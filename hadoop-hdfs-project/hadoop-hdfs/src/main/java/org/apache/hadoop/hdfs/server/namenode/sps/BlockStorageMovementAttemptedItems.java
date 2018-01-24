@@ -247,8 +247,6 @@ DECL|class|BlockStorageMovementAttemptedItems
 specifier|public
 class|class
 name|BlockStorageMovementAttemptedItems
-implements|implements
-name|BlockMovementListener
 block|{
 DECL|field|LOG
 specifier|private
@@ -300,6 +298,12 @@ name|timerThread
 init|=
 literal|null
 decl_stmt|;
+DECL|field|blkMovementListener
+specifier|private
+specifier|final
+name|BlockMovementListener
+name|blkMovementListener
+decl_stmt|;
 comment|//
 comment|// It might take anywhere between 5 to 10 minutes before
 comment|// a request is timed out.
@@ -342,7 +346,7 @@ specifier|final
 name|SPSService
 name|service
 decl_stmt|;
-DECL|method|BlockStorageMovementAttemptedItems (SPSService service, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles)
+DECL|method|BlockStorageMovementAttemptedItems (SPSService service, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles, BlockMovementListener blockMovementListener)
 specifier|public
 name|BlockStorageMovementAttemptedItems
 parameter_list|(
@@ -351,6 +355,9 @@ name|service
 parameter_list|,
 name|BlockStorageMovementNeeded
 name|unsatisfiedStorageMovementFiles
+parameter_list|,
+name|BlockMovementListener
+name|blockMovementListener
 parameter_list|)
 block|{
 name|this
@@ -435,6 +442,12 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|blkMovementListener
+operator|=
+name|blockMovementListener
+expr_stmt|;
 block|}
 comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param itemInfo    *          - tracking info    */
 DECL|method|add (AttemptedItemInfo itemInfo)
@@ -497,6 +510,22 @@ name|asList
 argument_list|(
 name|moveAttemptFinishedBlks
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// External listener if it is plugged-in
+if|if
+condition|(
+name|blkMovementListener
+operator|!=
+literal|null
+condition|)
+block|{
+name|blkMovementListener
+operator|.
+name|notifyMovementTriedBlocks
+argument_list|(
+name|moveAttemptFinishedBlks
 argument_list|)
 expr_stmt|;
 block|}

@@ -172,16 +172,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitMoveTask (BlockMovingInfo blkMovingInfo, BlockMovementListener blockMoveCompletionListener)
+DECL|method|submitMoveTask (BlockMovingInfo blkMovingInfo)
 specifier|public
 name|void
 name|submitMoveTask
 parameter_list|(
 name|BlockMovingInfo
 name|blkMovingInfo
-parameter_list|,
-name|BlockMovementListener
-name|blockMoveCompletionListener
 parameter_list|)
 throws|throws
 name|IOException

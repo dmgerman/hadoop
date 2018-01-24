@@ -74,6 +74,24 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlocksStorageMoveAttemptFinished
+import|;
+end_import
+
 begin_comment
 comment|/**  * An interface for SPSService, which exposes life cycle and processing APIs.  */
 end_comment
@@ -92,8 +110,8 @@ specifier|public
 interface|interface
 name|SPSService
 block|{
-comment|/**    * Initializes the helper services.    *    * @param ctxt    *          - context is an helper service to provide communication channel    *          between NN and SPS    * @param fileIDCollector    *          - a helper service for scanning the files under a given directory    *          id    * @param handler    *          - a helper service for moving the blocks    */
-DECL|method|init (Context ctxt, FileIdCollector fileIDCollector, BlockMoveTaskHandler handler)
+comment|/**    * Initializes the helper services.    *    * @param ctxt    *          - context is an helper service to provide communication channel    *          between NN and SPS    * @param fileIDCollector    *          - a helper service for scanning the files under a given directory    *          id    * @param handler    *          - a helper service for moving the blocks    * @param blkMovementListener    *          - listener to know about block movement attempt completion    */
+DECL|method|init (Context ctxt, FileIdCollector fileIDCollector, BlockMoveTaskHandler handler, BlockMovementListener blkMovementListener)
 name|void
 name|init
 parameter_list|(
@@ -105,6 +123,9 @@ name|fileIDCollector
 parameter_list|,
 name|BlockMoveTaskHandler
 name|handler
+parameter_list|,
+name|BlockMovementListener
+name|blkMovementListener
 parameter_list|)
 function_decl|;
 comment|/**    * Starts the SPS service. Make sure to initialize the helper services before    * invoking this method.    *    * @param reconfigStart    *          - to indicate whether the SPS startup requested from    *          reconfiguration service    */
@@ -186,6 +207,15 @@ name|markScanCompletedForPath
 parameter_list|(
 name|Long
 name|inodeId
+parameter_list|)
+function_decl|;
+comment|/**    * Notify the details of storage movement attempt finished blocks.    *    * @param moveAttemptFinishedBlks    *          - array contains all the blocks that are attempted to move    */
+DECL|method|notifyStorageMovementAttemptFinishedBlks ( BlocksStorageMoveAttemptFinished moveAttemptFinishedBlks)
+name|void
+name|notifyStorageMovementAttemptFinishedBlks
+parameter_list|(
+name|BlocksStorageMoveAttemptFinished
+name|moveAttemptFinishedBlks
 parameter_list|)
 function_decl|;
 block|}

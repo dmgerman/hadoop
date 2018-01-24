@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode.sps
+DECL|package|org.apache.hadoop.hdfs.server.common.sps
 package|package
 name|org
 operator|.
@@ -16,21 +16,11 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|common
 operator|.
 name|sps
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
 
 begin_import
 import|import
@@ -60,31 +50,11 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlockStorageMovementCommand
-operator|.
-name|BlockMovingInfo
-import|;
-end_import
-
 begin_comment
-comment|/**  * Interface for implementing different ways of block moving approaches. One can  * connect directly to DN and request block move, and other can talk NN to  * schedule via heart-beats.  */
+comment|/**  * Block movement status code.  */
 end_comment
 
-begin_interface
+begin_enum
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -93,24 +63,60 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|interface|BlockMoveTaskHandler
+DECL|enum|BlockMovementStatus
 specifier|public
-interface|interface
-name|BlockMoveTaskHandler
+enum|enum
+name|BlockMovementStatus
 block|{
-comment|/**    * This is an interface method to handle the move tasks. BlockMovingInfo must    * contain the required info to move the block, that source location,    * destination location and storage types.    */
-DECL|method|submitMoveTask (BlockMovingInfo blkMovingInfo)
-name|void
-name|submitMoveTask
+comment|/** Success. */
+DECL|enumConstant|DN_BLK_STORAGE_MOVEMENT_SUCCESS
+name|DN_BLK_STORAGE_MOVEMENT_SUCCESS
+argument_list|(
+literal|0
+argument_list|)
+block|,
+comment|/**    * Failure due to generation time stamp mismatches or network errors    * or no available space.    */
+DECL|enumConstant|DN_BLK_STORAGE_MOVEMENT_FAILURE
+name|DN_BLK_STORAGE_MOVEMENT_FAILURE
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+block|;
+comment|// TODO: need to support different type of failures. Failure due to network
+comment|// errors, block pinned, no space available etc.
+DECL|field|code
+specifier|private
+specifier|final
+name|int
+name|code
+decl_stmt|;
+DECL|method|BlockMovementStatus (int code)
+name|BlockMovementStatus
 parameter_list|(
-name|BlockMovingInfo
-name|blkMovingInfo
+name|int
+name|code
 parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
+block|{
+name|this
+operator|.
+name|code
+operator|=
+name|code
+expr_stmt|;
 block|}
-end_interface
+comment|/**    * @return the status code.    */
+DECL|method|getStatusCode ()
+name|int
+name|getStatusCode
+parameter_list|()
+block|{
+return|return
+name|code
+return|;
+block|}
+block|}
+end_enum
 
 end_unit
 

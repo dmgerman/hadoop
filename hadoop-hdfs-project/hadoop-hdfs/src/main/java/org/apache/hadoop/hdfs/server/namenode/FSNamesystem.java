@@ -8777,6 +8777,8 @@ name|blockManager
 argument_list|,
 name|this
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|blockManager
@@ -20446,7 +20448,7 @@ else|else
 block|{
 name|sps
 operator|.
-name|handleStorageMovementAttemptFinishedBlks
+name|notifyStorageMovementAttemptFinishedBlks
 argument_list|(
 name|blksMovementsFinished
 argument_list|)

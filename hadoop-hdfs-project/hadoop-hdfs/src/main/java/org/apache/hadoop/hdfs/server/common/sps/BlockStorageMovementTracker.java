@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.common.sps
 package|package
 name|org
 operator|.
@@ -16,7 +16,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|datanode
+name|common
+operator|.
+name|sps
 package|;
 end_package
 
@@ -144,46 +146,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|StoragePolicySatisfyWorker
-operator|.
-name|BlockMovementAttemptFinished
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|StoragePolicySatisfyWorker
-operator|.
-name|BlocksMovementsStatusHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -212,7 +174,7 @@ name|Private
 annotation|@
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Evolving
 DECL|class|BlockStorageMovementTracker
 specifier|public
 class|class
@@ -667,6 +629,7 @@ return|;
 block|}
 comment|/**    * Add future task to the tracking list to check the completion status of the    * block movement.    *    * @param blockID    *          block identifier    * @param futureTask    *          future task used for moving the respective block    */
 DECL|method|addBlock (Block block, Future<BlockMovementAttemptFinished> futureTask)
+specifier|public
 name|void
 name|addBlock
 parameter_list|(
@@ -743,6 +706,7 @@ block|}
 block|}
 comment|/**    * Clear the pending movement and movement result queues.    */
 DECL|method|removeAll ()
+specifier|public
 name|void
 name|removeAll
 parameter_list|()

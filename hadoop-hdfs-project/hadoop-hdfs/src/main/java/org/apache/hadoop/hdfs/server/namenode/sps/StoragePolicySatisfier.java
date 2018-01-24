@@ -769,7 +769,7 @@ name|blockMovingInfo
 expr_stmt|;
 block|}
 block|}
-DECL|method|init (final Context context, final FileIdCollector fileIDCollector, final BlockMoveTaskHandler blockMovementTaskHandler)
+DECL|method|init (final Context context, final FileIdCollector fileIDCollector, final BlockMoveTaskHandler blockMovementTaskHandler, final BlockMovementListener blockMovementListener)
 specifier|public
 name|void
 name|init
@@ -785,6 +785,10 @@ parameter_list|,
 specifier|final
 name|BlockMoveTaskHandler
 name|blockMovementTaskHandler
+parameter_list|,
+specifier|final
+name|BlockMovementListener
+name|blockMovementListener
 parameter_list|)
 block|{
 name|this
@@ -815,6 +819,8 @@ argument_list|(
 name|this
 argument_list|,
 name|storageMovementNeeded
+argument_list|,
+name|blockMovementListener
 argument_list|)
 expr_stmt|;
 name|this
@@ -1433,6 +1439,11 @@ literal|" are low redundant."
 argument_list|)
 expr_stmt|;
 block|}
+name|itemInfo
+operator|.
+name|increRetryCount
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|storageMovementNeeded
@@ -2012,10 +2023,22 @@ operator|.
 name|BLOCKS_TARGETS_PAIRED
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|status
+operator|!=
+name|BlocksMovingAnalysis
+operator|.
+name|Status
+operator|.
+name|BLOCKS_TARGETS_PAIRED
+condition|)
 block|{
-comment|// none of the blocks found its eligible targets for satisfying the
-comment|// storage policy.
+comment|// Check if the previous block was successfully paired. Here the
+comment|// status will set to NO_BLOCKS_TARGETS_PAIRED only when none of the
+comment|// blocks of a file found its eligible targets to satisfy the storage
+comment|// policy.
 name|status
 operator|=
 name|BlocksMovingAnalysis
@@ -2026,13 +2049,21 @@ name|NO_BLOCKS_TARGETS_PAIRED
 expr_stmt|;
 block|}
 block|}
-else|else
-block|{
+elseif|else
 if|if
 condition|(
 name|hasLowRedundancyBlocks
+operator|&&
+name|status
+operator|!=
+name|BlocksMovingAnalysis
+operator|.
+name|Status
+operator|.
+name|BLOCKS_TARGETS_PAIRED
 condition|)
 block|{
+comment|// Check if the previous block was successfully paired.
 name|status
 operator|=
 name|BlocksMovingAnalysis
@@ -2041,7 +2072,6 @@ name|Status
 operator|.
 name|FEW_LOW_REDUNDANCY_BLOCKS
 expr_stmt|;
-block|}
 block|}
 block|}
 name|List
@@ -2073,8 +2103,6 @@ operator|.
 name|submitMoveTask
 argument_list|(
 name|blkMovingInfo
-argument_list|,
-name|storageMovementsMonitor
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -3887,10 +3915,10 @@ return|;
 block|}
 block|}
 comment|/**    * Receives set of storage movement attempt finished blocks report.    *    * @param moveAttemptFinishedBlks    *          set of storage movement attempt finished blocks.    */
-DECL|method|handleStorageMovementAttemptFinishedBlks ( BlocksStorageMoveAttemptFinished moveAttemptFinishedBlks)
+DECL|method|notifyStorageMovementAttemptFinishedBlks ( BlocksStorageMoveAttemptFinished moveAttemptFinishedBlks)
 specifier|public
 name|void
-name|handleStorageMovementAttemptFinishedBlks
+name|notifyStorageMovementAttemptFinishedBlks
 parameter_list|(
 name|BlocksStorageMoveAttemptFinished
 name|moveAttemptFinishedBlks
@@ -3924,7 +3952,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getAttemptedItemsMonitor ()
-name|BlockMovementListener
+name|BlockStorageMovementAttemptedItems
 name|getAttemptedItemsMonitor
 parameter_list|()
 block|{

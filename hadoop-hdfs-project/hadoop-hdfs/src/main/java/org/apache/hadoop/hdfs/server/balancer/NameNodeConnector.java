@@ -1547,6 +1547,17 @@ throw|;
 block|}
 block|}
 block|}
+comment|/**    * Returns fallbackToSimpleAuth. This will be true or false during calls to    * indicate if a secure client falls back to simple auth.    */
+DECL|method|getFallbackToSimpleAuth ()
+specifier|public
+name|AtomicBoolean
+name|getFallbackToSimpleAuth
+parameter_list|()
+block|{
+return|return
+name|fallbackToSimpleAuth
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()

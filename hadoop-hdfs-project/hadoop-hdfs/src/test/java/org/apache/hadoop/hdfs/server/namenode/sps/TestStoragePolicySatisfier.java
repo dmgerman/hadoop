@@ -891,7 +891,7 @@ init|=
 literal|"COLD"
 decl_stmt|;
 DECL|field|LOG
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
 name|Logger
@@ -6991,6 +6991,8 @@ argument_list|,
 name|fileIDCollector
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|sps
@@ -7338,6 +7340,8 @@ argument_list|(
 name|ctxt
 argument_list|,
 name|fileIDCollector
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
