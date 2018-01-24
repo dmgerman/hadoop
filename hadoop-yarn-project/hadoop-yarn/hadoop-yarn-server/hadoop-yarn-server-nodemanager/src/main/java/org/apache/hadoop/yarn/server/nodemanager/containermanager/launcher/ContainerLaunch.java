@@ -2181,16 +2181,7 @@ operator|.
 name|getCommands
 argument_list|()
 argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|containerLogDirs
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-argument_list|)
+name|containerLogDir
 argument_list|,
 name|user
 argument_list|)
