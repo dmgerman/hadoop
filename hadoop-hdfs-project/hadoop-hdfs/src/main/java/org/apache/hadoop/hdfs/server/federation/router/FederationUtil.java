@@ -186,6 +186,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|VersionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jettison
@@ -595,6 +609,50 @@ block|}
 block|}
 return|return
 name|ret
+return|;
+block|}
+comment|/**    * Fetch the compile timestamp for this jar.    *    * @return Date compiled.    */
+DECL|method|getBuildVersion ()
+specifier|public
+specifier|static
+name|String
+name|getBuildVersion
+parameter_list|()
+block|{
+return|return
+name|VersionInfo
+operator|.
+name|getBuildVersion
+argument_list|()
+return|;
+block|}
+comment|/**    * Fetch the build/compile information for this jar.    *    * @return String Compilation info.    */
+DECL|method|getCompileInfo ()
+specifier|public
+specifier|static
+name|String
+name|getCompileInfo
+parameter_list|()
+block|{
+return|return
+name|VersionInfo
+operator|.
+name|getDate
+argument_list|()
+operator|+
+literal|" by "
+operator|+
+name|VersionInfo
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|VersionInfo
+operator|.
+name|getBranch
+argument_list|()
 return|;
 block|}
 comment|/**    * Create an instance of an interface with a constructor using a context.    *    * @param conf Configuration for the class names.    * @param context Context object to pass to the instance.    * @param contextClass Type of the context passed to the constructor.    * @param clazz Class of the object to return.    * @return New instance of the specified class that implements the desired    *         interface and a single parameter constructor containing a    *         StateStore reference.    */
