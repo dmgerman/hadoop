@@ -560,11 +560,14 @@ block|{
 DECL|enumConstant|anon
 DECL|enumConstant|sasl
 DECL|enumConstant|digest
+DECL|enumConstant|simple
 name|anon
 block|,
 name|sasl
 block|,
 name|digest
+block|,
+name|simple
 block|}
 comment|/**    * Access mechanism    */
 DECL|field|access
@@ -840,6 +843,16 @@ operator|=
 name|AccessPolicy
 operator|.
 name|anon
+expr_stmt|;
+break|break;
+case|case
+name|REGISTRY_CLIENT_AUTH_SIMPLE
+case|:
+name|access
+operator|=
+name|AccessPolicy
+operator|.
+name|simple
 expr_stmt|;
 break|break;
 default|default:
@@ -1246,6 +1259,9 @@ block|}
 break|break;
 case|case
 name|anon
+case|:
+case|case
+name|simple
 case|:
 comment|// nothing is needed; account is read only.
 if|if
@@ -2759,6 +2775,11 @@ operator|+
 name|keytab
 argument_list|)
 expr_stmt|;
+default|default:
+name|clearZKSaslClientProperties
+argument_list|()
+expr_stmt|;
+break|break;
 block|}
 block|}
 block|}

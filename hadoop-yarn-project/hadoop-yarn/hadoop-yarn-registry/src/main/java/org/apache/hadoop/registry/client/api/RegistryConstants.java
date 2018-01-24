@@ -339,6 +339,12 @@ name|REGISTRY_CLIENT_AUTH_ANONYMOUS
 init|=
 literal|""
 decl_stmt|;
+DECL|field|REGISTRY_CLIENT_AUTH_SIMPLE
+name|String
+name|REGISTRY_CLIENT_AUTH_SIMPLE
+init|=
+literal|"simple"
+decl_stmt|;
 comment|/**    * Registry client authentication ID.    *<p>    * This is only used in secure clusters with    * {@link #KEY_REGISTRY_CLIENT_AUTH} set to    * {@link #REGISTRY_CLIENT_AUTH_DIGEST}    *    */
 DECL|field|KEY_REGISTRY_CLIENT_AUTHENTICATION_ID
 name|String
