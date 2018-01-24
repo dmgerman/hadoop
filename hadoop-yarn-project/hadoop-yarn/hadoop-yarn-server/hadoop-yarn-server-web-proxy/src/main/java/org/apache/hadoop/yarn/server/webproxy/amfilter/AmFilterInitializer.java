@@ -433,17 +433,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|container
-operator|.
-name|addFilter
-argument_list|(
-name|FILTER_NAME
-argument_list|,
-name|FILTER_CLASS
-argument_list|,
-name|params
-argument_list|)
-expr_stmt|;
 comment|// Handle RM HA urls
 comment|// Include yarn-site.xml in the classpath
 name|YarnConfiguration
@@ -537,6 +526,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|container
+operator|.
+name|addFilter
+argument_list|(
+name|FILTER_NAME
+argument_list|,
+name|FILTER_CLASS
+argument_list|,
+name|params
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getRmIds (Configuration conf)
 specifier|private
