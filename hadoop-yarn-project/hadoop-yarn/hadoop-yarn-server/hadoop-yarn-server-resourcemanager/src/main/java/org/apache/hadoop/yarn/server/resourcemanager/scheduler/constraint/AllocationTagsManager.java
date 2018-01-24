@@ -351,7 +351,7 @@ operator|new
 name|TypeToCountedTags
 argument_list|()
 decl_stmt|;
-comment|/**    * Generic store mapping type<T> to counted tags.    * Currently used both for NodeId to Tag, Count and Rack to Tag, Count    */
+comment|/**    * Generic store mapping type T to counted tags.    * Currently used both for NodeId to Tag, Count and Rack to Tag, Count    */
 annotation|@
 name|VisibleForTesting
 DECL|class|TypeToCountedTags
@@ -1858,7 +1858,7 @@ operator|>
 literal|0
 return|;
 block|}
-comment|/**    * Get cardinality for following conditions. External can pass-in a binary op    * to implement customized logic.    *    * @param nodeId        nodeId, required.    * @param applicationId applicationId. When null is specified, return    *                      aggregated cardinality among all applications.    * @param tags          allocation tags, see    *                      {@link SchedulingRequest#getAllocationTags()},    *                      When multiple tags specified. Returns cardinality    *                      depends on op. If a specified tag doesn't exist, 0    *                      will be its cardinality. When null/empty tags    *                      specified, all tags (of the node/app) will be    *                      considered.    * @param op            operator. Such as Long::max, Long::sum, etc. Required.    *                      This parameter only take effect when #values>= 2.    * @return cardinality of specified query on the node.    * @throws InvalidAllocationTagsQueryException when illegal query    *                                            parameter specified    */
+comment|/**    * Get cardinality for following conditions. External can pass-in a binary op    * to implement customized logic.    *    * @param nodeId        nodeId, required.    * @param applicationId applicationId. When null is specified, return    *                      aggregated cardinality among all applications.    * @param tags          allocation tags, see    *                      {@link SchedulingRequest#getAllocationTags()},    *                      When multiple tags specified. Returns cardinality    *                      depends on op. If a specified tag doesn't exist, 0    *                      will be its cardinality. When null/empty tags    *                      specified, all tags (of the node/app) will be    *                      considered.    * @param op            operator. Such as Long::max, Long::sum, etc. Required.    *                      This parameter only take effect when #values greater    *                      than 2.    * @return cardinality of specified query on the node.    * @throws InvalidAllocationTagsQueryException when illegal query    *                                            parameter specified    */
 DECL|method|getNodeCardinalityByOp (NodeId nodeId, ApplicationId applicationId, Set<String> tags, LongBinaryOperator op)
 specifier|public
 name|long
@@ -1968,7 +1968,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get cardinality for following conditions. External can pass-in a binary op    * to implement customized logic.    *    * @param rack          rack, required.    * @param applicationId applicationId. When null is specified, return    *                      aggregated cardinality among all applications.    * @param tags          allocation tags, see    *                      {@link SchedulingRequest#getAllocationTags()},    *                      When multiple tags specified. Returns cardinality    *                      depends on op. If a specified tag doesn't exist, 0    *                      will be its cardinality. When null/empty tags    *                      specified, all tags (of the rack/app) will be    *                      considered.    * @param op            operator. Such as Long::max, Long::sum, etc. Required.    *                      This parameter only take effect when #values>= 2.    * @return cardinality of specified query on the rack.    * @throws InvalidAllocationTagsQueryException when illegal query    *                                            parameter specified    */
+comment|/**    * Get cardinality for following conditions. External can pass-in a binary op    * to implement customized logic.    *    * @param rack          rack, required.    * @param applicationId applicationId. When null is specified, return    *                      aggregated cardinality among all applications.    * @param tags          allocation tags, see    *                      {@link SchedulingRequest#getAllocationTags()},    *                      When multiple tags specified. Returns cardinality    *                      depends on op. If a specified tag doesn't exist, 0    *                      will be its cardinality. When null/empty tags    *                      specified, all tags (of the rack/app) will be    *                      considered.    * @param op            operator. Such as Long::max, Long::sum, etc. Required.    *                      This parameter only take effect when #values    *                      greater than 2.    * @return cardinality of specified query on the rack.    * @throws InvalidAllocationTagsQueryException when illegal query    *                                            parameter specified    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

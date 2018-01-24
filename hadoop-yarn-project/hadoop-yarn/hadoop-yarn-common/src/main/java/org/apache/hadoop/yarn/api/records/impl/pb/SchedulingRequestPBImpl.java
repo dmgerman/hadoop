@@ -310,6 +310,10 @@ name|SchedulingRequestProtoOrBuilder
 import|;
 end_import
 
+begin_comment
+comment|/**  * Proto implementation for {@link SchedulingRequest} interface.  */
+end_comment
+
 begin_class
 annotation|@
 name|Private

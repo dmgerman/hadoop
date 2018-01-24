@@ -146,6 +146,10 @@ name|ResourceSizingProtoOrBuilder
 import|;
 end_import
 
+begin_comment
+comment|/**  * Proto Implementation for {@link ResourceSizing} interface.  */
+end_comment
+
 begin_class
 annotation|@
 name|Private

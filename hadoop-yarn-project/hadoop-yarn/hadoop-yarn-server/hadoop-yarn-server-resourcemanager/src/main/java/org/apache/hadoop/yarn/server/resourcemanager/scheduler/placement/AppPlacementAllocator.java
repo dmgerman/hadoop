@@ -283,7 +283,7 @@ specifier|protected
 name|RMContext
 name|rmContext
 decl_stmt|;
-comment|/**    * Get iterator of preferred node depends on requirement and/or availability    * @param candidateNodeSet input CandidateNodeSet    * @return iterator of preferred node    */
+comment|/**    * Get iterator of preferred node depends on requirement and/or availability.    * @param candidateNodeSet input CandidateNodeSet    * @return iterator of preferred node    */
 DECL|method|getPreferredNodeIterator ( CandidateNodeSet<N> candidateNodeSet)
 specifier|public
 specifier|abstract
@@ -449,7 +449,7 @@ name|void
 name|showRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Initialize this allocator, this will be called by Factory automatically    *    * @param appSchedulingInfo appSchedulingInfo    * @param schedulerRequestKey schedulerRequestKey    * @param rmContext rmContext    */
+comment|/**    * Initialize this allocator, this will be called by Factory automatically.    *    * @param appSchedulingInfo appSchedulingInfo    * @param schedulerRequestKey schedulerRequestKey    * @param rmContext rmContext    */
 DECL|method|initialize (AppSchedulingInfo appSchedulingInfo, SchedulerRequestKey schedulerRequestKey, RMContext rmContext)
 specifier|public
 name|void

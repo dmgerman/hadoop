@@ -1767,9 +1767,11 @@ name|this
 operator|==
 name|o
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -1779,9 +1781,11 @@ operator|instanceof
 name|SchedulerNode
 operator|)
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 name|SchedulerNode
 name|that
 init|=

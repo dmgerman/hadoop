@@ -261,7 +261,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Set the<code>allocationRequestId</code> of the request.      *       * @see SchedulingRequest#setAllocationRequestId(long)      * @param allocationRequestId<code>allocationRequestId</code> of the      *          request      * @return {@link SchedulingRequest.SchedulingRequestBuilder}      */
+comment|/**      * Set the<code>allocationRequestId</code> of the request.      *      * @see SchedulingRequest#setAllocationRequestId(long)      * @param allocationRequestId<code>allocationRequestId</code> of the      *          request      * @return {@link SchedulingRequest.SchedulingRequestBuilder}      */
 annotation|@
 name|Public
 annotation|@
@@ -311,7 +311,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Set the<code>executionType</code> of the request.      *       * @see SchedulingRequest#setExecutionType(ExecutionTypeRequest)      * @param executionType<code>executionType</code> of the request      * @return {@link SchedulingRequest.SchedulingRequestBuilder}      */
+comment|/**      * Set the<code>executionType</code> of the request.      *      * @see SchedulingRequest#setExecutionType(ExecutionTypeRequest)      * @param executionType<code>executionType</code> of the request      * @return {@link SchedulingRequest.SchedulingRequestBuilder}      */
 annotation|@
 name|Public
 annotation|@
@@ -414,7 +414,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Return generated {@link SchedulingRequest} object.      *       * @return {@link SchedulingRequest}      */
+comment|/**      * Return generated {@link SchedulingRequest} object.      *      * @return {@link SchedulingRequest}      */
 annotation|@
 name|Public
 annotation|@

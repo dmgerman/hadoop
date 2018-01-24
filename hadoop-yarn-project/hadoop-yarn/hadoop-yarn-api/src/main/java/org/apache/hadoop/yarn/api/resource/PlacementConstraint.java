@@ -1128,6 +1128,7 @@ name|TargetConstraint
 extends|extends
 name|AbstractConstraint
 block|{
+comment|/**      * TargetOperator enum helps to specify type.      */
 DECL|enum|TargetOperator
 enum|enum
 name|TargetOperator

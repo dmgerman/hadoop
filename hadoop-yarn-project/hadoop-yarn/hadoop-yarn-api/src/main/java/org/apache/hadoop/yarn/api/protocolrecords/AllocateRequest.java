@@ -588,7 +588,7 @@ operator|.
 name|EMPTY_LIST
 return|;
 block|}
-comment|/**    * Set the list of Scheduling requests to inform the    *<code>ResourceManager</code> about the application's resource requirements    * (potentially including allocation tags& placement constraints).    * @param schedulingRequests list of<code>SchedulingRequest</code> to update    *          the<code>ResourceManager</code> about the application's resource    *          requirements.    */
+comment|/**    * Set the list of Scheduling requests to inform the    *<code>ResourceManager</code> about the application's resource requirements    * (potentially including allocation tags and placement constraints).    * @param schedulingRequests list of {@link SchedulingRequest} to update    *          the<code>ResourceManager</code> about the application's resource    *          requirements.    */
 annotation|@
 name|Public
 annotation|@

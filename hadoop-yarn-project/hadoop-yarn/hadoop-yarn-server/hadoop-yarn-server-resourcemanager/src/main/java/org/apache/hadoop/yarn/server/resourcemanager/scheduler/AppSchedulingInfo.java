@@ -548,28 +548,6 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|LocalityAppPlacementAllocator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|placement
-operator|.
 name|PendingAskUpdateResult
 import|;
 end_import
@@ -3356,7 +3334,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Pre-check node to see if it satisfy the given schedulerKey and    * scheduler mode    *    * @param schedulerKey schedulerKey    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @return can use the node or not.    */
+comment|/**    * Pre-check node to see if it satisfy the given schedulerKey and    * scheduler mode.    *    * @param schedulerKey schedulerKey    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @return can use the node or not.    */
 DECL|method|precheckNode (SchedulerRequestKey schedulerKey, SchedulerNode schedulerNode, SchedulingMode schedulingMode)
 specifier|public
 name|boolean

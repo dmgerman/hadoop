@@ -166,24 +166,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|resource
-operator|.
-name|PlacementConstraints
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -385,6 +367,10 @@ operator|.
 name|Arrays
 import|;
 end_import
+
+begin_comment
+comment|/**  * Test class for verifying Scheduling requests in CS.  */
+end_comment
 
 begin_class
 DECL|class|TestCapacitySchedulerSchedulingRequestUpdate

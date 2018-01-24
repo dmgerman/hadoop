@@ -688,22 +688,6 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|InvalidResourceRequestException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
 name|SchedulerInvalidResoureRequestException
 import|;
 end_import
@@ -6662,7 +6646,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Normalize a list of SchedulingRequest    *    * @param asks scheduling request    */
+comment|/**    * Normalize a list of SchedulingRequest.    *    * @param asks scheduling request    */
 DECL|method|normalizeSchedulingRequests (List<SchedulingRequest> asks)
 specifier|private
 name|void
