@@ -929,7 +929,11 @@ name|jobId
 argument_list|)
 throw|;
 block|}
-elseif|else
+name|fileInfo
+operator|.
+name|waitUntilMoved
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|fileInfo
@@ -1118,6 +1122,11 @@ operator|.
 name|getJobId
 argument_list|()
 decl_stmt|;
+name|mi
+operator|.
+name|waitUntilMoved
+argument_list|()
+expr_stmt|;
 name|result
 operator|.
 name|put

@@ -2481,6 +2481,12 @@ operator|.
 name|MOVE_FAILED
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**      * Parse a job from the JobHistoryFile, if the underlying file is not going      * to be deleted and the number of tasks associated with the job is not      * greater than maxTasksForLoadedJob.      *       * @return null if the underlying job history file was deleted, or      *         an {@link UnparsedJob} object representing a partially parsed job      *           if the job tasks exceeds the configured maximum, or      *         a {@link CompletedJob} representing a fully parsed job.      * @throws IOException      *           if there is an error trying to read the file if parsed.      */
 DECL|method|loadJob ()
@@ -2560,6 +2566,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 if|if
 condition|(
 name|LOG
@@ -2616,6 +2624,13 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getJobIndexInfo ()
 specifier|public
@@ -2740,6 +2755,52 @@ operator|>
 name|maxTasksForLoadedJob
 operator|)
 return|;
+block|}
+DECL|method|waitUntilMoved ()
+specifier|public
+specifier|synchronized
+name|void
+name|waitUntilMoved
+parameter_list|()
+block|{
+while|while
+condition|(
+name|isMovePending
+argument_list|()
+operator|&&
+operator|!
+name|didMoveFail
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+name|wait
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Waiting has been interrupted"
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 block|}
 DECL|field|serialNumberIndex
