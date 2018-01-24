@@ -1388,6 +1388,26 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|listVolumes ()
+specifier|public
+name|List
+argument_list|<
+name|VolumeInfo
+argument_list|>
+name|listVolumes
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|listVolume
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|createVolume (String userName, String volumeName, long volumeSize, int blockSize)
 specifier|public
 specifier|synchronized

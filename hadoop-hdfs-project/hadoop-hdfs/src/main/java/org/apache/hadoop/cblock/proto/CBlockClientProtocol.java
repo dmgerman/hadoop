@@ -20,11 +20,37 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|cblock
+operator|.
+name|meta
+operator|.
+name|VolumeInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -48,6 +74,16 @@ parameter_list|,
 name|String
 name|volumeName
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|listVolumes ()
+name|List
+argument_list|<
+name|VolumeInfo
+argument_list|>
+name|listVolumes
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
