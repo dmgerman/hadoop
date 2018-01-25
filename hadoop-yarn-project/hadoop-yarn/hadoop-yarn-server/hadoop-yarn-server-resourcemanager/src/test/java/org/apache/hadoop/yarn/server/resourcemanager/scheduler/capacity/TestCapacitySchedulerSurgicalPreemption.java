@@ -1044,6 +1044,29 @@ argument_list|,
 literal|16
 argument_list|)
 expr_stmt|;
+comment|// Ensure preemption metrics were recored.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Number of preempted containers incorrectly recorded:"
+argument_list|,
+literal|4
+argument_list|,
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"root"
+argument_list|)
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getAggregatePreemptedContainers
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rm1
 operator|.
 name|close
