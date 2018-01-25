@@ -441,20 +441,15 @@ name|waitOzoneReady
 argument_list|()
 expr_stmt|;
 comment|//the easiest way to create an open container is creating a key
-name|OzoneClientFactory
-operator|.
-name|setConfiguration
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|OzoneClient
 name|client
 init|=
 name|OzoneClientFactory
 operator|.
 name|getClient
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|ObjectStore
 name|objectStore

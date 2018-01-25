@@ -469,33 +469,6 @@ name|RestClient
 operator|.
 name|class
 decl_stmt|;
-DECL|field|OZONE_REST_SERVERS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_REST_SERVERS
-init|=
-literal|"ozone.rest.servers"
-decl_stmt|;
-DECL|field|OZONE_REST_CLIENT_PORT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_REST_CLIENT_PORT
-init|=
-literal|"ozone.rest.client.port"
-decl_stmt|;
-DECL|field|OZONE_REST_CLIENT_PORT_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|OZONE_REST_CLIENT_PORT_DEFAULT
-init|=
-literal|9864
-decl_stmt|;
 comment|// This defines the overall connection limit for the connection pool used in
 comment|// RestClient.
 DECL|field|OZONE_REST_CLIENT_HTTP_CONNECTION_MAX
