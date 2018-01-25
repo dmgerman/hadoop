@@ -296,6 +296,26 @@ name|federation
 operator|.
 name|store
 operator|.
+name|RouterStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
 name|StateStoreService
 import|;
 end_import
@@ -357,6 +377,20 @@ operator|.
 name|util
 operator|.
 name|JvmPauseMonitor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -521,6 +555,40 @@ specifier|private
 name|RouterQuotaManager
 name|quotaManager
 decl_stmt|;
+comment|/** Manages the current state of the router. */
+DECL|field|routerStateManager
+specifier|private
+name|RouterStore
+name|routerStateManager
+decl_stmt|;
+comment|/** Heartbeat our run status to the router state manager. */
+DECL|field|routerHeartbeatService
+specifier|private
+name|RouterHeartbeatService
+name|routerHeartbeatService
+decl_stmt|;
+comment|/** The start time of the namesystem. */
+DECL|field|startTime
+specifier|private
+specifier|final
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
+comment|/** State of the Router. */
+DECL|field|state
+specifier|private
+name|RouterServiceState
+name|state
+init|=
+name|RouterServiceState
+operator|.
+name|UNINITIALIZED
+decl_stmt|;
 comment|/////////////////////////////////////////////////////////
 comment|// Constructor
 comment|/////////////////////////////////////////////////////////
@@ -561,6 +629,13 @@ operator|.
 name|conf
 operator|=
 name|configuration
+expr_stmt|;
+name|updateRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|INITIALIZING
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -823,6 +898,24 @@ literal|"Heartbeat is enabled but there are no namenodes to monitor"
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Periodically update the router state
+name|this
+operator|.
+name|routerHeartbeatService
+operator|=
+operator|new
+name|RouterHeartbeatService
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|routerHeartbeatService
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Router metrics system
 if|if
@@ -945,6 +1038,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|updateRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -1003,6 +1103,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Update state
+name|updateRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|SHUTDOWN
+argument_list|)
+expr_stmt|;
 comment|// JVM pause monitor
 if|if
 condition|(
@@ -1632,6 +1740,56 @@ name|ret
 return|;
 block|}
 comment|/////////////////////////////////////////////////////////
+comment|// Router State Management
+comment|/////////////////////////////////////////////////////////
+comment|/**    * Update the router state and heartbeat to the state store.    *    * @param state The new router state.    */
+DECL|method|updateRouterState (RouterServiceState newState)
+specifier|public
+name|void
+name|updateRouterState
+parameter_list|(
+name|RouterServiceState
+name|newState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|newState
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|routerHeartbeatService
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|routerHeartbeatService
+operator|.
+name|updateStateAsync
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Get the status of the router.    *    * @return Status of the router.    */
+DECL|method|getRouterState ()
+specifier|public
+name|RouterServiceState
+name|getRouterState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|state
+return|;
+block|}
+comment|/////////////////////////////////////////////////////////
 comment|// Submodule getters
 comment|/////////////////////////////////////////////////////////
 comment|/**    * Get the State Store service.    *    * @return State Store service.    */
@@ -1731,9 +1889,66 @@ operator|.
 name|namenodeResolver
 return|;
 block|}
+comment|/**    * Get the state store interface for the router heartbeats.    *    * @return FederationRouterStateStore state store API handle.    */
+DECL|method|getRouterStateManager ()
+specifier|public
+name|RouterStore
+name|getRouterStateManager
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|routerStateManager
+operator|==
+literal|null
+operator|&&
+name|this
+operator|.
+name|stateStore
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|routerStateManager
+operator|=
+name|this
+operator|.
+name|stateStore
+operator|.
+name|getRegisteredRecordStore
+argument_list|(
+name|RouterStore
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|this
+operator|.
+name|routerStateManager
+return|;
+block|}
 comment|/////////////////////////////////////////////////////////
 comment|// Router info
 comment|/////////////////////////////////////////////////////////
+comment|/**    * Get the start date of the Router.    *    * @return Start date of the router.    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|startTime
+return|;
+block|}
 comment|/**    * Unique ID for the router, typically the hostname:port string for the    * router's RPC server. This ID may be null on router startup before the RPC    * server has bound to a port.    *    * @return Router identifier.    */
 DECL|method|getRouterId ()
 specifier|public

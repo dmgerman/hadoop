@@ -32,8 +32,8 @@ specifier|public
 enum|enum
 name|RouterServiceState
 block|{
-DECL|enumConstant|NONE
-name|NONE
+DECL|enumConstant|UNINITIALIZED
+name|UNINITIALIZED
 block|,
 DECL|enumConstant|INITIALIZING
 name|INITIALIZING
