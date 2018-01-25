@@ -387,7 +387,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|90000
 argument_list|)
 annotation|@
 name|SuppressWarnings

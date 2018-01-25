@@ -842,7 +842,7 @@ literal|0
 decl_stmt|;
 comment|// user name
 DECL|field|user
-specifier|protected
+specifier|private
 name|String
 name|user
 decl_stmt|;
@@ -960,7 +960,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, ReservationSubmissionRequest rr, long baseTimeMS, Resource amContainerResource)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource)
 specifier|public
 name|void
 name|init
@@ -998,14 +998,11 @@ parameter_list|,
 name|String
 name|oldApp
 parameter_list|,
-name|ReservationSubmissionRequest
-name|rr
-parameter_list|,
 name|long
 name|baseTimeMS
 parameter_list|,
 name|Resource
-name|amContainerResource
+name|amResource
 parameter_list|)
 block|{
 name|super
@@ -1079,15 +1076,9 @@ name|finishTime
 expr_stmt|;
 name|this
 operator|.
-name|reservationRequest
-operator|=
-name|rr
-expr_stmt|;
-name|this
-operator|.
 name|amContainerResource
 operator|=
-name|amContainerResource
+name|amResource
 expr_stmt|;
 block|}
 comment|/**    * register with RM    */
@@ -1192,6 +1183,22 @@ expr_stmt|;
 name|isAMContainerRunning
 operator|=
 literal|true
+expr_stmt|;
+block|}
+DECL|method|setReservationRequest (ReservationSubmissionRequest rr)
+specifier|protected
+name|void
+name|setReservationRequest
+parameter_list|(
+name|ReservationSubmissionRequest
+name|rr
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reservationRequest
+operator|=
+name|rr
 expr_stmt|;
 block|}
 DECL|method|submitReservationWhenSpecified ()
@@ -1747,6 +1754,22 @@ name|sendContainerRequest
 parameter_list|()
 throws|throws
 name|Exception
+function_decl|;
+DECL|method|initReservation ( ReservationId reservationId, long deadline, long now)
+specifier|public
+specifier|abstract
+name|void
+name|initReservation
+parameter_list|(
+name|ReservationId
+name|reservationId
+parameter_list|,
+name|long
+name|deadline
+parameter_list|,
+name|long
+name|now
+parameter_list|)
 function_decl|;
 DECL|method|checkStop ()
 specifier|protected

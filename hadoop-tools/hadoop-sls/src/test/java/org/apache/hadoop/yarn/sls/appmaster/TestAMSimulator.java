@@ -56,6 +56,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ReservationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -561,6 +579,23 @@ name|InterruptedException
 block|{     }
 annotation|@
 name|Override
+DECL|method|initReservation (ReservationId id, long deadline, long now)
+specifier|public
+name|void
+name|initReservation
+parameter_list|(
+name|ReservationId
+name|id
+parameter_list|,
+name|long
+name|deadline
+parameter_list|,
+name|long
+name|now
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
 DECL|method|checkStop ()
 specifier|protected
 name|void
@@ -832,8 +867,6 @@ argument_list|,
 literal|true
 argument_list|,
 name|appId
-argument_list|,
-literal|null
 argument_list|,
 literal|0
 argument_list|,
