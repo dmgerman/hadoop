@@ -166,26 +166,6 @@ name|server
 operator|.
 name|api
 operator|.
-name|protocolrecords
-operator|.
-name|NodeHeartbeatResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
 name|records
 operator|.
 name|OpportunisticContainersStatus
@@ -246,12 +226,6 @@ specifier|final
 name|NodeStatus
 name|nodeStatus
 decl_stmt|;
-DECL|field|latestResponse
-specifier|private
-specifier|final
-name|NodeHeartbeatResponse
-name|latestResponse
-decl_stmt|;
 DECL|field|logAggregationReportsForApps
 specifier|private
 name|List
@@ -260,7 +234,7 @@ name|LogAggregationReport
 argument_list|>
 name|logAggregationReportsForApps
 decl_stmt|;
-DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeStatus nodeStatus, NodeHeartbeatResponse latestResponse)
+DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeStatus nodeStatus)
 specifier|public
 name|RMNodeStatusEvent
 parameter_list|(
@@ -269,9 +243,6 @@ name|nodeId
 parameter_list|,
 name|NodeStatus
 name|nodeStatus
-parameter_list|,
-name|NodeHeartbeatResponse
-name|latestResponse
 parameter_list|)
 block|{
 name|this
@@ -280,13 +251,11 @@ name|nodeId
 argument_list|,
 name|nodeStatus
 argument_list|,
-name|latestResponse
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeStatus nodeStatus, NodeHeartbeatResponse latestResponse, List<LogAggregationReport> logAggregationReportsForApps)
+DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeStatus nodeStatus, List<LogAggregationReport> logAggregationReportsForApps)
 specifier|public
 name|RMNodeStatusEvent
 parameter_list|(
@@ -295,9 +264,6 @@ name|nodeId
 parameter_list|,
 name|NodeStatus
 name|nodeStatus
-parameter_list|,
-name|NodeHeartbeatResponse
-name|latestResponse
 parameter_list|,
 name|List
 argument_list|<
@@ -320,12 +286,6 @@ operator|.
 name|nodeStatus
 operator|=
 name|nodeStatus
-expr_stmt|;
-name|this
-operator|.
-name|latestResponse
-operator|=
-name|latestResponse
 expr_stmt|;
 name|this
 operator|.
@@ -365,18 +325,6 @@ name|nodeStatus
 operator|.
 name|getContainersStatuses
 argument_list|()
-return|;
-block|}
-DECL|method|getLatestResponse ()
-specifier|public
-name|NodeHeartbeatResponse
-name|getLatestResponse
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|latestResponse
 return|;
 block|}
 DECL|method|getKeepAliveAppIds ()

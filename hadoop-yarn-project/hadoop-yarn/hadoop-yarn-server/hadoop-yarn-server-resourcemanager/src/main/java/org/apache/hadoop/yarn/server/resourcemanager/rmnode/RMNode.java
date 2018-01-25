@@ -368,10 +368,10 @@ argument_list|>
 name|getRunningApps
 parameter_list|()
 function_decl|;
-comment|/**    * Update a {@link NodeHeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link NodeHeartbeatResponse} to update    */
-DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
+comment|/**    * Update a {@link NodeHeartbeatResponse} with the list of containers and    * applications to clean up for this node, and the containers to be updated.    *    * @param response the {@link NodeHeartbeatResponse} to update    */
+DECL|method|setAndUpdateNodeHeartbeatResponse (NodeHeartbeatResponse response)
 name|void
-name|updateNodeHeartbeatResponseForCleanup
+name|setAndUpdateNodeHeartbeatResponse
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response
@@ -408,15 +408,6 @@ name|String
 argument_list|>
 name|getNodeLabels
 parameter_list|()
-function_decl|;
-comment|/**    * Update containers to be updated    */
-DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
-name|void
-name|updateNodeHeartbeatResponseForUpdatedContainers
-parameter_list|(
-name|NodeHeartbeatResponse
-name|response
-parameter_list|)
 function_decl|;
 DECL|method|pullNewlyIncreasedContainers ()
 specifier|public

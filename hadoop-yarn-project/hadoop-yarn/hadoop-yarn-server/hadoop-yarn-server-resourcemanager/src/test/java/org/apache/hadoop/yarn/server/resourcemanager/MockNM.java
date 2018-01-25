@@ -1016,7 +1016,6 @@ name|increasedConts
 argument_list|,
 literal|true
 argument_list|,
-operator|++
 name|responseId
 argument_list|)
 expr_stmt|;
@@ -1334,6 +1333,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|responseId
+operator|=
+literal|0
+expr_stmt|;
 return|return
 name|registrationResponse
 return|;
@@ -1370,7 +1373,6 @@ argument_list|()
 argument_list|,
 name|isHealthy
 argument_list|,
-operator|++
 name|responseId
 argument_list|)
 return|;
@@ -1466,7 +1468,6 @@ argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-operator|++
 name|responseId
 argument_list|)
 return|;
@@ -1500,7 +1501,6 @@ name|conts
 argument_list|,
 name|isHealthy
 argument_list|,
-operator|++
 name|responseId
 argument_list|)
 return|;
@@ -1616,7 +1616,6 @@ argument_list|()
 argument_list|,
 name|isHealthy
 argument_list|,
-operator|++
 name|responseId
 argument_list|)
 return|;
@@ -1866,6 +1865,13 @@ argument_list|(
 name|req
 argument_list|)
 decl_stmt|;
+name|responseId
+operator|=
+name|heartbeatResponse
+operator|.
+name|getResponseId
+argument_list|()
+expr_stmt|;
 name|MasterKey
 name|masterKeyFromRM
 init|=
@@ -2007,6 +2013,22 @@ block|{
 return|return
 name|version
 return|;
+block|}
+DECL|method|setResponseId (int id)
+specifier|public
+name|void
+name|setResponseId
+parameter_list|(
+name|int
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|responseId
+operator|=
+name|id
+expr_stmt|;
 block|}
 block|}
 end_class

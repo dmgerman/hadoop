@@ -1473,8 +1473,6 @@ argument_list|()
 argument_list|,
 name|nodeStatus1
 argument_list|,
-literal|null
-argument_list|,
 name|node1ReportForApp
 argument_list|)
 argument_list|)
@@ -1579,8 +1577,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|nodeStatus2
-argument_list|,
-literal|null
 argument_list|,
 name|node2ReportForApp
 argument_list|)
@@ -1819,8 +1815,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|nodeStatus1
-argument_list|,
-literal|null
 argument_list|,
 name|node1ReportForApp2
 argument_list|)
@@ -2244,8 +2238,6 @@ argument_list|()
 argument_list|,
 name|nodeStatus1
 argument_list|,
-literal|null
-argument_list|,
 name|node1ReportForApp3
 argument_list|)
 argument_list|)
@@ -2532,8 +2524,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|nodeStatus2
-argument_list|,
-literal|null
 argument_list|,
 name|node2ReportForApp2
 argument_list|)

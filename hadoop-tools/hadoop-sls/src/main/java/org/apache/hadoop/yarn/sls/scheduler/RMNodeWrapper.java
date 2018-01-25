@@ -612,10 +612,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateNodeHeartbeatResponseForCleanup ( NodeHeartbeatResponse nodeHeartbeatResponse)
+DECL|method|setAndUpdateNodeHeartbeatResponse ( NodeHeartbeatResponse nodeHeartbeatResponse)
 specifier|public
 name|void
-name|updateNodeHeartbeatResponseForCleanup
+name|setAndUpdateNodeHeartbeatResponse
 parameter_list|(
 name|NodeHeartbeatResponse
 name|nodeHeartbeatResponse
@@ -623,7 +623,7 @@ parameter_list|)
 block|{
 name|node
 operator|.
-name|updateNodeHeartbeatResponseForCleanup
+name|setAndUpdateNodeHeartbeatResponse
 argument_list|(
 name|nodeHeartbeatResponse
 argument_list|)
@@ -751,19 +751,6 @@ name|RMNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
-specifier|public
-name|void
-name|updateNodeHeartbeatResponseForUpdatedContainers
-parameter_list|(
-name|NodeHeartbeatResponse
-name|response
-parameter_list|)
-block|{
-comment|// TODO Auto-generated method stub
 block|}
 annotation|@
 name|SuppressWarnings

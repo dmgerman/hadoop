@@ -777,10 +777,10 @@ return|return
 name|runningApplications
 return|;
 block|}
-DECL|method|updateNodeHeartbeatResponseForCleanup ( NodeHeartbeatResponse response)
+DECL|method|setAndUpdateNodeHeartbeatResponse ( NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateNodeHeartbeatResponseForCleanup
+name|setAndUpdateNodeHeartbeatResponse
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response
@@ -920,19 +920,6 @@ name|RMNodeLabelsManager
 operator|.
 name|EMPTY_STRING_SET
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
-specifier|public
-name|void
-name|updateNodeHeartbeatResponseForUpdatedContainers
-parameter_list|(
-name|NodeHeartbeatResponse
-name|response
-parameter_list|)
-block|{
-comment|// TODO Auto-generated method stub
 block|}
 annotation|@
 name|Override

@@ -664,12 +664,12 @@ name|ResourceManager
 name|rm
 decl_stmt|;
 comment|// heart beat response id
-DECL|field|RESPONSE_ID
+DECL|field|responseId
 specifier|private
 name|int
-name|RESPONSE_ID
+name|responseId
 init|=
-literal|1
+literal|0
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -1040,7 +1040,7 @@ name|ns
 operator|.
 name|setResponseId
 argument_list|(
-name|RESPONSE_ID
+name|responseId
 operator|++
 argument_list|)
 expr_stmt|;

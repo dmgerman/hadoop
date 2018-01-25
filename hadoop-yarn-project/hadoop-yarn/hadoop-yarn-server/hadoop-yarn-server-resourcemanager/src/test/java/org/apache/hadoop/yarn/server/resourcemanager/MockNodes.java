@@ -1166,10 +1166,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
+DECL|method|setAndUpdateNodeHeartbeatResponse ( NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateNodeHeartbeatResponseForCleanup
+name|setAndUpdateNodeHeartbeatResponse
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response
@@ -1279,17 +1279,6 @@ operator|.
 name|EMPTY_STRING_SET
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
-specifier|public
-name|void
-name|updateNodeHeartbeatResponseForUpdatedContainers
-parameter_list|(
-name|NodeHeartbeatResponse
-name|response
-parameter_list|)
-block|{            }
 annotation|@
 name|Override
 DECL|method|pullNewlyIncreasedContainers ()
