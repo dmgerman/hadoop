@@ -7554,6 +7554,10 @@ comment|// recovered application masters should not remove data from previous jo
 if|if
 condition|(
 operator|!
+name|isFirstAttempt
+argument_list|()
+operator|&&
+operator|!
 name|recovered
 argument_list|()
 condition|)
