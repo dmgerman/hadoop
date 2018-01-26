@@ -124,6 +124,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|PathIsNotEmptyDirectoryException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|AddBlockFlag
@@ -1060,7 +1074,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally    * deleting non empty directories programmatically.    * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed    * from the file system.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally    * deleting non empty directories programmatically.    * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed    * from the file system.    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> is not found    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException create not    *           allowed in safemode    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws PathIsNotEmptyDirectoryException if path is a non-empty directory    *           and<code>recursive</code> is set to false    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|AtMostOnce
 DECL|method|delete (String src, boolean recursive)
