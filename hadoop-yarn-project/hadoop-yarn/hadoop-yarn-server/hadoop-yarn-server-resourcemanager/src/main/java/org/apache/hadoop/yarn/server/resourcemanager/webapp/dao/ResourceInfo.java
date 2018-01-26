@@ -143,6 +143,16 @@ DECL|field|vCores
 name|int
 name|vCores
 decl_stmt|;
+annotation|@
+name|XmlElement
+DECL|field|resourceInformations
+name|ResourceInformationsInfo
+name|resourceInformations
+init|=
+operator|new
+name|ResourceInformationsInfo
+argument_list|()
+decl_stmt|;
 DECL|field|resources
 specifier|private
 name|Resource
@@ -160,6 +170,14 @@ parameter_list|(
 name|Resource
 name|res
 parameter_list|)
+block|{
+comment|// Make sure no NPE.
+if|if
+condition|(
+name|res
+operator|!=
+literal|null
+condition|)
 block|{
 name|memory
 operator|=
@@ -184,6 +202,17 @@ argument_list|(
 name|res
 argument_list|)
 expr_stmt|;
+name|resourceInformations
+operator|.
+name|addAll
+argument_list|(
+name|res
+operator|.
+name|getAllResourcesListCopy
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getMemorySize ()
 specifier|public
@@ -361,6 +390,16 @@ name|newInstance
 argument_list|(
 name|resources
 argument_list|)
+return|;
+block|}
+DECL|method|getResourcesInformations ()
+specifier|public
+name|ResourceInformationsInfo
+name|getResourcesInformations
+parameter_list|()
+block|{
+return|return
+name|resourceInformations
 return|;
 block|}
 block|}

@@ -321,6 +321,10 @@ block|,
 name|AppTimeoutInfo
 operator|.
 name|class
+block|,
+name|ResourceInformationsInfo
+operator|.
+name|class
 block|}
 decl_stmt|;
 comment|// these dao classes need root unwrapping
