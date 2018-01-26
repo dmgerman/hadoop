@@ -2107,6 +2107,13 @@ argument_list|(
 name|taskAttemptID
 argument_list|)
 decl_stmt|;
+name|AMFeedback
+name|feedback
+init|=
+operator|new
+name|AMFeedback
+argument_list|()
+decl_stmt|;
 name|AtomicReference
 argument_list|<
 name|TaskAttemptStatus
@@ -2127,25 +2134,26 @@ operator|==
 literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|IllegalStateException
+name|LOG
+operator|.
+name|error
 argument_list|(
-literal|"Status update was called"
-operator|+
-literal|" with illegal TaskAttemptId: "
+literal|"Status update was called with illegal TaskAttemptId: "
 operator|+
 name|yarnAttemptID
 argument_list|)
-throw|;
-block|}
-name|AMFeedback
+expr_stmt|;
 name|feedback
-init|=
-operator|new
-name|AMFeedback
-argument_list|()
-decl_stmt|;
+operator|.
+name|setTaskFound
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+return|return
+name|feedback
+return|;
+block|}
 name|feedback
 operator|.
 name|setTaskFound

@@ -3236,13 +3236,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|expected
-operator|=
-name|IllegalStateException
-operator|.
-name|class
-argument_list|)
 DECL|method|testStatusUpdateFromUnregisteredTask ()
 specifier|public
 name|void
@@ -3261,6 +3254,9 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|AMFeedback
+name|feedback
+init|=
 name|listener
 operator|.
 name|statusUpdate
@@ -3268,6 +3264,14 @@ argument_list|(
 name|attemptID
 argument_list|,
 name|firstReduceStatus
+argument_list|)
+decl_stmt|;
+name|assertFalse
+argument_list|(
+name|feedback
+operator|.
+name|getTaskFound
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

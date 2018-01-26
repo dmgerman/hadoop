@@ -3931,6 +3931,18 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|boolean
+name|uberized
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+literal|"mapreduce.task.uberized"
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 while|while
 condition|(
 operator|!
@@ -4080,6 +4092,22 @@ operator|!
 name|taskFound
 condition|)
 block|{
+if|if
+condition|(
+name|uberized
+condition|)
+block|{
+name|taskDone
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|warn
@@ -4099,6 +4127,7 @@ argument_list|(
 literal|66
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Set a flag that says we should preempt this is read by
 comment|// ReduceTasks in places of the execution where it is
