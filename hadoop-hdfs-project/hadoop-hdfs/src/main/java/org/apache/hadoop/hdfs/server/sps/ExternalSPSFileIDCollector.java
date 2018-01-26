@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -298,7 +308,7 @@ specifier|private
 name|int
 name|maxQueueLimitToScan
 decl_stmt|;
-DECL|method|ExternalSPSFileIDCollector (Context cxt, SPSService service, int batchSize)
+DECL|method|ExternalSPSFileIDCollector (Context cxt, SPSService service)
 specifier|public
 name|ExternalSPSFileIDCollector
 parameter_list|(
@@ -307,9 +317,6 @@ name|cxt
 parameter_list|,
 name|SPSService
 name|service
-parameter_list|,
-name|int
-name|batchSize
 parameter_list|)
 block|{
 name|this
@@ -411,7 +418,7 @@ block|}
 comment|/**    * Recursively scan the given path and add the file info to SPS service for    * processing.    */
 DECL|method|processPath (long startID, String fullPath)
 specifier|private
-name|void
+name|long
 name|processPath
 parameter_list|(
 name|long
@@ -421,6 +428,12 @@ name|String
 name|fullPath
 parameter_list|)
 block|{
+name|long
+name|pendingWorkCount
+init|=
+literal|0
+decl_stmt|;
+comment|// to be satisfied file counter
 for|for
 control|(
 name|byte
@@ -476,7 +489,9 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-return|return;
+return|return
+name|pendingWorkCount
+return|;
 block|}
 if|if
 condition|(
@@ -505,7 +520,9 @@ literal|" does not have childrens."
 argument_list|)
 expr_stmt|;
 block|}
-return|return;
+return|return
+name|pendingWorkCount
+return|;
 block|}
 for|for
 control|(
@@ -547,6 +564,10 @@ expr_stmt|;
 name|checkProcessingQueuesFree
 argument_list|()
 expr_stmt|;
+name|pendingWorkCount
+operator|++
+expr_stmt|;
+comment|// increment to be satisfied file count
 block|}
 else|else
 block|{
@@ -590,6 +611,8 @@ operator|.
 name|SEPARATOR
 expr_stmt|;
 block|}
+name|pendingWorkCount
+operator|+=
 name|processPath
 argument_list|(
 name|startID
@@ -618,7 +641,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
-return|return;
+return|return
+name|pendingWorkCount
+return|;
 block|}
 block|}
 block|}
@@ -758,6 +783,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|long
+name|pendingSatisfyItemsCount
+init|=
 name|processPath
 argument_list|(
 name|inodeId
@@ -769,7 +797,47 @@ argument_list|(
 name|inodeId
 argument_list|)
 argument_list|)
+decl_stmt|;
+comment|// Check whether the given path contains any item to be tracked
+comment|// or the no to be satisfied paths. In case of empty list, add the given
+comment|// inodeId to the 'pendingWorkForDirectory' with empty list so that later
+comment|// SPSPathIdProcessor#run function will remove the SPS hint considering that
+comment|// this path is already satisfied the storage policy.
+if|if
+condition|(
+name|pendingSatisfyItemsCount
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"There is no pending items to satisfy the given path "
+operator|+
+literal|"inodeId:{}"
+argument_list|,
+name|inodeId
+argument_list|)
 expr_stmt|;
+name|service
+operator|.
+name|addAllFileIdsToProcess
+argument_list|(
+name|inodeId
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|service
 operator|.
 name|markScanCompletedForPath
@@ -777,6 +845,7 @@ argument_list|(
 name|inodeId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

@@ -84,6 +84,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|StoragePolicySatisfierMode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|protocol
@@ -128,13 +146,16 @@ name|BlockMovementListener
 name|blkMovementListener
 parameter_list|)
 function_decl|;
-comment|/**    * Starts the SPS service. Make sure to initialize the helper services before    * invoking this method.    *    * @param reconfigStart    *          - to indicate whether the SPS startup requested from    *          reconfiguration service    */
-DECL|method|start (boolean reconfigStart)
+comment|/**    * Starts the SPS service. Make sure to initialize the helper services before    * invoking this method.    *    * @param reconfigStart    *          - to indicate whether the SPS startup requested from    *          reconfiguration service    * @param spsMode sps service mode    */
+DECL|method|start (boolean reconfigStart, StoragePolicySatisfierMode spsMode)
 name|void
 name|start
 parameter_list|(
 name|boolean
 name|reconfigStart
+parameter_list|,
+name|StoragePolicySatisfierMode
+name|spsMode
 parameter_list|)
 function_decl|;
 comment|/**    * Stops the SPS service gracefully. Timed wait to stop storage policy    * satisfier daemon threads.    */

@@ -662,6 +662,24 @@ name|protocol
 operator|.
 name|HdfsConstants
 operator|.
+name|StoragePolicySatisfierMode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
 name|StoragePolicySatisfyPathStatus
 import|;
 end_import
@@ -2427,14 +2445,13 @@ specifier|final
 name|boolean
 name|storagePolicyEnabled
 decl_stmt|;
-DECL|field|spsEnabled
+DECL|field|spsMode
 specifier|private
-name|boolean
-name|spsEnabled
+name|StoragePolicySatisfierMode
+name|spsMode
 decl_stmt|;
 DECL|field|spsPaths
 specifier|private
-specifier|final
 name|SPSPathIds
 name|spsPaths
 decl_stmt|;
@@ -2649,20 +2666,36 @@ operator|.
 name|DFS_STORAGE_POLICY_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
-name|spsEnabled
-operator|=
+name|String
+name|spsModeVal
+init|=
 name|conf
 operator|.
-name|getBoolean
+name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_MODE_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
+name|DFS_STORAGE_POLICY_SATISFIER_MODE_DEFAULT
 argument_list|)
+decl_stmt|;
+name|spsMode
+operator|=
+name|StoragePolicySatisfierMode
+operator|.
+name|fromString
+argument_list|(
+name|spsModeVal
+argument_list|)
+expr_stmt|;
+name|spsPaths
+operator|=
+operator|new
+name|SPSPathIds
+argument_list|()
 expr_stmt|;
 name|sps
 operator|=
@@ -2671,12 +2704,6 @@ name|StoragePolicySatisfier
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-name|spsPaths
-operator|=
-operator|new
-name|SPSPathIds
-argument_list|()
 expr_stmt|;
 name|blockTokenSecretManager
 operator|=
@@ -23514,7 +23541,11 @@ operator|!
 operator|(
 name|storagePolicyEnabled
 operator|&&
-name|spsEnabled
+name|spsMode
+operator|!=
+name|StoragePolicySatisfierMode
+operator|.
+name|NONE
 operator|)
 condition|)
 block|{
@@ -23534,9 +23565,9 @@ name|storagePolicyEnabled
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_MODE_KEY
 argument_list|,
-name|spsEnabled
+name|spsMode
 argument_list|)
 expr_stmt|;
 return|return;
@@ -23554,18 +23585,33 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage policy satisfier is already running."
+literal|"Storage policy satisfier is already running"
+operator|+
+literal|" as internal service."
 argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// starting internal SPS service
+if|if
+condition|(
+name|spsMode
+operator|==
+name|StoragePolicySatisfierMode
+operator|.
+name|INTERNAL
+condition|)
+block|{
 name|sps
 operator|.
 name|start
 argument_list|(
 literal|false
+argument_list|,
+name|spsMode
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Stop storage policy satisfier service.    *    * @param forceStop    *          true represents that it should stop SPS service by clearing all    *          pending SPS work    */
 DECL|method|stopSPS (boolean forceStop)
@@ -23583,7 +23629,13 @@ operator|!
 operator|(
 name|storagePolicyEnabled
 operator|&&
-name|spsEnabled
+operator|(
+name|spsMode
+operator|!=
+name|StoragePolicySatisfierMode
+operator|.
+name|NONE
+operator|)
 operator|)
 condition|)
 block|{
@@ -23606,11 +23658,14 @@ name|isRunning
 argument_list|()
 condition|)
 block|{
+name|removeAllSPSPathIds
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage policy satisfier is already stopped."
+literal|"Storage policy satisfier is not running."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -23624,10 +23679,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Enable storage policy satisfier by starting its service.    */
-DECL|method|enableSPS ()
+DECL|method|enableInternalSPS ()
 specifier|public
 name|void
-name|enableSPS
+name|enableInternalSPS
 parameter_list|()
 block|{
 if|if
@@ -23651,10 +23706,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|spsEnabled
-operator|=
-literal|true
-expr_stmt|;
 if|if
 condition|(
 name|sps
@@ -23667,17 +23718,114 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage policy satisfier is already running."
+literal|"Storage policy satisfier is already running as SPS mode:{}."
+argument_list|,
+name|spsMode
 argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|updateSPSMode
+argument_list|(
+name|StoragePolicySatisfierMode
+operator|.
+name|INTERNAL
+argument_list|)
+expr_stmt|;
 name|sps
 operator|.
 name|start
 argument_list|(
 literal|true
+argument_list|,
+name|spsMode
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Enable storage policy satisfier by starting its service.    */
+DECL|method|enableExternalSPS ()
+specifier|public
+name|void
+name|enableExternalSPS
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|storagePolicyEnabled
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to start StoragePolicySatisfier as {} set to {}."
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+argument_list|,
+name|storagePolicyEnabled
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|spsMode
+operator|==
+name|StoragePolicySatisfierMode
+operator|.
+name|EXTERNAL
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is already enabled as SPS mode:{}."
+argument_list|,
+name|spsMode
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|updateSPSMode
+argument_list|(
+name|StoragePolicySatisfierMode
+operator|.
+name|EXTERNAL
+argument_list|)
+expr_stmt|;
+name|sps
+operator|.
+name|stopGracefully
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|updateSPSMode (StoragePolicySatisfierMode newSpsMode)
+specifier|private
+name|void
+name|updateSPSMode
+parameter_list|(
+name|StoragePolicySatisfierMode
+name|newSpsMode
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Updating SPS service status, current mode:{}, new mode:{}"
+argument_list|,
+name|spsMode
+argument_list|,
+name|newSpsMode
+argument_list|)
+expr_stmt|;
+name|spsMode
+operator|=
+name|newSpsMode
 expr_stmt|;
 block|}
 comment|/**    * Disable the storage policy satisfier by stopping its services.    */
@@ -23687,10 +23835,21 @@ name|void
 name|disableSPS
 parameter_list|()
 block|{
-name|spsEnabled
-operator|=
-literal|false
-expr_stmt|;
+switch|switch
+condition|(
+name|spsMode
+condition|)
+block|{
+case|case
+name|NONE
+case|:
+break|break;
+case|case
+name|INTERNAL
+case|:
+case|case
+name|EXTERNAL
+case|:
 if|if
 condition|(
 operator|!
@@ -23707,15 +23866,18 @@ argument_list|(
 literal|"Storage policy satisfier is already stopped."
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stopping StoragePolicySatisfier, as admin requested to "
+literal|"Stopping StoragePolicySatisfier mode {}, as admin "
 operator|+
-literal|"stop it."
+literal|"requested to stop it."
+argument_list|,
+name|spsMode
 argument_list|)
 expr_stmt|;
 name|sps
@@ -23726,6 +23888,22 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+name|removeAllSPSPathIds
+argument_list|()
+expr_stmt|;
+break|break;
+default|default:
+comment|// nothing
+break|break;
+block|}
+name|updateSPSMode
+argument_list|(
+name|StoragePolicySatisfierMode
+operator|.
+name|NONE
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Timed wait to stop storage policy satisfier daemon threads.    */
 DECL|method|stopSPSGracefully ()
 specifier|public
@@ -23733,6 +23911,9 @@ name|void
 name|stopSPSGracefully
 parameter_list|()
 block|{
+name|removeAllSPSPathIds
+argument_list|()
+expr_stmt|;
 name|sps
 operator|.
 name|stopGracefully
@@ -23850,7 +24031,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return true if sps enabled.    */
+comment|/**    * @return true if sps is running as an internal service or external service.    */
 DECL|method|isSPSEnabled ()
 specifier|public
 name|boolean
@@ -23858,7 +24039,28 @@ name|isSPSEnabled
 parameter_list|()
 block|{
 return|return
-name|spsEnabled
+name|spsMode
+operator|==
+name|StoragePolicySatisfierMode
+operator|.
+name|INTERNAL
+operator|||
+name|spsMode
+operator|==
+name|StoragePolicySatisfierMode
+operator|.
+name|EXTERNAL
+return|;
+block|}
+comment|/**    * @return sps service mode.    */
+DECL|method|getSPSMode ()
+specifier|public
+name|StoragePolicySatisfierMode
+name|getSPSMode
+parameter_list|()
+block|{
+return|return
+name|spsMode
 return|;
 block|}
 block|}

@@ -971,9 +971,7 @@ condition|(
 operator|(
 name|itemInfo
 operator|=
-name|storageMovementNeeded
-operator|.
-name|poll
+name|get
 argument_list|()
 operator|)
 operator|!=

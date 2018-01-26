@@ -618,6 +618,17 @@ argument_list|(
 name|inodeID
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|bc
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 return|return
 name|blockManager
 operator|.

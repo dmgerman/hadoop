@@ -1778,12 +1778,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Command to check storage policy satisfier status. */
-DECL|class|IsSatisfierRunningCommand
+comment|/**    * Command to check storage policy satisfier status running internal(inside)    * Namenode.    */
+DECL|class|IsInternalSatisfierRunningCommand
 specifier|private
 specifier|static
 class|class
-name|IsSatisfierRunningCommand
+name|IsInternalSatisfierRunningCommand
 implements|implements
 name|AdminHelper
 operator|.
@@ -1798,7 +1798,7 @@ name|getName
 parameter_list|()
 block|{
 return|return
-literal|"-isSatisfierRunning"
+literal|"-isInternalSatisfierRunning"
 return|;
 block|}
 annotation|@
@@ -1832,7 +1832,9 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Check the status of Storage Policy Statisfier.\n\n"
+literal|"Check the status of Storage Policy Statisfier"
+operator|+
+literal|" running inside Namenode.\n\n"
 return|;
 block|}
 annotation|@
@@ -2223,7 +2225,7 @@ name|SatisfyStoragePolicyCommand
 argument_list|()
 block|,
 operator|new
-name|IsSatisfierRunningCommand
+name|IsInternalSatisfierRunningCommand
 argument_list|()
 block|}
 decl_stmt|;

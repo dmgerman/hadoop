@@ -1201,7 +1201,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Check whether current batch can be submitted for the processing.    *    * @return true if batch size meets meet the condition, otherwise false.    */
+comment|/**    * Check whether current batch can be submitted for the processing.    *    * @return true if batch size meets the condition, otherwise false.    */
 DECL|method|shouldSubmitCurrentBatch ()
 specifier|protected
 specifier|abstract
