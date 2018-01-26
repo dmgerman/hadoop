@@ -48,16 +48,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -349,24 +339,6 @@ operator|.
 name|records
 operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ResourceRequest
 import|;
 end_import
 
@@ -2946,7 +2918,7 @@ operator|.
 name|getContainerReport
 argument_list|()
 decl_stmt|;
-comment|// Set the allocation tags from the
+comment|// Set the allocation tags from the NMContainerStatus
 name|container
 operator|.
 name|setAllocationTags
@@ -3646,7 +3618,7 @@ literal|" rm-size-resource:"
 operator|+
 name|rmContainerResource
 operator|+
-literal|" nm-size-reosurce:"
+literal|" nm-size-resource:"
 operator|+
 name|nmContainerResource
 argument_list|)
@@ -3696,7 +3668,7 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
-comment|// Notify placementManager
+comment|// Notify AllocationTagsManager
 name|container
 operator|.
 name|rmContext
