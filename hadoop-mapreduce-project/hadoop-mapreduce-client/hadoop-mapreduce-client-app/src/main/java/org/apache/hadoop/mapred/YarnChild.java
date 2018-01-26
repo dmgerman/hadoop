@@ -1423,6 +1423,8 @@ name|stringifyException
 argument_list|(
 name|exception
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1501,6 +1503,8 @@ argument_list|(
 name|taskid
 argument_list|,
 name|cause
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

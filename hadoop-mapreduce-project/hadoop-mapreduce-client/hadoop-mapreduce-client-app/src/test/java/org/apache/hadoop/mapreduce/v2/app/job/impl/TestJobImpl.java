@@ -1050,7 +1050,7 @@ name|job
 operator|.
 name|event
 operator|.
-name|TaskTAttemptEvent
+name|TaskTAttemptFailedEvent
 import|;
 end_import
 
@@ -3594,16 +3594,12 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|TaskTAttemptEvent
+name|TaskTAttemptFailedEvent
 argument_list|(
 name|ta
 operator|.
 name|getID
 argument_list|()
-argument_list|,
-name|TaskEventType
-operator|.
-name|T_ATTEMPT_FAILED
 argument_list|)
 argument_list|)
 expr_stmt|;

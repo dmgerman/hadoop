@@ -590,7 +590,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|fatalError (TaskAttemptID taskId, String message)
+DECL|method|fatalError (TaskAttemptID taskId, String message, boolean fastFail)
 specifier|public
 name|void
 name|fatalError
@@ -600,6 +600,9 @@ name|taskId
 parameter_list|,
 name|String
 name|message
+parameter_list|,
+name|boolean
+name|fastFail
 parameter_list|)
 throws|throws
 name|IOException

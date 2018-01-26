@@ -191,7 +191,7 @@ name|TaskUmbilicalProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**     * Changed the version to 2, since we have a new method getMapOutputs     * Changed version to 3 to have progress() return a boolean    * Changed the version to 4, since we have replaced     *         TaskUmbilicalProtocol.progress(String, float, String,     *         org.apache.hadoop.mapred.TaskStatus.Phase, Counters)     *         with statusUpdate(String, TaskStatus)    *     * Version 5 changed counters representation for HADOOP-2248    * Version 6 changes the TaskStatus representation for HADOOP-2208    * Version 7 changes the done api (via HADOOP-3140). It now expects whether    *           or not the task's output needs to be promoted.    * Version 8 changes {job|tip|task}id's to use their corresponding     * objects rather than strings.    * Version 9 changes the counter representation for HADOOP-1915    * Version 10 changed the TaskStatus format and added reportNextRecordRange    *            for HADOOP-153    * Version 11 Adds RPCs for task commit as part of HADOOP-3150    * Version 12 getMapCompletionEvents() now also indicates if the events are     *            stale or not. Hence the return type is a class that     *            encapsulates the events and whether to reset events index.    * Version 13 changed the getTask method signature for HADOOP-249    * Version 14 changed the getTask method signature for HADOOP-4232    * Version 15 Adds FAILED_UNCLEAN and KILLED_UNCLEAN states for HADOOP-4759    * Version 16 Change in signature of getTask() for HADOOP-5488    * Version 17 Modified TaskID to be aware of the new TaskTypes    * Version 18 Added numRequiredSlots to TaskStatus for MAPREDUCE-516    * Version 19 Added fatalError for child to communicate fatal errors to TT    * Version 20 Added methods to manage checkpoints    * */
+comment|/**     * Changed the version to 2, since we have a new method getMapOutputs     * Changed version to 3 to have progress() return a boolean    * Changed the version to 4, since we have replaced     *         TaskUmbilicalProtocol.progress(String, float, String,     *         org.apache.hadoop.mapred.TaskStatus.Phase, Counters)     *         with statusUpdate(String, TaskStatus)    *     * Version 5 changed counters representation for HADOOP-2248    * Version 6 changes the TaskStatus representation for HADOOP-2208    * Version 7 changes the done api (via HADOOP-3140). It now expects whether    *           or not the task's output needs to be promoted.    * Version 8 changes {job|tip|task}id's to use their corresponding     * objects rather than strings.    * Version 9 changes the counter representation for HADOOP-1915    * Version 10 changed the TaskStatus format and added reportNextRecordRange    *            for HADOOP-153    * Version 11 Adds RPCs for task commit as part of HADOOP-3150    * Version 12 getMapCompletionEvents() now also indicates if the events are     *            stale or not. Hence the return type is a class that     *            encapsulates the events and whether to reset events index.    * Version 13 changed the getTask method signature for HADOOP-249    * Version 14 changed the getTask method signature for HADOOP-4232    * Version 15 Adds FAILED_UNCLEAN and KILLED_UNCLEAN states for HADOOP-4759    * Version 16 Change in signature of getTask() for HADOOP-5488    * Version 17 Modified TaskID to be aware of the new TaskTypes    * Version 18 Added numRequiredSlots to TaskStatus for MAPREDUCE-516    * Version 19 Added fatalError for child to communicate fatal errors to TT    * Version 20 Added methods to manage checkpoints    * Version 21 Added fastFail parameter to fatalError    * */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -199,7 +199,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|20L
+literal|21L
 decl_stmt|;
 comment|/**    * Called when a child task process starts, to get its task.    * @param context the JvmContext of the JVM w.r.t the TaskTracker that    *  launched it    * @return Task object    * @throws IOException     */
 DECL|method|getTask (JvmContext context)
@@ -324,8 +324,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/** Report that the task encounted a fatal error.*/
-DECL|method|fatalError (TaskAttemptID taskId, String message)
+comment|/**    * Report that the task encounted a fatal error.    * @param taskId task's id    * @param message fail message    * @param fastFail flag to enable fast fail for task    */
+DECL|method|fatalError (TaskAttemptID taskId, String message, boolean fastFail)
 name|void
 name|fatalError
 parameter_list|(
@@ -334,6 +334,9 @@ name|taskId
 parameter_list|,
 name|String
 name|message
+parameter_list|,
+name|boolean
+name|fastFail
 parameter_list|)
 throws|throws
 name|IOException

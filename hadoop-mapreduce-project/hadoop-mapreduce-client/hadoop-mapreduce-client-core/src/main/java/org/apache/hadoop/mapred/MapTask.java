@@ -8725,6 +8725,8 @@ argument_list|,
 name|lspillException
 argument_list|,
 name|logMsg
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

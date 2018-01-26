@@ -521,7 +521,7 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|fatalError (TaskAttemptID taskId, String msg)
+DECL|method|fatalError (TaskAttemptID taskId, String msg, boolean fastFail)
 specifier|public
 name|void
 name|fatalError
@@ -531,6 +531,9 @@ name|taskId
 parameter_list|,
 name|String
 name|msg
+parameter_list|,
+name|boolean
+name|fastFail
 parameter_list|)
 throws|throws
 name|IOException
@@ -546,6 +549,10 @@ operator|+
 literal|" reporting fatal error: "
 operator|+
 name|msg
+operator|+
+literal|" fast fail: "
+operator|+
+name|fastFail
 argument_list|)
 expr_stmt|;
 block|}
