@@ -108,22 +108,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|nodemanager
@@ -501,11 +485,55 @@ return|return
 name|cGroupsHandler
 return|;
 block|}
-DECL|method|getCGroupsCpuResourceHandler ( Configuration conf)
+specifier|public
+specifier|static
+name|NetworkPacketTaggingHandlerImpl
+DECL|method|getNetworkResourceHandler ()
+name|getNetworkResourceHandler
+parameter_list|()
+block|{
+return|return
+name|networkPacketTaggingHandlerImpl
+return|;
+block|}
+specifier|public
+specifier|static
+name|DiskResourceHandler
+DECL|method|getDiskResourceHandler ()
+name|getDiskResourceHandler
+parameter_list|()
+block|{
+return|return
+name|cGroupsBlkioResourceHandler
+return|;
+block|}
+specifier|public
+specifier|static
+name|MemoryResourceHandler
+DECL|method|getMemoryResourceHandler ()
+name|getMemoryResourceHandler
+parameter_list|()
+block|{
+return|return
+name|cGroupsMemoryResourceHandler
+return|;
+block|}
+specifier|public
+specifier|static
+name|CpuResourceHandler
+DECL|method|getCpuResourceHandler ()
+name|getCpuResourceHandler
+parameter_list|()
+block|{
+return|return
+name|cGroupsCpuResourceHandler
+return|;
+block|}
+DECL|method|initCGroupsCpuResourceHandler ( Configuration conf)
 specifier|private
 specifier|static
 name|CGroupsCpuResourceHandlerImpl
-name|getCGroupsCpuResourceHandler
+name|initCGroupsCpuResourceHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -710,11 +738,11 @@ literal|null
 return|;
 block|}
 block|}
-DECL|method|getNetworkResourceHandler (Configuration conf)
+DECL|method|initNetworkResourceHandler (Configuration conf)
 specifier|public
 specifier|static
 name|ResourceHandler
-name|getNetworkResourceHandler
+name|initNetworkResourceHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -842,8 +870,8 @@ block|}
 specifier|public
 specifier|static
 name|OutboundBandwidthResourceHandler
-DECL|method|getOutboundBandwidthResourceHandler (Configuration conf)
-name|getOutboundBandwidthResourceHandler
+DECL|method|initOutboundBandwidthResourceHandler (Configuration conf)
+name|initOutboundBandwidthResourceHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -858,11 +886,11 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|getDiskResourceHandler (Configuration conf)
+DECL|method|initDiskResourceHandler (Configuration conf)
 specifier|public
 specifier|static
 name|DiskResourceHandler
-name|getDiskResourceHandler
+name|initDiskResourceHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -955,11 +983,11 @@ return|return
 name|cGroupsBlkioResourceHandler
 return|;
 block|}
-DECL|method|getMemoryResourceHandler ( Configuration conf)
+DECL|method|initMemoryResourceHandler ( Configuration conf)
 specifier|public
 specifier|static
 name|MemoryResourceHandler
-name|getMemoryResourceHandler
+name|initMemoryResourceHandler
 parameter_list|(
 name|Configuration
 name|conf
@@ -1107,7 +1135,7 @@ name|addHandlerIfNotNull
 argument_list|(
 name|handlerList
 argument_list|,
-name|getNetworkResourceHandler
+name|initNetworkResourceHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -1117,7 +1145,7 @@ name|addHandlerIfNotNull
 argument_list|(
 name|handlerList
 argument_list|,
-name|getDiskResourceHandler
+name|initDiskResourceHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -1127,7 +1155,7 @@ name|addHandlerIfNotNull
 argument_list|(
 name|handlerList
 argument_list|,
-name|getMemoryResourceHandler
+name|initMemoryResourceHandler
 argument_list|(
 name|conf
 argument_list|)
@@ -1137,7 +1165,7 @@ name|addHandlerIfNotNull
 argument_list|(
 name|handlerList
 argument_list|,
-name|getCGroupsCpuResourceHandler
+name|initCGroupsCpuResourceHandler
 argument_list|(
 name|conf
 argument_list|)

@@ -169,10 +169,12 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|emptyConf
+specifier|private
 name|Configuration
 name|emptyConf
 decl_stmt|;
 DECL|field|networkEnabledConf
+specifier|private
 name|Configuration
 name|networkEnabledConf
 decl_stmt|;
@@ -232,7 +234,7 @@ name|resourceHandler
 init|=
 name|ResourceHandlerModule
 operator|.
-name|getOutboundBandwidthResourceHandler
+name|initOutboundBandwidthResourceHandler
 argument_list|(
 name|emptyConf
 argument_list|)
@@ -249,7 +251,7 @@ name|resourceHandler
 operator|=
 name|ResourceHandlerModule
 operator|.
-name|getOutboundBandwidthResourceHandler
+name|initOutboundBandwidthResourceHandler
 argument_list|(
 name|networkEnabledConf
 argument_list|)
@@ -279,6 +281,13 @@ name|class
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|resourceHandlerChain
+operator|!=
+literal|null
+condition|)
+block|{
 name|List
 argument_list|<
 name|ResourceHandler
@@ -319,6 +328,17 @@ name|resourceHandler
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Null returned"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 catch|catch
 parameter_list|(
 name|ResourceHandlerException
@@ -351,7 +371,7 @@ name|handler
 init|=
 name|ResourceHandlerModule
 operator|.
-name|getDiskResourceHandler
+name|initDiskResourceHandler
 argument_list|(
 name|emptyConf
 argument_list|)
@@ -385,7 +405,7 @@ name|handler
 operator|=
 name|ResourceHandlerModule
 operator|.
-name|getDiskResourceHandler
+name|initDiskResourceHandler
 argument_list|(
 name|diskConf
 argument_list|)
@@ -414,6 +434,13 @@ name|class
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|resourceHandlerChain
+operator|!=
+literal|null
+condition|)
+block|{
 name|List
 argument_list|<
 name|ResourceHandler
@@ -453,6 +480,17 @@ operator|==
 name|handler
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Null returned"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

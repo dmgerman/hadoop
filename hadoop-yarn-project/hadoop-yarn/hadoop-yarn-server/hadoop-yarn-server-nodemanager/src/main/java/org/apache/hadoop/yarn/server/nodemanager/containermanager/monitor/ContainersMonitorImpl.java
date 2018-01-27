@@ -1260,6 +1260,29 @@ name|DEFAULT_NM_CONTAINER_MONITOR_ENABLED
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the best process tree calculator.    * @param pId container process id    * @return process tree calculator    */
+specifier|private
+name|ResourceCalculatorProcessTree
+DECL|method|getResourceCalculatorProcessTree (String pId)
+name|getResourceCalculatorProcessTree
+parameter_list|(
+name|String
+name|pId
+parameter_list|)
+block|{
+return|return
+name|ResourceCalculatorProcessTree
+operator|.
+name|getResourceCalculatorProcessTree
+argument_list|(
+name|pId
+argument_list|,
+name|processTreeClass
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
 DECL|method|isResourceCalculatorAvailable ()
 specifier|private
 name|boolean
@@ -1296,15 +1319,9 @@ return|;
 block|}
 if|if
 condition|(
-name|ResourceCalculatorProcessTree
-operator|.
 name|getResourceCalculatorProcessTree
 argument_list|(
 literal|"0"
-argument_list|,
-name|processTreeClass
-argument_list|,
-name|conf
 argument_list|)
 operator|==
 literal|null
@@ -2382,15 +2399,9 @@ block|}
 name|ResourceCalculatorProcessTree
 name|pt
 init|=
-name|ResourceCalculatorProcessTree
-operator|.
 name|getResourceCalculatorProcessTree
 argument_list|(
 name|pId
-argument_list|,
-name|processTreeClass
-argument_list|,
-name|conf
 argument_list|)
 decl_stmt|;
 name|ptInfo
@@ -2653,7 +2664,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Memory usage of ProcessTree %s for container-id %s: "
+literal|"Resource usage of ProcessTree %s for container-id %s:"
+operator|+
+literal|" %s CPU:%f CPU/core:%f"
 argument_list|,
 name|pId
 argument_list|,
@@ -2661,8 +2674,7 @@ name|containerId
 operator|.
 name|toString
 argument_list|()
-argument_list|)
-operator|+
+argument_list|,
 name|formatUsageString
 argument_list|(
 name|currentVmemUsage
@@ -2672,6 +2684,11 @@ argument_list|,
 name|currentPmemUsage
 argument_list|,
 name|pmemLimit
+argument_list|)
+argument_list|,
+name|cpuUsagePercentPerCore
+argument_list|,
+name|cpuUsageTotalCoresPercentage
 argument_list|)
 argument_list|)
 expr_stmt|;

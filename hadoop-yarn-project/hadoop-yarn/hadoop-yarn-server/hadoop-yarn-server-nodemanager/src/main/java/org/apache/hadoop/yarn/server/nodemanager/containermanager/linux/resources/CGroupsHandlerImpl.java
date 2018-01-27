@@ -750,8 +750,10 @@ name|initializeControllerPaths
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getControllerPath (CGroupController controller)
-specifier|private
+specifier|public
 name|String
 name|getControllerPath
 parameter_list|(

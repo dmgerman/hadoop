@@ -134,6 +134,22 @@ name|Configured
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface class to obtain process resource usage  * NOTE: This class should not be used by external users, but only by external  * developers to extend and include their own process-tree implementation,   * especially for platforms other than Linux and Windows.  */
 end_comment
@@ -184,6 +200,15 @@ parameter_list|(
 name|String
 name|root
 parameter_list|)
+block|{   }
+comment|/**    * Initialize the object.    * @throws YarnException Throws an exception on error.    */
+DECL|method|initialize ()
+specifier|public
+name|void
+name|initialize
+parameter_list|()
+throws|throws
+name|YarnException
 block|{   }
 comment|/**    * Update the process-tree with latest state.    *    * Each call to this function should increment the age of the running    * processes that already exist in the process tree. Age is used other API's    * of the interface.    *    */
 DECL|method|updateProcessTree ()
@@ -351,6 +376,11 @@ name|setConf
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|rctree
+operator|.
+name|initialize
+argument_list|()
 expr_stmt|;
 return|return
 name|rctree

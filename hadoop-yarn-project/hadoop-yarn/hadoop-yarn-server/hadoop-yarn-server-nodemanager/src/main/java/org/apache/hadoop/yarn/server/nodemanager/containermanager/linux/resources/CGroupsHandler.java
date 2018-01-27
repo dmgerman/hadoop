@@ -166,6 +166,7 @@ name|name
 expr_stmt|;
 block|}
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -315,6 +316,15 @@ name|cGroupId
 parameter_list|)
 throws|throws
 name|ResourceHandlerException
+function_decl|;
+comment|/**    * Gets the absolute path to the specified cgroup controller.    * @param controller - controller type for the cgroup    * @return the root of the controller.    */
+DECL|method|getControllerPath (CGroupController controller)
+name|String
+name|getControllerPath
+parameter_list|(
+name|CGroupController
+name|controller
+parameter_list|)
 function_decl|;
 comment|/**    * Gets the relative path for the cgroup, independent of a controller, for a    * given cgroup id.    * @param cGroupId - id of the cgroup    * @return path for the cgroup relative to the root of (any) controller.    */
 DECL|method|getRelativePathForCGroup (String cGroupId)

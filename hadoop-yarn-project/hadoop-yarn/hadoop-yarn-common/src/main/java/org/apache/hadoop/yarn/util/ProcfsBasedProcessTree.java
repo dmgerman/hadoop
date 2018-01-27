@@ -2354,6 +2354,28 @@ init|=
 name|getTotalProcessJiffies
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Process "
+operator|+
+name|pid
+operator|+
+literal|" jiffies:"
+operator|+
+name|processTotalJiffies
+argument_list|)
+expr_stmt|;
+block|}
 name|cpuTimeTracker
 operator|.
 name|updateElapsedJiffies

@@ -538,15 +538,6 @@ name|add
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_MEMORY_RESOURCE_PREFIX
-argument_list|)
-expr_stmt|;
-name|configurationPrefixToSkipCompare
-operator|.
-name|add
-argument_list|(
-name|YarnConfiguration
-operator|.
 name|NM_CPU_RESOURCE_ENABLED
 argument_list|)
 expr_stmt|;
