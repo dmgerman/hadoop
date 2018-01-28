@@ -890,6 +890,7 @@ expr_stmt|;
 block|}
 comment|/**    * Initializes block movement tracker daemon and starts the thread.    */
 DECL|method|init ()
+specifier|public
 name|void
 name|init
 parameter_list|()

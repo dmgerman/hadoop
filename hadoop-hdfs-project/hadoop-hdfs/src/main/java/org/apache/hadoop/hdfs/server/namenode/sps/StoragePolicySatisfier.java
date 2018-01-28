@@ -562,6 +562,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -981,9 +995,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting StoragePolicySatisfier, as admin requested to "
+literal|"Starting {} StoragePolicySatisfier, as admin requested to "
 operator|+
 literal|"start it."
+argument_list|,
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
+name|spsMode
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -993,7 +1017,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting StoragePolicySatisfier."
+literal|"Starting {} StoragePolicySatisfier."
+argument_list|,
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
+name|spsMode
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1202,12 +1236,37 @@ parameter_list|()
 block|{
 while|while
 condition|(
+name|isRunning
+condition|)
+block|{
+comment|// Check if dependent service is running
+if|if
+condition|(
+operator|!
 name|ctxt
 operator|.
 name|isRunning
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Upstream service is down, skipping the sps work."
+argument_list|)
+expr_stmt|;
+block|}
+continue|continue;
+block|}
 try|try
 block|{
 if|if
@@ -1403,6 +1462,35 @@ comment|// be removed on storage movement attempt finished report.
 case|case
 name|BLOCKS_TARGETS_PAIRED
 case|:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block analysis status:{} for the file path:{}."
+operator|+
+literal|" Adding to attempt monitor queue for the storage "
+operator|+
+literal|"movement attempt finished report"
+argument_list|,
+name|status
+operator|.
+name|status
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|storageMovementsMonitor
@@ -1452,13 +1540,18 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding trackID "
+literal|"Adding trackID:{} for the file path:{} back to"
 operator|+
+literal|" retry queue as none of the blocks found its eligible"
+operator|+
+literal|" targets."
+argument_list|,
 name|trackId
-operator|+
-literal|" back to retry queue as none of the blocks"
-operator|+
-literal|" found its eligible targets."
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1492,13 +1585,16 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding trackID "
+literal|"Adding trackID:{} for the file path:{} back to "
 operator|+
+literal|"retry queue as some of the blocks are low redundant."
+argument_list|,
 name|trackId
-operator|+
-literal|" back to retry queue as some of the blocks"
-operator|+
-literal|" are low redundant."
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1532,13 +1628,16 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding trackID "
+literal|"Adding trackID:{} for the file path:{} back to "
 operator|+
+literal|"retry queue as some of the blocks movement failed."
+argument_list|,
 name|trackId
-operator|+
-literal|" back to retry queue as some of the blocks"
-operator|+
-literal|" movement failed."
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1564,9 +1663,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block analysis skipped or blocks already satisfied"
+literal|"Block analysis status:{} for the file path:{}."
 operator|+
-literal|" with storages. So, Cleaning up the Xattrs."
+literal|" So, Cleaning up the Xattrs."
+argument_list|,
+name|status
+operator|.
+name|status
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|storageMovementNeeded
@@ -1678,9 +1786,23 @@ condition|(
 name|isRunning
 condition|)
 block|{
+if|if
+condition|(
+name|t
+operator|instanceof
+name|InterruptedException
+condition|)
+block|{
 name|isRunning
 operator|=
 literal|false
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping StoragePolicySatisfier."
+argument_list|)
 expr_stmt|;
 comment|// Stopping monitor thread and clearing queues as well
 name|this
@@ -1695,49 +1817,24 @@ operator|.
 name|stopGracefully
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-operator|!
-operator|(
-name|t
-operator|instanceof
-name|InterruptedException
-operator|)
-condition|)
+block|}
+else|else
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"StoragePolicySatisfier received an exception"
-operator|+
-literal|" while shutting down."
-argument_list|,
-name|t
-argument_list|)
-expr_stmt|;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stopping StoragePolicySatisfier."
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"StoragePolicySatisfier thread received runtime exception. "
+literal|"StoragePolicySatisfier thread received runtime exception, "
 operator|+
-literal|"Stopping Storage policy satisfier work"
+literal|"ignoring"
 argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+block|}
+block|}
 return|return;
 block|}
 DECL|method|analyseBlocksStorageMovementsAndAssignToDN ( HdfsLocatedFileStatus fileInfo, boolean hasLowRedundancyBlocks, BlockStoragePolicy existingStoragePolicy, DatanodeStorageReport[] liveDns)
@@ -1804,18 +1901,17 @@ name|lastBlkComplete
 condition|)
 block|{
 comment|// Postpone, currently file is under construction
-comment|// So, should we add back? or leave it to user
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BlockCollectionID: {} file is under construction. So, postpone"
+literal|"File: {} is under construction. So, postpone"
 operator|+
 literal|" this to the next retry iteration"
 argument_list|,
 name|fileInfo
 operator|.
-name|getFileId
+name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1861,13 +1957,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BlockCollectionID: {} file is not having any blocks."
+literal|"File: {} is not having any blocks."
 operator|+
 literal|" So, skipping the analysis."
 argument_list|,
 name|fileInfo
 operator|.
-name|getFileId
+name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4371,6 +4467,22 @@ name|markScanCompletedForDir
 argument_list|(
 name|inodeId
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Join main SPS thread.    */
+DECL|method|join ()
+specifier|public
+name|void
+name|join
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+comment|//TODO Add join here on SPS rpc server also
+name|storagePolicySatisfierThread
+operator|.
+name|join
+argument_list|()
 expr_stmt|;
 block|}
 block|}

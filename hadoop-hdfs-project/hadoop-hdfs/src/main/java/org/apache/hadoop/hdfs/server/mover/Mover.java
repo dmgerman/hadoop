@@ -4105,7 +4105,7 @@ name|println
 argument_list|(
 literal|"Mover failed due to StoragePolicySatisfier"
 operator|+
-literal|" is running. Exiting with status "
+literal|" service running inside namenode. Exiting with status "
 operator|+
 name|ExitStatus
 operator|.
