@@ -1326,6 +1326,33 @@ argument_list|,
 name|conn
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+name|ugi
+init|=
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|?
+name|UserGroupInformation
+operator|.
+name|getLoginUser
+argument_list|()
+else|:
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized HBaseTimelineWriterImpl UGI to "
+operator|+
+name|ugi
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Stores the entire information in TimelineEntities to the timeline store.    */
 annotation|@

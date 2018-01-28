@@ -900,6 +900,15 @@ operator|.
 name|getCurrentUser
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized NMTimelinePublisher UGI to "
+operator|+
+name|nmLoginUGI
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit

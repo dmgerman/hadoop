@@ -2866,25 +2866,7 @@ argument_list|(
 name|nodeStatusUpdater
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
-name|serviceInit
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-comment|// TODO add local dirs to del
-block|}
-annotation|@
-name|Override
-DECL|method|serviceStart ()
-specifier|protected
-name|void
-name|serviceStart
-parameter_list|()
-throws|throws
-name|Exception
-block|{
+comment|// Do secure login before calling init for added services.
 try|try
 block|{
 name|doSecureLogin
@@ -2909,9 +2891,12 @@ throw|;
 block|}
 name|super
 operator|.
-name|serviceStart
-argument_list|()
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
+comment|// TODO add local dirs to del
 block|}
 annotation|@
 name|Override
