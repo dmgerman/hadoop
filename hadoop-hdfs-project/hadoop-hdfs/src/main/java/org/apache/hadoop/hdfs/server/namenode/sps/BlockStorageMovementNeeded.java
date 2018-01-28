@@ -1254,14 +1254,6 @@ argument_list|(
 literal|"SPSPathIdProcessor thread is interrupted. Stopping.."
 argument_list|)
 expr_stmt|;
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
 break|break;
 block|}
 name|LOG
@@ -1273,7 +1265,33 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-comment|// TODO: may be we should retry the current inode id?
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Interrupted while waiting in SPSPathIdProcessor"
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 block|}
 block|}
 block|}

@@ -579,6 +579,14 @@ name|write2IdFile
 init|=
 literal|true
 decl_stmt|;
+DECL|field|checkOtherInstanceRunning
+specifier|private
+specifier|static
+name|boolean
+name|checkOtherInstanceRunning
+init|=
+literal|true
+decl_stmt|;
 comment|/** Create {@link NameNodeConnector} for the given namenodes. */
 DECL|method|newNameNodeConnectors ( Collection<URI> namenodes, String name, Path idPath, Configuration conf, int maxIdleIterations)
 specifier|public
@@ -815,6 +823,25 @@ operator|=
 name|write2IdFile
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|checkOtherInstanceRunning (boolean toCheck)
+specifier|public
+specifier|static
+name|void
+name|checkOtherInstanceRunning
+parameter_list|(
+name|boolean
+name|toCheck
+parameter_list|)
+block|{
+name|NameNodeConnector
+operator|.
+name|checkOtherInstanceRunning
+operator|=
+name|toCheck
+expr_stmt|;
+block|}
 DECL|field|nameNodeUri
 specifier|private
 specifier|final
@@ -870,7 +897,6 @@ name|idPath
 decl_stmt|;
 DECL|field|out
 specifier|private
-specifier|final
 name|OutputStream
 name|out
 decl_stmt|;
@@ -1089,6 +1115,11 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// if it is for test, we do not create the id file
+if|if
+condition|(
+name|checkOtherInstanceRunning
+condition|)
+block|{
 name|out
 operator|=
 name|checkAndMarkRunning
@@ -1113,6 +1144,7 @@ operator|+
 literal|" is running."
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 DECL|method|getDistributedFileSystem ()
@@ -1588,6 +1620,11 @@ condition|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|checkOtherInstanceRunning
+condition|)
+block|{
 name|fs
 operator|.
 name|delete
@@ -1597,6 +1634,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1617,6 +1655,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|getNNProtocolConnection ()
+specifier|public
+name|NamenodeProtocol
+name|getNNProtocolConnection
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|namenode
+return|;
 block|}
 annotation|@
 name|Override

@@ -52,6 +52,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -159,7 +173,7 @@ import|;
 end_import
 
 begin_comment
-comment|/*****************************************************************************  * Protocol that a secondary NameNode uses to communicate with the NameNode.  * It's used to get part of the name node state  *****************************************************************************/
+comment|/*****************************************************************************  * Protocol that a secondary NameNode uses to communicate with the NameNode.  * Also used by external storage policy satisfier. It's used to get part of the  * name node state  *****************************************************************************/
 end_comment
 
 begin_interface
@@ -409,6 +423,61 @@ DECL|method|isRollingUpgrade ()
 name|boolean
 name|isRollingUpgrade
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the file path for the given file id. This API used by External SPS.    *    * @param inodeId    *          - file inode id.    * @return path    */
+annotation|@
+name|Idempotent
+DECL|method|getFilePath (Long inodeId)
+name|String
+name|getFilePath
+parameter_list|(
+name|Long
+name|inodeId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * @return Gets the next available sps path id, otherwise null. This API used    *         by External SPS.    */
+annotation|@
+name|AtMostOnce
+DECL|method|getNextSPSPathId ()
+name|Long
+name|getNextSPSPathId
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Verifies whether the given Datanode has the enough estimated size with    * given storage type for scheduling the block. This API used by External SPS.    *    * @param dn    *          - datanode    * @param type    *          - storage type    * @param estimatedSize    *          - size    */
+annotation|@
+name|Idempotent
+DECL|method|checkDNSpaceForScheduling (DatanodeInfo dn, StorageType type, long estimatedSize)
+name|boolean
+name|checkDNSpaceForScheduling
+parameter_list|(
+name|DatanodeInfo
+name|dn
+parameter_list|,
+name|StorageType
+name|type
+parameter_list|,
+name|long
+name|estimatedSize
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Check if any low redundancy blocks for given file id. This API used by    * External SPS.    *    * @param inodeID    *          - inode id.    */
+annotation|@
+name|Idempotent
+DECL|method|hasLowRedundancyBlocks (long inodeID)
+name|boolean
+name|hasLowRedundancyBlocks
+parameter_list|(
+name|long
+name|inodeID
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

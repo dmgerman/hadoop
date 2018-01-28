@@ -324,9 +324,9 @@ name|inodeID
 parameter_list|)
 function_decl|;
 comment|/**    * Checks whether the given datanode has sufficient space to occupy the given    * blockSize data.    *    * @param dn    *          datanode info    * @param type    *          storage type    * @param blockSize    *          blockSize to be scheduled    * @return true if the given datanode has sufficient space to occupy blockSize    *         data, false otherwise.    */
-DECL|method|verifyTargetDatanodeHasSpaceForScheduling (DatanodeInfo dn, StorageType type, long blockSize)
+DECL|method|checkDNSpaceForScheduling (DatanodeInfo dn, StorageType type, long blockSize)
 name|boolean
-name|verifyTargetDatanodeHasSpaceForScheduling
+name|checkDNSpaceForScheduling
 parameter_list|(
 name|DatanodeInfo
 name|dn
@@ -367,6 +367,14 @@ parameter_list|(
 name|Long
 name|inodeId
 parameter_list|)
+function_decl|;
+comment|/**    * Close the resources.    */
+DECL|method|close ()
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

@@ -1583,6 +1583,23 @@ block|}
 block|}
 block|}
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Namenode is in safemode. It will retry again."
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
 name|int
 name|numLiveDn
 init|=
@@ -3314,7 +3331,7 @@ name|goodTargetDn
 init|=
 name|ctxt
 operator|.
-name|verifyTargetDatanodeHasSpaceForScheduling
+name|checkDNSpaceForScheduling
 argument_list|(
 name|source
 argument_list|,
@@ -3457,7 +3474,7 @@ name|goodTargetDn
 init|=
 name|ctxt
 operator|.
-name|verifyTargetDatanodeHasSpaceForScheduling
+name|checkDNSpaceForScheduling
 argument_list|(
 name|target
 argument_list|,
