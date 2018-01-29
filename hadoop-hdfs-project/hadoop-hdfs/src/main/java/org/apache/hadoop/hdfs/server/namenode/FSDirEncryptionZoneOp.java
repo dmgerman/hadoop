@@ -813,6 +813,14 @@ literal|"encryption zone"
 argument_list|)
 throw|;
 block|}
+name|EncryptionFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|ensureKeyIsInitialized
+argument_list|()
+expr_stmt|;
 name|KeyProvider
 operator|.
 name|Metadata

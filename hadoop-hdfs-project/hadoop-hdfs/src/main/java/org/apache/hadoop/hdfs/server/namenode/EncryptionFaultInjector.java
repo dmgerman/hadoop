@@ -139,6 +139,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|VisibleForTesting
+DECL|method|ensureKeyIsInitialized ()
+specifier|public
+name|void
+name|ensureKeyIsInitialized
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 

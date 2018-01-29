@@ -182,7 +182,13 @@ name|void
 name|printStackTrace
 parameter_list|()
 block|{
-comment|// Do not provide the stack-trace
+name|printStackTrace
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -196,6 +202,13 @@ name|s
 parameter_list|)
 block|{
 comment|// Do not provide the stack-trace
+name|s
+operator|.
+name|println
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -209,6 +222,13 @@ name|s
 parameter_list|)
 block|{
 comment|// Do not provide the stack-trace
+name|s
+operator|.
+name|println
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
