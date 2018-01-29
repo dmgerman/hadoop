@@ -2707,7 +2707,7 @@ name|fs
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|3
 argument_list|)
 argument_list|)
 operator|.
@@ -2851,7 +2851,7 @@ name|fs
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|3
 argument_list|)
 argument_list|)
 operator|.

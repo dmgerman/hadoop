@@ -9402,11 +9402,6 @@ operator|.
 name|WEBHDFS_SCHEME
 argument_list|)
 decl_stmt|;
-name|NamenodeWebHdfsMethods
-operator|.
-name|resetServerDefaultsResponse
-argument_list|()
-expr_stmt|;
 name|FSNamesystem
 name|fsnSpy
 init|=
