@@ -5116,9 +5116,9 @@ name|nodeId
 argument_list|)
 return|;
 block|}
-comment|/**    * Get lists of new containers from NodeManager and process them.    * @param nm The RMNode corresponding to the NodeManager    * @return list of completed containers    */
-DECL|method|updateNewContainerInfo (RMNode nm)
-specifier|protected
+comment|/**    * Get lists of new containers from NodeManager and process them.    * @param nm The RMNode corresponding to the NodeManager    * @param schedulerNode schedulerNode    * @return list of completed containers    */
+DECL|method|updateNewContainerInfo (RMNode nm, SchedulerNode schedulerNode)
+specifier|private
 name|List
 argument_list|<
 name|ContainerStatus
@@ -5127,19 +5127,11 @@ name|updateNewContainerInfo
 parameter_list|(
 name|RMNode
 name|nm
+parameter_list|,
+name|SchedulerNode
+name|schedulerNode
 parameter_list|)
 block|{
-name|SchedulerNode
-name|node
-init|=
-name|getNode
-argument_list|(
-name|nm
-operator|.
-name|getNodeID
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|List
 argument_list|<
 name|UpdatedContainerInfo
@@ -5218,7 +5210,7 @@ operator|.
 name|getContainerId
 argument_list|()
 argument_list|,
-name|node
+name|schedulerNode
 argument_list|)
 expr_stmt|;
 block|}
@@ -5249,7 +5241,7 @@ operator|.
 name|getId
 argument_list|()
 argument_list|,
-name|node
+name|schedulerNode
 argument_list|,
 name|container
 argument_list|)
@@ -5259,9 +5251,9 @@ return|return
 name|completedContainers
 return|;
 block|}
-comment|/**    * Process completed container list.    * @param completedContainers Extracted list of completed containers    * @param releasedResources Reference resource object for completed containers    * @param nodeId NodeId corresponding to the NodeManager    * @return The total number of released containers    */
-DECL|method|updateCompletedContainers (List<ContainerStatus> completedContainers, Resource releasedResources, NodeId nodeId)
-specifier|protected
+comment|/**    * Process completed container list.    * @param completedContainers Extracted list of completed containers    * @param releasedResources Reference resource object for completed containers    * @param nodeId NodeId corresponding to the NodeManager    * @param schedulerNode schedulerNode    * @return The total number of released containers    */
+DECL|method|updateCompletedContainers (List<ContainerStatus> completedContainers, Resource releasedResources, NodeId nodeId, SchedulerNode schedulerNode)
+specifier|private
 name|int
 name|updateCompletedContainers
 parameter_list|(
@@ -5276,20 +5268,15 @@ name|releasedResources
 parameter_list|,
 name|NodeId
 name|nodeId
+parameter_list|,
+name|SchedulerNode
+name|schedulerNode
 parameter_list|)
 block|{
 name|int
 name|releasedContainers
 init|=
 literal|0
-decl_stmt|;
-name|SchedulerNode
-name|node
-init|=
-name|getNode
-argument_list|(
-name|nodeId
-argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
@@ -5350,12 +5337,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|node
+name|schedulerNode
 operator|!=
 literal|null
 condition|)
 block|{
-name|node
+name|schedulerNode
 operator|.
 name|releaseContainer
 argument_list|(
@@ -5505,29 +5492,21 @@ name|releasedContainers
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update container and utilization information on the NodeManager.    * @param nm The NodeManager to update    */
-DECL|method|updateNodeResourceUtilization (RMNode nm)
+comment|/**    * Update container and utilization information on the NodeManager.    * @param nm The NodeManager to update    * @param schedulerNode schedulerNode    */
+DECL|method|updateNodeResourceUtilization (RMNode nm, SchedulerNode schedulerNode)
 specifier|protected
 name|void
 name|updateNodeResourceUtilization
 parameter_list|(
 name|RMNode
 name|nm
+parameter_list|,
+name|SchedulerNode
+name|schedulerNode
 parameter_list|)
 block|{
-name|SchedulerNode
-name|node
-init|=
-name|getNode
-argument_list|(
-name|nm
-operator|.
-name|getNodeID
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|// Updating node resource utilization
-name|node
+name|schedulerNode
 operator|.
 name|setAggregatedContainersUtilization
 argument_list|(
@@ -5537,7 +5516,7 @@ name|getAggregatedContainersUtilization
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|node
+name|schedulerNode
 operator|.
 name|setNodeUtilization
 argument_list|(
@@ -5582,6 +5561,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Process new container information
+name|SchedulerNode
+name|schedulerNode
+init|=
+name|getNode
+argument_list|(
+name|nm
+operator|.
+name|getNodeID
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|ContainerStatus
@@ -5591,8 +5581,16 @@ init|=
 name|updateNewContainerInfo
 argument_list|(
 name|nm
+argument_list|,
+name|schedulerNode
 argument_list|)
 decl_stmt|;
+comment|// Notify Scheduler Node updated.
+name|schedulerNode
+operator|.
+name|notifyNodeUpdate
+argument_list|()
+expr_stmt|;
 comment|// Process completed containers
 name|Resource
 name|releasedResources
@@ -5619,6 +5617,8 @@ name|nm
 operator|.
 name|getNodeID
 argument_list|()
+argument_list|,
+name|schedulerNode
 argument_list|)
 decl_stmt|;
 comment|// If the node is decommissioning, send an update to have the total
@@ -5662,13 +5662,7 @@ name|ResourceOption
 operator|.
 name|newInstance
 argument_list|(
-name|getSchedulerNode
-argument_list|(
-name|nm
-operator|.
-name|getNodeID
-argument_list|()
-argument_list|)
+name|schedulerNode
 operator|.
 name|getAllocatedResource
 argument_list|()
@@ -5689,6 +5683,8 @@ expr_stmt|;
 name|updateNodeResourceUtilization
 argument_list|(
 name|nm
+argument_list|,
+name|schedulerNode
 argument_list|)
 expr_stmt|;
 comment|// Now node data structures are up-to-date and ready for scheduling.
@@ -5700,17 +5696,6 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|SchedulerNode
-name|node
-init|=
-name|getNode
-argument_list|(
-name|nm
-operator|.
-name|getNodeID
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -5721,7 +5706,7 @@ name|nm
 operator|+
 literal|" availableResource: "
 operator|+
-name|node
+name|schedulerNode
 operator|.
 name|getUnallocatedResource
 argument_list|()

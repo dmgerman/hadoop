@@ -164,6 +164,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -575,6 +589,13 @@ name|labels
 init|=
 literal|null
 decl_stmt|;
+comment|// Last updated time
+DECL|field|lastHeartbeatMonotonicTime
+specifier|private
+specifier|volatile
+name|long
+name|lastHeartbeatMonotonicTime
+decl_stmt|;
 DECL|method|SchedulerNode (RMNode node, boolean usePortForNodeName, Set<String> labels)
 specifier|public
 name|SchedulerNode
@@ -669,6 +690,15 @@ name|copyOf
 argument_list|(
 name|labels
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|lastHeartbeatMonotonicTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|SchedulerNode (RMNode node, boolean usePortForNodeName)
@@ -1692,6 +1722,33 @@ name|this
 operator|.
 name|nodeUtilization
 return|;
+block|}
+DECL|method|getLastHeartbeatMonotonicTime ()
+specifier|public
+name|long
+name|getLastHeartbeatMonotonicTime
+parameter_list|()
+block|{
+return|return
+name|lastHeartbeatMonotonicTime
+return|;
+block|}
+comment|/**    * This will be called for each node heartbeat.    */
+DECL|method|notifyNodeUpdate ()
+specifier|public
+name|void
+name|notifyNodeUpdate
+parameter_list|()
+block|{
+name|this
+operator|.
+name|lastHeartbeatMonotonicTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
 block|}
 DECL|class|ContainerInfo
 specifier|private
