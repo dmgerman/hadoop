@@ -5179,7 +5179,7 @@ name|event
 parameter_list|)
 block|{
 name|ApplicationAttemptId
-name|appAttemptID
+name|appAttemptId
 init|=
 name|event
 operator|.
@@ -5187,9 +5187,9 @@ name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
 name|ApplicationId
-name|appAttemptId
+name|appId
 init|=
-name|appAttemptID
+name|appAttemptId
 operator|.
 name|getApplicationId
 argument_list|()
@@ -5206,7 +5206,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|appAttemptId
+name|appId
 argument_list|)
 decl_stmt|;
 if|if
@@ -5223,7 +5223,7 @@ name|rmApp
 operator|.
 name|getRMAppAttempt
 argument_list|(
-name|appAttemptID
+name|appAttemptId
 argument_list|)
 decl_stmt|;
 if|if
