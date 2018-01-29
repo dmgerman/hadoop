@@ -2515,6 +2515,12 @@ specifier|private
 name|SPSPathIds
 name|spsPaths
 decl_stmt|;
+DECL|field|spsOutstandingPathsLimit
+specifier|private
+specifier|final
+name|int
+name|spsOutstandingPathsLimit
+decl_stmt|;
 comment|/** Minimum live replicas needed for the datanode to be transitioned    * from ENTERING_MAINTENANCE to IN_MAINTENANCE.    */
 DECL|field|minReplicationToBeInMaintenance
 specifier|private
@@ -2711,6 +2717,7 @@ operator|*
 literal|1000L
 argument_list|)
 expr_stmt|;
+comment|// StoragePolicySatisfier(SPS) configs
 name|storagePolicyEnabled
 operator|=
 name|conf
@@ -2742,6 +2749,21 @@ operator|.
 name|DFS_STORAGE_POLICY_SATISFIER_MODE_DEFAULT
 argument_list|)
 decl_stmt|;
+name|spsOutstandingPathsLimit
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_MAX_OUTSTANDING_PATHS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_MAX_OUTSTANDING_PATHS_DEFAULT
+argument_list|)
+expr_stmt|;
 name|spsMode
 operator|=
 name|StoragePolicySatisfierMode
@@ -24102,6 +24124,34 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|spsMode
+operator|!=
+name|StoragePolicySatisfierMode
+operator|.
+name|INTERNAL
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Satisfier is not running inside namenode, so status "
+operator|+
+literal|"can't be returned."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Satisfier is not running inside namenode, "
+operator|+
+literal|"so status can't be returned."
+argument_list|)
+throw|;
+block|}
 return|return
 name|sps
 operator|.
@@ -24137,6 +24187,57 @@ operator|.
 name|pollNext
 argument_list|()
 return|;
+block|}
+comment|/**    * Verify that satisfier queue limit exceeds allowed outstanding limit.    */
+DECL|method|verifyOutstandingSPSPathQLimit ()
+specifier|public
+name|void
+name|verifyOutstandingSPSPathQLimit
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|long
+name|size
+init|=
+name|spsPaths
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+comment|// Checking that the SPS call Q exceeds the allowed limit.
+if|if
+condition|(
+name|spsOutstandingPathsLimit
+operator|-
+name|size
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Satisifer Q - outstanding limit:{}, current size:{}"
+argument_list|,
+name|spsOutstandingPathsLimit
+argument_list|,
+name|size
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Outstanding satisfier queue limit: "
+operator|+
+name|spsOutstandingPathsLimit
+operator|+
+literal|" exceeded, try later!"
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Removes the SPS path id from the list of sps paths.    */
 DECL|method|removeSPSPathId (long trackId)

@@ -12800,6 +12800,9 @@ decl_stmt|;
 name|FileStatus
 name|auditStat
 decl_stmt|;
+name|validateStoragePolicySatisfy
+argument_list|()
+expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -12826,75 +12829,6 @@ operator|+
 name|src
 argument_list|)
 expr_stmt|;
-comment|// make sure storage policy is enabled, otherwise
-comment|// there is no need to satisfy storage policy.
-if|if
-condition|(
-operator|!
-name|dir
-operator|.
-name|isStoragePolicyEnabled
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Failed to satisfy storage policy since %s is set to false."
-argument_list|,
-name|DFS_STORAGE_POLICY_ENABLED_KEY
-argument_list|)
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|blockManager
-operator|.
-name|isSPSEnabled
-argument_list|()
-operator|||
-operator|(
-name|blockManager
-operator|.
-name|getSPSMode
-argument_list|()
-operator|==
-name|StoragePolicySatisfierMode
-operator|.
-name|INTERNAL
-operator|&&
-operator|!
-name|blockManager
-operator|.
-name|getStoragePolicySatisfier
-argument_list|()
-operator|.
-name|isRunning
-argument_list|()
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"Cannot request to satisfy storage policy "
-operator|+
-literal|"when storage policy satisfier feature has been disabled"
-operator|+
-literal|" by admin. Seek for an admin help to enable it "
-operator|+
-literal|"or use Mover tool."
-argument_list|)
-throw|;
-block|}
 name|auditStat
 operator|=
 name|FSDirSatisfyStoragePolicyOp
@@ -12956,6 +12890,93 @@ literal|null
 argument_list|,
 name|auditStat
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|validateStoragePolicySatisfy ()
+specifier|private
+name|void
+name|validateStoragePolicySatisfy
+parameter_list|()
+throws|throws
+name|UnsupportedActionException
+throws|,
+name|IOException
+block|{
+comment|// make sure storage policy is enabled, otherwise
+comment|// there is no need to satisfy storage policy.
+if|if
+condition|(
+operator|!
+name|dir
+operator|.
+name|isStoragePolicyEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Failed to satisfy storage policy since %s is set to false."
+argument_list|,
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+argument_list|)
+argument_list|)
+throw|;
+block|}
+comment|// checks sps status
+if|if
+condition|(
+operator|!
+name|blockManager
+operator|.
+name|isSPSEnabled
+argument_list|()
+operator|||
+operator|(
+name|blockManager
+operator|.
+name|getSPSMode
+argument_list|()
+operator|==
+name|StoragePolicySatisfierMode
+operator|.
+name|INTERNAL
+operator|&&
+operator|!
+name|blockManager
+operator|.
+name|getStoragePolicySatisfier
+argument_list|()
+operator|.
+name|isRunning
+argument_list|()
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedActionException
+argument_list|(
+literal|"Cannot request to satisfy storage policy "
+operator|+
+literal|"when storage policy satisfier feature has been disabled"
+operator|+
+literal|" by admin. Seek for an admin help to enable it "
+operator|+
+literal|"or use Mover tool."
+argument_list|)
+throw|;
+block|}
+comment|// checks SPS Q has many outstanding requests.
+name|blockManager
+operator|.
+name|verifyOutstandingSPSPathQLimit
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * unset storage policy set for a given file or a directory.    *    * @param src file/directory path    */

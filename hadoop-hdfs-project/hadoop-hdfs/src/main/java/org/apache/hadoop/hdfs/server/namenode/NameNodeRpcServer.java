@@ -1362,6 +1362,24 @@ name|protocol
 operator|.
 name|HdfsConstants
 operator|.
+name|StoragePolicySatisfierMode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
 name|StoragePolicySatisfyPathStatus
 import|;
 end_import
@@ -14416,6 +14434,54 @@ operator|new
 name|StandbyException
 argument_list|(
 literal|"Not supported by Standby Namenode."
+argument_list|)
+throw|;
+block|}
+comment|// Check that internal SPS service is running
+if|if
+condition|(
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getSPSMode
+argument_list|()
+operator|==
+name|StoragePolicySatisfierMode
+operator|.
+name|INTERNAL
+operator|&&
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getSPSService
+argument_list|()
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"SPS service is internally enabled and running inside "
+operator|+
+literal|"namenode, so external SPS is not allowed to fetch the path Ids"
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"SPS service is internally enabled and running"
+operator|+
+literal|" inside namenode, so external SPS is not allowed to fetch"
+operator|+
+literal|" the path Ids"
 argument_list|)
 throw|;
 block|}

@@ -210,6 +210,7 @@ specifier|private
 name|FSDirSatisfyStoragePolicyOp
 parameter_list|()
 block|{   }
+comment|/**    * Satisfy storage policy function which will add the entry to SPS call queue    * and will perform satisfaction async way.    *    * @param fsd    *          fs directory    * @param bm    *          block manager    * @param src    *          source path    * @param logRetryCache    *          whether to record RPC ids in editlog for retry cache rebuilding    * @return file status info    * @throws IOException    */
 DECL|method|satisfyStoragePolicy (FSDirectory fsd, BlockManager bm, String src, boolean logRetryCache)
 specifier|static
 name|FileStatus

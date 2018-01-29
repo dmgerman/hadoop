@@ -89,7 +89,6 @@ class|class
 name|SPSPathIds
 block|{
 comment|// List of pending dir to satisfy the policy
-comment|// TODO: Make this bounded queue.
 DECL|field|spsDirsToBeTraveresed
 specifier|private
 specifier|final
@@ -170,6 +169,21 @@ return|return
 name|spsDirsToBeTraveresed
 operator|.
 name|poll
+argument_list|()
+return|;
+block|}
+comment|/**    * @return the size of the queue.    */
+DECL|method|size ()
+specifier|public
+specifier|synchronized
+name|long
+name|size
+parameter_list|()
+block|{
+return|return
+name|spsDirsToBeTraveresed
+operator|.
+name|size
 argument_list|()
 return|;
 block|}

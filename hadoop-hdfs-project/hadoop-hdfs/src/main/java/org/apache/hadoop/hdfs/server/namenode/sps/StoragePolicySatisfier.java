@@ -702,6 +702,7 @@ name|blockMoveTaskHandler
 decl_stmt|;
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 decl_stmt|;

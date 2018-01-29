@@ -1083,7 +1083,7 @@ block|}
 comment|/**    * Gets distributed file system.    *    * @throws IOException    */
 DECL|method|getFS ()
 specifier|public
-name|void
+name|DistributedFileSystem
 name|getFS
 parameter_list|()
 throws|throws
@@ -1098,6 +1098,11 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
+return|return
+name|this
+operator|.
+name|dfs
+return|;
 block|}
 annotation|@
 name|After
@@ -2464,16 +2469,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|Assert
+name|GenericTestUtils
 operator|.
-name|assertTrue
-argument_list|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
+name|assertExceptionContains
 argument_list|(
 name|String
 operator|.
@@ -2483,7 +2481,8 @@ literal|"Failed to satisfy storage policy since %s is set to false."
 argument_list|,
 name|DFS_STORAGE_POLICY_ENABLED_KEY
 argument_list|)
-argument_list|)
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

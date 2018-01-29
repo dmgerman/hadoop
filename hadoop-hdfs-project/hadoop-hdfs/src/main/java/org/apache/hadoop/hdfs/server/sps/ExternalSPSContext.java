@@ -939,6 +939,10 @@ name|long
 name|estimatedSize
 parameter_list|)
 block|{
+comment|// TODO: Instead of calling namenode for checking the available space, it
+comment|// can be optimized by maintaining local cache of datanode storage report
+comment|// and do the computations. This local cache can be refreshed per file or
+comment|// periodic fashion.
 try|try
 block|{
 return|return
