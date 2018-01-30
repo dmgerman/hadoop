@@ -313,6 +313,11 @@ literal|"required container reports"
 argument_list|)
 throw|;
 block|}
+name|int
+name|containerID
+init|=
+literal|1
+decl_stmt|;
 while|while
 condition|(
 name|containerList
@@ -355,6 +360,9 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
+name|containerID
+operator|++
+expr_stmt|;
 comment|// We return container reports only for nodes that are healthy.
 if|if
 condition|(
@@ -389,6 +397,11 @@ name|sha256Hex
 argument_list|(
 name|containerName
 argument_list|)
+argument_list|)
+operator|.
+name|setContainerID
+argument_list|(
+name|containerID
 argument_list|)
 operator|.
 name|build

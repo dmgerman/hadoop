@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements. See the NOTICE file distributed with this  * work for additional information regarding copyright ownership. The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  *<p>http://www.apache.org/licenses/LICENSE-2.0  *<p>  *<p>Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements. See the NOTICE file distributed with this  * work for additional information regarding copyright ownership. The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  *<p>http://www.apache.org/licenses/LICENSE-2.0  *<p>  *<p>Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -668,7 +668,7 @@ specifier|final
 name|float
 name|containerCloseThreshold
 decl_stmt|;
-comment|/**    * Constructs a mapping class that creates mapping between container names    * and pipelines.    *    * @param nodeManager - NodeManager so that we can get the nodes that are    * healthy to place new    *     containers.    * @param cacheSizeMB - Amount of memory reserved for the LSM tree to cache    * its nodes. This is    *     passed to LevelDB and this memory is allocated in Native code space.    *     CacheSize is specified    *     in MB.    * @throws IOException    */
+comment|/**    * Constructs a mapping class that creates mapping between container names    * and pipelines.    *    * @param nodeManager - NodeManager so that we can get the nodes that are    * healthy to place new    * containers.    * @param cacheSizeMB - Amount of memory reserved for the LSM tree to cache    * its nodes. This is    * passed to LevelDB and this memory is allocated in Native code space.    * CacheSize is specified    * in MB.    * @throws IOException on Failure.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -788,14 +788,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|this
-argument_list|,
-name|this
-operator|.
-name|cacheSize
-operator|*
-name|OzoneConsts
-operator|.
-name|MB
 argument_list|)
 expr_stmt|;
 name|this
@@ -864,7 +856,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|getContainer (final String containerName)
@@ -928,12 +920,11 @@ name|FAILED_TO_FIND_CONTAINER
 argument_list|)
 throw|;
 block|}
-name|containerInfo
-operator|=
-name|ContainerInfo
+name|OzoneProtos
 operator|.
-name|fromProtobuf
-argument_list|(
+name|SCMContainerInfo
+name|temp
+init|=
 name|OzoneProtos
 operator|.
 name|SCMContainerInfo
@@ -944,6 +935,14 @@ name|parseFrom
 argument_list|(
 name|containerBytes
 argument_list|)
+decl_stmt|;
+name|containerInfo
+operator|=
+name|ContainerInfo
+operator|.
+name|fromProtobuf
+argument_list|(
+name|temp
 argument_list|)
 expr_stmt|;
 return|return
@@ -959,7 +958,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|listContainer (String startName, String prefixName, int count)
@@ -1137,7 +1136,7 @@ return|return
 name|containerList
 return|;
 block|}
-comment|/**    * Allocates a new container.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name of the container.    * @param owner    * @return - Pipeline that makes up this container.    * @throws IOException - Exception    */
+comment|/**    * Allocates a new container.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name of the container.    * @param owner - The string name of the Service that owns this container.    * @return - Pipeline that makes up this container.    * @throws IOException - Exception    */
 annotation|@
 name|Override
 DECL|method|allocateContainer ( ReplicationType type, ReplicationFactor replicationFactor, final String containerName, String owner)
@@ -1181,8 +1180,6 @@ argument_list|)
 expr_stmt|;
 name|ContainerInfo
 name|containerInfo
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -1303,7 +1300,7 @@ return|return
 name|containerInfo
 return|;
 block|}
-comment|/**    * Deletes a container from SCM.    *    * @param containerName - Container name    * @throws IOException if container doesn't exist or container store failed    * to delete the    *     specified key.    */
+comment|/**    * Deletes a container from SCM.    *    * @param containerName - Container name    * @throws IOException if container doesn't exist or container store failed    *                     to delete the    *                     specified key.    */
 annotation|@
 name|Override
 DECL|method|deleteContainer (String containerName)
@@ -1390,7 +1387,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} Used by client to update container state on SCM. */
+comment|/**    * {@inheritDoc} Used by client to update container state on SCM.    */
 annotation|@
 name|Override
 DECL|method|updateContainerState ( String containerName, OzoneProtos.LifeCycleEvent event)
@@ -1654,7 +1651,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** + * Returns the container State Manager. + * + * @return    * ContainerStateManager + */
+comment|/**    * Returns the container State Manager.    * @return ContainerStateManager    */
 annotation|@
 name|Override
 DECL|method|getStateManager ()
@@ -1868,6 +1865,16 @@ name|getStateEnterTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|builder
+operator|.
+name|setContainerID
+argument_list|(
+name|oldInfo
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|oldInfo
@@ -1981,8 +1988,6 @@ argument_list|(
 literal|"Failed to close container {}, reason : Not able to "
 operator|+
 literal|"update container state, current container state: {}."
-operator|+
-literal|"in state {}"
 argument_list|,
 name|containerInfo
 operator|.
@@ -2007,6 +2012,13 @@ operator|+
 literal|" {}, for container: {}, reason: container doesn't exist in"
 operator|+
 literal|"container database."
+argument_list|,
+name|datanodeID
+argument_list|,
+name|containerInfo
+operator|.
+name|getContainerName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2021,7 +2033,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Closes this stream and releases any system resources associated with it.    * If the stream is    * already closed then invoking this method has no effect.    *    *<p>    *    *<p>As noted in {@link AutoCloseable#close()}, cases where the close may    * fail require careful    * attention. It is strongly advised to relinquish the underlying resources    * and to internally    *<em>mark</em> the {@code Closeable} as closed, prior to throwing the    * {@code IOException}.    *    * @throws IOException if an I/O error occurs    */
+comment|/**    * Closes this stream and releases any system resources associated with it.    * If the stream is    * already closed then invoking this method has no effect.    *    *<p>As noted in {@link AutoCloseable#close()}, cases where the close may    * fail require careful    * attention. It is strongly advised to relinquish the underlying resources    * and to internally    *<em>mark</em> the {@code Closeable} as closed, prior to throwing the    * {@code IOException}.    *    * @throws IOException if an I/O error occurs    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -2075,7 +2087,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing ContainerMapping, we need to update    * this in the container store.    *    * @throws IOException    */
+comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing ContainerMapping, we need to update    * this in the container store.    *    * @throws IOException  on failure.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|flushContainerInfo ()

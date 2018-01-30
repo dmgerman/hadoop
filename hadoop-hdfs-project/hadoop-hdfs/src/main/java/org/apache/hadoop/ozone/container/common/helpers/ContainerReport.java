@@ -123,6 +123,37 @@ specifier|private
 name|long
 name|writeBytes
 decl_stmt|;
+DECL|field|containerID
+specifier|private
+name|long
+name|containerID
+decl_stmt|;
+DECL|method|getContainerID ()
+specifier|public
+name|long
+name|getContainerID
+parameter_list|()
+block|{
+return|return
+name|containerID
+return|;
+block|}
+DECL|method|setContainerID (long containerID)
+specifier|public
+name|void
+name|setContainerID
+parameter_list|(
+name|long
+name|containerID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containerID
+operator|=
+name|containerID
+expr_stmt|;
+block|}
 comment|/**    * Constructs the ContainerReport.    *    * @param containerName - Container Name.    * @param finalhash - Final Hash.    */
 DECL|method|ContainerReport (String containerName, String finalhash)
 specifier|public
@@ -358,6 +389,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|report
+operator|.
+name|setContainerID
+argument_list|(
+name|info
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|report
 return|;
@@ -652,6 +693,14 @@ argument_list|(
 name|this
 operator|.
 name|getFinalhash
+argument_list|()
+argument_list|)
+operator|.
+name|setContainerID
+argument_list|(
+name|this
+operator|.
+name|getContainerID
 argument_list|()
 argument_list|)
 operator|.

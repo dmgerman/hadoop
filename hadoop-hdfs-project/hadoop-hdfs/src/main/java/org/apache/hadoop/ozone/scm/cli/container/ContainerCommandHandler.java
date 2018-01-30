@@ -283,7 +283,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The handler class of container-specific commands, e.g. createContainer.  */
+comment|/**  * The handler class of container-specific commands, e.g. addContainer.  */
 end_comment
 
 begin_class

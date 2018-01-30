@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -80,6 +94,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|ContainerStates
+operator|.
+name|ContainerID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -97,7 +131,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Class wraps ozone container info. */
+comment|/**  * Class wraps ozone container info.  */
 end_comment
 
 begin_class
@@ -166,9 +200,17 @@ specifier|private
 name|String
 name|containerName
 decl_stmt|;
-DECL|method|ContainerInfo ( final String containerName, OzoneProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner)
+DECL|field|containerID
+specifier|private
+name|long
+name|containerID
+decl_stmt|;
+DECL|method|ContainerInfo ( long containerID, final String containerName, OzoneProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner)
 name|ContainerInfo
 parameter_list|(
+name|long
+name|containerID
+parameter_list|,
 specifier|final
 name|String
 name|containerName
@@ -197,6 +239,12 @@ name|String
 name|owner
 parameter_list|)
 block|{
+name|this
+operator|.
+name|containerID
+operator|=
+name|containerID
+expr_stmt|;
 name|this
 operator|.
 name|containerName
@@ -369,11 +417,31 @@ name|getContainerName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|builder
+operator|.
+name|setContainerID
+argument_list|(
+name|info
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|builder
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|getContainerID ()
+specifier|public
+name|long
+name|getContainerID
+parameter_list|()
+block|{
+return|return
+name|containerID
 return|;
 block|}
 DECL|method|getContainerName ()
@@ -397,6 +465,24 @@ block|{
 return|return
 name|state
 return|;
+block|}
+DECL|method|setState (OzoneProtos.LifeCycleState state)
+specifier|public
+name|void
+name|setState
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+name|state
+parameter_list|)
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|state
+expr_stmt|;
 block|}
 DECL|method|getStateEnterTime ()
 specifier|public
@@ -428,6 +514,23 @@ return|return
 name|allocatedBytes
 return|;
 block|}
+comment|/**    * Set Allocated bytes.    *    * @param size - newly allocated bytes -- negative size is case of deletes    * can be used.    */
+DECL|method|updateAllocatedBytes (long size)
+specifier|public
+name|void
+name|updateAllocatedBytes
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|this
+operator|.
+name|allocatedBytes
+operator|+=
+name|size
+expr_stmt|;
+block|}
 DECL|method|getUsedBytes ()
 specifier|public
 name|long
@@ -448,7 +551,22 @@ return|return
 name|numberOfKeys
 return|;
 block|}
-comment|/**    * Gets the last used time from SCM's perspective.    * @return time in milliseconds.    */
+DECL|method|containerID ()
+specifier|public
+name|ContainerID
+name|containerID
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ContainerID
+argument_list|(
+name|getContainerID
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Gets the last used time from SCM's perspective.    *    * @return time in milliseconds.    */
 DECL|method|getLastUsed ()
 specifier|public
 name|long
@@ -558,6 +676,14 @@ operator|.
 name|setStateEnterTime
 argument_list|(
 name|stateEnterTime
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|setContainerID
+argument_list|(
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -723,7 +849,7 @@ argument_list|)
 comment|// TODO : Fix this later. If we add these factors some tests fail.
 comment|// So Commenting this to continue and will enforce this with
 comment|// Changes in pipeline where we remove Container Name to
-comment|// SCMContainerinfo from Pipline.
+comment|// SCMContainerinfo from Pipeline.
 comment|// .append(pipeline.getFactor(), that.pipeline.getFactor())
 comment|// .append(pipeline.getType(), that.pipeline.getType())
 operator|.
@@ -845,7 +971,7 @@ name|o
 argument_list|)
 return|;
 block|}
-comment|/** Builder class for ContainerInfo. */
+comment|/**    * Builder class for ContainerInfo.    */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -894,6 +1020,39 @@ specifier|private
 name|String
 name|containerName
 decl_stmt|;
+DECL|field|containerID
+specifier|private
+name|long
+name|containerID
+decl_stmt|;
+DECL|method|setContainerID (long id)
+specifier|public
+name|Builder
+name|setContainerID
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|id
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|containerID
+operator|=
+name|id
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setState (OzoneProtos.LifeCycleState lifeCycleState)
 specifier|public
 name|Builder
@@ -1058,6 +1217,8 @@ return|return
 operator|new
 name|ContainerInfo
 argument_list|(
+name|containerID
+argument_list|,
 name|containerName
 argument_list|,
 name|state

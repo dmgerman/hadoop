@@ -745,6 +745,28 @@ argument_list|(
 name|leader
 argument_list|)
 expr_stmt|;
+name|pipeline
+operator|.
+name|setFactor
+argument_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+operator|.
+name|ONE
+argument_list|)
+expr_stmt|;
+name|pipeline
+operator|.
+name|setType
+argument_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationType
+operator|.
+name|STAND_ALONE
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 init|;
@@ -1776,7 +1798,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"createContainer: {}"
+literal|"addContainer: {}"
 argument_list|,
 name|containerName
 argument_list|)
