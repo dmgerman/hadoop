@@ -1081,7 +1081,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|constraintExpr
+name|simConstraint
+operator|.
+name|getConstraintExpr
+argument_list|()
 operator|instanceof
 name|Or
 argument_list|)
