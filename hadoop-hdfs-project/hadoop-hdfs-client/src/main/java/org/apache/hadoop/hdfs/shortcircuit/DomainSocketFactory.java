@@ -439,7 +439,14 @@ return|;
 block|}
 block|}
 comment|/**    * Information about domain socket paths.    */
+DECL|field|pathExpireSeconds
+specifier|private
+specifier|final
+name|long
+name|pathExpireSeconds
+decl_stmt|;
 DECL|field|pathMap
+specifier|private
 specifier|final
 name|Cache
 argument_list|<
@@ -448,23 +455,6 @@ argument_list|,
 name|PathState
 argument_list|>
 name|pathMap
-init|=
-name|CacheBuilder
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|expireAfterWrite
-argument_list|(
-literal|10
-argument_list|,
-name|TimeUnit
-operator|.
-name|MINUTES
-argument_list|)
-operator|.
-name|build
-argument_list|()
 decl_stmt|;
 DECL|method|DomainSocketFactory (ShortCircuitConf conf)
 specifier|public
@@ -605,6 +595,32 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|pathExpireSeconds
+operator|=
+name|conf
+operator|.
+name|getDomainSocketDisableIntervalSeconds
+argument_list|()
+expr_stmt|;
+name|pathMap
+operator|=
+name|CacheBuilder
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|expireAfterWrite
+argument_list|(
+name|pathExpireSeconds
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Get information about a domain socket path.    *    * @param addr         The inet address to use.    * @param conf         The client configuration.    *    * @return             Information about the socket path.    */
 DECL|method|getPathInfo (InetSocketAddress addr, ShortCircuitConf conf)
@@ -944,6 +960,16 @@ operator|.
 name|invalidateAll
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getPathExpireSeconds ()
+specifier|public
+name|long
+name|getPathExpireSeconds
+parameter_list|()
+block|{
+return|return
+name|pathExpireSeconds
+return|;
 block|}
 block|}
 end_class

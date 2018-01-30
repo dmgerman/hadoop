@@ -30,6 +30,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -3002,31 +3020,66 @@ argument_list|)
 argument_list|)
 return|;
 default|default:
+specifier|final
+name|long
+name|expiration
+init|=
+name|clientContext
+operator|.
+name|getDomainSocketFactory
+argument_list|()
+operator|.
+name|getPathExpireSeconds
+argument_list|()
+decl_stmt|;
+name|String
+name|disableMsg
+init|=
+literal|"disabled temporarily for "
+operator|+
+name|expiration
+operator|+
+literal|" seconds"
+decl_stmt|;
+if|if
+condition|(
+name|expiration
+operator|==
+literal|0
+condition|)
+block|{
+name|disableMsg
+operator|=
+literal|"not disabled"
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{}: unknown response code {} while attempting to set up "
+operator|+
+literal|"short-circuit access. {}. Short-circuit read for "
+operator|+
+literal|"DataNode {} is {} based on {}."
+argument_list|,
 name|this
-operator|+
-literal|": unknown response code "
-operator|+
+argument_list|,
 name|resp
 operator|.
 name|getStatus
 argument_list|()
-operator|+
-literal|" while attempting to set up short-circuit access. "
-operator|+
+argument_list|,
 name|resp
 operator|.
 name|getMessage
 argument_list|()
-operator|+
-literal|". Disabling short-circuit read for DataNode "
-operator|+
+argument_list|,
 name|datanode
-operator|+
-literal|" temporarily."
+argument_list|,
+name|disableMsg
+argument_list|,
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_KEY
 argument_list|)
 expr_stmt|;
 name|clientContext

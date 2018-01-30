@@ -874,6 +874,42 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
 name|DFS_DOMAIN_SOCKET_PATH_DEFAULT
 import|;
 end_import
@@ -2845,6 +2881,12 @@ specifier|final
 name|long
 name|shortCircuitCacheStaleThresholdMs
 decl_stmt|;
+DECL|field|domainSocketDisableIntervalSeconds
+specifier|private
+specifier|final
+name|long
+name|domainSocketDisableIntervalSeconds
+decl_stmt|;
 DECL|field|keyProviderCacheExpiryMs
 specifier|private
 specifier|final
@@ -3207,6 +3249,30 @@ argument_list|,
 name|DFS_SHORT_CIRCUIT_SHARED_MEMORY_WATCHER_INTERRUPT_CHECK_MS_DEFAULT
 argument_list|)
 expr_stmt|;
+name|domainSocketDisableIntervalSeconds
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_KEY
+argument_list|,
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|domainSocketDisableIntervalSeconds
+operator|>=
+literal|0
+argument_list|,
+name|DFS_DOMAIN_SOCKET_DISABLE_INTERVAL_SECOND_KEY
+operator|+
+literal|"can't be negative."
+argument_list|)
+expr_stmt|;
 name|keyProviderCacheExpiryMs
 operator|=
 name|conf
@@ -3411,6 +3477,17 @@ return|return
 name|shortCircuitCacheStaleThresholdMs
 return|;
 block|}
+comment|/**      * @return the domainSocketDisableIntervalSeconds      */
+DECL|method|getDomainSocketDisableIntervalSeconds ()
+specifier|public
+name|long
+name|getDomainSocketDisableIntervalSeconds
+parameter_list|()
+block|{
+return|return
+name|domainSocketDisableIntervalSeconds
+return|;
+block|}
 comment|/**      * @return the keyProviderCacheExpiryMs      */
 DECL|method|getKeyProviderCacheExpiryMs ()
 specifier|public
@@ -3480,6 +3557,10 @@ operator|+
 literal|", keyProviderCacheExpiryMs = "
 operator|+
 name|keyProviderCacheExpiryMs
+operator|+
+literal|", domainSocketDisableIntervalSeconds = "
+operator|+
+name|domainSocketDisableIntervalSeconds
 return|;
 block|}
 block|}

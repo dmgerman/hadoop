@@ -1318,7 +1318,6 @@ decl_stmt|;
 comment|/**    * Maximum total size of the cache, including both mmapped and    * no$-mmapped elements.    */
 DECL|field|maxTotalSize
 specifier|private
-specifier|final
 name|int
 name|maxTotalSize
 decl_stmt|;
@@ -1605,6 +1604,24 @@ block|{
 return|return
 name|staleThresholdMs
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setMaxTotalSize (int maxTotalSize)
+specifier|public
+name|void
+name|setMaxTotalSize
+parameter_list|(
+name|int
+name|maxTotalSize
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxTotalSize
+operator|=
+name|maxTotalSize
+expr_stmt|;
 block|}
 comment|/**    * Increment the reference count of a replica, and remove it from any free    * list it may be in.    *    * You must hold the cache lock while calling this function.    *    * @param replica      The replica we're removing.    */
 DECL|method|ref (ShortCircuitReplica replica)
@@ -4458,6 +4475,22 @@ parameter_list|()
 block|{
 return|return
 name|shmManager
+return|;
+block|}
+comment|/**    * Can be used in testing to verify whether a read went through SCR, after    * the read is done and before the stream is closed.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getReplicaInfoMapSize ()
+specifier|public
+name|int
+name|getReplicaInfoMapSize
+parameter_list|()
+block|{
+return|return
+name|replicaInfoMap
+operator|.
+name|size
+argument_list|()
 return|;
 block|}
 block|}
