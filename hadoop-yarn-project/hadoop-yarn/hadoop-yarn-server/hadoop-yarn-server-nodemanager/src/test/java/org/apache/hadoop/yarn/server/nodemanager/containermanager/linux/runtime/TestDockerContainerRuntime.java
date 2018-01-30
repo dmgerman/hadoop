@@ -9584,8 +9584,6 @@ literal|"[docker-command-execution]\n"
 operator|+
 literal|"  docker-command=volume\n"
 operator|+
-literal|"  format={{.Name}},{{.Driver}}\n"
-operator|+
 literal|"  sub-command=ls\n"
 argument_list|,
 name|fileContent
@@ -10057,6 +10055,13 @@ comment|// For following tests, we expect to have volume1,local in output
 comment|// Failure cases
 name|testDockerCommandPluginWithVolumesOutput
 argument_list|(
+literal|"DRIVER              VOLUME NAME\n"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|testDockerCommandPluginWithVolumesOutput
+argument_list|(
 literal|""
 argument_list|,
 literal|true
@@ -10065,6 +10070,24 @@ expr_stmt|;
 name|testDockerCommandPluginWithVolumesOutput
 argument_list|(
 literal|"volume1"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|testDockerCommandPluginWithVolumesOutput
+argument_list|(
+literal|"DRIVER              VOLUME NAME\n"
+operator|+
+literal|"nvidia-docker       nvidia_driver_375.66\n"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|testDockerCommandPluginWithVolumesOutput
+argument_list|(
+literal|"DRIVER              VOLUME NAME\n"
+operator|+
+literal|"                    volume1\n"
 argument_list|,
 literal|true
 argument_list|)
@@ -10085,7 +10108,25 @@ argument_list|)
 expr_stmt|;
 name|testDockerCommandPluginWithVolumesOutput
 argument_list|(
+literal|"DRIVER              VOLUME NAME\n"
+operator|+
+literal|"local               volume2\n"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|testDockerCommandPluginWithVolumesOutput
+argument_list|(
 literal|"volum1,something"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|testDockerCommandPluginWithVolumesOutput
+argument_list|(
+literal|"DRIVER              VOLUME NAME\n"
+operator|+
+literal|"something               volume1\n"
 argument_list|,
 literal|true
 argument_list|)
@@ -10100,7 +10141,11 @@ expr_stmt|;
 comment|// Success case
 name|testDockerCommandPluginWithVolumesOutput
 argument_list|(
-literal|"volume1,local\n"
+literal|"DRIVER              VOLUME NAME\n"
+operator|+
+literal|"nvidia-docker       nvidia_driver_375.66\n"
+operator|+
+literal|"local               volume1\n"
 argument_list|,
 literal|false
 argument_list|)
