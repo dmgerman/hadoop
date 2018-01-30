@@ -377,7 +377,7 @@ name|targetExpressions
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a constraint that restricts the number of allocations within a    * given scope (e.g., node or rack).    *    * For example, {@code cardinality(NODE, 3, 10)}, restricts the number of    * allocations per node to be no less than 3 and no more than 10.    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
+comment|/**    * Creates a constraint that restricts the number of allocations within a    * given scope (e.g., node or rack).    *    * For example, {@code cardinality(NODE, 3, 10, "zk")} is satisfied on nodes    * where there are no less than 3 allocations with tag "zk" and no more than    * 10.    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
 DECL|method|cardinality (String scope, int minCardinality, int maxCardinality, String... allocationTags)
 specifier|public
 specifier|static
@@ -450,7 +450,7 @@ name|allocationTags
 argument_list|)
 return|;
 block|}
-comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but    * determines only the maximum cardinality (the minimum can be as low as 0).    *    * @param scope the scope of the constraint    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
+comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but    * determines only the maximum cardinality (the minimum cardinality is 0).    *    * @param scope the scope of the constraint    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
 DECL|method|maxCardinality (String scope, int maxCardinality, String... allocationTags)
 specifier|public
 specifier|static
@@ -481,7 +481,7 @@ name|allocationTags
 argument_list|)
 return|;
 block|}
-comment|/**    * This constraint generalizes the cardinality and target constraints.    *    * Consider a set of nodes N that belongs to the scope specified in the    * constraint. If the target expressions are satisfied at least minCardinality    * times and at most max-cardinality times in the node set N, then the    * constraint is satisfied.    *    * For example, {@code targetCardinality(RACK, 2, 10, allocationTag("zk"))},    * requires an allocation to be placed within a rack that has at least 2 and    * at most 10 other allocations with tag "zk".    *    * @param scope the scope of the constraint    * @param minCardinality the minimum number of times the target expressions    *          have to be satisfied with the given scope    * @param maxCardinality the maximum number of times the target expressions    *          have to be satisfied with the given scope    * @param targetExpressions the target expressions    * @return the resulting placement constraint    */
+comment|/**    * This constraint generalizes the cardinality and target constraints.    *    * Consider a set of nodes N that belongs to the scope specified in the    * constraint. If the target expressions are satisfied at least minCardinality    * times and at most maxCardinality times in the node set N, then the    * constraint is satisfied.    *    * For example, {@code targetCardinality(RACK, 2, 10, allocationTag("zk"))},    * requires an allocation to be placed within a rack that has at least 2 and    * at most 10 other allocations with tag "zk".    *    * @param scope the scope of the constraint    * @param minCardinality the minimum number of times the target expressions    *          have to be satisfied with the given scope    * @param maxCardinality the maximum number of times the target expressions    *          have to be satisfied with the given scope    * @param targetExpressions the target expressions    * @return the resulting placement constraint    */
 DECL|method|targetCardinality (String scope, int minCardinality, int maxCardinality, TargetExpression... targetExpressions)
 specifier|public
 specifier|static
@@ -553,7 +553,7 @@ name|attributeValues
 argument_list|)
 return|;
 block|}
-comment|/**      * Constructs a target expression on a node partition. It is satisfied if      * the specified node partition has one of the specified nodePartitions      *      * @param nodePartitions the set of values that the attribute should take      *          values from      * @return the resulting expression on the node attribute      */
+comment|/**      * Constructs a target expression on a node partition. It is satisfied if      * the specified node partition has one of the specified nodePartitions.      *      * @param nodePartitions the set of values that the attribute should take      *          values from      * @return the resulting expression on the node attribute      */
 DECL|method|nodePartition ( String... nodePartitions)
 specifier|public
 specifier|static
@@ -579,7 +579,7 @@ name|nodePartitions
 argument_list|)
 return|;
 block|}
-comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * the there are allocations with one of the given tags.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
+comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
 DECL|method|allocationTag (String... allocationTags)
 specifier|public
 specifier|static
@@ -605,7 +605,7 @@ name|allocationTags
 argument_list|)
 return|;
 block|}
-comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * the there are allocations with one of the given tags. Comparing to      * {@link PlacementTargets#allocationTag(String...)}, this only check tags      * within the application.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
+comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags. Comparing to      * {@link PlacementTargets#allocationTag(String...)}, this only checks tags      * within the application.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
 DECL|method|allocationTagToIntraApp ( String... allocationTags)
 specifier|public
 specifier|static
