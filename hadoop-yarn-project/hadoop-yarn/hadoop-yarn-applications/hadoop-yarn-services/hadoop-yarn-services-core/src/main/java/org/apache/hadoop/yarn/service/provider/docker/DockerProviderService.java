@@ -240,8 +240,6 @@ operator|.
 name|getProperty
 argument_list|(
 name|DOCKER_NETWORK
-argument_list|,
-name|DEFAULT_DOCKER_NETWORK
 argument_list|)
 argument_list|)
 expr_stmt|;
