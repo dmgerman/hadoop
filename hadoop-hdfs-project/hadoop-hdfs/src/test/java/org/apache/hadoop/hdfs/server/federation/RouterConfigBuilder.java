@@ -119,6 +119,13 @@ name|enableQuota
 init|=
 literal|false
 decl_stmt|;
+DECL|field|enableSafemode
+specifier|private
+name|boolean
+name|enableSafemode
+init|=
+literal|false
+decl_stmt|;
 DECL|method|RouterConfigBuilder (Configuration configuration)
 specifier|public
 name|RouterConfigBuilder
@@ -195,6 +202,12 @@ expr_stmt|;
 name|this
 operator|.
 name|enableMetrics
+operator|=
+literal|true
+expr_stmt|;
+name|this
+operator|.
+name|enableSafemode
 operator|=
 literal|true
 expr_stmt|;
@@ -354,6 +367,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|safemode (boolean enable)
+specifier|public
+name|RouterConfigBuilder
+name|safemode
+parameter_list|(
+name|boolean
+name|enable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|enableSafemode
+operator|=
+name|enable
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|rpc ()
 specifier|public
 name|RouterConfigBuilder
@@ -454,6 +486,21 @@ return|return
 name|this
 operator|.
 name|quota
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|safemode ()
+specifier|public
+name|RouterConfigBuilder
+name|safemode
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|safemode
 argument_list|(
 literal|true
 argument_list|)
@@ -567,6 +614,19 @@ argument_list|,
 name|this
 operator|.
 name|enableQuota
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_SAFEMODE_ENABLE
+argument_list|,
+name|this
+operator|.
+name|enableSafemode
 argument_list|)
 expr_stmt|;
 return|return

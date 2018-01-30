@@ -567,6 +567,12 @@ specifier|private
 name|RouterHeartbeatService
 name|routerHeartbeatService
 decl_stmt|;
+comment|/** Enter/exit safemode. */
+DECL|field|safemodeService
+specifier|private
+name|RouterSafemodeService
+name|safemodeService
+decl_stmt|;
 comment|/** The start time of the namesystem. */
 DECL|field|startTime
 specifier|private
@@ -1020,6 +1026,42 @@ name|quotaUpdateService
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Safemode service to refuse RPC calls when the router is out of sync
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_SAFEMODE_ENABLE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_SAFEMODE_ENABLE_DEFAULT
+argument_list|)
+condition|)
+block|{
+comment|// Create safemode monitoring service
+name|this
+operator|.
+name|safemodeService
+operator|=
+operator|new
+name|RouterSafemodeService
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|safemodeService
+argument_list|)
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceInit
@@ -1038,6 +1080,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|safemodeService
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Router is running now
 name|updateRouterState
 argument_list|(
 name|RouterServiceState
@@ -1045,6 +1097,7 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|this

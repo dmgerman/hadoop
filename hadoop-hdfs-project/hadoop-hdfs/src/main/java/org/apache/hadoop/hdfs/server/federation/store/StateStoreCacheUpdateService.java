@@ -24,6 +24,18 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -170,7 +182,7 @@ name|setIntervalMs
 argument_list|(
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -179,6 +191,10 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_ROUTER_CACHE_TIME_TO_LIVE_MS_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 argument_list|)
 expr_stmt|;

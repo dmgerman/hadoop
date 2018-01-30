@@ -1859,6 +1859,13 @@ specifier|final
 name|FileSubclusterResolver
 name|subclusterResolver
 decl_stmt|;
+comment|/** If we are in safe mode, fail requests as if a standby NN. */
+DECL|field|safeMode
+specifier|private
+specifier|volatile
+name|boolean
+name|safeMode
+decl_stmt|;
 comment|/** Category of the operation that a thread is executing. */
 DECL|field|opCategory
 specifier|private
@@ -2562,7 +2569,7 @@ return|return
 name|rpcAddress
 return|;
 block|}
-comment|/**    * Check if the Router is in safe mode. We should only see READ, WRITE, and    * UNCHECKED. It includes a default handler when we haven't implemented an    * operation. If not supported, it always throws an exception reporting the    * operation.    *    * @param op Category of the operation to check.    * @param supported If the operation is supported or not. If not, it will    *                  throw an UnsupportedOperationException.    * @throws StandbyException If the Router is in safe mode and cannot serve    *                          client requests.    * @throws UnsupportedOperationException If the operation is not supported.    */
+comment|/**    * Check if the Router is in safe mode. We should only see READ, WRITE, and    * UNCHECKED. It includes a default handler when we haven't implemented an    * operation. If not supported, it always throws an exception reporting the    * operation.    *    * @param op Category of the operation to check.    * @param supported If the operation is supported or not. If not, it will    *                  throw an UnsupportedOperationException.    * @throws SafeModeException If the Router is in safe mode and cannot serve    *                           client requests.    * @throws UnsupportedOperationException If the operation is not supported.    */
 DECL|method|checkOperation (OperationCategory op, boolean supported)
 specifier|protected
 name|void
@@ -2575,7 +2582,7 @@ name|boolean
 name|supported
 parameter_list|)
 throws|throws
-name|StandbyException
+name|RouterSafeModeException
 throws|,
 name|UnsupportedOperationException
 block|{
@@ -2622,7 +2629,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check if the Router is in safe mode. We should only see READ, WRITE, and    * UNCHECKED. This function should be called by all ClientProtocol functions.    *    * @param op Category of the operation to check.    * @throws StandbyException If the Router is in safe mode and cannot serve    *                          client requests.    */
+comment|/**    * Check if the Router is in safe mode. We should only see READ, WRITE, and    * UNCHECKED. This function should be called by all ClientProtocol functions.    *    * @param op Category of the operation to check.    * @throws SafeModeException If the Router is in safe mode and cannot serve    *                           client requests.    */
 DECL|method|checkOperation (OperationCategory op)
 specifier|protected
 name|void
@@ -2632,7 +2639,7 @@ name|OperationCategory
 name|op
 parameter_list|)
 throws|throws
-name|StandbyException
+name|RouterSafeModeException
 block|{
 comment|// Log the function we are currently calling.
 if|if
@@ -2699,7 +2706,68 @@ condition|)
 block|{
 return|return;
 block|}
-comment|// TODO check Router safe mode and return Standby exception
+if|if
+condition|(
+name|safeMode
+condition|)
+block|{
+comment|// Throw standby exception, router is not available
+if|if
+condition|(
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|rpcMonitor
+operator|.
+name|routerFailureSafemode
+argument_list|()
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|RouterSafeModeException
+argument_list|(
+name|router
+operator|.
+name|getRouterId
+argument_list|()
+argument_list|,
+name|op
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * In safe mode all RPC requests will fail and return a standby exception.    * The client will try another Router, similar to the client retry logic for    * HA.    *    * @param mode True if enabled, False if disabled.    */
+DECL|method|setSafeMode (boolean mode)
+specifier|public
+name|void
+name|setSafeMode
+parameter_list|(
+name|boolean
+name|mode
+parameter_list|)
+block|{
+name|this
+operator|.
+name|safeMode
+operator|=
+name|mode
+expr_stmt|;
+block|}
+comment|/**    * Check if the Router is in safe mode and cannot serve RPC calls.    *    * @return If the Router is in safe mode.    */
+DECL|method|isInSafeMode ()
+specifier|public
+name|boolean
+name|isInSafeMode
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|safeMode
+return|;
 block|}
 annotation|@
 name|Override
