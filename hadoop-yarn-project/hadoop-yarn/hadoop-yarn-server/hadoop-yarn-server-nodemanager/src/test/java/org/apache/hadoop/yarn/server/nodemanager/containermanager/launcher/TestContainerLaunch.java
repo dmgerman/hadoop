@@ -2875,7 +2875,7 @@ name|shellContent
 operator|.
 name|contains
 argument_list|(
-literal|"export HADOOP_YARN_HOME=\"nodemanager_yarn_home\""
+literal|"export HADOOP_YARN_HOME=${HADOOP_YARN_HOME:-\"nodemanager_yarn_home\"}"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3195,7 +3195,7 @@ literal|"export HADOOP_MAPRED_HOME=\"/opt/hadoopbuild\""
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Verify no whitelisted variables inherited from NM env
+comment|// Available in env but not in whitelist
 name|Assert
 operator|.
 name|assertFalse
@@ -3208,15 +3208,16 @@ literal|"HADOOP_HDFS_HOME"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Available in env and in whitelist
 name|Assert
 operator|.
-name|assertFalse
+name|assertTrue
 argument_list|(
 name|shellContent
 operator|.
 name|contains
 argument_list|(
-literal|"HADOOP_YARN_HOME"
+literal|"export HADOOP_YARN_HOME=${HADOOP_YARN_HOME:-\"nodemanager_yarn_home\"}"
 argument_list|)
 argument_list|)
 expr_stmt|;
