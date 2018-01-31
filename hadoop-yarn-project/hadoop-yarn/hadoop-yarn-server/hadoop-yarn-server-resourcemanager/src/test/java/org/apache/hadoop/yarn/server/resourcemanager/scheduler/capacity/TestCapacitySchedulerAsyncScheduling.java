@@ -1017,7 +1017,7 @@ name|SCHEDULE_ASYNCHRONOUSLY_PREFIX
 operator|+
 literal|".scheduling-interval-ms"
 argument_list|,
-literal|100
+literal|0
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1992,6 +1992,8 @@ name|getClusterResource
 argument_list|()
 argument_list|,
 name|request
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2810,6 +2812,8 @@ argument_list|()
 index|[
 literal|1
 index|]
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2865,6 +2869,8 @@ argument_list|()
 index|[
 literal|1
 index|]
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2899,6 +2905,11 @@ name|ResourceCommitRequest
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|spyCs
@@ -3445,6 +3456,8 @@ name|getClusterResource
 argument_list|()
 argument_list|,
 name|request
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

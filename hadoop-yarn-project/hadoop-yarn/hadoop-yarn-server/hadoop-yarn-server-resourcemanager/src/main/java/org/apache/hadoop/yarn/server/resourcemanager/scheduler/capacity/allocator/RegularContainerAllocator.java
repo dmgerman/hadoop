@@ -1052,14 +1052,11 @@ condition|(
 operator|!
 name|appInfo
 operator|.
-name|acceptNodePartition
+name|precheckNode
 argument_list|(
 name|schedulerKey
 argument_list|,
 name|node
-operator|.
-name|getPartition
-argument_list|()
 argument_list|,
 name|schedulingMode
 argument_list|)

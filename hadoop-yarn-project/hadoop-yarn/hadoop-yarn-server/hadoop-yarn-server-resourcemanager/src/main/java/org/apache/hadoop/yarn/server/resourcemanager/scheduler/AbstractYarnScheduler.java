@@ -534,6 +534,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|UpdateContainerError
 import|;
 end_import
@@ -2118,6 +2136,28 @@ name|nodeFilter
 argument_list|)
 return|;
 block|}
+DECL|method|getNodes (final NodeFilter filter)
+specifier|public
+name|List
+argument_list|<
+name|N
+argument_list|>
+name|getNodes
+parameter_list|(
+specifier|final
+name|NodeFilter
+name|filter
+parameter_list|)
+block|{
+return|return
+name|nodeTracker
+operator|.
+name|getNodes
+argument_list|(
+name|filter
+argument_list|)
+return|;
+block|}
 DECL|method|shouldContainersBeAutoUpdated ()
 specifier|public
 name|boolean
@@ -3443,6 +3483,16 @@ argument_list|(
 name|status
 operator|.
 name|getAllocationRequestId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setAllocationTags
+argument_list|(
+name|status
+operator|.
+name|getAllocationTags
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5747,10 +5797,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Normalize a list of resource requests.    *    * @param asks resource requests    */
-DECL|method|normalizeRequests (List<ResourceRequest> asks)
+DECL|method|normalizeResourceRequests (List<ResourceRequest> asks)
 specifier|protected
 name|void
-name|normalizeRequests
+name|normalizeResourceRequests
 parameter_list|(
 name|List
 argument_list|<
@@ -7041,6 +7091,28 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Default implementation. Always returns false.    * @param appAttempt ApplicationAttempt.    * @param schedulingRequest SchedulingRequest.    * @param schedulerNode SchedulerNode.    * @return Success or not.    */
+annotation|@
+name|Override
+DECL|method|attemptAllocationOnNode (SchedulerApplicationAttempt appAttempt, SchedulingRequest schedulingRequest, SchedulerNode schedulerNode)
+specifier|public
+name|boolean
+name|attemptAllocationOnNode
+parameter_list|(
+name|SchedulerApplicationAttempt
+name|appAttempt
+parameter_list|,
+name|SchedulingRequest
+name|schedulingRequest
+parameter_list|,
+name|SchedulerNode
+name|schedulerNode
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
 block|}
 block|}
 end_class

@@ -148,6 +148,26 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@code Container} represents an allocated resource in the cluster.  *<p>  * The {@code ResourceManager} is the sole authority to allocate any  * {@code Container} to applications. The allocated {@code Container}  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.  *<p>  * It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *     {@link NodeId} of the node on which it is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link Priority} at which the container was allocated.</li>  *<li>  *     Container {@link Token} of the container, used to securely verify  *     authenticity of the allocation.  *</li>  *</ul>  *   * Typically, an {@code ApplicationMaster} receives the {@code Container}  * from the {@code ResourceManager} during resource-negotiation and then  * talks to the {@code NodeManager} to start/stop containers.  *   * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManagementProtocol#startContainers(org.apache.hadoop.yarn.api.protocolrecords.StartContainersRequest)  * @see ContainerManagementProtocol#stopContainers(org.apache.hadoop.yarn.api.protocolrecords.StopContainersRequest)  */
 end_comment
@@ -570,6 +590,41 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getAllocationTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAllocationTags
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|EMPTY_SET
+return|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setAllocationTags (Set<String> allocationTags)
+specifier|public
+name|void
+name|setAllocationTags
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationTags
+parameter_list|)
+block|{    }
 block|}
 end_class
 

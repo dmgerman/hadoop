@@ -396,6 +396,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -658,12 +676,12 @@ name|int
 name|getNumClusterNodes
 parameter_list|()
 function_decl|;
-comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param release    * @param blacklistAdditions     * @param blacklistRemovals     * @param updateRequests    * @return the {@link Allocation} for the application    */
+comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param schedulingRequests    * @param release    * @param blacklistAdditions    * @param blacklistRemovals    * @param updateRequests     @return the {@link Allocation} for the application    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
+DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<SchedulingRequest> schedulingRequests, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 name|Allocation
 name|allocate
 parameter_list|(
@@ -675,6 +693,12 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|ask
+parameter_list|,
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|schedulingRequests
 parameter_list|,
 name|List
 argument_list|<

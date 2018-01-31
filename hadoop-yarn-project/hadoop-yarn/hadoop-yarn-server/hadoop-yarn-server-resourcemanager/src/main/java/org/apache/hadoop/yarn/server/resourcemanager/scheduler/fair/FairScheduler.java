@@ -400,6 +400,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -4422,7 +4440,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
+DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<SchedulingRequest> schedulingRequests, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 specifier|public
 name|Allocation
 name|allocate
@@ -4435,6 +4453,12 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|ask
+parameter_list|,
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|schedulingRequests
 parameter_list|,
 name|List
 argument_list|<
@@ -4533,11 +4557,12 @@ name|updateRequests
 argument_list|)
 expr_stmt|;
 comment|// Sanity check
-name|normalizeRequests
+name|normalizeResourceRequests
 argument_list|(
 name|ask
 argument_list|)
 expr_stmt|;
+comment|// TODO, normalize SchedulingRequest
 comment|// Record container allocation start time
 name|application
 operator|.
@@ -4624,6 +4649,7 @@ argument_list|(
 name|ask
 argument_list|)
 expr_stmt|;
+comment|// TODO, handle SchedulingRequest
 name|application
 operator|.
 name|showRequests

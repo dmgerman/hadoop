@@ -52,8 +52,9 @@ specifier|public
 interface|interface
 name|ResourceAllocationCommitter
 block|{
-DECL|method|tryCommit (Resource cluster, ResourceCommitRequest proposal)
-name|void
+comment|/**    * Try to commit the allocation Proposal. This also gives the option of    * not updating a pending queued request.    * @param cluster Cluster Resource.    * @param proposal Proposal.    * @param updatePending Decrement pending if successful.    * @return Is successful or not.    */
+DECL|method|tryCommit (Resource cluster, ResourceCommitRequest proposal, boolean updatePending)
+name|boolean
 name|tryCommit
 parameter_list|(
 name|Resource
@@ -61,6 +62,9 @@ name|cluster
 parameter_list|,
 name|ResourceCommitRequest
 name|proposal
+parameter_list|,
+name|boolean
+name|updatePending
 parameter_list|)
 function_decl|;
 block|}

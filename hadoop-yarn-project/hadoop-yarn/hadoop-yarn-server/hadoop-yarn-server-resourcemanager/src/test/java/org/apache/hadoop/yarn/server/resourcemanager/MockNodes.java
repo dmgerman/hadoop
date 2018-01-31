@@ -62,6 +62,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1367,6 +1377,23 @@ DECL|method|getDecommissioningTimeout ()
 specifier|public
 name|Integer
 name|getDecommissioningTimeout
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAllocationTagsWithCount ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getAllocationTagsWithCount
 parameter_list|()
 block|{
 return|return

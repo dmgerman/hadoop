@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2164,6 +2174,12 @@ name|executionType
 parameter_list|,
 name|long
 name|allocationRequestId
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationTags
 parameter_list|)
 block|{
 name|numRetries
@@ -2197,6 +2213,8 @@ argument_list|,
 name|executionType
 argument_list|,
 name|allocationRequestId
+argument_list|,
+name|allocationTags
 argument_list|)
 return|;
 block|}

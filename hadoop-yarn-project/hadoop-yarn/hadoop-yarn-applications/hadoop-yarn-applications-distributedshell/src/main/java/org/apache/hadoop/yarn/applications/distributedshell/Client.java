@@ -1454,6 +1454,14 @@ name|autoPromoteContainers
 init|=
 literal|false
 decl_stmt|;
+comment|// Placement specification
+DECL|field|placementSpec
+specifier|private
+name|String
+name|placementSpec
+init|=
+literal|""
+decl_stmt|;
 comment|// log4j.properties file
 comment|// if available, add to local resources and set into classpath
 DECL|field|log4jPropFile
@@ -2362,6 +2370,21 @@ argument_list|,
 literal|"Interval between each retry, unit is milliseconds"
 argument_list|)
 expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"placement_spec"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Placement specification. Please note, if this option is specified,"
+operator|+
+literal|" The \"num_containers\" option will be ignored. All requested"
+operator|+
+literal|" containers will be of type GUARANTEED"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    */
 DECL|method|Client ()
@@ -2545,6 +2568,36 @@ expr_stmt|;
 name|keepContainers
 operator|=
 literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"placement_spec"
+argument_list|)
+condition|)
+block|{
+name|placementSpec
+operator|=
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"placement_spec"
+argument_list|)
+expr_stmt|;
+comment|// Check if it is parsable
+name|PlacementSpec
+operator|.
+name|parse
+argument_list|(
+name|this
+operator|.
+name|placementSpec
+argument_list|)
 expr_stmt|;
 block|}
 name|appName
@@ -4982,6 +5035,30 @@ name|numContainers
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|placementSpec
+operator|!=
+literal|null
+operator|&&
+name|placementSpec
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"--placement_spec "
+operator|+
+name|placementSpec
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 literal|null

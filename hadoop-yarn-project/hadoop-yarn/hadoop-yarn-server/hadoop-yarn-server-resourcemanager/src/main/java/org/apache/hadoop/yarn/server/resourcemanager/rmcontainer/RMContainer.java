@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -209,6 +219,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
 import|;
 end_import
 
@@ -441,6 +469,15 @@ function_decl|;
 DECL|method|getNodeId ()
 name|NodeId
 name|getNodeId
+parameter_list|()
+function_decl|;
+comment|/**    * Return {@link SchedulingRequest#getAllocationTags()} specified by AM.    * @return allocation tags, could be null/empty    */
+DECL|method|getAllocationTags ()
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAllocationTags
 parameter_list|()
 function_decl|;
 block|}

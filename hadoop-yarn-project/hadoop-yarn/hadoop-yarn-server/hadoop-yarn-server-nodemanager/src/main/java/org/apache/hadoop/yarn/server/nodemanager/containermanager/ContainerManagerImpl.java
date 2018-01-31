@@ -4254,6 +4254,11 @@ name|originalToken
 operator|.
 name|getAllocationRequestId
 argument_list|()
+argument_list|,
+name|originalToken
+operator|.
+name|getAllcationTags
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

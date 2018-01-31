@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -163,6 +173,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
 import|;
 end_import
 
@@ -540,6 +568,43 @@ argument_list|>
 name|updateRequests
 parameter_list|)
 function_decl|;
+comment|/**    * Get the list of Scheduling requests being sent by the    *<code>ApplicationMaster</code>.    * @return list of {@link SchedulingRequest} being sent by the    *<code>ApplicationMaster</code>.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getSchedulingRequests ()
+specifier|public
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|getSchedulingRequests
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|EMPTY_LIST
+return|;
+block|}
+comment|/**    * Set the list of Scheduling requests to inform the    *<code>ResourceManager</code> about the application's resource requirements    * (potentially including allocation tags and placement constraints).    * @param schedulingRequests list of {@link SchedulingRequest} to update    *          the<code>ResourceManager</code> about the application's resource    *          requirements.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setSchedulingRequests ( List<SchedulingRequest> schedulingRequests)
+specifier|public
+name|void
+name|setSchedulingRequests
+parameter_list|(
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|schedulingRequests
+parameter_list|)
+block|{   }
 annotation|@
 name|Public
 annotation|@
@@ -741,6 +806,34 @@ operator|.
 name|setUpdateRequests
 argument_list|(
 name|updateRequests
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Set the<code>schedulingRequests</code> of the request.      * @see AllocateRequest#setSchedulingRequests(List)      * @param schedulingRequests<code>SchedulingRequest</code> of the request      * @return {@link AllocateRequestBuilder}      */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|schedulingRequests ( List<SchedulingRequest> schedulingRequests)
+specifier|public
+name|AllocateRequestBuilder
+name|schedulingRequests
+parameter_list|(
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|schedulingRequests
+parameter_list|)
+block|{
+name|allocateRequest
+operator|.
+name|setSchedulingRequests
+argument_list|(
+name|schedulingRequests
 argument_list|)
 expr_stmt|;
 return|return

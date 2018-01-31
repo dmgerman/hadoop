@@ -162,6 +162,26 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  * NMContainerStatus includes the current information of a container. This  * record is used by YARN only, whereas {@link ContainerStatus} is used both  * inside YARN and by end-users.  */
 end_comment
@@ -573,6 +593,34 @@ name|ExecutionType
 name|executionType
 parameter_list|)
 block|{ }
+comment|/**    * Get and set the Allocation tags associated with the container.    */
+DECL|method|getAllocationTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAllocationTags
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|EMPTY_SET
+return|;
+block|}
+DECL|method|setAllocationTags (Set<String> allocationTags)
+specifier|public
+name|void
+name|setAllocationTags
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationTags
+parameter_list|)
+block|{    }
 block|}
 end_class
 
