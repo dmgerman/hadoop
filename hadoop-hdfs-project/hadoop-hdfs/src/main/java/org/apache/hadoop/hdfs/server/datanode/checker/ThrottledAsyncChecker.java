@@ -529,15 +529,6 @@ name|K
 name|context
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Scheduling a check for {}"
-argument_list|,
-name|target
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|checksInProgress
@@ -622,6 +613,15 @@ argument_list|()
 return|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Scheduling a check for {}"
+argument_list|,
+name|target
+argument_list|)
+expr_stmt|;
 specifier|final
 name|ListenableFuture
 argument_list|<
