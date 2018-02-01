@@ -265,11 +265,11 @@ argument_list|)
 expr_stmt|;
 name|record
 operator|.
-name|setBuildVersion
+name|setVersion
 argument_list|(
 name|FederationUtil
 operator|.
-name|getBuildVersion
+name|getVersion
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -340,18 +340,18 @@ name|RouterServiceState
 name|newStatus
 parameter_list|)
 function_decl|;
-DECL|method|getBuildVersion ()
+DECL|method|getVersion ()
 specifier|public
 specifier|abstract
 name|String
-name|getBuildVersion
+name|getVersion
 parameter_list|()
 function_decl|;
-DECL|method|setBuildVersion (String version)
+DECL|method|setVersion (String version)
 specifier|public
 specifier|abstract
 name|void
-name|setBuildVersion
+name|setVersion
 parameter_list|(
 name|String
 name|version
@@ -494,7 +494,7 @@ argument_list|()
 operator|+
 literal|","
 operator|+
-name|getBuildVersion
+name|getVersion
 argument_list|()
 return|;
 block|}

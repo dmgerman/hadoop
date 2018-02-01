@@ -86,6 +86,12 @@ name|String
 name|getMountTable
 parameter_list|()
 function_decl|;
+comment|/**    * Get the latest state of all routers.    * @return JSON with all of the known routers or null if failure.    */
+DECL|method|getRouters ()
+name|String
+name|getRouters
+parameter_list|()
+function_decl|;
 comment|/**    * Get the total capacity of the federated cluster.    * @return Total capacity of the federated cluster.    */
 DECL|method|getTotalCapacity ()
 name|long

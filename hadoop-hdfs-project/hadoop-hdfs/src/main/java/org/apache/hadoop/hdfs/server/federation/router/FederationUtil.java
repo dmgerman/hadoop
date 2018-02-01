@@ -611,18 +611,18 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Fetch the compile timestamp for this jar.    *    * @return Date compiled.    */
-DECL|method|getBuildVersion ()
+comment|/**    * Fetch the Hadoop version string for this jar.    *    * @return Hadoop version string, e.g., 3.0.1.    */
+DECL|method|getVersion ()
 specifier|public
 specifier|static
 name|String
-name|getBuildVersion
+name|getVersion
 parameter_list|()
 block|{
 return|return
 name|VersionInfo
 operator|.
-name|getBuildVersion
+name|getVersion
 argument_list|()
 return|;
 block|}

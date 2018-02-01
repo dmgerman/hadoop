@@ -713,10 +713,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getBuildVersion ()
+DECL|method|getVersion ()
 specifier|public
 name|String
-name|getBuildVersion
+name|getVersion
 parameter_list|()
 block|{
 name|RouterRecordProtoOrBuilder
@@ -734,7 +734,7 @@ condition|(
 operator|!
 name|proto
 operator|.
-name|hasBuildVersion
+name|hasVersion
 argument_list|()
 condition|)
 block|{
@@ -745,16 +745,16 @@ block|}
 return|return
 name|proto
 operator|.
-name|getBuildVersion
+name|getVersion
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setBuildVersion (String version)
+DECL|method|setVersion (String version)
 specifier|public
 name|void
-name|setBuildVersion
+name|setVersion
 parameter_list|(
 name|String
 name|version
@@ -781,7 +781,7 @@ condition|)
 block|{
 name|builder
 operator|.
-name|clearBuildVersion
+name|clearVersion
 argument_list|()
 expr_stmt|;
 block|}
@@ -789,7 +789,7 @@ else|else
 block|{
 name|builder
 operator|.
-name|setBuildVersion
+name|setVersion
 argument_list|(
 name|version
 argument_list|)

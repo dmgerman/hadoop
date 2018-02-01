@@ -84,6 +84,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertNotNull
 import|;
 end_import
@@ -704,17 +716,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Build version may vary a bit
-name|assertTrue
+name|assertFalse
 argument_list|(
 name|record
 operator|.
-name|getBuildVersion
+name|getVersion
 argument_list|()
 operator|.
-name|length
+name|isEmpty
 argument_list|()
-operator|>
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
