@@ -1446,7 +1446,7 @@ name|xattrs
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}    * @throws IOException    * @throws FileNotFoundException if the path does not exist.    * @throws AccessControlException if no read access    */
+comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}, or null if no policy has    * been set or the policy is REPLICATION    * @throws IOException    * @throws FileNotFoundException if the path does not exist.    * @throws AccessControlException if no read access    */
 DECL|method|getErasureCodingPolicy (final FSNamesystem fsn, final String src, FSPermissionChecker pc)
 specifier|static
 name|ErasureCodingPolicy
@@ -1474,6 +1474,20 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
+if|if
+condition|(
+name|FSDirectory
+operator|.
+name|isExactReservedName
+argument_list|(
+name|src
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|FSDirectory
 name|fsd
 init|=
@@ -1524,6 +1538,23 @@ name|READ
 argument_list|)
 expr_stmt|;
 block|}
+name|ErasureCodingPolicy
+name|ecPolicy
+decl_stmt|;
+if|if
+condition|(
+name|iip
+operator|.
+name|isDotSnapshotDir
+argument_list|()
+condition|)
+block|{
+name|ecPolicy
+operator|=
+literal|null
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|iip
@@ -1540,23 +1571,22 @@ name|FileNotFoundException
 argument_list|(
 literal|"Path not found: "
 operator|+
-name|iip
-operator|.
-name|getPath
-argument_list|()
+name|src
 argument_list|)
 throw|;
 block|}
-name|ErasureCodingPolicy
+else|else
+block|{
 name|ecPolicy
-init|=
+operator|=
 name|getErasureCodingPolicyForPath
 argument_list|(
 name|fsd
 argument_list|,
 name|iip
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|ecPolicy
@@ -1839,7 +1869,12 @@ init|=
 name|inode
 operator|.
 name|getXAttrFeature
+argument_list|(
+name|iip
+operator|.
+name|getPathSnapshotId
 argument_list|()
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
