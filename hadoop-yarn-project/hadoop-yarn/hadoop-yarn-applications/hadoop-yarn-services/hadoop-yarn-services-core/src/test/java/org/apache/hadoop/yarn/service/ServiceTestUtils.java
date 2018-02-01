@@ -124,6 +124,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|HttpServer2
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|service
@@ -1185,6 +1199,20 @@ argument_list|(
 name|NM_PMEM_CHECK_ENABLED
 argument_list|,
 literal|false
+argument_list|)
+expr_stmt|;
+comment|// set auth filters
+name|conf
+operator|.
+name|set
+argument_list|(
+name|HttpServer2
+operator|.
+name|FILTER_INITIALIZER_PROPERTY
+argument_list|,
+literal|"org.apache.hadoop.security.AuthenticationFilterInitializer,"
+operator|+
+literal|"org.apache.hadoop.security.HttpCrossOriginFilterInitializer"
 argument_list|)
 expr_stmt|;
 comment|// setup zk cluster

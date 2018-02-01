@@ -1242,6 +1242,7 @@ init|=
 literal|"hadoop.http.temp.dir"
 decl_stmt|;
 DECL|field|FILTER_INITIALIZER_PROPERTY
+specifier|public
 specifier|static
 specifier|final
 name|String
