@@ -899,8 +899,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Purging no-longer needed file "
-operator|+
+literal|"Purging no-longer needed file {}"
+argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
@@ -917,8 +917,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to delete no-longer-needed data "
-operator|+
+literal|"Unable to delete no-longer-needed data {}"
+argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
@@ -975,12 +975,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Formatting journal "
-operator|+
+literal|"Formatting journal {} with nsid: {}"
+argument_list|,
 name|sd
-operator|+
-literal|" with nsid: "
-operator|+
+argument_list|,
 name|getNamespaceID
 argument_list|()
 argument_list|)
@@ -1299,8 +1297,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Closing journal storage for "
-operator|+
+literal|"Closing journal storage for {}"
+argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;

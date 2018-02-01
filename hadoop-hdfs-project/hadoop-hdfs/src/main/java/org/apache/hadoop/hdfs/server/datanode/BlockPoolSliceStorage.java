@@ -829,18 +829,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block pool storage directory for location "
+literal|"Block pool storage directory for location {} and block pool"
 operator|+
+literal|" id {} does not exist"
+argument_list|,
 name|location
-operator|+
-literal|" and block pool id "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getBlockPoolID
 argument_list|()
-operator|+
-literal|" does not exist"
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -869,25 +867,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block pool storage directory for location "
+literal|"Block pool storage directory for location {} and block pool"
 operator|+
+literal|" id {} is not formatted. Formatting ..."
+argument_list|,
 name|location
-operator|+
-literal|" and block pool id "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getBlockPoolID
 argument_list|()
-operator|+
-literal|" is not formatted for "
-operator|+
-name|nsInfo
-operator|.
-name|getBlockPoolID
-argument_list|()
-operator|+
-literal|". Formatting ..."
 argument_list|)
 expr_stmt|;
 name|format
@@ -1098,8 +1087,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to analyze storage directories for block pool "
-operator|+
+literal|"Failed to analyze storage directories for block pool {}"
+argument_list|,
 name|nsInfo
 operator|.
 name|getBlockPoolID
@@ -1152,8 +1141,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Analyzing storage directories for bpid "
-operator|+
+literal|"Analyzing storage directories for bpid {}"
+argument_list|,
 name|nsInfo
 operator|.
 name|getBlockPoolID
@@ -1261,12 +1250,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Formatting block pool "
-operator|+
+literal|"Formatting block pool {} directory {}"
+argument_list|,
 name|blockpoolID
-operator|+
-literal|" directory "
-operator|+
+argument_list|,
 name|bpSdir
 operator|.
 name|getCurrentDir
@@ -1343,8 +1330,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removing block level storage: "
-operator|+
+literal|"Removing block level storage: {}"
+argument_list|,
 name|absPathToRemove
 argument_list|)
 expr_stmt|;
@@ -1758,11 +1745,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Restored "
-operator|+
+literal|"Restored {} block files from trash."
+argument_list|,
 name|restored
-operator|+
-literal|" block files from trash."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1920,15 +1905,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Restored "
-operator|+
-name|restored
-operator|+
-literal|" block files from trash "
+literal|"Restored {} block files from trash "
 operator|+
 literal|"before the layout upgrade. These blocks will be moved to "
 operator|+
 literal|"the previous directory during the upgrade"
+argument_list|,
+name|restored
 argument_list|)
 expr_stmt|;
 block|}
@@ -2079,32 +2062,26 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Upgrading block pool storage directory "
+literal|"Upgrading block pool storage directory {}.\n   old LV = {}; old"
 operator|+
+literal|" CTime = {}.\n   new LV = {}; new CTime = {}"
+argument_list|,
 name|bpSd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|".\n   old LV = "
-operator|+
+argument_list|,
 name|oldLV
-operator|+
-literal|"; old CTime = "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getCTime
 argument_list|()
-operator|+
-literal|".\n   new LV = "
-operator|+
+argument_list|,
 name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|"; new CTime = "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getCTime
@@ -2431,11 +2408,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Upgrade of "
-operator|+
+literal|"Upgrade of {} is complete"
+argument_list|,
 name|name
-operator|+
-literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2689,13 +2664,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Not overwriting "
-operator|+
-name|newChild
-operator|+
-literal|" with smaller file from "
+literal|"Not overwriting {} with smaller file from "
 operator|+
 literal|"trash directory. This message can be safely ignored."
+argument_list|,
+name|newChild
 argument_list|)
 expr_stmt|;
 block|}
@@ -2868,22 +2841,20 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rolling back storage directory "
+literal|"Rolling back storage directory {}.\n   target LV = {}; target "
 operator|+
+literal|"CTime = {}"
+argument_list|,
 name|bpSd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|".\n   target LV = "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|+
-literal|"; target CTime = "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getCTime
@@ -2949,14 +2920,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rollback of "
-operator|+
+literal|"Rollback of {} is complete"
+argument_list|,
 name|bpSd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3037,19 +3006,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Finalizing upgrade for storage directory "
+literal|"Finalizing upgrade for storage directory {}.\n   cur LV = {}; "
 operator|+
+literal|"cur CTime = {}"
+argument_list|,
 name|dataDirPath
-operator|+
-literal|".\n   cur LV = "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|+
-literal|"; cur CTime = "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getCTime
@@ -3117,11 +3084,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Finalize upgrade for "
-operator|+
+literal|"Finalize upgrade for {} failed."
+argument_list|,
 name|dataDirPath
-operator|+
-literal|" failed."
 argument_list|,
 name|ex
 argument_list|)
@@ -3131,11 +3096,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Finalize upgrade for "
-operator|+
+literal|"Finalize upgrade for {} is complete."
+argument_list|,
 name|dataDirPath
-operator|+
-literal|" is complete."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3232,16 +3195,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Linked blocks from "
-operator|+
+literal|"Linked blocks from {} to {}. {}"
+argument_list|,
 name|fromDir
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|toDir
-operator|+
-literal|". "
-operator|+
+argument_list|,
 name|hardLink
 operator|.
 name|linkStats
@@ -3473,8 +3432,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get block file for replica "
-operator|+
+literal|"Failed to get block file for replica {}"
+argument_list|,
 name|info
 argument_list|,
 name|e
@@ -3579,12 +3538,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Restoring "
-operator|+
+literal|"Restoring {} to {}"
+argument_list|,
 name|blockFile
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|restoreDirectory
 argument_list|)
 expr_stmt|;
@@ -3650,8 +3607,8 @@ name|error
 argument_list|(
 literal|"Trash and PreviousDir shouldn't both exist for storage "
 operator|+
-literal|"directory "
-operator|+
+literal|"directory {}"
+argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;
@@ -3708,8 +3665,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Cleared trash for storage directory "
-operator|+
+literal|"Cleared trash for storage directory {}"
+argument_list|,
 name|trashRoot
 argument_list|)
 expr_stmt|;
@@ -3886,8 +3843,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Created "
-operator|+
+literal|"Created {}"
+argument_list|,
 name|markerFile
 argument_list|)
 expr_stmt|;
@@ -3898,9 +3855,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} already exists."
+argument_list|,
 name|markerFile
-operator|+
-literal|" already exists."
 argument_list|)
 expr_stmt|;
 block|}
@@ -4012,8 +3969,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deleting "
-operator|+
+literal|"Deleting {}"
+argument_list|,
 name|markerFile
 argument_list|)
 expr_stmt|;
@@ -4038,8 +3995,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to delete "
-operator|+
+literal|"Failed to delete {}"
+argument_list|,
 name|markerFile
 argument_list|)
 expr_stmt|;

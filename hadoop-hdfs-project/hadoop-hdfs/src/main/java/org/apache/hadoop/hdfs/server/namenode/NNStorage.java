@@ -1019,7 +1019,7 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -1065,8 +1065,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"set restore failed storage to "
-operator|+
+literal|"set restore failed storage to {}"
+argument_list|,
 name|val
 argument_list|)
 expr_stmt|;
@@ -1122,8 +1122,8 @@ name|info
 argument_list|(
 literal|"NNStorage.attemptRestoreRemovedStorage: check removed(failed) "
 operator|+
-literal|"storage. removedStorages size = "
-operator|+
+literal|"storage. removedStorages size = {}"
+argument_list|,
 name|removedStorageDirs
 operator|.
 name|size
@@ -1152,22 +1152,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"currently disabled dir "
-operator|+
+literal|"currently disabled dir {}; type={} ;canwrite={}"
+argument_list|,
 name|root
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|"; type="
-operator|+
+argument_list|,
 name|sd
 operator|.
 name|getStorageDirType
 argument_list|()
-operator|+
-literal|";canwrite="
-operator|+
+argument_list|,
 name|FileUtil
 operator|.
 name|canWrite
@@ -1195,8 +1191,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"restoring dir "
-operator|+
+literal|"restoring dir {}"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
@@ -2051,8 +2047,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"writeTransactionIdToStorage failed on "
-operator|+
+literal|"writeTransactionIdToStorage failed on {}"
+argument_list|,
 name|sd
 argument_list|,
 name|e
@@ -2390,14 +2386,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage directory "
-operator|+
+literal|"Storage directory {} has been successfully formatted."
+argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|" has been successfully formatted."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3581,11 +3575,19 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error reported on storage directory "
-operator|+
+literal|"Error reported on storage directory {}"
+argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|String
 name|lsd
 init|=
@@ -3596,17 +3598,18 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"current list of storage dirs:"
-operator|+
+literal|"current list of storage dirs:{}"
+argument_list|,
 name|lsd
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"About to remove corresponding storage: "
-operator|+
+literal|"About to remove corresponding storage: {}"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
@@ -3634,8 +3637,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to unlock bad storage directory: "
-operator|+
+literal|"Unable to unlock bad storage directory: {}"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
@@ -3669,20 +3672,30 @@ name|sd
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|String
 name|lsd
-operator|=
+init|=
 name|listStorageDirectories
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"at the end current list of storage dirs:"
-operator|+
+literal|"at the end current list of storage dirs:{}"
+argument_list|,
 name|lsd
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**     * Processes the startup options for the clusterid and blockpoolid     * for the upgrade.     * @param startOpt Startup options     * @param layoutVersion Layout version for the upgrade     * @throws IOException    */
 DECL|method|processStartupOptionsForUpgrade (StartupOption startOpt, int layoutVersion)
@@ -3799,13 +3812,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Clusterid mismatch - current clusterid: "
+literal|"Clusterid mismatch - current clusterid: {}, Ignoring "
 operator|+
+literal|"given clusterid: {}"
+argument_list|,
 name|getClusterID
 argument_list|()
-operator|+
-literal|", Ignoring given clusterid: "
-operator|+
+argument_list|,
 name|startOpt
 operator|.
 name|getClusterId
@@ -3818,8 +3831,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Using clusterid: "
-operator|+
+literal|"Using clusterid: {}"
+argument_list|,
 name|getClusterID
 argument_list|()
 argument_list|)
@@ -4022,19 +4035,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"current cluster id for sd="
+literal|"current cluster id for sd={};lv={};"
 operator|+
+literal|"cid={}"
+argument_list|,
 name|sd
 operator|.
 name|getCurrentDir
 argument_list|()
-operator|+
-literal|";lv="
-operator|+
+argument_list|,
 name|layoutVersion
-operator|+
-literal|";cid="
-operator|+
+argument_list|,
 name|cid
 argument_list|)
 expr_stmt|;
@@ -4068,8 +4079,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"this sd not available: "
-operator|+
+literal|"this sd not available: {}"
+argument_list|,
 name|e
 operator|.
 name|getLocalizedMessage
@@ -4741,12 +4752,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error during write properties to the VERSION file to "
-operator|+
+literal|"Error during write properties to the VERSION file to {}"
+argument_list|,
 name|sd
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|e
 argument_list|)

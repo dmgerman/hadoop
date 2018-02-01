@@ -212,34 +212,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -474,6 +446,26 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Storage information file.  *<p>  * Local storage information is stored in a separate file VERSION.  * It contains type of the node,   * the storage layout version, the namespace id, and   * the fs state creation time.  *<p>  * Local storage can reside in multiple directories.   * Each directory should contain the same VERSION file as the others.  * During startup Hadoop servers (name-node and data-nodes) read their local   * storage information from them.  *<p>  * The servers hold a lock for each storage directory while they run so that   * other nodes were not able to startup sharing the same storage.  * The locks are released when the servers stop (normally or abnormally).  *   */
 end_comment
@@ -495,12 +487,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|Storage
 operator|.
@@ -1741,8 +1733,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get directory size :"
-operator|+
+literal|"Failed to get directory size : {}"
+argument_list|,
 name|root
 argument_list|,
 name|e
@@ -1835,8 +1827,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Will remove files: "
-operator|+
+literal|"Will remove files: {}"
+argument_list|,
 name|Arrays
 operator|.
 name|toString
@@ -2351,11 +2343,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Storage directory "
-operator|+
+literal|"Storage directory {} does not exist"
+argument_list|,
 name|rootPath
-operator|+
-literal|" does not exist"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2368,9 +2358,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} does not exist. Creating ..."
+argument_list|,
 name|rootPath
-operator|+
-literal|" does not exist. Creating ..."
 argument_list|)
 expr_stmt|;
 if|if
@@ -2409,9 +2399,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} is not a directory"
+argument_list|,
 name|rootPath
-operator|+
-literal|"is not a directory"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2435,8 +2425,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot access storage directory "
-operator|+
+literal|"Cannot access storage directory {}"
+argument_list|,
 name|rootPath
 argument_list|)
 expr_stmt|;
@@ -2457,8 +2447,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot access storage directory "
-operator|+
+literal|"Cannot access storage directory {}"
+argument_list|,
 name|rootPath
 argument_list|,
 name|ex
@@ -2882,8 +2872,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Completing previous upgrade for storage directory "
-operator|+
+literal|"Completing previous upgrade for storage directory {}"
+argument_list|,
 name|rootPath
 argument_list|)
 expr_stmt|;
@@ -2905,11 +2895,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovering storage directory "
-operator|+
+literal|"Recovering storage directory {} from previous upgrade"
+argument_list|,
 name|rootPath
-operator|+
-literal|" from previous upgrade"
 argument_list|)
 expr_stmt|;
 if|if
@@ -2941,8 +2929,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Completing previous rollback for storage directory "
-operator|+
+literal|"Completing previous rollback for storage directory {}"
+argument_list|,
 name|rootPath
 argument_list|)
 expr_stmt|;
@@ -2961,11 +2949,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovering storage directory "
-operator|+
+literal|"Recovering storage directory {} from previous rollback"
+argument_list|,
 name|rootPath
-operator|+
-literal|" from previous rollback"
 argument_list|)
 expr_stmt|;
 name|rename
@@ -2985,8 +2971,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Completing previous finalize for storage directory "
-operator|+
+literal|"Completing previous finalize for storage directory {}"
+argument_list|,
 name|rootPath
 argument_list|)
 expr_stmt|;
@@ -3005,8 +2991,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Completing previous checkpoint for storage directory "
-operator|+
+literal|"Completing previous checkpoint for storage directory {}"
+argument_list|,
 name|rootPath
 argument_list|)
 expr_stmt|;
@@ -3045,11 +3031,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovering storage directory "
-operator|+
+literal|"Recovering storage directory {} from failed checkpoint"
+argument_list|,
 name|rootPath
-operator|+
-literal|" from failed checkpoint"
 argument_list|)
 expr_stmt|;
 if|if
@@ -3180,8 +3164,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Locking is disabled for "
-operator|+
+literal|"Locking is disabled for {}"
+argument_list|,
 name|this
 operator|.
 name|root
@@ -3334,12 +3318,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to acquire file lock on path "
-operator|+
+literal|"Unable to acquire file lock on path {}"
+argument_list|,
 name|lockF
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3366,12 +3347,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Lock on "
-operator|+
+literal|"Lock on {} acquired by nodename {}"
+argument_list|,
 name|lockF
-operator|+
-literal|" acquired by nodename "
-operator|+
+argument_list|,
 name|jvmName
 argument_list|)
 expr_stmt|;
@@ -3405,12 +3384,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"It appears that another node "
+literal|"It appears that another node {} has already locked the "
 operator|+
+literal|"storage directory: {}"
+argument_list|,
 name|lockingJvmName
-operator|+
-literal|" has already locked the storage directory: "
-operator|+
+argument_list|,
 name|root
 argument_list|,
 name|oe
@@ -3435,13 +3414,13 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to acquire lock on "
+literal|"Failed to acquire lock on {}. If this storage directory is"
 operator|+
+literal|" mounted via NFS, ensure that the appropriate nfs lock services"
+operator|+
+literal|" are running."
+argument_list|,
 name|lockF
-operator|+
-literal|". If this storage directory is mounted via NFS, "
-operator|+
-literal|"ensure that the appropriate nfs lock services are running."
 argument_list|,
 name|e
 argument_list|)
@@ -4810,30 +4789,17 @@ operator|==
 literal|false
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to preserve last modified date from'"
-operator|+
+literal|"Failed to preserve last modified date from'{}' to '{}'"
+argument_list|,
 name|srcFile
-operator|+
-literal|"' to '"
-operator|+
+argument_list|,
 name|destFile
-operator|+
-literal|"'"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

@@ -992,20 +992,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Generated new storageID "
-operator|+
+literal|"Generated new storageID {} for directory {} {}"
+argument_list|,
 name|sd
 operator|.
 name|getStorageUuid
 argument_list|()
-operator|+
-literal|" for directory "
-operator|+
+argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
+argument_list|,
 operator|(
 name|oldStorageID
 operator|==
@@ -1061,8 +1059,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Enabled trash for bpid "
-operator|+
+literal|"Enabled trash for bpid {}"
+argument_list|,
 name|bpid
 argument_list|)
 expr_stmt|;
@@ -1106,8 +1104,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Cleared trash for bpid "
-operator|+
+literal|"Cleared trash for bpid {}"
+argument_list|,
 name|bpid
 argument_list|)
 expr_stmt|;
@@ -1498,11 +1496,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage directory with location "
-operator|+
+literal|"Storage directory with location {} does not exist"
+argument_list|,
 name|location
-operator|+
-literal|" does not exist"
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1524,18 +1520,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage directory with location "
+literal|"Storage directory with location {} is not formatted for "
 operator|+
+literal|"namespace {}. Formatting..."
+argument_list|,
 name|location
-operator|+
-literal|" is not formatted for namespace "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getNamespaceID
 argument_list|()
-operator|+
-literal|". Formatting..."
 argument_list|)
 expr_stmt|;
 name|format
@@ -1656,15 +1650,13 @@ specifier|final
 name|String
 name|errorMessage
 init|=
-literal|"Storage directory is in use"
+literal|"Storage directory is in use."
 decl_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
 name|errorMessage
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1853,23 +1845,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Using "
+literal|"Using {} threads to upgrade data directories ({}={}, "
 operator|+
+literal|"dataDirs={})"
+argument_list|,
 name|min
-operator|+
-literal|" threads to upgrade data directories ("
-operator|+
+argument_list|,
 name|key
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|n
-operator|+
-literal|", dataDirs="
-operator|+
+argument_list|,
 name|dataDirs
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2196,8 +2182,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to add storage directory "
-operator|+
+literal|"Failed to add storage directory {}"
+argument_list|,
 name|dataDir
 argument_list|,
 name|e
@@ -2211,11 +2197,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage directory "
-operator|+
+literal|"Storage directory {} has already been used."
+argument_list|,
 name|dataDir
-operator|+
-literal|" has already been used."
 argument_list|)
 expr_stmt|;
 name|success
@@ -2240,14 +2224,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"loadDataStorage: "
-operator|+
+literal|"loadDataStorage: {} upgrade tasks"
+argument_list|,
 name|tasks
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" upgrade tasks"
 argument_list|)
 expr_stmt|;
 for|for
@@ -2290,8 +2272,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to upgrade storage directory "
-operator|+
+literal|"Failed to upgrade storage directory {}"
+argument_list|,
 name|t
 operator|.
 name|dataDir
@@ -2522,12 +2504,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to add storage directory "
-operator|+
+literal|"Failed to add storage directory {} for block pool {}"
+argument_list|,
 name|dataDir
-operator|+
-literal|" for block pool "
-operator|+
+argument_list|,
 name|bpid
 argument_list|,
 name|e
@@ -2548,14 +2528,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"loadBlockPoolSliceStorage: "
-operator|+
+literal|"loadBlockPoolSliceStorage: {} upgrade tasks"
+argument_list|,
 name|tasks
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" upgrade tasks"
 argument_list|)
 expr_stmt|;
 for|for
@@ -2591,14 +2569,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to upgrade storage directory "
-operator|+
+literal|"Failed to upgrade storage directory {} for block pool {}"
+argument_list|,
 name|t
 operator|.
 name|dataDir
-operator|+
-literal|" for block pool "
-operator|+
+argument_list|,
 name|bpid
 argument_list|,
 name|e
@@ -2628,7 +2604,7 @@ return|return
 name|success
 return|;
 block|}
-comment|/**    * Remove storage dirs from DataStorage. All storage dirs are removed even when the    * IOException is thrown.    *    * @param dirsToRemove a set of storage directories to be removed.    * @throws IOException if I/O error when unlocking storage directory.    */
+comment|/**    * Remove storage dirs from DataStorage. All storage dirs are removed even when the    * IOException is thrown.    *    * @param storageLocations a set of storage directories to be removed.    * @throws IOException if I/O error when unlocking storage directory.    */
 DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocations)
 specifier|synchronized
 name|void
@@ -2797,17 +2773,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"I/O error attempting to unlock storage directory %s."
+literal|"I/O error attempting to unlock storage directory {}."
 argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-argument_list|)
 argument_list|,
 name|e
 argument_list|)
@@ -3514,12 +3485,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to acquire file lock on path "
-operator|+
+literal|"Unable to acquire file lock on path {}"
+argument_list|,
 name|oldF
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3937,32 +3905,26 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Upgrading storage directory "
+literal|"Upgrading storage directory {}.\n old LV = {}; old CTime = {}"
 operator|+
+literal|".\n new LV = {}; new CTime = {}"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|".\n   old LV = "
-operator|+
+argument_list|,
 name|oldLV
-operator|+
-literal|"; old CTime = "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getCTime
 argument_list|()
-operator|+
-literal|".\n   new LV = "
-operator|+
+argument_list|,
 name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|"; new CTime = "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getCTime
@@ -4266,14 +4228,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Upgrade of "
-operator|+
+literal|"Upgrade of {} is complete"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4303,18 +4263,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Updating layout version from "
-operator|+
+literal|"Updating layout version from {} to {} for storage {}"
+argument_list|,
 name|layoutVersion
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|" for storage "
-operator|+
+argument_list|,
 name|sd
 operator|.
 name|getRoot
@@ -4492,14 +4448,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Layout version rolled back to "
-operator|+
+literal|"Layout version rolled back to {} for storage {}"
+argument_list|,
 name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|" for storage "
-operator|+
+argument_list|,
 name|sd
 operator|.
 name|getRoot
@@ -4591,21 +4545,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rolling back storage directory "
+literal|"Rolling back storage directory {}.\n   target LV = {}; target "
 operator|+
+literal|"CTime = {}"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|".\n   target LV = "
-operator|+
+argument_list|,
 name|HdfsServerConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|"; target CTime = "
-operator|+
+argument_list|,
 name|nsInfo
 operator|.
 name|getCTime
@@ -4671,14 +4623,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rollback of "
-operator|+
+literal|"Rollback of {} is complete"
+argument_list|,
 name|sd
 operator|.
 name|getRoot
 argument_list|()
-operator|+
-literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4727,19 +4677,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Finalizing upgrade for storage directory "
+literal|"Finalizing upgrade for storage directory {}.\n   cur LV = {}; "
 operator|+
+literal|"cur CTime = {}"
+argument_list|,
 name|dataDirPath
-operator|+
-literal|".\n   cur LV = "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|+
-literal|"; cur CTime = "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getCTime
@@ -5098,16 +5046,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Linked blocks from "
-operator|+
+literal|"Linked blocks from {} to {}. {}"
+argument_list|,
 name|fromDir
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|toDir
-operator|+
-literal|". "
-operator|+
+argument_list|,
 name|hardLink
 operator|.
 name|linkStats
@@ -5235,12 +5179,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Start linking block files from "
-operator|+
+literal|"Start linking block files from {} to {}"
+argument_list|,
 name|from
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|to
 argument_list|)
 expr_stmt|;
@@ -5341,16 +5283,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"There are "
+literal|"There are {} duplicate block "
 operator|+
+literal|"entries within the same volume."
+argument_list|,
 name|duplicates
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" duplicate block "
-operator|+
-literal|"entries within the same volume."
 argument_list|)
 expr_stmt|;
 name|removeDuplicateEntries
@@ -6175,16 +6115,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpectedly low genstamp on "
-operator|+
+literal|"Unexpectedly low genstamp on {}."
+argument_list|,
 name|duplicate
 operator|.
 name|src
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|iter
@@ -6314,16 +6252,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpectedly short length on "
-operator|+
+literal|"Unexpectedly short length on {}."
+argument_list|,
 name|duplicate
 operator|.
 name|src
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -6339,16 +6275,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpectedly short length on "
-operator|+
+literal|"Unexpectedly short length on {}."
+argument_list|,
 name|prevLongest
 operator|.
 name|src
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -6452,16 +6386,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Discarding "
-operator|+
+literal|"Discarding {}."
+argument_list|,
 name|args
 operator|.
 name|src
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|iter
