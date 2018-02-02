@@ -483,6 +483,10 @@ name|tags
 operator|.
 name|isEmpty
 argument_list|()
+operator|&&
+name|node
+operator|!=
+literal|null
 condition|)
 block|{
 comment|// We are currently assuming a single allocation tag
