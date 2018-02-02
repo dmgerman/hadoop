@@ -229,6 +229,24 @@ argument_list|>
 name|sourceTags
 parameter_list|)
 function_decl|;
+comment|/**    * Consider all levels of constraints (scheduling request, app, cluster) and    * return a merged constraint.    *    * @param applicationId application ID    * @param sourceTags a set of source allocation tags    * @param schedulingRequestConstraint placement constraint at scheduling    *          request level    * @return a merged placement constraint    */
+DECL|method|getMultilevelConstraint (ApplicationId applicationId, Set<String> sourceTags, PlacementConstraint schedulingRequestConstraint)
+name|PlacementConstraint
+name|getMultilevelConstraint
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|sourceTags
+parameter_list|,
+name|PlacementConstraint
+name|schedulingRequestConstraint
+parameter_list|)
+function_decl|;
 comment|/**    * Remove the constraints that correspond to a given application.    *    * @param appId the application that will be removed.    */
 DECL|method|unregisterApplication (ApplicationId appId)
 name|void
