@@ -380,6 +380,16 @@ return|return
 name|proxy
 return|;
 block|}
+DECL|method|getRouterStateManager ()
+specifier|public
+name|RouterStateManager
+name|getRouterStateManager
+parameter_list|()
+block|{
+return|return
+name|proxy
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()
