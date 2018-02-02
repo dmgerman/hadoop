@@ -1110,6 +1110,27 @@ return|return
 name|EXIT_EXCEPTION_THROWN
 return|;
 block|}
+if|if
+condition|(
+name|response
+operator|.
+name|getStatus
+argument_list|()
+operator|==
+literal|503
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"YARN Service is unavailable or disabled."
+argument_list|)
+expr_stmt|;
+return|return
+name|EXIT_EXCEPTION_THROWN
+return|;
+block|}
 try|try
 block|{
 name|ServiceStatus
