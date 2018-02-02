@@ -73,7 +73,7 @@ name|Path
 name|path
 parameter_list|)
 function_decl|;
-comment|/**    * Public factory method which returns the appropriate implementation of    * CopyFilter.    *    * @param conf DistCp configuratoin    * @return An instance of the appropriate CopyFilter    */
+comment|/**    * Public factory method which returns the appropriate implementation of    * CopyFilter.    *    * @param conf DistCp configuration    * @return An instance of the appropriate CopyFilter    */
 DECL|method|getCopyFilter (Configuration conf)
 specifier|public
 specifier|static
