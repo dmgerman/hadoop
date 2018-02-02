@@ -3541,7 +3541,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|0700
+literal|0755
 argument_list|)
 argument_list|,
 name|perm
