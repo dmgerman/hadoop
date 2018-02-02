@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Node Attribute is a kind of a label which represents one of the  * attribute/feature of a Node. Its different from node partition label as  * resource guarantees across the queues will not be maintained for these type  * of labels.  *</p>  *<p>  * A given Node can be mapped with any kind of attribute, few examples are  * HAS_SSD=true, JAVA_VERSION=JDK1.8, OS_TYPE=WINDOWS.  *</p>  *<p>  * Its not compulsory for all the attributes to have value, empty string is the  * default value of the<code>NodeAttributeType.STRING</code>  *</p>  *  */
+comment|/**  *<p>  * Node Attribute is a kind of a label which represents one of the  * attribute/feature of a Node. Its different from node partition label as  * resource guarantees across the queues will not be maintained for these type  * of labels.  *</p>  *<p>  * A given Node can be mapped with any kind of attribute, few examples are  * HAS_SSD=true, JAVA_VERSION=JDK1.8, OS_TYPE=WINDOWS.  *</p>  *<p>  * Its not compulsory for all the attributes to have value, empty string is the  * default value of the<code>NodeAttributeType.STRING</code>  *</p>  *<p>  * Node Attribute Prefix is used as namespace to segregate the attributes.  *</p>  */
 end_comment
 
 begin_class
@@ -83,12 +83,53 @@ specifier|abstract
 class|class
 name|NodeAttribute
 block|{
+DECL|field|DEFAULT_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_PREFIX
+init|=
+literal|""
+decl_stmt|;
 DECL|method|newInstance (String attributeName, NodeAttributeType attributeType, String attributeValue)
 specifier|public
 specifier|static
 name|NodeAttribute
 name|newInstance
 parameter_list|(
+name|String
+name|attributeName
+parameter_list|,
+name|NodeAttributeType
+name|attributeType
+parameter_list|,
+name|String
+name|attributeValue
+parameter_list|)
+block|{
+return|return
+name|newInstance
+argument_list|(
+name|DEFAULT_PREFIX
+argument_list|,
+name|attributeName
+argument_list|,
+name|attributeType
+argument_list|,
+name|attributeValue
+argument_list|)
+return|;
+block|}
+DECL|method|newInstance (String attributePrefix, String attributeName, NodeAttributeType attributeType, String attributeValue)
+specifier|public
+specifier|static
+name|NodeAttribute
+name|newInstance
+parameter_list|(
+name|String
+name|attributePrefix
+parameter_list|,
 name|String
 name|attributeName
 parameter_list|,
@@ -111,6 +152,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|nodeAttribute
+operator|.
+name|setAttributePrefix
+argument_list|(
+name|attributePrefix
+argument_list|)
+expr_stmt|;
 name|nodeAttribute
 operator|.
 name|setAttributeName
@@ -136,6 +184,31 @@ return|return
 name|nodeAttribute
 return|;
 block|}
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getAttributePrefix ()
+specifier|public
+specifier|abstract
+name|String
+name|getAttributePrefix
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setAttributePrefix (String attributePrefix)
+specifier|public
+specifier|abstract
+name|void
+name|setAttributePrefix
+parameter_list|(
+name|String
+name|attributePrefix
+parameter_list|)
+function_decl|;
 annotation|@
 name|Public
 annotation|@
