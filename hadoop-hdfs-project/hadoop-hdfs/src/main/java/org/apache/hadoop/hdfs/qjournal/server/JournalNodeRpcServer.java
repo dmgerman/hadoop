@@ -22,31 +22,27 @@ end_package
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|IOException
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|net
+name|google
 operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|protobuf
 operator|.
-name|net
-operator|.
-name|URL
+name|BlockingService
 import|;
 end_import
 
@@ -199,26 +195,6 @@ operator|.
 name|InterQJournalProtocolProtos
 operator|.
 name|InterQJournalProtocolService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|qjournal
-operator|.
-name|protocol
-operator|.
-name|InterQJournalProtocolProtos
-operator|.
-name|GetEditLogManifestFromJournalResponseProto
 import|;
 end_import
 
@@ -564,27 +540,31 @@ end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
+name|IOException
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|net
 operator|.
-name|protobuf
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|BlockingService
+name|net
+operator|.
+name|URL
 import|;
 end_import
 
@@ -1691,9 +1671,9 @@ literal|"deprecation"
 argument_list|)
 annotation|@
 name|Override
+DECL|method|getEditLogManifestFromJournal ( String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
 specifier|public
-name|GetEditLogManifestFromJournalResponseProto
-DECL|method|getEditLogManifestFromJournal (String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
+name|GetEditLogManifestResponseProto
 name|getEditLogManifestFromJournal
 parameter_list|(
 name|String
@@ -1731,7 +1711,7 @@ name|inProgressOk
 argument_list|)
 decl_stmt|;
 return|return
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 operator|.
 name|newBuilder
 argument_list|()

@@ -90,9 +90,9 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
-name|InterQJournalProtocolProtos
+name|QJournalProtocolProtos
 operator|.
-name|GetEditLogManifestFromJournalRequestProto
+name|GetEditLogManifestRequestProto
 import|;
 end_import
 
@@ -110,9 +110,9 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
-name|InterQJournalProtocolProtos
+name|QJournalProtocolProtos
 operator|.
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 import|;
 end_import
 
@@ -166,15 +166,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getEditLogManifestFromJournal ( RpcController controller, GetEditLogManifestRequestProto request)
 specifier|public
-name|GetEditLogManifestFromJournalResponseProto
-DECL|method|getEditLogManifestFromJournal (RpcController controller, GetEditLogManifestFromJournalRequestProto request)
+name|GetEditLogManifestResponseProto
 name|getEditLogManifestFromJournal
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|GetEditLogManifestFromJournalRequestProto
+name|GetEditLogManifestRequestProto
 name|request
 parameter_list|)
 throws|throws

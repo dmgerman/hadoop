@@ -80,9 +80,9 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
-name|InterQJournalProtocolProtos
+name|QJournalProtocolProtos
 operator|.
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 import|;
 end_import
 
@@ -147,7 +147,7 @@ literal|1L
 decl_stmt|;
 comment|/**    * @param jid the journal from which to enumerate edits    * @param sinceTxId the first transaction which the client cares about    * @param inProgressOk whether or not to check the in-progress edit log    *        segment    * @return a list of edit log segments since the given transaction ID.    */
 DECL|method|getEditLogManifestFromJournal ( String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 name|getEditLogManifestFromJournal
 parameter_list|(
 name|String

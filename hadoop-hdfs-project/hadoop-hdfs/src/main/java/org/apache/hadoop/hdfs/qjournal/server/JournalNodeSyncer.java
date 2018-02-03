@@ -180,9 +180,9 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
-name|InterQJournalProtocolProtos
+name|QJournalProtocolProtos
 operator|.
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 import|;
 end_import
 
@@ -1400,7 +1400,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 name|editLogManifest
 decl_stmt|;
 try|try
@@ -1768,7 +1768,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getMissingLogSegments (List<RemoteEditLog> thisJournalEditLogs, GetEditLogManifestFromJournalResponseProto response, JournalNodeProxy remoteJNproxy)
+DECL|method|getMissingLogSegments (List<RemoteEditLog> thisJournalEditLogs, GetEditLogManifestResponseProto response, JournalNodeProxy remoteJNproxy)
 specifier|private
 name|void
 name|getMissingLogSegments
@@ -1779,7 +1779,7 @@ name|RemoteEditLog
 argument_list|>
 name|thisJournalEditLogs
 parameter_list|,
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestResponseProto
 name|response
 parameter_list|,
 name|JournalNodeProxy

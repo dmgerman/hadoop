@@ -104,9 +104,9 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
-name|InterQJournalProtocolProtos
+name|QJournalProtocolProtos
 operator|.
-name|GetEditLogManifestFromJournalResponseProto
+name|GetEditLogManifestRequestProto
 import|;
 end_import
 
@@ -124,9 +124,9 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
-name|InterQJournalProtocolProtos
+name|QJournalProtocolProtos
 operator|.
-name|GetEditLogManifestFromJournalRequestProto
+name|GetEditLogManifestResponseProto
 import|;
 end_import
 
@@ -297,9 +297,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getEditLogManifestFromJournal ( String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
 specifier|public
-name|GetEditLogManifestFromJournalResponseProto
-DECL|method|getEditLogManifestFromJournal (String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
+name|GetEditLogManifestResponseProto
 name|getEditLogManifestFromJournal
 parameter_list|(
 name|String
@@ -319,14 +319,14 @@ name|IOException
 block|{
 try|try
 block|{
-name|GetEditLogManifestFromJournalRequestProto
+name|GetEditLogManifestRequestProto
 operator|.
 name|Builder
 name|req
 decl_stmt|;
 name|req
 operator|=
-name|GetEditLogManifestFromJournalRequestProto
+name|GetEditLogManifestRequestProto
 operator|.
 name|newBuilder
 argument_list|()
