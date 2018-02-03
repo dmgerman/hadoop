@@ -10800,8 +10800,45 @@ name|UnsupportedOperationException
 name|e
 parameter_list|)
 block|{
-comment|// This means server doesn't supports GETSERVERDEFAULTS call.
+comment|// This means server doesn't support GETSERVERDEFAULTS call.
 comment|// Do nothing, let keyProviderUri = null.
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getClassName
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|e
+operator|.
+name|getClassName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"java.lang.IllegalArgumentException"
+argument_list|)
+condition|)
+block|{
+comment|// See HDFS-13100.
+comment|// This means server doesn't support GETSERVERDEFAULTS call.
+comment|// Do nothing, let keyProviderUri = null.
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 return|return
 name|HdfsKMSUtil
