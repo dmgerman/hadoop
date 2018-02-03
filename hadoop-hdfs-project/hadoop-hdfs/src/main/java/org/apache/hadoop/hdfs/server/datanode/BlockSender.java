@@ -827,6 +827,20 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
+comment|// The number of bytes per checksum here determines the alignment
+comment|// of reads: we always start reading at a checksum chunk boundary,
+comment|// even if the checksum type is NULL. So, choosing too big of a value
+comment|// would risk sending too much unnecessary data. 512 (1 disk sector)
+comment|// is likely to result in minimal extra IO.
+DECL|field|CHUNK_SIZE
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|CHUNK_SIZE
+init|=
+literal|512
+decl_stmt|;
 comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk if true, corrupt checksum is okay    * @param verifyChecksum verify checksum while reading the data    * @param sendChecksum send checksum to client.    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
 DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, boolean sendChecksum, DataNode datanode, String clientTraceFmt, CachingStrategy cachingStrategy)
 name|BlockSender
@@ -1074,32 +1088,6 @@ operator|.
 name|getVisibleLength
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|replica
-operator|instanceof
-name|FinalizedReplica
-condition|)
-block|{
-comment|// Load last checksum in case the replica is being written
-comment|// concurrently
-specifier|final
-name|FinalizedReplica
-name|frep
-init|=
-operator|(
-name|FinalizedReplica
-operator|)
-name|replica
-decl_stmt|;
-name|chunkChecksum
-operator|=
-name|frep
-operator|.
-name|getLastChecksumAndDataLen
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -1137,6 +1125,24 @@ name|rbw
 operator|.
 name|getLastChecksumAndDataLen
 argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|replica
+operator|instanceof
+name|FinalizedReplica
+condition|)
+block|{
+name|chunkChecksum
+operator|=
+name|getPartialChunkChecksumForFinalized
+argument_list|(
+operator|(
+name|FinalizedReplica
+operator|)
+name|replica
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -1548,11 +1554,6 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// The number of bytes per checksum here determines the alignment
-comment|// of reads: we always start reading at a checksum chunk boundary,
-comment|// even if the checksum type is NULL. So, choosing too big of a value
-comment|// would risk sending too much unnecessary data. 512 (1 disk sector)
-comment|// is likely to result in minimal extra IO.
 name|csum
 operator|=
 name|DataChecksum
@@ -1565,7 +1566,10 @@ name|Type
 operator|.
 name|NULL
 argument_list|,
-literal|512
+operator|(
+name|int
+operator|)
+name|CHUNK_SIZE
 argument_list|)
 expr_stmt|;
 block|}
@@ -1964,6 +1968,121 @@ expr_stmt|;
 throw|throw
 name|ioe
 throw|;
+block|}
+block|}
+DECL|method|getPartialChunkChecksumForFinalized ( FinalizedReplica finalized)
+specifier|private
+name|ChunkChecksum
+name|getPartialChunkChecksumForFinalized
+parameter_list|(
+name|FinalizedReplica
+name|finalized
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// There are a number of places in the code base where a finalized replica
+comment|// object is created. If last partial checksum is loaded whenever a
+comment|// finalized replica is created, it would increase latency in DataNode
+comment|// initialization. Therefore, the last partial chunk checksum is loaded
+comment|// lazily.
+comment|// Load last checksum in case the replica is being written concurrently
+specifier|final
+name|long
+name|replicaVisibleLength
+init|=
+name|replica
+operator|.
+name|getVisibleLength
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|replicaVisibleLength
+operator|%
+name|CHUNK_SIZE
+operator|!=
+literal|0
+operator|&&
+name|finalized
+operator|.
+name|getLastPartialChunkChecksum
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// the finalized replica does not have precomputed last partial
+comment|// chunk checksum. Recompute now.
+try|try
+block|{
+name|finalized
+operator|.
+name|loadLastPartialChunkChecksum
+argument_list|()
+expr_stmt|;
+return|return
+operator|new
+name|ChunkChecksum
+argument_list|(
+name|finalized
+operator|.
+name|getVisibleLength
+argument_list|()
+argument_list|,
+name|finalized
+operator|.
+name|getLastPartialChunkChecksum
+argument_list|()
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// meta file is lost. Continue anyway to preserve existing behavior.
+name|DataNode
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"meta file "
+operator|+
+name|finalized
+operator|.
+name|getMetaFile
+argument_list|()
+operator|+
+literal|" is missing!"
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+else|else
+block|{
+comment|// If the checksum is null, BlockSender will use on-disk checksum.
+return|return
+operator|new
+name|ChunkChecksum
+argument_list|(
+name|finalized
+operator|.
+name|getVisibleLength
+argument_list|()
+argument_list|,
+name|finalized
+operator|.
+name|getLastPartialChunkChecksum
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 comment|/**    * close opened files.    */

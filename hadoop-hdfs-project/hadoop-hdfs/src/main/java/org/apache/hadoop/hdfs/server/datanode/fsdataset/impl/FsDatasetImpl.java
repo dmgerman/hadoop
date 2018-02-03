@@ -9132,6 +9132,16 @@ operator|.
 name|getOriginalReplica
 argument_list|()
 expr_stmt|;
+operator|(
+operator|(
+name|FinalizedReplica
+operator|)
+name|newReplicaInfo
+operator|)
+operator|.
+name|loadLastPartialChunkChecksum
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{

@@ -244,6 +244,12 @@ specifier|private
 name|Block
 name|block
 decl_stmt|;
+DECL|field|lastPartialChunkChecksum
+specifier|private
+name|byte
+index|[]
+name|lastPartialChunkChecksum
+decl_stmt|;
 DECL|field|fromReplica
 specifier|private
 name|ReplicaInfo
@@ -704,6 +710,26 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setLastPartialChunkChecksum (byte[] checksum)
+specifier|public
+name|ReplicaBuilder
+name|setLastPartialChunkChecksum
+parameter_list|(
+name|byte
+index|[]
+name|checksum
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastPartialChunkChecksum
+operator|=
+name|checksum
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|buildLocalReplicaInPipeline ()
 specifier|public
 name|LocalReplicaInPipeline
@@ -1141,6 +1167,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|directoryUsed
+argument_list|,
+name|lastPartialChunkChecksum
 argument_list|)
 return|;
 block|}
@@ -1159,6 +1187,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|directoryUsed
+argument_list|,
+name|lastPartialChunkChecksum
 argument_list|)
 return|;
 block|}

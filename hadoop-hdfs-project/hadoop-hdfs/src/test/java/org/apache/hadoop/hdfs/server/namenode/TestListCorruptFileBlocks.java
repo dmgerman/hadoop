@@ -653,7 +653,7 @@ name|metaFiles
 init|=
 name|MiniDFSCluster
 operator|.
-name|getAllBlockMetadataFiles
+name|getAllBlockFiles
 argument_list|(
 name|data_dir
 argument_list|)
@@ -1172,7 +1172,7 @@ name|metaFiles
 init|=
 name|MiniDFSCluster
 operator|.
-name|getAllBlockMetadataFiles
+name|getAllBlockFiles
 argument_list|(
 name|data_dir
 argument_list|)
