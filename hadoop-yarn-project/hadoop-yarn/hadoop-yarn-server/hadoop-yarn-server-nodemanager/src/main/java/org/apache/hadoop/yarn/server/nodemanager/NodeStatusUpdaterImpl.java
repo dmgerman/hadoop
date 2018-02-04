@@ -5196,7 +5196,7 @@ name|nodeLabels
 init|=
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 decl_stmt|;
 name|nodeLabels
@@ -5355,7 +5355,7 @@ name|nodeLabelsForHeartbeat
 init|=
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 decl_stmt|;
 comment|// if the provider returns null then consider empty labels are set

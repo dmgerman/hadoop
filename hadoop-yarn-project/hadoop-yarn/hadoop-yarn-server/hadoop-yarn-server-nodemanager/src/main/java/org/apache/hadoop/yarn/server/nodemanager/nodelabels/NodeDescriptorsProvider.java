@@ -24,54 +24,50 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeLabel
+name|Set
 import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract class which will be responsible for fetching the node labels.  *  */
+comment|/**  * Interface which will be responsible for fetching node descriptors,  * a node descriptor could be a  * {@link org.apache.hadoop.yarn.api.records.NodeLabel} or a  * {@link org.apache.hadoop.yarn.api.records.NodeAttribute}.  */
 end_comment
 
-begin_class
-DECL|class|NodeLabelsProvider
+begin_interface
+DECL|interface|NodeDescriptorsProvider
 specifier|public
-specifier|abstract
-class|class
-name|NodeLabelsProvider
-extends|extends
-name|AbstractNodeDescriptorsProvider
+interface|interface
+name|NodeDescriptorsProvider
+parameter_list|<
+name|T
+parameter_list|>
+block|{
+comment|/**    * Provides the descriptors. The provider is expected to give same    * descriptors continuously until there is a change.    * If null is returned then an empty set is assumed by the caller.    *    * @return Set of node descriptors applicable for a node    */
+DECL|method|getDescriptors ()
+name|Set
 argument_list|<
-name|NodeLabel
+name|T
 argument_list|>
-block|{
-DECL|method|NodeLabelsProvider (String name)
-specifier|public
-name|NodeLabelsProvider
+name|getDescriptors
+parameter_list|()
+function_decl|;
+comment|/**    * Sets a set of descriptors to the provider.    * @param descriptors node descriptors.    */
+DECL|method|setDescriptors (Set<T> descriptors)
+name|void
+name|setDescriptors
 parameter_list|(
-name|String
-name|name
+name|Set
+argument_list|<
+name|T
+argument_list|>
+name|descriptors
 parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

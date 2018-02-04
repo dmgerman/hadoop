@@ -100,6 +100,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TimerTask
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1104,55 +1114,69 @@ specifier|public
 specifier|static
 class|class
 name|DummyNodeLabelsProvider
-implements|implements
+extends|extends
 name|NodeLabelsProvider
 block|{
-DECL|field|nodeLabels
-specifier|private
-name|Set
-argument_list|<
-name|NodeLabel
-argument_list|>
-name|nodeLabels
-init|=
-name|CommonNodeLabelsManager
-operator|.
-name|EMPTY_NODELABEL_SET
-decl_stmt|;
+DECL|method|DummyNodeLabelsProvider ()
+specifier|public
+name|DummyNodeLabelsProvider
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|"DummyNodeLabelsProvider"
+argument_list|)
+expr_stmt|;
+comment|// disable the fetch timer.
+name|setIntervalTime
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
-DECL|method|getNodeLabels ()
+DECL|method|cleanUp ()
+specifier|protected
+name|void
+name|cleanUp
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// fake implementation, nothing to cleanup
+block|}
+annotation|@
+name|Override
+DECL|method|createTimerTask ()
 specifier|public
-specifier|synchronized
-name|Set
-argument_list|<
-name|NodeLabel
-argument_list|>
-name|getNodeLabels
+name|TimerTask
+name|createTimerTask
 parameter_list|()
 block|{
 return|return
-name|nodeLabels
-return|;
-block|}
-DECL|method|setNodeLabels (Set<NodeLabel> nodeLabels)
-specifier|synchronized
-name|void
-name|setNodeLabels
-parameter_list|(
-name|Set
-argument_list|<
-name|NodeLabel
-argument_list|>
-name|nodeLabels
-parameter_list|)
+operator|new
+name|TimerTask
+argument_list|()
 block|{
-name|this
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|setDescriptors
+argument_list|(
+name|CommonNodeLabelsManager
 operator|.
-name|nodeLabels
-operator|=
-name|nodeLabels
+name|EMPTY_NODELABEL_SET
+argument_list|)
 expr_stmt|;
+block|}
+block|}
+return|;
 block|}
 block|}
 DECL|method|createNMConfigForDistributeNodeLabels ()
@@ -1354,7 +1378,7 @@ name|assertNLCollectionEquals
 argument_list|(
 name|dummyLabelsProviderRef
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|,
 name|resourceTracker
@@ -1376,7 +1400,7 @@ expr_stmt|;
 comment|// heartbeat with updated labels
 name|dummyLabelsProviderRef
 operator|.
-name|setNodeLabels
+name|setDescriptors
 argument_list|(
 name|toNodeLabelSet
 argument_list|(
@@ -1396,7 +1420,7 @@ name|assertNLCollectionEquals
 argument_list|(
 name|dummyLabelsProviderRef
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|,
 name|resourceTracker
@@ -1435,7 +1459,7 @@ expr_stmt|;
 comment|// provider return with null labels
 name|dummyLabelsProviderRef
 operator|.
-name|setNodeLabels
+name|setDescriptors
 argument_list|(
 literal|null
 argument_list|)
@@ -1489,7 +1513,7 @@ literal|0
 decl_stmt|;
 name|dummyLabelsProviderRef
 operator|.
-name|setNodeLabels
+name|setDescriptors
 argument_list|(
 name|toNodeLabelSet
 argument_list|(
@@ -1702,16 +1726,6 @@ return|;
 block|}
 block|}
 expr_stmt|;
-name|dummyLabelsProviderRef
-operator|.
-name|setNodeLabels
-argument_list|(
-name|toNodeLabelSet
-argument_list|(
-literal|"P"
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|YarnConfiguration
 name|conf
 init|=
@@ -1755,6 +1769,16 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|dummyLabelsProviderRef
+operator|.
+name|setDescriptors
+argument_list|(
+name|toNodeLabelSet
+argument_list|(
+literal|"P"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|resourceTracker
 operator|.
 name|waitTillHeartbeat
@@ -1769,7 +1793,7 @@ expr_stmt|;
 comment|// heartbeat with invalid labels
 name|dummyLabelsProviderRef
 operator|.
-name|setNodeLabels
+name|setDescriptors
 argument_list|(
 name|toNodeLabelSet
 argument_list|(

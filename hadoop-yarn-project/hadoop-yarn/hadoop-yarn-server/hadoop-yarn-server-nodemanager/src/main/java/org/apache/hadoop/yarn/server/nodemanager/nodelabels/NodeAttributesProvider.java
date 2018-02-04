@@ -36,29 +36,39 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeLabel
+name|NodeAttribute
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract class which will be responsible for fetching the node labels.  *  */
+comment|/**  * Abstract class which will be responsible for fetching the node attributes.  *  */
 end_comment
 
 begin_class
-DECL|class|NodeLabelsProvider
+DECL|class|NodeAttributesProvider
 specifier|public
 specifier|abstract
 class|class
-name|NodeLabelsProvider
+name|NodeAttributesProvider
 extends|extends
 name|AbstractNodeDescriptorsProvider
 argument_list|<
-name|NodeLabel
+name|NodeAttribute
 argument_list|>
 block|{
-DECL|method|NodeLabelsProvider (String name)
+DECL|method|NodeAttributesProvider (String name)
 specifier|public
-name|NodeLabelsProvider
+name|NodeAttributesProvider
 parameter_list|(
 name|String
 name|name

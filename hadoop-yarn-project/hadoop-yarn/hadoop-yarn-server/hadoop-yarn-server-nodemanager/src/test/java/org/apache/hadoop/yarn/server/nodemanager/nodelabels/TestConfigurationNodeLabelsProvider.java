@@ -501,7 +501,7 @@ argument_list|)
 argument_list|,
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -533,7 +533,7 @@ argument_list|)
 argument_list|,
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -568,9 +568,9 @@ name|YarnConfiguration
 operator|.
 name|NM_NODE_LABELS_PROVIDER_FETCH_INTERVAL_MS
 argument_list|,
-name|AbstractNodeLabelsProvider
+name|AbstractNodeDescriptorsProvider
 operator|.
-name|DISABLE_NODE_LABELS_PROVIDER_FETCH_TIMER
+name|DISABLE_NODE_DESCRIPTORS_PROVIDER_FETCH_TIMER
 argument_list|)
 expr_stmt|;
 name|nodeLabelsProvider
@@ -589,15 +589,18 @@ name|Assert
 operator|.
 name|assertNull
 argument_list|(
-literal|"Timer is not expected to be created when interval is configured as -1"
+literal|"Timer is not expected to be"
+operator|+
+literal|" created when interval is configured as -1"
 argument_list|,
 name|nodeLabelsProvider
 operator|.
-name|nodeLabelsScheduler
+name|getScheduler
+argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Ensure that even though timer is not run, node labels are fetched at least once so
-comment|// that NM registers/updates Labels with RM
+comment|// Ensure that even though timer is not run, node labels
+comment|// are fetched at least once so that NM registers/updates Labels with RM
 name|assertNLCollectionEquals
 argument_list|(
 name|toNodeLabelSet
@@ -607,7 +610,7 @@ argument_list|)
 argument_list|,
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -669,7 +672,7 @@ argument_list|)
 argument_list|,
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -694,7 +697,7 @@ argument_list|)
 argument_list|,
 name|nodeLabelsProvider
 operator|.
-name|getNodeLabels
+name|getDescriptors
 argument_list|()
 argument_list|)
 expr_stmt|;
