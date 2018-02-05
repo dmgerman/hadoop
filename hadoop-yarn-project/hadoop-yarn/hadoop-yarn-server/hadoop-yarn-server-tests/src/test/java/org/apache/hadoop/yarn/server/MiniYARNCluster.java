@@ -4027,18 +4027,15 @@ return|;
 block|}
 else|else
 block|{
-comment|// Increment response ID, the RMNodeStatusEvent will not get recorded
-comment|// for a duplicate heartbeat
+comment|// Use the same responseId for the custom node status
 name|nodeStatus
 operator|.
 name|setResponseId
 argument_list|(
-name|nodeStatus
+name|currentStatus
 operator|.
 name|getResponseId
 argument_list|()
-operator|+
-literal|1
 argument_list|)
 expr_stmt|;
 return|return
