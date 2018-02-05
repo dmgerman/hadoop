@@ -222,6 +222,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|io
+operator|.
+name|NullOutputStream
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -600,6 +614,21 @@ name|numOfFailedLastModifiedSet
 argument_list|)
 expr_stmt|;
 block|}
+comment|// ZipInputStream does not need the end of the file. Let's read it out.
+comment|// This helps with an additional TeeInputStream on the input.
+name|IOUtils
+operator|.
+name|copyBytes
+argument_list|(
+name|inputStream
+argument_list|,
+operator|new
+name|NullOutputStream
+argument_list|()
+argument_list|,
+name|BUFFER_SIZE
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Unpack matching files from a jar. Entries inside the jar that do    * not match the given pattern will be skipped. Keep also a copy    * of the entire jar in the same directory for backward compatibility.    * TODO remove this feature in a new release and do only unJar    *    * @param inputStream the jar stream to unpack    * @param toDir the destination directory into which to unpack the jar    * @param unpackRegex the pattern to match jar entries against    *    * @throws IOException if an I/O error has occurred or toDir    * cannot be created and does not already exist    */
