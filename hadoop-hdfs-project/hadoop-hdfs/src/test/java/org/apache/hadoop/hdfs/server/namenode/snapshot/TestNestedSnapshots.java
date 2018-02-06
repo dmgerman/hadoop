@@ -40,7 +40,7 @@ name|snapshot
 operator|.
 name|DirectorySnapshottableFeature
 operator|.
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 import|;
 end_import
 
@@ -1287,7 +1287,7 @@ control|(
 init|;
 name|s
 operator|<
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 condition|;
 name|s
 operator|++
@@ -1399,7 +1399,7 @@ literal|0
 init|;
 name|f
 operator|<
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 condition|;
 name|f
 operator|+=
@@ -1428,7 +1428,7 @@ control|(
 init|;
 name|s
 operator|<
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 condition|;
 name|s
 operator|+=

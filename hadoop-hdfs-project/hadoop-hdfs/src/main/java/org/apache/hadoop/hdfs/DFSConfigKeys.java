@@ -2661,6 +2661,24 @@ name|DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT
+init|=
+literal|"dfs.namenode.snapshot.max.limit"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT_DEFAULT
+init|=
+literal|65536
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public

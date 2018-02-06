@@ -2626,7 +2626,7 @@ name|assertEquals
 argument_list|(
 name|DirectorySnapshottableFeature
 operator|.
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 argument_list|,
 name|rootNode
 operator|.
@@ -2672,7 +2672,7 @@ name|assertEquals
 argument_list|(
 name|DirectorySnapshottableFeature
 operator|.
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 argument_list|,
 name|rootNode
 operator|.

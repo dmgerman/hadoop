@@ -675,6 +675,12 @@ name|snapshotCounter
 init|=
 literal|0
 decl_stmt|;
+DECL|field|maxSnapshotLimit
+specifier|private
+specifier|final
+name|int
+name|maxSnapshotLimit
+decl_stmt|;
 comment|/** All snapshottable directories in the namesystem. */
 DECL|field|snapshottables
 specifier|private
@@ -758,6 +764,23 @@ operator|.
 name|DFS_NAMENODE_SNAPSHOT_DIFF_ALLOW_SNAP_ROOT_DESCENDANT_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|maxSnapshotLimit
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT_DEFAULT
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -773,6 +796,10 @@ operator|+
 literal|", snapshotDiffAllowSnapRootDescendant: "
 operator|+
 name|snapshotDiffAllowSnapRootDescendant
+operator|+
+literal|", maxSnapshotLimit: "
+operator|+
+name|maxSnapshotLimit
 argument_list|)
 expr_stmt|;
 block|}
@@ -987,7 +1014,7 @@ name|setSnapshotQuota
 argument_list|(
 name|DirectorySnapshottableFeature
 operator|.
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -1430,6 +1457,8 @@ argument_list|,
 name|this
 operator|.
 name|captureOpenFiles
+argument_list|,
+name|maxSnapshotLimit
 argument_list|)
 expr_stmt|;
 comment|//create success, update id

@@ -211,6 +211,17 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_MAX_LIMIT
+argument_list|,
+literal|3
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -679,6 +690,96 @@ argument_list|,
 literal|0
 argument_list|,
 literal|"/sub1/.snapshot/sn1/sub1sub3"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testMaxSnapshotLimit ()
+specifier|public
+name|void
+name|testMaxSnapshotLimit
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-mkdir /sub3"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|DFSAdminRun
+argument_list|(
+literal|"-allowSnapshot /sub3"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Allowing snapshot "
+operator|+
+literal|"on /sub3 succeeded"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// test createSnapshot
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-createSnapshot /sub3 sn0"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Created snapshot /sub3/.snapshot/sn0"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-createSnapshot /sub3 sn1"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Created snapshot /sub3/.snapshot/sn1"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-createSnapshot /sub3 sn2"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Created snapshot /sub3/.snapshot/sn2"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-createSnapshot /sub3 sn3"
+argument_list|,
+literal|1
+argument_list|,
+literal|"Failed to add snapshot: there are already 3 snapshot(s) and "
+operator|+
+literal|"the max snapshot limit is 3"
 argument_list|,
 name|conf
 argument_list|)

@@ -531,11 +531,11 @@ extends|extends
 name|DirectoryWithSnapshotFeature
 block|{
 comment|/** Limit the number of snapshot per snapshottable directory. */
-DECL|field|SNAPSHOT_LIMIT
+DECL|field|SNAPSHOT_QUOTA_DEFAULT
 specifier|static
 specifier|final
 name|int
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 init|=
 literal|1
 operator|<<
@@ -564,7 +564,7 @@ specifier|private
 name|int
 name|snapshotQuota
 init|=
-name|SNAPSHOT_LIMIT
+name|SNAPSHOT_QUOTA_DEFAULT
 decl_stmt|;
 DECL|method|DirectorySnapshottableFeature (DirectoryWithSnapshotFeature feature)
 specifier|public
@@ -957,7 +957,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add a snapshot. */
-DECL|method|addSnapshot (INodeDirectory snapshotRoot, int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles)
+DECL|method|addSnapshot (INodeDirectory snapshotRoot, int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles, int maxSnapshotLimit)
 specifier|public
 name|Snapshot
 name|addSnapshot
@@ -978,6 +978,9 @@ parameter_list|,
 specifier|final
 name|boolean
 name|captureOpenFiles
+parameter_list|,
+name|int
+name|maxSnapshotLimit
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1012,6 +1015,30 @@ operator|+
 literal|" snapshot(s) and the snapshot quota is "
 operator|+
 name|snapshotQuota
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|n
+operator|+
+literal|1
+operator|>
+name|maxSnapshotLimit
+condition|)
+block|{
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Failed to add snapshot: there are already "
+operator|+
+name|n
+operator|+
+literal|" snapshot(s) and the max snapshot limit is "
+operator|+
+name|maxSnapshotLimit
 argument_list|)
 throw|;
 block|}
