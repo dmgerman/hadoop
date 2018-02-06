@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -2618,6 +2628,26 @@ block|}
 block|}
 block|}
 comment|// don't hold lock on 'this' to avoid edit log updates blocking token ops
+name|logExpireTokens
+argument_list|(
+name|expiredTokens
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|logExpireTokens ( Collection<TokenIdent> expiredTokens)
+specifier|protected
+name|void
+name|logExpireTokens
+parameter_list|(
+name|Collection
+argument_list|<
+name|TokenIdent
+argument_list|>
+name|expiredTokens
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 for|for
 control|(
 name|TokenIdent
