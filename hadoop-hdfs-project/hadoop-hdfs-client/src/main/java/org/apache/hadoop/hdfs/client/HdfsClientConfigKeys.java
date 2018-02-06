@@ -276,7 +276,7 @@ DECL|field|DFS_NAMENODE_RPC_PORT_DEFAULT
 name|int
 name|DFS_NAMENODE_RPC_PORT_DEFAULT
 init|=
-literal|9820
+literal|8020
 decl_stmt|;
 DECL|field|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 name|String

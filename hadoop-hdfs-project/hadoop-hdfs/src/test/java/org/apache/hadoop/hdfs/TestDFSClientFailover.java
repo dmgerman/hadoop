@@ -1797,7 +1797,7 @@ literal|"."
 operator|+
 name|namenode
 argument_list|,
-literal|"localhost:9820"
+literal|"localhost:8020"
 argument_list|)
 expr_stmt|;
 comment|// call createProxy implicitly and explicitly

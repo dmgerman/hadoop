@@ -856,7 +856,7 @@ specifier|final
 name|String
 name|NS1_NN_ADDR
 init|=
-literal|"ns1-nn.example.com:9820"
+literal|"ns1-nn.example.com:8020"
 decl_stmt|;
 DECL|field|NS1_NN1_ADDR
 specifier|static
@@ -864,7 +864,7 @@ specifier|final
 name|String
 name|NS1_NN1_ADDR
 init|=
-literal|"ns1-nn1.example.com:9820"
+literal|"ns1-nn1.example.com:8020"
 decl_stmt|;
 DECL|field|NS1_NN2_ADDR
 specifier|static
@@ -872,7 +872,7 @@ specifier|final
 name|String
 name|NS1_NN2_ADDR
 init|=
-literal|"ns1-nn2.example.com:9820"
+literal|"ns1-nn2.example.com:8020"
 decl_stmt|;
 comment|/**    * Reset to default UGI settings since some tests change them.    */
 annotation|@
@@ -2804,7 +2804,7 @@ name|InetSocketAddress
 argument_list|(
 literal|"localhost"
 argument_list|,
-literal|9820
+literal|8020
 argument_list|)
 argument_list|,
 name|conf
@@ -2848,25 +2848,25 @@ specifier|final
 name|String
 name|NS1_NN1_HOST
 init|=
-literal|"ns1-nn1.example.com:9820"
+literal|"ns1-nn1.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
 name|NS1_NN2_HOST
 init|=
-literal|"ns1-nn2.example.com:9820"
+literal|"ns1-nn2.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
 name|NS2_NN1_HOST
 init|=
-literal|"ns2-nn1.example.com:9820"
+literal|"ns2-nn1.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
 name|NS2_NN2_HOST
 init|=
-literal|"ns2-nn2.example.com:9820"
+literal|"ns2-nn2.example.com:8020"
 decl_stmt|;
 name|conf
 operator|.
@@ -3316,7 +3316,7 @@ specifier|final
 name|String
 name|NS1_NN1_HOST
 init|=
-literal|"ns1-nn1.example.com:9820"
+literal|"ns1-nn1.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
@@ -3328,7 +3328,7 @@ specifier|final
 name|String
 name|NS1_NN2_HOST
 init|=
-literal|"ns1-nn1.example.com:9820"
+literal|"ns1-nn1.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
@@ -3864,13 +3864,13 @@ specifier|final
 name|String
 name|NS2_NN_ADDR
 init|=
-literal|"ns2-nn.example.com:9820"
+literal|"ns2-nn.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
 name|NN1_ADDR
 init|=
-literal|"nn.example.com:9820"
+literal|"nn.example.com:8020"
 decl_stmt|;
 specifier|final
 name|String
@@ -3882,7 +3882,7 @@ specifier|final
 name|String
 name|NN2_ADDR
 init|=
-literal|"nn2.example.com:9820"
+literal|"nn2.example.com:8020"
 decl_stmt|;
 name|conf
 operator|.
@@ -4915,7 +4915,7 @@ name|CommonConfigurationKeys
 operator|.
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-literal|"hdfs://127.0.0.1:9820"
+literal|"hdfs://127.0.0.1:8020"
 argument_list|)
 expr_stmt|;
 name|Collection

@@ -2187,7 +2187,7 @@ specifier|final
 name|String
 name|journalsBaseUri
 init|=
-literal|"qjournal://jn0:9820;jn1:9820;jn2:9820"
+literal|"qjournal://jn0:8020;jn1:8020;jn2:8020"
 decl_stmt|;
 name|setupStaticHostResolution
 argument_list|(
@@ -2815,7 +2815,7 @@ block|{
 name|String
 name|journalsBaseUri
 init|=
-literal|"qjournal://jn1:9820;jn2:9820;jn3:9820"
+literal|"qjournal://jn1:8020;jn2:8020;jn3:8020"
 decl_stmt|;
 name|HdfsConfiguration
 name|conf
@@ -2878,7 +2878,7 @@ decl_stmt|;
 name|String
 name|journalsBaseUri
 init|=
-literal|"qjournal://jn0 :9820;jn1:9820;jn2:9820"
+literal|"qjournal://jn0 :8020;jn1:8020;jn2:8020"
 decl_stmt|;
 name|setupStaticHostResolution
 argument_list|(

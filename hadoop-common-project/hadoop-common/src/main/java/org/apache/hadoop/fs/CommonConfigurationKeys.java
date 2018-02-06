@@ -311,7 +311,7 @@ name|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
 init|=
 literal|100
 decl_stmt|;
-comment|/**    * CallQueue related settings. These are not used directly, but rather    * combined with a namespace and port. For instance:    * IPC_NAMESPACE + ".9820." + IPC_CALLQUEUE_IMPL_KEY    */
+comment|/**    * CallQueue related settings. These are not used directly, but rather    * combined with a namespace and port. For instance:    * IPC_NAMESPACE + ".8020." + IPC_CALLQUEUE_IMPL_KEY    */
 DECL|field|IPC_NAMESPACE
 specifier|public
 specifier|static

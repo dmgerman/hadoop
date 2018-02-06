@@ -7222,7 +7222,7 @@ name|set
 argument_list|(
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-literal|"hdfs://127.0.0.1:9820"
+literal|"hdfs://127.0.0.1:8020"
 argument_list|)
 expr_stmt|;
 name|DFSAdmin

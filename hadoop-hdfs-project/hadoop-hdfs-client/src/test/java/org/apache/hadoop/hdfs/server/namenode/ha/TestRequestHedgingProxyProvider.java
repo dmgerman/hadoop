@@ -493,7 +493,7 @@ name|ns
 operator|+
 literal|".nn1"
 argument_list|,
-literal|"machine1.foo.bar:9820"
+literal|"machine1.foo.bar:8020"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -510,7 +510,7 @@ name|ns
 operator|+
 literal|".nn2"
 argument_list|,
-literal|"machine2.foo.bar:9820"
+literal|"machine2.foo.bar:8020"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2101,7 +2101,7 @@ name|ns
 operator|+
 literal|".nn3"
 argument_list|,
-literal|"machine3.foo.bar:9820"
+literal|"machine3.foo.bar:8020"
 argument_list|)
 expr_stmt|;
 specifier|final

@@ -180,7 +180,7 @@ name|getProperty
 argument_list|(
 literal|"test.TestSshFenceByTcpPort.port"
 argument_list|,
-literal|"9820"
+literal|"8020"
 argument_list|)
 decl_stmt|;
 DECL|field|TEST_KEYFILE
