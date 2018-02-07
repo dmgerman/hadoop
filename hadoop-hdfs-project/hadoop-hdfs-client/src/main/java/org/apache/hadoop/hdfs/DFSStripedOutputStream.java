@@ -6592,7 +6592,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"> has "
+literal|"> failed to write "
 argument_list|)
 operator|.
 name|append
@@ -6602,7 +6602,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" corrupt blocks."
+literal|" blocks."
 argument_list|)
 expr_stmt|;
 if|if
