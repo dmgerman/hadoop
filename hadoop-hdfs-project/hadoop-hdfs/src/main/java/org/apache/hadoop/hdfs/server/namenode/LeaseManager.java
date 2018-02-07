@@ -769,9 +769,8 @@ name|getINodeIdWithLeases
 argument_list|()
 control|)
 block|{
-specifier|final
-name|INodeFile
-name|cons
+name|INode
+name|inode
 init|=
 name|fsnamesystem
 operator|.
@@ -782,6 +781,32 @@ name|getInode
 argument_list|(
 name|id
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+comment|// The inode could have been deleted after getINodeIdWithLeases() is
+comment|// called, check here, and ignore it if so
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to find inode {} in getNumUnderConstructionBlocks()."
+argument_list|,
+name|id
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+specifier|final
+name|INodeFile
+name|cons
+init|=
+name|inode
 operator|.
 name|asFile
 argument_list|()
@@ -843,9 +868,11 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
+block|{
 name|numUCBlocks
 operator|++
 expr_stmt|;
+block|}
 block|}
 block|}
 name|LOG
