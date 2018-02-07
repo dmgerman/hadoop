@@ -3207,7 +3207,27 @@ parameter_list|(
 name|InetSocketAddress
 name|targetAddr
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+if|if
+condition|(
+name|targetAddr
+operator|.
+name|isUnresolved
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unresolved host: "
+operator|+
+name|targetAddr
+argument_list|)
+throw|;
+block|}
 name|InetAddress
 name|addr
 init|=

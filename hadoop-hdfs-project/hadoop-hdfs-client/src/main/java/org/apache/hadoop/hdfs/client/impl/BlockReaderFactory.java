@@ -1510,6 +1510,8 @@ operator|.
 name|getShortCircuitConf
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|scConf
@@ -1623,6 +1625,23 @@ return|return
 name|reader
 return|;
 block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block read failed. Getting remote block reader using TCP"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 name|Preconditions
 operator|.
@@ -2053,7 +2072,7 @@ name|BlockReader
 name|getBlockReaderLocal
 parameter_list|()
 throws|throws
-name|InvalidToken
+name|IOException
 block|{
 name|LOG
 operator|.

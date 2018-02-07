@@ -634,6 +634,8 @@ parameter_list|,
 name|ShortCircuitConf
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// If there is no domain socket path configured, we can't use domain
 comment|// sockets.

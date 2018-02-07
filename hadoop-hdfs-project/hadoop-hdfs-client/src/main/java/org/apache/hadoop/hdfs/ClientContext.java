@@ -52,6 +52,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1058,6 +1068,8 @@ parameter_list|(
 name|DatanodeInfo
 name|datanodeInfo
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// If applications disable the feature or the client machine can't
 comment|// resolve its network location, clientNode will be set to null.
