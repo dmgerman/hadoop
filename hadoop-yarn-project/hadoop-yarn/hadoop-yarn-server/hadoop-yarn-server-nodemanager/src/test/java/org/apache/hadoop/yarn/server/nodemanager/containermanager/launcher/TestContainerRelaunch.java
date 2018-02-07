@@ -855,6 +855,26 @@ name|getUserLocalDirs
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"user filecache dirs null"
+argument_list|,
+name|csc
+operator|.
+name|getUserFilecacheDirs
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"application local dirs null"
+argument_list|,
+name|csc
+operator|.
+name|getApplicationLocalDirs
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

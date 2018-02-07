@@ -90,24 +90,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|registry
-operator|.
-name|client
-operator|.
-name|binding
-operator|.
-name|RegistryPathUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Shell
@@ -774,16 +756,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collections
 import|;
 end_import
@@ -795,16 +767,6 @@ operator|.
 name|util
 operator|.
 name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
 import|;
 end_import
 
@@ -845,16 +807,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
 import|;
 end_import
 
@@ -906,7 +858,7 @@ name|runtime
 operator|.
 name|LinuxContainerRuntimeConstants
 operator|.
-name|CONTAINER_ID_STR
+name|APPLICATION_LOCAL_DIRS
 import|;
 end_import
 
@@ -932,7 +884,7 @@ name|runtime
 operator|.
 name|LinuxContainerRuntimeConstants
 operator|.
-name|CONTAINER_LOCAL_DIRS
+name|CONTAINER_ID_STR
 import|;
 end_import
 
@@ -1322,7 +1274,7 @@ name|runtime
 operator|.
 name|LinuxContainerRuntimeConstants
 operator|.
-name|USER_LOCAL_DIRS
+name|USER_FILECACHE_DIRS
 import|;
 end_import
 
@@ -1476,11 +1428,6 @@ specifier|private
 name|String
 name|containerId
 decl_stmt|;
-DECL|field|defaultHostname
-specifier|private
-name|String
-name|defaultHostname
-decl_stmt|;
 DECL|field|container
 specifier|private
 name|Container
@@ -1597,21 +1544,21 @@ name|String
 argument_list|>
 name|filecacheDirs
 decl_stmt|;
-DECL|field|userLocalDirs
+DECL|field|userFilecacheDirs
 specifier|private
 name|List
 argument_list|<
 name|String
 argument_list|>
-name|userLocalDirs
+name|userFilecacheDirs
 decl_stmt|;
-DECL|field|containerLocalDirs
+DECL|field|applicationLocalDirs
 specifier|private
 name|List
 argument_list|<
 name|String
 argument_list|>
-name|containerLocalDirs
+name|applicationLocalDirs
 decl_stmt|;
 DECL|field|containerLogDirs
 specifier|private
@@ -1751,15 +1698,6 @@ expr_stmt|;
 name|containerId
 operator|=
 literal|"container_id"
-expr_stmt|;
-name|defaultHostname
-operator|=
-name|RegistryPathUtils
-operator|.
-name|encodeYarnID
-argument_list|(
-name|containerId
-argument_list|)
 expr_stmt|;
 name|container
 operator|=
@@ -2163,14 +2101,14 @@ name|resourcesOptions
 operator|=
 literal|"cgroups=none"
 expr_stmt|;
-name|userLocalDirs
+name|userFilecacheDirs
 operator|=
 operator|new
 name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|containerLocalDirs
+name|applicationLocalDirs
 operator|=
 operator|new
 name|ArrayList
@@ -2212,18 +2150,18 @@ argument_list|(
 literal|"/test_filecache_dir"
 argument_list|)
 expr_stmt|;
-name|userLocalDirs
+name|userFilecacheDirs
 operator|.
 name|add
 argument_list|(
-literal|"/test_user_local_dir"
+literal|"/test_user_filecache_dir"
 argument_list|)
 expr_stmt|;
-name|containerLocalDirs
+name|applicationLocalDirs
 operator|.
 name|add
 argument_list|(
-literal|"/test_container_local_dir"
+literal|"/test_application_local_dir"
 argument_list|)
 expr_stmt|;
 name|containerLogDirs
@@ -2364,16 +2302,16 @@ argument_list|)
 operator|.
 name|setExecutionAttribute
 argument_list|(
-name|USER_LOCAL_DIRS
+name|USER_FILECACHE_DIRS
 argument_list|,
-name|userLocalDirs
+name|userFilecacheDirs
 argument_list|)
 operator|.
 name|setExecutionAttribute
 argument_list|(
-name|CONTAINER_LOCAL_DIRS
+name|APPLICATION_LOCAL_DIRS
 argument_list|,
-name|containerLocalDirs
+name|applicationLocalDirs
 argument_list|)
 operator|.
 name|setExecutionAttribute
@@ -2628,12 +2566,22 @@ name|getArguments
 argument_list|()
 decl_stmt|;
 comment|//This invocation of container-executor should use 13 arguments in a
-comment|// specific order (sigh.)
+comment|// specific order
+name|int
+name|expected
+init|=
+literal|13
+decl_stmt|;
+name|int
+name|counter
+init|=
+literal|1
+decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|13
+name|expected
 argument_list|,
 name|args
 operator|.
@@ -2641,7 +2589,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//verify arguments
 name|Assert
 operator|.
 name|assertEquals
@@ -2652,7 +2599,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|1
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2678,7 +2626,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|2
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2692,7 +2641,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|3
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2706,7 +2656,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|4
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2723,7 +2674,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|5
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2743,7 +2695,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|6
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2763,7 +2716,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|7
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2780,7 +2734,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|8
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2799,7 +2754,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|9
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2818,7 +2774,8 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|10
+name|counter
+operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2832,79 +2789,13 @@ name|args
 operator|.
 name|get
 argument_list|(
-literal|12
+operator|++
+name|counter
 argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
 name|op
-return|;
-block|}
-DECL|method|getExpectedTestCapabilitiesArgumentString ()
-specifier|private
-name|String
-name|getExpectedTestCapabilitiesArgumentString
-parameter_list|()
-block|{
-comment|/* Ordering of capabilities depends on HashSet ordering. */
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|capabilitySet
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|testCapabilities
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|StringBuilder
-name|expectedCapabilitiesString
-init|=
-operator|new
-name|StringBuilder
-argument_list|(
-literal|"--cap-drop=ALL "
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|String
-name|capability
-range|:
-name|capabilitySet
-control|)
-block|{
-name|expectedCapabilitiesString
-operator|.
-name|append
-argument_list|(
-literal|"--cap-add="
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|capability
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|" "
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|expectedCapabilitiesString
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 annotation|@
@@ -3006,7 +2897,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|14
+literal|15
 decl_stmt|;
 name|int
 name|counter
@@ -3203,15 +3094,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -3250,7 +3152,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3366,7 +3267,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|14
+literal|15
 argument_list|,
 name|dockerCommands
 operator|.
@@ -3557,15 +3458,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -3604,7 +3516,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3997,7 +3908,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|14
+literal|15
 decl_stmt|;
 name|int
 name|counter
@@ -4196,15 +4107,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -4243,7 +4165,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4410,7 +4331,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|14
+literal|15
 decl_stmt|;
 name|int
 name|counter
@@ -4607,15 +4528,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -4654,7 +4586,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4919,15 +4850,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -4966,7 +4908,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5133,7 +5074,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|14
+literal|15
 decl_stmt|;
 name|Assert
 operator|.
@@ -5376,7 +5317,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|15
+literal|16
 decl_stmt|;
 name|int
 name|counter
@@ -5588,15 +5529,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -5635,7 +5587,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5750,7 +5701,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|14
+literal|15
 decl_stmt|;
 name|Assert
 operator|.
@@ -5802,10 +5753,6 @@ name|testLaunchPrivilegedContainersWithDisabledSetting
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
@@ -5884,10 +5831,6 @@ name|testLaunchPrivilegedContainersWithEnabledSettingAndDefaultACL
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 comment|//Enable privileged containers.
 name|conf
@@ -5981,10 +5924,6 @@ name|testLaunchPrivilegedContainersEnabledAndUserNotInWhitelist
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 comment|//Enable privileged containers.
 name|conf
@@ -6212,7 +6151,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|15
+literal|16
 decl_stmt|;
 name|int
 name|counter
@@ -6424,15 +6363,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -6471,7 +6421,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6684,10 +6633,6 @@ name|testMountSourceOnly
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
@@ -7064,7 +7009,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  ro-mounts=/test_local_dir/test_resource_file:test_mount"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,/"
+operator|+
+literal|"test_user_filecache_dir:/test_user_filecache_dir,"
+operator|+
+literal|"/test_local_dir/test_resource_file:test_mount"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7079,15 +7028,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
-operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7126,7 +7069,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7140,10 +7082,6 @@ name|testMountInvalid
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
@@ -7522,7 +7460,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  ro-mounts=/test_local_dir/test_resource_file:test_mount1,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
+operator|+
+literal|"/test_user_filecache_dir:/test_user_filecache_dir,"
+operator|+
+literal|"/test_local_dir/test_resource_file:test_mount1,"
 operator|+
 literal|"/test_local_dir/test_resource_file:test_mount2"
 argument_list|,
@@ -7539,15 +7481,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
-operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7586,7 +7522,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7898,7 +7833,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  ro-mounts=/tmp/foo:/tmp/foo"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
+operator|+
+literal|"/test_user_filecache_dir:/test_user_filecache_dir,"
+operator|+
+literal|"/tmp/foo:/tmp/foo"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7913,15 +7852,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
-operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir,"
+literal|"/test_application_local_dir:/test_application_local_dir,"
 operator|+
 literal|"/tmp/bar:/tmp/bar"
 argument_list|,
@@ -7962,7 +7895,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7976,10 +7908,6 @@ name|testUserMountInvalid
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
@@ -8058,10 +7986,6 @@ name|testUserMountModeInvalid
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
@@ -8140,10 +8064,6 @@ name|testUserMountModeNulInvalid
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
@@ -10679,7 +10599,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  ro-mounts=/source/path:/destination/path"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
+operator|+
+literal|"/test_user_filecache_dir:/test_user_filecache_dir,"
+operator|+
+literal|"/source/path:/destination/path"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -10694,15 +10618,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
-operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -10757,7 +10675,6 @@ operator|.
 name|get
 argument_list|(
 name|counter
-operator|++
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10771,10 +10688,6 @@ name|testDockerCapabilities
 parameter_list|()
 throws|throws
 name|ContainerExecutionException
-throws|,
-name|PrivilegedOperationException
-throws|,
-name|IOException
 block|{
 name|DockerLinuxContainerRuntime
 name|runtime
