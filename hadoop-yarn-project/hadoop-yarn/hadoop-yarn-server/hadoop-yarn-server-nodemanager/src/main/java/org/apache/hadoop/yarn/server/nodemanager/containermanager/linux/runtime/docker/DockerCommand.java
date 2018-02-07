@@ -400,6 +400,32 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**    * Add the client configuration directory to the docker command.    *    * The client configuration option proceeds any of the docker subcommands    * (such as run, load, pull, etc). Ordering will be handled by    * container-executor. Docker expects the value to be a directory containing    * the file config.json. This file is typically generated via docker login.    *    * @param clientConfigDir - directory containing the docker client config.    */
+DECL|method|setClientConfigDir (String clientConfigDir)
+specifier|public
+name|void
+name|setClientConfigDir
+parameter_list|(
+name|String
+name|clientConfigDir
+parameter_list|)
+block|{
+if|if
+condition|(
+name|clientConfigDir
+operator|!=
+literal|null
+condition|)
+block|{
+name|addCommandArguments
+argument_list|(
+literal|"docker-config"
+argument_list|,
+name|clientConfigDir
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
