@@ -930,7 +930,10 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|getNextSPSPathId
+name|getSPSManager
+argument_list|()
+operator|.
+name|getNextPathId
 argument_list|()
 return|;
 block|}
@@ -947,7 +950,10 @@ parameter_list|)
 block|{
 name|blockManager
 operator|.
-name|removeSPSPathId
+name|getSPSManager
+argument_list|()
+operator|.
+name|removePathId
 argument_list|(
 name|trackId
 argument_list|)
@@ -963,7 +969,10 @@ parameter_list|()
 block|{
 name|blockManager
 operator|.
-name|removeAllSPSPathIds
+name|getSPSManager
+argument_list|()
+operator|.
+name|removeAllPathIds
 argument_list|()
 expr_stmt|;
 block|}

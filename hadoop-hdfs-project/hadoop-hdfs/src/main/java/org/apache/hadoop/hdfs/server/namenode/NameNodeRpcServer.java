@@ -14234,10 +14234,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isStoragePolicySatisfierRunning ()
+DECL|method|isInternalSatisfierRunning ()
 specifier|public
 name|boolean
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 parameter_list|()
 throws|throws
 name|IOException
@@ -14248,7 +14248,7 @@ expr_stmt|;
 name|String
 name|operationName
 init|=
-literal|"isStoragePolicySatisfierRunning"
+literal|"isInternalSatisfierRunning"
 decl_stmt|;
 name|namesystem
 operator|.
@@ -14281,7 +14281,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|getSPSManager
+argument_list|()
+operator|.
+name|isInternalSatisfierRunning
 argument_list|()
 decl_stmt|;
 name|namesystem
@@ -14335,6 +14338,9 @@ return|return
 name|namesystem
 operator|.
 name|getBlockManager
+argument_list|()
+operator|.
+name|getSPSManager
 argument_list|()
 operator|.
 name|checkStoragePolicySatisfyPathStatus
@@ -14437,7 +14443,7 @@ literal|"Not supported by Standby Namenode."
 argument_list|)
 throw|;
 block|}
-comment|// Check that internal SPS service is running
+comment|// Check that SPS daemon service is running inside namenode
 if|if
 condition|(
 name|namesystem
@@ -14445,23 +14451,15 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|getSPSMode
+name|getSPSManager
+argument_list|()
+operator|.
+name|getMode
 argument_list|()
 operator|==
 name|StoragePolicySatisfierMode
 operator|.
 name|INTERNAL
-operator|&&
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|getSPSService
-argument_list|()
-operator|.
-name|isRunning
-argument_list|()
 condition|)
 block|{
 name|LOG
@@ -14491,7 +14489,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|getNextSPSPathId
+name|getSPSManager
+argument_list|()
+operator|.
+name|getNextPathId
 argument_list|()
 return|;
 block|}

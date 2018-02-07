@@ -14624,10 +14624,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|isStoragePolicySatisfierRunning ()
+DECL|method|isInternalSatisfierRunning ()
 specifier|public
 name|boolean
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 parameter_list|()
 throws|throws
 name|IOException
@@ -14635,7 +14635,7 @@ block|{
 return|return
 name|namenode
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 return|;
 block|}

@@ -1924,7 +1924,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 condition|)
 block|{

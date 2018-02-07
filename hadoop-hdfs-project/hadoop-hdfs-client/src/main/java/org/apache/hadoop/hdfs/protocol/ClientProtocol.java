@@ -2471,12 +2471,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Check if StoragePolicySatisfier is running.    * @return true if StoragePolicySatisfier is running    * @throws IOException    */
+comment|/**    * Check if internal StoragePolicySatisfier is running.    * @return true if internal StoragePolicySatisfier is running    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|isStoragePolicySatisfierRunning ()
+DECL|method|isInternalSatisfierRunning ()
 name|boolean
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 parameter_list|()
 throws|throws
 name|IOException

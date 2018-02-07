@@ -2573,6 +2573,13 @@ name|FILE
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
 name|Assert
 operator|.
 name|fail
@@ -2581,41 +2588,14 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Should failed to satisfy storage policy "
+literal|"Allow to invoke mutlipe times "
 operator|+
-literal|"for %s ,since it has been "
+literal|"#satisfyStoragePolicy() api for a path %s , internally just "
 operator|+
-literal|"added to satisfy movement queue."
+literal|"skipping addtion to satisfy movement queue."
 argument_list|,
 name|FILE
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Cannot request to call satisfy storage policy "
-operator|+
-literal|"on path %s, as this file/dir was already called for "
-operator|+
-literal|"satisfying storage policy."
-argument_list|,
-name|FILE
-argument_list|)
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -2960,7 +2940,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -3017,7 +2997,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -3089,7 +3069,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -3207,7 +3187,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -6683,7 +6663,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|addSPSPathId
+name|getSPSManager
+argument_list|()
+operator|.
+name|addPathId
 argument_list|(
 name|rootINode
 operator|.
@@ -7034,7 +7017,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|addSPSPathId
+name|getSPSManager
+argument_list|()
+operator|.
+name|addPathId
 argument_list|(
 name|rootINode
 operator|.
@@ -9163,9 +9149,15 @@ specifier|final
 name|StoragePolicySatisfier
 name|sps
 init|=
+operator|(
+name|StoragePolicySatisfier
+operator|)
 name|blockManager
 operator|.
-name|getStoragePolicySatisfier
+name|getSPSManager
+argument_list|()
+operator|.
+name|getInternalSPSService
 argument_list|()
 decl_stmt|;
 name|GenericTestUtils
@@ -9268,9 +9260,15 @@ specifier|final
 name|StoragePolicySatisfier
 name|sps
 init|=
+operator|(
+name|StoragePolicySatisfier
+operator|)
 name|blockManager
 operator|.
-name|getStoragePolicySatisfier
+name|getSPSManager
+argument_list|()
+operator|.
+name|getInternalSPSService
 argument_list|()
 decl_stmt|;
 name|GenericTestUtils

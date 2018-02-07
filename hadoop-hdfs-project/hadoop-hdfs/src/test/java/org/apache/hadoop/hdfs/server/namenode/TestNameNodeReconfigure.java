@@ -1354,7 +1354,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|getSPSManager
+argument_list|()
+operator|.
+name|isInternalSatisfierRunning
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1464,9 +1467,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"For enabling or disabling storage policy satisfier, we must "
+literal|"For enabling or disabling storage policy satisfier, must "
 operator|+
-literal|"pass either none/internal/external string value only"
+literal|"pass either internal/external/none string value only"
 argument_list|,
 name|e
 operator|.
@@ -1562,7 +1565,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|getSPSManager
+argument_list|()
+operator|.
+name|isInternalSatisfierRunning
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1749,7 +1755,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|getSPSManager
+argument_list|()
+operator|.
+name|isInternalSatisfierRunning
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1814,7 +1823,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|getSPSManager
+argument_list|()
+operator|.
+name|isInternalSatisfierRunning
 argument_list|()
 argument_list|)
 expr_stmt|;

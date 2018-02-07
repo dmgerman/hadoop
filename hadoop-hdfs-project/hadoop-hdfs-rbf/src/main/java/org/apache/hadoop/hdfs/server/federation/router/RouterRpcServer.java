@@ -14853,10 +14853,10 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|isStoragePolicySatisfierRunning ()
+DECL|method|isInternalSatisfierRunning ()
 specifier|public
 name|boolean
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 parameter_list|()
 throws|throws
 name|IOException

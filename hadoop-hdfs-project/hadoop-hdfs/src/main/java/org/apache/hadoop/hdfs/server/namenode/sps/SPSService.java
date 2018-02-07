@@ -164,10 +164,10 @@ name|void
 name|stopGracefully
 parameter_list|()
 function_decl|;
-comment|/**    * Disable the SPS service.    *    * @param forceStop    */
-DECL|method|disable (boolean forceStop)
+comment|/**    * Stops the SPS service.    *    * @param forceStop    *          true represents to clear all the sps path's hint, false otherwise.    */
+DECL|method|stop (boolean forceStop)
 name|void
-name|disable
+name|stop
 parameter_list|(
 name|boolean
 name|forceStop
@@ -214,6 +214,15 @@ DECL|method|processingQueueSize ()
 name|int
 name|processingQueueSize
 parameter_list|()
+function_decl|;
+comment|/**    * Clear inodeId present in the processing queue.    */
+DECL|method|clearQueue (long inodeId)
+name|void
+name|clearQueue
+parameter_list|(
+name|long
+name|inodeId
+parameter_list|)
 function_decl|;
 comment|/**    * @return the configuration.    */
 DECL|method|getConf ()

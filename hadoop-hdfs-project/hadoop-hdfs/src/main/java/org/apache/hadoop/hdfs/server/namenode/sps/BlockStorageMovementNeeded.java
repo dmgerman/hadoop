@@ -1204,7 +1204,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-name|cleanSpsStatus
+name|cleanSPSStatus
 argument_list|()
 expr_stmt|;
 block|}
@@ -1295,11 +1295,11 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|cleanSpsStatus ()
+DECL|method|cleanSPSStatus ()
 specifier|private
 specifier|synchronized
 name|void
-name|cleanSpsStatus
+name|cleanSPSStatus
 parameter_list|()
 block|{
 for|for

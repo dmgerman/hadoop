@@ -2698,7 +2698,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|IsStoragePolicySatisfierRunningRequestProto
+name|IsInternalSatisfierRunningRequestProto
 import|;
 end_import
 
@@ -2718,7 +2718,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|IsStoragePolicySatisfierRunningResponseProto
+name|IsInternalSatisfierRunningResponseProto
 import|;
 end_import
 
@@ -13154,14 +13154,14 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|IsStoragePolicySatisfierRunningResponseProto
-DECL|method|isStoragePolicySatisfierRunning (RpcController controller, IsStoragePolicySatisfierRunningRequestProto req)
-name|isStoragePolicySatisfierRunning
+name|IsInternalSatisfierRunningResponseProto
+DECL|method|isInternalSatisfierRunning (RpcController controller, IsInternalSatisfierRunningRequestProto req)
+name|isInternalSatisfierRunning
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|IsStoragePolicySatisfierRunningRequestProto
+name|IsInternalSatisfierRunningRequestProto
 name|req
 parameter_list|)
 throws|throws
@@ -13174,15 +13174,15 @@ name|ret
 init|=
 name|server
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 decl_stmt|;
-name|IsStoragePolicySatisfierRunningResponseProto
+name|IsInternalSatisfierRunningResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|IsStoragePolicySatisfierRunningResponseProto
+name|IsInternalSatisfierRunningResponseProto
 operator|.
 name|newBuilder
 argument_list|()

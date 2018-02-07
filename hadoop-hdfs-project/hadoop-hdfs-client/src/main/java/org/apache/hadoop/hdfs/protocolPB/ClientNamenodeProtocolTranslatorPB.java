@@ -2310,7 +2310,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|IsStoragePolicySatisfierRunningRequestProto
+name|IsInternalSatisfierRunningRequestProto
 import|;
 end_import
 
@@ -2330,7 +2330,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|IsStoragePolicySatisfierRunningResponseProto
+name|IsInternalSatisfierRunningResponseProto
 import|;
 end_import
 
@@ -4283,11 +4283,11 @@ decl_stmt|;
 specifier|private
 specifier|final
 specifier|static
-name|IsStoragePolicySatisfierRunningRequestProto
+name|IsInternalSatisfierRunningRequestProto
 DECL|field|VOID_IS_SPS_RUNNING_REQUEST
 name|VOID_IS_SPS_RUNNING_REQUEST
 init|=
-name|IsStoragePolicySatisfierRunningRequestProto
+name|IsInternalSatisfierRunningRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -12802,22 +12802,22 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|isStoragePolicySatisfierRunning ()
+DECL|method|isInternalSatisfierRunning ()
 specifier|public
 name|boolean
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 parameter_list|()
 throws|throws
 name|IOException
 block|{
 try|try
 block|{
-name|IsStoragePolicySatisfierRunningResponseProto
+name|IsInternalSatisfierRunningResponseProto
 name|rep
 init|=
 name|rpcProxy
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|(
 literal|null
 argument_list|,

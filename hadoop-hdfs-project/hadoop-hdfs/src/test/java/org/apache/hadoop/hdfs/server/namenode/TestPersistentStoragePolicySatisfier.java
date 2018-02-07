@@ -1784,8 +1784,15 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|disableSPS
+name|getSPSManager
 argument_list|()
+operator|.
+name|changeModeEvent
+argument_list|(
+name|StoragePolicySatisfierMode
+operator|.
+name|NONE
+argument_list|)
 expr_stmt|;
 comment|// Make sure satisfy xattr has been removed.
 name|DFSTestUtil

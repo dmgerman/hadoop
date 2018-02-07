@@ -1269,7 +1269,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|getStoragePolicySatisfier
+name|getSPSManager
+argument_list|()
+operator|.
+name|getInternalSPSService
 argument_list|()
 operator|.
 name|clearQueue

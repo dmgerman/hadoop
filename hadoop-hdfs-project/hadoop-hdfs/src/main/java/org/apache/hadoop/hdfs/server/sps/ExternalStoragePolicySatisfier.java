@@ -480,7 +480,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|isStoragePolicySatisfierRunning
+name|isInternalSatisfierRunning
 argument_list|()
 expr_stmt|;
 if|if

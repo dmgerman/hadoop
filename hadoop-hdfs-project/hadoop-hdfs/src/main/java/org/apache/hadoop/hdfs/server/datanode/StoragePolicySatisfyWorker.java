@@ -567,6 +567,7 @@ name|datanode
 operator|=
 name|datanode
 expr_stmt|;
+comment|// Defaulting to 10. This is to minimise the number of move ops.
 name|moverThreads
 operator|=
 name|conf
@@ -577,9 +578,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_MOVER_MOVERTHREADS_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_MOVER_MOVERTHREADS_DEFAULT
+literal|10
 argument_list|)
 expr_stmt|;
 name|moveExecutor
@@ -814,47 +813,6 @@ expr_stmt|;
 return|return
 name|t
 return|;
-block|}
-block|}
-argument_list|,
-operator|new
-name|ThreadPoolExecutor
-operator|.
-name|CallerRunsPolicy
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|rejectedExecution
-parameter_list|(
-name|Runnable
-name|runnable
-parameter_list|,
-name|ThreadPoolExecutor
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Execution for block movement to satisfy storage policy"
-operator|+
-literal|" got rejected, Executing in current thread"
-argument_list|)
-expr_stmt|;
-comment|// will run in the current thread.
-name|super
-operator|.
-name|rejectedExecution
-argument_list|(
-name|runnable
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 argument_list|)

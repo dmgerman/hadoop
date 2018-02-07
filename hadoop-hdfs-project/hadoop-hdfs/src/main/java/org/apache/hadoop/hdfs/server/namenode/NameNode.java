@@ -10103,7 +10103,7 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|reconfigureSPSEnabled
+name|reconfigureSPSModeEvent
 argument_list|(
 name|newVal
 argument_list|,
@@ -10522,9 +10522,9 @@ name|clientBackoffEnabled
 argument_list|)
 return|;
 block|}
-DECL|method|reconfigureSPSEnabled (String newVal, String property)
+DECL|method|reconfigureSPSModeEvent (String newVal, String property)
 name|String
-name|reconfigureSPSEnabled
+name|reconfigureSPSModeEvent
 parameter_list|(
 name|String
 name|newVal
@@ -10570,9 +10570,9 @@ argument_list|,
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"For enabling or disabling storage policy satisfier, we must "
+literal|"For enabling or disabling storage policy satisfier, must "
 operator|+
-literal|"pass either none/internal/external string value only"
+literal|"pass either internal/external/none string value only"
 argument_list|)
 argument_list|)
 throw|;
@@ -10622,51 +10622,19 @@ argument_list|(
 name|newVal
 argument_list|)
 decl_stmt|;
-switch|switch
-condition|(
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getSPSManager
+argument_list|()
+operator|.
+name|changeModeEvent
+argument_list|(
 name|mode
-condition|)
-block|{
-case|case
-name|NONE
-case|:
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|disableSPS
-argument_list|()
+argument_list|)
 expr_stmt|;
-break|break;
-case|case
-name|INTERNAL
-case|:
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|enableInternalSPS
-argument_list|()
-expr_stmt|;
-break|break;
-case|case
-name|EXTERNAL
-case|:
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|enableExternalSPS
-argument_list|()
-expr_stmt|;
-break|break;
-default|default:
-comment|// nothing
-break|break;
-block|}
 return|return
 name|newVal
 return|;

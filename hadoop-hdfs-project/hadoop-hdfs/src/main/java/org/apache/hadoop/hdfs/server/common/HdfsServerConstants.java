@@ -1382,7 +1382,7 @@ DECL|field|XATTR_SATISFY_STORAGE_POLICY
 name|String
 name|XATTR_SATISFY_STORAGE_POLICY
 init|=
-literal|"user.hdfs.sps.xattr"
+literal|"user.hdfs.sps"
 decl_stmt|;
 DECL|field|MOVER_ID_PATH
 name|Path

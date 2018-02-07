@@ -6505,7 +6505,10 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|isSPSEnabled
+name|getSPSManager
+argument_list|()
+operator|.
+name|isEnabled
 argument_list|()
 condition|)
 block|{

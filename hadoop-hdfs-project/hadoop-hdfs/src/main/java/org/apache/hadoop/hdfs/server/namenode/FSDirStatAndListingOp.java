@@ -654,7 +654,7 @@ name|isSuperUser
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the file info for a specific file.    * @param fsd The FS directory    * @param pc The permission checker    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    * @param needLocation if blockLocations need to be returned    *    * @param needLocation Include {@link LocatedBlocks} in result.    * @param needBlockToken Include block tokens in {@link LocatedBlocks}.    * @return object containing information regarding the file    *         or null if file not found    */
+comment|/**    * Get the file info for a specific file.    * @param fsd The FS directory    * @param pc The permission checker    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @param needLocation Include {@link LocatedBlocks} in result.    * @param needBlockToken Include block tokens in {@link LocatedBlocks}.    * @return object containing information regarding the file    *         or null if file not found    */
 DECL|method|getFileInfo (FSDirectory fsd, FSPermissionChecker pc, String srcArg, boolean resolveLink, boolean needLocation, boolean needBlockToken)
 specifier|static
 name|HdfsFileStatus
