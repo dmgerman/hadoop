@@ -38,20 +38,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Stopwatch
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -257,6 +243,20 @@ operator|.
 name|web
 operator|.
 name|HttpUserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StopWatch
 import|;
 end_import
 
@@ -3690,11 +3690,11 @@ expr_stmt|;
 try|try
 block|{
 specifier|final
-name|Stopwatch
+name|StopWatch
 name|sw
 init|=
 operator|new
-name|Stopwatch
+name|StopWatch
 argument_list|()
 operator|.
 name|start
