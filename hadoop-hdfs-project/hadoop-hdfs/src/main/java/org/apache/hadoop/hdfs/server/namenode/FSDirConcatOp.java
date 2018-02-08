@@ -1465,6 +1465,7 @@ operator|.
 name|clearBlocks
 argument_list|()
 expr_stmt|;
+comment|// Ensure the nodeToRemove is cleared from snapshot diff list
 name|nodeToRemove
 operator|.
 name|getParent
@@ -1473,6 +1474,11 @@ operator|.
 name|removeChild
 argument_list|(
 name|nodeToRemove
+argument_list|,
+name|targetIIP
+operator|.
+name|getLatestSnapshotId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fsd
