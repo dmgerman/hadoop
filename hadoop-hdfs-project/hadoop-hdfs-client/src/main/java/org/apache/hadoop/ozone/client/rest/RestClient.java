@@ -961,7 +961,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Ozone Client REST protocol implementation. It uses REST protocol to  * connect to Ozone Handler that executes client calls. RestClient uses  *<code>ozone.rest.servers</code> and<code>ozone.rest.client.port</code>  * to discover Ozone Rest Server.  */
+comment|/**  * Ozone Client REST protocol implementation. It uses REST protocol to  * connect to Ozone Handler that executes client calls.  */
 end_comment
 
 begin_class

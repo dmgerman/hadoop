@@ -1014,6 +1014,8 @@ operator|.
 name|CREATED
 argument_list|)
 expr_stmt|;
+comment|// space has already been allocated in container1, now container 2 should
+comment|// be chosen.
 name|info
 operator|=
 name|stateManager
@@ -1049,7 +1051,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|container1
+name|container2
 argument_list|,
 name|info
 operator|.
