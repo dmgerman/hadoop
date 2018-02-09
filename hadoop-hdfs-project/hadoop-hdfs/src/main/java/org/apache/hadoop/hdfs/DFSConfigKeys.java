@@ -308,7 +308,7 @@ name|driver
 operator|.
 name|impl
 operator|.
-name|StateStoreFileImpl
+name|StateStoreSerializerPBImpl
 import|;
 end_import
 
@@ -332,7 +332,7 @@ name|driver
 operator|.
 name|impl
 operator|.
-name|StateStoreSerializerPBImpl
+name|StateStoreZooKeeperImpl
 import|;
 end_import
 
@@ -7913,7 +7913,7 @@ argument_list|>
 DECL|field|FEDERATION_STORE_DRIVER_CLASS_DEFAULT
 name|FEDERATION_STORE_DRIVER_CLASS_DEFAULT
 init|=
-name|StateStoreFileImpl
+name|StateStoreZooKeeperImpl
 operator|.
 name|class
 decl_stmt|;

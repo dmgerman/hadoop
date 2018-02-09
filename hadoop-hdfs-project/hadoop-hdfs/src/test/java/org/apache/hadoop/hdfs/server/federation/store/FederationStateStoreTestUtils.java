@@ -320,6 +320,30 @@ name|federation
 operator|.
 name|store
 operator|.
+name|driver
+operator|.
+name|impl
+operator|.
+name|StateStoreFileImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
 name|records
 operator|.
 name|BaseRecord
@@ -417,6 +441,23 @@ specifier|final
 class|class
 name|FederationStateStoreTestUtils
 block|{
+comment|/** The State Store Driver implementation class for testing .*/
+specifier|private
+specifier|static
+specifier|final
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|StateStoreDriver
+argument_list|>
+DECL|field|FEDERATION_STORE_DRIVER_CLASS_FOR_TEST
+name|FEDERATION_STORE_DRIVER_CLASS_FOR_TEST
+init|=
+name|StateStoreFileImpl
+operator|.
+name|class
+decl_stmt|;
 DECL|method|FederationStateStoreTestUtils ()
 specifier|private
 name|FederationStateStoreTestUtils
@@ -424,8 +465,8 @@ parameter_list|()
 block|{
 comment|// Utility Class
 block|}
-comment|/**    * Get the default State Store driver implementation.    *    * @return Class of the default State Store driver implementation.    */
-DECL|method|getDefaultDriver ()
+comment|/**    * Get the State Store driver implementation for testing.    *    * @return Class of the State Store driver implementation.    */
+DECL|method|getTestDriverClass ()
 specifier|public
 specifier|static
 name|Class
@@ -434,13 +475,11 @@ name|?
 extends|extends
 name|StateStoreDriver
 argument_list|>
-name|getDefaultDriver
+name|getTestDriverClass
 parameter_list|()
 block|{
 return|return
-name|DFSConfigKeys
-operator|.
-name|FEDERATION_STORE_DRIVER_CLASS_DEFAULT
+name|FEDERATION_STORE_DRIVER_CLASS_FOR_TEST
 return|;
 block|}
 comment|/**    * Create a default State Store configuration.    *    * @return State Store configuration.    */
@@ -459,7 +498,7 @@ name|StateStoreDriver
 argument_list|>
 name|clazz
 init|=
-name|getDefaultDriver
+name|getTestDriverClass
 argument_list|()
 decl_stmt|;
 return|return
@@ -710,7 +749,7 @@ name|StateStoreDriver
 argument_list|>
 name|driverClass
 init|=
-name|getDefaultDriver
+name|getTestDriverClass
 argument_list|()
 decl_stmt|;
 name|deleteStateStore
