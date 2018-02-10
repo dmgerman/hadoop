@@ -683,6 +683,8 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|";charset=utf-8"
 block|}
 argument_list|)
 DECL|method|getVersion ()
@@ -745,6 +747,8 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|";charset=utf-8"
 block|}
 argument_list|)
 DECL|method|createService (@ontext HttpServletRequest request, Service service)
@@ -1150,6 +1154,8 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|";charset=utf-8"
 block|}
 argument_list|)
 DECL|method|getService (@ontext HttpServletRequest request, @PathParam(SERVICE_NAME) String appName)
@@ -1442,6 +1448,8 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|";charset=utf-8"
 block|}
 argument_list|)
 DECL|method|deleteService (@ontext HttpServletRequest request, @PathParam(SERVICE_NAME) String appName)
@@ -1834,6 +1842,8 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|";charset=utf-8"
 block|,
 name|MediaType
 operator|.
@@ -2172,6 +2182,8 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|";charset=utf-8"
 block|}
 argument_list|)
 DECL|method|updateService (@ontext HttpServletRequest request, @PathParam(SERVICE_NAME) String appName, Service updateServiceData)
