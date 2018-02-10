@@ -2607,6 +2607,9 @@ name|containerName
 argument_list|,
 name|pipeline
 operator|.
+name|getPipelineChannel
+argument_list|()
+operator|.
 name|getLeaderID
 argument_list|()
 argument_list|)
@@ -2626,6 +2629,9 @@ name|DatanodeIDProto
 name|dnID
 range|:
 name|pipeline
+operator|.
+name|getPipelineChannel
+argument_list|()
 operator|.
 name|getMembersList
 argument_list|()
