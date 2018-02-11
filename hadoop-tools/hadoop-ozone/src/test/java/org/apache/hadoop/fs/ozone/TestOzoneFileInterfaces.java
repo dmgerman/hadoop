@@ -793,6 +793,8 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+comment|// The timestamp of the newly created file should always be greater than
+comment|// the time when the test was started
 name|Assert
 operator|.
 name|assertTrue
@@ -801,7 +803,7 @@ name|status
 operator|.
 name|getModificationTime
 argument_list|()
-operator|<
+operator|>
 name|currentTime
 argument_list|)
 expr_stmt|;

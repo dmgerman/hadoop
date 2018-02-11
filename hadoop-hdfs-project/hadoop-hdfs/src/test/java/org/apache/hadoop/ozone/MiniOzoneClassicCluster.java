@@ -1272,6 +1272,16 @@ operator|.
 name|scm
 return|;
 block|}
+DECL|method|getConf ()
+specifier|public
+name|OzoneConfiguration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getKeySpaceManager ()

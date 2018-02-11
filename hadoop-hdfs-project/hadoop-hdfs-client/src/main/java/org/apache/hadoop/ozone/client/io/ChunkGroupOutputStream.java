@@ -56,6 +56,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FSExceptionMessages
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|ozone
@@ -504,6 +518,11 @@ specifier|final
 name|String
 name|requestID
 decl_stmt|;
+DECL|field|closed
+specifier|private
+name|boolean
+name|closed
+decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
@@ -547,6 +566,10 @@ expr_stmt|;
 name|requestID
 operator|=
 literal|null
+expr_stmt|;
+name|closed
+operator|=
+literal|false
 expr_stmt|;
 block|}
 comment|/**    * For testing purpose only. Not building output stream from blocks, but    * taking from externally.    *    * @param outputStream    * @param length    */
@@ -1011,6 +1034,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|streamEntries
@@ -1115,6 +1141,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|b
@@ -1378,6 +1407,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -1417,6 +1449,17 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+return|return;
+block|}
+name|closed
+operator|=
+literal|true
+expr_stmt|;
 for|for
 control|(
 name|ChunkOutputStreamEntry
@@ -2098,6 +2141,40 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+block|}
+comment|/**    * Verify that the output stream is open. Non blocking; this gives    * the last state of the volatile {@link #closed} field.    * @throws IOException if the connection is closed.    */
+DECL|method|checkNotClosed ()
+specifier|private
+name|void
+name|checkNotClosed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|": "
+operator|+
+name|FSExceptionMessages
+operator|.
+name|STREAM_IS_CLOSED
+operator|+
+literal|" Key: "
+operator|+
+name|keyArgs
+operator|.
+name|getKeyName
+argument_list|()
+argument_list|)
+throw|;
 block|}
 block|}
 block|}

@@ -124,6 +124,33 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|available ()
+specifier|public
+name|int
+name|available
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|inputStream
+operator|.
+name|available
+argument_list|()
+return|;
+block|}
+DECL|method|getInputStream ()
+specifier|public
+name|InputStream
+name|getInputStream
+parameter_list|()
+block|{
+return|return
+name|inputStream
+return|;
+block|}
 block|}
 end_class
 

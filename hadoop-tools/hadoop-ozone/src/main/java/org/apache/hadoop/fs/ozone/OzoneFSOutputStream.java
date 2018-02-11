@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.client.io
+DECL|package|org.apache.hadoop.fs.ozone
 package|package
 name|org
 operator|.
@@ -12,11 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
 name|ozone
-operator|.
-name|client
-operator|.
-name|io
 package|;
 end_package
 
@@ -40,28 +38,45 @@ name|OutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|io
+operator|.
+name|ChunkGroupOutputStream
+import|;
+end_import
+
 begin_comment
-comment|/**  * OzoneOutputStream is used to write data into Ozone.  * It uses SCM's {@link ChunkGroupOutputStream} for writing the data.  */
+comment|/**  * The output stream for Ozone file system.  *  * TODO: Make outputStream generic for both rest and rpc clients  * This class is not thread safe.  */
 end_comment
 
 begin_class
-DECL|class|OzoneOutputStream
+DECL|class|OzoneFSOutputStream
 specifier|public
 class|class
-name|OzoneOutputStream
+name|OzoneFSOutputStream
 extends|extends
 name|OutputStream
 block|{
 DECL|field|outputStream
 specifier|private
 specifier|final
-name|OutputStream
+name|ChunkGroupOutputStream
 name|outputStream
 decl_stmt|;
-comment|/**    * Constructs OzoneOutputStream with ChunkGroupOutputStream.    *    * @param outputStream    */
-DECL|method|OzoneOutputStream (OutputStream outputStream)
+DECL|method|OzoneFSOutputStream (OutputStream outputStream)
 specifier|public
-name|OzoneOutputStream
+name|OzoneFSOutputStream
 parameter_list|(
 name|OutputStream
 name|outputStream
@@ -71,6 +86,9 @@ name|this
 operator|.
 name|outputStream
 operator|=
+operator|(
+name|ChunkGroupOutputStream
+operator|)
 name|outputStream
 expr_stmt|;
 block|}
@@ -155,22 +173,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|//commitKey can be done here, if needed.
 name|outputStream
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
-DECL|method|getOutputStream ()
-specifier|public
-name|OutputStream
-name|getOutputStream
-parameter_list|()
-block|{
-return|return
-name|outputStream
-return|;
 block|}
 block|}
 end_class
