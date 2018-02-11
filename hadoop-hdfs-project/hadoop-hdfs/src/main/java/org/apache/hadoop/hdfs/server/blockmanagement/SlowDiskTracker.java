@@ -381,7 +381,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SlowPeerTracker
+name|SlowDiskTracker
 operator|.
 name|class
 argument_list|)
