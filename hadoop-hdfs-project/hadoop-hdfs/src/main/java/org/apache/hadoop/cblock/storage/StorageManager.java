@@ -953,6 +953,18 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOGGER
+operator|.
+name|error
+argument_list|(
+literal|"Error creating container."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
