@@ -86,6 +86,12 @@ specifier|final
 name|String
 name|srcPath
 decl_stmt|;
+DECL|field|blockSize
+specifier|private
+specifier|final
+name|long
+name|blockSize
+decl_stmt|;
 DECL|field|storagePolicyID
 specifier|private
 specifier|final
@@ -191,6 +197,15 @@ operator|=
 name|bc
 operator|.
 name|getName
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|blockSize
+operator|=
+name|block
+operator|.
+name|getNumBytes
 argument_list|()
 expr_stmt|;
 name|this
@@ -333,6 +348,16 @@ parameter_list|()
 block|{
 return|return
 name|srcPath
+return|;
+block|}
+DECL|method|getBlockSize ()
+specifier|public
+name|long
+name|getBlockSize
+parameter_list|()
+block|{
+return|return
+name|blockSize
 return|;
 block|}
 DECL|method|getStoragePolicyID ()

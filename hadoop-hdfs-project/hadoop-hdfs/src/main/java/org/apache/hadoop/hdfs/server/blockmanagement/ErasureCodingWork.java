@@ -300,10 +300,7 @@ literal|false
 argument_list|,
 name|excludedNodes
 argument_list|,
-name|getBlock
-argument_list|()
-operator|.
-name|getNumBytes
+name|getBlockSize
 argument_list|()
 argument_list|,
 name|storagePolicySuite
