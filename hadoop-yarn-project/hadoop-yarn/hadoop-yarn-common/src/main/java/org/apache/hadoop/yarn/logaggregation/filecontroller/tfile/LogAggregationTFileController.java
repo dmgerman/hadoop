@@ -2138,13 +2138,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationOwner (Path aggregatedLog)
+DECL|method|getApplicationOwner (Path aggregatedLog, ApplicationId appId)
 specifier|public
 name|String
 name|getApplicationOwner
 parameter_list|(
 name|Path
 name|aggregatedLog
+parameter_list|,
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|IOException
@@ -2168,7 +2171,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationAcls ( Path aggregatedLog)
+DECL|method|getApplicationAcls ( Path aggregatedLog, ApplicationId appId)
 specifier|public
 name|Map
 argument_list|<
@@ -2180,6 +2183,9 @@ name|getApplicationAcls
 parameter_list|(
 name|Path
 name|aggregatedLog
+parameter_list|,
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|IOException

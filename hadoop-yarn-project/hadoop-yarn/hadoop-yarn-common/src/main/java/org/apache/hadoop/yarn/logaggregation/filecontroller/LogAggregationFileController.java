@@ -957,8 +957,8 @@ name|ViewContext
 name|context
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the owner of the application.    *    * @param aggregatedLogPath the aggregatedLog path    * @return the application owner    * @throws IOException if we can not get the application owner    */
-DECL|method|getApplicationOwner (Path aggregatedLogPath)
+comment|/**    * Returns the owner of the application.    *    * @param aggregatedLogPath the aggregatedLog path    * @param appId the ApplicationId    * @return the application owner    * @throws IOException if we can not get the application owner    */
+DECL|method|getApplicationOwner (Path aggregatedLogPath, ApplicationId appId)
 specifier|public
 specifier|abstract
 name|String
@@ -966,12 +966,15 @@ name|getApplicationOwner
 parameter_list|(
 name|Path
 name|aggregatedLogPath
+parameter_list|,
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns ACLs for the application. An empty map is returned if no ACLs are    * found.    *    * @param aggregatedLogPath the aggregatedLog path.    * @return a map of the Application ACLs.    * @throws IOException if we can not get the application acls    */
-DECL|method|getApplicationAcls ( Path aggregatedLogPath)
+comment|/**    * Returns ACLs for the application. An empty map is returned if no ACLs are    * found.    *    * @param aggregatedLogPath the aggregatedLog path.    * @param appId the ApplicationId    * @return a map of the Application ACLs.    * @throws IOException if we can not get the application acls    */
+DECL|method|getApplicationAcls ( Path aggregatedLogPath, ApplicationId appId)
 specifier|public
 specifier|abstract
 name|Map
@@ -984,6 +987,9 @@ name|getApplicationAcls
 parameter_list|(
 name|Path
 name|aggregatedLogPath
+parameter_list|,
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|IOException
