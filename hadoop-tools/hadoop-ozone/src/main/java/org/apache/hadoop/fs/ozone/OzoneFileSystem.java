@@ -2313,7 +2313,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Couldn't delete {} - does not exist"
 argument_list|,
