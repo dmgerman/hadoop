@@ -7,13 +7,6 @@ begin_comment
 comment|/**  * API related to resources.  */
 end_comment
 
-begin_annotation
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-end_annotation
-
 begin_package
 DECL|package|org.apache.hadoop.yarn.api.resource
 package|package
@@ -30,20 +23,6 @@ operator|.
 name|resource
 package|;
 end_package
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
 
 end_unit
 
