@@ -3300,6 +3300,13 @@ argument_list|,
 name|vcores
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nameToValues
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|Map
@@ -3345,6 +3352,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|res
