@@ -11609,7 +11609,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|15
+literal|16
 decl_stmt|;
 name|int
 name|counter
@@ -11826,15 +11826,26 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  rw-mounts=/test_container_local_dir:/test_container_local_dir,"
+literal|"  ro-mounts=/test_filecache_dir:/test_filecache_dir,"
 operator|+
-literal|"/test_filecache_dir:/test_filecache_dir,"
+literal|"/test_user_filecache_dir:/test_user_filecache_dir"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+name|counter
+operator|++
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  rw-mounts=/test_container_log_dir:/test_container_log_dir,"
 operator|+
-literal|"/test_container_work_dir:/test_container_work_dir,"
-operator|+
-literal|"/test_container_log_dir:/test_container_log_dir,"
-operator|+
-literal|"/test_user_local_dir:/test_user_local_dir"
+literal|"/test_application_local_dir:/test_application_local_dir"
 argument_list|,
 name|dockerCommands
 operator|.
