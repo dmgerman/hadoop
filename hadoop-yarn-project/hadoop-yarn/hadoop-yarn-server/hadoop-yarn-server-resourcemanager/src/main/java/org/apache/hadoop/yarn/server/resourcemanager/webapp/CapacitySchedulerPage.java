@@ -1569,6 +1569,20 @@ argument_list|)
 operator|.
 name|__
 argument_list|(
+literal|"Intra-queue Preemption:"
+argument_list|,
+name|lqinfo
+operator|.
+name|getIntraQueuePreemptionDisabled
+argument_list|()
+condition|?
+literal|"disabled"
+else|:
+literal|"enabled"
+argument_list|)
+operator|.
+name|__
+argument_list|(
 literal|"Default Node Label Expression:"
 argument_list|,
 name|lqinfo

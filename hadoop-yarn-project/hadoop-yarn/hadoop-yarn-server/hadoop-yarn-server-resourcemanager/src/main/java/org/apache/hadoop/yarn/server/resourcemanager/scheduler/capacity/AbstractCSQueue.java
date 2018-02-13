@@ -1034,6 +1034,13 @@ specifier|volatile
 name|boolean
 name|preemptionDisabled
 decl_stmt|;
+comment|// Indicates if the in-queue preemption setting is ever disabled within the
+comment|// hierarchy of this queue.
+DECL|field|intraQueuePreemptionDisabledInHierarchy
+specifier|private
+name|boolean
+name|intraQueuePreemptionDisabledInHierarchy
+decl_stmt|;
 comment|// Track resource usage-by-label like used-resource/pending-resource, etc.
 DECL|field|queueUsage
 specifier|volatile
@@ -2314,6 +2321,17 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|intraQueuePreemptionDisabledInHierarchy
+operator|=
+name|isIntraQueueHierarchyPreemptionDisabled
+argument_list|(
+name|this
+argument_list|,
+name|configuration
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|priority
 operator|=
 name|configuration
@@ -3318,6 +3336,14 @@ argument_list|)
 expr_stmt|;
 name|queueInfo
 operator|.
+name|setIntraQueuePreemptionDisabled
+argument_list|(
+name|getIntraQueuePreemptionDisabled
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
 name|setQueueConfigurations
 argument_list|(
 name|getQueueConfigurations
@@ -3952,6 +3978,32 @@ return|;
 block|}
 annotation|@
 name|Private
+DECL|method|getIntraQueuePreemptionDisabled ()
+specifier|public
+name|boolean
+name|getIntraQueuePreemptionDisabled
+parameter_list|()
+block|{
+return|return
+name|intraQueuePreemptionDisabledInHierarchy
+operator|||
+name|preemptionDisabled
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|getIntraQueuePreemptionDisabledInHierarchy ()
+specifier|public
+name|boolean
+name|getIntraQueuePreemptionDisabledInHierarchy
+parameter_list|()
+block|{
+return|return
+name|intraQueuePreemptionDisabledInHierarchy
+return|;
+block|}
+annotation|@
+name|Private
 DECL|method|getQueueCapacities ()
 specifier|public
 name|QueueCapacities
@@ -4000,7 +4052,7 @@ return|return
 name|readLock
 return|;
 block|}
-comment|/**    * The specified queue is preemptable if system-wide preemption is turned on    * unless any queue in the<em>qPath</em> hierarchy has explicitly turned    * preemption off.    * NOTE: Preemptability is inherited from a queue's parent.    *     * @return true if queue has preemption disabled, false otherwise    */
+comment|/**    * The specified queue is cross-queue preemptable if system-wide cross-queue    * preemption is turned on unless any queue in the<em>qPath</em> hierarchy    * has explicitly turned cross-queue preemption off.    * NOTE: Cross-queue preemptability is inherited from a queue's parent.    *    * @param q queue to check preemption state    * @param configuration capacity scheduler config    * @return true if queue has cross-queue preemption disabled, false otherwise    */
 DECL|method|isQueueHierarchyPreemptionDisabled (CSQueue q, CapacitySchedulerConfiguration configuration)
 specifier|private
 name|boolean
@@ -4016,10 +4068,7 @@ block|{
 name|boolean
 name|systemWidePreemption
 init|=
-name|csContext
-operator|.
-name|getConfiguration
-argument_list|()
+name|configuration
 operator|.
 name|getBoolean
 argument_list|(
@@ -4091,6 +4140,96 @@ argument_list|,
 name|parentQ
 operator|.
 name|getPreemptionDisabled
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * The specified queue is intra-queue preemptable if    * 1) system-wide intra-queue preemption is turned on    * 2) no queue in the<em>qPath</em> hierarchy has explicitly turned off intra    *    queue preemption.    * NOTE: Intra-queue preemptability is inherited from a queue's parent.    *    * @param q queue to check intra-queue preemption state    * @param configuration capacity scheduler config    * @return true if queue has intra-queue preemption disabled, false otherwise    */
+DECL|method|isIntraQueueHierarchyPreemptionDisabled (CSQueue q, CapacitySchedulerConfiguration configuration)
+specifier|private
+name|boolean
+name|isIntraQueueHierarchyPreemptionDisabled
+parameter_list|(
+name|CSQueue
+name|q
+parameter_list|,
+name|CapacitySchedulerConfiguration
+name|configuration
+parameter_list|)
+block|{
+name|boolean
+name|systemWideIntraQueuePreemption
+init|=
+name|configuration
+operator|.
+name|getBoolean
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ENABLED
+argument_list|,
+name|CapacitySchedulerConfiguration
+operator|.
+name|DEFAULT_INTRAQUEUE_PREEMPTION_ENABLED
+argument_list|)
+decl_stmt|;
+comment|// Intra-queue preemption is disabled for this queue if the system-wide
+comment|// intra-queue preemption flag is false
+if|if
+condition|(
+operator|!
+name|systemWideIntraQueuePreemption
+condition|)
+return|return
+literal|true
+return|;
+comment|// Check if this is the root queue and the root queue's intra-queue
+comment|// preemption disable switch is set
+name|CSQueue
+name|parentQ
+init|=
+name|q
+operator|.
+name|getParent
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|parentQ
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|configuration
+operator|.
+name|getIntraQueuePreemptionDisabled
+argument_list|(
+name|q
+operator|.
+name|getQueuePath
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|// At this point, the master preemption switch is enabled down to this
+comment|// queue's level. Determine whether or not intra-queue preemption is enabled
+comment|// down to this queu's level and return that value.
+return|return
+name|configuration
+operator|.
+name|getIntraQueuePreemptionDisabled
+argument_list|(
+name|q
+operator|.
+name|getQueuePath
+argument_list|()
+argument_list|,
+name|parentQ
+operator|.
+name|getIntraQueuePreemptionDisabledInHierarchy
 argument_list|()
 argument_list|)
 return|;
