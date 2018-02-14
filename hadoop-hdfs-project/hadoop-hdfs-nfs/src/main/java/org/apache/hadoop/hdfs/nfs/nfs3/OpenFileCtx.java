@@ -168,34 +168,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -624,6 +596,26 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * OpenFileCtx saves the context of one HDFS file output stream. Access to it is  * synchronized by its member lock.  */
 end_comment
@@ -637,12 +629,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|OpenFileCtx
 operator|.
@@ -1080,28 +1072,17 @@ argument_list|(
 name|count
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Update nonSequentialWriteInMemory by "
-operator|+
+literal|"Update nonSequentialWriteInMemory by {} new value: {}"
+argument_list|,
 name|count
-operator|+
-literal|" new value: "
-operator|+
+argument_list|,
 name|newValue
 argument_list|)
 expr_stmt|;
-block|}
 name|Preconditions
 operator|.
 name|checkState
@@ -1379,14 +1360,6 @@ operator|!
 name|enabledDump
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1394,7 +1367,6 @@ argument_list|(
 literal|"Do nothing, dump is disabled."
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 if|if
@@ -1425,14 +1397,6 @@ operator|>=
 name|DUMP_WRITE_WATER_MARK
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1440,7 +1404,6 @@ argument_list|(
 literal|"Asking dumper to dump..."
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|dumpThread
@@ -1525,8 +1488,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Create dump file: "
-operator|+
+literal|"Create dump file: {}"
+argument_list|,
 name|dumpFilePath
 argument_list|)
 expr_stmt|;
@@ -1581,8 +1544,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Got failure when creating dump stream "
-operator|+
+literal|"Got failure when creating dump stream {}"
+argument_list|,
 name|dumpFilePath
 argument_list|,
 name|e
@@ -1617,8 +1580,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't close dump stream "
-operator|+
+literal|"Can't close dump stream {}"
+argument_list|,
 name|dumpFilePath
 argument_list|,
 name|e
@@ -1660,8 +1623,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get random access to file "
-operator|+
+literal|"Can't get random access to file {}"
+argument_list|,
 name|dumpFilePath
 argument_list|)
 expr_stmt|;
@@ -1673,27 +1636,18 @@ expr_stmt|;
 return|return;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Start dump. Before dump, nonSequentialWriteInMemory == "
-operator|+
+literal|"Start dump. Before dump, nonSequentialWriteInMemory == {}"
+argument_list|,
 name|nonSequentialWriteInMemory
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Iterator
 argument_list|<
 name|OffsetRange
@@ -1792,17 +1746,13 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Dump data failed: "
-operator|+
+literal|"Dump data failed: {} OpenFileCtx state: {}"
+argument_list|,
 name|writeCtx
-operator|+
-literal|" with error: "
-operator|+
-name|e
-operator|+
-literal|" OpenFileCtx state: "
-operator|+
+argument_list|,
 name|activeState
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 comment|// Disable dump
@@ -1813,27 +1763,18 @@ expr_stmt|;
 return|return;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"After dump, nonSequentialWriteInMemory == "
-operator|+
+literal|"After dump, nonSequentialWriteInMemory == {}"
+argument_list|,
 name|nonSequentialWriteInMemory
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -1899,14 +1840,6 @@ operator|.
 name|wait
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1914,7 +1847,6 @@ argument_list|(
 literal|"Dumper woke up"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1926,8 +1858,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Dumper is interrupted, dumpFilePath= "
-operator|+
+literal|"Dumper is interrupted, dumpFilePath = {}"
+argument_list|,
 name|OpenFileCtx
 operator|.
 name|this
@@ -1938,28 +1870,19 @@ expr_stmt|;
 block|}
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Dumper checking OpenFileCtx activeState: "
+literal|"Dumper checking OpenFileCtx activeState: {} "
 operator|+
+literal|"enabledDump: {}"
+argument_list|,
 name|activeState
-operator|+
-literal|" enabledDump: "
-operator|+
+argument_list|,
 name|enabledDump
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1987,12 +1910,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Dumper get Throwable: "
-operator|+
-name|t
-operator|+
-literal|". dumpFilePath: "
-operator|+
+literal|"Dumper got Throwable. dumpFilePath: {}"
+argument_list|,
 name|OpenFileCtx
 operator|.
 name|this
@@ -2086,10 +2005,10 @@ name|warn
 argument_list|(
 literal|"Got a repeated request, same range, with a different xid: "
 operator|+
+literal|"{} xid in old request: {}"
+argument_list|,
 name|xid
-operator|+
-literal|" xid in old request: "
-operator|+
+argument_list|,
 name|writeCtx
 operator|.
 name|getXid
@@ -2137,8 +2056,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"OpenFileCtx is inactive, fileId: "
-operator|+
+literal|"OpenFileCtx is inactive, fileId: {}"
+argument_list|,
 name|request
 operator|.
 name|getHandle
@@ -2248,49 +2167,31 @@ name|getReplied
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Repeated write request which hasn't been served: xid="
+literal|"Repeated write request which hasn't been served: "
 operator|+
+literal|"xid={}, drop it."
+argument_list|,
 name|xid
-operator|+
-literal|", drop it."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Repeated write request which is already served: xid="
-operator|+
-name|xid
+literal|"Repeated write request which is already served: xid={}"
 operator|+
 literal|", resend response."
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
-block|}
 name|WccData
 name|fileWcc
 init|=
@@ -2419,29 +2320,17 @@ name|count
 operator|-
 name|cachedOffset
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Got overwrite with appended data [%d-%d),"
+literal|"Got overwrite with appended data [{}-{}),"
 operator|+
-literal|" current offset %d,"
+literal|" current offset {},"
 operator|+
-literal|" drop the overlapped section [%d-%d)"
+literal|" drop the overlapped section [{}-{})"
 operator|+
-literal|" and append new data [%d-%d)."
+literal|" and append new data [{}-{})."
 argument_list|,
 name|offset
 argument_list|,
@@ -2464,10 +2353,8 @@ name|offset
 operator|+
 name|count
 operator|)
-argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|ByteBuffer
 name|data
 init|=
@@ -2686,28 +2573,17 @@ name|WriteCtx
 operator|.
 name|INVALID_ORIGINAL_COUNT
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"requested offset="
-operator|+
+literal|"requested offset={} and current offset={}"
+argument_list|,
 name|offset
-operator|+
-literal|" and current offset="
-operator|+
+argument_list|,
 name|cachedOffset
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Ignore write request with range below the current offset
 if|if
 condition|(
@@ -2858,21 +2734,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"(offset,count,nextOffset): "
-operator|+
-literal|"("
-operator|+
+literal|"(offset,count,nextOffset): ({},{},{})"
+argument_list|,
 name|offset
-operator|+
-literal|","
-operator|+
+argument_list|,
 name|count
-operator|+
-literal|","
-operator|+
+argument_list|,
 name|nextOffset
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2942,28 +2810,19 @@ argument_list|,
 name|dataState
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Add new write to the list with nextOffset "
+literal|"Add new write to the list with nextOffset {}"
 operator|+
+literal|" and requested offset={}"
+argument_list|,
 name|cachedOffset
-operator|+
-literal|" and requested offset="
-operator|+
+argument_list|,
 name|offset
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|writeCtx
@@ -3022,39 +2881,26 @@ argument_list|,
 name|writeCtx
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"New write buffered with xid "
+literal|"New write buffered with xid {} nextOffset {}"
 operator|+
+literal|"req offset={} mapsize={}"
+argument_list|,
 name|xid
-operator|+
-literal|" nextOffset "
-operator|+
+argument_list|,
 name|cachedOffset
-operator|+
-literal|" req offset="
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|" mapsize="
-operator|+
+argument_list|,
 name|pendingWrites
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -3064,15 +2910,12 @@ name|warn
 argument_list|(
 literal|"Got a repeated request, same range, with xid: "
 operator|+
+literal|"{} nextOffset {} req offset={}"
+argument_list|,
 name|xid
-operator|+
-literal|" nextOffset "
-operator|+
-operator|+
+argument_list|,
 name|cachedOffset
-operator|+
-literal|" req offset="
-operator|+
+argument_list|,
 name|offset
 argument_list|)
 expr_stmt|;
@@ -3194,14 +3037,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3209,7 +3044,6 @@ argument_list|(
 literal|"Process perfectOverWrite"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// TODO: let executor handle perfect overwrite
 name|response
 operator|=
@@ -3308,27 +3142,18 @@ operator|!
 name|asyncStatus
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trigger the write back task. Current nextOffset: "
-operator|+
+literal|"Trigger the write back task. Current nextOffset: {}"
+argument_list|,
 name|nextOffset
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|asyncStatus
 operator|=
 literal|true
@@ -3356,14 +3181,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3371,7 +3188,6 @@ argument_list|(
 literal|"The write back thread is working."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 literal|true
@@ -3507,8 +3323,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Have to change stable write to unstable write: "
-operator|+
+literal|"Have to change stable write to unstable write: {}"
+argument_list|,
 name|request
 operator|.
 name|getStableHow
@@ -3522,27 +3338,18 @@ operator|.
 name|UNSTABLE
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"UNSTABLE write request, send response for offset: "
-operator|+
+literal|"UNSTABLE write request, send response for offset: {}"
+argument_list|,
 name|writeCtx
 operator|.
 name|getOffset
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|WccData
 name|fileWcc
 init|=
@@ -3725,13 +3532,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"hsync failed when processing possible perfect overwrite, path="
+literal|"hsync failed when processing possible perfect overwrite, "
 operator|+
+literal|"path={} error: {}"
+argument_list|,
 name|path
-operator|+
-literal|" error: "
-operator|+
+argument_list|,
 name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -3796,12 +3606,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't read back "
-operator|+
+literal|"Can't read back {} bytes, partial read size: {}"
+argument_list|,
 name|count
-operator|+
-literal|" bytes, partial read size: "
-operator|+
+argument_list|,
 name|readCount
 argument_list|)
 expr_stmt|;
@@ -3836,8 +3644,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Read failed when processing possible perfect overwrite, path="
+literal|"Read failed when processing possible perfect overwrite, "
 operator|+
+literal|"path={}"
+argument_list|,
 name|path
 argument_list|,
 name|e
@@ -3867,7 +3677,7 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -3990,13 +3800,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Got error when processing perfect overwrite, path="
+literal|"Got error when processing perfect overwrite, path={} "
 operator|+
+literal|"error: {}"
+argument_list|,
 name|path
-operator|+
-literal|" error: "
-operator|+
+argument_list|,
 name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -4125,27 +3938,18 @@ argument_list|,
 name|fromRead
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got commit status: "
-operator|+
+literal|"Got commit status: {}"
+argument_list|,
 name|ret
 operator|.
 name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Do the sync outside the lock
 if|if
 condition|(
@@ -4229,8 +4033,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Got stream error during data sync: "
-operator|+
+literal|"Got stream error during data sync"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -4409,14 +4213,6 @@ name|commitCtx
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4424,7 +4220,6 @@ argument_list|(
 literal|"return COMMIT_SPECIAL_WAIT"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|COMMIT_STATUS
 operator|.
@@ -4490,35 +4285,22 @@ init|=
 name|getFlushedOffset
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getFlushedOffset="
-operator|+
+literal|"getFlushedOffset={} commitOffset={} nextOffset={}"
+argument_list|,
 name|flushed
-operator|+
-literal|" commitOffset="
-operator|+
+argument_list|,
 name|commitOffset
-operator|+
-literal|"nextOffset="
-operator|+
+argument_list|,
 name|nextOffset
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|pendingWrites
@@ -4552,14 +4334,6 @@ name|get
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4569,7 +4343,6 @@ operator|+
 literal|" with empty queue"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|handleSpecialWait
 argument_list|(
@@ -4678,14 +4451,6 @@ name|get
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4693,7 +4458,6 @@ argument_list|(
 literal|"get commit while still writing to the requested offset"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|handleSpecialWait
 argument_list|(
@@ -4742,14 +4506,6 @@ return|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4757,7 +4513,6 @@ argument_list|(
 literal|"return COMMIT_SPECIAL_SUCCESS"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|COMMIT_STATUS
 operator|.
@@ -4991,8 +4746,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stream can be closed for fileId: "
-operator|+
+literal|"stream can be closed for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
@@ -5025,27 +4780,18 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The async write task has no pending writes, fileId: "
-operator|+
+literal|"The async write task has no pending writes, fileId: {}"
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// process pending commit again to handle this race: a commit is added
 comment|// to pendingCommits map just after the last doSingleWrite returns.
 comment|// There is no pending write and the commit should be handled by the
@@ -5101,31 +4847,20 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"range.getMin()="
-operator|+
+literal|"range.getMin()={} nextOffset={}"
+argument_list|,
 name|range
 operator|.
 name|getMin
 argument_list|()
-operator|+
-literal|" nextOffset="
-operator|+
+argument_list|,
 name|nextOffset
 argument_list|)
 expr_stmt|;
-block|}
 name|long
 name|offset
 init|=
@@ -5144,14 +4879,6 @@ operator|>
 name|offset
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -5159,7 +4886,6 @@ argument_list|(
 literal|"The next sequential write has not arrived yet"
 argument_list|)
 expr_stmt|;
-block|}
 name|processCommits
 argument_list|(
 name|nextOffset
@@ -5187,29 +4913,15 @@ operator|<=
 name|offset
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Remove write "
-operator|+
+literal|"Remove write {} which is already written from the list"
+argument_list|,
 name|range
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" which is already written from the list"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// remove the WriteCtx from cache
 name|pendingWrites
 operator|.
@@ -5241,18 +4953,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got an overlapping write "
+literal|"Got an overlapping write {}, nextOffset={}. "
 operator|+
+literal|"Remove and trim it"
+argument_list|,
 name|range
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|", nextOffset="
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|". Remove and trim it"
 argument_list|)
 expr_stmt|;
 name|pendingWrites
@@ -5280,56 +4987,33 @@ name|getCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Change nextOffset (after trim) to "
-operator|+
+literal|"Change nextOffset (after trim) to {}"
+argument_list|,
 name|nextOffset
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|toWrite
 return|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Remove write "
-operator|+
+literal|"Remove write {} from the list"
+argument_list|,
 name|range
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" from the list"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// after writing, remove the WriteCtx from cache
 name|pendingWrites
 operator|.
@@ -5349,27 +5033,18 @@ name|getCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Change nextOffset to "
-operator|+
+literal|"Change nextOffset to {}"
+argument_list|,
 name|nextOffset
 operator|.
 name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|toWrite
 return|;
@@ -5444,19 +5119,14 @@ if|if
 condition|(
 operator|!
 name|activeState
-operator|&&
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
 condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The openFileCtx is not active anymore, fileId: "
-operator|+
+literal|"The openFileCtx is not active anymore, fileId: {}"
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
@@ -5491,28 +5161,24 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Another async task is already started before this one"
+literal|"Another async task is already started before this one "
 operator|+
-literal|" is finalized. fileId: "
+literal|"is finalized. fileId: {} asyncStatus: {} "
 operator|+
+literal|"original startOffset: {} "
+operator|+
+literal|"new startOffset: {}. Won't change asyncStatus here."
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|" asyncStatus: "
-operator|+
+argument_list|,
 name|asyncStatus
-operator|+
-literal|" original startOffset: "
-operator|+
+argument_list|,
 name|startOffset
-operator|+
-literal|" new startOffset: "
-operator|+
+argument_list|,
 name|asyncWriteBackStartOffset
-operator|+
-literal|". Won't change asyncStatus here."
 argument_list|)
 expr_stmt|;
 block|}
@@ -5625,14 +5291,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't sync for fileId: "
+literal|"Can't sync for fileId: {}. "
 operator|+
+literal|"Channel closed with writes pending"
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|". Channel closed with writes pending."
 argument_list|,
 name|cce
 argument_list|)
@@ -5734,12 +5400,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"After sync, the expect file size: "
+literal|"After sync, the expect file size: {}, "
 operator|+
+literal|"however actual file size is: {}"
+argument_list|,
 name|offset
-operator|+
-literal|", however actual file size is: "
-operator|+
+argument_list|,
 name|latestAttr
 operator|.
 name|getSize
@@ -5880,15 +5546,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"FileId: "
+literal|"FileId: {} Service time: {}ns. "
 operator|+
+literal|"Sent response for commit: {}"
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|" Service time: "
-operator|+
+argument_list|,
 name|Nfs3Utils
 operator|.
 name|getElapsedTime
@@ -5897,9 +5563,7 @@ name|commit
 operator|.
 name|startTime
 argument_list|)
-operator|+
-literal|"ns. Sent response for commit: "
-operator|+
+argument_list|,
 name|commit
 argument_list|)
 expr_stmt|;
@@ -5983,23 +5647,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"do write, fileHandle "
-operator|+
+literal|"do write, fileHandle {} offset: {} length: {} stableHow: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" offset: "
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|" length: "
-operator|+
+argument_list|,
 name|count
-operator|+
-literal|" stableHow: "
-operator|+
+argument_list|,
 name|stableHow
 operator|.
 name|name
@@ -6128,19 +5786,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"After writing "
+literal|"After writing {} at offset {}, "
 operator|+
+literal|"updated the memory count, new value: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" at offset "
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|", updated the memory count, new value: "
-operator|+
+argument_list|,
 name|nonSequentialWriteInMemory
 operator|.
 name|get
@@ -6173,8 +5829,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Do sync for stable write: "
-operator|+
+literal|"Do sync for stable write: {}"
+argument_list|,
 name|writeCtx
 argument_list|)
 expr_stmt|;
@@ -6239,8 +5895,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"hsync failed with writeCtx: "
-operator|+
+literal|"hsync failed with writeCtx: {}"
+argument_list|,
 name|writeCtx
 argument_list|,
 name|e
@@ -6286,15 +5942,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Return original count: "
-operator|+
+literal|"Return original count: {} instead of real data count: {}"
+argument_list|,
 name|writeCtx
 operator|.
 name|getOriginalCount
 argument_list|()
-operator|+
-literal|" instead of real data count: "
-operator|+
+argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
@@ -6393,19 +6047,15 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error writing to fileHandle "
-operator|+
+literal|"Error writing to fileHandle {} at offset {} and length {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" at offset "
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|" and length "
-operator|+
+argument_list|,
 name|count
 argument_list|,
 name|e
@@ -6461,8 +6111,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Clean up open file context for fileId: "
-operator|+
+literal|"Clean up open file context for fileId: {}"
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
@@ -6561,16 +6211,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't close stream for fileId: "
-operator|+
+literal|"Can't close stream for fileId: {}, error: {}"
+argument_list|,
 name|latestAttr
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|", error: "
-operator|+
+argument_list|,
 name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6579,14 +6230,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"There are "
-operator|+
+literal|"There are {} pending writes."
+argument_list|,
 name|pendingWrites
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" pending writes."
 argument_list|)
 expr_stmt|;
 name|WccAttr
@@ -6618,15 +6267,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Fail pending write: "
-operator|+
+literal|"Fail pending write: {}, nextOffset={}"
+argument_list|,
 name|key
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|", nextOffset="
-operator|+
+argument_list|,
 name|nextOffset
 operator|.
 name|get
@@ -6748,8 +6392,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to close outputstream of dump file"
-operator|+
+literal|"Failed to close outputstream of dump file {}"
+argument_list|,
 name|dumpFilePath
 argument_list|,
 name|e
@@ -6783,8 +6427,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to delete dumpfile: "
-operator|+
+literal|"Failed to delete dumpfile: {}"
+argument_list|,
 name|dumpFile
 argument_list|)
 expr_stmt|;

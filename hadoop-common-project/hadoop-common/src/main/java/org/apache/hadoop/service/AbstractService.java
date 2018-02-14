@@ -601,27 +601,16 @@ argument_list|)
 condition|)
 block|{
 comment|//if the service started (and isn't now in a later state), notify
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Service "
-operator|+
+literal|"Service {} is started"
+argument_list|,
 name|getName
 argument_list|()
-operator|+
-literal|" is started"
 argument_list|)
 expr_stmt|;
-block|}
 name|notifyListeners
 argument_list|()
 expr_stmt|;
@@ -756,14 +745,6 @@ block|}
 else|else
 block|{
 comment|//already stopped: note it
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -771,7 +752,6 @@ argument_list|(
 literal|"Ignoring re-entrant call to stop()"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -802,29 +782,15 @@ name|Exception
 name|exception
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"noteFailure "
+literal|"noteFailure {}"
 operator|+
 name|exception
-argument_list|,
-operator|(
-name|Throwable
-operator|)
-literal|null
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|exception
@@ -861,18 +827,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Service "
-operator|+
+literal|"Service {} failed in state {}"
+argument_list|,
 name|getName
 argument_list|()
-operator|+
-literal|" failed in state "
-operator|+
+argument_list|,
 name|failureState
-operator|+
-literal|"; cause: "
-operator|+
-name|exception
 argument_list|,
 name|exception
 argument_list|)
@@ -1167,13 +1127,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception while notifying listeners of "
-operator|+
+literal|"Exception while notifying listeners of {}"
+argument_list|,
 name|this
-operator|+
-literal|": "
-operator|+
-name|e
 argument_list|,
 name|e
 argument_list|)
@@ -1284,30 +1240,19 @@ operator|!=
 name|newState
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Service: "
-operator|+
+literal|"Service: {} entered state {}"
+argument_list|,
 name|getName
 argument_list|()
-operator|+
-literal|" entered state "
-operator|+
+argument_list|,
 name|getServiceState
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|recordLifecycleEvent
 argument_list|()
 expr_stmt|;

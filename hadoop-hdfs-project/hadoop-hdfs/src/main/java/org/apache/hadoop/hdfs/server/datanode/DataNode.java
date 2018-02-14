@@ -4137,8 +4137,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"File descriptor passing is disabled because "
-operator|+
+literal|"File descriptor passing is disabled because {}"
+argument_list|,
 name|reason
 argument_list|)
 expr_stmt|;
@@ -4208,8 +4208,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Configured hostname is "
-operator|+
+literal|"Configured hostname is {}"
+argument_list|,
 name|hostName
 argument_list|)
 expr_stmt|;
@@ -4388,12 +4388,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reconfiguring "
-operator|+
+literal|"Reconfiguring {} to {}"
+argument_list|,
 name|property
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|newVal
 argument_list|)
 expr_stmt|;
@@ -4460,12 +4458,10 @@ name|warn
 argument_list|(
 literal|"Exception while sending the block report after refreshing"
 operator|+
-literal|" volumes "
-operator|+
+literal|" volumes {} to {}"
+argument_list|,
 name|property
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|newVal
 argument_list|,
 name|e
@@ -4532,12 +4528,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reconfiguring "
-operator|+
+literal|"Reconfiguring {} to {}"
+argument_list|,
 name|property
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|newVal
 argument_list|)
 expr_stmt|;
@@ -5096,14 +5090,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deactivation request received for active volume: "
-operator|+
+literal|"Deactivation request received for active volume: {}"
+argument_list|,
 name|dir
 operator|.
 name|getRoot
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5229,8 +5220,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deactivation request received for failed volume: "
-operator|+
+literal|"Deactivation request received for failed volume: {}"
+argument_list|,
 name|failedStorageLocation
 argument_list|)
 expr_stmt|;
@@ -5395,8 +5386,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Adding new volumes: "
-operator|+
+literal|"Adding new volumes: {}"
+argument_list|,
 name|Joiner
 operator|.
 name|on
@@ -5624,8 +5615,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to add volume: "
-operator|+
+literal|"Failed to add volume: {}"
+argument_list|,
 name|volume
 argument_list|,
 name|ioe
@@ -5648,8 +5639,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Successfully added volume: "
-operator|+
+literal|"Successfully added volume: {}"
+argument_list|,
 name|volume
 argument_list|)
 expr_stmt|;
@@ -5684,8 +5675,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to add volume: "
-operator|+
+literal|"Failed to add volume: {}"
+argument_list|,
 name|volume
 argument_list|,
 name|e
@@ -5724,12 +5715,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to remove volume: "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
+literal|"Failed to remove volume"
 argument_list|,
 name|e
 argument_list|)
@@ -6306,8 +6292,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to load DataNode plugins. Specified list of plugins: "
+literal|"Unable to load DataNode plugins. "
 operator|+
+literal|"Specified list of plugins: {}"
+argument_list|,
 name|pluginsValue
 argument_list|,
 name|e
@@ -6338,8 +6326,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Started plug-in "
-operator|+
+literal|"Started plug-in {}"
+argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
@@ -6354,11 +6342,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"ServicePlugin "
-operator|+
+literal|"ServicePlugin {} could not be started"
+argument_list|,
 name|p
-operator|+
-literal|" could not be started"
 argument_list|,
 name|t
 argument_list|)
@@ -6598,8 +6584,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Opened IPC server at "
-operator|+
+literal|"Opened IPC server at {}"
+argument_list|,
 name|ipcServer
 operator|.
 name|getListenerAddress
@@ -6853,8 +6839,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Periodic Directory Tree Verification scan is disabled because "
+literal|"Periodic Directory Tree Verification scan "
 operator|+
+literal|"is disabled because {}"
+argument_list|,
 name|reason
 argument_list|)
 expr_stmt|;
@@ -7067,8 +7055,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Opened streaming server at "
-operator|+
+literal|"Opened streaming server at {}"
+argument_list|,
 name|streamingAddr
 argument_list|)
 expr_stmt|;
@@ -7202,8 +7190,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Listening on UNIX domain socket: "
-operator|+
+literal|"Listening on UNIX domain socket: {}"
+argument_list|,
 name|domainPeerServer
 operator|.
 name|getBindPath
@@ -7309,8 +7297,8 @@ name|warn
 argument_list|(
 literal|"Although short-circuit local reads are configured, "
 operator|+
-literal|"they are disabled because you didn't configure "
-operator|+
+literal|"they are disabled because you didn't configure {}"
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DOMAIN_SOCKET_PATH_KEY
@@ -7457,8 +7445,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot find BPOfferService for reporting block received for bpid="
+literal|"Cannot find BPOfferService for reporting block received "
 operator|+
+literal|"for bpid={}"
+argument_list|,
 name|block
 operator|.
 name|getBlockPoolId
@@ -7516,8 +7506,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot find BPOfferService for reporting block receiving for bpid="
+literal|"Cannot find BPOfferService for reporting block receiving "
 operator|+
+literal|"for bpid={}"
+argument_list|,
 name|block
 operator|.
 name|getBlockPoolId
@@ -7619,8 +7611,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot find FsVolumeSpi to report bad block: "
-operator|+
+literal|"Cannot find FsVolumeSpi to report bad block: {}"
+argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
@@ -8132,8 +8124,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting DataNode with maxLockedMemory = "
-operator|+
+literal|"Starting DataNode with maxLockedMemory = {}"
+argument_list|,
 name|dnConf
 operator|.
 name|maxLockedMemory
@@ -8245,8 +8237,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"dnUserName = "
-operator|+
+literal|"dnUserName = {}"
+argument_list|,
 name|dnUserName
 argument_list|)
 expr_stmt|;
@@ -8254,8 +8246,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"supergroup = "
-operator|+
+literal|"supergroup = {}"
+argument_list|,
 name|supergroup
 argument_list|)
 expr_stmt|;
@@ -8611,8 +8603,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Generated and persisted new Datanode UUID "
-operator|+
+literal|"Generated and persisted new Datanode UUID {}"
+argument_list|,
 name|storage
 operator|.
 name|getDatanodeUuid
@@ -8900,12 +8892,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block token params received from NN: for block pool "
+literal|"Block token params received from NN: "
 operator|+
+literal|"for block pool {} keyUpdateInterval={} min(s), "
+operator|+
+literal|"tokenLifetime={} min(s)"
+argument_list|,
 name|blockPoolId
-operator|+
-literal|" keyUpdateInterval="
-operator|+
+argument_list|,
 name|blockKeyUpdateInterval
 operator|/
 operator|(
@@ -8913,9 +8907,7 @@ literal|60
 operator|*
 literal|1000
 operator|)
-operator|+
-literal|" min(s), tokenLifetime="
-operator|+
+argument_list|,
 name|blockTokenLifetime
 operator|/
 operator|(
@@ -8923,8 +8915,6 @@ literal|60
 operator|*
 literal|1000
 operator|)
-operator|+
-literal|" min(s)"
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -9320,30 +9310,24 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Setting up storage: nsid="
+literal|"Setting up storage: nsid={};bpid={};lv={};"
 operator|+
+literal|"nsInfo={};dnuuid={}"
+argument_list|,
 name|bpStorage
 operator|.
 name|getNamespaceID
 argument_list|()
-operator|+
-literal|";bpid="
-operator|+
+argument_list|,
 name|bpid
-operator|+
-literal|";lv="
-operator|+
+argument_list|,
 name|storage
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|+
-literal|";nsInfo="
-operator|+
+argument_list|,
 name|nsInfo
-operator|+
-literal|";dnuuid="
-operator|+
+argument_list|,
 name|storage
 operator|.
 name|getDatanodeUuid
@@ -9670,28 +9654,17 @@ argument_list|(
 name|dnAddr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {} addr={}"
+argument_list|,
 name|dnAddr
-operator|+
-literal|" addr="
-operator|+
+argument_list|,
 name|addr
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|UserGroupInformation
 name|loginUgi
@@ -9969,44 +9942,26 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
 name|info
 operator|!=
 literal|null
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
 condition|)
 block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"getBlockLocalPathInfo successful block="
+literal|"getBlockLocalPathInfo successful "
 operator|+
+literal|"block={} blockfile {} metafile {}"
+argument_list|,
 name|block
-operator|+
-literal|" blockfile "
-operator|+
+argument_list|,
 name|info
 operator|.
 name|getBlockPath
 argument_list|()
-operator|+
-literal|" metafile "
-operator|+
+argument_list|,
 name|info
 operator|.
 name|getMetaPath
@@ -10014,30 +9969,19 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
 block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"getBlockLocalPathInfo for block="
+literal|"getBlockLocalPathInfo for block={} "
 operator|+
+literal|"returning null"
+argument_list|,
 name|block
-operator|+
-literal|" returning null"
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 name|metrics
 operator|.
@@ -10333,27 +10277,15 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got: "
-operator|+
+literal|"Got: {}"
+argument_list|,
 name|id
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|blockPoolTokenSecretManager
 operator|.
 name|checkAccess
@@ -10409,8 +10341,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stopped plug-in "
-operator|+
+literal|"Stopped plug-in {}"
+argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
@@ -10425,11 +10357,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"ServicePlugin "
-operator|+
+literal|"ServicePlugin {} could not be stopped"
+argument_list|,
 name|p
-operator|+
-literal|" could not be stopped"
 argument_list|,
 name|t
 argument_list|)
@@ -10528,7 +10458,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Exception interrupting DataXceiverServer: "
+literal|"Exception interrupting DataXceiverServer"
 argument_list|,
 name|e
 argument_list|)
@@ -10729,8 +10659,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Waiting for threadgroup to exit, active threads is "
-operator|+
+literal|"Waiting for threadgroup to exit, active threads is {}"
+argument_list|,
 name|this
 operator|.
 name|threadGroup
@@ -10924,7 +10854,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Received exception in BlockPoolManager#shutDownAll: "
+literal|"Received exception in BlockPoolManager#shutDownAll"
 argument_list|,
 name|ie
 argument_list|)
@@ -10958,9 +10888,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception when unlocking storage: "
-operator|+
-name|ie
+literal|"Exception when unlocking storage"
 argument_list|,
 name|ie
 argument_list|)
@@ -11162,12 +11090,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"DataNode.handleDiskError on : ["
+literal|"DataNode.handleDiskError on: "
 operator|+
+literal|"[{}] Keep Running: {}"
+argument_list|,
 name|failedVolumes
-operator|+
-literal|"] Keep Running: "
-operator|+
+argument_list|,
 name|hasEnoughResources
 argument_list|)
 expr_stmt|;
@@ -12065,45 +11993,36 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: {} (numBytes={}), stage={}, "
+operator|+
+literal|"clientname={}, targets={}, target storage types={}, "
+operator|+
+literal|"target storage IDs={}"
+argument_list|,
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|b
-operator|+
-literal|" (numBytes="
-operator|+
+argument_list|,
 name|b
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|")"
-operator|+
-literal|", stage="
-operator|+
+argument_list|,
 name|stage
-operator|+
-literal|", clientname="
-operator|+
+argument_list|,
 name|clientname
-operator|+
-literal|", targets="
-operator|+
+argument_list|,
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|targets
 argument_list|)
-operator|+
-literal|", target storage types="
-operator|+
-operator|(
+argument_list|,
 name|targetStorageTypes
 operator|==
 literal|null
@@ -12116,11 +12035,7 @@ name|asList
 argument_list|(
 name|targetStorageTypes
 argument_list|)
-operator|)
-operator|+
-literal|", target storage IDs="
-operator|+
-operator|(
+argument_list|,
 name|targetStorageIds
 operator|==
 literal|null
@@ -12133,7 +12048,6 @@ name|asList
 argument_list|(
 name|targetStorageIds
 argument_list|)
-operator|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -12277,24 +12191,15 @@ argument_list|(
 name|dnAddr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {}"
+argument_list|,
 name|dnAddr
 argument_list|)
 expr_stmt|;
-block|}
 name|sock
 operator|=
 name|newSocket
@@ -12604,34 +12509,28 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}, at {}: Transmitted {} (numBytes={}) to {}"
+argument_list|,
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|", at "
-operator|+
+argument_list|,
 name|DataNode
 operator|.
 name|this
 operator|.
 name|getDisplayName
 argument_list|()
-operator|+
-literal|": Transmitted "
-operator|+
+argument_list|,
 name|b
-operator|+
-literal|" (numBytes="
-operator|+
+argument_list|,
 name|b
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|") to "
-operator|+
+argument_list|,
 name|curTarget
 argument_list|)
 expr_stmt|;
@@ -12656,30 +12555,21 @@ name|in
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: close-ack={}"
+argument_list|,
 name|getClass
 argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|": close-ack="
-operator|+
+argument_list|,
 name|closeAck
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|closeAck
@@ -12774,11 +12664,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Adding block: "
-operator|+
+literal|"Adding block: {} for scanning"
+argument_list|,
 name|b
-operator|+
-literal|" for scanning"
 argument_list|)
 expr_stmt|;
 name|blockScanner
@@ -12803,62 +12691,20 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{}:Failed to transfer {} to {} got"
+argument_list|,
 name|bpReg
-operator|+
-literal|":Failed to transfer "
-operator|+
+argument_list|,
 name|b
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|targets
 index|[
 literal|0
 index|]
-operator|+
-literal|" got "
 argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
-comment|// disk check moved to FileIoProvider
-name|IOException
-name|cause
-init|=
-name|DatanodeUtil
-operator|.
-name|getCauseIfDiskError
-argument_list|(
-name|ie
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|cause
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// possible disk error
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"IOException in DataTransfer#run() "
-operator|+
-name|ie
-operator|.
-name|getMessage
-argument_list|()
-operator|+
-literal|". "
-operator|+
-literal|"Cause is "
-argument_list|,
-name|cause
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -13351,42 +13197,25 @@ block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Failed to initialize storage directory "
-operator|+
-name|locationString
-operator|+
-literal|". Exception details: "
-operator|+
-name|ioe
-argument_list|)
-expr_stmt|;
-comment|// Ignore the exception.
-continue|continue;
-block|}
-catch|catch
-parameter_list|(
+decl||
 name|SecurityException
-name|se
+name|ioe
 parameter_list|)
 block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to initialize storage directory "
+literal|"Failed to initialize storage directory {}."
 operator|+
+literal|"Exception details: {}"
+argument_list|,
 name|locationString
-operator|+
-literal|". Exception details: "
-operator|+
-name|se
+argument_list|,
+name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Ignore the exception.
@@ -13548,9 +13377,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Received exception in Datanode#join: "
-operator|+
+literal|"Received exception in Datanode#join: {}"
+argument_list|,
 name|ex
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -14427,27 +14259,15 @@ name|BlockTokenIdentifier
 operator|)
 name|tokenId
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got: "
-operator|+
+literal|"Got: {}"
+argument_list|,
 name|id
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|blockPoolTokenSecretManager
 operator|.
 name|checkAccess
@@ -15318,12 +15138,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"deleteBlockPool command received for block pool "
+literal|"deleteBlockPool command received for block pool {}, "
 operator|+
+literal|"force={}"
+argument_list|,
 name|blockPoolId
-operator|+
-literal|", force="
-operator|+
+argument_list|,
 name|force
 argument_list|)
 expr_stmt|;
@@ -15343,11 +15163,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The block pool "
-operator|+
+literal|"The block pool {} is still running, cannot be deleted."
+argument_list|,
 name|blockPoolId
-operator|+
-literal|" is still running, cannot be deleted."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -15392,11 +15210,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"shutdownDatanode command received (upgrade="
+literal|"shutdownDatanode command received (upgrade={}). "
 operator|+
+literal|"Shutting down Datanode..."
+argument_list|,
 name|forUpgrade
-operator|+
-literal|"). Shutting down Datanode..."
 argument_list|)
 expr_stmt|;
 comment|// Shutdown can be called only once.
@@ -16137,36 +15955,21 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error occurred when removing unhealthy storage dirs: "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
+literal|"Error occurred when removing unhealthy storage dirs"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|sb
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// send blockreport regarding volume failure
 name|handleDiskError
 argument_list|(
@@ -16813,8 +16616,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Disk Balancer - Unknown key in get balancer setting. Key: "
-operator|+
+literal|"Disk Balancer - Unknown key in get balancer setting. Key: {}"
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;

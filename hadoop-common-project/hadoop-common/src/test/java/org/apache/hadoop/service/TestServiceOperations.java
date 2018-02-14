@@ -292,10 +292,6 @@ name|service
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" : "
-operator|+
-name|e
 argument_list|)
 argument_list|)
 expr_stmt|;

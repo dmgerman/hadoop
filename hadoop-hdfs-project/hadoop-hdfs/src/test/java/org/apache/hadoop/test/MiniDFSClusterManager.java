@@ -190,34 +190,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -290,6 +262,26 @@ name|JSON
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class drives the creation of a mini-cluster on the local machine. By  * default, a MiniDFSCluster is spawned on the first available ports that are  * found.  *   * A series of command line flags controls the startup cluster options.  *   * This class can dump a Hadoop configuration and some basic metadata (in JSON)  * into a textfile.  *   * To shutdown the cluster, kill the process.  *   * To run this from the command line, do the following (replacing the jar  * version as appropriate):  *   * $HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/hdfs/hadoop-hdfs-0.24.0-SNAPSHOT-tests.jar org.apache.hadoop.test.MiniDFSClusterManager -options...  */
 end_comment
@@ -304,12 +296,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|MiniDFSClusterManager
 operator|.
@@ -675,8 +667,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Started MiniDFSCluster -- namenode on port "
-operator|+
+literal|"Started MiniDFSCluster -- namenode on port {}"
+argument_list|,
 name|dfs
 operator|.
 name|getNameNodePort
@@ -845,12 +837,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"options parsing failed:  "
-operator|+
+literal|"options parsing failed"
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 operator|new
@@ -920,8 +909,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unrecognized option: "
-operator|+
+literal|"Unrecognized option: {}"
+argument_list|,
 name|arg
 argument_list|)
 expr_stmt|;
@@ -1132,8 +1121,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Ignoring -D option "
-operator|+
+literal|"Ignoring -D option {}"
+argument_list|,
 name|prop
 argument_list|)
 expr_stmt|;
@@ -1144,11 +1133,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Updated "
-operator|+
+literal|"Updated {} configuration settings from command line."
+argument_list|,
 name|num_confs_updated
-operator|+
-literal|" configuration settings from command line."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1207,16 +1194,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Couldn't parse value ("
+literal|"Couldn't parse value ({}) for option {}. "
 operator|+
+literal|"Using default: {}"
+argument_list|,
 name|o
-operator|+
-literal|") for option "
-operator|+
+argument_list|,
 name|argName
-operator|+
-literal|". Using default: "
-operator|+
+argument_list|,
 name|defaultValue
 argument_list|)
 expr_stmt|;

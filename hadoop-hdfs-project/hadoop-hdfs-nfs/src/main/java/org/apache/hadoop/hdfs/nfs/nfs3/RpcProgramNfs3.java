@@ -128,34 +128,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -1884,6 +1856,26 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * RPC program corresponding to nfs daemon. See {@link Nfs3}.  */
 end_comment
@@ -1926,12 +1918,12 @@ decl_stmt|;
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|RpcProgramNfs3
 operator|.
@@ -2280,8 +2272,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Configured HDFS superuser is "
-operator|+
+literal|"Configured HDFS superuser is {}"
+argument_list|,
 name|superuser
 argument_list|)
 expr_stmt|;
@@ -2428,8 +2420,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Delete current dump directory "
-operator|+
+literal|"Delete current dump directory {}"
+argument_list|,
 name|writeDumpDir
 argument_list|)
 expr_stmt|;
@@ -2461,8 +2453,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Create new dump directory "
-operator|+
+literal|"Create new dump directory {}"
+argument_list|,
 name|writeDumpDir
 argument_list|)
 expr_stmt|;
@@ -2696,14 +2688,6 @@ name|NFS3Response
 name|nullProcedure
 parameter_list|()
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -2711,7 +2695,6 @@ argument_list|(
 literal|"NFS NULL"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|NFS3Response
@@ -2875,15 +2858,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"GETATTR for fileHandle: "
-operator|+
+literal|"GETATTR for fileHandle: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -2954,7 +2935,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|r
 argument_list|)
@@ -3008,8 +2989,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get file attribute, fileId="
-operator|+
+literal|"Can't get file attribute, fileId={}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -3048,8 +3029,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -3127,27 +3108,18 @@ name|MODE
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"set new mode: "
-operator|+
+literal|"set new mode: {}"
+argument_list|,
 name|newAttr
 operator|.
 name|getMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|dfsClient
 operator|.
 name|setPermission
@@ -3318,29 +3290,17 @@ operator|-
 literal|1
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"set atime: "
-operator|+
-operator|+
+literal|"set atime: {} mtime: {}"
+argument_list|,
 name|atime
-operator|+
-literal|" mtime: "
-operator|+
+argument_list|,
 name|mtime
 argument_list|)
 expr_stmt|;
-block|}
 name|dfsClient
 operator|.
 name|setTimes
@@ -3481,15 +3441,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS SETATTR fileHandle: "
-operator|+
+literal|"NFS SETATTR fileHandle: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -3551,8 +3509,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Setting file size is not supported when setattr, fileId: "
-operator|+
+literal|"Setting file size is not supported when setattr, fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -3613,8 +3571,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -3786,7 +3744,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -3829,8 +3787,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpAttr for fileIdPath: "
-operator|+
+literal|"Can't get postOpAttr for fileIdPath: {}"
+argument_list|,
 name|fileIdPath
 argument_list|,
 name|e1
@@ -4014,19 +3972,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS LOOKUP dir fileHandle: "
-operator|+
+literal|"NFS LOOKUP dir fileHandle: {} name: {} client: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" name: "
-operator|+
+argument_list|,
 name|fileName
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -4101,33 +4055,20 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS LOOKUP fileId: "
-operator|+
+literal|"NFS LOOKUP fileId: {} name: {} does not exist"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|" name: "
-operator|+
+argument_list|,
 name|fileName
-operator|+
-literal|" does not exist"
 argument_list|)
 expr_stmt|;
-block|}
 name|Nfs3FileAttributes
 name|postOpDirAttr
 init|=
@@ -4183,8 +4124,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId: "
-operator|+
+literal|"Can't get path for dir fileId: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
@@ -4241,7 +4182,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -4448,15 +4389,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS ACCESS fileHandle: "
-operator|+
+literal|"NFS ACCESS fileHandle: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -4490,8 +4429,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -4618,7 +4557,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|r
 argument_list|)
@@ -4672,7 +4611,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -4844,15 +4783,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS READLINK fileHandle: "
-operator|+
+literal|"NFS READLINK fileHandle: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -4939,8 +4876,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -4976,8 +4913,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Not a symlink, fileId: "
-operator|+
+literal|"Not a symlink, fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -5005,8 +4942,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Symlink target should not be null, fileId: "
-operator|+
+literal|"Symlink target should not be null, fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -5062,8 +4999,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Link size: "
-operator|+
+literal|"Link size: {} is larger than max transfer size: {}"
+argument_list|,
 name|target
 operator|.
 name|getBytes
@@ -5077,9 +5014,7 @@ argument_list|)
 argument_list|)
 operator|.
 name|length
-operator|+
-literal|" is larger than max transfer size: "
-operator|+
+argument_list|,
 name|rtmax
 argument_list|)
 expr_stmt|;
@@ -5135,12 +5070,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Readlink error: "
-operator|+
-name|e
-operator|.
-name|getClass
-argument_list|()
+literal|"Readlink error"
 argument_list|,
 name|e
 argument_list|)
@@ -5337,23 +5267,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS READ fileHandle: "
-operator|+
+literal|"NFS READ fileHandle: {} offset: {} count: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" offset: "
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|" count: "
-operator|+
+argument_list|,
 name|count
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -5432,20 +5356,12 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get error accessing file, fileId: "
-operator|+
+literal|"Get error accessing file, fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -5454,7 +5370,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|READ3Response
@@ -5472,27 +5387,18 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|READ3Response
@@ -5621,11 +5527,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"commitBeforeRead didn't succeed with ret="
+literal|"commitBeforeRead didn't succeed with ret={}. "
 operator|+
+literal|"Read may not get most recent data."
+argument_list|,
 name|ret
-operator|+
-literal|". Read may not get most recent data."
 argument_list|)
 expr_stmt|;
 block|}
@@ -5827,20 +5733,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Partial read. Asked offset: "
+literal|"Partial read. Asked offset: {} count: {} and read back: {} "
 operator|+
+literal|"file size: {}"
+argument_list|,
 name|offset
-operator|+
-literal|" count: "
-operator|+
+argument_list|,
 name|count
-operator|+
-literal|" and read back: "
-operator|+
+argument_list|,
 name|readCount
-operator|+
-literal|" file size: "
-operator|+
+argument_list|,
 name|attrs
 operator|.
 name|getSize
@@ -5907,19 +5809,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Read error: "
-operator|+
-name|e
-operator|.
-name|getClass
-argument_list|()
-operator|+
-literal|" offset: "
-operator|+
+literal|"Read error. Offset: {} count: {}"
+argument_list|,
 name|offset
-operator|+
-literal|" count: "
-operator|+
+argument_list|,
 name|count
 argument_list|,
 name|e
@@ -6170,34 +6063,26 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS WRITE fileHandle: "
+literal|"NFS WRITE fileHandle: {} offset: {} length: {} "
 operator|+
+literal|"stableHow: {} xid: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" offset: "
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|" length: "
-operator|+
+argument_list|,
 name|count
-operator|+
-literal|" stableHow: "
-operator|+
+argument_list|,
 name|stableHow
 operator|.
 name|getValue
 argument_list|()
-operator|+
-literal|" xid: "
-operator|+
+argument_list|,
 name|xid
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -6268,8 +6153,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -6330,31 +6215,20 @@ name|WRITE_COMMIT_VERF
 argument_list|)
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"requested offset="
-operator|+
+literal|"requested offset={} and current filesize={}"
+argument_list|,
 name|offset
-operator|+
-literal|" and current filesize="
-operator|+
+argument_list|,
 name|preOpAttr
 operator|.
 name|getSize
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|writeManager
 operator|.
 name|handleWrite
@@ -6381,19 +6255,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Error writing to fileId "
-operator|+
+literal|"Error writing to fileId {} at offset {} and length {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|" at offset "
-operator|+
+argument_list|,
 name|offset
-operator|+
-literal|" and length "
-operator|+
+argument_list|,
 name|data
 operator|.
 name|length
@@ -6433,12 +6303,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpAttr for fileId: "
-operator|+
-name|handle
-operator|.
-name|getFileId
-argument_list|()
+literal|"Can't get postOpAttr for fileId: {}"
 argument_list|,
 name|e1
 argument_list|)
@@ -6636,19 +6501,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS CREATE dir fileHandle: "
-operator|+
+literal|"NFS CREATE dir fileHandle: {} filename: {} client: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" filename: "
-operator|+
+argument_list|,
 name|fileName
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -6736,12 +6597,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Setting file size is not supported when creating file: "
+literal|"Setting file size is not supported when creating file: {} "
 operator|+
+literal|"dir fileId: {}"
+argument_list|,
 name|fileName
-operator|+
-literal|" dir fileId: "
-operator|+
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
@@ -6819,8 +6680,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for dirHandle: "
-operator|+
+literal|"Can't get path for dirHandle: {}"
+argument_list|,
 name|dirHandle
 argument_list|)
 expr_stmt|;
@@ -7188,31 +7049,20 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Opened stream for file: "
-operator|+
+literal|"Opened stream for file: {}, fileId: {}"
+argument_list|,
 name|fileName
-operator|+
-literal|", fileId: "
-operator|+
+argument_list|,
 name|fileHandle
 operator|.
 name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 catch|catch
@@ -7255,15 +7105,13 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't close stream for dirFileId: "
-operator|+
+literal|"Can't close stream for dirFileId: {} filename: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
 argument_list|()
-operator|+
-literal|" filename: "
-operator|+
+argument_list|,
 name|fileName
 argument_list|,
 name|e1
@@ -7311,8 +7159,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get postOpDirAttr for dirFileId: "
-operator|+
+literal|"Can't get postOpDirAttr for dirFileId: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
@@ -7528,19 +7376,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS MKDIR dirHandle: "
-operator|+
+literal|"NFS MKDIR dirHandle: {} filename: {} client: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" filename: "
-operator|+
+argument_list|,
 name|fileName
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -7569,10 +7413,10 @@ name|error
 argument_list|(
 literal|"Setting file size is not supported when mkdir: "
 operator|+
+literal|"{} in dirHandle {}"
+argument_list|,
 name|fileName
-operator|+
-literal|" in dirHandle"
-operator|+
+argument_list|,
 name|dirHandle
 argument_list|)
 expr_stmt|;
@@ -7642,8 +7486,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId: "
-operator|+
+literal|"Can't get path for dir fileId: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
@@ -7940,7 +7784,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -7979,8 +7823,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpDirAttr for "
-operator|+
+literal|"Can't get postOpDirAttr for {}"
+argument_list|,
 name|dirFileIdPath
 argument_list|,
 name|e
@@ -8183,19 +8027,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS REMOVE dir fileHandle: "
-operator|+
+literal|"NFS REMOVE dir fileHandle: {} fileName: {} client: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" fileName: "
-operator|+
+argument_list|,
 name|fileName
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -8281,8 +8121,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId: "
-operator|+
+literal|"Can't get path for dir fileId: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
@@ -8473,7 +8313,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -8512,8 +8352,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpDirAttr for "
-operator|+
+literal|"Can't get postOpDirAttr for {}"
+argument_list|,
 name|dirFileIdPath
 argument_list|,
 name|e1
@@ -8688,19 +8528,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS RMDIR dir fileHandle: "
-operator|+
+literal|"NFS RMDIR dir fileHandle: {} fileName: {} client: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" fileName: "
-operator|+
+argument_list|,
 name|fileName
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -8786,8 +8622,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for dir fileId: "
-operator|+
+literal|"Can't get path for dir fileId: {}"
+argument_list|,
 name|dirHandle
 operator|.
 name|getFileId
@@ -9001,7 +8837,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -9040,8 +8876,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpDirAttr for "
-operator|+
+literal|"Can't get postOpDirAttr for {}"
+argument_list|,
 name|dirFileIdPath
 argument_list|,
 name|e1
@@ -9242,30 +9078,22 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS RENAME from: "
-operator|+
+literal|"NFS RENAME from: {}/{} to: {}/{} client: {}"
+argument_list|,
 name|fromHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|"/"
-operator|+
+argument_list|,
 name|fromName
-operator|+
-literal|" to: "
-operator|+
+argument_list|,
 name|toHandle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|"/"
-operator|+
+argument_list|,
 name|toName
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -9392,8 +9220,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fromHandle fileId: "
-operator|+
+literal|"Can't get path for fromHandle fileId: {}"
+argument_list|,
 name|fromHandle
 operator|.
 name|getFileId
@@ -9434,8 +9262,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for toHandle fileId: "
-operator|+
+literal|"Can't get path for toHandle fileId: {}"
+argument_list|,
 name|toHandle
 operator|.
 name|getFileId
@@ -9609,7 +9437,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -9668,12 +9496,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpDirAttr for "
-operator|+
+literal|"Can't get postOpDirAttr for {} or {}"
+argument_list|,
 name|fromDirFileIdPath
-operator|+
-literal|" or"
-operator|+
+argument_list|,
 name|toDirFileIdPath
 argument_list|,
 name|e1
@@ -9878,36 +9704,21 @@ literal|"/"
 operator|+
 name|name
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS SYMLINK, target: "
-operator|+
+literal|"NFS SYMLINK, target: {} link: {} namenodeId: {} client: {}"
+argument_list|,
 name|symData
-operator|+
-literal|" link: "
-operator|+
+argument_list|,
 name|linkIdPath
-operator|+
-literal|" namenodeId: "
-operator|+
+argument_list|,
 name|namenodeId
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
-block|}
 name|DFSClient
 name|dfsClient
 init|=
@@ -10058,8 +9869,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception: "
-operator|+
+literal|"Exception"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -10176,8 +9987,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Cookie couldn't be found: "
-operator|+
+literal|"Cookie couldn't be found: {}, do listing from beginning"
+argument_list|,
 operator|new
 name|String
 argument_list|(
@@ -10190,8 +10001,6 @@ argument_list|(
 literal|"UTF-8"
 argument_list|)
 argument_list|)
-operator|+
-literal|", do listing from beginning"
 argument_list|)
 expr_stmt|;
 name|dlisting
@@ -10368,8 +10177,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid READDIR request, with negative cookie: "
-operator|+
+literal|"Invalid READDIR request, with negative cookie: {}"
+argument_list|,
 name|cookie
 argument_list|)
 expr_stmt|;
@@ -10402,8 +10211,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Nonpositive count in invalid READDIR request: "
-operator|+
+literal|"Nonpositive count in invalid READDIR request: {}"
+argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
@@ -10429,23 +10238,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS READDIR fileHandle: "
-operator|+
+literal|"NFS READDIR fileHandle: {} cookie: {} count: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" cookie: "
-operator|+
+argument_list|,
 name|cookie
-operator|+
-literal|" count: "
-operator|+
+argument_list|,
 name|count
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -10531,8 +10334,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -10562,8 +10365,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't readdir for regular file, fileId: "
-operator|+
+literal|"Can't readdir for regular file, fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -10637,12 +10440,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"CookieVerf mismatch. request cookieVerf: "
+literal|"CookieVerf mismatch. request cookieVerf: {} "
 operator|+
+literal|"dir cookieVerf: {}"
+argument_list|,
 name|cookieVerf
-operator|+
-literal|" dir cookieVerf: "
-operator|+
+argument_list|,
 name|dirStatus
 operator|.
 name|getModificationTime
@@ -10803,8 +10606,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -10832,7 +10635,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -11258,8 +11061,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid READDIRPLUS request, with negative cookie: "
-operator|+
+literal|"Invalid READDIRPLUS request, with negative cookie: {}"
+argument_list|,
 name|cookie
 argument_list|)
 expr_stmt|;
@@ -11292,8 +11095,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Nonpositive dircount in invalid READDIRPLUS request: "
-operator|+
+literal|"Nonpositive dircount in invalid READDIRPLUS request: {}"
+argument_list|,
 name|dirCount
 argument_list|)
 expr_stmt|;
@@ -11326,8 +11129,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Nonpositive maxcount in invalid READDIRPLUS request: "
-operator|+
+literal|"Nonpositive maxcount in invalid READDIRPLUS request: {}"
+argument_list|,
 name|maxCount
 argument_list|)
 expr_stmt|;
@@ -11353,27 +11156,21 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS READDIRPLUS fileHandle: "
+literal|"NFS READDIRPLUS fileHandle: {} cookie: {} dirCount: {} "
 operator|+
+literal|"maxCount: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" cookie: "
-operator|+
+argument_list|,
 name|cookie
-operator|+
-literal|" dirCount: "
-operator|+
+argument_list|,
 name|dirCount
-operator|+
-literal|" maxCount: "
-operator|+
+argument_list|,
 name|maxCount
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -11461,8 +11258,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -11492,8 +11289,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't readdirplus for regular file, fileId: "
-operator|+
+literal|"Can't readdirplus for regular file, fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -11565,12 +11362,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"cookieverf mismatch. request cookieverf: "
+literal|"cookieverf mismatch. request cookieverf: {} "
 operator|+
+literal|"dir cookieverf: {}"
+argument_list|,
 name|cookieVerf
-operator|+
-literal|" dir cookieverf: "
-operator|+
+argument_list|,
 name|dirStatus
 operator|.
 name|getModificationTime
@@ -11734,8 +11531,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -11763,7 +11560,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -11992,8 +11789,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get file attributes for fileId: "
-operator|+
+literal|"Can't get file attributes for fileId: {}"
+argument_list|,
 name|fileId
 argument_list|,
 name|e
@@ -12112,8 +11909,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't get file attributes for fileId: "
-operator|+
+literal|"Can't get file attributes for fileId: {}"
+argument_list|,
 name|fileId
 argument_list|,
 name|e
@@ -12332,15 +12129,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS FSSTAT fileHandle: "
-operator|+
+literal|"NFS FSSTAT fileHandle: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -12431,8 +12226,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -12514,7 +12309,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|r
 argument_list|)
@@ -12568,7 +12363,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -12740,15 +12535,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS FSINFO fileHandle: "
-operator|+
+literal|"NFS FSINFO fileHandle: {} client: {}"
+argument_list|,
+name|remoteAddress
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -12868,8 +12663,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -12945,7 +12740,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -13120,15 +12915,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS PATHCONF fileHandle: "
-operator|+
+literal|"NFS PATHCONF fileHandle: {} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -13199,8 +12992,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -13253,7 +13046,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -13444,29 +13237,23 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NFS COMMIT fileHandle: "
-operator|+
+literal|"NFS COMMIT fileHandle: {} offset={} count={} client: {}"
+argument_list|,
 name|handle
 operator|.
 name|dumpFileHandle
 argument_list|()
-operator|+
-literal|" offset="
-operator|+
+argument_list|,
 name|request
 operator|.
 name|getOffset
 argument_list|()
-operator|+
-literal|" count="
-operator|+
+argument_list|,
 name|request
 operator|.
 name|getCount
 argument_list|()
-operator|+
-literal|" client: "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|)
 expr_stmt|;
@@ -13547,8 +13334,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get path for fileId: "
-operator|+
+literal|"Can't get path for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -13665,7 +13452,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception "
+literal|"Exception"
 argument_list|,
 name|e
 argument_list|)
@@ -13701,8 +13488,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can't get postOpAttr for fileId: "
-operator|+
+literal|"Can't get postOpAttr for fileId: {}"
+argument_list|,
 name|handle
 operator|.
 name|getFileId
@@ -13974,14 +13761,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Wrong RPC AUTH flavor, "
-operator|+
+literal|"Wrong RPC AUTH flavor, {} is not AUTH_SYS or RPCSEC_GSS."
+argument_list|,
 name|credentials
 operator|.
 name|getFlavor
 argument_list|()
-operator|+
-literal|" is not AUTH_SYS or RPCSEC_GSS."
 argument_list|)
 expr_stmt|;
 name|XDR
@@ -14108,8 +13893,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sending the cached reply to retransmitted request "
-operator|+
+literal|"Sending the cached reply to retransmitted request {}"
+argument_list|,
 name|xid
 argument_list|)
 expr_stmt|;
@@ -14134,8 +13919,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Retransmitted request, transaction still in progress "
-operator|+
+literal|"Retransmitted request, transaction still in progress {}"
+argument_list|,
 name|xid
 argument_list|)
 expr_stmt|;
@@ -14345,26 +14130,19 @@ operator|.
 name|READ
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}{}"
+argument_list|,
 name|Nfs3Utils
 operator|.
 name|READ_RPC_START
-operator|+
+argument_list|,
 name|xid
 argument_list|)
 expr_stmt|;
-block|}
 name|response
 operator|=
 name|read
@@ -14374,34 +14152,19 @@ argument_list|,
 name|info
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-operator|&&
-operator|(
-name|nfsproc3
-operator|==
-name|NFSPROC3
-operator|.
-name|READ
-operator|)
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}{}"
+argument_list|,
 name|Nfs3Utils
 operator|.
 name|READ_RPC_END
-operator|+
+argument_list|,
 name|xid
 argument_list|)
 expr_stmt|;
-block|}
 name|metrics
 operator|.
 name|addRead
@@ -14425,26 +14188,19 @@ operator|.
 name|WRITE
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}{}"
+argument_list|,
 name|Nfs3Utils
 operator|.
 name|WRITE_RPC_START
-operator|+
+argument_list|,
 name|xid
 argument_list|)
 expr_stmt|;
-block|}
 name|response
 operator|=
 name|write
@@ -14925,27 +14681,18 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No sync response, expect an async response for request XID="
-operator|+
+literal|"No sync response, expect an async response for request XID={}"
+argument_list|,
 name|rpcCall
 operator|.
 name|getXid
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 comment|// TODO: currently we just return VerifierNone

@@ -469,13 +469,8 @@ operator|.
 name|error
 argument_list|(
 name|msg
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|getLocalizedMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -553,8 +548,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Service is not ready to become active, but forcing: "
-operator|+
+literal|"Service is not ready to become active, but forcing: {}"
+argument_list|,
 name|notReadyReason
 argument_list|)
 expr_stmt|;
@@ -669,18 +664,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to gracefully make "
-operator|+
+literal|"Unable to gracefully make {} standby ({})"
+argument_list|,
 name|svc
-operator|+
-literal|" standby ("
-operator|+
+argument_list|,
 name|sfe
 operator|.
 name|getMessage
 argument_list|()
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
 block|}
@@ -694,11 +685,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to gracefully make "
-operator|+
+literal|"Unable to gracefully make {} standby (unable to connect)"
+argument_list|,
 name|svc
-operator|+
-literal|" standby (unable to connect)"
 argument_list|,
 name|ioe
 argument_list|)
@@ -863,18 +852,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to make "
-operator|+
+literal|"Unable to make {} active ({}). Failing back."
+argument_list|,
 name|toSvc
-operator|+
-literal|" active ("
-operator|+
+argument_list|,
 name|sfe
 operator|.
 name|getMessage
 argument_list|()
-operator|+
-literal|"). Failing back."
 argument_list|)
 expr_stmt|;
 name|failed
@@ -896,11 +881,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to make "
-operator|+
+literal|"Unable to make {} active (unable to connect). Failing back."
+argument_list|,
 name|toSvc
-operator|+
-literal|" active (unable to connect). Failing back."
 argument_list|,
 name|ioe
 argument_list|)

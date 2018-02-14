@@ -130,34 +130,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -470,6 +442,26 @@ name|ThreadFactoryBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Thread which runs inside the NN when it's in Standby state,  * periodically waking up to take a checkpoint of the namespace.  * When it takes a checkpoint, it saves it to its local  * storage and then uploads it to the remote NameNode.  */
 end_comment
@@ -488,12 +480,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|StandbyCheckpointer
 operator|.
@@ -861,14 +853,12 @@ name|info
 argument_list|(
 literal|"Starting standby checkpoint thread...\n"
 operator|+
-literal|"Checkpointing active NN to possible NNs: "
+literal|"Checkpointing active NN to possible NNs: {}\n"
 operator|+
+literal|"Serving checkpoints at {}"
+argument_list|,
 name|activeNNAddresses
-operator|+
-literal|"\n"
-operator|+
-literal|"Serving checkpoints at "
-operator|+
+argument_list|,
 name|myNNAddress
 argument_list|)
 expr_stmt|;
@@ -1039,11 +1029,11 @@ name|info
 argument_list|(
 literal|"A checkpoint was triggered but the Standby Node has not "
 operator|+
-literal|"received any transactions since the last checkpoint at txid "
+literal|"received any transactions since the last checkpoint at txid {}. "
 operator|+
+literal|"Skipping..."
+argument_list|,
 name|thisCheckpointTxId
-operator|+
-literal|". Skipping..."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1425,17 +1415,9 @@ operator|=
 operator|new
 name|IOException
 argument_list|(
-literal|"Exception during image upload: "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
+literal|"Exception during image upload"
 argument_list|,
 name|e
-operator|.
-name|getCause
-argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1926,14 +1908,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Triggering checkpoint because there have been "
+literal|"Triggering checkpoint because there have been {} txns "
 operator|+
+literal|"since the last checkpoint, "
+operator|+
+literal|"which exceeds the configured threshold {}"
+argument_list|,
 name|uncheckpointed
-operator|+
-literal|" txns since the last checkpoint, which "
-operator|+
-literal|"exceeds the configured threshold "
-operator|+
+argument_list|,
 name|checkpointConf
 operator|.
 name|getTxnCount
@@ -1960,14 +1942,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Triggering checkpoint because it has been "
+literal|"Triggering checkpoint because it has been {} seconds "
 operator|+
+literal|"since the last checkpoint, which exceeds the configured "
+operator|+
+literal|"interval {}"
+argument_list|,
 name|secsSinceLast
-operator|+
-literal|" seconds since the last checkpoint, which "
-operator|+
-literal|"exceeds the configured interval "
-operator|+
+argument_list|,
 name|checkpointConf
 operator|.
 name|getPeriod
@@ -2104,8 +2086,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Checkpoint was cancelled: "
-operator|+
+literal|"Checkpoint was cancelled: {}"
+argument_list|,
 name|ce
 operator|.
 name|getMessage

@@ -2887,24 +2887,15 @@ argument_list|(
 name|oldBreadcrumbStat
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Becoming active for "
-operator|+
+literal|"Becoming active for {}"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
-block|}
 name|appClient
 operator|.
 name|becomeActive
@@ -2970,11 +2961,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Writing znode "
+literal|"Writing znode {} to indicate that the local "
 operator|+
+literal|"node is the most recent active..."
+argument_list|,
 name|zkBreadCrumbPath
-operator|+
-literal|" to indicate that the local node is the most recent active..."
 argument_list|)
 expr_stmt|;
 if|if
@@ -3124,20 +3115,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to delete our own bread-crumb of being active at "
+literal|"Unable to delete our own bread-crumb of being active at {}."
 operator|+
+literal|". Expecting to be fenced by the next active."
+argument_list|,
 name|zkBreadCrumbPath
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|getLocalizedMessage
-argument_list|()
-operator|+
-literal|". "
-operator|+
-literal|"Expecting to be fenced by the next active."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3255,8 +3239,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Old node exists: "
-operator|+
+literal|"Old node exists: {}"
+argument_list|,
 name|StringUtils
 operator|.
 name|byteToHexString
@@ -3314,24 +3298,15 @@ operator|.
 name|STANDBY
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Becoming standby for "
-operator|+
+literal|"Becoming standby for {}"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
-block|}
 name|state
 operator|=
 name|State
@@ -3360,24 +3335,15 @@ operator|.
 name|NEUTRAL
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Entering neutral mode for "
-operator|+
+literal|"Entering neutral mode for {}"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
-block|}
 name|state
 operator|=
 name|State
@@ -3979,8 +3945,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Ignoring stale result from old client with sessionId "
-operator|+
+literal|"Ignoring stale result from old client with sessionId {}"
+argument_list|,
 name|String
 operator|.
 name|format
@@ -4082,9 +4048,9 @@ name|error
 argument_list|(
 literal|"Connection timed out: couldn't connect to ZooKeeper in "
 operator|+
+literal|"{} milliseconds"
+argument_list|,
 name|connectionTimeoutMs
-operator|+
-literal|" milliseconds"
 argument_list|)
 expr_stmt|;
 name|zk

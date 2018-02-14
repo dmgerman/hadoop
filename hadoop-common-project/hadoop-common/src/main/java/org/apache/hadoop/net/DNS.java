@@ -743,16 +743,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"I/O error finding interface "
-operator|+
+literal|"I/O error finding interface {}"
+argument_list|,
 name|strInterface
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -1041,8 +1036,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to determine hostname for interface "
-operator|+
+literal|"Unable to determine hostname for interface {}"
+argument_list|,
 name|strInterface
 argument_list|)
 expr_stmt|;
@@ -1104,13 +1099,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to determine local hostname "
-operator|+
-literal|"-falling back to \""
-operator|+
+literal|"Unable to determine local hostname -falling back to '{}'"
+argument_list|,
 name|LOCALHOST
-operator|+
-literal|"\""
 argument_list|,
 name|e
 argument_list|)
@@ -1158,13 +1149,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to determine address of the host"
+literal|"Unable to determine address of the host "
 operator|+
-literal|"-falling back to \""
-operator|+
+literal|"-falling back to '{}' address"
+argument_list|,
 name|LOCALHOST
-operator|+
-literal|"\" address"
 argument_list|,
 name|e
 argument_list|)
@@ -1195,15 +1184,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to determine local loopback address "
-operator|+
-literal|"of \""
-operator|+
-name|LOCALHOST
-operator|+
-literal|"\" "
+literal|"Unable to determine local loopback address of '{}' "
 operator|+
 literal|"-this system's network configuration is unsupported"
+argument_list|,
+name|LOCALHOST
 argument_list|,
 name|e
 argument_list|)
@@ -1463,12 +1448,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"I/O error finding interface "
-operator|+
+literal|"I/O error finding interface {}: {}"
+argument_list|,
 name|strInterface
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
 operator|.
 name|getMessage

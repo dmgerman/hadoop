@@ -186,24 +186,15 @@ argument_list|,
 name|defaultRetryPolicySpec
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"multipleLinearRandomRetry = "
-operator|+
+literal|"multipleLinearRandomRetry = {}"
+argument_list|,
 name|multipleLinearRandomRetry
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|multipleLinearRandomRetry
@@ -428,24 +419,14 @@ operator|.
 name|TRY_ONCE_THEN_FAIL
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"RETRY "
-operator|+
+literal|"RETRY {}) policy={}"
+argument_list|,
 name|retries
-operator|+
-literal|") policy="
-operator|+
+argument_list|,
 name|p
 operator|.
 name|getClass
@@ -453,13 +434,10 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|", exception="
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|p
 operator|.

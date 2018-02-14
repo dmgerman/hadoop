@@ -26,34 +26,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -109,6 +81,26 @@ operator|.
 name|methods
 operator|.
 name|HttpRequestBase
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -178,12 +170,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|HttpInputStreamWithRelease
 operator|.
@@ -393,30 +385,19 @@ name|reason
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Releasing connection to "
-operator|+
+literal|"Releasing connection to {}:  {}"
+argument_list|,
 name|uri
-operator|+
-literal|":  "
-operator|+
+argument_list|,
 name|reason
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|req
@@ -516,13 +497,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Exception during release: "
-operator|+
+literal|"Exception during release: {}"
+argument_list|,
 name|operation
-operator|+
-literal|" - "
-operator|+
-name|ioe
 argument_list|,
 name|ioe
 argument_list|)
@@ -647,26 +624,15 @@ name|EOFException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"EOF exception "
-operator|+
-name|e
+literal|"EOF exception"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 name|read
 operator|=
 operator|-
@@ -783,26 +749,15 @@ name|EOFException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"EOF exception "
-operator|+
-name|e
+literal|"EOF exception"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 name|read
 operator|=
 operator|-
@@ -876,11 +831,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"input stream of "
-operator|+
-name|uri
+literal|"input stream of {}"
 operator|+
 literal|" not closed properly -cleaned up in finalize()"
+argument_list|,
+name|uri
 argument_list|)
 expr_stmt|;
 block|}
@@ -896,11 +851,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception while releasing "
-operator|+
+literal|"Exception while releasing {} in finalizer"
+argument_list|,
 name|uri
-operator|+
-literal|"in finalizer"
 argument_list|,
 name|e
 argument_list|)

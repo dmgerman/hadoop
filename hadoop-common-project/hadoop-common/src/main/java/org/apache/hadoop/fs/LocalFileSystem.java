@@ -671,9 +671,7 @@ argument_list|(
 literal|"Error moving bad file "
 operator|+
 name|p
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

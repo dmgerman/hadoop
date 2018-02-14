@@ -221,10 +221,6 @@ name|service
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" : "
-operator|+
-name|e
 argument_list|,
 name|e
 argument_list|)
@@ -269,14 +265,12 @@ name|log
 operator|.
 name|warn
 argument_list|(
-literal|"When stopping the service {} : {}"
+literal|"When stopping the service {}"
 argument_list|,
 name|service
 operator|.
 name|getName
 argument_list|()
-argument_list|,
-name|e
 argument_list|,
 name|e
 argument_list|)

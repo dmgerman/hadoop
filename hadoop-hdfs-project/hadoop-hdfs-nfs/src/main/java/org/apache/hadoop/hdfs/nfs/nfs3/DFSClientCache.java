@@ -22,20 +22,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -165,20 +151,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
 import|;
 end_import
 
@@ -414,6 +386,26 @@ name|RemovalNotification
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A cache saves DFSClient objects for different users.  */
 end_comment
@@ -427,12 +419,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DFSClientCache
 operator|.
@@ -970,16 +962,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Added export:"
-operator|+
+literal|"Added export: {} FileSystem URI: {} with namenodeId: {}"
+argument_list|,
 name|exportPath
-operator|+
-literal|" FileSystem URI:"
-operator|+
-name|exportURI
-operator|+
-literal|" with namenodeId:"
-operator|+
+argument_list|,
+name|exportPath
+argument_list|,
 name|namenodeId
 argument_list|)
 expr_stmt|;
@@ -1082,7 +1070,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"DFSClientCache.closeAll() threw an exception:\n"
+literal|"DFSClientCache.closeAll() threw an exception"
 argument_list|,
 name|e
 argument_list|)
@@ -1390,33 +1378,17 @@ argument_list|,
 name|realUser
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Created ugi:"
-operator|+
-literal|" %s for username: %s"
+literal|"Created ugi: {} for username: {}"
 argument_list|,
 name|ugi
 argument_list|,
 name|effectiveUser
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|ugi
 return|;
@@ -1674,12 +1646,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to create DFSClient for user:"
-operator|+
+literal|"Failed to create DFSClient for user: {}"
+argument_list|,
 name|userName
-operator|+
-literal|" Cause:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -1742,12 +1712,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to create DFSInputStream for user:"
-operator|+
+literal|"Failed to create DFSInputStream for user: {}"
+argument_list|,
 name|userName
-operator|+
-literal|" Cause:"
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

@@ -29606,12 +29606,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Get corrupt file blocks returned error: "
-operator|+
+literal|"Get corrupt file blocks returned error"
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

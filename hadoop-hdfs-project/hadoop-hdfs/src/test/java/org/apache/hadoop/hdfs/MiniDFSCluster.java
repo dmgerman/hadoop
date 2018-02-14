@@ -6859,8 +6859,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"unexpected URISyntaxException: "
-operator|+
+literal|"unexpected URISyntaxException"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

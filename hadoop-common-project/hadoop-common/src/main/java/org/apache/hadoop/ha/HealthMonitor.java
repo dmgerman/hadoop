@@ -765,16 +765,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Service health check failed for "
-operator|+
+literal|"Service health check failed for {}"
+argument_list|,
 name|targetToMonitor
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|t
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|enterState
@@ -791,23 +786,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Transport-level exception trying to monitor health of "
-operator|+
+literal|"Transport-level exception trying to monitor health of {}"
+argument_list|,
 name|targetToMonitor
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|t
-operator|.
-name|getCause
-argument_list|()
-operator|+
-literal|" "
-operator|+
-name|t
-operator|.
-name|getLocalizedMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|RPC
@@ -968,8 +951,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Entering state "
-operator|+
+literal|"Entering state {}"
+argument_list|,
 name|newState
 argument_list|)
 expr_stmt|;

@@ -386,13 +386,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -400,13 +396,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -428,12 +420,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|Gridmix
 operator|.
@@ -719,11 +711,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Gridmix input data directory "
+literal|"Gridmix input data directory {} already exists "
 operator|+
+literal|"when -generate option is used."
+argument_list|,
 name|inputDir
-operator|+
-literal|" already exists when -generate option is used.\n"
 argument_list|)
 expr_stmt|;
 return|return
@@ -756,16 +748,20 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Generating "
-operator|+
+literal|"Generating {} of test data..."
+argument_list|,
 name|StringUtils
 operator|.
-name|humanReadableInt
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
 argument_list|(
 name|genbytes
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
-operator|+
-literal|" of test data..."
 argument_list|)
 expr_stmt|;
 name|launchGridmixJob
@@ -788,12 +784,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Changing the permissions for inputPath "
-operator|+
+literal|"Changing the permissions for inputPath {}"
+argument_list|,
 name|inputDir
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|shell
@@ -2350,20 +2343,15 @@ operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
+name|debug
+argument_list|(
+literal|"Startup failed"
+argument_list|,
 name|e
-operator|.
-name|printStackTrace
-argument_list|()
+argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|factory
@@ -2517,7 +2505,7 @@ expr_stmt|;
 block|}
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,

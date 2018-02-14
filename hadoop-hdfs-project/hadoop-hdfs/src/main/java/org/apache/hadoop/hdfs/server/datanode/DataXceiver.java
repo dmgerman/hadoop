@@ -1533,27 +1533,18 @@ operator|.
 name|getLocalAddressString
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Number of active connections is: "
-operator|+
+literal|"Number of active connections is: {}"
+argument_list|,
 name|datanode
 operator|.
 name|getXceiverCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Update the current thread's name to contain the current status.    * Use this only after this receiver has started on its thread, i.e.,    * outside the constructor.    */
 DECL|method|updateCurrentThreadName (String status)
@@ -1697,8 +1688,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sending OOB to peer: "
-operator|+
+literal|"Sending OOB to peer: {}"
+argument_list|,
 name|peer
 argument_list|)
 expr_stmt|;
@@ -1740,8 +1731,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stopped the writer: "
-operator|+
+literal|"Stopped the writer: {}"
+argument_list|,
 name|peer
 argument_list|)
 expr_stmt|;
@@ -1908,18 +1899,16 @@ name|info
 argument_list|(
 literal|"Failed to read expected encryption handshake from client "
 operator|+
-literal|"at "
-operator|+
-name|peer
-operator|.
-name|getRemoteAddressString
-argument_list|()
-operator|+
-literal|". Perhaps the client "
+literal|"at {}. Perhaps the client "
 operator|+
 literal|"is running an older version of Hadoop which does not support "
 operator|+
 literal|"encryption"
+argument_list|,
+name|peer
+operator|.
+name|getRemoteAddressString
+argument_list|()
 argument_list|,
 name|imne
 argument_list|)
@@ -1933,16 +1922,16 @@ name|info
 argument_list|(
 literal|"Failed to read expected SASL data transfer protection "
 operator|+
-literal|"handshake from client at "
-operator|+
-name|peer
-operator|.
-name|getRemoteAddressString
-argument_list|()
+literal|"handshake from client at {}"
 operator|+
 literal|". Perhaps the client is running an older version of Hadoop "
 operator|+
 literal|"which does not support SASL data transfer protection"
+argument_list|,
+name|peer
+operator|.
+name|getRemoteAddressString
+argument_list|()
 argument_list|,
 name|imne
 argument_list|)
@@ -2205,11 +2194,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}; {}"
+argument_list|,
 name|s
-operator|+
-literal|"; "
-operator|+
+argument_list|,
 name|t
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2265,11 +2257,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}; {}"
+argument_list|,
 name|s1
-operator|+
-literal|"; "
-operator|+
+argument_list|,
 name|t
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2284,14 +2279,6 @@ condition|)
 block|{
 comment|// The InvalidToken exception has already been logged in
 comment|// checkAccess() method and this is not a server error.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
@@ -2301,7 +2288,6 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -2321,32 +2307,23 @@ block|{
 name|collectThreadLocalStates
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}:Number of active connections is: {}"
+argument_list|,
 name|datanode
 operator|.
 name|getDisplayName
 argument_list|()
-operator|+
-literal|":Number of active connections is: "
-operator|+
+argument_list|,
 name|datanode
 operator|.
 name|getXceiverCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|updateCurrentThreadName
 argument_list|(
 literal|"Cleaning up"
@@ -2839,8 +2816,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Reading receipt verification byte for "
-operator|+
+literal|"Reading receipt verification byte for {}"
+argument_list|,
 name|slotId
 argument_list|)
 expr_stmt|;
@@ -2875,10 +2852,10 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Receipt verification is not enabled on the DataNode.  "
+literal|"Receipt verification is not enabled on the DataNode. "
 operator|+
-literal|"Not verifying "
-operator|+
+literal|"Not verifying {}"
+argument_list|,
 name|slotId
 argument_list|)
 expr_stmt|;
@@ -2909,13 +2886,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Unregistering "
-operator|+
-name|registeredSlotId
-operator|+
-literal|" because the "
+literal|"Unregistering {} because the "
 operator|+
 literal|"requestShortCircuitFdsForRead operation failed."
+argument_list|,
+name|registeredSlotId
 argument_list|)
 expr_stmt|;
 name|datanode
@@ -3562,16 +3537,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to send success response back to the client.  "
+literal|"Failed to send success response back to the client. "
 operator|+
-literal|"Shutting down socket for "
-operator|+
+literal|"Shutting down socket for {}"
+argument_list|,
 name|shmInfo
 operator|.
 name|getShmId
 argument_list|()
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|sock
@@ -3937,16 +3910,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Client "
+literal|"Client {} did not send a valid status code "
 operator|+
+literal|"after reading. Will close connection."
+argument_list|,
 name|peer
 operator|.
 name|getRemoteAddressString
 argument_list|()
-operator|+
-literal|" did not send a valid status code after reading. "
-operator|+
-literal|"Will close connection."
 argument_list|)
 expr_stmt|;
 name|IOUtils
@@ -4030,32 +4001,21 @@ name|SocketException
 name|ignored
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
+literal|"{}:Ignoring exception while serving {} to {}"
+argument_list|,
 name|dnR
-operator|+
-literal|":Ignoring exception while serving "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|,
 name|ignored
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Its ok for remote side to close the connection anytime.
 name|datanode
 operator|.
@@ -4093,14 +4053,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{}:Got exception while serving {} to {}"
+argument_list|,
 name|dnR
-operator|+
-literal|":Got exception while serving "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|remoteAddress
 argument_list|,
 name|ioe
@@ -4506,51 +4464,35 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"opWriteBlock: stage="
+literal|"opWriteBlock: stage={}, clientname={}\n  "
 operator|+
+literal|"block  ={}, newGs={}, bytesRcvd=[{}, {}]\n  "
+operator|+
+literal|"targets={}; pipelineSize={}, srcDataNode={}, pinning={}"
+argument_list|,
 name|stage
-operator|+
-literal|", clientname="
-operator|+
+argument_list|,
 name|clientname
-operator|+
-literal|"\n  block  ="
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|", newGs="
-operator|+
+argument_list|,
 name|latestGenerationStamp
-operator|+
-literal|", bytesRcvd=["
-operator|+
+argument_list|,
 name|minBytesRcvd
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|maxBytesRcvd
-operator|+
-literal|"]"
-operator|+
-literal|"\n  targets="
-operator|+
+argument_list|,
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|targets
 argument_list|)
-operator|+
-literal|"; pipelineSize="
-operator|+
+argument_list|,
 name|pipelineSize
-operator|+
-literal|", srcDataNode="
-operator|+
+argument_list|,
 name|srcDataNode
-operator|+
-literal|", pinning="
-operator|+
+argument_list|,
 name|pinning
 argument_list|)
 expr_stmt|;
@@ -4558,16 +4500,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"isDatanode="
-operator|+
+literal|"isDatanode={}, isClient={}, isTransfer={}"
+argument_list|,
 name|isDatanode
-operator|+
-literal|", isClient="
-operator|+
+argument_list|,
 name|isClient
-operator|+
-literal|", isTransfer="
-operator|+
+argument_list|,
 name|isTransfer
 argument_list|)
 expr_stmt|;
@@ -4575,15 +4513,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"writeBlock receive buf size "
-operator|+
+literal|"writeBlock receive buf size {} tcp no delay {}"
+argument_list|,
 name|peer
 operator|.
 name|getReceiveBufferSize
 argument_list|()
-operator|+
-literal|" tcp no delay "
-operator|+
+argument_list|,
 name|peer
 operator|.
 name|getTcpNoDelay
@@ -4628,16 +4564,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Receiving "
-operator|+
+literal|"Receiving {} src: {} dest: {}"
+argument_list|,
 name|block
-operator|+
-literal|" src: "
-operator|+
+argument_list|,
 name|remoteAddress
-operator|+
-literal|" dest: "
-operator|+
+argument_list|,
 name|localAddress
 argument_list|)
 expr_stmt|;
@@ -4818,24 +4750,15 @@ argument_list|(
 name|connectToDnViaHostname
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {}"
+argument_list|,
 name|mirrorNode
 argument_list|)
 expr_stmt|;
-block|}
 name|mirrorTarget
 operator|=
 name|NetUtils
@@ -5236,11 +5159,6 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-operator|||
 name|mirrorInStatus
 operator|!=
 name|SUCCESS
@@ -5250,16 +5168,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Datanode "
+literal|"Datanode {} got response for connect"
 operator|+
+literal|"ack  from downstream datanode with firstbadlink as {}"
+argument_list|,
 name|targets
 operator|.
 name|length
-operator|+
-literal|" got response for connect ack "
-operator|+
-literal|" from downstream datanode with firstbadlink as "
-operator|+
+argument_list|,
 name|firstBadLink
 argument_list|)
 expr_stmt|;
@@ -5355,18 +5271,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
+literal|"{}:Exception transfering block {} to mirror {}"
+argument_list|,
 name|datanode
-operator|+
-literal|":Exception transfering block "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|" to mirror "
-operator|+
+argument_list|,
 name|mirrorNode
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -5380,17 +5292,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}:Exception transfering {} to mirror {}- continuing "
+operator|+
+literal|"without the mirror"
+argument_list|,
 name|datanode
-operator|+
-literal|":Exception transfering "
-operator|+
+argument_list|,
 name|block
-operator|+
-literal|" to mirror "
-operator|+
+argument_list|,
 name|mirrorNode
-operator|+
-literal|"- continuing without the mirror"
 argument_list|,
 name|e
 argument_list|)
@@ -5412,11 +5322,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-operator|||
 name|mirrorInStatus
 operator|!=
 name|SUCCESS
@@ -5426,14 +5331,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Datanode "
+literal|"Datanode {} forwarding connect ack to upstream "
 operator|+
+literal|"firstbadlink is {}"
+argument_list|,
 name|targets
 operator|.
 name|length
-operator|+
-literal|" forwarding connect ack to upstream firstbadlink is "
-operator|+
+argument_list|,
 name|firstBadLink
 argument_list|)
 expr_stmt|;
@@ -5513,14 +5418,6 @@ condition|(
 name|isTransfer
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
@@ -5528,7 +5425,6 @@ argument_list|(
 literal|"TRANSFER: send close-ack"
 argument_list|)
 expr_stmt|;
-block|}
 name|writeResponse
 argument_list|(
 name|SUCCESS
@@ -5598,20 +5494,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received "
-operator|+
+literal|"Received {} src: {} dest: {} of size {}"
+argument_list|,
 name|block
-operator|+
-literal|" src: "
-operator|+
+argument_list|,
 name|remoteAddress
-operator|+
-literal|" dest: "
-operator|+
+argument_list|,
 name|localAddress
-operator|+
-literal|" of size "
-operator|+
+argument_list|,
 name|block
 operator|.
 name|getNumBytes
@@ -5643,13 +5533,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"opWriteBlock "
-operator|+
+literal|"opWriteBlock {} received exception {}"
+argument_list|,
 name|block
-operator|+
-literal|" received exception "
-operator|+
+argument_list|,
 name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|incrDatanodeNetworkErrors
@@ -5861,13 +5752,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"transferBlock "
-operator|+
+literal|"transferBlock {} received exception {}"
+argument_list|,
 name|blk
-operator|+
-literal|" received exception "
-operator|+
+argument_list|,
 name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|incrDatanodeNetworkErrors
@@ -6049,13 +5941,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"blockChecksum "
-operator|+
+literal|"blockChecksum {} received exception {}"
+argument_list|,
 name|block
-operator|+
-literal|" received exception "
-operator|+
+argument_list|,
 name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|incrDatanodeNetworkErrors
@@ -6264,16 +6157,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"blockChecksum "
-operator|+
+literal|"blockChecksum {} received exception {}"
+argument_list|,
 name|stripedBlockInfo
 operator|.
 name|getBlock
 argument_list|()
-operator|+
-literal|" received exception "
-operator|+
+argument_list|,
 name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|incrDatanodeNetworkErrors
@@ -6584,12 +6478,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Copied "
-operator|+
+literal|"Copied {} to {}"
+argument_list|,
 name|block
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|peer
 operator|.
 name|getRemoteAddressString
@@ -6611,13 +6503,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"opCopyBlock "
-operator|+
+literal|"opCopyBlock {} received exception {}"
+argument_list|,
 name|block
-operator|+
-literal|" received exception "
-operator|+
+argument_list|,
 name|ioe
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|incrDatanodeNetworkErrors
@@ -6901,12 +6794,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Moved "
-operator|+
+literal|"Moved {} from StorageType {} to {}"
+argument_list|,
 name|block
-operator|+
-literal|" from StorageType "
-operator|+
+argument_list|,
 name|oldReplica
 operator|.
 name|getVolume
@@ -6914,9 +6805,7 @@ argument_list|()
 operator|.
 name|getStorageType
 argument_list|()
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|storageType
 argument_list|)
 expr_stmt|;
@@ -6945,24 +6834,15 @@ argument_list|(
 name|connectToDnViaHostname
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to datanode "
-operator|+
+literal|"Connecting to datanode {}"
+argument_list|,
 name|dnAddr
 argument_list|)
 expr_stmt|;
-block|}
 name|InetSocketAddress
 name|proxyAddr
 init|=
@@ -7311,19 +7191,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Moved "
-operator|+
+literal|"Moved {} from {}, delHint={}"
+argument_list|,
 name|block
-operator|+
-literal|" from "
-operator|+
+argument_list|,
 name|peer
 operator|.
 name|getRemoteAddressString
 argument_list|()
-operator|+
-literal|", delHint="
-operator|+
+argument_list|,
 name|delHint
 argument_list|)
 expr_stmt|;
@@ -7443,8 +7319,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error writing reply back to "
-operator|+
+literal|"Error writing reply back to {}"
+argument_list|,
 name|peer
 operator|.
 name|getRemoteAddressString
@@ -8076,33 +7952,20 @@ operator|.
 name|isBlockTokenEnabled
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Checking block access token for block '"
-operator|+
+literal|"Checking block access token for block '{}' with mode '{}'"
+argument_list|,
 name|blk
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|"' with mode '"
-operator|+
+argument_list|,
 name|mode
-operator|+
-literal|"'"
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|datanode
@@ -8209,16 +8072,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Block token verification failed: op="
+literal|"Block token verification failed: op={}, "
 operator|+
+literal|"remoteAddress={}, message={}"
+argument_list|,
 name|op
-operator|+
-literal|", remoteAddress="
-operator|+
+argument_list|,
 name|remoteAddress
-operator|+
-literal|", message="
-operator|+
+argument_list|,
 name|e
 operator|.
 name|getLocalizedMessage
