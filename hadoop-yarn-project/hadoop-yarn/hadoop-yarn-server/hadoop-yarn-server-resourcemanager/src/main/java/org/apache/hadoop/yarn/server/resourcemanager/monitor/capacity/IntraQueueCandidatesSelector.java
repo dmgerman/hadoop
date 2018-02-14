@@ -608,12 +608,12 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// Don't preempt if intra-queue preemption is disabled for this queue.
+comment|// Don't preempt if disabled for this queue.
 if|if
 condition|(
 name|leafQueue
 operator|.
-name|getIntraQueuePreemptionDisabled
+name|getPreemptionDisabled
 argument_list|()
 condition|)
 block|{

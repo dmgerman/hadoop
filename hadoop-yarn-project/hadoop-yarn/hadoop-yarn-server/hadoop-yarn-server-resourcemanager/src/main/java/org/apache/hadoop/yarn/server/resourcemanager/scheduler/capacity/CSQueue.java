@@ -919,20 +919,6 @@ name|boolean
 name|getPreemptionDisabled
 parameter_list|()
 function_decl|;
-comment|/**    * Check whether intra-queue preemption is disabled for this queue    * @return true if either intra-queue preemption or inter-queue preemption    * is disabled for this queue, false if neither is disabled.    */
-DECL|method|getIntraQueuePreemptionDisabled ()
-specifier|public
-name|boolean
-name|getIntraQueuePreemptionDisabled
-parameter_list|()
-function_decl|;
-comment|/**    * Determines whether or not the intra-queue preemption disabled switch is set    *  at any level in this queue's hierarchy.    * @return state of the intra-queue preemption switch at this queue level    */
-DECL|method|getIntraQueuePreemptionDisabledInHierarchy ()
-specifier|public
-name|boolean
-name|getIntraQueuePreemptionDisabledInHierarchy
-parameter_list|()
-function_decl|;
 comment|/**    * Get QueueCapacities of this queue    * @return queueCapacities    */
 DECL|method|getQueueCapacities ()
 specifier|public

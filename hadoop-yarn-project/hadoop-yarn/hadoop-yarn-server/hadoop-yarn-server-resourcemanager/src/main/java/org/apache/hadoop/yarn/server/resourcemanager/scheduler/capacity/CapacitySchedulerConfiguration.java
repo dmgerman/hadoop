@@ -5958,35 +5958,6 @@ return|return
 name|preemptionDisabled
 return|;
 block|}
-comment|/**    * Indicates whether intra-queue preemption is disabled on the specified queue    *    * @param queue queue path to query    * @param defaultVal used as default if the property is not set in the    * configuration    * @return true if preemption is disabled on queue, false otherwise    */
-DECL|method|getIntraQueuePreemptionDisabled (String queue, boolean defaultVal)
-specifier|public
-name|boolean
-name|getIntraQueuePreemptionDisabled
-parameter_list|(
-name|String
-name|queue
-parameter_list|,
-name|boolean
-name|defaultVal
-parameter_list|)
-block|{
-return|return
-name|getBoolean
-argument_list|(
-name|getQueuePrefix
-argument_list|(
-name|queue
-argument_list|)
-operator|+
-name|INTRA_QUEUE_PREEMPTION_CONFIG_PREFIX
-operator|+
-name|QUEUE_PREEMPTION_DISABLED
-argument_list|,
-name|defaultVal
-argument_list|)
-return|;
-block|}
 comment|/**    * Get configured node labels in a given queuePath    */
 DECL|method|getConfiguredNodeLabels (String queuePath)
 specifier|public
