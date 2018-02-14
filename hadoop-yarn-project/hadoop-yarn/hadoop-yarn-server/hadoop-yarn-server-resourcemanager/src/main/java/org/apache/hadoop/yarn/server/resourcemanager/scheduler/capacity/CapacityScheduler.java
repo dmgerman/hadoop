@@ -3295,6 +3295,45 @@ operator|.
 name|getResourceCalculator
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|calculator
+operator|instanceof
+name|DefaultResourceCalculator
+operator|&&
+name|ResourceUtils
+operator|.
+name|getNumberOfKnownResourceTypes
+argument_list|()
+operator|>
+literal|2
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"RM uses DefaultResourceCalculator which"
+operator|+
+literal|" used only memory as resource-type but invalid resource-types"
+operator|+
+literal|" specified "
+operator|+
+name|ResourceUtils
+operator|.
+name|getResourceTypes
+argument_list|()
+operator|+
+literal|". Use"
+operator|+
+literal|" DomainantResourceCalculator instead to make effective use of"
+operator|+
+literal|" these resource-types"
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|usePortForNodeName
