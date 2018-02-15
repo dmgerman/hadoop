@@ -131,7 +131,6 @@ name|ExecutorService
 name|executor
 decl_stmt|;
 DECL|method|ThreadPoolScheduler ()
-specifier|public
 name|ThreadPoolScheduler
 parameter_list|()
 block|{

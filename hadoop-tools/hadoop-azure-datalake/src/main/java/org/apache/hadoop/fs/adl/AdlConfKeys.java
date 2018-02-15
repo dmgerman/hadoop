@@ -105,6 +105,24 @@ name|AZURE_AD_REFRESH_URL_KEY
 init|=
 literal|"fs.adl.oauth2.refresh.url"
 decl_stmt|;
+DECL|field|AZURE_AD_ACCOUNT_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AZURE_AD_ACCOUNT_PREFIX
+init|=
+literal|"fs.adl.account."
+decl_stmt|;
+DECL|field|AZURE_AD_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AZURE_AD_PREFIX
+init|=
+literal|"fs.adl."
+decl_stmt|;
 comment|// optional when provider type is refresh or client id.
 DECL|field|AZURE_AD_TOKEN_PROVIDER_CLASS_KEY
 specifier|public
