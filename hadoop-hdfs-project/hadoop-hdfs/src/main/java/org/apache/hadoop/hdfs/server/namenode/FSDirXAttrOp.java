@@ -906,10 +906,9 @@ name|isPermissionEnabled
 argument_list|()
 condition|)
 block|{
-comment|/* To access xattr names, you need EXECUTE in the owning directory. */
 name|fsd
 operator|.
-name|checkParentAccess
+name|checkPathAccess
 argument_list|(
 name|pc
 argument_list|,
@@ -917,7 +916,7 @@ name|iip
 argument_list|,
 name|FsAction
 operator|.
-name|EXECUTE
+name|READ
 argument_list|)
 expr_stmt|;
 block|}
