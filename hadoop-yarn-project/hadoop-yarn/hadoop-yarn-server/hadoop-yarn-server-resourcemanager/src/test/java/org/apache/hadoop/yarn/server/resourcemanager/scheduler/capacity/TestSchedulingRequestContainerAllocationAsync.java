@@ -447,17 +447,6 @@ argument_list|)
 decl_stmt|;
 name|csConf
 operator|.
-name|setBoolean
-argument_list|(
-name|CapacitySchedulerConfiguration
-operator|.
-name|SCHEDULING_REQUEST_ALLOWED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-name|csConf
-operator|.
 name|setInt
 argument_list|(
 name|CapacitySchedulerConfiguration
@@ -478,6 +467,19 @@ operator|+
 literal|".scheduling-interval-ms"
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+name|csConf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_PLACEMENT_CONSTRAINTS_HANDLER
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|SCHEDULER_RM_PLACEMENT_CONSTRAINTS_HANDLER
 argument_list|)
 expr_stmt|;
 comment|// inject node label manager

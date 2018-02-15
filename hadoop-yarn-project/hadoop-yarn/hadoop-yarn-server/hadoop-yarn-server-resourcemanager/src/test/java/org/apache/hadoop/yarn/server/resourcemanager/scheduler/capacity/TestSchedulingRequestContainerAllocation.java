@@ -446,13 +446,15 @@ argument_list|)
 decl_stmt|;
 name|csConf
 operator|.
-name|setBoolean
+name|set
 argument_list|(
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|SCHEDULING_REQUEST_ALLOWED
+name|RM_PLACEMENT_CONSTRAINTS_HANDLER
 argument_list|,
-literal|true
+name|YarnConfiguration
+operator|.
+name|SCHEDULER_RM_PLACEMENT_CONSTRAINTS_HANDLER
 argument_list|)
 expr_stmt|;
 comment|// inject node label manager
@@ -977,13 +979,15 @@ argument_list|)
 decl_stmt|;
 name|csConf
 operator|.
-name|setBoolean
+name|set
 argument_list|(
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|SCHEDULING_REQUEST_ALLOWED
+name|RM_PLACEMENT_CONSTRAINTS_HANDLER
 argument_list|,
-literal|true
+name|YarnConfiguration
+operator|.
+name|SCHEDULER_RM_PLACEMENT_CONSTRAINTS_HANDLER
 argument_list|)
 expr_stmt|;
 comment|// inject node label manager
