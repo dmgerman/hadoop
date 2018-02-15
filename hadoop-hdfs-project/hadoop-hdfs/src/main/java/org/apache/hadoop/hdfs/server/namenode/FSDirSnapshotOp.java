@@ -521,14 +521,17 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a snapshot    * @param snapshotRoot The directory path where the snapshot is taken    * @param snapshotName The name of the snapshot    */
-DECL|method|createSnapshot ( FSDirectory fsd, SnapshotManager snapshotManager, String snapshotRoot, String snapshotName, boolean logRetryCache)
+comment|/**    * Create a snapshot    * @param fsd FS directory    * @param pc FS permission checker    * @param snapshotRoot The directory path where the snapshot is taken    * @param snapshotName The name of the snapshot    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding.    */
+DECL|method|createSnapshot ( FSDirectory fsd, FSPermissionChecker pc, SnapshotManager snapshotManager, String snapshotRoot, String snapshotName, boolean logRetryCache)
 specifier|static
 name|String
 name|createSnapshot
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|SnapshotManager
 name|snapshotManager
@@ -545,14 +548,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -697,13 +692,16 @@ return|return
 name|snapshotPath
 return|;
 block|}
-DECL|method|renameSnapshot (FSDirectory fsd, SnapshotManager snapshotManager, String path, String snapshotOldName, String snapshotNewName, boolean logRetryCache)
+DECL|method|renameSnapshot (FSDirectory fsd, FSPermissionChecker pc, SnapshotManager snapshotManager, String path, String snapshotOldName, String snapshotNewName, boolean logRetryCache)
 specifier|static
 name|void
 name|renameSnapshot
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|SnapshotManager
 name|snapshotManager
@@ -723,14 +721,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -821,7 +811,7 @@ name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getSnapshottableDirListing ( FSDirectory fsd, SnapshotManager snapshotManager)
+DECL|method|getSnapshottableDirListing ( FSDirectory fsd, FSPermissionChecker pc, SnapshotManager snapshotManager)
 specifier|static
 name|SnapshottableDirectoryStatus
 index|[]
@@ -830,20 +820,15 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|SnapshotManager
 name|snapshotManager
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|fsd
 operator|.
 name|readLock
@@ -885,13 +870,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getSnapshotDiffReport (FSDirectory fsd, SnapshotManager snapshotManager, String path, String fromSnapshot, String toSnapshot)
+DECL|method|getSnapshotDiffReport (FSDirectory fsd, FSPermissionChecker pc, SnapshotManager snapshotManager, String path, String fromSnapshot, String toSnapshot)
 specifier|static
 name|SnapshotDiffReport
 name|getSnapshotDiffReport
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|SnapshotManager
 name|snapshotManager
@@ -910,15 +898,6 @@ name|IOException
 block|{
 name|SnapshotDiffReport
 name|diffs
-decl_stmt|;
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
 decl_stmt|;
 name|fsd
 operator|.
@@ -1002,13 +981,16 @@ return|return
 name|diffs
 return|;
 block|}
-DECL|method|getSnapshotDiffReportListing (FSDirectory fsd, SnapshotManager snapshotManager, String path, String fromSnapshot, String toSnapshot, byte[] startPath, int index, int snapshotDiffReportLimit)
+DECL|method|getSnapshotDiffReportListing (FSDirectory fsd, FSPermissionChecker pc, SnapshotManager snapshotManager, String path, String fromSnapshot, String toSnapshot, byte[] startPath, int index, int snapshotDiffReportLimit)
 specifier|static
 name|SnapshotDiffReportListing
 name|getSnapshotDiffReportListing
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|SnapshotManager
 name|snapshotManager
@@ -1037,15 +1019,6 @@ name|IOException
 block|{
 name|SnapshotDiffReportListing
 name|diffs
-decl_stmt|;
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
 decl_stmt|;
 name|fsd
 operator|.
@@ -1327,8 +1300,8 @@ return|return
 name|snaps
 return|;
 block|}
-comment|/**    * Delete a snapshot of a snapshottable directory    * @param snapshotRoot The snapshottable directory    * @param snapshotName The name of the to-be-deleted snapshot    * @throws IOException    */
-DECL|method|deleteSnapshot ( FSDirectory fsd, SnapshotManager snapshotManager, String snapshotRoot, String snapshotName, boolean logRetryCache)
+comment|/**    * Delete a snapshot of a snapshottable directory    * @param fsd The FS directory    * @param pc The permission checker    * @param snapshotManager The snapshot manager    * @param snapshotRoot The snapshottable directory    * @param snapshotName The name of the to-be-deleted snapshot    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding.    * @throws IOException    */
+DECL|method|deleteSnapshot ( FSDirectory fsd, FSPermissionChecker pc, SnapshotManager snapshotManager, String snapshotRoot, String snapshotName, boolean logRetryCache)
 specifier|static
 name|INode
 operator|.
@@ -1337,6 +1310,9 @@ name|deleteSnapshot
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|SnapshotManager
 name|snapshotManager
@@ -1353,14 +1329,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip

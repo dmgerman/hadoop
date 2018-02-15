@@ -295,13 +295,16 @@ DECL|class|FSDirMkdirOp
 class|class
 name|FSDirMkdirOp
 block|{
-DECL|method|mkdirs (FSNamesystem fsn, String src, PermissionStatus permissions, boolean createParent)
+DECL|method|mkdirs (FSNamesystem fsn, FSPermissionChecker pc, String src, PermissionStatus permissions, boolean createParent)
 specifier|static
 name|FileStatus
 name|mkdirs
 parameter_list|(
 name|FSNamesystem
 name|fsn
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -345,14 +348,6 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|fsd
 operator|.
 name|writeLock

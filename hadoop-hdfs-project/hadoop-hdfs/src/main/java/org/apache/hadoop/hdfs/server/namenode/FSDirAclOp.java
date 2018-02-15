@@ -229,13 +229,16 @@ DECL|class|FSDirAclOp
 class|class
 name|FSDirAclOp
 block|{
-DECL|method|modifyAclEntries ( FSDirectory fsd, final String srcArg, List<AclEntry> aclSpec)
+DECL|method|modifyAclEntries ( FSDirectory fsd, FSPermissionChecker pc, final String srcArg, List<AclEntry> aclSpec)
 specifier|static
 name|FileStatus
 name|modifyAclEntries
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -260,14 +263,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -396,13 +391,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|removeAclEntries ( FSDirectory fsd, final String srcArg, List<AclEntry> aclSpec)
+DECL|method|removeAclEntries ( FSDirectory fsd, FSPermissionChecker pc, final String srcArg, List<AclEntry> aclSpec)
 specifier|static
 name|FileStatus
 name|removeAclEntries
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -427,14 +425,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -563,13 +553,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|removeDefaultAcl (FSDirectory fsd, final String srcArg)
+DECL|method|removeDefaultAcl (FSDirectory fsd, FSPermissionChecker pc, final String srcArg)
 specifier|static
 name|FileStatus
 name|removeDefaultAcl
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -588,14 +581,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -722,13 +707,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|removeAcl (FSDirectory fsd, final String srcArg)
+DECL|method|removeAcl (FSDirectory fsd, FSPermissionChecker pc, final String srcArg)
 specifier|static
 name|FileStatus
 name|removeAcl
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -747,14 +735,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -835,13 +815,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|setAcl ( FSDirectory fsd, final String srcArg, List<AclEntry> aclSpec)
+DECL|method|setAcl ( FSDirectory fsd, FSPermissionChecker pc, final String srcArg, List<AclEntry> aclSpec)
 specifier|static
 name|FileStatus
 name|setAcl
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -866,14 +849,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -958,13 +933,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|getAclStatus ( FSDirectory fsd, String src)
+DECL|method|getAclStatus ( FSDirectory fsd, FSPermissionChecker pc, String src)
 specifier|static
 name|AclStatus
 name|getAclStatus
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -977,14 +955,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|fsd
 operator|.
 name|readLock

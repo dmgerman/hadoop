@@ -432,13 +432,16 @@ specifier|public
 class|class
 name|FSDirAttrOp
 block|{
-DECL|method|setPermission ( FSDirectory fsd, final String src, FsPermission permission)
+DECL|method|setPermission ( FSDirectory fsd, FSPermissionChecker pc, final String src, FsPermission permission)
 specifier|static
 name|FileStatus
 name|setPermission
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -468,14 +471,6 @@ name|src
 argument_list|)
 throw|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -552,13 +547,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|setOwner ( FSDirectory fsd, String src, String username, String group)
+DECL|method|setOwner ( FSDirectory fsd, FSPermissionChecker pc, String src, String username, String group)
 specifier|static
 name|FileStatus
 name|setOwner
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -590,14 +588,6 @@ name|src
 argument_list|)
 throw|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -747,13 +737,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|setTimes ( FSDirectory fsd, String src, long mtime, long atime)
+DECL|method|setTimes ( FSDirectory fsd, FSPermissionChecker pc, String src, long mtime, long atime)
 specifier|static
 name|FileStatus
 name|setTimes
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -767,14 +760,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -911,13 +896,16 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|setReplication ( FSDirectory fsd, BlockManager bm, String src, final short replication)
+DECL|method|setReplication ( FSDirectory fsd, FSPermissionChecker pc, BlockManager bm, String src, final short replication)
 specifier|static
 name|boolean
 name|setReplication
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|BlockManager
 name|bm
@@ -946,14 +934,6 @@ expr_stmt|;
 specifier|final
 name|boolean
 name|isFile
-decl_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
 decl_stmt|;
 name|fsd
 operator|.
@@ -1055,13 +1035,16 @@ return|return
 name|isFile
 return|;
 block|}
-DECL|method|unsetStoragePolicy (FSDirectory fsd, BlockManager bm, String src)
+DECL|method|unsetStoragePolicy (FSDirectory fsd, FSPermissionChecker pc, BlockManager bm, String src)
 specifier|static
 name|FileStatus
 name|unsetStoragePolicy
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|BlockManager
 name|bm
@@ -1077,6 +1060,8 @@ name|setStoragePolicy
 argument_list|(
 name|fsd
 argument_list|,
+name|pc
+argument_list|,
 name|bm
 argument_list|,
 name|src
@@ -1089,13 +1074,16 @@ literal|"unset"
 argument_list|)
 return|;
 block|}
-DECL|method|setStoragePolicy (FSDirectory fsd, BlockManager bm, String src, final String policyName)
+DECL|method|setStoragePolicy (FSDirectory fsd, FSPermissionChecker pc, BlockManager bm, String src, final String policyName)
 specifier|static
 name|FileStatus
 name|setStoragePolicy
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|BlockManager
 name|bm
@@ -1143,6 +1131,8 @@ name|setStoragePolicy
 argument_list|(
 name|fsd
 argument_list|,
+name|pc
+argument_list|,
 name|bm
 argument_list|,
 name|src
@@ -1156,13 +1146,16 @@ literal|"set"
 argument_list|)
 return|;
 block|}
-DECL|method|setStoragePolicy (FSDirectory fsd, BlockManager bm, String src, final byte policyId, final String operation)
+DECL|method|setStoragePolicy (FSDirectory fsd, FSPermissionChecker pc, BlockManager bm, String src, final byte policyId, final String operation)
 specifier|static
 name|FileStatus
 name|setStoragePolicy
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|BlockManager
 name|bm
@@ -1207,14 +1200,6 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|INodesInPath
 name|iip
 decl_stmt|;
@@ -1325,13 +1310,16 @@ name|getStoragePolicies
 argument_list|()
 return|;
 block|}
-DECL|method|getStoragePolicy (FSDirectory fsd, BlockManager bm, String path)
+DECL|method|getStoragePolicy (FSDirectory fsd, FSPermissionChecker pc, BlockManager bm, String path)
 specifier|static
 name|BlockStoragePolicy
 name|getStoragePolicy
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|BlockManager
 name|bm
@@ -1342,14 +1330,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|fsd
 operator|.
 name|readLock
@@ -1445,7 +1425,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getPreferredBlockSize (FSDirectory fsd, String src)
+DECL|method|getPreferredBlockSize (FSDirectory fsd, FSPermissionChecker pc, String src)
 specifier|static
 name|long
 name|getPreferredBlockSize
@@ -1453,20 +1433,15 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|fsd
 operator|.
 name|readLock
@@ -1521,13 +1496,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Set the namespace, storagespace and typespace quota for a directory.    *    * Note: This does not support ".inodes" relative path.    */
-DECL|method|setQuota (FSDirectory fsd, String src, long nsQuota, long ssQuota, StorageType type)
+DECL|method|setQuota (FSDirectory fsd, FSPermissionChecker pc, String src, long nsQuota, long ssQuota, StorageType type)
 specifier|static
 name|void
 name|setQuota
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -1544,14 +1522,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|fsd

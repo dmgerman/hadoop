@@ -447,13 +447,16 @@ DECL|class|FSDirStatAndListingOp
 class|class
 name|FSDirStatAndListingOp
 block|{
-DECL|method|getListingInt (FSDirectory fsd, final String srcArg, byte[] startAfter, boolean needLocation)
+DECL|method|getListingInt (FSDirectory fsd, FSPermissionChecker pc, final String srcArg, byte[] startAfter, boolean needLocation)
 specifier|static
 name|DirectoryListing
 name|getListingInt
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -469,15 +472,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -660,14 +654,17 @@ name|isSuperUser
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the file info for a specific file.    *    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @param needLocation Include {@link LocatedBlocks} in result.    * @param needBlockToken Include block tokens in {@link LocatedBlocks}.    * @return object containing information regarding the file    *         or null if file not found    */
-DECL|method|getFileInfo (FSDirectory fsd, String srcArg, boolean resolveLink, boolean needLocation, boolean needBlockToken)
+comment|/**    * Get the file info for a specific file.    * @param fsd The FS directory    * @param pc The permission checker    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @param needLocation Include {@link LocatedBlocks} in result.    * @param needBlockToken Include block tokens in {@link LocatedBlocks}.    * @return object containing information regarding the file    *         or null if file not found    */
+DECL|method|getFileInfo (FSDirectory fsd, FSPermissionChecker pc, String srcArg, boolean resolveLink, boolean needLocation, boolean needBlockToken)
 specifier|static
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|srcArg
@@ -696,14 +693,6 @@ else|:
 name|DirOp
 operator|.
 name|READ_LINK
-decl_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
 decl_stmt|;
 specifier|final
 name|INodesInPath
@@ -777,7 +766,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns true if the file is closed    */
-DECL|method|isFileClosed (FSDirectory fsd, String src)
+DECL|method|isFileClosed (FSDirectory fsd, FSPermissionChecker pc, String src)
 specifier|static
 name|boolean
 name|isFileClosed
@@ -785,20 +774,15 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -834,7 +818,7 @@ name|isUnderConstruction
 argument_list|()
 return|;
 block|}
-DECL|method|getContentSummary ( FSDirectory fsd, String src)
+DECL|method|getContentSummary ( FSDirectory fsd, FSPermissionChecker pc, String src)
 specifier|static
 name|ContentSummary
 name|getContentSummary
@@ -842,20 +826,15 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -879,6 +858,8 @@ return|return
 name|getContentSummaryInt
 argument_list|(
 name|fsd
+argument_list|,
+name|pc
 argument_list|,
 name|iip
 argument_list|)
@@ -2875,7 +2856,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getContentSummaryInt (FSDirectory fsd, INodesInPath iip)
+DECL|method|getContentSummaryInt (FSDirectory fsd, FSPermissionChecker pc, INodesInPath iip)
 specifier|private
 specifier|static
 name|ContentSummary
@@ -2883,6 +2864,9 @@ name|getContentSummaryInt
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|INodesInPath
 name|iip
@@ -2952,10 +2936,7 @@ operator|.
 name|getContentSleepMicroSec
 argument_list|()
 argument_list|,
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
+name|pc
 argument_list|)
 decl_stmt|;
 name|ContentSummary
@@ -2997,7 +2978,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getQuotaUsage ( FSDirectory fsd, String src)
+DECL|method|getQuotaUsage ( FSDirectory fsd, FSPermissionChecker pc, String src)
 specifier|static
 name|QuotaUsage
 name|getQuotaUsage
@@ -3005,20 +2986,15 @@ parameter_list|(
 name|FSDirectory
 name|fsd
 parameter_list|,
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
@@ -3112,6 +3088,8 @@ return|return
 name|getContentSummaryInt
 argument_list|(
 name|fsd
+argument_list|,
+name|pc
 argument_list|,
 name|iip
 argument_list|)

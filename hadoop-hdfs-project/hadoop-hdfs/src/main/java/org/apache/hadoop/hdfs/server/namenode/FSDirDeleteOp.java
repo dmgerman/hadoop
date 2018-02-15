@@ -487,14 +487,17 @@ return|return
 name|filesRemoved
 return|;
 block|}
-comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    *    * @param fsn namespace    * @param src path name to be deleted    * @param recursive boolean true to apply to all sub-directories recursively    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *          rebuilding    * @return blocks collected from the deleted path    * @throws IOException    */
-DECL|method|delete ( FSNamesystem fsn, String src, boolean recursive, boolean logRetryCache)
+comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    *    * @param fsn namespace    * @param pc FS permission checker    * @param src path name to be deleted    * @param recursive boolean true to apply to all sub-directories recursively    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *          rebuilding    * @return blocks collected from the deleted path    * @throws IOException    */
+DECL|method|delete ( FSNamesystem fsn, FSPermissionChecker pc, String src, boolean recursive, boolean logRetryCache)
 specifier|static
 name|BlocksMapUpdateInfo
 name|delete
 parameter_list|(
 name|FSNamesystem
 name|fsn
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -514,14 +517,6 @@ init|=
 name|fsn
 operator|.
 name|getFSDirectory
-argument_list|()
-decl_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
 argument_list|()
 decl_stmt|;
 if|if
@@ -641,7 +636,7 @@ name|logRetryCache
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by    * {@link org.apache.hadoop.hdfs.server.namenode.FSEditLog} only.    *<br>    *    * @param fsd the FSDirectory instance    * @param src a string representation of a path to an inode    * @param mtime the time the inode is removed    */
+comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by    * {@link org.apache.hadoop.hdfs.server.namenode.FSEditLog} only.    *<br>    *    * @param fsd the FSDirectory instance    * @param iip inodes of a path to be deleted    * @param mtime the time the inode is removed    */
 DECL|method|deleteForEditLog (FSDirectory fsd, INodesInPath iip, long mtime)
 specifier|static
 name|void

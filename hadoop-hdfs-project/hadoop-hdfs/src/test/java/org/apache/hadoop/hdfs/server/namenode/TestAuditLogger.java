@@ -762,6 +762,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doThrow
@@ -2778,8 +2790,17 @@ argument_list|(
 name|mockedDir
 argument_list|)
 operator|.
-name|getPermissionChecker
+name|checkTraverse
+argument_list|(
+name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
+argument_list|,
+name|any
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|cluster
 operator|.

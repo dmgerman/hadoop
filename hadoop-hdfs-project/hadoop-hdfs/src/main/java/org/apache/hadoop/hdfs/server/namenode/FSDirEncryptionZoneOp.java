@@ -3421,7 +3421,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Get the current key version name for the given EZ. This will first drain    * the provider's local cache, then generate a new edek.    *<p>    * The encryption key version of the newly generated edek will be used as    * the target key version of this re-encryption - meaning all edeks'    * keyVersion are compared with it, and only sent to the KMS for re-encryption    * when the version is different.    *<p>    * Note: KeyProvider has a getCurrentKey interface, but that is under    * a different ACL. HDFS should not try to operate on additional ACLs, but    * rather use the generate ACL it already has.    */
-DECL|method|getCurrentKeyVersion (final FSDirectory dir, final String zone)
+DECL|method|getCurrentKeyVersion (final FSDirectory dir, final FSPermissionChecker pc, final String zone)
 specifier|static
 name|String
 name|getCurrentKeyVersion
@@ -3429,6 +3429,10 @@ parameter_list|(
 specifier|final
 name|FSDirectory
 name|dir
+parameter_list|,
+specifier|final
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -3461,6 +3465,8 @@ operator|.
 name|getKeyNameForZone
 argument_list|(
 name|dir
+argument_list|,
+name|pc
 argument_list|,
 name|zone
 argument_list|)
@@ -3543,7 +3549,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Resolve the zone to an inode, find the encryption zone info associated with    * that inode, and return the key name. Does not contact the KMS.    */
-DECL|method|getKeyNameForZone (final FSDirectory dir, final String zone)
+DECL|method|getKeyNameForZone (final FSDirectory dir, final FSPermissionChecker pc, final String zone)
 specifier|static
 name|String
 name|getKeyNameForZone
@@ -3551,6 +3557,10 @@ parameter_list|(
 specifier|final
 name|FSDirectory
 name|dir
+parameter_list|,
+specifier|final
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -3570,15 +3580,6 @@ assert|;
 specifier|final
 name|INodesInPath
 name|iip
-decl_stmt|;
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|dir
-operator|.
-name|getPermissionChecker
-argument_list|()
 decl_stmt|;
 name|dir
 operator|.

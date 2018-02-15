@@ -233,13 +233,16 @@ DECL|class|FSDirConcatOp
 class|class
 name|FSDirConcatOp
 block|{
-DECL|method|concat (FSDirectory fsd, String target, String[] srcs, boolean logRetryCache)
+DECL|method|concat (FSDirectory fsd, FSPermissionChecker pc, String target, String[] srcs, boolean logRetryCache)
 specifier|static
 name|FileStatus
 name|concat
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|target
@@ -295,14 +298,6 @@ name|target
 argument_list|)
 expr_stmt|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|INodesInPath
 name|targetIIP

@@ -389,14 +389,17 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Set xattr for a file or directory.    *    * @param src    *          - path on which it sets the xattr    * @param xAttr    *          - xAttr details to set    * @param flag    *          - xAttrs flags    * @throws IOException    */
-DECL|method|setXAttr ( FSDirectory fsd, String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag, boolean logRetryCache)
+comment|/**    * Set xattr for a file or directory.    * @param fsd    *          - FS directory    * @param pc    *          - FS permission checker    * @param src    *          - path on which it sets the xattr    * @param xAttr    *          - xAttr details to set    * @param flag    *          - xAttrs flags    * @param logRetryCache    *          - whether to record RPC ids in editlog for retry cache    *          rebuilding.    * @throws IOException    */
+DECL|method|setXAttr ( FSDirectory fsd, FSPermissionChecker pc, String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag, boolean logRetryCache)
 specifier|static
 name|FileStatus
 name|setXAttr
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -428,14 +431,6 @@ argument_list|,
 name|xAttr
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|XAttrPermissionFilter
 operator|.
 name|checkPermissionForApi
@@ -558,7 +553,7 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|getXAttrs (FSDirectory fsd, final String srcArg, List<XAttr> xAttrs)
+DECL|method|getXAttrs (FSDirectory fsd, FSPermissionChecker pc, final String srcArg, List<XAttr> xAttrs)
 specifier|static
 name|List
 argument_list|<
@@ -568,6 +563,9 @@ name|getXAttrs
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -592,14 +590,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|boolean
 name|isRawPath
@@ -837,7 +827,7 @@ return|return
 name|toGet
 return|;
 block|}
-DECL|method|listXAttrs ( FSDirectory fsd, String src)
+DECL|method|listXAttrs ( FSDirectory fsd, FSPermissionChecker pc, String src)
 specifier|static
 name|List
 argument_list|<
@@ -847,6 +837,9 @@ name|listXAttrs
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -861,15 +854,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 specifier|final
 name|boolean
 name|isRawPath
@@ -949,14 +933,17 @@ name|isRawPath
 argument_list|)
 return|;
 block|}
-comment|/**    * Remove an xattr for a file or directory.    *    * @param src    *          - path to remove the xattr from    * @param xAttr    *          - xAttr to remove    * @throws IOException    */
-DECL|method|removeXAttr ( FSDirectory fsd, String src, XAttr xAttr, boolean logRetryCache)
+comment|/**    * Remove an xattr for a file or directory.    * @param fsd    *          - FS direcotry    * @param pc    *          - FS permission checker    * @param src    *          - path to remove the xattr from    * @param xAttr    *          - xAttr to remove    * @param logRetryCache    *          - whether to record RPC ids in editlog for retry cache    *          rebuilding.    * @throws IOException    */
+DECL|method|removeXAttr ( FSDirectory fsd, FSPermissionChecker pc, String src, XAttr xAttr, boolean logRetryCache)
 specifier|static
 name|FileStatus
 name|removeXAttr
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 name|String
 name|src
@@ -977,14 +964,6 @@ argument_list|(
 name|fsd
 argument_list|)
 expr_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|XAttrPermissionFilter
 operator|.
 name|checkPermissionForApi

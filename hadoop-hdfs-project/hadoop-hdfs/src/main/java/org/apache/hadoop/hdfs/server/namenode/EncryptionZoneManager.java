@@ -888,6 +888,15 @@ block|{
 name|INodesInPath
 name|iip
 decl_stmt|;
+specifier|final
+name|FSPermissionChecker
+name|pc
+init|=
+name|dir
+operator|.
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|dir
 operator|.
 name|readLock
@@ -901,10 +910,7 @@ name|dir
 operator|.
 name|resolvePath
 argument_list|(
-name|dir
-operator|.
-name|getPermissionChecker
-argument_list|()
+name|pc
 argument_list|,
 name|zone
 argument_list|,

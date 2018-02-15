@@ -620,6 +620,18 @@ name|StandbyException
 throws|,
 name|IOException
 block|{
+specifier|final
+name|FSPermissionChecker
+name|pc
+init|=
+name|namenode
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|namenode
 operator|.
 name|getNamesystem
@@ -642,6 +654,8 @@ argument_list|()
 operator|.
 name|getFSDirectory
 argument_list|()
+argument_list|,
+name|pc
 argument_list|,
 name|src
 argument_list|,

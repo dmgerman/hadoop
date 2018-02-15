@@ -395,13 +395,16 @@ name|FSDirRenameOp
 block|{
 annotation|@
 name|Deprecated
-DECL|method|renameToInt ( FSDirectory fsd, final String src, final String dst, boolean logRetryCache)
+DECL|method|renameToInt ( FSDirectory fsd, FSPermissionChecker pc, final String src, final String dst, boolean logRetryCache)
 specifier|static
 name|RenameResult
 name|renameToInt
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -443,14 +446,6 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 comment|// Rename does not operate on link targets
 comment|// Do not resolveLink when checking permissions of src and dst
 name|INodesInPath
@@ -1277,13 +1272,16 @@ literal|null
 return|;
 block|}
 comment|/**    * The new rename which has the POSIX semantic.    */
-DECL|method|renameToInt ( FSDirectory fsd, final String srcArg, final String dstArg, boolean logRetryCache, Options.Rename... options)
+DECL|method|renameToInt ( FSDirectory fsd, FSPermissionChecker pc, final String srcArg, final String dstArg, boolean logRetryCache, Options.Rename... options)
 specifier|static
 name|RenameResult
 name|renameToInt
 parameter_list|(
 name|FSDirectory
 name|fsd
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|String
@@ -1343,15 +1341,6 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsd
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 init|=
