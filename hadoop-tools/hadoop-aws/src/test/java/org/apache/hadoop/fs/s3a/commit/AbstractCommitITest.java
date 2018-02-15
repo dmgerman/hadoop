@@ -894,6 +894,13 @@ name|float
 name|p
 parameter_list|)
 block|{
+if|if
+condition|(
+name|inconsistentClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|inconsistentClient
 operator|.
 name|setThrottleProbability
@@ -901,6 +908,7 @@ argument_list|(
 name|p
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Set the throttling factor on requests and number of calls to throttle.    * @param p probability of a throttling occurring: 0-1.0    * @param limit limit to number of calls which fail    */
 DECL|method|setThrottling (float p, int limit)
@@ -915,6 +923,13 @@ name|int
 name|limit
 parameter_list|)
 block|{
+if|if
+condition|(
+name|inconsistentClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|inconsistentClient
 operator|.
 name|setThrottleProbability
@@ -922,6 +937,7 @@ argument_list|(
 name|p
 argument_list|)
 expr_stmt|;
+block|}
 name|setFailureLimit
 argument_list|(
 name|limit
@@ -961,6 +977,13 @@ name|int
 name|limit
 parameter_list|)
 block|{
+if|if
+condition|(
+name|inconsistentClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|inconsistentClient
 operator|.
 name|setFailureLimit
@@ -968,6 +991,7 @@ argument_list|(
 name|limit
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Abort all multipart uploads under a path.    * @param path path for uploads to abort; may be null    * @return a count of aborts    * @throws IOException trouble.    */
 DECL|method|abortMultipartUploadsUnderPath (Path path)

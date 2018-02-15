@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a
+DECL|package|org.apache.hadoop.fs.s3a.auth
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|fs
 operator|.
 name|s3a
+operator|.
+name|auth
 package|;
 end_package
 
@@ -168,9 +170,69 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|AWSCredentialProviderList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|SimpleAWSCredentialsProvider
 import|;
 end_import
 
@@ -243,10 +305,18 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Support IAM Assumed roles by instantiating an instance of  * {@code STSAssumeRoleSessionCredentialsProvider} from configuration  * properties, including wiring up the inner authenticator, and,  * unless overridden, creating a session name from the current user.  */
+comment|/**  * Support IAM Assumed roles by instantiating an instance of  * {@code STSAssumeRoleSessionCredentialsProvider} from configuration  * properties, including wiring up the inner authenticator, and,  * unless overridden, creating a session name from the current user.  *  * Classname is used in configuration files; do not move.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|AssumedRoleCredentialProvider
 specifier|public
 class|class
@@ -279,7 +349,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"org.apache.hadoop.fs.s3a.AssumedRoleCredentialProvider"
+literal|"org.apache.hadoop.fs.s3a.auth.AssumedRoleCredentialProvider"
 decl_stmt|;
 DECL|field|E_FORBIDDEN_PROVIDER
 specifier|static
@@ -479,7 +549,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}"
 argument_list|,

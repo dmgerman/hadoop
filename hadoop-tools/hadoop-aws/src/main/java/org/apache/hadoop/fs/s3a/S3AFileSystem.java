@@ -5868,7 +5868,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Partial failure of delete, {} errors"
 argument_list|,
@@ -5892,7 +5892,7 @@ control|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"{}: \"{}\" - {}"
 argument_list|,
@@ -6627,6 +6627,11 @@ name|withKeys
 argument_list|(
 name|keysToDelete
 argument_list|)
+operator|.
+name|withQuiet
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6740,11 +6745,49 @@ condition|(
 name|outcome
 condition|)
 block|{
+try|try
+block|{
 name|maybeCreateFakeParentDirectory
 argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessDeniedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot create directory marker at {}: {}"
+argument_list|,
+name|f
+operator|.
+name|getParent
+argument_list|()
+argument_list|,
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to create fake dir above {}"
+argument_list|,
+name|f
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|outcome
@@ -7286,6 +7329,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a fake parent directory if required.    * That is: it parent is not the root path and does not yet exist.    * @param path whose parent is created if needed.    * @throws IOException IO problem    * @throws AmazonClientException untranslated AWS client problem    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|maybeCreateFakeParentDirectory (Path path)
 name|void
 name|maybeCreateFakeParentDirectory

@@ -415,6 +415,17 @@ name|getSimpleName
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the mapper of this class.    * @return the mapper    */
+DECL|method|getMapper ()
+specifier|public
+name|ObjectMapper
+name|getMapper
+parameter_list|()
+block|{
+return|return
+name|mapper
+return|;
+block|}
 comment|/**    * Convert from JSON.    *    * @param json input    * @return the parsed JSON    * @throws IOException IO problems    * @throws JsonParseException If the input is not well-formatted    * @throws JsonMappingException failure to map from the JSON to this class    */
 annotation|@
 name|SuppressWarnings

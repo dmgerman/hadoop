@@ -2695,11 +2695,15 @@ name|Assume
 operator|.
 name|assumeTrue
 argument_list|(
+literal|"Filesystem does not have magic support enabled: "
+operator|+
+name|fs
+argument_list|,
 name|fs
 operator|.
 name|hasCapability
 argument_list|(
-name|STREAM_CAPABILITY_MAGIC_OUTPUT
+name|STORE_CAPABILITY_MAGIC_COMMITTER
 argument_list|)
 argument_list|)
 expr_stmt|;

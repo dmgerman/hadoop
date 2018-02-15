@@ -186,6 +186,22 @@ name|s3
 operator|.
 name|model
 operator|.
+name|MultiObjectDeleteException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
 name|S3ObjectSummary
 import|;
 end_import
@@ -1219,6 +1235,30 @@ name|ase
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+literal|200
+case|:
+if|if
+condition|(
+name|exception
+operator|instanceof
+name|MultiObjectDeleteException
+condition|)
+block|{
+comment|// failure during a bulk delete
+return|return
+name|translateMultiObjectDeleteException
+argument_list|(
+name|message
+argument_list|,
+operator|(
+name|MultiObjectDeleteException
+operator|)
+name|exception
+argument_list|)
+return|;
+block|}
+comment|// other 200: FALL THROUGH
 default|default:
 comment|// no specific exit code. Choose an IOE subclass based on the class
 comment|// of the caught exception
@@ -1624,6 +1664,171 @@ argument_list|,
 name|ex
 argument_list|)
 return|;
+block|}
+comment|/**    * A MultiObjectDeleteException is raised if one or more delete objects    * listed in a bulk DELETE operation failed.    * The top-level exception is therefore just "something wasn't deleted",    * but doesn't include the what or the why.    * This translation will extract an AccessDeniedException if that's one of    * the causes, otherwise grabs the status code and uses it in the    * returned exception.    * @param message text for the exception    * @param ex exception to translate    * @return an IOE with more detail.    */
+DECL|method|translateMultiObjectDeleteException (String message, MultiObjectDeleteException ex)
+specifier|public
+specifier|static
+name|IOException
+name|translateMultiObjectDeleteException
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|MultiObjectDeleteException
+name|ex
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|keys
+decl_stmt|;
+name|StringBuffer
+name|result
+init|=
+operator|new
+name|StringBuffer
+argument_list|(
+name|ex
+operator|.
+name|getErrors
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|*
+literal|100
+argument_list|)
+decl_stmt|;
+name|result
+operator|.
+name|append
+argument_list|(
+name|message
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|": "
+argument_list|)
+expr_stmt|;
+name|String
+name|exitCode
+init|=
+literal|""
+decl_stmt|;
+for|for
+control|(
+name|MultiObjectDeleteException
+operator|.
+name|DeleteError
+name|error
+range|:
+name|ex
+operator|.
+name|getErrors
+argument_list|()
+control|)
+block|{
+name|String
+name|code
+init|=
+name|error
+operator|.
+name|getCode
+argument_list|()
+decl_stmt|;
+name|result
+operator|.
+name|append
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s: %s: %s%n"
+argument_list|,
+name|code
+argument_list|,
+name|error
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|error
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|exitCode
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
+literal|"AccessDenied"
+operator|.
+name|equals
+argument_list|(
+name|code
+argument_list|)
+condition|)
+block|{
+name|exitCode
+operator|=
+name|code
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+literal|"AccessDenied"
+operator|.
+name|equals
+argument_list|(
+name|exitCode
+argument_list|)
+condition|)
+block|{
+return|return
+operator|(
+name|IOException
+operator|)
+operator|new
+name|AccessDeniedException
+argument_list|(
+name|result
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|ex
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|AWSS3IOException
+argument_list|(
+name|result
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|ex
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Get low level details of an amazon exception for logging; multi-line.    * @param e exception    * @return string details    */
 DECL|method|stringify (AmazonServiceException e)
@@ -2218,6 +2423,7 @@ return|;
 block|}
 comment|/**    * Load list of AWS credential provider/credential provider factory classes.    * @param conf configuration    * @param key key    * @param defaultValue list of default values    * @return the list of classes, possibly empty    * @throws IOException on a failure to load the list.    */
 DECL|method|loadAWSProviderClasses (Configuration conf, String key, Class<?>... defaultValue)
+specifier|public
 specifier|static
 name|Class
 argument_list|<
@@ -2297,6 +2503,7 @@ block|}
 block|}
 comment|/**    * Create an AWS credential provider from its class by using reflection.  The    * class must implement one of the following means of construction, which are    * attempted in order:    *    *<ol>    *<li>a public constructor accepting    *    org.apache.hadoop.conf.Configuration</li>    *<li>a public static method named getInstance that accepts no    *    arguments and returns an instance of    *    com.amazonaws.auth.AWSCredentialsProvider, or</li>    *<li>a public default constructor.</li>    *</ol>    *    * @param conf configuration    * @param credClass credential class    * @return the instantiated class    * @throws IOException on any instantiation failure.    */
 DECL|method|createAWSCredentialProvider ( Configuration conf, Class<?> credClass)
+specifier|public
 specifier|static
 name|AWSCredentialsProvider
 name|createAWSCredentialProvider
@@ -3756,11 +3963,11 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-comment|/**    * Apply an operation to every {@link LocatedFileStatus} in a remote    * iterator.    * @param iterator iterator from a list    * @param eval closure to evaluate    * @throws IOException anything in the closure, or iteration logic.    */
+comment|/**    * Apply an operation to every {@link LocatedFileStatus} in a remote    * iterator.    * @param iterator iterator from a list    * @param eval closure to evaluate    * @return the number of files processed    * @throws IOException anything in the closure, or iteration logic.    */
 DECL|method|applyLocatedFiles ( RemoteIterator<LocatedFileStatus> iterator, CallOnLocatedFileStatus eval)
 specifier|public
 specifier|static
-name|void
+name|long
 name|applyLocatedFiles
 parameter_list|(
 name|RemoteIterator
@@ -3775,6 +3982,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|count
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 name|iterator
@@ -3783,6 +3995,9 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
+name|count
+operator|++
+expr_stmt|;
 name|eval
 operator|.
 name|call
@@ -3794,6 +4009,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|count
+return|;
 block|}
 comment|/**    * Map an operation to every {@link LocatedFileStatus} in a remote    * iterator, returning a list of the results.    * @param<T> return type of map    * @param iterator iterator from a list    * @param eval closure to evaluate    * @return the list of mapped results.    * @throws IOException anything in the closure, or iteration logic.    */
 DECL|method|mapLocatedFiles ( RemoteIterator<LocatedFileStatus> iterator, LocatedFileStatusMap<T> eval)

@@ -40,6 +40,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -288,6 +316,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -339,6 +377,18 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Callable
 import|;
 end_import
 
@@ -436,6 +486,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
+operator|.
+name|intercept
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -449,6 +515,14 @@ comment|/**  * Utilities for the S3A tests.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|S3ATestUtils
 specifier|public
 specifier|final
@@ -1628,6 +1702,72 @@ name|metrics
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Variant of {@code LambdaTestUtils#intercept() which closes the Closeable    * returned by the invoked operation, and using its toString() value    * for exception messages.    * @param clazz class of exception; the raised exception must be this class    *<i>or a subclass</i>.    * @param contained string which must be in the {@code toString()} value    * of the exception    * @param eval expression to eval    * @param<T> return type of expression    * @param<E> exception class    * @return the caught exception if it was of the expected type and contents    */
+DECL|method|interceptClosing ( Class<E> clazz, String contained, Callable<T> eval)
+specifier|public
+specifier|static
+parameter_list|<
+name|E
+extends|extends
+name|Throwable
+parameter_list|,
+name|T
+extends|extends
+name|Closeable
+parameter_list|>
+name|E
+name|interceptClosing
+parameter_list|(
+name|Class
+argument_list|<
+name|E
+argument_list|>
+name|clazz
+parameter_list|,
+name|String
+name|contained
+parameter_list|,
+name|Callable
+argument_list|<
+name|T
+argument_list|>
+name|eval
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|intercept
+argument_list|(
+name|clazz
+argument_list|,
+name|contained
+argument_list|,
+parameter_list|()
+lambda|->
+block|{
+try|try
+init|(
+name|Closeable
+name|c
+init|=
+name|eval
+operator|.
+name|call
+argument_list|()
+init|)
+block|{
+return|return
+name|c
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+block|}
+argument_list|)
+return|;
+block|}
 comment|/**    * Helper class to do diffs of metrics.    */
 DECL|class|MetricDiff
 specifier|public
@@ -2688,11 +2828,11 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * List a directory.    * @param fileSystem FS    * @param path path    * @throws IOException failure.    */
+comment|/**    * List a directory/directory tree.    * @param fileSystem FS    * @param path path    * @param recursive do a recursive listing?    * @return the number of files found.    * @throws IOException failure.    */
 DECL|method|lsR (FileSystem fileSystem, Path path, boolean recursive)
 specifier|public
 specifier|static
-name|void
+name|long
 name|lsR
 parameter_list|(
 name|FileSystem
@@ -2723,8 +2863,11 @@ argument_list|(
 literal|"Empty path"
 argument_list|)
 expr_stmt|;
-return|return;
+return|return
+literal|0
+return|;
 block|}
+return|return
 name|S3AUtils
 operator|.
 name|applyLocatedFiles
@@ -2746,12 +2889,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"  {}"
+literal|"{}"
 argument_list|,
 name|status
 argument_list|)
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Turn on the inconsistent S3A FS client in a configuration,    * with 100% probability of inconsistency, default delays.    * For this to go live, the paths must include the element    * {@link InconsistentAmazonS3Client#DEFAULT_DELAY_KEY_SUBSTRING}.    * @param conf configuration to patch    * @param delay delay in millis    */
 DECL|method|enableInconsistentS3Client (Configuration conf, long delay)

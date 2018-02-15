@@ -1464,9 +1464,14 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|MaybeIOE
+operator|.
+name|NONE
+operator|.
+name|equals
+argument_list|(
 name|outcome
-operator|==
-literal|null
+argument_list|)
 condition|)
 block|{
 name|outcome

@@ -203,7 +203,7 @@ name|ASSUMED_ROLE_CREDENTIALS_PROVIDER
 init|=
 literal|"fs.s3a.assumed.role.credentials.provider"
 decl_stmt|;
-comment|/** JSON policy containing more restrictions to apply to the role. */
+comment|/** JSON policy containing the policy to apply to the role. */
 DECL|field|ASSUMED_ROLE_POLICY
 specifier|public
 specifier|static
