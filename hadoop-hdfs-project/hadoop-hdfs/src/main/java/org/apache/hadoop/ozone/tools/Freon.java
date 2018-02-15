@@ -553,23 +553,23 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Corona - A tool to populate ozone with data for testing.<br>  * This is not a map-reduce program and this is not for benchmarking  * Ozone write throughput.<br>  * It supports both online and offline modes. Default mode is offline,  *<i>-mode</i> can be used to change the mode.  *<p>  * In online mode, active internet connection is required,  * common crawl data from AWS will be used.<br>  * Default source is:<br>  * https://commoncrawl.s3.amazonaws.com/crawl-data/  * CC-MAIN-2017-17/warc.paths.gz<br>  * (it contains the path to actual data segment)<br>  * User can override this using<i>-source</i>.  * The following values are derived from URL of Common Crawl data  *<ul>  *<li>Domain will be used as Volume</li>  *<li>URL will be used as Bucket</li>  *<li>FileName will be used as Key</li>  *</ul></p>  * In offline mode, the data will be random bytes and  * size of data will be 10 KB.<br>  *<ul>  *<li>Default number of Volumes 10,<i>-numOfVolumes</i>  * can be used to override</li>  *<li>Default number of Buckets per Volume 1000,<i>-numOfBuckets</i>  * can be used to override</li>  *<li>Default number of Keys per Bucket 500000,<i>-numOfKeys</i>  * can be used to override</li>  *</ul>  */
+comment|/**  * Freon - A tool to populate ozone with data for testing.<br>  * This is not a map-reduce program and this is not for benchmarking  * Ozone write throughput.<br>  * It supports both online and offline modes. Default mode is offline,  *<i>-mode</i> can be used to change the mode.  *<p>  * In online mode, active internet connection is required,  * common crawl data from AWS will be used.<br>  * Default source is:<br>  * https://commoncrawl.s3.amazonaws.com/crawl-data/  * CC-MAIN-2017-17/warc.paths.gz<br>  * (it contains the path to actual data segment)<br>  * User can override this using<i>-source</i>.  * The following values are derived from URL of Common Crawl data  *<ul>  *<li>Domain will be used as Volume</li>  *<li>URL will be used as Bucket</li>  *<li>FileName will be used as Key</li>  *</ul></p>  * In offline mode, the data will be random bytes and  * size of data will be 10 KB.<br>  *<ul>  *<li>Default number of Volumes 10,<i>-numOfVolumes</i>  * can be used to override</li>  *<li>Default number of Buckets per Volume 1000,<i>-numOfBuckets</i>  * can be used to override</li>  *<li>Default number of Keys per Bucket 500000,<i>-numOfKeys</i>  * can be used to override</li>  *</ul>  */
 end_comment
 
 begin_class
-DECL|class|Corona
+DECL|class|Freon
 specifier|public
 specifier|final
 class|class
-name|Corona
+name|Freon
 extends|extends
 name|Configured
 implements|implements
 name|Tool
 block|{
-DECL|enum|CoronaOps
+DECL|enum|FreonOps
 enum|enum
-name|CoronaOps
+name|FreonOps
 block|{
 DECL|enumConstant|VOLUME_CREATE
 name|VOLUME_CREATE
@@ -776,7 +776,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|Corona
+name|Freon
 operator|.
 name|class
 argument_list|)
@@ -978,8 +978,8 @@ argument_list|()
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|method|Corona (Configuration conf)
-name|Corona
+DECL|method|Freon (Configuration conf)
+name|Freon
 parameter_list|(
 name|Configuration
 name|conf
@@ -1067,10 +1067,10 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|CoronaOps
+name|FreonOps
 name|ops
 range|:
-name|CoronaOps
+name|FreonOps
 operator|.
 name|values
 argument_list|()
@@ -1127,7 +1127,7 @@ argument_list|(
 name|conf
 argument_list|,
 operator|new
-name|Corona
+name|Freon
 argument_list|(
 name|conf
 argument_list|)
@@ -1539,7 +1539,7 @@ name|withDescription
 argument_list|(
 literal|"specifies the mode of "
 operator|+
-literal|"Corona run."
+literal|"Freon run."
 argument_list|)
 expr_stmt|;
 name|Option
@@ -2174,7 +2174,7 @@ name|println
 argument_list|(
 literal|"-mode [online | offline]        "
 operator|+
-literal|"specifies the mode in which Corona should run."
+literal|"specifies the mode in which Freon should run."
 argument_list|)
 expr_stmt|;
 name|System
@@ -2384,7 +2384,7 @@ return|return
 name|progressBarThread
 return|;
 block|}
-comment|/**    * Prints stats of {@link Corona} run to the PrintStream.    *    * @param out PrintStream    */
+comment|/**    * Prints stats of {@link Freon} run to the PrintStream.    *    * @param out PrintStream    */
 DECL|method|printStats (PrintStream out)
 specifier|private
 name|void
@@ -2758,7 +2758,7 @@ init|=
 operator|new
 name|String
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|values
 argument_list|()
@@ -2778,7 +2778,7 @@ init|=
 operator|new
 name|String
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|values
 argument_list|()
@@ -2793,7 +2793,7 @@ init|=
 operator|new
 name|String
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|values
 argument_list|()
@@ -2803,10 +2803,10 @@ index|]
 decl_stmt|;
 for|for
 control|(
-name|CoronaOps
+name|FreonOps
 name|ops
 range|:
-name|CoronaOps
+name|FreonOps
 operator|.
 name|values
 argument_list|()
@@ -2946,11 +2946,11 @@ name|DURATION_FORMAT
 argument_list|)
 expr_stmt|;
 block|}
-name|CoronaJobInfo
+name|FreonJobInfo
 name|jobInfo
 init|=
 operator|new
-name|CoronaJobInfo
+name|FreonJobInfo
 argument_list|()
 operator|.
 name|setExecTime
@@ -2970,7 +2970,7 @@ name|setMeanVolumeCreateTime
 argument_list|(
 name|means
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|VOLUME_CREATE
 operator|.
@@ -2983,7 +2983,7 @@ name|setDeviationVolumeCreateTime
 argument_list|(
 name|deviations
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|VOLUME_CREATE
 operator|.
@@ -2996,7 +2996,7 @@ name|setTenQuantileVolumeCreateTime
 argument_list|(
 name|quantileTime
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|VOLUME_CREATE
 operator|.
@@ -3009,7 +3009,7 @@ name|setMeanBucketCreateTime
 argument_list|(
 name|means
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|BUCKET_CREATE
 operator|.
@@ -3022,7 +3022,7 @@ name|setDeviationBucketCreateTime
 argument_list|(
 name|deviations
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|BUCKET_CREATE
 operator|.
@@ -3035,7 +3035,7 @@ name|setTenQuantileBucketCreateTime
 argument_list|(
 name|quantileTime
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|BUCKET_CREATE
 operator|.
@@ -3048,7 +3048,7 @@ name|setMeanKeyCreateTime
 argument_list|(
 name|means
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_CREATE
 operator|.
@@ -3061,7 +3061,7 @@ name|setDeviationKeyCreateTime
 argument_list|(
 name|deviations
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_CREATE
 operator|.
@@ -3074,7 +3074,7 @@ name|setTenQuantileKeyCreateTime
 argument_list|(
 name|quantileTime
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_CREATE
 operator|.
@@ -3087,7 +3087,7 @@ name|setMeanKeyWriteTime
 argument_list|(
 name|means
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_WRITE
 operator|.
@@ -3100,7 +3100,7 @@ name|setDeviationKeyWriteTime
 argument_list|(
 name|deviations
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_WRITE
 operator|.
@@ -3113,7 +3113,7 @@ name|setTenQuantileKeyWriteTime
 argument_list|(
 name|quantileTime
 index|[
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_WRITE
 operator|.
@@ -3570,7 +3570,7 @@ name|histograms
 operator|.
 name|get
 argument_list|(
-name|CoronaOps
+name|FreonOps
 operator|.
 name|VOLUME_CREATE
 operator|.
@@ -3699,7 +3699,7 @@ name|histograms
 operator|.
 name|get
 argument_list|(
-name|CoronaOps
+name|FreonOps
 operator|.
 name|BUCKET_CREATE
 operator|.
@@ -3835,7 +3835,7 @@ name|histograms
 operator|.
 name|get
 argument_list|(
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_CREATE
 operator|.
@@ -3900,7 +3900,7 @@ name|histograms
 operator|.
 name|get
 argument_list|(
-name|CoronaOps
+name|FreonOps
 operator|.
 name|KEY_WRITE
 operator|.
@@ -4044,11 +4044,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|CoronaJobInfo
+DECL|class|FreonJobInfo
 specifier|private
 specifier|final
 class|class
-name|CoronaJobInfo
+name|FreonJobInfo
 block|{
 DECL|field|status
 specifier|private
@@ -4184,9 +4184,9 @@ name|String
 index|[]
 name|tenQuantileKeyWriteTime
 decl_stmt|;
-DECL|method|CoronaJobInfo ()
+DECL|method|FreonJobInfo ()
 specifier|private
-name|CoronaJobInfo
+name|FreonJobInfo
 parameter_list|()
 block|{
 name|this
@@ -4203,7 +4203,7 @@ name|this
 operator|.
 name|numOfVolumes
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4213,7 +4213,7 @@ name|this
 operator|.
 name|numOfBuckets
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4223,7 +4223,7 @@ name|this
 operator|.
 name|numOfKeys
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4233,7 +4233,7 @@ name|this
 operator|.
 name|numOfThreads
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4243,7 +4243,7 @@ name|this
 operator|.
 name|keySize
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4253,7 +4253,7 @@ name|this
 operator|.
 name|mode
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4267,7 +4267,7 @@ name|Time
 operator|.
 name|formatTime
 argument_list|(
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4278,7 +4278,7 @@ name|this
 operator|.
 name|replicationFactor
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4291,7 +4291,7 @@ name|this
 operator|.
 name|replicationType
 operator|=
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4356,7 +4356,7 @@ name|NANOSECONDS
 operator|.
 name|toSeconds
 argument_list|(
-name|Corona
+name|Freon
 operator|.
 name|this
 operator|.
@@ -4547,7 +4547,7 @@ return|;
 block|}
 DECL|method|setGitBaseRevision (String gitBaseRevisionVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setGitBaseRevision
 parameter_list|(
 name|String
@@ -4564,7 +4564,7 @@ return|;
 block|}
 DECL|method|setExecTime (String execTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setExecTime
 parameter_list|(
 name|String
@@ -4581,7 +4581,7 @@ return|;
 block|}
 DECL|method|setMeanKeyWriteTime (String deviationKeyWriteTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setMeanKeyWriteTime
 parameter_list|(
 name|String
@@ -4600,7 +4600,7 @@ return|;
 block|}
 DECL|method|setDeviationKeyWriteTime ( String deviationKeyWriteTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setDeviationKeyWriteTime
 parameter_list|(
 name|String
@@ -4619,7 +4619,7 @@ return|;
 block|}
 DECL|method|setTenQuantileKeyWriteTime ( String[] tenQuantileKeyWriteTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setTenQuantileKeyWriteTime
 parameter_list|(
 name|String
@@ -4639,7 +4639,7 @@ return|;
 block|}
 DECL|method|setMeanKeyCreateTime (String deviationKeyWriteTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setMeanKeyCreateTime
 parameter_list|(
 name|String
@@ -4658,7 +4658,7 @@ return|;
 block|}
 DECL|method|setDeviationKeyCreateTime ( String deviationKeyCreateTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setDeviationKeyCreateTime
 parameter_list|(
 name|String
@@ -4677,7 +4677,7 @@ return|;
 block|}
 DECL|method|setTenQuantileKeyCreateTime ( String[] tenQuantileKeyCreateTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setTenQuantileKeyCreateTime
 parameter_list|(
 name|String
@@ -4697,7 +4697,7 @@ return|;
 block|}
 DECL|method|setMeanBucketCreateTime ( String deviationKeyWriteTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setMeanBucketCreateTime
 parameter_list|(
 name|String
@@ -4716,7 +4716,7 @@ return|;
 block|}
 DECL|method|setDeviationBucketCreateTime ( String deviationBucketCreateTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setDeviationBucketCreateTime
 parameter_list|(
 name|String
@@ -4735,7 +4735,7 @@ return|;
 block|}
 DECL|method|setTenQuantileBucketCreateTime ( String[] tenQuantileBucketCreateTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setTenQuantileBucketCreateTime
 parameter_list|(
 name|String
@@ -4755,7 +4755,7 @@ return|;
 block|}
 DECL|method|setMeanVolumeCreateTime ( String deviationKeyWriteTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setMeanVolumeCreateTime
 parameter_list|(
 name|String
@@ -4774,7 +4774,7 @@ return|;
 block|}
 DECL|method|setDeviationVolumeCreateTime ( String deviationVolumeCreateTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setDeviationVolumeCreateTime
 parameter_list|(
 name|String
@@ -4793,7 +4793,7 @@ return|;
 block|}
 DECL|method|setTenQuantileVolumeCreateTime ( String[] tenQuantileVolumeCreateTimeVal)
 specifier|public
-name|CoronaJobInfo
+name|FreonJobInfo
 name|setTenQuantileVolumeCreateTime
 parameter_list|(
 name|String

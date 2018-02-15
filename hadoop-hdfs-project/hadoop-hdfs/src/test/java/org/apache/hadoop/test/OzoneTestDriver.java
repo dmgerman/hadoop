@@ -28,7 +28,7 @@ name|ozone
 operator|.
 name|tools
 operator|.
-name|Corona
+name|Freon
 import|;
 end_import
 
@@ -95,9 +95,9 @@ name|pgd
 operator|.
 name|addClass
 argument_list|(
-literal|"corona"
+literal|"freon"
 argument_list|,
-name|Corona
+name|Freon
 operator|.
 name|class
 argument_list|,

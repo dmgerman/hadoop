@@ -193,14 +193,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests Corona, with MiniOzoneCluster.  */
+comment|/**  * Tests Freon, with MiniOzoneCluster.  */
 end_comment
 
 begin_class
-DECL|class|TestCorona
+DECL|class|TestFreon
 specifier|public
 class|class
-name|TestCorona
+name|TestFreon
 block|{
 DECL|field|cluster
 specifier|private
@@ -358,11 +358,11 @@ argument_list|(
 literal|"10"
 argument_list|)
 expr_stmt|;
-name|Corona
-name|corona
+name|Freon
+name|freon
 init|=
 operator|new
-name|Corona
+name|Freon
 argument_list|(
 name|conf
 argument_list|)
@@ -376,7 +376,7 @@ name|run
 argument_list|(
 name|conf
 argument_list|,
-name|corona
+name|freon
 argument_list|,
 name|args
 operator|.
@@ -396,7 +396,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfVolumesCreated
 argument_list|()
@@ -408,7 +408,7 @@ name|assertEquals
 argument_list|(
 literal|10
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfBucketsCreated
 argument_list|()
@@ -420,7 +420,7 @@ name|assertEquals
 argument_list|(
 literal|100
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfKeysAdded
 argument_list|()
@@ -434,7 +434,7 @@ literal|10240
 operator|-
 literal|36
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getKeyValueLength
 argument_list|()
@@ -545,11 +545,11 @@ argument_list|(
 literal|"10"
 argument_list|)
 expr_stmt|;
-name|Corona
-name|corona
+name|Freon
+name|freon
 init|=
 operator|new
-name|Corona
+name|Freon
 argument_list|(
 name|conf
 argument_list|)
@@ -563,7 +563,7 @@ name|run
 argument_list|(
 name|conf
 argument_list|,
-name|corona
+name|freon
 argument_list|,
 name|args
 operator|.
@@ -592,7 +592,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfVolumesCreated
 argument_list|()
@@ -604,7 +604,7 @@ name|assertEquals
 argument_list|(
 literal|10
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfBucketsCreated
 argument_list|()
@@ -616,7 +616,7 @@ name|assertEquals
 argument_list|(
 literal|100
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfKeysAdded
 argument_list|()
@@ -626,7 +626,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|corona
+name|freon
 operator|.
 name|getValidateWrites
 argument_list|()
@@ -638,7 +638,7 @@ name|assertNotEquals
 argument_list|(
 literal|0
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getTotalKeysValidated
 argument_list|()
@@ -650,7 +650,7 @@ name|assertNotEquals
 argument_list|(
 literal|0
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getSuccessfulValidationCount
 argument_list|()
@@ -662,7 +662,7 @@ name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getUnsuccessfulValidationCount
 argument_list|()
@@ -767,11 +767,11 @@ argument_list|(
 literal|"10240"
 argument_list|)
 expr_stmt|;
-name|Corona
-name|corona
+name|Freon
+name|freon
 init|=
 operator|new
-name|Corona
+name|Freon
 argument_list|(
 name|conf
 argument_list|)
@@ -785,7 +785,7 @@ name|run
 argument_list|(
 name|conf
 argument_list|,
-name|corona
+name|freon
 argument_list|,
 name|args
 operator|.
@@ -805,7 +805,7 @@ name|assertEquals
 argument_list|(
 literal|10
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfVolumesCreated
 argument_list|()
@@ -817,7 +817,7 @@ name|assertEquals
 argument_list|(
 literal|10
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfBucketsCreated
 argument_list|()
@@ -829,7 +829,7 @@ name|assertEquals
 argument_list|(
 literal|100
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfKeysAdded
 argument_list|()
@@ -950,11 +950,11 @@ argument_list|(
 literal|"10240"
 argument_list|)
 expr_stmt|;
-name|Corona
-name|corona
+name|Freon
+name|freon
 init|=
 operator|new
-name|Corona
+name|Freon
 argument_list|(
 name|conf
 argument_list|)
@@ -968,7 +968,7 @@ name|run
 argument_list|(
 name|conf
 argument_list|,
-name|corona
+name|freon
 argument_list|,
 name|args
 operator|.
@@ -988,7 +988,7 @@ name|assertEquals
 argument_list|(
 literal|10
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfVolumesCreated
 argument_list|()
@@ -1000,7 +1000,7 @@ name|assertEquals
 argument_list|(
 literal|10
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfBucketsCreated
 argument_list|()
@@ -1012,7 +1012,7 @@ name|assertEquals
 argument_list|(
 literal|100
 argument_list|,
-name|corona
+name|freon
 operator|.
 name|getNumberOfKeysAdded
 argument_list|()
