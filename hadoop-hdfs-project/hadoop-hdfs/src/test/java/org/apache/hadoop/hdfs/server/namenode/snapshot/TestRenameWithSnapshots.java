@@ -7227,7 +7227,7 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -7399,7 +7399,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|FileDiff
 argument_list|>
@@ -7525,7 +7525,7 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|FileDiff
 argument_list|>
@@ -8873,7 +8873,7 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -9612,7 +9612,7 @@ name|getLocalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -9732,7 +9732,7 @@ name|isWithSnapshot
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -10196,7 +10196,7 @@ name|getLocalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -10769,7 +10769,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -10924,7 +10924,7 @@ operator|.
 name|DstReference
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -12128,7 +12128,7 @@ name|getParent
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -12713,7 +12713,7 @@ name|getParent
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -13194,7 +13194,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -13333,7 +13333,7 @@ name|getParent
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|FileDiff
 argument_list|>
@@ -14834,7 +14834,7 @@ name|getLocalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -15384,7 +15384,7 @@ name|getLocalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -16457,7 +16457,7 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -16621,7 +16621,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// bar should only have a snapshot diff for s0
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -16743,7 +16743,7 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -17115,7 +17115,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>

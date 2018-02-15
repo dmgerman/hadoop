@@ -336,6 +336,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|DiffList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|DirectoryWithSnapshotFeature
 operator|.
 name|DirectoryDiff
@@ -1169,7 +1189,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// one snapshot on root: s1
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>

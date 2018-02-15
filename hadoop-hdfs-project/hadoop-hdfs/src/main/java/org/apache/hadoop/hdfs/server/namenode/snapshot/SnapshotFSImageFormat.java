@@ -545,7 +545,7 @@ block|}
 else|else
 block|{
 specifier|final
-name|List
+name|DiffList
 argument_list|<
 name|D
 argument_list|>
@@ -1495,7 +1495,7 @@ name|loader
 argument_list|)
 decl_stmt|;
 comment|// 6. Compose the SnapshotDiff
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>

@@ -425,7 +425,7 @@ literal|1
 index|]
 decl_stmt|;
 specifier|final
-name|List
+name|DiffList
 argument_list|<
 name|FileDiff
 argument_list|>

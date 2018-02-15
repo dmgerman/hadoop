@@ -1116,7 +1116,7 @@ name|isWithSnapshot
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>

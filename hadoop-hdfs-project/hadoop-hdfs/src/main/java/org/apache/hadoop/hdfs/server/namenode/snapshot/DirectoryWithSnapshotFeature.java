@@ -1842,7 +1842,7 @@ name|newChild
 parameter_list|)
 block|{
 specifier|final
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -1923,7 +1923,7 @@ name|child
 parameter_list|)
 block|{
 specifier|final
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -1998,7 +1998,7 @@ name|child
 parameter_list|)
 block|{
 specifier|final
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
@@ -3558,7 +3558,7 @@ name|dirCopy
 init|=
 literal|null
 decl_stmt|;
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>

@@ -3852,7 +3852,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|List
+name|DiffList
 argument_list|<
 name|FileDiff
 argument_list|>
@@ -4154,7 +4154,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|List
+name|DiffList
 argument_list|<
 name|DirectoryDiff
 argument_list|>
