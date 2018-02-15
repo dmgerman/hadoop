@@ -35,6 +35,14 @@ name|void
 name|readLock
 parameter_list|()
 function_decl|;
+comment|/** Acquire read lock, unless interrupted while waiting  */
+DECL|method|readLockInterruptibly ()
+name|void
+name|readLockInterruptibly
+parameter_list|()
+throws|throws
+name|InterruptedException
+function_decl|;
 comment|/** Release read lock. */
 DECL|method|readUnlock ()
 specifier|public

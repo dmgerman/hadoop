@@ -56,16 +56,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|InterruptedIOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -1807,31 +1797,40 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+comment|// The edit logging code will fail catastrophically if it
+comment|// is interrupted during a logSync, since the interrupt
+comment|// closes the edit log files. Doing this inside the
+comment|// fsn lock will prevent being interrupted when stopping
+comment|// the secret manager.
+name|namesystem
+operator|.
+name|readLockInterruptibly
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+comment|// this monitor isn't necessary if stopped while holding write lock
+comment|// but for safety, guard against a stop with read lock.
 synchronized|synchronized
 init|(
 name|noInterruptsLock
 init|)
 block|{
-comment|// The edit logging code will fail catastrophically if it
-comment|// is interrupted during a logSync, since the interrupt
-comment|// closes the edit log files. Doing this inside the
-comment|// above lock and then checking interruption status
-comment|// prevents this bug.
 if|if
 condition|(
 name|Thread
 operator|.
-name|interrupted
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|InterruptedIOException
-argument_list|(
-literal|"Interrupted before updating master key"
-argument_list|)
-throw|;
+return|return;
+comment|// leave flag set so secret monitor exits.
 block|}
 name|namesystem
 operator|.
@@ -1839,6 +1838,33 @@ name|logUpdateMasterKey
 argument_list|(
 name|key
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+comment|// AbstractDelegationTokenManager may crash if an exception is thrown.
+comment|// The interrupt flag will be detected when it attempts to sleep.
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -1857,31 +1883,40 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+comment|// The edit logging code will fail catastrophically if it
+comment|// is interrupted during a logSync, since the interrupt
+comment|// closes the edit log files. Doing this inside the
+comment|// fsn lock will prevent being interrupted when stopping
+comment|// the secret manager.
+name|namesystem
+operator|.
+name|readLockInterruptibly
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+comment|// this monitor isn't necessary if stopped while holding write lock
+comment|// but for safety, guard against a stop with read lock.
 synchronized|synchronized
 init|(
 name|noInterruptsLock
 init|)
 block|{
-comment|// The edit logging code will fail catastrophically if it
-comment|// is interrupted during a logSync, since the interrupt
-comment|// closes the edit log files. Doing this inside the
-comment|// above lock and then checking interruption status
-comment|// prevents this bug.
 if|if
 condition|(
 name|Thread
 operator|.
-name|interrupted
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|InterruptedIOException
-argument_list|(
-literal|"Interrupted before expiring delegation token"
-argument_list|)
-throw|;
+return|return;
+comment|// leave flag set so secret monitor exits.
 block|}
 name|namesystem
 operator|.
@@ -1889,6 +1924,33 @@ name|logExpireDelegationToken
 argument_list|(
 name|dtId
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+comment|// AbstractDelegationTokenManager may crash if an exception is thrown.
+comment|// The interrupt flag will be detected when it attempts to sleep.
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
 expr_stmt|;
 block|}
 block|}

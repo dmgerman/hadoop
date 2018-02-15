@@ -9773,6 +9773,24 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|readLockInterruptibly ()
+specifier|public
+name|void
+name|readLockInterruptibly
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+name|this
+operator|.
+name|fsLock
+operator|.
+name|readLockInterruptibly
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|readUnlock ()
 specifier|public
 name|void
@@ -26938,9 +26956,12 @@ literal|"this should never be called while in safemode, since we stop "
 operator|+
 literal|"the DT manager before entering safemode!"
 assert|;
-comment|// No need to hold FSN lock since we don't access any internal
-comment|// structures, and this is stopped before the FSN shuts itself
-comment|// down, etc.
+comment|// edit log rolling is not thread-safe and must be protected by the
+comment|// fsn lock.  not updating namespace so read lock is sufficient.
+assert|assert
+name|hasReadLock
+argument_list|()
+assert|;
 name|getEditLog
 argument_list|()
 operator|.
@@ -26975,9 +26996,13 @@ literal|"this should never be called while in safemode, since we stop "
 operator|+
 literal|"the DT manager before entering safemode!"
 assert|;
-comment|// No need to hold FSN lock since we don't access any internal
-comment|// structures, and this is stopped before the FSN shuts itself
-comment|// down, etc.
+comment|// edit log rolling is not thread-safe and must be protected by the
+comment|// fsn lock.  not updating namespace so read lock is sufficient.
+assert|assert
+name|hasReadLock
+argument_list|()
+assert|;
+comment|// do not logSync so expiration edits are batched
 name|getEditLog
 argument_list|()
 operator|.
