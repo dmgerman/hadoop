@@ -54,6 +54,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|file
@@ -313,6 +323,22 @@ operator|.
 name|s3a
 operator|.
 name|S3AFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestConstants
 import|;
 end_import
 
@@ -660,6 +686,12 @@ argument_list|(
 literal|"/"
 argument_list|)
 decl_stmt|;
+comment|/**    * test URI, built in setup.    */
+DECL|field|uri
+specifier|private
+name|URI
+name|uri
+decl_stmt|;
 comment|/**    * A role FS; if non-null it is closed in teardown.    */
 DECL|field|roleFS
 specifier|private
@@ -683,6 +715,16 @@ argument_list|()
 expr_stmt|;
 name|assumeRoleTests
 argument_list|()
+expr_stmt|;
+name|uri
+operator|=
+operator|new
+name|URI
+argument_list|(
+name|S3ATestConstants
+operator|.
+name|DEFAULT_CSVTEST_FILE
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -888,6 +930,8 @@ init|=
 operator|new
 name|AssumedRoleCredentialProvider
 argument_list|(
+name|uri
+argument_list|,
 name|conf
 argument_list|)
 init|)
@@ -959,6 +1003,8 @@ lambda|->
 operator|new
 name|AssumedRoleCredentialProvider
 argument_list|(
+name|uri
+argument_list|,
 name|conf
 argument_list|)
 argument_list|)
@@ -1434,6 +1480,8 @@ lambda|->
 operator|new
 name|AssumedRoleCredentialProvider
 argument_list|(
+name|uri
+argument_list|,
 name|conf
 argument_list|)
 argument_list|)
@@ -1483,6 +1531,8 @@ lambda|->
 operator|new
 name|AssumedRoleCredentialProvider
 argument_list|(
+name|uri
+argument_list|,
 name|conf
 argument_list|)
 argument_list|)

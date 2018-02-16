@@ -44,6 +44,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Locale
@@ -396,11 +406,14 @@ specifier|final
 name|String
 name|arn
 decl_stmt|;
-comment|/**    * Instantiate.    * This calls {@link #getCredentials()} to fail fast on the inner    * role credential retrieval.    * @param conf configuration    * @throws IOException on IO problems and some parameter checking    * @throws IllegalArgumentException invalid parameters    * @throws AWSSecurityTokenServiceException problems getting credentials    */
-DECL|method|AssumedRoleCredentialProvider (Configuration conf)
+comment|/**    * Instantiate.    * This calls {@link #getCredentials()} to fail fast on the inner    * role credential retrieval.    * @param uri URI of endpoint.    * @param conf configuration    * @throws IOException on IO problems and some parameter checking    * @throws IllegalArgumentException invalid parameters    * @throws AWSSecurityTokenServiceException problems getting credentials    */
+DECL|method|AssumedRoleCredentialProvider (URI uri, Configuration conf)
 specifier|public
 name|AssumedRoleCredentialProvider
 parameter_list|(
+name|URI
+name|uri
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -503,6 +516,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|aClass
+argument_list|,
+name|uri
 argument_list|)
 argument_list|)
 expr_stmt|;

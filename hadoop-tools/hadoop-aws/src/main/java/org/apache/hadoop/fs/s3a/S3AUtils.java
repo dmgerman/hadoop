@@ -784,6 +784,17 @@ name|EOF_MESSAGE_IN_XML_PARSER
 init|=
 literal|"Failed to sanitize XML document destined for handler class"
 decl_stmt|;
+DECL|field|BUCKET_PATTERN
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|BUCKET_PATTERN
+init|=
+name|FS_S3A_BUCKET_PREFIX
+operator|+
+literal|"%s.%s"
+decl_stmt|;
 DECL|method|S3AUtils ()
 specifier|private
 name|S3AUtils
@@ -2276,7 +2287,7 @@ name|getTime
 argument_list|()
 return|;
 block|}
-comment|/**    * Create the AWS credentials from the providers, the URI and    * the key {@link Constants#AWS_CREDENTIALS_PROVIDER} in the configuration.    * @param binding Binding URI, may contain user:pass login details    * @param conf filesystem configuration    * @return a credentials provider list    * @throws IOException Problems loading the providers (including reading    * secrets from credential files).    */
+comment|/**    * Create the AWS credentials from the providers, the URI and    * the key {@link Constants#AWS_CREDENTIALS_PROVIDER} in the configuration.    * @param binding Binding URI, may contain user:pass login details;    * may be null    * @param conf filesystem configuration    * @return a credentials provider list    * @throws IOException Problems loading the providers (including reading    * secrets from credential files).    */
 DECL|method|createAWSCredentialProviderSet ( URI binding, Configuration conf)
 specifier|public
 specifier|static
@@ -2395,6 +2406,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|aClass
+argument_list|,
+name|binding
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2501,8 +2514,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create an AWS credential provider from its class by using reflection.  The    * class must implement one of the following means of construction, which are    * attempted in order:    *    *<ol>    *<li>a public constructor accepting    *    org.apache.hadoop.conf.Configuration</li>    *<li>a public static method named getInstance that accepts no    *    arguments and returns an instance of    *    com.amazonaws.auth.AWSCredentialsProvider, or</li>    *<li>a public default constructor.</li>    *</ol>    *    * @param conf configuration    * @param credClass credential class    * @return the instantiated class    * @throws IOException on any instantiation failure.    */
-DECL|method|createAWSCredentialProvider ( Configuration conf, Class<?> credClass)
+comment|/**    * Create an AWS credential provider from its class by using reflection.  The    * class must implement one of the following means of construction, which are    * attempted in order:    *    *<ol>    *<li>a public constructor accepting java.net.URI and    *     org.apache.hadoop.conf.Configuration</li>    *<li>a public static method named getInstance that accepts no    *    arguments and returns an instance of    *    com.amazonaws.auth.AWSCredentialsProvider, or</li>    *<li>a public default constructor.</li>    *</ol>    *    * @param conf configuration    * @param credClass credential class    * @param uri URI of the FS    * @return the instantiated class    * @throws IOException on any instantiation failure.    */
+DECL|method|createAWSCredentialProvider ( Configuration conf, Class<?> credClass, URI uri)
 specifier|public
 specifier|static
 name|AWSCredentialsProvider
@@ -2516,6 +2529,9 @@ argument_list|<
 name|?
 argument_list|>
 name|credClass
+parameter_list|,
+name|URI
+name|uri
 parameter_list|)
 throws|throws
 name|IOException
@@ -2596,10 +2612,51 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-comment|// new X(conf)
+comment|// new X(uri, conf)
 name|Constructor
 name|cons
 init|=
+name|getConstructor
+argument_list|(
+name|credClass
+argument_list|,
+name|URI
+operator|.
+name|class
+argument_list|,
+name|Configuration
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cons
+operator|!=
+literal|null
+condition|)
+block|{
+name|credentials
+operator|=
+operator|(
+name|AWSCredentialsProvider
+operator|)
+name|cons
+operator|.
+name|newInstance
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+name|credentials
+return|;
+block|}
+comment|// new X(conf)
+name|cons
+operator|=
 name|getConstructor
 argument_list|(
 name|credClass
@@ -2608,7 +2665,7 @@ name|Configuration
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|cons
@@ -2841,7 +2898,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Return the access key and secret for S3 API use.    * Credentials may exist in configuration, within credential providers    * or indicated in the UserInfo of the name URI param.    * @param name the URI for which we need the access keys.    * @param conf the Configuration object to interrogate for keys.    * @return AWSAccessKeys    * @throws IOException problems retrieving passwords from KMS.    */
+comment|/**    * Return the access key and secret for S3 API use.    * Credentials may exist in configuration, within credential providers    * or indicated in the UserInfo of the name URI param.    * @param name the URI for which we need the access keys; may be null    * @param conf the Configuration object to interrogate for keys.    * @return AWSAccessKeys    * @throws IOException problems retrieving passwords from KMS.    */
 DECL|method|getAWSAccessKeys (URI name, Configuration conf)
 specifier|public
 specifier|static
@@ -2886,10 +2943,30 @@ name|class
 argument_list|)
 decl_stmt|;
 name|String
+name|bucket
+init|=
+name|name
+operator|!=
+literal|null
+condition|?
+name|name
+operator|.
+name|getHost
+argument_list|()
+else|:
+literal|""
+decl_stmt|;
+comment|// build the secrets. as getPassword() uses the last arg as
+comment|// the return value if non-null, the ordering of
+comment|// login -> bucket -> base is critical
+comment|// get the bucket values
+name|String
 name|accessKey
 init|=
-name|getPassword
+name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|ACCESS_KEY
@@ -2900,11 +2977,14 @@ name|getUser
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// finally the base
 name|String
 name|secretKey
 init|=
-name|getPassword
+name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|SECRET_KEY
@@ -2915,6 +2995,7 @@ name|getPassword
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// and override with any per bucket values
 return|return
 operator|new
 name|S3xLoginHelper
@@ -2927,8 +3008,148 @@ name|secretKey
 argument_list|)
 return|;
 block|}
+comment|/**    * Get a password from a configuration, including JCEKS files, handling both    * the absolute key and bucket override.    * @param bucket bucket or "" if none known    * @param conf configuration    * @param baseKey base key to look up, e.g "fs.s3a.secret.key"    * @param overrideVal override value: if non empty this is used instead of    * querying the configuration.    * @return a password or "".    * @throws IOException on any IO problem    * @throws IllegalArgumentException bad arguments    */
+DECL|method|lookupPassword ( String bucket, Configuration conf, String baseKey, String overrideVal)
+specifier|public
+specifier|static
+name|String
+name|lookupPassword
+parameter_list|(
+name|String
+name|bucket
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|baseKey
+parameter_list|,
+name|String
+name|overrideVal
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|initialVal
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|baseKey
+operator|.
+name|startsWith
+argument_list|(
+name|FS_S3A_PREFIX
+argument_list|)
+argument_list|,
+literal|"%s does not start with $%s"
+argument_list|,
+name|baseKey
+argument_list|,
+name|FS_S3A_PREFIX
+argument_list|)
+expr_stmt|;
+comment|// if there's a bucket, work with it
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|bucket
+argument_list|)
+condition|)
+block|{
+name|String
+name|subkey
+init|=
+name|baseKey
+operator|.
+name|substring
+argument_list|(
+name|FS_S3A_PREFIX
+operator|.
+name|length
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|String
+name|shortBucketKey
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|BUCKET_PATTERN
+argument_list|,
+name|bucket
+argument_list|,
+name|subkey
+argument_list|)
+decl_stmt|;
+name|String
+name|longBucketKey
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|BUCKET_PATTERN
+argument_list|,
+name|bucket
+argument_list|,
+name|baseKey
+argument_list|)
+decl_stmt|;
+comment|// set from the long key unless overidden.
+name|initialVal
+operator|=
+name|getPassword
+argument_list|(
+name|conf
+argument_list|,
+name|longBucketKey
+argument_list|,
+name|overrideVal
+argument_list|)
+expr_stmt|;
+comment|// then override from the short one if it is set
+name|initialVal
+operator|=
+name|getPassword
+argument_list|(
+name|conf
+argument_list|,
+name|shortBucketKey
+argument_list|,
+name|initialVal
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// no bucket, make the initial value the override value
+name|initialVal
+operator|=
+name|overrideVal
+expr_stmt|;
+block|}
+return|return
+name|getPassword
+argument_list|(
+name|conf
+argument_list|,
+name|baseKey
+argument_list|,
+name|initialVal
+argument_list|)
+return|;
+block|}
 comment|/**    * Get a password from a configuration, or, if a value is passed in,    * pick that up instead.    * @param conf configuration    * @param key key to look up    * @param val current value: if non empty this is used instead of    * querying the configuration.    * @return a password or "".    * @throws IOException on any problem    */
 DECL|method|getPassword (Configuration conf, String key, String val)
+specifier|private
 specifier|static
 name|String
 name|getPassword
@@ -2945,11 +3166,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|defVal
-init|=
-literal|""
-decl_stmt|;
 return|return
 name|getPassword
 argument_list|(
@@ -2959,7 +3175,7 @@ name|key
 argument_list|,
 name|val
 argument_list|,
-name|defVal
+literal|""
 argument_list|)
 return|;
 block|}
@@ -4348,12 +4564,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get any SSE key from a configuration/credential provider.    * This operation handles the case where the option has been    * set in the provider or configuration to the option    * {@code OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY}.    * @param conf configuration to examine    * @return the encryption key or null    */
-DECL|method|getServerSideEncryptionKey (Configuration conf)
+comment|/**    * Get any SSE key from a configuration/credential provider.    * This operation handles the case where the option has been    * set in the provider or configuration to the option    * {@code OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY}.    * IOExceptions raised during retrieval are swallowed.    * @param bucket bucket to query for    * @param conf configuration to examine    * @return the encryption key or ""    * @throws IllegalArgumentException bad arguments.    */
+DECL|method|getServerSideEncryptionKey (String bucket, Configuration conf)
 specifier|static
 name|String
 name|getServerSideEncryptionKey
 parameter_list|(
+name|String
+name|bucket
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -4363,6 +4582,8 @@ block|{
 return|return
 name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|conf
 argument_list|,
 name|SERVER_SIDE_ENCRYPTION_KEY
@@ -4390,7 +4611,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot retrieve SERVER_SIDE_ENCRYPTION_KEY"
+literal|"Cannot retrieve "
+operator|+
+name|SERVER_SIDE_ENCRYPTION_KEY
 argument_list|,
 name|e
 argument_list|)
@@ -4400,12 +4623,15 @@ literal|""
 return|;
 block|}
 block|}
-comment|/**    * Get the server-side encryption algorithm.    * This includes validation of the configuration, checking the state of    * the encryption key given the chosen algorithm.    * @param conf configuration to scan    * @return the encryption mechanism (which will be {@code NONE} unless    * one is set.    * @throws IOException on any validation problem.    */
-DECL|method|getEncryptionAlgorithm (Configuration conf)
+comment|/**    * Get the server-side encryption algorithm.    * This includes validation of the configuration, checking the state of    * the encryption key given the chosen algorithm.    *    * @param bucket bucket to query for    * @param conf configuration to scan    * @return the encryption mechanism (which will be {@code NONE} unless    * one is set.    * @throws IOException on any validation problem.    */
+DECL|method|getEncryptionAlgorithm (String bucket, Configuration conf)
 specifier|static
 name|S3AEncryptionMethods
 name|getEncryptionAlgorithm
 parameter_list|(
+name|String
+name|bucket
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -4419,11 +4645,15 @@ name|S3AEncryptionMethods
 operator|.
 name|getMethod
 argument_list|(
-name|conf
-operator|.
-name|getTrimmed
+name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
+name|conf
+argument_list|,
 name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -4432,6 +4662,8 @@ name|sseKey
 init|=
 name|getServerSideEncryptionKey
 argument_list|(
+name|bucket
+argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;

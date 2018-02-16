@@ -80,6 +80,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -152,6 +162,24 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|lookupPassword
+import|;
+end_import
+
 begin_comment
 comment|/**  * Support session credentials for authenticating with AWS.  *  * Please note that users may reference this class name from configuration  * property fs.s3a.aws.credentials.provider.  Therefore, changing the class name  * would be a backward-incompatible change.  */
 end_comment
@@ -209,8 +237,42 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+argument_list|(
+literal|null
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|TemporaryAWSCredentialsProvider (URI uri, Configuration conf)
+specifier|public
+name|TemporaryAWSCredentialsProvider
+parameter_list|(
+name|URI
+name|uri
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 try|try
 block|{
+comment|// determine the bucket
+name|String
+name|bucket
+init|=
+name|uri
+operator|!=
+literal|null
+condition|?
+name|uri
+operator|.
+name|getHost
+argument_list|()
+else|:
+literal|""
+decl_stmt|;
 name|Configuration
 name|c
 init|=
@@ -229,10 +291,10 @@ name|this
 operator|.
 name|accessKey
 operator|=
-name|S3AUtils
-operator|.
 name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|ACCESS_KEY
@@ -244,10 +306,10 @@ name|this
 operator|.
 name|secretKey
 operator|=
-name|S3AUtils
-operator|.
 name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|SECRET_KEY
@@ -259,10 +321,10 @@ name|this
 operator|.
 name|sessionToken
 operator|=
-name|S3AUtils
-operator|.
 name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|SESSION_TOKEN

@@ -98,7 +98,7 @@ specifier|public
 interface|interface
 name|S3ClientFactory
 block|{
-comment|/**    * Creates a new {@link AmazonS3} client.  This method accepts the S3A file    * system URI both in raw input form and validated form as separate arguments,    * because both values may be useful in logging.    *    * @param name raw input S3A file system URI    * @return S3 client    * @throws IOException IO problem    */
+comment|/**    * Creates a new {@link AmazonS3} client.    *    * @param name raw input S3A file system URI    * @return S3 client    * @throws IOException IO problem    */
 DECL|method|createS3Client (URI name)
 name|AmazonS3
 name|createS3Client

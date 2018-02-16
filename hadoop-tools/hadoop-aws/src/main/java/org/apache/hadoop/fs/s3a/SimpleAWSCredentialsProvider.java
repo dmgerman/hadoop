@@ -135,6 +135,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -214,16 +224,33 @@ specifier|private
 name|IOException
 name|lookupIOE
 decl_stmt|;
-DECL|method|SimpleAWSCredentialsProvider (Configuration conf)
+DECL|method|SimpleAWSCredentialsProvider (URI uri, Configuration conf)
 specifier|public
 name|SimpleAWSCredentialsProvider
 parameter_list|(
+name|URI
+name|uri
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
 block|{
 try|try
 block|{
+name|String
+name|bucket
+init|=
+name|uri
+operator|!=
+literal|null
+condition|?
+name|uri
+operator|.
+name|getHost
+argument_list|()
+else|:
+literal|""
+decl_stmt|;
 name|Configuration
 name|c
 init|=
@@ -246,6 +273,8 @@ name|S3AUtils
 operator|.
 name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|ACCESS_KEY
@@ -261,6 +290,8 @@ name|S3AUtils
 operator|.
 name|lookupPassword
 argument_list|(
+name|bucket
+argument_list|,
 name|c
 argument_list|,
 name|SECRET_KEY
@@ -341,7 +372,7 @@ throw|throw
 operator|new
 name|CredentialInitializationException
 argument_list|(
-literal|"Access key, secret key or session token is unset"
+literal|"Access key or secret key is unset"
 argument_list|)
 throw|;
 block|}
