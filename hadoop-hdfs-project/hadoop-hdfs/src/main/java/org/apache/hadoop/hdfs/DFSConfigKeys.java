@@ -7265,7 +7265,7 @@ specifier|final
 name|boolean
 name|DFS_DISK_BALANCER_ENABLED_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|DFS_DISK_BALANCER_MAX_DISK_THROUGHPUT
 specifier|public
