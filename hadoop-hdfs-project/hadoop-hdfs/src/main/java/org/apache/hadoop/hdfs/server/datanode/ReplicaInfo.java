@@ -251,7 +251,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
+comment|/**    * Constructor.    * @param block a block    * @param vol volume where replica is located    */
 DECL|method|ReplicaInfo (Block block, FsVolumeSpi vol)
 name|ReplicaInfo
 parameter_list|(
