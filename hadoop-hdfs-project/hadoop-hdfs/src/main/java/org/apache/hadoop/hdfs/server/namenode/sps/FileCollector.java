@@ -61,7 +61,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An interface for scanning the directory recursively and collect file ids  * under the given directory.  */
+comment|/**  * An interface for scanning the directory recursively and collect files  * under the given directory.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
 end_comment
 
 begin_interface
@@ -73,18 +73,21 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|interface|FileIdCollector
+DECL|interface|FileCollector
 specifier|public
 interface|interface
-name|FileIdCollector
+name|FileCollector
+parameter_list|<
+name|T
+parameter_list|>
 block|{
-comment|/**    * Scans the given inode directory and collects the file ids under that    * directory and adds to the given BlockStorageMovementNeeded.    *    * @param inodeID    *          - The directory ID    */
-DECL|method|scanAndCollectFileIds (Long inodeId)
+comment|/**    * This method can be used to scan and collects the files under that    * directory and adds to the given BlockStorageMovementNeeded.    *    * @param filePath    *          - file path    */
+DECL|method|scanAndCollectFiles (T filePath)
 name|void
-name|scanAndCollectFileIds
+name|scanAndCollectFiles
 parameter_list|(
-name|Long
-name|inodeId
+name|T
+name|filePath
 parameter_list|)
 throws|throws
 name|IOException

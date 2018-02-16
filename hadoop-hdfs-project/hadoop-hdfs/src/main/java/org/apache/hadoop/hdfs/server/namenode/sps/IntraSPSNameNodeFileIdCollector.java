@@ -166,7 +166,10 @@ name|IntraSPSNameNodeFileIdCollector
 extends|extends
 name|FSTreeTraverser
 implements|implements
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|Long
+argument_list|>
 block|{
 DECL|field|maxQueueLimitToScan
 specifier|private
@@ -177,6 +180,9 @@ DECL|field|service
 specifier|private
 specifier|final
 name|SPSService
+argument_list|<
+name|Long
+argument_list|>
 name|service
 decl_stmt|;
 DECL|field|remainingCapacity
@@ -191,10 +197,13 @@ specifier|private
 name|List
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|Long
+argument_list|>
 argument_list|>
 name|currentBatch
 decl_stmt|;
-DECL|method|IntraSPSNameNodeFileIdCollector (FSDirectory dir, SPSService service)
+DECL|method|IntraSPSNameNodeFileIdCollector (FSDirectory dir, SPSService<Long> service)
 specifier|public
 name|IntraSPSNameNodeFileIdCollector
 parameter_list|(
@@ -202,6 +211,9 @@ name|FSDirectory
 name|dir
 parameter_list|,
 name|SPSService
+argument_list|<
+name|Long
+argument_list|>
 name|service
 parameter_list|)
 block|{
@@ -322,6 +334,9 @@ name|add
 argument_list|(
 operator|new
 name|ItemInfo
+argument_list|<
+name|Long
+argument_list|>
 argument_list|(
 operator|(
 operator|(
@@ -381,12 +396,12 @@ return|return;
 block|}
 annotation|@
 name|Override
-DECL|method|submitCurrentBatch (long startId)
+DECL|method|submitCurrentBatch (Long startId)
 specifier|protected
 name|void
 name|submitCurrentBatch
 parameter_list|(
-name|long
+name|Long
 name|startId
 parameter_list|)
 throws|throws
@@ -397,7 +412,7 @@ block|{
 comment|// Add current child's to queue
 name|service
 operator|.
-name|addAllFileIdsToProcess
+name|addAllFilesToProcess
 argument_list|(
 name|startId
 argument_list|,
@@ -514,10 +529,10 @@ comment|// Nothing to do
 block|}
 annotation|@
 name|Override
-DECL|method|scanAndCollectFileIds (final Long startINodeId)
+DECL|method|scanAndCollectFiles (final Long startINodeId)
 specifier|public
 name|void
-name|scanAndCollectFileIds
+name|scanAndCollectFiles
 parameter_list|(
 specifier|final
 name|Long
@@ -581,6 +596,9 @@ name|add
 argument_list|(
 operator|new
 name|ItemInfo
+argument_list|<
+name|Long
+argument_list|>
 argument_list|(
 name|startInode
 operator|.
@@ -640,7 +658,7 @@ block|}
 comment|// Mark startInode traverse is done, this is last-batch
 name|service
 operator|.
-name|addAllFileIdsToProcess
+name|addAllFilesToProcess
 argument_list|(
 name|startInode
 operator|.

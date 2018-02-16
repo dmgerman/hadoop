@@ -197,7 +197,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An interface for the communication between NameNode and SPS module.  */
+comment|/**  * An interface for the communication between SPS and Namenode module.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
 end_comment
 
 begin_interface
@@ -213,6 +213,9 @@ DECL|interface|Context
 specifier|public
 interface|interface
 name|Context
+parameter_list|<
+name|T
+parameter_list|>
 block|{
 comment|/**    * Returns true if the SPS is running, false otherwise.    */
 DECL|method|isRunning ()
@@ -253,13 +256,13 @@ name|NetworkTopology
 name|getNetworkTopology
 parameter_list|()
 function_decl|;
-comment|/**    * Returns true if the give Inode exists in the Namespace.    *    * @param inodeId    *          - Inode ID    * @return true if Inode exists, false otherwise.    */
-DECL|method|isFileExist (long inodeId)
+comment|/**    * Returns true if the give file exists in the Namespace.    *    * @param filePath    *          - file info    * @return true if the given file exists, false otherwise.    */
+DECL|method|isFileExist (T filePath)
 name|boolean
 name|isFileExist
 parameter_list|(
-name|long
-name|inodeId
+name|T
+name|filePath
 parameter_list|)
 function_decl|;
 comment|/**    * Gets the storage policy details for the given policy ID.    *    * @param policyId    *          - Storage policy ID    * @return the detailed policy object    */
@@ -277,13 +280,13 @@ name|void
 name|addDropPreviousSPSWorkAtDNs
 parameter_list|()
 function_decl|;
-comment|/**    * Remove the hint which was added to track SPS call.    *    * @param inodeId    *          - Inode ID    * @throws IOException    */
-DECL|method|removeSPSHint (long inodeId)
+comment|/**    * Remove the hint which was added to track SPS call.    *    * @param spsPath    *          - user invoked satisfier path    * @throws IOException    */
+DECL|method|removeSPSHint (T spsPath)
 name|void
 name|removeSPSHint
 parameter_list|(
-name|long
-name|inodeId
+name|T
+name|spsPath
 parameter_list|)
 throws|throws
 name|IOException
@@ -294,13 +297,13 @@ name|int
 name|getNumLiveDataNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Get the file info for a specific file.    *    * @param inodeID    *          inode identifier    * @return file status metadata information    */
-DECL|method|getFileInfo (long inodeID)
+comment|/**    * Get the file info for a specific file.    *    * @param file    *          file path    * @return file status metadata information    */
+DECL|method|getFileInfo (T file)
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
-name|long
-name|inodeID
+name|T
+name|file
 parameter_list|)
 throws|throws
 name|IOException
@@ -313,15 +316,6 @@ name|getLiveDatanodeStorageReport
 parameter_list|()
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Returns true if the given inode file has low redundancy blocks.    *    * @param inodeID    *          inode identifier    * @return true if block collection has low redundancy blocks    */
-DECL|method|hasLowRedundancyBlocks (long inodeID)
-name|boolean
-name|hasLowRedundancyBlocks
-parameter_list|(
-name|long
-name|inodeID
-parameter_list|)
 function_decl|;
 comment|/**    * Checks whether the given datanode has sufficient space to occupy the given    * blockSize data.    *    * @param dn    *          datanode info    * @param type    *          storage type    * @param blockSize    *          blockSize to be scheduled    * @return true if the given datanode has sufficient space to occupy blockSize    *         data, false otherwise.    */
 DECL|method|checkDNSpaceForScheduling (DatanodeInfo dn, StorageType type, long blockSize)
@@ -338,18 +332,18 @@ name|long
 name|blockSize
 parameter_list|)
 function_decl|;
-comment|/**    * @return next SPS path id to process.    */
-DECL|method|getNextSPSPathId ()
-name|Long
-name|getNextSPSPathId
+comment|/**    * @return next SPS path info to process.    */
+DECL|method|getNextSPSPath ()
+name|T
+name|getNextSPSPath
 parameter_list|()
 function_decl|;
 comment|/**    * Removes the SPS path id.    */
-DECL|method|removeSPSPathId (long pathId)
+DECL|method|removeSPSPathId (T pathId)
 name|void
 name|removeSPSPathId
 parameter_list|(
-name|long
+name|T
 name|pathId
 parameter_list|)
 function_decl|;
@@ -358,15 +352,6 @@ DECL|method|removeAllSPSPathIds ()
 name|void
 name|removeAllSPSPathIds
 parameter_list|()
-function_decl|;
-comment|/**    * Gets the file path for a given inode id.    *    * @param inodeId    *          - path inode id.    */
-DECL|method|getFilePath (Long inodeId)
-name|String
-name|getFilePath
-parameter_list|(
-name|Long
-name|inodeId
-parameter_list|)
 function_decl|;
 block|}
 end_interface

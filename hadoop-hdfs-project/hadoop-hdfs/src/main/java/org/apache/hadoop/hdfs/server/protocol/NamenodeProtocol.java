@@ -426,25 +426,12 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets the file path for the given file id. This API used by External SPS.    *    * @param inodeId    *          - file inode id.    * @return path    */
-annotation|@
-name|Idempotent
-DECL|method|getFilePath (Long inodeId)
-name|String
-name|getFilePath
-parameter_list|(
-name|Long
-name|inodeId
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * @return Gets the next available sps path id, otherwise null. This API used    *         by External SPS.    */
+comment|/**    * @return Gets the next available sps path, otherwise null. This API used    *         by External SPS.    */
 annotation|@
 name|AtMostOnce
-DECL|method|getNextSPSPathId ()
-name|Long
-name|getNextSPSPathId
+DECL|method|getNextSPSPath ()
+name|String
+name|getNextSPSPath
 parameter_list|()
 throws|throws
 name|IOException
@@ -464,19 +451,6 @@ name|type
 parameter_list|,
 name|long
 name|estimatedSize
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Check if any low redundancy blocks for given file id. This API used by    * External SPS.    *    * @param inodeID    *          - inode id.    */
-annotation|@
-name|Idempotent
-DECL|method|hasLowRedundancyBlocks (long inodeID)
-name|boolean
-name|hasLowRedundancyBlocks
-parameter_list|(
-name|long
-name|inodeID
 parameter_list|)
 throws|throws
 name|IOException

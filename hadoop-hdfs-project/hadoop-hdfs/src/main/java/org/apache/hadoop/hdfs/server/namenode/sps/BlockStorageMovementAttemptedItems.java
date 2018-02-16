@@ -239,7 +239,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A monitor class for checking whether block storage movements attempt  * completed or not. If this receives block storage movement attempt  * status(either success or failure) from DN then it will just remove the  * entries from tracking. If there is no DN reports about movement attempt  * finished for a longer time period, then such items will retries automatically  * after timeout. The default timeout would be 5 minutes.  */
+comment|/**  * A monitor class for checking whether block storage movements attempt  * completed or not. If this receives block storage movement attempt  * status(either success or failure) from DN then it will just remove the  * entries from tracking. If there is no DN reports about movement attempt  * finished for a longer time period, then such items will retries automatically  * after timeout. The default timeout would be 5 minutes.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
 end_comment
 
 begin_class
@@ -247,6 +247,9 @@ DECL|class|BlockStorageMovementAttemptedItems
 specifier|public
 class|class
 name|BlockStorageMovementAttemptedItems
+parameter_list|<
+name|T
+parameter_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -271,6 +274,9 @@ specifier|final
 name|List
 argument_list|<
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|storageMovementAttemptedItems
 decl_stmt|;
@@ -338,22 +344,34 @@ comment|// minimum value
 DECL|field|blockStorageMovementNeeded
 specifier|private
 name|BlockStorageMovementNeeded
+argument_list|<
+name|T
+argument_list|>
 name|blockStorageMovementNeeded
 decl_stmt|;
 DECL|field|service
 specifier|private
 specifier|final
 name|SPSService
+argument_list|<
+name|T
+argument_list|>
 name|service
 decl_stmt|;
-DECL|method|BlockStorageMovementAttemptedItems (SPSService service, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles, BlockMovementListener blockMovementListener)
+DECL|method|BlockStorageMovementAttemptedItems (SPSService<T> service, BlockStorageMovementNeeded<T> unsatisfiedStorageMovementFiles, BlockMovementListener blockMovementListener)
 specifier|public
 name|BlockStorageMovementAttemptedItems
 parameter_list|(
 name|SPSService
+argument_list|<
+name|T
+argument_list|>
 name|service
 parameter_list|,
 name|BlockStorageMovementNeeded
+argument_list|<
+name|T
+argument_list|>
 name|unsatisfiedStorageMovementFiles
 parameter_list|,
 name|BlockMovementListener
@@ -450,12 +468,15 @@ name|blockMovementListener
 expr_stmt|;
 block|}
 comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param itemInfo    *          - tracking info    */
-DECL|method|add (AttemptedItemInfo itemInfo)
+DECL|method|add (AttemptedItemInfo<T> itemInfo)
 specifier|public
 name|void
 name|add
 parameter_list|(
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|itemInfo
 parameter_list|)
 block|{
@@ -729,6 +750,9 @@ block|{
 name|Iterator
 argument_list|<
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|iter
 init|=
@@ -752,6 +776,9 @@ argument_list|()
 condition|)
 block|{
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|itemInfo
 init|=
 name|iter
@@ -771,12 +798,12 @@ operator|+
 name|selfRetryTimeout
 condition|)
 block|{
-name|Long
-name|blockCollectionID
+name|T
+name|file
 init|=
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
@@ -785,17 +812,23 @@ name|movementFinishedBlocks
 init|)
 block|{
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|candidate
 init|=
 operator|new
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|itemInfo
 operator|.
-name|getStartId
+name|getStartPath
 argument_list|()
 argument_list|,
-name|blockCollectionID
+name|file
 argument_list|,
 name|itemInfo
 operator|.
@@ -825,7 +858,7 @@ literal|"TrackID: {} becomes timed out and moved to needed "
 operator|+
 literal|"retries queue for next iteration."
 argument_list|,
-name|blockCollectionID
+name|file
 argument_list|)
 expr_stmt|;
 block|}
@@ -882,6 +915,9 @@ block|{
 name|Iterator
 argument_list|<
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|iterator
 init|=
@@ -899,6 +935,9 @@ argument_list|()
 condition|)
 block|{
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|attemptedItemInfo
 init|=
 name|iterator
@@ -936,15 +975,18 @@ name|add
 argument_list|(
 operator|new
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|attemptedItemInfo
 operator|.
-name|getStartId
+name|getStartPath
 argument_list|()
 argument_list|,
 name|attemptedItemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 argument_list|,
 name|attemptedItemInfo

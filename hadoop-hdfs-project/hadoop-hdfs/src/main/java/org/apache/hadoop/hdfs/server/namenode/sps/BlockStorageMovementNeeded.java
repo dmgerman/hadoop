@@ -211,7 +211,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A Class to track the block collection IDs (Inode's ID) for which physical  * storage movement needed as per the Namespace and StorageReports from DN.  * It scan the pending directories for which storage movement is required and  * schedule the block collection IDs for movement. It track the info of  * scheduled items and remove the SPS xAttr from the file/Directory once  * movement is success.  */
+comment|/**  * A Class to track the block collection IDs (Inode's ID) for which physical  * storage movement needed as per the Namespace and StorageReports from DN.  * It scan the pending directories for which storage movement is required and  * schedule the block collection IDs for movement. It track the info of  * scheduled items and remove the SPS xAttr from the file/Directory once  * movement is success.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
 end_comment
 
 begin_class
@@ -223,6 +223,9 @@ DECL|class|BlockStorageMovementNeeded
 specifier|public
 class|class
 name|BlockStorageMovementNeeded
+parameter_list|<
+name|T
+parameter_list|>
 block|{
 DECL|field|LOG
 specifier|public
@@ -246,6 +249,9 @@ specifier|final
 name|Queue
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|storageMovementNeeded
 init|=
@@ -253,16 +259,19 @@ operator|new
 name|LinkedList
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Map of startId and number of child's. Number of child's indicate the    * number of files pending to satisfy the policy.    */
+comment|/**    * Map of startPath and number of child's. Number of child's indicate the    * number of files pending to satisfy the policy.    */
 DECL|field|pendingWorkForDirectory
 specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|Long
+name|T
 argument_list|,
 name|DirPendingWorkInfo
 argument_list|>
@@ -270,11 +279,7 @@ name|pendingWorkForDirectory
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Long
-argument_list|,
-name|DirPendingWorkInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|spsStatus
@@ -282,7 +287,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|Long
+name|T
 argument_list|,
 name|StoragePolicySatisfyPathStatusInfo
 argument_list|>
@@ -297,6 +302,9 @@ DECL|field|ctxt
 specifier|private
 specifier|final
 name|Context
+argument_list|<
+name|T
+argument_list|>
 name|ctxt
 decl_stmt|;
 DECL|field|pathIdCollector
@@ -304,10 +312,13 @@ specifier|private
 name|Daemon
 name|pathIdCollector
 decl_stmt|;
-DECL|field|fileIDCollector
+DECL|field|fileCollector
 specifier|private
-name|FileIdCollector
-name|fileIDCollector
+name|FileCollector
+argument_list|<
+name|T
+argument_list|>
+name|fileCollector
 decl_stmt|;
 DECL|field|pathIDProcessor
 specifier|private
@@ -324,15 +335,21 @@ name|statusClearanceElapsedTimeMs
 init|=
 literal|300000
 decl_stmt|;
-DECL|method|BlockStorageMovementNeeded (Context context, FileIdCollector fileIDCollector)
+DECL|method|BlockStorageMovementNeeded (Context<T> context, FileCollector<T> fileCollector)
 specifier|public
 name|BlockStorageMovementNeeded
 parameter_list|(
 name|Context
+argument_list|<
+name|T
+argument_list|>
 name|context
 parameter_list|,
-name|FileIdCollector
-name|fileIDCollector
+name|FileCollector
+argument_list|<
+name|T
+argument_list|>
+name|fileCollector
 parameter_list|)
 block|{
 name|this
@@ -343,9 +360,9 @@ name|context
 expr_stmt|;
 name|this
 operator|.
-name|fileIDCollector
+name|fileCollector
 operator|=
-name|fileIDCollector
+name|fileCollector
 expr_stmt|;
 name|pathIDProcessor
 operator|=
@@ -355,13 +372,16 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Add the candidate to tracking list for which storage movement    * expected if necessary.    *    * @param trackInfo    *          - track info for satisfy the policy    */
-DECL|method|add (ItemInfo trackInfo)
+DECL|method|add (ItemInfo<T> trackInfo)
 specifier|public
 specifier|synchronized
 name|void
 name|add
 parameter_list|(
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|trackInfo
 parameter_list|)
 block|{
@@ -371,7 +391,7 @@ name|put
 argument_list|(
 name|trackInfo
 operator|.
-name|getStartId
+name|getFile
 argument_list|()
 argument_list|,
 operator|new
@@ -391,21 +411,24 @@ name|trackInfo
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add the itemInfo list to tracking list for which storage movement expected    * if necessary.    *    * @param startId    *          - start id    * @param itemInfoList    *          - List of child in the directory    * @param scanCompleted    *          -Indicates whether the start id directory has no more elements to    *          scan.    */
+comment|/**    * Add the itemInfo list to tracking list for which storage movement expected    * if necessary.    *    * @param startPath    *          - start path    * @param itemInfoList    *          - List of child in the directory    * @param scanCompleted    *          -Indicates whether the start id directory has no more elements to    *          scan.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|addAll (long startId, List<ItemInfo> itemInfoList, boolean scanCompleted)
+DECL|method|addAll (T startPath, List<ItemInfo<T>> itemInfoList, boolean scanCompleted)
 specifier|public
 specifier|synchronized
 name|void
 name|addAll
 parameter_list|(
-name|long
-name|startId
+name|T
+name|startPath
 parameter_list|,
 name|List
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|itemInfoList
 parameter_list|,
@@ -422,7 +445,7 @@ argument_list|)
 expr_stmt|;
 name|updatePendingDirScanStats
 argument_list|(
-name|startId
+name|startPath
 argument_list|,
 name|itemInfoList
 operator|.
@@ -436,13 +459,16 @@ block|}
 comment|/**    * Add the itemInfo to tracking list for which storage movement expected if    * necessary.    *    * @param itemInfoList    *          - List of child in the directory    * @param scanCompleted    *          -Indicates whether the ItemInfo start id directory has no more    *          elements to scan.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|add (ItemInfo itemInfo, boolean scanCompleted)
+DECL|method|add (ItemInfo<T> itemInfo, boolean scanCompleted)
 specifier|public
 specifier|synchronized
 name|void
 name|add
 parameter_list|(
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|itemInfo
 parameter_list|,
 name|boolean
@@ -462,12 +488,12 @@ if|if
 condition|(
 name|itemInfo
 operator|.
-name|getStartId
+name|getStartPath
 argument_list|()
 operator|==
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 condition|)
 block|{
@@ -477,7 +503,7 @@ name|updatePendingDirScanStats
 argument_list|(
 name|itemInfo
 operator|.
-name|getStartId
+name|getFile
 argument_list|()
 argument_list|,
 literal|1
@@ -486,13 +512,13 @@ name|scanCompleted
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updatePendingDirScanStats (long startId, int numScannedFiles, boolean scanCompleted)
+DECL|method|updatePendingDirScanStats (T startPath, int numScannedFiles, boolean scanCompleted)
 specifier|private
 name|void
 name|updatePendingDirScanStats
 parameter_list|(
-name|long
-name|startId
+name|T
+name|startPath
 parameter_list|,
 name|int
 name|numScannedFiles
@@ -508,7 +534,7 @@ name|pendingWorkForDirectory
 operator|.
 name|get
 argument_list|(
-name|startId
+name|startPath
 argument_list|)
 decl_stmt|;
 if|if
@@ -528,7 +554,7 @@ name|pendingWorkForDirectory
 operator|.
 name|put
 argument_list|(
-name|startId
+name|startPath
 argument_list|,
 name|pendingWork
 argument_list|)
@@ -553,11 +579,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Gets the block collection id for which storage movements check necessary    * and make the movement if required.    *    * @return block collection ID    */
+comment|/**    * Gets the satisfier files for which block storage movements check necessary    * and make the movement if required.    *    * @return satisfier files    */
 DECL|method|get ()
 specifier|public
 specifier|synchronized
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|get
 parameter_list|()
 block|{
@@ -607,13 +636,16 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Decrease the pending child count for directory once one file blocks moved    * successfully. Remove the SPS xAttr if pending child count is zero.    */
-DECL|method|removeItemTrackInfo (ItemInfo trackInfo, boolean isSuccess)
+DECL|method|removeItemTrackInfo (ItemInfo<T> trackInfo, boolean isSuccess)
 specifier|public
 specifier|synchronized
 name|void
 name|removeItemTrackInfo
 parameter_list|(
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|trackInfo
 parameter_list|,
 name|boolean
@@ -632,12 +664,12 @@ condition|)
 block|{
 comment|// If track is part of some start inode then reduce the pending
 comment|// directory work count.
-name|long
+name|T
 name|startId
 init|=
 name|trackInfo
 operator|.
-name|getStartId
+name|getStartPath
 argument_list|()
 decl_stmt|;
 if|if
@@ -754,7 +786,7 @@ name|removeSPSHint
 argument_list|(
 name|trackInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -762,7 +794,7 @@ name|updateStatus
 argument_list|(
 name|trackInfo
 operator|.
-name|getStartId
+name|getFile
 argument_list|()
 argument_list|,
 name|isSuccess
@@ -770,13 +802,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|clearQueue (long trackId)
+DECL|method|clearQueue (T trackId)
 specifier|public
 specifier|synchronized
 name|void
 name|clearQueue
 parameter_list|(
-name|long
+name|T
 name|trackId
 parameter_list|)
 block|{
@@ -790,6 +822,9 @@ expr_stmt|;
 name|Iterator
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|iterator
 init|=
@@ -807,6 +842,9 @@ argument_list|()
 condition|)
 block|{
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|next
 init|=
 name|iterator
@@ -818,7 +856,7 @@ if|if
 condition|(
 name|next
 operator|.
-name|getStartId
+name|getFile
 argument_list|()
 operator|==
 name|trackId
@@ -840,12 +878,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Mark inode status as SUCCESS in map.    */
-DECL|method|updateStatus (long startId, boolean isSuccess)
+DECL|method|updateStatus (T startId, boolean isSuccess)
 specifier|private
 name|void
 name|updateStatus
 parameter_list|(
-name|long
+name|T
 name|startId
 parameter_list|,
 name|boolean
@@ -914,7 +952,7 @@ name|clearQueuesWithNotification
 parameter_list|()
 block|{
 comment|// Remove xAttr from directories
-name|Long
+name|T
 name|trackId
 decl_stmt|;
 while|while
@@ -924,7 +962,7 @@ name|trackId
 operator|=
 name|ctxt
 operator|.
-name|getNextSPSPathId
+name|getNextSPSPath
 argument_list|()
 operator|)
 operator|!=
@@ -964,6 +1002,9 @@ block|}
 comment|// File's directly added to storageMovementNeeded, So try to remove
 comment|// xAttr for file
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|itemInfo
 decl_stmt|;
 while|while
@@ -996,7 +1037,7 @@ name|removeSPSHint
 argument_list|(
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1016,7 +1057,7 @@ literal|"Failed to remove SPS xattr for track id "
 operator|+
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 argument_list|,
 name|ie
@@ -1058,8 +1099,8 @@ name|lastStatusCleanTime
 init|=
 literal|0
 decl_stmt|;
-name|Long
-name|startINodeId
+name|T
+name|startINode
 init|=
 literal|null
 decl_stmt|;
@@ -1084,23 +1125,23 @@ condition|)
 block|{
 if|if
 condition|(
-name|startINodeId
+name|startINode
 operator|==
 literal|null
 condition|)
 block|{
-name|startINodeId
+name|startINode
 operator|=
 name|ctxt
 operator|.
-name|getNextSPSPathId
+name|getNextSPSPath
 argument_list|()
 expr_stmt|;
 block|}
 comment|// else same id will be retried
 if|if
 condition|(
-name|startINodeId
+name|startINode
 operator|==
 literal|null
 condition|)
@@ -1120,7 +1161,7 @@ name|spsStatus
 operator|.
 name|put
 argument_list|(
-name|startINodeId
+name|startINode
 argument_list|,
 operator|new
 name|StoragePolicySatisfyPathStatusInfo
@@ -1131,11 +1172,11 @@ name|IN_PROGRESS
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fileIDCollector
+name|fileCollector
 operator|.
-name|scanAndCollectFileIds
+name|scanAndCollectFiles
 argument_list|(
-name|startINodeId
+name|startINode
 argument_list|)
 expr_stmt|;
 comment|// check if directory was empty and no child added to queue
@@ -1146,7 +1187,7 @@ name|pendingWorkForDirectory
 operator|.
 name|get
 argument_list|(
-name|startINodeId
+name|startINode
 argument_list|)
 decl_stmt|;
 if|if
@@ -1165,19 +1206,19 @@ name|ctxt
 operator|.
 name|removeSPSHint
 argument_list|(
-name|startINodeId
+name|startINode
 argument_list|)
 expr_stmt|;
 name|pendingWorkForDirectory
 operator|.
 name|remove
 argument_list|(
-name|startINodeId
+name|startINode
 argument_list|)
 expr_stmt|;
 name|updateStatus
 argument_list|(
-name|startINodeId
+name|startINode
 argument_list|,
 literal|true
 argument_list|)
@@ -1208,11 +1249,11 @@ name|cleanSPSStatus
 argument_list|()
 expr_stmt|;
 block|}
-name|startINodeId
+name|startINode
 operator|=
 literal|null
 expr_stmt|;
-comment|// Current inode id successfully scanned.
+comment|// Current inode successfully scanned.
 block|}
 block|}
 catch|catch
@@ -1308,7 +1349,7 @@ name|Iterator
 argument_list|<
 name|Entry
 argument_list|<
-name|Long
+name|T
 argument_list|,
 name|StoragePolicySatisfyPathStatusInfo
 argument_list|>
@@ -1332,7 +1373,7 @@ control|)
 block|{
 name|Entry
 argument_list|<
-name|Long
+name|T
 argument_list|,
 name|StoragePolicySatisfyPathStatusInfo
 argument_list|>
@@ -1755,13 +1796,13 @@ return|return
 name|statusClearanceElapsedTimeMs
 return|;
 block|}
-DECL|method|markScanCompletedForDir (Long inodeId)
+DECL|method|markScanCompletedForDir (T inode)
 specifier|public
 name|void
 name|markScanCompletedForDir
 parameter_list|(
-name|Long
-name|inodeId
+name|T
+name|inode
 parameter_list|)
 block|{
 name|DirPendingWorkInfo
@@ -1771,7 +1812,7 @@ name|pendingWorkForDirectory
 operator|.
 name|get
 argument_list|(
-name|inodeId
+name|inode
 argument_list|)
 decl_stmt|;
 if|if

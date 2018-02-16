@@ -359,6 +359,9 @@ class|class
 name|IntraSPSNameNodeContext
 implements|implements
 name|Context
+argument_list|<
+name|Long
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -391,9 +394,12 @@ decl_stmt|;
 DECL|field|service
 specifier|private
 name|SPSService
+argument_list|<
+name|Long
+argument_list|>
 name|service
 decl_stmt|;
-DECL|method|IntraSPSNameNodeContext (Namesystem namesystem, BlockManager blockManager, SPSService service)
+DECL|method|IntraSPSNameNodeContext (Namesystem namesystem, BlockManager blockManager, SPSService<Long> service)
 specifier|public
 name|IntraSPSNameNodeContext
 parameter_list|(
@@ -404,6 +410,9 @@ name|BlockManager
 name|blockManager
 parameter_list|,
 name|SPSService
+argument_list|<
+name|Long
+argument_list|>
 name|service
 parameter_list|)
 block|{
@@ -444,14 +453,15 @@ name|getNumLiveDataNodes
 argument_list|()
 return|;
 block|}
+comment|/**    * @return object containing information regarding the file or null if file    *         not found.    */
 annotation|@
 name|Override
-DECL|method|getFileInfo (long inodeID)
+DECL|method|getFileInfo (Long inodeID)
 specifier|public
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
-name|long
+name|Long
 name|inodeID
 parameter_list|)
 throws|throws
@@ -490,15 +500,7 @@ return|return
 literal|null
 return|;
 block|}
-name|HdfsFileStatus
-name|fileInfo
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|fileInfo
-operator|=
+return|return
 name|namesystem
 operator|.
 name|getFileInfo
@@ -509,26 +511,6 @@ literal|true
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"File path:{} doesn't exists!"
-argument_list|,
-name|filePath
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|fileInfo
 return|;
 block|}
 annotation|@
@@ -574,32 +556,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|hasLowRedundancyBlocks (long inodeId)
-specifier|public
-name|boolean
-name|hasLowRedundancyBlocks
-parameter_list|(
-name|long
-name|inodeId
-parameter_list|)
-block|{
-return|return
-name|blockManager
-operator|.
-name|hasLowRedundancyBlocks
-argument_list|(
-name|inodeId
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|isFileExist (long inodeId)
+DECL|method|isFileExist (Long inodeId)
 specifier|public
 name|boolean
 name|isFileExist
 parameter_list|(
-name|long
+name|Long
 name|inodeId
 parameter_list|)
 block|{
@@ -619,12 +581,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeSPSHint (long inodeId)
+DECL|method|removeSPSHint (Long inodeId)
 specifier|public
 name|void
 name|removeSPSHint
 parameter_list|(
-name|long
+name|Long
 name|inodeId
 parameter_list|)
 throws|throws
@@ -921,10 +883,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getNextSPSPathId ()
+DECL|method|getNextSPSPath ()
 specifier|public
 name|Long
-name|getNextSPSPathId
+name|getNextSPSPath
 parameter_list|()
 block|{
 return|return
@@ -939,12 +901,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeSPSPathId (long trackId)
+DECL|method|removeSPSPathId (Long trackId)
 specifier|public
 name|void
 name|removeSPSPathId
 parameter_list|(
-name|long
+name|Long
 name|trackId
 parameter_list|)
 block|{
@@ -975,26 +937,6 @@ operator|.
 name|removeAllPathIds
 argument_list|()
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getFilePath (Long inodeId)
-specifier|public
-name|String
-name|getFilePath
-parameter_list|(
-name|Long
-name|inodeId
-parameter_list|)
-block|{
-return|return
-name|namesystem
-operator|.
-name|getFilePath
-argument_list|(
-name|inodeId
-argument_list|)
-return|;
 block|}
 block|}
 end_class

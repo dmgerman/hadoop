@@ -738,6 +738,9 @@ DECL|field|service
 specifier|private
 specifier|final
 name|SPSService
+argument_list|<
+name|String
+argument_list|>
 name|service
 decl_stmt|;
 DECL|field|blkDispatcher
@@ -746,7 +749,7 @@ specifier|final
 name|BlockDispatcher
 name|blkDispatcher
 decl_stmt|;
-DECL|method|ExternalSPSBlockMoveTaskHandler (Configuration conf, NameNodeConnector nnc, SPSService spsService)
+DECL|method|ExternalSPSBlockMoveTaskHandler (Configuration conf, NameNodeConnector nnc, SPSService<String> spsService)
 specifier|public
 name|ExternalSPSBlockMoveTaskHandler
 parameter_list|(
@@ -757,6 +760,9 @@ name|NameNodeConnector
 name|nnc
 parameter_list|,
 name|SPSService
+argument_list|<
+name|String
+argument_list|>
 name|spsService
 parameter_list|)
 block|{

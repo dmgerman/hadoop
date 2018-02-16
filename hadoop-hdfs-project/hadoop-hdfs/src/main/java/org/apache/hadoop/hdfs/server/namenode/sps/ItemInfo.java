@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ItemInfo is a file info object for which need to satisfy the policy.  */
+comment|/**  * ItemInfo is a file info object for which need to satisfy the policy. For  * internal satisfier service, it uses inode id which is Long datatype. For the  * external satisfier service, it uses the full string representation of the  * path.  */
 end_comment
 
 begin_class
@@ -67,44 +67,47 @@ DECL|class|ItemInfo
 specifier|public
 class|class
 name|ItemInfo
+parameter_list|<
+name|T
+parameter_list|>
 block|{
-DECL|field|startId
+DECL|field|startPath
 specifier|private
-name|long
-name|startId
+name|T
+name|startPath
 decl_stmt|;
-DECL|field|fileId
+DECL|field|file
 specifier|private
-name|long
-name|fileId
+name|T
+name|file
 decl_stmt|;
 DECL|field|retryCount
 specifier|private
 name|int
 name|retryCount
 decl_stmt|;
-DECL|method|ItemInfo (long startId, long fileId)
+DECL|method|ItemInfo (T startPath, T file)
 specifier|public
 name|ItemInfo
 parameter_list|(
-name|long
-name|startId
+name|T
+name|startPath
 parameter_list|,
-name|long
-name|fileId
+name|T
+name|file
 parameter_list|)
 block|{
 name|this
 operator|.
-name|startId
+name|startPath
 operator|=
-name|startId
+name|startPath
 expr_stmt|;
 name|this
 operator|.
-name|fileId
+name|file
 operator|=
-name|fileId
+name|file
 expr_stmt|;
 comment|// set 0 when item is getting added first time in queue.
 name|this
@@ -114,17 +117,17 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-DECL|method|ItemInfo (final long startId, final long fileId, final int retryCount)
+DECL|method|ItemInfo (final T startPath, final T file, final int retryCount)
 specifier|public
 name|ItemInfo
 parameter_list|(
 specifier|final
-name|long
-name|startId
+name|T
+name|startPath
 parameter_list|,
 specifier|final
-name|long
-name|fileId
+name|T
+name|file
 parameter_list|,
 specifier|final
 name|int
@@ -133,15 +136,15 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|startId
+name|startPath
 operator|=
-name|startId
+name|startPath
 expr_stmt|;
 name|this
 operator|.
-name|fileId
+name|file
 operator|=
-name|fileId
+name|file
 expr_stmt|;
 name|this
 operator|.
@@ -150,26 +153,26 @@ operator|=
 name|retryCount
 expr_stmt|;
 block|}
-comment|/**    * Return the start inode id of the current track Id. This indicates that SPS    * was invoked on this inode id.    */
-DECL|method|getStartId ()
+comment|/**    * Returns the start path of the current file. This indicates that SPS    * was invoked on this path.    */
+DECL|method|getStartPath ()
 specifier|public
-name|long
-name|getStartId
+name|T
+name|getStartPath
 parameter_list|()
 block|{
 return|return
-name|startId
+name|startPath
 return|;
 block|}
-comment|/**    * Return the File inode Id for which needs to satisfy the policy.    */
-DECL|method|getFileId ()
+comment|/**    * Returns the file for which needs to satisfy the policy.    */
+DECL|method|getFile ()
 specifier|public
-name|long
-name|getFileId
+name|T
+name|getFile
 parameter_list|()
 block|{
 return|return
-name|fileId
+name|file
 return|;
 block|}
 comment|/**    * Returns true if the tracking path is a directory, false otherwise.    */
@@ -180,11 +183,13 @@ name|isDir
 parameter_list|()
 block|{
 return|return
-operator|(
-name|startId
-operator|!=
-name|fileId
-operator|)
+operator|!
+name|startPath
+operator|.
+name|equals
+argument_list|(
+name|file
+argument_list|)
 return|;
 block|}
 comment|/**    * Get the attempted retry count of the block for satisfy the policy.    */

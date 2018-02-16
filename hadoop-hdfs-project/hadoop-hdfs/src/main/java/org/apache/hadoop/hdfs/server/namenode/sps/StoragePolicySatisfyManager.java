@@ -220,6 +220,9 @@ DECL|field|spsService
 specifier|private
 specifier|final
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|spsService
 decl_stmt|;
 DECL|field|storagePolicyEnabled
@@ -346,6 +349,9 @@ name|spsService
 operator|=
 operator|new
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 argument_list|(
 name|conf
 argument_list|)
@@ -976,6 +982,9 @@ comment|/**    * @return internal SPS service instance.    */
 DECL|method|getInternalSPSService ()
 specifier|public
 name|SPSService
+argument_list|<
+name|Long
+argument_list|>
 name|getInternalSPSService
 parameter_list|()
 block|{

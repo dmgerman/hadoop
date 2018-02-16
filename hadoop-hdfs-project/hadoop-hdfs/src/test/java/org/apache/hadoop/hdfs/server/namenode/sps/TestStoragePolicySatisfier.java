@@ -1028,7 +1028,7 @@ specifier|final
 name|String
 name|FILE
 init|=
-literal|"/testMoveWhenStoragePolicyNotSatisfying"
+literal|"/testMoveToSatisfyStoragePolicy"
 decl_stmt|;
 DECL|field|DEFAULT_BLOCK_SIZE
 specifier|public
@@ -6560,15 +6560,24 @@ decl_stmt|;
 comment|//Queue limit can control the traverse logic to wait for some free
 comment|//entry in queue. After 10 files, traverse control will be on U.
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|sps
 init|=
 operator|new
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
 name|Context
+argument_list|<
+name|Long
+argument_list|>
 name|ctxt
 init|=
 operator|new
@@ -6614,7 +6623,10 @@ return|;
 block|}
 block|}
 decl_stmt|;
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|Long
+argument_list|>
 name|fileIDCollector
 init|=
 name|createFileIdCollector
@@ -6718,19 +6730,31 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createFileIdCollector (StoragePolicySatisfier sps, Context ctxt)
+DECL|method|createFileIdCollector ( StoragePolicySatisfier<Long> sps, Context<Long> ctxt)
 specifier|public
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|Long
+argument_list|>
 name|createFileIdCollector
 parameter_list|(
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|sps
 parameter_list|,
 name|Context
+argument_list|<
+name|Long
+argument_list|>
 name|ctxt
 parameter_list|)
 block|{
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|Long
+argument_list|>
 name|fileIDCollector
 init|=
 operator|new
@@ -6914,15 +6938,24 @@ decl_stmt|;
 comment|// Queue limit can control the traverse logic to wait for some free
 comment|// entry in queue. After 10 files, traverse control will be on U.
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|sps
 init|=
 operator|new
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
 name|Context
+argument_list|<
+name|Long
+argument_list|>
 name|ctxt
 init|=
 operator|new
@@ -6968,7 +7001,10 @@ return|;
 block|}
 block|}
 decl_stmt|;
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|Long
+argument_list|>
 name|fileIDCollector
 init|=
 name|createFileIdCollector
@@ -7072,7 +7108,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertTraversal (List<String> expectedTraverseOrder, FSDirectory fsDir, StoragePolicySatisfier sps)
+DECL|method|assertTraversal (List<String> expectedTraverseOrder, FSDirectory fsDir, StoragePolicySatisfier<Long> sps)
 specifier|private
 name|void
 name|assertTraversal
@@ -7087,6 +7123,9 @@ name|FSDirectory
 name|fsDir
 parameter_list|,
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|sps
 parameter_list|)
 throws|throws
@@ -7119,6 +7158,9 @@ literal|0
 argument_list|)
 decl_stmt|;
 name|ItemInfo
+argument_list|<
+name|Long
+argument_list|>
 name|itemInfo
 init|=
 name|sps
@@ -7138,12 +7180,12 @@ condition|)
 block|{
 continue|continue;
 block|}
-name|long
+name|Long
 name|trackId
 init|=
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 decl_stmt|;
 name|INode
@@ -7200,6 +7242,9 @@ name|expectedTraverseOrder
 control|)
 block|{
 name|ItemInfo
+argument_list|<
+name|Long
+argument_list|>
 name|itemInfo
 init|=
 name|sps
@@ -7219,12 +7264,12 @@ condition|)
 block|{
 continue|continue;
 block|}
-name|long
+name|Long
 name|trackId
 init|=
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 decl_stmt|;
 name|INode
@@ -9119,7 +9164,7 @@ name|file1
 return|;
 block|}
 DECL|method|waitForAttemptedItems (long expectedBlkMovAttemptedCount, int timeout)
-specifier|private
+specifier|public
 name|void
 name|waitForAttemptedItems
 parameter_list|(
@@ -9147,10 +9192,16 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|sps
 init|=
 operator|(
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 operator|)
 name|blockManager
 operator|.
@@ -9189,6 +9240,9 @@ argument_list|,
 operator|(
 call|(
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|Long
+argument_list|>
 call|)
 argument_list|(
 name|sps
@@ -9206,6 +9260,9 @@ return|return
 operator|(
 call|(
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|Long
+argument_list|>
 call|)
 argument_list|(
 name|sps
@@ -9230,7 +9287,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|waitForBlocksMovementAttemptReport ( long expectedMovementFinishedBlocksCount, int timeout)
-specifier|private
+specifier|public
 name|void
 name|waitForBlocksMovementAttemptReport
 parameter_list|(
@@ -9258,10 +9315,16 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 name|sps
 init|=
 operator|(
 name|StoragePolicySatisfier
+argument_list|<
+name|Long
+argument_list|>
 operator|)
 name|blockManager
 operator|.
@@ -9300,6 +9363,9 @@ argument_list|,
 operator|(
 call|(
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|Long
+argument_list|>
 call|)
 argument_list|(
 name|sps
@@ -9317,6 +9383,9 @@ return|return
 operator|(
 call|(
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|Long
+argument_list|>
 call|)
 argument_list|(
 name|sps

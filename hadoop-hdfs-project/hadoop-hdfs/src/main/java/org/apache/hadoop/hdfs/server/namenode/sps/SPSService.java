@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An interface for SPSService, which exposes life cycle and processing APIs.  */
+comment|/**  * An interface for SPSService, which exposes life cycle and processing APIs.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
 end_comment
 
 begin_interface
@@ -127,17 +127,26 @@ DECL|interface|SPSService
 specifier|public
 interface|interface
 name|SPSService
+parameter_list|<
+name|T
+parameter_list|>
 block|{
-comment|/**    * Initializes the helper services.    *    * @param ctxt    *          - context is an helper service to provide communication channel    *          between NN and SPS    * @param fileIDCollector    *          - a helper service for scanning the files under a given directory    *          id    * @param handler    *          - a helper service for moving the blocks    * @param blkMovementListener    *          - listener to know about block movement attempt completion    */
-DECL|method|init (Context ctxt, FileIdCollector fileIDCollector, BlockMoveTaskHandler handler, BlockMovementListener blkMovementListener)
+comment|/**    * Initializes the helper services.    *    * @param ctxt    *          - context is an helper service to provide communication channel    *          between NN and SPS    * @param fileCollector    *          - a helper service for scanning the files under a given directory    *          id    * @param handler    *          - a helper service for moving the blocks    * @param blkMovementListener    *          - listener to know about block movement attempt completion    */
+DECL|method|init (Context<T> ctxt, FileCollector<T> fileCollector, BlockMoveTaskHandler handler, BlockMovementListener blkMovementListener)
 name|void
 name|init
 parameter_list|(
 name|Context
+argument_list|<
+name|T
+argument_list|>
 name|ctxt
 parameter_list|,
-name|FileIdCollector
-name|fileIDCollector
+name|FileCollector
+argument_list|<
+name|T
+argument_list|>
+name|fileCollector
 parameter_list|,
 name|BlockMoveTaskHandler
 name|handler
@@ -179,29 +188,35 @@ name|boolean
 name|isRunning
 parameter_list|()
 function_decl|;
-comment|/**    * Adds the Item information(file id etc) to processing queue.    *    * @param itemInfo    */
-DECL|method|addFileIdToProcess (ItemInfo itemInfo, boolean scanCompleted)
+comment|/**    * Adds the Item information(file etc) to processing queue.    *    * @param itemInfo    *          file info object for which need to satisfy the policy    */
+DECL|method|addFileToProcess (ItemInfo<T> itemInfo, boolean scanCompleted)
 name|void
-name|addFileIdToProcess
+name|addFileToProcess
 parameter_list|(
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|itemInfo
 parameter_list|,
 name|boolean
 name|scanCompleted
 parameter_list|)
 function_decl|;
-comment|/**    * Adds all the Item information(file id etc) to processing queue.    *    * @param startId    *          - directory/file id, on which SPS was called.    * @param itemInfoList    *          - list of item infos    * @param scanCompleted    *          - whether the scanning of directory fully done with itemInfoList    */
-DECL|method|addAllFileIdsToProcess (long startId, List<ItemInfo> itemInfoList, boolean scanCompleted)
+comment|/**    * Adds all the Item information(file etc) to processing queue.    *    * @param startPath    *          - directory/file, on which SPS was called.    * @param itemInfoList    *          - list of item infos    * @param scanCompleted    *          - whether the scanning of directory fully done with itemInfoList    */
+DECL|method|addAllFilesToProcess (T startPath, List<ItemInfo<T>> itemInfoList, boolean scanCompleted)
 name|void
-name|addAllFileIdsToProcess
+name|addAllFilesToProcess
 parameter_list|(
-name|long
-name|startId
+name|T
+name|startPath
 parameter_list|,
 name|List
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|itemInfoList
 parameter_list|,
@@ -216,12 +231,12 @@ name|processingQueueSize
 parameter_list|()
 function_decl|;
 comment|/**    * Clear inodeId present in the processing queue.    */
-DECL|method|clearQueue (long inodeId)
+DECL|method|clearQueue (T spsPath)
 name|void
 name|clearQueue
 parameter_list|(
-name|long
-name|inodeId
+name|T
+name|spsPath
 parameter_list|)
 function_decl|;
 comment|/**    * @return the configuration.    */
@@ -230,13 +245,13 @@ name|Configuration
 name|getConf
 parameter_list|()
 function_decl|;
-comment|/**    * Marks the scanning of directory if finished.    *    * @param inodeId    *          - directory inode id.    */
-DECL|method|markScanCompletedForPath (Long inodeId)
+comment|/**    * Marks the scanning of directory if finished.    *    * @param spsPath    *          - satisfier path    */
+DECL|method|markScanCompletedForPath (T spsPath)
 name|void
 name|markScanCompletedForPath
 parameter_list|(
-name|Long
-name|inodeId
+name|T
+name|spsPath
 parameter_list|)
 function_decl|;
 comment|/**    * Notify the details of storage movement attempt finished blocks.    *    * @param moveAttemptFinishedBlks    *          - array contains all the blocks that are attempted to move    */

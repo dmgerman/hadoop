@@ -607,7 +607,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Setting storagePolicy on a file after the file write will only update the new  * storage policy type in Namespace, but physical block storage movement will  * not happen until user runs "Mover Tool" explicitly for such files. The  * StoragePolicySatisfier Daemon thread implemented for addressing the case  * where users may want to physically move the blocks by a dedidated daemon (can  * run inside Namenode or stand alone) instead of running mover tool explicitly.  * Just calling client API to satisfyStoragePolicy on a file/dir will  * automatically trigger to move its physical storage locations as expected in  * asynchronous manner. Here SPS will pick the file blocks which are expecting  * to change its storages, then it will build the mapping of source block  * location and expected storage type and location to move. After that this  * class will also prepare requests to send to Datanode for processing the  * physical block movements.  */
+comment|/**  * Setting storagePolicy on a file after the file write will only update the new  * storage policy type in Namespace, but physical block storage movement will  * not happen until user runs "Mover Tool" explicitly for such files. The  * StoragePolicySatisfier Daemon thread implemented for addressing the case  * where users may want to physically move the blocks by a dedicated daemon (can  * run inside Namenode or stand alone) instead of running mover tool explicitly.  * Just calling client API to satisfyStoragePolicy on a file/dir will  * automatically trigger to move its physical storage locations as expected in  * asynchronous manner. Here SPS will pick the file blocks which are expecting  * to change its storages, then it will build the mapping of source block  * location and expected storage type and location to move. After that this  * class will also prepare requests to send to Datanode for processing the  * physical block movements.  */
 end_comment
 
 begin_class
@@ -619,8 +619,14 @@ DECL|class|StoragePolicySatisfier
 specifier|public
 class|class
 name|StoragePolicySatisfier
+parameter_list|<
+name|T
+parameter_list|>
 implements|implements
 name|SPSService
+argument_list|<
+name|T
+argument_list|>
 implements|,
 name|Runnable
 block|{
@@ -648,11 +654,17 @@ decl_stmt|;
 DECL|field|storageMovementNeeded
 specifier|private
 name|BlockStorageMovementNeeded
+argument_list|<
+name|T
+argument_list|>
 name|storageMovementNeeded
 decl_stmt|;
 DECL|field|storageMovementsMonitor
 specifier|private
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|T
+argument_list|>
 name|storageMovementsMonitor
 decl_stmt|;
 DECL|field|isRunning
@@ -693,6 +705,9 @@ decl_stmt|;
 DECL|field|ctxt
 specifier|private
 name|Context
+argument_list|<
+name|T
+argument_list|>
 name|ctxt
 decl_stmt|;
 DECL|field|blockMoveTaskHandler
@@ -812,17 +827,23 @@ name|blockMovingInfo
 expr_stmt|;
 block|}
 block|}
-DECL|method|init (final Context context, final FileIdCollector fileIDCollector, final BlockMoveTaskHandler blockMovementTaskHandler, final BlockMovementListener blockMovementListener)
+DECL|method|init (final Context<T> context, final FileCollector<T> fileIDCollector, final BlockMoveTaskHandler blockMovementTaskHandler, final BlockMovementListener blockMovementListener)
 specifier|public
 name|void
 name|init
 parameter_list|(
 specifier|final
 name|Context
+argument_list|<
+name|T
+argument_list|>
 name|context
 parameter_list|,
 specifier|final
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|T
+argument_list|>
 name|fileIDCollector
 parameter_list|,
 specifier|final
@@ -846,6 +867,9 @@ name|storageMovementNeeded
 operator|=
 operator|new
 name|BlockStorageMovementNeeded
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|context
 argument_list|,
@@ -858,6 +882,9 @@ name|storageMovementsMonitor
 operator|=
 operator|new
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|this
 argument_list|,
@@ -1288,6 +1315,19 @@ continue|continue;
 block|}
 try|try
 block|{
+name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
+name|itemInfo
+init|=
+literal|null
+decl_stmt|;
+name|boolean
+name|retryItem
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1297,14 +1337,13 @@ name|isInSafeMode
 argument_list|()
 condition|)
 block|{
-name|ItemInfo
 name|itemInfo
-init|=
+operator|=
 name|storageMovementNeeded
 operator|.
 name|get
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|itemInfo
@@ -1334,7 +1373,7 @@ literal|" retries. Removing inode "
 operator|+
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 operator|+
 literal|" from the queue"
@@ -1351,12 +1390,12 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|long
+name|T
 name|trackId
 init|=
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 decl_stmt|;
 name|BlocksMovingAnalysis
@@ -1373,16 +1412,6 @@ name|existingStoragePolicy
 decl_stmt|;
 comment|// TODO: presently, context internally acquire the lock
 comment|// and returns the result. Need to discuss to move the lock outside?
-name|boolean
-name|hasLowRedundancyBlocks
-init|=
-name|ctxt
-operator|.
-name|hasLowRedundancyBlocks
-argument_list|(
-name|trackId
-argument_list|)
-decl_stmt|;
 name|HdfsFileStatus
 name|fileStatus
 init|=
@@ -1458,8 +1487,6 @@ name|analyseBlocksStorageMovementsAndAssignToDN
 argument_list|(
 name|file
 argument_list|,
-name|hasLowRedundancyBlocks
-argument_list|,
 name|existingStoragePolicy
 argument_list|,
 name|liveDnReports
@@ -1518,15 +1545,18 @@ name|add
 argument_list|(
 operator|new
 name|AttemptedItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|itemInfo
 operator|.
-name|getStartId
+name|getStartPath
 argument_list|()
 argument_list|,
 name|itemInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 argument_list|,
 name|monotonicNow
@@ -1574,19 +1604,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|itemInfo
-operator|.
-name|increRetryCount
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|storageMovementNeeded
-operator|.
-name|add
-argument_list|(
-name|itemInfo
-argument_list|)
+name|retryItem
+operator|=
+literal|true
 expr_stmt|;
 break|break;
 case|case
@@ -1617,19 +1637,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|itemInfo
-operator|.
-name|increRetryCount
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|storageMovementNeeded
-operator|.
-name|add
-argument_list|(
-name|itemInfo
-argument_list|)
+name|retryItem
+operator|=
+literal|true
 expr_stmt|;
 break|break;
 case|case
@@ -1660,14 +1670,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|storageMovementNeeded
-operator|.
-name|add
-argument_list|(
-name|itemInfo
-argument_list|)
+name|retryItem
+operator|=
+literal|true
 expr_stmt|;
 break|break;
 comment|// Just clean Xattrs
@@ -1765,6 +1770,26 @@ operator|=
 literal|0L
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|retryItem
+condition|)
+block|{
+name|itemInfo
+operator|.
+name|increRetryCount
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|storageMovementNeeded
+operator|.
+name|add
+argument_list|(
+name|itemInfo
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1853,16 +1878,13 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|analyseBlocksStorageMovementsAndAssignToDN ( HdfsLocatedFileStatus fileInfo, boolean hasLowRedundancyBlocks, BlockStoragePolicy existingStoragePolicy, DatanodeStorageReport[] liveDns)
+DECL|method|analyseBlocksStorageMovementsAndAssignToDN ( HdfsLocatedFileStatus fileInfo, BlockStoragePolicy existingStoragePolicy, DatanodeStorageReport[] liveDns)
 specifier|private
 name|BlocksMovingAnalysis
 name|analyseBlocksStorageMovementsAndAssignToDN
 parameter_list|(
 name|HdfsLocatedFileStatus
 name|fileInfo
-parameter_list|,
-name|boolean
-name|hasLowRedundancyBlocks
 parameter_list|,
 name|BlockStoragePolicy
 name|existingStoragePolicy
@@ -2013,6 +2035,19 @@ name|BlockMovingInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|boolean
+name|hasLowRedundancyBlocks
+init|=
+literal|false
+decl_stmt|;
+name|int
+name|replication
+init|=
+name|fileInfo
+operator|.
+name|getReplication
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -2041,6 +2076,20 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
+comment|// Block is considered as low redundancy when the block locations array
+comment|// length is less than expected replication factor. If any of the block is
+comment|// low redundant, then hasLowRedundancyBlocks will be marked as true.
+name|hasLowRedundancyBlocks
+operator||=
+name|isLowRedundancyBlock
+argument_list|(
+name|blockInfo
+argument_list|,
+name|replication
+argument_list|,
+name|ecPolicy
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|StorageType
@@ -2239,21 +2288,22 @@ name|NO_BLOCKS_TARGETS_PAIRED
 expr_stmt|;
 block|}
 block|}
-elseif|else
+block|}
+comment|// If there is no block paired and few blocks are low redundant, so marking
+comment|// the status as FEW_LOW_REDUNDANCY_BLOCKS.
 if|if
 condition|(
 name|hasLowRedundancyBlocks
 operator|&&
 name|status
-operator|!=
+operator|==
 name|BlocksMovingAnalysis
 operator|.
 name|Status
 operator|.
-name|BLOCKS_TARGETS_PAIRED
+name|NO_BLOCKS_TARGETS_PAIRED
 condition|)
 block|{
-comment|// Check if the previous block was successfully paired.
 name|status
 operator|=
 name|BlocksMovingAnalysis
@@ -2262,7 +2312,6 @@ name|Status
 operator|.
 name|FEW_LOW_REDUNDANCY_BLOCKS
 expr_stmt|;
-block|}
 block|}
 name|List
 argument_list|<
@@ -2352,6 +2401,70 @@ name|status
 argument_list|,
 name|assignedBlockIds
 argument_list|)
+return|;
+block|}
+comment|/**    * The given block is considered as low redundancy when the block locations    * length is less than expected replication factor. For EC blocks, redundancy    * is the summation of data + parity blocks.    *    * @param blockInfo    *          block    * @param replication    *          replication factor of the given file block    * @param ecPolicy    *          erasure coding policy of the given file block    * @return true if the given block is low redundant.    */
+DECL|method|isLowRedundancyBlock (LocatedBlock blockInfo, int replication, ErasureCodingPolicy ecPolicy)
+specifier|private
+name|boolean
+name|isLowRedundancyBlock
+parameter_list|(
+name|LocatedBlock
+name|blockInfo
+parameter_list|,
+name|int
+name|replication
+parameter_list|,
+name|ErasureCodingPolicy
+name|ecPolicy
+parameter_list|)
+block|{
+name|boolean
+name|hasLowRedundancyBlock
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|blockInfo
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+comment|// For EC blocks, redundancy is the summation of data + parity blocks.
+name|replication
+operator|=
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+operator|+
+name|ecPolicy
+operator|.
+name|getNumParityUnits
+argument_list|()
+expr_stmt|;
+block|}
+comment|// block is considered as low redundancy when the block locations length is
+comment|// less than expected replication factor.
+name|hasLowRedundancyBlock
+operator|=
+name|blockInfo
+operator|.
+name|getLocations
+argument_list|()
+operator|.
+name|length
+operator|<
+name|replication
+condition|?
+literal|true
+else|:
+literal|false
+expr_stmt|;
+return|return
+name|hasLowRedundancyBlock
 return|;
 block|}
 comment|/**    * Compute the list of block moving information corresponding to the given    * blockId. This will check that each block location of the given block is    * satisfying the expected storage policy. If block location is not satisfied    * the policy then find out the target node with the expected storage type to    * satisfy the storage policy.    *    * @param blockMovingInfos    *          - list of block source and target node pair    * @param blockInfo    *          - block details    * @param expectedStorageTypes    *          - list of expected storage type to satisfy the storage policy    * @param existing    *          - list to get existing storage types    * @param storages    *          - available storages    * @return false if some of the block locations failed to find target node to    *         satisfy the storage policy, true otherwise    */
@@ -4140,7 +4253,11 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getAttemptedItemsMonitor ()
+specifier|public
 name|BlockStorageMovementAttemptedItems
+argument_list|<
+name|T
+argument_list|>
 name|getAttemptedItemsMonitor
 parameter_list|()
 block|{
@@ -4171,12 +4288,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Clear queues for given track id.    */
-DECL|method|clearQueue (long trackId)
+DECL|method|clearQueue (T trackId)
 specifier|public
 name|void
 name|clearQueue
 parameter_list|(
-name|long
+name|T
 name|trackId
 parameter_list|)
 block|{
@@ -4194,8 +4311,14 @@ specifier|final
 specifier|static
 class|class
 name|AttemptedItemInfo
+parameter_list|<
+name|T
+parameter_list|>
 extends|extends
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 block|{
 DECL|field|lastAttemptedOrReportedTime
 specifier|private
@@ -4212,13 +4335,13 @@ argument_list|>
 name|blocks
 decl_stmt|;
 comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      */
-DECL|method|AttemptedItemInfo (long rootId, long trackId, long lastAttemptedOrReportedTime, List<Block> blocks, int retryCount)
+DECL|method|AttemptedItemInfo (T rootId, T trackId, long lastAttemptedOrReportedTime, List<Block> blocks, int retryCount)
 name|AttemptedItemInfo
 parameter_list|(
-name|long
+name|T
 name|rootId
 parameter_list|,
-name|long
+name|T
 name|trackId
 parameter_list|,
 name|long
@@ -4295,6 +4418,7 @@ name|blocks
 return|;
 block|}
 block|}
+comment|/**    * Returns sps invoked path status. This method is used by internal satisfy    * storage policy service.    *    * @param path    *          sps path    * @return storage policy satisfy path status    * @throws IOException    */
 DECL|method|checkStoragePolicySatisfyPathStatus ( String path)
 specifier|public
 name|StoragePolicySatisfyPathStatus
@@ -4322,12 +4446,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addFileIdToProcess (ItemInfo trackInfo, boolean scanCompleted)
+DECL|method|addFileToProcess (ItemInfo<T> trackInfo, boolean scanCompleted)
 specifier|public
 name|void
-name|addFileIdToProcess
+name|addFileToProcess
 parameter_list|(
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 name|trackInfo
 parameter_list|,
 name|boolean
@@ -4361,7 +4488,7 @@ literal|"storageMovementNeeded queue"
 argument_list|,
 name|trackInfo
 operator|.
-name|getFileId
+name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4369,17 +4496,20 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addAllFileIdsToProcess (long startId, List<ItemInfo> itemInfoList, boolean scanCompleted)
+DECL|method|addAllFilesToProcess (T startPath, List<ItemInfo<T>> itemInfoList, boolean scanCompleted)
 specifier|public
 name|void
-name|addAllFileIdsToProcess
+name|addAllFilesToProcess
 parameter_list|(
-name|long
-name|startId
+name|T
+name|startPath
 parameter_list|,
 name|List
 argument_list|<
 name|ItemInfo
+argument_list|<
+name|T
+argument_list|>
 argument_list|>
 name|itemInfoList
 parameter_list|,
@@ -4392,7 +4522,7 @@ argument_list|()
 operator|.
 name|addAll
 argument_list|(
-name|startId
+name|startPath
 argument_list|,
 name|itemInfoList
 argument_list|,
@@ -4432,6 +4562,9 @@ name|VisibleForTesting
 DECL|method|getStorageMovementQueue ()
 specifier|public
 name|BlockStorageMovementNeeded
+argument_list|<
+name|T
+argument_list|>
 name|getStorageMovementQueue
 parameter_list|()
 block|{
@@ -4441,12 +4574,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|markScanCompletedForPath (Long inodeId)
+DECL|method|markScanCompletedForPath (T inodeId)
 specifier|public
 name|void
 name|markScanCompletedForPath
 parameter_list|(
-name|Long
+name|T
 name|inodeId
 parameter_list|)
 block|{
@@ -4468,7 +4601,6 @@ parameter_list|()
 throws|throws
 name|InterruptedException
 block|{
-comment|//TODO Add join here on SPS rpc server also
 name|storagePolicySatisfierThread
 operator|.
 name|join

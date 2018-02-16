@@ -1223,13 +1223,13 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Submit the current batch for processing.    *    * @param startId    *          Id of the start inode.    * @throws IOException    * @throws InterruptedException    */
-DECL|method|submitCurrentBatch (long startId)
+DECL|method|submitCurrentBatch (Long startId)
 specifier|protected
 specifier|abstract
 name|void
 name|submitCurrentBatch
 parameter_list|(
-name|long
+name|Long
 name|startId
 parameter_list|)
 throws|throws

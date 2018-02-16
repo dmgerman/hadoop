@@ -3229,13 +3229,13 @@ block|}
 comment|/**      * Submit the current batch to the thread pool.      *      * @param zoneId      *          Id of the EZ INode      * @throws IOException      * @throws InterruptedException      */
 annotation|@
 name|Override
-DECL|method|submitCurrentBatch (final long zoneId)
+DECL|method|submitCurrentBatch (final Long zoneId)
 specifier|protected
 name|void
 name|submitCurrentBatch
 parameter_list|(
 specifier|final
-name|long
+name|Long
 name|zoneId
 parameter_list|)
 throws|throws

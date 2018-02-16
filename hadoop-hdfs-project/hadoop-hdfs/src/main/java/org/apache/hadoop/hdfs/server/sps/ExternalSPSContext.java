@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -177,6 +187,22 @@ operator|.
 name|protocol
 operator|.
 name|HdfsFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsLocatedFileStatus
 import|;
 end_import
 
@@ -355,6 +381,9 @@ class|class
 name|ExternalSPSContext
 implements|implements
 name|Context
+argument_list|<
+name|String
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|public
@@ -375,6 +404,9 @@ decl_stmt|;
 DECL|field|service
 specifier|private
 name|SPSService
+argument_list|<
+name|String
+argument_list|>
 name|service
 decl_stmt|;
 DECL|field|nnc
@@ -394,11 +426,14 @@ operator|.
 name|createDefaultSuite
 argument_list|()
 decl_stmt|;
-DECL|method|ExternalSPSContext (SPSService service, NameNodeConnector nnc)
+DECL|method|ExternalSPSContext (SPSService<String> service, NameNodeConnector nnc)
 specifier|public
 name|ExternalSPSContext
 parameter_list|(
 name|SPSService
+argument_list|<
+name|String
+argument_list|>
 name|service
 parameter_list|,
 name|NameNodeConnector
@@ -646,29 +681,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isFileExist (long inodeId)
+DECL|method|isFileExist (String filePath)
 specifier|public
 name|boolean
 name|isFileExist
 parameter_list|(
-name|long
-name|inodeId
-parameter_list|)
-block|{
 name|String
 name|filePath
-init|=
-literal|null
-decl_stmt|;
+parameter_list|)
+block|{
 try|try
 block|{
-name|filePath
-operator|=
-name|getFilePath
-argument_list|(
-name|inodeId
-argument_list|)
-expr_stmt|;
 return|return
 name|nnc
 operator|.
@@ -697,13 +720,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception while getting file is for the given path:{} "
-operator|+
-literal|"and fileId:{}"
+literal|"Exception while getting file is for the given path:{}"
 argument_list|,
 name|filePath
-argument_list|,
-name|inodeId
 argument_list|,
 name|e
 argument_list|)
@@ -745,12 +764,12 @@ comment|// Nothing todo
 block|}
 annotation|@
 name|Override
-DECL|method|removeSPSHint (long inodeId)
+DECL|method|removeSPSHint (String inodeId)
 specifier|public
 name|void
 name|removeSPSHint
 parameter_list|(
-name|long
+name|String
 name|inodeId
 parameter_list|)
 throws|throws
@@ -766,10 +785,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|getFilePath
-argument_list|(
 name|inodeId
-argument_list|)
 argument_list|)
 argument_list|,
 name|HdfsServerConstants
@@ -826,18 +842,26 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFileInfo (long inodeID)
+DECL|method|getFileInfo (String path)
 specifier|public
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
-name|long
-name|inodeID
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+name|HdfsLocatedFileStatus
+name|fileInfo
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|fileInfo
+operator|=
 name|nnc
 operator|.
 name|getDistributedFileSystem
@@ -848,13 +872,32 @@ argument_list|()
 operator|.
 name|getLocatedFileInfo
 argument_list|(
-name|getFilePath
-argument_list|(
-name|inodeID
-argument_list|)
+name|path
 argument_list|,
 literal|false
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Path:{} doesn't exists!"
+argument_list|,
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|fileInfo
 return|;
 block|}
 annotation|@
@@ -874,53 +917,6 @@ operator|.
 name|getLiveDatanodeStorageReport
 argument_list|()
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|hasLowRedundancyBlocks (long inodeID)
-specifier|public
-name|boolean
-name|hasLowRedundancyBlocks
-parameter_list|(
-name|long
-name|inodeID
-parameter_list|)
-block|{
-try|try
-block|{
-return|return
-name|nnc
-operator|.
-name|getNNProtocolConnection
-argument_list|()
-operator|.
-name|hasLowRedundancyBlocks
-argument_list|(
-name|inodeID
-argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to check whether fileid:{} has low redundancy blocks."
-argument_list|,
-name|inodeID
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -987,10 +983,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getNextSPSPathId ()
+DECL|method|getNextSPSPath ()
 specifier|public
-name|Long
-name|getNextSPSPathId
+name|String
+name|getNextSPSPath
 parameter_list|()
 block|{
 try|try
@@ -1001,7 +997,7 @@ operator|.
 name|getNNProtocolConnection
 argument_list|()
 operator|.
-name|getNextSPSPathId
+name|getNextSPSPath
 argument_list|()
 return|;
 block|}
@@ -1027,12 +1023,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|removeSPSPathId (long pathId)
+DECL|method|removeSPSPathId (String pathId)
 specifier|public
 name|void
 name|removeSPSPathId
 parameter_list|(
-name|long
+name|String
 name|pathId
 parameter_list|)
 block|{
@@ -1047,53 +1043,6 @@ name|removeAllSPSPathIds
 parameter_list|()
 block|{
 comment|// We need not specifically implement for external.
-block|}
-annotation|@
-name|Override
-DECL|method|getFilePath (Long inodeId)
-specifier|public
-name|String
-name|getFilePath
-parameter_list|(
-name|Long
-name|inodeId
-parameter_list|)
-block|{
-try|try
-block|{
-return|return
-name|nnc
-operator|.
-name|getNNProtocolConnection
-argument_list|()
-operator|.
-name|getFilePath
-argument_list|(
-name|inodeId
-argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Exception while getting file path id:{} from Namenode."
-argument_list|,
-name|inodeId
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
 block|}
 block|}
 end_class

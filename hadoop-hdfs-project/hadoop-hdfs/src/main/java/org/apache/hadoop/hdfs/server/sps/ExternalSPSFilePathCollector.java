@@ -172,27 +172,7 @@ name|namenode
 operator|.
 name|sps
 operator|.
-name|Context
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|sps
-operator|.
-name|FileIdCollector
+name|FileCollector
 import|;
 end_import
 
@@ -257,7 +237,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is to scan the paths recursively. If file is directory, then it  * will scan for files recursively. If the file is non directory, then it will  * just submit the same file to process.  */
+comment|/**  * This class is to scan the paths recursively. If file is directory, then it  * will scan for files recursively. If the file is non directory, then it will  * just submit the same file to process. This will use file string path  * representation.  */
 end_comment
 
 begin_class
@@ -265,12 +245,15 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|ExternalSPSFileIDCollector
+DECL|class|ExternalSPSFilePathCollector
 specifier|public
 class|class
-name|ExternalSPSFileIDCollector
+name|ExternalSPSFilePathCollector
 implements|implements
-name|FileIdCollector
+name|FileCollector
+argument_list|<
+name|String
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|public
@@ -283,15 +266,10 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ExternalSPSFileIDCollector
+name|ExternalSPSFilePathCollector
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|cxt
-specifier|private
-name|Context
-name|cxt
 decl_stmt|;
 DECL|field|dfs
 specifier|private
@@ -301,6 +279,9 @@ decl_stmt|;
 DECL|field|service
 specifier|private
 name|SPSService
+argument_list|<
+name|String
+argument_list|>
 name|service
 decl_stmt|;
 DECL|field|maxQueueLimitToScan
@@ -308,23 +289,17 @@ specifier|private
 name|int
 name|maxQueueLimitToScan
 decl_stmt|;
-DECL|method|ExternalSPSFileIDCollector (Context cxt, SPSService service)
+DECL|method|ExternalSPSFilePathCollector (SPSService<String> service)
 specifier|public
-name|ExternalSPSFileIDCollector
+name|ExternalSPSFilePathCollector
 parameter_list|(
-name|Context
-name|cxt
-parameter_list|,
 name|SPSService
+argument_list|<
+name|String
+argument_list|>
 name|service
 parameter_list|)
 block|{
-name|this
-operator|.
-name|cxt
-operator|=
-name|cxt
-expr_stmt|;
 name|this
 operator|.
 name|service
@@ -416,16 +391,16 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Recursively scan the given path and add the file info to SPS service for    * processing.    */
-DECL|method|processPath (long startID, String fullPath)
+DECL|method|processPath (String startID, String childPath)
 specifier|private
 name|long
 name|processPath
 parameter_list|(
-name|long
+name|String
 name|startID
 parameter_list|,
 name|String
-name|fullPath
+name|childPath
 parameter_list|)
 block|{
 name|long
@@ -462,7 +437,7 @@ argument_list|()
 operator|.
 name|listPaths
 argument_list|(
-name|fullPath
+name|childPath
 argument_list|,
 name|lastReturnedName
 argument_list|,
@@ -482,7 +457,7 @@ name|warn
 argument_list|(
 literal|"Failed to list directory "
 operator|+
-name|fullPath
+name|childPath
 operator|+
 literal|". Ignore the directory and continue."
 argument_list|,
@@ -514,7 +489,7 @@ name|debug
 argument_list|(
 literal|"The scanning start dir/sub dir "
 operator|+
-name|fullPath
+name|childPath
 operator|+
 literal|" does not have childrens."
 argument_list|)
@@ -535,6 +510,16 @@ name|getPartialListing
 argument_list|()
 control|)
 block|{
+name|String
+name|childFullPath
+init|=
+name|child
+operator|.
+name|getFullName
+argument_list|(
+name|childPath
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|child
@@ -545,17 +530,17 @@ condition|)
 block|{
 name|service
 operator|.
-name|addFileIdToProcess
+name|addFileToProcess
 argument_list|(
 operator|new
 name|ItemInfo
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|startID
 argument_list|,
-name|child
-operator|.
-name|getFileId
-argument_list|()
+name|childFullPath
 argument_list|)
 argument_list|,
 literal|false
@@ -571,16 +556,6 @@ comment|// increment to be satisfied file count
 block|}
 else|else
 block|{
-name|String
-name|fullPathStr
-init|=
-name|child
-operator|.
-name|getFullName
-argument_list|(
-name|fullPath
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|child
@@ -592,7 +567,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|fullPathStr
+name|childFullPath
 operator|.
 name|endsWith
 argument_list|(
@@ -602,9 +577,9 @@ name|SEPARATOR
 argument_list|)
 condition|)
 block|{
-name|fullPathStr
+name|childFullPath
 operator|=
-name|fullPathStr
+name|childFullPath
 operator|+
 name|Path
 operator|.
@@ -617,7 +592,7 @@ name|processPath
 argument_list|(
 name|startID
 argument_list|,
-name|fullPathStr
+name|childFullPath
 argument_list|)
 expr_stmt|;
 block|}
@@ -779,13 +754,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|scanAndCollectFileIds (Long inodeId)
+DECL|method|scanAndCollectFiles (String path)
 specifier|public
 name|void
-name|scanAndCollectFileIds
+name|scanAndCollectFiles
 parameter_list|(
-name|Long
-name|inodeId
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -813,14 +788,9 @@ name|pendingSatisfyItemsCount
 init|=
 name|processPath
 argument_list|(
-name|inodeId
+name|path
 argument_list|,
-name|cxt
-operator|.
-name|getFilePath
-argument_list|(
-name|inodeId
-argument_list|)
+name|path
 argument_list|)
 decl_stmt|;
 comment|// Check whether the given path contains any item to be tracked
@@ -843,14 +813,14 @@ literal|"There is no pending items to satisfy the given path "
 operator|+
 literal|"inodeId:{}"
 argument_list|,
-name|inodeId
+name|path
 argument_list|)
 expr_stmt|;
 name|service
 operator|.
-name|addAllFileIdsToProcess
+name|addAllFilesToProcess
 argument_list|(
-name|inodeId
+name|path
 argument_list|,
 operator|new
 name|ArrayList
@@ -867,7 +837,7 @@ name|service
 operator|.
 name|markScanCompletedForPath
 argument_list|(
-name|inodeId
+name|path
 argument_list|)
 expr_stmt|;
 block|}
