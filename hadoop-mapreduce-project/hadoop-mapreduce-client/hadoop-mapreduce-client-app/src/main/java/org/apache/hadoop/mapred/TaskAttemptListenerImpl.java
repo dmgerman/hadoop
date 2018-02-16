@@ -2114,6 +2114,13 @@ operator|new
 name|AMFeedback
 argument_list|()
 decl_stmt|;
+name|feedback
+operator|.
+name|setTaskFound
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|AtomicReference
 argument_list|<
 name|TaskAttemptStatus
@@ -2134,6 +2141,20 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// The task is not known, but it could be in the process of tearing
+comment|// down gracefully or receiving a thread dump signal. Tolerate unknown
+comment|// tasks as long as they have unregistered recently.
+if|if
+condition|(
+operator|!
+name|taskHeartbeatHandler
+operator|.
+name|hasRecentlyUnregistered
+argument_list|(
+name|yarnAttemptID
+argument_list|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -2150,17 +2171,11 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|feedback
 return|;
 block|}
-name|feedback
-operator|.
-name|setTaskFound
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 comment|// Propagating preemption to the task if TASK_PREEMPTION is enabled
 if|if
 condition|(
