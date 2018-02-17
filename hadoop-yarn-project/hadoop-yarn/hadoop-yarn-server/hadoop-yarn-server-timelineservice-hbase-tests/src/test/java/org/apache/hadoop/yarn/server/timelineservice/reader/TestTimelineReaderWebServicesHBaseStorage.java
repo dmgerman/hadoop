@@ -478,7 +478,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 import|;
 end_import
 
@@ -653,7 +653,7 @@ specifier|static
 name|long
 name|dayTs
 init|=
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
@@ -3008,7 +3008,7 @@ name|appEntity
 operator|.
 name|setId
 argument_list|(
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|convertApplicationIdToString
 argument_list|(
@@ -6937,7 +6937,7 @@ expr_stmt|;
 name|long
 name|firstFlowActivity
 init|=
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(

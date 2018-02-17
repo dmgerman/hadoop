@@ -558,7 +558,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|BaseTable
+name|BaseTableRW
 import|;
 end_import
 
@@ -602,7 +602,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 import|;
 end_import
 
@@ -1042,17 +1042,17 @@ name|conn
 operator|.
 name|getTable
 argument_list|(
-name|BaseTable
+name|BaseTableRW
 operator|.
 name|getTableName
 argument_list|(
 name|c1
 argument_list|,
-name|FlowActivityTable
+name|FlowActivityTableRW
 operator|.
 name|TABLE_NAME_CONF_NAME
 argument_list|,
-name|FlowActivityTable
+name|FlowActivityTableRW
 operator|.
 name|DEFAULT_TABLE_NAME
 argument_list|)
@@ -1199,7 +1199,7 @@ expr_stmt|;
 name|Long
 name|dayTs
 init|=
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
@@ -1893,17 +1893,17 @@ name|conn
 operator|.
 name|getTable
 argument_list|(
-name|BaseTable
+name|BaseTableRW
 operator|.
 name|getTableName
 argument_list|(
 name|c1
 argument_list|,
-name|FlowActivityTable
+name|FlowActivityTableRW
 operator|.
 name|TABLE_NAME_CONF_NAME
 argument_list|,
-name|FlowActivityTable
+name|FlowActivityTableRW
 operator|.
 name|DEFAULT_TABLE_NAME
 argument_list|)
@@ -2028,7 +2028,7 @@ expr_stmt|;
 name|Long
 name|dayTs
 init|=
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
@@ -2497,7 +2497,7 @@ expr_stmt|;
 name|long
 name|dayTs
 init|=
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
@@ -2775,17 +2775,17 @@ name|conn
 operator|.
 name|getTable
 argument_list|(
-name|BaseTable
+name|BaseTableRW
 operator|.
 name|getTableName
 argument_list|(
 name|c1
 argument_list|,
-name|FlowActivityTable
+name|FlowActivityTableRW
 operator|.
 name|TABLE_NAME_CONF_NAME
 argument_list|,
-name|FlowActivityTable
+name|FlowActivityTableRW
 operator|.
 name|DEFAULT_TABLE_NAME
 argument_list|)
@@ -2885,7 +2885,7 @@ expr_stmt|;
 name|Long
 name|dayTs
 init|=
-name|HBaseTimelineStorageUtils
+name|HBaseTimelineSchemaUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
