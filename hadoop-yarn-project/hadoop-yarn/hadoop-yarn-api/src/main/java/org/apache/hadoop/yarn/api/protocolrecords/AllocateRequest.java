@@ -585,7 +585,8 @@ block|{
 return|return
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 return|;
 block|}
 comment|/**    * Set the list of Scheduling requests to inform the    *<code>ResourceManager</code> about the application's resource requirements    * (potentially including allocation tags and placement constraints).    * @param schedulingRequests list of {@link SchedulingRequest} to update    *          the<code>ResourceManager</code> about the application's resource    *          requirements.    */

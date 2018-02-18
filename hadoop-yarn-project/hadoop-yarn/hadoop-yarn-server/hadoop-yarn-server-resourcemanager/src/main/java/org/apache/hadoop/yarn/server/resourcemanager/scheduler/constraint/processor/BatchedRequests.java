@@ -554,7 +554,8 @@ name|tag
 argument_list|,
 name|Collections
 operator|.
-name|EMPTY_SET
+name|emptySet
+argument_list|()
 argument_list|)
 return|;
 block|}

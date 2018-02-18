@@ -321,7 +321,8 @@ name|configuredPlugins
 init|=
 name|Collections
 operator|.
-name|EMPTY_MAP
+name|emptyMap
+argument_list|()
 decl_stmt|;
 DECL|method|initialize (Context context)
 specifier|public

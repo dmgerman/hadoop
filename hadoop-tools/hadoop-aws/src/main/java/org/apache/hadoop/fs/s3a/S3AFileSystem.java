@@ -8264,7 +8264,8 @@ name|tombstones
 init|=
 name|Collections
 operator|.
-name|EMPTY_SET
+name|emptySet
+argument_list|()
 decl_stmt|;
 if|if
 condition|(

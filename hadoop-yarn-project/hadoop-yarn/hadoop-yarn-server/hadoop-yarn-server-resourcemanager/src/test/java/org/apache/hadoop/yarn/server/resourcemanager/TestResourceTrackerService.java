@@ -5197,11 +5197,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|getNodeStatusObject (NodeId nodeId)
 specifier|private
 name|NodeStatus
@@ -5243,7 +5238,8 @@ name|setContainersStatuses
 argument_list|(
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|status
@@ -5252,7 +5248,8 @@ name|setKeepAliveApplications
 argument_list|(
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

@@ -424,11 +424,6 @@ operator|=
 name|logAggregationReportsForApps
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|getNMReportedIncreasedContainers ()
 specifier|public
 name|List
@@ -450,7 +445,8 @@ literal|null
 condition|?
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 else|:
 name|this
 operator|.

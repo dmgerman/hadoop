@@ -675,11 +675,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|pullContainerUpdates ()
 specifier|public
 name|List
@@ -697,7 +692,8 @@ name|list
 init|=
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -763,11 +759,6 @@ name|EMPTY_STRING_SET
 return|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
 name|Override
 DECL|method|pullNewlyIncreasedContainers ()
 specifier|public
@@ -782,7 +773,8 @@ comment|// TODO Auto-generated method stub
 return|return
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 return|;
 block|}
 DECL|method|getOpportunisticContainersStatus ()

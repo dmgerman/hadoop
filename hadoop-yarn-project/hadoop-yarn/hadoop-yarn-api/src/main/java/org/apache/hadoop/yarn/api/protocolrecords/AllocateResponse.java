@@ -1344,7 +1344,8 @@ block|{
 return|return
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 return|;
 block|}
 comment|/**    * Add a list of rejected SchedulingRequests to the AllocateResponse.    * @param rejectedRequests List of Rejected Scheduling Requests.    */

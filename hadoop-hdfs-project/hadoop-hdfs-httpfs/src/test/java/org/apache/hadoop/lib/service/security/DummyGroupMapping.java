@@ -98,11 +98,6 @@ name|GroupMappingServiceProvider
 block|{
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|getGroups (String user)
 specifier|public
 name|List
@@ -185,7 +180,8 @@ argument_list|)
 else|:
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 return|;
 block|}
 block|}

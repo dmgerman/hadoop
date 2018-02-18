@@ -5922,7 +5922,8 @@ block|}
 return|return
 name|Collections
 operator|.
-name|EMPTY_MAP
+name|emptyMap
+argument_list|()
 return|;
 block|}
 comment|/**    * Level of a queue is how many "-" at beginning, root's level is 0    */

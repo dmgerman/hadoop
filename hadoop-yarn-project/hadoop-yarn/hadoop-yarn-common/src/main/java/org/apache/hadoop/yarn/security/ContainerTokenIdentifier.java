@@ -1785,7 +1785,8 @@ block|}
 return|return
 name|Collections
 operator|.
-name|EMPTY_SET
+name|emptySet
+argument_list|()
 return|;
 block|}
 comment|// TODO: Needed?

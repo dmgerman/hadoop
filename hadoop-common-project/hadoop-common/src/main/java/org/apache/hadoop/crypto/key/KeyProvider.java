@@ -1072,11 +1072,6 @@ return|return
 name|cipher
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|getAttributes ()
 specifier|public
 name|Map
@@ -1097,7 +1092,8 @@ operator|)
 condition|?
 name|Collections
 operator|.
-name|EMPTY_MAP
+name|emptyMap
+argument_list|()
 else|:
 name|attributes
 return|;
@@ -1913,11 +1909,6 @@ return|return
 name|description
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|getAttributes ()
 specifier|public
 name|Map
@@ -1938,7 +1929,8 @@ operator|)
 condition|?
 name|Collections
 operator|.
-name|EMPTY_MAP
+name|emptyMap
+argument_list|()
 else|:
 name|attributes
 return|;

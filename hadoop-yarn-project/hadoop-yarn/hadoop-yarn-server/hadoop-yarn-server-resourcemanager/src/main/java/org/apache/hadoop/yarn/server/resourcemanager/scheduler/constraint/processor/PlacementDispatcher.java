@@ -556,7 +556,8 @@ block|}
 return|return
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 return|;
 block|}
 DECL|method|pullRejectedRequests ( ApplicationId applicationId)
@@ -646,7 +647,8 @@ block|}
 return|return
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 return|;
 block|}
 DECL|method|clearApplicationState (ApplicationId applicationId)

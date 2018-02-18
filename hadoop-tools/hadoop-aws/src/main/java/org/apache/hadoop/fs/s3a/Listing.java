@@ -2138,7 +2138,8 @@ name|tombstones
 operator|=
 name|Collections
 operator|.
-name|EMPTY_SET
+name|emptySet
+argument_list|()
 expr_stmt|;
 block|}
 block|}

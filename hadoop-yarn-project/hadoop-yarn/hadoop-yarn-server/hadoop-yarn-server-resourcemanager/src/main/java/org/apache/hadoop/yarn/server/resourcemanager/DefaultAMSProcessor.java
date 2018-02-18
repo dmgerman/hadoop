@@ -1746,7 +1746,8 @@ argument_list|()
 else|:
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
@@ -1767,7 +1768,8 @@ argument_list|()
 else|:
 name|Collections
 operator|.
-name|EMPTY_LIST
+name|emptyList
+argument_list|()
 decl_stmt|;
 name|RMApp
 name|app
