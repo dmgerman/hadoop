@@ -180,7 +180,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getPrefixServiceName (String serviceName)
-specifier|public
+specifier|private
 specifier|static
 name|String
 name|getPrefixServiceName

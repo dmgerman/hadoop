@@ -309,6 +309,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -419,6 +429,26 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|useWhitelistEnv (Map<String, String> env)
+specifier|public
+name|boolean
+name|useWhitelistEnv
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|)
+block|{
+return|return
+literal|true
+return|;
 block|}
 annotation|@
 name|Override

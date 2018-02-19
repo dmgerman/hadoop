@@ -74,6 +74,16 @@ name|Container
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstraction for various container runtime implementations. Examples  * include Process Tree, Docker, Appc runtimes etc. These implementations  * are meant for low-level OS container support - dependencies on  * higher-level node mananger constructs should be avoided.  */
 end_comment
@@ -147,6 +157,20 @@ name|container
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
+function_decl|;
+comment|/**    * Whether to propagate the whitelist of environment variables from the    * nodemanager environment into the container environment.    * @param env the container's environment variables    * @return true if whitelist variables should be propagated, false otherwise    * @see org.apache.hadoop.yarn.conf.YarnConfiguration#NM_ENV_WHITELIST    */
+DECL|method|useWhitelistEnv (Map<String, String> env)
+name|boolean
+name|useWhitelistEnv
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|)
 function_decl|;
 block|}
 end_interface
