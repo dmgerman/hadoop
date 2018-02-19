@@ -316,6 +316,11 @@ specifier|protected
 name|boolean
 name|preemptionDisabled
 decl_stmt|;
+DECL|field|intraQueuePreemptionDisabled
+specifier|protected
+name|boolean
+name|intraQueuePreemptionDisabled
+decl_stmt|;
 DECL|field|defaultNodeLabelExpression
 specifier|protected
 name|String
@@ -448,6 +453,13 @@ operator|=
 name|q
 operator|.
 name|getPreemptionDisabled
+argument_list|()
+expr_stmt|;
+name|intraQueuePreemptionDisabled
+operator|=
+name|q
+operator|.
+name|getIntraQueuePreemptionDisabled
 argument_list|()
 expr_stmt|;
 name|orderingPolicyInfo
@@ -714,6 +726,16 @@ parameter_list|()
 block|{
 return|return
 name|preemptionDisabled
+return|;
+block|}
+DECL|method|getIntraQueuePreemptionDisabled ()
+specifier|public
+name|boolean
+name|getIntraQueuePreemptionDisabled
+parameter_list|()
+block|{
+return|return
+name|intraQueuePreemptionDisabled
 return|;
 block|}
 DECL|method|getOrderingPolicyInfo ()
