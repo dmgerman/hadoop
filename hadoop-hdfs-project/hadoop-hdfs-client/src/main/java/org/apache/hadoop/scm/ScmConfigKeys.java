@@ -779,6 +779,25 @@ name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_DEFAULT
 init|=
 literal|"60s"
 decl_stmt|;
+comment|/**    * This determines the total number of pools to be processed in parallel.    */
+DECL|field|OZONE_SCM_MAX_NODEPOOL_PROCESSING_THREADS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_MAX_NODEPOOL_PROCESSING_THREADS
+init|=
+literal|"ozone.scm.max.nodepool.processing.threads"
+decl_stmt|;
+DECL|field|OZONE_SCM_MAX_NODEPOOL_PROCESSING_THREADS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_MAX_NODEPOOL_PROCESSING_THREADS_DEFAULT
+init|=
+literal|1
+decl_stmt|;
 comment|/**    * These 2 settings control the number of threads in executor pool and time    * outs for thw container reports from all nodes.    */
 DECL|field|OZONE_SCM_MAX_CONTAINER_REPORT_THREADS
 specifier|public

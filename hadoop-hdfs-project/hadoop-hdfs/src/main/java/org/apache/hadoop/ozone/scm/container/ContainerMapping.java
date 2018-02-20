@@ -84,22 +84,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|OzoneConsts
@@ -247,6 +231,26 @@ operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|ContainerReportsRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|replication
+operator|.
+name|ContainerSupervisor
 import|;
 end_import
 
@@ -662,6 +666,12 @@ name|ContainerInfo
 argument_list|>
 name|containerLeaseManager
 decl_stmt|;
+DECL|field|containerSupervisor
+specifier|private
+specifier|final
+name|ContainerSupervisor
+name|containerSupervisor
+decl_stmt|;
 DECL|field|containerCloseThreshold
 specifier|private
 specifier|final
@@ -788,6 +798,23 @@ argument_list|(
 name|conf
 argument_list|,
 name|this
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|containerSupervisor
+operator|=
+operator|new
+name|ContainerSupervisor
+argument_list|(
+name|conf
+argument_list|,
+name|nodeManager
+argument_list|,
+name|nodeManager
+operator|.
+name|getNodePoolManager
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -1664,22 +1691,20 @@ return|return
 name|containerStateManager
 return|;
 block|}
-comment|/**    * Process container report from Datanode.    *    * @param datanodeID Datanode ID    * @param reportType Type of report    * @param containerInfos container details    */
+comment|/**    * Process container report from Datanode.    *    * @param reports Container report    */
 annotation|@
 name|Override
-DECL|method|processContainerReports ( DatanodeID datanodeID, ContainerReportsRequestProto.reportType reportType, List<StorageContainerDatanodeProtocolProtos.ContainerInfo> containerInfos)
+DECL|method|processContainerReports (ContainerReportsRequestProto reports)
 specifier|public
 name|void
 name|processContainerReports
 parameter_list|(
-name|DatanodeID
-name|datanodeID
-parameter_list|,
 name|ContainerReportsRequestProto
-operator|.
-name|reportType
-name|reportType
-parameter_list|,
+name|reports
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|List
 argument_list|<
 name|StorageContainerDatanodeProtocolProtos
@@ -1687,10 +1712,19 @@ operator|.
 name|ContainerInfo
 argument_list|>
 name|containerInfos
-parameter_list|)
-throws|throws
-name|IOException
-block|{
+init|=
+name|reports
+operator|.
+name|getReportsList
+argument_list|()
+decl_stmt|;
+name|containerSupervisor
+operator|.
+name|handleContainerReport
+argument_list|(
+name|reports
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|StorageContainerDatanodeProtocolProtos
@@ -1942,7 +1976,7 @@ name|containerCloseThreshold
 condition|)
 block|{
 comment|// TODO: The container has to be moved to close container queue.
-comment|// For now, we are just updating the container state to CLOSED.
+comment|// For now, we are just updating the container state to CLOSING.
 comment|// Close container implementation can decide on how to maintain
 comment|// list of containers to be closed, this is the place where we
 comment|// have to add the containers to that list.
@@ -2013,7 +2047,10 @@ literal|" {}, for container: {}, reason: container doesn't exist in"
 operator|+
 literal|"container database."
 argument_list|,
-name|datanodeID
+name|reports
+operator|.
+name|getDatanodeID
+argument_list|()
 argument_list|,
 name|containerInfo
 operator|.

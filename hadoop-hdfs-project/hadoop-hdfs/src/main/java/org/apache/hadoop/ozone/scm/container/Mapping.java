@@ -28,22 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|protocol
@@ -51,24 +35,6 @@ operator|.
 name|proto
 operator|.
 name|OzoneProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
 import|;
 end_import
 
@@ -244,26 +210,13 @@ name|ContainerStateManager
 name|getStateManager
 parameter_list|()
 function_decl|;
-comment|/**    * Process container report from Datanode.    *    * @param datanodeID Datanode ID    * @param reportType Type of report    * @param containerInfos container details    */
-DECL|method|processContainerReports ( DatanodeID datanodeID, ContainerReportsRequestProto.reportType reportType, List<StorageContainerDatanodeProtocolProtos.ContainerInfo> containerInfos)
+comment|/**    * Process container report from Datanode.    *    * @param reports Container report    */
+DECL|method|processContainerReports (ContainerReportsRequestProto reports)
 name|void
 name|processContainerReports
 parameter_list|(
-name|DatanodeID
-name|datanodeID
-parameter_list|,
 name|ContainerReportsRequestProto
-operator|.
-name|reportType
-name|reportType
-parameter_list|,
-name|List
-argument_list|<
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
-argument_list|>
-name|containerInfos
+name|reports
 parameter_list|)
 throws|throws
 name|IOException

@@ -158,24 +158,6 @@ name|scm
 operator|.
 name|node
 operator|.
-name|CommandQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|scm
-operator|.
-name|node
-operator|.
 name|NodeManager
 import|;
 end_import
@@ -443,12 +425,6 @@ specifier|final
 name|PeriodicPool
 name|pool
 decl_stmt|;
-DECL|field|commandQueue
-specifier|private
-specifier|final
-name|CommandQueue
-name|commandQueue
-decl_stmt|;
 DECL|field|nodeManager
 specifier|private
 specifier|final
@@ -520,8 +496,8 @@ specifier|private
 name|long
 name|maxWaitTime
 decl_stmt|;
-comment|/**    * Constructs an pool that is being processed.    *  @param maxWaitTime - Maximum wait time in milliseconds.    * @param pool - Pool that we are working against    * @param nodeManager - Nodemanager    * @param poolManager - pool manager    * @param commandQueue - Command queue    * @param executorService - Shared Executor service.    */
-DECL|method|InProgressPool (long maxWaitTime, PeriodicPool pool, NodeManager nodeManager, NodePoolManager poolManager, CommandQueue commandQueue, ExecutorService executorService)
+comment|/**    * Constructs an pool that is being processed.    *  @param maxWaitTime - Maximum wait time in milliseconds.    * @param pool - Pool that we are working against    * @param nodeManager - Nodemanager    * @param poolManager - pool manager    * @param executorService - Shared Executor service.    */
+DECL|method|InProgressPool (long maxWaitTime, PeriodicPool pool, NodeManager nodeManager, NodePoolManager poolManager, ExecutorService executorService)
 name|InProgressPool
 parameter_list|(
 name|long
@@ -535,9 +511,6 @@ name|nodeManager
 parameter_list|,
 name|NodePoolManager
 name|poolManager
-parameter_list|,
-name|CommandQueue
-name|commandQueue
 parameter_list|,
 name|ExecutorService
 name|executorService
@@ -562,13 +535,6 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|poolManager
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|commandQueue
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -604,12 +570,6 @@ operator|.
 name|poolManager
 operator|=
 name|poolManager
-expr_stmt|;
-name|this
-operator|.
-name|commandQueue
-operator|=
-name|commandQueue
 expr_stmt|;
 name|this
 operator|.
@@ -888,9 +848,9 @@ expr_stmt|;
 comment|// Queue commands to all datanodes in this pool to send us container
 comment|// report. Since we ignore dead nodes, it is possible that we would have
 comment|// over replicated the container if the node comes back.
-name|commandQueue
+name|nodeManager
 operator|.
-name|addCommand
+name|addDatanodeCommand
 argument_list|(
 name|id
 argument_list|,
@@ -1028,6 +988,15 @@ name|ContainerReportsRequestProto
 name|containerReport
 parameter_list|)
 block|{
+if|if
+condition|(
+name|status
+operator|==
+name|ProgressStatus
+operator|.
+name|InProgress
+condition|)
+block|{
 name|executorService
 operator|.
 name|submit
@@ -1038,6 +1007,19 @@ name|containerReport
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cannot handle container report when the pool is in {} status."
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|processContainerReport ( ContainerReportsRequestProto reports)
 specifier|private
@@ -1263,6 +1245,23 @@ operator|.
 name|getPoolName
 argument_list|()
 return|;
+block|}
+end_function
+
+begin_function
+DECL|method|finalizeReconciliation ()
+specifier|public
+name|void
+name|finalizeReconciliation
+parameter_list|()
+block|{
+name|status
+operator|=
+name|ProgressStatus
+operator|.
+name|Done
+expr_stmt|;
+comment|//TODO: Add finalizing logic. This is where actual reconciliation happens.
 block|}
 end_function
 

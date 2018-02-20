@@ -218,6 +218,24 @@ name|scm
 operator|.
 name|node
 operator|.
+name|CommandQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|node
+operator|.
 name|NodeManager
 import|;
 end_import
@@ -272,6 +290,34 @@ name|NodeState
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|node
+operator|.
+name|NodePoolManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Node Manager to test replication.  */
 end_comment
@@ -295,8 +341,14 @@ name|NodeState
 argument_list|>
 name|nodeStateMap
 decl_stmt|;
+DECL|field|commandQueue
+specifier|private
+specifier|final
+name|CommandQueue
+name|commandQueue
+decl_stmt|;
 comment|/**    * A list of Datanodes and current states.    * @param nodeState A node state map.    */
-DECL|method|ReplicationNodeManagerMock (Map<DatanodeID, NodeState> nodeState)
+DECL|method|ReplicationNodeManagerMock (Map<DatanodeID, NodeState> nodeState, CommandQueue commandQueue)
 specifier|public
 name|ReplicationNodeManagerMock
 parameter_list|(
@@ -307,6 +359,9 @@ argument_list|,
 name|NodeState
 argument_list|>
 name|nodeState
+parameter_list|,
+name|CommandQueue
+name|commandQueue
 parameter_list|)
 block|{
 name|Preconditions
@@ -316,9 +371,17 @@ argument_list|(
 name|nodeState
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|nodeStateMap
 operator|=
 name|nodeState
+expr_stmt|;
+name|this
+operator|.
+name|commandQueue
+operator|=
+name|commandQueue
 expr_stmt|;
 block|}
 comment|/**    * Get the minimum number of nodes to get out of chill mode.    *    * @return int    */
@@ -529,6 +592,25 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNodePoolManager ()
+specifier|public
+name|NodePoolManager
+name|getNodePoolManager
+parameter_list|()
+block|{
+return|return
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|NodePoolManager
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
 comment|/**    * Wait for the heartbeat is processed by NodeManager.    *    * @return true if heartbeat has been processed.    */
 annotation|@
 name|Override
@@ -675,6 +757,32 @@ argument_list|(
 name|id
 argument_list|,
 name|state
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+specifier|public
+name|void
+name|addDatanodeCommand
+parameter_list|(
+name|DatanodeID
+name|id
+parameter_list|,
+name|SCMCommand
+name|command
+parameter_list|)
+block|{
+name|this
+operator|.
+name|commandQueue
+operator|.
+name|addCommand
+argument_list|(
+name|id
+argument_list|,
+name|command
 argument_list|)
 expr_stmt|;
 block|}

@@ -3484,6 +3484,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNodePoolManager ()
+specifier|public
+name|NodePoolManager
+name|getNodePoolManager
+parameter_list|()
+block|{
+return|return
+name|nodePoolManager
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getNodeCount ()
 specifier|public
 name|Map
