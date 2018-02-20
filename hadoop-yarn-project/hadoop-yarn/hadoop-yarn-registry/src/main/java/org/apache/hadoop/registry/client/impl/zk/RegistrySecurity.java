@@ -2775,6 +2775,7 @@ operator|+
 name|keytab
 argument_list|)
 expr_stmt|;
+break|break;
 default|default:
 name|clearZKSaslClientProperties
 argument_list|()
