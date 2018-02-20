@@ -68,7 +68,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
+name|ArrayDeque
 import|;
 end_import
 
@@ -78,7 +78,17 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
 import|;
 end_import
 
@@ -600,7 +610,7 @@ expr_stmt|;
 name|pendingNodes
 operator|=
 operator|new
-name|LinkedList
+name|ArrayDeque
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -933,7 +943,7 @@ operator|.
 name|trace
 argument_list|(
 literal|"startDecommission: Node {} in {}, nothing to do."
-operator|+
+argument_list|,
 name|node
 argument_list|,
 name|node
@@ -1018,7 +1028,7 @@ operator|.
 name|trace
 argument_list|(
 literal|"stopDecommission: Node {} in {}, nothing to do."
-operator|+
+argument_list|,
 name|node
 argument_list|,
 name|node
@@ -1136,7 +1146,7 @@ operator|.
 name|trace
 argument_list|(
 literal|"startMaintenance: Node {} in {}, nothing to do."
-operator|+
+argument_list|,
 name|node
 argument_list|,
 name|node
@@ -1248,7 +1258,7 @@ operator|.
 name|trace
 argument_list|(
 literal|"stopMaintenance: Node {} in {}, nothing to do."
-operator|+
+argument_list|,
 name|node
 argument_list|,
 name|node
@@ -1593,7 +1603,7 @@ name|nodeList
 operator|.
 name|append
 argument_list|(
-literal|" "
+literal|' '
 argument_list|)
 expr_stmt|;
 block|}
@@ -2015,14 +2025,14 @@ name|iterator
 argument_list|()
 decl_stmt|;
 specifier|final
-name|LinkedList
+name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|toRemove
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -2330,6 +2340,8 @@ argument_list|(
 literal|"Node {} is sufficiently replicated and healthy, "
 operator|+
 literal|"marked as {}."
+argument_list|,
+name|dn
 argument_list|,
 name|dn
 operator|.
@@ -2966,16 +2978,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"File "
+literal|"File {} is not under construction. Skipping add to "
 operator|+
+literal|"low redundancy open files!"
+argument_list|,
 name|ucFile
 operator|.
 name|getLocalName
 argument_list|()
-operator|+
-literal|" is not under "
-operator|+
-literal|"construction. Skipping add to low redundancy open files!"
 argument_list|)
 expr_stmt|;
 block|}
