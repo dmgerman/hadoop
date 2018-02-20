@@ -36,7 +36,17 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayDeque
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Deque
 import|;
 end_import
 
@@ -71,17 +81,15 @@ block|{
 DECL|field|tagQ
 specifier|final
 specifier|private
-name|LinkedList
+name|Deque
 argument_list|<
 name|ImageElement
 argument_list|>
 name|tagQ
 init|=
 operator|new
-name|LinkedList
-argument_list|<
-name|ImageElement
-argument_list|>
+name|ArrayDeque
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|XmlImageVisitor (String filename)
@@ -171,11 +179,10 @@ if|if
 condition|(
 name|tagQ
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|==
-literal|0
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -185,6 +192,7 @@ operator|+
 literal|"in FSImage file"
 argument_list|)
 throw|;
+block|}
 name|ImageElement
 name|element
 init|=
@@ -261,7 +269,7 @@ name|IOException
 block|{
 name|write
 argument_list|(
-literal|"<"
+literal|'<'
 operator|+
 name|element
 operator|.
@@ -299,14 +307,14 @@ name|IOException
 block|{
 name|write
 argument_list|(
-literal|"<"
+literal|'<'
 operator|+
 name|element
 operator|.
 name|toString
 argument_list|()
 operator|+
-literal|" "
+literal|' '
 operator|+
 name|key
 operator|+
@@ -341,11 +349,11 @@ name|IOException
 block|{
 name|write
 argument_list|(
-literal|"<"
+literal|'<'
 operator|+
 name|tag
 operator|+
-literal|">"
+literal|'>'
 operator|+
 name|XMLUtils
 operator|.
