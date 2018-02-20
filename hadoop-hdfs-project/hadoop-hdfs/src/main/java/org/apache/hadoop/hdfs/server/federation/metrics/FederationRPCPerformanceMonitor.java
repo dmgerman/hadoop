@@ -694,6 +694,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|proxyOpRetries ()
+specifier|public
+name|void
+name|proxyOpRetries
+parameter_list|()
+block|{
+name|metrics
+operator|.
+name|incrProxyOpRetries
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|routerFailureStateStore ()
 specifier|public
 name|void
@@ -854,6 +868,20 @@ block|}
 return|return
 operator|-
 literal|1
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRPCMetrics ()
+specifier|public
+name|FederationRPCMetrics
+name|getRPCMetrics
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|metrics
 return|;
 block|}
 block|}

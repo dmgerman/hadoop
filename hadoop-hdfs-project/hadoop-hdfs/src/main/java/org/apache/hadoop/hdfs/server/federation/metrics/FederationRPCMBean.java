@@ -103,6 +103,11 @@ name|long
 name|getProxyOpNotImplemented
 parameter_list|()
 function_decl|;
+DECL|method|getProxyOpRetries ()
+name|long
+name|getProxyOpRetries
+parameter_list|()
+function_decl|;
 DECL|method|getRouterFailureStateStoreOps ()
 name|long
 name|getRouterFailureStateStoreOps

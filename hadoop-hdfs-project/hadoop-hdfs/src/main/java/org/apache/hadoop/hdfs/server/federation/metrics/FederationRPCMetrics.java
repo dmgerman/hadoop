@@ -319,6 +319,16 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Number of operation retries"
+argument_list|)
+DECL|field|proxyOpRetries
+specifier|private
+name|MutableCounterLong
+name|proxyOpRetries
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"Failed requests due to State Store unavailable"
 argument_list|)
 DECL|field|routerFailureStateStore
@@ -559,6 +569,33 @@ parameter_list|()
 block|{
 return|return
 name|proxyOpNotImplemented
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|incrProxyOpRetries ()
+specifier|public
+name|void
+name|incrProxyOpRetries
+parameter_list|()
+block|{
+name|proxyOpRetries
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProxyOpRetries ()
+specifier|public
+name|long
+name|getProxyOpRetries
+parameter_list|()
+block|{
+return|return
+name|proxyOpRetries
 operator|.
 name|value
 argument_list|()

@@ -50,6 +50,26 @@ name|server
 operator|.
 name|federation
 operator|.
+name|metrics
+operator|.
+name|FederationRPCMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
 name|store
 operator|.
 name|StateStoreService
@@ -80,6 +100,12 @@ parameter_list|,
 name|StateStoreService
 name|store
 parameter_list|)
+function_decl|;
+comment|/**    * Get Router RPC metrics info.    * @return The instance of FederationRPCMetrics.    */
+DECL|method|getRPCMetrics ()
+name|FederationRPCMetrics
+name|getRPCMetrics
+parameter_list|()
 function_decl|;
 comment|/**    * Close the monitor.    */
 DECL|method|close ()
@@ -124,6 +150,12 @@ comment|/**    * Failed to proxy an operation because it is not implemented.    
 DECL|method|proxyOpNotImplemented ()
 name|void
 name|proxyOpNotImplemented
+parameter_list|()
+function_decl|;
+comment|/**    * Retry to proxy an operation to a Namenode because of an unexpected    * exception.    */
+DECL|method|proxyOpRetries ()
+name|void
+name|proxyOpRetries
 parameter_list|()
 function_decl|;
 comment|/**    * If the Router cannot contact the State Store in an operation.    */

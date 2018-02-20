@@ -947,6 +947,23 @@ operator|.
 name|numOfBlocksPendingDeletion
 return|;
 block|}
+comment|/**    * Set the validity of registration.    * @param isValid The desired value to be set.    */
+DECL|method|setRegistrationValid (boolean isValid)
+specifier|public
+name|void
+name|setRegistrationValid
+parameter_list|(
+name|boolean
+name|isValid
+parameter_list|)
+block|{
+name|this
+operator|.
+name|registrationValid
+operator|=
+name|isValid
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
