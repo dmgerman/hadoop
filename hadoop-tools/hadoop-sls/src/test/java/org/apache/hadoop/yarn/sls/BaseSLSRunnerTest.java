@@ -646,7 +646,7 @@ name|fail
 argument_list|(
 literal|"TestSLSRunner catched exception from child thread "
 operator|+
-literal|"(TaskRunner.Task): "
+literal|"(TaskRunner.TaskDefinition): "
 operator|+
 name|exceptionList
 argument_list|)

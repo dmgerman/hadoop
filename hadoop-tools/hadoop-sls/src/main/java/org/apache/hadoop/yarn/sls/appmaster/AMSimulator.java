@@ -960,7 +960,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource, Map<String, String> params)
 specifier|public
 name|void
 name|init
@@ -1003,6 +1003,14 @@ name|baseTimeMS
 parameter_list|,
 name|Resource
 name|amResource
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|params
 parameter_list|)
 block|{
 name|super
