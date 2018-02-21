@@ -545,6 +545,16 @@ operator|new
 name|BZip2CompressionInputStream
 argument_list|(
 name|in
+argument_list|,
+literal|0L
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
+name|READ_MODE
+operator|.
+name|BYBLOCK
 argument_list|)
 return|;
 block|}
