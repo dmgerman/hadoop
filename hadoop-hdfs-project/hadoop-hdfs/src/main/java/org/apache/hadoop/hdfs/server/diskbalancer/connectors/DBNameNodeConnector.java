@@ -644,16 +644,6 @@ comment|// Does it make sense ? Balancer does do that. Right now
 comment|// we only deal with volumes and not blockPools
 name|volume
 operator|.
-name|setUsed
-argument_list|(
-name|report
-operator|.
-name|getDfsUsed
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|volume
-operator|.
 name|setUuid
 argument_list|(
 name|storage

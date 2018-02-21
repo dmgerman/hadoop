@@ -601,6 +601,13 @@ name|this
 operator|.
 name|getCapacity
 argument_list|()
+argument_list|,
+literal|"DiskBalancerVolume.setUsed: dfsUsedSpace(%s)< capacity(%s)"
+argument_list|,
+name|dfsUsedSpace
+argument_list|,
+name|getCapacity
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
