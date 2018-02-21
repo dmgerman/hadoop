@@ -2098,7 +2098,7 @@ name|Resources
 operator|.
 name|clone
 argument_list|(
-name|userSpecificAmUsed
+name|amUsed
 argument_list|)
 argument_list|,
 name|Resources
