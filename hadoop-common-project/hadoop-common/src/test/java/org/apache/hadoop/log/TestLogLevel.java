@@ -1919,9 +1919,23 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
+literal|"Error while authenticating "
+operator|+
+literal|"with endpoint"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
 literal|"Unrecognized SSL message"
 argument_list|,
 name|e
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1988,9 +2002,23 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
+literal|"Error while authenticating "
+operator|+
+literal|"with endpoint"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
 literal|"Unrecognized SSL message"
 argument_list|,
 name|e
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2057,9 +2085,23 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
+literal|"Error while authenticating "
+operator|+
+literal|"with endpoint"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
 literal|"Unexpected end of file from server"
 argument_list|,
 name|e
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2126,9 +2168,23 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
+literal|"Error while authenticating "
+operator|+
+literal|"with endpoint"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
 literal|"Unexpected end of file from server"
 argument_list|,
 name|e
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -2220,6 +2220,9 @@ operator|.
 name|getCause
 argument_list|()
 operator|.
+name|getCause
+argument_list|()
+operator|.
 name|getClass
 argument_list|()
 argument_list|)
@@ -2231,6 +2234,9 @@ operator|(
 name|GSSException
 operator|)
 name|ae
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getCause
 argument_list|()

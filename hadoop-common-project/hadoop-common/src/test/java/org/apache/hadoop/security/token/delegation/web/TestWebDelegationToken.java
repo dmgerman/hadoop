@@ -2352,6 +2352,9 @@ name|assertTrue
 argument_list|(
 name|ex
 operator|.
+name|getCause
+argument_list|()
+operator|.
 name|getMessage
 argument_list|()
 operator|.
@@ -4686,6 +4689,9 @@ operator|.
 name|assertTrue
 argument_list|(
 name|ex
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getMessage
 argument_list|()
