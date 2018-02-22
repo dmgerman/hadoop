@@ -694,9 +694,9 @@ name|byte
 index|[]
 name|tagByteArray
 init|=
-name|Tag
+name|HBaseTimelineServerUtils
 operator|.
-name|fromList
+name|convertTagListToByteArray
 argument_list|(
 name|tags
 argument_list|)
