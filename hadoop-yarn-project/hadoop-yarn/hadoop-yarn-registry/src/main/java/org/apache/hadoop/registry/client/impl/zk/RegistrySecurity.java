@@ -2662,7 +2662,7 @@ return|return
 name|entries
 return|;
 block|}
-comment|/**    * Apply the security environment to this curator instance. This    * may include setting up the ZK system properties for SASL    * @param builder curator builder    */
+comment|/**    * Apply the security environment to this curator instance. This    * may include setting up the ZK system properties for SASL    * @param builder curator builder    * @throws IOException if jaas configuration can't be generated or found    */
 DECL|method|applySecurityEnvironment (CuratorFrameworkFactory.Builder builder)
 specifier|public
 name|void
@@ -2673,6 +2673,8 @@ operator|.
 name|Builder
 name|builder
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -2712,6 +2714,70 @@ break|break;
 case|case
 name|sasl
 case|:
+name|String
+name|existingJaasConf
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.security.auth.login.config"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|existingJaasConf
+operator|==
+literal|null
+operator|||
+name|existingJaasConf
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|principal
+operator|==
+literal|null
+operator|||
+name|keytab
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"SASL is configured for registry, "
+operator|+
+literal|"but neither keytab/principal nor java.security.auth.login"
+operator|+
+literal|".config system property are specified"
+argument_list|)
+throw|;
+block|}
+comment|// in this case, keytab and principal are specified and no jaas
+comment|// config is specified, so we will create one
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Enabling ZK sasl client: jaasClientEntry = "
+operator|+
+name|jaasClientEntry
+operator|+
+literal|", principal = "
+operator|+
+name|principal
+operator|+
+literal|", keytab = "
+operator|+
+name|keytab
+argument_list|)
+expr_stmt|;
 name|JaasConfiguration
 name|jconf
 init|=
@@ -2758,23 +2824,50 @@ argument_list|,
 name|jaasClientEntry
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// in this case, jaas config is specified so we will not change it
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Enabling ZK sasl client: jaasClientEntry = "
+literal|"Using existing ZK sasl configuration: "
 operator|+
-name|jaasClientEntry
+literal|"jaasClientEntry = "
 operator|+
-literal|", principal = "
+name|System
+operator|.
+name|getProperty
+argument_list|(
+name|ZooKeeperSaslClient
+operator|.
+name|LOGIN_CONTEXT_NAME_KEY
+argument_list|,
+literal|"Client"
+argument_list|)
 operator|+
-name|principal
+literal|", sasl client = "
 operator|+
-literal|", keytab = "
+name|System
+operator|.
+name|getProperty
+argument_list|(
+name|ZooKeeperSaslClient
+operator|.
+name|ENABLE_CLIENT_SASL_KEY
+argument_list|,
+name|ZooKeeperSaslClient
+operator|.
+name|ENABLE_CLIENT_SASL_DEFAULT
+argument_list|)
 operator|+
-name|keytab
+literal|", jaas = "
+operator|+
+name|existingJaasConf
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 default|default:
 name|clearZKSaslClientProperties
