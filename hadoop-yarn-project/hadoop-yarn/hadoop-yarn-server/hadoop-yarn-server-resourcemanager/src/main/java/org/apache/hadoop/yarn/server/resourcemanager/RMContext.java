@@ -166,6 +166,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|nodelabels
+operator|.
+name|NodeAttributesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -911,6 +927,19 @@ name|void
 name|setNodeLabelManager
 parameter_list|(
 name|RMNodeLabelsManager
+name|mgr
+parameter_list|)
+function_decl|;
+DECL|method|getNodeAttributesManager ()
+name|NodeAttributesManager
+name|getNodeAttributesManager
+parameter_list|()
+function_decl|;
+DECL|method|setNodeAttributesManager (NodeAttributesManager mgr)
+name|void
+name|setNodeAttributesManager
+parameter_list|(
+name|NodeAttributesManager
 name|mgr
 parameter_list|)
 function_decl|;

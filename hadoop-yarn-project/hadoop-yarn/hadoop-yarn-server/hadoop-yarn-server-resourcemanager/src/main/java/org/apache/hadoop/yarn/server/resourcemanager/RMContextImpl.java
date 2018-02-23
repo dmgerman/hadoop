@@ -244,6 +244,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|nodelabels
+operator|.
+name|NodeAttributesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -2165,6 +2181,25 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|setNodeAttributesManager (NodeAttributesManager mgr)
+specifier|public
+name|void
+name|setNodeAttributesManager
+parameter_list|(
+name|NodeAttributesManager
+name|mgr
+parameter_list|)
+block|{
+name|activeServiceContext
+operator|.
+name|setNodeAttributesManager
+argument_list|(
+name|mgr
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getAllocationTagsManager ()
 specifier|public
 name|AllocationTagsManager
@@ -2633,6 +2668,21 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Note: Read java doc before adding any services over here.
+annotation|@
+name|Override
+DECL|method|getNodeAttributesManager ()
+specifier|public
+name|NodeAttributesManager
+name|getNodeAttributesManager
+parameter_list|()
+block|{
+return|return
+name|activeServiceContext
+operator|.
+name|getNodeAttributesManager
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
