@@ -188,8 +188,13 @@ name|Set
 import|;
 end_import
 
+begin_comment
+comment|/**  * This interface provides context for the calculation of ideal allocation  * and preemption for the {@code CapacityScheduler}.  */
+end_comment
+
 begin_interface
 DECL|interface|CapacitySchedulerPreemptionContext
+specifier|public
 interface|interface
 name|CapacitySchedulerPreemptionContext
 block|{

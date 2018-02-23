@@ -26,6 +26,46 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -148,46 +188,6 @@ name|Resources
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
 begin_comment
 comment|/**  * Calculate how much resources need to be preempted for each queue,  * will be used by {@link PreemptionCandidatesSelector}  */
 end_comment
@@ -243,7 +243,7 @@ expr_stmt|;
 block|}
 comment|/**    * This method computes (for a single level in the tree, passed as a {@code    * List<TempQueue>}) the ideal assignment of resources. This is done    * recursively to allocate capacity fairly across all queues with pending    * demands. It terminates when no resources are left to assign, or when all    * demand is satisfied.    *    * @param rc resource calculator    * @param queues a list of cloned queues to be assigned capacity to (this is    * an out param)    * @param totalPreemptionAllowed total amount of preemption we allow    * @param tot_guarant the amount of capacity assigned to this pool of queues    */
 DECL|method|computeIdealResourceDistribution (ResourceCalculator rc, List<TempQueuePerPartition> queues, Resource totalPreemptionAllowed, Resource tot_guarant)
-specifier|private
+specifier|protected
 name|void
 name|computeIdealResourceDistribution
 parameter_list|(
@@ -540,9 +540,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This method recursively computes the ideal assignment of resources to each    * level of the hierarchy. This ensures that leafs that are over-capacity but    * with parents within capacity will not be preemptionCandidates. Preemptions are allowed    * within each subtree according to local over/under capacity.    *    * @param root the root of the cloned queue hierachy    * @param totalPreemptionAllowed maximum amount of preemption allowed    * @return a list of leaf queues updated with preemption targets    */
+comment|/**    * This method recursively computes the ideal assignment of resources to each    * level of the hierarchy. This ensures that leafs that are over-capacity but    * with parents within capacity will not be preemptionCandidates. Preemptions    * are allowed within each subtree according to local over/under capacity.    *    * @param root the root of the cloned queue hierachy    * @param totalPreemptionAllowed maximum amount of preemption allowed    */
 DECL|method|recursivelyComputeIdealAssignment ( TempQueuePerPartition root, Resource totalPreemptionAllowed)
-specifier|private
+specifier|protected
 name|void
 name|recursivelyComputeIdealAssignment
 parameter_list|(
@@ -956,11 +956,7 @@ comment|// compute the ideal distribution of resources among queues
 comment|// updates cloned queues state accordingly
 name|tRoot
 operator|.
-name|idealAssigned
-operator|=
-name|tRoot
-operator|.
-name|getGuaranteed
+name|initializeRootIdealWithGuarangeed
 argument_list|()
 expr_stmt|;
 name|recursivelyComputeIdealAssignment

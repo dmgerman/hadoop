@@ -237,6 +237,16 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|queueName
+return|;
+block|}
 DECL|method|getUsed ()
 specifier|public
 name|Resource
