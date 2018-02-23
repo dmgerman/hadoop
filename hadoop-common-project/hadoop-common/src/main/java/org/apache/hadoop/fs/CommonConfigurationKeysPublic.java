@@ -1761,6 +1761,24 @@ argument_list|,
 name|HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS
 argument_list|)
 decl_stmt|;
+DECL|field|HADOOP_SYSTEM_TAGS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SYSTEM_TAGS
+init|=
+literal|"hadoop.system.tags"
+decl_stmt|;
+DECL|field|HADOOP_CUSTOM_TAGS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_CUSTOM_TAGS
+init|=
+literal|"hadoop.custom.tags"
+decl_stmt|;
 block|}
 end_class
 
