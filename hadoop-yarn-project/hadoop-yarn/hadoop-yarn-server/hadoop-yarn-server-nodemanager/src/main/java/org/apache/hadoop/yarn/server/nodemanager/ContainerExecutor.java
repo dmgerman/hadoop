@@ -1534,7 +1534,12 @@ name|String
 argument_list|>
 name|env
 range|:
+name|sb
+operator|.
+name|orderEnvByDependencies
+argument_list|(
 name|environment
+argument_list|)
 operator|.
 name|entrySet
 argument_list|()
