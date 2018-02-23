@@ -4263,6 +4263,23 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Closing an already closed stream. [Stream:{}, streamer:{}]"
+argument_list|,
+name|closed
+argument_list|,
+name|getStreamer
+argument_list|()
+operator|.
+name|streamerClosed
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 name|getStreamer
 argument_list|()
 operator|.
@@ -4274,6 +4291,36 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|cleanupAndRethrowIOException
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|closed
+condition|)
+block|{
+comment|// If stream is not closed but streamer closed, clean up the stream.
+comment|// Most importantly, end the file lease.
+name|closeThreads
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return;
 block|}
 try|try
@@ -4308,10 +4355,57 @@ name|setCurrentPacketToEmpty
 argument_list|()
 expr_stmt|;
 block|}
+try|try
+block|{
 name|flushInternal
 argument_list|()
 expr_stmt|;
 comment|// flush all data to Datanodes
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|cleanupAndRethrowIOException
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+name|completeFile
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClosedChannelException
+name|ignored
+parameter_list|)
+block|{     }
+finally|finally
+block|{
+comment|// Failures may happen when flushing data.
+comment|// Streamers may keep waiting for the new block information.
+comment|// Thus need to force closing these threads.
+comment|// Don't need to call setClosed() because closeThreads(true)
+comment|// calls setClosed() in the finally block.
+name|closeThreads
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|completeFile ()
+specifier|private
+name|void
+name|completeFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 comment|// get last block before destroying the streamer
 name|ExtendedBlock
 name|lastBlock
@@ -4345,25 +4439,94 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-catch|catch
+comment|/**    * Determines whether an IOException thrown needs extra cleanup on the stream.    * Space quota exceptions will be thrown when getting new blocks, so the    * open HDFS file need to be closed.    *    * @param ioe the IOException    * @return whether the stream needs cleanup for the given IOException    */
+DECL|method|exceptionNeedsCleanup (IOException ioe)
+specifier|private
+name|boolean
+name|exceptionNeedsCleanup
 parameter_list|(
-name|ClosedChannelException
-name|ignored
+name|IOException
+name|ioe
 parameter_list|)
-block|{     }
-finally|finally
 block|{
-comment|// Failures may happen when flushing data.
-comment|// Streamers may keep waiting for the new block information.
-comment|// Thus need to force closing these threads.
-comment|// Don't need to call setClosed() because closeThreads(true)
-comment|// calls setClosed() in the finally block.
-name|closeThreads
+return|return
+name|ioe
+operator|instanceof
+name|DSQuotaExceededException
+operator|||
+name|ioe
+operator|instanceof
+name|QuotaByStorageTypeExceededException
+return|;
+block|}
+DECL|method|cleanupAndRethrowIOException (IOException ioe)
+specifier|private
+name|void
+name|cleanupAndRethrowIOException
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|exceptionNeedsCleanup
 argument_list|(
-literal|true
+name|ioe
+argument_list|)
+condition|)
+block|{
+specifier|final
+name|MultipleIOException
+operator|.
+name|Builder
+name|b
+init|=
+operator|new
+name|MultipleIOException
+operator|.
+name|Builder
+argument_list|()
+decl_stmt|;
+name|b
+operator|.
+name|add
+argument_list|(
+name|ioe
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|completeFile
+argument_list|()
+expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|b
+operator|.
+name|add
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|b
+operator|.
+name|build
+argument_list|()
+throw|;
+block|}
+block|}
+throw|throw
+name|ioe
+throw|;
 block|}
 comment|// should be called holding (this) lock since setTestFilename() may
 comment|// be called during unit tests
