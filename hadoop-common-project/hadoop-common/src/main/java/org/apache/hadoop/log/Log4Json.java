@@ -232,7 +232,7 @@ name|Log4Json
 extends|extends
 name|Layout
 block|{
-comment|/**    * Jackson factories are thread safe when constructing parsers and generators.    * They are not thread safe in configure methods; if there is to be any    * configuration it must be done in a static intializer block.    */
+comment|/**    * Jackson factories are thread safe when constructing parsers and generators.    * They are not thread safe in configure methods; if there is to be any    * configuration it must be done in a static initializer block.    */
 DECL|field|factory
 specifier|private
 specifier|static

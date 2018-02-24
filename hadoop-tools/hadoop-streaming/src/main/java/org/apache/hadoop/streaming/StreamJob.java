@@ -1010,7 +1010,7 @@ operator|.
 name|jobConf_
 return|;
 block|}
-comment|/**    * This is the method that actually    * intializes the job conf and submits the job    * to the jobtracker    * @throws IOException    * @deprecated use {@link #run(String[])} instead.    */
+comment|/**    * This is the method that actually    * initializes the job conf and submits the job    * to the jobtracker    * @throws IOException    * @deprecated use {@link #run(String[])} instead.    */
 annotation|@
 name|Deprecated
 DECL|method|go ()

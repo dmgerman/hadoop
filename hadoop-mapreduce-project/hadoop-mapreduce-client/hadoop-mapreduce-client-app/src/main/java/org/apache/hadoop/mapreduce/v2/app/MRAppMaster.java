@@ -6979,7 +6979,7 @@ operator|!
 name|errorHappenedShutDown
 condition|)
 block|{
-comment|// create a job event for job intialization
+comment|// create a job event for job initialization
 name|JobEvent
 name|initJobEvent
 init|=

@@ -4193,7 +4193,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Caught Exception while intializing"
+literal|"Caught Exception while initializing"
 argument_list|)
 expr_stmt|;
 name|e
@@ -4469,7 +4469,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Caught Exception while intializing"
+literal|"Caught Exception while initializing"
 argument_list|)
 expr_stmt|;
 name|e
@@ -4754,7 +4754,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Caught Exception while intializing"
+literal|"Caught Exception while initializing"
 argument_list|)
 expr_stmt|;
 name|e
@@ -5035,7 +5035,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Caught Exception while intializing"
+literal|"Caught Exception while initializing"
 argument_list|)
 expr_stmt|;
 name|e
@@ -5367,7 +5367,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Caught Exception while intializing"
+literal|"Caught Exception while initializing"
 argument_list|)
 expr_stmt|;
 name|e
@@ -5848,7 +5848,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Caught Exception while intializing"
+literal|"Caught Exception while initializing"
 argument_list|)
 expr_stmt|;
 name|e

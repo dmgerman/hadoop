@@ -686,10 +686,10 @@ return|return
 name|list
 return|;
 block|}
-DECL|method|intializePriorityDigraph ()
+DECL|method|initializePriorityDigraph ()
 specifier|private
 name|void
-name|intializePriorityDigraph
+name|initializePriorityDigraph
 parameter_list|()
 block|{
 if|if
@@ -1807,7 +1807,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|intializePriorityDigraph
+name|initializePriorityDigraph
 argument_list|()
 expr_stmt|;
 comment|// When all queues are set to same priority, or priority is not respected,

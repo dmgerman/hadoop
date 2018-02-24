@@ -941,7 +941,7 @@ argument_list|(
 name|kmsConf
 argument_list|)
 expr_stmt|;
-comment|// intializing the KeyProvider
+comment|// initializing the KeyProvider
 name|String
 name|providerString
 init|=

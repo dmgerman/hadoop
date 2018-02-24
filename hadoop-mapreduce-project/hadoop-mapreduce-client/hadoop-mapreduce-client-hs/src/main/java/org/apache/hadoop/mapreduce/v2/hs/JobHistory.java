@@ -772,7 +772,7 @@ throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"Failed to intialize existing directories"
+literal|"Failed to initialize existing directories"
 argument_list|,
 name|e
 argument_list|)

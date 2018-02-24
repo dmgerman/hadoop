@@ -1738,7 +1738,7 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Namesystem has not been intialized yet."
+literal|"Namesystem has not been initialized yet."
 argument_list|)
 expr_stmt|;
 name|NamenodeWebHdfsMethods

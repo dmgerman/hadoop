@@ -323,7 +323,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot intialize driver for {}"
+literal|"Cannot initialize driver for {}"
 argument_list|,
 name|getDriverName
 argument_list|()
