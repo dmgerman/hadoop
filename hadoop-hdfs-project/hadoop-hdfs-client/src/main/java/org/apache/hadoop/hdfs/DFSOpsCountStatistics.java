@@ -456,6 +456,12 @@ argument_list|(
 literal|"op_set_xattr"
 argument_list|)
 operator|,
+DECL|enumConstant|GET_SNAPSHOT_DIFF
+name|GET_SNAPSHOT_DIFF
+argument_list|(
+literal|"op_get_snapshot_diff"
+argument_list|)
+operator|,
 DECL|enumConstant|TRUNCATE
 name|TRUNCATE
 argument_list|(

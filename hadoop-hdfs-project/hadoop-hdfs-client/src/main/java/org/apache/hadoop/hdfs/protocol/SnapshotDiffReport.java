@@ -261,6 +261,28 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|parseDiffType (String s)
+specifier|public
+specifier|static
+name|DiffType
+name|parseDiffType
+parameter_list|(
+name|String
+name|s
+parameter_list|)
+block|{
+return|return
+name|DiffType
+operator|.
+name|valueOf
+argument_list|(
+name|s
+operator|.
+name|toUpperCase
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Representing the full path and diff type of a file/directory where changes    * have happened.    */
 DECL|class|DiffReportEntry

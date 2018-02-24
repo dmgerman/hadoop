@@ -239,6 +239,16 @@ name|HttpURLConnection
 operator|.
 name|HTTP_OK
 argument_list|)
+block|,
+DECL|enumConstant|GETSNAPSHOTDIFF
+name|GETSNAPSHOTDIFF
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
 block|;
 DECL|field|redirect
 specifier|final
