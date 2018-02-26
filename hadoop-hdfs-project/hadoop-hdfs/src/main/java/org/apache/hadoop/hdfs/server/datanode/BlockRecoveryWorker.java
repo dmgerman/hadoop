@@ -1821,13 +1821,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// If any of the data-nodes failed, the recovery fails, because
-comment|// we never know the actual state of the replica on failed data-nodes.
-comment|// The recovery should be started over.
+comment|// Abort if all failed.
 if|if
 condition|(
-operator|!
-name|failedList
+name|successList
 operator|.
 name|isEmpty
 argument_list|()
