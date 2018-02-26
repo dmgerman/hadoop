@@ -1583,12 +1583,11 @@ name|doneDirFS
 argument_list|,
 name|doneDirPrefixPath
 argument_list|,
-operator|new
-name|FsPermission
-argument_list|(
 name|JobHistoryUtils
 operator|.
-name|HISTORY_INTERMEDIATE_USER_DIR_PERMISSIONS
+name|getConfiguredHistoryIntermediateUserDoneDirPermissions
+argument_list|(
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;

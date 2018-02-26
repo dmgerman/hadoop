@@ -330,6 +330,26 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"intermediate-done-dir"
 decl_stmt|;
+DECL|field|MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"intermediate-user-done-dir.permissions"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|short
+DECL|field|DEFAULT_MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS
+name|DEFAULT_MR_HISTORY_INTERMEDIATE_USER_DONE_DIR_PERMISSIONS
+init|=
+literal|0770
+decl_stmt|;
 comment|/** Size of the job list cache.*/
 DECL|field|MR_HISTORY_JOBLIST_CACHE_SIZE
 specifier|public
