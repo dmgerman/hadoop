@@ -2673,11 +2673,18 @@ argument_list|()
 decl_stmt|;
 comment|// If it's bounded by durable Txns, endTxId could not be larger
 comment|// than committedTxnId. This ensures the consistency.
+comment|// We don't do the following for finalized log segments, since all
+comment|// edits in those are guaranteed to be committed.
 if|if
 condition|(
 name|onlyDurableTxns
 operator|&&
 name|inProgressOk
+operator|&&
+name|remoteLog
+operator|.
+name|isInProgress
+argument_list|()
 condition|)
 block|{
 name|endTxId

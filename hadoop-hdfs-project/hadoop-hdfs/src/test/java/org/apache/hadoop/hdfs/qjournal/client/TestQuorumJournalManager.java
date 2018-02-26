@@ -4288,6 +4288,110 @@ literal|50
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testInProgressRecovery ()
+specifier|public
+name|void
+name|testInProgressRecovery
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Test the case when in-progress edit log tailing is on, and
+comment|// new active performs recovery when the old active crashes
+comment|// without closing the last log segment.
+comment|// See HDFS-13145 for more details.
+comment|// Write two batches of edits. After these, the commitId on the
+comment|// journals should be 5, and endTxnId should be 8.
+name|EditLogOutputStream
+name|stm
+init|=
+name|qjm
+operator|.
+name|startLogSegment
+argument_list|(
+literal|1
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
+argument_list|)
+decl_stmt|;
+name|writeTxns
+argument_list|(
+name|stm
+argument_list|,
+literal|1
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+name|writeTxns
+argument_list|(
+name|stm
+argument_list|,
+literal|6
+argument_list|,
+literal|3
+argument_list|)
+expr_stmt|;
+comment|// Do recovery from a separate QJM, just like in failover.
+name|QuorumJournalManager
+name|qjm2
+init|=
+name|createSpyingQJM
+argument_list|()
+decl_stmt|;
+name|qjm2
+operator|.
+name|recoverUnfinalizedSegments
+argument_list|()
+expr_stmt|;
+name|checkRecovery
+argument_list|(
+name|cluster
+argument_list|,
+literal|1
+argument_list|,
+literal|8
+argument_list|)
+expr_stmt|;
+comment|// When selecting input stream, we should see all txns up to 8.
+name|List
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|streams
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|qjm2
+operator|.
+name|selectInputStreams
+argument_list|(
+name|streams
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|verifyEdits
+argument_list|(
+name|streams
+argument_list|,
+literal|1
+argument_list|,
+literal|8
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|createSpyingQJM ()
 specifier|private
 name|QuorumJournalManager
