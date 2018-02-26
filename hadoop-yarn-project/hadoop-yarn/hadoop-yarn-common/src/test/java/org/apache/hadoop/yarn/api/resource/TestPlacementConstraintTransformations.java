@@ -495,6 +495,23 @@ name|TargetConstraint
 operator|)
 name|tConstraintExpr
 decl_stmt|;
+comment|// Make sure the expression string is consistent
+comment|// before and after transforming
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|single
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|target
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -722,6 +739,23 @@ name|SingleConstraint
 operator|)
 name|sConstraintExpr
 decl_stmt|;
+comment|// Make sure the consistent expression string is consistent
+comment|// before and after transforming
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|single
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|cardinality
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
