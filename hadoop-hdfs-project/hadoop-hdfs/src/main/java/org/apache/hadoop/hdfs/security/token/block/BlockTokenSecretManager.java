@@ -68,27 +68,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
 import|;
 end_import
 
@@ -128,17 +108,21 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Map
+name|commons
+operator|.
+name|lang3
+operator|.
+name|ArrayUtils
 import|;
 end_import
 
@@ -181,6 +165,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageType
 import|;
 end_import
 
@@ -294,6 +292,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Timer
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -322,29 +334,29 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|fs
+name|collect
 operator|.
-name|StorageType
+name|HashMultiset
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|util
+name|collect
 operator|.
-name|Timer
+name|Multiset
 import|;
 end_import
 
@@ -773,7 +785,9 @@ condition|(
 operator|!
 name|isMaster
 condition|)
+block|{
 return|return;
+block|}
 comment|/*      * Need to set estimated expiry dates for currentKey and nextKey so that if      * NN crashes, DN can still expire those keys. NN will stop using the newly      * generated currentKey after the first keyUpdateInterval, however it may      * still be used by DN and Balancer to generate new tokens before they get a      * chance to sync their keys with NN. Since we require keyUpdInterval to be      * long enough so that all live DN's and Balancer will sync their keys with      * NN at least once during the period, the estimated expiry date for      * currentKey is set to now() + 2 * keyUpdateInterval + tokenLifetime.      * Similarly, the estimated expiry date for nextKey is one keyUpdateInterval      * more.      */
 name|setSerialNo
 argument_list|(
@@ -871,16 +885,11 @@ condition|(
 operator|!
 name|isMaster
 condition|)
+block|{
 return|return
 literal|null
 return|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+block|}
 name|LOG
 operator|.
 name|debug
@@ -1018,7 +1027,9 @@ name|exportedKeys
 operator|==
 literal|null
 condition|)
+block|{
 return|return;
+block|}
 name|LOG
 operator|.
 name|info
@@ -1070,10 +1081,10 @@ name|receivedKeys
 index|[
 name|i
 index|]
-operator|==
+operator|!=
 literal|null
 condition|)
-continue|continue;
+block|{
 name|this
 operator|.
 name|allKeys
@@ -1094,6 +1105,7 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Update block keys if update time> update interval.    * @return true if the keys are updated.    */
@@ -1140,9 +1152,11 @@ condition|(
 operator|!
 name|isMaster
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -1461,15 +1475,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|storageTypes
-operator|!=
-literal|null
-operator|&&
-name|storageTypes
+name|ArrayUtils
 operator|.
-name|length
-operator|>
-literal|0
+name|isNotEmpty
+argument_list|(
+name|storageTypes
+argument_list|)
 condition|)
 block|{
 name|checkAccess
@@ -1487,15 +1498,12 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|storageIds
-operator|!=
-literal|null
-operator|&&
-name|storageIds
+name|ArrayUtils
 operator|.
-name|length
-operator|>
-literal|0
+name|isNotEmpty
+argument_list|(
+name|storageIds
+argument_list|)
 condition|)
 block|{
 name|checkAccess
@@ -1561,9 +1569,6 @@ operator|+
 literal|" using "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1592,9 +1597,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" doesn't belong to user "
 operator|+
@@ -1626,9 +1628,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" doesn't apply to block "
 operator|+
@@ -1656,9 +1655,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" doesn't apply to block "
 operator|+
@@ -1684,9 +1680,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" is expired."
 argument_list|)
@@ -1713,9 +1706,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" doesn't have "
 operator|+
@@ -1752,11 +1742,12 @@ name|InvalidToken
 block|{
 if|if
 condition|(
-name|requested
+name|ArrayUtils
 operator|.
-name|length
-operator|==
-literal|0
+name|isEmpty
+argument_list|(
+name|requested
+argument_list|)
 condition|)
 block|{
 throw|throw
@@ -1775,28 +1766,25 @@ throw|;
 block|}
 if|if
 condition|(
-name|candidates
+name|ArrayUtils
 operator|.
-name|length
-operator|==
-literal|0
+name|isEmpty
+argument_list|(
+name|candidates
+argument_list|)
 condition|)
 block|{
 return|return;
 block|}
-name|List
-name|unseenCandidates
-init|=
-operator|new
-name|ArrayList
+name|Multiset
 argument_list|<
 name|T
 argument_list|>
-argument_list|()
-decl_stmt|;
-name|unseenCandidates
+name|c
+init|=
+name|HashMultiset
 operator|.
-name|addAll
+name|create
 argument_list|(
 name|Arrays
 operator|.
@@ -1805,7 +1793,7 @@ argument_list|(
 name|candidates
 argument_list|)
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 for|for
 control|(
 name|T
@@ -1814,23 +1802,15 @@ range|:
 name|requested
 control|)
 block|{
-specifier|final
-name|int
-name|index
-init|=
-name|unseenCandidates
+if|if
+condition|(
+operator|!
+name|c
 operator|.
-name|indexOf
+name|remove
 argument_list|(
 name|req
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|index
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
 throw|throw
@@ -1865,34 +1845,6 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-name|Collections
-operator|.
-name|swap
-argument_list|(
-name|unseenCandidates
-argument_list|,
-name|index
-argument_list|,
-name|unseenCandidates
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-name|unseenCandidates
-operator|.
-name|remove
-argument_list|(
-name|unseenCandidates
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 comment|/** Check if access should be allowed. userID is not checked if null */
@@ -2022,9 +1974,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|id
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" doesn't have the correct token password"
 argument_list|)
@@ -2169,6 +2118,7 @@ name|key
 operator|==
 literal|null
 condition|)
+block|{
 throw|throw
 operator|new
 name|IllegalStateException
@@ -2176,6 +2126,7 @@ argument_list|(
 literal|"currentKey hasn't been initialized."
 argument_list|)
 throw|;
+block|}
 name|identifier
 operator|.
 name|setExpiryDate
@@ -2213,9 +2164,6 @@ argument_list|(
 literal|"Generating block token for "
 operator|+
 name|identifier
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2267,9 +2215,6 @@ argument_list|(
 literal|"Block token with "
 operator|+
 name|identifier
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" is expired."
 argument_list|)
@@ -2312,9 +2257,6 @@ argument_list|(
 literal|"Can't re-compute password for "
 operator|+
 name|identifier
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|", since the required block key (keyID="
 operator|+
