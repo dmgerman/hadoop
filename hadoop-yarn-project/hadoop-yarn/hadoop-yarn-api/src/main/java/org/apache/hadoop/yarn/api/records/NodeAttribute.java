@@ -92,6 +92,24 @@ name|DEFAULT_PREFIX
 init|=
 literal|""
 decl_stmt|;
+DECL|field|PREFIX_DISTRIBUTED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PREFIX_DISTRIBUTED
+init|=
+literal|"nm.yarn.io"
+decl_stmt|;
+DECL|field|PREFIX_CENTRALIZED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PREFIX_CENTRALIZED
+init|=
+literal|"rm.yarn.io"
+decl_stmt|;
 DECL|method|newInstance (String attributeName, NodeAttributeType attributeType, String attributeValue)
 specifier|public
 specifier|static

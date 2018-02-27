@@ -1116,6 +1116,104 @@ literal|3000
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testNodeAttributesValidation ()
+specifier|public
+name|void
+name|testNodeAttributesValidation
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Script output contains ambiguous node attributes
+name|String
+name|scriptContent
+init|=
+literal|"echo NODE_ATTRIBUTE:host,STRING,host1234\n "
+operator|+
+literal|"echo NODE_ATTRIBUTE:host,STRING,host2345\n "
+operator|+
+literal|"echo NODE_ATTRIBUTE:ip,STRING,10.0.0.1"
+decl_stmt|;
+name|writeNodeAttributeScriptFile
+argument_list|(
+name|scriptContent
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|nodeAttributesProvider
+operator|.
+name|init
+argument_list|(
+name|getConfForNodeAttributeScript
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|nodeAttributesProvider
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+comment|// There should be no attributes found, and we should
+comment|// see Malformed output warnings in the log
+try|try
+block|{
+name|GenericTestUtils
+operator|.
+name|waitFor
+argument_list|(
+parameter_list|()
+lambda|->
+name|nodeAttributesProvider
+operator|.
+name|getDescriptors
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|3
+argument_list|,
+literal|500
+argument_list|,
+literal|3000
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"This test should timeout because the provide is unable"
+operator|+
+literal|" to parse any attributes from the script output."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|nodeAttributesProvider
+operator|.
+name|getDescriptors
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

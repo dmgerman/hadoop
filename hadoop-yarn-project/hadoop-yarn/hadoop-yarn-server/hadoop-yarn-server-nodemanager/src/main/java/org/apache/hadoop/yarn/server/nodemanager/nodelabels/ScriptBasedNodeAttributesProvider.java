@@ -74,6 +74,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|nodelabels
+operator|.
+name|NodeLabelUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -561,6 +577,7 @@ name|nodeAttribute
 argument_list|)
 throw|;
 block|}
+comment|// Automatically setup prefix for collected attributes
 name|NodeAttribute
 name|na
 init|=
@@ -568,6 +585,10 @@ name|NodeAttribute
 operator|.
 name|newInstance
 argument_list|(
+name|NodeAttribute
+operator|.
+name|PREFIX_DISTRIBUTED
+argument_list|,
 name|attributeStrs
 index|[
 literal|0
@@ -589,14 +610,70 @@ literal|2
 index|]
 argument_list|)
 decl_stmt|;
+comment|// Since a NodeAttribute is identical with another one as long as
+comment|// their prefix and name are same, to avoid attributes getting
+comment|// overwritten by ambiguous attribute, make sure it fails in such
+comment|// case.
+if|if
+condition|(
+operator|!
 name|attributeSet
 operator|.
 name|add
 argument_list|(
 name|na
 argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Ambiguous node attribute is found: "
+operator|+
+name|na
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|", a same attribute already exists"
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+comment|// Before updating the attributes to the provider,
+comment|// verify if they are valid
+try|try
+block|{
+name|NodeLabelUtil
+operator|.
+name|validateNodeAttributes
+argument_list|(
+name|attributeSet
+argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Node attributes collected by the script "
+operator|+
+literal|"contains some invalidate entries. Detail message: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
 block|}
 return|return
 name|attributeSet
