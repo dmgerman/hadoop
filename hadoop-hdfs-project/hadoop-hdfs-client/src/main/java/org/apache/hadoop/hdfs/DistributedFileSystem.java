@@ -10313,6 +10313,31 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|isValidSnapshotName
+argument_list|(
+name|fromSnapshot
+argument_list|)
+operator|||
+operator|!
+name|isValidSnapshotName
+argument_list|(
+name|toSnapshot
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Remote Iterator is"
+operator|+
+literal|"supported for snapshotDiffReport between two snapshots"
+argument_list|)
+throw|;
+block|}
 return|return
 operator|new
 name|SnapshotDiffReportListingIterator
@@ -10573,6 +10598,31 @@ name|part
 return|;
 block|}
 block|}
+DECL|method|isValidSnapshotName (String snapshotName)
+specifier|private
+name|boolean
+name|isValidSnapshotName
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|)
+block|{
+comment|// If any of the snapshots specified in the getSnapshotDiffReport call
+comment|// is null or empty, it points to the current tree.
+return|return
+operator|(
+name|snapshotName
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|snapshotName
+operator|.
+name|isEmpty
+argument_list|()
+operator|)
+return|;
+block|}
 DECL|method|getSnapshotDiffReportInternal ( final String snapshotDir, final String fromSnapshot, final String toSnapshot)
 specifier|private
 name|SnapshotDiffReport
@@ -10593,6 +10643,38 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// In case the diff needs to be computed between a snapshot and the current
+comment|// tree, we should not do iterative diffReport computation as the iterative
+comment|// approach might fail if in between the rpc calls the current tree
+comment|// changes in absence of the global fsn lock.
+if|if
+condition|(
+operator|!
+name|isValidSnapshotName
+argument_list|(
+name|fromSnapshot
+argument_list|)
+operator|||
+operator|!
+name|isValidSnapshotName
+argument_list|(
+name|toSnapshot
+argument_list|)
+condition|)
+block|{
+return|return
+name|dfs
+operator|.
+name|getSnapshotDiffReport
+argument_list|(
+name|snapshotDir
+argument_list|,
+name|fromSnapshot
+argument_list|,
+name|toSnapshot
+argument_list|)
+return|;
+block|}
 name|byte
 index|[]
 name|startPath
