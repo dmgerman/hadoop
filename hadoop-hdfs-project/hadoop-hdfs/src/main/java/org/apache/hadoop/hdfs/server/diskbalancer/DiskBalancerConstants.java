@@ -104,16 +104,6 @@ name|DISKBALANCER_MAX_VERSION
 init|=
 literal|1
 decl_stmt|;
-comment|/**    * We treat a plan as stale if it was generated before the hours    * defined by the constant below. Defaults to 24 hours.    */
-DECL|field|DISKBALANCER_VALID_PLAN_HOURS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DISKBALANCER_VALID_PLAN_HOURS
-init|=
-literal|24
-decl_stmt|;
 comment|// never constructed.
 DECL|method|DiskBalancerConstants ()
 specifier|private
