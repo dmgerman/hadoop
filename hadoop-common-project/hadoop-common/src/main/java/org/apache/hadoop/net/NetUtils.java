@@ -2511,7 +2511,7 @@ return|return
 name|local
 return|;
 block|}
-comment|/**    * Take an IOException , the local host port and remote host port details and    * return an IOException with the input exception as the cause and also    * include the host details. The new exception provides the stack trace of the    * place where the exception is thrown and some extra diagnostics information.    * If the exception is BindException or ConnectException or    * UnknownHostException or SocketTimeoutException, return a new one of the    * same type; Otherwise return an IOException.    *    * @param destHost target host (nullable)    * @param destPort target port    * @param localHost local host (nullable)    * @param localPort local port    * @param exception the caught exception.    * @return an exception to throw    */
+comment|/**    * Take an IOException , the local host port and remote host port details and    * return an IOException with the input exception as the cause and also    * include the host details. The new exception provides the stack trace of the    * place where the exception is thrown and some extra diagnostics information.    * If the exception is of type BindException, ConnectException,    * UnknownHostException, SocketTimeoutException or has a String constructor,    * return a new one of the same type; Otherwise return an IOException.    *    * @param destHost target host (nullable)    * @param destPort target port    * @param localHost local host (nullable)    * @param localPort local port    * @param exception the caught exception.    * @return an exception to throw    */
 DECL|method|wrapException (final String destHost, final int destPort, final String localHost, final int localPort, final IOException exception)
 specifier|public
 specifier|static
@@ -2538,6 +2538,8 @@ specifier|final
 name|IOException
 name|exception
 parameter_list|)
+block|{
+try|try
 block|{
 if|if
 condition|(
@@ -2858,6 +2860,41 @@ return|;
 block|}
 else|else
 block|{
+comment|// Return instance of same type if Exception has a String constructor
+return|return
+name|wrapWithMessage
+argument_list|(
+name|exception
+argument_list|,
+literal|"DestHost:destPort "
+operator|+
+name|destHost
+operator|+
+literal|":"
+operator|+
+name|destPort
+operator|+
+literal|" , LocalHost:localPort "
+operator|+
+name|localHost
+operator|+
+literal|":"
+operator|+
+name|localPort
+operator|+
+literal|". Failed on local exception: "
+operator|+
+name|exception
+argument_list|)
+return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
 return|return
 operator|(
 name|IOException
@@ -2929,6 +2966,8 @@ parameter_list|,
 name|String
 name|msg
 parameter_list|)
+throws|throws
+name|T
 block|{
 name|Class
 argument_list|<
@@ -2996,18 +3035,18 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to wrap exception of type "
+literal|"Unable to wrap exception of type {}: it has no (String) "
 operator|+
+literal|"constructor"
+argument_list|,
 name|clazz
-operator|+
-literal|": it has no (String) constructor"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-return|return
+throw|throw
 name|exception
-return|;
+throw|;
 block|}
 block|}
 comment|/**    * Get the host details as a string    * @param destHost destinatioon host (nullable)    * @param destPort destination port    * @param localHost local host (nullable)    * @return a string describing the destination host:port and the local host    */
