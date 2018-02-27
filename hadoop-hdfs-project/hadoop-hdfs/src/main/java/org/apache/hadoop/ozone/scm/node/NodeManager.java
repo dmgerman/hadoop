@@ -322,7 +322,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Add a {@link SCMCommand} to the command queue, which are    * handled by HB thread asynchronously.    * @param id    * @param command    */
 DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
-specifier|default
 name|void
 name|addDatanodeCommand
 parameter_list|(
@@ -332,7 +331,7 @@ parameter_list|,
 name|SCMCommand
 name|command
 parameter_list|)
-block|{}
+function_decl|;
 block|}
 end_interface
 

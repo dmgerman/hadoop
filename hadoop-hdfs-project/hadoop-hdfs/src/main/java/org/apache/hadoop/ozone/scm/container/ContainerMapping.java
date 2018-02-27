@@ -248,6 +248,26 @@ name|scm
 operator|.
 name|container
 operator|.
+name|closer
+operator|.
+name|ContainerCloser
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|replication
 operator|.
 name|ContainerSupervisor
@@ -580,6 +600,38 @@ name|FAILED_TO_CHANGE_CONTAINER_STATE
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_CONTAINER_SIZE_GB
+import|;
+end_import
+
 begin_comment
 comment|/**  * Mapping class contains the mapping from a name to a pipeline mapping. This  * is used by SCM when  * allocating new locations and when looking up a key.  */
 end_comment
@@ -678,6 +730,18 @@ specifier|final
 name|float
 name|containerCloseThreshold
 decl_stmt|;
+DECL|field|closer
+specifier|private
+specifier|final
+name|ContainerCloser
+name|closer
+decl_stmt|;
+DECL|field|size
+specifier|private
+specifier|final
+name|long
+name|size
+decl_stmt|;
 comment|/**    * Constructs a mapping class that creates mapping between container names    * and pipelines.    *    * @param nodeManager - NodeManager so that we can get the nodes that are    * healthy to place new    * containers.    * @param cacheSizeMB - Amount of memory reserved for the LSM tree to cache    * its nodes. This is    * passed to LevelDB and this memory is allocated in Native code space.    * CacheSize is specified    * in MB.    * @throws IOException on Failure.    */
 annotation|@
 name|SuppressWarnings
@@ -714,6 +778,18 @@ operator|.
 name|cacheSize
 operator|=
 name|cacheSizeMB
+expr_stmt|;
+name|this
+operator|.
+name|closer
+operator|=
+operator|new
+name|ContainerCloser
+argument_list|(
+name|nodeManager
+argument_list|,
+name|conf
+argument_list|)
 expr_stmt|;
 name|File
 name|metaDir
@@ -787,6 +863,24 @@ name|nodeManager
 argument_list|,
 name|conf
 argument_list|)
+expr_stmt|;
+comment|// To be replaced with code getStorageSize once it is committed.
+name|size
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|OZONE_SCM_CONTAINER_SIZE_GB
+argument_list|,
+name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+argument_list|)
+operator|*
+literal|1024
+operator|*
+literal|1024
+operator|*
+literal|1024
 expr_stmt|;
 name|this
 operator|.
@@ -1678,7 +1772,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the container State Manager.    * @return ContainerStateManager    */
+comment|/**    * Returns the container State Manager.    *    * @return ContainerStateManager    */
 annotation|@
 name|Override
 DECL|method|getStateManager ()
@@ -1691,7 +1785,7 @@ return|return
 name|containerStateManager
 return|;
 block|}
-comment|/**    * Process container report from Datanode.    *    * @param reports Container report    */
+comment|/**    * Process container report from Datanode.    *<p>    * Processing follows a very simple logic for time being.    *<p>    * 1. Datanodes report the current State -- denoted by the datanodeState    *<p>    * 2. We are the older SCM state from the Database -- denoted by    * the knownState.    *<p>    * 3. We copy the usage etc. from currentState to newState and log that    * newState to the DB. This allows us SCM to bootup again and read the    * state of the world from the DB, and then reconcile the state from    * container reports, when they arrive.    *    * @param reports Container report    */
 annotation|@
 name|Override
 DECL|method|processContainerReports (ContainerReportsRequestProto reports)
@@ -1730,7 +1824,7 @@ control|(
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|ContainerInfo
-name|containerInfo
+name|datanodeState
 range|:
 name|containerInfos
 control|)
@@ -1739,7 +1833,7 @@ name|byte
 index|[]
 name|dbKey
 init|=
-name|containerInfo
+name|datanodeState
 operator|.
 name|getContainerNameBytes
 argument_list|()
@@ -1775,7 +1869,7 @@ block|{
 name|OzoneProtos
 operator|.
 name|SCMContainerInfo
-name|oldInfo
+name|knownState
 init|=
 name|OzoneProtos
 operator|.
@@ -1788,6 +1882,114 @@ argument_list|(
 name|containerBytes
 argument_list|)
 decl_stmt|;
+name|OzoneProtos
+operator|.
+name|SCMContainerInfo
+name|newState
+init|=
+name|reconcileState
+argument_list|(
+name|datanodeState
+argument_list|,
+name|knownState
+argument_list|)
+decl_stmt|;
+comment|// FIX ME: This can be optimized, we write twice to memory, where a
+comment|// single write would work well.
+comment|//
+comment|// We need to write this to DB again since the closed only write
+comment|// the updated State.
+name|containerStore
+operator|.
+name|put
+argument_list|(
+name|dbKey
+argument_list|,
+name|newState
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// If the container is closed, then state is already written to SCM
+comment|// DB.TODO: So can we can write only once to DB.
+if|if
+condition|(
+name|closeContainerIfNeeded
+argument_list|(
+name|newState
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Closing the Container: {}"
+argument_list|,
+name|newState
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// Container not found in our container db.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error while processing container report from datanode :"
+operator|+
+literal|" {}, for container: {}, reason: container doesn't exist in"
+operator|+
+literal|"container database."
+argument_list|,
+name|reports
+operator|.
+name|getDatanodeID
+argument_list|()
+argument_list|,
+name|datanodeState
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Reconciles the state from Datanode with the state in SCM.    *    * @param datanodeState - State from the Datanode.    * @param knownState - State inside SCM.    * @return new SCM State for this container.    */
+DECL|method|reconcileState ( StorageContainerDatanodeProtocolProtos.ContainerInfo datanodeState, OzoneProtos.SCMContainerInfo knownState)
+specifier|private
+name|OzoneProtos
+operator|.
+name|SCMContainerInfo
+name|reconcileState
+parameter_list|(
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerInfo
+name|datanodeState
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|SCMContainerInfo
+name|knownState
+parameter_list|)
+block|{
 name|OzoneProtos
 operator|.
 name|SCMContainerInfo
@@ -1806,7 +2008,7 @@ name|builder
 operator|.
 name|setContainerName
 argument_list|(
-name|oldInfo
+name|knownState
 operator|.
 name|getContainerName
 argument_list|()
@@ -1816,7 +2018,7 @@ name|builder
 operator|.
 name|setPipeline
 argument_list|(
-name|oldInfo
+name|knownState
 operator|.
 name|getPipeline
 argument_list|()
@@ -1830,7 +2032,7 @@ comment|// ContainerStateManager during SCM shutdown.
 name|long
 name|usedSize
 init|=
-name|containerInfo
+name|datanodeState
 operator|.
 name|getUsed
 argument_list|()
@@ -1838,14 +2040,14 @@ decl_stmt|;
 name|long
 name|allocated
 init|=
-name|oldInfo
+name|knownState
 operator|.
 name|getAllocatedBytes
 argument_list|()
 operator|>
 name|usedSize
 condition|?
-name|oldInfo
+name|knownState
 operator|.
 name|getAllocatedBytes
 argument_list|()
@@ -1863,17 +2065,14 @@ name|builder
 operator|.
 name|setUsedBytes
 argument_list|(
-name|containerInfo
-operator|.
-name|getUsed
-argument_list|()
+name|usedSize
 argument_list|)
 expr_stmt|;
 name|builder
 operator|.
 name|setNumberOfKeys
 argument_list|(
-name|containerInfo
+name|datanodeState
 operator|.
 name|getKeyCount
 argument_list|()
@@ -1883,7 +2082,7 @@ name|builder
 operator|.
 name|setState
 argument_list|(
-name|oldInfo
+name|knownState
 operator|.
 name|getState
 argument_list|()
@@ -1893,7 +2092,7 @@ name|builder
 operator|.
 name|setStateEnterTime
 argument_list|(
-name|oldInfo
+name|knownState
 operator|.
 name|getStateEnterTime
 argument_list|()
@@ -1903,7 +2102,7 @@ name|builder
 operator|.
 name|setContainerID
 argument_list|(
-name|oldInfo
+name|knownState
 operator|.
 name|getContainerID
 argument_list|()
@@ -1911,7 +2110,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|oldInfo
+name|knownState
 operator|.
 name|getOwner
 argument_list|()
@@ -1923,63 +2122,95 @@ name|builder
 operator|.
 name|setOwner
 argument_list|(
-name|oldInfo
+name|knownState
 operator|.
 name|getOwner
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|OzoneProtos
-operator|.
-name|SCMContainerInfo
-name|newContainerInfo
-init|=
+return|return
 name|builder
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-name|containerStore
+return|;
+block|}
+comment|/**    * Queues the close container command, to datanode and writes the new state    * to container DB.    *<p>    * TODO : Remove this 2 ContainerInfo definitions. It is brain dead to have    * one protobuf in one file and another definition in another file.    *    * @param newState - This is the state we maintain in SCM.    * @throws IOException    */
+DECL|method|closeContainerIfNeeded (OzoneProtos.SCMContainerInfo newState)
+specifier|private
+name|boolean
+name|closeContainerIfNeeded
+parameter_list|(
+name|OzoneProtos
 operator|.
-name|put
-argument_list|(
-name|dbKey
-argument_list|,
-name|newContainerInfo
-operator|.
-name|toByteArray
-argument_list|()
-argument_list|)
-expr_stmt|;
+name|SCMContainerInfo
+name|newState
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|float
 name|containerUsedPercentage
 init|=
 literal|1.0f
 operator|*
-name|containerInfo
+name|newState
 operator|.
-name|getUsed
+name|getUsedBytes
 argument_list|()
 operator|/
-name|containerInfo
+name|this
 operator|.
-name|getSize
-argument_list|()
+name|size
 decl_stmt|;
-comment|// TODO: Handling of containers which are already in close queue.
+name|ContainerInfo
+name|scmInfo
+init|=
+name|getContainer
+argument_list|(
+name|newState
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|containerUsedPercentage
 operator|>=
 name|containerCloseThreshold
+operator|&&
+operator|!
+name|isClosed
+argument_list|(
+name|scmInfo
+argument_list|)
 condition|)
 block|{
-comment|// TODO: The container has to be moved to close container queue.
-comment|// For now, we are just updating the container state to CLOSING.
-comment|// Close container implementation can decide on how to maintain
-comment|// list of containers to be closed, this is the place where we
-comment|// have to add the containers to that list.
+comment|// We will call closer till get to the closed state.
+comment|// That is SCM will make this call repeatedly until we reach the closed
+comment|// state.
+name|closer
+operator|.
+name|close
+argument_list|(
+name|newState
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|shouldClose
+argument_list|(
+name|scmInfo
+argument_list|)
+condition|)
+block|{
+comment|// This event moves the Container from Open to Closing State, this is
+comment|// a state inside SCM. This is the desired state that SCM wants this
+comment|// container to reach. We will know that a container has reached the
+comment|// closed state from container reports. This state change should be
+comment|// invoked once and only once.
 name|OzoneProtos
 operator|.
 name|LifeCycleState
@@ -1987,12 +2218,7 @@ name|state
 init|=
 name|updateContainerState
 argument_list|(
-name|ContainerInfo
-operator|.
-name|fromProtobuf
-argument_list|(
-name|newContainerInfo
-argument_list|)
+name|scmInfo
 operator|.
 name|getContainerName
 argument_list|()
@@ -2019,11 +2245,13 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to close container {}, reason : Not able to "
+literal|"Failed to close container {}, reason : Not able "
+operator|+
+literal|"to "
 operator|+
 literal|"update container state, current container state: {}."
 argument_list|,
-name|containerInfo
+name|newState
 operator|.
 name|getContainerName
 argument_list|()
@@ -2031,46 +2259,77 @@ argument_list|,
 name|state
 argument_list|)
 expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
 block|}
 block|}
+return|return
+literal|false
+return|;
 block|}
-else|else
+comment|/**    * In Container is in closed state, if it is in closed, Deleting or Deleted    * State.    *    * @param info - ContainerInfo.    * @return true if is in open state, false otherwise    */
+DECL|method|shouldClose (ContainerInfo info)
+specifier|private
+name|boolean
+name|shouldClose
+parameter_list|(
+name|ContainerInfo
+name|info
+parameter_list|)
 block|{
-comment|// Container not found in our container db.
-name|LOG
+return|return
+name|info
 operator|.
-name|error
-argument_list|(
-literal|"Error while processing container report from datanode :"
-operator|+
-literal|" {}, for container: {}, reason: container doesn't exist in"
-operator|+
-literal|"container database."
-argument_list|,
-name|reports
-operator|.
-name|getDatanodeID
+name|getState
 argument_list|()
-argument_list|,
-name|containerInfo
+operator|==
+name|OzoneProtos
 operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-expr_stmt|;
+name|LifeCycleState
+operator|.
+name|OPEN
+return|;
 block|}
-block|}
-finally|finally
+DECL|method|isClosed (ContainerInfo info)
+specifier|private
+name|boolean
+name|isClosed
+parameter_list|(
+name|ContainerInfo
+name|info
+parameter_list|)
 block|{
-name|lock
+return|return
+name|info
 operator|.
-name|unlock
+name|getState
 argument_list|()
-expr_stmt|;
+operator|==
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|CLOSED
+return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCloser ()
+specifier|public
+name|ContainerCloser
+name|getCloser
+parameter_list|()
+block|{
+return|return
+name|closer
+return|;
 block|}
-block|}
-comment|/**    * Closes this stream and releases any system resources associated with it.    * If the stream is    * already closed then invoking this method has no effect.    *    *<p>As noted in {@link AutoCloseable#close()}, cases where the close may    * fail require careful    * attention. It is strongly advised to relinquish the underlying resources    * and to internally    *<em>mark</em> the {@code Closeable} as closed, prior to throwing the    * {@code IOException}.    *    * @throws IOException if an I/O error occurs    */
+comment|/**    * Closes this stream and releases any system resources associated with it.    * If the stream is    * already closed then invoking this method has no effect.    *<p>    *<p>As noted in {@link AutoCloseable#close()}, cases where the close may    * fail require careful    * attention. It is strongly advised to relinquish the underlying resources    * and to internally    *<em>mark</em> the {@code Closeable} as closed, prior to throwing the    * {@code IOException}.    *    * @throws IOException if an I/O error occurs    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -2124,7 +2383,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing ContainerMapping, we need to update    * this in the container store.    *    * @throws IOException  on failure.    */
+comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing ContainerMapping, we need to update    * this in the container store.    *    * @throws IOException on failure.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|flushContainerInfo ()
