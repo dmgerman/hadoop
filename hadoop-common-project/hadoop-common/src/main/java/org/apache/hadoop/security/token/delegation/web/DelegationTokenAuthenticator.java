@@ -86,6 +86,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|SecurityUtil
@@ -797,6 +811,8 @@ name|token
 argument_list|)
 condition|)
 block|{
+try|try
+block|{
 comment|// check and renew TGT to handle potential expiration
 name|UserGroupInformation
 operator|.
@@ -810,9 +826,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No delegation token found for url={}, token={}, authenticating"
+literal|"No delegation token found for url={}, token={}, "
 operator|+
-literal|" with {}"
+literal|"authenticating with {}"
 argument_list|,
 name|url
 argument_list|,
@@ -833,6 +849,36 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+name|NetUtils
+operator|.
+name|wrapException
+argument_list|(
+name|url
+operator|.
+name|getHost
+argument_list|()
+argument_list|,
+name|url
+operator|.
+name|getPort
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|0
+argument_list|,
+name|ex
+argument_list|)
+throw|;
+block|}
 block|}
 else|else
 block|{
