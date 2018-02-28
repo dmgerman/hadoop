@@ -4014,6 +4014,25 @@ name|DFS_SPS_MAX_OUTSTANDING_PATHS_DEFAULT
 init|=
 literal|10000
 decl_stmt|;
+comment|// SPS datanode cache config, defaulting to 5mins.
+DECL|field|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS
+init|=
+literal|"dfs.storage.policy.satisfier.datanode.cache.refresh.interval.ms"
+decl_stmt|;
+DECL|field|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS_DEFAULT
+init|=
+literal|300000L
+decl_stmt|;
 comment|// SPS keytab configurations, by default it is disabled.
 DECL|field|DFS_SPS_ADDRESS_KEY
 specifier|public

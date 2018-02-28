@@ -84,20 +84,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|UnresolvedLinkException
 import|;
 end_import
@@ -130,7 +116,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeInfo
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -144,9 +130,15 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|HdfsFileStatus
+name|namenode
+operator|.
+name|sps
+operator|.
+name|StoragePolicySatisfier
+operator|.
+name|DatanodeMap
 import|;
 end_import
 
@@ -250,11 +242,14 @@ name|AccessControlException
 throws|,
 name|ParentNotDirectoryException
 function_decl|;
-comment|/**    * Gets the network topology.    *    * @return network topology    */
-DECL|method|getNetworkTopology ()
+comment|/**    * Gets the network topology.    *    * @param datanodeMap    *          target datanodes    *    * @return network topology    */
+DECL|method|getNetworkTopology (DatanodeMap datanodeMap)
 name|NetworkTopology
 name|getNetworkTopology
-parameter_list|()
+parameter_list|(
+name|DatanodeMap
+name|datanodeMap
+parameter_list|)
 function_decl|;
 comment|/**    * Returns true if the give file exists in the Namespace.    *    * @param filePath    *          - file info    * @return true if the given file exists, false otherwise.    */
 DECL|method|isFileExist (T filePath)
@@ -316,21 +311,6 @@ name|getLiveDatanodeStorageReport
 parameter_list|()
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Checks whether the given datanode has sufficient space to occupy the given    * blockSize data.    *    * @param dn    *          datanode info    * @param type    *          storage type    * @param blockSize    *          blockSize to be scheduled    * @return true if the given datanode has sufficient space to occupy blockSize    *         data, false otherwise.    */
-DECL|method|checkDNSpaceForScheduling (DatanodeInfo dn, StorageType type, long blockSize)
-name|boolean
-name|checkDNSpaceForScheduling
-parameter_list|(
-name|DatanodeInfo
-name|dn
-parameter_list|,
-name|StorageType
-name|type
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|)
 function_decl|;
 comment|/**    * @return next SPS path info to process.    */
 DECL|method|getNextSPSPath ()

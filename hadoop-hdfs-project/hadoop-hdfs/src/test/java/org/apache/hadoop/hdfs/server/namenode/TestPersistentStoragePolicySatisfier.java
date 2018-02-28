@@ -616,6 +616,18 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Reduced refresh cycle to update latest datanodes.
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS
+argument_list|,
+literal|1000
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|dnNumber
@@ -1387,6 +1399,18 @@ name|INTERNAL
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Reduced refresh cycle to update latest datanodes.
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS
+argument_list|,
+literal|1000
 argument_list|)
 expr_stmt|;
 name|haCluster

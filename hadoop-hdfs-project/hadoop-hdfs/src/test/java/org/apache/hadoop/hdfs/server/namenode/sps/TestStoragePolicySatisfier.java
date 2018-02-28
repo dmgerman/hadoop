@@ -1197,6 +1197,19 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Most of the tests are restarting DNs and NN. So, reduced refresh cycle to
+comment|// update latest datanodes.
+name|config
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_DATANODE_CACHE_REFRESH_INTERVAL_MS
+argument_list|,
+literal|3000
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test

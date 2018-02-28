@@ -52,20 +52,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -433,25 +419,6 @@ DECL|method|getNextSPSPath ()
 name|String
 name|getNextSPSPath
 parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Verifies whether the given Datanode has the enough estimated size with    * given storage type for scheduling the block. This API used by External SPS.    *    * @param dn    *          - datanode    * @param type    *          - storage type    * @param estimatedSize    *          - size    */
-annotation|@
-name|Idempotent
-DECL|method|checkDNSpaceForScheduling (DatanodeInfo dn, StorageType type, long estimatedSize)
-name|boolean
-name|checkDNSpaceForScheduling
-parameter_list|(
-name|DatanodeInfo
-name|dn
-parameter_list|,
-name|StorageType
-name|type
-parameter_list|,
-name|long
-name|estimatedSize
-parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
