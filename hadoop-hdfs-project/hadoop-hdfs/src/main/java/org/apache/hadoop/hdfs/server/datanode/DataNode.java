@@ -8469,27 +8469,6 @@ name|errMessage
 argument_list|)
 throw|;
 block|}
-name|SaslPropertiesResolver
-name|saslPropsResolver
-init|=
-name|dnConf
-operator|.
-name|getSaslPropsResolver
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|resources
-operator|!=
-literal|null
-operator|&&
-name|saslPropsResolver
-operator|==
-literal|null
-condition|)
-block|{
-return|return;
-block|}
 if|if
 condition|(
 name|dnConf
@@ -8500,6 +8479,74 @@ condition|)
 block|{
 return|return;
 block|}
+if|if
+condition|(
+name|resources
+operator|!=
+literal|null
+condition|)
+block|{
+specifier|final
+name|boolean
+name|httpSecured
+init|=
+name|resources
+operator|.
+name|isHttpPortPrivileged
+argument_list|()
+operator|||
+name|DFSUtil
+operator|.
+name|getHttpPolicy
+argument_list|(
+name|conf
+argument_list|)
+operator|==
+name|HttpConfig
+operator|.
+name|Policy
+operator|.
+name|HTTPS_ONLY
+decl_stmt|;
+specifier|final
+name|boolean
+name|rpcSecured
+init|=
+name|resources
+operator|.
+name|isRpcPortPrivileged
+argument_list|()
+operator|||
+name|resources
+operator|.
+name|isSaslEnabled
+argument_list|()
+decl_stmt|;
+comment|// Allow secure DataNode to startup if:
+comment|// 1. Http is secure.
+comment|// 2. Rpc is secure
+if|if
+condition|(
+name|rpcSecured
+operator|&&
+name|httpSecured
+condition|)
+block|{
+return|return;
+block|}
+block|}
+else|else
+block|{
+comment|// Handle cases when SecureDataNodeStarter#getSecureResources is not
+comment|// invoked
+name|SaslPropertiesResolver
+name|saslPropsResolver
+init|=
+name|dnConf
+operator|.
+name|getSaslPropsResolver
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|saslPropsResolver
@@ -8518,25 +8565,20 @@ operator|.
 name|Policy
 operator|.
 name|HTTPS_ONLY
-operator|&&
-name|resources
-operator|==
-literal|null
 condition|)
 block|{
 return|return;
+block|}
 block|}
 throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Cannot start secure DataNode without "
+literal|"Cannot start secure DataNode due to incorrect "
 operator|+
-literal|"configuring either privileged resources or SASL RPC data transfer "
+literal|"config. See https://cwiki.apache.org/confluence/display/HADOOP/"
 operator|+
-literal|"protection and SSL for HTTP.  Using privileged resources in "
-operator|+
-literal|"combination with SASL RPC data transfer protection is not supported."
+literal|"Secure+DataNode for details."
 argument_list|)
 throw|;
 block|}
