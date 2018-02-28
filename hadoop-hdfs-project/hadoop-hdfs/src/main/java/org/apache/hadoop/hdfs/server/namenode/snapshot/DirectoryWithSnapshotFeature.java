@@ -1084,6 +1084,32 @@ name|INodeDirectory
 name|dir
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|snapshotId
+argument_list|,
+name|dir
+argument_list|,
+operator|new
+name|ChildrenDiff
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DirectoryDiff (int snapshotId, INodeDirectory dir, ChildrenDiff diff)
+specifier|public
+name|DirectoryDiff
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|,
+name|INodeDirectory
+name|dir
+parameter_list|,
+name|ChildrenDiff
+name|diff
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|snapshotId
@@ -1113,9 +1139,7 @@ name|this
 operator|.
 name|diff
 operator|=
-operator|new
-name|ChildrenDiff
-argument_list|()
+name|diff
 expr_stmt|;
 block|}
 comment|/** Constructor used by FSImage loading */
