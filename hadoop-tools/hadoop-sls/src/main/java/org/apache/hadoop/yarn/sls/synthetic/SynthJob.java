@@ -258,6 +258,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|sls
 operator|.
 name|appmaster
@@ -615,7 +633,12 @@ specifier|private
 name|int
 name|priority
 decl_stmt|;
-DECL|method|SynthTask (String type, long time, long maxMemory, long maxVcores, int priority)
+DECL|field|executionType
+specifier|private
+name|ExecutionType
+name|executionType
+decl_stmt|;
+DECL|method|SynthTask (String type, long time, long maxMemory, long maxVcores, int priority, ExecutionType executionType)
 specifier|private
 name|SynthTask
 parameter_list|(
@@ -633,6 +656,9 @@ name|maxVcores
 parameter_list|,
 name|int
 name|priority
+parameter_list|,
+name|ExecutionType
+name|executionType
 parameter_list|)
 block|{
 name|this
@@ -664,6 +690,12 @@ operator|.
 name|priority
 operator|=
 name|priority
+expr_stmt|;
+name|this
+operator|.
+name|executionType
+operator|=
+name|executionType
 expr_stmt|;
 block|}
 DECL|method|getType ()
@@ -716,6 +748,16 @@ return|return
 name|priority
 return|;
 block|}
+DECL|method|getExecutionType ()
+specifier|public
+name|ExecutionType
+name|getExecutionType
+parameter_list|()
+block|{
+return|return
+name|executionType
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -731,7 +773,7 @@ name|format
 argument_list|(
 literal|"[task]\ttype: %1$-10s\ttime: %2$3s\tmemory: "
 operator|+
-literal|"%3$4s\tvcores: %4$2s%n"
+literal|"%3$4s\tvcores: %4$2s\texecution_type: %5$-10s%n"
 argument_list|,
 name|getType
 argument_list|()
@@ -743,6 +785,12 @@ name|getMemory
 argument_list|()
 argument_list|,
 name|getVcores
+argument_list|()
+argument_list|,
+name|getExecutionType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 return|;
@@ -1059,6 +1107,28 @@ name|task
 operator|.
 name|priority
 decl_stmt|;
+name|ExecutionType
+name|executionType
+init|=
+name|task
+operator|.
+name|executionType
+operator|==
+literal|null
+condition|?
+name|ExecutionType
+operator|.
+name|GUARANTEED
+else|:
+name|ExecutionType
+operator|.
+name|valueOf
+argument_list|(
+name|task
+operator|.
+name|executionType
+argument_list|)
+decl_stmt|;
 comment|// Save task information by type
 name|taskByType
 operator|.
@@ -1143,6 +1213,8 @@ argument_list|,
 name|vcores
 argument_list|,
 name|priority
+argument_list|,
+name|executionType
 argument_list|)
 decl_stmt|;
 name|tasks

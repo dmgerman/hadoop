@@ -1885,11 +1885,17 @@ name|Exception
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|metricsON
+condition|)
+block|{
 name|schedulerMetrics
 operator|.
 name|tearDown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

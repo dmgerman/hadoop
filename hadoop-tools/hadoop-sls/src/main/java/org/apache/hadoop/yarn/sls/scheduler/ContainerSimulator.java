@@ -108,6 +108,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -166,7 +184,17 @@ specifier|private
 name|String
 name|type
 decl_stmt|;
-comment|/**    * invoked when AM schedules containers to allocate    */
+comment|// execution type
+DECL|field|executionType
+specifier|private
+name|ExecutionType
+name|executionType
+init|=
+name|ExecutionType
+operator|.
+name|GUARANTEED
+decl_stmt|;
+comment|/**    * invoked when AM schedules containers to allocate.    */
 DECL|method|ContainerSimulator (Resource resource, long lifeTime, String hostname, int priority, String type)
 specifier|public
 name|ContainerSimulator
@@ -185,6 +213,48 @@ name|priority
 parameter_list|,
 name|String
 name|type
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|resource
+argument_list|,
+name|lifeTime
+argument_list|,
+name|hostname
+argument_list|,
+name|priority
+argument_list|,
+name|type
+argument_list|,
+name|ExecutionType
+operator|.
+name|GUARANTEED
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * invoked when AM schedules containers to allocate.    */
+DECL|method|ContainerSimulator (Resource resource, long lifeTime, String hostname, int priority, String type, ExecutionType executionType)
+specifier|public
+name|ContainerSimulator
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|long
+name|lifeTime
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|int
+name|priority
+parameter_list|,
+name|String
+name|type
+parameter_list|,
+name|ExecutionType
+name|executionType
 parameter_list|)
 block|{
 name|this
@@ -217,8 +287,14 @@ name|type
 operator|=
 name|type
 expr_stmt|;
+name|this
+operator|.
+name|executionType
+operator|=
+name|executionType
+expr_stmt|;
 block|}
-comment|/**    * invoke when NM schedules containers to run    */
+comment|/**    * invoke when NM schedules containers to run.    */
 DECL|method|ContainerSimulator (ContainerId id, Resource resource, long endTime, long lifeTime)
 specifier|public
 name|ContainerSimulator
@@ -426,6 +502,16 @@ name|priority
 operator|=
 name|p
 expr_stmt|;
+block|}
+DECL|method|getExecutionType ()
+specifier|public
+name|ExecutionType
+name|getExecutionType
+parameter_list|()
+block|{
+return|return
+name|executionType
+return|;
 block|}
 block|}
 end_class
