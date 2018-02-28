@@ -564,7 +564,7 @@ name|exceptions
 operator|.
 name|LauncherExitCodes
 operator|.
-name|EXIT_SUCCESS
+name|*
 import|;
 end_import
 
@@ -1668,6 +1668,9 @@ name|YarnException
 throws|,
 name|FileNotFoundException
 block|{
+name|int
+name|result
+init|=
 name|ugi
 operator|.
 name|doAs
@@ -1728,6 +1731,23 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|result
+operator|==
+name|EXIT_SUCCESS
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully stopped service {}"
+argument_list|,
+name|appName
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|destroy
 condition|)
 block|{
@@ -1750,18 +1770,6 @@ name|appName
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Successfully stopped service {}"
-argument_list|,
-name|appName
-argument_list|)
-expr_stmt|;
-block|}
 name|sc
 operator|.
 name|close
@@ -1773,7 +1781,7 @@ return|;
 block|}
 block|}
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|ServiceStatus
 name|serviceStatus
 init|=
@@ -1798,6 +1806,37 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|result
+operator|==
+name|EXIT_COMMAND_ARGUMENT_ERROR
+condition|)
+block|{
+name|serviceStatus
+operator|.
+name|setDiagnostics
+argument_list|(
+literal|"Service "
+operator|+
+name|appName
+operator|+
+literal|" is already stopped"
+argument_list|)
+expr_stmt|;
+return|return
+name|formatResponse
+argument_list|(
+name|Status
+operator|.
+name|BAD_REQUEST
+argument_list|,
+name|serviceStatus
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 name|serviceStatus
 operator|.
 name|setDiagnostics
@@ -1807,6 +1846,7 @@ operator|+
 name|appName
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|formatResponse

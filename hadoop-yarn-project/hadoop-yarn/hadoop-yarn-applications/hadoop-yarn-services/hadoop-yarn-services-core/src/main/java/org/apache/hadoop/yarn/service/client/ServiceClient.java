@@ -2889,7 +2889,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|EXIT_SUCCESS
+name|EXIT_COMMAND_ARGUMENT_ERROR
 return|;
 block|}
 if|if
@@ -5418,7 +5418,7 @@ name|verifyNoLiveAppInRM
 argument_list|(
 name|serviceName
 argument_list|,
-literal|"thaw"
+literal|"start"
 argument_list|)
 expr_stmt|;
 name|ApplicationId
