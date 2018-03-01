@@ -237,6 +237,15 @@ argument_list|,
 literal|"Executes a given plan."
 argument_list|)
 expr_stmt|;
+name|addValidCommandParameters
+argument_list|(
+name|DiskBalancerCLI
+operator|.
+name|SKIPDATECHECK
+argument_list|,
+literal|"skips the date check and force execute the plan"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    */
 annotation|@
@@ -337,16 +346,51 @@ name|plan
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|skipDateCheck
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|DiskBalancerCLI
+operator|.
+name|SKIPDATECHECK
+argument_list|)
+condition|)
+block|{
+name|skipDateCheck
+operator|=
+literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Skipping date check on this plan. This could mean we are "
+operator|+
+literal|"executing an old plan and may not be the right plan for this "
+operator|+
+literal|"data node."
+argument_list|)
+expr_stmt|;
+block|}
 name|submitPlan
 argument_list|(
 name|planFile
 argument_list|,
 name|planData
+argument_list|,
+name|skipDateCheck
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Submits plan to a given data node.    *    * @param planFile - Plan file name    * @param planData - Plan data in json format    * @throws IOException    */
-DECL|method|submitPlan (final String planFile, final String planData)
+comment|/**    * Submits plan to a given data node.    *    * @param planFile - Plan file name    * @param planData - Plan data in json format    * @param skipDateCheck - skips date check    * @throws IOException    */
+DECL|method|submitPlan (final String planFile, final String planData, boolean skipDateCheck)
 specifier|private
 name|void
 name|submitPlan
@@ -358,6 +402,9 @@ parameter_list|,
 specifier|final
 name|String
 name|planData
+parameter_list|,
+name|boolean
+name|skipDateCheck
 parameter_list|)
 throws|throws
 name|IOException
@@ -421,7 +468,6 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-comment|// TODO : Support skipping date check.
 name|dataNode
 operator|.
 name|submitDiskBalancerPlan
@@ -436,7 +482,7 @@ name|planFile
 argument_list|,
 name|planData
 argument_list|,
-literal|false
+name|skipDateCheck
 argument_list|)
 expr_stmt|;
 block|}

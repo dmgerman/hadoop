@@ -16524,7 +16524,6 @@ name|DATANODE_STATUS_NOT_REGULAR
 argument_list|)
 throw|;
 block|}
-comment|// TODO : Support force option
 name|this
 operator|.
 name|diskBalancer
