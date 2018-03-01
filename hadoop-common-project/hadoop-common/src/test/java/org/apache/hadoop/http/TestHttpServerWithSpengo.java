@@ -1057,9 +1057,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// userA cannot impersonate userC, but for /stacks, /jmx and /conf,
-comment|// they doesn't require users to authorize by default, so they
-comment|// can be accessed.
+comment|// userA cannot impersonate userC, it fails.
 for|for
 control|(
 name|String
@@ -1074,58 +1072,6 @@ block|,
 literal|"jmx"
 block|,
 literal|"conf"
-block|}
-control|)
-block|{
-name|HttpURLConnection
-name|conn
-init|=
-name|authUrl
-operator|.
-name|openConnection
-argument_list|(
-operator|new
-name|URL
-argument_list|(
-name|serverURL
-operator|+
-name|servlet
-operator|+
-literal|"?doAs=userC"
-argument_list|)
-argument_list|,
-name|token
-argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|HttpURLConnection
-operator|.
-name|HTTP_OK
-argument_list|,
-name|conn
-operator|.
-name|getResponseCode
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-comment|// "/logs" and "/logLevel" require admin authorization,
-comment|// only userA has the access.
-for|for
-control|(
-name|String
-name|servlet
-range|:
-operator|new
-name|String
-index|[]
-block|{
-literal|"logLevel"
-block|,
-literal|"logs"
 block|}
 control|)
 block|{
