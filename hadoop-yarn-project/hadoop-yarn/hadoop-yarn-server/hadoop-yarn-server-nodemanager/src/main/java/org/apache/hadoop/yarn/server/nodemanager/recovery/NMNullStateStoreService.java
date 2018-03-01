@@ -1036,7 +1036,17 @@ name|assignedResources
 parameter_list|)
 throws|throws
 name|IOException
-block|{   }
+block|{
+name|updateContainerResourceMapping
+argument_list|(
+name|container
+argument_list|,
+name|resourceType
+argument_list|,
+name|assignedResources
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|initStorage (Configuration conf)
