@@ -820,7 +820,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Get the NN ID of the other node in an HA setup.    *     * @param conf the configuration of this node    * @return the NN ID of the other node in this nameservice    */
+comment|/**    * Get the NN ID of the other nodes in an HA setup.    *     * @param conf the configuration of this node    * @return a list of NN IDs of other nodes in this nameservice    */
 DECL|method|getNameNodeIdOfOtherNodes (Configuration conf, String nsId)
 specifier|public
 specifier|static
@@ -1003,7 +1003,7 @@ return|return
 name|namenodes
 return|;
 block|}
-comment|/**    * Given the configuration for this node, return a Configuration object for    * the other node in an HA setup.    *     * @param myConf the configuration of this node    * @return the configuration of the other node in an HA setup    */
+comment|/**    * Given the configuration for this node, return a list of configurations    * for the other nodes in an HA setup.    *     * @param myConf the configuration of this node    * @return a list of configuration of other nodes in an HA setup    */
 DECL|method|getConfForOtherNodes ( Configuration myConf)
 specifier|public
 specifier|static
@@ -1031,7 +1031,7 @@ name|List
 argument_list|<
 name|String
 argument_list|>
-name|otherNn
+name|otherNodes
 init|=
 name|getNameNodeIdOfOtherNodes
 argument_list|(
@@ -1053,7 +1053,7 @@ argument_list|<
 name|Configuration
 argument_list|>
 argument_list|(
-name|otherNn
+name|otherNodes
 operator|.
 name|size
 argument_list|()
@@ -1089,7 +1089,7 @@ control|(
 name|String
 name|nn
 range|:
-name|otherNn
+name|otherNodes
 control|)
 block|{
 name|Configuration
