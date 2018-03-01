@@ -24,13 +24,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -290,13 +286,13 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Sprintf() to the log iff the log is at debug level. If the log    * is not at debug level, the printf operation is skipped, so    * no time is spent generating the string.    * @param log log to use    * @param text text message    * @param args args arguments to the print statement    */
-DECL|method|debug (Log log, String text, Object... args)
+DECL|method|debug (Logger log, String text, Object... args)
 specifier|public
 specifier|static
 name|void
 name|debug
 parameter_list|(
-name|Log
+name|Logger
 name|log
 parameter_list|,
 name|String
@@ -332,13 +328,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Log an exception (in text and trace) iff the log is at debug    * @param log Log to use    * @param text text message    * @param ex exception    */
-DECL|method|debugEx (Log log, String text, Exception ex)
+DECL|method|debugEx (Logger log, String text, Exception ex)
 specifier|public
 specifier|static
 name|void
 name|debugEx
 parameter_list|(
-name|Log
+name|Logger
 name|log
 parameter_list|,
 name|String
@@ -370,13 +366,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Sprintf() to the log iff the log is at trace level. If the log    * is not at trace level, the printf operation is skipped, so    * no time is spent generating the string.    * @param log log to use    * @param text text message    * @param args args arguments to the print statement    */
-DECL|method|trace (Log log, String text, Object... args)
+DECL|method|trace (Logger log, String text, Object... args)
 specifier|public
 specifier|static
 name|void
 name|trace
 parameter_list|(
-name|Log
+name|Logger
 name|log
 parameter_list|,
 name|String
