@@ -1876,16 +1876,6 @@ argument_list|()
 decl_stmt|;
 name|ServiceApiUtil
 operator|.
-name|validateNameFormat
-argument_list|(
-name|serviceName
-argument_list|,
-name|getConfig
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ServiceApiUtil
-operator|.
 name|validateAndResolveService
 argument_list|(
 name|service
