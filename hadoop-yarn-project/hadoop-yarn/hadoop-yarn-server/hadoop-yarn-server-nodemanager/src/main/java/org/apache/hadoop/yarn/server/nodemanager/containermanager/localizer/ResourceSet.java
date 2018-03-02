@@ -750,6 +750,16 @@ name|LocalResourceRequest
 name|request
 parameter_list|)
 block|{
+comment|// Skip null request when localization failed for running container
+if|if
+condition|(
+name|request
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|pendingResources
 operator|.
 name|remove
