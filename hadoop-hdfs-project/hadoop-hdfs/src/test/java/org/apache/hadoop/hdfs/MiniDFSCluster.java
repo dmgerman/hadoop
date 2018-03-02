@@ -12466,7 +12466,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"injectBlocks is valid only for SimilatedFSDataset"
+literal|"injectBlocks is valid only for"
+operator|+
+literal|" SimulatedFSDataset"
 argument_list|)
 throw|;
 block|}
@@ -12600,7 +12602,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"injectBlocks is valid only for SimilatedFSDataset"
+literal|"injectBlocks is valid only for"
+operator|+
+literal|" SimulatedFSDataset"
 argument_list|)
 throw|;
 block|}
