@@ -191,10 +191,10 @@ comment|/**  * SkipList is an implementation of a data structure for storing a s
 end_comment
 
 begin_class
-DECL|class|DirectoryDiffList
+DECL|class|DiffListBySkipList
 specifier|public
 class|class
-name|DirectoryDiffList
+name|DiffListBySkipList
 implements|implements
 name|DiffList
 argument_list|<
@@ -212,7 +212,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|DirectoryDiffList
+name|DiffListBySkipList
 operator|.
 name|class
 argument_list|)
@@ -778,9 +778,9 @@ name|SkipListNode
 name|head
 decl_stmt|;
 comment|/**    * Constructs a new, empty instance of SkipList.    */
-DECL|method|DirectoryDiffList (int capacity, int interval, int skipLevel)
+DECL|method|DiffListBySkipList (int capacity, int interval, int skipLevel)
 specifier|public
-name|DirectoryDiffList
+name|DiffListBySkipList
 parameter_list|(
 name|int
 name|capacity

@@ -601,6 +601,25 @@ literal|1
 argument_list|)
 return|;
 block|}
+DECL|method|newDiffs ()
+name|DiffList
+argument_list|<
+name|D
+argument_list|>
+name|newDiffs
+parameter_list|()
+block|{
+return|return
+operator|new
+name|DiffListByArrayList
+argument_list|<>
+argument_list|(
+name|INodeDirectory
+operator|.
+name|DEFAULT_FILES_PER_DIRECTORY
+argument_list|)
+return|;
+block|}
 DECL|method|createDiffsIfNeeded ()
 specifier|private
 name|void
@@ -616,14 +635,8 @@ condition|)
 block|{
 name|diffs
 operator|=
-operator|new
-name|DiffListByArrayList
-argument_list|<>
-argument_list|(
-name|INodeDirectory
-operator|.
-name|DEFAULT_FILES_PER_DIRECTORY
-argument_list|)
+name|newDiffs
+argument_list|()
 expr_stmt|;
 block|}
 block|}

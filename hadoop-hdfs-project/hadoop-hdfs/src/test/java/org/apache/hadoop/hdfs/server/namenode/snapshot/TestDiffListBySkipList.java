@@ -299,10 +299,10 @@ comment|/**  * This class tests the DirectoryDiffList API's.  */
 end_comment
 
 begin_class
-DECL|class|TestDirectoryDiffList
+DECL|class|TestDiffListBySkipList
 specifier|public
 class|class
-name|TestDirectoryDiffList
+name|TestDiffListBySkipList
 block|{
 DECL|field|NUM_SNAPSHOTS
 specifier|static
@@ -515,12 +515,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyChildrenList (DirectoryDiffList skip, INodeDirectory dir)
+DECL|method|verifyChildrenList (DiffListBySkipList skip, INodeDirectory dir)
 specifier|static
 name|void
 name|verifyChildrenList
 parameter_list|(
-name|DirectoryDiffList
+name|DiffListBySkipList
 name|skip
 parameter_list|,
 name|INodeDirectory
@@ -649,7 +649,7 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|verifyChildrenList ( DiffList<DirectoryDiff> array, DirectoryDiffList skip, INodeDirectory dir, List<INode> childrenList)
+DECL|method|verifyChildrenList ( DiffList<DirectoryDiff> array, DiffListBySkipList skip, INodeDirectory dir, List<INode> childrenList)
 specifier|static
 name|void
 name|verifyChildrenList
@@ -660,7 +660,7 @@ name|DirectoryDiff
 argument_list|>
 name|array
 parameter_list|,
-name|DirectoryDiffList
+name|DiffListBySkipList
 name|skip
 parameter_list|,
 name|INodeDirectory
@@ -1021,7 +1021,7 @@ operator|+
 name|n
 argument_list|)
 decl_stmt|;
-name|DirectoryDiffList
+name|DiffListBySkipList
 operator|.
 name|LOG
 operator|.
@@ -1033,11 +1033,11 @@ name|root
 argument_list|)
 expr_stmt|;
 specifier|final
-name|DirectoryDiffList
+name|DiffListBySkipList
 name|skipList
 init|=
 operator|new
-name|DirectoryDiffList
+name|DiffListBySkipList
 argument_list|(
 literal|0
 argument_list|,
@@ -1075,7 +1075,7 @@ name|root
 argument_list|)
 decl_stmt|;
 comment|// verify that the both the children list obtained from hdfs and
-comment|// DirectoryDiffList are same
+comment|// DiffListBySkipList are same
 name|verifyChildrenList
 argument_list|(
 name|skipList
@@ -1137,7 +1137,7 @@ operator|+
 name|n
 argument_list|)
 decl_stmt|;
-name|DirectoryDiffList
+name|DiffListBySkipList
 operator|.
 name|LOG
 operator|.
@@ -1308,11 +1308,11 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 specifier|final
-name|DirectoryDiffList
+name|DiffListBySkipList
 name|skipList
 init|=
 operator|new
-name|DirectoryDiffList
+name|DiffListBySkipList
 argument_list|(
 literal|0
 argument_list|,
@@ -1382,7 +1382,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// verify that the both the children list obtained from hdfs and
-comment|// DirectoryDiffList are same
+comment|// DiffListBySkipList are same
 name|verifyChildrenList
 argument_list|(
 name|skipList
@@ -1669,7 +1669,7 @@ operator|+
 name|n
 argument_list|)
 decl_stmt|;
-name|DirectoryDiffList
+name|DiffListBySkipList
 operator|.
 name|LOG
 operator|.
@@ -1681,11 +1681,11 @@ name|root
 argument_list|)
 expr_stmt|;
 specifier|final
-name|DirectoryDiffList
+name|DiffListBySkipList
 name|skipList
 init|=
 operator|new
-name|DirectoryDiffList
+name|DiffListBySkipList
 argument_list|(
 literal|0
 argument_list|,
@@ -1823,7 +1823,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|remove (int i, DirectoryDiffList skip, DiffList<DirectoryDiff> array)
+DECL|method|remove (int i, DiffListBySkipList skip, DiffList<DirectoryDiff> array)
 specifier|static
 name|DirectoryDiff
 name|remove
@@ -1831,7 +1831,7 @@ parameter_list|(
 name|int
 name|i
 parameter_list|,
-name|DirectoryDiffList
+name|DiffListBySkipList
 name|skip
 parameter_list|,
 name|DiffList
@@ -1841,7 +1841,7 @@ argument_list|>
 name|array
 parameter_list|)
 block|{
-name|DirectoryDiffList
+name|DiffListBySkipList
 operator|.
 name|LOG
 operator|.

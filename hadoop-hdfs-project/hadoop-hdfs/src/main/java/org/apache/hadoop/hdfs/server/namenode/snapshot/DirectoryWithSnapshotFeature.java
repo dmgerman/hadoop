@@ -1846,6 +1846,27 @@ name|currentDir
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|newDiffs ()
+name|DiffList
+argument_list|<
+name|DirectoryDiff
+argument_list|>
+name|newDiffs
+parameter_list|()
+block|{
+return|return
+name|DirectoryDiffListFactory
+operator|.
+name|createDiffList
+argument_list|(
+name|INodeDirectory
+operator|.
+name|DEFAULT_FILES_PER_DIRECTORY
+argument_list|)
+return|;
+block|}
 comment|/** Replace the given child in the created/deleted list, if there is any. */
 DECL|method|replaceChild (final ListType type, final INode oldChild, final INode newChild)
 specifier|public
