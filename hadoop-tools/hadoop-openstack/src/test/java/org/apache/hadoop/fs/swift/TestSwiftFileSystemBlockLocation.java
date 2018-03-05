@@ -213,6 +213,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}"
+argument_list|,
 name|location
 argument_list|)
 expr_stmt|;
