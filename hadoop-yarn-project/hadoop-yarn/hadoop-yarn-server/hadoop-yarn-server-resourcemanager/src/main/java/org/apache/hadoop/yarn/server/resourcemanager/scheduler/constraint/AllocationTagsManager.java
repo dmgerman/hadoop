@@ -40,6 +40,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2107,6 +2121,28 @@ operator|.
 name|get
 argument_list|(
 name|nodeId
+argument_list|)
+return|;
+block|}
+comment|/**    * @return all application IDs in a set that currently visible by    * the allocation tags manager.    */
+DECL|method|getAllApplicationIds ()
+specifier|public
+name|Set
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getAllApplicationIds
+parameter_list|()
+block|{
+return|return
+name|ImmutableSet
+operator|.
+name|copyOf
+argument_list|(
+name|perAppNodeMappings
+operator|.
+name|keySet
+argument_list|()
 argument_list|)
 return|;
 block|}

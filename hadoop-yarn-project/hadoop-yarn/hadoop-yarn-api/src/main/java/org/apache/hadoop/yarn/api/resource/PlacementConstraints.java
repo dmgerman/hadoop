@@ -43,20 +43,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
 operator|.
 name|Public
 import|;
@@ -75,6 +61,24 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AllocationTagNamespace
 import|;
 end_import
 
@@ -292,30 +296,6 @@ name|String
 name|NODE_PARTITION
 init|=
 literal|"yarn_node_partition/"
-decl_stmt|;
-DECL|field|APPLICATION_LABEL_PREFIX
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|APPLICATION_LABEL_PREFIX
-init|=
-literal|"yarn_application_label/"
-decl_stmt|;
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|field|APPLICATION_LABEL_INTRA_APPLICATION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APPLICATION_LABEL_INTRA_APPLICATION
-init|=
-name|APPLICATION_LABEL_PREFIX
-operator|+
-literal|"%intra_app%"
 decl_stmt|;
 comment|/**    * Creates a constraint that requires allocations to be placed on nodes that    * satisfy all target expressions within the given scope (e.g., node or rack).    *    * For example, {@code targetIn(RACK, allocationTag("hbase-m"))}, allows    * allocations on nodes that belong to a rack that has at least one tag with    * value "hbase-m".    *    * @param scope the scope within which the target expressions should be    *          satisfied    * @param targetExpressions the expressions that need to be satisfied within    *          the scope    * @return the resulting placement constraint    */
 DECL|method|targetIn (String scope, TargetExpression... targetExpressions)
@@ -605,13 +585,16 @@ name|allocationTags
 argument_list|)
 return|;
 block|}
-comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags. Comparing to      * {@link PlacementTargets#allocationTag(String...)}, this only checks tags      * within the application.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
-DECL|method|allocationTagToIntraApp ( String... allocationTags)
+comment|/**      * Constructs a target expression on a set of allocation tags under      * a certain namespace.      *      * @param namespace namespace of the allocation tags      * @param allocationTags allocation tags      * @return a target expression      */
+DECL|method|allocationTagWithNamespace (String namespace, String... allocationTags)
 specifier|public
 specifier|static
 name|TargetExpression
-name|allocationTagToIntraApp
+name|allocationTagWithNamespace
 parameter_list|(
+name|String
+name|namespace
+parameter_list|,
 name|String
 modifier|...
 name|allocationTags
@@ -625,7 +608,45 @@ name|TargetType
 operator|.
 name|ALLOCATION_TAG
 argument_list|,
-name|APPLICATION_LABEL_INTRA_APPLICATION
+name|namespace
+argument_list|,
+name|allocationTags
+argument_list|)
+return|;
+block|}
+comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags. Comparing to      * {@link PlacementTargets#allocationTag(String...)}, this only checks tags      * within the application.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
+DECL|method|allocationTagToIntraApp ( String... allocationTags)
+specifier|public
+specifier|static
+name|TargetExpression
+name|allocationTagToIntraApp
+parameter_list|(
+name|String
+modifier|...
+name|allocationTags
+parameter_list|)
+block|{
+name|AllocationTagNamespace
+name|selfNs
+init|=
+operator|new
+name|AllocationTagNamespace
+operator|.
+name|Self
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|TargetExpression
+argument_list|(
+name|TargetType
+operator|.
+name|ALLOCATION_TAG
+argument_list|,
+name|selfNs
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|allocationTags
 argument_list|)

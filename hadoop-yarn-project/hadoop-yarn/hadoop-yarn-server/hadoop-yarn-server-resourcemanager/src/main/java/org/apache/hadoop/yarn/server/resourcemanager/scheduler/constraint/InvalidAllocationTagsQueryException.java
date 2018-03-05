@@ -75,6 +75,20 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|InvalidAllocationTagsQueryException (YarnException e)
+specifier|public
+name|InvalidAllocationTagsQueryException
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
