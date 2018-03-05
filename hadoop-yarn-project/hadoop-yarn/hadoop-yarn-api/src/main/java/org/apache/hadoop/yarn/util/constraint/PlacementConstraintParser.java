@@ -1862,7 +1862,7 @@ operator|.
 name|pop
 argument_list|()
 decl_stmt|;
-name|Integer
+name|int
 name|max
 init|=
 name|toInt
@@ -1878,7 +1878,7 @@ operator|.
 name|pop
 argument_list|()
 decl_stmt|;
-name|Integer
+name|int
 name|min
 init|=
 name|toInt
