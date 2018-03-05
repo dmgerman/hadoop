@@ -52,20 +52,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|AmazonS3
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -216,6 +202,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -301,6 +297,24 @@ operator|.
 name|s3a
 operator|.
 name|Constants
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|FailureInjectionPolicy
 operator|.
 name|*
 import|;
@@ -2984,7 +2998,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * retrying v2 list.    * @param fs    * @param key    * @param delimiter    * @return    * @throws IOException    */
+comment|/**    * retrying v2 list.    * @param fs    * @param key    * @param delimiter    * @return    * @throws IOException on error    */
 DECL|method|listObjectsV2 (S3AFileSystem fs, String key, String delimiter)
 specifier|private
 name|ListObjectsV2Result
@@ -3000,10 +3014,6 @@ name|String
 name|delimiter
 parameter_list|)
 throws|throws
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 block|{
 name|ListObjectsV2Request
@@ -3049,44 +3059,6 @@ return|;
 block|}
 argument_list|)
 return|;
-block|}
-DECL|method|clearInconsistency (S3AFileSystem fs)
-specifier|private
-specifier|static
-name|void
-name|clearInconsistency
-parameter_list|(
-name|S3AFileSystem
-name|fs
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|AmazonS3
-name|s3
-init|=
-name|fs
-operator|.
-name|getAmazonS3ClientForTesting
-argument_list|(
-literal|"s3guard"
-argument_list|)
-decl_stmt|;
-name|InconsistentAmazonS3Client
-name|ic
-init|=
-name|InconsistentAmazonS3Client
-operator|.
-name|castFrom
-argument_list|(
-name|s3
-argument_list|)
-decl_stmt|;
-name|ic
-operator|.
-name|clearInconsistency
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 end_class

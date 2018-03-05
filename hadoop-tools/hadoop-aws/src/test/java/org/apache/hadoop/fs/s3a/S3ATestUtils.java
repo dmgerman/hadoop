@@ -422,7 +422,7 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|InconsistentAmazonS3Client
+name|FailureInjectionPolicy
 operator|.
 name|*
 import|;
@@ -2896,7 +2896,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Turn on the inconsistent S3A FS client in a configuration,    * with 100% probability of inconsistency, default delays.    * For this to go live, the paths must include the element    * {@link InconsistentAmazonS3Client#DEFAULT_DELAY_KEY_SUBSTRING}.    * @param conf configuration to patch    * @param delay delay in millis    */
+comment|/**    * Turn on the inconsistent S3A FS client in a configuration,    * with 100% probability of inconsistency, default delays.    * For this to go live, the paths must include the element    * {@link FailureInjectionPolicy#DEFAULT_DELAY_KEY_SUBSTRING}.    * @param conf configuration to patch    * @param delay delay in millis    */
 DECL|method|enableInconsistentS3Client (Configuration conf, long delay)
 specifier|public
 specifier|static

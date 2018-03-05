@@ -745,6 +745,23 @@ do|do
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|retryCount
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"retry #{}"
+argument_list|,
+name|retryCount
+argument_list|)
+expr_stmt|;
+block|}
 comment|// execute the operation, returning if successful
 return|return
 name|operation
@@ -806,13 +823,6 @@ name|caught
 argument_list|)
 expr_stmt|;
 block|}
-name|int
-name|attempts
-init|=
-name|retryCount
-operator|+
-literal|1
-decl_stmt|;
 try|try
 block|{
 comment|// decide action base on operation, invocation count, etc

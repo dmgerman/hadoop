@@ -4316,6 +4316,8 @@ argument_list|)
 return|;
 block|}
 DECL|method|basicFileStatus (Path path, int size, boolean isDir, long newModTime, long newAccessTime)
+specifier|public
+specifier|static
 name|FileStatus
 name|basicFileStatus
 parameter_list|(

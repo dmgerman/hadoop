@@ -198,20 +198,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -304,13 +290,11 @@ specifier|private
 name|S3ObjectInputStream
 name|wrappedStream
 decl_stmt|;
-DECL|field|stats
+DECL|field|context
 specifier|private
 specifier|final
-name|FileSystem
-operator|.
-name|Statistics
-name|stats
+name|S3AReadOpContext
+name|context
 decl_stmt|;
 DECL|field|client
 specifier|private
@@ -329,6 +313,12 @@ specifier|private
 specifier|final
 name|String
 name|key
+decl_stmt|;
+DECL|field|pathStr
+specifier|private
+specifier|final
+name|String
+name|pathStr
 decl_stmt|;
 DECL|field|contentLength
 specifier|private
@@ -390,12 +380,6 @@ name|Constants
 operator|.
 name|DEFAULT_READAHEAD_RANGE
 decl_stmt|;
-DECL|field|invoker
-specifier|private
-specifier|final
-name|Invoker
-name|invoker
-decl_stmt|;
 comment|/**    * This is the actual position within the object, used by    * lazy seek to decide whether to seek on the next read or not.    */
 DECL|field|nextReadPos
 specifier|private
@@ -414,11 +398,14 @@ specifier|private
 name|long
 name|contentRangeStart
 decl_stmt|;
-comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param s3Attributes object attributes from a HEAD request    * @param contentLength length of content    * @param client S3 client to use    * @param stats statistics to update    * @param instrumentation instrumentation to update    * @param readahead readahead bytes    * @param inputPolicy IO policy    * @param invoker preconfigured invoker    */
-DECL|method|S3AInputStream (S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead, S3AInputPolicy inputPolicy, Invoker invoker)
+comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param ctx operation context    * @param s3Attributes object attributes from a HEAD request    * @param contentLength length of content    * @param client S3 client to use    * @param readahead readahead bytes    * @param inputPolicy IO policy    */
+DECL|method|S3AInputStream (S3AReadOpContext ctx, S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client, long readahead, S3AInputPolicy inputPolicy)
 specifier|public
 name|S3AInputStream
 parameter_list|(
+name|S3AReadOpContext
+name|ctx
+parameter_list|,
 name|S3ObjectAttributes
 name|s3Attributes
 parameter_list|,
@@ -428,22 +415,11 @@ parameter_list|,
 name|AmazonS3
 name|client
 parameter_list|,
-name|FileSystem
-operator|.
-name|Statistics
-name|stats
-parameter_list|,
-name|S3AInstrumentation
-name|instrumentation
-parameter_list|,
 name|long
 name|readahead
 parameter_list|,
 name|S3AInputPolicy
 name|inputPolicy
-parameter_list|,
-name|Invoker
-name|invoker
 parameter_list|)
 block|{
 name|Preconditions
@@ -489,6 +465,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|context
+operator|=
+name|ctx
+expr_stmt|;
+name|this
+operator|.
 name|bucket
 operator|=
 name|s3Attributes
@@ -507,6 +489,20 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|pathStr
+operator|=
+name|ctx
+operator|.
+name|dstFileStatus
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|contentLength
 operator|=
 name|contentLength
@@ -516,12 +512,6 @@ operator|.
 name|client
 operator|=
 name|client
-expr_stmt|;
-name|this
-operator|.
-name|stats
-operator|=
-name|stats
 expr_stmt|;
 name|this
 operator|.
@@ -543,6 +533,8 @@ name|this
 operator|.
 name|streamStatistics
 operator|=
+name|ctx
+operator|.
 name|instrumentation
 operator|.
 name|newInputStreamStatistics
@@ -576,12 +568,6 @@ argument_list|(
 name|readahead
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|invoker
-operator|=
-name|invoker
-expr_stmt|;
 block|}
 comment|/**    * Set/update the input policy of the stream.    * This updates the stream statistics.    * @param inputPolicy new input policy.    */
 DECL|method|setInputPolicy (S3AInputPolicy inputPolicy)
@@ -611,6 +597,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param reason reason for reopen    * @param targetPos target position    * @param length length requested    * @throws IOException on any failure to open the object    */
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|reopen (String reason, long targetPos, long length)
 specifier|private
 specifier|synchronized
@@ -776,15 +766,16 @@ decl_stmt|;
 name|S3Object
 name|object
 init|=
-name|invoker
+name|context
 operator|.
-name|retry
+name|getReadInvoker
+argument_list|()
+operator|.
+name|once
 argument_list|(
 name|text
 argument_list|,
 name|uri
-argument_list|,
-literal|true
 argument_list|,
 parameter_list|()
 lambda|->
@@ -954,6 +945,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Adjust the stream to a specific position.    *    * @param targetPos target seek position    * @param length length of content that needs to be read from targetPos    * @throws IOException    */
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|seekInStream (long targetPos, long length)
 specifier|private
 name|void
@@ -1226,6 +1221,10 @@ literal|false
 return|;
 block|}
 comment|/**    * Perform lazy seek and adjust stream to correct position for reading.    *    * @param targetPos position from where data should be read    * @param len length of the content that needs to be read    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|lazySeek (long targetPos, long len)
 specifier|private
 name|void
@@ -1239,6 +1238,29 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+comment|// With S3Guard, the metadatastore gave us metadata for the file in
+comment|// open(), so we use a slightly different retry policy.
+name|Invoker
+name|invoker
+init|=
+name|context
+operator|.
+name|getReadInvoker
+argument_list|()
+decl_stmt|;
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"lazySeek"
+argument_list|,
+name|pathStr
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 comment|//For lazy seek
 name|seekInStream
@@ -1267,6 +1289,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Increment the bytes read counter if there is a stats instance    * and the number of bytes read is more than zero.    * @param bytesRead number of bytes read    */
 DECL|method|incrementBytesRead (long bytesRead)
 specifier|private
@@ -1286,6 +1311,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|context
+operator|.
 name|stats
 operator|!=
 literal|null
@@ -1295,6 +1322,8 @@ operator|>
 literal|0
 condition|)
 block|{
+name|context
+operator|.
 name|stats
 operator|.
 name|incrementBytesRead
@@ -1306,6 +1335,11 @@ block|}
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+comment|// Some retries only happen w/ S3Guard, as intended.
 DECL|method|read ()
 specifier|public
 specifier|synchronized
@@ -1338,9 +1372,6 @@ operator|-
 literal|1
 return|;
 block|}
-name|int
-name|byteRead
-decl_stmt|;
 try|try
 block|{
 name|lazySeek
@@ -1350,7 +1381,52 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|e
+parameter_list|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+comment|// With S3Guard, the metadatastore gave us metadata for the file in
+comment|// open(), so we use a slightly different retry policy.
+comment|// read() may not be likely to fail, but reopen() does a GET which
+comment|// certainly could.
+name|Invoker
+name|invoker
+init|=
+name|context
+operator|.
+name|getReadInvoker
+argument_list|()
+decl_stmt|;
+name|int
 name|byteRead
+init|=
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"read"
+argument_list|,
+name|pathStr
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
+block|{
+name|int
+name|b
+decl_stmt|;
+try|try
+block|{
+name|b
 operator|=
 name|wrappedStream
 operator|.
@@ -1382,7 +1458,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|byteRead
+name|b
 operator|=
 name|wrappedStream
 operator|.
@@ -1390,6 +1466,12 @@ name|read
 argument_list|()
 expr_stmt|;
 block|}
+return|return
+name|b
+return|;
+block|}
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|byteRead
@@ -1422,6 +1504,10 @@ name|byteRead
 return|;
 block|}
 comment|/**    * Handle an IOE on a read by attempting to re-open the stream.    * The filesystem's readException count will be incremented.    * @param ioe exception caught.    * @param length length of data being attempted to read    * @throws IOException any exception thrown on the re-open attempt.    */
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|onReadFailure (IOException ioe, int length)
 specifier|private
 name|void
@@ -1449,17 +1535,6 @@ argument_list|,
 name|uri
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"While trying to read from stream {}"
-argument_list|,
-name|uri
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
 name|streamStatistics
 operator|.
 name|readException
@@ -1478,6 +1553,11 @@ block|}
 comment|/**    * {@inheritDoc}    *    * This updates the statistics on read operations started and whether    * or not the read operation "completed", that is: returned the exact    * number of bytes requested.    * @throws IOException if there are other problems    */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+comment|// Some retries only happen w/ S3Guard, as intended.
 DECL|method|read (byte[] buf, int off, int len)
 specifier|public
 specifier|synchronized
@@ -1564,11 +1644,18 @@ operator|-
 literal|1
 return|;
 block|}
-name|int
-name|bytesRead
+comment|// With S3Guard, the metadatastore gave us metadata for the file in
+comment|// open(), so we use a slightly different retry policy.
+comment|// read() may not be likely to fail, but reopen() does a GET which
+comment|// certainly could.
+name|Invoker
+name|invoker
+init|=
+name|context
+operator|.
+name|getReadInvoker
+argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|streamStatistics
 operator|.
 name|readOperationStarted
@@ -1578,7 +1665,28 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
+name|int
 name|bytesRead
+init|=
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"read"
+argument_list|,
+name|pathStr
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
+block|{
+name|int
+name|bytes
+decl_stmt|;
+try|try
+block|{
+name|bytes
 operator|=
 name|wrappedStream
 operator|.
@@ -1598,13 +1706,6 @@ name|EOFException
 name|e
 parameter_list|)
 block|{
-name|onReadFailure
-argument_list|(
-name|e
-argument_list|,
-name|len
-argument_list|)
-expr_stmt|;
 comment|// the base implementation swallows EOFs.
 return|return
 operator|-
@@ -1624,7 +1725,7 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-name|bytesRead
+name|bytes
 operator|=
 name|wrappedStream
 operator|.
@@ -1638,6 +1739,12 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|bytes
+return|;
+block|}
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|bytesRead
@@ -1767,6 +1874,10 @@ block|}
 block|}
 block|}
 comment|/**    * Close a stream: decide whether to abort or close, based on    * the length of the stream and the current position.    * If a close() is attempted and fails, the operation escalates to    * an abort.    *    * This does not set the {@link #closed} flag.    * @param reason reason for stream being closed; used in messages    * @param length length of the stream.    * @param forceAbort force an abort; used if explicitly requested.    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|closeStream (String reason, long length, boolean forceAbort)
 specifier|private
 name|void
@@ -2347,6 +2458,11 @@ block|}
 comment|/**    * Subclass {@code readFully()} operation which only seeks at the start    * of the series of operations; seeking back at the end.    *    * This is significantly higher performance if multiple read attempts are    * needed to fetch the data, as it does not break the HTTP connection.    *    * To maintain thread safety requirements, this operation is synchronized    * for the duration of the sequence.    * {@inheritDoc}    *    */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+comment|// Some retries only happen w/ S3Guard, as intended.
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|void

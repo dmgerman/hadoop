@@ -301,6 +301,12 @@ comment|/**  * The S3A request retry policy.  *  * This uses the retry options i
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
+comment|// I want a struct of finals, for real.
 DECL|class|S3ARetryPolicy
 specifier|public
 class|class
@@ -308,11 +314,52 @@ name|S3ARetryPolicy
 implements|implements
 name|RetryPolicy
 block|{
+comment|/** Final retry policy we end up with. */
 DECL|field|retryPolicy
 specifier|private
 specifier|final
 name|RetryPolicy
 name|retryPolicy
+decl_stmt|;
+comment|// Retry policies for mapping exceptions to
+comment|/** Base policy from configuration. */
+DECL|field|fixedRetries
+specifier|protected
+specifier|final
+name|RetryPolicy
+name|fixedRetries
+decl_stmt|;
+comment|/** Rejection of all non-idempotent calls except specific failures. */
+DECL|field|retryIdempotentCalls
+specifier|protected
+specifier|final
+name|RetryPolicy
+name|retryIdempotentCalls
+decl_stmt|;
+comment|/** Policy for throttle requests, which are considered repeatable, even for    * non-idempotent calls, as the service rejected the call entirely. */
+DECL|field|throttlePolicy
+specifier|protected
+specifier|final
+name|RetryPolicy
+name|throttlePolicy
+decl_stmt|;
+comment|/** No retry on network and tangible API issues. */
+DECL|field|fail
+specifier|protected
+specifier|final
+name|RetryPolicy
+name|fail
+init|=
+name|RetryPolicies
+operator|.
+name|TRY_ONCE_THEN_FAIL
+decl_stmt|;
+comment|/** Client connectivity: fixed retries without care for idempotency. */
+DECL|field|connectivityFailure
+specifier|protected
+specifier|final
+name|RetryPolicy
+name|connectivityFailure
 decl_stmt|;
 comment|/**    * Instantiate.    * @param conf configuration to read.    */
 DECL|method|S3ARetryPolicy (Configuration conf)
@@ -335,9 +382,8 @@ literal|"Null configuration"
 argument_list|)
 expr_stmt|;
 comment|// base policy from configuration
-name|RetryPolicy
 name|fixedRetries
-init|=
+operator|=
 name|retryUpToMaximumCountWithFixedSleep
 argument_list|(
 name|conf
@@ -366,12 +412,11 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// which is wrapped by a rejection of all non-idempotent calls except
 comment|// for specific failures.
-name|RetryPolicy
 name|retryIdempotentCalls
-init|=
+operator|=
 operator|new
 name|FailNonIOEs
 argument_list|(
@@ -381,13 +426,12 @@ argument_list|(
 name|fixedRetries
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// and a separate policy for throttle requests, which are considered
 comment|// repeatable, even for non-idempotent calls, as the service
 comment|// rejected the call entirely
-name|RetryPolicy
 name|throttlePolicy
-init|=
+operator|=
 name|exponentialBackoffRetry
 argument_list|(
 name|conf
@@ -416,21 +460,55 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
-decl_stmt|;
-comment|// no retry on network and tangible API issues
-name|RetryPolicy
-name|fail
-init|=
-name|RetryPolicies
-operator|.
-name|TRY_ONCE_THEN_FAIL
-decl_stmt|;
+expr_stmt|;
 comment|// client connectivity: fixed retries without care for idempotency
-name|RetryPolicy
 name|connectivityFailure
-init|=
+operator|=
 name|fixedRetries
+expr_stmt|;
+name|Map
+argument_list|<
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|Exception
+argument_list|>
+argument_list|,
+name|RetryPolicy
+argument_list|>
+name|policyMap
+init|=
+name|createExceptionMap
+argument_list|()
 decl_stmt|;
+name|retryPolicy
+operator|=
+name|retryByException
+argument_list|(
+name|retryIdempotentCalls
+argument_list|,
+name|policyMap
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Subclasses can override this like a constructor to change behavior: call    * superclass method, then modify it as needed, and return it.    * @return Map from exception type to RetryPolicy    */
+DECL|method|createExceptionMap ()
+specifier|protected
+name|Map
+argument_list|<
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|Exception
+argument_list|>
+argument_list|,
+name|RetryPolicy
+argument_list|>
+name|createExceptionMap
+parameter_list|()
+block|{
 comment|// the policy map maps the exact classname; subclasses do not
 comment|// inherit policies.
 name|Map
@@ -491,17 +569,6 @@ operator|.
 name|put
 argument_list|(
 name|InterruptedIOException
-operator|.
-name|class
-argument_list|,
-name|fail
-argument_list|)
-expr_stmt|;
-name|policyMap
-operator|.
-name|put
-argument_list|(
-name|AWSRedirectException
 operator|.
 name|class
 argument_list|,
@@ -690,15 +757,9 @@ argument_list|,
 name|throttlePolicy
 argument_list|)
 expr_stmt|;
-name|retryPolicy
-operator|=
-name|retryByException
-argument_list|(
-name|retryIdempotentCalls
-argument_list|,
+return|return
 name|policyMap
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Override
