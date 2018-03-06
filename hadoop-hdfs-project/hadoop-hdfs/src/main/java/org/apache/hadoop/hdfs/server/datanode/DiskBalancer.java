@@ -3797,8 +3797,9 @@ block|{
 name|currentCount
 operator|++
 expr_stmt|;
-name|poolIndex
-operator|=
+name|int
+name|index
+init|=
 name|poolIndex
 operator|++
 operator|%
@@ -3806,7 +3807,7 @@ name|poolIters
 operator|.
 name|size
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|FsVolumeSpi
 operator|.
 name|BlockIterator
@@ -3816,7 +3817,7 @@ name|poolIters
 operator|.
 name|get
 argument_list|(
-name|poolIndex
+name|index
 argument_list|)
 decl_stmt|;
 name|block

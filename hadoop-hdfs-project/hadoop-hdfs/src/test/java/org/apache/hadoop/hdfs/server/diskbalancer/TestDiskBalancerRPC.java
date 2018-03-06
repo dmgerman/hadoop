@@ -532,7 +532,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 import|;
 end_import
 
@@ -1902,16 +1902,18 @@ argument_list|,
 name|dest
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|DiskBalancerTestUtil
 operator|.
 name|getBlockCount
 argument_list|(
 name|source
+argument_list|,
+literal|false
 argument_list|)
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
