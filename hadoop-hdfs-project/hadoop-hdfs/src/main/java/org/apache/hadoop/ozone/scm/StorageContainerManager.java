@@ -3909,6 +3909,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getContainerInfo (String containerName)
+specifier|public
 name|ContainerInfo
 name|getContainerInfo
 parameter_list|(

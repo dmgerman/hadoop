@@ -225,11 +225,6 @@ specifier|private
 name|String
 name|containerFilePath
 decl_stmt|;
-DECL|field|open
-specifier|private
-name|boolean
-name|open
-decl_stmt|;
 DECL|field|hash
 specifier|private
 name|String
@@ -245,13 +240,28 @@ specifier|private
 name|long
 name|maxSize
 decl_stmt|;
+DECL|field|containerID
+specifier|private
+name|Long
+name|containerID
+decl_stmt|;
+DECL|field|state
+specifier|private
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+name|state
+decl_stmt|;
 comment|/**    * Constructs a  ContainerData Object.    *    * @param containerName - Name    */
-DECL|method|ContainerData (String containerName, Configuration conf)
+DECL|method|ContainerData (String containerName, Long containerID, Configuration conf)
 specifier|public
 name|ContainerData
 parameter_list|(
 name|String
 name|containerName
+parameter_list|,
+name|Long
+name|containerID
 parameter_list|,
 name|Configuration
 name|conf
@@ -271,12 +281,6 @@ operator|.
 name|containerName
 operator|=
 name|containerName
-expr_stmt|;
-name|this
-operator|.
-name|open
-operator|=
-literal|true
 expr_stmt|;
 name|this
 operator|.
@@ -309,6 +313,22 @@ argument_list|(
 literal|0L
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|containerID
+operator|=
+name|containerID
+expr_stmt|;
+name|this
+operator|.
+name|state
+operator|=
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|OPEN
+expr_stmt|;
 block|}
 comment|/**    * Constructs a ContainerData object from ProtoBuf classes.    *    * @param protoData - ProtoBuf Message    * @throws IOException    */
 DECL|method|getFromProtBuf ( ContainerProtos.ContainerData protoData, Configuration conf)
@@ -337,6 +357,11 @@ argument_list|(
 name|protoData
 operator|.
 name|getName
+argument_list|()
+argument_list|,
+name|protoData
+operator|.
+name|getContainerID
 argument_list|()
 argument_list|,
 name|conf
@@ -428,28 +453,18 @@ if|if
 condition|(
 name|protoData
 operator|.
-name|hasOpen
+name|hasState
 argument_list|()
 condition|)
 block|{
 name|data
 operator|.
-name|setOpen
+name|setState
 argument_list|(
 name|protoData
 operator|.
-name|getOpen
+name|getState
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|data
-operator|.
-name|setOpen
-argument_list|(
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -547,6 +562,16 @@ name|getContainerName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|builder
+operator|.
+name|setContainerID
+argument_list|(
+name|this
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -612,11 +637,11 @@ expr_stmt|;
 block|}
 name|builder
 operator|.
-name|setOpen
+name|setState
 argument_list|(
 name|this
 operator|.
-name|isOpen
+name|getState
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -696,6 +721,27 @@ argument_list|(
 name|this
 operator|.
 name|getBytesUsed
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|getKeyCount
+argument_list|()
+operator|>=
+literal|0
+condition|)
+block|{
+name|builder
+operator|.
+name|setKeyCount
+argument_list|(
+name|this
+operator|.
+name|getKeyCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -946,6 +992,52 @@ operator|=
 name|containerPath
 expr_stmt|;
 block|}
+comment|/**    * Get container ID.    * @return - container ID.    */
+DECL|method|getContainerID ()
+specifier|public
+specifier|synchronized
+name|Long
+name|getContainerID
+parameter_list|()
+block|{
+return|return
+name|containerID
+return|;
+block|}
+DECL|method|setState (OzoneProtos.LifeCycleState state)
+specifier|public
+specifier|synchronized
+name|void
+name|setState
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+name|state
+parameter_list|)
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|state
+expr_stmt|;
+block|}
+DECL|method|getState ()
+specifier|public
+specifier|synchronized
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+name|getState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|state
+return|;
+block|}
 comment|/**    * checks if the container is open.    * @return - boolean    */
 DECL|method|isOpen ()
 specifier|public
@@ -955,7 +1047,13 @@ name|isOpen
 parameter_list|()
 block|{
 return|return
-name|open
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|OPEN
+operator|==
+name|state
 return|;
 block|}
 comment|/**    * Marks this container as closed.    */
@@ -966,9 +1064,14 @@ name|void
 name|closeContainer
 parameter_list|()
 block|{
-name|setOpen
+comment|// TODO: closed or closing here
+name|setState
 argument_list|(
-literal|false
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|CLOSED
 argument_list|)
 expr_stmt|;
 comment|// Some thing brain dead for now. name + Time stamp of when we get the close
@@ -1022,24 +1125,6 @@ operator|.
 name|hash
 operator|=
 name|hash
-expr_stmt|;
-block|}
-comment|/**    * Sets the open or closed values.    * @param open    */
-DECL|method|setOpen (boolean open)
-specifier|public
-specifier|synchronized
-name|void
-name|setOpen
-parameter_list|(
-name|boolean
-name|open
-parameter_list|)
-block|{
-name|this
-operator|.
-name|open
-operator|=
-name|open
 expr_stmt|;
 block|}
 DECL|method|setMaxSize (long maxSize)
