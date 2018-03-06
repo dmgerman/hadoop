@@ -601,6 +601,10 @@ block|,
 name|DataParam
 operator|.
 name|class
+block|,
+name|UnmaskedPermissionParam
+operator|.
+name|class
 block|}
 argument_list|)
 expr_stmt|;
@@ -617,6 +621,10 @@ name|Class
 index|[]
 block|{
 name|PermissionParam
+operator|.
+name|class
+block|,
+name|UnmaskedPermissionParam
 operator|.
 name|class
 block|}
@@ -1638,6 +1646,52 @@ argument_list|,
 name|HttpFSFileSystem
 operator|.
 name|DEFAULT_PERMISSION
+argument_list|,
+literal|8
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Class for unmaskedpermission parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|UnmaskedPermissionParam
+specifier|public
+specifier|static
+class|class
+name|UnmaskedPermissionParam
+extends|extends
+name|ShortParam
+block|{
+comment|/**      * Parameter name.      */
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+name|HttpFSFileSystem
+operator|.
+name|UNMASKED_PERMISSION_PARAM
+decl_stmt|;
+comment|/**      * Constructor.      */
+DECL|method|UnmaskedPermissionParam ()
+specifier|public
+name|UnmaskedPermissionParam
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|NAME
+argument_list|,
+operator|(
+name|short
+operator|)
+operator|-
+literal|1
 argument_list|,
 literal|8
 argument_list|)

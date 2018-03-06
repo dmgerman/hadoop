@@ -556,6 +556,26 @@ name|server
 operator|.
 name|HttpFSParametersProvider
 operator|.
+name|UnmaskedPermissionParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|http
+operator|.
+name|server
+operator|.
+name|HttpFSParametersProvider
+operator|.
 name|SnapshotNameParam
 import|;
 end_import
@@ -3749,6 +3769,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Short
+name|unmaskedPermission
+init|=
+name|params
+operator|.
+name|get
+argument_list|(
+name|UnmaskedPermissionParam
+operator|.
+name|NAME
+argument_list|,
+name|UnmaskedPermissionParam
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|Boolean
 name|override
 init|=
@@ -3818,6 +3854,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+name|unmaskedPermission
 argument_list|)
 decl_stmt|;
 name|fsExecute
@@ -3831,7 +3869,9 @@ name|AUDIT_LOG
 operator|.
 name|info
 argument_list|(
-literal|"[{}] permission [{}] override [{}] replication [{}] blockSize [{}]"
+literal|"[{}] permission [{}] override [{}] "
+operator|+
+literal|"replication [{}] blockSize [{}] unmaskedpermission [{}]"
 argument_list|,
 operator|new
 name|Object
@@ -3846,6 +3886,8 @@ block|,
 name|replication
 block|,
 name|blockSize
+block|,
+name|unmaskedPermission
 block|}
 argument_list|)
 expr_stmt|;
@@ -4219,6 +4261,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Short
+name|unmaskedPermission
+init|=
+name|params
+operator|.
+name|get
+argument_list|(
+name|UnmaskedPermissionParam
+operator|.
+name|NAME
+argument_list|,
+name|UnmaskedPermissionParam
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|FSOperations
 operator|.
 name|FSMkdirs
@@ -4232,6 +4290,8 @@ argument_list|(
 name|path
 argument_list|,
 name|permission
+argument_list|,
+name|unmaskedPermission
 argument_list|)
 decl_stmt|;
 name|JSONObject
@@ -4248,11 +4308,13 @@ name|AUDIT_LOG
 operator|.
 name|info
 argument_list|(
-literal|"[{}] permission [{}]"
+literal|"[{}] permission [{}] unmaskedpermission [{}]"
 argument_list|,
 name|path
 argument_list|,
 name|permission
+argument_list|,
+name|unmaskedPermission
 argument_list|)
 expr_stmt|;
 name|response

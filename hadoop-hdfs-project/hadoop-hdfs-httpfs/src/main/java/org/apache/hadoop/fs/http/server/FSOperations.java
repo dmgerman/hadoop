@@ -354,6 +354,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|FsCreateModes
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -2377,6 +2393,11 @@ specifier|private
 name|short
 name|permission
 decl_stmt|;
+DECL|field|unmaskedPermission
+specifier|private
+name|short
+name|unmaskedPermission
+decl_stmt|;
 DECL|field|override
 specifier|private
 name|boolean
@@ -2392,8 +2413,8 @@ specifier|private
 name|long
 name|blockSize
 decl_stmt|;
-comment|/**      * Creates a Create executor.      *      * @param is input stream to for the file to create.      * @param path path of the file to create.      * @param perm permission for the file.      * @param override if the file should be overriden if it already exist.      * @param repl the replication factor for the file.      * @param blockSize the block size for the file.      */
-DECL|method|FSCreate (InputStream is, String path, short perm, boolean override, short repl, long blockSize)
+comment|/**      * Creates a Create executor.      *      * @param is input stream to for the file to create.      * @param path path of the file to create.      * @param perm permission for the file.      * @param override if the file should be overriden if it already exist.      * @param repl the replication factor for the file.      * @param blockSize the block size for the file.      * @param unmaskedPerm unmasked permissions for the file      */
+DECL|method|FSCreate (InputStream is, String path, short perm, boolean override, short repl, long blockSize, short unmaskedPerm)
 specifier|public
 name|FSCreate
 parameter_list|(
@@ -2414,6 +2435,9 @@ name|repl
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|short
+name|unmaskedPerm
 parameter_list|)
 block|{
 name|this
@@ -2437,6 +2461,12 @@ operator|.
 name|permission
 operator|=
 name|perm
+expr_stmt|;
+name|this
+operator|.
+name|unmaskedPermission
+operator|=
+name|unmaskedPerm
 expr_stmt|;
 name|this
 operator|.
@@ -2516,6 +2546,30 @@ argument_list|(
 name|permission
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|unmaskedPermission
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|fsPermission
+operator|=
+name|FsCreateModes
+operator|.
+name|create
+argument_list|(
+name|fsPermission
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+name|unmaskedPermission
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|int
 name|bufferSize
 init|=
@@ -3234,8 +3288,13 @@ specifier|private
 name|short
 name|permission
 decl_stmt|;
-comment|/**      * Creates a mkdirs executor.      *      * @param path directory path to create.      * @param permission permission to use.      */
-DECL|method|FSMkdirs (String path, short permission)
+DECL|field|unmaskedPermission
+specifier|private
+name|short
+name|unmaskedPermission
+decl_stmt|;
+comment|/**      * Creates a mkdirs executor.      *      * @param path directory path to create.      * @param permission permission to use.      * @param unmaskedPermission unmasked permissions for the directory      */
+DECL|method|FSMkdirs (String path, short permission, short unmaskedPermission)
 specifier|public
 name|FSMkdirs
 parameter_list|(
@@ -3244,6 +3303,9 @@ name|path
 parameter_list|,
 name|short
 name|permission
+parameter_list|,
+name|short
+name|unmaskedPermission
 parameter_list|)
 block|{
 name|this
@@ -3261,6 +3323,12 @@ operator|.
 name|permission
 operator|=
 name|permission
+expr_stmt|;
+name|this
+operator|.
+name|unmaskedPermission
+operator|=
+name|unmaskedPermission
 expr_stmt|;
 block|}
 comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the mkdirs operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occurred.      */
@@ -3286,6 +3354,30 @@ argument_list|(
 name|permission
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|unmaskedPermission
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|fsPermission
+operator|=
+name|FsCreateModes
+operator|.
+name|create
+argument_list|(
+name|fsPermission
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+name|unmaskedPermission
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|boolean
 name|mkdirs
 init|=

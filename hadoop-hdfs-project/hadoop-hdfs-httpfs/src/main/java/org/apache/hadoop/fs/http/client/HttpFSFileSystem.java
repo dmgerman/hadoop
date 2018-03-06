@@ -935,6 +935,15 @@ name|PERMISSION_PARAM
 init|=
 literal|"permission"
 decl_stmt|;
+DECL|field|UNMASKED_PERMISSION_PARAM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UNMASKED_PERMISSION_PARAM
+init|=
+literal|"unmaskedpermission"
+decl_stmt|;
 DECL|field|ACLSPEC_PARAM
 specifier|public
 specifier|static
