@@ -1952,19 +1952,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 assert|assert
+operator|!
 operator|(
 name|isDirectory
 argument_list|()
 operator|&&
-name|getSymlink
+name|isSymlink
 argument_list|()
-operator|==
-literal|null
 operator|)
-operator|||
-operator|!
-name|isDirectory
-argument_list|()
+operator|:
+literal|"A directory cannot be a symlink"
 assert|;
 block|}
 comment|/**    * Write instance encoded as protobuf to stream.    * @param out Output stream    * @see PBHelper#convert(FileStatus)    * @deprecated Use the {@link PBHelper} and protobuf serialization directly.    */
