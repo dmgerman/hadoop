@@ -712,6 +712,30 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|logaggregation
+operator|.
+name|tracker
+operator|.
+name|NMLogAggregationStatusTracker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|resourceplugin
 operator|.
 name|ResourcePluginManager
@@ -3624,6 +3648,11 @@ specifier|private
 name|ResourcePluginManager
 name|resourcePluginManager
 decl_stmt|;
+DECL|field|nmLogAggregationStatusTracker
+specifier|private
+name|NMLogAggregationStatusTracker
+name|nmLogAggregationStatusTracker
+decl_stmt|;
 DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager, NMStateStoreService stateStore, boolean isDistSchedulingEnabled, Configuration conf)
 specifier|public
 name|NMContext
@@ -4409,6 +4438,34 @@ name|deletionService
 operator|=
 name|deletionService
 expr_stmt|;
+block|}
+DECL|method|setNMLogAggregationStatusTracker ( NMLogAggregationStatusTracker nmLogAggregationStatusTracker)
+specifier|public
+name|void
+name|setNMLogAggregationStatusTracker
+parameter_list|(
+name|NMLogAggregationStatusTracker
+name|nmLogAggregationStatusTracker
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nmLogAggregationStatusTracker
+operator|=
+name|nmLogAggregationStatusTracker
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNMLogAggregationStatusTracker ()
+specifier|public
+name|NMLogAggregationStatusTracker
+name|getNMLogAggregationStatusTracker
+parameter_list|()
+block|{
+return|return
+name|nmLogAggregationStatusTracker
+return|;
 block|}
 block|}
 comment|/**    * @return the node health checker    */

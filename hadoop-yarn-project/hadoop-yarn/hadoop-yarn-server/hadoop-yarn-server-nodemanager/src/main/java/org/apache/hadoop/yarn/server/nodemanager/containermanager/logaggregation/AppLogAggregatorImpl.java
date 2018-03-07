@@ -2500,6 +2500,8 @@ argument_list|(
 name|logAggregationStatus
 argument_list|,
 name|diagnosticMessage
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 if|if
@@ -2531,11 +2533,13 @@ argument_list|(
 name|finalLogAggregationStatus
 argument_list|,
 literal|""
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|sendLogAggregationReportInternal ( LogAggregationStatus logAggregationStatus, String diagnosticMessage)
+DECL|method|sendLogAggregationReportInternal ( LogAggregationStatus logAggregationStatus, String diagnosticMessage, boolean finalized)
 specifier|private
 name|void
 name|sendLogAggregationReportInternal
@@ -2545,6 +2549,9 @@ name|logAggregationStatus
 parameter_list|,
 name|String
 name|diagnosticMessage
+parameter_list|,
+name|boolean
+name|finalized
 parameter_list|)
 block|{
 name|LogAggregationReport
@@ -2590,6 +2597,29 @@ operator|.
 name|add
 argument_list|(
 name|report
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|context
+operator|.
+name|getNMLogAggregationStatusTracker
+argument_list|()
+operator|.
+name|updateLogAggregationStatus
+argument_list|(
+name|appId
+argument_list|,
+name|logAggregationStatus
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|,
+name|diagnosticMessage
+argument_list|,
+name|finalized
 argument_list|)
 expr_stmt|;
 block|}
