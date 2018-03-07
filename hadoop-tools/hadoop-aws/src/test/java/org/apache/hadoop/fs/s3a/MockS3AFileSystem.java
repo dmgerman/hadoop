@@ -80,6 +80,22 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
+name|UploadPartRequest
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -1181,6 +1197,17 @@ parameter_list|)
 block|{
 comment|// no-op
 block|}
+annotation|@
+name|Override
+DECL|method|setOptionalUploadPartRequestParameters ( UploadPartRequest request)
+specifier|protected
+name|void
+name|setOptionalUploadPartRequestParameters
+parameter_list|(
+name|UploadPartRequest
+name|request
+parameter_list|)
+block|{   }
 annotation|@
 name|Override
 annotation|@
