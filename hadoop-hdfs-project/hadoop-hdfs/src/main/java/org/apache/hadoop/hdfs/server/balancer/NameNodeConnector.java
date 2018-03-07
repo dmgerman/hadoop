@@ -1146,7 +1146,7 @@ name|bytesMoved
 return|;
 block|}
 comment|/** @return blocks with locations. */
-DECL|method|getBlocks (DatanodeInfo datanode, long size)
+DECL|method|getBlocks (DatanodeInfo datanode, long size, long minBlockSize)
 specifier|public
 name|BlocksWithLocations
 name|getBlocks
@@ -1156,6 +1156,9 @@ name|datanode
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|long
+name|minBlockSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -1168,6 +1171,8 @@ argument_list|(
 name|datanode
 argument_list|,
 name|size
+argument_list|,
+name|minBlockSize
 argument_list|)
 return|;
 block|}

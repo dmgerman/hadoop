@@ -4161,6 +4161,8 @@ name|getDatanodeInfo
 argument_list|()
 argument_list|,
 name|size
+argument_list|,
+name|getBlocksMinBlockSize
 argument_list|)
 decl_stmt|;
 if|if

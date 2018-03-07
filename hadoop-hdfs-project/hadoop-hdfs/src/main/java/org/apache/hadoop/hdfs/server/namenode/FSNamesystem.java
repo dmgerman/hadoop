@@ -10231,7 +10231,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * return a list of blocks& their locations on<code>datanode</code> whose    * total size is<code>size</code>    *    * @param datanode on which blocks are located    * @param size total size of blocks    */
-DECL|method|getBlocks (DatanodeID datanode, long size)
+DECL|method|getBlocks (DatanodeID datanode, long size, long minimumBlockSize)
 specifier|public
 name|BlocksWithLocations
 name|getBlocks
@@ -10241,6 +10241,9 @@ name|datanode
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|long
+name|minimumBlockSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -10273,6 +10276,8 @@ argument_list|(
 name|datanode
 argument_list|,
 name|size
+argument_list|,
+name|minimumBlockSize
 argument_list|)
 return|;
 block|}

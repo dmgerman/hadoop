@@ -826,7 +826,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getBlocks (DatanodeInfo datanode, long size)
+DECL|method|getBlocks (DatanodeInfo datanode, long size, long minBlockSize)
 specifier|public
 name|BlocksWithLocations
 name|getBlocks
@@ -836,6 +836,9 @@ name|datanode
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|long
+name|minBlockSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -864,6 +867,11 @@ operator|.
 name|setSize
 argument_list|(
 name|size
+argument_list|)
+operator|.
+name|setMinBlockSize
+argument_list|(
+name|minBlockSize
 argument_list|)
 operator|.
 name|build

@@ -2294,15 +2294,6 @@ specifier|private
 name|int
 name|numBlocksPerIteration
 decl_stmt|;
-comment|/**    * Minimum size that a block can be sent to Balancer through getBlocks.    * And after HDFS-8824, the small blocks are unused anyway, so there's no    * point to send them to balancer.    */
-DECL|field|getBlocksMinBlockSize
-specifier|private
-name|long
-name|getBlocksMinBlockSize
-init|=
-operator|-
-literal|1
-decl_stmt|;
 comment|/**    * Progress of the Reconstruction queues initialisation.    */
 DECL|field|reconstructionQueuesInitProgress
 specifier|private
@@ -2906,23 +2897,6 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT_DEFAULT
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|getBlocksMinBlockSize
-operator|=
-name|conf
-operator|.
-name|getLongBytes
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_GETBLOCKS_MIN_BLOCK_SIZE_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_BALANCER_GETBLOCKS_MIN_BLOCK_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -7515,7 +7489,7 @@ name|replication
 return|;
 block|}
 comment|/** Get all blocks with location information from a datanode. */
-DECL|method|getBlocksWithLocations (final DatanodeID datanode, final long size)
+DECL|method|getBlocksWithLocations (final DatanodeID datanode, final long size, final long minBlockSize)
 specifier|public
 name|BlocksWithLocations
 name|getBlocksWithLocations
@@ -7527,6 +7501,10 @@ parameter_list|,
 specifier|final
 name|long
 name|size
+parameter_list|,
+specifier|final
+name|long
+name|minBlockSize
 parameter_list|)
 throws|throws
 name|UnregisteredNodeException
@@ -7683,7 +7661,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|<
-name|getBlocksMinBlockSize
+name|minBlockSize
 condition|)
 block|{
 continue|continue;
@@ -7755,7 +7733,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|<
-name|getBlocksMinBlockSize
+name|minBlockSize
 condition|)
 block|{
 continue|continue;

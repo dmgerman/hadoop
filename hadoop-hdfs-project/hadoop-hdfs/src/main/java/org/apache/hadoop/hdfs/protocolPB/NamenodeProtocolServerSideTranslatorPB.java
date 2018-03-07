@@ -871,6 +871,11 @@ name|request
 operator|.
 name|getSize
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getMinBlockSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

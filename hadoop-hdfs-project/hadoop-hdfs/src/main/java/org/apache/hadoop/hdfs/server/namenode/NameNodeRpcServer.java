@@ -4942,7 +4942,7 @@ comment|/////////////////////////////////////////////////////
 annotation|@
 name|Override
 comment|// NamenodeProtocol
-DECL|method|getBlocks (DatanodeInfo datanode, long size)
+DECL|method|getBlocks (DatanodeInfo datanode, long size, long minBlockSize)
 specifier|public
 name|BlocksWithLocations
 name|getBlocks
@@ -4952,6 +4952,9 @@ name|datanode
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|long
+name|minBlockSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -4960,6 +4963,23 @@ if|if
 condition|(
 name|size
 operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unexpected not positive size: "
+operator|+
+name|size
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|minBlockSize
+operator|<
 literal|0
 condition|)
 block|{
@@ -4989,6 +5009,8 @@ argument_list|(
 name|datanode
 argument_list|,
 name|size
+argument_list|,
+name|minBlockSize
 argument_list|)
 return|;
 block|}
