@@ -777,27 +777,27 @@ argument_list|()
 operator|+
 literal|"{"
 operator|+
-literal|"\n  fileLength="
+literal|";  fileLength="
 operator|+
 name|fileLength
 operator|+
-literal|"\n  underConstruction="
+literal|";  underConstruction="
 operator|+
 name|underConstruction
 operator|+
-literal|"\n  blocks="
+literal|";  blocks="
 operator|+
 name|blocks
 operator|+
-literal|"\n  lastLocatedBlock="
+literal|";  lastLocatedBlock="
 operator|+
 name|lastLocatedBlock
 operator|+
-literal|"\n  isLastBlockComplete="
+literal|";  isLastBlockComplete="
 operator|+
 name|isLastBlockComplete
 operator|+
-literal|"\n  ecPolicy="
+literal|";  ecPolicy="
 operator|+
 name|ecPolicy
 operator|+
