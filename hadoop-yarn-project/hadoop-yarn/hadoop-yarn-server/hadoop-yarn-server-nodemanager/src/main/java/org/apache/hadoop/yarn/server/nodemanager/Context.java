@@ -276,30 +276,6 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
-operator|.
-name|tracker
-operator|.
-name|NMLogAggregationStatusTracker
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
 name|resourceplugin
 operator|.
 name|ResourcePluginManager
@@ -630,11 +606,6 @@ function_decl|;
 DECL|method|getNMTimelinePublisher ()
 name|NMTimelinePublisher
 name|getNMTimelinePublisher
-parameter_list|()
-function_decl|;
-DECL|method|getNMLogAggregationStatusTracker ()
-name|NMLogAggregationStatusTracker
-name|getNMLogAggregationStatusTracker
 parameter_list|()
 function_decl|;
 DECL|method|getContainerExecutor ()

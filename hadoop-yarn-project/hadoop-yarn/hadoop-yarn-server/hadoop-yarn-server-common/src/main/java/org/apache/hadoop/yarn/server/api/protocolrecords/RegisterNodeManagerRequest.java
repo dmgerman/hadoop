@@ -515,29 +515,6 @@ name|Resource
 name|physicalResource
 parameter_list|)
 function_decl|;
-DECL|method|getLogAggregationReportsForApps ()
-specifier|public
-specifier|abstract
-name|List
-argument_list|<
-name|LogAggregationReport
-argument_list|>
-name|getLogAggregationReportsForApps
-parameter_list|()
-function_decl|;
-DECL|method|setLogAggregationReportsForApps ( List<LogAggregationReport> logAggregationReportsForApps)
-specifier|public
-specifier|abstract
-name|void
-name|setLogAggregationReportsForApps
-parameter_list|(
-name|List
-argument_list|<
-name|LogAggregationReport
-argument_list|>
-name|logAggregationReportsForApps
-parameter_list|)
-function_decl|;
 block|}
 end_class
 
