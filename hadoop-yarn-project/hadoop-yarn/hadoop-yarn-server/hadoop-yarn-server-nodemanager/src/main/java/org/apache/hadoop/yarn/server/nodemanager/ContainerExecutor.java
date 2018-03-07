@@ -116,6 +116,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -1353,8 +1363,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * This method writes out the launch environment of a container to the    * default container launch script. For the default container script path see    * {@link ContainerLaunch#CONTAINER_SCRIPT}.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run    * @param logDir the log dir to which to copy debugging information    * @param user the username of the job owner    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
-DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user)
+comment|/**    * This method writes out the launch environment of a container to the    * default container launch script. For the default container script path see    * {@link ContainerLaunch#CONTAINER_SCRIPT}.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run    * @param logDir the log dir to which to copy debugging information    * @param user the username of the job owner    * @param nmVars the set of environment vars that are explicitly set by NM    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
+DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user, LinkedHashSet<String> nmVars)
 specifier|public
 name|void
 name|writeLaunchEnv
@@ -1392,6 +1402,12 @@ name|logDir
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|LinkedHashSet
+argument_list|<
+name|String
+argument_list|>
+name|nmVars
 parameter_list|)
 throws|throws
 name|IOException
@@ -1415,13 +1431,15 @@ argument_list|,
 name|ContainerLaunch
 operator|.
 name|CONTAINER_SCRIPT
+argument_list|,
+name|nmVars
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method writes out the launch environment of a container to a specified    * path.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run    * @param logDir the log dir to which to copy debugging information    * @param user the username of the job owner    * @param outFilename the path to which to write the launch environment    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
+comment|/**    * This method writes out the launch environment of a container to a specified    * path.    *    * @param out the output stream to which the environment is written (usually    * a script file which will be executed by the Launcher)    * @param environment the environment variables and their values    * @param resources the resources which have been localized for this    * container. Symlinks will be created to these localized resources    * @param command the command that will be run    * @param logDir the log dir to which to copy debugging information    * @param user the username of the job owner    * @param outFilename the path to which to write the launch environment    * @param nmVars the set of environment vars that are explicitly set by NM    * @throws IOException if any errors happened writing to the OutputStream,    * while creating symlinks    */
 annotation|@
 name|VisibleForTesting
-DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user, String outFilename)
+DECL|method|writeLaunchEnv (OutputStream out, Map<String, String> environment, Map<Path, List<String>> resources, List<String> command, Path logDir, String user, String outFilename, LinkedHashSet<String> nmVars)
 specifier|public
 name|void
 name|writeLaunchEnv
@@ -1462,15 +1480,16 @@ name|user
 parameter_list|,
 name|String
 name|outFilename
+parameter_list|,
+name|LinkedHashSet
+argument_list|<
+name|String
+argument_list|>
+name|nmVars
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|updateEnvForWhitelistVars
-argument_list|(
-name|environment
-argument_list|)
-expr_stmt|;
 name|ContainerLaunch
 operator|.
 name|ShellScriptBuilder
@@ -1522,6 +1541,84 @@ argument_list|(
 literal|"Setting up env variables"
 argument_list|)
 expr_stmt|;
+comment|// Whitelist environment variables are treated specially.
+comment|// Only add them if they are not already defined in the environment.
+comment|// Add them using special syntax to prevent them from eclipsing
+comment|// variables that may be set explicitly in the container image (e.g,
+comment|// in a docker image).  Put these before the others to ensure the
+comment|// correct expansion is used.
+for|for
+control|(
+name|String
+name|var
+range|:
+name|whitelistVars
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|environment
+operator|.
+name|containsKey
+argument_list|(
+name|var
+argument_list|)
+condition|)
+block|{
+name|String
+name|val
+init|=
+name|getNMEnvVar
+argument_list|(
+name|var
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|val
+operator|!=
+literal|null
+condition|)
+block|{
+name|sb
+operator|.
+name|whitelistedEnv
+argument_list|(
+name|var
+argument_list|,
+name|val
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|// Now write vars that were set explicitly by nodemanager, preserving
+comment|// the order they were written in.
+for|for
+control|(
+name|String
+name|nmEnvVar
+range|:
+name|nmVars
+control|)
+block|{
+name|sb
+operator|.
+name|env
+argument_list|(
+name|nmEnvVar
+argument_list|,
+name|environment
+operator|.
+name|get
+argument_list|(
+name|nmEnvVar
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Now write the remaining environment variables.
 for|for
 control|(
 name|Map
@@ -1545,6 +1642,20 @@ name|entrySet
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|nmVars
+operator|.
+name|contains
+argument_list|(
+name|env
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+condition|)
+block|{
 name|sb
 operator|.
 name|env
@@ -1560,6 +1671,55 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+comment|// Add the whitelist vars to the environment.  Do this after writing
+comment|// environment variables so they are not written twice.
+for|for
+control|(
+name|String
+name|var
+range|:
+name|whitelistVars
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|environment
+operator|.
+name|containsKey
+argument_list|(
+name|var
+argument_list|)
+condition|)
+block|{
+name|String
+name|val
+init|=
+name|getNMEnvVar
+argument_list|(
+name|var
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|val
+operator|!=
+literal|null
+condition|)
+block|{
+name|environment
+operator|.
+name|put
+argument_list|(
+name|var
+argument_list|,
+name|val
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 if|if
@@ -2560,68 +2720,6 @@ operator|.
 name|unlock
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-comment|/**    * Propagate variables from the nodemanager's environment into the    * container's environment if unspecified by the container.    * @param env the environment to update    * @see org.apache.hadoop.yarn.conf.YarnConfiguration#NM_ENV_WHITELIST    */
-DECL|method|updateEnvForWhitelistVars (Map<String, String> env)
-specifier|protected
-name|void
-name|updateEnvForWhitelistVars
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|env
-parameter_list|)
-block|{
-for|for
-control|(
-name|String
-name|var
-range|:
-name|whitelistVars
-control|)
-block|{
-if|if
-condition|(
-operator|!
-name|env
-operator|.
-name|containsKey
-argument_list|(
-name|var
-argument_list|)
-condition|)
-block|{
-name|String
-name|val
-init|=
-name|getNMEnvVar
-argument_list|(
-name|var
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|val
-operator|!=
-literal|null
-condition|)
-block|{
-name|env
-operator|.
-name|put
-argument_list|(
-name|var
-argument_list|,
-name|val
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 block|}
 block|}
 annotation|@
