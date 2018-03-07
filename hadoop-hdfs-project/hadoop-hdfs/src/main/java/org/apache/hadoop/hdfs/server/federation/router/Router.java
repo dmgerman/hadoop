@@ -523,13 +523,13 @@ name|ActiveNamenodeResolver
 name|namenodeResolver
 decl_stmt|;
 comment|/** Updates the namenode status in the namenode resolver. */
-DECL|field|namenodeHearbeatServices
+DECL|field|namenodeHeartbeatServices
 specifier|private
 name|Collection
 argument_list|<
 name|NamenodeHeartbeatService
 argument_list|>
-name|namenodeHearbeatServices
+name|namenodeHeartbeatServices
 decl_stmt|;
 comment|/** Router metrics. */
 DECL|field|metrics
@@ -865,9 +865,9 @@ block|{
 comment|// Create status updater for each monitored Namenode
 name|this
 operator|.
-name|namenodeHearbeatServices
+name|namenodeHeartbeatServices
 operator|=
-name|createNamenodeHearbeatServices
+name|createNamenodeHeartbeatServices
 argument_list|()
 expr_stmt|;
 for|for
@@ -877,7 +877,7 @@ name|hearbeatService
 range|:
 name|this
 operator|.
-name|namenodeHearbeatServices
+name|namenodeHeartbeatServices
 control|)
 block|{
 name|addService
@@ -890,7 +890,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|namenodeHearbeatServices
+name|namenodeHeartbeatServices
 operator|.
 name|isEmpty
 argument_list|()
@@ -1458,8 +1458,8 @@ name|Collection
 argument_list|<
 name|NamenodeHeartbeatService
 argument_list|>
-DECL|method|createNamenodeHearbeatServices ()
-name|createNamenodeHearbeatServices
+DECL|method|createNamenodeHeartbeatServices ()
+name|createNamenodeHeartbeatServices
 parameter_list|()
 block|{
 name|Map
@@ -2114,6 +2114,23 @@ return|return
 name|this
 operator|.
 name|quotaUpdateService
+return|;
+block|}
+comment|/**    * Get the list of namenode heartbeat service.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getNamenodeHearbeatServices ()
+name|Collection
+argument_list|<
+name|NamenodeHeartbeatService
+argument_list|>
+name|getNamenodeHearbeatServices
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|namenodeHeartbeatServices
 return|;
 block|}
 block|}
