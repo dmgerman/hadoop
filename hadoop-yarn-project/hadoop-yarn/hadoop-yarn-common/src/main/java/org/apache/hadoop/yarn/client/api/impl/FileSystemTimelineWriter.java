@@ -56,6 +56,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -2152,6 +2162,9 @@ argument_list|()
 operator|.
 name|createGenerator
 argument_list|(
+operator|(
+name|OutputStream
+operator|)
 name|stream
 argument_list|)
 expr_stmt|;

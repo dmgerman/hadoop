@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -866,6 +876,9 @@ name|factory
 operator|.
 name|createGenerator
 argument_list|(
+operator|(
+name|OutputStream
+operator|)
 name|ostream
 argument_list|,
 name|JsonEncoding

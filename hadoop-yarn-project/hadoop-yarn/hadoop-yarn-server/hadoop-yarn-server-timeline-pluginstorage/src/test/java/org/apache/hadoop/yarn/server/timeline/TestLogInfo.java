@@ -340,6 +340,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|charset
@@ -1571,6 +1581,9 @@ argument_list|()
 operator|.
 name|createGenerator
 argument_list|(
+operator|(
+name|OutputStream
+operator|)
 name|outStream
 argument_list|)
 expr_stmt|;
@@ -1656,6 +1669,9 @@ argument_list|()
 operator|.
 name|createGenerator
 argument_list|(
+operator|(
+name|OutputStream
+operator|)
 name|outStreamDomain
 argument_list|)
 decl_stmt|;

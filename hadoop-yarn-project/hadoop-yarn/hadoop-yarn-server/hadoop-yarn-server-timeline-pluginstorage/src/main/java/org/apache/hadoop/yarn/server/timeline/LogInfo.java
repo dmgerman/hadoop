@@ -366,6 +366,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -879,6 +889,9 @@ name|jsonFactory
 operator|.
 name|createParser
 argument_list|(
+operator|(
+name|InputStream
+operator|)
 name|in
 argument_list|)
 expr_stmt|;
