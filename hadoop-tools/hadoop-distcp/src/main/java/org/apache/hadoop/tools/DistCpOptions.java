@@ -1963,22 +1963,6 @@ condition|(
 operator|!
 name|syncFolder
 operator|&&
-name|skipCRC
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Skip CRC is valid only with update options"
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|syncFolder
-operator|&&
 name|append
 condition|)
 block|{

@@ -1260,7 +1260,7 @@ init|=
 operator|new
 name|StringBuilder
 argument_list|(
-literal|"Check-sum mismatch between "
+literal|"Checksum mismatch between "
 argument_list|)
 operator|.
 name|append
@@ -1283,6 +1283,76 @@ argument_list|(
 literal|"."
 argument_list|)
 decl_stmt|;
+name|boolean
+name|addSkipHint
+init|=
+literal|false
+decl_stmt|;
+name|String
+name|srcScheme
+init|=
+name|sourceFS
+operator|.
+name|getScheme
+argument_list|()
+decl_stmt|;
+name|String
+name|targetScheme
+init|=
+name|targetFS
+operator|.
+name|getScheme
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|srcScheme
+operator|.
+name|equals
+argument_list|(
+name|targetScheme
+argument_list|)
+operator|&&
+operator|!
+operator|(
+name|srcScheme
+operator|.
+name|contains
+argument_list|(
+literal|"hdfs"
+argument_list|)
+operator|&&
+name|targetScheme
+operator|.
+name|contains
+argument_list|(
+literal|"hdfs"
+argument_list|)
+operator|)
+condition|)
+block|{
+comment|// the filesystems are different and they aren't both hdfs connectors
+name|errorMessage
+operator|.
+name|append
+argument_list|(
+literal|"Source and destination filesystems are of"
+operator|+
+literal|" different types\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Their checksum algorithms may be incompatible"
+argument_list|)
+expr_stmt|;
+name|addSkipHint
+operator|=
+literal|true
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|sourceFS
@@ -1310,24 +1380,38 @@ name|errorMessage
 operator|.
 name|append
 argument_list|(
-literal|" Source and target differ in block-size."
+literal|" Source and target differ in block-size.\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
 literal|" Use -pb to preserve block-sizes during copy."
 argument_list|)
+expr_stmt|;
+name|addSkipHint
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|addSkipHint
+condition|)
+block|{
+name|errorMessage
 operator|.
 name|append
 argument_list|(
-literal|" Alternatively, skip checksum-checks altogether, using -skipCrc."
+literal|" You can skip checksum-checks altogether "
+operator|+
+literal|" with -skipcrccheck.\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
 literal|" (NOTE: By skipping checksums, one runs the risk of "
 operator|+
-literal|"masking data-corruption during file-transfer.)"
+literal|"masking data-corruption during file-transfer.)\n"
 argument_list|)
 expr_stmt|;
 block|}
