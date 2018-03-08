@@ -62,7 +62,11 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|AuthenticationWithProxyUserFilter
+name|authentication
+operator|.
+name|server
+operator|.
+name|AuthenticationFilter
 import|;
 end_import
 
@@ -87,7 +91,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Filter initializer to initialize {@link AuthenticationWithProxyUserFilter}  * for ATSv2 timeline reader server with timeline service specific  * configurations.  */
+comment|/**  * Filter initializer to initialize {@link AuthenticationFilter}  * for ATSv2 timeline reader server with timeline service specific  * configurations.  */
 end_comment
 
 begin_class
@@ -98,7 +102,7 @@ name|TimelineReaderAuthenticationFilterInitializer
 extends|extends
 name|TimelineAuthenticationFilterInitializer
 block|{
-comment|/**    * Initializes {@link AuthenticationWithProxyUserFilter}    *<p>    * Propagates to {@link AuthenticationWithProxyUserFilter} configuration all    * YARN configuration properties prefixed with    * {@value TimelineAuthenticationFilterInitializer#PREFIX}.    *    * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
+comment|/**    * Initializes {@link AuthenticationFilter}    *<p>    * Propagates to {@link AuthenticationFilter} configuration all    * YARN configuration properties prefixed with    * {@value TimelineAuthenticationFilterInitializer#PREFIX}.    *    * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
 annotation|@
 name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)
@@ -124,7 +128,7 @@ name|addGlobalFilter
 argument_list|(
 literal|"Timeline Reader Authentication Filter"
 argument_list|,
-name|AuthenticationWithProxyUserFilter
+name|AuthenticationFilter
 operator|.
 name|class
 operator|.
