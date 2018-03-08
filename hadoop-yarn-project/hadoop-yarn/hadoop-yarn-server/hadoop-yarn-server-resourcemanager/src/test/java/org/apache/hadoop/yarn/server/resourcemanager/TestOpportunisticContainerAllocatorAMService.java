@@ -2358,12 +2358,10 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 name|allocateResponse
 operator|=
@@ -2403,12 +2401,10 @@ operator|.
 name|waitForEventThreadToWait
 argument_list|()
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Verify Metrics After OPP allocation (Nothing should change again)
 name|verifyMetrics
@@ -2677,12 +2673,10 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 name|allocateResponse
 operator|=
@@ -2823,12 +2817,10 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Verify that the container is still in ACQUIRED state wrt the RM.
 name|RMContainer
@@ -2993,6 +2985,11 @@ comment|// Wait for scheduler to finish processing events
 name|dispatcher
 operator|.
 name|waitForEventThreadToWait
+argument_list|()
+expr_stmt|;
+name|rm
+operator|.
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Verify Metrics After OPP allocation :
@@ -3512,12 +3509,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Verify that container is actually running wrt the RM..
 name|RMContainer
@@ -3773,12 +3768,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 name|allocateResponse
 operator|=
@@ -4434,12 +4427,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Verify that container is actually running wrt the RM..
 name|RMContainer
@@ -4520,12 +4511,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Verify that container has been removed..
 name|rmContainer
@@ -5093,12 +5082,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Verify that container is actually running wrt the RM..
 name|RMContainer
@@ -5214,12 +5201,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Get the update response on next allocate
 name|allocateResponse
@@ -5449,12 +5434,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -5556,12 +5539,10 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Check that the container resources are increased in
 comment|// NM through NM heartbeat response
@@ -5689,12 +5670,10 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// Check that the container resources are decreased
 comment|// in NM through NM heartbeat response
@@ -5829,12 +5808,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Thread
+name|rm
 operator|.
-name|sleep
-argument_list|(
-literal|200
-argument_list|)
+name|drainEvents
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
