@@ -74,6 +74,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -502,6 +516,19 @@ expr_stmt|;
 block|}
 return|return
 name|ret
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getUgi ()
+name|UserGroupInformation
+name|getUgi
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|ugi
 return|;
 block|}
 comment|/**    * Get the token identifiers for this connection.    * @return List with the token identifiers.    */
