@@ -1930,7 +1930,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Unrecognized SSL message"
+literal|"recognized SSL message"
 argument_list|,
 name|e
 operator|.
@@ -2013,7 +2013,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Unrecognized SSL message"
+literal|"recognized SSL message"
 argument_list|,
 name|e
 operator|.
