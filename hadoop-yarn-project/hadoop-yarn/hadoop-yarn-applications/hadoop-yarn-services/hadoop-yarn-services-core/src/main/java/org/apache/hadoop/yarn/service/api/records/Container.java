@@ -705,21 +705,21 @@ operator|=
 name|state
 expr_stmt|;
 block|}
-comment|/**    * Name of the component that this container instance belongs to.    **/
-DECL|method|componentName (String componentName)
+comment|/**    * Name of the component instance that this container instance belongs to.    **/
+DECL|method|componentInstanceName (String componentInstanceName)
 specifier|public
 name|Container
-name|componentName
+name|componentInstanceName
 parameter_list|(
 name|String
-name|componentName
+name|componentInstanceName
 parameter_list|)
 block|{
 name|this
 operator|.
 name|componentInstanceName
 operator|=
-name|componentName
+name|componentInstanceName
 expr_stmt|;
 return|return
 name|this
@@ -734,12 +734,12 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Name of the component that this container instance belongs to."
+literal|"Name of the component instance that this container instance belongs to."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"component_name"
+literal|"component_instance_name"
 argument_list|)
 DECL|method|getComponentInstanceName ()
 specifier|public
@@ -756,7 +756,7 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"component_name"
+literal|"component_instance_name"
 argument_list|)
 DECL|method|setComponentInstanceName (String componentInstanceName)
 specifier|public
