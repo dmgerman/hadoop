@@ -491,23 +491,6 @@ return|return
 name|referred
 return|;
 block|}
-DECL|method|setReferredINode (INode referred)
-specifier|public
-specifier|final
-name|void
-name|setReferredINode
-parameter_list|(
-name|INode
-name|referred
-parameter_list|)
-block|{
-name|this
-operator|.
-name|referred
-operator|=
-name|referred
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|isReference ()

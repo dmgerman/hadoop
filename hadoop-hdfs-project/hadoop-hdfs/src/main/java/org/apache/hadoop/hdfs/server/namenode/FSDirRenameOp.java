@@ -3109,8 +3109,6 @@ parameter_list|,
 name|INodesInPath
 name|dstIIP
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|this
 operator|.
