@@ -875,6 +875,13 @@ operator|.
 name|getName
 argument_list|()
 operator|+
+literal|" version "
+operator|+
+name|service
+operator|.
+name|getVersion
+argument_list|()
+operator|+
 literal|" saved."
 argument_list|)
 expr_stmt|;

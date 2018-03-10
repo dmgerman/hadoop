@@ -703,6 +703,13 @@ argument_list|)
 expr_stmt|;
 name|exampleApp
 operator|.
+name|setVersion
+argument_list|(
+literal|"v1"
+argument_list|)
+expr_stmt|;
+name|exampleApp
+operator|.
 name|addComponent
 argument_list|(
 name|createComponent

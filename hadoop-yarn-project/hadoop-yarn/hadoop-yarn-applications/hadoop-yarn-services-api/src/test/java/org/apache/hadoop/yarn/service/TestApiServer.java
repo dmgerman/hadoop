@@ -622,6 +622,13 @@ argument_list|(
 literal|"jenkins"
 argument_list|)
 expr_stmt|;
+name|service
+operator|.
+name|setVersion
+argument_list|(
+literal|"v1"
+argument_list|)
+expr_stmt|;
 name|Artifact
 name|artifact
 init|=

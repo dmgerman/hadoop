@@ -32,6 +32,12 @@ name|ERROR_APPLICATION_NAME_INVALID
 init|=
 literal|"Service name is either empty or not provided"
 decl_stmt|;
+DECL|field|ERROR_APPLICATION_VERSION_INVALID
+name|String
+name|ERROR_APPLICATION_VERSION_INVALID
+init|=
+literal|"Version of service %s is either empty or not provided"
+decl_stmt|;
 DECL|field|ERROR_APPLICATION_NAME_INVALID_FORMAT
 name|String
 name|ERROR_APPLICATION_NAME_INVALID_FORMAT
