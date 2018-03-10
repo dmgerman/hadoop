@@ -809,7 +809,6 @@ name|conn
 operator|!=
 literal|null
 operator|&&
-operator|!
 name|conn
 operator|.
 name|isUsable
