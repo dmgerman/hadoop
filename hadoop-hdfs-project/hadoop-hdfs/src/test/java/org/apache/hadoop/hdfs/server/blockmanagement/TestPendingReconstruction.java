@@ -2626,18 +2626,6 @@ argument_list|,
 literal|"TEST"
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 name|BlockManagerTestUtil
 operator|.
 name|computeAllPendingWork
@@ -2692,6 +2680,18 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 comment|// 4. delete the file
 name|fs
 operator|.
