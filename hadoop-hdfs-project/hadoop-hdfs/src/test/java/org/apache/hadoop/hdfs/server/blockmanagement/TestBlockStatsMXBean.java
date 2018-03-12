@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1133,6 +1149,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|createFile

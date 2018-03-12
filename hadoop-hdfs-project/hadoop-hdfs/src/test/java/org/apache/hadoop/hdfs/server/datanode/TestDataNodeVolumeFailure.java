@@ -2053,6 +2053,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 comment|// make both data directories to fail on dn0
 specifier|final
 name|File
@@ -2170,6 +2175,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 specifier|final
 name|File
 name|dn0Vol1
@@ -2384,6 +2394,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// The test uses DataNodeTestUtils#injectDataDirFailure() to simulate
+comment|// volume failures which is currently not supported on Windows.
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
 specifier|final
 name|File
 name|dn0Vol1
