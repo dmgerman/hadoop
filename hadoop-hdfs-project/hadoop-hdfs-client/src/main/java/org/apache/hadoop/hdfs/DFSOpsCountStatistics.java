@@ -462,6 +462,12 @@ argument_list|(
 literal|"op_get_snapshot_diff"
 argument_list|)
 operator|,
+DECL|enumConstant|GET_SNAPSHOTTABLE_DIRECTORY_LIST
+name|GET_SNAPSHOTTABLE_DIRECTORY_LIST
+argument_list|(
+literal|"op_get_snapshottable_directory_list"
+argument_list|)
+operator|,
 DECL|enumConstant|TRUNCATE
 name|TRUNCATE
 argument_list|(
