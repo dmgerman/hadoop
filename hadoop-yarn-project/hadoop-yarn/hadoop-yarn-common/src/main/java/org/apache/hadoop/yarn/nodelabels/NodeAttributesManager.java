@@ -107,13 +107,16 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * To completely replace the mappings for a given node with the new Set of    * Attributes. If the mapping contains an attribute whose type does not match    * a previously existing Attribute under the same prefix (name space) then    * exception is thrown. Key would be name of the node and value would be set    * of Attributes to be mapped.    *    * @param nodeAttributeMapping    * @throws IOException    */
-DECL|method|replaceNodeAttributes ( Map<String, Set<NodeAttribute>> nodeAttributeMapping)
+comment|/**    * To completely replace the mappings for a given node with the new Set of    * Attributes which are under a given prefix. If the mapping contains an    * attribute whose type does not match a previously existing Attribute    * under the same prefix (name space) then exception is thrown.    * Key would be name of the node and value would be set of Attributes to    * be mapped. If the prefix is null, then all node attributes will be    * replaced regardless of what prefix they have.    *    * @param prefix node attribute prefix    * @param nodeAttributeMapping host name to a set of node attributes mapping    * @throws IOException if failed to replace attributes    */
+DECL|method|replaceNodeAttributes (String prefix, Map<String, Set<NodeAttribute>> nodeAttributeMapping)
 specifier|public
 specifier|abstract
 name|void
 name|replaceNodeAttributes
 parameter_list|(
+name|String
+name|prefix
+parameter_list|,
 name|Map
 argument_list|<
 name|String

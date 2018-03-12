@@ -1270,9 +1270,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|NodeLabelsProvider
-name|labelsProvider
 parameter_list|)
 block|{
 return|return
@@ -1286,8 +1283,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|labelsProvider
 argument_list|)
 block|{
 annotation|@
@@ -1681,9 +1676,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|NodeLabelsProvider
-name|labelsProvider
 parameter_list|)
 block|{
 return|return
@@ -1697,8 +1689,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|labelsProvider
 argument_list|)
 block|{
 annotation|@

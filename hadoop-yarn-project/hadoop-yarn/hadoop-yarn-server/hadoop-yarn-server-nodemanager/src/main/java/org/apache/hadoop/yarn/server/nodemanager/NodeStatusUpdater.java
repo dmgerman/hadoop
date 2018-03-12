@@ -52,6 +52,46 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|nodelabels
+operator|.
+name|NodeAttributesProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|nodelabels
+operator|.
+name|NodeLabelsProvider
+import|;
+end_import
+
 begin_interface
 DECL|interface|NodeStatusUpdater
 specifier|public
@@ -106,6 +146,24 @@ name|reportException
 parameter_list|(
 name|Exception
 name|ex
+parameter_list|)
+function_decl|;
+comment|/**    * Sets a node attributes provider to node manager.    * @param provider    */
+DECL|method|setNodeAttributesProvider (NodeAttributesProvider provider)
+name|void
+name|setNodeAttributesProvider
+parameter_list|(
+name|NodeAttributesProvider
+name|provider
+parameter_list|)
+function_decl|;
+comment|/**    * Sets a node labels provider to the node manager.    * @param provider    */
+DECL|method|setNodeLabelsProvider (NodeLabelsProvider provider)
+name|void
+name|setNodeLabelsProvider
+parameter_list|(
+name|NodeLabelsProvider
+name|provider
 parameter_list|)
 function_decl|;
 block|}

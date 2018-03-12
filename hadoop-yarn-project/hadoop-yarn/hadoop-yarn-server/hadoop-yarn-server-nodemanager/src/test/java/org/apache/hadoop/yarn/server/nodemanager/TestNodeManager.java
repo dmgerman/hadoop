@@ -757,7 +757,7 @@ name|NM_NODE_LABELS_PROVIDER_CONFIG
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|CONFIG_NODE_LABELS_PROVIDER
+name|CONFIG_NODE_DESCRIPTOR_PROVIDER
 argument_list|)
 expr_stmt|;
 name|labelsProviderService
