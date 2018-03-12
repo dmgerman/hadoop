@@ -197,7 +197,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|FairScheduler
+name|MaxRunningAppsEnforcer
 operator|.
 name|class
 argument_list|)
