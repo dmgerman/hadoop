@@ -221,7 +221,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests of the S3A FileSystem which don't have a specific home and can share  * a filesystem instance with others..  */
+comment|/**  * Tests of the S3A FileSystem which don't have a specific home and can share  * a filesystem instance with others.  * Checksums are turned on unless explicitly disabled for a test case.  */
 end_comment
 
 begin_class
@@ -249,6 +249,55 @@ operator|.
 name|UTF_8
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+operator|.
+name|setup
+argument_list|()
+expr_stmt|;
+comment|// checksums are forced on.
+name|enableChecksums
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Turn checksums on.    * Relies on the FS not caching the configuration option    * @param enabled enabled flag.    */
+DECL|method|enableChecksums (final boolean enabled)
+specifier|protected
+name|void
+name|enableChecksums
+parameter_list|(
+specifier|final
+name|boolean
+name|enabled
+parameter_list|)
+block|{
+name|getFileSystem
+argument_list|()
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|setBoolean
+argument_list|(
+name|Constants
+operator|.
+name|ETAG_CHECKSUM_ENABLED
+argument_list|,
+name|enabled
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testCreateNonRecursiveSuccess ()
@@ -629,7 +678,7 @@ argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-literal|"file 1 checksum"
+literal|"Null file 1 checksum"
 argument_list|,
 name|checksum1
 argument_list|)
@@ -663,6 +712,58 @@ argument_list|)
 argument_list|,
 literal|0
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Make sure that when checksums are disabled, the caller    * gets null back.    */
+annotation|@
+name|Test
+DECL|method|testChecksumDisabled ()
+specifier|public
+name|void
+name|testChecksumDisabled
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+comment|// checksums are forced off.
+name|enableChecksums
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+specifier|final
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
+name|Path
+name|file1
+init|=
+name|touchFile
+argument_list|(
+literal|"file1"
+argument_list|)
+decl_stmt|;
+name|EtagChecksum
+name|checksum1
+init|=
+name|fs
+operator|.
+name|getFileChecksum
+argument_list|(
+name|file1
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|assertNull
+argument_list|(
+literal|"Checksums are being generated"
+argument_list|,
+name|checksum1
 argument_list|)
 expr_stmt|;
 block|}
@@ -914,14 +1015,62 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testLengthPastEOF ()
+DECL|method|testNegativeLengthDisabledChecksum ()
 specifier|public
 name|void
-name|testLengthPastEOF
+name|testNegativeLengthDisabledChecksum
 parameter_list|()
 throws|throws
 name|Throwable
 block|{
+name|enableChecksums
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|LambdaTestUtils
+operator|.
+name|intercept
+argument_list|(
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
+name|getFileSystem
+argument_list|()
+operator|.
+name|getFileChecksum
+argument_list|(
+name|mkFile
+argument_list|(
+literal|"negative"
+argument_list|,
+name|HELLO
+argument_list|)
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testChecksumLengthPastEOF ()
+specifier|public
+name|void
+name|testChecksumLengthPastEOF
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|enableChecksums
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 specifier|final
 name|S3AFileSystem
 name|fs
@@ -939,8 +1088,9 @@ argument_list|,
 name|HELLO
 argument_list|)
 decl_stmt|;
-name|assertEquals
-argument_list|(
+name|EtagChecksum
+name|l
+init|=
 name|fs
 operator|.
 name|getFileChecksum
@@ -951,6 +1101,17 @@ name|HELLO
 operator|.
 name|length
 argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"Null checksum"
+argument_list|,
+name|l
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|l
 argument_list|,
 name|fs
 operator|.

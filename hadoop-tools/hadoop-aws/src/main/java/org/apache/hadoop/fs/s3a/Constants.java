@@ -1424,6 +1424,26 @@ name|RETRY_THROTTLE_INTERVAL_DEFAULT
 init|=
 literal|"500ms"
 decl_stmt|;
+comment|/**    * Should etags be exposed as checksums?    */
+DECL|field|ETAG_CHECKSUM_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ETAG_CHECKSUM_ENABLED
+init|=
+literal|"fs.s3a.etag.checksum.enabled"
+decl_stmt|;
+comment|/**    * Default value: false.    */
+DECL|field|ETAG_CHECKSUM_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|ETAG_CHECKSUM_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

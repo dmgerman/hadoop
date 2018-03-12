@@ -11878,7 +11878,7 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the etag of a object at the path via HEAD request and return it    * as a checksum object. This has the whatever guarantees about equivalence    * the S3 implementation offers.    *<ol>    *<li>If a tag has not changed, consider the object unchanged.</li>    *<li>Two tags being different does not imply the data is different.</li>    *</ol>    * Different S3 implementations may offer different guarantees.    * @param f The file path    * @param length The length of the file range for checksum calculation    * @return The EtagChecksum or null if checksums are not supported.    * @throws IOException IO failure    * @see<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTCommonResponseHeaders.html">Common Response Headers</a>    */
+comment|/**    * When enabled, get the etag of a object at the path via HEAD request and    * return it as a checksum object.    *<ol>    *<li>If a tag has not changed, consider the object unchanged.</li>    *<li>Two tags being different does not imply the data is different.</li>    *</ol>    * Different S3 implementations may offer different guarantees.    *    * This check is (currently) only made if    * {@link Constants#ETAG_CHECKSUM_ENABLED} is set; turning it on    * has caused problems with Distcp (HADOOP-15273).    *    * @param f The file path    * @param length The length of the file range for checksum calculation    * @return The EtagChecksum or null if checksums are not enabled or supported.    * @throws IOException IO failure    * @see<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTCommonResponseHeaders.html">Common Response Headers</a>    */
 annotation|@
 name|Override
 annotation|@
@@ -11909,6 +11909,24 @@ operator|>=
 literal|0
 argument_list|)
 expr_stmt|;
+name|entryPoint
+argument_list|(
+name|INVOCATION_GET_FILE_CHECKSUM
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|getConf
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|ETAG_CHECKSUM_ENABLED
+argument_list|,
+name|ETAG_CHECKSUM_ENABLED_DEFAULT
+argument_list|)
+condition|)
+block|{
 name|Path
 name|path
 init|=
@@ -11972,6 +11990,14 @@ return|;
 block|}
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+comment|// disabled
+return|return
+literal|null
+return|;
+block|}
 block|}
 comment|/**    * {@inheritDoc}.    *    * This implementation is optimized for S3, which can do a bulk listing    * off all entries under a path in one single operation. Thus there is    * no need to recursively walk the directory tree.    *    * Instead a {@link ListObjectsRequest} is created requesting a (windowed)    * listing of all entries under the given path. This is used to construct    * an {@code ObjectListingIterator} instance, iteratively returning the    * sequence of lists of elements under the path. This is then iterated    * over in a {@code FileStatusListingIterator}, which generates    * {@link S3AFileStatus} instances, one per listing entry.    * These are then translated into {@link LocatedFileStatus} instances.    *    * This is essentially a nested and wrapped set of iterators, with some    * generator classes; an architecture which may become less convoluted    * using lambda-expressions.    * @param f a path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files/directories    *         in the given path    * @throws FileNotFoundException if {@code path} does not exist    * @throws IOException if any I/O error occurred    */
 annotation|@

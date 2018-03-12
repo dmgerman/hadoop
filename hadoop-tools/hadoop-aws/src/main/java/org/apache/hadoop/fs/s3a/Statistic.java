@@ -186,6 +186,16 @@ argument_list|,
 literal|"Calls of exists()"
 argument_list|)
 block|,
+DECL|enumConstant|INVOCATION_GET_FILE_CHECKSUM
+name|INVOCATION_GET_FILE_CHECKSUM
+argument_list|(
+name|CommonStatisticNames
+operator|.
+name|OP_GET_FILE_CHECKSUM
+argument_list|,
+literal|"Calls of getFileChecksum()"
+argument_list|)
+block|,
 DECL|enumConstant|INVOCATION_GET_FILE_STATUS
 name|INVOCATION_GET_FILE_STATUS
 argument_list|(
