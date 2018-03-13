@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -87,6 +97,30 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|runner
+operator|.
+name|RunWith
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|runners
+operator|.
+name|Parameterized
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -134,7 +168,18 @@ name|fail
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test {@link LowRedundancyBlocks}.  */
+end_comment
+
 begin_class
+annotation|@
+name|RunWith
+argument_list|(
+name|Parameterized
+operator|.
+name|class
+argument_list|)
 DECL|class|TestLowRedundancyBlockQueues
 specifier|public
 class|class
@@ -145,12 +190,47 @@ specifier|private
 specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
-init|=
+decl_stmt|;
+DECL|method|TestLowRedundancyBlockQueues (ErasureCodingPolicy policy)
+specifier|public
+name|TestLowRedundancyBlockQueues
+parameter_list|(
+name|ErasureCodingPolicy
+name|policy
+parameter_list|)
+block|{
+name|ecPolicy
+operator|=
+name|policy
+expr_stmt|;
+block|}
+annotation|@
+name|Parameterized
+operator|.
+name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"{index}: {0}"
+argument_list|)
+DECL|method|policies ()
+specifier|public
+specifier|static
+name|Collection
+argument_list|<
+name|Object
+index|[]
+argument_list|>
+name|policies
+parameter_list|()
+block|{
+return|return
 name|StripedFileTestUtil
 operator|.
-name|getDefaultECPolicy
+name|getECPolicies
 argument_list|()
-decl_stmt|;
+return|;
+block|}
 DECL|method|genBlockInfo (long id)
 specifier|private
 name|BlockInfo

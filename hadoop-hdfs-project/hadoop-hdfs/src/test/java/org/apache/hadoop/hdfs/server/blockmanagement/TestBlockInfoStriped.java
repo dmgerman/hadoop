@@ -126,6 +126,30 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|runner
+operator|.
+name|RunWith
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|runners
+operator|.
+name|Parameterized
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|internal
@@ -179,6 +203,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -215,10 +249,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test {@link BlockInfoStriped}  */
+comment|/**  * Test {@link BlockInfoStriped}.  */
 end_comment
 
 begin_class
+annotation|@
+name|RunWith
+argument_list|(
+name|Parameterized
+operator|.
+name|class
+argument_list|)
 DECL|class|TestBlockInfoStriped
 specifier|public
 class|class
@@ -251,18 +292,33 @@ specifier|private
 specifier|final
 name|ErasureCodingPolicy
 name|testECPolicy
-init|=
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
-argument_list|()
 decl_stmt|;
 DECL|field|totalBlocks
 specifier|private
 specifier|final
 name|int
 name|totalBlocks
-init|=
+decl_stmt|;
+DECL|field|info
+specifier|private
+specifier|final
+name|BlockInfoStriped
+name|info
+decl_stmt|;
+DECL|method|TestBlockInfoStriped (ErasureCodingPolicy policy)
+specifier|public
+name|TestBlockInfoStriped
+parameter_list|(
+name|ErasureCodingPolicy
+name|policy
+parameter_list|)
+block|{
+name|testECPolicy
+operator|=
+name|policy
+expr_stmt|;
+name|totalBlocks
+operator|=
 name|testECPolicy
 operator|.
 name|getNumDataUnits
@@ -272,13 +328,9 @@ name|testECPolicy
 operator|.
 name|getNumParityUnits
 argument_list|()
-decl_stmt|;
-DECL|field|info
-specifier|private
-specifier|final
-name|BlockInfoStriped
+expr_stmt|;
 name|info
-init|=
+operator|=
 operator|new
 name|BlockInfoStriped
 argument_list|(
@@ -286,7 +338,35 @@ name|baseBlock
 argument_list|,
 name|testECPolicy
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+annotation|@
+name|Parameterized
+operator|.
+name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"{index}: {0}"
+argument_list|)
+DECL|method|policies ()
+specifier|public
+specifier|static
+name|Collection
+argument_list|<
+name|Object
+index|[]
+argument_list|>
+name|policies
+parameter_list|()
+block|{
+return|return
+name|StripedFileTestUtil
+operator|.
+name|getECPolicies
+argument_list|()
+return|;
+block|}
 DECL|method|createReportedBlocks (int num)
 specifier|private
 name|Block
@@ -353,7 +433,7 @@ argument_list|(
 literal|300000
 argument_list|)
 decl_stmt|;
-comment|/**    * Test adding storage and reported block    */
+comment|/**    * Test adding storage and reported block.    */
 annotation|@
 name|Test
 DECL|method|testAddStorage ()
