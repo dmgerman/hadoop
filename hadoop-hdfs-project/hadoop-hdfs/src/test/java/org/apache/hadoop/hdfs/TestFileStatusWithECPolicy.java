@@ -190,11 +190,15 @@ name|Timeout
 import|;
 end_import
 
+begin_comment
+comment|/**  * This test ensures the statuses of EC files with the default policy.  */
+end_comment
+
 begin_class
-DECL|class|TestFileStatusWithECPolicy
+DECL|class|TestFileStatusWithDefaultECPolicy
 specifier|public
 class|class
-name|TestFileStatusWithECPolicy
+name|TestFileStatusWithDefaultECPolicy
 block|{
 DECL|field|cluster
 specifier|private
@@ -282,9 +286,7 @@ name|fs
 operator|.
 name|enableErasureCodingPolicy
 argument_list|(
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
+name|getEcPolicy
 argument_list|()
 operator|.
 name|getName
@@ -317,6 +319,19 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+DECL|method|getEcPolicy ()
+specifier|public
+name|ErasureCodingPolicy
+name|getEcPolicy
+parameter_list|()
+block|{
+return|return
+name|StripedFileTestUtil
+operator|.
+name|getDefaultECPolicy
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Test
@@ -440,9 +455,7 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy1
 init|=
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
+name|getEcPolicy
 argument_list|()
 decl_stmt|;
 comment|// set EC policy on dir
