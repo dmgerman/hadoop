@@ -1891,38 +1891,28 @@ operator|==
 literal|null
 condition|)
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Set default erasure coding policy"
-operator|+
-literal|" on "
-operator|+
-name|path
-argument_list|)
+name|ecPolicyName
+operator|=
+literal|"default"
 expr_stmt|;
 block|}
-else|else
-block|{
 name|System
 operator|.
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"Set erasure coding policy "
+literal|"Set "
 operator|+
 name|ecPolicyName
 operator|+
-literal|" on "
+literal|" erasure coding policy on"
+operator|+
+literal|" "
 operator|+
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 name|RemoteIterator
 argument_list|<
 name|FileStatus
@@ -1952,11 +1942,13 @@ name|println
 argument_list|(
 literal|"Warning: setting erasure coding policy on a "
 operator|+
-literal|"non-empty directory will not automatically convert existing"
+literal|"non-empty directory will not automatically convert existing "
 operator|+
-literal|" files to "
+literal|"files to "
 operator|+
 name|ecPolicyName
+operator|+
+literal|" erasure coding policy"
 argument_list|)
 expr_stmt|;
 block|}
