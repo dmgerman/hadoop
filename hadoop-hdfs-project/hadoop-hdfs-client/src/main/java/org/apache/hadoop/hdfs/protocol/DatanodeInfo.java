@@ -305,6 +305,11 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
+DECL|field|numBlocks
+specifier|private
+name|int
+name|numBlocks
+decl_stmt|;
 comment|// Datanode administrative states
 DECL|enum|AdminStates
 specifier|public
@@ -583,6 +588,15 @@ operator|.
 name|getLastBlockReportMonotonic
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|numBlocks
+operator|=
+name|from
+operator|.
+name|getNumBlocks
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|DatanodeInfo (DatanodeID nodeID)
 specifier|protected
@@ -675,6 +689,12 @@ name|lastBlockReportMonotonic
 operator|=
 literal|0L
 expr_stmt|;
+name|this
+operator|.
+name|numBlocks
+operator|=
+literal|0
+expr_stmt|;
 block|}
 DECL|method|DatanodeInfo (DatanodeID nodeID, String location)
 specifier|protected
@@ -700,7 +720,7 @@ name|location
 expr_stmt|;
 block|}
 comment|/** Constructor. */
-DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String datanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long nonDfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final long lastUpdateMonotonic, final int xceiverCount, final String networkLocation, final AdminStates adminState, final String upgradeDomain, final long lastBlockReportTime, final long lastBlockReportMonotonic)
+DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String datanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long nonDfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final long lastUpdateMonotonic, final int xceiverCount, final String networkLocation, final AdminStates adminState, final String upgradeDomain, final long lastBlockReportTime, final long lastBlockReportMonotonic, final int blockCount)
 specifier|private
 name|DatanodeInfo
 parameter_list|(
@@ -791,6 +811,10 @@ parameter_list|,
 specifier|final
 name|long
 name|lastBlockReportMonotonic
+parameter_list|,
+specifier|final
+name|int
+name|blockCount
 parameter_list|)
 block|{
 name|super
@@ -899,6 +923,12 @@ operator|.
 name|lastBlockReportMonotonic
 operator|=
 name|lastBlockReportMonotonic
+expr_stmt|;
+name|this
+operator|.
+name|numBlocks
+operator|=
+name|blockCount
 expr_stmt|;
 block|}
 comment|/** Network location name. */
@@ -1118,6 +1148,17 @@ return|return
 name|lastUpdateMonotonic
 return|;
 block|}
+comment|/**    * @return Num of Blocks    */
+DECL|method|getNumBlocks ()
+specifier|public
+name|int
+name|getNumBlocks
+parameter_list|()
+block|{
+return|return
+name|numBlocks
+return|;
+block|}
 comment|/**    * Set lastUpdate monotonic time    */
 DECL|method|setLastUpdateMonotonic (long lastUpdateMonotonic)
 specifier|public
@@ -1297,6 +1338,23 @@ operator|.
 name|xceiverCount
 operator|=
 name|xceiverCount
+expr_stmt|;
+block|}
+comment|/** Sets number of blocks. */
+DECL|method|setNumBlocks (int blockCount)
+specifier|public
+name|void
+name|setNumBlocks
+parameter_list|(
+name|int
+name|blockCount
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numBlocks
+operator|=
+name|blockCount
 expr_stmt|;
 block|}
 comment|/** network location */
@@ -1504,6 +1562,12 @@ argument_list|(
 name|getName
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|int
+name|blockCount
+init|=
+name|getNumBlocks
+argument_list|()
 decl_stmt|;
 name|buffer
 operator|.
@@ -2098,6 +2162,23 @@ name|lastBlockReportTime
 argument_list|)
 else|:
 literal|"Never"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Num of Blocks: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|blockCount
 argument_list|)
 operator|.
 name|append
@@ -3198,6 +3279,11 @@ name|lastBlockReportMonotonic
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|numBlocks
+specifier|private
+name|int
+name|numBlocks
+decl_stmt|;
 DECL|method|setFrom (DatanodeInfo from)
 specifier|public
 name|DatanodeInfoBuilder
@@ -3340,6 +3426,15 @@ operator|=
 name|from
 operator|.
 name|getLastBlockReportMonotonic
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|numBlocks
+operator|=
+name|from
+operator|.
+name|getNumBlocks
 argument_list|()
 expr_stmt|;
 name|setNodeID
@@ -3847,6 +3942,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setNumBlocks (int blockCount)
+specifier|public
+name|DatanodeInfoBuilder
+name|setNumBlocks
+parameter_list|(
+name|int
+name|blockCount
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numBlocks
+operator|=
+name|blockCount
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|DatanodeInfo
@@ -3900,6 +4014,8 @@ argument_list|,
 name|lastBlockReportTime
 argument_list|,
 name|lastBlockReportMonotonic
+argument_list|,
+name|numBlocks
 argument_list|)
 return|;
 block|}
