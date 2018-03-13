@@ -64,6 +64,24 @@ argument_list|<
 name|BaseRecord
 argument_list|>
 block|{
+DECL|field|ERROR_MSG_CREATION_TIME_NEGATIVE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ERROR_MSG_CREATION_TIME_NEGATIVE
+init|=
+literal|"The creation time for the record cannot be negative."
+decl_stmt|;
+DECL|field|ERROR_MSG_MODIFICATION_TIME_NEGATIVE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ERROR_MSG_MODIFICATION_TIME_NEGATIVE
+init|=
+literal|"The modification time for the record cannot be negative."
+decl_stmt|;
 comment|/**    * Set the modification time for the record.    *    * @param time Modification time of the record.    */
 DECL|method|setDateModified (long time)
 specifier|public
@@ -499,24 +517,46 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Validates the record. Called when the record is created, populated from the    * state store, and before committing to the state store.    * @return If the record is valid.    */
+comment|/**    * Validates the record. Called when the record is created, populated from the    * state store, and before committing to the state store. If validate failed,    * there throws an exception.    */
 DECL|method|validate ()
 specifier|public
-name|boolean
+name|void
 name|validate
 parameter_list|()
 block|{
-return|return
+if|if
+condition|(
 name|getDateCreated
 argument_list|()
-operator|>
+operator|<=
 literal|0
-operator|&&
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ERROR_MSG_CREATION_TIME_NEGATIVE
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
 name|getDateModified
 argument_list|()
-operator|>
+operator|<=
 literal|0
-return|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ERROR_MSG_MODIFICATION_TIME_NEGATIVE
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override

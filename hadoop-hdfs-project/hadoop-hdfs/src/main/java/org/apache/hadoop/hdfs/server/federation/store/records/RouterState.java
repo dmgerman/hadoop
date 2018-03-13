@@ -542,18 +542,15 @@ annotation|@
 name|Override
 DECL|method|validate ()
 specifier|public
-name|boolean
+name|void
 name|validate
 parameter_list|()
 block|{
-name|boolean
-name|ret
-init|=
 name|super
 operator|.
 name|validate
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 operator|(
@@ -579,23 +576,16 @@ operator|.
 name|INITIALIZING
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
+throw|throw
+operator|new
+name|IllegalArgumentException
 argument_list|(
-literal|"Invalid router entry, no address specified {}"
-argument_list|,
+literal|"Invalid router entry, no address specified "
+operator|+
 name|this
 argument_list|)
-expr_stmt|;
-name|ret
-operator|=
-literal|false
-expr_stmt|;
+throw|;
 block|}
-return|return
-name|ret
-return|;
 block|}
 annotation|@
 name|Override

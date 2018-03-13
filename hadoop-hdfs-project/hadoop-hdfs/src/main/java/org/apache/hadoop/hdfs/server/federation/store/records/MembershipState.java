@@ -207,6 +207,42 @@ name|BaseRecord
 implements|implements
 name|FederationNamenodeContext
 block|{
+DECL|field|ERROR_MSG_NO_NS_SPECIFIED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ERROR_MSG_NO_NS_SPECIFIED
+init|=
+literal|"Invalid registration, no nameservice specified "
+decl_stmt|;
+DECL|field|ERROR_MSG_NO_WEB_ADDR_SPECIFIED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ERROR_MSG_NO_WEB_ADDR_SPECIFIED
+init|=
+literal|"Invalid registration, no web address specified "
+decl_stmt|;
+DECL|field|ERROR_MSG_NO_RPC_ADDR_SPECIFIED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ERROR_MSG_NO_RPC_ADDR_SPECIFIED
+init|=
+literal|"Invalid registration, no rpc address specified "
+decl_stmt|;
+DECL|field|ERROR_MSG_NO_BP_SPECIFIED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ERROR_MSG_NO_BP_SPECIFIED
+init|=
+literal|"Invalid registration, no block pool specified "
+decl_stmt|;
 comment|/** Expiration time in ms for this entry. */
 DECL|field|expirationMs
 specifier|private
@@ -967,18 +1003,15 @@ annotation|@
 name|Override
 DECL|method|validate ()
 specifier|public
-name|boolean
+name|void
 name|validate
 parameter_list|()
 block|{
-name|boolean
-name|ret
-init|=
 name|super
 operator|.
 name|validate
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|getNameserviceId
@@ -995,11 +1028,15 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|//LOG.error("Invalid registration, no nameservice specified " + this);
-name|ret
-operator|=
-literal|false
-expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ERROR_MSG_NO_NS_SPECIFIED
+operator|+
+name|this
+argument_list|)
+throw|;
 block|}
 if|if
 condition|(
@@ -1017,11 +1054,15 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|//LOG.error("Invalid registration, no web address specified " + this);
-name|ret
-operator|=
-literal|false
-expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ERROR_MSG_NO_WEB_ADDR_SPECIFIED
+operator|+
+name|this
+argument_list|)
+throw|;
 block|}
 if|if
 condition|(
@@ -1039,11 +1080,15 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|//LOG.error("Invalid registration, no rpc address specified " + this);
-name|ret
-operator|=
-literal|false
-expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ERROR_MSG_NO_RPC_ADDR_SPECIFIED
+operator|+
+name|this
+argument_list|)
+throw|;
 block|}
 if|if
 condition|(
@@ -1068,15 +1113,16 @@ literal|0
 operator|)
 condition|)
 block|{
-comment|//LOG.error("Invalid registration, no block pool specified " + this);
-name|ret
-operator|=
-literal|false
-expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ERROR_MSG_NO_BP_SPECIFIED
+operator|+
+name|this
+argument_list|)
+throw|;
 block|}
-return|return
-name|ret
-return|;
 block|}
 comment|/**    * Overrides the cached getBlockPoolId() with an update. The state will be    * reset when the cache is flushed    *    * @param newState Service state of the namenode.    */
 DECL|method|overrideState (FederationNamenodeServiceState newState)
