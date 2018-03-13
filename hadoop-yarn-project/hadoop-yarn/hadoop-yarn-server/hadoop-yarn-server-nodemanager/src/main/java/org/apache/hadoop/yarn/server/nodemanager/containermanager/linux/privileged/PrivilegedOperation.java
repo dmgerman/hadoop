@@ -211,8 +211,15 @@ name|LIST_AS_USER
 argument_list|(
 literal|""
 argument_list|)
+block|,
+comment|// no CLI switch supported yet.
+DECL|enumConstant|ADD_NUMA_PARAMS
+name|ADD_NUMA_PARAMS
+argument_list|(
+literal|""
+argument_list|)
 block|;
-comment|//no CLI switch supported yet.
+comment|// no CLI switch supported yet.
 DECL|field|option
 specifier|private
 specifier|final
