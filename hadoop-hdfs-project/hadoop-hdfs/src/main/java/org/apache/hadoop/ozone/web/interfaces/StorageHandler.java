@@ -270,6 +270,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -297,6 +307,8 @@ DECL|interface|StorageHandler
 specifier|public
 interface|interface
 name|StorageHandler
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Creates a Storage Volume.    *    * @param args - Volume Name    *    * @throws IOException    * @throws OzoneException    */
 DECL|method|createVolume (VolumeArgs args)
