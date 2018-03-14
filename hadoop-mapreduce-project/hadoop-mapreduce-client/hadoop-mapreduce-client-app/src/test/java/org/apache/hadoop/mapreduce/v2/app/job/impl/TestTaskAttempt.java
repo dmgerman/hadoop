@@ -1803,6 +1803,12 @@ block|{
 name|MRApp
 name|app
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|app
+operator|=
 operator|new
 name|FailingAttemptsMRApp
 argument_list|(
@@ -1810,12 +1816,21 @@ literal|1
 argument_list|,
 literal|0
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|testMRAppHistory
 argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -1830,6 +1845,12 @@ block|{
 name|MRApp
 name|app
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|app
+operator|=
 operator|new
 name|FailingAttemptsMRApp
 argument_list|(
@@ -1837,12 +1858,21 @@ literal|0
 argument_list|,
 literal|1
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|testMRAppHistory
 argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -1858,6 +1888,12 @@ comment|// test TA_CONTAINER_LAUNCH_FAILED for map
 name|FailingAttemptsDuringAssignedMRApp
 name|app
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|app
+operator|=
 operator|new
 name|FailingAttemptsDuringAssignedMRApp
 argument_list|(
@@ -1869,11 +1905,16 @@ name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|testTaskAttemptAssignedFailHistory
 argument_list|(
 name|app
 argument_list|)
+expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 comment|// test TA_CONTAINER_LAUNCH_FAILED for reduce
 name|app
@@ -1895,6 +1936,11 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 comment|// test TA_CONTAINER_COMPLETED for map
 name|app
 operator|=
@@ -1914,6 +1960,11 @@ name|testTaskAttemptAssignedFailHistory
 argument_list|(
 name|app
 argument_list|)
+expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 comment|// test TA_CONTAINER_COMPLETED for reduce
 name|app
@@ -1935,6 +1986,11 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 comment|// test TA_FAILMSG for map
 name|app
 operator|=
@@ -1954,6 +2010,11 @@ name|testTaskAttemptAssignedFailHistory
 argument_list|(
 name|app
 argument_list|)
+expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 comment|// test TA_FAILMSG for reduce
 name|app
@@ -1975,6 +2036,11 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 comment|// test TA_FAILMSG_BY_CLIENT for map
 name|app
 operator|=
@@ -1994,6 +2060,11 @@ name|testTaskAttemptAssignedFailHistory
 argument_list|(
 name|app
 argument_list|)
+expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 comment|// test TA_FAILMSG_BY_CLIENT for reduce
 name|app
@@ -2015,6 +2086,11 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 comment|// test TA_KILL for map
 name|app
 operator|=
@@ -2034,6 +2110,11 @@ name|testTaskAttemptAssignedKilledHistory
 argument_list|(
 name|app
 argument_list|)
+expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 comment|// test TA_KILL for reduce
 name|app
@@ -2055,6 +2136,20 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|app
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
