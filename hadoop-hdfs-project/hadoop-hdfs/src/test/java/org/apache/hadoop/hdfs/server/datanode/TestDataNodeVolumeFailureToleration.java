@@ -341,11 +341,6 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|dataDir
-specifier|private
-name|String
-name|dataDir
-decl_stmt|;
 comment|// Sleep at least 3 seconds (a 1s heartbeat plus padding) to allow
 comment|// for heartbeats to propagate from the datanodes to the namenode.
 DECL|field|WAIT_FOR_HEARTBEATS
@@ -481,13 +476,6 @@ operator|=
 name|cluster
 operator|.
 name|getFileSystem
-argument_list|()
-expr_stmt|;
-name|dataDir
-operator|=
-name|cluster
-operator|.
-name|getDataDirectory
 argument_list|()
 expr_stmt|;
 block|}
@@ -857,20 +845,13 @@ comment|// Fail a volume on the 2nd DN
 name|File
 name|dn2Vol1
 init|=
-operator|new
-name|File
+name|cluster
+operator|.
+name|getStorageDir
 argument_list|(
-name|dataDir
+literal|1
 argument_list|,
-literal|"data"
-operator|+
-operator|(
-literal|2
-operator|*
-literal|1
-operator|+
-literal|1
-operator|)
+literal|0
 argument_list|)
 decl_stmt|;
 name|DataNodeTestUtils
