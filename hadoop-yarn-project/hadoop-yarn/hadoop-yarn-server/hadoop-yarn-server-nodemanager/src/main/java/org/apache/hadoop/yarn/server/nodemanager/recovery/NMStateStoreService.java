@@ -636,6 +636,14 @@ name|ContainerRetryContext
 operator|.
 name|RETRY_INVALID
 decl_stmt|;
+DECL|field|restartTimes
+specifier|private
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|restartTimes
+decl_stmt|;
 DECL|field|workDir
 specifier|private
 name|String
@@ -793,6 +801,38 @@ operator|=
 name|retryAttempts
 expr_stmt|;
 block|}
+DECL|method|getRestartTimes ()
+specifier|public
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|getRestartTimes
+parameter_list|()
+block|{
+return|return
+name|restartTimes
+return|;
+block|}
+DECL|method|setRestartTimes ( List<Long> restartTimes)
+specifier|public
+name|void
+name|setRestartTimes
+parameter_list|(
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|restartTimes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|restartTimes
+operator|=
+name|restartTimes
+expr_stmt|;
+block|}
 DECL|method|getWorkDir ()
 specifier|public
 name|String
@@ -948,6 +988,16 @@ operator|.
 name|append
 argument_list|(
 name|remainingRetryAttempts
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", RestartTimes: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|restartTimes
 argument_list|)
 operator|.
 name|append
@@ -1791,6 +1841,25 @@ name|containerId
 parameter_list|,
 name|int
 name|remainingRetryAttempts
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record restart times for a container.    * @param containerId    * @param restartTimes    * @throws IOException    */
+DECL|method|storeContainerRestartTimes ( ContainerId containerId, List<Long> restartTimes)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerRestartTimes
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|restartTimes
 parameter_list|)
 throws|throws
 name|IOException

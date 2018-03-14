@@ -2053,6 +2053,14 @@ name|containrRetryInterval
 init|=
 literal|0
 decl_stmt|;
+DECL|field|containerFailuresValidityInterval
+specifier|private
+name|long
+name|containerFailuresValidityInterval
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|// Timeline domain ID
 DECL|field|domainId
 specifier|private
@@ -2814,6 +2822,19 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Interval between each retry, unit is milliseconds"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_failures_validity_interval"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Failures which are out of the time window will not be added to"
+operator|+
+literal|" the number of container retry attempts"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -3954,6 +3975,22 @@ argument_list|(
 literal|"container_retry_interval"
 argument_list|,
 literal|"0"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|containerFailuresValidityInterval
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_failures_validity_interval"
+argument_list|,
+literal|"-1"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7180,6 +7217,8 @@ argument_list|,
 name|containerMaxRetries
 argument_list|,
 name|containrRetryInterval
+argument_list|,
+name|containerFailuresValidityInterval
 argument_list|)
 decl_stmt|;
 name|ContainerLaunchContext

@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@code ContainerRetryContext} indicates how container retry after it fails  * to run.  *<p>  * It provides details such as:  *<ul>  *<li>  *     {@link ContainerRetryPolicy} :  *     - NEVER_RETRY(DEFAULT value): no matter what error code is when container  *       fails to run, just do not retry.  *     - RETRY_ON_ALL_ERRORS: no matter what error code is, when container fails  *       to run, just retry.  *     - RETRY_ON_SPECIFIC_ERROR_CODES: when container fails to run, do retry if  *       the error code is one of<em>errorCodes</em>, otherwise do not retry.  *  *     Note: if error code is 137(SIGKILL) or 143(SIGTERM), it will not retry  *     because it is usually killed on purpose.  *</li>  *<li>  *<em>maxRetries</em> specifies how many times to retry if need to retry.  *     If the value is -1, it means retry forever.  *</li>  *<li><em>retryInterval</em> specifies delaying some time before relaunch  *   container, the unit is millisecond.</li>  *</ul>  */
+comment|/**  * {@code ContainerRetryContext} indicates how container retry after it fails  * to run.  *<p>  * It provides details such as:  *<ul>  *<li>  *     {@link ContainerRetryPolicy} :  *     - NEVER_RETRY(DEFAULT value): no matter what error code is when container  *       fails to run, just do not retry.  *     - RETRY_ON_ALL_ERRORS: no matter what error code is, when container fails  *       to run, just retry.  *     - RETRY_ON_SPECIFIC_ERROR_CODES: when container fails to run, do retry if  *       the error code is one of<em>errorCodes</em>, otherwise do not retry.  *  *     Note: if error code is 137(SIGKILL) or 143(SIGTERM), it will not retry  *     because it is usually killed on purpose.  *</li>  *<li>  *<em>maxRetries</em> specifies how many times to retry if need to retry.  *     If the value is -1, it means retry forever.  *</li>  *<li><em>retryInterval</em> specifies delaying some time before relaunch  *   container, the unit is millisecond.</li>  *<li>  *<em>failuresValidityInterval</em>: default value is -1.  *     When failuresValidityInterval in milliseconds is set to {@literal>} 0,  *     the failure number will not take failures which happen out of the  *     failuresValidityInterval into failure count. If failure count  *     reaches to<em>maxRetries</em>, the container will be failed.  *</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -153,7 +153,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( ContainerRetryPolicy retryPolicy, Set<Integer> errorCodes, int maxRetries, int retryInterval)
+DECL|method|newInstance ( ContainerRetryPolicy retryPolicy, Set<Integer> errorCodes, int maxRetries, int retryInterval, long failuresValidityInterval)
 specifier|public
 specifier|static
 name|ContainerRetryContext
@@ -173,6 +173,9 @@ name|maxRetries
 parameter_list|,
 name|int
 name|retryInterval
+parameter_list|,
+name|long
+name|failuresValidityInterval
 parameter_list|)
 block|{
 name|ContainerRetryContext
@@ -215,8 +218,57 @@ argument_list|(
 name|retryInterval
 argument_list|)
 expr_stmt|;
+name|containerRetryContext
+operator|.
+name|setFailuresValidityInterval
+argument_list|(
+name|failuresValidityInterval
+argument_list|)
+expr_stmt|;
 return|return
 name|containerRetryContext
+return|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance ( ContainerRetryPolicy retryPolicy, Set<Integer> errorCodes, int maxRetries, int retryInterval)
+specifier|public
+specifier|static
+name|ContainerRetryContext
+name|newInstance
+parameter_list|(
+name|ContainerRetryPolicy
+name|retryPolicy
+parameter_list|,
+name|Set
+argument_list|<
+name|Integer
+argument_list|>
+name|errorCodes
+parameter_list|,
+name|int
+name|maxRetries
+parameter_list|,
+name|int
+name|retryInterval
+parameter_list|)
+block|{
+return|return
+name|newInstance
+argument_list|(
+name|retryPolicy
+argument_list|,
+name|errorCodes
+argument_list|,
+name|maxRetries
+argument_list|,
+name|retryInterval
+argument_list|,
+operator|-
+literal|1
+argument_list|)
 return|;
 block|}
 DECL|method|getRetryPolicy ()
@@ -291,6 +343,23 @@ name|setRetryInterval
 parameter_list|(
 name|int
 name|retryInterval
+parameter_list|)
+function_decl|;
+DECL|method|getFailuresValidityInterval ()
+specifier|public
+specifier|abstract
+name|long
+name|getFailuresValidityInterval
+parameter_list|()
+function_decl|;
+DECL|method|setFailuresValidityInterval ( long failuresValidityInterval)
+specifier|public
+specifier|abstract
+name|void
+name|setFailuresValidityInterval
+parameter_list|(
+name|long
+name|failuresValidityInterval
 parameter_list|)
 function_decl|;
 block|}

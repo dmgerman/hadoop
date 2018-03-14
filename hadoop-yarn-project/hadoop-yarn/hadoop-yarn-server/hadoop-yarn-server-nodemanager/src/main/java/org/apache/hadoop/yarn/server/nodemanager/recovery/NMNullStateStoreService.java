@@ -561,6 +561,25 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
+DECL|method|storeContainerRestartTimes (ContainerId containerId, List<Long> restartTimes)
+specifier|public
+name|void
+name|storeContainerRestartTimes
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|restartTimes
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
 DECL|method|storeContainerWorkDir (ContainerId containerId, String workDir)
 specifier|public
 name|void

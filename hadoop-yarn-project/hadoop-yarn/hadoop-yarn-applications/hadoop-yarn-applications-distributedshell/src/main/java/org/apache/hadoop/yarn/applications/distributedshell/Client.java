@@ -2402,6 +2402,19 @@ name|opts
 operator|.
 name|addOption
 argument_list|(
+literal|"container_failures_validity_interval"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Failures which are out of the time window will not be added to"
+operator|+
+literal|" the number of container retry attempts"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
 literal|"docker_client_config"
 argument_list|,
 literal|true
@@ -3608,6 +3621,31 @@ operator|.
 name|getOptionValue
 argument_list|(
 literal|"container_retry_interval"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"container_failures_validity_interval"
+argument_list|)
+condition|)
+block|{
+name|containerRetryOptions
+operator|.
+name|add
+argument_list|(
+literal|"--container_failures_validity_interval "
+operator|+
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_failures_validity_interval"
 argument_list|)
 argument_list|)
 expr_stmt|;
