@@ -212,33 +212,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get all records of the requested record class from the data store. To use    * the default implementations in this class, getAll must return new instances    * of the records on each call. It is recommended to override the default    * implementations for better performance.    *    * @param clazz Class of record to fetch.    * @param sub Sub path.    * @return List of all records that match the clazz and the sub path.    * @throws IOException    */
-annotation|@
-name|Idempotent
-DECL|method|get (Class<T> clazz, String sub)
-argument_list|<
-name|T
-extends|extends
-name|BaseRecord
-argument_list|>
-name|QueryResult
-argument_list|<
-name|T
-argument_list|>
-name|get
-parameter_list|(
-name|Class
-argument_list|<
-name|T
-argument_list|>
-name|clazz
-parameter_list|,
-name|String
-name|sub
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Get a single record from the store that matches the query.    *    * @param clazz Class of record to fetch.    * @param query Query to filter results.    * @return A single record matching the query. Null if there are no matching    *         records or more than one matching record in the store.    * @throws IOException If multiple records match or if the data store cannot    *           be queried.    */
 annotation|@
 name|Idempotent
