@@ -286,6 +286,8 @@ argument_list|,
 name|USER1
 argument_list|,
 literal|0.1f
+argument_list|,
+name|accessibleNodeLabelsOnC
 argument_list|)
 expr_stmt|;
 comment|//submit another app2 as USER2
@@ -314,6 +316,8 @@ argument_list|,
 name|USER2
 argument_list|,
 literal|0.2f
+argument_list|,
+name|accessibleNodeLabelsOnC
 argument_list|)
 expr_stmt|;
 comment|//validate total activated abs capacity

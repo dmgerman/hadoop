@@ -656,6 +656,18 @@ return|return
 name|parentQueue
 return|;
 block|}
+DECL|method|hasParentQueue ()
+specifier|public
+name|boolean
+name|hasParentQueue
+parameter_list|()
+block|{
+return|return
+name|parentQueue
+operator|!=
+literal|null
+return|;
+block|}
 DECL|method|getType ()
 specifier|public
 name|MappingType
@@ -986,6 +998,27 @@ name|source
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|mapping
+operator|.
+name|queue
+operator|.
+name|equals
+argument_list|(
+name|CURRENT_USER_MAPPING
+argument_list|)
+condition|)
+block|{
+return|return
+name|getPlacementContext
+argument_list|(
+name|mapping
+argument_list|,
+name|user
+argument_list|)
+return|;
+block|}
 return|return
 name|getPlacementContext
 argument_list|(

@@ -2984,7 +2984,7 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-comment|//only user test has permission to submit to 'test' queue
+comment|//only user test has permission to submit to 'user1' queue
 name|newAppMonitor
 operator|.
 name|submitApplication
@@ -2997,7 +2997,7 @@ expr_stmt|;
 try|try
 block|{
 comment|//should fail since user does not have permission to submit to queue
-comment|// 'test'
+comment|// 'managedparent'
 name|asContext
 operator|.
 name|setApplicationId
