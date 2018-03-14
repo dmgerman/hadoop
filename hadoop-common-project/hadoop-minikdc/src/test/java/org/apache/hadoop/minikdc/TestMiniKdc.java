@@ -1097,7 +1097,7 @@ operator|.
 name|getSubject
 argument_list|()
 operator|.
-name|getPrincipals
+name|getPrivateCredentials
 argument_list|()
 operator|.
 name|isEmpty
