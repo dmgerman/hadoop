@@ -3705,8 +3705,6 @@ parameter_list|(
 name|long
 name|timestamp
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|srcParent
 operator|.
@@ -3746,8 +3744,6 @@ DECL|method|restoreSource ()
 name|void
 name|restoreSource
 parameter_list|()
-throws|throws
-name|QuotaExceededException
 block|{
 comment|// Rename failed - restore src
 specifier|final
@@ -3874,8 +3870,6 @@ parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -3982,7 +3976,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|cleanDst (BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanDst ( BlockStoragePolicySuite bsps, BlocksMapUpdateInfo collectedBlocks)
 name|boolean
 name|cleanDst
 parameter_list|(
@@ -3992,8 +3986,6 @@ parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -4144,8 +4136,6 @@ parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 comment|// update the quota usage in src tree
 if|if
@@ -4178,8 +4168,6 @@ operator|.
 name|addSpaceConsumed
 argument_list|(
 name|newSrcCounts
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

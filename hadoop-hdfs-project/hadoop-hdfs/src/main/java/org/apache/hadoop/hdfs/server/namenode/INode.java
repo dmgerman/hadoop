@@ -324,22 +324,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -1620,42 +1604,15 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 function_decl|;
-comment|/**    * Check and add namespace/storagespace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
-DECL|method|addSpaceConsumed (QuotaCounts counts, boolean verify)
+comment|/**    * Check and add namespace/storagespace/storagetype consumed to itself and the ancestors.    */
+DECL|method|addSpaceConsumed (QuotaCounts counts)
 specifier|public
 name|void
 name|addSpaceConsumed
 parameter_list|(
 name|QuotaCounts
 name|counts
-parameter_list|,
-name|boolean
-name|verify
 parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
-name|addSpaceConsumed2Parent
-argument_list|(
-name|counts
-argument_list|,
-name|verify
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Check and add namespace/storagespace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
-DECL|method|addSpaceConsumed2Parent (QuotaCounts counts, boolean verify)
-name|void
-name|addSpaceConsumed2Parent
-parameter_list|(
-name|QuotaCounts
-name|counts
-parameter_list|,
-name|boolean
-name|verify
-parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -1669,8 +1626,6 @@ operator|.
 name|addSpaceConsumed
 argument_list|(
 name|counts
-argument_list|,
-name|verify
 argument_list|)
 expr_stmt|;
 block|}

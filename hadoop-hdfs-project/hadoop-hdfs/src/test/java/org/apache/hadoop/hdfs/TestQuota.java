@@ -1006,8 +1006,6 @@ specifier|static
 name|void
 name|tearDownClass
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 try|try
 block|{
@@ -1153,8 +1151,6 @@ specifier|public
 name|void
 name|testDSQuotaExceededExceptionIsHumanReadable
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|Integer
 name|bytes

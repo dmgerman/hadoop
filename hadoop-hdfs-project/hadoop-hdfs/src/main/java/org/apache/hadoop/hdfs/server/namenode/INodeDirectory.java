@@ -190,22 +190,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|SnapshotException
 import|;
 end_import
@@ -960,20 +944,22 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addSpaceConsumed (QuotaCounts counts, boolean verify)
+DECL|method|addSpaceConsumed (QuotaCounts counts)
 specifier|public
 name|void
 name|addSpaceConsumed
 parameter_list|(
 name|QuotaCounts
 name|counts
-parameter_list|,
-name|boolean
-name|verify
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
+name|super
+operator|.
+name|addSpaceConsumed
+argument_list|(
+name|counts
+argument_list|)
+expr_stmt|;
 specifier|final
 name|DirectoryWithQuotaFeature
 name|q
@@ -986,27 +972,16 @@ condition|(
 name|q
 operator|!=
 literal|null
+operator|&&
+name|isQuotaSet
+argument_list|()
 condition|)
 block|{
 name|q
 operator|.
-name|addSpaceConsumed
-argument_list|(
-name|this
-argument_list|,
-name|counts
-argument_list|,
-name|verify
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|addSpaceConsumed2Parent
+name|addSpaceConsumed2Cache
 argument_list|(
 name|counts
-argument_list|,
-name|verify
 argument_list|)
 expr_stmt|;
 block|}
@@ -1415,8 +1390,6 @@ name|maxSnapshotLimit
 parameter_list|)
 throws|throws
 name|SnapshotException
-throws|,
-name|QuotaExceededException
 block|{
 return|return
 name|getDirectorySnapshottableFeature
@@ -2532,8 +2505,6 @@ specifier|final
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 specifier|final
 name|int
@@ -3374,7 +3345,7 @@ return|return
 name|summary
 return|;
 block|}
-comment|/**    * This method is usually called by the undo section of rename.    *     * Before calling this function, in the rename operation, we replace the    * original src node (of the rename operation) with a reference node (WithName    * instance) in both the children list and a created list, delete the    * reference node from the children list, and add it to the corresponding    * deleted list.    *     * To undo the above operations, we have the following steps in particular:    *     *<pre>    * 1) remove the WithName node from the deleted list (if it exists)     * 2) replace the WithName node in the created list with srcChild     * 3) add srcChild back as a child of srcParent. Note that we already add     * the node into the created list of a snapshot diff in step 2, we do not need    * to add srcChild to the created list of the latest snapshot.    *</pre>    *     * We do not need to update quota usage because the old child is in the     * deleted list before.     *     * @param oldChild    *          The reference node to be removed/replaced    * @param newChild    *          The node to be added back    * @throws QuotaExceededException should not throw this exception    */
+comment|/**    * This method is usually called by the undo section of rename.    *     * Before calling this function, in the rename operation, we replace the    * original src node (of the rename operation) with a reference node (WithName    * instance) in both the children list and a created list, delete the    * reference node from the children list, and add it to the corresponding    * deleted list.    *     * To undo the above operations, we have the following steps in particular:    *     *<pre>    * 1) remove the WithName node from the deleted list (if it exists)     * 2) replace the WithName node in the created list with srcChild     * 3) add srcChild back as a child of srcParent. Note that we already add     * the node into the created list of a snapshot diff in step 2, we do not need    * to add srcChild to the created list of the latest snapshot.    *</pre>    *     * We do not need to update quota usage because the old child is in the     * deleted list before.     *     * @param oldChild    *          The reference node to be removed/replaced    * @param newChild    *          The node to be added back    */
 DECL|method|undoRename4ScrParent (final INodeReference oldChild, final INode newChild)
 specifier|public
 name|void
@@ -3388,8 +3359,6 @@ specifier|final
 name|INode
 name|newChild
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|DirectoryWithSnapshotFeature
 name|sf
@@ -3455,8 +3424,6 @@ parameter_list|,
 name|int
 name|latestSnapshotId
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|DirectoryWithSnapshotFeature
 name|sf
@@ -3532,8 +3499,6 @@ decl_stmt|;
 name|addSpaceConsumed
 argument_list|(
 name|counts
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

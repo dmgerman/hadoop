@@ -1271,8 +1271,6 @@ operator|.
 name|INodeReference
 name|r
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|long
 name|referredId

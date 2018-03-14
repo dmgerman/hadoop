@@ -168,22 +168,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|QuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|SnapshotException
 import|;
 end_import
@@ -966,8 +950,6 @@ name|maxSnapshotLimit
 parameter_list|)
 throws|throws
 name|SnapshotException
-throws|,
-name|QuotaExceededException
 block|{
 comment|//check snapshot quota
 specifier|final
