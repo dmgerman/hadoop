@@ -557,7 +557,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocating a new pipelineChannel of size: {}"
+literal|"Allocating a new ratis pipelineChannel of size: {}"
 argument_list|,
 name|count
 argument_list|)

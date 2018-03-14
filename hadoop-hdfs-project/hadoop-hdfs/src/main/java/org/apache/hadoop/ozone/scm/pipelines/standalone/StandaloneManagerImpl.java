@@ -509,7 +509,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocating a new pipeline channel of size: {}"
+literal|"Allocating a new standalone pipeline channel of size: {}"
 argument_list|,
 name|count
 argument_list|)

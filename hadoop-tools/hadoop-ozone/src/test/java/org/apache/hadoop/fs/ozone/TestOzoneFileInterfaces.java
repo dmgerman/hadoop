@@ -623,6 +623,11 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|numDataNodes
+argument_list|(
+literal|10
+argument_list|)
+operator|.
 name|setHandlerType
 argument_list|(
 name|OzoneConsts

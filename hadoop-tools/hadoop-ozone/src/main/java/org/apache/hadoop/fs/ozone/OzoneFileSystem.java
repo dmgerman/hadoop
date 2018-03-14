@@ -3083,7 +3083,7 @@ try|try
 block|{
 name|LOG
 operator|.
-name|info
+name|trace
 argument_list|(
 literal|"creating dir for key:{}"
 argument_list|,
@@ -3488,7 +3488,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|trace
 argument_list|(
 literal|"iterating key:{}"
 argument_list|,

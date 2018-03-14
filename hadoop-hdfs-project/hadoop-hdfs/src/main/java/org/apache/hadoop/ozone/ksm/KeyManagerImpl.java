@@ -2248,16 +2248,6 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-operator|(
-name|ex
-operator|instanceof
-name|KSMException
-operator|)
-condition|)
-block|{
 name|LOG
 operator|.
 name|error
@@ -2273,7 +2263,6 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|KSMException
