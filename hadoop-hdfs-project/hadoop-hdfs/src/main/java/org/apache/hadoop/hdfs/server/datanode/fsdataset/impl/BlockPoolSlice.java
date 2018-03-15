@@ -4034,11 +4034,6 @@ default|default:
 break|break;
 block|}
 block|}
-name|inputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 comment|// Now it is safe to add the replica into volumeMap
 comment|// In case of any exception during parsing this cache file, fall back
 comment|// to scan all the files on disk.
@@ -4136,6 +4131,14 @@ return|;
 block|}
 finally|finally
 block|{
+comment|// close the inputStream
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|inputStream
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -4162,14 +4165,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// close the inputStream
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|inputStream
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|saveReplicas (BlockListAsLongs blocksListToPersist)
