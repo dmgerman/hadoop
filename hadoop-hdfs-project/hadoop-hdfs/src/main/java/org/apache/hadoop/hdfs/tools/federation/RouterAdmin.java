@@ -844,7 +844,9 @@ literal|"Federation Admin Tools:\n"
 operator|+
 literal|"\t[-add<source><nameservice><destination> "
 operator|+
-literal|"[-readonly] -owner<owner> -group<group> -mode<mode>]\n"
+literal|"[-readonly] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+operator|+
+literal|"-owner<owner> -group<group> -mode<mode>]\n"
 operator|+
 literal|"\t[-rm<source>]\n"
 operator|+

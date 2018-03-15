@@ -1669,6 +1669,8 @@ operator|.
 name|info
 argument_list|(
 literal|"Updated mount point {} in resolver"
+argument_list|,
+name|srcPath
 argument_list|)
 expr_stmt|;
 block|}
@@ -2496,6 +2498,12 @@ name|Path
 operator|.
 name|SEPARATOR
 argument_list|)
+operator|&&
+operator|!
+name|remainingPath
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|newPath

@@ -24,33 +24,50 @@ name|order
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|resolver
+operator|.
+name|PathLocation
+import|;
+end_import
+
 begin_comment
-comment|/**  * Order of the destinations when we have multiple of them. When the resolver  * of files to subclusters (FileSubclusterResolver) has multiple destinations,  * this determines which location should be checked first.  */
+comment|/**  * Policy that decides which should be the first location accessed given  * multiple destinations.  */
 end_comment
 
-begin_enum
-DECL|enum|DestinationOrder
+begin_interface
+DECL|interface|OrderedResolver
 specifier|public
-enum|enum
-name|DestinationOrder
+interface|interface
+name|OrderedResolver
 block|{
-DECL|enumConstant|HASH
-name|HASH
-block|,
-comment|// Follow consistent hashing in the first folder level
-DECL|enumConstant|LOCAL
-name|LOCAL
-block|,
-comment|// Local first
-DECL|enumConstant|RANDOM
-name|RANDOM
-block|,
-comment|// Random order
-DECL|enumConstant|HASH_ALL
-name|HASH_ALL
-comment|// Follow consistent hashing
+comment|/**    * Get the first namespace based on this resolver approach.    *    * @param path Path to check.    * @param loc Federated location with multiple destinations.    * @return First namespace out of the locations.    */
+DECL|method|getFirstNamespace (String path, PathLocation loc)
+name|String
+name|getFirstNamespace
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|PathLocation
+name|loc
+parameter_list|)
+function_decl|;
 block|}
-end_enum
+end_interface
 
 end_unit
 

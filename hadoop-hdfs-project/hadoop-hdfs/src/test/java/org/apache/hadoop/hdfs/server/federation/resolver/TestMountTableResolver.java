@@ -2841,7 +2841,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"1->/testlocationcache/"
+literal|"1->/testlocationcache"
 argument_list|,
 name|mountTable
 operator|.
@@ -2856,7 +2856,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"2->/anothertestlocationcache/"
+literal|"2->/anothertestlocationcache"
 argument_list|,
 name|mountTable
 operator|.
@@ -2945,7 +2945,7 @@ expr_stmt|;
 comment|// Ensure location cache update correctly
 name|assertEquals
 argument_list|(
-literal|"3->/testlocationcache/"
+literal|"3->/testlocationcache"
 argument_list|,
 name|mountTable
 operator|.
