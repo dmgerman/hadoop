@@ -847,7 +847,7 @@ name|dn2Vol1
 init|=
 name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|1
 argument_list|,
