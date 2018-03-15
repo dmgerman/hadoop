@@ -726,8 +726,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|commands
-operator|!=
-literal|null
+argument_list|,
+literal|"commands cannot be null."
 argument_list|)
 expr_stmt|;
 name|this

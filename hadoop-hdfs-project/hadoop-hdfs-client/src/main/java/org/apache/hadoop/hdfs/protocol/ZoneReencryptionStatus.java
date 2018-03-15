@@ -702,8 +702,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|name
-operator|==
-literal|null
+argument_list|,
+literal|"zone name cannot be null"
 argument_list|)
 expr_stmt|;
 name|zoneName
