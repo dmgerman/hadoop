@@ -152,6 +152,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -1003,6 +1015,10 @@ operator|+
 literal|" done\n"
 operator|+
 literal|"fi"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|Thread

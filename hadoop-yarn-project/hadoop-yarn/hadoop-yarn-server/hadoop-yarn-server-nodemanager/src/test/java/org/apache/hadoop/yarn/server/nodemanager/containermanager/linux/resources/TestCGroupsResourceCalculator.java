@@ -119,6 +119,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -324,6 +336,10 @@ operator|+
 literal|"6:cpuacct,cpu:/yarn/container_1\n"
 operator|+
 literal|"5:pids:/yarn/container_1\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|CGroupsResourceCalculator
@@ -431,6 +447,10 @@ operator|+
 literal|"5:pids:/yarn/container_1\n"
 operator|+
 literal|"4:memory:/yarn/container_1\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|CGroupsResourceCalculator
@@ -609,6 +629,10 @@ operator|+
 literal|"5:pids:/yarn/container_1\n"
 operator|+
 literal|"4:memory:/yarn/container_1\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|FileUtils
@@ -630,6 +654,10 @@ operator|+
 literal|"user 5415\n"
 operator|+
 literal|"system 3632"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|CGroupsResourceCalculator
@@ -831,6 +859,10 @@ argument_list|,
 literal|"6:cpuacct,cpu:/yarn/container_1\n"
 operator|+
 literal|"4:memory:/yarn/container_1\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|FileUtils
@@ -848,6 +880,10 @@ name|MEM_STAT
 argument_list|)
 argument_list|,
 literal|"418496512\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|CGroupsResourceCalculator
@@ -927,6 +963,10 @@ name|MEMSW_STAT
 argument_list|)
 argument_list|,
 literal|"418496513\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|calculator
@@ -1049,6 +1089,10 @@ argument_list|,
 literal|"user 5415\n"
 operator|+
 literal|"system 3632"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|CGroupsResourceCalculator
@@ -1248,6 +1292,10 @@ name|MEM_STAT
 argument_list|)
 argument_list|,
 literal|"418496512\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|CGroupsResourceCalculator
@@ -1327,6 +1375,10 @@ name|MEMSW_STAT
 argument_list|)
 argument_list|,
 literal|"418496513\n"
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|calculator

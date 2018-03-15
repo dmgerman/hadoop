@@ -78,7 +78,7 @@ name|nio
 operator|.
 name|charset
 operator|.
-name|Charset
+name|StandardCharsets
 import|;
 end_import
 
@@ -397,12 +397,9 @@ argument_list|)
 argument_list|,
 literal|"foo"
 argument_list|,
-name|Charset
+name|StandardCharsets
 operator|.
-name|forName
-argument_list|(
-literal|"UTF-8"
-argument_list|)
+name|UTF_8
 argument_list|)
 expr_stmt|;
 block|}
