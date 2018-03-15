@@ -3953,6 +3953,14 @@ name|getIpcPort
 argument_list|()
 argument_list|)
 operator|.
+name|setOzoneRestPort
+argument_list|(
+name|dn
+operator|.
+name|getOzoneRestPort
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -6655,7 +6663,9 @@ name|DatanodeIDProto
 name|dn
 parameter_list|)
 block|{
-return|return
+name|DatanodeID
+name|datanodeID
+init|=
 operator|new
 name|DatanodeID
 argument_list|(
@@ -6701,6 +6711,19 @@ operator|.
 name|getIpcPort
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|datanodeID
+operator|.
+name|setOzoneRestPort
+argument_list|(
+name|dn
+operator|.
+name|getOzoneRestPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|datanodeID
 return|;
 block|}
 DECL|method|convert (AdminState adminState)

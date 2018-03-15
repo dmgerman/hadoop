@@ -770,11 +770,9 @@ name|addr
 operator|==
 literal|null
 condition|)
-block|{
 return|return
 literal|false
 return|;
-block|}
 try|try
 block|{
 name|URL
