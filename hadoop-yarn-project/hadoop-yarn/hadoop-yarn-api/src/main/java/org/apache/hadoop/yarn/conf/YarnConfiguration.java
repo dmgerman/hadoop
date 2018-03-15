@@ -4721,7 +4721,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/**    * How long for ResourceManager to wait for NodeManager to report its    * log aggregation status. If waiting time of which the log aggregation status    * is reported from NodeManager exceeds the configured value, RM will report    * log aggregation status for this NodeManager as TIME_OUT    */
+comment|/**    * How long for ResourceManager to wait for NodeManager to report its    * log aggregation status. If waiting time of which the log aggregation status    * is reported from NodeManager exceeds the configured value, RM will report    * log aggregation status for this NodeManager as TIME_OUT.    *    * This configuration will be used in NodeManager as well to decide    * whether and when to delete the cached log aggregation status.    */
 DECL|field|LOG_AGGREGATION_STATUS_TIME_OUT_MS
 specifier|public
 specifier|static
