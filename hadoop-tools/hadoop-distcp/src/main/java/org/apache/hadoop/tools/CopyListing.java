@@ -423,16 +423,6 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|pathToListFile
-operator|.
-name|getFileSystem
-argument_list|(
-name|config
-argument_list|)
-decl_stmt|;
 specifier|final
 name|boolean
 name|splitLargeFile
@@ -458,8 +448,6 @@ name|DistCpUtils
 operator|.
 name|sortListing
 argument_list|(
-name|fs
-argument_list|,
 name|config
 argument_list|,
 name|pathToListFile

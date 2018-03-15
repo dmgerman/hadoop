@@ -940,6 +940,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|assertIsFile
+argument_list|(
+name|fs
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
 name|FileStatus
 name|stat
 init|=
@@ -958,18 +965,6 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"not a file "
-operator|+
-name|statText
-argument_list|,
-name|stat
-operator|.
-name|isFile
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"wrong length "
@@ -3112,6 +3107,84 @@ name|isSymlink
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Assert that a varargs list of paths exist.    * @param fs filesystem    * @param message message for exceptions    * @param paths paths    * @throws IOException IO failure    */
+DECL|method|assertPathsExist (FileSystem fs, String message, Path... paths)
+specifier|public
+specifier|static
+name|void
+name|assertPathsExist
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Path
+modifier|...
+name|paths
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|Path
+name|path
+range|:
+name|paths
+control|)
+block|{
+name|assertPathExists
+argument_list|(
+name|fs
+argument_list|,
+name|message
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Assert that a varargs list of paths do not exist.    * @param fs filesystem    * @param message message for exceptions    * @param paths paths    * @throws IOException IO failure    */
+DECL|method|assertPathsDoNotExist (FileSystem fs, String message, Path... paths)
+specifier|public
+specifier|static
+name|void
+name|assertPathsDoNotExist
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Path
+modifier|...
+name|paths
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|Path
+name|path
+range|:
+name|paths
+control|)
+block|{
+name|assertPathDoesNotExist
+argument_list|(
+name|fs
+argument_list|,
+name|message
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Create a dataset for use in the tests; all data is in the range    * base to (base+modulo-1) inclusive.    * @param len length of data    * @param base base of the data    * @param modulo the modulo    * @return the newly generated dataset    */
 DECL|method|dataset (int len, int base, int modulo)

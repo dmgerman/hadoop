@@ -120,6 +120,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileStatus
@@ -321,14 +335,21 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * CopyListingFileStatus is a view of {@link FileStatus}, recording additional  * data members useful to distcp.  */
+comment|/**  * CopyListingFileStatus is a view of {@link FileStatus}, recording additional  * data members useful to distcp.  *  * This is the datastructure persisted in the sequence files generated  * in the CopyCommitter when deleting files.  * Any tool working with these generated files needs to be aware of an  * important stability guarantee: there is none; expect it to change  * across minor Hadoop releases without any support for reading the files of  * different versions.  * Tools parsing the listings must be built and tested against the point  * release of Hadoop which they intend to support.  */
 end_comment
 
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+literal|"Distcp support tools"
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|CopyListingFileStatus
 specifier|public
 specifier|final

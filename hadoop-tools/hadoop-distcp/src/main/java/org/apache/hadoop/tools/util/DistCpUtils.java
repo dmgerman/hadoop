@@ -2075,16 +2075,13 @@ return|return
 name|copyListingFileStatus
 return|;
 block|}
-comment|/**    * Sort sequence file containing FileStatus and Text as key and value respecitvely    *    * @param fs - File System    * @param conf - Configuration    * @param sourceListing - Source listing file    * @return Path of the sorted file. Is source file with _sorted appended to the name    * @throws IOException - Any exception during sort.    */
-DECL|method|sortListing (FileSystem fs, Configuration conf, Path sourceListing)
+comment|/**    * Sort sequence file containing FileStatus and Text as key and value    * respectively.    *    * @param conf - Configuration    * @param sourceListing - Source listing file    * @return Path of the sorted file. Is source file with _sorted appended to the name    * @throws IOException - Any exception during sort.    */
+DECL|method|sortListing (Configuration conf, Path sourceListing)
 specifier|public
 specifier|static
 name|Path
 name|sortListing
 parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
@@ -2094,6 +2091,73 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Path
+name|output
+init|=
+operator|new
+name|Path
+argument_list|(
+name|sourceListing
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"_sorted"
+argument_list|)
+decl_stmt|;
+name|sortListing
+argument_list|(
+name|conf
+argument_list|,
+name|sourceListing
+argument_list|,
+name|output
+argument_list|)
+expr_stmt|;
+return|return
+name|output
+return|;
+block|}
+comment|/**    * Sort sequence file containing FileStatus and Text as key and value    * respectively, saving the result to the {@code output} path, which    * will be deleted first.    *    * @param conf - Configuration    * @param sourceListing - Source listing file    * @param output output path    * @throws IOException - Any exception during sort.    */
+DECL|method|sortListing (final Configuration conf, final Path sourceListing, final Path output)
+specifier|public
+specifier|static
+name|void
+name|sortListing
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|Path
+name|sourceListing
+parameter_list|,
+specifier|final
+name|Path
+name|output
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileSystem
+name|fs
+init|=
+name|sourceListing
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+comment|// force verify that the destination FS matches the input
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
+name|output
+argument_list|)
+expr_stmt|;
 name|SequenceFile
 operator|.
 name|Sorter
@@ -2117,20 +2181,6 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|Path
-name|output
-init|=
-operator|new
-name|Path
-argument_list|(
-name|sourceListing
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"_sorted"
-argument_list|)
-decl_stmt|;
 name|fs
 operator|.
 name|delete
@@ -2149,9 +2199,6 @@ argument_list|,
 name|output
 argument_list|)
 expr_stmt|;
-return|return
-name|output
-return|;
 block|}
 comment|/**    * Determines if a file system supports ACLs by running a canary getAclStatus    * request on the file system root.  This method is used before distcp job    * submission to fail fast if the user requested preserving ACLs, but the file    * system cannot support ACLs.    *    * @param fs FileSystem to check    * @throws AclsNotSupportedException if fs does not support ACLs    */
 DECL|method|checkFileSystemAclSupport (FileSystem fs)
@@ -2435,6 +2482,14 @@ argument_list|(
 name|source
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|sourceChecksum
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// iff there's a source checksum, look for one at the destination.
 name|targetChecksum
 operator|=
 name|targetFS
@@ -2444,6 +2499,7 @@ argument_list|(
 name|target
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

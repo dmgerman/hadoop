@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -125,11 +139,11 @@ literal|false
 argument_list|,
 literal|"Update target, copying only missing"
 operator|+
-literal|"files or directories"
+literal|" files or directories"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Deletes missing files in target that are missing from source    * This allows the target to be in sync with the source contents    * Typically used in conjunction with SYNC_FOLDERS    * Incompatible with ATOMIC_COMMIT    */
+comment|/**    * Deletes missing files in target that are missing from source.    * This allows the target to be in sync with the source contents    * Typically used in conjunction with SYNC_FOLDERS    * Incompatible with ATOMIC_COMMIT    */
 DECL|enumConstant|DELETE_MISSING
 name|DELETE_MISSING
 argument_list|(
@@ -147,6 +161,32 @@ argument_list|,
 literal|"Delete from target, "
 operator|+
 literal|"files missing in source. Delete is applicable only with update or overwrite options"
+argument_list|)
+argument_list|)
+block|,
+comment|/**    * Track missing files in target that are missing from source    * This allows for other applications to complete the synchronization,    * possibly with object-store-specific delete algorithms.    * Typically used in conjunction with SYNC_FOLDERS    * Incompatible with ATOMIC_COMMIT    */
+DECL|enumConstant|InterfaceStability.Unstable
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|enumConstant|TRACK_MISSING
+name|TRACK_MISSING
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_TRACK_MISSING
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"xtrack"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Save information about missing source files to the"
+operator|+
+literal|" specified directory"
 argument_list|)
 argument_list|)
 block|,

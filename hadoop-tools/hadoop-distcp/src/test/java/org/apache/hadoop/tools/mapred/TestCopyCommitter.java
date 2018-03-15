@@ -342,6 +342,42 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|util
+operator|.
+name|TestDistCpUtils
+operator|.
+name|*
+import|;
+end_import
+
 begin_class
 DECL|class|TestCopyCommitter
 specifier|public
@@ -555,6 +591,8 @@ specifier|public
 name|void
 name|createMetaFolder
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|config
 operator|.
@@ -590,8 +628,6 @@ argument_list|(
 literal|"/meta"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|getFileSystem
@@ -603,30 +639,6 @@ name|meta
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while creating meta folder"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Unable to create meta folder"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|After
 DECL|method|cleanupMetaFolder ()
@@ -634,6 +646,8 @@ specifier|public
 name|void
 name|cleanupMetaFolder
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|Path
 name|meta
@@ -644,8 +658,6 @@ argument_list|(
 literal|"/meta"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|cluster
@@ -680,30 +692,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while cleaning up folder"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Unable to clean up meta folder"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testNoCommitAction ()
@@ -711,6 +699,8 @@ specifier|public
 name|void
 name|testNoCommitAction
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|TaskAttemptContext
 name|taskAttemptContext
@@ -740,8 +730,6 @@ name|getJobID
 argument_list|()
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|OutputCommitter
 name|committer
 init|=
@@ -764,12 +752,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Commit Successful"
+argument_list|,
 name|taskAttemptContext
 operator|.
 name|getStatus
 argument_list|()
-argument_list|,
-literal|"Commit Successful"
 argument_list|)
 expr_stmt|;
 comment|//Test for idempotent commit
@@ -784,38 +772,14 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Commit Successful"
+argument_list|,
 name|taskAttemptContext
 operator|.
 name|getStatus
 argument_list|()
-argument_list|,
-literal|"Commit Successful"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Commit failed"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -824,6 +788,8 @@ specifier|public
 name|void
 name|testPreserveStatus
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|TaskAttemptContext
 name|taskAttemptContext
@@ -1058,9 +1024,6 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
 name|checkDirectoryPermissions
 argument_list|(
 name|fs
@@ -1069,16 +1032,7 @@ name|targetBase
 argument_list|,
 name|sourcePerm
 argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Permission don't match"
-argument_list|)
 expr_stmt|;
-block|}
 comment|//Test for idempotent commit
 name|committer
 operator|.
@@ -1087,9 +1041,6 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
 name|checkDirectoryPermissions
 argument_list|(
 name|fs
@@ -1097,38 +1048,6 @@ argument_list|,
 name|targetBase
 argument_list|,
 name|sourcePerm
-argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Permission don't match"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing for preserve status"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Preserve status failure"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1161,6 +1080,8 @@ specifier|public
 name|void
 name|testDeleteMissing
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|TaskAttemptContext
 name|taskAttemptContext
@@ -1416,12 +1337,7 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|TestDistCpUtils
-operator|.
-name|checkIfFoldersAreInSync
+name|verifyFoldersAreInSync
 argument_list|(
 name|fs
 argument_list|,
@@ -1429,22 +1345,8 @@ name|targetBase
 argument_list|,
 name|sourceBase
 argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Source and target folders are not in sync"
-argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|TestDistCpUtils
-operator|.
-name|checkIfFoldersAreInSync
+name|verifyFoldersAreInSync
 argument_list|(
 name|fs
 argument_list|,
@@ -1452,16 +1354,7 @@ name|sourceBase
 argument_list|,
 name|targetBase
 argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Source and target folders are not in sync"
-argument_list|)
 expr_stmt|;
-block|}
 comment|//Test for idempotent commit
 name|committer
 operator|.
@@ -1470,12 +1363,7 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|TestDistCpUtils
-operator|.
-name|checkIfFoldersAreInSync
+name|verifyFoldersAreInSync
 argument_list|(
 name|fs
 argument_list|,
@@ -1483,60 +1371,14 @@ name|targetBase
 argument_list|,
 name|sourceBase
 argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Source and target folders are not in sync"
-argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|TestDistCpUtils
-operator|.
-name|checkIfFoldersAreInSync
+name|verifyFoldersAreInSync
 argument_list|(
 name|fs
 argument_list|,
 name|sourceBase
 argument_list|,
 name|targetBase
-argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Source and target folders are not in sync"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing for delete missing"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Delete missing failure"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1571,6 +1413,8 @@ specifier|public
 name|void
 name|testDeleteMissingFlatInterleavedFiles
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|TaskAttemptContext
 name|taskAttemptContext
@@ -1669,8 +1513,6 @@ name|nextLong
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1680,8 +1522,6 @@ operator|+
 literal|"/1"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1691,8 +1531,6 @@ operator|+
 literal|"/3"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1702,8 +1540,6 @@ operator|+
 literal|"/4"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1713,8 +1549,6 @@ operator|+
 literal|"/5"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1724,8 +1558,6 @@ operator|+
 literal|"/7"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1735,8 +1567,6 @@ operator|+
 literal|"/8"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1746,8 +1576,6 @@ operator|+
 literal|"/9"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1757,8 +1585,6 @@ operator|+
 literal|"/2"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1768,8 +1594,6 @@ operator|+
 literal|"/4"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1779,8 +1603,6 @@ operator|+
 literal|"/5"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1790,8 +1612,6 @@ operator|+
 literal|"/7"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1801,8 +1621,6 @@ operator|+
 literal|"/9"
 argument_list|)
 expr_stmt|;
-name|TestDistCpUtils
-operator|.
 name|createFile
 argument_list|(
 name|fs
@@ -1937,12 +1755,7 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|TestDistCpUtils
-operator|.
-name|checkIfFoldersAreInSync
+name|verifyFoldersAreInSync
 argument_list|(
 name|fs
 argument_list|,
@@ -1950,20 +1763,13 @@ name|targetBase
 argument_list|,
 name|sourceBase
 argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Source and target folders are not in sync"
-argument_list|)
 expr_stmt|;
-block|}
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|4
+argument_list|,
 name|fs
 operator|.
 name|listStatus
@@ -1976,8 +1782,6 @@ argument_list|)
 argument_list|)
 operator|.
 name|length
-argument_list|,
-literal|4
 argument_list|)
 expr_stmt|;
 comment|//Test for idempotent commit
@@ -1988,12 +1792,7 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|TestDistCpUtils
-operator|.
-name|checkIfFoldersAreInSync
+name|verifyFoldersAreInSync
 argument_list|(
 name|fs
 argument_list|,
@@ -2001,20 +1800,13 @@ name|targetBase
 argument_list|,
 name|sourceBase
 argument_list|)
-condition|)
-block|{
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Source and target folders are not in sync"
-argument_list|)
 expr_stmt|;
-block|}
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|4
+argument_list|,
 name|fs
 operator|.
 name|listStatus
@@ -2027,31 +1819,6 @@ argument_list|)
 argument_list|)
 operator|.
 name|length
-argument_list|,
-literal|4
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing for delete missing"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Delete missing failure"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2086,6 +1853,8 @@ specifier|public
 name|void
 name|testAtomicCommitMissingFinal
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|TaskAttemptContext
 name|taskAttemptContext
@@ -2224,35 +1993,29 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Work path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|workPath
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+name|assertPathDoesNotExist
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Final path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|finalPath
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2263,35 +2026,29 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+name|assertPathDoesNotExist
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Work path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|workPath
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Final path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|finalPath
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2303,59 +2060,30 @@ argument_list|(
 name|jobContext
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+name|assertPathDoesNotExist
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Work path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|workPath
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Final path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|finalPath
 argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing for preserve status"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Atomic commit failure"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2399,6 +2127,8 @@ specifier|public
 name|void
 name|testAtomicCommitExistingFinal
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|TaskAttemptContext
 name|taskAttemptContext
@@ -2548,35 +2278,29 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Work path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|workPath
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Final path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|finalPath
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2603,35 +2327,29 @@ name|Exception
 name|exception
 parameter_list|)
 block|{
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Work path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|workPath
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertPathExists
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
+literal|"Final path"
+argument_list|,
 operator|new
 name|Path
 argument_list|(
 name|finalPath
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2643,29 +2361,6 @@ literal|"Atomic-commit Test pass."
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception encountered while testing for atomic commit."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Atomic commit failure"
-argument_list|)
-expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -2735,7 +2430,7 @@ return|;
 block|}
 DECL|method|checkDirectoryPermissions (FileSystem fs, String targetBase, FsPermission sourcePerm)
 specifier|private
-name|boolean
+name|void
 name|checkDirectoryPermissions
 parameter_list|(
 name|FileSystem
@@ -2767,9 +2462,7 @@ name|stack
 init|=
 operator|new
 name|Stack
-argument_list|<
-name|Path
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|stack
@@ -2861,20 +2554,17 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|sourcePerm
+argument_list|,
 name|status
 operator|.
 name|getPermission
 argument_list|()
-argument_list|,
-name|sourcePerm
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-literal|true
-return|;
 block|}
 DECL|class|NullInputFormat
 specifier|private

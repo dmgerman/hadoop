@@ -24,6 +24,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -35,11 +63,28 @@ comment|/**  * Utility class to hold commonly used constants.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+literal|"Distcp support tools"
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DistCpConstants
 specifier|public
+specifier|final
 class|class
 name|DistCpConstants
 block|{
+DECL|method|DistCpConstants ()
+specifier|private
+name|DistCpConstants
+parameter_list|()
+block|{   }
 comment|/* Default number of threads to use for building file listing */
 DECL|field|DEFAULT_LISTSTATUS_THREADS
 specifier|public
@@ -161,6 +206,15 @@ name|String
 name|CONF_LABEL_DELETE_MISSING
 init|=
 literal|"distcp.delete.missing.source"
+decl_stmt|;
+DECL|field|CONF_LABEL_TRACK_MISSING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_TRACK_MISSING
+init|=
+literal|"distcp.track.missing.source"
 decl_stmt|;
 DECL|field|CONF_LABEL_LISTSTATUS_THREADS
 specifier|public
@@ -580,6 +634,36 @@ init|=
 literal|8
 operator|*
 literal|1024
+decl_stmt|;
+comment|/** Filename of sorted files in when tracking saves them. */
+DECL|field|SOURCE_SORTED_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SOURCE_SORTED_FILE
+init|=
+literal|"source_sorted.seq"
+decl_stmt|;
+comment|/** Filename of unsorted target listing. */
+DECL|field|TARGET_LISTING_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TARGET_LISTING_FILE
+init|=
+literal|"target_listing.seq"
+decl_stmt|;
+comment|/** Filename of sorted target listing. */
+DECL|field|TARGET_SORTED_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TARGET_SORTED_FILE
+init|=
+literal|"target_sorted.seq"
 decl_stmt|;
 block|}
 end_class

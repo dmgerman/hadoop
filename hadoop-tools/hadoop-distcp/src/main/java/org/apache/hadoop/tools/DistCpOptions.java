@@ -86,6 +86,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -177,6 +205,14 @@ comment|/**  * The Options class encapsulates all DistCp options.  *  * When you
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DistCpOptions
 specifier|public
 specifier|final
@@ -252,6 +288,13 @@ specifier|private
 specifier|final
 name|boolean
 name|syncFolder
+decl_stmt|;
+comment|/** Path to save source/dest sequence files to, if non-null. */
+DECL|field|trackPath
+specifier|private
+specifier|final
+name|Path
+name|trackPath
 decl_stmt|;
 comment|/** Whether files only present in target should be deleted. */
 DECL|field|deleteMissing
@@ -722,6 +765,14 @@ name|builder
 operator|.
 name|verboseLog
 expr_stmt|;
+name|this
+operator|.
+name|trackPath
+operator|=
+name|builder
+operator|.
+name|trackPath
+expr_stmt|;
 block|}
 DECL|method|getSourceFileListing ()
 specifier|public
@@ -1054,6 +1105,16 @@ return|return
 name|verboseLog
 return|;
 block|}
+DECL|method|getTrackPath ()
+specifier|public
+name|Path
+name|getTrackPath
+parameter_list|()
+block|{
+return|return
+name|trackPath
+return|;
+block|}
 comment|/**    * Add options to configuration. These will be used in the Mapper/committer    *    * @param conf - Configuration object to which the options need to be added    */
 DECL|method|appendToConf (Configuration conf)
 specifier|public
@@ -1345,6 +1406,32 @@ name|verboseLog
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|trackPath
+operator|!=
+literal|null
+condition|)
+block|{
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
+name|TRACK_MISSING
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|trackPath
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Utility to easily string-ify Options, for logging.    *    * @return String representation of the Options.    */
 annotation|@
@@ -1595,6 +1682,11 @@ DECL|field|logPath
 specifier|private
 name|Path
 name|logPath
+decl_stmt|;
+DECL|field|trackPath
+specifier|private
+name|Path
+name|trackPath
 decl_stmt|;
 DECL|field|copyStrategy
 specifier|private
@@ -2372,6 +2464,25 @@ operator|.
 name|logPath
 operator|=
 name|newLogPath
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|withTrackMissing (Path path)
+specifier|public
+name|Builder
+name|withTrackMissing
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+name|this
+operator|.
+name|trackPath
+operator|=
+name|path
 expr_stmt|;
 return|return
 name|this
