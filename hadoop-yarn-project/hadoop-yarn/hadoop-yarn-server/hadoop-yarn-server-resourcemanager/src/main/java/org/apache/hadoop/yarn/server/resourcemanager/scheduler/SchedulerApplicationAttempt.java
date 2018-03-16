@@ -2610,6 +2610,8 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+try|try
+block|{
 name|reReservations
 operator|.
 name|add
@@ -2617,6 +2619,15 @@ argument_list|(
 name|schedulerKey
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// This happens when count = MAX_INT, ignore the exception
+block|}
 block|}
 DECL|method|getReReservations (SchedulerRequestKey schedulerKey)
 specifier|public
@@ -5032,6 +5043,8 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+try|try
+block|{
 return|return
 name|missedNonPartitionedReqSchedulingOpportunity
 operator|.
@@ -5044,6 +5057,20 @@ argument_list|)
 operator|+
 literal|1
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// This happens when count = MAX_INT, ignore the exception
+return|return
+name|Integer
+operator|.
+name|MAX_VALUE
+return|;
+block|}
 block|}
 specifier|public
 name|void
