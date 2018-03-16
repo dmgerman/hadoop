@@ -5142,6 +5142,40 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|pendingRecoveryBlocks
+operator|.
+name|isUnderRecovery
+argument_list|(
+name|lastBlock
+argument_list|)
+condition|)
+block|{
+comment|// We've just finished recovery for this block, complete
+comment|// the block forcibly disregarding number of replicas.
+comment|// This is to ignore minReplication, the block will be closed
+comment|// and then replicated out.
+name|completeBlock
+argument_list|(
+name|lastBlock
+argument_list|,
+name|iip
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|updateNeededReconstructions
+argument_list|(
+name|lastBlock
+argument_list|,
+literal|1
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|committed
 return|;
