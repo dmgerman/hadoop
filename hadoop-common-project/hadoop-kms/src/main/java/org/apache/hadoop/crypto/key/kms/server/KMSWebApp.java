@@ -120,6 +120,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -985,6 +999,32 @@ argument_list|,
 name|kmsConf
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|keyProvider
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"No"
+operator|+
+literal|" KeyProvider has been initialized, please"
+operator|+
+literal|" check whether %s '%s' is configured correctly in"
+operator|+
+literal|" kms-site.xml."
+argument_list|,
+name|KMSConfiguration
+operator|.
+name|KEY_PROVIDER_URI
+argument_list|,
+name|providerString
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|kmsConf
