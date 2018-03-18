@@ -1423,6 +1423,26 @@ name|String
 name|appId
 parameter_list|)
 function_decl|;
+comment|/**    * This method verifies if an user has access to a specified queue.    *    * @return Response containing the status code.    *    * @param queue queue    * @param username user    * @param queueAclType acl type of queue, it could be    *                     SUBMIT_APPLICATIONS/ADMINISTER_QUEUE    * @param hsr request    *    * @throws AuthorizationException if the user is not authorized to invoke this    *                                method.    */
+DECL|method|checkUserAccessToQueue (String queue, String username, String queueAclType, HttpServletRequest hsr)
+name|Response
+name|checkUserAccessToQueue
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|String
+name|username
+parameter_list|,
+name|String
+name|queueAclType
+parameter_list|,
+name|HttpServletRequest
+name|hsr
+parameter_list|)
+throws|throws
+name|AuthorizationException
+function_decl|;
 block|}
 end_interface
 

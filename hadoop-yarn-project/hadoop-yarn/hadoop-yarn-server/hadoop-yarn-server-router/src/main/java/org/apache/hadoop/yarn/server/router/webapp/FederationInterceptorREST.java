@@ -5348,6 +5348,32 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|checkUserAccessToQueue (String queue, String username, String queueAclType, HttpServletRequest hsr)
+specifier|public
+name|Response
+name|checkUserAccessToQueue
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|String
+name|username
+parameter_list|,
+name|String
+name|queueAclType
+parameter_list|,
+name|HttpServletRequest
+name|hsr
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getAppAttempt (HttpServletRequest req, HttpServletResponse res, String appId, String appAttemptId)
 specifier|public
 name|AppAttemptInfo

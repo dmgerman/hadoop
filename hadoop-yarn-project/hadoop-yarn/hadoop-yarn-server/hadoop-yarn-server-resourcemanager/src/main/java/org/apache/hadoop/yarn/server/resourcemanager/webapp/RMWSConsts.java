@@ -441,6 +441,16 @@ name|GET_CONTAINER
 init|=
 literal|"/apps/{appid}/appattempts/{appattemptid}/containers/{containerid}"
 decl_stmt|;
+comment|/**    * Path for {code checkUserAccessToQueue#}    */
+DECL|field|CHECK_USER_ACCESS_TO_QUEUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHECK_USER_ACCESS_TO_QUEUE
+init|=
+literal|"/queues/{queue}/access"
+decl_stmt|;
 comment|// ----------------QueryParams for RMWebServiceProtocol----------------
 DECL|field|TIME
 specifier|public
@@ -504,6 +514,15 @@ name|String
 name|QUEUE
 init|=
 literal|"queue"
+decl_stmt|;
+DECL|field|QUEUES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUEUES
+init|=
+literal|"queues"
 decl_stmt|;
 DECL|field|LIMIT
 specifier|public
@@ -738,6 +757,15 @@ name|String
 name|CONTAINERS
 init|=
 literal|"containers"
+decl_stmt|;
+DECL|field|QUEUE_ACL_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUEUE_ACL_TYPE
+init|=
+literal|"queue-acl-type"
 decl_stmt|;
 DECL|method|RMWSConsts ()
 specifier|private
