@@ -420,6 +420,67 @@ name|MULTIPART_DOWNLOAD_AHEAD_PART_MAX_NUM_DEFAULT
 init|=
 literal|4
 decl_stmt|;
+comment|// The maximum queue number for copies
+comment|// New copies will be blocked when queue is full
+DECL|field|MAX_COPY_TASKS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_COPY_TASKS_KEY
+init|=
+literal|"fs.oss.max.copy.tasks"
+decl_stmt|;
+DECL|field|MAX_COPY_TASKS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_COPY_TASKS_DEFAULT
+init|=
+literal|1024
+operator|*
+literal|10240
+decl_stmt|;
+comment|// The maximum number of threads allowed in the pool for copies
+DECL|field|MAX_COPY_THREADS_NUM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_COPY_THREADS_NUM_KEY
+init|=
+literal|"fs.oss.max.copy.threads"
+decl_stmt|;
+DECL|field|MAX_COPY_THREADS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_COPY_THREADS_DEFAULT
+init|=
+literal|25
+decl_stmt|;
+comment|// The maximum number of concurrent tasks allowed to copy one directory.
+comment|// So we will not block other copies
+DECL|field|MAX_CONCURRENT_COPY_TASKS_PER_DIR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_CONCURRENT_COPY_TASKS_PER_DIR_KEY
+init|=
+literal|"fs.oss.max.copy.tasks.per.dir"
+decl_stmt|;
+DECL|field|MAX_CONCURRENT_COPY_TASKS_PER_DIR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_CONCURRENT_COPY_TASKS_PER_DIR_DEFAULT
+init|=
+literal|5
+decl_stmt|;
 comment|// Comma separated list of directories
 DECL|field|BUFFER_DIR_KEY
 specifier|public
