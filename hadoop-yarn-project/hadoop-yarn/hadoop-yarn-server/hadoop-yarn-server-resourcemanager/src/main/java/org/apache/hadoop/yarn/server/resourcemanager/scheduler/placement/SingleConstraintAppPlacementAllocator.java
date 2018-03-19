@@ -104,9 +104,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|constraint
 operator|.
 name|AllocationTagNamespace
 import|;
@@ -257,22 +261,6 @@ operator|.
 name|resource
 operator|.
 name|PlacementConstraints
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|InvalidAllocationTagException
 import|;
 end_import
 
@@ -1760,10 +1748,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|AllocationTagNamespaceType
 operator|.
-name|SELF
+name|APP_LABEL
 operator|.
 name|equals
 argument_list|(
@@ -1776,20 +1763,20 @@ condition|)
 block|{
 name|throwExceptionWithMetaInfo
 argument_list|(
-literal|"As of now, the only accepted target key for targetKey of "
-operator|+
-literal|"allocation_tag target expression is: ["
+literal|"As of now, allocation tag namespace ["
 operator|+
 name|AllocationTagNamespaceType
 operator|.
-name|SELF
+name|APP_LABEL
 operator|.
 name|toString
 argument_list|()
 operator|+
-literal|"]. Please make changes to placement constraints "
+literal|"] is not supported. Please make changes to placement "
 operator|+
-literal|"accordingly. If this is null, it will be set to "
+literal|"constraints accordingly. If this is null, it will be "
+operator|+
+literal|"set to "
 operator|+
 name|AllocationTagNamespaceType
 operator|.
@@ -1805,7 +1792,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 name|e
 parameter_list|)
 block|{

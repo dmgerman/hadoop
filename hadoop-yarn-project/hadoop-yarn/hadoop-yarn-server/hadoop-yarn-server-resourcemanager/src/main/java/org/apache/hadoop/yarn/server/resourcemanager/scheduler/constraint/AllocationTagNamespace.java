@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint
 package|package
 name|org
 operator|.
@@ -14,9 +14,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|constraint
 package|;
 end_package
 
@@ -58,9 +62,29 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|api
 operator|.
-name|InvalidAllocationTagException
+name|records
+operator|.
+name|AllocationTagNamespaceType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -71,6 +95,16 @@ operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
 import|;
 end_import
 
@@ -91,6 +125,18 @@ operator|.
 name|util
 operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
 import|;
 end_import
 
@@ -191,26 +237,6 @@ operator|.
 name|AllocationTagNamespaceType
 operator|.
 name|ALL
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|AllocationTagNamespaceType
-operator|.
-name|fromString
 import|;
 end_import
 
@@ -306,7 +332,7 @@ return|return
 name|nsType
 return|;
 block|}
-comment|/**    * Get the scope of the namespace, in form of a set of applications.    * Before calling this method, {@link #evaluate(TargetApplications)}    * must be called in prior to ensure the scope is proper evaluated.    *    * @return a set of applications.    */
+comment|/**    * Get the scope of the namespace, in form of a set of applications.    *    * @return a set of applications.    */
 DECL|method|getNamespaceScope ()
 specifier|public
 name|Set
@@ -343,11 +369,11 @@ operator|.
 name|nsScope
 return|;
 block|}
+comment|/**    * Evaluate the namespace against given target applications    * if it is necessary. Only self/not-self/app-label namespace types    * require this evaluation step, because they are not binding to a    * specific scope during initiating. So we do lazy binding for them    * in this method.    *    * @param target a generic type target that impacts this evaluation.    * @throws InvalidAllocationTagsQueryException    */
 annotation|@
 name|Override
 DECL|method|evaluate (TargetApplications target)
 specifier|public
-specifier|abstract
 name|void
 name|evaluate
 parameter_list|(
@@ -355,102 +381,9 @@ name|TargetApplications
 name|target
 parameter_list|)
 throws|throws
-name|InvalidAllocationTagException
-function_decl|;
-comment|/**    * @return true if the namespace is effective in all applications    * in this cluster. Specifically the namespace prefix should be    * "all".    */
-DECL|method|isGlobal ()
-specifier|public
-name|boolean
-name|isGlobal
-parameter_list|()
+name|InvalidAllocationTagsQueryException
 block|{
-return|return
-name|AllocationTagNamespaceType
-operator|.
-name|ALL
-operator|.
-name|equals
-argument_list|(
-name|getNamespaceType
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * @return true if the namespace is effective within a single application    * by its application ID, the namespace prefix should be "app-id";    * false otherwise.    */
-DECL|method|isSingleInterApp ()
-specifier|public
-name|boolean
-name|isSingleInterApp
-parameter_list|()
-block|{
-return|return
-name|AllocationTagNamespaceType
-operator|.
-name|APP_ID
-operator|.
-name|equals
-argument_list|(
-name|getNamespaceType
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * @return true if the namespace is effective to the application itself,    * the namespace prefix should be "self"; false otherwise.    */
-DECL|method|isIntraApp ()
-specifier|public
-name|boolean
-name|isIntraApp
-parameter_list|()
-block|{
-return|return
-name|AllocationTagNamespaceType
-operator|.
-name|SELF
-operator|.
-name|equals
-argument_list|(
-name|getNamespaceType
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * @return true if the namespace is effective to all applications except    * itself, the namespace prefix should be "not-self"; false otherwise.    */
-DECL|method|isNotSelf ()
-specifier|public
-name|boolean
-name|isNotSelf
-parameter_list|()
-block|{
-return|return
-name|AllocationTagNamespaceType
-operator|.
-name|NOT_SELF
-operator|.
-name|equals
-argument_list|(
-name|getNamespaceType
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * @return true if the namespace is effective to a group of applications    * identified by a application label, the namespace prefix should be    * "app-label"; false otherwise.    */
-DECL|method|isAppLabel ()
-specifier|public
-name|boolean
-name|isAppLabel
-parameter_list|()
-block|{
-return|return
-name|AllocationTagNamespaceType
-operator|.
-name|APP_LABEL
-operator|.
-name|equals
-argument_list|(
-name|getNamespaceType
-argument_list|()
-argument_list|)
-return|;
+comment|// Sub-class needs to override this when it requires the eval step.
 block|}
 annotation|@
 name|Override
@@ -500,7 +433,7 @@ name|TargetApplications
 name|target
 parameter_list|)
 throws|throws
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 block|{
 if|if
 condition|(
@@ -518,7 +451,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 argument_list|(
 literal|"Namespace Self must"
 operator|+
@@ -649,34 +582,6 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|evaluate (TargetApplications target)
-specifier|public
-name|void
-name|evaluate
-parameter_list|(
-name|TargetApplications
-name|target
-parameter_list|)
-block|{
-name|Set
-argument_list|<
-name|ApplicationId
-argument_list|>
-name|allAppIds
-init|=
-name|target
-operator|.
-name|getAllApplicationIds
-argument_list|()
-decl_stmt|;
-name|setScopeIfNotNull
-argument_list|(
-name|allAppIds
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Namespace to all applications in the cluster.    */
 DECL|class|AppLabel
@@ -746,18 +651,6 @@ name|targetAppId
 operator|=
 name|applicationId
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|evaluate (TargetApplications target)
-specifier|public
-name|void
-name|evaluate
-parameter_list|(
-name|TargetApplications
-name|target
-parameter_list|)
-block|{
 name|setScopeIfNotNull
 argument_list|(
 name|ImmutableSet
@@ -791,7 +684,7 @@ name|targetAppId
 return|;
 block|}
 block|}
-comment|/**    * Parse namespace from a string. The string must be in legal format    * defined by each {@link AllocationTagNamespaceType}.    *    * @param namespaceStr namespace string.    * @return an instance of {@link AllocationTagNamespace}.    * @throws InvalidAllocationTagException    * if given string is not in valid format    */
+comment|/**    * Parse namespace from a string. The string must be in legal format    * defined by each {@link AllocationTagNamespaceType}.    *    * @param namespaceStr namespace string.    * @return an instance of {@link AllocationTagNamespace}.    * @throws InvalidAllocationTagsQueryException    * if given string is not in valid format    */
 DECL|method|parse (String namespaceStr)
 specifier|public
 specifier|static
@@ -802,7 +695,7 @@ name|String
 name|namespaceStr
 parameter_list|)
 throws|throws
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 block|{
 comment|// Return the default namespace if no valid string is given.
 if|if
@@ -896,7 +789,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 argument_list|(
 literal|"Missing the application ID in the namespace string: "
 operator|+
@@ -931,7 +824,7 @@ return|;
 default|default:
 throw|throw
 operator|new
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 argument_list|(
 literal|"Invalid namespace string "
 operator|+
@@ -939,6 +832,99 @@ name|namespaceStr
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|fromString (String prefix)
+specifier|private
+specifier|static
+name|AllocationTagNamespaceType
+name|fromString
+parameter_list|(
+name|String
+name|prefix
+parameter_list|)
+throws|throws
+name|InvalidAllocationTagsQueryException
+block|{
+for|for
+control|(
+name|AllocationTagNamespaceType
+name|type
+range|:
+name|AllocationTagNamespaceType
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|type
+operator|.
+name|getTypeKeyword
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|prefix
+argument_list|)
+condition|)
+block|{
+return|return
+name|type
+return|;
+block|}
+block|}
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|values
+init|=
+name|Arrays
+operator|.
+name|stream
+argument_list|(
+name|AllocationTagNamespaceType
+operator|.
+name|values
+argument_list|()
+argument_list|)
+operator|.
+name|map
+argument_list|(
+name|AllocationTagNamespaceType
+operator|::
+name|toString
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toSet
+argument_list|()
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|InvalidAllocationTagsQueryException
+argument_list|(
+literal|"Invalid namespace prefix: "
+operator|+
+name|prefix
+operator|+
+literal|", valid values are: "
+operator|+
+name|String
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|values
+argument_list|)
+argument_list|)
+throw|;
 block|}
 DECL|method|parseAppID (String appIDStr)
 specifier|private
@@ -950,7 +936,7 @@ name|String
 name|appIDStr
 parameter_list|)
 throws|throws
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 block|{
 try|try
 block|{
@@ -980,7 +966,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 argument_list|(
 literal|"Invalid application ID for "
 operator|+
@@ -996,7 +982,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Valid given namespace string and parse it to a list of sub-strings    * that can be consumed by the parser according to the type of the    * namespace. Currently the size of return list should be either 1 or 2.    * Extra slash is escaped during the normalization.    *    * @param namespaceStr namespace string.    * @return a list of parsed strings.    * @throws InvalidAllocationTagException    * if namespace format is unexpected.    */
+comment|/**    * Valid given namespace string and parse it to a list of sub-strings    * that can be consumed by the parser according to the type of the    * namespace. Currently the size of return list should be either 1 or 2.    * Extra slash is escaped during the normalization.    *    * @param namespaceStr namespace string.    * @return a list of parsed strings.    * @throws InvalidAllocationTagsQueryException    * if namespace format is unexpected.    */
 DECL|method|normalize (String namespaceStr)
 specifier|private
 specifier|static
@@ -1010,7 +996,7 @@ name|String
 name|namespaceStr
 parameter_list|)
 throws|throws
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 block|{
 name|List
 argument_list|<
@@ -1093,7 +1079,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 argument_list|(
 literal|"Invalid namespace string: "
 operator|+

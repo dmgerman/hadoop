@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.exceptions
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint
 package|package
 name|org
 operator|.
@@ -14,47 +14,58 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|constraint
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
 begin_comment
-comment|/**  * This exception is thrown by  * {@link  * org.apache.hadoop.yarn.api.records.AllocationTagNamespace#parse(String)}  * when it fails to parse a namespace.  */
+comment|/**  * A class implements Evaluable interface represents the internal state  * of the class can be changed against a given target.  * @param<T> a target to evaluate against  */
 end_comment
 
-begin_class
-DECL|class|InvalidAllocationTagException
+begin_interface
+DECL|interface|Evaluable
 specifier|public
-class|class
-name|InvalidAllocationTagException
-extends|extends
-name|YarnException
+interface|interface
+name|Evaluable
+parameter_list|<
+name|T
+parameter_list|>
 block|{
-DECL|field|serialVersionUID
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|1L
-decl_stmt|;
-DECL|method|InvalidAllocationTagException (String message)
-specifier|public
-name|InvalidAllocationTagException
+comment|/**    * Evaluate against a given target, this process changes the internal state    * of current class.    *    * @param target a generic type target that impacts this evaluation.    * @throws YarnException    */
+DECL|method|evaluate (T target)
+name|void
+name|evaluate
 parameter_list|(
-name|String
-name|message
+name|T
+name|target
 parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
+throws|throws
+name|YarnException
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

@@ -78,7 +78,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|AllocationTagNamespace
+name|AllocationTagNamespaceType
 import|;
 end_import
 
@@ -397,6 +397,51 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but let you    * attach a namespace to the given allocation tags.    *    * @param scope the scope of the constraint    * @param namespace the namespace of the allocation tags    * @param minCardinality determines the minimum number of allocations within    *                       the scope    * @param maxCardinality determines the maximum number of allocations within    *                       the scope    * @param allocationTags allocation tags    * @return the resulting placement constraint    */
+DECL|method|cardinality (String scope, String namespace, int minCardinality, int maxCardinality, String... allocationTags)
+specifier|public
+specifier|static
+name|AbstractConstraint
+name|cardinality
+parameter_list|(
+name|String
+name|scope
+parameter_list|,
+name|String
+name|namespace
+parameter_list|,
+name|int
+name|minCardinality
+parameter_list|,
+name|int
+name|maxCardinality
+parameter_list|,
+name|String
+modifier|...
+name|allocationTags
+parameter_list|)
+block|{
+return|return
+operator|new
+name|SingleConstraint
+argument_list|(
+name|scope
+argument_list|,
+name|minCardinality
+argument_list|,
+name|maxCardinality
+argument_list|,
+name|PlacementTargets
+operator|.
+name|allocationTagWithNamespace
+argument_list|(
+name|namespace
+argument_list|,
+name|allocationTags
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but    * determines only the minimum cardinality (the maximum cardinality is    * unbound).    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
 DECL|method|minCardinality (String scope, int minCardinality, String... allocationTags)
 specifier|public
@@ -430,6 +475,44 @@ name|allocationTags
 argument_list|)
 return|;
 block|}
+comment|/**    * Similar to {@link #minCardinality(String, int, String...)}, but let you    * attach a namespace to the allocation tags.    *    * @param scope the scope of the constraint    * @param namespace the namespace of these tags    * @param minCardinality determines the minimum number of allocations within    *                       the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
+DECL|method|minCardinality (String scope, String namespace, int minCardinality, String... allocationTags)
+specifier|public
+specifier|static
+name|AbstractConstraint
+name|minCardinality
+parameter_list|(
+name|String
+name|scope
+parameter_list|,
+name|String
+name|namespace
+parameter_list|,
+name|int
+name|minCardinality
+parameter_list|,
+name|String
+modifier|...
+name|allocationTags
+parameter_list|)
+block|{
+return|return
+name|cardinality
+argument_list|(
+name|scope
+argument_list|,
+name|namespace
+argument_list|,
+name|minCardinality
+argument_list|,
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|,
+name|allocationTags
+argument_list|)
+return|;
+block|}
 comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but    * determines only the maximum cardinality (the minimum cardinality is 0).    *    * @param scope the scope of the constraint    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
 DECL|method|maxCardinality (String scope, int maxCardinality, String... allocationTags)
 specifier|public
@@ -452,6 +535,42 @@ return|return
 name|cardinality
 argument_list|(
 name|scope
+argument_list|,
+literal|0
+argument_list|,
+name|maxCardinality
+argument_list|,
+name|allocationTags
+argument_list|)
+return|;
+block|}
+comment|/**    * Similar to {@link #maxCardinality(String, int, String...)}, but let you    * specify a namespace for the tags, see supported namespaces in    * {@link AllocationTagNamespaceType}.    *    * @param scope the scope of the constraint    * @param tagNamespace the namespace of these tags    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags allocation tags    * @return the resulting placement constraint    */
+DECL|method|maxCardinality (String scope, String tagNamespace, int maxCardinality, String... allocationTags)
+specifier|public
+specifier|static
+name|AbstractConstraint
+name|maxCardinality
+parameter_list|(
+name|String
+name|scope
+parameter_list|,
+name|String
+name|tagNamespace
+parameter_list|,
+name|int
+name|maxCardinality
+parameter_list|,
+name|String
+modifier|...
+name|allocationTags
+parameter_list|)
+block|{
+return|return
+name|cardinality
+argument_list|(
+name|scope
+argument_list|,
+name|tagNamespace
 argument_list|,
 literal|0
 argument_list|,
@@ -626,15 +745,6 @@ modifier|...
 name|allocationTags
 parameter_list|)
 block|{
-name|AllocationTagNamespace
-name|selfNs
-init|=
-operator|new
-name|AllocationTagNamespace
-operator|.
-name|Self
-argument_list|()
-decl_stmt|;
 return|return
 operator|new
 name|TargetExpression
@@ -643,7 +753,9 @@ name|TargetType
 operator|.
 name|ALLOCATION_TAG
 argument_list|,
-name|selfNs
+name|AllocationTagNamespaceType
+operator|.
+name|SELF
 operator|.
 name|toString
 argument_list|()

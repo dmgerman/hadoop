@@ -118,24 +118,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AllocationTagNamespace
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|AllocationTagNamespaceType
 import|;
 end_import
@@ -173,24 +155,6 @@ operator|.
 name|records
 operator|.
 name|SchedulingRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TargetApplications
 import|;
 end_import
 
@@ -382,22 +346,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|InvalidAllocationTagException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -526,7 +474,7 @@ name|AllocationTagsManager
 name|atm
 parameter_list|)
 throws|throws
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 block|{
 comment|// Parse to a valid namespace.
 name|AllocationTagNamespace
@@ -539,43 +487,26 @@ argument_list|(
 name|targetKey
 argument_list|)
 decl_stmt|;
-comment|// TODO remove such check once we support all forms of namespaces
+comment|// TODO Complete remove this check once we support app-label.
 if|if
 condition|(
-operator|!
+name|AllocationTagNamespaceType
+operator|.
+name|APP_LABEL
+operator|.
+name|equals
+argument_list|(
 name|namespace
 operator|.
-name|isIntraApp
+name|getNamespaceType
 argument_list|()
-operator|&&
-operator|!
-name|namespace
-operator|.
-name|isSingleInterApp
-argument_list|()
+argument_list|)
 condition|)
 block|{
 throw|throw
 operator|new
-name|InvalidAllocationTagException
+name|InvalidAllocationTagsQueryException
 argument_list|(
-literal|"Only support "
-operator|+
-name|AllocationTagNamespaceType
-operator|.
-name|SELF
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" and "
-operator|+
-name|AllocationTagNamespaceType
-operator|.
-name|APP_ID
-operator|+
-literal|" now,"
-operator|+
 name|namespace
 operator|.
 name|toString
@@ -612,72 +543,6 @@ return|return
 name|namespace
 return|;
 block|}
-comment|// We return a single app Id now, because at present,
-comment|// only self and app-id namespace is supported. But moving on,
-comment|// this will return a set of application IDs.
-comment|// TODO support other forms of namespaces
-DECL|method|getNamespaceScope ( AllocationTagNamespace namespace)
-specifier|private
-specifier|static
-name|ApplicationId
-name|getNamespaceScope
-parameter_list|(
-name|AllocationTagNamespace
-name|namespace
-parameter_list|)
-throws|throws
-name|InvalidAllocationTagException
-block|{
-if|if
-condition|(
-name|namespace
-operator|.
-name|getNamespaceScope
-argument_list|()
-operator|==
-literal|null
-operator|||
-name|namespace
-operator|.
-name|getNamespaceScope
-argument_list|()
-operator|.
-name|size
-argument_list|()
-operator|!=
-literal|1
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidAllocationTagException
-argument_list|(
-literal|"Invalid allocation tag namespace "
-operator|+
-name|namespace
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|", expecting it is not null and only 1 application"
-operator|+
-literal|" ID in the scope."
-argument_list|)
-throw|;
-block|}
-return|return
-name|namespace
-operator|.
-name|getNamespaceScope
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
-return|;
-block|}
 comment|/**    * Returns true if<b>single</b> placement constraint with associated    * allocationTags and scope is satisfied by a specific scheduler Node.    *    * @param targetApplicationId the application id, which could be override by    *                           target application id specified inside allocation    *                           tags.    * @param sc the placement constraint    * @param te the target expression    * @param node the scheduler node    * @param tm the allocation tags store    * @return true if single application constraint is satisfied by node    * @throws InvalidAllocationTagsQueryException    */
 DECL|method|canSatisfySingleConstraintExpression ( ApplicationId targetApplicationId, SingleConstraint sc, TargetExpression te, SchedulerNode node, AllocationTagsManager tm)
 specifier|private
@@ -706,11 +571,6 @@ block|{
 comment|// Parse the allocation tag's namespace from the given target key,
 comment|// then evaluate the namespace and get its scope,
 comment|// which is represented by one or more application IDs.
-name|ApplicationId
-name|effectiveAppID
-decl_stmt|;
-try|try
-block|{
 name|AllocationTagNamespace
 name|namespace
 init|=
@@ -726,28 +586,21 @@ argument_list|,
 name|tm
 argument_list|)
 decl_stmt|;
-name|effectiveAppID
-operator|=
-name|getNamespaceScope
+name|AllocationTags
+name|allocationTags
+init|=
+name|AllocationTags
+operator|.
+name|newAllocationTags
 argument_list|(
 name|namespace
+argument_list|,
+name|te
+operator|.
+name|getTargetValues
+argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InvalidAllocationTagException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|InvalidAllocationTagsQueryException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
+decl_stmt|;
 name|long
 name|minScopeCardinality
 init|=
@@ -822,12 +675,7 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|,
-name|effectiveAppID
-argument_list|,
-name|te
-operator|.
-name|getTargetValues
-argument_list|()
+name|allocationTags
 argument_list|,
 name|Long
 operator|::
@@ -851,12 +699,7 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|,
-name|effectiveAppID
-argument_list|,
-name|te
-operator|.
-name|getTargetValues
-argument_list|()
+name|allocationTags
 argument_list|,
 name|Long
 operator|::
@@ -897,12 +740,7 @@ operator|.
 name|getRackName
 argument_list|()
 argument_list|,
-name|effectiveAppID
-argument_list|,
-name|te
-operator|.
-name|getTargetValues
-argument_list|()
+name|allocationTags
 argument_list|,
 name|Long
 operator|::
@@ -926,12 +764,7 @@ operator|.
 name|getRackName
 argument_list|()
 argument_list|,
-name|effectiveAppID
-argument_list|,
-name|te
-operator|.
-name|getTargetValues
-argument_list|()
+name|allocationTags
 argument_list|,
 name|Long
 operator|::
