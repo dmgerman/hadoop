@@ -1008,11 +1008,44 @@ operator|.
 name|toString
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"{\"queues\":[{\"name\":\"default\",\"state\":\"running\",\"acl_submit_job\":\"*\",\"acl_administer_jobs\":\"*\",\"properties\":[],\"children\":[]},{\"name\":\"q1\",\"state\":\"running\",\"acl_submit_job\":\" \",\"acl_administer_jobs\":\" \",\"properties\":[],\"children\":[{\"name\":\"q1:q2\",\"state\":\"running\",\"acl_submit_job\":\" \",\"acl_administer_jobs\":\" \",\"properties\":[{\"key\":\"capacity\",\"value\":\"20\"},{\"key\":\"user-limit\",\"value\":\"30\"}],\"children\":[]}]}]}"
-argument_list|,
 name|result
+operator|.
+name|contains
+argument_list|(
+literal|"{\"queues\":[{\"name\":\"default\",\"state\":\"running\",\"acl_submit_job\":\"*\",\"acl_administer_jobs\":\"*\",\"properties\":[],\"children\":[]},{\"name\":\"q1\",\"state\":\"running\",\"acl_submit_job\":\" \",\"acl_administer_jobs\":\" \",\"properties\":[],\"children\":[{\"name\":\"q1:q2\",\"state\":\"running\",\"acl_submit_job\":\" \",\"acl_administer_jobs\":\" \",\"properties\":["
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|result
+operator|.
+name|contains
+argument_list|(
+literal|"{\"key\":\"capacity\",\"value\":\"20\"}"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|result
+operator|.
+name|contains
+argument_list|(
+literal|"{\"key\":\"user-limit\",\"value\":\"30\"}"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|result
+operator|.
+name|contains
+argument_list|(
+literal|"],\"children\":[]}]}]}"
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// test constructor QueueAclsInfo
