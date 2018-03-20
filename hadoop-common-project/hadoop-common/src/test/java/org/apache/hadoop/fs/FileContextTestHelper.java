@@ -197,7 +197,7 @@ operator|.
 name|getRandomizedTestDir
 argument_list|()
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -394,7 +394,14 @@ argument_list|()
 operator|+
 literal|"/"
 operator|+
+operator|new
+name|Path
+argument_list|(
 name|testRootDir
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
 expr_stmt|;
 block|}
 block|}
