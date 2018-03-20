@@ -324,6 +324,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -1194,9 +1208,6 @@ argument_list|(
 name|getRandomizedTempPath
 argument_list|()
 argument_list|)
-operator|.
-name|getAbsoluteFile
-argument_list|()
 return|;
 block|}
 comment|/**    * Get a temp path. This may or may not be relative; it depends on what the    * {@link #SYSPROP_TEST_DATA_DIR} is set to. If unset, it returns a path    * under the relative path {@link #DEFAULT_TEST_DATA_PATH}    * @param subpath sub path, with no leading "/" character    * @return a string to use in paths    */
@@ -1213,6 +1224,14 @@ block|{
 name|String
 name|prop
 init|=
+operator|(
+name|Path
+operator|.
+name|WINDOWS
+operator|)
+condition|?
+name|DEFAULT_TEST_DATA_PATH
+else|:
 name|System
 operator|.
 name|getProperty
