@@ -538,6 +538,15 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
+name|e
+operator|.
+name|printStackTrace
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
+expr_stmt|;
 return|return
 literal|1
 return|;
