@@ -708,9 +708,29 @@ name|void
 name|run
 parameter_list|()
 block|{
+try|try
+block|{
 name|checkDirs
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+comment|// Prevent uncaught exceptions from killing this thread
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error while checking local directories: "
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|LocalDirsHandlerService ()
