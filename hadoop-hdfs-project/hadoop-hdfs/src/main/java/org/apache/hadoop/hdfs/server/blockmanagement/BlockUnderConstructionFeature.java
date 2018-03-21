@@ -230,7 +230,7 @@ decl_stmt|;
 comment|/**    * The block source to use in the event of copy-on-write truncate.    */
 DECL|field|truncateBlock
 specifier|private
-name|Block
+name|BlockInfo
 name|truncateBlock
 decl_stmt|;
 DECL|method|BlockUnderConstructionFeature (Block blk, BlockUCState state, DatanodeStorageInfo[] targets, BlockType blockType)
@@ -769,7 +769,7 @@ block|}
 comment|/** Get recover block */
 DECL|method|getTruncateBlock ()
 specifier|public
-name|Block
+name|BlockInfo
 name|getTruncateBlock
 parameter_list|()
 block|{
@@ -777,12 +777,12 @@ return|return
 name|truncateBlock
 return|;
 block|}
-DECL|method|setTruncateBlock (Block recoveryBlock)
+DECL|method|setTruncateBlock (BlockInfo recoveryBlock)
 specifier|public
 name|void
 name|setTruncateBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|recoveryBlock
 parameter_list|)
 block|{

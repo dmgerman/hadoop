@@ -17808,7 +17808,7 @@ name|getUnderConstructionFeature
 argument_list|()
 decl_stmt|;
 comment|// determine if last block was intended to be truncated
-name|Block
+name|BlockInfo
 name|recoveryBlock
 init|=
 name|uc

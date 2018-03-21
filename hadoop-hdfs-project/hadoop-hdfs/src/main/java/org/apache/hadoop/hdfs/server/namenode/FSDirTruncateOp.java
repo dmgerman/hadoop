@@ -585,7 +585,7 @@ name|UNDER_RECOVERY
 condition|)
 block|{
 specifier|final
-name|Block
+name|BlockInfo
 name|truncatedBlock
 init|=
 name|last
@@ -1400,9 +1400,14 @@ operator|.
 name|setTruncateBlock
 argument_list|(
 operator|new
-name|Block
+name|BlockInfoContiguous
 argument_list|(
 name|oldBlock
+argument_list|,
+name|oldBlock
+operator|.
+name|getReplication
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
