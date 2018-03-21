@@ -304,26 +304,6 @@ name|UserGroupInformation
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
 begin_comment
 comment|/**  * Data schema for  * {@link org.apache.hadoop.hdfs.server.federation.store.  * MountTableStore FederationMountTableStore} data stored in the  * {@link org.apache.hadoop.hdfs.server.federation.store.  * StateStoreService FederationStateStoreService}. Supports string  * serialization.  */
 end_comment
@@ -337,22 +317,6 @@ name|MountTable
 extends|extends
 name|BaseRecord
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Logger
-name|LOG
-init|=
-name|LoggerFactory
-operator|.
-name|getLogger
-argument_list|(
-name|MountTable
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 DECL|field|ERROR_MSG_NO_SOURCE_PATH
 specifier|public
 specifier|static
@@ -1799,6 +1763,33 @@ return|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+comment|/**    * Check if a mount table spans all locations.    * @return If the mount table spreads across all locations.    */
+DECL|method|isAll ()
+specifier|public
+name|boolean
+name|isAll
+parameter_list|()
+block|{
+name|DestinationOrder
+name|order
+init|=
+name|getDestOrder
+argument_list|()
+decl_stmt|;
+return|return
+name|order
+operator|==
+name|DestinationOrder
+operator|.
+name|HASH_ALL
+operator|||
+name|order
+operator|==
+name|DestinationOrder
+operator|.
+name|RANDOM
 return|;
 block|}
 comment|/**    * Normalize a path for that filesystem.    *    * @param path Path to normalize.    * @return Normalized path.    */
