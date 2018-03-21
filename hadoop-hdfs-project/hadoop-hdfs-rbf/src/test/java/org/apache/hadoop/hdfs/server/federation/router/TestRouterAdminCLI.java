@@ -2556,6 +2556,17 @@ operator|.
 name|getQuota
 argument_list|()
 expr_stmt|;
+comment|// verify if ns quota keeps quondam value
+name|assertEquals
+argument_list|(
+name|nsQuota
+argument_list|,
+name|quotaUsage
+operator|.
+name|getQuota
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// verify if ss quota is correctly set
 name|assertEquals
 argument_list|(
