@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -651,11 +661,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|constructFilterListBasedOnFields ()
+DECL|method|constructFilterListBasedOnFields ( Set<String> cfsInFields)
 specifier|protected
 name|FilterList
 name|constructFilterListBasedOnFields
-parameter_list|()
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|cfsInFields
+parameter_list|)
 block|{
 return|return
 literal|null
