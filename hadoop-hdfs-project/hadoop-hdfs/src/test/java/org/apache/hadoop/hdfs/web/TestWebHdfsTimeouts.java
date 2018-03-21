@@ -450,7 +450,7 @@ specifier|final
 name|int
 name|CLIENTS_TO_CONSUME_BACKLOG
 init|=
-literal|100
+literal|129
 decl_stmt|;
 DECL|field|CONNECTION_BACKLOG
 specifier|private
@@ -468,7 +468,7 @@ specifier|final
 name|int
 name|SHORT_SOCKET_TIMEOUT
 init|=
-literal|5
+literal|200
 decl_stmt|;
 DECL|field|TEST_TIMEOUT
 specifier|private
@@ -477,7 +477,7 @@ specifier|final
 name|int
 name|TEST_TIMEOUT
 init|=
-literal|10000
+literal|100000
 decl_stmt|;
 DECL|field|clients
 specifier|private
