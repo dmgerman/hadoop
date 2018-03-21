@@ -2985,6 +2985,19 @@ operator|new
 name|StandbyState
 argument_list|()
 decl_stmt|;
+DECL|field|OBSERVER_STATE
+specifier|public
+specifier|static
+specifier|final
+name|HAState
+name|OBSERVER_STATE
+init|=
+operator|new
+name|StandbyState
+argument_list|(
+literal|true
+argument_list|)
+decl_stmt|;
 DECL|field|NAMENODE_HTRACE_PREFIX
 specifier|private
 specifier|static
@@ -5349,6 +5362,20 @@ return|return
 name|ACTIVE_STATE
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|OBSERVER
+condition|)
+block|{
+return|return
+name|OBSERVER_STATE
+return|;
+block|}
 else|else
 block|{
 return|return
@@ -7506,6 +7533,29 @@ if|if
 condition|(
 name|StartupOption
 operator|.
+name|OBSERVER
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|startOpt
+operator|=
+name|StartupOption
+operator|.
+name|OBSERVER
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|StartupOption
+operator|.
 name|UPGRADE
 operator|.
 name|getName
@@ -9241,6 +9291,22 @@ literal|"HA for namenode is not enabled"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|state
+operator|==
+name|OBSERVER_STATE
+condition|)
+block|{
+comment|// TODO: we may need to remove this when enabling failover for observer
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"Cannot transition from Observer to Active"
+argument_list|)
+throw|;
+block|}
 name|state
 operator|.
 name|setState
@@ -9277,6 +9343,22 @@ operator|new
 name|ServiceFailedException
 argument_list|(
 literal|"HA for namenode is not enabled"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|state
+operator|==
+name|OBSERVER_STATE
+condition|)
+block|{
+comment|// TODO: we may need to remove this when enabling failover for observer
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"Cannot transition from Observer to Standby"
 argument_list|)
 throw|;
 block|}
@@ -9514,6 +9596,7 @@ name|String
 name|getState
 parameter_list|()
 block|{
+comment|// TODO: maybe we should return a different result for observer namenode?
 name|String
 name|servStateStr
 init|=
@@ -9831,6 +9914,12 @@ name|startStandbyServices
 argument_list|(
 name|getConf
 argument_list|()
+argument_list|,
+name|state
+operator|==
+name|NameNode
+operator|.
+name|OBSERVER_STATE
 argument_list|)
 expr_stmt|;
 block|}
@@ -9988,6 +10077,17 @@ name|boolean
 name|allowStaleReads
 parameter_list|()
 block|{
+if|if
+condition|(
+name|state
+operator|==
+name|OBSERVER_STATE
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 return|return
 name|allowStaleStandbyReads
 return|;
@@ -10025,6 +10125,21 @@ argument_list|(
 name|ACTIVE_STATE
 argument_list|)
 operator|)
+return|;
+block|}
+DECL|method|isObserverState ()
+specifier|public
+name|boolean
+name|isObserverState
+parameter_list|()
+block|{
+return|return
+name|state
+operator|.
+name|equals
+argument_list|(
+name|OBSERVER_STATE
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns whether the NameNode is completely started    */

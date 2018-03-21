@@ -9619,10 +9619,9 @@ operator|.
 name|isRollingUpgrade
 argument_list|()
 operator|&&
-operator|!
 name|nn
 operator|.
-name|isStandbyState
+name|isActiveState
 argument_list|()
 operator|&&
 name|noStaleStorages

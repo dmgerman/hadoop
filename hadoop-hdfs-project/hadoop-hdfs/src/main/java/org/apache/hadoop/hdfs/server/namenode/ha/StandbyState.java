@@ -144,10 +144,30 @@ name|StandbyState
 extends|extends
 name|HAState
 block|{
+DECL|field|isObserver
+specifier|private
+specifier|final
+name|boolean
+name|isObserver
+decl_stmt|;
 DECL|method|StandbyState ()
 specifier|public
 name|StandbyState
 parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|StandbyState (boolean isObserver)
+specifier|public
+name|StandbyState
+parameter_list|(
+name|boolean
+name|isObserver
+parameter_list|)
 block|{
 name|super
 argument_list|(
@@ -155,6 +175,12 @@ name|HAServiceState
 operator|.
 name|STANDBY
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isObserver
+operator|=
+name|isObserver
 expr_stmt|;
 block|}
 annotation|@
@@ -189,6 +215,21 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|isObserver
+operator|&&
+name|s
+operator|==
+name|NameNode
+operator|.
+name|STANDBY_STATE
+condition|)
+block|{
+comment|// To guard against the exception in the following super call.
+comment|// The other case, standby -> observer, should not happen.
 return|return;
 block|}
 name|super
@@ -375,6 +416,22 @@ parameter_list|()
 block|{
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|isObserver
+condition|?
+literal|"observer"
+else|:
+literal|"standby"
 return|;
 block|}
 block|}

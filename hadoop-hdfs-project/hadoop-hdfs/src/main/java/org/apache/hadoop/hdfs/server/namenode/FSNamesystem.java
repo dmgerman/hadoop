@@ -5509,7 +5509,7 @@ specifier|final
 name|ReentrantLock
 name|cpLock
 decl_stmt|;
-comment|/**    * Used when this NN is in standby state to read from the shared edit log.    */
+comment|/**    * Used when this NN is in standby or observer state to read from the    * shared edit log.    */
 DECL|field|editLogTailer
 specifier|private
 name|EditLogTailer
@@ -9061,14 +9061,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Start services required in standby state     *     * @throws IOException    */
-DECL|method|startStandbyServices (final Configuration conf)
+comment|/**    * Start services required in standby or observer state    *     * @throws IOException    */
+DECL|method|startStandbyServices (final Configuration conf, boolean isObserver)
 name|void
 name|startStandbyServices
 parameter_list|(
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|isObserver
 parameter_list|)
 throws|throws
 name|IOException
@@ -9077,7 +9080,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting services required for standby state"
+literal|"Starting services required for "
+operator|+
+operator|(
+name|isObserver
+condition|?
+literal|"observer"
+else|:
+literal|"standby"
+operator|)
+operator|+
+literal|" state"
 argument_list|)
 expr_stmt|;
 if|if
@@ -9132,6 +9145,9 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|isObserver
+operator|&&
 name|standbyShouldCheckpoint
 condition|)
 block|{
