@@ -265,8 +265,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**     * Construct a server for a protocol implementation instance.    *     * @param protocol the class of protocol to use    * @param instance the instance of protocol whose methods will be called    * @param conf the configuration to use    * @param bindAddress the address to bind on to listen for connection    * @param port the port to listen for connections on    * @param numHandlers the number of method handler threads to run    * @param numReaders the number of reader threads to run    * @param queueSizePerHandler the size of the queue per hander thread    * @param verbose whether each call should be logged    * @param secretManager The secret manager to use to validate incoming requests.    * @param portRangeConfig A config parameter that can be used to restrict    *        the range of ports used when port is 0 (an ephemeral port)    * @return The Server instance    * @throws IOException on any error    */
-DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig )
+comment|/**     * Construct a server for a protocol implementation instance.    *     * @param protocol the class of protocol to use    * @param instance the instance of protocol whose methods will be called    * @param conf the configuration to use    * @param bindAddress the address to bind on to listen for connection    * @param port the port to listen for connections on    * @param numHandlers the number of method handler threads to run    * @param numReaders the number of reader threads to run    * @param queueSizePerHandler the size of the queue per hander thread    * @param verbose whether each call should be logged    * @param secretManager The secret manager to use to validate incoming requests.    * @param portRangeConfig A config parameter that can be used to restrict    *        the range of ports used when port is 0 (an ephemeral port)    * @param alignmentContext provides server state info on client responses    * @return The Server instance    * @throws IOException on any error    */
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig, AlignmentContext alignmentContext)
 name|RPC
 operator|.
 name|Server
@@ -312,6 +312,9 @@ name|secretManager
 parameter_list|,
 name|String
 name|portRangeConfig
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException

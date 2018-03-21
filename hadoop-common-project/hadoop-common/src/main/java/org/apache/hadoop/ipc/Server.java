@@ -1450,6 +1450,11 @@ specifier|private
 name|Tracer
 name|tracer
 decl_stmt|;
+DECL|field|alignmentContext
+specifier|private
+name|AlignmentContext
+name|alignmentContext
+decl_stmt|;
 comment|/**    * Logical name of the server used in metrics and monitor.    */
 DECL|field|serverName
 specifier|private
@@ -1499,6 +1504,23 @@ name|addSuppressedLoggingExceptions
 argument_list|(
 name|exceptionClass
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set alignment context to pass state info thru RPC.    *    * @param alignmentContext alignment state context    */
+DECL|method|setAlignmentContext (AlignmentContext alignmentContext)
+specifier|public
+name|void
+name|setAlignmentContext
+parameter_list|(
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+block|{
+name|this
+operator|.
+name|alignmentContext
+operator|=
+name|alignmentContext
 expr_stmt|;
 block|}
 comment|/**    * ExceptionsHandler manages Exception groups for special handling    * e.g., terse exception group for concise logging messages    */
@@ -13932,6 +13954,21 @@ argument_list|(
 name|CURRENT_VERSION
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|alignmentContext
+operator|!=
+literal|null
+condition|)
+block|{
+name|alignmentContext
+operator|.
+name|updateResponseState
+argument_list|(
+name|headerBuilder
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|status

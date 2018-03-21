@@ -2675,6 +2675,13 @@ name|portRangeConfig
 init|=
 literal|null
 decl_stmt|;
+DECL|field|alignmentContext
+specifier|private
+name|AlignmentContext
+name|alignmentContext
+init|=
+literal|null
+decl_stmt|;
 DECL|method|Builder (Configuration conf)
 specifier|public
 name|Builder
@@ -2898,6 +2905,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/** Default: null */
+DECL|method|setAlignmentContext (AlignmentContext alignmentContext)
+specifier|public
+name|Builder
+name|setAlignmentContext
+parameter_list|(
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+block|{
+name|this
+operator|.
+name|alignmentContext
+operator|=
+name|alignmentContext
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Build the RPC Server.       * @throws IOException on error      * @throws HadoopIllegalArgumentException when mandatory fields are not set      */
 DECL|method|build ()
 specifier|public
@@ -3017,6 +3044,10 @@ argument_list|,
 name|this
 operator|.
 name|portRangeConfig
+argument_list|,
+name|this
+operator|.
+name|alignmentContext
 argument_list|)
 return|;
 block|}

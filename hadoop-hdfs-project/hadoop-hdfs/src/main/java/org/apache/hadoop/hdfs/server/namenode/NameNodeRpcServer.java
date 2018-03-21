@@ -4352,6 +4352,15 @@ name|getDelegationTokenSecretManager
 argument_list|()
 argument_list|)
 operator|.
+name|setAlignmentContext
+argument_list|(
+operator|new
+name|GlobalStateIdContext
+argument_list|(
+name|namesystem
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;

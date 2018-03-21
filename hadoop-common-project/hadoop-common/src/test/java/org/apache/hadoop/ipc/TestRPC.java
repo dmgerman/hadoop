@@ -1972,7 +1972,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getServer ( Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
+DECL|method|getServer ( Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig, AlignmentContext alignmentContext)
 specifier|public
 name|org
 operator|.
@@ -2027,6 +2027,9 @@ name|secretManager
 parameter_list|,
 name|String
 name|portRangeConfig
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
