@@ -13837,6 +13837,7 @@ block|}
 comment|/**    * Create hedged reads thread pool, HEDGED_READ_THREAD_POOL, if    * it does not already exist.    * @param num Number of threads for hedged reads thread pool.    * If zero, skip hedged reads thread pool creation.    */
 DECL|method|initThreadsNumForHedgedReads (int num)
 specifier|private
+specifier|static
 specifier|synchronized
 name|void
 name|initThreadsNumForHedgedReads
