@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Comparator
@@ -46,7 +56,18 @@ name|Comparator
 argument_list|<
 name|FederationNamenodeContext
 argument_list|>
+implements|,
+name|Serializable
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|2304924292036293331L
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|compare (FederationNamenodeContext o1, FederationNamenodeContext o2)

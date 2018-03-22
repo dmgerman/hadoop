@@ -223,7 +223,16 @@ name|this
 operator|.
 name|types
 operator|=
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
 name|pTypes
+argument_list|,
+name|pTypes
+operator|.
+name|length
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -355,9 +364,20 @@ name|getTypes
 parameter_list|()
 block|{
 return|return
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
 name|this
 operator|.
 name|types
+argument_list|,
+name|this
+operator|.
+name|types
+operator|.
+name|length
+argument_list|)
 return|;
 block|}
 comment|/**    * Generate a list of parameters for this specific location using no context.    *    * @return A list of parameters for the method customized for the location.    */
