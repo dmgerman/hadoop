@@ -3227,6 +3227,18 @@ name|Configuration
 name|other
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|other
+init|)
+block|{
+comment|// Make sure we clone a finalized state
+comment|// Resources like input streams can be processed only once
+name|other
+operator|.
+name|getProps
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|resources
@@ -3244,11 +3256,6 @@ operator|.
 name|clone
 argument_list|()
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|other
-init|)
-block|{
 if|if
 condition|(
 name|other
