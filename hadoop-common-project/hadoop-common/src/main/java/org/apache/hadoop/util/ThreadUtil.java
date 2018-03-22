@@ -169,7 +169,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Convenience method that returns a resource as inputstream from the    * classpath.    *<p>    * It first attempts to use the Thread's context classloader and if not    * set it uses the class' classloader.    *    * @param resourceName resource to retrieve.    *    * @throws IOException thrown if resource cannot be loaded    * @return inputstream with the resource.    */
+comment|/**    * Convenience method that returns a resource as inputstream from the    * classpath.    *<p>    * Uses the Thread's context classloader to load resource.    *    * @param resourceName resource to retrieve.    *    * @throws IOException thrown if resource cannot be loaded    * @return inputstream with the resource.    */
 DECL|method|getResourceAsStream (String resourceName)
 specifier|public
 specifier|static
@@ -209,6 +209,50 @@ operator|+
 name|resourceName
 operator|+
 literal|"' because class loader of the current thread is null"
+argument_list|)
+throw|;
+block|}
+return|return
+name|getResourceAsStream
+argument_list|(
+name|cl
+argument_list|,
+name|resourceName
+argument_list|)
+return|;
+block|}
+comment|/**    * Convenience method that returns a resource as inputstream from the    * classpath using given classloader.    *<p>    *    * @param cl ClassLoader to be used to retrieve resource.    * @param resourceName resource to retrieve.    *    * @throws IOException thrown if resource cannot be loaded    * @return inputstream with the resource.    */
+DECL|method|getResourceAsStream (ClassLoader cl, String resourceName)
+specifier|public
+specifier|static
+name|InputStream
+name|getResourceAsStream
+parameter_list|(
+name|ClassLoader
+name|cl
+parameter_list|,
+name|String
+name|resourceName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|cl
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can not read resource file '"
+operator|+
+name|resourceName
+operator|+
+literal|"' because given class loader is null"
 argument_list|)
 throw|;
 block|}

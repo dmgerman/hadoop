@@ -181,6 +181,13 @@ name|ThreadUtil
 operator|.
 name|getResourceAsStream
 argument_list|(
+name|VersionInfo
+operator|.
+name|class
+operator|.
+name|getClassLoader
+argument_list|()
+argument_list|,
 name|versionInfoFile
 argument_list|)
 expr_stmt|;
