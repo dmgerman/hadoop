@@ -154,7 +154,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|NamenodeContext
 import|;
@@ -174,7 +174,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|RouterContext
 import|;

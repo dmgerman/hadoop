@@ -288,7 +288,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 import|;
 end_import
 
@@ -306,7 +306,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|NamenodeContext
 import|;
@@ -326,7 +326,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|RouterContext
 import|;
@@ -414,7 +414,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 name|cluster
 init|=
 name|getCluster

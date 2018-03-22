@@ -150,7 +150,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 import|;
 end_import
 
@@ -168,7 +168,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|NamenodeContext
 import|;
@@ -287,15 +287,15 @@ comment|/**  * Test the service that heartbeats the state of the namenodes to th
 end_comment
 
 begin_class
-DECL|class|TestNamenodeHeartbeat
+DECL|class|TestRouterNamenodeHeartbeat
 specifier|public
 class|class
-name|TestNamenodeHeartbeat
+name|TestRouterNamenodeHeartbeat
 block|{
 DECL|field|cluster
 specifier|private
 specifier|static
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|namenodeResolver
@@ -338,7 +338,7 @@ block|{
 name|cluster
 operator|=
 operator|new
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 argument_list|(
 literal|true
 argument_list|,
@@ -513,11 +513,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 name|testCluster
 init|=
 operator|new
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 argument_list|(
 literal|true
 argument_list|,

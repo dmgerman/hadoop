@@ -156,7 +156,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|TEST_STRING
 import|;
@@ -792,7 +792,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 import|;
 end_import
 
@@ -810,7 +810,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|NamenodeContext
 import|;
@@ -830,7 +830,7 @@ name|server
 operator|.
 name|federation
 operator|.
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|RouterContext
 import|;
@@ -1143,7 +1143,7 @@ comment|/** Federated HDFS cluster. */
 DECL|field|cluster
 specifier|private
 specifier|static
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 name|cluster
 decl_stmt|;
 comment|/** Random Router for this federated cluster. */
@@ -1214,7 +1214,7 @@ block|{
 name|cluster
 operator|=
 operator|new
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 argument_list|(
 literal|false
 argument_list|,
@@ -1604,7 +1604,7 @@ expr_stmt|;
 block|}
 DECL|method|getCluster ()
 specifier|protected
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 name|getCluster
 parameter_list|()
 block|{

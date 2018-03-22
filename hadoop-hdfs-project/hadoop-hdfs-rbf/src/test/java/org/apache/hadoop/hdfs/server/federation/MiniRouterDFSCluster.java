@@ -522,6 +522,28 @@ name|router
 operator|.
 name|RBFConfigKeys
 operator|.
+name|DFS_ROUTER_SAFEMODE_ENABLE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|RBFConfigKeys
+operator|.
 name|FEDERATION_FILE_RESOLVER_CLIENT_CLASS
 import|;
 end_import
@@ -950,6 +972,26 @@ name|federation
 operator|.
 name|resolver
 operator|.
+name|FederationNamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|resolver
+operator|.
 name|FileSubclusterResolver
 import|;
 end_import
@@ -1137,10 +1179,10 @@ comment|/**  * Test utility to mimic a federated HDFS cluster with multiple rout
 end_comment
 
 begin_class
-DECL|class|RouterDFSCluster
+DECL|class|MiniRouterDFSCluster
 specifier|public
 class|class
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 block|{
 DECL|field|LOG
 specifier|private
@@ -1153,7 +1195,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 operator|.
 name|class
 argument_list|)
@@ -1184,6 +1226,17 @@ name|String
 name|TEST_FILE
 init|=
 literal|"testfile"
+decl_stmt|;
+DECL|field|RND
+specifier|private
+specifier|static
+specifier|final
+name|Random
+name|RND
+init|=
+operator|new
+name|Random
+argument_list|()
 decl_stmt|;
 comment|/** Nameservices in the federated cluster. */
 DECL|field|nameservices
@@ -2262,9 +2315,9 @@ name|suffix
 return|;
 block|}
 block|}
-DECL|method|RouterDFSCluster (boolean ha, int numNameservices, int numNamenodes, long heartbeatInterval, long cacheFlushInterval)
+DECL|method|MiniRouterDFSCluster ( boolean ha, int numNameservices, int numNamenodes, long heartbeatInterval, long cacheFlushInterval)
 specifier|public
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 parameter_list|(
 name|boolean
 name|ha
@@ -2308,9 +2361,9 @@ name|numNamenodes
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RouterDFSCluster (boolean ha, int numNameservices)
+DECL|method|MiniRouterDFSCluster (boolean ha, int numNameservices)
 specifier|public
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 parameter_list|(
 name|boolean
 name|ha
@@ -2333,9 +2386,9 @@ name|DEFAULT_CACHE_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RouterDFSCluster (boolean ha, int numNameservices, int numNamenodes)
+DECL|method|MiniRouterDFSCluster ( boolean ha, int numNameservices, int numNamenodes)
 specifier|public
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 parameter_list|(
 name|boolean
 name|ha
@@ -2855,6 +2908,16 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+comment|// Disable safemode on startup
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFS_ROUTER_SAFEMODE_ENABLE
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 comment|// Set the nameservice ID for the default NN monitor
 name|conf
 operator|.
@@ -3252,17 +3315,10 @@ name|String
 name|getRandomNameservice
 parameter_list|()
 block|{
-name|Random
-name|r
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 name|int
 name|randIndex
 init|=
-name|r
+name|RND
 operator|.
 name|nextInt
 argument_list|(
@@ -4462,6 +4518,75 @@ argument_list|,
 name|state
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Wait for name spaces to be active.    * @throws Exception If we cannot check the status or we timeout.    */
+DECL|method|waitActiveNamespaces ()
+specifier|public
+name|void
+name|waitActiveNamespaces
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+for|for
+control|(
+name|RouterContext
+name|r
+range|:
+name|this
+operator|.
+name|routers
+control|)
+block|{
+name|Router
+name|router
+init|=
+name|r
+operator|.
+name|router
+decl_stmt|;
+specifier|final
+name|ActiveNamenodeResolver
+name|resolver
+init|=
+name|router
+operator|.
+name|getNamenodeResolver
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|FederationNamespaceInfo
+name|ns
+range|:
+name|resolver
+operator|.
+name|getNamespaces
+argument_list|()
+control|)
+block|{
+specifier|final
+name|String
+name|nsId
+init|=
+name|ns
+operator|.
+name|getNameserviceId
+argument_list|()
+decl_stmt|;
+name|waitNamenodeRegistered
+argument_list|(
+name|resolver
+argument_list|,
+name|nsId
+argument_list|,
+name|FederationNamenodeServiceState
+operator|.
+name|ACTIVE
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Get the federated path for a nameservice.    * @param nsId Nameservice identifier.    * @return Path in the Router.    */
 DECL|method|getFederatedPathForNS (String nsId)

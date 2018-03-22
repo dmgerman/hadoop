@@ -344,7 +344,7 @@ specifier|public
 class|class
 name|StateStoreDFSCluster
 extends|extends
-name|RouterDFSCluster
+name|MiniRouterDFSCluster
 block|{
 DECL|field|DEFAULT_FILE_RESOLVER
 specifier|private
