@@ -278,7 +278,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|entityId
+name|entityType
 argument_list|)
 condition|)
 block|{
