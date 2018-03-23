@@ -575,13 +575,23 @@ operator|=
 name|bindAddress
 expr_stmt|;
 block|}
-DECL|method|initWebHdfs (Configuration conf)
-specifier|private
+DECL|method|initWebHdfs (Configuration conf, String hostname, HttpServer2 httpServer2, String jerseyResourcePackage)
+specifier|public
+specifier|static
 name|void
 name|initWebHdfs
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|HttpServer2
+name|httpServer2
+parameter_list|,
+name|String
+name|jerseyResourcePackage
 parameter_list|)
 throws|throws
 name|IOException
@@ -668,13 +678,15 @@ init|=
 name|getAuthFilterParams
 argument_list|(
 name|conf
+argument_list|,
+name|hostname
 argument_list|)
 decl_stmt|;
 name|HttpServer2
 operator|.
 name|defineFilter
 argument_list|(
-name|httpServer
+name|httpServer2
 operator|.
 name|getWebAppContext
 argument_list|()
@@ -754,7 +766,7 @@ name|HttpServer2
 operator|.
 name|defineFilter
 argument_list|(
-name|httpServer
+name|httpServer2
 operator|.
 name|getWebAppContext
 argument_list|()
@@ -775,19 +787,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add webhdfs packages
-name|httpServer
+name|httpServer2
 operator|.
 name|addJerseyResourcePackage
 argument_list|(
-name|NamenodeWebHdfsMethods
-operator|.
-name|class
-operator|.
-name|getPackage
-argument_list|()
-operator|.
-name|getName
-argument_list|()
+name|jerseyResourcePackage
 operator|+
 literal|";"
 operator|+
@@ -1048,6 +1052,23 @@ block|}
 name|initWebHdfs
 argument_list|(
 name|conf
+argument_list|,
+name|bindAddress
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|httpServer
+argument_list|,
+name|NamenodeWebHdfsMethods
+operator|.
+name|class
+operator|.
+name|getPackage
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|httpServer
@@ -1157,8 +1178,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getAuthFilterParams (Configuration conf)
+DECL|method|getAuthFilterParams (Configuration conf, String hostname)
 specifier|private
+specifier|static
 name|Map
 argument_list|<
 name|String
@@ -1169,6 +1191,9 @@ name|getAuthFilterParams
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|hostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -1301,10 +1326,7 @@ name|getServerPrincipal
 argument_list|(
 name|principalInConf
 argument_list|,
-name|bindAddress
-operator|.
-name|getHostName
-argument_list|()
+name|hostname
 argument_list|)
 argument_list|)
 expr_stmt|;

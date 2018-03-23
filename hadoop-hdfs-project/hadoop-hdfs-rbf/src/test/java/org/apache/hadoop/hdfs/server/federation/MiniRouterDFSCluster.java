@@ -1519,6 +1519,29 @@ operator|.
 name|fileContext
 return|;
 block|}
+DECL|method|getHttpAddress ()
+specifier|public
+name|String
+name|getHttpAddress
+parameter_list|()
+block|{
+name|InetSocketAddress
+name|httpAddress
+init|=
+name|router
+operator|.
+name|getHttpServerAddress
+argument_list|()
+decl_stmt|;
+return|return
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|httpAddress
+argument_list|)
+return|;
+block|}
 DECL|method|initRouter ()
 specifier|public
 name|void

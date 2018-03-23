@@ -3453,7 +3453,7 @@ end_comment
 
 begin_function
 DECL|method|getCreateLocation (final String src)
-specifier|private
+specifier|protected
 name|RemoteLocation
 name|getCreateLocation
 parameter_list|(

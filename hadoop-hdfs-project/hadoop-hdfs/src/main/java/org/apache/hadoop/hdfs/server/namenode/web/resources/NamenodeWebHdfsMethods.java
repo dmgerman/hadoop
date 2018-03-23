@@ -1451,7 +1451,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|init (final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final UriFsPathParam path, final HttpOpParam<?> op, final Param<?, ?>... parameters)
-specifier|private
+specifier|protected
 name|void
 name|init
 parameter_list|(
@@ -1683,6 +1683,26 @@ return|return
 name|cp
 return|;
 block|}
+DECL|method|getScheme ()
+specifier|protected
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+name|scheme
+return|;
+block|}
+DECL|method|getContext ()
+specifier|protected
+name|ServletContext
+name|getContext
+parameter_list|()
+block|{
+return|return
+name|context
+return|;
+block|}
 DECL|method|doAs (final UserGroupInformation ugi, final PrivilegedExceptionAction<T> action)
 specifier|private
 parameter_list|<
@@ -1796,7 +1816,8 @@ name|getHostAddress
 parameter_list|()
 block|{
 return|return
-name|remoteAddr
+name|getRemoteAddr
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -1831,22 +1852,6 @@ block|}
 block|}
 block|}
 decl_stmt|;
-specifier|final
-name|NameNode
-name|namenode
-init|=
-operator|(
-name|NameNode
-operator|)
-name|context
-operator|.
-name|getAttribute
-argument_list|(
-literal|"name.node"
-argument_list|)
-decl_stmt|;
-name|namenode
-operator|.
 name|queueExternalCall
 argument_list|(
 name|call
@@ -1924,6 +1929,51 @@ block|}
 return|return
 name|result
 return|;
+block|}
+DECL|method|getRemoteAddr ()
+specifier|protected
+name|String
+name|getRemoteAddr
+parameter_list|()
+block|{
+return|return
+name|remoteAddr
+return|;
+block|}
+DECL|method|queueExternalCall (ExternalCall call)
+specifier|protected
+name|void
+name|queueExternalCall
+parameter_list|(
+name|ExternalCall
+name|call
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+specifier|final
+name|NameNode
+name|namenode
+init|=
+operator|(
+name|NameNode
+operator|)
+name|context
+operator|.
+name|getAttribute
+argument_list|(
+literal|"name.node"
+argument_list|)
+decl_stmt|;
+name|namenode
+operator|.
+name|queueExternalCall
+argument_list|(
+name|call
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -2397,7 +2447,7 @@ return|;
 block|}
 comment|/**    * Choose the datanode to redirect the request. Note that the nodes have been    * sorted based on availability and network distances, thus it is sufficient    * to return the first element of the node here.    */
 DECL|method|bestNode (DatanodeInfo[] nodes, HashSet<Node> excludes)
-specifier|private
+specifier|protected
 specifier|static
 name|DatanodeInfo
 name|bestNode
@@ -3627,7 +3677,7 @@ argument_list|(
 literal|"rawtypes"
 argument_list|)
 DECL|method|validateOpParams (HttpOpParam<?> op, Param... params)
-specifier|private
+specifier|protected
 name|void
 name|validateOpParams
 parameter_list|(
@@ -4433,7 +4483,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final UnmaskedPermissionParam unmaskedPermission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final ExcludeDatanodesParam exclDatanodes, final CreateFlagParam createFlagParam, final NoRedirectParam noredirectParam, final StoragePolicyParam policyName )
-specifier|private
+specifier|protected
 name|Response
 name|put
 parameter_list|(
@@ -4579,20 +4629,6 @@ name|CURRENT_CONF
 argument_list|)
 decl_stmt|;
 specifier|final
-name|NameNode
-name|namenode
-init|=
-operator|(
-name|NameNode
-operator|)
-name|context
-operator|.
-name|getAttribute
-argument_list|(
-literal|"name.node"
-argument_list|)
-decl_stmt|;
-specifier|final
 name|ClientProtocol
 name|cp
 init|=
@@ -4611,6 +4647,20 @@ case|case
 name|CREATE
 case|:
 block|{
+specifier|final
+name|NameNode
+name|namenode
+init|=
+operator|(
+name|NameNode
+operator|)
+name|context
+operator|.
+name|getAttribute
+argument_list|(
+literal|"name.node"
+argument_list|)
+decl_stmt|;
 specifier|final
 name|URI
 name|uri
@@ -6391,7 +6441,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|post ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PostOpParam op, final ConcatSourcesParam concatSrcs, final BufferSizeParam bufferSize, final ExcludeDatanodesParam excludeDatanodes, final NewLengthParam newLength, final NoRedirectParam noredirectParam )
-specifier|private
+specifier|protected
 name|Response
 name|post
 parameter_list|(
@@ -7705,7 +7755,7 @@ name|encodedValue
 return|;
 block|}
 DECL|method|get ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final GetOpParam op, final OffsetParam offset, final LengthParam length, final RenewerParam renewer, final BufferSizeParam bufferSize, final List<XAttrNameParam> xattrNames, final XAttrEncodingParam xattrEncoding, final ExcludeDatanodesParam excludeDatanodes, final FsActionParam fsAction, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final TokenKindParam tokenKind, final TokenServiceParam tokenService, final NoRedirectParam noredirectParam, final StartAfterParam startAfter )
-specifier|private
+specifier|protected
 name|Response
 name|get
 parameter_list|(
@@ -9973,7 +10023,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|delete ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final DeleteOpParam op, final RecursiveParam recursive, final SnapshotNameParam snapshotName )
-specifier|private
+specifier|protected
 name|Response
 name|delete
 parameter_list|(
