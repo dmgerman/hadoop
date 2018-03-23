@@ -93,6 +93,15 @@ name|CONTAINER_RETRY_INTERVAL
 init|=
 literal|"yarn.service.container-failure.retry-interval-ms"
 decl_stmt|;
+DECL|field|CONTAINER_FAILURES_VALIDITY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_FAILURES_VALIDITY_INTERVAL
+init|=
+literal|"yarn.service.container-failure.validity-interval-ms"
+decl_stmt|;
 DECL|field|AM_RESTART_MAX
 specifier|public
 specifier|static

@@ -958,7 +958,7 @@ return|return
 name|containerLaunchContext
 return|;
 block|}
-DECL|method|setRetryContext (int maxRetries, int retryInterval)
+DECL|method|setRetryContext (int maxRetries, int retryInterval, long failuresValidityInterval)
 specifier|public
 name|void
 name|setRetryContext
@@ -968,6 +968,9 @@ name|maxRetries
 parameter_list|,
 name|int
 name|retryInterval
+parameter_list|,
+name|long
+name|failuresValidityInterval
 parameter_list|)
 block|{
 name|ContainerRetryContext
@@ -986,6 +989,8 @@ argument_list|,
 name|maxRetries
 argument_list|,
 name|retryInterval
+argument_list|,
+name|failuresValidityInterval
 argument_list|)
 decl_stmt|;
 name|containerLaunchContext
