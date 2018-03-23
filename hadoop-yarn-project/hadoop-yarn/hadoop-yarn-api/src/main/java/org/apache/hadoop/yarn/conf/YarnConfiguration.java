@@ -1144,6 +1144,15 @@ name|USER_GROUP_PLACEMENT_RULE
 init|=
 literal|"user-group"
 decl_stmt|;
+DECL|field|APP_NAME_PLACEMENT_RULE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APP_NAME_PLACEMENT_RULE
+init|=
+literal|"app-name"
+decl_stmt|;
 comment|/** Enable Resource Manager webapp ui actions */
 DECL|field|RM_WEBAPP_UI_ACTIONS_ENABLED
 specifier|public

@@ -26,9 +26,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|io
 operator|.
-name|Map
+name|IOException
 import|;
 end_import
 
@@ -80,7 +80,11 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerContext
 import|;
 end_import
 
@@ -107,25 +111,18 @@ name|getName
 argument_list|()
 return|;
 block|}
-DECL|method|initialize (Map<String, String> parameters, RMContext rmContext)
+DECL|method|initialize ( CapacitySchedulerContext schedulerContext)
 specifier|public
-name|void
+specifier|abstract
+name|boolean
 name|initialize
 parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|parameters
-parameter_list|,
-name|RMContext
-name|rmContext
+name|CapacitySchedulerContext
+name|schedulerContext
 parameter_list|)
 throws|throws
-name|YarnException
-block|{   }
+name|IOException
+function_decl|;
 comment|/**    * Get queue for a given application    *     * @param asc application submission context    * @param user userName    *     * @throws YarnException    *           if any error happens    *     * @return<p>    *         non-null value means it is determined    *</p>    *<p>    *         null value means it is undetermined, so next {@link PlacementRule}    *         in the {@link PlacementManager} will take care    *</p>    */
 DECL|method|getPlacementForApp ( ApplicationSubmissionContext asc, String user)
 specifier|public

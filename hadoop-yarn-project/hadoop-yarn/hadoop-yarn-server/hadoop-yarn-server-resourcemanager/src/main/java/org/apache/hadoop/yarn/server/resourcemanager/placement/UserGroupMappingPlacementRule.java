@@ -801,6 +801,21 @@ operator|)
 return|;
 block|}
 block|}
+DECL|method|UserGroupMappingPlacementRule ()
+specifier|public
+name|UserGroupMappingPlacementRule
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|false
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|UserGroupMappingPlacementRule (boolean overrideWithQueueMappings, List<QueueMapping> newMappings, Groups groups)
 specifier|public
 name|UserGroupMappingPlacementRule
@@ -1262,11 +1277,12 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|get ( CapacitySchedulerContext schedulerContext)
+annotation|@
+name|Override
+DECL|method|initialize (CapacitySchedulerContext schedulerContext)
 specifier|public
-specifier|static
-name|UserGroupMappingPlacementRule
-name|get
+name|boolean
+name|initialize
 parameter_list|(
 name|CapacitySchedulerContext
 name|schedulerContext
@@ -1569,20 +1585,30 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-return|return
-operator|new
-name|UserGroupMappingPlacementRule
-argument_list|(
-name|overrideWithQueueMappings
-argument_list|,
+name|this
+operator|.
+name|mappings
+operator|=
 name|newMappings
-argument_list|,
+expr_stmt|;
+name|this
+operator|.
 name|groups
-argument_list|)
+operator|=
+name|groups
+expr_stmt|;
+name|this
+operator|.
+name|overrideWithQueueMappings
+operator|=
+name|overrideWithQueueMappings
+expr_stmt|;
+return|return
+literal|true
 return|;
 block|}
 return|return
-literal|null
+literal|false
 return|;
 block|}
 DECL|method|validateAndGetQueueMapping ( CapacitySchedulerQueueManager queueManager, CSQueue queue, QueueMapping mapping, QueuePath queuePath)
