@@ -1144,9 +1144,9 @@ name|String
 argument_list|>
 name|TAGS
 init|=
-operator|new
-name|HashSet
-argument_list|<>
+name|ConcurrentHashMap
+operator|.
+name|newKeySet
 argument_list|()
 decl_stmt|;
 DECL|field|quietmode
@@ -10900,7 +10900,7 @@ block|}
 block|}
 name|this
 operator|.
-name|removeUndeclaredTags
+name|addTags
 argument_list|(
 name|properties
 argument_list|)
@@ -12234,17 +12234,19 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Removes undeclared tags and related properties from propertyTagsMap.    * Its required because ordering of properties in xml config files is not    * guaranteed.    * @param prop    */
-DECL|method|removeUndeclaredTags (Properties prop)
-specifier|private
+comment|/**    * Add tags defined in HADOOP_SYSTEM_TAGS, HADOOP_CUSTOM_TAGS.    * @param prop    */
+DECL|method|addTags (Properties prop)
+specifier|public
 name|void
-name|removeUndeclaredTags
+name|addTags
 parameter_list|(
 name|Properties
 name|prop
 parameter_list|)
 block|{
 comment|// Get all system tags
+try|try
+block|{
 if|if
 condition|(
 name|prop
@@ -12344,29 +12346,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|Set
-name|undeclaredTags
-init|=
-name|propertyTagsMap
-operator|.
-name|keySet
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|undeclaredTags
-operator|.
-name|retainAll
-argument_list|(
-name|TAGS
-argument_list|)
-condition|)
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|trace
 argument_list|(
-literal|"Removed undeclared tags:"
+literal|"Error adding tags in configuration"
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
@@ -12406,6 +12399,8 @@ literal|","
 argument_list|)
 control|)
 block|{
+try|try
+block|{
 name|tagStr
 operator|=
 name|tagStr
@@ -12413,8 +12408,6 @@ operator|.
 name|trim
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 comment|// Handle property with no/null value
 if|if
 condition|(
