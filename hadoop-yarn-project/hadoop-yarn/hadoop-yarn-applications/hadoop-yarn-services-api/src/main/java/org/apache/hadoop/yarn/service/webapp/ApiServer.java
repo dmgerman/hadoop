@@ -2470,6 +2470,35 @@ name|ugi
 argument_list|)
 return|;
 block|}
+comment|// If an UPGRADE is requested
+if|if
+condition|(
+name|updateServiceData
+operator|.
+name|getState
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|updateServiceData
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|ServiceState
+operator|.
+name|UPGRADING
+condition|)
+block|{
+return|return
+name|upgradeService
+argument_list|(
+name|updateServiceData
+argument_list|,
+name|ugi
+argument_list|)
+return|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3117,7 +3146,134 @@ name|status
 argument_list|)
 return|;
 block|}
+DECL|method|upgradeService (Service service, final UserGroupInformation ugi)
+specifier|private
+name|Response
+name|upgradeService
+parameter_list|(
+name|Service
+name|service
+parameter_list|,
+specifier|final
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+name|ServiceStatus
+name|status
+init|=
+operator|new
+name|ServiceStatus
+argument_list|()
+decl_stmt|;
+name|ugi
+operator|.
+name|doAs
+argument_list|(
+call|(
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+call|)
+argument_list|()
+operator|->
+block|{
+name|ServiceClient
+name|sc
+operator|=
+name|getServiceClient
+argument_list|()
+block|;
+name|sc
+operator|.
+name|init
+argument_list|(
+name|YARN_CONFIG
+argument_list|)
+block|;
+name|sc
+operator|.
+name|start
+argument_list|()
+block|;
+name|sc
+operator|.
+name|actionUpgrade
+argument_list|(
+name|service
+argument_list|)
+block|;
+name|sc
+operator|.
+name|close
+argument_list|()
+block|;
+return|return
+literal|null
+return|;
+block|}
+block|)
+function|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Service {} version {} upgrade initialized"
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setDiagnostics
+argument_list|(
+literal|"Service "
+operator|+
+name|service
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" version "
+operator|+
+name|service
+operator|.
+name|getVersion
+argument_list|()
+operator|+
+literal|" saved."
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setState
+parameter_list|(
+name|ServiceState
+operator|.
+name|ACCEPTED
+parameter_list|)
+constructor_decl|;
+return|return
+name|formatResponse
+argument_list|(
+name|Status
+operator|.
+name|ACCEPTED
+argument_list|,
+name|status
+argument_list|)
+return|;
+block|}
+end_class
+
+begin_comment
 comment|/**    * Used by negative test case.    *    * @param mockServerClient - A mocked version of ServiceClient    */
+end_comment
+
+begin_function
 DECL|method|setServiceClient (ServiceClient mockServerClient)
 specifier|public
 name|void
@@ -3136,6 +3292,9 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|getServiceClient ()
 specifier|private
 name|ServiceClient
@@ -3160,7 +3319,13 @@ argument_list|()
 return|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Configure impersonation callback.    *    * @param request - web request    * @return - configured UGI class for proxy callback    * @throws IOException - if user is not login.    */
+end_comment
+
+begin_function
 DECL|method|getProxyUser (HttpServletRequest request)
 specifier|private
 name|UserGroupInformation
@@ -3249,7 +3414,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Format HTTP response.    *    * @param status - HTTP Code    * @param message - Diagnostic message    * @return - HTTP response    */
+end_comment
+
+begin_function
 DECL|method|formatResponse (Status status, String message)
 specifier|private
 name|Response
@@ -3285,7 +3456,13 @@ name|entity
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Format HTTP response.    *    * @param status - HTTP Code    * @param entity - ServiceStatus object    * @return - HTTP response    */
+end_comment
+
+begin_function
 DECL|method|formatResponse (Status status, ServiceStatus entity)
 specifier|private
 name|Response
@@ -3315,8 +3492,8 @@ name|build
 argument_list|()
 return|;
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

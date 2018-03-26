@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.service.component
+DECL|package|org.apache.hadoop.yarn.service
 package|package
 name|org
 operator|.
@@ -15,31 +15,21 @@ operator|.
 name|yarn
 operator|.
 name|service
-operator|.
-name|component
 package|;
 end_package
 
+begin_comment
+comment|/**  * Types of {@link ServiceEvent}.  */
+end_comment
+
 begin_enum
-DECL|enum|ComponentEventType
+DECL|enum|ServiceEventType
 specifier|public
 enum|enum
-name|ComponentEventType
+name|ServiceEventType
 block|{
-DECL|enumConstant|FLEX
-name|FLEX
-block|,
-DECL|enumConstant|CONTAINER_ALLOCATED
-name|CONTAINER_ALLOCATED
-block|,
-DECL|enumConstant|CONTAINER_RECOVERED
-name|CONTAINER_RECOVERED
-block|,
-DECL|enumConstant|CONTAINER_STARTED
-name|CONTAINER_STARTED
-block|,
-DECL|enumConstant|CONTAINER_COMPLETED
-name|CONTAINER_COMPLETED
+DECL|enumConstant|START
+name|START
 block|,
 DECL|enumConstant|UPGRADE
 name|UPGRADE

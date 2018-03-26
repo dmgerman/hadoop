@@ -34,6 +34,9 @@ name|FLEXING
 block|,
 DECL|enumConstant|STABLE
 name|STABLE
+block|,
+DECL|enumConstant|UPGRADING
+name|UPGRADING
 block|}
 end_enum
 

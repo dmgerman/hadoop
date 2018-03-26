@@ -85,10 +85,13 @@ name|ComponentState
 block|{
 DECL|enumConstant|FLEXING
 DECL|enumConstant|STABLE
+DECL|enumConstant|NEEDS_UPGRADE
 name|FLEXING
 block|,
 name|STABLE
-block|}
+block|,
+name|NEEDS_UPGRADE
+block|; }
 end_enum
 
 end_unit

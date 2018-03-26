@@ -200,6 +200,12 @@ name|PRINCIPAL
 init|=
 literal|"yarn.service.am.principal"
 decl_stmt|;
+DECL|field|UPGRADE_DIR
+name|String
+name|UPGRADE_DIR
+init|=
+literal|"upgrade"
+decl_stmt|;
 block|}
 end_interface
 

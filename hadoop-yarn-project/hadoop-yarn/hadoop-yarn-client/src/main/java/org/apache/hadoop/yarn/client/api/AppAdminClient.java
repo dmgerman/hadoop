@@ -606,6 +606,28 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    * Upgrade a long running service.    *    * @param appName the name of the application    * @param fileName specification of application upgrade to save.    *    * @return exit code    * @throws IOException IOException    * @throws YarnException exception in client or server    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionUpgrade (String appName, String fileName)
+specifier|public
+specifier|abstract
+name|int
+name|actionUpgrade
+parameter_list|(
+name|String
+name|appName
+parameter_list|,
+name|String
+name|fileName
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
 block|}
 end_class
 
