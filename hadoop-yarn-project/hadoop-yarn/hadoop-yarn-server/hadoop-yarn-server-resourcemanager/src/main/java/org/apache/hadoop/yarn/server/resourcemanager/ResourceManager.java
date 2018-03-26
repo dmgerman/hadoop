@@ -2328,17 +2328,8 @@ operator|.
 name|CORE_SITE_CONFIGURATION_FILE
 argument_list|)
 expr_stmt|;
-comment|// Do refreshUserToGroupsMappings with loaded core-site.xml
-name|Groups
-operator|.
-name|getUserToGroupsMappingServiceWithLoadedConfiguration
-argument_list|(
-name|this
-operator|.
-name|conf
-argument_list|)
-operator|.
-name|refresh
+comment|// Refresh user to group mappings during init.
+name|refreshUserToGroupMappingsWithConf
 argument_list|()
 expr_stmt|;
 comment|// Do refreshSuperUserGroupsConfiguration with loaded core-site.xml
@@ -2648,6 +2639,66 @@ name|this
 operator|.
 name|conf
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|refreshUserToGroupMappingsWithConf ()
+specifier|private
+name|void
+name|refreshUserToGroupMappingsWithConf
+parameter_list|()
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+name|Configuration
+name|newConf
+init|=
+operator|new
+name|Configuration
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
+name|InputStream
+name|confFileInputStream
+init|=
+name|configurationProvider
+operator|.
+name|getConfigurationInputStream
+argument_list|(
+name|newConf
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|CORE_SITE_CONFIGURATION_FILE
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|confFileInputStream
+operator|!=
+literal|null
+condition|)
+block|{
+name|newConf
+operator|.
+name|addResource
+argument_list|(
+name|confFileInputStream
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Do refreshUserToGroupsMappings with loaded core-site.xml
+name|Groups
+operator|.
+name|getUserToGroupsMappingServiceWithLoadedConfiguration
+argument_list|(
+name|newConf
+argument_list|)
+operator|.
+name|refresh
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|loadConfigurationXml (String configurationFile)
