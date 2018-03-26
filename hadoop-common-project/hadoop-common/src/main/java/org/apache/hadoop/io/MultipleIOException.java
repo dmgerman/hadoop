@@ -290,6 +290,31 @@ name|exceptions
 argument_list|)
 return|;
 block|}
+comment|/**      * @return whether any exception was added.      */
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+block|{
+if|if
+condition|(
+name|exceptions
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+return|return
+name|exceptions
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
 block|}
 block|}
 end_class
