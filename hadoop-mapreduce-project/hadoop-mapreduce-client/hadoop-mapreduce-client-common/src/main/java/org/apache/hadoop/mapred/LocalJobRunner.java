@@ -1223,6 +1223,8 @@ operator|.
 name|setup
 argument_list|(
 name|conf
+argument_list|,
+name|jobid
 argument_list|)
 expr_stmt|;
 comment|// Write out configuration file.  Instead of copying it from

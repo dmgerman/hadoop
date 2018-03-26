@@ -224,11 +224,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicLong
+name|UUID
 import|;
 end_import
 
@@ -610,13 +606,16 @@ init|=
 literal|false
 decl_stmt|;
 comment|/**    * Set up the distributed cache by localizing the resources, and updating    * the configuration with references to the localized resources.    * @param conf    * @throws IOException    */
-DECL|method|setup (JobConf conf)
+DECL|method|setup (JobConf conf, JobID jobId)
 specifier|public
 name|void
 name|setup
 parameter_list|(
 name|JobConf
 name|conf
+parameter_list|,
+name|JobID
+name|jobId
 parameter_list|)
 throws|throws
 name|IOException
@@ -664,18 +663,6 @@ name|localResources
 argument_list|)
 expr_stmt|;
 comment|// Generating unique numbers for FSDownload.
-name|AtomicLong
-name|uniqueNumberGenerator
-init|=
-operator|new
-name|AtomicLong
-argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|// Find which resources are to be put on the local classpath
 name|Map
 argument_list|<
@@ -884,6 +871,30 @@ name|values
 argument_list|()
 control|)
 block|{
+name|Path
+name|destPathForDownload
+init|=
+operator|new
+name|Path
+argument_list|(
+name|destPath
+argument_list|,
+name|jobId
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"_"
+operator|+
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|Callable
 argument_list|<
 name|Path
@@ -899,21 +910,7 @@ name|ugi
 argument_list|,
 name|conf
 argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|destPath
-argument_list|,
-name|Long
-operator|.
-name|toString
-argument_list|(
-name|uniqueNumberGenerator
-operator|.
-name|incrementAndGet
-argument_list|()
-argument_list|)
-argument_list|)
+name|destPathForDownload
 argument_list|,
 name|resource
 argument_list|)
