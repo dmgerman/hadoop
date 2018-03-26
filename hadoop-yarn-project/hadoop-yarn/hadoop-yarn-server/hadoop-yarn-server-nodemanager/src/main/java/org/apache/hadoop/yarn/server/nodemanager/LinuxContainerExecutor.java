@@ -3071,6 +3071,20 @@ operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"Exception message: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -3097,7 +3111,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"Exception message: "
+literal|"Shell error output: "
 operator|+
 name|e
 operator|.
@@ -3124,10 +3138,7 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|e
-operator|.
-name|getOutput
-argument_list|()
+name|output
 operator|.
 name|isEmpty
 argument_list|()
