@@ -36,6 +36,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|regex
 operator|.
 name|Matcher
@@ -51,6 +71,18 @@ operator|.
 name|regex
 operator|.
 name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
 import|;
 end_import
 
@@ -81,6 +113,20 @@ operator|.
 name|management
 operator|.
 name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -130,6 +176,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -149,7 +209,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This util class provides a method to register an MBean using  * our standard naming convention as described in the doc  *  for {link {@link #register(String, String, Object)}  */
+comment|/**  * This util class provides a method to register an MBean using  * our standard naming convention as described in the doc  *  for {link {@link #register(String, String, Object)}.  */
 end_comment
 
 begin_class
@@ -163,6 +223,7 @@ operator|.
 name|Stable
 DECL|class|MBeans
 specifier|public
+specifier|final
 class|class
 name|MBeans
 block|{
@@ -233,7 +294,12 @@ operator|+
 literal|"(.+)$"
 argument_list|)
 decl_stmt|;
-comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service=<serviceName>,name=<nameName>"    * Where the<serviceName> and<nameName> are the supplied parameters    *    * @param serviceName    * @param nameName    * @param theMbean - the MBean to register    * @return the named used to register the MBean    */
+DECL|method|MBeans ()
+specifier|private
+name|MBeans
+parameter_list|()
+block|{   }
+comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service=<serviceName>,name=<nameName>"    * Where the<serviceName> and<nameName> are the supplied parameters.    *    * @param serviceName    * @param nameName    * @param theMbean - the MBean to register    * @return the named used to register the MBean    */
 DECL|method|register (String serviceName, String nameName, Object theMbean)
 specifier|static
 specifier|public
@@ -250,6 +316,51 @@ name|Object
 name|theMbean
 parameter_list|)
 block|{
+return|return
+name|register
+argument_list|(
+name|serviceName
+argument_list|,
+name|nameName
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|()
+argument_list|,
+name|theMbean
+argument_list|)
+return|;
+block|}
+comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service=<serviceName>,name=<nameName>"    * Where the<serviceName> and<nameName> are the supplied parameters.    *    * @param serviceName    * @param nameName    * @param properties - Key value pairs to define additional JMX ObjectName    *                     properties.    * @param theMbean    - the MBean to register    * @return the named used to register the MBean    */
+DECL|method|register (String serviceName, String nameName, Map<String, String> properties, Object theMbean)
+specifier|static
+specifier|public
+name|ObjectName
+name|register
+parameter_list|(
+name|String
+name|serviceName
+parameter_list|,
+name|String
+name|nameName
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|properties
+parameter_list|,
+name|Object
+name|theMbean
+parameter_list|)
+block|{
 specifier|final
 name|MBeanServer
 name|mbs
@@ -259,6 +370,17 @@ operator|.
 name|getPlatformMBeanServer
 argument_list|()
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|properties
+argument_list|,
+literal|"JMX bean properties should not be null for "
+operator|+
+literal|"bean registration."
+argument_list|)
+expr_stmt|;
 name|ObjectName
 name|name
 init|=
@@ -267,6 +389,8 @@ argument_list|(
 name|serviceName
 argument_list|,
 name|nameName
+argument_list|,
+name|properties
 argument_list|)
 decl_stmt|;
 if|if
@@ -560,9 +684,10 @@ name|mbeanName
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getMBeanName (String serviceName, String nameName)
+annotation|@
+name|VisibleForTesting
+DECL|method|getMBeanName (String serviceName, String nameName, Map<String, String> additionalParameters)
 specifier|static
-specifier|private
 name|ObjectName
 name|getMBeanName
 parameter_list|(
@@ -571,8 +696,54 @@ name|serviceName
 parameter_list|,
 name|String
 name|nameName
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|additionalParameters
 parameter_list|)
 block|{
+name|String
+name|additionalKeys
+init|=
+name|additionalParameters
+operator|.
+name|entrySet
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|entry
+lambda|->
+name|entry
+operator|.
+name|getKey
+argument_list|()
+operator|+
+literal|"="
+operator|+
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|joining
+argument_list|(
+literal|","
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|String
 name|nameStr
 init|=
@@ -587,6 +758,19 @@ operator|+
 name|NAME_PREFIX
 operator|+
 name|nameName
+operator|+
+operator|(
+name|additionalKeys
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|""
+else|:
+literal|","
+operator|+
+name|additionalKeys
+operator|)
 decl_stmt|;
 try|try
 block|{
