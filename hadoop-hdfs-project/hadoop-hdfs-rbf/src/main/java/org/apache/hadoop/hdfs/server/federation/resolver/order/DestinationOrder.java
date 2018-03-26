@@ -48,7 +48,11 @@ block|,
 comment|// Random order
 DECL|enumConstant|HASH_ALL
 name|HASH_ALL
+block|,
 comment|// Follow consistent hashing
+DECL|enumConstant|SPACE
+name|SPACE
+comment|// Available space based order
 block|}
 end_enum
 

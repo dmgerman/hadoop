@@ -508,7 +508,7 @@ name|TEST_DIR_HASH_ALL
 init|=
 literal|"/hashall"
 decl_stmt|;
-comment|/** Directory that will be in a HASH_ALL mount point. */
+comment|/** Directory that will be in a RANDOM mount point. */
 DECL|field|TEST_DIR_RANDOM
 specifier|private
 specifier|static
@@ -517,6 +517,16 @@ name|String
 name|TEST_DIR_RANDOM
 init|=
 literal|"/random"
+decl_stmt|;
+comment|/** Directory that will be in a SPACE mount point. */
+DECL|field|TEST_DIR_SPACE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|TEST_DIR_SPACE
+init|=
+literal|"/space"
 decl_stmt|;
 comment|/** Number of namespaces. */
 DECL|field|NUM_NAMESPACES
@@ -664,6 +674,15 @@ operator|.
 name|RANDOM
 argument_list|)
 expr_stmt|;
+name|createMountTableEntry
+argument_list|(
+name|TEST_DIR_SPACE
+argument_list|,
+name|DestinationOrder
+operator|.
+name|SPACE
+argument_list|)
+expr_stmt|;
 comment|// Get filesystems for federated and each namespace
 name|routerFs
 operator|=
@@ -792,6 +811,22 @@ block|{
 name|testAll
 argument_list|(
 name|TEST_DIR_RANDOM
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testSpaceAll ()
+specifier|public
+name|void
+name|testSpaceAll
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testAll
+argument_list|(
+name|TEST_DIR_SPACE
 argument_list|)
 expr_stmt|;
 block|}

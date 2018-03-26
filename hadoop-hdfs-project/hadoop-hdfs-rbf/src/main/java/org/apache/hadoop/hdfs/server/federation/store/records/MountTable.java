@@ -1790,6 +1790,12 @@ operator|==
 name|DestinationOrder
 operator|.
 name|RANDOM
+operator|||
+name|order
+operator|==
+name|DestinationOrder
+operator|.
+name|SPACE
 return|;
 block|}
 comment|/**    * Normalize a path for that filesystem.    *    * @param path Path to normalize.    * @return Normalized path.    */
