@@ -3697,6 +3697,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+comment|// If incoming app does not have priority configured in submission
+comment|// context, system could be assume that its a 0 priority app and could be
+comment|// considered as normal.
+name|this
+operator|.
+name|applicationPriority
+operator|=
+name|Priority
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 name|int
 name|globalMaxAppAttempts
 init|=
