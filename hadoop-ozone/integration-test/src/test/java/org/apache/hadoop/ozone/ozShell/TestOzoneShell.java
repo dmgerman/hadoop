@@ -891,13 +891,12 @@ specifier|final
 name|int
 name|port
 init|=
-name|dataNode
-operator|.
-name|getDatanodeId
-argument_list|()
+name|MiniOzoneClassicCluster
 operator|.
 name|getOzoneRestPort
-argument_list|()
+argument_list|(
+name|dataNode
+argument_list|)
 decl_stmt|;
 name|url
 operator|=

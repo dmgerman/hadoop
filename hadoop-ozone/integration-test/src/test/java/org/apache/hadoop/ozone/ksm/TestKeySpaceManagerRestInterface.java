@@ -881,13 +881,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|datanode
-operator|.
-name|getDatanodeId
-argument_list|()
+name|MiniOzoneClassicCluster
 operator|.
 name|getOzoneRestPort
-argument_list|()
+argument_list|(
+name|datanode
+argument_list|)
 argument_list|,
 operator|(
 name|int

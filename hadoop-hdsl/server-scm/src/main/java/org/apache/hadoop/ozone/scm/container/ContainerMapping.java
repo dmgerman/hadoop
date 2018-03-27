@@ -1950,7 +1950,7 @@ literal|"container database."
 argument_list|,
 name|reports
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 argument_list|,
 name|datanodeState

@@ -58,11 +58,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -410,7 +410,7 @@ specifier|private
 specifier|final
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|ratisMembers
 decl_stmt|;
@@ -467,7 +467,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|newNodesList
 init|=
@@ -478,7 +478,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
@@ -503,7 +503,7 @@ comment|//TODO: Add Raft State to the Nodes, so we can query and skip nodes from
 comment|// data from datanode instead of maintaining a set.
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|datanode
 range|:
 name|datanodes
@@ -668,7 +668,7 @@ block|}
 comment|/**    * Creates a pipeline from a specified set of Nodes.    *    * @param pipelineID - Name of the pipeline    * @param datanodes - The list of datanodes that make this pipeline.    */
 annotation|@
 name|Override
-DECL|method|createPipeline (String pipelineID, List<DatanodeID> datanodes)
+DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
 specifier|public
 name|void
 name|createPipeline
@@ -678,7 +678,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|)
@@ -704,7 +704,7 @@ DECL|method|getMembers (String pipelineID)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getMembers
 parameter_list|(
@@ -721,7 +721,7 @@ block|}
 comment|/**    * Update the datanode list of the pipeline.    *    * @param pipelineID    * @param newDatanodes    */
 annotation|@
 name|Override
-DECL|method|updatePipeline (String pipelineID, List<DatanodeID> newDatanodes)
+DECL|method|updatePipeline (String pipelineID, List<DatanodeDetails> newDatanodes)
 specifier|public
 name|void
 name|updatePipeline
@@ -731,7 +731,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|newDatanodes
 parameter_list|)

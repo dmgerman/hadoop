@@ -746,7 +746,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|block
@@ -757,7 +757,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -862,7 +862,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|block
@@ -873,7 +873,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -193,7 +193,7 @@ block|}
 DECL|method|findHdslPlugin (DataNode dataNode)
 specifier|private
 specifier|static
-name|HdslServerPlugin
+name|HdslDatanodeService
 name|findHdslPlugin
 parameter_list|(
 name|DataNode
@@ -215,12 +215,12 @@ if|if
 condition|(
 name|plugin
 operator|instanceof
-name|HdslServerPlugin
+name|HdslDatanodeService
 condition|)
 block|{
 return|return
 operator|(
-name|HdslServerPlugin
+name|HdslDatanodeService
 operator|)
 name|plugin
 return|;

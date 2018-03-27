@@ -28,11 +28,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -587,7 +587,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Creates a pipeline from a specified set of Nodes.    * @param pipelineID - Name of the pipeline    * @param datanodes - The list of datanodes that make this pipeline.    */
-DECL|method|createPipeline (String pipelineID, List<DatanodeID> datanodes)
+DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
 specifier|public
 specifier|abstract
 name|void
@@ -598,7 +598,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|)
@@ -624,7 +624,7 @@ specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getMembers
 parameter_list|(
@@ -635,7 +635,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update the datanode list of the pipeline.    */
-DECL|method|updatePipeline (String pipelineID, List<DatanodeID> newDatanodes)
+DECL|method|updatePipeline (String pipelineID, List<DatanodeDetails> newDatanodes)
 specifier|public
 specifier|abstract
 name|void
@@ -646,7 +646,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|newDatanodes
 parameter_list|)

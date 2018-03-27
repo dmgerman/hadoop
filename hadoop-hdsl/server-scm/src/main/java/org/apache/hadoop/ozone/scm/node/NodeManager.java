@@ -46,7 +46,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|UnregisteredNodeException
 import|;
 end_import
 
@@ -58,11 +58,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|UnregisteredNodeException
+name|DatanodeDetails
 import|;
 end_import
 
@@ -194,6 +194,16 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
 begin_comment
 comment|/**  * A node manager supports a simple interface for managing a datanode.  *<p/>  * 1. A datanode registers with the NodeManager.  *<p/>  * 2. If the node is allowed to register, we add that to the nodes that we need  * to keep track of.  *<p/>  * 3. A heartbeat is made by the node at a fixed frequency.  *<p/>  * 4. A node can be in any of these 4 states: {HEALTHY, STALE, DEAD,  * DECOMMISSIONED}  *<p/>  * HEALTHY - It is a datanode that is regularly heartbeating us.  *  * STALE - A datanode for which we have missed few heart beats.  *  * DEAD - A datanode that we have not heard from for a while.  *  * DECOMMISSIONED - Someone told us to remove this node from the tracking  * list, by calling removeNode. We will throw away this nodes info soon.  */
 end_comment
@@ -213,11 +223,11 @@ extends|,
 name|Runnable
 block|{
 comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
-DECL|method|removeNode (DatanodeID node)
+DECL|method|removeNode (DatanodeDetails node)
 name|void
 name|removeNode
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
@@ -227,7 +237,7 @@ comment|/**    * Gets all Live Datanodes that is currently communicating with SC
 DECL|method|getNodes (NodeState nodeState)
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -244,11 +254,11 @@ name|NodeState
 name|nodeState
 parameter_list|)
 function_decl|;
-comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeIDs known to SCM.    */
+comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeDetails known to SCM.    */
 DECL|method|getAllNodes ()
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getAllNodes
 parameter_list|()
@@ -281,20 +291,20 @@ comment|/**    * Return a map of node stats.    * @return a map of individual no
 DECL|method|getNodeStats ()
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|SCMNodeStat
 argument_list|>
 name|getNodeStats
 parameter_list|()
 function_decl|;
-comment|/**    * Return the node stat of the specified datanode.    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
-DECL|method|getNodeStat (DatanodeID datanodeID)
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails DatanodeDetails.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+DECL|method|getNodeStat (DatanodeDetails datanodeDetails)
 name|SCMNodeMetric
 name|getNodeStat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 function_decl|;
 comment|/**    * Returns the NodePoolManager associated with the NodeManager.    * @return NodePoolManager    */
@@ -311,22 +321,22 @@ name|boolean
 name|waitForHeartbeatProcessed
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the node state of a specific node.    * @param id - DatanodeID    * @return Healthy/Stale/Dead.    */
-DECL|method|getNodeState (DatanodeID id)
+comment|/**    * Returns the node state of a specific node.    * @param datanodeDetails DatanodeDetails    * @return Healthy/Stale/Dead.    */
+DECL|method|getNodeState (DatanodeDetails datanodeDetails)
 name|NodeState
 name|getNodeState
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 function_decl|;
-comment|/**    * Add a {@link SCMCommand} to the command queue, which are    * handled by HB thread asynchronously.    * @param id    * @param command    */
-DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+comment|/**    * Add a {@link SCMCommand} to the command queue, which are    * handled by HB thread asynchronously.    * @param dnId datanode uuid    * @param command    */
+DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)
 name|void
 name|addDatanodeCommand
 parameter_list|(
-name|DatanodeID
-name|id
+name|UUID
+name|dnId
 parameter_list|,
 name|SCMCommand
 name|command

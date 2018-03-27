@@ -1048,11 +1048,11 @@ return|;
 block|}
 block|}
 comment|/**    * Get the path for datanode id file.    *    * @param conf - Configuration    * @return the path of datanode id as string    */
-DECL|method|getDatanodeIDPath (Configuration conf)
+DECL|method|getDatanodeIdFilePath (Configuration conf)
 specifier|public
 specifier|static
 name|String
-name|getDatanodeIDPath
+name|getDatanodeIdFilePath
 parameter_list|(
 name|Configuration
 name|conf

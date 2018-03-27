@@ -60,11 +60,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -282,8 +282,8 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 range|:
 name|nodeManager
 operator|.
@@ -300,7 +300,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|id
+name|dd
 argument_list|)
 operator|.
 name|get
@@ -319,7 +319,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|id
+name|dd
 argument_list|)
 operator|.
 name|get
@@ -487,7 +487,7 @@ name|GB
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesCapacity
 init|=
@@ -512,7 +512,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesRandom
 init|=
@@ -629,7 +629,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|deleteContainer (MockNodeManager nodeManager, List<DatanodeID> nodes, long containerSize)
+DECL|method|deleteContainer (MockNodeManager nodeManager, List<DatanodeDetails> nodes, long containerSize)
 specifier|private
 name|void
 name|deleteContainer
@@ -639,7 +639,7 @@ name|nodeManager
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|,
@@ -649,8 +649,8 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 range|:
 name|nodes
 control|)
@@ -659,14 +659,14 @@ name|nodeManager
 operator|.
 name|delContainer
 argument_list|(
-name|id
+name|dd
 argument_list|,
 name|containerSize
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createContainer (MockNodeManager nodeManager, List<DatanodeID> nodes, long containerSize)
+DECL|method|createContainer (MockNodeManager nodeManager, List<DatanodeDetails> nodes, long containerSize)
 specifier|private
 name|void
 name|createContainer
@@ -676,7 +676,7 @@ name|nodeManager
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|,
@@ -686,8 +686,8 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 range|:
 name|nodes
 control|)
@@ -696,7 +696,7 @@ name|nodeManager
 operator|.
 name|addContainer
 argument_list|(
-name|id
+name|dd
 argument_list|,
 name|containerSize
 argument_list|)

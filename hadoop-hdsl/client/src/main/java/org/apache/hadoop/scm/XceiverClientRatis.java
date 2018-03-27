@@ -68,6 +68,22 @@ name|hdsl
 operator|.
 name|protocol
 operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -111,22 +127,6 @@ operator|.
 name|proto
 operator|.
 name|HdslProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
 import|;
 end_import
 
@@ -558,7 +558,7 @@ name|maxOutStandingChunks
 expr_stmt|;
 block|}
 comment|/**    * {@inheritDoc}    */
-DECL|method|createPipeline (String clusterId, List<DatanodeID> datanodes)
+DECL|method|createPipeline (String clusterId, List<DatanodeDetails> datanodes)
 specifier|public
 name|void
 name|createPipeline
@@ -568,7 +568,7 @@ name|clusterId
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|)
@@ -626,14 +626,14 @@ operator|.
 name|RATIS
 return|;
 block|}
-DECL|method|reinitialize (List<DatanodeID> datanodes, RaftGroup group)
+DECL|method|reinitialize (List<DatanodeDetails> datanodes, RaftGroup group)
 specifier|private
 name|void
 name|reinitialize
 parameter_list|(
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|,
@@ -660,7 +660,7 @@ literal|null
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|d
 range|:
 name|datanodes
@@ -725,12 +725,12 @@ throw|;
 block|}
 block|}
 comment|/**    * Adds a new peers to the Ratis Ring.    *    * @param datanode - new datanode    * @param group    - Raft group    * @throws IOException - on Failure.    */
-DECL|method|reinitialize (DatanodeID datanode, RaftGroup group)
+DECL|method|reinitialize (DatanodeDetails datanode, RaftGroup group)
 specifier|private
 name|void
 name|reinitialize
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|datanode
 parameter_list|,
 name|RaftGroup

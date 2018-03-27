@@ -76,11 +76,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -469,12 +469,12 @@ specifier|private
 name|ThreadPoolExecutor
 name|writeChunkExecutor
 decl_stmt|;
-DECL|method|XceiverServerRatis (DatanodeID id, int port, String storageDir, ContainerDispatcher dispatcher, Configuration conf)
+DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, String storageDir, ContainerDispatcher dispatcher, Configuration conf)
 specifier|private
 name|XceiverServerRatis
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 parameter_list|,
 name|int
 name|port
@@ -582,7 +582,7 @@ name|Objects
 operator|.
 name|requireNonNull
 argument_list|(
-name|id
+name|dd
 argument_list|,
 literal|"id == null"
 argument_list|)
@@ -666,7 +666,7 @@ name|RatisHelper
 operator|.
 name|toRaftPeerId
 argument_list|(
-name|id
+name|dd
 argument_list|)
 argument_list|)
 operator|.
@@ -942,14 +942,14 @@ return|return
 name|properties
 return|;
 block|}
-DECL|method|newXceiverServerRatis (DatanodeID datanodeID, Configuration ozoneConf, ContainerDispatcher dispatcher)
+DECL|method|newXceiverServerRatis ( DatanodeDetails datanodeDetails, Configuration ozoneConf, ContainerDispatcher dispatcher)
 specifier|public
 specifier|static
 name|XceiverServerRatis
 name|newXceiverServerRatis
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|Configuration
 name|ozoneConf
@@ -1132,9 +1132,9 @@ name|File
 operator|.
 name|separator
 operator|+
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1160,7 +1160,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|setRatisPort
 argument_list|(
@@ -1171,7 +1171,7 @@ return|return
 operator|new
 name|XceiverServerRatis
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|,
 name|localPort
 argument_list|,

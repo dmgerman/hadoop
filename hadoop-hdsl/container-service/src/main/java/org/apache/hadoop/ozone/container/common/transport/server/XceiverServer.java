@@ -154,6 +154,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
@@ -314,10 +330,13 @@ name|Channel
 name|channel
 decl_stmt|;
 comment|/**    * Constructs a netty server class.    *    * @param conf - Configuration    */
-DECL|method|XceiverServer (Configuration conf, ContainerDispatcher dispatcher)
+DECL|method|XceiverServer (DatanodeDetails datanodeDetails, Configuration conf, ContainerDispatcher dispatcher)
 specifier|public
 name|XceiverServer
 parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
@@ -444,6 +463,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|datanodeDetails
+operator|.
+name|setContainerPort
+argument_list|(
+name|port
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|storageContainer

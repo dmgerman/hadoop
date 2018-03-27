@@ -678,7 +678,7 @@ condition|(
 operator|!
 name|request
 operator|.
-name|hasDatanodeID
+name|hasDatanodeUuid
 argument_list|()
 condition|)
 block|{

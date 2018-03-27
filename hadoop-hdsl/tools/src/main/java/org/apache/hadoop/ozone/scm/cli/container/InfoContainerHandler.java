@@ -104,11 +104,7 @@ name|hdsl
 operator|.
 name|protocol
 operator|.
-name|proto
-operator|.
-name|ContainerProtos
-operator|.
-name|ContainerData
+name|DatanodeDetails
 import|;
 end_import
 
@@ -120,11 +116,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerData
 import|;
 end_import
 
@@ -570,7 +570,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|DatanodeID
+name|DatanodeDetails
 operator|::
 name|getHostName
 argument_list|)

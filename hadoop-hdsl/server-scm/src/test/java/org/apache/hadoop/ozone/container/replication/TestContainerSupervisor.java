@@ -42,11 +42,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|protocol
+name|conf
 operator|.
-name|DatanodeID
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -60,9 +60,9 @@ name|hadoop
 operator|.
 name|hdsl
 operator|.
-name|conf
+name|protocol
 operator|.
-name|OzoneConfiguration
+name|DatanodeDetails
 import|;
 end_import
 
@@ -589,7 +589,7 @@ DECL|field|datanodes
 specifier|private
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
@@ -677,7 +677,7 @@ argument_list|)
 expr_stmt|;
 name|Map
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|NodeState
 argument_list|>
@@ -705,12 +705,12 @@ name|x
 operator|++
 control|)
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|datanode
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|datanodes
@@ -811,7 +811,7 @@ name|z
 operator|++
 control|)
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|id
 init|=
 name|datanodes
@@ -1473,12 +1473,12 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|id
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 operator|(
@@ -1585,7 +1585,7 @@ name|contains
 argument_list|(
 name|id
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 argument_list|)
 argument_list|,

@@ -66,29 +66,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|commands
-operator|.
-name|RegisteredCommand
+name|DatanodeDetails
 import|;
 end_import
 
@@ -125,18 +107,18 @@ specifier|private
 name|TestUtils
 parameter_list|()
 block|{   }
-DECL|method|getDatanodeID (SCMNodeManager nodeManager)
+DECL|method|getDatanodeDetails (SCMNodeManager nodeManager)
 specifier|public
 specifier|static
-name|DatanodeID
-name|getDatanodeID
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|(
 name|SCMNodeManager
 name|nodeManager
 parameter_list|)
 block|{
 return|return
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
@@ -150,12 +132,12 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new DatanodeID with NodeID set to the string.    *    * @param uuid - node ID, it is generally UUID.    * @return DatanodeID.    */
-DECL|method|getDatanodeID (SCMNodeManager nodeManager, String uuid)
+comment|/**    * Create a new DatanodeDetails with NodeID set to the string.    *    * @param uuid - node ID, it is generally UUID.    * @return DatanodeID.    */
+DECL|method|getDatanodeDetails (SCMNodeManager nodeManager, String uuid)
 specifier|public
 specifier|static
-name|DatanodeID
-name|getDatanodeID
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|(
 name|SCMNodeManager
 name|nodeManager
@@ -164,49 +146,37 @@ name|String
 name|uuid
 parameter_list|)
 block|{
-name|DatanodeID
-name|tempDataNode
+name|DatanodeDetails
+name|datanodeDetails
 init|=
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|uuid
 argument_list|)
 decl_stmt|;
-name|RegisteredCommand
-name|command
-init|=
-operator|(
-name|RegisteredCommand
-operator|)
 name|nodeManager
 operator|.
 name|register
 argument_list|(
-name|tempDataNode
-argument_list|)
-decl_stmt|;
-return|return
-operator|new
-name|DatanodeID
-argument_list|(
-name|command
+name|datanodeDetails
 operator|.
-name|getDatanodeUUID
+name|getProtoBufMessage
 argument_list|()
-argument_list|,
-name|tempDataNode
 argument_list|)
+expr_stmt|;
+return|return
+name|datanodeDetails
 return|;
 block|}
-comment|/**    * Get specified number of datanode IDs and registered them with node manager.    *    * @param nodeManager - node manager to register the datanode ids.    * @param count       - number of datanode IDs needed.    * @return    */
-DECL|method|getRegisteredDatanodeIDs ( SCMNodeManager nodeManager, int count)
+comment|/**    * Get specified number of DatanodeDetails and registered them with node    * manager.    *    * @param nodeManager - node manager to register the datanode ids.    * @param count       - number of DatanodeDetails needed.    * @return    */
+DECL|method|getListOfRegisteredDatanodeDetails ( SCMNodeManager nodeManager, int count)
 specifier|public
 specifier|static
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
-name|getRegisteredDatanodeIDs
+name|getListOfRegisteredDatanodeDetails
 parameter_list|(
 name|SCMNodeManager
 name|nodeManager
@@ -217,7 +187,7 @@ parameter_list|)
 block|{
 name|ArrayList
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
@@ -245,7 +215,7 @@ name|datanodes
 operator|.
 name|add
 argument_list|(
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -256,16 +226,16 @@ return|return
 name|datanodes
 return|;
 block|}
-comment|/**    * Get a datanode ID.    *    * @return DatanodeID    */
-DECL|method|getDatanodeID ()
+comment|/**    * Get a datanode details.    *    * @return DatanodeDetails    */
+DECL|method|getDatanodeDetails ()
 specifier|public
 specifier|static
-name|DatanodeID
-name|getDatanodeID
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|()
 block|{
 return|return
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|UUID
 operator|.
@@ -277,11 +247,11 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getDatanodeID (String uuid)
+DECL|method|getDatanodeDetails (String uuid)
 specifier|private
 specifier|static
-name|DatanodeID
-name|getDatanodeID
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|(
 name|String
 name|uuid
@@ -336,35 +306,74 @@ name|hostName
 init|=
 name|uuid
 decl_stmt|;
-return|return
-operator|new
-name|DatanodeID
+name|DatanodeDetails
+operator|.
+name|Builder
+name|builder
+init|=
+name|DatanodeDetails
+operator|.
+name|newBuilder
+argument_list|()
+decl_stmt|;
+name|builder
+operator|.
+name|setUuid
+argument_list|(
+name|uuid
+argument_list|)
+operator|.
+name|setHostName
+argument_list|(
+literal|"localhost"
+argument_list|)
+operator|.
+name|setIpAddress
 argument_list|(
 name|ipAddress
-argument_list|,
-name|hostName
-argument_list|,
-name|uuid
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
+argument_list|)
+operator|.
+name|setInfoPort
+argument_list|(
 literal|0
 argument_list|)
+operator|.
+name|setInfoSecurePort
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|setContainerPort
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|setRatisPort
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|setOzoneRestPort
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+return|return
+name|builder
+operator|.
+name|build
+argument_list|()
 return|;
 block|}
-comment|/**    * Get specified number of datanode IDs.    *    * @param count - number of datanode IDs needed.    * @return    */
-DECL|method|getDatanodeIDs (int count)
+comment|/**    * Get specified number of list of DatanodeDetails.    *    * @param count - number of datanode IDs needed.    * @return    */
+DECL|method|getListOfDatanodeDetails (int count)
 specifier|public
 specifier|static
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
-name|getDatanodeIDs
+name|getListOfDatanodeDetails
 parameter_list|(
 name|int
 name|count
@@ -372,7 +381,7 @@ parameter_list|)
 block|{
 name|ArrayList
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
@@ -400,7 +409,7 @@ name|datanodes
 operator|.
 name|add
 argument_list|(
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 argument_list|)
 expr_stmt|;

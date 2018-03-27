@@ -44,11 +44,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -271,7 +271,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesInPool
 init|=
@@ -335,7 +335,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|id
 init|=
 name|nodesInPool
@@ -420,7 +420,7 @@ argument_list|(
 name|info
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeDetails
 argument_list|(
 name|id
 operator|.

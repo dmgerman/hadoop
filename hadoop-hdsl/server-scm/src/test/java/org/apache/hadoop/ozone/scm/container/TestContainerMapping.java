@@ -56,11 +56,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -267,24 +267,6 @@ operator|.
 name|test
 operator|.
 name|GenericTestUtils
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|scm
-operator|.
-name|TestUtils
-operator|.
-name|getDatanodeID
 import|;
 end_import
 
@@ -742,7 +724,7 @@ block|{
 comment|/* This is a lame test, we should really be testing something like     z-score or make sure that we don't have 3sigma kind of events. Too lazy     to write all that code. This test very lamely tests if we have more than     5 separate nodes  from the list of 10 datanodes that got allocated a     container.      */
 name|Set
 argument_list|<
-name|String
+name|UUID
 argument_list|>
 name|pipelineList
 init|=
@@ -823,7 +805,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -916,7 +898,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|newPipeline
@@ -924,7 +906,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1286,10 +1268,12 @@ argument_list|(
 name|containerName
 argument_list|)
 decl_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
-name|getDatanodeID
+name|TestUtils
+operator|.
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|ContainerReportsRequestProto
@@ -1408,9 +1392,9 @@ argument_list|()
 decl_stmt|;
 name|crBuilder
 operator|.
-name|setDatanodeID
+name|setDatanodeDetails
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -1500,12 +1484,12 @@ argument_list|(
 name|containerName
 argument_list|)
 decl_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|ContainerReportsRequestProto
@@ -1624,9 +1608,9 @@ argument_list|()
 decl_stmt|;
 name|crBuilder
 operator|.
-name|setDatanodeID
+name|setDatanodeDetails
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getProtoBufMessage
 argument_list|()

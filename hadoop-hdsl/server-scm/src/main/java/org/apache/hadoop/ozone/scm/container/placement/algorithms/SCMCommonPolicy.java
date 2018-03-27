@@ -60,11 +60,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -325,7 +325,7 @@ DECL|method|chooseDatanodes (int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|chooseDatanodes
 parameter_list|(
@@ -341,7 +341,7 @@ name|SCMException
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 init|=
@@ -445,7 +445,7 @@ throw|;
 block|}
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyList
 init|=
@@ -531,14 +531,14 @@ return|return
 name|healthyList
 return|;
 block|}
-comment|/**    * Returns true if this node has enough space to meet our requirement.    *    * @param datanodeID DatanodeID    * @return true if we have enough space.    */
-DECL|method|hasEnoughSpace (DatanodeID datanodeID, long sizeRequired)
+comment|/**    * Returns true if this node has enough space to meet our requirement.    *    * @param datanodeDetails DatanodeDetails    * @return true if we have enough space.    */
+DECL|method|hasEnoughSpace (DatanodeDetails datanodeDetails, long sizeRequired)
 specifier|private
 name|boolean
 name|hasEnoughSpace
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|long
 name|sizeRequired
@@ -551,7 +551,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 decl_stmt|;
 return|return
@@ -576,11 +576,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * This function invokes the derived classes chooseNode Function to build a    * list of nodes. Then it verifies that invoked policy was able to return    * expected number of nodes.    *    * @param nodesRequired - Nodes Required    * @param healthyNodes - List of Nodes in the result set.    * @return List of Datanodes that can be used for placement.    * @throws SCMException    */
-DECL|method|getResultSet (int nodesRequired, List<DatanodeID> healthyNodes)
+DECL|method|getResultSet ( int nodesRequired, List<DatanodeDetails> healthyNodes)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getResultSet
 parameter_list|(
@@ -589,7 +589,7 @@ name|nodesRequired
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 parameter_list|)
@@ -598,7 +598,7 @@ name|SCMException
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|results
 init|=
@@ -623,7 +623,7 @@ operator|++
 control|)
 block|{
 comment|// invoke the choose function defined in the derived classes.
-name|DatanodeID
+name|DatanodeDetails
 name|nodeId
 init|=
 name|chooseNode
@@ -691,16 +691,16 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * Choose a datanode according to the policy, this function is implemented    * by the actual policy class. For example, PlacementCapacity or    * PlacementRandom.    *    * @param healthyNodes - Set of healthy nodes we can choose from.    * @return DatanodeID    */
-DECL|method|chooseNode (List<DatanodeID> healthyNodes)
+comment|/**    * Choose a datanode according to the policy, this function is implemented    * by the actual policy class. For example, PlacementCapacity or    * PlacementRandom.    *    * @param healthyNodes - Set of healthy nodes we can choose from.    * @return DatanodeDetails    */
+DECL|method|chooseNode ( List<DatanodeDetails> healthyNodes)
 specifier|public
 specifier|abstract
-name|DatanodeID
+name|DatanodeDetails
 name|chooseNode
 parameter_list|(
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 parameter_list|)

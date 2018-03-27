@@ -74,11 +74,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|protocol
+name|conf
 operator|.
-name|DatanodeID
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -92,9 +92,9 @@ name|hadoop
 operator|.
 name|hdsl
 operator|.
-name|conf
+name|protocol
 operator|.
-name|OzoneConfiguration
+name|DatanodeDetails
 import|;
 end_import
 
@@ -412,12 +412,10 @@ specifier|final
 name|OzoneContainer
 name|container
 decl_stmt|;
-DECL|field|datanodeID
+DECL|field|datanodeDetails
 specifier|private
-name|DatanodeID
-name|datanodeID
-init|=
-literal|null
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 DECL|field|commandDispatcher
 specifier|private
@@ -449,13 +447,13 @@ name|cmdProcessThread
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Constructs a a datanode state machine.    *    * @param datanodeID - DatanodeID used to identify a datanode    * @param conf - Configuration.    */
-DECL|method|DatanodeStateMachine (DatanodeID datanodeID, Configuration conf)
+comment|/**    * Constructs a a datanode state machine.    *    * @param datanodeDetails - DatanodeDetails used to identify a datanode    * @param conf - Configuration.    */
+DECL|method|DatanodeStateMachine (DatanodeDetails datanodeDetails, Configuration conf)
 specifier|public
 name|DatanodeStateMachine
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|Configuration
 name|conf
@@ -468,6 +466,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|datanodeDetails
+operator|=
+name|datanodeDetails
 expr_stmt|;
 name|executorService
 operator|=
@@ -537,7 +541,9 @@ operator|=
 operator|new
 name|OzoneContainer
 argument_list|(
-name|datanodeID
+name|this
+operator|.
+name|datanodeDetails
 argument_list|,
 operator|new
 name|OzoneConfiguration
@@ -545,12 +551,6 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|datanodeID
-operator|=
-name|datanodeID
 expr_stmt|;
 name|nextHB
 operator|=
@@ -619,33 +619,15 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|setDatanodeID (DatanodeID datanodeID)
+comment|/**    *    * Return DatanodeDetails if set, return null otherwise.    *    * @return DatanodeDetails    */
+DECL|method|getDatanodeDetails ()
 specifier|public
-name|void
-name|setDatanodeID
-parameter_list|(
-name|DatanodeID
-name|datanodeID
-parameter_list|)
-block|{
-name|this
-operator|.
-name|datanodeID
-operator|=
-name|datanodeID
-expr_stmt|;
-block|}
-comment|/**    *    * Return DatanodeID if set, return null otherwise.    *    * @return datanodeID    */
-DECL|method|getDatanodeID ()
-specifier|public
-name|DatanodeID
-name|getDatanodeID
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
-name|datanodeID
+name|datanodeDetails
 return|;
 block|}
 comment|/**    * Returns the Connection manager for this state machine.    *    * @return - SCMConnectionManager.    */

@@ -32,7 +32,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|UnregisteredNodeException
 import|;
 end_import
 
@@ -44,11 +44,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|UnregisteredNodeException
+name|DatanodeDetails
 import|;
 end_import
 
@@ -292,7 +292,7 @@ name|scm
 operator|.
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 import|;
 end_import
 
@@ -367,6 +367,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -639,7 +649,7 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 decl_stmt|;
@@ -648,7 +658,7 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|staleNodes
 decl_stmt|;
@@ -657,7 +667,7 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|deadNodes
 decl_stmt|;
@@ -666,7 +676,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|SCMNodeStat
 argument_list|>
@@ -688,7 +698,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|DatanodeID
+name|UUID
 argument_list|,
 name|List
 argument_list|<
@@ -770,15 +780,15 @@ name|x
 operator|++
 control|)
 block|{
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 init|=
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|populateNodeMetric
 argument_list|(
-name|id
+name|dd
 argument_list|,
 name|x
 argument_list|)
@@ -799,14 +809,14 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Invoked from ctor to create some node Metrics.    *    * @param datanodeID - Datanode ID    */
-DECL|method|populateNodeMetric (DatanodeID datanodeID, int x)
+comment|/**    * Invoked from ctor to create some node Metrics.    *    * @param datanodeDetails - Datanode details    */
+DECL|method|populateNodeMetric (DatanodeDetails datanodeDetails, int x)
 specifier|private
 name|void
 name|populateNodeMetric
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|int
 name|x
@@ -883,9 +893,9 @@ name|nodeMetricMap
 operator|.
 name|put
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|,
 name|newStat
@@ -921,7 +931,7 @@ name|healthyNodes
 operator|.
 name|add
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 block|}
@@ -948,7 +958,7 @@ name|staleNodes
 operator|.
 name|add
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 block|}
@@ -975,7 +985,7 @@ name|deadNodes
 operator|.
 name|add
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 block|}
@@ -1000,12 +1010,12 @@ block|}
 comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
 annotation|@
 name|Override
-DECL|method|removeNode (DatanodeID node)
+DECL|method|removeNode (DatanodeDetails node)
 specifier|public
 name|void
 name|removeNode
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
@@ -1018,7 +1028,7 @@ DECL|method|getNodes (HdslProtos.NodeState nodestate)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -1081,7 +1091,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 init|=
@@ -1108,14 +1118,14 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeIDs known to SCM.    */
+comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeDetails known to SCM.    */
 annotation|@
 name|Override
 DECL|method|getAllNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getAllNodes
 parameter_list|()
@@ -1211,7 +1221,7 @@ DECL|method|getNodeStats ()
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|SCMNodeStat
 argument_list|>
@@ -1222,16 +1232,16 @@ return|return
 name|nodeMetricMap
 return|;
 block|}
-comment|/**    * Return the node stat of the specified datanode.    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails - datanode details.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
 annotation|@
 name|Override
-DECL|method|getNodeStat (DatanodeID datanodeID)
+DECL|method|getNodeStat (DatanodeDetails datanodeDetails)
 specifier|public
 name|SCMNodeMetric
 name|getNodeStat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 block|{
 return|return
@@ -1242,9 +1252,9 @@ name|nodeMetricMap
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1282,18 +1292,18 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Returns the node state of a specific node.    *    * @param id - DatanodeID    * @return Healthy/Stale/Dead.    */
+comment|/**    * Returns the node state of a specific node.    *    * @param dd - DatanodeDetails    * @return Healthy/Stale/Dead.    */
 annotation|@
 name|Override
-DECL|method|getNodeState (DatanodeID id)
+DECL|method|getNodeState (DatanodeDetails dd)
 specifier|public
 name|HdslProtos
 operator|.
 name|NodeState
 name|getNodeState
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 parameter_list|)
 block|{
 return|return
@@ -1302,13 +1312,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)
 specifier|public
 name|void
 name|addDatanodeCommand
 parameter_list|(
-name|DatanodeID
-name|id
+name|UUID
+name|dnId
 parameter_list|,
 name|SCMCommand
 name|command
@@ -1320,7 +1330,7 @@ name|commandMap
 operator|.
 name|containsKey
 argument_list|(
-name|id
+name|dnId
 argument_list|)
 condition|)
 block|{
@@ -1334,7 +1344,7 @@ name|commandMap
 operator|.
 name|get
 argument_list|(
-name|id
+name|dnId
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -1376,7 +1386,7 @@ name|commandMap
 operator|.
 name|put
 argument_list|(
-name|id
+name|dnId
 argument_list|,
 name|commandList
 argument_list|)
@@ -1384,13 +1394,13 @@ expr_stmt|;
 block|}
 block|}
 comment|// Returns the number of commands that is queued to this node manager.
-DECL|method|getCommandCount (DatanodeID id)
+DECL|method|getCommandCount (DatanodeDetails dd)
 specifier|public
 name|int
 name|getCommandCount
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 parameter_list|)
 block|{
 name|List
@@ -1403,7 +1413,7 @@ name|commandMap
 operator|.
 name|get
 argument_list|(
-name|id
+name|dd
 argument_list|)
 decl_stmt|;
 return|return
@@ -1421,13 +1431,13 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|clearCommandQueue (DatanodeID id)
+DECL|method|clearCommandQueue (UUID dnId)
 specifier|public
 name|void
 name|clearCommandQueue
 parameter_list|(
-name|DatanodeID
-name|id
+name|UUID
+name|dnId
 parameter_list|)
 block|{
 if|if
@@ -1436,7 +1446,7 @@ name|commandMap
 operator|.
 name|containsKey
 argument_list|(
-name|id
+name|dnId
 argument_list|)
 condition|)
 block|{
@@ -1444,7 +1454,7 @@ name|commandMap
 operator|.
 name|put
 argument_list|(
-name|id
+name|dnId
 argument_list|,
 operator|new
 name|LinkedList
@@ -1490,26 +1500,28 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeID - Send datanodeID with Node info, but datanode UUID is    * empty. Server returns a datanodeID for the given node.    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetails DatanodeDetailsProto    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeID datanodeID)
+DECL|method|register (HdslProtos.DatanodeDetailsProto datanodeDetails)
 specifier|public
 name|SCMCommand
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|)
 block|{
 return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response list    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState containerReportState)
+DECL|method|sendHeartbeat ( HdslProtos.DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ReportState containerReportState)
 specifier|public
 name|List
 argument_list|<
@@ -1517,8 +1529,10 @@ name|SCMCommand
 argument_list|>
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -1530,7 +1544,7 @@ block|{
 if|if
 condition|(
 operator|(
-name|datanodeID
+name|datanodeDetails
 operator|!=
 literal|null
 operator|)
@@ -1560,9 +1574,9 @@ name|nodeMetricMap
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1651,9 +1665,14 @@ name|nodeMetricMap
 operator|.
 name|put
 argument_list|(
-name|datanodeID
+name|DatanodeDetails
 operator|.
-name|toString
+name|getFromProtoBuf
+argument_list|(
+name|datanodeDetails
+argument_list|)
+operator|.
+name|getUuid
 argument_list|()
 argument_list|,
 name|stat
@@ -1729,14 +1748,14 @@ return|return
 name|nodeCountMap
 return|;
 block|}
-comment|/**    * Makes it easy to add a container.    *    * @param datanodeID datanode ID    * @param size number of bytes.    */
-DECL|method|addContainer (DatanodeID datanodeID, long size)
+comment|/**    * Makes it easy to add a container.    *    * @param datanodeDetails datanode details    * @param size number of bytes.    */
+DECL|method|addContainer (DatanodeDetails datanodeDetails, long size)
 specifier|public
 name|void
 name|addContainer
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|long
 name|size
@@ -1751,9 +1770,9 @@ name|nodeMetricMap
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1792,9 +1811,9 @@ name|nodeMetricMap
 operator|.
 name|put
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|,
 name|stat
@@ -1802,14 +1821,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Makes it easy to simulate a delete of a container.    *    * @param datanodeID datanode ID    * @param size number of bytes.    */
-DECL|method|delContainer (DatanodeID datanodeID, long size)
+comment|/**    * Makes it easy to simulate a delete of a container.    *    * @param datanodeDetails datanode Details    * @param size number of bytes.    */
+DECL|method|delContainer (DatanodeDetails datanodeDetails, long size)
 specifier|public
 name|void
 name|delContainer
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|long
 name|size
@@ -1824,9 +1843,9 @@ name|nodeMetricMap
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1865,9 +1884,9 @@ name|nodeMetricMap
 operator|.
 name|put
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|,
 name|stat

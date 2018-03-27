@@ -30,9 +30,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|DatanodeID
+name|datanode
+operator|.
+name|DataNode
 import|;
 end_import
 
@@ -44,13 +46,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|server
+name|protocol
 operator|.
-name|datanode
-operator|.
-name|DataNode
+name|DatanodeDetails
 import|;
 end_import
 
@@ -449,9 +449,9 @@ decl_stmt|;
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
-name|allIds
+name|datanodeDetailsSet
 init|=
 name|datanodes
 operator|.
@@ -460,9 +460,9 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|DataNode
+name|MiniOzoneClassicCluster
 operator|::
-name|getDatanodeId
+name|getDatanodeDetails
 argument_list|)
 operator|.
 name|collect
@@ -524,11 +524,11 @@ decl_stmt|;
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|subIds
 init|=
-name|allIds
+name|datanodeDetailsSet
 operator|.
 name|subList
 argument_list|(
@@ -560,7 +560,7 @@ name|ratisId
 argument_list|)
 expr_stmt|;
 comment|// check Ratis cluster members
-comment|//final List<DatanodeID> dns = manager.getMembers(ratisId);
+comment|//final List<DatanodeDetails> dns = manager.getMembers(ratisId);
 comment|//Assert.assertEquals(subIds, dns);
 block|}
 comment|// randomly close two of the clusters
@@ -635,7 +635,7 @@ name|chosen
 decl_stmt|;
 comment|//manager.updatePipeline(ratisId, allIds);
 comment|// check Ratis cluster members
-comment|//final List<DatanodeID> dns = manager.getMembers(ratisId);
+comment|//final List<DatanodeDetails> dns = manager.getMembers(ratisId);
 comment|//Assert.assertEquals(allIds, dns);
 block|}
 finally|finally

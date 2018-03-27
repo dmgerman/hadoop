@@ -56,11 +56,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -104,11 +104,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|container
+name|scm
 operator|.
-name|common
-operator|.
-name|SCMTestUtils
+name|TestUtils
 import|;
 end_import
 
@@ -181,24 +179,6 @@ operator|.
 name|test
 operator|.
 name|PathUtils
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|scm
-operator|.
-name|TestUtils
-operator|.
-name|getDatanodeIDs
 import|;
 end_import
 
@@ -463,11 +443,13 @@ decl_stmt|;
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 init|=
-name|getDatanodeIDs
+name|TestUtils
+operator|.
+name|getListOfDatanodeDetails
 argument_list|(
 name|nodeCount
 argument_list|)
@@ -487,7 +469,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 range|:
 name|nodes
@@ -505,7 +487,7 @@ expr_stmt|;
 block|}
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesRetrieved
 init|=
@@ -533,7 +515,7 @@ argument_list|,
 name|nodesRetrieved
 argument_list|)
 expr_stmt|;
-name|DatanodeID
+name|DatanodeDetails
 name|nodeRemoved
 init|=
 name|nodes
@@ -554,7 +536,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesAfterRemove
 init|=
@@ -574,7 +556,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nonExistSet
 init|=
@@ -640,11 +622,13 @@ decl_stmt|;
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 init|=
-name|getDatanodeIDs
+name|TestUtils
+operator|.
+name|getListOfDatanodeDetails
 argument_list|(
 name|nodeCount
 argument_list|)
@@ -676,7 +660,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 range|:
 name|nodes
@@ -694,7 +678,7 @@ expr_stmt|;
 block|}
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesRetrieved
 init|=
@@ -753,7 +737,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodesRetrieved
 init|=
@@ -805,20 +789,20 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Compare and verify that two datanode lists are equal.    * @param list1 - datanode list 1.    * @param list2 - datanode list 2.    */
-DECL|method|assertTwoDatanodeListsEqual (List<DatanodeID> list1, List<DatanodeID> list2)
+DECL|method|assertTwoDatanodeListsEqual (List<DatanodeDetails> list1, List<DatanodeDetails> list2)
 specifier|private
 name|void
 name|assertTwoDatanodeListsEqual
 parameter_list|(
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|list1
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|list2
 parameter_list|)

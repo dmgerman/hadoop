@@ -60,11 +60,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -211,11 +211,11 @@ block|}
 comment|/**    * Called by SCM to choose datanodes.    *    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of datanodes.    * @throws SCMException  SCMException    */
 annotation|@
 name|Override
-DECL|method|chooseDatanodes (final int nodesRequired, final long sizeRequired)
+DECL|method|chooseDatanodes ( final int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|chooseDatanodes
 parameter_list|(
@@ -232,7 +232,7 @@ name|SCMException
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 init|=
@@ -268,17 +268,17 @@ name|healthyNodes
 argument_list|)
 return|;
 block|}
-comment|/**    * Find a node from the healthy list and return it after removing it from the    * list that we are operating on.    *    * @param healthyNodes - List of healthy nodes that meet the size    * requirement.    * @return DatanodeID that is chosen.    */
+comment|/**    * Find a node from the healthy list and return it after removing it from the    * list that we are operating on.    *    * @param healthyNodes - List of healthy nodes that meet the size    * requirement.    * @return DatanodeDetails that is chosen.    */
 annotation|@
 name|Override
-DECL|method|chooseNode (List<DatanodeID> healthyNodes)
+DECL|method|chooseNode (List<DatanodeDetails> healthyNodes)
 specifier|public
-name|DatanodeID
+name|DatanodeDetails
 name|chooseNode
 parameter_list|(
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 parameter_list|)
@@ -311,8 +311,8 @@ name|size
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|DatanodeID
-name|chosenID
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 comment|// There is a possibility that both numbers will be same.
 comment|// if that is so, we just return the node.
@@ -323,7 +323,7 @@ operator|==
 name|secondNodeNdx
 condition|)
 block|{
-name|chosenID
+name|datanodeDetails
 operator|=
 name|healthyNodes
 operator|.
@@ -335,8 +335,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|DatanodeID
-name|firstNodeID
+name|DatanodeDetails
+name|firstNodeDetails
 init|=
 name|healthyNodes
 operator|.
@@ -345,8 +345,8 @@ argument_list|(
 name|firstNodeNdx
 argument_list|)
 decl_stmt|;
-name|DatanodeID
-name|secondNodeID
+name|DatanodeDetails
+name|secondNodeDetails
 init|=
 name|healthyNodes
 operator|.
@@ -363,7 +363,7 @@ argument_list|()
 operator|.
 name|getNodeStat
 argument_list|(
-name|firstNodeID
+name|firstNodeDetails
 argument_list|)
 decl_stmt|;
 name|SCMNodeMetric
@@ -374,10 +374,10 @@ argument_list|()
 operator|.
 name|getNodeStat
 argument_list|(
-name|secondNodeID
+name|secondNodeDetails
 argument_list|)
 decl_stmt|;
-name|chosenID
+name|datanodeDetails
 operator|=
 name|firstNodeMetric
 operator|.
@@ -389,20 +389,20 @@ name|get
 argument_list|()
 argument_list|)
 condition|?
-name|firstNodeID
+name|firstNodeDetails
 else|:
-name|secondNodeID
+name|secondNodeDetails
 expr_stmt|;
 block|}
 name|healthyNodes
 operator|.
 name|remove
 argument_list|(
-name|chosenID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 return|return
-name|chosenID
+name|datanodeDetails
 return|;
 block|}
 block|}

@@ -526,9 +526,9 @@ name|as
 argument_list|(
 name|datanodes
 argument_list|,
-name|DataNode
+name|MiniOzoneClassicCluster
 operator|::
-name|getDatanodeId
+name|getDatanodeDetails
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -548,7 +548,7 @@ comment|//      manager.createPipeline(ratisId, pipeline.getMachines());
 comment|//      LOG.info("Created RatisCluster " + ratisId);
 comment|//
 comment|//      // check Ratis cluster members
-comment|//      final List<DatanodeID> dns = manager.getMembers(ratisId);
+comment|//      final List<DatanodeDetails> dns = manager.getMembers(ratisId);
 comment|//      Assert.assertEquals(pipeline.getMachines(), dns);
 comment|//
 comment|//      // run test

@@ -26,11 +26,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -1475,9 +1475,13 @@ throws|throws
 name|Exception
 block|{
 comment|// The cluster has one Datanode server.
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
+name|MiniOzoneClassicCluster
+operator|.
+name|getDatanodeDetails
+argument_list|(
 name|cluster
 operator|.
 name|getDataNodes
@@ -1487,9 +1491,7 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getDatanodeId
-argument_list|()
+argument_list|)
 decl_stmt|;
 name|String
 name|formatStr
@@ -1692,12 +1694,12 @@ argument_list|()
 argument_list|,
 literal|""
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()
@@ -1853,12 +1855,12 @@ argument_list|()
 argument_list|,
 literal|""
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()
@@ -1978,12 +1980,12 @@ argument_list|()
 argument_list|,
 literal|""
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()

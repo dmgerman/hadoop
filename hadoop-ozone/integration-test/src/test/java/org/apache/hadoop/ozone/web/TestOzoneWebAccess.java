@@ -468,13 +468,12 @@ argument_list|)
 decl_stmt|;
 name|port
 operator|=
-name|dataNode
-operator|.
-name|getDatanodeId
-argument_list|()
+name|MiniOzoneClassicCluster
 operator|.
 name|getOzoneRestPort
-argument_list|()
+argument_list|(
+name|dataNode
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * shutdown MiniOzoneCluster.    */

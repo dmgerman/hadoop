@@ -182,11 +182,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|protocol
+name|conf
 operator|.
-name|DatanodeID
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -200,9 +200,9 @@ name|hadoop
 operator|.
 name|hdsl
 operator|.
-name|conf
+name|protocol
 operator|.
-name|OzoneConfiguration
+name|DatanodeDetails
 import|;
 end_import
 
@@ -341,24 +341,6 @@ operator|.
 name|HdslProtos
 operator|.
 name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HdfsProtos
 import|;
 end_import
 
@@ -799,13 +781,9 @@ literal|"hostName TEXT NOT NULL, "
 operator|+
 literal|"datanodeUUId TEXT PRIMARY KEY NOT NULL,"
 operator|+
-literal|"ipAddr TEXT, "
-operator|+
-literal|"xferPort INTEGER,"
+literal|"ipAddress TEXT, "
 operator|+
 literal|"infoPort INTEGER,"
-operator|+
-literal|"ipcPort INTEGER,"
 operator|+
 literal|"infoSecurePort INTEGER,"
 operator|+
@@ -829,9 +807,9 @@ specifier|final
 name|String
 name|INSERT_DATANODE_INFO
 init|=
-literal|"INSERT INTO datanodeInfo (hostname, datanodeUUid, ipAddr, xferPort, "
+literal|"INSERT INTO datanodeInfo (hostname, datanodeUUid, ipAddress, "
 operator|+
-literal|"infoPort, ipcPort, infoSecurePort, containerPort) "
+literal|"infoPort, infoSecurePort, containerPort) "
 operator|+
 literal|"VALUES (\"%s\", \"%s\", \"%s\", %d, %d, %d, %d, %d)"
 decl_stmt|;
@@ -2625,10 +2603,10 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|HdfsProtos
+name|HdslProtos
 operator|.
-name|DatanodeIDProto
-name|dnID
+name|DatanodeDetailsProto
+name|dd
 range|:
 name|pipeline
 operator|.
@@ -2642,9 +2620,9 @@ block|{
 name|String
 name|uuid
 init|=
-name|dnID
+name|dd
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 decl_stmt|;
 if|if
@@ -2663,43 +2641,28 @@ comment|// but this seems a bit cleaner.
 name|String
 name|ipAddr
 init|=
-name|dnID
+name|dd
 operator|.
-name|getIpAddr
+name|getIpAddress
 argument_list|()
 decl_stmt|;
 name|String
 name|hostName
 init|=
-name|dnID
+name|dd
 operator|.
 name|getHostName
 argument_list|()
 decl_stmt|;
 name|int
-name|xferPort
-init|=
-name|dnID
-operator|.
-name|hasXferPort
-argument_list|()
-condition|?
-name|dnID
-operator|.
-name|getXferPort
-argument_list|()
-else|:
-literal|0
-decl_stmt|;
-name|int
 name|infoPort
 init|=
-name|dnID
+name|dd
 operator|.
 name|hasInfoPort
 argument_list|()
 condition|?
-name|dnID
+name|dd
 operator|.
 name|getInfoPort
 argument_list|()
@@ -2709,12 +2672,12 @@ decl_stmt|;
 name|int
 name|securePort
 init|=
-name|dnID
+name|dd
 operator|.
 name|hasInfoSecurePort
 argument_list|()
 condition|?
-name|dnID
+name|dd
 operator|.
 name|getInfoSecurePort
 argument_list|()
@@ -2722,24 +2685,9 @@ else|:
 literal|0
 decl_stmt|;
 name|int
-name|ipcPort
-init|=
-name|dnID
-operator|.
-name|hasIpcPort
-argument_list|()
-condition|?
-name|dnID
-operator|.
-name|getIpcPort
-argument_list|()
-else|:
-literal|0
-decl_stmt|;
-name|int
 name|containerPort
 init|=
-name|dnID
+name|dd
 operator|.
 name|getContainerPort
 argument_list|()
@@ -2759,11 +2707,7 @@ name|uuid
 argument_list|,
 name|ipAddr
 argument_list|,
-name|xferPort
-argument_list|,
 name|infoPort
-argument_list|,
-name|ipcPort
 argument_list|,
 name|securePort
 argument_list|,
@@ -3058,16 +3002,16 @@ name|value
 parameter_list|)
 lambda|->
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|nodeId
 init|=
-name|DatanodeID
+name|DatanodeDetails
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|HdfsProtos
+name|HdslProtos
 operator|.
-name|DatanodeIDProto
+name|DatanodeDetailsProto
 operator|.
 name|PARSER
 operator|.
@@ -3121,7 +3065,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|insertNodePoolDB (Connection conn, String blockPool, DatanodeID datanodeID)
+DECL|method|insertNodePoolDB (Connection conn, String blockPool, DatanodeDetails datanodeDetails)
 specifier|private
 name|void
 name|insertNodePoolDB
@@ -3132,8 +3076,8 @@ parameter_list|,
 name|String
 name|blockPool
 parameter_list|,
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 throws|throws
 name|SQLException
@@ -3147,9 +3091,9 @@ name|format
 argument_list|(
 name|INSERT_NODE_POOL
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 argument_list|,
 name|blockPool
@@ -3163,7 +3107,7 @@ name|insertNodePool
 argument_list|)
 expr_stmt|;
 name|String
-name|insertDatanodeID
+name|insertDatanodeDetails
 init|=
 name|String
 operator|.
@@ -3171,42 +3115,32 @@ name|format
 argument_list|(
 name|INSERT_DATANODE_INFO
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getHostName
 argument_list|()
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getIpAddr
+name|getIpAddress
 argument_list|()
 argument_list|,
-name|datanodeID
-operator|.
-name|getXferPort
-argument_list|()
-argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getInfoPort
 argument_list|()
 argument_list|,
-name|datanodeID
-operator|.
-name|getIpcPort
-argument_list|()
-argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getInfoSecurePort
 argument_list|()
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getContainerPort
 argument_list|()
@@ -3216,7 +3150,7 @@ name|executeSQL
 argument_list|(
 name|conn
 argument_list|,
-name|insertDatanodeID
+name|insertDatanodeDetails
 argument_list|)
 expr_stmt|;
 block|}

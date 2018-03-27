@@ -26,11 +26,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -1400,7 +1400,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dnid
 range|:
 name|nodeManager
@@ -1415,7 +1415,7 @@ name|put
 argument_list|(
 name|dnid
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 argument_list|,
 literal|"DefaultNodePool"
@@ -1533,7 +1533,7 @@ operator|+
 literal|"/out_sql.db"
 decl_stmt|;
 comment|// TODO : the following will fail due to empty Datanode list, need to fix.
-comment|//String dnUUID = cluster.getDataNodes().get(0).getDatanodeUuid();
+comment|//String dnUUID = cluster.getDataNodes().get(0).getUuid();
 name|String
 name|dbRootPath
 init|=
@@ -1796,7 +1796,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 operator|.
 name|equals
@@ -1806,7 +1806,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 condition|?

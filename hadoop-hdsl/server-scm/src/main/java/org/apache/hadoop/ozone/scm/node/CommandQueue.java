@@ -56,22 +56,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|protocol
@@ -142,6 +126,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|locks
@@ -195,7 +189,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|DatanodeID
+name|UUID
 argument_list|,
 name|Commands
 argument_list|>
@@ -282,13 +276,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns  a list of Commands for the datanode to execute, if we have no    * commands returns a empty list otherwise the current set of    * commands are returned and command map set to empty list again.    *    * @param datanodeID DatanodeID    * @return List of SCM Commands.    */
+comment|/**    * Returns  a list of Commands for the datanode to execute, if we have no    * commands returns a empty list otherwise the current set of    * commands are returned and command map set to empty list again.    *    * @param datanodeUuid Datanode UUID    * @return List of SCM Commands.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getCommand (final DatanodeID datanodeID)
+DECL|method|getCommand (final UUID datanodeUuid)
 name|List
 argument_list|<
 name|SCMCommand
@@ -296,8 +290,8 @@ argument_list|>
 name|getCommand
 parameter_list|(
 specifier|final
-name|DatanodeID
-name|datanodeID
+name|UUID
+name|datanodeUuid
 parameter_list|)
 block|{
 name|lock
@@ -314,7 +308,7 @@ name|commandMap
 operator|.
 name|remove
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|)
 decl_stmt|;
 name|List
@@ -385,15 +379,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Adds a Command to the SCM Queue to send the command to container.    *    * @param datanodeID DatanodeID    * @param command    - Command    */
-DECL|method|addCommand (final DatanodeID datanodeID, final SCMCommand command)
+comment|/**    * Adds a Command to the SCM Queue to send the command to container.    *    * @param datanodeUuid DatanodeDetails.Uuid    * @param command    - Command    */
+DECL|method|addCommand (final UUID datanodeUuid, final SCMCommand command)
 specifier|public
 name|void
 name|addCommand
 parameter_list|(
 specifier|final
-name|DatanodeID
-name|datanodeID
+name|UUID
+name|datanodeUuid
 parameter_list|,
 specifier|final
 name|SCMCommand
@@ -413,7 +407,7 @@ name|commandMap
 operator|.
 name|containsKey
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|)
 condition|)
 block|{
@@ -421,7 +415,7 @@ name|commandMap
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|)
 operator|.
 name|add
@@ -436,7 +430,7 @@ name|commandMap
 operator|.
 name|put
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|,
 operator|new
 name|Commands

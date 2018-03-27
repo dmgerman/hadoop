@@ -28,11 +28,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -159,7 +159,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|String
 argument_list|>
@@ -182,7 +182,7 @@ block|}
 comment|/**    * Add a node to a node pool.    *    * @param pool - name of the node pool.    * @param node - data node.    */
 annotation|@
 name|Override
-DECL|method|addNode (String pool, DatanodeID node)
+DECL|method|addNode (String pool, DatanodeDetails node)
 specifier|public
 name|void
 name|addNode
@@ -190,7 +190,7 @@ parameter_list|(
 name|String
 name|pool
 parameter_list|,
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 block|{
@@ -207,7 +207,7 @@ block|}
 comment|/**    * Remove a node from a node pool.    *    * @param pool - name of the node pool.    * @param node - data node.    * @throws SCMException    */
 annotation|@
 name|Override
-DECL|method|removeNode (String pool, DatanodeID node)
+DECL|method|removeNode (String pool, DatanodeDetails node)
 specifier|public
 name|void
 name|removeNode
@@ -215,7 +215,7 @@ parameter_list|(
 name|String
 name|pool
 parameter_list|,
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
@@ -258,7 +258,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|String
 argument_list|>
@@ -297,7 +297,7 @@ DECL|method|getNodes (String pool)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -307,7 +307,7 @@ parameter_list|)
 block|{
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodeSet
 init|=
@@ -322,7 +322,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|String
 argument_list|>
@@ -368,16 +368,16 @@ name|datanodeSet
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the node pool name if the node has been added to a node pool.    *    * @param datanodeID - datanode ID.    * @return node pool name if it has been assigned. null if the node has not    * been assigned to any node pool yet.    */
+comment|/**    * Get the node pool name if the node has been added to a node pool.    *    * @param datanodeDetails DatanodeDetails.    * @return node pool name if it has been assigned. null if the node has not    * been assigned to any node pool yet.    */
 annotation|@
 name|Override
-DECL|method|getNodePool (DatanodeID datanodeID)
+DECL|method|getNodePool (DatanodeDetails datanodeDetails)
 specifier|public
 name|String
 name|getNodePool
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 block|{
 return|return
@@ -385,7 +385,7 @@ name|nodeMemberShip
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 return|;
 block|}

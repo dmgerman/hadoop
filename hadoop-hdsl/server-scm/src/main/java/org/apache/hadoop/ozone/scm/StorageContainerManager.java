@@ -178,11 +178,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|protocol
-operator|.
-name|DatanodeID
+name|HdslUtils
 import|;
 end_import
 
@@ -196,7 +194,9 @@ name|hadoop
 operator|.
 name|hdsl
 operator|.
-name|HdslUtils
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -487,6 +487,26 @@ operator|.
 name|proto
 operator|.
 name|HdslProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -4097,7 +4117,7 @@ throw|;
 block|}
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
@@ -4122,7 +4142,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|datanode
 range|:
 name|datanodes
@@ -4374,7 +4394,7 @@ DECL|method|queryNode (EnumSet<NodeState> nodeStatuses)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|queryNode
 parameter_list|(
@@ -4412,7 +4432,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|resultList
 init|=
@@ -4423,7 +4443,7 @@ argument_list|()
 decl_stmt|;
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|currentSet
 init|=
@@ -4442,7 +4462,7 @@ control|)
 block|{
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nextSet
 init|=
@@ -4522,7 +4542,7 @@ DECL|method|queryNodeState (NodeState nodeState)
 specifier|private
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|queryNodeState
 parameter_list|(
@@ -4555,7 +4575,7 @@ throw|;
 block|}
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|returnSet
 init|=
@@ -4566,7 +4586,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|tmp
 init|=
@@ -5115,16 +5135,16 @@ name|getProtobufMessage
 argument_list|()
 return|;
 block|}
-comment|/**    * Used by data node to send a Heartbeat.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - Node Report    * @param reportState - Container report ready info.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+comment|/**    * Used by data node to send a Heartbeat.    *    * @param datanodeDetails - Datanode Details.    * @param nodeReport - Node Report    * @param reportState - Container report ready info.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
+DECL|method|sendHeartbeat ( DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ReportState reportState)
 specifier|public
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -5146,7 +5166,7 @@ argument_list|()
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|,
 name|nodeReport
 argument_list|,
@@ -5180,9 +5200,9 @@ name|getCommandResponse
 argument_list|(
 name|cmd
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 operator|.
 name|toString
@@ -5206,25 +5226,23 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Register Datanode.    *    * @param datanodeID - DatanodID.    * @param scmAddresses - List of SCMs this datanode is configured to    * communicate.    * @return SCM Command.    */
+comment|/**    * Register Datanode.    *    * @param datanodeDetails - DatanodID.    * @param scmAddresses - List of SCMs this datanode is configured to    * communicate.    * @return SCM Command.    */
 annotation|@
 name|Override
 specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMRegisteredCmdResponseProto
-DECL|method|register (DatanodeID datanodeID, String[] scmAddresses)
+DECL|method|register (DatanodeDetailsProto datanodeDetails, String[] scmAddresses)
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|,
 name|String
 index|[]
 name|scmAddresses
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// TODO : Return the list of Nodes that forms the SCM HA.
 return|return
@@ -5234,7 +5252,7 @@ name|scmNodeManager
 operator|.
 name|register
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 argument_list|,
 literal|null
@@ -5393,10 +5411,10 @@ name|datanodeUuid
 init|=
 name|reports
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 decl_stmt|;
 if|if

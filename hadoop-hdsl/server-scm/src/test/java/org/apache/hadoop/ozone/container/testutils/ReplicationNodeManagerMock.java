@@ -46,7 +46,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|UnregisteredNodeException
 import|;
 end_import
 
@@ -58,11 +58,29 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|UnregisteredNodeException
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
 import|;
 end_import
 
@@ -310,6 +328,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|mockito
@@ -335,7 +363,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|NodeState
 argument_list|>
@@ -348,13 +376,13 @@ name|CommandQueue
 name|commandQueue
 decl_stmt|;
 comment|/**    * A list of Datanodes and current states.    * @param nodeState A node state map.    */
-DECL|method|ReplicationNodeManagerMock (Map<DatanodeID, NodeState> nodeState, CommandQueue commandQueue)
+DECL|method|ReplicationNodeManagerMock (Map<DatanodeDetails, NodeState> nodeState, CommandQueue commandQueue)
 specifier|public
 name|ReplicationNodeManagerMock
 parameter_list|(
 name|Map
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|NodeState
 argument_list|>
@@ -431,12 +459,12 @@ block|}
 comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
 annotation|@
 name|Override
-DECL|method|removeNode (DatanodeID node)
+DECL|method|removeNode (DatanodeDetails node)
 specifier|public
 name|void
 name|removeNode
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
@@ -457,7 +485,7 @@ DECL|method|getNodes (NodeState nodestate)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -485,14 +513,14 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeIDs known to SCM.    */
+comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeDetails known to SCM.    */
 annotation|@
 name|Override
 DECL|method|getAllNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getAllNodes
 parameter_list|()
@@ -565,7 +593,7 @@ DECL|method|getNodeStats ()
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|SCMNodeStat
 argument_list|>
@@ -576,16 +604,16 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Return the node stat of the specified datanode.    *    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+comment|/**    * Return the node stat of the specified datanode.    *    * @param dd - datanode details.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
 annotation|@
 name|Override
-DECL|method|getNodeStat (DatanodeID datanodeID)
+DECL|method|getNodeStat (DatanodeDetails dd)
 specifier|public
 name|SCMNodeMetric
 name|getNodeStat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|dd
 parameter_list|)
 block|{
 return|return
@@ -624,16 +652,16 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Returns the node state of a specific node.    *    * @param id - DatanodeID    * @return Healthy/Stale/Dead.    */
+comment|/**    * Returns the node state of a specific node.    *    * @param dd - DatanodeDetails    * @return Healthy/Stale/Dead.    */
 annotation|@
 name|Override
-DECL|method|getNodeState (DatanodeID id)
+DECL|method|getNodeState (DatanodeDetails dd)
 specifier|public
 name|NodeState
 name|getNodeState
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 parameter_list|)
 block|{
 return|return
@@ -641,7 +669,7 @@ name|nodeStateMap
 operator|.
 name|get
 argument_list|(
-name|id
+name|dd
 argument_list|)
 return|;
 block|}
@@ -681,26 +709,28 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any SCM.    *    * @param datanodeID - Send datanodeID with Node info, but datanode UUID is    * empty. Server returns a datanodeID for the given node.    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any SCM.    *    * @param dd DatanodeDetailsProto    *    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeID datanodeID)
+DECL|method|register (HdslProtos.DatanodeDetailsProto dd)
 specifier|public
 name|SCMCommand
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
+name|dd
 parameter_list|)
 block|{
 return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response list    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param dd - Datanode Details.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState containerReportState)
+DECL|method|sendHeartbeat (HdslProtos.DatanodeDetailsProto dd, SCMNodeReport nodeReport, ReportState containerReportState)
 specifier|public
 name|List
 argument_list|<
@@ -708,8 +738,10 @@ name|SCMCommand
 argument_list|>
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
+name|dd
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -737,13 +769,13 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Adds a node to the existing Node manager. This is used only for test    * purposes.    * @param id - DatanodeID    * @param state State you want to put that node to.    */
-DECL|method|addNode (DatanodeID id, NodeState state)
+comment|/**    * Adds a node to the existing Node manager. This is used only for test    * purposes.    * @param id DatanodeDetails    * @param state State you want to put that node to.    */
+DECL|method|addNode (DatanodeDetails id, NodeState state)
 specifier|public
 name|void
 name|addNode
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|id
 parameter_list|,
 name|NodeState
@@ -762,13 +794,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)
 specifier|public
 name|void
 name|addDatanodeCommand
 parameter_list|(
-name|DatanodeID
-name|id
+name|UUID
+name|dnId
 parameter_list|,
 name|SCMCommand
 name|command
@@ -780,7 +812,7 @@ name|commandQueue
 operator|.
 name|addCommand
 argument_list|(
-name|id
+name|dnId
 argument_list|,
 name|command
 argument_list|)

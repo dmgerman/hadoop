@@ -60,11 +60,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -191,11 +191,11 @@ block|}
 comment|/**    * Choose datanodes called by the SCM to choose the datanode.    *    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of Datanodes.    * @throws SCMException  SCMException    */
 annotation|@
 name|Override
-DECL|method|chooseDatanodes (final int nodesRequired, final long sizeRequired)
+DECL|method|chooseDatanodes ( final int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|chooseDatanodes
 parameter_list|(
@@ -212,7 +212,7 @@ name|SCMException
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 init|=
@@ -249,20 +249,20 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Just chose a node randomly and remove it from the set of nodes we can    * chose from.    *    * @param healthyNodes - all healthy datanodes.    * @return one randomly chosen datanode that from two randomly chosen datanode    */
-DECL|method|chooseNode (final List<DatanodeID> healthyNodes)
+DECL|method|chooseNode (final List<DatanodeDetails> healthyNodes)
 specifier|public
-name|DatanodeID
+name|DatanodeDetails
 name|chooseNode
 parameter_list|(
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodes
 parameter_list|)
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|selectedNode
 init|=
 name|healthyNodes

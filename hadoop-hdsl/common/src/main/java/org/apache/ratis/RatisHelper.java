@@ -22,11 +22,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -315,19 +315,19 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|toRaftPeerIdString (DatanodeID id)
+DECL|method|toRaftPeerIdString (DatanodeDetails id)
 specifier|static
 name|String
 name|toRaftPeerIdString
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|id
 parameter_list|)
 block|{
 return|return
 name|id
 operator|.
-name|getIpAddr
+name|getUuidString
 argument_list|()
 operator|+
 literal|"_"
@@ -338,19 +338,19 @@ name|getRatisPort
 argument_list|()
 return|;
 block|}
-DECL|method|toRaftPeerAddressString (DatanodeID id)
+DECL|method|toRaftPeerAddressString (DatanodeDetails id)
 specifier|static
 name|String
 name|toRaftPeerAddressString
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|id
 parameter_list|)
 block|{
 return|return
 name|id
 operator|.
-name|getIpAddr
+name|getIpAddress
 argument_list|()
 operator|+
 literal|":"
@@ -361,12 +361,12 @@ name|getRatisPort
 argument_list|()
 return|;
 block|}
-DECL|method|toRaftPeerId (DatanodeID id)
+DECL|method|toRaftPeerId (DatanodeDetails id)
 specifier|static
 name|RaftPeerId
 name|toRaftPeerId
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|id
 parameter_list|)
 block|{
@@ -382,12 +382,12 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|toRaftPeer (DatanodeID id)
+DECL|method|toRaftPeer (DatanodeDetails id)
 specifier|static
 name|RaftPeer
 name|toRaftPeer
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|id
 parameter_list|)
 block|{
@@ -429,12 +429,12 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|toRaftPeers (List<E> datanodes)
+DECL|method|toRaftPeers ( List<E> datanodes)
 specifier|static
 parameter_list|<
 name|E
 extends|extends
-name|DatanodeID
+name|DatanodeDetails
 parameter_list|>
 name|List
 argument_list|<
@@ -513,14 +513,14 @@ return|return
 name|EMPTY_GROUP
 return|;
 block|}
-DECL|method|newRaftGroup (List<DatanodeID> datanodes)
+DECL|method|newRaftGroup (List<DatanodeDetails> datanodes)
 specifier|static
 name|RaftGroup
 name|newRaftGroup
 parameter_list|(
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|)

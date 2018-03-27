@@ -70,11 +70,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -105,24 +105,6 @@ operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|SCMTestUtils
 import|;
 end_import
 
@@ -299,24 +281,6 @@ operator|.
 name|test
 operator|.
 name|PathUtils
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|scm
-operator|.
-name|TestUtils
-operator|.
-name|getDatanodeID
 import|;
 end_import
 
@@ -965,10 +929,12 @@ name|x
 operator|++
 control|)
 block|{
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
-name|getDatanodeID
+name|TestUtils
+operator|.
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -977,7 +943,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1118,10 +1087,13 @@ name|sendHeartbeat
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1194,12 +1166,12 @@ argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -1224,7 +1196,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1308,12 +1283,12 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -1328,7 +1303,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1390,12 +1368,12 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 try|try
@@ -1413,7 +1391,10 @@ name|nodemanager
 operator|.
 name|register
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|List
@@ -1426,7 +1407,10 @@ name|nodemanager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1444,7 +1428,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1487,7 +1471,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1524,7 +1508,10 @@ name|nodemanager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1638,12 +1625,12 @@ name|x
 operator|++
 control|)
 block|{
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -1652,7 +1639,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1947,7 +1937,7 @@ init|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodeList
 init|=
@@ -1960,12 +1950,12 @@ argument_list|,
 literal|"Node"
 argument_list|)
 decl_stmt|;
-name|DatanodeID
+name|DatanodeDetails
 name|staleNode
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -1976,6 +1966,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -1985,7 +1978,7 @@ expr_stmt|;
 comment|// Heartbeat all other nodes.
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 range|:
 name|nodeList
@@ -1996,6 +1989,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2015,7 +2011,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 range|:
 name|nodeList
@@ -2026,6 +2022,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2046,7 +2045,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|staleNodeList
 init|=
@@ -2089,7 +2088,7 @@ literal|"Stale node is not the expected ID"
 argument_list|,
 name|staleNode
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|staleNodeList
@@ -2099,7 +2098,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2113,7 +2112,7 @@ expr_stmt|;
 comment|// heartbeat good nodes again.
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 range|:
 name|nodeList
@@ -2124,6 +2123,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2181,7 +2183,7 @@ expr_stmt|;
 comment|// Check for the dead node now.
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|deadNodeList
 init|=
@@ -2224,7 +2226,7 @@ literal|"Dead node is not the expected ID"
 argument_list|,
 name|staleNode
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|deadNodeList
@@ -2234,7 +2236,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2392,36 +2394,36 @@ name|conf
 argument_list|)
 init|)
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|healthyNode
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
 literal|"HealthyNode"
 argument_list|)
 decl_stmt|;
-name|DatanodeID
+name|DatanodeDetails
 name|staleNode
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
 literal|"StaleNode"
 argument_list|)
 decl_stmt|;
-name|DatanodeID
+name|DatanodeDetails
 name|deadNode
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
@@ -2433,6 +2435,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2444,6 +2449,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2455,6 +2463,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|deadNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2536,6 +2547,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2547,6 +2561,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2558,6 +2575,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|deadNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2576,6 +2596,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2608,7 +2631,7 @@ comment|//  2 nodes must move to Stale state and the healthy node must
 comment|// remain in the healthy State.
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyList
 init|=
@@ -2637,7 +2660,7 @@ literal|"Healthy node is not the expected ID"
 argument_list|,
 name|healthyNode
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|healthyList
@@ -2647,7 +2670,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2669,6 +2692,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2680,6 +2706,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2698,6 +2727,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2727,7 +2759,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|staleList
 init|=
@@ -2740,7 +2772,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|deadList
 init|=
@@ -2818,7 +2850,7 @@ literal|"Healthy node is not the expected ID"
 argument_list|,
 name|healthyNode
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|healthyList
@@ -2828,7 +2860,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2850,7 +2882,7 @@ literal|"Stale node is not the expected ID"
 argument_list|,
 name|staleNode
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|staleList
@@ -2860,7 +2892,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2882,7 +2914,7 @@ literal|"Dead node is not the expected ID"
 argument_list|,
 name|deadNode
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 name|deadList
@@ -2892,7 +2924,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2902,6 +2934,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2913,6 +2948,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2924,6 +2962,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|deadNode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -2966,7 +3007,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Heartbeat a given set of nodes at a specified frequency.    *    * @param manager       - Node Manager    * @param list          - List of datanodeIDs    * @param sleepDuration - Duration to sleep between heartbeats.    * @throws InterruptedException    */
-DECL|method|heartbeatNodeSet (SCMNodeManager manager, List<DatanodeID> list, int sleepDuration)
+DECL|method|heartbeatNodeSet (SCMNodeManager manager, List<DatanodeDetails> list, int sleepDuration)
 specifier|private
 name|void
 name|heartbeatNodeSet
@@ -2976,7 +3017,7 @@ name|manager
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|list
 parameter_list|,
@@ -3000,7 +3041,7 @@ condition|)
 block|{
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 range|:
 name|list
@@ -3011,6 +3052,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -3032,7 +3076,7 @@ DECL|method|createNodeSet (SCMNodeManager nodeManager, int count, String prefix)
 specifier|private
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|createNodeSet
 parameter_list|(
@@ -3048,7 +3092,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|list
 init|=
@@ -3078,7 +3122,7 @@ name|add
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
@@ -3227,7 +3271,7 @@ init|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyNodeList
 init|=
@@ -3242,7 +3286,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|staleNodeList
 init|=
@@ -3257,7 +3301,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|deadNodeList
 init|=
@@ -3333,7 +3377,7 @@ comment|// No Thread just one time HBs the node manager, so that these will be
 comment|// marked as dead nodes eventually.
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 range|:
 name|deadNodeList
@@ -3344,6 +3388,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -3430,7 +3477,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|deadList
 init|=
@@ -3443,7 +3490,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 range|:
 name|deadList
@@ -3597,7 +3644,7 @@ init|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyList
 init|=
@@ -3612,7 +3659,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|staleList
 init|=
@@ -3857,7 +3904,7 @@ init|)
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|healthyList
 init|=
@@ -4020,12 +4067,12 @@ argument_list|(
 literal|10
 argument_list|)
 expr_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -4034,7 +4081,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -4156,12 +4206,12 @@ name|x
 operator|++
 control|)
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|datanode
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -4171,6 +4221,9 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanode
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -4313,12 +4366,12 @@ name|x
 operator|++
 control|)
 block|{
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -4382,7 +4435,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 name|nrb
 operator|.
@@ -4587,12 +4643,12 @@ name|conf
 argument_list|)
 init|)
 block|{
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -4694,7 +4750,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 name|nrb
 operator|.
@@ -4842,7 +4901,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -4867,7 +4926,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -4892,7 +4951,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -4923,10 +4982,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|datanodeID
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|datanodeDetails
 argument_list|)
 decl_stmt|;
 name|SCMNodeStat
@@ -4936,7 +4992,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -4992,7 +5048,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -5017,7 +5073,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -5042,7 +5098,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -5223,7 +5279,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 name|nrb
 operator|.
@@ -5302,7 +5361,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -5327,7 +5386,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get
@@ -5352,7 +5411,7 @@ name|nodeManager
 operator|.
 name|getNodeStat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|get

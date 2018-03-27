@@ -42,11 +42,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -116,10 +116,10 @@ specifier|public
 class|class
 name|HeartbeatQueueItem
 block|{
-DECL|field|datanodeID
+DECL|field|datanodeDetails
 specifier|private
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 DECL|field|recvTimestamp
 specifier|private
@@ -136,12 +136,12 @@ specifier|private
 name|ReportState
 name|containerReportState
 decl_stmt|;
-comment|/**    *    * @param datanodeID - datanode ID of the heartbeat.    * @param recvTimestamp - heartbeat receive timestamp.    * @param nodeReport - node report associated with the heartbeat if any.    * @param containerReportState - container report state.    */
-DECL|method|HeartbeatQueueItem (DatanodeID datanodeID, long recvTimestamp, SCMNodeReport nodeReport, ReportState containerReportState)
+comment|/**    *    * @param datanodeDetails - datanode ID of the heartbeat.    * @param recvTimestamp - heartbeat receive timestamp.    * @param nodeReport - node report associated with the heartbeat if any.    * @param containerReportState - container report state.    */
+DECL|method|HeartbeatQueueItem (DatanodeDetails datanodeDetails, long recvTimestamp, SCMNodeReport nodeReport, ReportState containerReportState)
 name|HeartbeatQueueItem
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|long
 name|recvTimestamp
@@ -155,9 +155,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|datanodeID
+name|datanodeDetails
 operator|=
-name|datanodeID
+name|datanodeDetails
 expr_stmt|;
 name|this
 operator|.
@@ -179,14 +179,14 @@ name|containerReportState
 expr_stmt|;
 block|}
 comment|/**    * @return datanode ID.    */
-DECL|method|getDatanodeID ()
+DECL|method|getDatanodeDetails ()
 specifier|public
-name|DatanodeID
-name|getDatanodeID
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|()
 block|{
 return|return
-name|datanodeID
+name|datanodeDetails
 return|;
 block|}
 comment|/**    * @return node report.    */
@@ -229,10 +229,10 @@ specifier|static
 class|class
 name|Builder
 block|{
-DECL|field|datanodeID
+DECL|field|datanodeDetails
 specifier|private
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 DECL|field|nodeReport
 specifier|private
@@ -252,20 +252,20 @@ init|=
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-DECL|method|setDatanodeID (DatanodeID datanodeId)
+DECL|method|setDatanodeDetails (DatanodeDetails dnDetails)
 specifier|public
 name|Builder
-name|setDatanodeID
+name|setDatanodeDetails
 parameter_list|(
-name|DatanodeID
-name|datanodeId
+name|DatanodeDetails
+name|dnDetails
 parameter_list|)
 block|{
 name|this
 operator|.
-name|datanodeID
+name|datanodeDetails
 operator|=
-name|datanodeId
+name|dnDetails
 expr_stmt|;
 return|return
 name|this
@@ -340,7 +340,7 @@ return|return
 operator|new
 name|HeartbeatQueueItem
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|,
 name|recvTimestamp
 argument_list|,

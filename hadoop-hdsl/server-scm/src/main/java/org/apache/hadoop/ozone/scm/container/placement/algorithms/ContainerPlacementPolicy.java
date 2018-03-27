@@ -32,11 +32,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -74,7 +74,7 @@ comment|/**    * Given the replication factor and size required, return set of d
 DECL|method|chooseDatanodes (int nodesRequired, long sizeRequired)
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|chooseDatanodes
 parameter_list|(

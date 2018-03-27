@@ -505,7 +505,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -528,7 +528,7 @@ argument_list|(
 name|traceID
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -619,7 +619,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -642,7 +642,7 @@ argument_list|(
 name|traceID
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -735,7 +735,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -758,7 +758,7 @@ argument_list|(
 name|traceID
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -865,7 +865,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -888,7 +888,7 @@ argument_list|(
 name|traceID
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -1088,7 +1088,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -1111,7 +1111,7 @@ argument_list|(
 name|traceID
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -1231,7 +1231,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -1264,7 +1264,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -1372,7 +1372,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -1412,7 +1412,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -1490,7 +1490,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -1528,7 +1528,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -1612,7 +1612,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -1643,7 +1643,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)
@@ -1778,7 +1778,7 @@ operator|.
 name|getLeader
 argument_list|()
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -1801,7 +1801,7 @@ argument_list|(
 name|traceID
 argument_list|)
 operator|.
-name|setDatanodeID
+name|setDatanodeUuid
 argument_list|(
 name|id
 argument_list|)

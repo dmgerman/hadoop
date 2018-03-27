@@ -76,7 +76,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|UnregisteredNodeException
 import|;
 end_import
 
@@ -88,11 +88,45 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|UnregisteredNodeException
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|Server
 import|;
 end_import
 
@@ -594,6 +628,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collections
@@ -637,6 +681,16 @@ operator|.
 name|util
 operator|.
 name|Queue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -869,7 +923,7 @@ specifier|private
 specifier|final
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -880,7 +934,7 @@ specifier|private
 specifier|final
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -891,7 +945,7 @@ specifier|private
 specifier|final
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -911,9 +965,9 @@ specifier|private
 specifier|final
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|UUID
 argument_list|,
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 decl_stmt|;
@@ -923,7 +977,7 @@ specifier|private
 specifier|final
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|SCMNodeStat
 argument_list|>
@@ -1122,6 +1176,7 @@ name|nodeStats
 operator|=
 operator|new
 name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|scmStat
@@ -1375,16 +1430,14 @@ block|}
 comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
 annotation|@
 name|Override
-DECL|method|removeNode (DatanodeID node)
+DECL|method|removeNode (DatanodeDetails node)
 specifier|public
 name|void
 name|removeNode
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
-throws|throws
-name|UnregisteredNodeException
 block|{
 comment|// TODO : Fix me when adding the SCM CLI.
 block|}
@@ -1395,7 +1448,7 @@ DECL|method|getNodes (NodeState nodestate)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -1407,7 +1460,7 @@ name|IllegalArgumentException
 block|{
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -1532,23 +1585,23 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns all datanodes that are known to SCM.    *    * @return List of DatanodeIDs    */
+comment|/**    * Returns all datanodes that are known to SCM.    *    * @return List of DatanodeDetails    */
 annotation|@
 name|Override
 DECL|method|getAllNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getAllNodes
 parameter_list|()
 block|{
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|set
 decl_stmt|;
@@ -1916,16 +1969,16 @@ operator|!=
 literal|0
 return|;
 block|}
-comment|/**    * Returns the node state of a specific node.    *    * @param id - DatanodeID    * @return Healthy/Stale/Dead/Unknown.    */
+comment|/**    * Returns the node state of a specific node.    *    * @param datanodeDetails - Datanode Details    * @return Healthy/Stale/Dead/Unknown.    */
 annotation|@
 name|Override
-DECL|method|getNodeState (DatanodeID id)
+DECL|method|getNodeState (DatanodeDetails datanodeDetails)
 specifier|public
 name|NodeState
 name|getNodeState
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 block|{
 comment|// There is a subtle race condition here, hence we also support
@@ -1935,6 +1988,14 @@ comment|// not added it to Stale Nodes list.
 comment|// We can fix that by adding the node to stale list before we remove, but
 comment|// then the node is in 2 states to avoid this race condition. Instead we
 comment|// just deal with the possibilty of getting a state called unknown.
+name|UUID
+name|id
+init|=
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|healthyNodes
@@ -1942,9 +2003,6 @@ operator|.
 name|containsKey
 argument_list|(
 name|id
-operator|.
-name|getDatanodeUuid
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1959,9 +2017,6 @@ operator|.
 name|containsKey
 argument_list|(
 name|id
-operator|.
-name|getDatanodeUuid
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1976,9 +2031,6 @@ operator|.
 name|containsKey
 argument_list|(
 name|id
-operator|.
-name|getDatanodeUuid
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -2103,7 +2155,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -2153,7 +2205,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -2322,7 +2374,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Moves a Healthy node to a Stale node state.    *    * @param entry - Map Entry    */
-DECL|method|moveHealthyNodeToStale (Map.Entry<String, Long> entry)
+DECL|method|moveHealthyNodeToStale (Map.Entry<UUID, Long> entry)
 specifier|private
 name|void
 name|moveHealthyNodeToStale
@@ -2331,7 +2383,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -2401,12 +2453,15 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Moves a Stale node to a dead node state.    *    * @param entry - Map Entry    */
-DECL|method|moveStaleNodeToDead (Map.Entry<String, Long> entry)
+DECL|method|moveStaleNodeToDead (Map.Entry<UUID, Long> entry)
 specifier|private
 name|void
 name|moveStaleNodeToDead
@@ -2415,7 +2470,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -2514,20 +2569,20 @@ block|{
 name|lastHBProcessedCount
 operator|++
 expr_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|hbItem
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
-name|String
+name|UUID
 name|datanodeUuid
 init|=
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 decl_stmt|;
 name|SCMNodeReport
@@ -2607,7 +2662,7 @@ argument_list|)
 expr_stmt|;
 name|updateCommandQueue
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|,
 name|hbItem
 operator|.
@@ -2667,7 +2722,7 @@ argument_list|)
 expr_stmt|;
 name|updateCommandQueue
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|,
 name|hbItem
 operator|.
@@ -2727,7 +2782,7 @@ argument_list|)
 expr_stmt|;
 name|updateCommandQueue
 argument_list|(
-name|datanodeID
+name|datanodeUuid
 argument_list|,
 name|hbItem
 operator|.
@@ -2755,10 +2810,7 @@ name|commandQueue
 operator|.
 name|addCommand
 argument_list|(
-name|hbItem
-operator|.
-name|getDatanodeID
-argument_list|()
+name|datanodeUuid
 argument_list|,
 operator|new
 name|ReregisterCommand
@@ -2766,13 +2818,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateNodeStat (String datanodeUuid, SCMNodeReport nodeReport)
+DECL|method|updateNodeStat (UUID dnId, SCMNodeReport nodeReport)
 specifier|private
 name|void
 name|updateNodeStat
 parameter_list|(
-name|String
-name|datanodeUuid
+name|UUID
+name|dnId
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -2785,7 +2837,7 @@ name|nodeStats
 operator|.
 name|get
 argument_list|(
-name|datanodeUuid
+name|dnId
 argument_list|)
 decl_stmt|;
 if|if
@@ -2803,7 +2855,7 @@ literal|"SCM updateNodeStat based on heartbeat from previous"
 operator|+
 literal|"dead datanode {}"
 argument_list|,
-name|datanodeUuid
+name|dnId
 argument_list|)
 expr_stmt|;
 name|stat
@@ -2905,7 +2957,7 @@ name|nodeStats
 operator|.
 name|put
 argument_list|(
-name|datanodeUuid
+name|dnId
 argument_list|,
 name|stat
 argument_list|)
@@ -2919,13 +2971,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|updateCommandQueue (DatanodeID datanodeID, ReportState.states containerReportState)
+DECL|method|updateCommandQueue (UUID dnId, ReportState.states containerReportState)
 specifier|private
 name|void
 name|updateCommandQueue
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|UUID
+name|dnId
 parameter_list|,
 name|ReportState
 operator|.
@@ -2952,7 +3004,7 @@ name|commandQueue
 operator|.
 name|addCommand
 argument_list|(
-name|datanodeID
+name|dnId
 argument_list|,
 name|SendContainerCommand
 operator|.
@@ -3110,24 +3162,81 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeID - Send datanodeID with Node info. This function    *                   generates and assigns new datanode ID for the datanode.    *                   This allows SCM to be run independent of Namenode if    *                   required.    *    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetailsProto - Send datanodeDetails with Node info.    *                   This function generates and assigns new datanode ID    *                   for the datanode. This allows SCM to be run independent    *                   of Namenode if required.    *    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeID datanodeID)
+DECL|method|register (DatanodeDetailsProto datanodeDetailsProto)
 specifier|public
 name|SCMCommand
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|)
 block|{
+name|DatanodeDetails
+name|datanodeDetails
+init|=
+name|DatanodeDetails
+operator|.
+name|getFromProtoBuf
+argument_list|(
+name|datanodeDetailsProto
+argument_list|)
+decl_stmt|;
+name|InetAddress
+name|dnAddress
+init|=
+name|Server
+operator|.
+name|getRemoteIp
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|dnAddress
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Mostly called inside an RPC, update ip and peer hostname
+name|String
+name|hostname
+init|=
+name|dnAddress
+operator|.
+name|getHostName
+argument_list|()
+decl_stmt|;
+name|String
+name|ip
+init|=
+name|dnAddress
+operator|.
+name|getHostAddress
+argument_list|()
+decl_stmt|;
+name|datanodeDetails
+operator|.
+name|setHostName
+argument_list|(
+name|hostname
+argument_list|)
+expr_stmt|;
+name|datanodeDetails
+operator|.
+name|setIpAddress
+argument_list|(
+name|ip
+argument_list|)
+expr_stmt|;
+block|}
 name|SCMCommand
 name|responseCommand
 init|=
 name|verifyDatanodeUUID
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 decl_stmt|;
 if|if
@@ -3141,16 +3250,21 @@ return|return
 name|responseCommand
 return|;
 block|}
+name|UUID
+name|dnId
+init|=
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+decl_stmt|;
 name|nodes
 operator|.
 name|put
 argument_list|(
-name|datanodeID
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|dnId
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 name|totalNodes
@@ -3162,10 +3276,7 @@ name|healthyNodes
 operator|.
 name|put
 argument_list|(
-name|datanodeID
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|dnId
 argument_list|,
 name|monotonicNow
 argument_list|()
@@ -3180,10 +3291,7 @@ name|nodeStats
 operator|.
 name|put
 argument_list|(
-name|datanodeID
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|dnId
 argument_list|,
 operator|new
 name|SCMNodeStat
@@ -3232,7 +3340,7 @@ name|nodePoolManager
 operator|.
 name|getNodePool
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|==
 literal|null
@@ -3246,7 +3354,7 @@ name|SCMNodePoolManager
 operator|.
 name|DEFAULT_NODEPOOL
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 block|}
@@ -3281,9 +3389,9 @@ name|info
 argument_list|(
 literal|"Data node with ID: {} Registered."
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3302,9 +3410,9 @@ argument_list|)
 operator|.
 name|setDatanodeUUID
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 argument_list|)
 operator|.
@@ -3319,21 +3427,21 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Verifies the datanode does not have a valid UUID already.    *    * @param datanodeID - Datanode UUID.    * @return SCMCommand    */
-DECL|method|verifyDatanodeUUID (DatanodeID datanodeID)
+comment|/**    * Verifies the datanode does not have a valid UUID already.    *    * @param datanodeDetails - Datanode Details.    * @return SCMCommand    */
+DECL|method|verifyDatanodeUUID (DatanodeDetails datanodeDetails)
 specifier|private
 name|SCMCommand
 name|verifyDatanodeUUID
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 block|{
 if|if
 condition|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 operator|!=
 literal|null
@@ -3342,9 +3450,9 @@ name|nodes
 operator|.
 name|containsKey
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 condition|)
@@ -3355,7 +3463,7 @@ name|trace
 argument_list|(
 literal|"Datanode is already registered. Datanode: {}"
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|toString
 argument_list|()
@@ -3383,9 +3491,9 @@ argument_list|)
 operator|.
 name|setDatanodeUUID
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 argument_list|)
 operator|.
@@ -3397,10 +3505,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response.    * @throws IOException    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetailsProto - DatanodeDetailsProto.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState containerReportState)
+DECL|method|sendHeartbeat ( DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport, ReportState containerReportState)
 specifier|public
 name|List
 argument_list|<
@@ -3408,8 +3516,8 @@ name|SCMCommand
 argument_list|>
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -3418,13 +3526,23 @@ name|ReportState
 name|containerReportState
 parameter_list|)
 block|{
+name|DatanodeDetails
+name|datanodeDetails
+init|=
+name|DatanodeDetails
+operator|.
+name|getFromProtoBuf
+argument_list|(
+name|datanodeDetailsProto
+argument_list|)
+decl_stmt|;
 comment|// Checking for NULL to make sure that we don't get
 comment|// an exception from ConcurrentList.
 comment|// This could be a problem in tests, if this function is invoked via
 comment|// protobuf, transport layer will guarantee that this is not null.
 if|if
 condition|(
-name|datanodeID
+name|datanodeDetails
 operator|!=
 literal|null
 condition|)
@@ -3439,9 +3557,9 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|setDatanodeID
+name|setDatanodeDetails
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 operator|.
 name|setNodeReport
@@ -3474,7 +3592,10 @@ name|commandQueue
 operator|.
 name|getCommand
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -3504,7 +3625,7 @@ DECL|method|getNodeStats ()
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|SCMNodeStat
 argument_list|>
@@ -3520,16 +3641,16 @@ name|nodeStats
 argument_list|)
 return|;
 block|}
-comment|/**    * Return the node stat of the specified datanode.    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
 annotation|@
 name|Override
-DECL|method|getNodeStat (DatanodeID datanodeID)
+DECL|method|getNodeStat (DatanodeDetails datanodeDetails)
 specifier|public
 name|SCMNodeMetric
 name|getNodeStat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 block|{
 return|return
@@ -3540,10 +3661,7 @@ name|nodeStats
 operator|.
 name|get
 argument_list|(
-name|datanodeID
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|datanodeDetails
 argument_list|)
 argument_list|)
 return|;
@@ -3623,13 +3741,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)
 specifier|public
 name|void
 name|addDatanodeCommand
 parameter_list|(
-name|DatanodeID
-name|id
+name|UUID
+name|dnId
 parameter_list|,
 name|SCMCommand
 name|command
@@ -3641,7 +3759,7 @@ name|commandQueue
 operator|.
 name|addCommand
 argument_list|(
-name|id
+name|dnId
 argument_list|,
 name|command
 argument_list|)

@@ -88,11 +88,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -1414,16 +1414,16 @@ name|ContainerReportsRequestProto
 name|containerReport
 parameter_list|)
 block|{
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
-name|DatanodeID
+name|DatanodeDetails
 operator|.
 name|getFromProtoBuf
 argument_list|(
 name|containerReport
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1444,7 +1444,7 @@ name|poolManager
 operator|.
 name|getNodePool
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 decl_stmt|;
 for|for
@@ -1493,7 +1493,7 @@ name|poolName
 argument_list|,
 name|containerReport
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1512,7 +1512,7 @@ literal|"Skipping processing container report from datanode {}, "
 operator|+
 literal|"cause: failed to get the corresponding node pool"
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|toString
 argument_list|()

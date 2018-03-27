@@ -46,6 +46,22 @@ name|hdsl
 operator|.
 name|protocol
 operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -89,22 +105,6 @@ operator|.
 name|ContainerProtos
 operator|.
 name|ContainerCommandResponseProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
 import|;
 end_import
 
@@ -315,6 +315,22 @@ operator|.
 name|ratis
 operator|.
 name|XceiverServerRatis
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|TestUtils
 import|;
 end_import
 
@@ -768,6 +784,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DatanodeDetails
+name|datanodeDetails
+init|=
+name|TestUtils
+operator|.
+name|getDatanodeDetails
+argument_list|()
+decl_stmt|;
 name|runTestClientServer
 argument_list|(
 literal|1
@@ -808,6 +832,8 @@ lambda|->
 operator|new
 name|XceiverServer
 argument_list|(
+name|datanodeDetails
+argument_list|,
 name|conf
 argument_list|,
 operator|new
@@ -906,12 +932,12 @@ literal|3
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|newXceiverServerRatis ( DatanodeID dn, OzoneConfiguration conf)
+DECL|method|newXceiverServerRatis ( DatanodeDetails dn, OzoneConfiguration conf)
 specifier|static
 name|XceiverServerRatis
 name|newXceiverServerRatis
 parameter_list|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 parameter_list|,
 name|OzoneConfiguration
@@ -920,15 +946,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|String
-name|id
-init|=
-name|dn
-operator|.
-name|getXferAddr
-argument_list|()
-decl_stmt|;
 name|conf
 operator|.
 name|setInt
@@ -949,14 +966,10 @@ name|dir
 init|=
 name|TEST_DIR
 operator|+
-name|id
+name|dn
 operator|.
-name|replace
-argument_list|(
-literal|':'
-argument_list|,
-literal|'_'
-argument_list|)
+name|getUuid
+argument_list|()
 decl_stmt|;
 name|conf
 operator|.
@@ -990,7 +1003,7 @@ name|dispatcher
 argument_list|)
 return|;
 block|}
-DECL|method|initXceiverServerRatis ( RpcType rpc, DatanodeID id, Pipeline pipeline)
+DECL|method|initXceiverServerRatis ( RpcType rpc, DatanodeDetails dd, Pipeline pipeline)
 specifier|static
 name|void
 name|initXceiverServerRatis
@@ -998,8 +1011,8 @@ parameter_list|(
 name|RpcType
 name|rpc
 parameter_list|,
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 parameter_list|,
 name|Pipeline
 name|pipeline
@@ -1015,7 +1028,7 @@ name|RatisHelper
 operator|.
 name|toRaftPeer
 argument_list|(
-name|id
+name|dd
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1107,7 +1120,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestClientServer ( int numDatanodes, BiConsumer<Pipeline, OzoneConfiguration> initConf, CheckedBiFunction<Pipeline, OzoneConfiguration, XceiverClientSpi, IOException> createClient, CheckedBiFunction<DatanodeID, OzoneConfiguration, XceiverServerSpi, IOException> createServer, CheckedBiConsumer<DatanodeID, Pipeline, IOException> initServer)
+DECL|method|runTestClientServer ( int numDatanodes, BiConsumer<Pipeline, OzoneConfiguration> initConf, CheckedBiFunction<Pipeline, OzoneConfiguration, XceiverClientSpi, IOException> createClient, CheckedBiFunction<DatanodeDetails, OzoneConfiguration, XceiverServerSpi, IOException> createServer, CheckedBiConsumer<DatanodeDetails, Pipeline, IOException> initServer)
 specifier|static
 name|void
 name|runTestClientServer
@@ -1137,7 +1150,7 @@ name|createClient
 parameter_list|,
 name|CheckedBiFunction
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|OzoneConfiguration
 argument_list|,
@@ -1149,7 +1162,7 @@ name|createServer
 parameter_list|,
 name|CheckedBiConsumer
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|Pipeline
 argument_list|,
@@ -1219,7 +1232,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|dn
 range|:
 name|pipeline
@@ -1442,11 +1455,21 @@ operator|.
 name|init
 argument_list|()
 expr_stmt|;
+name|DatanodeDetails
+name|datanodeDetails
+init|=
+name|TestUtils
+operator|.
+name|getDatanodeDetails
+argument_list|()
+decl_stmt|;
 name|server
 operator|=
 operator|new
 name|XceiverServer
 argument_list|(
+name|datanodeDetails
+argument_list|,
 name|conf
 argument_list|,
 name|dispatcher

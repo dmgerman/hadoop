@@ -60,11 +60,31 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -85,26 +105,6 @@ operator|.
 name|statemachine
 operator|.
 name|EndpointStateMachine
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdsl
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerNodeIDProto
 import|;
 end_import
 
@@ -231,10 +231,10 @@ name|EndPointStates
 argument_list|>
 name|result
 decl_stmt|;
-DECL|field|containerNodeIDProto
+DECL|field|datanodeDetailsProto
 specifier|private
-name|ContainerNodeIDProto
-name|containerNodeIDProto
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 decl_stmt|;
 comment|/**    * Creates a register endpoint task.    *    * @param rpcEndPoint - endpoint    * @param conf - conf    */
 annotation|@
@@ -263,32 +263,32 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
-comment|/**    * Get the ContainerNodeID Proto.    *    * @return ContainerNodeIDProto    */
-DECL|method|getContainerNodeIDProto ()
+comment|/**    * Get the DatanodeDetailsProto Proto.    *    * @return DatanodeDetailsProto    */
+DECL|method|getDatanodeDetailsProto ()
 specifier|public
-name|ContainerNodeIDProto
-name|getContainerNodeIDProto
+name|DatanodeDetailsProto
+name|getDatanodeDetailsProto
 parameter_list|()
 block|{
 return|return
-name|containerNodeIDProto
+name|datanodeDetailsProto
 return|;
 block|}
-comment|/**    * Set the contiainerNodeID Proto.    *    * @param containerNodeIDProto - Container Node ID.    */
-DECL|method|setContainerNodeIDProto (ContainerNodeIDProto containerNodeIDProto)
+comment|/**    * Set the contiainerNodeID Proto.    *    * @param datanodeDetailsProto - Container Node ID.    */
+DECL|method|setDatanodeDetailsProto ( DatanodeDetailsProto datanodeDetailsProto)
 specifier|public
 name|void
-name|setContainerNodeIDProto
+name|setDatanodeDetailsProto
 parameter_list|(
-name|ContainerNodeIDProto
-name|containerNodeIDProto
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerNodeIDProto
+name|datanodeDetailsProto
 operator|=
-name|containerNodeIDProto
+name|datanodeDetailsProto
 expr_stmt|;
 block|}
 comment|/**    * Computes a result, or throws an exception if unable to do so.    *    * @return computed result    * @throws Exception if unable to compute a result    */
@@ -306,7 +306,7 @@ name|Exception
 block|{
 if|if
 condition|(
-name|getContainerNodeIDProto
+name|getDatanodeDetailsProto
 argument_list|()
 operator|==
 literal|null
@@ -341,20 +341,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|DatanodeID
-name|dnNodeID
-init|=
-name|DatanodeID
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|getContainerNodeIDProto
-argument_list|()
-operator|.
-name|getDatanodeID
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|// TODO : Add responses to the command Queue.
 name|rpcEndPoint
 operator|.
@@ -363,7 +349,7 @@ argument_list|()
 operator|.
 name|register
 argument_list|(
-name|dnNodeID
+name|datanodeDetailsProto
 argument_list|,
 name|conf
 operator|.
@@ -461,10 +447,10 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|containerNodeIDProto
+DECL|field|datanodeDetails
 specifier|private
-name|ContainerNodeIDProto
-name|containerNodeIDProto
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 comment|/**      * Constructs the builder class.      */
 DECL|method|Builder ()
@@ -512,21 +498,21 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the NodeID.      *      * @param nodeID - NodeID proto      * @return Builder      */
-DECL|method|setNodeID (ContainerNodeIDProto nodeID)
+comment|/**      * Sets the NodeID.      *      * @param dnDetails - NodeID proto      * @return Builder      */
+DECL|method|setDatanodeDetails (DatanodeDetails dnDetails)
 specifier|public
 name|Builder
-name|setNodeID
+name|setDatanodeDetails
 parameter_list|(
-name|ContainerNodeIDProto
-name|nodeID
+name|DatanodeDetails
+name|dnDetails
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerNodeIDProto
+name|datanodeDetails
 operator|=
-name|nodeID
+name|dnDetails
 expr_stmt|;
 return|return
 name|this
@@ -588,7 +574,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|containerNodeIDProto
+name|datanodeDetails
 operator|==
 literal|null
 condition|)
@@ -597,7 +583,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"No nodeID specified."
+literal|"No datanode specified."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -627,9 +613,12 @@ argument_list|)
 decl_stmt|;
 name|task
 operator|.
-name|setContainerNodeIDProto
+name|setDatanodeDetailsProto
 argument_list|(
-name|containerNodeIDProto
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

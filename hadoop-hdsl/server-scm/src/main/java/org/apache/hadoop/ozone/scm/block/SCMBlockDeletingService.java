@@ -70,11 +70,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -313,6 +313,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -580,7 +590,7 @@ literal|null
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
@@ -673,12 +683,12 @@ condition|)
 block|{
 for|for
 control|(
-name|DatanodeID
-name|datanodeID
+name|UUID
+name|dnId
 range|:
 name|transactions
 operator|.
-name|getDatanodes
+name|getDatanodeIDs
 argument_list|()
 control|)
 block|{
@@ -692,7 +702,7 @@ name|transactions
 operator|.
 name|getDatanodeTransactions
 argument_list|(
-name|datanodeID
+name|dnId
 argument_list|)
 decl_stmt|;
 if|if
@@ -723,7 +733,7 @@ name|nodeManager
 operator|.
 name|addDatanodeCommand
 argument_list|(
-name|datanodeID
+name|dnId
 argument_list|,
 operator|new
 name|DeleteBlocksCommand
@@ -740,7 +750,7 @@ literal|"Added delete block command for datanode {} in the queue,"
 operator|+
 literal|" number of delete block transactions: {}, TxID list: {}"
 argument_list|,
-name|datanodeID
+name|dnId
 argument_list|,
 name|dnTXs
 operator|.
@@ -757,7 +767,7 @@ name|transactions
 operator|.
 name|getTransactionIDList
 argument_list|(
-name|datanodeID
+name|dnId
 argument_list|)
 argument_list|)
 argument_list|)
@@ -784,7 +794,7 @@ name|dnTxCount
 argument_list|,
 name|transactions
 operator|.
-name|getDatanodes
+name|getDatanodeIDs
 argument_list|()
 operator|.
 name|size

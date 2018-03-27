@@ -40,11 +40,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -283,13 +287,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeID - Datanode ID.    * @param nodeReport - node report state    * @param reportState - container report state.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
+comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - node report state    * @param reportState - container report state.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ReportState reportState)
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -300,13 +304,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Register Datanode.    * @param datanodeID - DatanodID.    * @param scmAddresses - List of SCMs this datanode is configured to    *                     communicate.    * @return SCM Command.    */
-DECL|method|register (DatanodeID datanodeID, String[] scmAddresses)
+comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    * @param scmAddresses - List of SCMs this datanode is configured to    *                     communicate.    * @return SCM Command.    */
+DECL|method|register (DatanodeDetailsProto datanodeDetails, String[] scmAddresses)
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|,
 name|String
 index|[]

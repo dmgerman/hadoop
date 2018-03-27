@@ -42,11 +42,31 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -400,7 +420,7 @@ DECL|field|nodeContainers
 specifier|private
 name|Map
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|,
 name|Map
 argument_list|<
@@ -739,18 +759,18 @@ comment|// Just ignore this exception.
 block|}
 block|}
 block|}
-comment|/**    * Used by data node to send a Heartbeat.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+comment|/**    * Used by data node to send a Heartbeat.    *    * @param datanodeDetailsProto - DatanodeDetailsProto.    * @param nodeReport - node report.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
 annotation|@
 name|Override
 specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMHeartbeatResponseProto
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState scmReportState)
+DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport, ReportState scmReportState)
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -806,18 +826,18 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Register Datanode.    *    * @param datanodeID - DatanodID.    * @param scmAddresses - List of SCMs this datanode is configured to    * communicate.    * @return SCM Command.    */
+comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto DatanodDetailsProto.    * @param scmAddresses - List of SCMs this datanode is configured to    * communicate.    * @return SCM Command.    */
 annotation|@
 name|Override
 specifier|public
 name|StorageContainerDatanodeProtocolProtos
-DECL|method|register (DatanodeID datanodeID, String[] scmAddresses)
+DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, String[] scmAddresses)
 operator|.
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|,
 name|String
 index|[]
@@ -855,9 +875,9 @@ argument_list|)
 operator|.
 name|setDatanodeUUID
 argument_list|(
-name|datanodeID
+name|datanodeDetailsProto
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 operator|.
@@ -906,16 +926,16 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
-name|DatanodeID
+name|DatanodeDetails
 name|datanode
 init|=
-name|DatanodeID
+name|DatanodeDetails
 operator|.
 name|getFromProtoBuf
 argument_list|(
 name|reports
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 argument_list|)
 decl_stmt|;

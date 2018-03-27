@@ -198,9 +198,7 @@ name|hdsl
 operator|.
 name|protocol
 operator|.
-name|proto
-operator|.
-name|HdslProtos
+name|DatanodeDetails
 import|;
 end_import
 
@@ -212,11 +210,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|proto
+operator|.
+name|HdslProtos
 import|;
 end_import
 
@@ -473,7 +473,7 @@ annotation|@
 name|JsonIgnore
 DECL|method|getLeader ()
 specifier|public
-name|DatanodeID
+name|DatanodeDetails
 name|getLeader
 parameter_list|()
 block|{
@@ -524,7 +524,7 @@ DECL|method|getMachines ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getMachines
 parameter_list|()
@@ -567,7 +567,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|id
 range|:
 name|pipelineChannel

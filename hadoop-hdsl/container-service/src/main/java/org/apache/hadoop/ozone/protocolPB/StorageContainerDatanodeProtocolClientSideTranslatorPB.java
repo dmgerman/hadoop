@@ -50,11 +50,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -518,16 +522,16 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Send by datanode to SCM.    *    * @param datanodeID - DatanodeID    * @param nodeReport - node report    * @throws IOException    */
+comment|/**    * Send by datanode to SCM.    *    * @param datanodeDetailsProto - Datanode Details    * @param nodeReport - node report    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
+DECL|method|sendHeartbeat ( DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport, ReportState reportState)
 specifier|public
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
@@ -550,12 +554,9 @@ argument_list|()
 decl_stmt|;
 name|req
 operator|.
-name|setDatanodeID
+name|setDatanodeDetails
 argument_list|(
-name|datanodeID
-operator|.
-name|getProtoBufMessage
-argument_list|()
+name|datanodeDetailsProto
 argument_list|)
 expr_stmt|;
 name|req
@@ -612,16 +613,16 @@ return|return
 name|resp
 return|;
 block|}
-comment|/**    * Register Datanode.    *    * @param datanodeID - DatanodID.    * @return SCM Command.    */
+comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto - Datanode Details    * @return SCM Command.    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeID datanodeID, String[] scmAddresses)
+DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, String[] scmAddresses)
 specifier|public
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|,
 name|String
 index|[]
@@ -642,12 +643,9 @@ argument_list|()
 decl_stmt|;
 name|req
 operator|.
-name|setDatanodeID
+name|setDatanodeDetails
 argument_list|(
-name|datanodeID
-operator|.
-name|getProtoBufMessage
-argument_list|()
+name|datanodeDetailsProto
 argument_list|)
 expr_stmt|;
 specifier|final

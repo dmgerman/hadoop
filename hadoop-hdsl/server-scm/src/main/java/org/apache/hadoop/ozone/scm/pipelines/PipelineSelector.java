@@ -56,11 +56,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -544,7 +544,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    *    * @param nodes - list of datanodes on which we will allocate the container.    * The first of the list will be the leader node.    * @return pipeline corresponding to nodes    */
-DECL|method|newPipelineFromNodes (List<DatanodeID> nodes, LifeCycleState state, ReplicationType replicationType, ReplicationFactor replicationFactor, String name)
+DECL|method|newPipelineFromNodes ( List<DatanodeDetails> nodes, LifeCycleState state, ReplicationType replicationType, ReplicationFactor replicationFactor, String name)
 specifier|public
 specifier|static
 name|PipelineChannel
@@ -552,7 +552,7 @@ name|newPipelineFromNodes
 parameter_list|(
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|,
@@ -598,7 +598,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getDatanodeUuid
+name|getUuidString
 argument_list|()
 decl_stmt|;
 name|PipelineChannel
@@ -620,7 +620,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
+name|DatanodeDetails
 name|node
 range|:
 name|nodes
@@ -909,7 +909,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates a pipeline from a specified set of Nodes.    */
-DECL|method|createPipeline (ReplicationType replicationType, String pipelineID, List<DatanodeID> datanodes)
+DECL|method|createPipeline (ReplicationType replicationType, String pipelineID, List<DatanodeDetails> datanodes)
 specifier|public
 name|void
 name|createPipeline
@@ -922,7 +922,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|)
@@ -961,7 +961,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|DatanodeID
+name|DatanodeDetails
 operator|::
 name|toString
 argument_list|)
@@ -1041,7 +1041,7 @@ DECL|method|getDatanodes (ReplicationType replicationType, String pipelineID)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getDatanodes
 parameter_list|(
@@ -1090,7 +1090,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Update the datanodes in the list of the pipeline.    */
-DECL|method|updateDatanodes (ReplicationType replicationType, String pipelineID, List<DatanodeID> newDatanodes)
+DECL|method|updateDatanodes (ReplicationType replicationType, String pipelineID, List<DatanodeDetails> newDatanodes)
 specifier|public
 name|void
 name|updateDatanodes
@@ -1103,7 +1103,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|newDatanodes
 parameter_list|)
@@ -1142,7 +1142,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|DatanodeID
+name|DatanodeDetails
 operator|::
 name|toString
 argument_list|)

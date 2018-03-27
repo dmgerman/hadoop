@@ -352,6 +352,10 @@ name|getDatanodeOzoneRestPort
 parameter_list|()
 block|{
 return|return
+name|MiniOzoneClassicCluster
+operator|.
+name|getOzoneRestPort
+argument_list|(
 name|cluster
 operator|.
 name|getDataNodes
@@ -361,12 +365,7 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getDatanodeId
-argument_list|()
-operator|.
-name|getOzoneRestPort
-argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

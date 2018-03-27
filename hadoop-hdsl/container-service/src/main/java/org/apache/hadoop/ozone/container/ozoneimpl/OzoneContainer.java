@@ -58,9 +58,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|DatanodeID
+name|datanode
+operator|.
+name|StorageLocation
 import|;
 end_import
 
@@ -72,13 +74,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|server
+name|protocol
 operator|.
-name|datanode
-operator|.
-name|StorageLocation
+name|DatanodeDetails
 import|;
 end_import
 
@@ -700,12 +700,12 @@ name|BlockDeletingService
 name|blockDeletingService
 decl_stmt|;
 comment|/**    * Creates a network endpoint and enables Ozone container.    *    * @param ozoneConfig - Config    * @throws IOException    */
-DECL|method|OzoneContainer (DatanodeID datanodeID, Configuration ozoneConfig)
+DECL|method|OzoneContainer ( DatanodeDetails datanodeDetails, Configuration ozoneConfig)
 specifier|public
 name|OzoneContainer
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|Configuration
 name|ozoneConfig
@@ -815,7 +815,7 @@ name|ozoneConfig
 argument_list|,
 name|locations
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 name|this
@@ -929,6 +929,8 @@ block|{
 operator|new
 name|XceiverServer
 argument_list|(
+name|datanodeDetails
+argument_list|,
 name|this
 operator|.
 name|ozoneConfig
@@ -942,8 +944,10 @@ name|XceiverServerRatis
 operator|.
 name|newXceiverServerRatis
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|,
+name|this
+operator|.
 name|ozoneConfig
 argument_list|,
 name|dispatcher

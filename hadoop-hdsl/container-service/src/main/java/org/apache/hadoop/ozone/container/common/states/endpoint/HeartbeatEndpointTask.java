@@ -60,11 +60,31 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -183,26 +203,6 @@ operator|.
 name|commands
 operator|.
 name|DeleteBlocksCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdsl
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerNodeIDProto
 import|;
 end_import
 
@@ -360,10 +360,10 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|containerNodeIDProto
+DECL|field|datanodeDetailsProto
 specifier|private
-name|ContainerNodeIDProto
-name|containerNodeIDProto
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 decl_stmt|;
 DECL|field|context
 specifier|private
@@ -405,31 +405,31 @@ name|context
 expr_stmt|;
 block|}
 comment|/**    * Get the container Node ID proto.    *    * @return ContainerNodeIDProto    */
-DECL|method|getContainerNodeIDProto ()
+DECL|method|getDatanodeDetailsProto ()
 specifier|public
-name|ContainerNodeIDProto
-name|getContainerNodeIDProto
+name|DatanodeDetailsProto
+name|getDatanodeDetailsProto
 parameter_list|()
 block|{
 return|return
-name|containerNodeIDProto
+name|datanodeDetailsProto
 return|;
 block|}
-comment|/**    * Set container node ID proto.    *    * @param containerNodeIDProto - the node id.    */
-DECL|method|setContainerNodeIDProto (ContainerNodeIDProto containerNodeIDProto)
+comment|/**    * Set container node ID proto.    *    * @param datanodeDetailsProto - the node id.    */
+DECL|method|setDatanodeDetailsProto (DatanodeDetailsProto datanodeDetailsProto)
 specifier|public
 name|void
-name|setContainerNodeIDProto
+name|setDatanodeDetailsProto
 parameter_list|(
-name|ContainerNodeIDProto
-name|containerNodeIDProto
+name|DatanodeDetailsProto
+name|datanodeDetailsProto
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerNodeIDProto
+name|datanodeDetailsProto
 operator|=
-name|containerNodeIDProto
+name|datanodeDetailsProto
 expr_stmt|;
 block|}
 comment|/**    * Computes a result, or throws an exception if unable to do so.    *    * @return computed result    * @throws Exception if unable to compute a result    */
@@ -458,26 +458,11 @@ name|checkState
 argument_list|(
 name|this
 operator|.
-name|containerNodeIDProto
+name|datanodeDetailsProto
 operator|!=
 literal|null
 argument_list|)
 expr_stmt|;
-name|DatanodeID
-name|datanodeID
-init|=
-name|DatanodeID
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|this
-operator|.
-name|containerNodeIDProto
-operator|.
-name|getDatanodeID
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|SCMHeartbeatResponseProto
 name|reponse
 init|=
@@ -488,7 +473,7 @@ argument_list|()
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetailsProto
 argument_list|,
 name|this
 operator|.
@@ -509,7 +494,7 @@ name|processResponse
 argument_list|(
 name|reponse
 argument_list|,
-name|datanodeID
+name|datanodeDetailsProto
 argument_list|)
 expr_stmt|;
 name|rpcEndpoint
@@ -572,7 +557,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Add this command to command processing Queue.    *    * @param response - SCMHeartbeat response.    */
-DECL|method|processResponse (SCMHeartbeatResponseProto response, final DatanodeID datanodeID)
+DECL|method|processResponse (SCMHeartbeatResponseProto response, final DatanodeDetailsProto datanodeDetails)
 specifier|private
 name|void
 name|processResponse
@@ -581,8 +566,8 @@ name|SCMHeartbeatResponseProto
 name|response
 parameter_list|,
 specifier|final
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|)
 block|{
 for|for
@@ -608,12 +593,9 @@ argument_list|()
 operator|.
 name|equalsIgnoreCase
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
-argument_list|()
-operator|.
-name|toString
+name|getUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -873,10 +855,10 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|containerNodeIDProto
+DECL|field|datanodeDetails
 specifier|private
-name|ContainerNodeIDProto
-name|containerNodeIDProto
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 DECL|field|context
 specifier|private
@@ -929,21 +911,21 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the NodeID.      *      * @param nodeID - NodeID proto      * @return Builder      */
-DECL|method|setNodeID (ContainerNodeIDProto nodeID)
+comment|/**      * Sets the NodeID.      *      * @param dnDetails - NodeID proto      * @return Builder      */
+DECL|method|setDatanodeDetails (DatanodeDetails dnDetails)
 specifier|public
 name|Builder
-name|setNodeID
+name|setDatanodeDetails
 parameter_list|(
-name|ContainerNodeIDProto
-name|nodeID
+name|DatanodeDetails
+name|dnDetails
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerNodeIDProto
+name|datanodeDetails
 operator|=
-name|nodeID
+name|dnDetails
 expr_stmt|;
 return|return
 name|this
@@ -1025,7 +1007,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|containerNodeIDProto
+name|datanodeDetails
 operator|==
 literal|null
 condition|)
@@ -1034,7 +1016,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"No nodeID specified."
+literal|"No datanode specified."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1068,9 +1050,12 @@ argument_list|)
 decl_stmt|;
 name|task
 operator|.
-name|setContainerNodeIDProto
+name|setDatanodeDetailsProto
 argument_list|(
-name|containerNodeIDProto
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

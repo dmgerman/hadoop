@@ -58,11 +58,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -231,6 +231,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -459,7 +469,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Boolean
 argument_list|>
@@ -729,9 +739,9 @@ parameter_list|()
 block|{
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
-name|datanodeIDList
+name|datanodeDetailsList
 init|=
 name|this
 operator|.
@@ -747,7 +757,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|datanodeIDList
+name|datanodeDetailsList
 operator|.
 name|size
 argument_list|()
@@ -815,10 +825,10 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|dd
 range|:
-name|datanodeIDList
+name|datanodeDetailsList
 control|)
 block|{
 name|NodeState
@@ -826,7 +836,7 @@ name|currentState
 init|=
 name|getNodestate
 argument_list|(
-name|id
+name|dd
 argument_list|)
 decl_stmt|;
 if|if
@@ -852,7 +862,10 @@ name|nodeManager
 operator|.
 name|addDatanodeCommand
 argument_list|(
-name|id
+name|dd
+operator|.
+name|getUuid
+argument_list|()
 argument_list|,
 name|cmd
 argument_list|)
@@ -881,14 +894,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Gets the node state.    *    * @param id - datanode ID.    * @return NodeState.    */
-DECL|method|getNodestate (DatanodeID id)
+comment|/**    * Gets the node state.    *    * @param datanode - datanode information.    * @return NodeState.    */
+DECL|method|getNodestate (DatanodeDetails datanode)
 specifier|private
 name|NodeState
 name|getNodestate
 parameter_list|(
-name|DatanodeID
-name|id
+name|DatanodeDetails
+name|datanode
 parameter_list|)
 block|{
 name|NodeState
@@ -928,7 +941,7 @@ name|nodeManager
 operator|.
 name|getNodeState
 argument_list|(
-name|id
+name|datanode
 argument_list|)
 expr_stmt|;
 name|currentTry
@@ -970,7 +983,7 @@ literal|"try and node manager returns INVALID state. This indicates we "
 operator|+
 literal|"are dealing with a node that we don't know about."
 argument_list|,
-name|id
+name|datanode
 argument_list|)
 expr_stmt|;
 block|}
@@ -1034,16 +1047,16 @@ return|return
 parameter_list|()
 lambda|->
 block|{
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
-name|DatanodeID
+name|DatanodeDetails
 operator|.
 name|getFromProtoBuf
 argument_list|(
 name|reports
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1053,9 +1066,9 @@ name|processedNodeSet
 operator|.
 name|computeIfAbsent
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|,
 parameter_list|(
@@ -1079,9 +1092,9 @@ literal|"Total Nodes processed : {} Node Name: {} "
 argument_list|,
 name|nodeProcessed
 argument_list|,
-name|datanodeID
+name|datanodeDetails
 operator|.
-name|getDatanodeUuid
+name|getUuid
 argument_list|()
 argument_list|)
 expr_stmt|;

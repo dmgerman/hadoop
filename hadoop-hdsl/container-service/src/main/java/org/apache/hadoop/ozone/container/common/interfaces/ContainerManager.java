@@ -74,22 +74,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|datanode
@@ -111,6 +95,22 @@ operator|.
 name|util
 operator|.
 name|RwLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -284,8 +284,8 @@ name|ContainerManager
 extends|extends
 name|RwLock
 block|{
-comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param datanodeID - Datanode ID    * @throws StorageContainerException    */
-DECL|method|init (Configuration config, List<StorageLocation> containerDirs, DatanodeID datanodeID)
+comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param datanodeDetails - DatanodeDetails    * @throws StorageContainerException    */
+DECL|method|init (Configuration config, List<StorageLocation> containerDirs, DatanodeDetails datanodeDetails)
 name|void
 name|init
 parameter_list|(
@@ -298,8 +298,8 @@ name|StorageLocation
 argument_list|>
 name|containerDirs
 parameter_list|,
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 throws|throws
 name|IOException

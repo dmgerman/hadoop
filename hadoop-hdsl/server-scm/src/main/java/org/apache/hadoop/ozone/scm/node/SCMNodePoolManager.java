@@ -56,29 +56,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|protocol
+name|conf
 operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HdfsProtos
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -92,9 +74,27 @@ name|hadoop
 operator|.
 name|hdsl
 operator|.
-name|conf
+name|protocol
 operator|.
-name|OzoneConfiguration
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdslProtos
 import|;
 end_import
 
@@ -435,7 +435,7 @@ specifier|static
 specifier|final
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|EMPTY_NODE_LIST
 init|=
@@ -483,7 +483,7 @@ name|String
 argument_list|,
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 argument_list|>
 name|nodePools
@@ -618,16 +618,16 @@ lambda|->
 block|{
 try|try
 block|{
-name|DatanodeID
+name|DatanodeDetails
 name|nodeId
 init|=
-name|DatanodeID
+name|DatanodeDetails
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|HdfsProtos
+name|HdslProtos
 operator|.
-name|DatanodeIDProto
+name|DatanodeDetailsProto
 operator|.
 name|PARSER
 operator|.
@@ -649,7 +649,7 @@ argument_list|)
 decl_stmt|;
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodePool
 init|=
@@ -772,7 +772,7 @@ block|}
 comment|/**    * Add a datanode to a node pool.    * @param pool - name of the node pool.    * @param node - name of the datanode.    */
 annotation|@
 name|Override
-DECL|method|addNode (final String pool, final DatanodeID node)
+DECL|method|addNode (final String pool, final DatanodeDetails node)
 specifier|public
 name|void
 name|addNode
@@ -782,7 +782,7 @@ name|String
 name|pool
 parameter_list|,
 specifier|final
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
@@ -840,7 +840,7 @@ expr_stmt|;
 comment|// add to the in-memory store
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodePool
 init|=
@@ -873,7 +873,7 @@ operator|=
 operator|new
 name|HashSet
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -910,7 +910,7 @@ block|}
 comment|/**    * Remove a datanode from a node pool.    * @param pool - name of the node pool.    * @param node - datanode id.    * @throws SCMException    */
 annotation|@
 name|Override
-DECL|method|removeNode (final String pool, final DatanodeID node)
+DECL|method|removeNode (final String pool, final DatanodeDetails node)
 specifier|public
 name|void
 name|removeNode
@@ -920,7 +920,7 @@ name|String
 name|pool
 parameter_list|,
 specifier|final
-name|DatanodeID
+name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
@@ -1031,7 +1031,7 @@ condition|)
 block|{
 name|Set
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|nodePool
 init|=
@@ -1197,7 +1197,7 @@ DECL|method|getNodes (final String pool)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -1252,17 +1252,17 @@ name|EMPTY_NODE_LIST
 return|;
 block|}
 block|}
-comment|/**    * Get the node pool name if the node has been added to a node pool.    * @param datanodeID - datanode ID.    * @return node pool name if it has been assigned.    * null if the node has not been assigned to any node pool yet.    * TODO: Put this in a in-memory map if performance is an issue.    */
+comment|/**    * Get the node pool name if the node has been added to a node pool.    * @param datanodeDetails - datanode ID.    * @return node pool name if it has been assigned.    * null if the node has not been assigned to any node pool yet.    * TODO: Put this in a in-memory map if performance is an issue.    */
 annotation|@
 name|Override
-DECL|method|getNodePool (final DatanodeID datanodeID)
+DECL|method|getNodePool (final DatanodeDetails datanodeDetails)
 specifier|public
 name|String
 name|getNodePool
 parameter_list|(
 specifier|final
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 throws|throws
 name|SCMException
@@ -1271,7 +1271,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|,
 literal|"node is null"
 argument_list|)
@@ -1286,7 +1286,7 @@ name|nodePoolStore
 operator|.
 name|get
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -1322,7 +1322,7 @@ name|SCMException
 argument_list|(
 literal|"Failed to get node pool for node "
 operator|+
-name|datanodeID
+name|datanodeDetails
 operator|.
 name|toString
 argument_list|()

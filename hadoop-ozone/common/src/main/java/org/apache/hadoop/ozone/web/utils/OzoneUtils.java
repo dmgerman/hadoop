@@ -394,11 +394,11 @@ name|host
 return|;
 block|}
 comment|/**    * Get the path for datanode id file.    *    * @param conf - Configuration    * @return the path of datanode id as string    */
-DECL|method|getDatanodeIDPath (Configuration conf)
+DECL|method|getDatanodeIdFilePath (Configuration conf)
 specifier|public
 specifier|static
 name|String
-name|getDatanodeIDPath
+name|getDatanodeIdFilePath
 parameter_list|(
 name|Configuration
 name|conf
@@ -407,7 +407,7 @@ block|{
 return|return
 name|HdslUtils
 operator|.
-name|getDatanodeIDPath
+name|getDatanodeIdFilePath
 argument_list|(
 name|conf
 argument_list|)

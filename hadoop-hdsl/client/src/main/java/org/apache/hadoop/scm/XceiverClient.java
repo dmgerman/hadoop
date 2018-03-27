@@ -164,6 +164,22 @@ name|hdsl
 operator|.
 name|protocol
 operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdsl
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -185,22 +201,6 @@ operator|.
 name|proto
 operator|.
 name|HdslProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
 import|;
 end_import
 
@@ -527,7 +527,7 @@ name|semaphore
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|DatanodeID
+name|DatanodeDetails
 name|leader
 init|=
 name|this
@@ -851,7 +851,7 @@ block|}
 comment|/**    * Create a pipeline.    *    * @param pipelineID - Name of the pipeline.    * @param datanodes - Datanodes    */
 annotation|@
 name|Override
-DECL|method|createPipeline (String pipelineID, List<DatanodeID> datanodes)
+DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
 specifier|public
 name|void
 name|createPipeline
@@ -861,7 +861,7 @@ name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 parameter_list|)

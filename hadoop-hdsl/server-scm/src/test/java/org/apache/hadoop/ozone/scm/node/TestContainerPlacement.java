@@ -70,11 +70,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -119,24 +119,6 @@ operator|.
 name|ozone
 operator|.
 name|OzoneConsts
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|SCMTestUtils
 import|;
 end_import
 
@@ -804,13 +786,13 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeID
+name|DatanodeDetails
 argument_list|>
 name|datanodes
 init|=
 name|TestUtils
 operator|.
-name|getRegisteredDatanodeIDs
+name|getListOfRegisteredDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
@@ -821,8 +803,8 @@ try|try
 block|{
 for|for
 control|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 range|:
 name|datanodes
 control|)
@@ -884,7 +866,10 @@ name|nodeManager
 operator|.
 name|sendHeartbeat
 argument_list|(
-name|datanodeID
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 name|nrb
 operator|.

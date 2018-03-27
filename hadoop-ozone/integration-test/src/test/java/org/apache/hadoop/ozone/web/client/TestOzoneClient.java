@@ -917,13 +917,12 @@ name|format
 argument_list|(
 literal|"http://localhost:%d"
 argument_list|,
-name|dataNode
-operator|.
-name|getDatanodeId
-argument_list|()
+name|MiniOzoneClassicCluster
 operator|.
 name|getOzoneRestPort
-argument_list|()
+argument_list|(
+name|dataNode
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

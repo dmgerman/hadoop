@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|stream
 operator|.
 name|Collectors
@@ -80,11 +90,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|DatanodeDetails
 import|;
 end_import
 
@@ -197,7 +207,7 @@ specifier|private
 specifier|final
 name|ArrayListMultimap
 argument_list|<
-name|DatanodeID
+name|UUID
 argument_list|,
 name|DeletedBlocksTransaction
 argument_list|>
@@ -319,8 +329,8 @@ return|return;
 block|}
 for|for
 control|(
-name|DatanodeID
-name|dnID
+name|DatanodeDetails
+name|dd
 range|:
 name|info
 operator|.
@@ -331,6 +341,14 @@ name|getMachines
 argument_list|()
 control|)
 block|{
+name|UUID
+name|dnID
+init|=
+name|dd
+operator|.
+name|getUuid
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|transactions
@@ -456,12 +474,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getDatanodes ()
+DECL|method|getDatanodeIDs ()
 name|Set
 argument_list|<
-name|DatanodeID
+name|UUID
 argument_list|>
-name|getDatanodes
+name|getDatanodeIDs
 parameter_list|()
 block|{
 return|return
@@ -483,12 +501,12 @@ name|isEmpty
 argument_list|()
 return|;
 block|}
-DECL|method|hasTransactions (DatanodeID dnID)
+DECL|method|hasTransactions (UUID dnId)
 name|boolean
 name|hasTransactions
 parameter_list|(
-name|DatanodeID
-name|dnID
+name|UUID
+name|dnId
 parameter_list|)
 block|{
 return|return
@@ -496,7 +514,7 @@ name|transactions
 operator|.
 name|containsKey
 argument_list|(
-name|dnID
+name|dnId
 argument_list|)
 operator|&&
 operator|!
@@ -504,22 +522,22 @@ name|transactions
 operator|.
 name|get
 argument_list|(
-name|dnID
+name|dnId
 argument_list|)
 operator|.
 name|isEmpty
 argument_list|()
 return|;
 block|}
-DECL|method|getDatanodeTransactions ( DatanodeID dnID)
+DECL|method|getDatanodeTransactions (UUID dnId)
 name|List
 argument_list|<
 name|DeletedBlocksTransaction
 argument_list|>
 name|getDatanodeTransactions
 parameter_list|(
-name|DatanodeID
-name|dnID
+name|UUID
+name|dnId
 parameter_list|)
 block|{
 return|return
@@ -527,26 +545,26 @@ name|transactions
 operator|.
 name|get
 argument_list|(
-name|dnID
+name|dnId
 argument_list|)
 return|;
 block|}
-DECL|method|getTransactionIDList (DatanodeID dnID)
+DECL|method|getTransactionIDList (UUID dnId)
 name|List
 argument_list|<
 name|String
 argument_list|>
 name|getTransactionIDList
 parameter_list|(
-name|DatanodeID
-name|dnID
+name|UUID
+name|dnId
 parameter_list|)
 block|{
 if|if
 condition|(
 name|hasTransactions
 argument_list|(
-name|dnID
+name|dnId
 argument_list|)
 condition|)
 block|{
@@ -555,7 +573,7 @@ name|transactions
 operator|.
 name|get
 argument_list|(
-name|dnID
+name|dnId
 argument_list|)
 operator|.
 name|stream

@@ -40,11 +40,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|proto
+operator|.
+name|HdslProtos
+operator|.
+name|DatanodeDetailsProto
 import|;
 end_import
 
@@ -159,25 +163,25 @@ name|SCMVersionRequestProto
 name|versionRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Register the node if the node finds that it is not registered with any SCM.    * @param datanodeID - Send datanodeID with Node info, but datanode UUID is    *                   empty. Server returns a datanodeID for the given node.    * @return  SCMHeartbeatResponseProto    */
-DECL|method|register (DatanodeID datanodeID)
+comment|/**    * Register the node if the node finds that it is not registered with any SCM.    * @param datanodeDetails DatanodeDetails    * @return  SCMHeartbeatResponseProto    */
+DECL|method|register (DatanodeDetailsProto datanodeDetails)
 name|SCMCommand
 name|register
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|)
 function_decl|;
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @param reportState - container report.    * @return SCMheartbeat response list    */
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @param reportState - container report.    * @return SCMheartbeat response list    */
+DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ReportState reportState)
 name|List
 argument_list|<
 name|SCMCommand
 argument_list|>
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetailsProto
+name|datanodeDetails
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport

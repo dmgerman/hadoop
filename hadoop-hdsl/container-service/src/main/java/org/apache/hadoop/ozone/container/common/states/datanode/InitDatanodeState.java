@@ -60,11 +60,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdsl
 operator|.
-name|protocol
-operator|.
-name|DatanodeID
+name|HdslUtils
 import|;
 end_import
 
@@ -78,7 +76,9 @@ name|hadoop
 operator|.
 name|hdsl
 operator|.
-name|HdslUtils
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -559,7 +559,7 @@ expr_stmt|;
 block|}
 block|}
 comment|// If datanode ID is set, persist it to the ID file.
-name|persistContainerDatanodeID
+name|persistContainerDatanodeDetails
 argument_list|()
 expr_stmt|;
 return|return
@@ -574,11 +574,11 @@ name|getNextState
 argument_list|()
 return|;
 block|}
-comment|/**    * Update Ozone container port to the datanode ID,    * and persist the ID to a local file.    */
-DECL|method|persistContainerDatanodeID ()
+comment|/**    * Persist DatanodeDetails to datanode.id file.    */
+DECL|method|persistContainerDatanodeDetails ()
 specifier|private
 name|void
-name|persistContainerDatanodeID
+name|persistContainerDatanodeDetails
 parameter_list|()
 throws|throws
 name|IOException
@@ -588,47 +588,11 @@ name|dataNodeIDPath
 init|=
 name|HdslUtils
 operator|.
-name|getDatanodeIDPath
+name|getDatanodeIdFilePath
 argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
-name|dataNodeIDPath
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"A valid file path is needed for config setting {}"
-argument_list|,
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_DATANODE_ID
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|context
-operator|.
-name|setState
-argument_list|(
-name|DatanodeStateMachine
-operator|.
-name|DatanodeStates
-operator|.
-name|SHUTDOWN
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|File
 name|idPath
 init|=
@@ -638,28 +602,8 @@ argument_list|(
 name|dataNodeIDPath
 argument_list|)
 decl_stmt|;
-name|int
-name|containerPort
-init|=
-name|this
-operator|.
-name|context
-operator|.
-name|getContainerPort
-argument_list|()
-decl_stmt|;
-name|int
-name|ratisPort
-init|=
-name|this
-operator|.
-name|context
-operator|.
-name|getRatisPort
-argument_list|()
-decl_stmt|;
-name|DatanodeID
-name|datanodeID
+name|DatanodeDetails
+name|datanodeDetails
 init|=
 name|this
 operator|.
@@ -668,35 +612,27 @@ operator|.
 name|getParent
 argument_list|()
 operator|.
-name|getDatanodeID
+name|getDatanodeDetails
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|datanodeID
+name|datanodeDetails
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|idPath
+operator|.
+name|exists
+argument_list|()
 condition|)
 block|{
-name|datanodeID
-operator|.
-name|setContainerPort
-argument_list|(
-name|containerPort
-argument_list|)
-expr_stmt|;
-name|datanodeID
-operator|.
-name|setRatisPort
-argument_list|(
-name|ratisPort
-argument_list|)
-expr_stmt|;
 name|ContainerUtils
 operator|.
-name|writeDatanodeIDTo
+name|writeDatanodeDetailsTo
 argument_list|(
-name|datanodeID
+name|datanodeDetails
 argument_list|,
 name|idPath
 argument_list|)
@@ -705,7 +641,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Datanode ID is persisted to {}"
+literal|"DatanodeDetails is persisted to {}"
 argument_list|,
 name|dataNodeIDPath
 argument_list|)
