@@ -2757,6 +2757,8 @@ name|DatanodeReportType
 operator|.
 name|LIVE
 argument_list|,
+literal|false
+argument_list|,
 name|TIME_OUT
 argument_list|)
 decl_stmt|;

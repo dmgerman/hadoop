@@ -322,6 +322,19 @@ operator|.
 name|federationMetrics
 return|;
 block|}
+comment|/**    * Get the Namenode metrics.    *    * @return Namenode metrics.    */
+DECL|method|getNamenodeMetrics ()
+specifier|public
+name|NamenodeBeanMetrics
+name|getNamenodeMetrics
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nnMetrics
+return|;
+block|}
 comment|/**    * Get the JVM metrics for the Router.    *    * @return JVM metrics.    */
 DECL|method|getJvmMetrics ()
 specifier|public

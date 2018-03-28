@@ -7713,6 +7713,8 @@ name|getDatanodeReport
 argument_list|(
 name|type
 argument_list|,
+literal|true
+argument_list|,
 literal|0
 argument_list|)
 return|;
@@ -7720,11 +7722,11 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get the datanode report with a timeout.    * @param type Type of the datanode.    * @param timeOutMs Time out for the reply in milliseconds.    * @return List of datanodes.    * @throws IOException If it cannot get the report.    */
+comment|/**    * Get the datanode report with a timeout.    * @param type Type of the datanode.    * @param requireResponse If we require all the namespaces to report.    * @param timeOutMs Time out for the reply in milliseconds.    * @return List of datanodes.    * @throws IOException If it cannot get the report.    */
 end_comment
 
 begin_function
-DECL|method|getDatanodeReport ( DatanodeReportType type, long timeOutMs)
+DECL|method|getDatanodeReport ( DatanodeReportType type, boolean requireResponse, long timeOutMs)
 specifier|public
 name|DatanodeInfo
 index|[]
@@ -7732,6 +7734,9 @@ name|getDatanodeReport
 parameter_list|(
 name|DatanodeReportType
 name|type
+parameter_list|,
+name|boolean
+name|requireResponse
 parameter_list|,
 name|long
 name|timeOutMs
@@ -7816,7 +7821,7 @@ name|nss
 argument_list|,
 name|method
 argument_list|,
-literal|true
+name|requireResponse
 argument_list|,
 literal|false
 argument_list|,
@@ -7956,37 +7961,16 @@ argument_list|()
 decl_stmt|;
 end_decl_stmt
 
-begin_decl_stmt
-name|DatanodeInfo
-index|[]
-name|combinedData
-init|=
-operator|new
-name|DatanodeInfo
-index|[
-name|datanodes
-operator|.
-name|size
-argument_list|()
-index|]
-decl_stmt|;
-end_decl_stmt
-
-begin_expr_stmt
-name|combinedData
-operator|=
-name|datanodes
-operator|.
-name|toArray
-argument_list|(
-name|combinedData
-argument_list|)
-expr_stmt|;
-end_expr_stmt
-
 begin_return
 return|return
-name|combinedData
+name|toArray
+argument_list|(
+name|datanodes
+argument_list|,
+name|DatanodeInfo
+operator|.
+name|class
+argument_list|)
 return|;
 end_return
 
@@ -13750,7 +13734,7 @@ comment|/**    * Convert a set of values into an array.    * @param set Input se
 end_comment
 
 begin_function
-DECL|method|toArray (Set<T> set, Class<T> clazz)
+DECL|method|toArray (Collection<T> set, Class<T> clazz)
 specifier|private
 specifier|static
 parameter_list|<
@@ -13760,7 +13744,7 @@ name|T
 index|[]
 name|toArray
 parameter_list|(
-name|Set
+name|Collection
 argument_list|<
 name|T
 argument_list|>
