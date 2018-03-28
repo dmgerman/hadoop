@@ -6186,11 +6186,6 @@ name|done
 operator|=
 literal|true
 expr_stmt|;
-name|amRMClient
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
