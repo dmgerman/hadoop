@@ -228,6 +228,15 @@ operator|.
 name|FEDERATION_STATESTORE_HEARTBEAT_INTERVAL_SECS
 argument_list|)
 expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_FLUSH_CACHE_FOR_RM_ADDR
+argument_list|)
+expr_stmt|;
 name|configurationPropsToSkipCompare
 operator|.
 name|add
