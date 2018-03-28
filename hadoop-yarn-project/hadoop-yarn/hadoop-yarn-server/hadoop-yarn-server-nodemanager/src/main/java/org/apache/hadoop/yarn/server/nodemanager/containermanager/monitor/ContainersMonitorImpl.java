@@ -1679,8 +1679,8 @@ name|myCpuVcores
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check whether a container's process tree's current memory usage is over    * limit.    *    * When a java process exec's a program, it could momentarily account for    * double the size of it's memory, because the JVM does a fork()+exec()    * which at fork time creates a copy of the parent's memory. If the    * monitoring thread detects the memory used by the container tree at the    * same instance, it could assume it is over limit and kill the tree, for no    * fault of the process itself.    *    * We counter this problem by employing a heuristic check: - if a process    * tree exceeds the memory limit by more than twice, it is killed    * immediately - if a process tree has processes older than the monitoring    * interval exceeding the memory limit by even 1 time, it is killed. Else it    * is given the benefit of doubt to lie around for one more iteration.    *    * @param containerId    *          Container Id for the container tree    * @param currentMemUsage    *          Memory usage of a container tree    * @param curMemUsageOfAgedProcesses    *          Memory usage of processes older than an iteration in a container    *          tree    * @param vmemLimit    *          The limit specified for the container    * @return true if the memory usage is more than twice the specified limit,    *         or if processes in the tree, older than this thread's monitoring    *         interval, exceed the memory limit. False, otherwise.    */
-DECL|method|isProcessTreeOverLimit (String containerId, long currentMemUsage, long curMemUsageOfAgedProcesses, long vmemLimit)
+comment|/**    * Check whether a container's process tree's current memory usage is over    * limit.    *    * When a java process exec's a program, it could momentarily account for    * double the size of it's memory, because the JVM does a fork()+exec()    * which at fork time creates a copy of the parent's memory. If the    * monitoring thread detects the memory used by the container tree at the    * same instance, it could assume it is over limit and kill the tree, for no    * fault of the process itself.    *    * We counter this problem by employing a heuristic check: - if a process    * tree exceeds the memory limit by more than twice, it is killed    * immediately - if a process tree has processes older than the monitoring    * interval exceeding the memory limit by even 1 time, it is killed. Else it    * is given the benefit of doubt to lie around for one more iteration.    *    * @param containerId    *          Container Id for the container tree    * @param currentMemUsage    *          Memory usage of a container tree    * @param curMemUsageOfAgedProcesses    *          Memory usage of processes older than an iteration in a container    *          tree    * @param memLimit    *          The limit specified for the container    * @return true if the memory usage is more than twice the specified limit,    *         or if processes in the tree, older than this thread's monitoring    *         interval, exceed the memory limit. False, otherwise.    */
+DECL|method|isProcessTreeOverLimit (String containerId, long currentMemUsage, long curMemUsageOfAgedProcesses, long memLimit)
 specifier|private
 name|boolean
 name|isProcessTreeOverLimit
@@ -1695,7 +1695,7 @@ name|long
 name|curMemUsageOfAgedProcesses
 parameter_list|,
 name|long
-name|vmemLimit
+name|memLimit
 parameter_list|)
 block|{
 name|boolean
@@ -1710,7 +1710,7 @@ operator|>
 operator|(
 literal|2
 operator|*
-name|vmemLimit
+name|memLimit
 operator|)
 condition|)
 block|{
@@ -1726,7 +1726,7 @@ literal|" running over twice "
 operator|+
 literal|"the configured limit. Limit="
 operator|+
-name|vmemLimit
+name|memLimit
 operator|+
 literal|", current usage = "
 operator|+
@@ -1743,7 +1743,7 @@ if|if
 condition|(
 name|curMemUsageOfAgedProcesses
 operator|>
-name|vmemLimit
+name|memLimit
 condition|)
 block|{
 name|LOG
@@ -1758,7 +1758,7 @@ literal|" has processes older than 1 "
 operator|+
 literal|"iteration running over the configured limit. Limit="
 operator|+
-name|vmemLimit
+name|memLimit
 operator|+
 literal|", current usage = "
 operator|+
