@@ -2956,7 +2956,7 @@ return|;
 block|}
 DECL|method|apply (Resource cluster, ResourceCommitRequest<FiCaSchedulerApp, FiCaSchedulerNode> request, boolean updatePending)
 specifier|public
-name|void
+name|boolean
 name|apply
 parameter_list|(
 name|Resource
@@ -3021,6 +3021,27 @@ operator|.
 name|getAllocatedOrReservedContainer
 argument_list|()
 decl_stmt|;
+comment|// Required sanity check - AM can call 'allocate' to update resource
+comment|// request without locking the scheduler, hence we need to check
+if|if
+condition|(
+name|updatePending
+operator|&&
+name|getOutstandingAsksCount
+argument_list|(
+name|schedulerContainer
+operator|.
+name|getSchedulerRequestKey
+argument_list|()
+argument_list|)
+operator|<=
+literal|0
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 name|RMContainer
 name|rmContainer
 init|=
@@ -3211,6 +3232,10 @@ expr_stmt|;
 comment|// If this is from a SchedulingRequest, set allocation tags.
 if|if
 condition|(
+name|containerRequest
+operator|!=
+literal|null
+operator|&&
 name|containerRequest
 operator|.
 name|getSchedulingRequest
@@ -3457,6 +3482,9 @@ name|request
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+literal|true
+return|;
 block|}
 DECL|method|unreserve (SchedulerRequestKey schedulerKey, FiCaSchedulerNode node, RMContainer rmContainer)
 specifier|public

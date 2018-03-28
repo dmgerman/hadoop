@@ -14714,8 +14714,7 @@ name|request
 argument_list|,
 name|updatePending
 argument_list|)
-condition|)
-block|{
+operator|&&
 name|app
 operator|.
 name|apply
@@ -14726,7 +14725,8 @@ name|request
 argument_list|,
 name|updatePending
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
