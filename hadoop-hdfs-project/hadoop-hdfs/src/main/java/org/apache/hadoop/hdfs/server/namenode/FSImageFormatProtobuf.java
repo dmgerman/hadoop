@@ -2812,8 +2812,9 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**      * @return number of non-fatal errors detected while writing the image.      * @throws IOException on fatal error.      */
 DECL|method|save (File file, FSImageCompression compression)
-name|void
+name|long
 name|save
 parameter_list|(
 name|File
@@ -2860,6 +2861,9 @@ init|=
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|long
+name|numErrors
+init|=
 name|saveInternal
 argument_list|(
 name|fout
@@ -2871,12 +2875,12 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Image file {} of size {} bytes saved in {} seconds."
+literal|"Image file {} of size {} bytes saved in {} seconds {}."
 argument_list|,
 name|file
 argument_list|,
@@ -2893,8 +2897,27 @@ name|startTime
 operator|)
 operator|/
 literal|1000
+argument_list|,
+operator|(
+name|numErrors
+operator|>
+literal|0
+condition|?
+operator|(
+literal|" with"
+operator|+
+name|numErrors
+operator|+
+literal|" errors"
+operator|)
+else|:
+literal|""
+operator|)
 argument_list|)
 expr_stmt|;
+return|return
+name|numErrors
+return|;
 block|}
 finally|finally
 block|{
@@ -3018,9 +3041,10 @@ name|sectionOutputStream
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * @return number of non-fatal errors detected while saving the image.      * @throws IOException on fatal error.      */
 DECL|method|saveSnapshots (FileSummary.Builder summary)
 specifier|private
-name|void
+name|long
 name|saveSnapshots
 parameter_list|(
 name|FileSummary
@@ -3092,10 +3116,17 @@ argument_list|(
 name|sectionOutputStream
 argument_list|)
 expr_stmt|;
+return|return
+name|snapshotSaver
+operator|.
+name|getNumImageErrors
+argument_list|()
+return|;
 block|}
+comment|/**      * @return number of non-fatal errors detected while writing the FsImage.      * @throws IOException on fatal error.      */
 DECL|method|saveInternal (FileOutputStream fout, FSImageCompression compression, String filePath)
 specifier|private
-name|void
+name|long
 name|saveInternal
 parameter_list|(
 name|FileOutputStream
@@ -3310,11 +3341,14 @@ argument_list|(
 name|b
 argument_list|)
 expr_stmt|;
+name|long
+name|numErrors
+init|=
 name|saveSnapshots
 argument_list|(
 name|b
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|prog
 operator|.
 name|endStep
@@ -3445,6 +3479,9 @@ name|digest
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+name|numErrors
+return|;
 block|}
 DECL|method|saveSecretManagerSection (FileSummary.Builder summary)
 specifier|private

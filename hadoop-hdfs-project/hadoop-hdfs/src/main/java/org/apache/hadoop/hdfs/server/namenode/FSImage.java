@@ -200,6 +200,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -764,6 +778,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|ExitUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -862,6 +890,19 @@ name|boolean
 name|isUpgradeFinalized
 init|=
 literal|false
+decl_stmt|;
+comment|// If true, then image corruption was detected. The NameNode process will
+comment|// exit immediately after saving the image.
+DECL|field|exitAfterSave
+specifier|private
+name|AtomicBoolean
+name|exitAfterSave
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 DECL|field|storage
 specifier|protected
@@ -4785,6 +4826,9 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|long
+name|numErrors
+init|=
 name|saver
 operator|.
 name|save
@@ -4793,7 +4837,36 @@ name|newFile
 argument_list|,
 name|compression
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|numErrors
+operator|>
+literal|0
+condition|)
+block|{
+comment|// The image is likely corrupted.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Detected "
+operator|+
+name|numErrors
+operator|+
+literal|" errors while saving FsImage "
+operator|+
+name|dstFile
+argument_list|)
 expr_stmt|;
+name|exitAfterSave
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 name|MD5FileUtils
 operator|.
 name|saveMD5File
@@ -5479,6 +5552,34 @@ operator|.
 name|updateNameDirSize
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|exitAfterSave
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"NameNode process will exit now... The saved FsImage "
+operator|+
+name|nnf
+operator|+
+literal|" is potentially corrupted."
+argument_list|)
+expr_stmt|;
+name|ExitUtil
+operator|.
+name|terminate
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @see #saveFSImageInAllDirs(FSNamesystem, NameNodeFile, long, Canceler)    */
 DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid)
@@ -5832,6 +5933,16 @@ argument_list|)
 expr_stmt|;
 comment|// Since we now have a new checkpoint, we can clean up some
 comment|// old edit logs and checkpoints.
+comment|// Do not purge anything if we just wrote a corrupted FsImage.
+if|if
+condition|(
+operator|!
+name|exitAfterSave
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
 name|purgeOldStorage
 argument_list|(
 name|nnf
@@ -5846,6 +5957,7 @@ operator|.
 name|IMAGE_NEW
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
