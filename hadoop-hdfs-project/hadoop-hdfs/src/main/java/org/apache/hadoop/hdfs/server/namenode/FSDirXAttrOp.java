@@ -2062,6 +2062,14 @@ operator|.
 name|readINodeXAttrByPrefixedName
 argument_list|(
 name|iip
+operator|.
+name|getLastINode
+argument_list|()
+argument_list|,
+name|iip
+operator|.
+name|getPathSnapshotId
+argument_list|()
 argument_list|,
 name|prefixedName
 argument_list|)
@@ -2076,13 +2084,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedGetXAttrByPrefixedName ( INodesInPath iip, String prefixedName)
+DECL|method|unprotectedGetXAttrByPrefixedName ( INode inode, int snapshotId, String prefixedName)
 specifier|static
 name|XAttr
 name|unprotectedGetXAttrByPrefixedName
 parameter_list|(
-name|INodesInPath
-name|iip
+name|INode
+name|inode
+parameter_list|,
+name|int
+name|snapshotId
 parameter_list|,
 name|String
 name|prefixedName
@@ -2095,7 +2106,9 @@ name|XAttrStorage
 operator|.
 name|readINodeXAttrByPrefixedName
 argument_list|(
-name|iip
+name|inode
+argument_list|,
+name|snapshotId
 argument_list|,
 name|prefixedName
 argument_list|)

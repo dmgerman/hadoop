@@ -1154,6 +1154,8 @@ specifier|final
 name|INodesInPath
 name|iip
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|fsd
 operator|.
@@ -2001,6 +2003,14 @@ operator|.
 name|unprotectedGetXAttrByPrefixedName
 argument_list|(
 name|iip
+operator|.
+name|getLastINode
+argument_list|()
+argument_list|,
+name|iip
+operator|.
+name|getPathSnapshotId
+argument_list|()
 argument_list|,
 name|CRYPTO_XATTR_ENCRYPTION_ZONE
 argument_list|)
@@ -2430,6 +2440,14 @@ operator|.
 name|unprotectedGetXAttrByPrefixedName
 argument_list|(
 name|iip
+operator|.
+name|getLastINode
+argument_list|()
+argument_list|,
+name|iip
+operator|.
+name|getPathSnapshotId
+argument_list|()
 argument_list|,
 name|CRYPTO_XATTR_FILE_ENCRYPTION_INFO
 argument_list|)
@@ -2577,6 +2595,8 @@ name|ezInfo
 parameter_list|)
 throws|throws
 name|RetryStartFileException
+throws|,
+name|IOException
 block|{
 name|FileEncryptionInfo
 name|feInfo
@@ -2710,6 +2730,8 @@ throws|throws
 name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|IOException
 block|{
 if|if
 condition|(

@@ -9244,6 +9244,29 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Got unexpected ez path"
+argument_list|,
+name|zone
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|dfsAdmin
+operator|.
+name|getEncryptionZoneForPath
+argument_list|(
+name|snap1Zone
+argument_list|)
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertNull
 argument_list|(
 literal|"Expected null ez path"
@@ -9256,7 +9279,7 @@ name|snap2Zone
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Create the encryption zone again
+comment|// Create the encryption zone again, and that shouldn't affect old snapshot
 name|dfsAdmin
 operator|.
 name|createEncryptionZone
@@ -9266,6 +9289,58 @@ argument_list|,
 name|TEST_KEY2
 argument_list|,
 name|NO_TRASH
+argument_list|)
+expr_stmt|;
+name|EncryptionZone
+name|ezSnap1
+init|=
+name|dfsAdmin
+operator|.
+name|getEncryptionZoneForPath
+argument_list|(
+name|snap1Zone
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Got unexpected ez path"
+argument_list|,
+name|zone
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|ezSnap1
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Unexpected ez key"
+argument_list|,
+name|TEST_KEY
+argument_list|,
+name|ezSnap1
+operator|.
+name|getKeyName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Expected null ez path"
+argument_list|,
+name|dfsAdmin
+operator|.
+name|getEncryptionZoneForPath
+argument_list|(
+name|snap2Zone
+argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -9338,16 +9413,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Check that older snapshots still have the old EZ settings
-name|EncryptionZone
 name|ezSnap1
-init|=
+operator|=
 name|dfsAdmin
 operator|.
 name|getEncryptionZoneForPath
 argument_list|(
 name|snap1Zone
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Got unexpected ez path"
@@ -9376,6 +9450,18 @@ name|ezSnap1
 operator|.
 name|getKeyName
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Expected null ez path"
+argument_list|,
+name|dfsAdmin
+operator|.
+name|getEncryptionZoneForPath
+argument_list|(
+name|snap2Zone
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Check that listEZs only shows the current filesystem state
