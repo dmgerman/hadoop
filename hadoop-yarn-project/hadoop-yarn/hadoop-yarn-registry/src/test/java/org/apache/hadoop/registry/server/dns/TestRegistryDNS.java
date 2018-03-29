@@ -757,7 +757,7 @@ name|RegistryConstants
 operator|.
 name|KEY_DNS_DOMAIN
 argument_list|,
-literal|"hwx.test"
+literal|"dev.test"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -860,7 +860,7 @@ name|recs
 init|=
 name|assertDNSQuery
 argument_list|(
-literal|"test1.root.hwx.test."
+literal|"test1.root.dev.test."
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -890,7 +890,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"management-api.test1.root.hwx.test."
+literal|"management-api.test1.root.dev.test."
 argument_list|,
 literal|2
 argument_list|)
@@ -899,7 +899,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong target name"
 argument_list|,
-literal|"test1.root.hwx.test."
+literal|"test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -939,7 +939,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"appmaster-ipc-api.test1.root.hwx.test."
+literal|"appmaster-ipc-api.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -984,7 +984,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"appmaster-ipc-api.test1.root.hwx.test."
+literal|"appmaster-ipc-api.test1.root.dev.test."
 argument_list|,
 literal|2
 argument_list|)
@@ -993,7 +993,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong target name"
 argument_list|,
-literal|"test1.root.hwx.test."
+literal|"test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -1033,7 +1033,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"http-api.test1.root.hwx.test."
+literal|"http-api.test1.root.dev.test."
 argument_list|,
 literal|2
 argument_list|)
@@ -1042,7 +1042,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong target name"
 argument_list|,
-literal|"test1.root.hwx.test."
+literal|"test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -1082,7 +1082,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"http-api.test1.root.hwx.test."
+literal|"http-api.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -1125,7 +1125,7 @@ argument_list|)
 expr_stmt|;
 name|assertDNSQuery
 argument_list|(
-literal|"test1.root.hwx.test."
+literal|"test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -1136,7 +1136,7 @@ argument_list|)
 expr_stmt|;
 name|assertDNSQuery
 argument_list|(
-literal|"appmaster-ipc-api.test1.root.hwx.test."
+literal|"appmaster-ipc-api.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -1147,7 +1147,7 @@ argument_list|)
 expr_stmt|;
 name|assertDNSQuery
 argument_list|(
-literal|"http-api.test1.root.hwx.test."
+literal|"http-api.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -1158,7 +1158,7 @@ argument_list|)
 expr_stmt|;
 name|assertDNSQuery
 argument_list|(
-literal|"management-api.test1.root.hwx.test."
+literal|"management-api.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -1213,7 +1213,7 @@ name|recs
 init|=
 name|assertDNSQuery
 argument_list|(
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"ctr-e50-1451931954322-0016-01-000002.dev.test."
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1243,7 +1243,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -1304,7 +1304,7 @@ name|Name
 operator|.
 name|fromString
 argument_list|(
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"ctr-e50-1451931954322-0016-01-000002.dev.test."
 argument_list|)
 decl_stmt|;
 name|Record
@@ -1417,7 +1417,7 @@ name|recs
 init|=
 name|assertDNSQuery
 argument_list|(
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"ctr-e50-1451931954322-0016-01-000002.dev.test."
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1462,7 +1462,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -1553,7 +1553,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -1606,7 +1606,7 @@ name|RegistryConstants
 operator|.
 name|KEY_DNS_DOMAIN
 argument_list|,
-literal|"hwx.test"
+literal|"dev.test"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1706,7 +1706,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -1917,7 +1917,7 @@ name|Name
 operator|.
 name|fromString
 argument_list|(
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"ctr-e50-1451931954322-0016-01-000002.dev.test."
 argument_list|)
 decl_stmt|;
 name|Record
@@ -2491,7 +2491,7 @@ name|Name
 operator|.
 name|fromString
 argument_list|(
-literal|"hwxstg.site."
+literal|"dev.test."
 argument_list|)
 argument_list|,
 name|DClass
@@ -2796,7 +2796,7 @@ name|recs
 init|=
 name|assertDNSQuery
 argument_list|(
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"ctr-e50-1451931954322-0016-01-000002.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -2832,7 +2832,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -2900,7 +2900,7 @@ name|Name
 operator|.
 name|fromString
 argument_list|(
-literal|"missing.hwx.test."
+literal|"missing.dev.test."
 argument_list|)
 decl_stmt|;
 name|Record
@@ -3093,7 +3093,7 @@ name|RegistryConstants
 operator|.
 name|KEY_DNS_DOMAIN
 argument_list|,
-literal|"hwx.test"
+literal|"dev.test"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -3248,7 +3248,7 @@ name|recs
 init|=
 name|assertDNSQuery
 argument_list|(
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"ctr-e50-1451931954322-0016-01-000002.dev.test."
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -3278,7 +3278,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -3313,7 +3313,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"comp-name.test1.root.hwx.test."
+literal|"comp-name.test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -3439,7 +3439,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"cn005.hwx.test."
+literal|"cn005.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -3792,7 +3792,7 @@ name|RegistryConstants
 operator|.
 name|KEY_DNS_DOMAIN
 argument_list|,
-literal|"hwx.test"
+literal|"dev.test"
 argument_list|)
 expr_stmt|;
 name|conf
