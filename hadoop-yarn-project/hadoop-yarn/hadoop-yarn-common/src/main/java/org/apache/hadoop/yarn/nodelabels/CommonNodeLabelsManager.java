@@ -1361,7 +1361,9 @@ return|return
 name|initNodeLabelStoreInProgress
 return|;
 block|}
+comment|/**    * @return true if node label configuration type is not distributed.    */
 DECL|method|isCentralizedConfiguration ()
+specifier|public
 name|boolean
 name|isCentralizedConfiguration
 parameter_list|()
@@ -1413,18 +1415,11 @@ name|this
 operator|.
 name|store
 operator|.
-name|setNodeLabelsManager
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|store
-operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 name|this

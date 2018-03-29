@@ -4773,7 +4773,7 @@ literal|"java.io.IOException: label name should only contains"
 operator|+
 literal|" {0-9, a-z, A-Z, -, _} and should not started with"
 operator|+
-literal|" {-,_}, now it is=a&"
+literal|" {-,_}, now it is= a&"
 decl_stmt|;
 name|validateJsonExceptionContent
 argument_list|(

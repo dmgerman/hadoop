@@ -150,6 +150,22 @@ name|yarn
 operator|.
 name|nodelabels
 operator|.
+name|CommonNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|nodelabels
+operator|.
 name|NodeLabelsStore
 import|;
 end_import
@@ -224,6 +240,21 @@ name|IOException
 block|{
 comment|// do nothing
 block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|CommonNodeLabelsManager
+name|mgr
+parameter_list|)
+throws|throws
+name|Exception
+block|{        }
 annotation|@
 name|Override
 specifier|public

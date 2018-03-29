@@ -206,6 +206,21 @@ annotation|@
 name|Override
 specifier|public
 name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|CommonNodeLabelsManager
+name|mgr
+parameter_list|)
+throws|throws
+name|Exception
+block|{        }
+annotation|@
+name|Override
+specifier|public
+name|void
 name|removeClusterNodeLabels
 parameter_list|(
 name|Collection
@@ -279,15 +294,6 @@ block|{
 comment|// do nothing
 block|}
 block|}
-expr_stmt|;
-name|this
-operator|.
-name|store
-operator|.
-name|setNodeLabelsManager
-argument_list|(
-name|this
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@

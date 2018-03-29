@@ -144,24 +144,20 @@ name|YarnException
 import|;
 end_import
 
-begin_class
-DECL|class|NodeLabelsStore
+begin_comment
+comment|/**  * Interface class for Node label store.  */
+end_comment
+
+begin_interface
+DECL|interface|NodeLabelsStore
 specifier|public
-specifier|abstract
-class|class
+interface|interface
 name|NodeLabelsStore
-implements|implements
+extends|extends
 name|Closeable
 block|{
-DECL|field|mgr
-specifier|protected
-name|CommonNodeLabelsManager
-name|mgr
-decl_stmt|;
-comment|/**    * Store node {@literal ->} label    */
+comment|/**    * Store node {@literal ->} label.    */
 DECL|method|updateNodeToLabelsMappings ( Map<NodeId, Set<String>> nodeToLabels)
-specifier|public
-specifier|abstract
 name|void
 name|updateNodeToLabelsMappings
 parameter_list|(
@@ -179,10 +175,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Store new labels    */
+comment|/**    * Store new labels.    */
 DECL|method|storeNewClusterNodeLabels (List<NodeLabel> label)
-specifier|public
-specifier|abstract
 name|void
 name|storeNewClusterNodeLabels
 parameter_list|(
@@ -195,10 +189,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove labels    */
+comment|/**    * Remove labels.    */
 DECL|method|removeClusterNodeLabels (Collection<String> labels)
-specifier|public
-specifier|abstract
 name|void
 name|removeClusterNodeLabels
 parameter_list|(
@@ -211,10 +203,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover labels and node to labels mappings from store, but if    * ignoreNodeToLabelsMappings is true then node to labels mappings should not    * be recovered. In case of Distributed NodeLabels setup    * ignoreNodeToLabelsMappings will be set to true and recover will be invoked    * as RM will collect the node labels from NM through registration/HB    *    * @throws IOException    * @throws YarnException    */
+comment|/**    * Recover labels and node to labels mappings from store, but if    * ignoreNodeToLabelsMappings is true then node to labels mappings should not    * be recovered. In case of Distributed NodeLabels setup    * ignoreNodeToLabelsMappings will be set to true and recover will be invoked    * as RM will collect the node labels from NM through registration/HB.    *    * @throws IOException    * @throws YarnException    */
 DECL|method|recover ()
-specifier|public
-specifier|abstract
 name|void
 name|recover
 parameter_list|()
@@ -223,35 +213,21 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|init (Configuration conf, CommonNodeLabelsManager mgr)
 name|void
 name|init
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|)
-throws|throws
-name|Exception
-block|{}
-DECL|method|setNodeLabelsManager (CommonNodeLabelsManager mgr)
-specifier|public
-name|void
-name|setNodeLabelsManager
-parameter_list|(
+parameter_list|,
 name|CommonNodeLabelsManager
 name|mgr
 parameter_list|)
-block|{
-name|this
-operator|.
-name|mgr
-operator|=
-name|mgr
-expr_stmt|;
+throws|throws
+name|Exception
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 
