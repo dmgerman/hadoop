@@ -1252,7 +1252,14 @@ throw|throw
 operator|new
 name|AclException
 argument_list|(
-literal|"Invalid ACL: only directories may have a default ACL."
+literal|"Invalid ACL: only directories may have a default ACL. "
+operator|+
+literal|"Path: "
+operator|+
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
 argument_list|)
 throw|;
 block|}
