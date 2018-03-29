@@ -839,11 +839,6 @@ specifier|private
 name|RMActiveServiceContext
 name|activeServiceContext
 decl_stmt|;
-DECL|field|resourceProfilesManager
-specifier|private
-name|ResourceProfilesManager
-name|resourceProfilesManager
-decl_stmt|;
 DECL|field|proxyHostAndPort
 specifier|private
 name|String
@@ -2416,7 +2411,10 @@ block|{
 return|return
 name|this
 operator|.
-name|resourceProfilesManager
+name|activeServiceContext
+operator|.
+name|getResourceProfilesManager
+argument_list|()
 return|;
 block|}
 DECL|method|getProxyHostAndPort (Configuration conf)
@@ -2544,9 +2542,12 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|resourceProfilesManager
-operator|=
+name|activeServiceContext
+operator|.
+name|setResourceProfilesManager
+argument_list|(
 name|mgr
+argument_list|)
 expr_stmt|;
 block|}
 comment|// Note: Read java doc before adding any services over here.
