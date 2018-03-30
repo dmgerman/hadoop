@@ -354,6 +354,8 @@ specifier|abstract
 name|Configuration
 name|retrieve
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Get a list of confirmed configuration mutations starting from a given id.    * @param fromId id from which to start getting mutations, inclusive    * @return list of configuration mutations    */
 DECL|method|getConfirmedConfHistory (long fromId)

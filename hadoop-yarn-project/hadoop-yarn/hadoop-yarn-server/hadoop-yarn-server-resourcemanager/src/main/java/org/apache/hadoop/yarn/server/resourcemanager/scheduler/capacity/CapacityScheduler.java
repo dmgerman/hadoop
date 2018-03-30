@@ -3220,6 +3220,11 @@ name|YarnConfiguration
 operator|.
 name|ZK_CONFIGURATION_STORE
 case|:
+case|case
+name|YarnConfiguration
+operator|.
+name|FS_CONFIGURATION_STORE
+case|:
 name|this
 operator|.
 name|csConfProvider
