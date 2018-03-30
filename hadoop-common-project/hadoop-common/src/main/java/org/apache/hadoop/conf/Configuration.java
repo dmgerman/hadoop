@@ -8480,7 +8480,7 @@ return|;
 block|}
 comment|/**    * Try and resolve the provided element name as a credential provider    * alias.    * @param name alias of the provisioned credential    * @return password or null if not found    * @throws IOException    */
 DECL|method|getPasswordFromCredentialProviders (String name)
-specifier|protected
+specifier|public
 name|char
 index|[]
 name|getPasswordFromCredentialProviders
