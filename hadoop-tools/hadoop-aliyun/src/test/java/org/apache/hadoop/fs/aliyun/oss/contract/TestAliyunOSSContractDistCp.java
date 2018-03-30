@@ -127,7 +127,7 @@ name|newConf
 operator|.
 name|setLong
 argument_list|(
-name|MULTIPART_UPLOAD_SIZE_KEY
+name|MULTIPART_UPLOAD_PART_SIZE_KEY
 argument_list|,
 name|MULTIPART_SETTING
 argument_list|)
