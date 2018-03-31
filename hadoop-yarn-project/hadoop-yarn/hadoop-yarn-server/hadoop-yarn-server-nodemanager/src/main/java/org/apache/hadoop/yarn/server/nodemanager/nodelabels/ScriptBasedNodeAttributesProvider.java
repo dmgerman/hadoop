@@ -577,6 +577,31 @@ name|nodeAttribute
 argument_list|)
 throw|;
 block|}
+comment|// We don't allow script to overwrite our dist prefix,
+comment|// so disallow any prefix set in the script.
+if|if
+condition|(
+name|attributeStrs
+index|[
+literal|0
+index|]
+operator|.
+name|contains
+argument_list|(
+literal|"/"
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Node attributes reported by script"
+operator|+
+literal|" should not contain any prefix."
+argument_list|)
+throw|;
+block|}
 comment|// Automatically setup prefix for collected attributes
 name|NodeAttribute
 name|na
