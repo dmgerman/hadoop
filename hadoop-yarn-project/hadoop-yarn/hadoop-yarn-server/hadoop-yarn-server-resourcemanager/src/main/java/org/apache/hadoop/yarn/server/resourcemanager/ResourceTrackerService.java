@@ -4058,6 +4058,18 @@ name|nodeAttributes
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Update node attributes to RMNode
+name|rmNode
+operator|.
+name|setNodeAttributes
+argument_list|(
+name|NodeAttribute
+operator|.
+name|PREFIX_DISTRIBUTED
+argument_list|,
+name|nodeAttributes
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 return|return
