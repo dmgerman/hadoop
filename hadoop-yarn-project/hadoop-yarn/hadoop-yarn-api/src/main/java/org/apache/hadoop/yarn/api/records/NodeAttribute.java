@@ -83,15 +83,6 @@ specifier|abstract
 class|class
 name|NodeAttribute
 block|{
-DECL|field|DEFAULT_PREFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_PREFIX
-init|=
-literal|""
-decl_stmt|;
 DECL|field|PREFIX_DISTRIBUTED
 specifier|public
 specifier|static
@@ -129,7 +120,7 @@ block|{
 return|return
 name|newInstance
 argument_list|(
-name|DEFAULT_PREFIX
+name|PREFIX_CENTRALIZED
 argument_list|,
 name|attributeName
 argument_list|,
