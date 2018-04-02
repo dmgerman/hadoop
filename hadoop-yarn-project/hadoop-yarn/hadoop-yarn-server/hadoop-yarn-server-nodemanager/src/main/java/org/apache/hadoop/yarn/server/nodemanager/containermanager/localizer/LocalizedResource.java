@@ -1356,6 +1356,11 @@ else|:
 literal|""
 operator|)
 operator|+
+literal|" size : "
+operator|+
+name|getSize
+argument_list|()
+operator|+
 literal|" transitioned from "
 operator|+
 name|oldState
