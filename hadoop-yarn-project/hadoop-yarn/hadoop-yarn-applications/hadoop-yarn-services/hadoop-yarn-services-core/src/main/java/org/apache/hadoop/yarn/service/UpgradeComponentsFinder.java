@@ -228,35 +228,6 @@ name|equals
 argument_list|(
 name|currentDef
 operator|.
-name|getPlacementPolicy
-argument_list|()
-argument_list|,
-name|targetDef
-operator|.
-name|getPlacementPolicy
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"changes to placement policy "
-operator|+
-literal|"not supported by upgrade"
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|Objects
-operator|.
-name|equals
-argument_list|(
-name|currentDef
-operator|.
 name|getResource
 argument_list|()
 argument_list|,

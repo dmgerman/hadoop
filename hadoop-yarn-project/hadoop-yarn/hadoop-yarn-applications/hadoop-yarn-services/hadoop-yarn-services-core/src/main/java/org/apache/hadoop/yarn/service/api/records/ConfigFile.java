@@ -325,7 +325,7 @@ name|HADOOP_XML
 argument_list|(
 literal|"HADOOP_XML"
 argument_list|)
-block|,;
+block|;
 DECL|field|value
 specifier|private
 name|String

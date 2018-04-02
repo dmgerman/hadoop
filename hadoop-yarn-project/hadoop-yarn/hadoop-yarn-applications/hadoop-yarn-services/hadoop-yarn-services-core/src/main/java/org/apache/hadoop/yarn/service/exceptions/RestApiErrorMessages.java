@@ -260,6 +260,42 @@ literal|"Quicklinks specified at"
 operator|+
 literal|" component level, needs corresponding values set at service level"
 decl_stmt|;
+DECL|field|ERROR_PLACEMENT_POLICY_TAG_NAME_NOT_SAME
+name|String
+name|ERROR_PLACEMENT_POLICY_TAG_NAME_NOT_SAME
+init|=
+literal|"Invalid target tag %s "
+operator|+
+literal|"specified in placement policy of component %s. For now, target tags "
+operator|+
+literal|"support self reference only. Specifying anything other than its "
+operator|+
+literal|"component name is not supported. Set target tag of component %s to "
+operator|+
+literal|"%s."
+decl_stmt|;
+DECL|field|ERROR_PLACEMENT_POLICY_TAG_NAME_INVALID
+name|String
+name|ERROR_PLACEMENT_POLICY_TAG_NAME_INVALID
+init|=
+literal|"Invalid target tag %s "
+operator|+
+literal|"specified in placement policy of component %s. Target tags should be "
+operator|+
+literal|"a valid component name in the service."
+decl_stmt|;
+DECL|field|ERROR_PLACEMENT_POLICY_EXPRESSION_ELEMENT_NAME_INVALID
+name|String
+name|ERROR_PLACEMENT_POLICY_EXPRESSION_ELEMENT_NAME_INVALID
+init|=
+literal|"Invalid "
+operator|+
+literal|"expression element name %s specified in placement policy of component "
+operator|+
+literal|"%s. Expression element names should be a valid constraint name or an "
+operator|+
+literal|"expression name defined for this component only."
+decl_stmt|;
 block|}
 end_interface
 

@@ -24,30 +24,6 @@ end_package
 
 begin_import
 import|import
-name|io
-operator|.
-name|swagger
-operator|.
-name|annotations
-operator|.
-name|ApiModel
-import|;
-end_import
-
-begin_import
-import|import
-name|io
-operator|.
-name|swagger
-operator|.
-name|annotations
-operator|.
-name|ApiModelProperty
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -62,7 +38,55 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Objects
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -82,34 +106,30 @@ end_import
 
 begin_import
 import|import
-name|org
+name|io
 operator|.
-name|apache
+name|swagger
 operator|.
-name|hadoop
+name|annotations
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
+name|ApiModel
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|io
 operator|.
-name|apache
+name|swagger
 operator|.
-name|hadoop
+name|annotations
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
+name|ApiModelProperty
 import|;
 end_import
 
 begin_comment
-comment|/**  * Placement policy of an instance of an service. This feature is in the  * works in YARN-4902.  **/
+comment|/**  * Advanced placement policy of the components of a service.  **/
 end_comment
 
 begin_class
@@ -126,7 +146,9 @@ name|ApiModel
 argument_list|(
 name|description
 operator|=
-literal|"Placement policy of an instance of an service. This feature is in the works in YARN-4902."
+literal|"Advanced placement policy of the components of a "
+operator|+
+literal|"service."
 argument_list|)
 annotation|@
 name|javax
@@ -141,7 +163,7 @@ literal|"class io.swagger.codegen.languages.JavaClientCodegen"
 argument_list|,
 name|date
 operator|=
-literal|"2016-06-02T08:15:05.615-07:00"
+literal|"2018-02-16T10:20:12.927-07:00"
 argument_list|)
 DECL|class|PlacementPolicy
 specifier|public
@@ -159,28 +181,37 @@ name|serialVersionUID
 init|=
 literal|4341110649551172231L
 decl_stmt|;
-DECL|field|label
+DECL|field|constraints
 specifier|private
-name|String
-name|label
+name|List
+argument_list|<
+name|PlacementConstraint
+argument_list|>
+name|constraints
 init|=
-literal|null
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
 decl_stmt|;
-comment|/**    * Assigns a service to a named partition of the cluster where the service    * desires to run (optional). If not specified all services are submitted to    * a default label of the service owner. One or more labels can be setup for    * each service owner account with required constraints like no-preemption,    * sla-99999, preemption-ok, etc.    **/
-DECL|method|label (String label)
+comment|/**    * Placement constraint details.    **/
+DECL|method|constraints (List<PlacementConstraint> constraints)
 specifier|public
 name|PlacementPolicy
-name|label
+name|constraints
 parameter_list|(
-name|String
-name|label
+name|List
+argument_list|<
+name|PlacementConstraint
+argument_list|>
+name|constraints
 parameter_list|)
 block|{
 name|this
 operator|.
-name|label
+name|constraints
 operator|=
-name|label
+name|constraints
 expr_stmt|;
 return|return
 name|this
@@ -193,39 +224,45 @@ name|example
 operator|=
 literal|"null"
 argument_list|,
-name|value
+name|required
 operator|=
-literal|"Assigns a service to a named partition of the cluster where the service desires to run (optional). If not specified all services are submitted to a default label of the service owner. One or more labels can be setup for each service owner account with required constraints like no-preemption, sla-99999, preemption-ok, etc."
+literal|true
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"label"
+literal|"constraints"
 argument_list|)
-DECL|method|getLabel ()
+DECL|method|getConstraints ()
 specifier|public
-name|String
-name|getLabel
+name|List
+argument_list|<
+name|PlacementConstraint
+argument_list|>
+name|getConstraints
 parameter_list|()
 block|{
 return|return
-name|label
+name|constraints
 return|;
 block|}
-DECL|method|setLabel (String label)
+DECL|method|setConstraints (List<PlacementConstraint> constraints)
 specifier|public
 name|void
-name|setLabel
+name|setConstraints
 parameter_list|(
-name|String
-name|label
+name|List
+argument_list|<
+name|PlacementConstraint
+argument_list|>
+name|constraints
 parameter_list|)
 block|{
 name|this
 operator|.
-name|label
+name|constraints
 operator|=
-name|label
+name|constraints
 expr_stmt|;
 block|}
 annotation|@
@@ -288,11 +325,11 @@ name|equals
 argument_list|(
 name|this
 operator|.
-name|label
+name|constraints
 argument_list|,
 name|placementPolicy
 operator|.
-name|label
+name|constraints
 argument_list|)
 return|;
 block|}
@@ -309,7 +346,7 @@ name|Objects
 operator|.
 name|hash
 argument_list|(
-name|label
+name|constraints
 argument_list|)
 return|;
 block|}
@@ -339,14 +376,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    label: "
+literal|"    constraints: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|label
+name|constraints
 argument_list|)
 argument_list|)
 operator|.

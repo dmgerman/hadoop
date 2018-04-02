@@ -1089,7 +1089,7 @@ operator|=
 name|runPrivilegedContainer
 expr_stmt|;
 block|}
-comment|/**    * Advanced scheduling and placement policies for all containers of this    * component (optional). If not specified, the service level placement_policy    * takes effect. Refer to the description at the global level for more    * details.    **/
+comment|/**    * Advanced scheduling and placement policies for all containers of this    * component.    **/
 DECL|method|placementPolicy (PlacementPolicy placementPolicy)
 specifier|public
 name|Component
@@ -1118,7 +1118,9 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Advanced scheduling and placement policies for all containers of this component (optional). If not specified, the service level placement_policy takes effect. Refer to the description at the global level for more details."
+literal|"Advanced scheduling and "
+operator|+
+literal|"placement policies for all containers of this component."
 argument_list|)
 DECL|method|getPlacementPolicy ()
 specifier|public

@@ -490,6 +490,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|RejectedSchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -1514,6 +1532,15 @@ specifier|private
 name|long
 name|containerRecoveryTimeout
 decl_stmt|;
+comment|// If even one component of a service uses placement constraints, then use
+comment|// placement scheduler to schedule containers for all components (including
+comment|// the ones with no constraints). Mixing of container requests and scheduling
+comment|// requests for a single service is not recommended.
+DECL|field|hasAtLeastOnePlacementConstraint
+specifier|private
+name|boolean
+name|hasAtLeastOnePlacementConstraint
+decl_stmt|;
 DECL|method|ServiceScheduler (ServiceContext context)
 specifier|public
 name|ServiceScheduler
@@ -2237,6 +2264,9 @@ operator|.
 name|getBindAddress
 argument_list|()
 decl_stmt|;
+comment|// When yarn.resourcemanager.placement-constraints.handler is set to
+comment|// placement-processor then constraints need to be added during
+comment|// registerApplicationMaster.
 name|RegisterApplicationMasterResponse
 name|response
 init|=
@@ -3651,6 +3681,46 @@ expr_stmt|;
 name|allocateId
 operator|++
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|hasAtLeastOnePlacementConstraint
+operator|&&
+name|compSpec
+operator|.
+name|getPlacementPolicy
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|compSpec
+operator|.
+name|getPlacementPolicy
+argument_list|()
+operator|.
+name|getConstraints
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|compSpec
+operator|.
+name|getPlacementPolicy
+argument_list|()
+operator|.
+name|getConstraints
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|hasAtLeastOnePlacementConstraint
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|class|ServiceEventHandler
@@ -4564,6 +4634,32 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|onRequestsRejected ( List<RejectedSchedulingRequest> rejectedSchedulingRequests)
+specifier|public
+name|void
+name|onRequestsRejected
+parameter_list|(
+name|List
+argument_list|<
+name|RejectedSchedulingRequest
+argument_list|>
+name|rejectedSchedulingRequests
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error in AMRMClient callback handler. Following scheduling "
+operator|+
+literal|"requests were rejected: {}"
+argument_list|,
+name|rejectedSchedulingRequests
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|class|NMClientCallback
 specifier|private
@@ -5001,6 +5097,16 @@ parameter_list|()
 block|{
 return|return
 name|diagnostics
+return|;
+block|}
+DECL|method|hasAtLeastOnePlacementConstraint ()
+specifier|public
+name|boolean
+name|hasAtLeastOnePlacementConstraint
+parameter_list|()
+block|{
+return|return
+name|hasAtLeastOnePlacementConstraint
 return|;
 block|}
 block|}

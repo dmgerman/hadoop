@@ -334,7 +334,7 @@ operator|=
 name|state
 expr_stmt|;
 block|}
-comment|/**    * An error code specific to a scenario which service owners should be able to use    * to understand the failure in addition to the diagnostic information.    **/
+comment|/**    * An error code specific to a scenario which service owners should be able to    * use to understand the failure in addition to the diagnostic information.    **/
 DECL|method|code (Integer code)
 specifier|public
 name|ServiceStatus

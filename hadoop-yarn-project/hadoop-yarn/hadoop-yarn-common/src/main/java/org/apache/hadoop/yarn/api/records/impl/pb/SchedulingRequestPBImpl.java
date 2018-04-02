@@ -1440,6 +1440,11 @@ operator|+
 name|getResourceSizing
 argument_list|()
 operator|+
+literal|", placementConstraint="
+operator|+
+name|getPlacementConstraint
+argument_list|()
+operator|+
 literal|'}'
 return|;
 block|}
