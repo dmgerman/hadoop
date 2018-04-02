@@ -680,6 +680,28 @@ name|webapp
 operator|.
 name|dao
 operator|.
+name|RMQueueAclInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
 name|ReservationDeleteRequestInfo
 import|;
 end_import
@@ -1425,7 +1447,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * This method verifies if an user has access to a specified queue.    *    * @return Response containing the status code.    *    * @param queue queue    * @param username user    * @param queueAclType acl type of queue, it could be    *                     SUBMIT_APPLICATIONS/ADMINISTER_QUEUE    * @param hsr request    *    * @throws AuthorizationException if the user is not authorized to invoke this    *                                method.    */
 DECL|method|checkUserAccessToQueue (String queue, String username, String queueAclType, HttpServletRequest hsr)
-name|Response
+name|RMQueueAclInfo
 name|checkUserAccessToQueue
 parameter_list|(
 name|String

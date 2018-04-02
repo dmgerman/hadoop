@@ -1068,6 +1068,28 @@ name|webapp
 operator|.
 name|dao
 operator|.
+name|RMQueueAclInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
 name|ReservationDeleteRequestInfo
 import|;
 end_import
@@ -5350,7 +5372,7 @@ annotation|@
 name|Override
 DECL|method|checkUserAccessToQueue (String queue, String username, String queueAclType, HttpServletRequest hsr)
 specifier|public
-name|Response
+name|RMQueueAclInfo
 name|checkUserAccessToQueue
 parameter_list|(
 name|String
