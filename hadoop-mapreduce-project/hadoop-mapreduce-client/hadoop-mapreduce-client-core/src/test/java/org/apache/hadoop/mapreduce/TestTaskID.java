@@ -18,15 +18,31 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
+name|java
 operator|.
 name|io
 operator|.
-name|DataInputByteBuffer
+name|ByteArrayOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
 import|;
 end_import
 
@@ -40,7 +56,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|DataOutputByteBuffer
+name|DataInputByteBuffer
 import|;
 end_import
 
@@ -268,10 +284,10 @@ block|}
 comment|/**    * Test of getTaskType method, of class TaskID.    */
 annotation|@
 name|Test
-DECL|method|testGetTaskType_0args ()
+DECL|method|testGetTaskType0args ()
 specifier|public
 name|void
-name|testGetTaskType_0args
+name|testGetTaskType0args
 parameter_list|()
 block|{
 name|JobID
@@ -1222,12 +1238,21 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|DataOutputByteBuffer
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|DataOutputStream
 name|out
 init|=
 operator|new
-name|DataOutputByteBuffer
-argument_list|()
+name|DataOutputStream
+argument_list|(
+name|baos
+argument_list|)
 decl_stmt|;
 name|out
 operator|.
@@ -1292,10 +1317,15 @@ name|in
 operator|.
 name|reset
 argument_list|(
-name|out
+name|ByteBuffer
 operator|.
-name|getData
+name|wrap
+argument_list|(
+name|baos
+operator|.
+name|toByteArray
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|TaskID
@@ -1362,12 +1392,21 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|DataOutputByteBuffer
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|DataOutputStream
 name|out
 init|=
 operator|new
-name|DataOutputByteBuffer
-argument_list|()
+name|DataOutputStream
+argument_list|(
+name|baos
+argument_list|)
 decl_stmt|;
 name|taskId
 operator|.
@@ -1397,10 +1436,15 @@ name|in
 operator|.
 name|reset
 argument_list|(
-name|out
+name|ByteBuffer
 operator|.
-name|getData
+name|wrap
+argument_list|(
+name|baos
+operator|.
+name|toByteArray
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1948,10 +1992,10 @@ block|}
 comment|/**    * Test of getTaskType method, of class TaskID.    */
 annotation|@
 name|Test
-DECL|method|testGetTaskType_char ()
+DECL|method|testGetTaskTypeChar ()
 specifier|public
 name|void
-name|testGetTaskType_char
+name|testGetTaskTypeChar
 parameter_list|()
 block|{
 name|assertEquals
