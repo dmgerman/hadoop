@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.jmx
+DECL|package|org.apache.hadoop.hdsl.server
 package|package
 name|org
 operator|.
@@ -12,7 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|jmx
+name|hdsl
+operator|.
+name|server
 package|;
 end_package
 

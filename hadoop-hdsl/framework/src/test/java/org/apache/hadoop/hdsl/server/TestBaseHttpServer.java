@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web
+DECL|package|org.apache.hadoop.hdsl.server
 package|package
 name|org
 operator|.
@@ -12,9 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdsl
 operator|.
-name|web
+name|server
 package|;
 end_package
 
@@ -26,11 +26,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
-operator|.
 name|conf
 operator|.
-name|OzoneConfiguration
+name|Configuration
 import|;
 end_import
 
@@ -55,14 +53,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test Common ozone web methods.  */
+comment|/**  * Test Common ozone/hdsl web methods.  */
 end_comment
 
 begin_class
-DECL|class|TestOzoneHttpServer
+DECL|class|TestBaseHttpServer
 specifier|public
 class|class
-name|TestOzoneHttpServer
+name|TestBaseHttpServer
 block|{
 annotation|@
 name|Test
@@ -74,11 +72,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|OzoneConfiguration
+name|Configuration
 name|conf
 init|=
 operator|new
-name|OzoneConfiguration
+name|Configuration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -90,11 +88,11 @@ argument_list|,
 literal|"false"
 argument_list|)
 expr_stmt|;
-name|OzoneHttpServer
-name|ozoneHttpServer
+name|BaseHttpServer
+name|baseHttpServer
 init|=
 operator|new
-name|OzoneHttpServer
+name|BaseHttpServer
 argument_list|(
 name|conf
 argument_list|,
@@ -228,7 +226,7 @@ name|assertEquals
 argument_list|(
 literal|"/0.0.0.0:1234"
 argument_list|,
-name|ozoneHttpServer
+name|baseHttpServer
 operator|.
 name|getBindAddress
 argument_list|(
@@ -260,7 +258,7 @@ name|assertEquals
 argument_list|(
 literal|"/1.2.3.4:1234"
 argument_list|,
-name|ozoneHttpServer
+name|baseHttpServer
 operator|.
 name|getBindAddress
 argument_list|(

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web
+DECL|package|org.apache.hadoop.hdsl.server
 package|package
 name|org
 operator|.
@@ -12,9 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdsl
 operator|.
-name|web
+name|server
 package|;
 end_package
 
@@ -219,11 +219,11 @@ comment|/**  * Base class for HTTP server of the Ozone related components.  */
 end_comment
 
 begin_class
-DECL|class|OzoneHttpServer
+DECL|class|BaseHttpServer
 specifier|public
 specifier|abstract
 class|class
-name|OzoneHttpServer
+name|BaseHttpServer
 block|{
 DECL|field|LOG
 specifier|private
@@ -236,7 +236,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|OzoneHttpServer
+name|BaseHttpServer
 operator|.
 name|class
 argument_list|)
@@ -274,9 +274,9 @@ specifier|private
 name|String
 name|name
 decl_stmt|;
-DECL|method|OzoneHttpServer (Configuration conf, String name)
+DECL|method|BaseHttpServer (Configuration conf, String name)
 specifier|public
-name|OzoneHttpServer
+name|BaseHttpServer
 parameter_list|(
 name|Configuration
 name|conf
@@ -433,7 +433,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add a servlet to OzoneHttpServer.    * @param servletName The name of the servlet    * @param pathSpec The path spec for the servlet    * @param clazz The servlet class    */
+comment|/**    * Add a servlet to BaseHttpServer.    * @param servletName The name of the servlet    * @param pathSpec The path spec for the servlet    * @param clazz The servlet class    */
 DECL|method|addServlet (String servletName, String pathSpec, Class<? extends HttpServlet> clazz)
 specifier|protected
 name|void

@@ -40,7 +40,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|jmx
+name|hdsl
+operator|.
+name|server
 operator|.
 name|ServiceRuntimeInfo
 import|;

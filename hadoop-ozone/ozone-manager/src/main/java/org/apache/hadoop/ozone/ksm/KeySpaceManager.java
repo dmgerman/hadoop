@@ -136,7 +136,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|jmx
+name|hdsl
+operator|.
+name|server
 operator|.
 name|ServiceRuntimeInfoImpl
 import|;
@@ -738,11 +740,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdsl
 operator|.
-name|web
-operator|.
-name|util
+name|server
 operator|.
 name|ServerUtils
 operator|.

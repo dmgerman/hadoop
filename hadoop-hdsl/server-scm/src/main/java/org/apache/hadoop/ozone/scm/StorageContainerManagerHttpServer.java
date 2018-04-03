@@ -40,9 +40,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdsl
 operator|.
-name|OzoneConfigKeys
+name|server
+operator|.
+name|BaseHttpServer
 import|;
 end_import
 
@@ -56,9 +58,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|OzoneHttpServer
+name|OzoneConfigKeys
 import|;
 end_import
 
@@ -96,7 +96,7 @@ specifier|public
 class|class
 name|StorageContainerManagerHttpServer
 extends|extends
-name|OzoneHttpServer
+name|BaseHttpServer
 block|{
 DECL|method|StorageContainerManagerHttpServer (Configuration conf)
 specifier|public

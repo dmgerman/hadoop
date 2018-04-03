@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web
+DECL|package|org.apache.hadoop.hdsl.server
 package|package
 name|org
 operator|.
@@ -12,14 +12,14 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdsl
 operator|.
-name|web
+name|server
 package|;
 end_package
 
 begin_comment
-comment|/**  * Classes related to the ozone web interface.  */
+comment|/**  * Common server side utilities for all the hdsl/ozone server components.  */
 end_comment
 
 end_unit

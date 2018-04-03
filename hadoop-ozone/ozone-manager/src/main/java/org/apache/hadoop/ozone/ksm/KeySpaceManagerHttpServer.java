@@ -68,11 +68,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdsl
 operator|.
-name|web
+name|server
 operator|.
-name|OzoneHttpServer
+name|BaseHttpServer
 import|;
 end_import
 
@@ -96,7 +96,7 @@ specifier|public
 class|class
 name|KeySpaceManagerHttpServer
 extends|extends
-name|OzoneHttpServer
+name|BaseHttpServer
 block|{
 DECL|method|KeySpaceManagerHttpServer (Configuration conf, KeySpaceManager ksm)
 specifier|public
