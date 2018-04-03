@@ -4497,6 +4497,8 @@ name|now
 operator|-
 name|delta
 decl_stmt|;
+try|try
+block|{
 name|getStore
 argument_list|()
 operator|.
@@ -4505,6 +4507,19 @@ argument_list|(
 name|divide
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|e
+parameter_list|)
+block|{
+name|errorln
+argument_list|(
+literal|"Prune operation not supported in metadata store."
+argument_list|)
+expr_stmt|;
+block|}
 name|out
 operator|.
 name|flush
