@@ -1422,6 +1422,46 @@ name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 init|=
 literal|"hadoop.security.key.provider.path"
 decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_KEY
+init|=
+literal|"hadoop.security.key.default.bitlength"
+decl_stmt|;
+comment|/** Defalt value for HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_KEY. */
+DECL|field|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_DEFAULT
+init|=
+literal|128
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_KEY_DEFAULT_CIPHER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_KEY_DEFAULT_CIPHER_KEY
+init|=
+literal|"hadoop.security.key.default.cipher"
+decl_stmt|;
+comment|/** Defalt value for HADOOP_SECURITY_KEY_DEFAULT_CIPHER_KEY. */
+DECL|field|HADOOP_SECURITY_KEY_DEFAULT_CIPHER_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_KEY_DEFAULT_CIPHER_DEFAULT
+init|=
+literal|"AES/CTR/NoPadding"
+decl_stmt|;
 comment|//<!-- KMSClientProvider configurations -->
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_ENC_KEY_CACHE_SIZE

@@ -244,6 +244,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|crypto
@@ -278,7 +292,9 @@ specifier|final
 name|String
 name|DEFAULT_CIPHER_NAME
 init|=
-literal|"hadoop.security.key.default.cipher"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_KEY_DEFAULT_CIPHER_KEY
 decl_stmt|;
 DECL|field|DEFAULT_CIPHER
 specifier|public
@@ -287,7 +303,9 @@ specifier|final
 name|String
 name|DEFAULT_CIPHER
 init|=
-literal|"AES/CTR/NoPadding"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_KEY_DEFAULT_CIPHER_DEFAULT
 decl_stmt|;
 DECL|field|DEFAULT_BITLENGTH_NAME
 specifier|public
@@ -296,7 +314,9 @@ specifier|final
 name|String
 name|DEFAULT_BITLENGTH_NAME
 init|=
-literal|"hadoop.security.key.default.bitlength"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_KEY
 decl_stmt|;
 DECL|field|DEFAULT_BITLENGTH
 specifier|public
@@ -305,7 +325,9 @@ specifier|final
 name|int
 name|DEFAULT_BITLENGTH
 init|=
-literal|128
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_DEFAULT
 decl_stmt|;
 DECL|field|conf
 specifier|private
