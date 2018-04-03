@@ -2098,7 +2098,7 @@ block|}
 if|if
 condition|(
 name|numOfDatanodes
-operator|==
+operator|<=
 literal|0
 condition|)
 block|{
@@ -2107,21 +2107,20 @@ operator|.
 name|debug
 argument_list|(
 literal|"Failed to find datanode (scope=\"{}\" excludedScope=\"{}\")."
+operator|+
+literal|" numOfDatanodes={}"
 argument_list|,
 name|scope
 argument_list|,
 name|excludedScope
+argument_list|,
+name|numOfDatanodes
 argument_list|)
 expr_stmt|;
 return|return
 literal|null
 return|;
 block|}
-name|Node
-name|ret
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|int
 name|availableNodes
@@ -2163,7 +2162,7 @@ name|debug
 argument_list|(
 literal|"Choosing random from {} available nodes on node {},"
 operator|+
-literal|" scope={}, excludedScope={}, excludeNodes={}"
+literal|" scope={}, excludedScope={}, excludeNodes={}. numOfDatanodes={}."
 argument_list|,
 name|availableNodes
 argument_list|,
@@ -2174,8 +2173,15 @@ argument_list|,
 name|excludedScope
 argument_list|,
 name|excludedNodes
+argument_list|,
+name|numOfDatanodes
 argument_list|)
 expr_stmt|;
+name|Node
+name|ret
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|availableNodes
@@ -2183,27 +2189,87 @@ operator|>
 literal|0
 condition|)
 block|{
-do|do
-block|{
-name|int
-name|leaveIndex
-init|=
-name|r
-operator|.
-name|nextInt
-argument_list|(
-name|numOfDatanodes
-argument_list|)
-decl_stmt|;
 name|ret
 operator|=
-name|innerNode
-operator|.
-name|getLeaf
+name|chooseRandom
 argument_list|(
-name|leaveIndex
+name|innerNode
 argument_list|,
 name|node
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|numOfDatanodes
+argument_list|,
+name|availableNodes
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"chooseRandom returning {}"
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+return|return
+name|ret
+return|;
+block|}
+comment|/**    * Randomly choose one node under<i>parentNode</i>, considering the exclude    * nodes and scope. Should be called with {@link #netlock}'s readlock held.    *    * @param parentNode        the parent node    * @param excludedScopeNode the node corresponding to the exclude scope.    * @param excludedNodes     a collection of nodes to be excluded from    * @param totalInScopeNodes total number of nodes under parentNode, excluding    *                          the excludedScopeNode    * @param availableNodes    number of available nodes under parentNode that    *                          could be chosen, excluding excludedNodes    * @return the chosen node, or null if none can be chosen    */
+DECL|method|chooseRandom (final InnerNode parentNode, final Node excludedScopeNode, final Collection<Node> excludedNodes, final int totalInScopeNodes, final int availableNodes)
+specifier|private
+name|Node
+name|chooseRandom
+parameter_list|(
+specifier|final
+name|InnerNode
+name|parentNode
+parameter_list|,
+specifier|final
+name|Node
+name|excludedScopeNode
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|,
+specifier|final
+name|int
+name|totalInScopeNodes
+parameter_list|,
+specifier|final
+name|int
+name|availableNodes
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|totalInScopeNodes
+operator|>=
+name|availableNodes
+operator|&&
+name|availableNodes
+operator|>
+literal|0
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%d should>= %d, and both should be positive."
+argument_list|,
+name|totalInScopeNodes
+argument_list|,
+name|availableNodes
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -2212,6 +2278,92 @@ name|excludedNodes
 operator|==
 literal|null
 operator|||
+name|excludedNodes
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// if there are no excludedNodes, randomly choose a node
+specifier|final
+name|int
+name|index
+init|=
+name|r
+operator|.
+name|nextInt
+argument_list|(
+name|totalInScopeNodes
+argument_list|)
+decl_stmt|;
+return|return
+name|parentNode
+operator|.
+name|getLeaf
+argument_list|(
+name|index
+argument_list|,
+name|excludedScopeNode
+argument_list|)
+return|;
+block|}
+comment|// excludedNodes non empty.
+comment|// Choose the nth VALID node, where n is random. VALID meaning it can be
+comment|// returned, after considering exclude scope and exclude nodes.
+comment|// The probability of being chosen should be equal for all VALID nodes.
+comment|// Notably, we do NOT choose nth node, and find the next valid node
+comment|// if n is excluded - this will make the probability of the node immediately
+comment|// after an excluded node higher.
+comment|//
+comment|// Start point is always 0 and that's fine, because the nth valid node
+comment|// logic provides equal randomness.
+comment|//
+comment|// Consider this example, where 1,3,5 out of the 10 nodes are excluded:
+comment|// 1 2 3 4 5 6 7 8 9 10
+comment|// x   x   x
+comment|// We will randomly choose the nth valid node where n is [0,6].
+comment|// We do NOT choose a random number n and just use the closest valid node,
+comment|// for example both n=3 and n=4 will choose 4, making it a 2/10 probability,
+comment|// higher than the expected 1/7
+comment|// totalInScopeNodes=10 and availableNodes=7 in this example.
+name|int
+name|nthValidToReturn
+init|=
+name|r
+operator|.
+name|nextInt
+argument_list|(
+name|availableNodes
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"nthValidToReturn is {}"
+argument_list|,
+name|nthValidToReturn
+argument_list|)
+expr_stmt|;
+name|Node
+name|ret
+init|=
+name|parentNode
+operator|.
+name|getLeaf
+argument_list|(
+name|r
+operator|.
+name|nextInt
+argument_list|(
+name|totalInScopeNodes
+argument_list|)
+argument_list|,
+name|excludedScopeNode
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
 operator|!
 name|excludedNodes
 operator|.
@@ -2221,7 +2373,85 @@ name|ret
 argument_list|)
 condition|)
 block|{
+comment|// return if we're lucky enough to get a valid node at a random first pick
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Chosen node {} from first random"
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+return|return
+name|ret
+return|;
+block|}
+else|else
+block|{
+name|ret
+operator|=
+literal|null
+expr_stmt|;
+block|}
+name|Node
+name|lastValidNode
+init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|totalInScopeNodes
+condition|;
+operator|++
+name|i
+control|)
+block|{
+name|ret
+operator|=
+name|parentNode
+operator|.
+name|getLeaf
+argument_list|(
+name|i
+argument_list|,
+name|excludedScopeNode
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|excludedNodes
+operator|.
+name|contains
+argument_list|(
+name|ret
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|nthValidToReturn
+operator|==
+literal|0
+condition|)
+block|{
 break|break;
+block|}
+operator|--
+name|nthValidToReturn
+expr_stmt|;
+name|lastValidNode
+operator|=
+name|ret
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -2234,25 +2464,53 @@ argument_list|,
 name|ret
 argument_list|)
 expr_stmt|;
+name|ret
+operator|=
+literal|null
+expr_stmt|;
 block|}
-comment|// We've counted numOfAvailableNodes inside the lock, so there must be
-comment|// at least 1 satisfying node. Keep trying until we found it.
 block|}
-do|while
+if|if
 condition|(
-literal|true
+name|ret
+operator|==
+literal|null
+operator|&&
+name|lastValidNode
+operator|!=
+literal|null
 condition|)
-do|;
-block|}
+block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
-literal|"chooseRandom returning {}"
+literal|"BUG: Found lastValidNode {} but not nth valid node. "
+operator|+
+literal|"parentNode={}, excludedScopeNode={}, excludedNodes={}, "
+operator|+
+literal|"totalInScopeNodes={}, availableNodes={}, nthValidToReturn={}."
 argument_list|,
-name|ret
+name|lastValidNode
+argument_list|,
+name|parentNode
+argument_list|,
+name|excludedScopeNode
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|totalInScopeNodes
+argument_list|,
+name|availableNodes
+argument_list|,
+name|nthValidToReturn
 argument_list|)
 expr_stmt|;
+name|ret
+operator|=
+name|lastValidNode
+expr_stmt|;
+block|}
 return|return
 name|ret
 return|;
