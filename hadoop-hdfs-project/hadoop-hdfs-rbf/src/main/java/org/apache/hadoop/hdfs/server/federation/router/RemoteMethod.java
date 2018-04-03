@@ -135,6 +135,16 @@ argument_list|>
 index|[]
 name|types
 decl_stmt|;
+comment|/** Class of the protocol for the method. */
+DECL|field|protocol
+specifier|private
+specifier|final
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+decl_stmt|;
 comment|/** String name of the ClientProtocol method. */
 DECL|field|methodName
 specifier|private
@@ -142,11 +152,36 @@ specifier|final
 name|String
 name|methodName
 decl_stmt|;
-comment|/**    * Create a method with no parameters.    *    * @param method The string name of the ClientProtocol method.    */
+comment|/**    * Create a remote method generator for the ClientProtocol with no parameters.    *    * @param method The string name of the protocol method.    */
 DECL|method|RemoteMethod (String method)
 specifier|public
 name|RemoteMethod
 parameter_list|(
+name|String
+name|method
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|ClientProtocol
+operator|.
+name|class
+argument_list|,
+name|method
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a method with no parameters.    *    * @param proto Protocol of the method.    * @param method The string name of the ClientProtocol method.    */
+DECL|method|RemoteMethod (Class<?> proto, String method)
+specifier|public
+name|RemoteMethod
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|proto
+parameter_list|,
 name|String
 name|method
 parameter_list|)
@@ -169,12 +204,60 @@ name|methodName
 operator|=
 name|method
 expr_stmt|;
+name|this
+operator|.
+name|protocol
+operator|=
+name|proto
+expr_stmt|;
 block|}
-comment|/**    * Creates a remote method generator.    *    * @param method The string name of the ClientProtocol method.    * @param pTypes A list of types to use to locate the specific method.    * @param pParams A list of parameters for the method. The order of the    *          parameter list must match the order and number of the types.    *          Parameters are grouped into 2 categories:    *<ul>    *<li>Static parameters that are immutable across locations.    *<li>Dynamic parameters that are determined for each location by a    *          RemoteParam object. To specify a dynamic parameter, pass an    *          instance of RemoteParam in place of the parameter value.    *</ul>    * @throws IOException If the types and parameter lists are not valid.    */
+comment|/**    * Create a remote method generator for the ClientProtocol.    *    * @param method The string name of the ClientProtocol method.    * @param pTypes A list of types to use to locate the specific method.    * @param pParams A list of parameters for the method. The order of the    *          parameter list must match the order and number of the types.    *          Parameters are grouped into 2 categories:    *<ul>    *<li>Static parameters that are immutable across locations.    *<li>Dynamic parameters that are determined for each location by a    *          RemoteParam object. To specify a dynamic parameter, pass an    *          instance of RemoteParam in place of the parameter value.    *</ul>    * @throws IOException If the types and parameter lists are not valid.    */
 DECL|method|RemoteMethod (String method, Class<?>[] pTypes, Object... pParams)
 specifier|public
 name|RemoteMethod
 parameter_list|(
+name|String
+name|method
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+argument_list|>
+index|[]
+name|pTypes
+parameter_list|,
+name|Object
+modifier|...
+name|pParams
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|ClientProtocol
+operator|.
+name|class
+argument_list|,
+name|method
+argument_list|,
+name|pTypes
+argument_list|,
+name|pParams
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a remote method generator.    *    * @param proto Protocol of the method.    * @param method The string name of the ClientProtocol method.    * @param pTypes A list of types to use to locate the specific method.    * @param pParams A list of parameters for the method. The order of the    *          parameter list must match the order and number of the types.    *          Parameters are grouped into 2 categories:    *<ul>    *<li>Static parameters that are immutable across locations.    *<li>Dynamic parameters that are determined for each location by a    *          RemoteParam object. To specify a dynamic parameter, pass an    *          instance of RemoteParam in place of the parameter value.    *</ul>    * @throws IOException If the types and parameter lists are not valid.    */
+DECL|method|RemoteMethod (Class<?> proto, String method, Class<?>[] pTypes, Object... pParams)
+specifier|public
+name|RemoteMethod
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|proto
+parameter_list|,
 name|String
 name|method
 parameter_list|,
@@ -215,6 +298,12 @@ throw|;
 block|}
 name|this
 operator|.
+name|protocol
+operator|=
+name|proto
+expr_stmt|;
+name|this
+operator|.
 name|params
 operator|=
 name|pParams
@@ -241,6 +330,22 @@ operator|=
 name|method
 expr_stmt|;
 block|}
+comment|/**    * Get the interface/protocol for this method. For example, ClientProtocol or    * NamenodeProtocol.    *    * @return Protocol for this method.    */
+DECL|method|getProtocol ()
+specifier|public
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|getProtocol
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|protocol
+return|;
+block|}
 comment|/**    * Get the represented java method.    *    * @return Method    * @throws IOException If the method cannot be found.    */
 DECL|method|getMethod ()
 specifier|public
@@ -260,9 +365,7 @@ literal|null
 condition|)
 block|{
 return|return
-name|ClientProtocol
-operator|.
-name|class
+name|protocol
 operator|.
 name|getDeclaredMethod
 argument_list|(
@@ -275,9 +378,7 @@ block|}
 else|else
 block|{
 return|return
-name|ClientProtocol
-operator|.
-name|class
+name|protocol
 operator|.
 name|getDeclaredMethod
 argument_list|(
@@ -297,7 +398,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot get method {} with types {}"
+literal|"Cannot get method {} with types {} from {}"
 argument_list|,
 name|methodName
 argument_list|,
@@ -307,6 +408,11 @@ name|toString
 argument_list|(
 name|types
 argument_list|)
+argument_list|,
+name|protocol
+operator|.
+name|getSimpleName
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -329,7 +435,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot access method {} with types {}"
+literal|"Cannot access method {} with types {} from {}"
 argument_list|,
 name|methodName
 argument_list|,
@@ -339,6 +445,11 @@ name|toString
 argument_list|(
 name|types
 argument_list|)
+argument_list|,
+name|protocol
+operator|.
+name|getSimpleName
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -522,6 +633,40 @@ block|}
 block|}
 return|return
 name|objList
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|protocol
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|"#"
+operator|+
+name|this
+operator|.
+name|methodName
+operator|+
+literal|" "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|this
+operator|.
+name|params
+argument_list|)
 return|;
 block|}
 block|}

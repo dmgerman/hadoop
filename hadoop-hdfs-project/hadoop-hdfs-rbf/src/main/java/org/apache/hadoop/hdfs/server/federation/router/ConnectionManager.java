@@ -731,8 +731,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Fetches the next available proxy client in the pool. Each client connection    * is reserved for a single user and cannot be reused until free.    *    * @param ugi User group information.    * @param nnAddress Namenode address for the connection.    * @return Proxy client to connect to nnId as UGI.    * @throws IOException If the connection cannot be obtained.    */
-DECL|method|getConnection ( UserGroupInformation ugi, String nnAddress)
+comment|/**    * Fetches the next available proxy client in the pool. Each client connection    * is reserved for a single user and cannot be reused until free.    *    * @param ugi User group information.    * @param nnAddress Namenode address for the connection.    * @param protocol Protocol for the connection.    * @return Proxy client to connect to nnId as UGI.    * @throws IOException If the connection cannot be obtained.    */
+DECL|method|getConnection (UserGroupInformation ugi, String nnAddress, Class<?> protocol)
 specifier|public
 name|ConnectionContext
 name|getConnection
@@ -742,6 +742,12 @@ name|ugi
 parameter_list|,
 name|String
 name|nnAddress
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
 parameter_list|)
 throws|throws
 name|IOException
@@ -778,6 +784,8 @@ argument_list|(
 name|ugi
 argument_list|,
 name|nnAddress
+argument_list|,
+name|protocol
 argument_list|)
 decl_stmt|;
 name|ConnectionPool
@@ -865,6 +873,8 @@ argument_list|,
 name|this
 operator|.
 name|maxSize
+argument_list|,
+name|protocol
 argument_list|)
 expr_stmt|;
 name|this

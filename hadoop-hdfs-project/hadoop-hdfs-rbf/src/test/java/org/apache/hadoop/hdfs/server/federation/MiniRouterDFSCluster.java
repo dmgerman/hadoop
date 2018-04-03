@@ -1821,6 +1821,16 @@ return|return
 name|client
 return|;
 block|}
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
+block|}
 block|}
 comment|/**    * Namenode context in the federated cluster.    */
 DECL|class|NamenodeContext
@@ -2335,6 +2345,16 @@ expr_stmt|;
 block|}
 return|return
 name|suffix
+return|;
+block|}
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
 return|;
 block|}
 block|}
