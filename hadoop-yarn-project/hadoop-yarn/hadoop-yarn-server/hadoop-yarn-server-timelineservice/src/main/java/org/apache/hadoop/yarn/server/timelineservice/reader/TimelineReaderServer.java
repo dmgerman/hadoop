@@ -1392,7 +1392,7 @@ name|setFloat
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|TIMELINE_SERVICE_VERSION
+name|TIMELINE_SERVICE_VERSIONS
 argument_list|,
 literal|2.0f
 argument_list|)

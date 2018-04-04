@@ -467,24 +467,12 @@ name|conf
 parameter_list|)
 block|{
 return|return
-name|timelineServiceEnabled
-argument_list|(
-name|conf
-argument_list|)
-operator|&&
-name|Math
+name|YarnConfiguration
 operator|.
-name|abs
-argument_list|(
-name|getTimelineServiceVersion
+name|timelineServiceV15Enabled
 argument_list|(
 name|conf
 argument_list|)
-operator|-
-literal|1.5
-argument_list|)
-operator|<
-literal|0.00001
 return|;
 block|}
 DECL|method|createTimelineAbout (String about)
