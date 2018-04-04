@@ -1068,6 +1068,23 @@ argument_list|,
 name|containerName
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|pipeline
+argument_list|,
+literal|"Pipeline type=%s/"
+operator|+
+literal|"replication=%s couldn't be found for the new container. "
+operator|+
+literal|"Do you have enough nodes?"
+argument_list|,
+name|type
+argument_list|,
+name|replicationFactor
+argument_list|)
+expr_stmt|;
 name|ContainerInfo
 name|containerInfo
 init|=
