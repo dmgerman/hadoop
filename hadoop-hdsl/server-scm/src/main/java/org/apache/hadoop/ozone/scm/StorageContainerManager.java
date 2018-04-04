@@ -2096,7 +2096,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: \n hdfs scm [genericOptions] "
+literal|"Usage: \n oz scm [genericOptions] "
 operator|+
 literal|"[ "
 operator|+
@@ -2118,7 +2118,7 @@ argument_list|()
 operator|+
 literal|"<cid> ] ]\n "
 operator|+
-literal|"hdfs scm [genericOptions] [ "
+literal|"oz scm [genericOptions] [ "
 operator|+
 name|StartupOption
 operator|.
@@ -2129,7 +2129,7 @@ argument_list|()
 operator|+
 literal|" ]\n "
 operator|+
-literal|"hdfs scm [ "
+literal|"oz scm [ "
 operator|+
 name|StartupOption
 operator|.

@@ -1045,7 +1045,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: \n hdfs ksm [genericOptions] "
+literal|"Usage: \n oz ksm [genericOptions] "
 operator|+
 literal|"[ "
 operator|+
@@ -1058,7 +1058,7 @@ argument_list|()
 operator|+
 literal|" ]\n "
 operator|+
-literal|"hdfs ksm [ "
+literal|"oz ksm [ "
 operator|+
 name|StartupOption
 operator|.
