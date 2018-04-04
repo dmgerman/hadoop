@@ -72,6 +72,24 @@ name|protobuf
 operator|.
 name|RpcHeaderProtos
 operator|.
+name|RpcRequestHeaderProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
 name|RpcResponseHeaderProto
 import|;
 end_import
@@ -109,12 +127,6 @@ name|ClientGCIContext
 implements|implements
 name|AlignmentContext
 block|{
-DECL|field|dfsClient
-specifier|private
-specifier|final
-name|DFSClient
-name|dfsClient
-decl_stmt|;
 DECL|field|lastSeenStateId
 specifier|private
 specifier|final
@@ -133,20 +145,17 @@ operator|.
 name|MIN_VALUE
 argument_list|)
 decl_stmt|;
-comment|/**    * Client side constructor.    * @param dfsClient client side state receiver    */
-DECL|method|ClientGCIContext (DFSClient dfsClient)
-name|ClientGCIContext
-parameter_list|(
-name|DFSClient
-name|dfsClient
-parameter_list|)
+DECL|method|getLastSeenStateId ()
+name|long
+name|getLastSeenStateId
+parameter_list|()
 block|{
-name|this
+return|return
+name|lastSeenStateId
 operator|.
-name|dfsClient
-operator|=
-name|dfsClient
-expr_stmt|;
+name|get
+argument_list|()
+return|;
 block|}
 comment|/**    * Client side implementation only receives state alignment info.    * It does not provide state alignment info therefore this does nothing.    */
 annotation|@
@@ -164,7 +173,7 @@ parameter_list|)
 block|{
 comment|// Do nothing.
 block|}
-comment|/**    * Client side implementation for receiving state alignment info.    */
+comment|/**    * Client side implementation for receiving state alignment info in responses.    */
 annotation|@
 name|Override
 DECL|method|receiveResponseState (RpcResponseHeaderProto header)
@@ -186,15 +195,45 @@ name|getStateId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|dfsClient
+block|}
+comment|/**    * Client side implementation for providing state alignment info in requests.    */
+annotation|@
+name|Override
+DECL|method|updateRequestState (RpcRequestHeaderProto.Builder header)
+specifier|public
+name|void
+name|updateRequestState
+parameter_list|(
+name|RpcRequestHeaderProto
 operator|.
-name|lastSeenStateId
-operator|=
+name|Builder
+name|header
+parameter_list|)
+block|{
+name|header
+operator|.
+name|setStateId
+argument_list|(
 name|lastSeenStateId
 operator|.
-name|get
+name|longValue
 argument_list|()
+argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Client side implementation only provides state alignment info in requests.    * Client does not receive RPC requests therefore this does nothing.    */
+annotation|@
+name|Override
+DECL|method|receiveRequestState (RpcRequestHeaderProto header)
+specifier|public
+name|void
+name|receiveRequestState
+parameter_list|(
+name|RpcRequestHeaderProto
+name|header
+parameter_list|)
+block|{
+comment|// Do nothing.
 block|}
 block|}
 end_class

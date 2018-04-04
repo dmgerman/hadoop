@@ -2696,11 +2696,6 @@ specifier|volatile
 name|long
 name|lastLeaseRenewal
 decl_stmt|;
-DECL|field|lastSeenStateId
-specifier|volatile
-name|long
-name|lastSeenStateId
-decl_stmt|;
 DECL|field|serverDefaults
 specifier|private
 specifier|volatile
@@ -2826,6 +2821,12 @@ specifier|private
 specifier|final
 name|long
 name|serverDefaultsValidityPeriod
+decl_stmt|;
+DECL|field|alignmentContext
+specifier|private
+specifier|final
+name|ClientGCIContext
+name|alignmentContext
 decl_stmt|;
 DECL|method|getConf ()
 specifier|public
@@ -3596,15 +3597,19 @@ argument_list|,
 name|nnFallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|alignmentContext
+operator|=
+operator|new
+name|ClientGCIContext
+argument_list|()
+expr_stmt|;
 name|Client
 operator|.
 name|setAlignmentContext
 argument_list|(
-operator|new
-name|ClientGCIContext
-argument_list|(
-name|this
-argument_list|)
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -4131,6 +4136,17 @@ parameter_list|()
 block|{
 return|return
 name|clientRunning
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAlignmentContext ()
+name|ClientGCIContext
+name|getAlignmentContext
+parameter_list|()
+block|{
+return|return
+name|alignmentContext
 return|;
 block|}
 DECL|method|getLastLeaseRenewal ()

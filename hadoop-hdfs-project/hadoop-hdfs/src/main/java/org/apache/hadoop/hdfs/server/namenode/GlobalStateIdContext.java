@@ -76,6 +76,24 @@ name|protobuf
 operator|.
 name|RpcHeaderProtos
 operator|.
+name|RpcRequestHeaderProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
 name|RpcResponseHeaderProto
 import|;
 end_import
@@ -120,7 +138,7 @@ operator|=
 name|namesystem
 expr_stmt|;
 block|}
-comment|/**    * Server side implementation for providing state alignment info.    */
+comment|/**    * Server side implementation for providing state alignment info in responses.    */
 annotation|@
 name|Override
 DECL|method|updateResponseState (RpcResponseHeaderProto.Builder header)
@@ -158,6 +176,74 @@ name|header
 parameter_list|)
 block|{
 comment|// Do nothing.
+block|}
+comment|/**    * Server side implementation only receives state alignment info.    * It does not build RPC requests therefore this does nothing.    */
+annotation|@
+name|Override
+DECL|method|updateRequestState (RpcRequestHeaderProto.Builder header)
+specifier|public
+name|void
+name|updateRequestState
+parameter_list|(
+name|RpcRequestHeaderProto
+operator|.
+name|Builder
+name|header
+parameter_list|)
+block|{
+comment|// Do nothing.
+block|}
+comment|/**    * Server side implementation for processing state alignment info in requests.    */
+annotation|@
+name|Override
+DECL|method|receiveRequestState (RpcRequestHeaderProto header)
+specifier|public
+name|void
+name|receiveRequestState
+parameter_list|(
+name|RpcRequestHeaderProto
+name|header
+parameter_list|)
+block|{
+name|long
+name|serverStateId
+init|=
+name|namesystem
+operator|.
+name|getLastWrittenTransactionId
+argument_list|()
+decl_stmt|;
+name|long
+name|clientStateId
+init|=
+name|header
+operator|.
+name|getStateId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|clientStateId
+operator|>
+name|serverStateId
+condition|)
+block|{
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"A client sent stateId: "
+operator|+
+name|clientStateId
+operator|+
+literal|", but server state is: "
+operator|+
+name|serverStateId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

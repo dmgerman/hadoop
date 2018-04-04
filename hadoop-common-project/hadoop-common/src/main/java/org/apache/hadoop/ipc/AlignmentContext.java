@@ -58,6 +58,24 @@ name|protobuf
 operator|.
 name|RpcHeaderProtos
 operator|.
+name|RpcRequestHeaderProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
 name|RpcResponseHeaderProto
 import|;
 end_import
@@ -97,6 +115,26 @@ name|void
 name|receiveResponseState
 parameter_list|(
 name|RpcResponseHeaderProto
+name|header
+parameter_list|)
+function_decl|;
+comment|/**    * This is the intended client method call to pull last seen state info    * into RPC request processing.    * @param header The RPC request header builder.    */
+DECL|method|updateRequestState (RpcRequestHeaderProto.Builder header)
+name|void
+name|updateRequestState
+parameter_list|(
+name|RpcRequestHeaderProto
+operator|.
+name|Builder
+name|header
+parameter_list|)
+function_decl|;
+comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    * @param header The RPC request header.    */
+DECL|method|receiveRequestState (RpcRequestHeaderProto header)
+name|void
+name|receiveRequestState
+parameter_list|(
+name|RpcRequestHeaderProto
 name|header
 parameter_list|)
 function_decl|;

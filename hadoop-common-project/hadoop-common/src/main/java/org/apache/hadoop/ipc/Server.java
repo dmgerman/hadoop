@@ -11701,6 +11701,22 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|alignmentContext
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Check incoming RPC request's state.
+name|alignmentContext
+operator|.
+name|receiveRequestState
+argument_list|(
+name|header
+argument_list|)
+expr_stmt|;
+block|}
 name|CallerContext
 name|callerContext
 init|=

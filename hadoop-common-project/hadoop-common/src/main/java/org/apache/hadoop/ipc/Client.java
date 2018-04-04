@@ -4915,6 +4915,8 @@ operator|.
 name|retry
 argument_list|,
 name|clientId
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 specifier|final
