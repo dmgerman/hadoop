@@ -2461,6 +2461,8 @@ name|getBlockInvalidateLimit
 argument_list|()
 argument_list|,
 name|startupDelayBlockDeletionInMs
+argument_list|,
+name|blockIdManager
 argument_list|)
 expr_stmt|;
 comment|// Compute the map capacity by allocating 2% of total memory
@@ -8591,6 +8593,14 @@ argument_list|,
 name|b
 operator|.
 name|getReasonCode
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getStored
+argument_list|()
+operator|.
+name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;

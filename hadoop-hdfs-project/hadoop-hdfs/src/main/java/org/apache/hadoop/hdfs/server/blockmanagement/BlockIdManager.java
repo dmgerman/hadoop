@@ -741,6 +741,33 @@ operator|.
 name|GRANDFATHER_GENERATION_STAMP
 expr_stmt|;
 block|}
+comment|/**    * Return true if the block is a striped block.    *    * Before HDFS-4645, block ID was randomly generated (legacy), so it is    * possible that legacy block ID to be negative, which should not be    * considered as striped block ID.    *    * @see #isLegacyBlock(Block) detecting legacy block IDs.    */
+DECL|method|isStripedBlock (Block block)
+specifier|public
+name|boolean
+name|isStripedBlock
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+block|{
+return|return
+name|isStripedBlockID
+argument_list|(
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+operator|&&
+operator|!
+name|isLegacyBlock
+argument_list|(
+name|block
+argument_list|)
+return|;
+block|}
+comment|/**    * See {@link #isStripedBlock(Block)}, we should not use this function alone    * to determine a block is striped block.    */
 DECL|method|isStripedBlockID (long id)
 specifier|public
 specifier|static

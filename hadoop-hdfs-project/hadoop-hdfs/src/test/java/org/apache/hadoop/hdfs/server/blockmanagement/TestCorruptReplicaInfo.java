@@ -69,6 +69,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -160,6 +184,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StripedFileTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -212,6 +250,16 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test makes sure that   *   CorruptReplicasMap::numBlocksWithCorruptReplicas and  *   CorruptReplicasMap::getCorruptReplicaBlockIds  *   return the correct values  */
 end_comment
@@ -245,7 +293,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|Block
+name|BlockInfo
 argument_list|>
 name|replicaMap
 init|=
@@ -261,7 +309,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|Block
+name|BlockInfo
 argument_list|>
 name|stripedBlocksMap
 init|=
@@ -274,7 +322,7 @@ comment|// Allow easy block creation by block id. Return existing
 comment|// replica block if one with same block id already exists.
 DECL|method|getReplica (Long blockId)
 specifier|private
-name|Block
+name|BlockInfo
 name|getReplica
 parameter_list|(
 name|Long
@@ -292,12 +340,20 @@ name|blockId
 argument_list|)
 condition|)
 block|{
+name|short
+name|replFactor
+init|=
+literal|3
+decl_stmt|;
 name|replicaMap
 operator|.
 name|put
 argument_list|(
 name|blockId
 argument_list|,
+operator|new
+name|BlockInfoContiguous
+argument_list|(
 operator|new
 name|Block
 argument_list|(
@@ -306,6 +362,9 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|)
+argument_list|,
+name|replFactor
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -321,7 +380,7 @@ return|;
 block|}
 DECL|method|getReplica (int blkId)
 specifier|private
-name|Block
+name|BlockInfo
 name|getReplica
 parameter_list|(
 name|int
@@ -342,7 +401,7 @@ return|;
 block|}
 DECL|method|getStripedBlock (int blkId)
 specifier|private
-name|Block
+name|BlockInfo
 name|getStripedBlock
 parameter_list|(
 name|int
@@ -388,6 +447,9 @@ argument_list|(
 name|stripedBlockId
 argument_list|,
 operator|new
+name|BlockInfoStriped
+argument_list|(
+operator|new
 name|Block
 argument_list|(
 name|stripedBlockId
@@ -395,6 +457,12 @@ argument_list|,
 literal|1024
 argument_list|,
 literal|0
+argument_list|)
+argument_list|,
+name|StripedFileTestUtil
+operator|.
+name|getDefaultECPolicy
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -486,6 +554,72 @@ operator|new
 name|CorruptReplicasMap
 argument_list|()
 decl_stmt|;
+name|BlockIdManager
+name|bim
+init|=
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|BlockIdManager
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|bim
+operator|.
+name|isLegacyBlock
+argument_list|(
+name|any
+argument_list|(
+name|Block
+operator|.
+name|class
+argument_list|)
+argument_list|)
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|bim
+operator|.
+name|isStripedBlock
+argument_list|(
+name|any
+argument_list|(
+name|Block
+operator|.
+name|class
+argument_list|)
+argument_list|)
+argument_list|)
+operator|.
+name|thenCallRealMethod
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+operator|!
+name|bim
+operator|.
+name|isLegacyBlock
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Make sure initial values are returned correctly
 name|assertEquals
 argument_list|(
@@ -531,6 +665,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|CONTIGUOUS
@@ -550,6 +686,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|CONTIGUOUS
@@ -568,6 +706,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|CONTIGUOUS
@@ -966,6 +1106,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|CONTIGUOUS
@@ -1000,6 +1142,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|STRIPED
@@ -1034,6 +1178,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|CONTIGUOUS
@@ -1068,6 +1214,8 @@ name|crm
 operator|.
 name|getCorruptBlockIdsForTesting
 argument_list|(
+name|bim
+argument_list|,
 name|BlockType
 operator|.
 name|STRIPED
@@ -1086,7 +1234,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addToCorruptReplicasMap (CorruptReplicasMap crm, Block blk, DatanodeDescriptor dn)
+DECL|method|addToCorruptReplicasMap (CorruptReplicasMap crm, BlockInfo blk, DatanodeDescriptor dn)
 specifier|private
 specifier|static
 name|void
@@ -1095,7 +1243,7 @@ parameter_list|(
 name|CorruptReplicasMap
 name|crm
 parameter_list|,
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -1115,6 +1263,11 @@ argument_list|,
 name|Reason
 operator|.
 name|NONE
+argument_list|,
+name|blk
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

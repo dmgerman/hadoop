@@ -373,6 +373,12 @@ specifier|final
 name|int
 name|blockInvalidateLimit
 decl_stmt|;
+DECL|field|blockIdManager
+specifier|private
+specifier|final
+name|BlockIdManager
+name|blockIdManager
+decl_stmt|;
 comment|/**    * The period of pending time for block invalidation since the NameNode    * startup    */
 DECL|field|pendingPeriodInMs
 specifier|private
@@ -392,7 +398,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-DECL|method|InvalidateBlocks (final int blockInvalidateLimit, long pendingPeriodInMs)
+DECL|method|InvalidateBlocks (final int blockInvalidateLimit, long pendingPeriodInMs, final BlockIdManager blockIdManager)
 name|InvalidateBlocks
 parameter_list|(
 specifier|final
@@ -401,6 +407,10 @@ name|blockInvalidateLimit
 parameter_list|,
 name|long
 name|pendingPeriodInMs
+parameter_list|,
+specifier|final
+name|BlockIdManager
+name|blockIdManager
 parameter_list|)
 block|{
 name|this
@@ -414,6 +424,12 @@ operator|.
 name|pendingPeriodInMs
 operator|=
 name|pendingPeriodInMs
+expr_stmt|;
+name|this
+operator|.
+name|blockIdManager
+operator|=
+name|blockIdManager
 expr_stmt|;
 name|printBlockDeletionTime
 argument_list|(
@@ -636,14 +652,11 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
+name|blockIdManager
 operator|.
-name|isStripedBlockID
+name|isStripedBlock
 argument_list|(
 name|block
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -684,14 +697,11 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
+name|blockIdManager
 operator|.
-name|isStripedBlockID
+name|isStripedBlock
 argument_list|(
 name|block
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -931,14 +941,11 @@ condition|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
+name|blockIdManager
 operator|.
-name|isStripedBlockID
+name|isStripedBlock
 argument_list|(
 name|block
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1108,14 +1115,11 @@ condition|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
+name|blockIdManager
 operator|.
-name|isStripedBlockID
+name|isStripedBlock
 argument_list|(
 name|block
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 condition|)
 block|{

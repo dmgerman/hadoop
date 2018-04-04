@@ -326,11 +326,11 @@ name|info
 return|;
 block|}
 comment|/**    * Remove the block from the block map;    * remove it from all data-node lists it belongs to;    * and remove all data-node locations associated with the block.    */
-DECL|method|removeBlock (Block block)
+DECL|method|removeBlock (BlockInfo block)
 name|void
 name|removeBlock
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
@@ -666,7 +666,7 @@ expr_stmt|;
 comment|// remove block from the map
 name|decrementBlockStat
 argument_list|(
-name|b
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -760,26 +760,21 @@ return|return
 name|capacity
 return|;
 block|}
-DECL|method|incrementBlockStat (Block block)
+DECL|method|incrementBlockStat (BlockInfo block)
 specifier|private
 name|void
 name|incrementBlockStat
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
-operator|.
-name|isStripedBlockID
-argument_list|(
 name|block
 operator|.
-name|getBlockId
+name|isStriped
 argument_list|()
-argument_list|)
 condition|)
 block|{
 name|totalECBlockGroups
@@ -797,26 +792,21 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|decrementBlockStat (Block block)
+DECL|method|decrementBlockStat (BlockInfo block)
 specifier|private
 name|void
 name|decrementBlockStat
 parameter_list|(
-name|Block
+name|BlockInfo
 name|block
 parameter_list|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
-operator|.
-name|isStripedBlockID
-argument_list|(
 name|block
 operator|.
-name|getBlockId
+name|isStriped
 argument_list|()
-argument_list|)
 condition|)
 block|{
 name|totalECBlockGroups

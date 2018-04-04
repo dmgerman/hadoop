@@ -271,7 +271,7 @@ name|LongAdder
 argument_list|()
 decl_stmt|;
 comment|/**    * Mark the block belonging to datanode as corrupt.    *    * @param blk Block to be added to CorruptReplicasMap    * @param dn DatanodeDescriptor which holds the corrupt replica    * @param reason a textual reason (for logging purposes)    * @param reasonCode the enum representation of the reason    */
-DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn, String reason, Reason reasonCode)
+DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn, String reason, Reason reasonCode, boolean isStriped)
 name|void
 name|addToCorruptReplicasMap
 parameter_list|(
@@ -286,6 +286,9 @@ name|reason
 parameter_list|,
 name|Reason
 name|reasonCode
+parameter_list|,
+name|boolean
+name|isStriped
 parameter_list|)
 block|{
 name|Map
@@ -332,7 +335,7 @@ argument_list|)
 expr_stmt|;
 name|incrementBlockStat
 argument_list|(
-name|blk
+name|isStriped
 argument_list|)
 expr_stmt|;
 block|}
@@ -434,11 +437,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove Block from CorruptBlocksMap.    * @param blk Block to be removed    */
-DECL|method|removeFromCorruptReplicasMap (Block blk)
+DECL|method|removeFromCorruptReplicasMap (BlockInfo blk)
 name|void
 name|removeFromCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -474,17 +477,20 @@ block|{
 name|decrementBlockStat
 argument_list|(
 name|blk
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
 comment|/**    * Remove the block at the given datanode from CorruptBlockMap    * @param blk block to be removed    * @param datanode datanode where the block is located    * @return true if the removal is successful;               false if the replica is not in the map    */
-DECL|method|removeFromCorruptReplicasMap (Block blk, DatanodeDescriptor datanode)
+DECL|method|removeFromCorruptReplicasMap ( BlockInfo blk, DatanodeDescriptor datanode)
 name|boolean
 name|removeFromCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -504,11 +510,11 @@ name|ANY
 argument_list|)
 return|;
 block|}
-DECL|method|removeFromCorruptReplicasMap (Block blk, DatanodeDescriptor datanode, Reason reason)
+DECL|method|removeFromCorruptReplicasMap ( BlockInfo blk, DatanodeDescriptor datanode, Reason reason)
 name|boolean
 name|removeFromCorruptReplicasMap
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|,
 name|DatanodeDescriptor
@@ -608,6 +614,9 @@ expr_stmt|;
 name|decrementBlockStat
 argument_list|(
 name|blk
+operator|.
+name|isStriped
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -619,26 +628,18 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|incrementBlockStat (Block block)
+DECL|method|incrementBlockStat (boolean isStriped)
 specifier|private
 name|void
 name|incrementBlockStat
 parameter_list|(
-name|Block
-name|block
+name|boolean
+name|isStriped
 parameter_list|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
-operator|.
-name|isStripedBlockID
-argument_list|(
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|)
+name|isStriped
 condition|)
 block|{
 name|totalCorruptECBlockGroups
@@ -656,26 +657,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|decrementBlockStat (Block block)
+DECL|method|decrementBlockStat (boolean isStriped)
 specifier|private
 name|void
 name|decrementBlockStat
 parameter_list|(
-name|Block
-name|block
+name|boolean
+name|isStriped
 parameter_list|)
 block|{
 if|if
 condition|(
-name|BlockIdManager
-operator|.
-name|isStripedBlockID
-argument_list|(
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|)
+name|isStriped
 condition|)
 block|{
 name|totalCorruptECBlockGroups
@@ -824,14 +817,17 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks     * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId     * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    */
+comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks     * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId     * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param bim BlockIdManager to determine the block type.    * @param blockType desired block type to return.    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getCorruptBlockIdsForTesting (BlockType blockType, int numExpectedBlocks, Long startingBlockId)
+DECL|method|getCorruptBlockIdsForTesting (BlockIdManager bim, BlockType blockType, int numExpectedBlocks, Long startingBlockId)
 name|long
 index|[]
 name|getCorruptBlockIdsForTesting
 parameter_list|(
+name|BlockIdManager
+name|bim
+parameter_list|,
 name|BlockType
 name|blockType
 parameter_list|,
@@ -894,14 +890,11 @@ name|STRIPED
 condition|)
 block|{
 return|return
-name|BlockIdManager
+name|bim
 operator|.
-name|isStripedBlockID
+name|isStripedBlock
 argument_list|(
 name|r
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 operator|&&
 name|r
@@ -916,14 +909,11 @@ else|else
 block|{
 return|return
 operator|!
-name|BlockIdManager
+name|bim
 operator|.
-name|isStripedBlockID
+name|isStripedBlock
 argument_list|(
 name|r
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 operator|&&
 name|r
