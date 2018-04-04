@@ -26,7 +26,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|tools
+name|freon
 operator|.
 name|Freon
 import|;

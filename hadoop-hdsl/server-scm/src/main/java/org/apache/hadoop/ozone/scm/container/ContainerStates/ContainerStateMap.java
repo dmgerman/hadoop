@@ -450,6 +450,27 @@ parameter_list|)
 throws|throws
 name|SCMException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|info
+argument_list|,
+literal|"Container Info cannot be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|info
+operator|.
+name|getPipeline
+argument_list|()
+argument_list|,
+literal|"Pipeline cannot be null"
+argument_list|)
+expr_stmt|;
 try|try
 init|(
 name|AutoCloseableLock

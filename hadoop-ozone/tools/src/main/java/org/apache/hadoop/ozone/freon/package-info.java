@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.tools
+DECL|package|org.apache.hadoop.ozone.freon
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|tools
+name|freon
 package|;
 end_package
 
