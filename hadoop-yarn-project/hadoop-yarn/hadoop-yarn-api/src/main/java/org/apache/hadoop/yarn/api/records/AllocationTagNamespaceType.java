@@ -48,10 +48,10 @@ argument_list|(
 literal|"app-id"
 argument_list|)
 block|,
-DECL|enumConstant|APP_LABEL
-name|APP_LABEL
+DECL|enumConstant|APP_TAG
+name|APP_TAG
 argument_list|(
-literal|"app-label"
+literal|"app-tag"
 argument_list|)
 block|,
 DECL|enumConstant|ALL

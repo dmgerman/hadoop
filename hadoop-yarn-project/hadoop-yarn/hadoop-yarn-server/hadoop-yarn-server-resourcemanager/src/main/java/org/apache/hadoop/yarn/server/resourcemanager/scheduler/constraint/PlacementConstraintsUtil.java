@@ -118,24 +118,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AllocationTagNamespaceType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationId
 import|;
 end_import
@@ -457,92 +439,6 @@ specifier|private
 name|PlacementConstraintsUtil
 parameter_list|()
 block|{   }
-comment|/**    * Try to the namespace of the allocation tags from the given target key.    *    * @param targetKey    * @return allocation tag namespace.    * @throws InvalidAllocationTagsQueryException    * if fail to parse the target key to a valid namespace.    */
-DECL|method|getAllocationTagNamespace ( ApplicationId currentAppId, String targetKey, AllocationTagsManager atm)
-specifier|private
-specifier|static
-name|AllocationTagNamespace
-name|getAllocationTagNamespace
-parameter_list|(
-name|ApplicationId
-name|currentAppId
-parameter_list|,
-name|String
-name|targetKey
-parameter_list|,
-name|AllocationTagsManager
-name|atm
-parameter_list|)
-throws|throws
-name|InvalidAllocationTagsQueryException
-block|{
-comment|// Parse to a valid namespace.
-name|AllocationTagNamespace
-name|namespace
-init|=
-name|AllocationTagNamespace
-operator|.
-name|parse
-argument_list|(
-name|targetKey
-argument_list|)
-decl_stmt|;
-comment|// TODO Complete remove this check once we support app-label.
-if|if
-condition|(
-name|AllocationTagNamespaceType
-operator|.
-name|APP_LABEL
-operator|.
-name|equals
-argument_list|(
-name|namespace
-operator|.
-name|getNamespaceType
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidAllocationTagsQueryException
-argument_list|(
-name|namespace
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" is not supported yet!"
-argument_list|)
-throw|;
-block|}
-comment|// Evaluate the namespace according to the given target
-comment|// before it can be consumed.
-name|TargetApplications
-name|ta
-init|=
-operator|new
-name|TargetApplications
-argument_list|(
-name|currentAppId
-argument_list|,
-name|atm
-operator|.
-name|getAllApplicationIds
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|namespace
-operator|.
-name|evaluate
-argument_list|(
-name|ta
-argument_list|)
-expr_stmt|;
-return|return
-name|namespace
-return|;
-block|}
 comment|/**    * Returns true if<b>single</b> placement constraint with associated    * allocationTags and scope is satisfied by a specific scheduler Node.    *    * @param targetApplicationId the application id, which could be override by    *                           target application id specified inside allocation    *                           tags.    * @param sc the placement constraint    * @param te the target expression    * @param node the scheduler node    * @param tm the allocation tags store    * @return true if single application constraint is satisfied by node    * @throws InvalidAllocationTagsQueryException    */
 DECL|method|canSatisfySingleConstraintExpression ( ApplicationId targetApplicationId, SingleConstraint sc, TargetExpression te, SchedulerNode node, AllocationTagsManager tm)
 specifier|private
@@ -568,13 +464,14 @@ parameter_list|)
 throws|throws
 name|InvalidAllocationTagsQueryException
 block|{
-comment|// Parse the allocation tag's namespace from the given target key,
-comment|// then evaluate the namespace and get its scope,
-comment|// which is represented by one or more application IDs.
-name|AllocationTagNamespace
-name|namespace
+comment|// Creates AllocationTags that will be further consumed by allocation
+comment|// tags manager for cardinality check.
+name|AllocationTags
+name|allocationTags
 init|=
-name|getAllocationTagNamespace
+name|AllocationTags
+operator|.
+name|createAllocationTags
 argument_list|(
 name|targetApplicationId
 argument_list|,
@@ -582,18 +479,6 @@ name|te
 operator|.
 name|getTargetKey
 argument_list|()
-argument_list|,
-name|tm
-argument_list|)
-decl_stmt|;
-name|AllocationTags
-name|allocationTags
-init|=
-name|AllocationTags
-operator|.
-name|newAllocationTags
-argument_list|(
-name|namespace
 argument_list|,
 name|te
 operator|.

@@ -196,7 +196,7 @@ name|records
 operator|.
 name|AllocationTagNamespaceType
 operator|.
-name|APP_LABEL
+name|APP_TAG
 import|;
 end_import
 
@@ -241,15 +241,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class to describe the namespace of an allocation tag.  * Each namespace can be evaluated against a set of applications.  * After evaluation, the namespace should have an implicit set of  * applications which defines its scope.  */
+comment|/**  * Class to describe the namespace of allocation tags, used by  * {@link AllocationTags}. Each namespace can be evaluated against  * a target set applications, represented by {@link TargetApplications}.  * After evaluation, the namespace is interpreted to be a set of  * applications based on the namespace type.  */
 end_comment
 
 begin_class
-DECL|class|AllocationTagNamespace
+DECL|class|TargetApplicationsNamespace
 specifier|public
 specifier|abstract
 class|class
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 implements|implements
 name|Evaluable
 argument_list|<
@@ -279,9 +279,9 @@ name|ApplicationId
 argument_list|>
 name|nsScope
 decl_stmt|;
-DECL|method|AllocationTagNamespace (AllocationTagNamespaceType allocationTagNamespaceType)
+DECL|method|TargetApplicationsNamespace (AllocationTagNamespaceType allocationTagNamespaceType)
 specifier|public
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 parameter_list|(
 name|AllocationTagNamespaceType
 name|allocationTagNamespaceType
@@ -409,7 +409,7 @@ specifier|static
 class|class
 name|Self
 extends|extends
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 block|{
 DECL|method|Self ()
 specifier|public
@@ -486,7 +486,7 @@ specifier|static
 class|class
 name|NotSelf
 extends|extends
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 block|{
 DECL|field|applicationId
 specifier|private
@@ -569,7 +569,7 @@ specifier|static
 class|class
 name|All
 extends|extends
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 block|{
 DECL|method|All ()
 specifier|public
@@ -583,24 +583,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Namespace to all applications in the cluster.    */
-DECL|class|AppLabel
+comment|/**    * Namespace to applications that attached with a certain application tag.    */
+DECL|class|AppTag
 specifier|public
 specifier|static
 class|class
-name|AppLabel
+name|AppTag
 extends|extends
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 block|{
-DECL|method|AppLabel ()
+DECL|field|applicationTag
+specifier|private
+name|String
+name|applicationTag
+decl_stmt|;
+DECL|method|AppTag (String appTag)
 specifier|public
-name|AppLabel
-parameter_list|()
+name|AppTag
+parameter_list|(
+name|String
+name|appTag
+parameter_list|)
 block|{
 name|super
 argument_list|(
-name|APP_LABEL
+name|APP_TAG
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|applicationTag
+operator|=
+name|appTag
 expr_stmt|;
 block|}
 annotation|@
@@ -614,7 +628,37 @@ name|TargetApplications
 name|target
 parameter_list|)
 block|{
-comment|// TODO Implement app-label namespace evaluation
+name|setScopeIfNotNull
+argument_list|(
+name|target
+operator|.
+name|getApplicationIdsByTag
+argument_list|(
+name|applicationTag
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|APP_TAG
+operator|.
+name|toString
+argument_list|()
+operator|+
+name|NAMESPACE_DELIMITER
+operator|+
+name|this
+operator|.
+name|applicationTag
+return|;
 block|}
 block|}
 comment|/**    * Namespace defined by a certain application ID.    */
@@ -624,7 +668,7 @@ specifier|static
 class|class
 name|AppID
 extends|extends
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 block|{
 DECL|field|targetAppId
 specifier|private
@@ -684,11 +728,11 @@ name|targetAppId
 return|;
 block|}
 block|}
-comment|/**    * Parse namespace from a string. The string must be in legal format    * defined by each {@link AllocationTagNamespaceType}.    *    * @param namespaceStr namespace string.    * @return an instance of {@link AllocationTagNamespace}.    * @throws InvalidAllocationTagsQueryException    * if given string is not in valid format    */
+comment|/**    * Parse namespace from a string. The string must be in legal format    * defined by each {@link AllocationTagNamespaceType}.    *    * @param namespaceStr namespace string.    * @return an instance of {@link TargetApplicationsNamespace}.    * @throws InvalidAllocationTagsQueryException    * if given string is not in valid format    */
 DECL|method|parse (String namespaceStr)
 specifier|public
 specifier|static
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 name|parse
 parameter_list|(
 name|String
@@ -814,12 +858,39 @@ name|appIDStr
 argument_list|)
 return|;
 case|case
-name|APP_LABEL
+name|APP_TAG
 case|:
+if|if
+condition|(
+name|nsValues
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|2
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidAllocationTagsQueryException
+argument_list|(
+literal|"Missing the application tag in the namespace string: "
+operator|+
+name|namespaceStr
+argument_list|)
+throw|;
+block|}
 return|return
 operator|new
-name|AppLabel
-argument_list|()
+name|AppTag
+argument_list|(
+name|nsValues
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
 return|;
 default|default:
 throw|throw
@@ -929,7 +1000,7 @@ block|}
 DECL|method|parseAppID (String appIDStr)
 specifier|private
 specifier|static
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 name|parseAppID
 parameter_list|(
 name|String

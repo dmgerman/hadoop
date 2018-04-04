@@ -70,7 +70,7 @@ name|scheduler
 operator|.
 name|constraint
 operator|.
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 import|;
 end_import
 
@@ -1951,13 +1951,13 @@ decl_stmt|;
 comment|// App2 asks for 3 containers that anti-affinity with any mapper,
 comment|// since 3 out of 4 nodes already have mapper containers, all 3
 comment|// containers will be allocated on the other node.
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 operator|.
 name|All
 name|allNs
 init|=
 operator|new
-name|AllocationTagNamespace
+name|TargetApplicationsNamespace
 operator|.
 name|All
 argument_list|()
