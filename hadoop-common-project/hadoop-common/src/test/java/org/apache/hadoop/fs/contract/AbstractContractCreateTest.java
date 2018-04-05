@@ -1266,15 +1266,20 @@ name|isSupported
 argument_list|(
 name|IS_BLOBSTORE
 argument_list|)
+operator|||
+name|isSupported
+argument_list|(
+name|CREATE_VISIBILITY_DELAYED
+argument_list|)
 condition|)
 block|{
-comment|// object store: downgrade to a skip so that the failure is visible
-comment|// in test results
+comment|// object store or some file systems: downgrade to a skip so that the
+comment|// failure is visible in test results
 name|skip
 argument_list|(
-literal|"Filesystem is an object store and newly created files are not "
+literal|"For object store or some file systems, newly created files are"
 operator|+
-literal|"immediately visible"
+literal|" not immediately visible"
 argument_list|)
 expr_stmt|;
 block|}
