@@ -5983,7 +5983,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|19
+literal|20
 argument_list|,
 name|nodeInfo
 operator|.
