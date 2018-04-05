@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.scm.cli
+DECL|package|org.apache.hadoop.hdds.scm.cli
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -182,7 +182,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -198,7 +198,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
@@ -314,13 +314,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -332,13 +332,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|Pipeline
 import|;
@@ -351,6 +351,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -2479,7 +2481,7 @@ name|ContainerInfo
 operator|.
 name|fromProtobuf
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|SCMContainerInfo
 operator|.
@@ -2603,7 +2605,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|DatanodeDetailsProto
 name|dd
@@ -3009,7 +3011,7 @@ name|DatanodeDetails
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|DatanodeDetailsProto
 operator|.

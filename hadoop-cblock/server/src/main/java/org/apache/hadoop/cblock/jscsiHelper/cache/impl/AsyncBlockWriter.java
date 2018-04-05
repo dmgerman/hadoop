@@ -106,6 +106,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -120,6 +122,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|XceiverClientSpi
@@ -133,6 +137,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -153,6 +159,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.

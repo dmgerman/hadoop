@@ -138,9 +138,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 import|;
 end_import
 
@@ -405,7 +405,7 @@ name|conf
 parameter_list|)
 block|{
 return|return
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getDatanodeIdFilePath
 argument_list|(
@@ -484,9 +484,9 @@ name|conf
 parameter_list|)
 block|{
 return|return
-name|HdslUtils
+name|HddsUtils
 operator|.
-name|isHdslEnabled
+name|isHddsEnabled
 argument_list|(
 name|conf
 argument_list|)

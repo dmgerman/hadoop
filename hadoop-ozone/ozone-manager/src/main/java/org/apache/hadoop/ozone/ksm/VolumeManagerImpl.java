@@ -58,7 +58,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -152,13 +152,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -779,7 +779,7 @@ decl_stmt|;
 comment|// Write the vol info
 name|List
 argument_list|<
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|KeyValue
 argument_list|>
@@ -815,7 +815,7 @@ name|metadataList
 operator|.
 name|add
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|KeyValue
 operator|.

@@ -102,7 +102,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -166,11 +166,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
+operator|.
+name|scm
 operator|.
 name|client
 operator|.
-name|OzoneClientUtils
+name|HddsClientUtils
 import|;
 end_import
 
@@ -2257,7 +2259,7 @@ name|Mockito
 operator|.
 name|spy
 argument_list|(
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()

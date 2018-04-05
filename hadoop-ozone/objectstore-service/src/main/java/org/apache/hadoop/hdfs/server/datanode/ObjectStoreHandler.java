@@ -28,9 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getScmAddressForBlockClients
 import|;
@@ -44,9 +44,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getScmAddressForClients
 import|;
@@ -326,6 +326,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|protocolPB
@@ -341,6 +343,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -448,7 +452,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -463,6 +467,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -479,6 +485,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.

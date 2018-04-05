@@ -98,7 +98,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -224,7 +224,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -256,7 +256,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -272,7 +272,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -410,13 +410,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -446,6 +446,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -459,6 +461,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -479,6 +483,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -2773,12 +2779,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|replicationType
 init|=
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 operator|.
@@ -2790,12 +2796,12 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
 init|=
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.

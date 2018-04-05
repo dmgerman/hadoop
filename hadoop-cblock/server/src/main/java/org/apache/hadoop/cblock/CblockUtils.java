@@ -190,9 +190,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getHostNameFromConfigKeys
 import|;
@@ -206,9 +206,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getPortNumberFromConfigKeys
 import|;

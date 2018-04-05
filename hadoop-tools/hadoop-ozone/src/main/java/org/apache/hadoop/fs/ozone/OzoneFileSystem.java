@@ -410,7 +410,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -426,7 +426,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.

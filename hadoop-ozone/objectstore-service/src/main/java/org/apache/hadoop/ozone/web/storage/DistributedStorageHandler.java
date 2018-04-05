@@ -200,7 +200,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -216,13 +216,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -400,6 +400,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -414,6 +416,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -427,6 +431,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -833,7 +839,7 @@ decl_stmt|;
 DECL|field|type
 specifier|private
 specifier|final
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
@@ -841,7 +847,7 @@ decl_stmt|;
 DECL|field|factor
 specifier|private
 specifier|final
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|factor
@@ -907,7 +913,7 @@ condition|)
 block|{
 name|type
 operator|=
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 operator|.
@@ -915,7 +921,7 @@ name|RATIS
 expr_stmt|;
 name|factor
 operator|=
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.
@@ -926,7 +932,7 @@ else|else
 block|{
 name|type
 operator|=
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 operator|.
@@ -934,7 +940,7 @@ name|STAND_ALONE
 expr_stmt|;
 name|factor
 operator|=
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.

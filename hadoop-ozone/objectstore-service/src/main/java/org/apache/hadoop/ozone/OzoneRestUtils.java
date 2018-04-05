@@ -164,11 +164,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
+operator|.
+name|scm
 operator|.
 name|client
 operator|.
-name|OzoneClientUtils
+name|HddsClientUtils
 import|;
 end_import
 
@@ -423,7 +425,7 @@ parameter_list|)
 throws|throws
 name|IllegalArgumentException
 block|{
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|verifyResourceName
 argument_list|(

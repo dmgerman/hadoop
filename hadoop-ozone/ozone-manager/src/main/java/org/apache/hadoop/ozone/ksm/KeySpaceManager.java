@@ -136,7 +136,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|server
 operator|.
@@ -434,7 +434,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -490,13 +490,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -524,6 +524,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmInfo
@@ -537,6 +539,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -554,6 +558,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|protocol
@@ -569,6 +575,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -586,6 +594,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|protocolPB
@@ -602,6 +612,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|protocolPB
@@ -617,6 +629,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -676,9 +690,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getScmAddressForBlockClients
 import|;
@@ -692,9 +706,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getScmAddressForClients
 import|;
@@ -708,11 +722,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
-name|isHdslEnabled
+name|isHddsEnabled
 import|;
 end_import
 
@@ -740,7 +754,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|server
 operator|.
@@ -960,13 +974,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeState
 operator|.
@@ -2065,7 +2079,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|isHdslEnabled
+name|isHddsEnabled
 argument_list|(
 name|conf
 argument_list|)
@@ -3746,7 +3760,7 @@ argument_list|()
 operator|.
 name|setNodeType
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.
@@ -3909,7 +3923,7 @@ argument_list|()
 operator|.
 name|setNodeType
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.
@@ -3964,7 +3978,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|Node
 argument_list|>
@@ -3981,7 +3995,7 @@ argument_list|(
 name|HEALTHY
 argument_list|)
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|QueryScope
 operator|.
@@ -3995,7 +4009,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|Node
 name|node
@@ -4003,7 +4017,7 @@ range|:
 name|nodes
 control|)
 block|{
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|DatanodeDetailsProto
 name|datanode
@@ -4025,7 +4039,7 @@ argument_list|()
 operator|.
 name|setNodeType
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.

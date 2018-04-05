@@ -132,7 +132,7 @@ name|dataNode
 parameter_list|)
 block|{
 return|return
-name|findHdslPlugin
+name|findHddsPlugin
 argument_list|(
 name|dataNode
 argument_list|)
@@ -155,7 +155,7 @@ name|dataNode
 parameter_list|)
 block|{
 return|return
-name|findHdslPlugin
+name|findHddsPlugin
 argument_list|(
 name|dataNode
 argument_list|)
@@ -181,7 +181,7 @@ name|dataNode
 parameter_list|)
 block|{
 return|return
-name|findHdslPlugin
+name|findHddsPlugin
 argument_list|(
 name|dataNode
 argument_list|)
@@ -190,11 +190,11 @@ name|getDatanodeStateMachine
 argument_list|()
 return|;
 block|}
-DECL|method|findHdslPlugin (DataNode dataNode)
+DECL|method|findHddsPlugin (DataNode dataNode)
 specifier|private
 specifier|static
-name|HdslDatanodeService
-name|findHdslPlugin
+name|HddsDatanodeService
+name|findHddsPlugin
 parameter_list|(
 name|DataNode
 name|dataNode
@@ -215,12 +215,12 @@ if|if
 condition|(
 name|plugin
 operator|instanceof
-name|HdslDatanodeService
+name|HddsDatanodeService
 condition|)
 block|{
 return|return
 operator|(
-name|HdslDatanodeService
+name|HddsDatanodeService
 operator|)
 name|plugin
 return|;
@@ -230,7 +230,7 @@ throw|throw
 operator|new
 name|IllegalStateException
 argument_list|(
-literal|"Can't find the Hdsl server plugin in the"
+literal|"Can't find the Hdds server plugin in the"
 operator|+
 literal|" plugin collection of datanode"
 argument_list|)

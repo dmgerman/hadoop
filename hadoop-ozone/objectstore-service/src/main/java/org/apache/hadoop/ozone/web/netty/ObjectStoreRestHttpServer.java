@@ -232,6 +232,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -464,11 +466,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_CSRF_ENABLED_DEFAULT
+name|HDDS_REST_CSRF_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -480,11 +484,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_CSRF_ENABLED_KEY
+name|HDDS_REST_CSRF_ENABLED_KEY
 import|;
 end_import
 
@@ -496,11 +502,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_HTTP_ADDRESS_DEFAULT
+name|HDDS_REST_HTTP_ADDRESS_DEFAULT
 import|;
 end_import
 
@@ -512,16 +520,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_HTTP_ADDRESS_KEY
+name|HDDS_REST_HTTP_ADDRESS_KEY
 import|;
 end_import
 
 begin_comment
-comment|/**  * Netty based web server for Hdsl rest api server.  *<p>  * Based on the Datanode http serer.  */
+comment|/**  * Netty based web server for Hdds rest api server.  *<p>  * Based on the Datanode http serer.  */
 end_comment
 
 begin_class
@@ -804,11 +814,11 @@ name|getInt
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_NETTY_HIGH_WATERMARK
+name|HDDS_REST_NETTY_HIGH_WATERMARK
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_NETTY_HIGH_WATERMARK_DEFAULT
+name|HDDS_REST_NETTY_HIGH_WATERMARK_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -828,11 +838,11 @@ name|getInt
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_NETTY_LOW_WATERMARK
+name|HDDS_REST_NETTY_LOW_WATERMARK
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_NETTY_LOW_WATERMARK_DEFAULT
+name|HDDS_REST_NETTY_LOW_WATERMARK_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -928,9 +938,9 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|HDSL_REST_HTTP_ADDRESS_KEY
+name|HDDS_REST_HTTP_ADDRESS_KEY
 argument_list|,
-name|HDSL_REST_HTTP_ADDRESS_DEFAULT
+name|HDDS_REST_HTTP_ADDRESS_DEFAULT
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1015,7 +1025,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Listening HDSL REST traffic on "
+literal|"Listening HDDS REST traffic on "
 operator|+
 name|httpAddress
 argument_list|)
@@ -1074,9 +1084,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|HDSL_REST_CSRF_ENABLED_KEY
+name|HDDS_REST_CSRF_ENABLED_KEY
 argument_list|,
-name|HDSL_REST_CSRF_ENABLED_DEFAULT
+name|HDDS_REST_CSRF_ENABLED_DEFAULT
 argument_list|)
 condition|)
 block|{

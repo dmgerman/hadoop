@@ -42,7 +42,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
@@ -76,13 +76,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -93,6 +93,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -109,6 +111,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -129,6 +133,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -362,7 +368,7 @@ argument_list|)
 operator|.
 name|setState
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
@@ -480,17 +486,17 @@ comment|// 5GB
 block|}
 annotation|@
 name|Override
-DECL|method|createContainer (HdslProtos.ReplicationType type, HdslProtos.ReplicationFactor replicationFactor, String containerId, String owner)
+DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String containerId, String owner)
 specifier|public
 name|Pipeline
 name|createContainer
 parameter_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
 parameter_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
@@ -544,22 +550,22 @@ block|}
 comment|/**    * Returns a set of Nodes that meet a query criteria.    *    * @param nodeStatuses - A set of criteria that we want the node to have.    * @param queryScope - Query scope - Cluster or pool.    * @param poolName - if it is pool, a pool name is required.    * @return A set of nodes that meet the requested criteria.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|queryNode (EnumSet<HdslProtos.NodeState> nodeStatuses, HdslProtos.QueryScope queryScope, String poolName)
+DECL|method|queryNode (EnumSet<HddsProtos.NodeState> nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
 specifier|public
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodePool
 name|queryNode
 parameter_list|(
 name|EnumSet
 argument_list|<
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeState
 argument_list|>
 name|nodeStatuses
 parameter_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|QueryScope
 name|queryScope
@@ -577,22 +583,22 @@ block|}
 comment|/**    * Creates a specified replication pipeline.    *    * @param type - Type    * @param factor - Replication factor    * @param nodePool - Set of machines.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|createReplicationPipeline (HdslProtos.ReplicationType type, HdslProtos.ReplicationFactor factor, HdslProtos.NodePool nodePool)
+DECL|method|createReplicationPipeline (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, HddsProtos.NodePool nodePool)
 specifier|public
 name|Pipeline
 name|createReplicationPipeline
 parameter_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
 parameter_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|factor
 parameter_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodePool
 name|nodePool

@@ -96,7 +96,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -126,13 +126,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -143,6 +143,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -158,6 +160,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -171,6 +175,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -192,6 +198,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|protocolPB
@@ -207,6 +215,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -295,6 +305,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -743,7 +755,7 @@ operator|.
 name|getType
 argument_list|()
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.
@@ -815,7 +827,7 @@ operator|.
 name|getType
 argument_list|()
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.

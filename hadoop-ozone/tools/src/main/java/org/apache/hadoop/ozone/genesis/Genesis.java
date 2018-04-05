@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Main class that executes a set of HDSL/Ozone benchmarks.  * We purposefully don't use the runner and tools classes from Hadoop.  * There are some name collisions with OpenJDK JMH package.  *<p>  * Hence, these classes do not use the Tool/Runner pattern of standard Hadoop  * CLI.  */
+comment|/**  * Main class that executes a set of HDDS/Ozone benchmarks.  * We purposefully don't use the runner and tools classes from Hadoop.  * There are some name collisions with OpenJDK JMH package.  *<p>  * Hence, these classes do not use the Tool/Runner pattern of standard Hadoop  * CLI.  */
 end_comment
 
 begin_class

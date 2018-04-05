@@ -116,7 +116,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -132,7 +132,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
@@ -150,7 +150,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|HdslDatanodeService
+name|HddsDatanodeService
 import|;
 end_import
 
@@ -454,13 +454,13 @@ if|if
 condition|(
 name|plugin
 operator|instanceof
-name|HdslDatanodeService
+name|HddsDatanodeService
 condition|)
 block|{
 return|return
 operator|(
 operator|(
-name|HdslDatanodeService
+name|HddsDatanodeService
 operator|)
 name|plugin
 operator|)
@@ -474,7 +474,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Not able to find HdslDatanodeService in the"
+literal|"Not able to find HddsDatanodeService in the"
 operator|+
 literal|" list of plugins loaded by DataNode."
 argument_list|)

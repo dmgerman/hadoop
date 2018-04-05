@@ -118,7 +118,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -148,7 +148,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
@@ -294,7 +294,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -344,6 +344,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -357,6 +359,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -374,6 +378,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|protocolPB
@@ -390,7 +396,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -686,13 +692,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeState
 operator|.
@@ -1911,14 +1917,14 @@ if|if
 condition|(
 name|plugin
 operator|instanceof
-name|HdslDatanodeService
+name|HddsDatanodeService
 condition|)
 block|{
 name|datanodeDetails
 operator|=
 operator|(
 operator|(
-name|HdslDatanodeService
+name|HddsDatanodeService
 operator|)
 name|plugin
 operator|)
@@ -2634,7 +2640,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|HDSL_REST_HTTP_ADDRESS_KEY
+name|HDDS_REST_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -2647,7 +2653,7 @@ name|DFS_DATANODE_PLUGINS_KEY
 argument_list|,
 literal|"org.apache.hadoop.ozone.web.ObjectStoreRestPlugin,"
 operator|+
-literal|"org.apache.hadoop.ozone.HdslDatanodeService"
+literal|"org.apache.hadoop.ozone.HddsDatanodeService"
 argument_list|)
 expr_stmt|;
 comment|// Configure KSM and SCM handlers

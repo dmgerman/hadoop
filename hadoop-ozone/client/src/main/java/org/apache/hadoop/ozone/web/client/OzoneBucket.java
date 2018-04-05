@@ -58,9 +58,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdds
 operator|.
-name|IOUtils
+name|scm
+operator|.
+name|client
+operator|.
+name|HddsClientUtils
 import|;
 end_import
 
@@ -72,11 +76,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|io
 operator|.
-name|client
-operator|.
-name|OzoneClientUtils
+name|IOUtils
 import|;
 end_import
 
@@ -208,7 +210,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|server
 operator|.
@@ -864,7 +866,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()
@@ -1147,7 +1149,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()
@@ -1506,7 +1508,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()
@@ -1680,7 +1682,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()
@@ -1967,7 +1969,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()
@@ -2207,7 +2209,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()
@@ -2775,7 +2777,7 @@ init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|OzoneClientUtils
+name|HddsClientUtils
 operator|.
 name|newHttpClient
 argument_list|()

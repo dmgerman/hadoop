@@ -56,7 +56,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -184,13 +184,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -364,9 +364,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getScmAddressForClients
 import|;
@@ -617,7 +617,7 @@ argument_list|)
 decl_stmt|;
 name|Map
 argument_list|<
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 argument_list|,
@@ -666,7 +666,7 @@ name|serviceMap
 operator|.
 name|get
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.
@@ -748,7 +748,7 @@ name|serviceMap
 operator|.
 name|get
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.
@@ -798,7 +798,7 @@ name|serviceMap
 operator|.
 name|get
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.

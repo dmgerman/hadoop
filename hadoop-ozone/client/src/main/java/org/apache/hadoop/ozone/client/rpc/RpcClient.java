@@ -56,7 +56,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -218,7 +218,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -250,7 +250,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -266,7 +266,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|client
 operator|.
@@ -632,13 +632,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -666,6 +666,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -680,6 +682,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -693,6 +697,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -709,6 +715,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -1234,7 +1242,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeType
 operator|.
@@ -3009,7 +3017,7 @@ argument_list|)
 operator|.
 name|setType
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 operator|.
@@ -3024,7 +3032,7 @@ argument_list|)
 operator|.
 name|setFactor
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.
@@ -3091,7 +3099,7 @@ argument_list|)
 operator|.
 name|setType
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 operator|.
@@ -3106,7 +3114,7 @@ argument_list|)
 operator|.
 name|setFactor
 argument_list|(
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 operator|.

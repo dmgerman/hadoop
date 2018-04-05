@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.scm.node
+DECL|package|org.apache.hadoop.hdds.scm.node
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -42,7 +42,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -58,13 +58,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -90,6 +90,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -103,6 +105,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -200,13 +204,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeState
 operator|.
@@ -222,13 +226,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodeState
 operator|.
@@ -244,13 +248,35 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
+operator|.
+name|NodeState
+operator|.
+name|INVALID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
 operator|.
 name|NodeState
 operator|.
@@ -265,6 +291,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -282,6 +310,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -298,6 +328,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -313,6 +345,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|scm
 operator|.
@@ -513,7 +547,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|NodePool
 name|pool
@@ -529,7 +563,7 @@ argument_list|(
 name|HEALTHY
 argument_list|)
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|QueryScope
 operator|.
@@ -621,7 +655,7 @@ argument_list|(
 name|STALE
 argument_list|)
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|QueryScope
 operator|.
@@ -681,7 +715,7 @@ argument_list|(
 name|STALE
 argument_list|)
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|QueryScope
 operator|.
@@ -716,7 +750,7 @@ argument_list|(
 name|DEAD
 argument_list|)
 argument_list|,
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|QueryScope
 operator|.

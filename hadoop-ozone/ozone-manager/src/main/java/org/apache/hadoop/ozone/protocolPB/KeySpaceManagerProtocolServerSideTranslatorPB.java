@@ -942,13 +942,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|HdslProtos
+name|HddsProtos
 import|;
 end_import
 
@@ -2047,7 +2047,7 @@ operator|.
 name|getKeyArgs
 argument_list|()
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
@@ -2064,7 +2064,7 @@ argument_list|()
 else|:
 literal|null
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|factor
@@ -2899,7 +2899,7 @@ operator|.
 name|getKeyArgs
 argument_list|()
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
@@ -2916,7 +2916,7 @@ argument_list|()
 else|:
 literal|null
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|factor
@@ -3074,7 +3074,7 @@ operator|.
 name|getKeyArgs
 argument_list|()
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
@@ -3091,7 +3091,7 @@ argument_list|()
 else|:
 literal|null
 decl_stmt|;
-name|HdslProtos
+name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|factor

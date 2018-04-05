@@ -174,9 +174,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
-name|HdslUtils
+name|HddsUtils
 import|;
 end_import
 
@@ -188,7 +188,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdsl
+name|hdds
 operator|.
 name|conf
 operator|.
@@ -1133,7 +1133,7 @@ name|InetSocketAddress
 argument_list|>
 name|addresses
 init|=
-name|HdslUtils
+name|HddsUtils
 operator|.
 name|getSCMAddresses
 argument_list|(
