@@ -468,6 +468,26 @@ name|records
 operator|.
 name|timelineservice
 operator|.
+name|SubApplicationEntity
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
 name|TimelineEntities
 import|;
 end_import
@@ -790,7 +810,7 @@ name|APPLICATION_JSON
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
-DECL|method|putEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @QueryParam(R) String async, @QueryParam(R) String appId, TimelineEntities entities)
+DECL|method|putEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @QueryParam(R) String async, @QueryParam(R) String isSubAppEntities, @QueryParam(R) String appId, TimelineEntities entities)
 specifier|public
 name|Response
 name|putEntities
@@ -812,6 +832,14 @@ literal|"async"
 argument_list|)
 name|String
 name|async
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"subappwrite"
+argument_list|)
+name|String
+name|isSubAppEntities
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -977,6 +1005,15 @@ argument_list|(
 name|processTimelineEntities
 argument_list|(
 name|entities
+argument_list|,
+name|appId
+argument_list|,
+name|Boolean
+operator|.
+name|valueOf
+argument_list|(
+name|isSubAppEntities
+argument_list|)
 argument_list|)
 argument_list|,
 name|callerUgi
@@ -992,6 +1029,15 @@ argument_list|(
 name|processTimelineEntities
 argument_list|(
 name|entities
+argument_list|,
+name|appId
+argument_list|,
+name|Boolean
+operator|.
+name|valueOf
+argument_list|(
+name|isSubAppEntities
+argument_list|)
 argument_list|)
 argument_list|,
 name|callerUgi
@@ -1161,7 +1207,7 @@ block|}
 comment|// The process may not be necessary according to the way we write the backend,
 comment|// but let's keep it for now in case we need to use sub-classes APIs in the
 comment|// future (e.g., aggregation).
-DECL|method|processTimelineEntities ( TimelineEntities entities)
+DECL|method|processTimelineEntities ( TimelineEntities entities, String appId, boolean isSubAppWrite)
 specifier|private
 specifier|static
 name|TimelineEntities
@@ -1169,6 +1215,12 @@ name|processTimelineEntities
 parameter_list|(
 name|TimelineEntities
 name|entities
+parameter_list|,
+name|String
+name|appId
+parameter_list|,
+name|boolean
+name|isSubAppWrite
 parameter_list|)
 block|{
 name|TimelineEntities
@@ -1343,6 +1395,37 @@ block|}
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|isSubAppWrite
+condition|)
+block|{
+name|SubApplicationEntity
+name|se
+init|=
+operator|new
+name|SubApplicationEntity
+argument_list|(
+name|entity
+argument_list|)
+decl_stmt|;
+name|se
+operator|.
+name|setApplicationId
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+name|entitiesToReturn
+operator|.
+name|addEntity
+argument_list|(
+name|se
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|entitiesToReturn
 operator|.
 name|addEntity
@@ -1350,6 +1433,7 @@ argument_list|(
 name|entity
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return

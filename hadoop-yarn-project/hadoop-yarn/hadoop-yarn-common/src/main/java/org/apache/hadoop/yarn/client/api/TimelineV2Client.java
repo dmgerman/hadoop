@@ -205,7 +205,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *<p>    * Send the information of a number of conceptual entities to the timeline    * service v.2 collector. It is a blocking API. The method will not return    * until all the put entities have been persisted.    *</p>    *    * @param entities the collection of {@link TimelineEntity}    * @throws IOException  if there are I/O errors    * @throws YarnException if entities are incomplete/invalid    */
+comment|/**    *<p>    * Send the information of a number of conceptual entities within the scope    * of YARN application to the timeline service v.2 collector. It is a blocking    * API. The method will not return until all the put entities have been    * persisted.    *</p>    *    * @param entities the collection of {@link TimelineEntity}    * @throws IOException  if there are I/O errors    * @throws YarnException if entities are incomplete/invalid    */
 annotation|@
 name|Public
 DECL|method|putEntities (TimelineEntity... entities)
@@ -223,7 +223,7 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    *<p>    * Send the information of a number of conceptual entities to the timeline    * service v.2 collector. It is an asynchronous API. The method will return    * once all the entities are received.    *</p>    *    * @param entities the collection of {@link TimelineEntity}    * @throws IOException  if there are I/O errors    * @throws YarnException if entities are incomplete/invalid    */
+comment|/**    *<p>    * Send the information of a number of conceptual entities within the scope    * of YARN application to the timeline service v.2 collector. It is an    * asynchronous API. The method will return once all the entities are    * received.    *</p>    *    * @param entities the collection of {@link TimelineEntity}    * @throws IOException  if there are I/O errors    * @throws YarnException if entities are incomplete/invalid    */
 annotation|@
 name|Public
 DECL|method|putEntitiesAsync (TimelineEntity... entities)
@@ -251,6 +251,42 @@ parameter_list|(
 name|CollectorInfo
 name|collectorInfo
 parameter_list|)
+function_decl|;
+comment|/**    *<p>    * Send the information of a number of conceptual entities within the scope of    * a sub-application to the timeline service v.2 collector. It is a blocking    * API. The method will not return until all the put entities have been    * persisted.    *</p>    *    * @param entities the collection of {@link TimelineEntity}    * @throws IOException  if there are I/O errors    * @throws YarnException if entities are incomplete/invalid    */
+annotation|@
+name|Public
+DECL|method|putSubAppEntities (TimelineEntity... entities)
+specifier|public
+specifier|abstract
+name|void
+name|putSubAppEntities
+parameter_list|(
+name|TimelineEntity
+modifier|...
+name|entities
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
+comment|/**    *<p>    * Send the information of a number of conceptual entities within the scope of    * a sub-application to the timeline service v.2 collector. It is an    * asynchronous API. The method will return once all the entities are received    * .    *</p>    *    * @param entities the collection of {@link TimelineEntity}    * @throws IOException  if there are I/O errors    * @throws YarnException if entities are incomplete/invalid    */
+annotation|@
+name|Public
+DECL|method|putSubAppEntitiesAsync (TimelineEntity... entities)
+specifier|public
+specifier|abstract
+name|void
+name|putSubAppEntitiesAsync
+parameter_list|(
+name|TimelineEntity
+modifier|...
+name|entities
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
 function_decl|;
 block|}
 end_class
