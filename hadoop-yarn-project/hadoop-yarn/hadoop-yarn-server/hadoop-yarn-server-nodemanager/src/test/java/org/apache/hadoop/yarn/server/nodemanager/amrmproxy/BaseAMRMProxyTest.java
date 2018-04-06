@@ -1219,6 +1219,27 @@ operator|.
 name|amrmProxyService
 return|;
 block|}
+DECL|method|getNMContext ()
+specifier|protected
+name|Context
+name|getNMContext
+parameter_list|()
+block|{
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+name|this
+operator|.
+name|nmContext
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+operator|.
+name|nmContext
+return|;
+block|}
 annotation|@
 name|Before
 DECL|method|setUp ()
