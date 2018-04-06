@@ -1387,6 +1387,25 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|currentFilter
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|TimelineParseException
+argument_list|(
+literal|"Invalid expression provided for "
+operator|+
+name|exprName
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
 name|filterList
 operator|=
 operator|new
@@ -1395,6 +1414,7 @@ argument_list|(
 name|currentFilter
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 elseif|else
 if|if
