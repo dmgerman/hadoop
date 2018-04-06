@@ -34,6 +34,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -77,6 +87,26 @@ operator|.
 name|records
 operator|.
 name|NodeAttribute
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|NodeToAttributes
 import|;
 end_import
 
@@ -207,6 +237,23 @@ name|getAttributesForNode
 parameter_list|(
 name|String
 name|hostName
+parameter_list|)
+function_decl|;
+comment|/**    * Get All node to Attributes list based on filter.    *    * @return List<NodeToAttributes> nodeToAttributes matching filter.If empty    * or null is passed as argument will return all.    */
+DECL|method|getNodeToAttributes ( Set<String> prefix)
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|NodeToAttributes
+argument_list|>
+name|getNodeToAttributes
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|prefix
 parameter_list|)
 function_decl|;
 comment|// futuristic

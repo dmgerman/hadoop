@@ -212,37 +212,6 @@ operator|=
 name|attribute
 expr_stmt|;
 block|}
-DECL|method|RMNodeAttribute (String attributeName)
-specifier|public
-name|RMNodeAttribute
-parameter_list|(
-name|String
-name|attributeName
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|attributeName
-argument_list|)
-expr_stmt|;
-name|attribute
-operator|=
-name|NodeAttribute
-operator|.
-name|newInstance
-argument_list|(
-name|attributeName
-argument_list|,
-name|NodeAttributeType
-operator|.
-name|STRING
-argument_list|,
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|getAttributeType ()
 specifier|public
 name|NodeAttributeType

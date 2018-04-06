@@ -337,6 +337,15 @@ argument_list|(
 name|fsWorkingPath
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Created store directory :"
+operator|+
+name|fsWorkingPath
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Filesystem store schema define the log name and mirror name.    */
 DECL|class|StoreSchema

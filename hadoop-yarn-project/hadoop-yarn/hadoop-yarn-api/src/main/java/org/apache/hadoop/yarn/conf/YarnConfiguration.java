@@ -11257,6 +11257,42 @@ name|NODE_LABELS_PREFIX
 operator|+
 literal|"fs-store.root-dir"
 decl_stmt|;
+comment|/**    * Node-attribute configurations.    */
+DECL|field|NODE_ATTRIBUTE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NODE_ATTRIBUTE_PREFIX
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"node-attribute."
+decl_stmt|;
+comment|/**    * Node attribute store implementation class.    */
+DECL|field|FS_NODE_ATTRIBUTE_STORE_IMPL_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_NODE_ATTRIBUTE_STORE_IMPL_CLASS
+init|=
+name|NODE_ATTRIBUTE_PREFIX
+operator|+
+literal|"fs-store.impl.class"
+decl_stmt|;
+comment|/**    * File system not attribute store directory.    */
+DECL|field|FS_NODE_ATTRIBUTE_STORE_ROOT_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_NODE_ATTRIBUTE_STORE_ROOT_DIR
+init|=
+name|NODE_ATTRIBUTE_PREFIX
+operator|+
+literal|"fs-store.root-dir"
+decl_stmt|;
 comment|/**    * Flag to indicate if the node labels feature enabled, by default it's    * disabled    */
 DECL|field|NODE_LABELS_ENABLED
 specifier|public
