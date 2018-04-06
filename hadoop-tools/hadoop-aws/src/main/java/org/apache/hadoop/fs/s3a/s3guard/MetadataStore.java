@@ -334,6 +334,22 @@ name|IOException
 throws|,
 name|UnsupportedOperationException
 function_decl|;
+comment|/**    * Same as {@link MetadataStore#prune(long)}, but with an additional    * keyPrefix parameter to filter the pruned keys with a prefix.    *    * @param modTime Oldest modification time to allow    * @param keyPrefix The prefix for the keys that should be removed    * @throws IOException if there is an error    * @throws UnsupportedOperationException if not implemented    */
+DECL|method|prune (long modTime, String keyPrefix)
+name|void
+name|prune
+parameter_list|(
+name|long
+name|modTime
+parameter_list|,
+name|String
+name|keyPrefix
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|UnsupportedOperationException
+function_decl|;
 comment|/**    * Get any diagnostics information from a store, as a list of (key, value)    * tuples for display. Arbitrary values; no guarantee of stability.    * These are for debugging only.    * @return a map of strings.    * @throws IOException if there is an error    */
 DECL|method|getDiagnostics ()
 name|Map

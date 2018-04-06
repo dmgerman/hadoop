@@ -3825,7 +3825,7 @@ annotation|@
 name|Retries
 operator|.
 name|OnceRaw
-DECL|method|expiredFiles (long modTime)
+DECL|method|expiredFiles (long modTime, String keyPrefix)
 specifier|private
 name|ItemCollection
 argument_list|<
@@ -3835,12 +3835,15 @@ name|expiredFiles
 parameter_list|(
 name|long
 name|modTime
+parameter_list|,
+name|String
+name|keyPrefix
 parameter_list|)
 block|{
 name|String
 name|filterExpression
 init|=
-literal|"mod_time< :mod_time"
+literal|"mod_time< :mod_time and begins_with(parent, :parent)"
 decl_stmt|;
 name|String
 name|projectionExpression
@@ -3859,6 +3862,13 @@ argument_list|(
 literal|":mod_time"
 argument_list|,
 name|modTime
+argument_list|)
+operator|.
+name|withString
+argument_list|(
+literal|":parent"
+argument_list|,
+name|keyPrefix
 argument_list|)
 decl_stmt|;
 return|return
@@ -3892,6 +3902,37 @@ name|prune
 parameter_list|(
 name|long
 name|modTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|prune
+argument_list|(
+name|modTime
+argument_list|,
+literal|"/"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
+argument_list|(
+literal|"once(batchWrite)"
+argument_list|)
+DECL|method|prune (long modTime, String keyPrefix)
+specifier|public
+name|void
+name|prune
+parameter_list|(
+name|long
+name|modTime
+parameter_list|,
+name|String
+name|keyPrefix
 parameter_list|)
 throws|throws
 name|IOException
@@ -3936,6 +3977,8 @@ range|:
 name|expiredFiles
 argument_list|(
 name|modTime
+argument_list|,
+name|keyPrefix
 argument_list|)
 control|)
 block|{

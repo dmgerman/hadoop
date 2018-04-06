@@ -330,6 +330,20 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
+DECL|method|prune (long modTime, String keyPrefix)
+specifier|public
+name|void
+name|prune
+parameter_list|(
+name|long
+name|modTime
+parameter_list|,
+name|String
+name|keyPrefix
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

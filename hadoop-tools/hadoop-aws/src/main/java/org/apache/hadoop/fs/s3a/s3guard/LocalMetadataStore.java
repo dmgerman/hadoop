@@ -1333,12 +1333,36 @@ annotation|@
 name|Override
 DECL|method|prune (long modTime)
 specifier|public
+name|void
+name|prune
+parameter_list|(
+name|long
+name|modTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|prune
+argument_list|(
+name|modTime
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|prune (long modTime, String keyPrefix)
+specifier|public
 specifier|synchronized
 name|void
 name|prune
 parameter_list|(
 name|long
 name|modTime
+parameter_list|,
+name|String
+name|keyPrefix
 parameter_list|)
 throws|throws
 name|IOException
@@ -1400,6 +1424,8 @@ name|getFileStatus
 argument_list|()
 argument_list|,
 name|modTime
+argument_list|,
+name|keyPrefix
 argument_list|)
 condition|)
 block|{
@@ -1516,6 +1542,8 @@ argument_list|(
 name|status
 argument_list|,
 name|modTime
+argument_list|,
+name|keyPrefix
 argument_list|)
 condition|)
 block|{
@@ -1599,7 +1627,7 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|expired (FileStatus status, long expiry)
+DECL|method|expired (FileStatus status, long expiry, String keyPrefix)
 specifier|private
 name|boolean
 name|expired
@@ -1609,6 +1637,9 @@ name|status
 parameter_list|,
 name|long
 name|expiry
+parameter_list|,
+name|String
+name|keyPrefix
 parameter_list|)
 block|{
 comment|// Note: S3 doesn't track modification time on directories, so for
@@ -1626,6 +1657,19 @@ name|status
 operator|.
 name|isDirectory
 argument_list|()
+operator|&&
+name|status
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|keyPrefix
+argument_list|)
 return|;
 block|}
 annotation|@
