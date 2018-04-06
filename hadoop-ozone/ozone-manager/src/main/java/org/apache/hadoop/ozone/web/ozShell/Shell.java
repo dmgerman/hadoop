@@ -1159,7 +1159,7 @@ literal|true
 argument_list|,
 literal|"creates a volume"
 operator|+
-literal|"for the specified user.\n \t For example : hdfs oz  -createVolume "
+literal|"for the specified user.\n \t For example : hdfs o3  -createVolume "
 operator|+
 literal|"<volumeURI> -root -user<userName>\n"
 argument_list|)
@@ -1183,7 +1183,7 @@ literal|true
 argument_list|,
 literal|"deletes a volume"
 operator|+
-literal|"if it is empty.\n \t For example : hdfs oz -deleteVolume<volumeURI>"
+literal|"if it is empty.\n \t For example : ozone oz -deleteVolume<volumeURI>"
 operator|+
 literal|" -root \n"
 argument_list|)
@@ -1207,9 +1207,9 @@ literal|true
 argument_list|,
 literal|"List the volumes of a given user.\n"
 operator|+
-literal|"For example : hdfs oz -listVolume<ozoneURI>"
+literal|"For example : ozone oz -listVolume<ozoneURI>"
 operator|+
-literal|"-user<username> -root or hdfs oz "
+literal|"-user<username> -root or ozone oz "
 operator|+
 literal|"-listVolume"
 argument_list|)
@@ -1233,7 +1233,7 @@ literal|true
 argument_list|,
 literal|"updates an existing volume.\n"
 operator|+
-literal|"\t For example : hdfs oz "
+literal|"\t For example : ozone oz "
 operator|+
 literal|"-updateVolume<volumeURI> -quota "
 operator|+
@@ -1292,7 +1292,7 @@ literal|true
 argument_list|,
 literal|"creates a bucket in a given volume."
 operator|+
-literal|"For example: hdfs oz -createBucket<bucketURI>"
+literal|"For example: ozone oz -createBucket<bucketURI>"
 argument_list|)
 decl_stmt|;
 name|opts
@@ -1374,7 +1374,7 @@ literal|true
 argument_list|,
 literal|"allows changing bucket attributes.\n"
 operator|+
-literal|" For example: hdfs oz -updateBucket<bucketURI> "
+literal|" For example: ozone oz -updateBucket<bucketURI> "
 operator|+
 literal|"-addAcl user:frodo:rw"
 argument_list|)
@@ -1984,7 +1984,7 @@ name|printHelp
 argument_list|(
 name|eightyColumn
 argument_list|,
-literal|"hdfs oz -command uri [args]"
+literal|"ozone oz -command uri [args]"
 argument_list|,
 literal|"Ozone Commands"
 argument_list|,

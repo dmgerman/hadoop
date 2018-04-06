@@ -1059,7 +1059,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: \n oz ksm [genericOptions] "
+literal|"Usage: \n ozone ksm [genericOptions] "
 operator|+
 literal|"[ "
 operator|+
@@ -1072,7 +1072,7 @@ argument_list|()
 operator|+
 literal|" ]\n "
 operator|+
-literal|"oz ksm [ "
+literal|"ozone ksm [ "
 operator|+
 name|StartupOption
 operator|.

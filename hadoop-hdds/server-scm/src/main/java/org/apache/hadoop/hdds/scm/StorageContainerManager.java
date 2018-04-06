@@ -2058,7 +2058,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: \n oz scm [genericOptions] "
+literal|"Usage: \n ozone scm [genericOptions] "
 operator|+
 literal|"[ "
 operator|+
@@ -2080,7 +2080,7 @@ argument_list|()
 operator|+
 literal|"<cid> ] ]\n "
 operator|+
-literal|"oz scm [genericOptions] [ "
+literal|"ozone scm [genericOptions] [ "
 operator|+
 name|StartupOption
 operator|.
@@ -2091,7 +2091,7 @@ argument_list|()
 operator|+
 literal|" ]\n "
 operator|+
-literal|"oz scm [ "
+literal|"ozone scm [ "
 operator|+
 name|StartupOption
 operator|.

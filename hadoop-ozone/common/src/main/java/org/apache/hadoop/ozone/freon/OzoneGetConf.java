@@ -287,7 +287,7 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"oz getconf is utility for "
+literal|"ozone getconf is utility for "
 operator|+
 literal|"getting configuration information from the config file.\n"
 decl_stmt|;
@@ -553,7 +553,7 @@ name|usage
 operator|.
 name|append
 argument_list|(
-literal|"\noz getconf \n"
+literal|"\nozone getconf \n"
 argument_list|)
 expr_stmt|;
 for|for
