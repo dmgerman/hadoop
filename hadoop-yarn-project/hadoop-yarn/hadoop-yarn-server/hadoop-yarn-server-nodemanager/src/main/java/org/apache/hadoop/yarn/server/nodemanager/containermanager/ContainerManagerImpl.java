@@ -3182,6 +3182,14 @@ operator|new
 name|AuxServices
 argument_list|(
 name|auxiliaryLocalPathHandler
+argument_list|,
+name|this
+operator|.
+name|context
+argument_list|,
+name|this
+operator|.
+name|deletionService
 argument_list|)
 expr_stmt|;
 name|auxiliaryServices

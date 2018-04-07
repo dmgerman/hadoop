@@ -6949,6 +6949,17 @@ name|NM_AUX_SERVICES
 operator|+
 literal|".%s.classpath"
 decl_stmt|;
+DECL|field|NM_AUX_SERVICE_REMOTE_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_AUX_SERVICE_REMOTE_CLASSPATH
+init|=
+name|NM_AUX_SERVICES
+operator|+
+literal|".%s.remote-classpath"
+decl_stmt|;
 DECL|field|NM_AUX_SERVICES_SYSTEM_CLASSES
 specifier|public
 specifier|static
