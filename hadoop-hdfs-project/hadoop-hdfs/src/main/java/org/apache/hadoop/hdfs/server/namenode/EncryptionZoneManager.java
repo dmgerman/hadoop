@@ -2527,24 +2527,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|dir
-operator|.
-name|isNonEmptyDirectory
-argument_list|(
-name|srcIIP
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Attempt to create an encryption zone for a non-empty directory."
-argument_list|)
-throw|;
-block|}
 name|INode
 name|srcINode
 init|=
@@ -2600,6 +2582,24 @@ name|getPath
 argument_list|()
 operator|+
 literal|" is already an encryption zone."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|dir
+operator|.
+name|isNonEmptyDirectory
+argument_list|(
+name|srcIIP
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Attempt to create an encryption zone for a non-empty directory."
 argument_list|)
 throw|;
 block|}
