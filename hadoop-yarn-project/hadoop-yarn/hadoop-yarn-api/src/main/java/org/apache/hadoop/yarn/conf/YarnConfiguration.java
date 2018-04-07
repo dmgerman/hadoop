@@ -1419,6 +1419,17 @@ literal|"yarn."
 operator|+
 literal|"webapp.api-service.enable"
 decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_YARN_API_SYSTEM_SERVICES_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_YARN_API_SYSTEM_SERVICES_CLASS
+init|=
+literal|"org.apache.hadoop.yarn.service.client.SystemServiceManagerImpl"
+decl_stmt|;
 DECL|field|RM_RESOURCE_TRACKER_ADDRESS
 specifier|public
 specifier|static

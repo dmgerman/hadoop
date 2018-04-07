@@ -201,6 +201,17 @@ name|ROLLING_LOG_EXCLUSION_PATTERN
 init|=
 literal|"yarn.service.rolling-log.exclude-pattern"
 decl_stmt|;
+DECL|field|YARN_SERVICES_SYSTEM_SERVICE_DIRECTORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_SERVICES_SYSTEM_SERVICE_DIRECTORY
+init|=
+name|YARN_SERVICE_PREFIX
+operator|+
+literal|"system-service.dir"
+decl_stmt|;
 comment|/**    * The yarn service base path:    * Defaults to HomeDir/.yarn/    */
 DECL|field|YARN_SERVICE_BASE_PATH
 specifier|public
