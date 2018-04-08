@@ -252,6 +252,28 @@ name|federation
 operator|.
 name|store
 operator|.
+name|driver
+operator|.
+name|StateStoreDriver
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
 name|records
 operator|.
 name|BaseRecord
@@ -279,7 +301,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * StateStoreDriver} implementation based on a filesystem. The most common uses  * HDFS as a backend.  */
+comment|/**  * {@link StateStoreDriver} implementation based on a filesystem. The common  * implementation uses HDFS as a backend. The path can be specified setting  * dfs.federation.router.driver.fs.path=hdfs://host:port/path/to/store.  */
 end_comment
 
 begin_class
