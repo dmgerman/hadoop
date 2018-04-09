@@ -11281,7 +11281,7 @@ name|NODE_ATTRIBUTE_PREFIX
 operator|+
 literal|"fs-store.impl.class"
 decl_stmt|;
-comment|/**    * File system not attribute store directory.    */
+comment|/**    * File system node attribute store directory.    */
 DECL|field|FS_NODE_ATTRIBUTE_STORE_ROOT_DIR
 specifier|public
 specifier|static

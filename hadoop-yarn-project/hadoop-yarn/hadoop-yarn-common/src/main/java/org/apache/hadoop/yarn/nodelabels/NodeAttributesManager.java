@@ -220,9 +220,28 @@ argument_list|>
 name|prefix
 parameter_list|)
 function_decl|;
-comment|/**    * Given a attribute set, return what all Nodes have attribute mapped to it.    *    * @return a Map, of attribute to set of hostnames    */
-comment|//TODO need to handle as part of REST patch.
-comment|/*  public abstract Map<NodeAttribute, Set<String>> getAttributesToNodes(       Set<NodeAttribute> attributes);*/
+comment|/**    * Given a attribute set, return what all Nodes have attribute mapped to it.    * If the attributes set is null or empty, all attributes mapping are    * returned.    *    * @return a Map of attributes to set of hostnames.    */
+DECL|method|getAttributesToNodes ( Set<NodeAttribute> attributes)
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|NodeAttribute
+argument_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+argument_list|>
+name|getAttributesToNodes
+parameter_list|(
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+name|attributes
+parameter_list|)
+function_decl|;
 comment|/**    * NodeAttribute to AttributeValue Map.    *    * @return Map<NodeAttribute, AttributeValue> mapping of Attribute to Value.    */
 DECL|method|getAttributesForNode ( String hostName)
 specifier|public
