@@ -5581,6 +5581,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// srcLocations may be trimmed by getRenameDestinations()
@@ -5742,6 +5744,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// srcLocations may be trimmed by getRenameDestinations()
@@ -6278,6 +6282,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -13586,11 +13592,11 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get the possible locations of a path in the federated cluster.    *    * @param path Path to check.    * @param failIfLocked Fail the request if locked (top mount point).    * @return Prioritized list of locations in the federated cluster.    * @throws IOException If the location for this path cannot be determined.    */
+comment|/**    * Get the possible locations of a path in the federated cluster.    * During the get operation, it will do the quota verification.    *    * @param path Path to check.    * @param failIfLocked Fail the request if locked (top mount point).    * @return Prioritized list of locations in the federated cluster.    * @throws IOException If the location for this path cannot be determined.    */
 end_comment
 
 begin_function
-DECL|method|getLocationsForPath ( String path, boolean failIfLocked)
+DECL|method|getLocationsForPath (String path, boolean failIfLocked)
 specifier|protected
 name|List
 argument_list|<
@@ -13603,6 +13609,44 @@ name|path
 parameter_list|,
 name|boolean
 name|failIfLocked
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getLocationsForPath
+argument_list|(
+name|path
+argument_list|,
+name|failIfLocked
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Get the possible locations of a path in the federated cluster.    *    * @param path Path to check.    * @param failIfLocked Fail the request if locked (top mount point).    * @param needQuotaVerify If need to do the quota verification.    * @return Prioritized list of locations in the federated cluster.    * @throws IOException If the location for this path cannot be determined.    */
+end_comment
+
+begin_function
+DECL|method|getLocationsForPath (String path, boolean failIfLocked, boolean needQuotaVerify)
+specifier|protected
+name|List
+argument_list|<
+name|RemoteLocation
+argument_list|>
+name|getLocationsForPath
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|boolean
+name|failIfLocked
+parameter_list|,
+name|boolean
+name|needQuotaVerify
 parameter_list|)
 throws|throws
 name|IOException
@@ -13704,6 +13748,8 @@ name|router
 operator|.
 name|isQuotaEnabled
 argument_list|()
+operator|&&
+name|needQuotaVerify
 condition|)
 block|{
 name|RouterQuotaUsage
