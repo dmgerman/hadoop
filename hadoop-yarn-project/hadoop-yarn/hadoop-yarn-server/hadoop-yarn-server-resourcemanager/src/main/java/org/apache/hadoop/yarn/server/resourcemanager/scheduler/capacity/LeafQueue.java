@@ -3980,6 +3980,55 @@ argument_list|,
 name|amResouceLimit
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Queue: "
+operator|+
+name|getQueueName
+argument_list|()
+operator|+
+literal|", node label : "
+operator|+
+name|nodePartition
+operator|+
+literal|", queue "
+operator|+
+literal|"partition "
+operator|+
+literal|"resource : "
+operator|+
+name|queuePartitionResource
+operator|+
+literal|','
+operator|+
+literal|" queue current limit : "
+operator|+
+name|queueCurrentLimit
+operator|+
+literal|","
+operator|+
+literal|" queue partition usable resource : "
+operator|+
+name|queuePartitionUsableResource
+operator|+
+literal|","
+operator|+
+literal|" amResourceLimit : "
+operator|+
+name|amResouceLimit
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|amResouceLimit
 return|;

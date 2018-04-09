@@ -624,7 +624,6 @@ name|getExistingNodeLabels
 argument_list|()
 control|)
 block|{
-comment|//TODO - update to use getMaximumCapacity(nodeLabel) in YARN-7574
 name|setEntitlement
 argument_list|(
 name|nodeLabel
@@ -643,7 +642,9 @@ name|getQueueCapacities
 argument_list|()
 operator|.
 name|getMaximumCapacity
-argument_list|()
+argument_list|(
+name|nodeLabel
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

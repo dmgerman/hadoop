@@ -7246,6 +7246,24 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Allocation for application "
+operator|+
+name|applicationAttemptId
+operator|+
+literal|" : "
+operator|+
+name|allocation
+operator|+
+literal|" with cluster resource : "
+operator|+
+name|getClusterResource
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|allocation
 return|;

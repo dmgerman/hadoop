@@ -1794,7 +1794,10 @@ parameter_list|(
 name|IOException
 name|e
 parameter_list|)
-block|{     }
+block|{
+comment|//Queue may not exist since it could be auto-created in case of
+comment|// dynamic queues
+block|}
 for|for
 control|(
 name|ResourceRequest

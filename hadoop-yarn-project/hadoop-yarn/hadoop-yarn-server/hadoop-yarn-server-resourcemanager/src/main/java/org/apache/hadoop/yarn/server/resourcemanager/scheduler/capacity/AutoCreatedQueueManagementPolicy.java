@@ -48,6 +48,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -71,6 +81,8 @@ parameter_list|,
 name|ParentQueue
 name|parentQueue
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Reinitialize policy state ( if required )    * @param schedulerContext Capacity Scheduler context    */
 DECL|method|reinitialize (CapacitySchedulerContext schedulerContext, ParentQueue parentQueue)
@@ -83,6 +95,8 @@ parameter_list|,
 name|ParentQueue
 name|parentQueue
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Get initial template for the specified leaf queue    * @param leafQueue the leaf queue    * @return initial leaf queue template configurations and capacities for    * auto created queue    */
 DECL|method|getInitialLeafQueueConfiguration ( AbstractAutoCreatedLeafQueue leafQueue)
@@ -95,7 +109,7 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 function_decl|;
-comment|/**    * Compute/Adjust child queue capacities    * for auto created leaf queues    *    * @return returns a list of suggested QueueEntitlementChange(s) which may    * or may not be be enforced by the scheduler    */
+comment|/**    * Compute/Adjust child queue capacities    * for auto created leaf queues    * This computes queue entitlements but does not update LeafQueueState or    * queue capacities. Scheduler calls commitQueueManagemetChanges after    * validation after applying queue changes and commits to LeafQueueState    * are done in commitQueueManagementChanges.    *    * @return returns a list of suggested QueueEntitlementChange(s) which may    * or may not be be enforced by the scheduler    */
 DECL|method|computeQueueManagementChanges ()
 name|List
 argument_list|<

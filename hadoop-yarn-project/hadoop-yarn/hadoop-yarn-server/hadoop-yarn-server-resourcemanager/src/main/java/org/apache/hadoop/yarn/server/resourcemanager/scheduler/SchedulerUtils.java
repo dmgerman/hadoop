@@ -955,6 +955,33 @@ operator|.
 name|getNodeLabelExpression
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Requested Node Label Expression : "
+operator|+
+name|labelExp
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Queue Info : "
+operator|+
+name|queueInfo
+argument_list|)
+expr_stmt|;
+block|}
 comment|// if queue has default label expression, and RR doesn't have, use the
 comment|// default label expression of queue
 if|if
@@ -980,6 +1007,27 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting default node label expression : "
+operator|+
+name|queueInfo
+operator|.
+name|getDefaultNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|labelExp
 operator|=
 name|queueInfo
@@ -988,11 +1036,18 @@ name|getDefaultNodeLabelExpression
 argument_list|()
 expr_stmt|;
 block|}
-comment|// If labelExp still equals to null, set it to be NO_LABEL
+comment|// If labelExp still equals to null, it could either be a dynamic queue
+comment|// or the label is not configured
+comment|// set it to be NO_LABEL in case of a pre-configured queue. Dynamic
+comment|// queues are handled in RMAppAttemptImp.ScheduledTransition
 if|if
 condition|(
 name|labelExp
 operator|==
+literal|null
+operator|&&
+name|queueInfo
+operator|!=
 literal|null
 condition|)
 block|{
@@ -1003,6 +1058,13 @@ operator|.
 name|NO_LABEL
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|labelExp
+operator|!=
+literal|null
+condition|)
+block|{
 name|resReq
 operator|.
 name|setNodeLabelExpression
@@ -1010,6 +1072,7 @@ argument_list|(
 name|labelExp
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumResource, String queueName, YarnScheduler scheduler, boolean isRecovery, RMContext rmContext)
 specifier|public
@@ -1198,8 +1261,8 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// it is possible queue cannot get when queue mapping is set, just ignore
-comment|// the queueInfo here, and move forward
+comment|//Queue may not exist since it could be auto-created in case of
+comment|// dynamic queues
 block|}
 block|}
 name|SchedulerUtils

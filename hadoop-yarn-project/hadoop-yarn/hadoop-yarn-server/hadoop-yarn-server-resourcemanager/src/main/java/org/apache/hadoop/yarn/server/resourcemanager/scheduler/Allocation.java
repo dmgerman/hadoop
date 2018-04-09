@@ -719,6 +719,64 @@ operator|=
 name|resource
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Allocation{"
+operator|+
+literal|"containers="
+operator|+
+name|containers
+operator|+
+literal|", strictContainers="
+operator|+
+name|strictContainers
+operator|+
+literal|", fungibleContainers="
+operator|+
+name|fungibleContainers
+operator|+
+literal|", fungibleResources="
+operator|+
+name|fungibleResources
+operator|+
+literal|", nmTokens="
+operator|+
+name|nmTokens
+operator|+
+literal|", increasedContainers="
+operator|+
+name|increasedContainers
+operator|+
+literal|", decreasedContainers="
+operator|+
+name|decreasedContainers
+operator|+
+literal|", promotedContainers="
+operator|+
+name|promotedContainers
+operator|+
+literal|", demotedContainers="
+operator|+
+name|demotedContainers
+operator|+
+literal|", previousAttemptContainers="
+operator|+
+name|previousAttemptContainers
+operator|+
+literal|", resourceLimit="
+operator|+
+name|resourceLimit
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 

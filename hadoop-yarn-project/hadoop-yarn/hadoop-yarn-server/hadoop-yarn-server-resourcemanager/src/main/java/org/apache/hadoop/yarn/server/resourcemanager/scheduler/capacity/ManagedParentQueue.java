@@ -601,6 +601,8 @@ specifier|private
 name|void
 name|initializeQueueManagementPolicy
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|queueManagementPolicy
 operator|=
@@ -630,6 +632,8 @@ specifier|private
 name|void
 name|reinitializeQueueManagementPolicy
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|AutoCreatedQueueManagementPolicy
 name|managementPolicy

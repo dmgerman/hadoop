@@ -162,6 +162,40 @@ return|return
 name|newNodePartition
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"PendingAskUpdateResult{"
+operator|+
+literal|"lastPendingAsk="
+operator|+
+name|lastPendingAsk
+operator|+
+literal|", lastNodePartition='"
+operator|+
+name|lastNodePartition
+operator|+
+literal|'\''
+operator|+
+literal|", newPendingAsk="
+operator|+
+name|newPendingAsk
+operator|+
+literal|", newNodePartition='"
+operator|+
+name|newNodePartition
+operator|+
+literal|'\''
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 
