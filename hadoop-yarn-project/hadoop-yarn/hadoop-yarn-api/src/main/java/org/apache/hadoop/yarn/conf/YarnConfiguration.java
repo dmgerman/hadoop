@@ -6533,6 +6533,28 @@ name|DEFAULT_NM_DOCKER_ALLOW_DELAYED_REMOVAL
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * A configurable value to pass to the Docker Stop command. This value    * defines the number of seconds between the docker stop command sending    * a SIGTERM and a SIGKILL.    */
+DECL|field|NM_DOCKER_STOP_GRACE_PERIOD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_STOP_GRACE_PERIOD
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"stop.grace-period"
+decl_stmt|;
+comment|/**    * The default value for the grace period between the SIGTERM and the    * SIGKILL in the Docker Stop command.    */
+DECL|field|DEFAULT_NM_DOCKER_STOP_GRACE_PERIOD
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_DOCKER_STOP_GRACE_PERIOD
+init|=
+literal|10
+decl_stmt|;
 comment|/** The mode in which the Java Container Sandbox should run detailed by    *  the JavaSandboxLinuxContainerRuntime. */
 DECL|field|YARN_CONTAINER_SANDBOX
 specifier|public

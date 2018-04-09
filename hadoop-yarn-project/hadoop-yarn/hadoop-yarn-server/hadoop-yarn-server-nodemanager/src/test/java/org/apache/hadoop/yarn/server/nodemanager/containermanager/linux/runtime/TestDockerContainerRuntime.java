@@ -1801,6 +1801,11 @@ name|signalPid
 init|=
 literal|"1234"
 decl_stmt|;
+DECL|field|dockerStopGracePeriod
+specifier|private
+name|int
+name|dockerStopGracePeriod
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -1927,6 +1932,21 @@ expr_stmt|;
 name|image
 operator|=
 literal|"busybox:latest"
+expr_stmt|;
+name|dockerStopGracePeriod
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_DOCKER_STOP_GRACE_PERIOD
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_DOCKER_STOP_GRACE_PERIOD
+argument_list|)
 expr_stmt|;
 name|env
 operator|.
@@ -8818,7 +8838,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|3
+literal|4
 argument_list|,
 name|dockerCommands
 operator|.
@@ -8865,6 +8885,20 @@ operator|.
 name|get
 argument_list|(
 literal|2
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  time=10"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|3
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -8908,7 +8942,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|3
+literal|4
 argument_list|,
 name|dockerCommands
 operator|.
@@ -8955,6 +8989,20 @@ operator|.
 name|get
 argument_list|(
 literal|2
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"  time=10"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|3
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12322,6 +12370,11 @@ operator|new
 name|DockerStopCommand
 argument_list|(
 name|containerName
+argument_list|)
+operator|.
+name|setGracePeriod
+argument_list|(
+name|dockerStopGracePeriod
 argument_list|)
 decl_stmt|;
 name|DockerCommandExecutor

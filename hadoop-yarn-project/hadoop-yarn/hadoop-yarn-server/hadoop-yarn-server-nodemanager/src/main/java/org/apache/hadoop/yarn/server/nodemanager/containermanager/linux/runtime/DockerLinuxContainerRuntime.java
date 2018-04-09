@@ -1318,6 +1318,11 @@ specifier|private
 name|boolean
 name|delayedRemovalAllowed
 decl_stmt|;
+DECL|field|dockerStopGracePeriod
+specifier|private
+name|int
+name|dockerStopGracePeriod
+decl_stmt|;
 comment|/**    * Return whether the given environment variables indicate that the operation    * is requesting a Docker container.  If the environment contains a key    * called {@code YARN_CONTAINER_RUNTIME_TYPE} whose value is {@code docker},    * this method will return true.  Otherwise it will return false.    *    * @param env the environment variable settings for the operation    * @return whether a Docker container is requested    */
 DECL|method|isDockerContainerRequested ( Map<String, String> env)
 specifier|public
@@ -1646,6 +1651,21 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_DOCKER_ALLOW_DELAYED_REMOVAL
+argument_list|)
+expr_stmt|;
+name|dockerStopGracePeriod
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_DOCKER_STOP_GRACE_PERIOD
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_DOCKER_STOP_GRACE_PERIOD
 argument_list|)
 expr_stmt|;
 block|}
@@ -5403,6 +5423,11 @@ operator|new
 name|DockerStopCommand
 argument_list|(
 name|containerId
+argument_list|)
+operator|.
+name|setGracePeriod
+argument_list|(
+name|dockerStopGracePeriod
 argument_list|)
 decl_stmt|;
 name|DockerCommandExecutor
