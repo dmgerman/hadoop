@@ -1203,6 +1203,26 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Waits for DatanodeStateMachine to exit.    *    * @throws InterruptedException    */
+DECL|method|join ()
+specifier|public
+name|void
+name|join
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+name|stateMachineThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+name|cmdProcessThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Stop the daemon thread of the datanode state machine.    */
 DECL|method|stopDaemon ()
 specifier|public

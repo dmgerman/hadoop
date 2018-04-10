@@ -821,6 +821,15 @@ name|OZONE_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
 init|=
 literal|"ozone.web.authentication.kerberos.principal"
 decl_stmt|;
+DECL|field|HDDS_DATANODE_PLUGINS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_DATANODE_PLUGINS_KEY
+init|=
+literal|"hdds.datanode.plugins"
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

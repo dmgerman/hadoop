@@ -24,6 +24,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -121,6 +137,26 @@ specifier|private
 name|MiniOzoneTestHelper
 parameter_list|()
 block|{   }
+DECL|method|getDatanodeDetails (DataNode dataNode)
+specifier|public
+specifier|static
+name|DatanodeDetails
+name|getDatanodeDetails
+parameter_list|(
+name|DataNode
+name|dataNode
+parameter_list|)
+block|{
+return|return
+name|findHddsPlugin
+argument_list|(
+name|dataNode
+argument_list|)
+operator|.
+name|getDatanodeDetails
+argument_list|()
+return|;
+block|}
 DECL|method|getOzoneContainer (DataNode dataNode)
 specifier|public
 specifier|static

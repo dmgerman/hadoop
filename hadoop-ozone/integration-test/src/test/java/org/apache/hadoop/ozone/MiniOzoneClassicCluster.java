@@ -710,6 +710,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|HDDS_DATANODE_PLUGINS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -2651,9 +2667,16 @@ name|set
 argument_list|(
 name|DFS_DATANODE_PLUGINS_KEY
 argument_list|,
-literal|"org.apache.hadoop.ozone.web.ObjectStoreRestPlugin,"
-operator|+
 literal|"org.apache.hadoop.ozone.HddsDatanodeService"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|HDDS_DATANODE_PLUGINS_KEY
+argument_list|,
+literal|"org.apache.hadoop.ozone.web.OzoneHddsDatanodeService"
 argument_list|)
 expr_stmt|;
 comment|// Configure KSM and SCM handlers
