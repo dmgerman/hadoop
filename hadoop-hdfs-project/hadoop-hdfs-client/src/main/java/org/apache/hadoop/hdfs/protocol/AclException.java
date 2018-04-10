@@ -82,6 +82,26 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Creates a new AclException.    *    * @param message String message    * @param cause The cause of the exception    */
+DECL|method|AclException (String message, Throwable cause)
+specifier|public
+name|AclException
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
