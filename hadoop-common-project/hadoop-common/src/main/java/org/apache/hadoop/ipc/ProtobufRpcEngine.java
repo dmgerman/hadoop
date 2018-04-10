@@ -2340,14 +2340,11 @@ name|queueSizePerHandler
 argument_list|,
 name|conf
 argument_list|,
-name|classNameBase
+name|serverNameFromClass
 argument_list|(
 name|protocolImpl
 operator|.
 name|getClass
-argument_list|()
-operator|.
-name|getName
 argument_list|()
 argument_list|)
 argument_list|,

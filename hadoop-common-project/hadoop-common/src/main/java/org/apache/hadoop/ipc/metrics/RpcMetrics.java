@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -71,6 +85,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|MetricsTag
 import|;
 end_import
 
@@ -335,6 +363,18 @@ argument_list|,
 literal|"RPC port"
 argument_list|,
 name|port
+argument_list|)
+operator|.
+name|tag
+argument_list|(
+literal|"serverName"
+argument_list|,
+literal|"Name of the RPC server"
+argument_list|,
+name|server
+operator|.
+name|getServerName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|int
@@ -1141,6 +1181,26 @@ argument_list|()
 operator|.
 name|stddev
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTag (String tagName)
+specifier|public
+name|MetricsTag
+name|getTag
+parameter_list|(
+name|String
+name|tagName
+parameter_list|)
+block|{
+return|return
+name|registry
+operator|.
+name|getTag
+argument_list|(
+name|tagName
+argument_list|)
 return|;
 block|}
 block|}

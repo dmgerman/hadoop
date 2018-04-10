@@ -1450,6 +1450,13 @@ specifier|private
 name|Tracer
 name|tracer
 decl_stmt|;
+comment|/**    * Logical name of the server used in metrics and monitor.    */
+DECL|field|serverName
+specifier|private
+specifier|final
+name|String
+name|serverName
+decl_stmt|;
 comment|/**    * Add exception classes for which server won't log stack traces.    *    * @param exceptionClass exception classes    */
 DECL|method|addTerseExceptions (Class<?>.... exceptionClass)
 specifier|public
@@ -12903,6 +12910,12 @@ literal|0
 expr_stmt|;
 name|this
 operator|.
+name|serverName
+operator|=
+name|serverName
+expr_stmt|;
+name|this
+operator|.
 name|maxDataLength
 operator|=
 name|conf
@@ -16141,6 +16154,16 @@ name|idleScanInterval
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getServerName ()
+specifier|public
+name|String
+name|getServerName
+parameter_list|()
+block|{
+return|return
+name|serverName
+return|;
 block|}
 block|}
 end_class
