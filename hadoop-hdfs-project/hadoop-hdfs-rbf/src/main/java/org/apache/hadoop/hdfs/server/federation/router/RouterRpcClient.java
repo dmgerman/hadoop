@@ -4050,7 +4050,7 @@ name|IOException
 name|ioe
 init|=
 operator|new
-name|IOException
+name|SubClusterTimeoutException
 argument_list|(
 name|msg
 argument_list|)
