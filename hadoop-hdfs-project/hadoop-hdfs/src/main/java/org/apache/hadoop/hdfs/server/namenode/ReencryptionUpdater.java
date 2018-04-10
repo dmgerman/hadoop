@@ -2171,7 +2171,10 @@ try|try
 block|{
 name|handler
 operator|.
-name|checkZoneReady
+name|getTraverser
+argument_list|()
+operator|.
+name|checkINodeReady
 argument_list|(
 name|task
 operator|.
