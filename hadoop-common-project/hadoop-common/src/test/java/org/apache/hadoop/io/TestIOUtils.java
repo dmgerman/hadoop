@@ -230,10 +230,6 @@ name|FileUtils
 import|;
 end_import
 
-begin_empty_stmt
-empty_stmt|;
-end_empty_stmt
-
 begin_import
 import|import
 name|org
