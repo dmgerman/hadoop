@@ -709,7 +709,7 @@ argument_list|(
 name|mockExecutor
 argument_list|)
 operator|.
-name|launchContainer
+name|relaunchContainer
 argument_list|(
 name|captor
 operator|.

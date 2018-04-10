@@ -226,6 +226,21 @@ name|STDOUT
 init|=
 literal|"stdout"
 decl_stmt|;
+comment|/**    * The type of launch for the container.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|enum|ContainerLaunchType
+enum|enum
+name|ContainerLaunchType
+block|{
+DECL|enumConstant|LAUNCH
+name|LAUNCH
+block|,
+DECL|enumConstant|RELAUNCH
+name|RELAUNCH
+block|}
 comment|/**    * Environment for Applications.    *    * Some of the environment variables for applications are<em>final</em>    * i.e. they cannot be modified by the applications.    */
 DECL|enum|Environment
 specifier|public

@@ -706,6 +706,25 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|relaunchContainer (ContainerRuntimeContext ctx)
+specifier|public
+name|void
+name|relaunchContainer
+parameter_list|(
+name|ContainerRuntimeContext
+name|ctx
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+block|{
+name|launchContainer
+argument_list|(
+name|ctx
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|signalContainer (ContainerRuntimeContext ctx)
 specifier|public
 name|void

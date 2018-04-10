@@ -756,7 +756,7 @@ throw|;
 block|}
 name|ret
 operator|=
-name|launchContainer
+name|relaunchContainer
 argument_list|(
 operator|new
 name|ContainerStartContext

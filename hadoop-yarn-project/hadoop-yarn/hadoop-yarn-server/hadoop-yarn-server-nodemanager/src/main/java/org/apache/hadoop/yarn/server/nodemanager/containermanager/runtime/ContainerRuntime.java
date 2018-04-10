@@ -114,6 +114,17 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
+comment|/**    * Relaunch a container.    *    * @param ctx the {@link ContainerRuntimeContext}    * @throws ContainerExecutionException if an error occurs while relaunching    * the container    */
+DECL|method|relaunchContainer (ContainerRuntimeContext ctx)
+name|void
+name|relaunchContainer
+parameter_list|(
+name|ContainerRuntimeContext
+name|ctx
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+function_decl|;
 comment|/**    * Signal a container. Signals may be a request to terminate, a status check,    * etc.    *    * @param ctx the {@link ContainerRuntimeContext}    * @throws ContainerExecutionException if an error occurs while signaling    * the container    */
 DECL|method|signalContainer (ContainerRuntimeContext ctx)
 name|void

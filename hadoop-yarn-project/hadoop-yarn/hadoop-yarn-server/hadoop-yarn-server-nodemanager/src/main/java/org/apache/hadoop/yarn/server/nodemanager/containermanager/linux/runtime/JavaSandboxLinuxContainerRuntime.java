@@ -1278,6 +1278,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|relaunchContainer (ContainerRuntimeContext ctx)
+specifier|public
+name|void
+name|relaunchContainer
+parameter_list|(
+name|ContainerRuntimeContext
+name|ctx
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+block|{
+try|try
+block|{
+name|super
+operator|.
+name|relaunchContainer
+argument_list|(
+name|ctx
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|deletePolicyFiles
+argument_list|(
+name|ctx
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Determine if JVMSandboxLinuxContainerRuntime should be used.  This is    * decided based on the value of    * {@value YarnConfiguration#YARN_CONTAINER_SANDBOX}    * @return true if Sandbox is requested, false otherwise    */
 DECL|method|isSandboxContainerRequested ()
 name|boolean

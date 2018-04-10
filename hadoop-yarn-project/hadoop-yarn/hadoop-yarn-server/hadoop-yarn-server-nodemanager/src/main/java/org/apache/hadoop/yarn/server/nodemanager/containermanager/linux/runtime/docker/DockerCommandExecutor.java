@@ -957,6 +957,46 @@ name|RUNNING
 argument_list|)
 return|;
 block|}
+comment|/**    * Is the container in a startable state?    *    * @param containerStatus   the container's {@link DockerContainerStatus}.    * @return                  is the container in a startable state.    */
+DECL|method|isStartable (DockerContainerStatus containerStatus)
+specifier|public
+specifier|static
+name|boolean
+name|isStartable
+parameter_list|(
+name|DockerContainerStatus
+name|containerStatus
+parameter_list|)
+block|{
+if|if
+condition|(
+name|containerStatus
+operator|.
+name|equals
+argument_list|(
+name|DockerContainerStatus
+operator|.
+name|EXITED
+argument_list|)
+operator|||
+name|containerStatus
+operator|.
+name|equals
+argument_list|(
+name|DockerContainerStatus
+operator|.
+name|STOPPED
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

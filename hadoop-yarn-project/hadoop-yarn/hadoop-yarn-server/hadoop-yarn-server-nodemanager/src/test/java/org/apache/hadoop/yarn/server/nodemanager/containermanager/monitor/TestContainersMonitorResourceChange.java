@@ -741,6 +741,25 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|relaunchContainer (ContainerStartContext ctx)
+specifier|public
+name|int
+name|relaunchContainer
+parameter_list|(
+name|ContainerStartContext
+name|ctx
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|ConfigurationException
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|signalContainer (ContainerSignalContext ctx)
 specifier|public
 name|boolean

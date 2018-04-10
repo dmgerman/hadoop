@@ -1930,6 +1930,28 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|relaunchContainer (ContainerStartContext ctx)
+specifier|public
+name|int
+name|relaunchContainer
+parameter_list|(
+name|ContainerStartContext
+name|ctx
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|ConfigurationException
+block|{
+return|return
+name|launchContainer
+argument_list|(
+name|ctx
+argument_list|)
+return|;
+block|}
 comment|/**    * Create a new {@link ShellCommandExecutor} using the parameters.    *    * @param wrapperScriptPath the path to the script to execute    * @param containerIdStr the container ID    * @param user the application owner's username    * @param pidFile the path to the container's PID file    * @param resource this parameter controls memory and CPU limits.    * @param workDir If not-null, specifies the directory which should be set    * as the current working directory for the command. If null,    * the current working directory is not modified.    * @param environment the container environment    * @return the new {@link ShellCommandExecutor}    * @see ShellCommandExecutor    */
 DECL|method|buildCommandExecutor (String wrapperScriptPath, String containerIdStr, String user, Path pidFile, Resource resource, File workDir, Map<String, String> environment)
 specifier|protected

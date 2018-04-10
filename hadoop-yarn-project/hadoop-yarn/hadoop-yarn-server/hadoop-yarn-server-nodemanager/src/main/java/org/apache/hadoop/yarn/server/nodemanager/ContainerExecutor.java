@@ -998,6 +998,21 @@ name|IOException
 throws|,
 name|ConfigurationException
 function_decl|;
+comment|/**    * Relaunch the container on the node. This is a blocking call and returns    * only when the container exits.    * @param ctx Encapsulates information necessary for relaunching containers.    * @return the return status of the relaunch    * @throws IOException if the container relaunch fails    * @throws ConfigurationException if config error was found    */
+DECL|method|relaunchContainer (ContainerStartContext ctx)
+specifier|public
+specifier|abstract
+name|int
+name|relaunchContainer
+parameter_list|(
+name|ContainerStartContext
+name|ctx
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|ConfigurationException
+function_decl|;
 comment|/**    * Signal container with the specified signal.    *    * @param ctx Encapsulates information necessary for signaling containers.    * @return returns true if the operation succeeded    * @throws IOException if signaling the container fails    */
 DECL|method|signalContainer (ContainerSignalContext ctx)
 specifier|public
