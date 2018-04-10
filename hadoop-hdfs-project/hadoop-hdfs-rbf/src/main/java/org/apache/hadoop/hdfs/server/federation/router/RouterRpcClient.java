@@ -3505,6 +3505,23 @@ if|if
 condition|(
 name|locations
 operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No remote locations available"
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|locations
+operator|.
 name|size
 argument_list|()
 operator|==
