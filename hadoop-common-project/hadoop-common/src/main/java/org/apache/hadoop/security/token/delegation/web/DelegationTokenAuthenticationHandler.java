@@ -512,7 +512,7 @@ implements|implements
 name|AuthenticationHandler
 block|{
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -1135,6 +1135,9 @@ argument_list|(
 literal|"Processing operation for req=({}), token: {}"
 argument_list|,
 name|request
+operator|.
+name|getRequestURL
+argument_list|()
 argument_list|,
 name|token
 argument_list|)
@@ -2077,6 +2080,9 @@ name|getClass
 argument_list|()
 argument_list|,
 name|request
+operator|.
+name|getRequestURL
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token
