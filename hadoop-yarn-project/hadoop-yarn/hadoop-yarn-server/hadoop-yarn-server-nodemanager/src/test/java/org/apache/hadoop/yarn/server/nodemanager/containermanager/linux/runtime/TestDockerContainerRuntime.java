@@ -2322,7 +2322,7 @@ argument_list|)
 expr_stmt|;
 name|user
 operator|=
-literal|"user"
+name|submittingUser
 expr_stmt|;
 name|appId
 operator|=
@@ -6768,7 +6768,7 @@ decl_stmt|;
 name|int
 name|expected
 init|=
-literal|15
+literal|14
 decl_stmt|;
 name|int
 name|counter
@@ -6852,30 +6852,6 @@ operator|.
 name|assertEquals
 argument_list|(
 literal|"  docker-command=run"
-argument_list|,
-name|dockerCommands
-operator|.
-name|get
-argument_list|(
-name|counter
-operator|++
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"  group-add="
-operator|+
-name|String
-operator|.
-name|join
-argument_list|(
-literal|","
-argument_list|,
-name|groups
-argument_list|)
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7001,7 +6977,7 @@ name|assertEquals
 argument_list|(
 literal|"  user="
 operator|+
-name|uidGidPair
+name|submittingUser
 argument_list|,
 name|dockerCommands
 operator|.
@@ -8812,7 +8788,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"user"
+name|submittingUser
 argument_list|,
 name|op
 operator|.

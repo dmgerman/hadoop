@@ -3506,6 +3506,15 @@ argument_list|)
 throw|;
 block|}
 block|}
+if|if
+condition|(
+operator|!
+name|allowPrivilegedContainerExecution
+argument_list|(
+name|container
+argument_list|)
+condition|)
+block|{
 name|dockerRunAsUser
 operator|=
 name|uid
@@ -3514,6 +3523,19 @@ literal|":"
 operator|+
 name|gid
 expr_stmt|;
+block|}
+else|else
+block|{
+name|dockerRunAsUser
+operator|=
+name|ctx
+operator|.
+name|getExecutionAttribute
+argument_list|(
+name|USER
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|//List<String> -> stored as List -> fetched/converted to List<String>
 comment|//we can't do better here thanks to type-erasure
@@ -4130,6 +4152,15 @@ condition|(
 name|enableUserReMapping
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|allowPrivilegedContainerExecution
+argument_list|(
+name|container
+argument_list|)
+condition|)
+block|{
 name|runCommand
 operator|.
 name|groupAdd
@@ -4137,6 +4168,7 @@ argument_list|(
 name|groups
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// use plugins to update docker run command.
 if|if
