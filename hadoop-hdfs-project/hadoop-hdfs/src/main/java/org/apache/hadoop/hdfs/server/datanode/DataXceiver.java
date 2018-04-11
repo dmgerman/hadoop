@@ -144,6 +144,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockChecksumOptions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -5782,7 +5798,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|blockChecksum (ExtendedBlock block, Token<BlockTokenIdentifier> blockToken)
+DECL|method|blockChecksum (ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, BlockChecksumOptions blockChecksumOptions)
 specifier|public
 name|void
 name|blockChecksum
@@ -5795,6 +5811,9 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
+parameter_list|,
+name|BlockChecksumOptions
+name|blockChecksumOptions
 parameter_list|)
 throws|throws
 name|IOException
@@ -5847,6 +5866,8 @@ argument_list|(
 name|datanode
 argument_list|,
 name|block
+argument_list|,
+name|blockChecksumOptions
 argument_list|)
 decl_stmt|;
 try|try
@@ -5890,7 +5911,7 @@ name|getCrcPerBlock
 argument_list|()
 argument_list|)
 operator|.
-name|setMd5
+name|setBlockChecksum
 argument_list|(
 name|ByteString
 operator|.
@@ -5913,6 +5934,16 @@ name|maker
 operator|.
 name|getCrcType
 argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|setBlockChecksumOptions
+argument_list|(
+name|PBHelperClient
+operator|.
+name|convert
+argument_list|(
+name|blockChecksumOptions
 argument_list|)
 argument_list|)
 argument_list|)
@@ -5982,7 +6013,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|blockGroupChecksum (final StripedBlockInfo stripedBlockInfo, final Token<BlockTokenIdentifier> blockToken, long requestedNumBytes)
+DECL|method|blockGroupChecksum (final StripedBlockInfo stripedBlockInfo, final Token<BlockTokenIdentifier> blockToken, long requestedNumBytes, BlockChecksumOptions blockChecksumOptions)
 specifier|public
 name|void
 name|blockGroupChecksum
@@ -6000,6 +6031,9 @@ name|blockToken
 parameter_list|,
 name|long
 name|requestedNumBytes
+parameter_list|,
+name|BlockChecksumOptions
+name|blockChecksumOptions
 parameter_list|)
 throws|throws
 name|IOException
@@ -6063,6 +6097,8 @@ argument_list|,
 name|stripedBlockInfo
 argument_list|,
 name|requestedNumBytes
+argument_list|,
+name|blockChecksumOptions
 argument_list|)
 decl_stmt|;
 try|try
@@ -6106,7 +6142,7 @@ name|getCrcPerBlock
 argument_list|()
 argument_list|)
 operator|.
-name|setMd5
+name|setBlockChecksum
 argument_list|(
 name|ByteString
 operator|.
@@ -6129,6 +6165,16 @@ name|maker
 operator|.
 name|getCrcType
 argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|setBlockChecksumOptions
+argument_list|(
+name|PBHelperClient
+operator|.
+name|convert
+argument_list|(
+name|blockChecksumOptions
 argument_list|)
 argument_list|)
 argument_list|)

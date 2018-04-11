@@ -1884,6 +1884,20 @@ return|;
 block|}
 block|}
 block|}
+comment|/**    * Enum for indicating what mode to use when combining chunk and block    * checksums to define an aggregate FileChecksum. This should be considered    * a client-side runtime option rather than a persistent property of any    * stored metadata, which is why this is not part of ChecksumOpt, which    * deals with properties of files at rest.    */
+DECL|enum|ChecksumCombineMode
+specifier|public
+enum|enum
+name|ChecksumCombineMode
+block|{
+DECL|enumConstant|MD5MD5CRC
+name|MD5MD5CRC
+block|,
+comment|// MD5 of block checksums, which are MD5 over chunk CRCs
+DECL|enumConstant|COMPOSITE_CRC
+name|COMPOSITE_CRC
+comment|// Block/chunk-independent composite CRC
+block|}
 block|}
 end_class
 

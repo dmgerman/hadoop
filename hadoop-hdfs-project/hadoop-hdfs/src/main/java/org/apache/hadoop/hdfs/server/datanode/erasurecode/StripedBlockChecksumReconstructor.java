@@ -46,16 +46,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|security
-operator|.
-name|MessageDigest
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Arrays
@@ -90,20 +80,6 @@ name|DataOutputBuffer
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|MD5Hash
-import|;
-end_import
-
 begin_comment
 comment|/**  * StripedBlockChecksumReconstructor reconstruct one or more missed striped  * block in the striped block group, the minimum number of live striped blocks  * should be no less than data block number. Then checksum will be recalculated  * using the newly reconstructed block.  */
 end_comment
@@ -115,6 +91,7 @@ operator|.
 name|Private
 DECL|class|StripedBlockChecksumReconstructor
 specifier|public
+specifier|abstract
 class|class
 name|StripedBlockChecksumReconstructor
 extends|extends
@@ -143,11 +120,6 @@ specifier|private
 name|DataOutputBuffer
 name|checksumWriter
 decl_stmt|;
-DECL|field|md5
-specifier|private
-name|MD5Hash
-name|md5
-decl_stmt|;
 DECL|field|checksumDataLen
 specifier|private
 name|long
@@ -159,7 +131,7 @@ name|long
 name|requestedLen
 decl_stmt|;
 DECL|method|StripedBlockChecksumReconstructor (ErasureCodingWorker worker, StripedReconstructionInfo stripedReconInfo, DataOutputBuffer checksumWriter, long requestedBlockLength)
-specifier|public
+specifier|protected
 name|StripedBlockChecksumReconstructor
 parameter_list|(
 name|ErasureCodingWorker
@@ -312,6 +284,8 @@ name|tmpLen
 index|]
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|reconstruct ()
 specifier|public
 name|void
@@ -320,14 +294,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MessageDigest
-name|digester
-init|=
-name|MD5Hash
-operator|.
-name|getDigester
+name|prepareDigester
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|long
 name|maxTargetLength
 init|=
@@ -403,8 +372,6 @@ name|array
 argument_list|()
 argument_list|,
 name|toReconstructLen
-argument_list|,
-name|digester
 argument_list|)
 expr_stmt|;
 name|updatePositionInBlock
@@ -420,29 +387,8 @@ name|clearBuffers
 argument_list|()
 expr_stmt|;
 block|}
-name|byte
-index|[]
-name|digest
-init|=
-name|digester
-operator|.
-name|digest
+name|commitDigest
 argument_list|()
-decl_stmt|;
-name|md5
-operator|=
-operator|new
-name|MD5Hash
-argument_list|(
-name|digest
-argument_list|)
-expr_stmt|;
-name|md5
-operator|.
-name|write
-argument_list|(
-name|checksumWriter
-argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -452,7 +398,59 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|checksumWithTargetOutput (byte[] outputData, int toReconstructLen, MessageDigest digester)
+comment|/**    * Should return a representation of a completed/reconstructed digest which    * is suitable for debug printing.    */
+DECL|method|getDigestObject ()
+specifier|public
+specifier|abstract
+name|Object
+name|getDigestObject
+parameter_list|()
+function_decl|;
+comment|/**    * This will be called before starting reconstruction.    */
+DECL|method|prepareDigester ()
+specifier|abstract
+name|void
+name|prepareDigester
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This will be called repeatedly with chunked checksums computed in-flight    * over reconstructed data.    *    * @param dataBytesPerChecksum the number of underlying data bytes    *     corresponding to each checksum inside {@code checksumBytes}.    */
+DECL|method|updateDigester (byte[] checksumBytes, int dataBytesPerChecksum)
+specifier|abstract
+name|void
+name|updateDigester
+parameter_list|(
+name|byte
+index|[]
+name|checksumBytes
+parameter_list|,
+name|int
+name|dataBytesPerChecksum
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This will be called when reconstruction of entire requested length is    * complete and any final digests should be committed to    * implementation-specific output fields.    */
+DECL|method|commitDigest ()
+specifier|abstract
+name|void
+name|commitDigest
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getChecksumWriter ()
+specifier|protected
+name|DataOutputBuffer
+name|getChecksumWriter
+parameter_list|()
+block|{
+return|return
+name|checksumWriter
+return|;
+block|}
+DECL|method|checksumWithTargetOutput (byte[] outputData, int toReconstructLen)
 specifier|private
 name|long
 name|checksumWithTargetOutput
@@ -463,9 +461,6 @@ name|outputData
 parameter_list|,
 name|int
 name|toReconstructLen
-parameter_list|,
-name|MessageDigest
-name|digester
 parameter_list|)
 throws|throws
 name|IOException
@@ -582,17 +577,15 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|digester
-operator|.
-name|update
+name|updateDigester
 argument_list|(
 name|checksumBuf
 argument_list|,
-literal|0
-argument_list|,
-name|checksumBuf
+name|getChecksum
+argument_list|()
 operator|.
-name|length
+name|getBytesPerChecksum
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|checksumDataLength
@@ -658,11 +651,11 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|digester
-operator|.
-name|update
+name|updateDigester
 argument_list|(
 name|partialCrc
+argument_list|,
+name|partialLength
 argument_list|)
 expr_stmt|;
 name|checksumDataLength
@@ -699,17 +692,15 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// updates digest using the checksum array of bytes
-name|digester
-operator|.
-name|update
+name|updateDigester
 argument_list|(
 name|checksumBuf
 argument_list|,
-literal|0
-argument_list|,
-name|checksumBuf
+name|getChecksum
+argument_list|()
 operator|.
-name|length
+name|getBytesPerChecksum
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -836,16 +827,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-block|}
-DECL|method|getMD5 ()
-specifier|public
-name|MD5Hash
-name|getMD5
-parameter_list|()
-block|{
-return|return
-name|md5
-return|;
 block|}
 DECL|method|getChecksumDataLen ()
 specifier|public

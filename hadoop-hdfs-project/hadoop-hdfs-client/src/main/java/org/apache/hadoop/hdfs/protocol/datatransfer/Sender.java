@@ -134,6 +134,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockChecksumOptions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -1758,7 +1774,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|blockChecksum (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken)
+DECL|method|blockChecksum (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, BlockChecksumOptions blockChecksumOptions)
 specifier|public
 name|void
 name|blockChecksum
@@ -1773,6 +1789,9 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
+parameter_list|,
+name|BlockChecksumOptions
+name|blockChecksumOptions
 parameter_list|)
 throws|throws
 name|IOException
@@ -1797,6 +1816,16 @@ name|blockToken
 argument_list|)
 argument_list|)
 operator|.
+name|setBlockChecksumOptions
+argument_list|(
+name|PBHelperClient
+operator|.
+name|convert
+argument_list|(
+name|blockChecksumOptions
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -1814,7 +1843,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken, long requestedNumBytes)
+DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken, long requestedNumBytes, BlockChecksumOptions blockChecksumOptions)
 specifier|public
 name|void
 name|blockGroupChecksum
@@ -1830,6 +1859,9 @@ name|blockToken
 parameter_list|,
 name|long
 name|requestedNumBytes
+parameter_list|,
+name|BlockChecksumOptions
+name|blockChecksumOptions
 parameter_list|)
 throws|throws
 name|IOException
@@ -1912,6 +1944,16 @@ operator|.
 name|setRequestedNumBytes
 argument_list|(
 name|requestedNumBytes
+argument_list|)
+operator|.
+name|setBlockChecksumOptions
+argument_list|(
+name|PBHelperClient
+operator|.
+name|convert
+argument_list|(
+name|blockChecksumOptions
+argument_list|)
 argument_list|)
 operator|.
 name|build

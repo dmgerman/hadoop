@@ -84,6 +84,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockChecksumOptions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -538,8 +554,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get block checksum (MD5 of CRC32).    *    * @param blk a block.    * @param blockToken security token for accessing the block.    * @throws IOException    */
-DECL|method|blockChecksum (ExtendedBlock blk, Token<BlockTokenIdentifier> blockToken)
+comment|/**    * Get block checksum (MD5 of CRC32).    *    * @param blk a block.    * @param blockToken security token for accessing the block.    * @param blockChecksumOptions determines how the block-level checksum is    *     computed from underlying block metadata.    * @throws IOException    */
+DECL|method|blockChecksum (ExtendedBlock blk, Token<BlockTokenIdentifier> blockToken, BlockChecksumOptions blockChecksumOptions)
 name|void
 name|blockChecksum
 parameter_list|(
@@ -551,12 +567,15 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|blockToken
+parameter_list|,
+name|BlockChecksumOptions
+name|blockChecksumOptions
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get striped block group checksum (MD5 of CRC32).    *    * @param stripedBlockInfo a striped block info.    * @param blockToken security token for accessing the block.    * @param requestedNumBytes requested number of bytes in the block group    *                          to compute the checksum.    * @throws IOException    */
-DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken, long requestedNumBytes)
+comment|/**    * Get striped block group checksum (MD5 of CRC32).    *    * @param stripedBlockInfo a striped block info.    * @param blockToken security token for accessing the block.    * @param requestedNumBytes requested number of bytes in the block group    *                          to compute the checksum.    * @param blockChecksumOptions determines how the block-level checksum is    *     computed from underlying block metadata.    * @throws IOException    */
+DECL|method|blockGroupChecksum (StripedBlockInfo stripedBlockInfo, Token<BlockTokenIdentifier> blockToken, long requestedNumBytes, BlockChecksumOptions blockChecksumOptions)
 name|void
 name|blockGroupChecksum
 parameter_list|(
@@ -571,6 +590,9 @@ name|blockToken
 parameter_list|,
 name|long
 name|requestedNumBytes
+parameter_list|,
+name|BlockChecksumOptions
+name|blockChecksumOptions
 parameter_list|)
 throws|throws
 name|IOException

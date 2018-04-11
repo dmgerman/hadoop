@@ -482,6 +482,52 @@ argument_list|()
 return|;
 block|}
 block|}
+comment|/**    * @return the int representation of the polynomial associated with the    *     CRC {@code type}, suitable for use with further CRC arithmetic.    * @throws IOException if there is no CRC polynomial applicable    *     to the given {@code type}.    */
+DECL|method|getCrcPolynomialForType (Type type)
+specifier|public
+specifier|static
+name|int
+name|getCrcPolynomialForType
+parameter_list|(
+name|Type
+name|type
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+switch|switch
+condition|(
+name|type
+condition|)
+block|{
+case|case
+name|CRC32
+case|:
+return|return
+name|CrcUtil
+operator|.
+name|GZIP_POLYNOMIAL
+return|;
+case|case
+name|CRC32C
+case|:
+return|return
+name|CrcUtil
+operator|.
+name|CASTAGNOLI_POLYNOMIAL
+return|;
+default|default:
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No CRC polynomial could be associated with type: "
+operator|+
+name|type
+argument_list|)
+throw|;
+block|}
+block|}
 DECL|method|newDataChecksum (Type type, int bytesPerChecksum )
 specifier|public
 specifier|static

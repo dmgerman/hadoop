@@ -8777,7 +8777,7 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getFileChecksum
+name|getFileChecksumWithCombineMode
 argument_list|(
 name|getPathName
 argument_list|(
@@ -8891,7 +8891,7 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getFileChecksum
+name|getFileChecksumWithCombineMode
 argument_list|(
 name|getPathName
 argument_list|(

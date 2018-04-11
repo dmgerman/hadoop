@@ -869,7 +869,7 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getFileChecksum
+name|getFileChecksumWithCombineMode
 argument_list|(
 name|getUriPath
 argument_list|(
