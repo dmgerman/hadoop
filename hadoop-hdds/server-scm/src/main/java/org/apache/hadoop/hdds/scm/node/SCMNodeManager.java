@@ -3462,6 +3462,17 @@ name|ReportState
 name|containerReportState
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|datanodeDetailsProto
+argument_list|,
+literal|"Heartbeat is missing "
+operator|+
+literal|"DatanodeDetails."
+argument_list|)
+expr_stmt|;
 name|DatanodeDetails
 name|datanodeDetails
 init|=
@@ -3598,6 +3609,9 @@ operator|.
 name|get
 argument_list|(
 name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
 argument_list|)
 argument_list|)
 return|;

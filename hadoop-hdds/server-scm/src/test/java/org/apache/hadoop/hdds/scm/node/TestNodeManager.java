@@ -276,16 +276,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|hamcrest
-operator|.
-name|CoreMatchers
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|After
@@ -641,18 +631,6 @@ operator|.
 name|CoreMatchers
 operator|.
 name|containsString
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|hamcrest
-operator|.
-name|MatcherAssert
-operator|.
-name|assertThat
 import|;
 end_import
 
@@ -1958,8 +1936,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|nodeCount
-argument_list|,
-literal|"Node"
 argument_list|)
 decl_stmt|;
 name|DatanodeDetails
@@ -2254,13 +2230,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Asserts that we log an error for null in datanode ID.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * Check for NPE when datanodeDetails is passed null for sendHeartbeat.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@
 name|Test
-DECL|method|testScmLogErrorOnNullDatanode ()
+DECL|method|testScmCheckForErrorOnNullDatanodeDetails ()
 specifier|public
 name|void
-name|testScmLogErrorOnNullDatanode
+name|testScmCheckForErrorOnNullDatanodeDetails
 parameter_list|()
 throws|throws
 name|IOException
@@ -2281,22 +2257,6 @@ argument_list|()
 argument_list|)
 init|)
 block|{
-name|GenericTestUtils
-operator|.
-name|LogCapturer
-name|logCapturer
-init|=
-name|GenericTestUtils
-operator|.
-name|LogCapturer
-operator|.
-name|captureLogs
-argument_list|(
-name|SCMNodeManager
-operator|.
-name|LOG
-argument_list|)
-decl_stmt|;
 name|nodeManager
 operator|.
 name|sendHeartbeat
@@ -2308,22 +2268,22 @@ argument_list|,
 name|reportState
 argument_list|)
 expr_stmt|;
-name|logCapturer
+block|}
+catch|catch
+parameter_list|(
+name|NullPointerException
+name|npe
+parameter_list|)
+block|{
+name|GenericTestUtils
 operator|.
-name|stopCapturing
-argument_list|()
-expr_stmt|;
-name|assertThat
+name|assertExceptionContains
 argument_list|(
-name|logCapturer
-operator|.
-name|getOutput
-argument_list|()
+literal|"Heartbeat is missing "
+operator|+
+literal|"DatanodeDetails."
 argument_list|,
-name|containsString
-argument_list|(
-literal|"Datanode ID in heartbeat is null"
-argument_list|)
+name|npe
 argument_list|)
 expr_stmt|;
 block|}
@@ -2414,8 +2374,6 @@ operator|.
 name|getDatanodeDetails
 argument_list|(
 name|nodeManager
-argument_list|,
-literal|"HealthyNode"
 argument_list|)
 decl_stmt|;
 name|DatanodeDetails
@@ -2426,8 +2384,6 @@ operator|.
 name|getDatanodeDetails
 argument_list|(
 name|nodeManager
-argument_list|,
-literal|"StaleNode"
 argument_list|)
 decl_stmt|;
 name|DatanodeDetails
@@ -2438,8 +2394,6 @@ operator|.
 name|getDatanodeDetails
 argument_list|(
 name|nodeManager
-argument_list|,
-literal|"DeadNode"
 argument_list|)
 decl_stmt|;
 name|nodeManager
@@ -3083,8 +3037,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a set of Nodes with a given prefix.    *    * @param count  - number of nodes.    * @param prefix - A prefix string that can be used in verification.    * @return List of Nodes.    */
-DECL|method|createNodeSet (SCMNodeManager nodeManager, int count, String prefix)
+comment|/**    * Create a set of Nodes with a given prefix.    *    * @param count  - number of nodes.    * @return List of Nodes.    */
+DECL|method|createNodeSet (SCMNodeManager nodeManager, int count)
 specifier|private
 name|List
 argument_list|<
@@ -3097,9 +3051,6 @@ name|nodeManager
 parameter_list|,
 name|int
 name|count
-parameter_list|,
-name|String
-name|prefix
 parameter_list|)
 block|{
 name|List
@@ -3138,9 +3089,13 @@ name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|,
-name|prefix
-operator|+
-name|x
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3292,8 +3247,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|healthyCount
-argument_list|,
-literal|"Healthy"
 argument_list|)
 decl_stmt|;
 name|List
@@ -3307,8 +3260,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|staleCount
-argument_list|,
-literal|"Stale"
 argument_list|)
 decl_stmt|;
 name|List
@@ -3322,8 +3273,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|deadCount
-argument_list|,
-literal|"Dead"
 argument_list|)
 decl_stmt|;
 name|Runnable
@@ -3508,18 +3457,13 @@ range|:
 name|deadList
 control|)
 block|{
-name|assertThat
+name|assertTrue
+argument_list|(
+name|deadNodeList
+operator|.
+name|contains
 argument_list|(
 name|node
-operator|.
-name|getHostName
-argument_list|()
-argument_list|,
-name|CoreMatchers
-operator|.
-name|startsWith
-argument_list|(
-literal|"Dead"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3665,8 +3609,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|healthyCount
-argument_list|,
-literal|"h"
 argument_list|)
 decl_stmt|;
 name|List
@@ -3680,8 +3622,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|staleCount
-argument_list|,
-literal|"s"
 argument_list|)
 decl_stmt|;
 name|Runnable
@@ -3925,8 +3865,6 @@ argument_list|(
 name|nodeManager
 argument_list|,
 name|healthyCount
-argument_list|,
-literal|"h"
 argument_list|)
 decl_stmt|;
 name|GenericTestUtils
@@ -4995,6 +4933,9 @@ operator|.
 name|get
 argument_list|(
 name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|SCMNodeStat

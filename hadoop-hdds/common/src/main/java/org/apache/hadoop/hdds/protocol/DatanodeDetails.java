@@ -666,6 +666,52 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|equals (Object obj)
+specifier|public
+name|boolean
+name|equals
+parameter_list|(
+name|Object
+name|obj
+parameter_list|)
+block|{
+return|return
+name|obj
+operator|instanceof
+name|DatanodeDetails
+operator|&&
+name|uuid
+operator|.
+name|equals
+argument_list|(
+operator|(
+operator|(
+name|DatanodeDetails
+operator|)
+name|obj
+operator|)
+operator|.
+name|uuid
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+return|return
+name|uuid
+operator|.
+name|hashCode
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns DatanodeDetails.Builder instance.    *    * @return DatanodeDetails.Builder    */
 DECL|method|newBuilder ()
 specifier|public
