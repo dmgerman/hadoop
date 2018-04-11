@@ -350,6 +350,8 @@ argument_list|(
 name|DST_NS_0
 argument_list|,
 name|DST_PATH_0
+argument_list|,
+name|SRC
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -363,6 +365,8 @@ argument_list|(
 name|DST_NS_1
 argument_list|,
 name|DST_PATH_1
+argument_list|,
+name|SRC
 argument_list|)
 argument_list|)
 expr_stmt|;

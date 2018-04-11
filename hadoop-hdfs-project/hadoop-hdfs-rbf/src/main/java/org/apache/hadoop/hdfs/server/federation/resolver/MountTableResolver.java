@@ -1991,6 +1991,8 @@ argument_list|(
 name|defaultNameService
 argument_list|,
 name|path
+argument_list|,
+name|path
 argument_list|)
 decl_stmt|;
 name|List
@@ -2544,6 +2546,8 @@ argument_list|(
 name|nsId
 argument_list|,
 name|newPath
+argument_list|,
+name|path
 argument_list|)
 decl_stmt|;
 name|locations

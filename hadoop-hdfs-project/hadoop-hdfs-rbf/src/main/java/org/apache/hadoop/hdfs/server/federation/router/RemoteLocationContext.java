@@ -70,6 +70,14 @@ name|String
 name|getDest
 parameter_list|()
 function_decl|;
+comment|/**    * Original source location.    *    * @return Source path.    */
+DECL|method|getSrc ()
+specifier|public
+specifier|abstract
+name|String
+name|getSrc
+parameter_list|()
+function_decl|;
 annotation|@
 name|Override
 DECL|method|hashCode ()

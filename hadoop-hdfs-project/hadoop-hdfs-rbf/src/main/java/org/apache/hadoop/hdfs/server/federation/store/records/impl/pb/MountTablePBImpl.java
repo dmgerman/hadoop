@@ -684,6 +684,9 @@ argument_list|(
 name|nsId
 argument_list|,
 name|path
+argument_list|,
+name|getSourcePath
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ret

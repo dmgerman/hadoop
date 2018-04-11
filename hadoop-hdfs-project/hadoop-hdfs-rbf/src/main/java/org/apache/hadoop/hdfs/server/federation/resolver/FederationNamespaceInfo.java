@@ -136,6 +136,18 @@ operator|.
 name|nameserviceId
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getSrc ()
+specifier|public
+name|String
+name|getSrc
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * The HDFS cluster id for this namespace.    *    * @return Cluster identifier.    */
 DECL|method|getClusterId ()
 specifier|public

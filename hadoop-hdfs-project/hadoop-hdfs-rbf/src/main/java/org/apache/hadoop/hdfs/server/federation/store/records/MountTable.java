@@ -687,6 +687,8 @@ argument_list|(
 name|nsId
 argument_list|,
 name|path
+argument_list|,
+name|src
 argument_list|)
 decl_stmt|;
 name|locations

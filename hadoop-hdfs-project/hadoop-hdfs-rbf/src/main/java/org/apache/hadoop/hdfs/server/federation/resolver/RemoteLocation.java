@@ -43,7 +43,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A single in a remote namespace consisting of a nameservice ID  * and a HDFS path.  */
+comment|/**  * A location in a remote namespace consisting of a nameservice ID and a HDFS  * path (destination). It also contains the federated location (source).  */
 end_comment
 
 begin_class
@@ -69,14 +69,21 @@ name|String
 name|namenodeId
 decl_stmt|;
 comment|/** Path in the remote location. */
-DECL|field|path
+DECL|field|dstPath
 specifier|private
 specifier|final
 name|String
-name|path
+name|dstPath
 decl_stmt|;
-comment|/**    * Create a new remote location.    *    * @param nsId    * @param pPath    */
-DECL|method|RemoteLocation (String nsId, String pPath)
+comment|/** Original path in federation. */
+DECL|field|srcPath
+specifier|private
+specifier|final
+name|String
+name|srcPath
+decl_stmt|;
+comment|/**    * Create a new remote location.    *    * @param nsId Destination namespace.    * @param dPath Path in the destination namespace.    * @param sPath Path in the federated level.    */
+DECL|method|RemoteLocation (String nsId, String dPath, String sPath)
 specifier|public
 name|RemoteLocation
 parameter_list|(
@@ -84,7 +91,10 @@ name|String
 name|nsId
 parameter_list|,
 name|String
-name|pPath
+name|dPath
+parameter_list|,
+name|String
+name|sPath
 parameter_list|)
 block|{
 name|this
@@ -93,12 +103,14 @@ name|nsId
 argument_list|,
 literal|null
 argument_list|,
-name|pPath
+name|dPath
+argument_list|,
+name|sPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a new remote location pointing to a particular namenode in the    * namespace.    *    * @param nsId Destination namespace.    * @param pPath Path in the destination namespace.    */
-DECL|method|RemoteLocation (String nsId, String nnId, String pPath)
+comment|/**    * Create a new remote location pointing to a particular namenode in the    * namespace.    *    * @param nsId Destination namespace.    * @param nnId Destination namenode.    * @param dPath Path in the destination namespace.    * @param sPath Path in the federated level    */
+DECL|method|RemoteLocation (String nsId, String nnId, String dPath, String sPath)
 specifier|public
 name|RemoteLocation
 parameter_list|(
@@ -109,7 +121,10 @@ name|String
 name|nnId
 parameter_list|,
 name|String
-name|pPath
+name|dPath
+parameter_list|,
+name|String
+name|sPath
 parameter_list|)
 block|{
 name|this
@@ -126,9 +141,15 @@ name|nnId
 expr_stmt|;
 name|this
 operator|.
-name|path
+name|dstPath
 operator|=
-name|pPath
+name|dPath
+expr_stmt|;
+name|this
+operator|.
+name|srcPath
+operator|=
+name|sPath
 expr_stmt|;
 block|}
 annotation|@
@@ -179,7 +200,21 @@ block|{
 return|return
 name|this
 operator|.
-name|path
+name|dstPath
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSrc ()
+specifier|public
+name|String
+name|getSrc
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|srcPath
 return|;
 block|}
 annotation|@
@@ -198,7 +233,7 @@ literal|"->"
 operator|+
 name|this
 operator|.
-name|path
+name|dstPath
 return|;
 block|}
 block|}

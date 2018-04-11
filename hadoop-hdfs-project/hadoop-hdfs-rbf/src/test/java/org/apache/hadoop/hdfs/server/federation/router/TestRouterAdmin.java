@@ -1537,6 +1537,8 @@ argument_list|(
 literal|"ns0"
 argument_list|,
 literal|"/"
+argument_list|,
+literal|"/"
 argument_list|)
 argument_list|)
 argument_list|,
@@ -1611,6 +1613,8 @@ operator|new
 name|RemoteLocation
 argument_list|(
 literal|"ns1"
+argument_list|,
+literal|"/"
 argument_list|,
 literal|"/"
 argument_list|)
