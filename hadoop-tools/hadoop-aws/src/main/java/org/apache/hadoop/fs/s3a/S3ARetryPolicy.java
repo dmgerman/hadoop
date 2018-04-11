@@ -661,8 +661,8 @@ argument_list|,
 name|retryIdempotentCalls
 argument_list|)
 expr_stmt|;
-comment|// policy on a 400/bad request still ambiguous. Given it
-comment|// comes and goes on test runs: try again
+comment|// policy on a 400/bad request still ambiguous.
+comment|// Treated as an immediate failure
 name|policyMap
 operator|.
 name|put
@@ -671,7 +671,7 @@ name|AWSBadRequestException
 operator|.
 name|class
 argument_list|,
-name|connectivityFailure
+name|fail
 argument_list|)
 expr_stmt|;
 comment|// Status 500 error code is also treated as a connectivity problem
