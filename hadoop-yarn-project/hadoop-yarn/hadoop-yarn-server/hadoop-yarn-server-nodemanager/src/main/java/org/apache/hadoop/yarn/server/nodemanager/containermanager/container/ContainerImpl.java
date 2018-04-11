@@ -10876,6 +10876,15 @@ name|getRestartTimes
 argument_list|()
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|windowRetryContext
+operator|.
+name|getRestartTimes
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 try|try

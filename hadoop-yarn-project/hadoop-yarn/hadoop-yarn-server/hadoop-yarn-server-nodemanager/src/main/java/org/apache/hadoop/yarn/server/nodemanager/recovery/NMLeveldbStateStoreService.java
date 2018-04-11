@@ -2422,6 +2422,15 @@ range|:
 name|unparsedRestartTimes
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|restartTime
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|restartTimes
 operator|.
 name|add
@@ -2434,6 +2443,7 @@ name|restartTime
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|rcs
 operator|.
