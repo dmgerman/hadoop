@@ -92,15 +92,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
-name|protocol
+name|container
 operator|.
-name|proto
+name|common
 operator|.
-name|HddsProtos
+name|statemachine
 operator|.
-name|DatanodeDetailsProto
+name|EndpointStateMachine
 import|;
 end_import
 
@@ -112,15 +112,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|container
+name|protocol
 operator|.
-name|common
+name|proto
 operator|.
-name|statemachine
+name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|EndpointStateMachine
+name|SCMRegisteredCmdResponseProto
 import|;
 end_import
 
@@ -233,10 +233,10 @@ name|EndPointStates
 argument_list|>
 name|result
 decl_stmt|;
-DECL|field|datanodeDetailsProto
+DECL|field|datanodeDetails
 specifier|private
-name|DatanodeDetailsProto
-name|datanodeDetailsProto
+name|DatanodeDetails
+name|datanodeDetails
 decl_stmt|;
 comment|/**    * Creates a register endpoint task.    *    * @param rpcEndPoint - endpoint    * @param conf - conf    */
 annotation|@
@@ -265,32 +265,32 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
-comment|/**    * Get the DatanodeDetailsProto Proto.    *    * @return DatanodeDetailsProto    */
-DECL|method|getDatanodeDetailsProto ()
+comment|/**    * Get the DatanodeDetails.    *    * @return DatanodeDetailsProto    */
+DECL|method|getDatanodeDetails ()
 specifier|public
-name|DatanodeDetailsProto
-name|getDatanodeDetailsProto
+name|DatanodeDetails
+name|getDatanodeDetails
 parameter_list|()
 block|{
 return|return
-name|datanodeDetailsProto
+name|datanodeDetails
 return|;
 block|}
-comment|/**    * Set the contiainerNodeID Proto.    *    * @param datanodeDetailsProto - Container Node ID.    */
-DECL|method|setDatanodeDetailsProto ( DatanodeDetailsProto datanodeDetailsProto)
+comment|/**    * Set the contiainerNodeID Proto.    *    * @param datanodeDetails - Container Node ID.    */
+DECL|method|setDatanodeDetails ( DatanodeDetails datanodeDetails)
 specifier|public
 name|void
-name|setDatanodeDetailsProto
+name|setDatanodeDetails
 parameter_list|(
-name|DatanodeDetailsProto
-name|datanodeDetailsProto
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 block|{
 name|this
 operator|.
-name|datanodeDetailsProto
+name|datanodeDetails
 operator|=
-name|datanodeDetailsProto
+name|datanodeDetails
 expr_stmt|;
 block|}
 comment|/**    * Computes a result, or throws an exception if unable to do so.    *    * @return computed result    * @throws Exception if unable to compute a result    */
@@ -308,7 +308,7 @@ name|Exception
 block|{
 if|if
 condition|(
-name|getDatanodeDetailsProto
+name|getDatanodeDetails
 argument_list|()
 operator|==
 literal|null
@@ -318,7 +318,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container ID proto cannot be null in RegisterEndpoint task, "
+literal|"DatanodeDetails cannot be null in RegisterEndpoint task, "
 operator|+
 literal|"shutting down the endpoint."
 argument_list|)
@@ -344,6 +344,9 @@ expr_stmt|;
 try|try
 block|{
 comment|// TODO : Add responses to the command Queue.
+name|SCMRegisteredCmdResponseProto
+name|response
+init|=
 name|rpcEndPoint
 operator|.
 name|getEndPoint
@@ -351,7 +354,10 @@ argument_list|()
 operator|.
 name|register
 argument_list|(
-name|datanodeDetailsProto
+name|datanodeDetails
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|,
 name|conf
 operator|.
@@ -362,7 +368,41 @@ operator|.
 name|OZONE_SCM_NAMES
 argument_list|)
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|response
+operator|.
+name|hasHostname
+argument_list|()
+operator|&&
+name|response
+operator|.
+name|hasIpAddress
+argument_list|()
+condition|)
+block|{
+name|datanodeDetails
+operator|.
+name|setHostName
+argument_list|(
+name|response
+operator|.
+name|getHostname
+argument_list|()
+argument_list|)
 expr_stmt|;
+name|datanodeDetails
+operator|.
+name|setIpAddress
+argument_list|(
+name|response
+operator|.
+name|getIpAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|EndpointStateMachine
 operator|.
 name|EndPointStates
@@ -615,12 +655,9 @@ argument_list|)
 decl_stmt|;
 name|task
 operator|.
-name|setDatanodeDetailsProto
+name|setDatanodeDetails
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
