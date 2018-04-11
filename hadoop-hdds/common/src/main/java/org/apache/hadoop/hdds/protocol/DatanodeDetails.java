@@ -129,16 +129,6 @@ specifier|private
 name|String
 name|hostName
 decl_stmt|;
-DECL|field|infoPort
-specifier|private
-name|Integer
-name|infoPort
-decl_stmt|;
-DECL|field|infoSecurePort
-specifier|private
-name|Integer
-name|infoSecurePort
-decl_stmt|;
 DECL|field|containerPort
 specifier|private
 name|Integer
@@ -154,8 +144,8 @@ specifier|private
 name|Integer
 name|ozoneRestPort
 decl_stmt|;
-comment|/**    * Constructs DatanodeDetails instance. DatanodeDetails.Builder is used    * for instantiating DatanodeDetails.    * @param uuid DataNode's UUID    * @param ipAddress IP Address of this DataNode    * @param hostName DataNode's hostname    * @param infoPort HTTP Port    * @param infoSecurePort HTTPS Port    * @param containerPort Container Port    * @param ratisPort Ratis Port    * @param ozoneRestPort Rest Port    */
-DECL|method|DatanodeDetails ( String uuid, String ipAddress, String hostName, Integer infoPort, Integer infoSecurePort, Integer containerPort, Integer ratisPort, Integer ozoneRestPort)
+comment|/**    * Constructs DatanodeDetails instance. DatanodeDetails.Builder is used    * for instantiating DatanodeDetails.    * @param uuid DataNode's UUID    * @param ipAddress IP Address of this DataNode    * @param hostName DataNode's hostname    * @param containerPort Container Port    * @param ratisPort Ratis Port    * @param ozoneRestPort Rest Port    */
+DECL|method|DatanodeDetails (String uuid, String ipAddress, String hostName, Integer containerPort, Integer ratisPort, Integer ozoneRestPort)
 specifier|private
 name|DatanodeDetails
 parameter_list|(
@@ -167,12 +157,6 @@ name|ipAddress
 parameter_list|,
 name|String
 name|hostName
-parameter_list|,
-name|Integer
-name|infoPort
-parameter_list|,
-name|Integer
-name|infoSecurePort
 parameter_list|,
 name|Integer
 name|containerPort
@@ -206,18 +190,6 @@ operator|.
 name|hostName
 operator|=
 name|hostName
-expr_stmt|;
-name|this
-operator|.
-name|infoPort
-operator|=
-name|infoPort
-expr_stmt|;
-name|this
-operator|.
-name|infoSecurePort
-operator|=
-name|infoSecurePort
 expr_stmt|;
 name|this
 operator|.
@@ -317,58 +289,6 @@ parameter_list|()
 block|{
 return|return
 name|hostName
-return|;
-block|}
-comment|/**    * Sets the InfoPort.    * @param port InfoPort    */
-DECL|method|setInfoPort (int port)
-specifier|public
-name|void
-name|setInfoPort
-parameter_list|(
-name|int
-name|port
-parameter_list|)
-block|{
-name|infoPort
-operator|=
-name|port
-expr_stmt|;
-block|}
-comment|/**    * Returns DataNodes Info Port.    *    * @return InfoPort    */
-DECL|method|getInfoPort ()
-specifier|public
-name|int
-name|getInfoPort
-parameter_list|()
-block|{
-return|return
-name|infoPort
-return|;
-block|}
-comment|/**    * Sets the InfoSecurePort.    *    * @param port InfoSecurePort    */
-DECL|method|setInfoSecurePort (int port)
-specifier|public
-name|void
-name|setInfoSecurePort
-parameter_list|(
-name|int
-name|port
-parameter_list|)
-block|{
-name|infoSecurePort
-operator|=
-name|port
-expr_stmt|;
-block|}
-comment|/**    * Returns DataNodes Secure Info Port.    *    * @return InfoSecurePort    */
-DECL|method|getInfoSecurePort ()
-specifier|public
-name|int
-name|getInfoSecurePort
-parameter_list|()
-block|{
-return|return
-name|infoSecurePort
 return|;
 block|}
 comment|/**    * Sets the Container Port.    * @param port ContainerPort    */
@@ -522,44 +442,6 @@ if|if
 condition|(
 name|datanodeDetailsProto
 operator|.
-name|hasInfoPort
-argument_list|()
-condition|)
-block|{
-name|builder
-operator|.
-name|setInfoPort
-argument_list|(
-name|datanodeDetailsProto
-operator|.
-name|getInfoPort
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|datanodeDetailsProto
-operator|.
-name|hasInfoSecurePort
-argument_list|()
-condition|)
-block|{
-name|builder
-operator|.
-name|setInfoSecurePort
-argument_list|(
-name|datanodeDetailsProto
-operator|.
-name|getInfoSecurePort
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|datanodeDetailsProto
-operator|.
 name|hasContainerPort
 argument_list|()
 condition|)
@@ -676,36 +558,6 @@ operator|.
 name|setHostName
 argument_list|(
 name|hostName
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|infoPort
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|setInfoPort
-argument_list|(
-name|infoPort
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|infoSecurePort
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|setInfoSecurePort
-argument_list|(
-name|infoSecurePort
 argument_list|)
 expr_stmt|;
 block|}
@@ -850,16 +702,6 @@ specifier|private
 name|String
 name|hostName
 decl_stmt|;
-DECL|field|infoPort
-specifier|private
-name|Integer
-name|infoPort
-decl_stmt|;
-DECL|field|infoSecurePort
-specifier|private
-name|Integer
-name|infoSecurePort
-decl_stmt|;
 DECL|field|containerPort
 specifier|private
 name|Integer
@@ -930,46 +772,6 @@ operator|.
 name|hostName
 operator|=
 name|host
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-comment|/**      * Sets the InfoPort.      *      * @param port InfoPort      * @return DatanodeDetails.Builder      */
-DECL|method|setInfoPort (Integer port)
-specifier|public
-name|Builder
-name|setInfoPort
-parameter_list|(
-name|Integer
-name|port
-parameter_list|)
-block|{
-name|this
-operator|.
-name|infoPort
-operator|=
-name|port
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-comment|/**      * Sets the Secure Info Port.      *      * @param port InfoSecurePort      * @return DatanodeDetails.Builder      */
-DECL|method|setInfoSecurePort (Integer port)
-specifier|public
-name|Builder
-name|setInfoSecurePort
-parameter_list|(
-name|Integer
-name|port
-parameter_list|)
-block|{
-name|this
-operator|.
-name|infoSecurePort
-operator|=
-name|port
 expr_stmt|;
 return|return
 name|this
@@ -1058,10 +860,6 @@ argument_list|,
 name|ipAddress
 argument_list|,
 name|hostName
-argument_list|,
-name|infoPort
-argument_list|,
-name|infoSecurePort
 argument_list|,
 name|containerPort
 argument_list|,

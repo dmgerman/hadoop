@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.cli
+DECL|package|org.apache.hadoop.ozone.scm.cli
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
 name|scm
 operator|.
@@ -785,10 +785,6 @@ literal|"datanodeUUId TEXT PRIMARY KEY NOT NULL,"
 operator|+
 literal|"ipAddress TEXT, "
 operator|+
-literal|"infoPort INTEGER,"
-operator|+
-literal|"infoSecurePort INTEGER,"
-operator|+
 literal|"containerPort INTEGER NOT NULL);"
 decl_stmt|;
 DECL|field|INSERT_CONTAINER_INFO
@@ -811,9 +807,9 @@ name|INSERT_DATANODE_INFO
 init|=
 literal|"INSERT INTO datanodeInfo (hostname, datanodeUUid, ipAddress, "
 operator|+
-literal|"infoPort, infoSecurePort, containerPort) "
+literal|"containerPort,) "
 operator|+
-literal|"VALUES (\"%s\", \"%s\", \"%s\", %d, %d, %d, %d, %d)"
+literal|"VALUES (\"%s\", \"%s\", \"%s\", %d"
 decl_stmt|;
 DECL|field|INSERT_CONTAINER_MEMBERS
 specifier|private
@@ -2349,7 +2345,7 @@ block|,
 DECL|enumConstant|UNKNOWN
 name|UNKNOWN
 block|}
-comment|/**    * Convert container.db to sqlite. The schema of sql db:    * three tables, containerId, containerMachines, datanodeInfo    * (* for primary key)    *    * containerInfo:    * ----------------------------------------------    * container name* | container lead datanode uuid    * ----------------------------------------------    *    * containerMembers:    * --------------------------------    * container name* |  datanodeUUid*    * --------------------------------    *    * datanodeInfo:    * ---------------------------------------------------------    * hostname | datanodeUUid* | xferPort | infoPort | ipcPort    * ---------------------------------------------------------    *    * --------------------------------    * | infoSecurePort | containerPort    * --------------------------------    *    * @param dbPath path to container db.    * @param outPath path to output sqlite    * @throws IOException throws exception.    */
+comment|/**    * Convert container.db to sqlite. The schema of sql db:    * three tables, containerId, containerMachines, datanodeInfo    * (* for primary key)    *    * containerInfo:    * ----------------------------------------------    * container name* | container lead datanode uuid    * ----------------------------------------------    *    * containerMembers:    * --------------------------------    * container name* |  datanodeUUid*    * --------------------------------    *    * datanodeInfo:    * ---------------------------------------------------------    * hostname | datanodeUUid* | xferPort | ipcPort    * ---------------------------------------------------------    *    * --------------------------------    * | containerPort    * --------------------------------    *    * @param dbPath path to container db.    * @param outPath path to output sqlite    * @throws IOException throws exception.    */
 DECL|method|convertContainerDB (Path dbPath, Path outPath)
 specifier|private
 name|void
@@ -2657,36 +2653,6 @@ name|getHostName
 argument_list|()
 decl_stmt|;
 name|int
-name|infoPort
-init|=
-name|dd
-operator|.
-name|hasInfoPort
-argument_list|()
-condition|?
-name|dd
-operator|.
-name|getInfoPort
-argument_list|()
-else|:
-literal|0
-decl_stmt|;
-name|int
-name|securePort
-init|=
-name|dd
-operator|.
-name|hasInfoSecurePort
-argument_list|()
-condition|?
-name|dd
-operator|.
-name|getInfoSecurePort
-argument_list|()
-else|:
-literal|0
-decl_stmt|;
-name|int
 name|containerPort
 init|=
 name|dd
@@ -2708,10 +2674,6 @@ argument_list|,
 name|uuid
 argument_list|,
 name|ipAddr
-argument_list|,
-name|infoPort
-argument_list|,
-name|securePort
 argument_list|,
 name|containerPort
 argument_list|)
@@ -2912,7 +2874,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Converts nodePool.db to sqlite. The schema of sql db:    * two tables, nodePool and datanodeInfo (the same datanode Info as for    * container.db).    *    * nodePool    * ---------------------------------------------------------    * datanodeUUID* | poolName*    * ---------------------------------------------------------    *    * datanodeInfo:    * ---------------------------------------------------------    * hostname | datanodeUUid* | xferPort | infoPort | ipcPort    * ---------------------------------------------------------    *    * --------------------------------    * | infoSecurePort | containerPort    * --------------------------------    *    * @param dbPath path to container db.    * @param outPath path to output sqlite    * @throws IOException throws exception.    */
+comment|/**    * Converts nodePool.db to sqlite. The schema of sql db:    * two tables, nodePool and datanodeInfo (the same datanode Info as for    * container.db).    *    * nodePool    * ---------------------------------------------------------    * datanodeUUID* | poolName*    * ---------------------------------------------------------    *    * datanodeInfo:    * ---------------------------------------------------------    * hostname | datanodeUUid* | xferPort | ipcPort    * ---------------------------------------------------------    *    * --------------------------------    * |containerPort    * --------------------------------    *    * @param dbPath path to container db.    * @param outPath path to output sqlite    * @throws IOException throws exception.    */
 DECL|method|convertNodePoolDB (Path dbPath, Path outPath)
 specifier|private
 name|void
@@ -3130,16 +3092,6 @@ argument_list|,
 name|datanodeDetails
 operator|.
 name|getIpAddress
-argument_list|()
-argument_list|,
-name|datanodeDetails
-operator|.
-name|getInfoPort
-argument_list|()
-argument_list|,
-name|datanodeDetails
-operator|.
-name|getInfoSecurePort
 argument_list|()
 argument_list|,
 name|datanodeDetails

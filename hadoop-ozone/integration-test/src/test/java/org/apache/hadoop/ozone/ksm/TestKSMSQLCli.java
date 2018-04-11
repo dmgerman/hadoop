@@ -102,7 +102,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
 name|scm
 operator|.

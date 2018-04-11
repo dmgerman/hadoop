@@ -2005,16 +2005,6 @@ argument_list|(
 literal|"127.0.0.1"
 argument_list|)
 operator|.
-name|setInfoPort
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|setInfoSecurePort
-argument_list|(
-literal|0
-argument_list|)
-operator|.
 name|setContainerPort
 argument_list|(
 literal|0

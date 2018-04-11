@@ -656,16 +656,6 @@ name|getHostName
 argument_list|()
 argument_list|)
 operator|.
-name|setInfoPort
-argument_list|(
-name|port
-argument_list|)
-operator|.
-name|setInfoSecurePort
-argument_list|(
-name|port
-argument_list|)
-operator|.
 name|setContainerPort
 argument_list|(
 name|port
