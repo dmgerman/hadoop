@@ -2410,6 +2410,54 @@ literal|false
 return|;
 block|}
 block|}
+comment|// If allocate from reserved container, make sure node is still reserved
+if|if
+condition|(
+name|allocation
+operator|.
+name|getAllocateFromReservedContainer
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|reservedContainerOnNode
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Try to allocate from reserved container "
+operator|+
+name|allocation
+operator|.
+name|getAllocateFromReservedContainer
+argument_list|()
+operator|.
+name|getRmContainer
+argument_list|()
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|", but node is not reserved"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|// Do we have enough space on this node?
 name|Resource
 name|availableResource
