@@ -1215,7 +1215,9 @@ expr_stmt|;
 block|}
 comment|// Create compa with 2 containers
 comment|// Create compb with 2 containers which depends on compa
-comment|// Check containers for compa started before containers for compb
+comment|// Create compc with 2 containers which depends on compb
+comment|// Check containers for compa started before containers for compb before
+comment|// containers for compc
 annotation|@
 name|Test
 argument_list|(
@@ -1280,6 +1282,7 @@ literal|"sleep 1000"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Let compb depend on compa
 name|Component
 name|compb
 init|=
@@ -1292,7 +1295,6 @@ argument_list|,
 literal|"sleep 1000"
 argument_list|)
 decl_stmt|;
-comment|// Let compb depedends on compa;
 name|compb
 operator|.
 name|setDependencies
@@ -1310,6 +1312,38 @@ operator|.
 name|addComponent
 argument_list|(
 name|compb
+argument_list|)
+expr_stmt|;
+comment|// Let compc depend on compb
+name|Component
+name|compc
+init|=
+name|createComponent
+argument_list|(
+literal|"compc"
+argument_list|,
+literal|2
+argument_list|,
+literal|"sleep 1000"
+argument_list|)
+decl_stmt|;
+name|compc
+operator|.
+name|setDependencies
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+literal|"compb"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|exampleApp
+operator|.
+name|addComponent
+argument_list|(
+name|compc
 argument_list|)
 expr_stmt|;
 name|client
@@ -1336,6 +1370,8 @@ argument_list|,
 literal|"compa"
 argument_list|,
 literal|"compb"
+argument_list|,
+literal|"compc"
 argument_list|)
 expr_stmt|;
 name|client

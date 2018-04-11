@@ -1600,6 +1600,17 @@ name|getNumberOfContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|setDesiredContainers
+argument_list|(
+name|component
+operator|.
+name|getNumberOfContainers
+argument_list|()
+operator|.
+name|intValue
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createNumCompInstances (long count)
 specifier|private
