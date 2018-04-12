@@ -7920,9 +7920,7 @@ name|void
 name|testGetApplications
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|YarnException
+name|Exception
 block|{
 comment|/**      * 1. Submit 3 applications alternately in two queues      * 2. Test each of the filters      */
 comment|// Basic setup
@@ -8309,6 +8307,14 @@ argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// make sure each app is submitted at a different time
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|rmService
 operator|.
 name|submitApplication
@@ -8321,9 +8327,22 @@ index|[
 name|i
 index|]
 operator|=
-name|System
+name|rmService
 operator|.
-name|currentTimeMillis
+name|getApplicationReport
+argument_list|(
+name|GetApplicationReportRequest
+operator|.
+name|newInstance
+argument_list|(
+name|appId
+argument_list|)
+argument_list|)
+operator|.
+name|getApplicationReport
+argument_list|()
+operator|.
+name|getStartTime
 argument_list|()
 expr_stmt|;
 block|}
@@ -8400,6 +8419,8 @@ name|submitTimeMillis
 index|[
 literal|0
 index|]
+operator|+
+literal|1
 argument_list|,
 name|System
 operator|.
@@ -8437,6 +8458,8 @@ name|submitTimeMillis
 index|[
 literal|1
 index|]
+operator|+
+literal|1
 argument_list|,
 name|System
 operator|.
@@ -8473,6 +8496,8 @@ name|submitTimeMillis
 index|[
 literal|2
 index|]
+operator|+
+literal|1
 argument_list|,
 name|System
 operator|.
