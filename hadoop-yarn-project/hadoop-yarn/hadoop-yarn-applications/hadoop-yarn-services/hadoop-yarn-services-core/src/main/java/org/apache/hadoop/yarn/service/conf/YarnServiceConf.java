@@ -129,6 +129,15 @@ name|DEFAULT_KEY_AM_RESOURCE_MEM
 init|=
 literal|1024
 decl_stmt|;
+DECL|field|DEFAULT_AM_JVM_XMX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_AM_JVM_XMX
+init|=
+literal|" -Xmx768m "
+decl_stmt|;
 DECL|field|YARN_QUEUE
 specifier|public
 specifier|static
