@@ -960,7 +960,56 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|processPaths (PathData parent, PathData ... items)
+DECL|method|isSorted ()
+specifier|protected
+name|boolean
+name|isSorted
+parameter_list|()
+block|{
+comment|// use the non-iterative method for listing because explicit sorting is
+comment|// required based on time/size/reverse or Total number of entries
+comment|// required to print summary first when non-recursive.
+return|return
+operator|!
+name|isRecursive
+argument_list|()
+operator|||
+name|isOrderTime
+argument_list|()
+operator|||
+name|isOrderSize
+argument_list|()
+operator|||
+name|isOrderReverse
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getListingGroupSize ()
+specifier|protected
+name|int
+name|getListingGroupSize
+parameter_list|()
+block|{
+if|if
+condition|(
+name|pathOnly
+condition|)
+block|{
+comment|// If there is a need of printing only paths, then no grouping required
+return|return
+literal|0
+return|;
+block|}
+comment|/*      * LS output should be formatted properly. Grouping 100 items and formatting      * the output to reduce the creation of huge sized arrays. This method will      * be called only when recursive is set.      */
+return|return
+literal|100
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|processPaths (PathData parent, PathData... items)
 specifier|protected
 name|void
 name|processPaths

@@ -3137,6 +3137,33 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|listStatusIterator (final Path p)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|FileStatus
+argument_list|>
+name|listStatusIterator
+parameter_list|(
+specifier|final
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Not-using fs#listStatusIterator() since it includes crc files as well
+return|return
+operator|new
+name|DirListingIterator
+argument_list|<>
+argument_list|(
+name|p
+argument_list|)
+return|;
+block|}
 comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f    *          given path    * @return the statuses of the files/directories in the given patch    * @throws IOException    */
 annotation|@
 name|Override

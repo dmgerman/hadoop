@@ -794,6 +794,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|isSorted ()
+specifier|protected
+name|boolean
+name|isSorted
+parameter_list|()
+block|{
+comment|//Sort the children for merge
+return|return
+literal|true
+return|;
+block|}
 block|}
 DECL|class|Cp
 specifier|static

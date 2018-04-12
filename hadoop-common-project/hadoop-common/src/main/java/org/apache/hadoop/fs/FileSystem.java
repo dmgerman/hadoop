@@ -5956,7 +5956,7 @@ return|;
 block|}
 comment|/**    * Generic iterator for implementing {@link #listStatusIterator(Path)}.    */
 DECL|class|DirListingIterator
-specifier|private
+specifier|protected
 class|class
 name|DirListingIterator
 parameter_list|<
