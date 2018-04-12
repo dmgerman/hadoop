@@ -1932,7 +1932,9 @@ decl_stmt|;
 name|String
 name|lastLine
 init|=
-literal|null
+name|NamenodeFsck
+operator|.
+name|CORRUPT_STATUS
 decl_stmt|;
 name|int
 name|errCode
