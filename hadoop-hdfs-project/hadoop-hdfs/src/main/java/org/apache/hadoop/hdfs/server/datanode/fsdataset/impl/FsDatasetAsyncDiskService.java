@@ -254,6 +254,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|common
+operator|.
+name|Storage
+operator|.
+name|StorageDirectory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|datanode
 operator|.
 name|fsdataset
@@ -702,7 +722,7 @@ name|volume
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Stops AsyncDiskService for a volume.    * @param volume the root of the volume.    */
+comment|/**    * Stops AsyncDiskService for a volume.    * @param storageId id of {@link StorageDirectory}.    */
 DECL|method|removeVolume (String storageId)
 specifier|synchronized
 name|void
