@@ -5869,14 +5869,10 @@ expr_stmt|;
 comment|// Add the env variables passed by the admin
 name|MRApps
 operator|.
-name|setEnvFromInputString
+name|setEnvFromInputProperty
 argument_list|(
 name|environment
 argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
 name|MRJobConfig
 operator|.
 name|MAPRED_ADMIN_USER_ENV
@@ -5884,7 +5880,6 @@ argument_list|,
 name|MRJobConfig
 operator|.
 name|DEFAULT_MAPRED_ADMIN_USER_ENV
-argument_list|)
 argument_list|,
 name|conf
 argument_list|)

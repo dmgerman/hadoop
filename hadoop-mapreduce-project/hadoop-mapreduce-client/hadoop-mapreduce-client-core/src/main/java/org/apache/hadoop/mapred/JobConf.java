@@ -773,7 +773,7 @@ name|MAPRED_TASK_ENV
 init|=
 literal|"mapred.child.env"
 decl_stmt|;
-comment|/**    * Configuration key to set the environment of the child map tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can    * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *</ul>    */
+comment|/**    * Configuration key to set the environment of the child map tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can    * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *</ul>    *    * You can also add environment variables individually by appending    *<code>.VARNAME</code> to this configuration key, where VARNAME is    * the name of the environment variable.    *    * Example:    *<ul>    *<li>mapreduce.map.env.VARNAME=value</li>    *</ul>    */
 DECL|field|MAPRED_MAP_TASK_ENV
 specifier|public
 specifier|static
@@ -785,7 +785,7 @@ name|JobContext
 operator|.
 name|MAP_ENV
 decl_stmt|;
-comment|/**    * Configuration key to set the environment of the child reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *</ul>    */
+comment|/**    * Configuration key to set the environment of the child reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *</ul>    *    * You can also add environment variables individually by appending    *<code>.VARNAME</code> to this configuration key, where VARNAME is    * the name of the environment variable.    *    * Example:    *<ul>    *<li>mapreduce.reduce.env.VARNAME=value</li>    *</ul>    */
 DECL|field|MAPRED_REDUCE_TASK_ENV
 specifier|public
 specifier|static

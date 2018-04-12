@@ -3266,14 +3266,10 @@ expr_stmt|;
 comment|// Setup the environment variables for Admin first
 name|MRApps
 operator|.
-name|setEnvFromInputString
+name|setEnvFromInputProperty
 argument_list|(
 name|environment
 argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
 name|MRJobConfig
 operator|.
 name|MR_AM_ADMIN_USER_ENV
@@ -3281,7 +3277,6 @@ argument_list|,
 name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_ADMIN_USER_ENV
-argument_list|)
 argument_list|,
 name|conf
 argument_list|)
@@ -3289,18 +3284,15 @@ expr_stmt|;
 comment|// Setup the environment variables (LD_LIBRARY_PATH, etc)
 name|MRApps
 operator|.
-name|setEnvFromInputString
+name|setEnvFromInputProperty
 argument_list|(
 name|environment
 argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
 name|MRJobConfig
 operator|.
 name|MR_AM_ENV
-argument_list|)
+argument_list|,
+literal|null
 argument_list|,
 name|conf
 argument_list|)
