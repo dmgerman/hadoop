@@ -2254,6 +2254,21 @@ operator|+
 literal|"]"
 argument_list|)
 expr_stmt|;
+comment|// Skip to put into runningContainers and addUtilization when recover
+if|if
+condition|(
+operator|!
+name|runningContainers
+operator|.
+name|containsKey
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+condition|)
+block|{
 name|runningContainers
 operator|.
 name|put
@@ -2275,6 +2290,7 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|container
