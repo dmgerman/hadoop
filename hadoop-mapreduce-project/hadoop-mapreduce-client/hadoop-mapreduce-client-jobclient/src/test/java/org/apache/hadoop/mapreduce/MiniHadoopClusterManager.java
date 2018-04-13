@@ -792,6 +792,15 @@ argument_list|(
 name|numDataNodes
 argument_list|)
 operator|.
+name|format
+argument_list|(
+name|dfsOpts
+operator|==
+name|StartupOption
+operator|.
+name|FORMAT
+argument_list|)
+operator|.
 name|startupOption
 argument_list|(
 name|dfsOpts
