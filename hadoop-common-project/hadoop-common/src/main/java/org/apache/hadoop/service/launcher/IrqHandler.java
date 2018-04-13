@@ -258,6 +258,7 @@ expr_stmt|;
 block|}
 comment|/**    * Bind to the interrupt handler.    * @throws IllegalArgumentException if the exception could not be set    */
 DECL|method|bind ()
+specifier|public
 name|void
 name|bind
 parameter_list|()
