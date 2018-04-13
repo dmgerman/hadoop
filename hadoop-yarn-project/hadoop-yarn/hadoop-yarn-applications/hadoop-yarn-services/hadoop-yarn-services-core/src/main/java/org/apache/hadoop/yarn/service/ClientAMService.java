@@ -880,6 +880,13 @@ name|getCurrentUser
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|scheduler
+operator|.
+name|setGracefulStop
+argument_list|()
+expr_stmt|;
 comment|// Stop the service in 2 seconds delay to make sure this rpc call is completed.
 comment|// shutdown hook will be executed which will stop AM gracefully.
 name|Thread

@@ -1541,6 +1541,13 @@ specifier|private
 name|boolean
 name|hasAtLeastOnePlacementConstraint
 decl_stmt|;
+DECL|field|gracefulStop
+specifier|private
+name|boolean
+name|gracefulStop
+init|=
+literal|false
+decl_stmt|;
 DECL|method|ServiceScheduler (ServiceContext context)
 specifier|public
 name|ServiceScheduler
@@ -1779,6 +1786,16 @@ name|nmClient
 operator|=
 name|createNMClient
 argument_list|()
+expr_stmt|;
+name|nmClient
+operator|.
+name|getClient
+argument_list|()
+operator|.
+name|cleanupRunningContainersOnStop
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|addIfService
 argument_list|(
@@ -2053,6 +2070,29 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|setGracefulStop ()
+specifier|protected
+name|void
+name|setGracefulStop
+parameter_list|()
+block|{
+name|this
+operator|.
+name|gracefulStop
+operator|=
+literal|true
+expr_stmt|;
+name|nmClient
+operator|.
+name|getClient
+argument_list|()
+operator|.
+name|cleanupRunningContainersOnStop
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
@@ -2115,7 +2155,31 @@ argument_list|(
 literal|"Stopping service scheduler"
 argument_list|)
 expr_stmt|;
-comment|// Mark component-instances/containers as STOPPED
+if|if
+condition|(
+name|executorService
+operator|!=
+literal|null
+condition|)
+block|{
+name|executorService
+operator|.
+name|shutdownNow
+argument_list|()
+expr_stmt|;
+block|}
+name|DefaultMetricsSystem
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+comment|// only stop the entire service when a graceful stop has been initiated
+comment|// (e.g. via client RPC, not through the AM receiving a SIGTERM)
+if|if
+condition|(
+name|gracefulStop
+condition|)
+block|{
 if|if
 condition|(
 name|YarnConfiguration
@@ -2127,6 +2191,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+comment|// mark component-instances/containers as STOPPED
 for|for
 control|(
 name|ContainerId
@@ -2154,36 +2219,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-if|if
-condition|(
-name|executorService
-operator|!=
-literal|null
-condition|)
-block|{
-name|executorService
-operator|.
-name|shutdownNow
-argument_list|()
-expr_stmt|;
-block|}
-name|DefaultMetricsSystem
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|YarnConfiguration
-operator|.
-name|timelineServiceV2Enabled
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-condition|)
-block|{
+comment|// mark attempt as unregistered
 name|serviceTimelinePublisher
 operator|.
 name|serviceAttemptUnregistered
@@ -2197,6 +2233,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// unregister AM
 name|amRMClient
 operator|.
 name|unregisterApplicationMaster
@@ -2233,6 +2270,7 @@ argument_list|,
 name|diagnostics
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStop
