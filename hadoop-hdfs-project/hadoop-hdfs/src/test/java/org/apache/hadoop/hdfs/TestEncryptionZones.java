@@ -1246,6 +1246,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|KMS_CLIENT_COPY_LEGACY_TOKEN_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1982,6 +1998,16 @@ operator|.
 name|DFS_NAMENODE_LIST_ENCRYPTION_ZONES_NUM_RESPONSES
 argument_list|,
 literal|2
+argument_list|)
+expr_stmt|;
+comment|// disable kms client copy legacy token logic because it's irrelevant.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|KMS_CLIENT_COPY_LEGACY_TOKEN_KEY
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|cluster
