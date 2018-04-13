@@ -82,6 +82,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|HddsConfServlet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|http
 operator|.
 name|HttpConfig
@@ -431,9 +447,22 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|httpServer
+operator|.
+name|addServlet
+argument_list|(
+literal|"conf"
+argument_list|,
+literal|"/conf"
+argument_list|,
+name|HddsConfServlet
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 block|}
 block|}
-comment|/**    * Add a servlet to BaseHttpServer.    * @param servletName The name of the servlet    * @param pathSpec The path spec for the servlet    * @param clazz The servlet class    */
+comment|/**    * Add a servlet to BaseHttpServer.    *    * @param servletName The name of the servlet    * @param pathSpec    The path spec for the servlet    * @param clazz       The servlet class    */
 DECL|method|addServlet (String servletName, String pathSpec, Class<? extends HttpServlet> clazz)
 specifier|protected
 name|void
@@ -466,7 +495,7 @@ name|clazz
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the WebAppContext associated with this HttpServer.    * @return WebAppContext    */
+comment|/**    * Returns the WebAppContext associated with this HttpServer.    *    * @return WebAppContext    */
 DECL|method|getWebAppContext ()
 specifier|protected
 name|WebAppContext
