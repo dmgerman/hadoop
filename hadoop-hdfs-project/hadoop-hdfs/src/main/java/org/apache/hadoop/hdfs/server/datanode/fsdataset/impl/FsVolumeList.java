@@ -1699,7 +1699,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Dynamically remove volume in the list.    * @param volume the volume to be removed.    * @param clearFailure set true to remove failure info for this volume.    */
+comment|/**    * Dynamically remove volume in the list.    * @param storageLocation {@link StorageLocation} of the volume to be removed.    * @param clearFailure set true to remove failure info for this volume.    */
 DECL|method|removeVolume (StorageLocation storageLocation, boolean clearFailure)
 name|void
 name|removeVolume
