@@ -2852,6 +2852,14 @@ name|replica
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|FETCH_OR_CREATE_RETRY_TIMES
+specifier|static
+specifier|final
+name|int
+name|FETCH_OR_CREATE_RETRY_TIMES
+init|=
+literal|3
+decl_stmt|;
 comment|/**    * Fetch or create a replica.    *    * You must hold the cache lock while calling this function.    *    * @param key          Key to use for lookup.    * @param creator      Replica creator callback.  Will be called without    *                     the cache lock being held.    *    * @return             Null if no replica could be found or created.    *                     The replica, otherwise.    */
 DECL|method|fetchOrCreate (ExtendedBlockId key, ShortCircuitReplicaCreator creator)
 specifier|public
@@ -2870,8 +2878,6 @@ argument_list|<
 name|ShortCircuitReplicaInfo
 argument_list|>
 name|newWaitable
-init|=
-literal|null
 decl_stmt|;
 name|lock
 operator|.
@@ -2885,7 +2891,20 @@ name|info
 init|=
 literal|null
 decl_stmt|;
-do|do
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|FETCH_OR_CREATE_RETRY_TIMES
+condition|;
+name|i
+operator|++
+control|)
 block|{
 if|if
 condition|(
@@ -2938,6 +2957,7 @@ argument_list|,
 name|waitable
 argument_list|)
 expr_stmt|;
+break|break;
 block|}
 catch|catch
 parameter_list|(
@@ -2962,11 +2982,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-do|while
-condition|(
-literal|false
-condition|)
-do|;
 if|if
 condition|(
 name|info
@@ -3019,8 +3034,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Fetch an existing ReplicaInfo object.    *    * @param key       The key that we're using.    * @param waitable  The waitable object to wait on.    * @return          The existing ReplicaInfo object, or null if there is    *                  none.    *    * @throws RetriableException   If the caller needs to retry.    */
+annotation|@
+name|VisibleForTesting
+comment|// ONLY for testing
 DECL|method|fetch (ExtendedBlockId key, Waitable<ShortCircuitReplicaInfo> waitable)
-specifier|private
+specifier|protected
 name|ShortCircuitReplicaInfo
 name|fetch
 parameter_list|(
