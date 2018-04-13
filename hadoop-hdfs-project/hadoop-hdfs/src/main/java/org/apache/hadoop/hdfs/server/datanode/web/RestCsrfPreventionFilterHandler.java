@@ -266,7 +266,6 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|RestCsrfPreventionFilterHandler
-specifier|public
 specifier|final
 class|class
 name|RestCsrfPreventionFilterHandler

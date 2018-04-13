@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web
+DECL|package|org.apache.hadoop.ozone
 package|package
 name|org
 operator|.
@@ -13,8 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|ozone
-operator|.
-name|web
 package|;
 end_package
 
@@ -53,20 +51,6 @@ operator|.
 name|headers
 operator|.
 name|Header
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
 import|;
 end_import
 

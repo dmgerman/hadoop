@@ -352,7 +352,7 @@ name|getDatanodeOzoneRestPort
 parameter_list|()
 block|{
 return|return
-name|MiniOzoneClassicCluster
+name|MiniOzoneTestHelper
 operator|.
 name|getOzoneRestPort
 argument_list|(

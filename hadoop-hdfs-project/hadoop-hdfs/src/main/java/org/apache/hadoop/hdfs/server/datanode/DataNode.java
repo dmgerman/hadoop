@@ -6067,7 +6067,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the hostname for this datanode. If the hostname is not    * explicitly configured in the given config, then it is determined    * via the DNS class.    *    * @param config configuration    * @return the hostname (NB: may not be a FQDN)    * @throws UnknownHostException if the dfs.datanode.dns.interface    *    option is used and the hostname can not be determined    */
 DECL|method|getHostName (Configuration config)
-specifier|public
+specifier|private
 specifier|static
 name|String
 name|getHostName

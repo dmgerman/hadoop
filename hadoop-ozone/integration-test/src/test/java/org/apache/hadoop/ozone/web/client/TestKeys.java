@@ -956,7 +956,7 @@ specifier|final
 name|int
 name|port
 init|=
-name|MiniOzoneClassicCluster
+name|MiniOzoneTestHelper
 operator|.
 name|getOzoneRestPort
 argument_list|(
@@ -1831,7 +1831,7 @@ specifier|final
 name|int
 name|port
 init|=
-name|MiniOzoneClassicCluster
+name|MiniOzoneTestHelper
 operator|.
 name|getOzoneRestPort
 argument_list|(

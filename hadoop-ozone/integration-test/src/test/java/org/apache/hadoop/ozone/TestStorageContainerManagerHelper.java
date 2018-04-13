@@ -1291,7 +1291,7 @@ control|)
 block|{
 if|if
 condition|(
-name|MiniOzoneClassicCluster
+name|MiniOzoneTestHelper
 operator|.
 name|getDatanodeDetails
 argument_list|(

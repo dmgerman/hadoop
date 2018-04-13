@@ -662,7 +662,7 @@ expr_stmt|;
 name|DatanodeDetails
 name|datanodeDetails
 init|=
-name|MiniOzoneClassicCluster
+name|MiniOzoneTestHelper
 operator|.
 name|getDatanodeDetails
 argument_list|(

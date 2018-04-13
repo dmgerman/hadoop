@@ -348,9 +348,6 @@ name|DATA_NODE
 block|,
 DECL|enumConstant|JOURNAL_NODE
 name|JOURNAL_NODE
-block|,
-DECL|enumConstant|STORAGE_CONTAINER_SERVICE
-name|STORAGE_CONTAINER_SERVICE
 block|}
 comment|/** Startup options for rolling upgrade. */
 DECL|enum|RollingUpgradeStartupOption
