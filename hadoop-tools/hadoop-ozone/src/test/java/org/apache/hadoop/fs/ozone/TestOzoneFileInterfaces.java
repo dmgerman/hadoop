@@ -162,6 +162,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
@@ -249,24 +251,6 @@ operator|.
 name|fs
 operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|DataNode
 import|;
 end_import
 
@@ -625,7 +609,7 @@ argument_list|)
 operator|.
 name|numDataNodes
 argument_list|(
-literal|10
+literal|3
 argument_list|)
 operator|.
 name|setHandlerType
@@ -771,36 +755,6 @@ argument_list|(
 name|bucketArgs
 argument_list|)
 expr_stmt|;
-comment|// Fetch the host and port for File System init
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-name|int
-name|port
-init|=
-name|dataNode
-operator|.
-name|getInfoPort
-argument_list|()
-decl_stmt|;
-name|String
-name|host
-init|=
-name|dataNode
-operator|.
-name|getDatanodeHostname
-argument_list|()
-decl_stmt|;
 name|rootPath
 operator|=
 name|String
@@ -915,7 +869,7 @@ condition|)
 block|{
 name|assertTrue
 argument_list|(
-literal|"The initialized file system is not OzoneFileSysetem but "
+literal|"The initialized file system is not OzoneFileSystem but "
 operator|+
 name|fs
 operator|.

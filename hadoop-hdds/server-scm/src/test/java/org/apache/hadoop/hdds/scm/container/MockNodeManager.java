@@ -1414,6 +1414,9 @@ operator|.
 name|get
 argument_list|(
 name|dd
+operator|.
+name|getUuid
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
