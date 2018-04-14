@@ -564,6 +564,17 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
+argument_list|,
+literal|1000L
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After

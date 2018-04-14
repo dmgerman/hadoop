@@ -8614,7 +8614,7 @@ specifier|final
 name|int
 name|DEFAULT_ATS_APP_COLLECTOR_LINGER_PERIOD_IN_MS
 init|=
-literal|1000
+literal|60000
 decl_stmt|;
 DECL|field|NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
 specifier|public
