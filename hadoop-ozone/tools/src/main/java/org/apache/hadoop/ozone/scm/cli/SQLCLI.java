@@ -807,9 +807,9 @@ name|INSERT_DATANODE_INFO
 init|=
 literal|"INSERT INTO datanodeInfo (hostname, datanodeUUid, ipAddress, "
 operator|+
-literal|"containerPort,) "
+literal|"containerPort) "
 operator|+
-literal|"VALUES (\"%s\", \"%s\", \"%s\", %d"
+literal|"VALUES (\"%s\", \"%s\", \"%s\", \"%d\")"
 decl_stmt|;
 DECL|field|INSERT_CONTAINER_MEMBERS
 specifier|private
@@ -3086,7 +3086,7 @@ argument_list|()
 argument_list|,
 name|datanodeDetails
 operator|.
-name|getUuid
+name|getUuidString
 argument_list|()
 argument_list|,
 name|datanodeDetails

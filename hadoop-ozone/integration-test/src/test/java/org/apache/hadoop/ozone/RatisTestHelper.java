@@ -233,10 +233,10 @@ decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|final
-name|MiniOzoneClassicCluster
+name|MiniOzoneCluster
 name|cluster
 decl_stmt|;
-comment|/**      * Create a {@link MiniOzoneClassicCluster} for testing by setting      *   OZONE_ENABLED = true,      *   RATIS_ENABLED = true, and      *   OZONE_HANDLER_TYPE_KEY = "distributed".      */
+comment|/**      * Create a {@link MiniOzoneCluster} for testing by setting      *   OZONE_ENABLED = true,      *   RATIS_ENABLED = true, and      *   OZONE_HANDLER_TYPE_KEY = "distributed".      */
 DECL|method|RatisTestSuite (final Class<?> clazz)
 specifier|public
 name|RatisTestSuite
@@ -282,33 +282,12 @@ return|;
 block|}
 DECL|method|getCluster ()
 specifier|public
-name|MiniOzoneClassicCluster
+name|MiniOzoneCluster
 name|getCluster
 parameter_list|()
 block|{
 return|return
 name|cluster
-return|;
-block|}
-DECL|method|getDatanodeInfoPort ()
-specifier|public
-name|int
-name|getDatanodeInfoPort
-parameter_list|()
-block|{
-return|return
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getInfoPort
-argument_list|()
 return|;
 block|}
 DECL|method|newOzoneRestClient ()
@@ -341,7 +320,7 @@ parameter_list|()
 block|{
 name|cluster
 operator|.
-name|close
+name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
@@ -352,20 +331,21 @@ name|getDatanodeOzoneRestPort
 parameter_list|()
 block|{
 return|return
-name|MiniOzoneTestHelper
-operator|.
-name|getOzoneRestPort
-argument_list|(
 name|cluster
 operator|.
-name|getDataNodes
+name|getHddsDatanodes
 argument_list|()
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
-argument_list|)
+operator|.
+name|getDatanodeDetails
+argument_list|()
+operator|.
+name|getOzoneRestPort
+argument_list|()
 return|;
 block|}
 block|}
@@ -468,7 +448,7 @@ expr_stmt|;
 block|}
 DECL|method|newMiniOzoneCluster ( int numDatanodes, OzoneConfiguration conf)
 specifier|static
-name|MiniOzoneClassicCluster
+name|MiniOzoneCluster
 name|newMiniOzoneCluster
 parameter_list|(
 name|int
@@ -481,27 +461,19 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|MiniOzoneClassicCluster
+name|MiniOzoneCluster
 name|cluster
 init|=
-operator|new
-name|MiniOzoneClassicCluster
+name|MiniOzoneCluster
 operator|.
-name|Builder
+name|newBuilder
 argument_list|(
 name|conf
 argument_list|)
 operator|.
-name|numDataNodes
+name|setNumDatanodes
 argument_list|(
 name|numDatanodes
-argument_list|)
-operator|.
-name|setHandlerType
-argument_list|(
-name|OzoneConsts
-operator|.
-name|OZONE_HANDLER_DISTRIBUTED
 argument_list|)
 operator|.
 name|build

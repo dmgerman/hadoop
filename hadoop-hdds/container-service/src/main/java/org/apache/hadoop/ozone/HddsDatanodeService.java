@@ -334,7 +334,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|conf
 specifier|private
-name|Configuration
+name|OzoneConfiguration
 name|conf
 decl_stmt|;
 DECL|field|datanodeDetails
@@ -355,6 +355,58 @@ name|ServicePlugin
 argument_list|>
 name|plugins
 decl_stmt|;
+comment|/**    * Default constructor.    */
+DECL|method|HddsDatanodeService ()
+specifier|public
+name|HddsDatanodeService
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructs {@link HddsDatanodeService} using the provided {@code conf}    * value.    *    * @param conf OzoneConfiguration    */
+DECL|method|HddsDatanodeService (Configuration conf)
+specifier|public
+name|HddsDatanodeService
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|conf
+operator|==
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+operator|new
+name|OzoneConfiguration
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+operator|new
+name|OzoneConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Starts HddsDatanode services.    *    * @param service The service instance invoking this method    */
 annotation|@
 name|Override
 DECL|method|start (Object service)
@@ -393,15 +445,6 @@ operator|.
 name|getConf
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|conf
-operator|=
-operator|new
-name|OzoneConfiguration
-argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -618,6 +661,7 @@ argument_list|()
 return|;
 block|}
 block|}
+comment|/**    * Starts all the service plugins which are configured using    * OzoneConfigKeys.HDDS_DATANODE_PLUGINS_KEY.    */
 DECL|method|startPlugins ()
 specifier|private
 name|void
@@ -720,9 +764,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Returns the OzoneConfiguration used by this HddsDatanodeService.    *    * @return OzoneConfiguration    */
 DECL|method|getConf ()
 specifier|public
-name|Configuration
+name|OzoneConfiguration
 name|getConf
 parameter_list|()
 block|{
@@ -760,14 +805,37 @@ specifier|public
 name|void
 name|join
 parameter_list|()
-throws|throws
-name|InterruptedException
+block|{
+try|try
 block|{
 name|datanodeStateMachine
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Interrupted during StorageContainerManager join."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -852,35 +920,67 @@ name|close
 parameter_list|()
 throws|throws
 name|IOException
-block|{   }
-DECL|method|createHddsDatanodeService (String args[])
+block|{
+if|if
+condition|(
+name|plugins
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|ServicePlugin
+name|plugin
+range|:
+name|plugins
+control|)
+block|{
+try|try
+block|{
+name|plugin
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"ServicePlugin {} could not be closed"
+argument_list|,
+name|plugin
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+DECL|method|createHddsDatanodeService ( Configuration conf)
 specifier|public
 specifier|static
 name|HddsDatanodeService
 name|createHddsDatanodeService
 parameter_list|(
-name|String
-name|args
-index|[]
+name|Configuration
+name|conf
 parameter_list|)
 block|{
-name|StringUtils
-operator|.
-name|startupShutdownMessage
-argument_list|(
-name|HddsDatanodeService
-operator|.
-name|class
-argument_list|,
-name|args
-argument_list|,
-name|LOG
-argument_list|)
-expr_stmt|;
 return|return
 operator|new
 name|HddsDatanodeService
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
 DECL|method|main (String args[])
@@ -896,12 +996,27 @@ parameter_list|)
 block|{
 try|try
 block|{
+name|StringUtils
+operator|.
+name|startupShutdownMessage
+argument_list|(
+name|HddsDatanodeService
+operator|.
+name|class
+argument_list|,
+name|args
+argument_list|,
+name|LOG
+argument_list|)
+expr_stmt|;
 name|HddsDatanodeService
 name|hddsDatanodeService
 init|=
 name|createHddsDatanodeService
 argument_list|(
-name|args
+operator|new
+name|OzoneConfiguration
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|hddsDatanodeService
@@ -927,7 +1042,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception in while starting HddsDatanodeService."
+literal|"Exception in HddsDatanodeService."
 argument_list|,
 name|e
 argument_list|)
