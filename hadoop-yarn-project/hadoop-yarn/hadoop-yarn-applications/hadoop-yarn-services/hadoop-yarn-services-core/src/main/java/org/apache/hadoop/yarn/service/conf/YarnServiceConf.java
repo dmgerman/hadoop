@@ -40,6 +40,14 @@ name|Configuration
 import|;
 end_import
 
+begin_comment
+comment|// ALL SERVICE AM PROPERTIES ADDED TO THIS FILE MUST BE DOCUMENTED
+end_comment
+
+begin_comment
+comment|// in the yarn site yarn-service/Configurations.md file.
+end_comment
+
 begin_class
 DECL|class|YarnServiceConf
 specifier|public
@@ -65,6 +73,19 @@ name|CLIENT_AM_RETRY_MAX_WAIT_MS
 init|=
 literal|"yarn.service.client-am.retry.max-wait-ms"
 decl_stmt|;
+DECL|field|DEFAULT_CLIENT_AM_RETRY_MAX_WAIT_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_CLIENT_AM_RETRY_MAX_WAIT_MS
+init|=
+literal|15
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
 DECL|field|CLIENT_AM_RETRY_MAX_INTERVAL_MS
 specifier|public
 specifier|static
@@ -73,6 +94,17 @@ name|String
 name|CLIENT_AM_RETRY_MAX_INTERVAL_MS
 init|=
 literal|"yarn.service.client-am.retry-interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_CLIENT_AM_RETRY_MAX_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_CLIENT_AM_RETRY_MAX_INTERVAL_MS
+init|=
+literal|2
+operator|*
+literal|1000
 decl_stmt|;
 comment|// Retry settings for container failures
 DECL|field|CONTAINER_RETRY_MAX
@@ -84,6 +116,16 @@ name|CONTAINER_RETRY_MAX
 init|=
 literal|"yarn.service.container-failure.retry.max"
 decl_stmt|;
+DECL|field|DEFAULT_CONTAINER_RETRY_MAX
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_CONTAINER_RETRY_MAX
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|CONTAINER_RETRY_INTERVAL
 specifier|public
 specifier|static
@@ -92,6 +134,15 @@ name|String
 name|CONTAINER_RETRY_INTERVAL
 init|=
 literal|"yarn.service.container-failure.retry-interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_CONTAINER_RETRY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_CONTAINER_RETRY_INTERVAL
+init|=
+literal|30000
 decl_stmt|;
 DECL|field|CONTAINER_FAILURES_VALIDITY_INTERVAL
 specifier|public
@@ -102,6 +153,16 @@ name|CONTAINER_FAILURES_VALIDITY_INTERVAL
 init|=
 literal|"yarn.service.container-failure.validity-interval-ms"
 decl_stmt|;
+DECL|field|DEFAULT_CONTAINER_FAILURES_VALIDITY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_CONTAINER_FAILURES_VALIDITY_INTERVAL
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|AM_RESTART_MAX
 specifier|public
 specifier|static
@@ -110,6 +171,15 @@ name|String
 name|AM_RESTART_MAX
 init|=
 literal|"yarn.service.am-restart.max-attempts"
+decl_stmt|;
+DECL|field|DEFAULT_AM_RESTART_MAX
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_AM_RESTART_MAX
+init|=
+literal|20
 decl_stmt|;
 DECL|field|AM_RESOURCE_MEM
 specifier|public
@@ -129,15 +199,6 @@ name|DEFAULT_KEY_AM_RESOURCE_MEM
 init|=
 literal|1024
 decl_stmt|;
-DECL|field|DEFAULT_AM_JVM_XMX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_AM_JVM_XMX
-init|=
-literal|" -Xmx768m "
-decl_stmt|;
 DECL|field|YARN_QUEUE
 specifier|public
 specifier|static
@@ -146,6 +207,15 @@ name|String
 name|YARN_QUEUE
 init|=
 literal|"yarn.service.queue"
+decl_stmt|;
+DECL|field|DEFAULT_YARN_QUEUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_YARN_QUEUE
+init|=
+literal|"default"
 decl_stmt|;
 DECL|field|API_SERVER_ADDRESS
 specifier|public
@@ -241,6 +311,15 @@ name|CONTAINER_FAILURE_THRESHOLD
 init|=
 literal|"yarn.service.container-failure-per-component.threshold"
 decl_stmt|;
+DECL|field|DEFAULT_CONTAINER_FAILURE_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_CONTAINER_FAILURE_THRESHOLD
+init|=
+literal|10
+decl_stmt|;
 comment|/**    * Maximum number of container failures on a node before the node is blacklisted    */
 DECL|field|NODE_BLACKLIST_THRESHOLD
 specifier|public
@@ -251,6 +330,15 @@ name|NODE_BLACKLIST_THRESHOLD
 init|=
 literal|"yarn.service.node-blacklist.threshold"
 decl_stmt|;
+DECL|field|DEFAULT_NODE_BLACKLIST_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NODE_BLACKLIST_THRESHOLD
+init|=
+literal|3
+decl_stmt|;
 comment|/**    * The failure count for CONTAINER_FAILURE_THRESHOLD and NODE_BLACKLIST_THRESHOLD    * gets reset periodically, the unit is seconds.    */
 DECL|field|CONTAINER_FAILURE_WINDOW
 specifier|public
@@ -260,6 +348,15 @@ name|String
 name|CONTAINER_FAILURE_WINDOW
 init|=
 literal|"yarn.service.failure-count-reset.window"
+decl_stmt|;
+DECL|field|DEFAULT_CONTAINER_FAILURE_WINDOW
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_CONTAINER_FAILURE_WINDOW
+init|=
+literal|21600
 decl_stmt|;
 comment|/**    * interval between readiness checks.    */
 DECL|field|READINESS_CHECK_INTERVAL
@@ -281,6 +378,25 @@ init|=
 literal|30
 decl_stmt|;
 comment|// seconds
+comment|/**    * Default readiness check enabled.    */
+DECL|field|DEFAULT_READINESS_CHECK_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_READINESS_CHECK_ENABLED
+init|=
+literal|"yarn.service.default-readiness-check.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_READINESS_CHECK_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_READINESS_CHECK_ENABLED_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * JVM opts.    */
 DECL|field|JVM_OPTS
 specifier|public
@@ -290,6 +406,15 @@ name|String
 name|JVM_OPTS
 init|=
 literal|"yarn.service.am.java.opts"
+decl_stmt|;
+DECL|field|DEFAULT_AM_JVM_XMX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_AM_JVM_XMX
+init|=
+literal|" -Xmx768m "
 decl_stmt|;
 comment|/**    * How long to wait until a container is considered dead.    */
 DECL|field|CONTAINER_RECOVERY_TIMEOUT_MS
@@ -407,6 +532,51 @@ argument_list|,
 name|systemConf
 operator|.
 name|getInt
+argument_list|(
+name|name
+argument_list|,
+name|defaultValue
+argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|getBoolean (String name, boolean defaultValue, Configuration userConf, org.apache.hadoop.conf.Configuration systemConf)
+specifier|public
+specifier|static
+name|boolean
+name|getBoolean
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|defaultValue
+parameter_list|,
+name|Configuration
+name|userConf
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+name|systemConf
+parameter_list|)
+block|{
+return|return
+name|userConf
+operator|.
+name|getPropertyBool
+argument_list|(
+name|name
+argument_list|,
+name|systemConf
+operator|.
+name|getBoolean
 argument_list|(
 name|name
 argument_list|,

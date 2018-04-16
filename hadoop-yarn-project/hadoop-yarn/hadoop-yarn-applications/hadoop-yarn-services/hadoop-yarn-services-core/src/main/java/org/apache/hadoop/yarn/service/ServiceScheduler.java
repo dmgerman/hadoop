@@ -1976,8 +1976,7 @@ argument_list|()
 expr_stmt|;
 name|containerRecoveryTimeout
 operator|=
-name|getConfig
-argument_list|()
+name|YarnServiceConf
 operator|.
 name|getInt
 argument_list|(
@@ -1988,6 +1987,14 @@ argument_list|,
 name|YarnServiceConf
 operator|.
 name|DEFAULT_CONTAINER_RECOVERY_TIMEOUT_MS
+argument_list|,
+name|app
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|,
+name|getConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

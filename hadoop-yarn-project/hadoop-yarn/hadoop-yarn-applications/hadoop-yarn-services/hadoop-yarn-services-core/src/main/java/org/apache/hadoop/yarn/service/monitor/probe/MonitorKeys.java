@@ -32,6 +32,27 @@ specifier|public
 interface|interface
 name|MonitorKeys
 block|{
+comment|/**    * Default probing key : DNS check enabled {@value}.    */
+DECL|field|DEFAULT_PROBE_DNS_CHECK_ENABLED
+name|String
+name|DEFAULT_PROBE_DNS_CHECK_ENABLED
+init|=
+literal|"dns.check.enabled"
+decl_stmt|;
+comment|/**    * Default probing default : DNS check enabled {@value}.    */
+DECL|field|DEFAULT_PROBE_DNS_CHECK_ENABLED_DEFAULT
+name|boolean
+name|DEFAULT_PROBE_DNS_CHECK_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * Default probing key : DNS checking address IP:port {@value}.    */
+DECL|field|DEFAULT_PROBE_DNS_ADDRESS
+name|String
+name|DEFAULT_PROBE_DNS_ADDRESS
+init|=
+literal|"dns.address"
+decl_stmt|;
 comment|/**    * Port probing key : port to attempt to create a TCP connection to {@value}.    */
 DECL|field|PORT_PROBE_PORT
 name|String

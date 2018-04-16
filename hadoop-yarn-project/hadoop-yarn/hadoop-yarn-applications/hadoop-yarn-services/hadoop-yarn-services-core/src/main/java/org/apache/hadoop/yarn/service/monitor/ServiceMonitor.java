@@ -424,6 +424,26 @@ name|conf
 operator|.
 name|YarnServiceConf
 operator|.
+name|DEFAULT_CONTAINER_FAILURE_WINDOW
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
+operator|.
+name|YarnServiceConf
+operator|.
 name|DEFAULT_READINESS_CHECK_INTERVAL
 import|;
 end_import
@@ -625,7 +645,7 @@ name|getLong
 argument_list|(
 name|CONTAINER_FAILURE_WINDOW
 argument_list|,
-literal|21600
+name|DEFAULT_CONTAINER_FAILURE_WINDOW
 argument_list|,
 name|context
 operator|.
@@ -747,6 +767,20 @@ operator|==
 name|STARTED
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Readiness check succeeded for {}: {}"
+argument_list|,
+name|instance
+operator|.
+name|getCompInstanceName
+argument_list|()
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
 comment|// synchronously update the state.
 name|instance
 operator|.
@@ -768,6 +802,20 @@ block|}
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Readiness check failed for {}: {}"
+argument_list|,
+name|instance
+operator|.
+name|getCompInstanceName
+argument_list|()
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|instance

@@ -60,24 +60,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|utils
-operator|.
-name|ServiceUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -135,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Probe for a port being open.  */
+comment|/**  * A probe that checks whether a container has a specified port open. This  * probe also performs the checks of the {@link DefaultProbe}. Additional  * configurable properties include:  *  *   port - required port for socket connection  *   timeout - connection timeout (default 1000)  */
 end_comment
 
 begin_class
@@ -144,7 +126,7 @@ specifier|public
 class|class
 name|PortProbe
 extends|extends
-name|Probe
+name|DefaultProbe
 block|{
 DECL|field|log
 specifier|protected
@@ -174,7 +156,7 @@ specifier|final
 name|int
 name|timeout
 decl_stmt|;
-DECL|method|PortProbe (int port, int timeout)
+DECL|method|PortProbe (int port, int timeout, Map<String, String> props)
 specifier|public
 name|PortProbe
 parameter_list|(
@@ -183,6 +165,14 @@ name|port
 parameter_list|,
 name|int
 name|timeout
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|props
 parameter_list|)
 block|{
 name|super
@@ -197,7 +187,7 @@ name|timeout
 operator|+
 literal|"ms"
 argument_list|,
-literal|null
+name|props
 argument_list|)
 expr_stmt|;
 name|this
@@ -284,6 +274,8 @@ argument_list|(
 name|port
 argument_list|,
 name|timeout
+argument_list|,
+name|props
 argument_list|)
 return|;
 block|}
@@ -302,51 +294,22 @@ block|{
 name|ProbeStatus
 name|status
 init|=
-operator|new
-name|ProbeStatus
-argument_list|()
+name|super
+operator|.
+name|ping
+argument_list|(
+name|instance
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|instance
-operator|.
-name|getContainerStatus
-argument_list|()
-operator|==
-literal|null
-operator|||
-name|ServiceUtils
-operator|.
-name|isEmpty
-argument_list|(
-name|instance
-operator|.
-name|getContainerStatus
-argument_list|()
-operator|.
-name|getIPs
-argument_list|()
-argument_list|)
-condition|)
-block|{
+operator|!
 name|status
 operator|.
-name|fail
-argument_list|(
-name|this
-argument_list|,
-operator|new
-name|IOException
-argument_list|(
-name|instance
-operator|.
-name|getCompInstanceName
+name|isSuccess
 argument_list|()
-operator|+
-literal|": IP is not available yet"
-argument_list|)
-argument_list|)
-expr_stmt|;
+condition|)
+block|{
 return|return
 name|status
 return|;

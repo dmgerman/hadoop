@@ -325,6 +325,12 @@ specifier|public
 enum|enum
 name|TypeEnum
 block|{
+DECL|enumConstant|DEFAULT
+name|DEFAULT
+argument_list|(
+literal|"DEFAULT"
+argument_list|)
+block|,
 DECL|enumConstant|HTTP
 name|HTTP
 argument_list|(

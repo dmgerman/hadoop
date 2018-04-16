@@ -4593,7 +4593,7 @@ name|YarnServiceConf
 operator|.
 name|AM_RESTART_MAX
 argument_list|,
-literal|20
+name|DEFAULT_AM_RESTART_MAX
 argument_list|,
 name|app
 operator|.
@@ -4755,7 +4755,7 @@ name|get
 argument_list|(
 name|YARN_QUEUE
 argument_list|,
-literal|"default"
+name|DEFAULT_YARN_QUEUE
 argument_list|)
 expr_stmt|;
 block|}
