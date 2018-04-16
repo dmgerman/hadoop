@@ -758,8 +758,6 @@ decl_stmt|;
 comment|// Set up datanode address
 name|setupDatanodeAddress
 argument_list|(
-name|i
-argument_list|,
 name|dnConf
 argument_list|,
 name|setupHostsFile
