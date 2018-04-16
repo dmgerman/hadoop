@@ -5560,8 +5560,9 @@ name|replicaInfo
 return|;
 block|}
 comment|/**    * Moves a block from a given volume to another.    *    * @param block       - Extended Block    * @param replicaInfo - ReplicaInfo    * @param volumeRef   - Volume Ref - Closed by caller.    * @return newReplicaInfo    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
 DECL|method|moveBlock (ExtendedBlock block, ReplicaInfo replicaInfo, FsVolumeReference volumeRef)
-specifier|private
 name|ReplicaInfo
 name|moveBlock
 parameter_list|(

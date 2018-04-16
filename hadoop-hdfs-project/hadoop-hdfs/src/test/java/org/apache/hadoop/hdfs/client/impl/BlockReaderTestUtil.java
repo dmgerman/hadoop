@@ -723,6 +723,30 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|BlockReaderTestUtil (MiniDFSCluster cluster, HdfsConfiguration conf)
+specifier|public
+name|BlockReaderTestUtil
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|HdfsConfiguration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+name|this
+operator|.
+name|cluster
+operator|=
+name|cluster
+expr_stmt|;
+block|}
 DECL|method|BlockReaderTestUtil (int replicationFactor, HdfsConfiguration config)
 specifier|public
 name|BlockReaderTestUtil
