@@ -691,9 +691,9 @@ name|allocatedResource
 operator|+
 literal|" queue="
 operator|+
-name|this
+name|appInfo
 operator|.
-name|toString
+name|getQueueName
 argument_list|()
 operator|+
 literal|" cluster="
@@ -878,7 +878,10 @@ argument_list|()
 operator|+
 literal|" queue="
 operator|+
-name|this
+name|appInfo
+operator|.
+name|getQueueName
+argument_list|()
 operator|+
 literal|" clusterResource="
 operator|+
