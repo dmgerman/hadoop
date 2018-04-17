@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.node
+DECL|package|org.apache.hadoop.ozone.scm.node
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
 name|scm
 operator|.

@@ -85,9 +85,15 @@ end_comment
 begin_class
 DECL|class|Genesis
 specifier|public
+specifier|final
 class|class
 name|Genesis
 block|{
+DECL|method|Genesis ()
+specifier|private
+name|Genesis
+parameter_list|()
+block|{   }
 DECL|method|main (String[] args)
 specifier|public
 specifier|static

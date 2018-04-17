@@ -711,12 +711,12 @@ operator|.
 name|ReplicationType
 name|type
 decl_stmt|;
-DECL|field|containerOwner
+DECL|field|CONTAINER_OWNER
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|containerOwner
+name|CONTAINER_OWNER
 init|=
 literal|"OZONE"
 decl_stmt|;
@@ -985,7 +985,7 @@ name|type
 argument_list|,
 name|factor
 argument_list|,
-name|containerOwner
+name|CONTAINER_OWNER
 argument_list|)
 decl_stmt|;
 name|pipeline1
@@ -1036,7 +1036,7 @@ name|type
 argument_list|,
 name|factor
 argument_list|,
-name|containerOwner
+name|CONTAINER_OWNER
 argument_list|)
 expr_stmt|;
 name|pipeline2

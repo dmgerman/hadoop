@@ -267,10 +267,10 @@ specifier|private
 name|Mapping
 name|scmContainerMapping
 decl_stmt|;
-DECL|field|stateManager
+DECL|field|containerStateManager
 specifier|private
 name|ContainerStateManager
-name|stateManager
+name|containerStateManager
 decl_stmt|;
 DECL|field|containerOwner
 specifier|private
@@ -339,7 +339,7 @@ operator|.
 name|getScmContainerManager
 argument_list|()
 expr_stmt|;
-name|stateManager
+name|containerStateManager
 operator|=
 name|scmContainerMapping
 operator|.
@@ -414,7 +414,7 @@ expr_stmt|;
 name|ContainerInfo
 name|info
 init|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainer
 argument_list|(
@@ -570,7 +570,7 @@ expr_stmt|;
 name|int
 name|numContainers
 init|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -868,7 +868,7 @@ expr_stmt|;
 name|ContainerInfo
 name|info
 init|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainer
 argument_list|(
@@ -911,7 +911,7 @@ argument_list|)
 expr_stmt|;
 name|info
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainer
 argument_list|(
@@ -982,7 +982,7 @@ comment|// space has already been allocated in container1, now container 2 shoul
 comment|// be chosen.
 name|info
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainer
 argument_list|(
@@ -1040,7 +1040,7 @@ name|ContainerID
 argument_list|>
 name|containerList
 init|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1121,7 +1121,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1171,7 +1171,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1221,7 +1221,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1271,7 +1271,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1321,7 +1321,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1371,7 +1371,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1421,7 +1421,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1517,7 +1517,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1639,7 +1639,7 @@ argument_list|)
 expr_stmt|;
 name|containers
 operator|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainerIDs
 argument_list|(
@@ -1794,7 +1794,7 @@ comment|// trigger allocating bytes by calling getMatchingContainer
 name|ContainerInfo
 name|info
 init|=
-name|stateManager
+name|containerStateManager
 operator|.
 name|getMatchingContainer
 argument_list|(

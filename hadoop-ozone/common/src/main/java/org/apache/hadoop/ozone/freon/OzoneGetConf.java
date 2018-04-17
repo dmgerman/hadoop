@@ -608,6 +608,7 @@ class|class
 name|CommandHandler
 block|{
 DECL|field|key
+specifier|protected
 name|String
 name|key
 decl_stmt|;
@@ -687,14 +688,14 @@ operator|-
 literal|1
 return|;
 block|}
-DECL|method|checkArgs (String args[])
+DECL|method|checkArgs (String[] args)
 specifier|protected
 name|void
 name|checkArgs
 parameter_list|(
 name|String
-name|args
 index|[]
+name|args
 parameter_list|)
 block|{
 if|if
@@ -720,7 +721,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Method to be overridden by sub classes for specific behavior */
+comment|/** Method to be overridden by sub classes for specific behavior. */
 DECL|method|doWorkInternal (OzoneGetConf tool, String[] args)
 name|int
 name|doWorkInternal

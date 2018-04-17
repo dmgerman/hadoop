@@ -166,7 +166,7 @@ operator|=
 name|err
 expr_stmt|;
 block|}
-DECL|method|logOut (String msg, String ... variable)
+DECL|method|logOut (String msg, String... variable)
 specifier|public
 name|void
 name|logOut

@@ -161,6 +161,7 @@ end_comment
 begin_class
 DECL|class|KsmUtils
 specifier|public
+specifier|final
 class|class
 name|KsmUtils
 block|{

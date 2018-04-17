@@ -99,6 +99,7 @@ end_comment
 begin_class
 DECL|class|TestUtils
 specifier|public
+specifier|final
 class|class
 name|TestUtils
 block|{

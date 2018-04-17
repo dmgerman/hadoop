@@ -305,6 +305,9 @@ name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
 DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
 specifier|transient
 name|Logger
 name|LOG

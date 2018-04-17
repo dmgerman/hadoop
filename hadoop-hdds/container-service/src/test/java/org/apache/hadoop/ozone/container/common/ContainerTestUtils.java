@@ -175,6 +175,7 @@ end_comment
 begin_class
 DECL|class|ContainerTestUtils
 specifier|public
+specifier|final
 class|class
 name|ContainerTestUtils
 block|{

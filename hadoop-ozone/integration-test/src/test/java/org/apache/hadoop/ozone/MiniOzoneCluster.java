@@ -260,8 +260,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Returns StorageContainerLocationClient to communicate with    * {@link StorageContainerManager} associated with the MiniOzoneCluster.    *    * @return StorageContainerLocation Client    * @throws IOException    */
-name|StorageContainerLocationProtocolClientSideTranslatorPB
 DECL|method|getStorageContainerLocationClient ()
+name|StorageContainerLocationProtocolClientSideTranslatorPB
 name|getStorageContainerLocationClient
 parameter_list|()
 throws|throws
@@ -327,6 +327,7 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Builder class for MiniOzoneCluster.    */
 DECL|class|Builder
 specifier|abstract
 class|class

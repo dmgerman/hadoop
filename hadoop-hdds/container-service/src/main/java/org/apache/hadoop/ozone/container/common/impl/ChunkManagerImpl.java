@@ -631,6 +631,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can not identify write operation."
+argument_list|)
+throw|;
 block|}
 block|}
 catch|catch

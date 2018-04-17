@@ -317,6 +317,7 @@ end_comment
 begin_class
 DECL|class|HddsUtils
 specifier|public
+specifier|final
 class|class
 name|HddsUtils
 block|{

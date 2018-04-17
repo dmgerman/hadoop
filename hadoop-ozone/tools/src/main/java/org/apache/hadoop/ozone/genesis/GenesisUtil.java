@@ -139,6 +139,7 @@ end_comment
 begin_class
 DECL|class|GenesisUtil
 specifier|public
+specifier|final
 class|class
 name|GenesisUtil
 block|{

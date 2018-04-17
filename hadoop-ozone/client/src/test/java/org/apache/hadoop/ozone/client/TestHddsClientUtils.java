@@ -193,7 +193,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This test class verifies the parsing of SCM endpoint config settings.  * The parsing logic is in {@link org.apache.hadoop.hdds.scm.client.HddsClientUtils}.  */
+comment|/**  * This test class verifies the parsing of SCM endpoint config settings. The  * parsing logic is in {@link org.apache.hadoop.hdds.scm.client.HddsClientUtils}.  */
 end_comment
 
 begin_class

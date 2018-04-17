@@ -357,9 +357,15 @@ end_comment
 begin_class
 DECL|class|HddsServerUtil
 specifier|public
+specifier|final
 class|class
 name|HddsServerUtil
 block|{
+DECL|method|HddsServerUtil ()
+specifier|private
+name|HddsServerUtil
+parameter_list|()
+block|{   }
 DECL|field|LOG
 specifier|private
 specifier|static

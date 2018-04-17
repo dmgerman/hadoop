@@ -15,6 +15,7 @@ end_package
 begin_class
 DECL|class|HddsConfigKeys
 specifier|public
+specifier|final
 class|class
 name|HddsConfigKeys
 block|{

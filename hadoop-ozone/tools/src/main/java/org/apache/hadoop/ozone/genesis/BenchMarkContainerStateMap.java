@@ -408,46 +408,6 @@ name|CLOSED
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|ReplicationType
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|ReplicationFactor
-import|;
-end_import
-
 begin_class
 annotation|@
 name|State
@@ -462,12 +422,12 @@ class|class
 name|BenchMarkContainerStateMap
 block|{
 DECL|field|stateMap
-specifier|public
+specifier|private
 name|ContainerStateMap
 name|stateMap
 decl_stmt|;
 DECL|field|containerID
-specifier|public
+specifier|private
 name|AtomicInteger
 name|containerID
 decl_stmt|;
@@ -933,7 +893,7 @@ name|ids
 argument_list|)
 return|;
 block|}
-DECL|method|createPipeline ( String containerName, Iterable<DatanodeDetails> ids)
+DECL|method|createPipeline (String containerName, Iterable<DatanodeDetails> ids)
 specifier|public
 specifier|static
 name|Pipeline

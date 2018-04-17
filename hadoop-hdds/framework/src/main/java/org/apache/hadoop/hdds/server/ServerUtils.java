@@ -153,6 +153,7 @@ end_comment
 begin_class
 DECL|class|ServerUtils
 specifier|public
+specifier|final
 class|class
 name|ServerUtils
 block|{

@@ -210,12 +210,12 @@ name|DATA_LEN
 init|=
 literal|1024
 decl_stmt|;
-DECL|field|maxKeys
+DECL|field|MAX_KEYS
 specifier|private
 specifier|static
 specifier|final
 name|long
-name|maxKeys
+name|MAX_KEYS
 init|=
 literal|1024
 operator|*
@@ -316,7 +316,7 @@ name|nextLong
 argument_list|(
 literal|0L
 argument_list|,
-name|maxKeys
+name|MAX_KEYS
 argument_list|)
 decl_stmt|;
 name|store

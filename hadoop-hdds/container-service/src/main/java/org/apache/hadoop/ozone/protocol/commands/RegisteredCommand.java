@@ -560,39 +560,39 @@ name|this
 return|;
 block|}
 comment|/**      * sets the hostname.      */
-DECL|method|setHostname (String hostname)
+DECL|method|setHostname (String host)
 specifier|public
 name|Builder
 name|setHostname
 parameter_list|(
 name|String
-name|hostname
+name|host
 parameter_list|)
 block|{
 name|this
 operator|.
 name|hostname
 operator|=
-name|hostname
+name|host
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setIpAddress (String ipAddress)
+DECL|method|setIpAddress (String ipAddr)
 specifier|public
 name|Builder
 name|setIpAddress
 parameter_list|(
 name|String
-name|ipAddress
+name|ipAddr
 parameter_list|)
 block|{
 name|this
 operator|.
 name|ipAddress
 operator|=
-name|ipAddress
+name|ipAddr
 expr_stmt|;
 return|return
 name|this

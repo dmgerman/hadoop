@@ -983,15 +983,15 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|main (String args[])
+DECL|method|main (String[] args)
 specifier|public
 specifier|static
 name|void
 name|main
 parameter_list|(
 name|String
-name|args
 index|[]
+name|args
 parameter_list|)
 block|{
 try|try
