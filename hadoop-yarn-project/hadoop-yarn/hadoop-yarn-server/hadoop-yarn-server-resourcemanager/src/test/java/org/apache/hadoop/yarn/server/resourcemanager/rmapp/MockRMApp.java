@@ -575,6 +575,13 @@ operator|*
 name|DT
 argument_list|)
 decl_stmt|;
+DECL|field|launch
+specifier|private
+name|long
+name|launch
+init|=
+name|start
+decl_stmt|;
 DECL|field|submit
 name|long
 name|submit
@@ -1165,6 +1172,18 @@ parameter_list|()
 block|{
 return|return
 name|submit
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLaunchTime ()
+specifier|public
+name|long
+name|getLaunchTime
+parameter_list|()
+block|{
+return|return
+name|launch
 return|;
 block|}
 DECL|method|setStartTime (long time)

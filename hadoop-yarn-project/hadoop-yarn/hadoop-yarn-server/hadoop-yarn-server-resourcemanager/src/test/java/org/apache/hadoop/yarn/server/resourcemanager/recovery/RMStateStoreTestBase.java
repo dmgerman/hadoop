@@ -2649,6 +2649,8 @@ name|FINISHED
 argument_list|,
 literal|"appDiagnostics"
 argument_list|,
+literal|123
+argument_list|,
 literal|1234
 argument_list|,
 name|appState
@@ -2810,6 +2812,8 @@ operator|.
 name|FINISHED
 argument_list|,
 literal|"appDiagnostics"
+argument_list|,
+literal|123
 argument_list|,
 literal|1234
 argument_list|,

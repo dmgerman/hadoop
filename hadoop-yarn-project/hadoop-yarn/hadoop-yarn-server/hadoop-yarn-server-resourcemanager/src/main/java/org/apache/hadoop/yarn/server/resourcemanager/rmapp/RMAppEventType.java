@@ -66,6 +66,9 @@ block|,
 DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
 block|,
+DECL|enumConstant|ATTEMPT_LAUNCHED
+name|ATTEMPT_LAUNCHED
+block|,
 comment|// Source: Container and ResourceTracker
 DECL|enumConstant|APP_RUNNING_ON_NODE
 name|APP_RUNNING_ON_NODE

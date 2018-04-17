@@ -782,6 +782,22 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getLaunchTime ()
+specifier|public
+name|long
+name|getLaunchTime
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -1524,6 +1540,16 @@ literal|1000
 decl_stmt|;
 specifier|final
 name|long
+name|launch
+init|=
+name|start
+operator|+
+name|i
+operator|*
+literal|100
+decl_stmt|;
+specifier|final
+name|long
 name|finish
 init|=
 literal|234567
@@ -1642,6 +1668,17 @@ parameter_list|()
 block|{
 return|return
 name|start
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|long
+name|getLaunchTime
+parameter_list|()
+block|{
+return|return
+name|launch
 return|;
 block|}
 annotation|@
@@ -1837,6 +1874,9 @@ name|toString
 argument_list|()
 argument_list|,
 name|getTrackingUrl
+argument_list|()
+argument_list|,
+name|getLaunchTime
 argument_list|()
 argument_list|,
 name|getStartTime

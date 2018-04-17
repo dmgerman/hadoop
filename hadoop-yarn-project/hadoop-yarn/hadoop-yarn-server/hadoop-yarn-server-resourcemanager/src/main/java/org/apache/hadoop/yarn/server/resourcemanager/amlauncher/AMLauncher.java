@@ -1979,6 +1979,11 @@ argument_list|,
 name|RMAppAttemptEventType
 operator|.
 name|LAUNCHED
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

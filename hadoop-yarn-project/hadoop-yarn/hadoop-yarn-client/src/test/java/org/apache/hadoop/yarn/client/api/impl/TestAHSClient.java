@@ -2261,6 +2261,8 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
@@ -2637,6 +2639,8 @@ literal|2
 argument_list|,
 literal|2
 argument_list|,
+literal|2
+argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
@@ -2713,6 +2717,8 @@ literal|3
 argument_list|,
 literal|3
 argument_list|,
+literal|3
+argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
@@ -2784,6 +2790,8 @@ argument_list|,
 literal|"diagnostics4"
 argument_list|,
 literal|"url4"
+argument_list|,
+literal|4
 argument_list|,
 literal|4
 argument_list|,
