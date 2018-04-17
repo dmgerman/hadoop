@@ -482,6 +482,13 @@ name|description
 init|=
 literal|null
 decl_stmt|;
+DECL|field|dockerClientConfig
+specifier|private
+name|String
+name|dockerClientConfig
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * A unique service name.    **/
 DECL|method|name (String name)
 specifier|public
@@ -1518,6 +1525,76 @@ name|kerberosPrincipal
 expr_stmt|;
 block|}
 annotation|@
+name|JsonProperty
+argument_list|(
+literal|"docker_client_config"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"docker_client_config"
+argument_list|)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:hiddenfield"
+argument_list|)
+DECL|method|dockerClientConfig (String dockerClientConfig)
+specifier|public
+name|Service
+name|dockerClientConfig
+parameter_list|(
+name|String
+name|dockerClientConfig
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dockerClientConfig
+operator|=
+name|dockerClientConfig
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**    * The Docker client config for the service.    * @return dockerClientConfig    */
+annotation|@
+name|ApiModelProperty
+argument_list|(
+name|value
+operator|=
+literal|"The Docker client config for the service"
+argument_list|)
+DECL|method|getDockerClientConfig ()
+specifier|public
+name|String
+name|getDockerClientConfig
+parameter_list|()
+block|{
+return|return
+name|dockerClientConfig
+return|;
+block|}
+DECL|method|setDockerClientConfig (String dockerClientConfig)
+specifier|public
+name|void
+name|setDockerClientConfig
+parameter_list|(
+name|String
+name|dockerClientConfig
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dockerClientConfig
+operator|=
+name|dockerClientConfig
+expr_stmt|;
+block|}
+annotation|@
 name|Override
 DECL|method|equals (java.lang.Object o)
 specifier|public
@@ -1916,6 +1993,26 @@ argument_list|(
 name|toIndentedString
 argument_list|(
 name|kerberosPrincipal
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"    dockerClientConfig: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|toIndentedString
+argument_list|(
+name|dockerClientConfig
 argument_list|)
 argument_list|)
 operator|.

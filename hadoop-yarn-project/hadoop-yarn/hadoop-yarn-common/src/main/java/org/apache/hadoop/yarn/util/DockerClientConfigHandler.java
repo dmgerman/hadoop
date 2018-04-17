@@ -671,7 +671,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Added token: "
+literal|"Token read from Docker client configuration file: "
 operator|+
 name|token
 operator|.
@@ -760,7 +760,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Added token: "
+literal|"Token read from token storage: "
 operator|+
 name|token
 operator|.
@@ -813,6 +813,11 @@ operator|.
 name|createObjectNode
 argument_list|()
 decl_stmt|;
+name|boolean
+name|foundDockerCred
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 name|credentials
@@ -854,6 +859,10 @@ name|KIND
 argument_list|)
 condition|)
 block|{
+name|foundDockerCred
+operator|=
+literal|true
+expr_stmt|;
 name|DockerCredentialTokenIdentifier
 name|ti
 init|=
@@ -932,6 +941,11 @@ block|}
 block|}
 block|}
 block|}
+if|if
+condition|(
+name|foundDockerCred
+condition|)
+block|{
 name|rootNode
 operator|.
 name|put
@@ -967,6 +981,7 @@ operator|.
 name|UTF_8
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
