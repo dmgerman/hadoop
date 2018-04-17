@@ -697,11 +697,6 @@ specifier|protected
 name|long
 name|startedTime
 decl_stmt|;
-DECL|field|launchTime
-specifier|private
-name|long
-name|launchTime
-decl_stmt|;
 DECL|field|finishedTime
 specifier|protected
 name|long
@@ -1315,15 +1310,6 @@ operator|=
 name|app
 operator|.
 name|getStartTime
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|launchTime
-operator|=
-name|app
-operator|.
-name|getLaunchTime
 argument_list|()
 expr_stmt|;
 name|this
@@ -2260,18 +2246,6 @@ return|return
 name|this
 operator|.
 name|startedTime
-return|;
-block|}
-DECL|method|getLaunchTime ()
-specifier|public
-name|long
-name|getLaunchTime
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|launchTime
 return|;
 block|}
 DECL|method|getFinishTime ()

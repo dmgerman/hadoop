@@ -5253,8 +5253,6 @@ literal|"appDiagnostics"
 else|:
 literal|""
 argument_list|,
-literal|0
-argument_list|,
 name|isFinished
 condition|?
 name|finishTime

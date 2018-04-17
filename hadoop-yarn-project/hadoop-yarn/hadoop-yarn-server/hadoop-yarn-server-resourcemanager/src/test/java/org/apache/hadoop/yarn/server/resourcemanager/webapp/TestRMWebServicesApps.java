@@ -13286,15 +13286,6 @@ name|getXmlLong
 argument_list|(
 name|element
 argument_list|,
-literal|"launchTime"
-argument_list|)
-argument_list|,
-name|WebServicesTestUtils
-operator|.
-name|getXmlLong
-argument_list|(
-name|element
-argument_list|,
 literal|"finishedTime"
 argument_list|)
 argument_list|,
@@ -13657,7 +13648,7 @@ block|{
 name|int
 name|expectedNumberOfElements
 init|=
-literal|40
+literal|39
 operator|+
 operator|(
 name|hasResourceReqs
@@ -13881,13 +13872,6 @@ name|info
 operator|.
 name|getLong
 argument_list|(
-literal|"launchTime"
-argument_list|)
-argument_list|,
-name|info
-operator|.
-name|getLong
-argument_list|(
 literal|"finishedTime"
 argument_list|)
 argument_list|,
@@ -14021,7 +14005,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, int prioirty, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long launchTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, float queueUsagePerc, float clusterUsagePerc, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus, boolean unmanagedApplication, String appNodeLabelExpression, String amNodeLabelExpression, String amRPCAddress)
+DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, int prioirty, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs, int allocatedMB, int allocatedVCores, int numContainers, float queueUsagePerc, float clusterUsagePerc, int preemptedResourceMB, int preemptedResourceVCores, int numNonAMContainerPreempted, int numAMContainerPreempted, String logAggregationStatus, boolean unmanagedApplication, String appNodeLabelExpression, String amNodeLabelExpression, String amRPCAddress)
 specifier|public
 name|void
 name|verifyAppInfoGeneric
@@ -14067,9 +14051,6 @@ name|clusterId
 parameter_list|,
 name|long
 name|startedTime
-parameter_list|,
-name|long
-name|launchTime
 parameter_list|,
 name|long
 name|finishedTime

@@ -3554,8 +3554,6 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-literal|0
-argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
@@ -3638,8 +3636,6 @@ argument_list|,
 literal|"diagnostics"
 argument_list|,
 literal|"url"
-argument_list|,
-literal|0
 argument_list|,
 literal|0
 argument_list|,

@@ -618,12 +618,6 @@ name|long
 name|getSubmitTime
 parameter_list|()
 function_decl|;
-comment|/**    * The launch time of the application.    * Since getStartTime() returns what is essentially submit time,    * this new field is to prevent potential backwards compatibility issues.    * @return the launch time of the application.    */
-DECL|method|getLaunchTime ()
-name|long
-name|getLaunchTime
-parameter_list|()
-function_decl|;
 comment|/**    * The tracking url for the application master.    * @return the tracking url for the application master.    */
 DECL|method|getTrackingUrl ()
 name|String
