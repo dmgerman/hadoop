@@ -504,10 +504,10 @@ name|serviceLaucher
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|field|skipCounter
+DECL|field|badFileNameExtensionSkipCounter
 specifier|private
 name|int
-name|skipCounter
+name|badFileNameExtensionSkipCounter
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -525,6 +525,13 @@ operator|new
 name|HashMap
 argument_list|<>
 argument_list|()
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|badDirSkipCounter
+specifier|private
+name|int
+name|badDirSkipCounter
 decl_stmt|;
 DECL|method|SystemServiceManagerImpl ()
 specifier|public
@@ -1421,6 +1428,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|badDirSkipCounter
+operator|++
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -1643,7 +1653,7 @@ argument_list|,
 name|filename
 argument_list|)
 expr_stmt|;
-name|skipCounter
+name|badFileNameExtensionSkipCounter
 operator|++
 expr_stmt|;
 continue|continue;
@@ -1763,6 +1773,8 @@ name|filename
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|info
@@ -1779,6 +1791,7 @@ argument_list|,
 name|filename
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -1988,15 +2001,26 @@ return|return
 name|syncUserServices
 return|;
 block|}
-DECL|method|getSkipCounter ()
 annotation|@
 name|VisibleForTesting
+DECL|method|getBadFileNameExtensionSkipCounter ()
 name|int
-name|getSkipCounter
+name|getBadFileNameExtensionSkipCounter
 parameter_list|()
 block|{
 return|return
-name|skipCounter
+name|badFileNameExtensionSkipCounter
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBadDirSkipCounter ()
+name|int
+name|getBadDirSkipCounter
+parameter_list|()
+block|{
+return|return
+name|badDirSkipCounter
 return|;
 block|}
 block|}

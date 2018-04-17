@@ -255,10 +255,10 @@ comment|/**  * Test class for system service manager.  */
 end_comment
 
 begin_class
-DECL|class|TestSystemServiceImpl
+DECL|class|TestSystemServiceManagerImpl
 specifier|public
 class|class
-name|TestSystemServiceImpl
+name|TestSystemServiceManagerImpl
 block|{
 DECL|field|LOG
 specifier|private
@@ -271,7 +271,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestSystemServiceImpl
+name|TestSystemServiceManagerImpl
 operator|.
 name|class
 argument_list|)
@@ -291,7 +291,7 @@ specifier|private
 name|String
 name|resourcePath
 init|=
-literal|"users"
+literal|"system-services"
 decl_stmt|;
 DECL|field|users
 specifier|private
@@ -548,7 +548,19 @@ literal|1
 argument_list|,
 name|systemService
 operator|.
-name|getSkipCounter
+name|getBadFileNameExtensionSkipCounter
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|systemService
+operator|.
+name|getBadDirSkipCounter
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -700,9 +712,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Service name doesn't exist in expected "
-operator|+
-literal|"userService "
+literal|"Service name doesn't exist in expected userService "
 operator|+
 name|serviceNames
 argument_list|,
