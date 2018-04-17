@@ -1425,6 +1425,8 @@ name|rsrc
 init|=
 literal|"testGroupMappingRefresh_rsrc.xml"
 decl_stmt|;
+name|tempResource
+operator|=
 name|addNewConfigResource
 argument_list|(
 name|rsrc
@@ -1568,8 +1570,9 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|addNewConfigResource (String rsrcName, String keyGroup, String groups, String keyHosts, String hosts)
-specifier|private
-name|void
+specifier|public
+specifier|static
+name|String
 name|addNewConfigResource
 parameter_list|(
 name|String
@@ -1645,8 +1648,9 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
-name|tempResource
-operator|=
+name|String
+name|tmp
+init|=
 name|dir
 operator|.
 name|toString
@@ -1655,7 +1659,7 @@ operator|+
 literal|"/"
 operator|+
 name|rsrcName
-expr_stmt|;
+decl_stmt|;
 name|String
 name|newResource
 init|=
@@ -1692,7 +1696,7 @@ argument_list|(
 operator|new
 name|FileOutputStream
 argument_list|(
-name|tempResource
+name|tmp
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1715,6 +1719,9 @@ argument_list|(
 name|rsrcName
 argument_list|)
 expr_stmt|;
+return|return
+name|tmp
+return|;
 block|}
 block|}
 end_class
