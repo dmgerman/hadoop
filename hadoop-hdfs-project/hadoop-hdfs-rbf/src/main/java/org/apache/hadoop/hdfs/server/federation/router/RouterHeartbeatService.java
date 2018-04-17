@@ -599,14 +599,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot heartbeat router {}: {}"
+literal|"Cannot heartbeat router {}"
 argument_list|,
 name|routerId
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -755,14 +752,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot get version for {}: {}"
+literal|"Cannot get version for {}"
 argument_list|,
 name|clazz
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

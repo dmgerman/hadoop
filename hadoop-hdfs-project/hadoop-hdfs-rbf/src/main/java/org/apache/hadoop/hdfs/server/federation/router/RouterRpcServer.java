@@ -13891,12 +13891,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot get mount point: {}"
+literal|"Cannot get mount point"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -13976,12 +13973,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot get mount point: {}"
+literal|"Cannot get mount point"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -14134,12 +14128,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot get mount point: {}"
+literal|"Cannot get mount point"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

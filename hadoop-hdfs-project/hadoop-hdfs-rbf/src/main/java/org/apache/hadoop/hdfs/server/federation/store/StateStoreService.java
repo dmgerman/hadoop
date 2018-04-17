@@ -916,7 +916,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Failed to register State Store bean {}"
 argument_list|,

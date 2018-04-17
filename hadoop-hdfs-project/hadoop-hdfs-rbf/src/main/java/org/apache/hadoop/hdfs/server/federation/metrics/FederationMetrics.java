@@ -2925,7 +2925,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Cannot get the live nodes: {}"
 argument_list|,

@@ -1114,12 +1114,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot get Namenodes from the State Store: {}"
+literal|"Cannot get Namenodes from the State Store"
 argument_list|,
 name|ioe
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

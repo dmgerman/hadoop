@@ -4359,6 +4359,9 @@ operator|+
 literal|"\" for \""
 operator|+
 name|method
+operator|.
+name|getMethodName
+argument_list|()
 operator|+
 literal|"\" timed out"
 decl_stmt|;
