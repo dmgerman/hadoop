@@ -860,6 +860,8 @@ operator|.
 name|getStartTime
 argument_list|()
 argument_list|,
+literal|0
+argument_list|,
 name|appHistory
 operator|.
 name|getFinishTime

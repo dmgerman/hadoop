@@ -282,7 +282,7 @@ name|ApplicationAttemptStateData
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|newInstance (long submitTime, long startTime, String user, ApplicationSubmissionContext submissionContext, RMAppState state, String diagnostics, long finishTime, CallerContext callerContext)
+DECL|method|newInstance (long submitTime, long startTime, String user, ApplicationSubmissionContext submissionContext, RMAppState state, String diagnostics, long launchTime, long finishTime, CallerContext callerContext)
 specifier|public
 specifier|static
 name|ApplicationStateData
@@ -305,6 +305,9 @@ name|state
 parameter_list|,
 name|String
 name|diagnostics
+parameter_list|,
+name|long
+name|launchTime
 parameter_list|,
 name|long
 name|finishTime
@@ -369,6 +372,13 @@ argument_list|)
 expr_stmt|;
 name|appState
 operator|.
+name|setLaunchTime
+argument_list|(
+name|launchTime
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
 name|setFinishTime
 argument_list|(
 name|finishTime
@@ -385,7 +395,7 @@ return|return
 name|appState
 return|;
 block|}
-DECL|method|newInstance (long submitTime, long startTime, String user, ApplicationSubmissionContext submissionContext, RMAppState state, String diagnostics, long finishTime, CallerContext callerContext, Map<ApplicationTimeoutType, Long> applicationTimeouts)
+DECL|method|newInstance (long submitTime, long startTime, String user, ApplicationSubmissionContext submissionContext, RMAppState state, String diagnostics, long launchTime, long finishTime, CallerContext callerContext, Map<ApplicationTimeoutType, Long> applicationTimeouts)
 specifier|public
 specifier|static
 name|ApplicationStateData
@@ -408,6 +418,9 @@ name|state
 parameter_list|,
 name|String
 name|diagnostics
+parameter_list|,
+name|long
+name|launchTime
 parameter_list|,
 name|long
 name|finishTime
@@ -480,6 +493,13 @@ argument_list|)
 expr_stmt|;
 name|appState
 operator|.
+name|setLaunchTime
+argument_list|(
+name|launchTime
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
 name|setFinishTime
 argument_list|(
 name|finishTime
@@ -539,6 +559,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|""
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -723,6 +745,32 @@ name|setStartTime
 parameter_list|(
 name|long
 name|startTime
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>launch time</em> of the application.    * @return<em>launch time</em> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getLaunchTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getLaunchTime
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setLaunchTime (long launchTime)
+specifier|public
+specifier|abstract
+name|void
+name|setLaunchTime
+parameter_list|(
+name|long
+name|launchTime
 parameter_list|)
 function_decl|;
 comment|/**    * The application submitter    */

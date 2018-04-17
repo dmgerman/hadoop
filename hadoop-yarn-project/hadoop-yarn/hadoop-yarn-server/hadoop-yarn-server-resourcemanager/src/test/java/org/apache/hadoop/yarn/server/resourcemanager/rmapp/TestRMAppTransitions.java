@@ -7631,6 +7631,11 @@ literal|null
 argument_list|,
 name|app
 operator|.
+name|getLaunchTime
+argument_list|()
+argument_list|,
+name|app
+operator|.
 name|getFinishTime
 argument_list|()
 argument_list|,
