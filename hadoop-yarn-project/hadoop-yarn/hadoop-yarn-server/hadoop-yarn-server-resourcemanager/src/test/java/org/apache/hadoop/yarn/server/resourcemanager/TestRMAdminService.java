@@ -4260,6 +4260,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Make sure RM will use the updated GroupMappingServiceProvider
+name|Groups
+operator|.
+name|getUserToGroupsMappingServiceWithLoadedConfiguration
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|refresh
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|String
@@ -6216,6 +6226,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// verify UserToGroupsMappings
+name|Groups
+operator|.
+name|getUserToGroupsMappingServiceWithLoadedConfiguration
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|refresh
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|String

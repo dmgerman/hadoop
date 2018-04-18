@@ -252,20 +252,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|Groups
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|SecurityUtil
 import|;
 end_import
@@ -2325,10 +2311,6 @@ operator|.
 name|CORE_SITE_CONFIGURATION_FILE
 argument_list|)
 expr_stmt|;
-comment|// Refresh user to group mappings during init.
-name|refreshUserToGroupMappingsWithConf
-argument_list|()
-expr_stmt|;
 comment|// Do refreshSuperUserGroupsConfiguration with loaded core-site.xml
 comment|// Or use RM specific configurations to overwrite the common ones first
 comment|// if they exist
@@ -2636,66 +2618,6 @@ name|this
 operator|.
 name|conf
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|refreshUserToGroupMappingsWithConf ()
-specifier|private
-name|void
-name|refreshUserToGroupMappingsWithConf
-parameter_list|()
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-block|{
-name|Configuration
-name|newConf
-init|=
-operator|new
-name|Configuration
-argument_list|(
-literal|false
-argument_list|)
-decl_stmt|;
-name|InputStream
-name|confFileInputStream
-init|=
-name|configurationProvider
-operator|.
-name|getConfigurationInputStream
-argument_list|(
-name|newConf
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|CORE_SITE_CONFIGURATION_FILE
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|confFileInputStream
-operator|!=
-literal|null
-condition|)
-block|{
-name|newConf
-operator|.
-name|addResource
-argument_list|(
-name|confFileInputStream
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Do refreshUserToGroupsMappings with loaded core-site.xml
-name|Groups
-operator|.
-name|getUserToGroupsMappingServiceWithLoadedConfiguration
-argument_list|(
-name|newConf
-argument_list|)
-operator|.
-name|refresh
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|loadConfigurationXml (String configurationFile)
