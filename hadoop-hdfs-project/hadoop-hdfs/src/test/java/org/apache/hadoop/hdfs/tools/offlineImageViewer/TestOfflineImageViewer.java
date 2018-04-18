@@ -1877,7 +1877,7 @@ name|emptydir
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//Create a directory whose name should be escaped in XML
+comment|//Create directories whose name should be escaped in XML
 name|Path
 name|invalidXMLDir
 init|=
@@ -1896,6 +1896,42 @@ argument_list|)
 expr_stmt|;
 name|dirCount
 operator|++
+expr_stmt|;
+name|Path
+name|entityRefXMLDir
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/dirContainingEntityRef&here"
+argument_list|)
+decl_stmt|;
+name|hdfs
+operator|.
+name|mkdirs
+argument_list|(
+name|entityRefXMLDir
+argument_list|)
+expr_stmt|;
+name|dirCount
+operator|++
+expr_stmt|;
+name|writtenFiles
+operator|.
+name|put
+argument_list|(
+name|entityRefXMLDir
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|hdfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|entityRefXMLDir
+argument_list|)
+argument_list|)
 expr_stmt|;
 comment|//Create a directory with sticky bits
 name|Path
