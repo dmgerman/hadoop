@@ -1289,7 +1289,7 @@ literal|"ms"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Calls {@link FsVolumeImpl#checkDirs()} on each volume.    *     * Use {@link checkDirsLock} to allow only one instance of checkDirs() call.    *    * @return list of all the failed volumes.    * @param failedVolumes    */
+comment|/**    * Updates the failed volume info in the volumeFailureInfos Map    * and calls {@link #removeVolume(FsVolumeImpl)} to remove the volume    * from the volume list for each of the failed volumes.    *    * @param failedVolumes set of volumes marked failed.    */
 DECL|method|handleVolumeFailures (Set<FsVolumeSpi> failedVolumes)
 name|void
 name|handleVolumeFailures
