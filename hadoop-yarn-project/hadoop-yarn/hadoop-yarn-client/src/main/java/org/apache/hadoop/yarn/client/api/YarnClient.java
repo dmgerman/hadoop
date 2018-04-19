@@ -1889,6 +1889,36 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * The interface used by client to get all node to attribute mapping in    * existing cluster.    *</p>    *    * @param hostNames HostNames for which host to attributes mapping has to    *                  be retrived.If empty or null is set then will return    *                  all nodes to attributes mapping in cluster.    * @return Node to attribute mappings    * @throws YarnException    * @throws IOException    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getNodeToAttributes ( Set<String> hostNames)
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+argument_list|>
+name|getNodeToAttributes
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|hostNames
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 block|}
 end_class
 

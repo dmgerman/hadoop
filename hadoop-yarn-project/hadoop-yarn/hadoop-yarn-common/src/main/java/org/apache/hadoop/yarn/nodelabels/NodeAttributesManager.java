@@ -275,6 +275,28 @@ argument_list|>
 name|prefix
 parameter_list|)
 function_decl|;
+comment|/**    * Get all node to Attributes mapping.    *    * @return Map<String, Set<NodeAttribute>> nodesToAttributes matching    * filter.If empty or null is passed as argument will return all.    */
+DECL|method|getNodesToAttributes ( Set<String> hostNames)
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+argument_list|>
+name|getNodesToAttributes
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|hostNames
+parameter_list|)
+function_decl|;
 comment|// futuristic
 comment|// public set<NodeId> getNodesMatchingExpression(String nodeLabelExp);
 block|}

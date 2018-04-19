@@ -76,7 +76,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnProtos
 operator|.
 name|NodeToAttributesProto
 import|;
