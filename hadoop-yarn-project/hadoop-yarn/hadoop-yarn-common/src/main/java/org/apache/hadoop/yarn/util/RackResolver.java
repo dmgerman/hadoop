@@ -24,7 +24,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|Collections
 import|;
 end_import
 
@@ -35,34 +35,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
 import|;
 end_import
 
@@ -224,6 +196,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -250,6 +242,7 @@ block|}
 argument_list|)
 DECL|class|RackResolver
 specifier|public
+specifier|final
 class|class
 name|RackResolver
 block|{
@@ -271,18 +264,24 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|RackResolver
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Hide the default constructor for utility class.    */
+DECL|method|RackResolver ()
+specifier|private
+name|RackResolver
+parameter_list|()
+block|{   }
 DECL|method|init (Configuration conf)
 specifier|public
 specifier|synchronized
@@ -301,13 +300,10 @@ condition|)
 block|{
 return|return;
 block|}
-else|else
-block|{
 name|initCalled
 operator|=
 literal|true
 expr_stmt|;
-block|}
 name|Class
 argument_list|<
 name|?
@@ -384,7 +380,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Utility method for getting a hostname resolved to a node in the    * network topology. This method initializes the class with the     * right resolver implementation.    * @param conf    * @param hostName    * @return node {@link Node} after resolving the hostname    */
+comment|/**    * Utility method for getting a hostname resolved to a node in the    * network topology. This method initializes the class with the    * right resolver implementation.    * @param conf    * @param hostName    * @return node {@link Node} after resolving the hostname    */
 DECL|method|resolve (Configuration conf, String hostName)
 specifier|public
 specifier|static
@@ -458,22 +454,13 @@ name|String
 argument_list|>
 name|tmpList
 init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|String
-argument_list|>
-argument_list|(
-literal|1
-argument_list|)
-decl_stmt|;
-name|tmpList
+name|Collections
 operator|.
-name|add
+name|singletonList
 argument_list|(
 name|hostName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|List
 argument_list|<
 name|String
@@ -490,7 +477,9 @@ decl_stmt|;
 name|String
 name|rName
 init|=
-literal|null
+name|NetworkTopology
+operator|.
+name|DEFAULT_RACK
 decl_stmt|;
 if|if
 condition|(
@@ -508,36 +497,19 @@ operator|==
 literal|null
 condition|)
 block|{
-name|rName
-operator|=
-name|NetworkTopology
-operator|.
-name|DEFAULT_RACK
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Couldn't resolve "
-operator|+
+literal|"Could not resolve {}. Falling back to {}"
+argument_list|,
 name|hostName
-operator|+
-literal|". Falling back to "
-operator|+
+argument_list|,
 name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -550,28 +522,17 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Resolved "
-operator|+
+literal|"Resolved {} to {}"
+argument_list|,
 name|hostName
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|rName
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 operator|new
@@ -583,7 +544,7 @@ name|rName
 argument_list|)
 return|;
 block|}
-comment|/**    * Only used by tests    */
+comment|/**    * Only used by tests.    */
 annotation|@
 name|Private
 annotation|@
