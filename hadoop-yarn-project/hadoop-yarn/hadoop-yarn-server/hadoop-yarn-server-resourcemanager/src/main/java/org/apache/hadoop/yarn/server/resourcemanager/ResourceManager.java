@@ -6767,12 +6767,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|transitionToActive
-argument_list|()
-expr_stmt|;
-block|}
 name|startWepApp
 argument_list|()
 expr_stmt|;
@@ -6814,6 +6808,22 @@ operator|.
 name|serviceStart
 argument_list|()
 expr_stmt|;
+comment|// Non HA case, start after RM services are started.
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|rmContext
+operator|.
+name|isHAEnabled
+argument_list|()
+condition|)
+block|{
+name|transitionToActive
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|doSecureLogin ()
 specifier|protected
