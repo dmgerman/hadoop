@@ -678,7 +678,7 @@ name|nodePartitions
 argument_list|)
 return|;
 block|}
-comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
+comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags. The default namespace      * for these tags is {@link AllocationTagNamespaceType#SELF}, this only      * checks tags within the application.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
 DECL|method|allocationTag (String... allocationTags)
 specifier|public
 specifier|static
@@ -691,14 +691,14 @@ name|allocationTags
 parameter_list|)
 block|{
 return|return
-operator|new
-name|TargetExpression
+name|allocationTagWithNamespace
 argument_list|(
-name|TargetType
+name|AllocationTagNamespaceType
 operator|.
-name|ALLOCATION_TAG
-argument_list|,
-literal|null
+name|SELF
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|allocationTags
 argument_list|)
@@ -728,37 +728,6 @@ operator|.
 name|ALLOCATION_TAG
 argument_list|,
 name|namespace
-argument_list|,
-name|allocationTags
-argument_list|)
-return|;
-block|}
-comment|/**      * Constructs a target expression on an allocation tag. It is satisfied if      * there are allocations with one of the given tags. Comparing to      * {@link PlacementTargets#allocationTag(String...)}, this only checks tags      * within the application.      *      * @param allocationTags the set of tags that the attribute should take      *          values from      * @return the resulting expression on the allocation tags      */
-DECL|method|allocationTagToIntraApp ( String... allocationTags)
-specifier|public
-specifier|static
-name|TargetExpression
-name|allocationTagToIntraApp
-parameter_list|(
-name|String
-modifier|...
-name|allocationTags
-parameter_list|)
-block|{
-return|return
-operator|new
-name|TargetExpression
-argument_list|(
-name|TargetType
-operator|.
-name|ALLOCATION_TAG
-argument_list|,
-name|AllocationTagNamespaceType
-operator|.
-name|SELF
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|allocationTags
 argument_list|)

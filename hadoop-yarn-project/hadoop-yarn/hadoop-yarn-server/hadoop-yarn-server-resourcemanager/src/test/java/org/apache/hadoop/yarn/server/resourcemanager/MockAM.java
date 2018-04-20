@@ -2203,7 +2203,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 name|tags
 argument_list|)

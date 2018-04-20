@@ -922,7 +922,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -1046,7 +1046,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -1170,7 +1170,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -1285,7 +1285,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -1401,7 +1401,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -1524,7 +1524,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|)
@@ -1533,7 +1533,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"reducer"
 argument_list|)
@@ -1626,7 +1626,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|)
@@ -1635,7 +1635,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|""
 argument_list|)
@@ -1732,7 +1732,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|)
@@ -1829,7 +1829,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|)
@@ -1922,7 +1922,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -2017,7 +2017,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -2121,7 +2121,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -2290,7 +2290,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|)
@@ -2401,7 +2401,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -2535,7 +2535,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,
@@ -2716,7 +2716,7 @@ name|PlacementConstraints
 operator|.
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 literal|"mapper"
 argument_list|,

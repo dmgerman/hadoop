@@ -3590,7 +3590,7 @@ name|add
 argument_list|(
 name|PlacementTargets
 operator|.
-name|allocationTagToIntraApp
+name|allocationTag
 argument_list|(
 name|yarnServiceConstraint
 operator|.
