@@ -712,12 +712,9 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|diskValidator
-operator|=
-name|DiskValidatorFactory
-operator|.
-name|getInstance
-argument_list|(
+name|String
+name|diskValidatorName
+init|=
 name|conf
 operator|.
 name|get
@@ -730,19 +727,25 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_DISK_VALIDATOR
 argument_list|)
+decl_stmt|;
+name|diskValidator
+operator|=
+name|DiskValidatorFactory
+operator|.
+name|getInstance
+argument_list|(
+name|diskValidatorName
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Disk Validator: "
+literal|"Disk Validator '"
 operator|+
-name|YarnConfiguration
-operator|.
-name|DISK_VALIDATOR
+name|diskValidatorName
 operator|+
-literal|" is loaded."
+literal|"' is loaded."
 argument_list|)
 expr_stmt|;
 block|}
