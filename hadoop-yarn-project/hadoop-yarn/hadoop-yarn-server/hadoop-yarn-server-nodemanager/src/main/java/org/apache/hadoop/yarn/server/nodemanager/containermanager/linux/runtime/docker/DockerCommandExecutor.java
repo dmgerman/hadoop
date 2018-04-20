@@ -52,6 +52,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|Context
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|nodemanager
@@ -290,7 +326,7 @@ name|DockerCommandExecutor
 parameter_list|()
 block|{   }
 comment|/**    * Execute a docker command and return the output.    *    * @param dockerCommand               the docker command to run.    * @param containerId                 the id of the container.    * @param env                         environment for the container.    * @param conf                        the hadoop configuration.    * @param privilegedOperationExecutor the privileged operations executor.    * @param disableFailureLogging       disable logging for known rc failures.    * @return the output of the operation.    * @throws ContainerExecutionException if the operation fails.    */
-DECL|method|executeDockerCommand (DockerCommand dockerCommand, String containerId, Map<String, String> env, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, boolean disableFailureLogging)
+DECL|method|executeDockerCommand (DockerCommand dockerCommand, String containerId, Map<String, String> env, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, boolean disableFailureLogging, Context nmContext)
 specifier|public
 specifier|static
 name|String
@@ -318,6 +354,9 @@ name|privilegedOperationExecutor
 parameter_list|,
 name|boolean
 name|disableFailureLogging
+parameter_list|,
+name|Context
+name|nmContext
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
@@ -340,7 +379,22 @@ name|writeCommandToTempFile
 argument_list|(
 name|dockerCommand
 argument_list|,
+name|nmContext
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|ContainerId
+operator|.
+name|fromString
+argument_list|(
 name|containerId
+argument_list|)
+argument_list|)
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 name|PrivilegedOperation
@@ -470,7 +524,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Get the status of the docker container. This runs a docker inspect to    * get the status. If the container no longer exists, docker inspect throws    * an exception and the nonexistent status is returned.    *    * @param containerId                 the id of the container.    * @param conf                        the hadoop configuration.    * @param privilegedOperationExecutor the privileged operations executor.    * @return a {@link DockerContainerStatus} representing the current status.    */
-DECL|method|getContainerStatus (String containerId, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor)
+DECL|method|getContainerStatus (String containerId, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, Context nmContext)
 specifier|public
 specifier|static
 name|DockerContainerStatus
@@ -484,6 +538,9 @@ name|conf
 parameter_list|,
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
+parameter_list|,
+name|Context
+name|nmContext
 parameter_list|)
 block|{
 try|try
@@ -501,6 +558,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|privilegedOperationExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -780,7 +839,7 @@ return|;
 block|}
 block|}
 comment|/**    * Execute the docker inspect command to retrieve the docker container's    * status.    *    * @param containerId                 the id of the container.    * @param conf                        the hadoop configuration.    * @param privilegedOperationExecutor the privileged operations executor.    * @return the current container status.    * @throws ContainerExecutionException if the docker operation fails to run.    */
-DECL|method|executeStatusCommand (String containerId, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor)
+DECL|method|executeStatusCommand (String containerId, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, Context nmContext)
 specifier|private
 specifier|static
 name|String
@@ -794,6 +853,9 @@ name|conf
 parameter_list|,
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
+parameter_list|,
+name|Context
+name|nmContext
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
@@ -828,6 +890,8 @@ argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 literal|true
+argument_list|,
+name|nmContext
 argument_list|)
 return|;
 block|}

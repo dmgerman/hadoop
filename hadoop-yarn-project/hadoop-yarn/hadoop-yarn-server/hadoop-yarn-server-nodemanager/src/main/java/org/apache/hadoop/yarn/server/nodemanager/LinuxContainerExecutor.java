@@ -1018,6 +1018,11 @@ specifier|private
 name|LinuxContainerRuntime
 name|linuxContainerRuntime
 decl_stmt|;
+DECL|field|nmContext
+specifier|private
+name|Context
+name|nmContext
+decl_stmt|;
 comment|/**    * The container exit code.    */
 DECL|enum|ExitCode
 specifier|public
@@ -1671,13 +1676,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Context nmContext)
+DECL|method|init (Context context)
 specifier|public
 name|void
 name|init
 parameter_list|(
 name|Context
-name|nmContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1690,6 +1695,12 @@ operator|.
 name|getConf
 argument_list|()
 decl_stmt|;
+name|this
+operator|.
+name|nmContext
+operator|=
+name|context
+expr_stmt|;
 comment|// Send command to executor which will just start up,
 comment|// verify configuration/permissions and exit
 try|try
@@ -5024,6 +5035,8 @@ name|getConf
 argument_list|()
 argument_list|,
 name|privOpExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 argument_list|)
 condition|)
@@ -5064,6 +5077,8 @@ argument_list|,
 name|privOpExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}

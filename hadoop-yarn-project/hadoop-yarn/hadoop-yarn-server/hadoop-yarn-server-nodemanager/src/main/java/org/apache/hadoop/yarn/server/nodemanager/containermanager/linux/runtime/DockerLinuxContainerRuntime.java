@@ -1854,12 +1854,8 @@ argument_list|(
 name|dockerVolumeCommand
 argument_list|,
 name|container
-operator|.
-name|getContainerId
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 name|PrivilegedOperation
@@ -4241,7 +4237,9 @@ name|writeCommandToTempFile
 argument_list|(
 name|runCommand
 argument_list|,
-name|containerIdStr
+name|container
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 name|PrivilegedOperation
@@ -4371,6 +4369,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|privilegedOperationExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -4405,7 +4405,9 @@ name|writeCommandToTempFile
 argument_list|(
 name|startCommand
 argument_list|,
-name|containerIdStr
+name|container
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 name|PrivilegedOperation
@@ -4845,7 +4847,9 @@ name|writeCommandToTempFile
 argument_list|(
 name|inspectCommand
 argument_list|,
-name|containerId
+name|container
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 name|PrivilegedOperation
@@ -5667,6 +5671,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|privilegedOperationExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -5708,6 +5714,8 @@ argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -5778,6 +5786,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|privilegedOperationExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -5822,6 +5832,8 @@ argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -5925,6 +5937,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|privilegedOperationExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -5961,6 +5975,8 @@ argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}

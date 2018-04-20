@@ -188,6 +188,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -207,6 +225,24 @@ operator|.
 name|records
 operator|.
 name|ContainerLaunchContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|LocalDirsHandlerService
 import|;
 end_import
 
@@ -1041,6 +1077,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1540,6 +1588,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Matchers
+operator|.
+name|anyString
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|any
@@ -1694,10 +1754,20 @@ specifier|private
 name|ContainerId
 name|cId
 decl_stmt|;
+DECL|field|appAttemptId
+specifier|private
+name|ApplicationAttemptId
+name|appAttemptId
+decl_stmt|;
 DECL|field|context
 specifier|private
 name|ContainerLaunchContext
 name|context
+decl_stmt|;
+DECL|field|nmContext
+specifier|private
+name|Context
+name|nmContext
 decl_stmt|;
 DECL|field|env
 specifier|private
@@ -1958,7 +2028,7 @@ argument_list|)
 expr_stmt|;
 name|containerId
 operator|=
-literal|"container_id"
+literal|"container_e11_1518975676334_14532816_01_000001"
 expr_stmt|;
 name|container
 operator|=
@@ -1974,6 +2044,15 @@ operator|=
 name|mock
 argument_list|(
 name|ContainerId
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|appAttemptId
+operator|=
+name|mock
+argument_list|(
+name|ApplicationAttemptId
 operator|.
 name|class
 argument_list|)
@@ -2010,6 +2089,11 @@ expr_stmt|;
 name|image
 operator|=
 literal|"busybox:latest"
+expr_stmt|;
+name|nmContext
+operator|=
+name|createMockNMContext
+argument_list|()
 expr_stmt|;
 name|dockerStopGracePeriod
 operator|=
@@ -2061,6 +2145,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|containerId
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|cId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|appAttemptId
 argument_list|)
 expr_stmt|;
 name|when
@@ -2624,6 +2721,182 @@ name|resourcesOptions
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|createMockNMContext ()
+specifier|public
+name|Context
+name|createMockNMContext
+parameter_list|()
+block|{
+name|Context
+name|mockNMContext
+init|=
+name|mock
+argument_list|(
+name|Context
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|LocalDirsHandlerService
+name|localDirsHandler
+init|=
+name|mock
+argument_list|(
+name|LocalDirsHandlerService
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|ResourcePluginManager
+name|resourcePluginManager
+init|=
+name|mock
+argument_list|(
+name|ResourcePluginManager
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|String
+name|tmpPath
+init|=
+operator|new
+name|StringBuffer
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|'/'
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"hadoop.tmp.dir"
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|ConcurrentMap
+argument_list|<
+name|ContainerId
+argument_list|,
+name|Container
+argument_list|>
+name|containerMap
+init|=
+name|mock
+argument_list|(
+name|ConcurrentMap
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|mockNMContext
+operator|.
+name|getLocalDirsHandler
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|localDirsHandler
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|mockNMContext
+operator|.
+name|getResourcePluginManager
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|resourcePluginManager
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|mockNMContext
+operator|.
+name|getContainers
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|containerMap
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|containerMap
+operator|.
+name|get
+argument_list|(
+name|any
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|when
+argument_list|(
+name|localDirsHandler
+operator|.
+name|getLocalPathForWrite
+argument_list|(
+name|anyString
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|tmpPath
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LocalDirsHandler failed"
+operator|+
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|mockNMContext
+return|;
+block|}
 annotation|@
 name|Test
 DECL|method|testSelectDockerContainerType ()
@@ -3117,7 +3390,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|runtime
@@ -3337,7 +3610,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -3471,7 +3744,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|runtime
@@ -3686,7 +3959,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -3807,7 +4080,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 comment|//invalid default network configuration - sdn2 is included in allowed
@@ -3871,7 +4144,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3934,7 +4207,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -3974,7 +4247,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Random
@@ -4314,7 +4587,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -4457,7 +4730,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|String
@@ -4709,7 +4982,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -4893,7 +5166,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|runtime
@@ -5085,7 +5358,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  hostname=ctr-id"
+literal|"  hostname=ctr-e11-1518975676334-14532816-01-000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -5130,7 +5403,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -5407,7 +5680,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  hostname=ctr-id"
+literal|"  hostname=ctr-e11-1518975676334-14532816-01-000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -5452,7 +5725,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -5627,7 +5900,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -5776,7 +6049,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -5870,7 +6143,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -6101,7 +6374,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -6239,7 +6512,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -6388,7 +6661,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -6478,7 +6751,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -6583,7 +6856,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -6689,7 +6962,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -6896,7 +7169,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7046,7 +7319,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|String
@@ -7168,7 +7441,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|runtime
@@ -7229,7 +7502,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -7311,7 +7584,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -7542,7 +7815,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -7663,7 +7936,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -7745,7 +8018,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -7978,7 +8251,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -8105,7 +8378,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -8336,7 +8609,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -8459,7 +8732,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -8537,7 +8810,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -8615,7 +8888,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|env
@@ -8932,7 +9205,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -9036,7 +9309,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -9136,7 +9409,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -10323,14 +10596,10 @@ name|dockerVolumeListOutput
 argument_list|)
 expr_stmt|;
 name|Context
-name|nmContext
+name|mockNMContext
 init|=
-name|mock
-argument_list|(
-name|Context
-operator|.
-name|class
-argument_list|)
+name|createMockNMContext
+argument_list|()
 decl_stmt|;
 name|ResourcePluginManager
 name|rpm
@@ -10433,7 +10702,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|nmContext
+name|mockNMContext
 operator|.
 name|getResourcePluginManager
 argument_list|()
@@ -10450,7 +10719,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-name|nmContext
+name|mockNMContext
 argument_list|)
 expr_stmt|;
 name|ContainerRuntimeContext
@@ -10753,14 +11022,10 @@ literal|"volume1,local"
 argument_list|)
 expr_stmt|;
 name|Context
-name|nmContext
+name|mockNMContext
 init|=
-name|mock
-argument_list|(
-name|Context
-operator|.
-name|class
-argument_list|)
+name|createMockNMContext
+argument_list|()
 decl_stmt|;
 name|ResourcePluginManager
 name|rpm
@@ -10863,7 +11128,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|nmContext
+name|mockNMContext
 operator|.
 name|getResourcePluginManager
 argument_list|()
@@ -10880,7 +11145,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-name|nmContext
+name|mockNMContext
 argument_list|)
 expr_stmt|;
 name|ContainerRuntimeContext
@@ -11115,7 +11380,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -11269,7 +11534,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -11311,7 +11576,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -11347,7 +11612,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -11382,7 +11647,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -11419,7 +11684,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Iterator
@@ -11607,7 +11872,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
+name|nmContext
 argument_list|)
 expr_stmt|;
 name|Set
@@ -12167,7 +12432,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -12418,7 +12683,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"  name=container_id"
+literal|"  name=container_e11_1518975676334_14532816_01_000001"
 argument_list|,
 name|dockerCommands
 operator|.
@@ -12615,6 +12880,8 @@ argument_list|,
 name|mockExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -12665,6 +12932,8 @@ argument_list|,
 name|mockExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -12794,6 +13063,8 @@ argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 literal|false
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}
