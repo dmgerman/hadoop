@@ -2104,14 +2104,15 @@ specifier|static
 class|class
 name|OpInstanceCache
 block|{
-DECL|field|cache
+DECL|field|CACHE
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|OpInstanceCacheMap
 argument_list|>
-name|cache
+name|CACHE
 init|=
 operator|new
 name|ThreadLocal
@@ -2240,7 +2241,7 @@ condition|?
 operator|(
 name|T
 operator|)
-name|cache
+name|CACHE
 operator|.
 name|get
 argument_list|()

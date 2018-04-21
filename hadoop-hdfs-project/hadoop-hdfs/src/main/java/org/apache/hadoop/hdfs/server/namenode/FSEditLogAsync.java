@@ -244,14 +244,15 @@ specifier|private
 name|Thread
 name|syncThread
 decl_stmt|;
-DECL|field|threadEdit
+DECL|field|THREAD_EDIT
 specifier|private
 specifier|static
+specifier|final
 name|ThreadLocal
 argument_list|<
 name|Edit
 argument_list|>
-name|threadEdit
+name|THREAD_EDIT
 init|=
 operator|new
 name|ThreadLocal
@@ -536,7 +537,7 @@ argument_list|(
 name|op
 argument_list|)
 decl_stmt|;
-name|threadEdit
+name|THREAD_EDIT
 operator|.
 name|set
 argument_list|(
@@ -560,7 +561,7 @@ block|{
 name|Edit
 name|edit
 init|=
-name|threadEdit
+name|THREAD_EDIT
 operator|.
 name|get
 argument_list|()
@@ -573,7 +574,7 @@ literal|null
 condition|)
 block|{
 comment|// do NOT remove to avoid expunge& rehash penalties.
-name|threadEdit
+name|THREAD_EDIT
 operator|.
 name|set
 argument_list|(
