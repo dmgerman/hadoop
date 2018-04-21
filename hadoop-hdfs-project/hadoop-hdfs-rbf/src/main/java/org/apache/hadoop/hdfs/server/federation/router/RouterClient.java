@@ -390,6 +390,16 @@ return|return
 name|proxy
 return|;
 block|}
+DECL|method|getNameserviceManager ()
+specifier|public
+name|NameserviceManager
+name|getNameserviceManager
+parameter_list|()
+block|{
+return|return
+name|proxy
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()

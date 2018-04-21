@@ -276,6 +276,28 @@ name|store
 operator|.
 name|impl
 operator|.
+name|DisabledNameserviceStoreImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
+name|impl
+operator|.
 name|MembershipStoreImpl
 import|;
 end_import
@@ -497,7 +519,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A service to initialize a  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver} and maintain the connection to the data store. There are  * multiple state store driver connections supported:  *<ul>  *<li>File  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.impl.  * StateStoreFileImpl StateStoreFileImpl}  *<li>ZooKeeper  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.impl.  * StateStoreZooKeeperImpl StateStoreZooKeeperImpl}  *</ul>  *<p>  * The service also supports the dynamic registration of record stores like:  *<ul>  *<li>{@link MembershipStore}: state of the Namenodes in the  * federation.  *<li>{@link MountTableStore}: Mount table between to subclusters.  * See {@link org.apache.hadoop.fs.viewfs.ViewFs ViewFs}.  *<li>{@link RebalancerStore}: Log of the rebalancing operations.  *<li>{@link RouterStore}: Router state in the federation.  *<li>{@link TokenStore}: Tokens in the federation.  *</ul>  */
+comment|/**  * A service to initialize a  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver} and maintain the connection to the data store. There are  * multiple state store driver connections supported:  *<ul>  *<li>File  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.impl.  * StateStoreFileImpl StateStoreFileImpl}  *<li>ZooKeeper  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.impl.  * StateStoreZooKeeperImpl StateStoreZooKeeperImpl}  *</ul>  *<p>  * The service also supports the dynamic registration of record stores like:  *<ul>  *<li>{@link MembershipStore}: state of the Namenodes in the  * federation.  *<li>{@link MountTableStore}: Mount table between to subclusters.  * See {@link org.apache.hadoop.fs.viewfs.ViewFs ViewFs}.  *<li>{@link RebalancerStore}: Log of the rebalancing operations.  *<li>{@link RouterStore}: Router state in the federation.  *<li>{@link DisabledNameserviceStore}: Disabled name services.  *<li>{@link TokenStore}: Tokens in the federation.  *</ul>  */
 end_comment
 
 begin_class
@@ -759,6 +781,13 @@ expr_stmt|;
 name|addRecordStore
 argument_list|(
 name|RouterStoreImpl
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|addRecordStore
+argument_list|(
+name|DisabledNameserviceStoreImpl
 operator|.
 name|class
 argument_list|)

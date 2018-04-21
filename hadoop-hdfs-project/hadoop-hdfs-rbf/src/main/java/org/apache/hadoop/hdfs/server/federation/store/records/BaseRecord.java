@@ -48,6 +48,20 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Abstract base of a data record in the StateStore. All StateStore records are  * derived from this class. Data records are persisted in the data store and  * are identified by their primary key. Each data record contains:  *<ul>  *<li>A primary key consisting of a combination of record data fields.  *<li>A modification date.  *<li>A creation date.  *</ul>  */
 end_comment
@@ -196,6 +210,19 @@ argument_list|(
 name|getPrimaryKeys
 argument_list|()
 argument_list|)
+return|;
+block|}
+comment|/**    * If the record has fields others than the primary keys. This is used by    * TestStateStoreDriverBase to skip the modification check.    *    * @return If the record has more fields.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|hasOtherFields ()
+specifier|public
+name|boolean
+name|hasOtherFields
+parameter_list|()
+block|{
+return|return
+literal|true
 return|;
 block|}
 comment|/**    * Generates a cache key from a map of values.    *    * @param keys Map of values.    * @return String mashup of key values.    */
