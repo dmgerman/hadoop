@@ -1471,7 +1471,7 @@ name|percentage
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns collection of nameservice Ids from the configuration.    * @param conf configuration    * @return collection of nameservice Ids, or null if not specified    */
+comment|/**    * Returns collection of nameservice Ids from the configuration.    * @param conf configuration    * @return collection of nameservice Ids. Empty list if unspecified.    */
 DECL|method|getNameServiceIds (Configuration conf)
 specifier|public
 specifier|static
