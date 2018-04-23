@@ -2138,6 +2138,22 @@ argument_list|,
 literal|"Local in-VM metadata store for testing"
 argument_list|)
 expr_stmt|;
+name|map
+operator|.
+name|put
+argument_list|(
+name|MetadataStoreCapabilities
+operator|.
+name|PERSISTS_AUTHORITATIVE_BIT
+argument_list|,
+name|Boolean
+operator|.
+name|toString
+argument_list|(
+literal|true
+argument_list|)
+argument_list|)
+expr_stmt|;
 return|return
 name|map
 return|;
