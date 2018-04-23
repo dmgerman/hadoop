@@ -3113,6 +3113,24 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|expiresIn
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Will not renew token "
+operator|+
+name|token
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|long
 name|renewIn
 init|=

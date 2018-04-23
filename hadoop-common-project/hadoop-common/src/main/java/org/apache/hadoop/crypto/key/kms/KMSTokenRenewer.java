@@ -327,11 +327,15 @@ name|DelegationTokenExtension
 operator|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"keyProvider {} cannot renew token {}."
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"keyProvider %s cannot renew token [%s]"
 argument_list|,
 name|keyProvider
 operator|==
@@ -346,10 +350,8 @@ argument_list|()
 argument_list|,
 name|token
 argument_list|)
-expr_stmt|;
-return|return
-literal|0
-return|;
+argument_list|)
+throw|;
 block|}
 return|return
 operator|(
@@ -437,11 +439,15 @@ name|DelegationTokenExtension
 operator|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"keyProvider {} cannot cancel token {}."
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"keyProvider %s cannot cancel token [%s]"
 argument_list|,
 name|keyProvider
 operator|==
@@ -456,8 +462,8 @@ argument_list|()
 argument_list|,
 name|token
 argument_list|)
-expr_stmt|;
-return|return;
+argument_list|)
+throw|;
 block|}
 operator|(
 operator|(
