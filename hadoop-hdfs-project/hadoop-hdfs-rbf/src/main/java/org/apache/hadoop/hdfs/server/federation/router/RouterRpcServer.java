@@ -8651,7 +8651,8 @@ name|method
 argument_list|,
 literal|true
 argument_list|,
-literal|true
+operator|!
+name|isChecked
 argument_list|,
 name|Boolean
 operator|.
