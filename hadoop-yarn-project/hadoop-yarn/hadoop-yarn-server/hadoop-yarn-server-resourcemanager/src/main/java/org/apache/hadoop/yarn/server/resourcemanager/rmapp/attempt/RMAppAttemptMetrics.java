@@ -52,6 +52,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|atomic
 operator|.
 name|AtomicBoolean
@@ -447,7 +459,7 @@ argument_list|>
 name|resourceUsageMap
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -462,7 +474,7 @@ argument_list|>
 name|preemptedResourceMap
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -679,7 +691,12 @@ name|lock
 argument_list|()
 expr_stmt|;
 return|return
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
 name|resourcePreempted
+argument_list|)
 return|;
 block|}
 finally|finally
@@ -1408,7 +1425,12 @@ name|getApplicationAttemptHeadroom
 parameter_list|()
 block|{
 return|return
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
 name|applicationHeadroom
+argument_list|)
 return|;
 block|}
 DECL|method|setApplicationAttemptHeadRoom (Resource headRoom)
