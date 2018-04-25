@@ -62,8 +62,12 @@ block|,
 comment|// When the namenode cannot be reached.
 DECL|enumConstant|EXPIRED
 name|EXPIRED
-block|;
+block|,
 comment|// When the last update is too old.
+DECL|enumConstant|DISABLED
+name|DISABLED
+block|;
+comment|// When the nameservice is disabled.
 DECL|method|getState (HAServiceState state)
 specifier|public
 specifier|static

@@ -3712,10 +3712,6 @@ decl_stmt|;
 if|if
 condition|(
 name|nn
-operator|!=
-literal|null
-operator|&&
-name|nn
 operator|instanceof
 name|MembershipState
 condition|)

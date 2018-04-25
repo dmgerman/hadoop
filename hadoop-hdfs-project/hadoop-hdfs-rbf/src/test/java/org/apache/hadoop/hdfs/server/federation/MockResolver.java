@@ -122,6 +122,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1395,6 +1405,26 @@ return|return
 name|this
 operator|.
 name|namespaces
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDisabledNamespaces ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getDisabledNamespaces
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|()
 return|;
 block|}
 annotation|@

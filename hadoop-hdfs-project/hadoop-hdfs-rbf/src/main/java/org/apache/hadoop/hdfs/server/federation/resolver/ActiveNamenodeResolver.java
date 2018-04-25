@@ -176,6 +176,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get a list of all namespaces that are disabled.    *    * @return List of name spaces identifier in the federation    * @throws IOException If the disabled list is not available.    */
+DECL|method|getDisabledNamespaces ()
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getDisabledNamespaces
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Assign a unique identifier for the parent router service.    * Required to report the status to the namenode resolver.    *    * @param routerId Unique string identifier for the router.    */
 DECL|method|setRouterId (String routerId)
 name|void

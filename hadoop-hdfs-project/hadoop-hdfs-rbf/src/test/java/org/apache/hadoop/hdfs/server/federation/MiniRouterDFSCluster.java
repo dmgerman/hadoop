@@ -1543,6 +1543,16 @@ operator|.
 name|fileContext
 return|;
 block|}
+DECL|method|getFileSystemURI ()
+specifier|public
+name|URI
+name|getFileSystemURI
+parameter_list|()
+block|{
+return|return
+name|fileSystemUri
+return|;
+block|}
 DECL|method|getHttpAddress ()
 specifier|public
 name|String
@@ -1803,6 +1813,17 @@ block|}
 return|return
 name|adminClient
 return|;
+block|}
+DECL|method|resetAdminClient ()
+specifier|public
+name|void
+name|resetAdminClient
+parameter_list|()
+block|{
+name|adminClient
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|getClient ()
 specifier|public
