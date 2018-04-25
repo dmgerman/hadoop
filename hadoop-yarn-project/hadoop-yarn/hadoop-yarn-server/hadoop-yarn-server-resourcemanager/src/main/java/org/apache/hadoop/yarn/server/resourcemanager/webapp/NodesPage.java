@@ -1764,7 +1764,7 @@ name|append
 argument_list|(
 literal|", {'sType': 'title-numeric', 'bSearchable': false, "
 operator|+
-literal|"'aTargets': [ 8, 9 ] }"
+literal|"'aTargets': [ 9, 10 ] }"
 argument_list|)
 expr_stmt|;
 name|b
