@@ -230,6 +230,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -2095,6 +2109,14 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+name|long
+name|start
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// Step 2: decode into prepared output buffers
 name|decoder
 operator|.
@@ -2183,6 +2205,27 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|long
+name|end
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+comment|// Decoding time includes CPU time on erasure coding and memory copying of
+comment|// decoded data.
+name|dfsStripedInputStream
+operator|.
+name|readStatistics
+operator|.
+name|addErasureCodingDecodingTime
+argument_list|(
+name|end
+operator|-
+name|start
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Prepare erased indices.    */
 DECL|method|prepareErasedIndices ()

@@ -16,6 +16,22 @@ name|hdfs
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
 begin_comment
 comment|/**  * A utility class that maintains statistics for reading.  */
 end_comment
@@ -45,6 +61,20 @@ DECL|field|totalZeroCopyBytesRead
 specifier|private
 name|long
 name|totalZeroCopyBytesRead
+decl_stmt|;
+DECL|field|blockType
+specifier|private
+name|BlockType
+name|blockType
+init|=
+name|BlockType
+operator|.
+name|CONTIGUOUS
+decl_stmt|;
+DECL|field|totalEcDecodingTimeMillis
+specifier|private
+name|long
+name|totalEcDecodingTimeMillis
 decl_stmt|;
 DECL|method|ReadStatistics ()
 specifier|public
@@ -162,6 +192,30 @@ operator|-
 name|totalLocalBytesRead
 return|;
 block|}
+comment|/**    * @return block type of the input stream. If block type != CONTIGUOUS,    * it is reading erasure coded data.    */
+DECL|method|getBlockType ()
+specifier|public
+specifier|synchronized
+name|BlockType
+name|getBlockType
+parameter_list|()
+block|{
+return|return
+name|blockType
+return|;
+block|}
+comment|/**    * Return the total time in milliseconds used for erasure coding decoding.    */
+DECL|method|getTotalEcDecodingTimeMillis ()
+specifier|public
+specifier|synchronized
+name|long
+name|getTotalEcDecodingTimeMillis
+parameter_list|()
+block|{
+return|return
+name|totalEcDecodingTimeMillis
+return|;
+block|}
 DECL|method|addRemoteBytes (long amt)
 specifier|public
 specifier|synchronized
@@ -266,6 +320,39 @@ operator|+=
 name|amt
 expr_stmt|;
 block|}
+DECL|method|addErasureCodingDecodingTime (long millis)
+specifier|public
+specifier|synchronized
+name|void
+name|addErasureCodingDecodingTime
+parameter_list|(
+name|long
+name|millis
+parameter_list|)
+block|{
+name|this
+operator|.
+name|totalEcDecodingTimeMillis
+operator|+=
+name|millis
+expr_stmt|;
+block|}
+DECL|method|setBlockType (BlockType blockType)
+specifier|synchronized
+name|void
+name|setBlockType
+parameter_list|(
+name|BlockType
+name|blockType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockType
+operator|=
+name|blockType
+expr_stmt|;
+block|}
 DECL|method|clear ()
 specifier|public
 specifier|synchronized
@@ -294,6 +381,12 @@ expr_stmt|;
 name|this
 operator|.
 name|totalZeroCopyBytesRead
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalEcDecodingTimeMillis
 operator|=
 literal|0
 expr_stmt|;
