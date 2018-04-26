@@ -396,21 +396,9 @@ name|DefaultHttpResponse
 import|;
 end_import
 
-begin_import
-import|import
-name|io
-operator|.
-name|netty
-operator|.
-name|handler
-operator|.
-name|codec
-operator|.
-name|http
-operator|.
-name|HttpHeaderUtil
-import|;
-end_import
+begin_comment
+comment|//import io.netty.handler.codec.http.HttpUtil;
+end_comment
 
 begin_import
 import|import
@@ -1253,7 +1241,7 @@ name|set
 argument_list|(
 name|CONNECTION
 argument_list|,
-name|HttpHeaderUtil
+name|HttpHeaders
 operator|.
 name|isKeepAlive
 argument_list|(
@@ -1556,7 +1544,7 @@ name|host
 operator|+
 name|nettyReq
 operator|.
-name|uri
+name|getUri
 argument_list|()
 decl_stmt|;
 name|LOG
@@ -1578,7 +1566,7 @@ name|webapp
 argument_list|,
 name|nettyReq
 operator|.
-name|method
+name|getMethod
 argument_list|()
 operator|.
 name|name

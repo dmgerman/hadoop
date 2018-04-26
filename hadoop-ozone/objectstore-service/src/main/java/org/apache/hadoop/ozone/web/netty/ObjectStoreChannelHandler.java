@@ -136,7 +136,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderNames
+name|HttpHeaders
+operator|.
+name|Names
 operator|.
 name|CONNECTION
 import|;
@@ -154,7 +156,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderNames
+name|HttpHeaders
+operator|.
+name|Names
 operator|.
 name|CONTENT_LENGTH
 import|;
@@ -172,7 +176,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderValues
+name|HttpHeaders
+operator|.
+name|Values
 operator|.
 name|CLOSE
 import|;

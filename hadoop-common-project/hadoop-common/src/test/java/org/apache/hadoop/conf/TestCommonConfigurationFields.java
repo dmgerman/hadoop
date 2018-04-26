@@ -466,6 +466,14 @@ argument_list|(
 literal|"fs.s3a."
 argument_list|)
 expr_stmt|;
+comment|// O3 properties are in a different subtree.
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.o3."
+argument_list|)
+expr_stmt|;
 comment|//ftp properties are in a different subtree.
 comment|// - org.apache.hadoop.fs.ftp.FTPFileSystem.
 name|xmlPrefixToSkipCompare

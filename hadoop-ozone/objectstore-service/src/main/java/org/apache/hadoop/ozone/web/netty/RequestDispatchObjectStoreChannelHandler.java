@@ -60,7 +60,7 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderUtil
+name|HttpHeaders
 import|;
 end_import
 
@@ -288,7 +288,7 @@ condition|(
 operator|!
 name|nettyReq
 operator|.
-name|decoderResult
+name|getDecoderResult
 argument_list|()
 operator|.
 name|isSuccess
@@ -342,7 +342,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|HttpHeaderUtil
+name|HttpHeaders
 operator|.
 name|is100ContinueExpected
 argument_list|(

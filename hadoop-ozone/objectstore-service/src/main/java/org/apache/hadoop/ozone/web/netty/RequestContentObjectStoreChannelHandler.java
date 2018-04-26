@@ -84,7 +84,7 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderUtil
+name|HttpHeaders
 import|;
 end_import
 
@@ -429,7 +429,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|HttpHeaderUtil
+name|HttpHeaders
 operator|.
 name|isKeepAlive
 argument_list|(

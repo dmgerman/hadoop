@@ -803,22 +803,6 @@ return|return
 name|coderNameCompactMap
 return|;
 block|}
-comment|/**    * Get all codec names and their corresponding coder list.    * @return a map of all codec names, and their corresponding code list    * separated by ','.    */
-DECL|method|getCodec2CoderCompactMap ()
-specifier|public
-name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|getCodec2CoderCompactMap
-parameter_list|()
-block|{
-return|return
-name|coderNameCompactMap
-return|;
-block|}
 block|}
 end_class
 
