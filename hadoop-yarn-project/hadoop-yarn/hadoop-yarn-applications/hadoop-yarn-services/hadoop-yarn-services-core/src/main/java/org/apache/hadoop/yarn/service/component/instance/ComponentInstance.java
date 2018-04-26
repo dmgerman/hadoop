@@ -1877,9 +1877,16 @@ name|shouldExit
 init|=
 literal|false
 decl_stmt|;
-comment|// check if it exceeds the failure threshold
+comment|// Check if it exceeds the failure threshold, but only if health threshold
+comment|// monitor is not enabled
 if|if
 condition|(
+operator|!
+name|comp
+operator|.
+name|isHealthThresholdMonitorEnabled
+argument_list|()
+operator|&&
 name|comp
 operator|.
 name|currentContainerFailure
