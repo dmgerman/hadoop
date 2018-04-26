@@ -39,6 +39,9 @@ name|BECOME_READY
 block|,
 DECL|enumConstant|BECOME_NOT_READY
 name|BECOME_NOT_READY
+block|,
+DECL|enumConstant|UPGRADE
+name|UPGRADE
 block|}
 end_enum
 

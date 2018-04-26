@@ -122,6 +122,9 @@ block|,
 name|FLEX
 block|,
 name|UPGRADING
+block|,
+DECL|enumConstant|UPGRADING_AUTO_FINALIZE
+name|UPGRADING_AUTO_FINALIZE
 block|; }
 end_enum
 

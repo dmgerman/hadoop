@@ -60,6 +60,11 @@ specifier|private
 name|String
 name|version
 decl_stmt|;
+DECL|field|autoFinalize
+specifier|private
+name|boolean
+name|autoFinalize
+decl_stmt|;
 DECL|method|ServiceEvent (ServiceEventType serviceEventType)
 specifier|public
 name|ServiceEvent
@@ -114,6 +119,35 @@ operator|.
 name|version
 operator|=
 name|version
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|isAutoFinalize ()
+specifier|public
+name|boolean
+name|isAutoFinalize
+parameter_list|()
+block|{
+return|return
+name|autoFinalize
+return|;
+block|}
+DECL|method|setAutoFinalize (boolean autoFinalize)
+specifier|public
+name|ServiceEvent
+name|setAutoFinalize
+parameter_list|(
+name|boolean
+name|autoFinalize
+parameter_list|)
+block|{
+name|this
+operator|.
+name|autoFinalize
+operator|=
+name|autoFinalize
 expr_stmt|;
 return|return
 name|this

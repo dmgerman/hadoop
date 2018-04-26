@@ -26,6 +26,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|cache
 operator|.
 name|LoadingCache
@@ -209,11 +223,46 @@ specifier|public
 name|String
 name|keytab
 decl_stmt|;
+DECL|field|serviceManager
+specifier|private
+name|ServiceManager
+name|serviceManager
+decl_stmt|;
 DECL|method|ServiceContext ()
 specifier|public
 name|ServiceContext
 parameter_list|()
 block|{    }
+DECL|method|getServiceManager ()
+specifier|public
+name|ServiceManager
+name|getServiceManager
+parameter_list|()
+block|{
+return|return
+name|serviceManager
+return|;
+block|}
+DECL|method|setServiceManager (ServiceManager serviceManager)
+name|void
+name|setServiceManager
+parameter_list|(
+name|ServiceManager
+name|serviceManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|serviceManager
+operator|=
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|serviceManager
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

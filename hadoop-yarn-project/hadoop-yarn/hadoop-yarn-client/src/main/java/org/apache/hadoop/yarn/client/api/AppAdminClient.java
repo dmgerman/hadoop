@@ -158,6 +158,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -606,22 +616,50 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    * Upgrade a long running service.    *    * @param appName the name of the application    * @param fileName specification of application upgrade to save.    *    * @return exit code    * @throws IOException IOException    * @throws YarnException exception in client or server    */
+comment|/**    * Initiate upgrade of a long running service.    *    * @param appName      the name of the application.    * @param fileName     specification of application upgrade to save.    * @param autoFinalize when true, finalization of upgrade will be done    *                     automatically.    * @return exit code    * @throws IOException   IOException    * @throws YarnException exception in client or server    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|actionUpgrade (String appName, String fileName)
+DECL|method|initiateUpgrade (String appName, String fileName, boolean autoFinalize)
 specifier|public
 specifier|abstract
 name|int
-name|actionUpgrade
+name|initiateUpgrade
 parameter_list|(
 name|String
 name|appName
 parameter_list|,
 name|String
 name|fileName
+parameter_list|,
+name|boolean
+name|autoFinalize
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
+comment|/**    * Upgrade component instances of a long running service.    *    * @param appName            the name of the application.    * @param componentInstances the name of the component instances.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionUpgradeInstances (String appName, List<String> componentInstances)
+specifier|public
+specifier|abstract
+name|int
+name|actionUpgradeInstances
+parameter_list|(
+name|String
+name|appName
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|componentInstances
 parameter_list|)
 throws|throws
 name|IOException

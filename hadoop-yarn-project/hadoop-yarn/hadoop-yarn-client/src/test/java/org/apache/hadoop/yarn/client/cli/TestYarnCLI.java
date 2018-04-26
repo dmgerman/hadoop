@@ -17088,6 +17088,41 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -autoFinalize                            Works with -upgrade and"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -initiate options to initiate"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          the upgrade of the application"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          with the ability to finalize the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          upgrade automatically."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -changeQueue<Queue Name>                Moves application to a new"
 argument_list|)
 expr_stmt|;
@@ -17284,6 +17319,20 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -finalize                                Works with -upgrade option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          finalize the upgrade."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -flex<Application Name or ID>           Changes number of running"
 argument_list|)
 expr_stmt|;
@@ -17369,6 +17418,69 @@ operator|.
 name|println
 argument_list|(
 literal|" -help                                    Displays help for all commands."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -initiate<File Name>                    Works with -upgrade option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          initiate the application"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          upgrade. It requires the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          upgraded application"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          specification file."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -instances<Component Instances>         Works with -upgrade option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          trigger the upgrade of specified"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          component instances of the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -17838,6 +17950,41 @@ operator|.
 name|println
 argument_list|(
 literal|"                                          be passed using 'appId' option."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -upgrade<Application Name>              Upgrades an"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application/long-running"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          service. It requires either"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -initiate, -instances, or"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -finalize options."
 argument_list|)
 expr_stmt|;
 name|pw

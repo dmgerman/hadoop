@@ -71,12 +71,18 @@ block|{
 DECL|enumConstant|RUNNING_BUT_UNREADY
 DECL|enumConstant|READY
 DECL|enumConstant|STOPPED
+DECL|enumConstant|NEEDS_UPGRADE
+DECL|enumConstant|UPGRADING
 name|RUNNING_BUT_UNREADY
 block|,
 name|READY
 block|,
 name|STOPPED
-block|}
+block|,
+name|NEEDS_UPGRADE
+block|,
+name|UPGRADING
+block|; }
 end_enum
 
 end_unit

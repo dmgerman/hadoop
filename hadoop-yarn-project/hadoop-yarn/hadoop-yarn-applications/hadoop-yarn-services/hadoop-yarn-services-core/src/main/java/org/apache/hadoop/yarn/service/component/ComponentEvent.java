@@ -191,6 +191,11 @@ operator|.
 name|Component
 name|targetSpec
 decl_stmt|;
+DECL|field|upgradeVersion
+specifier|private
+name|String
+name|upgradeVersion
+decl_stmt|;
 DECL|method|getContainerId ()
 specifier|public
 name|ContainerId
@@ -442,6 +447,35 @@ name|checkNotNull
 argument_list|(
 name|targetSpec
 argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|getUpgradeVersion ()
+specifier|public
+name|String
+name|getUpgradeVersion
+parameter_list|()
+block|{
+return|return
+name|upgradeVersion
+return|;
+block|}
+DECL|method|setUpgradeVersion (String upgradeVersion)
+specifier|public
+name|ComponentEvent
+name|setUpgradeVersion
+parameter_list|(
+name|String
+name|upgradeVersion
+parameter_list|)
+block|{
+name|this
+operator|.
+name|upgradeVersion
+operator|=
+name|upgradeVersion
 expr_stmt|;
 return|return
 name|this

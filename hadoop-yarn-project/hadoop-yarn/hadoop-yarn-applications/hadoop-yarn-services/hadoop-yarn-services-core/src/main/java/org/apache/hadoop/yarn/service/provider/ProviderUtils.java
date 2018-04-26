@@ -180,26 +180,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Component
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ConfigFile
 import|;
 end_import
@@ -277,6 +257,24 @@ operator|.
 name|containerlaunch
 operator|.
 name|AbstractLauncher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|containerlaunch
+operator|.
+name|ContainerLaunchService
 import|;
 end_import
 
@@ -508,7 +506,87 @@ name|api
 operator|.
 name|ServiceApiConstants
 operator|.
-name|*
+name|COMPONENT_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|ServiceApiConstants
+operator|.
+name|COMPONENT_INSTANCE_NAME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|ServiceApiConstants
+operator|.
+name|COMPONENT_NAME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|ServiceApiConstants
+operator|.
+name|COMPONENT_NAME_LC
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|ServiceApiConstants
+operator|.
+name|CONTAINER_ID
 import|;
 end_import
 
@@ -888,7 +966,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|initCompInstanceDir (SliderFileSystem fs, ComponentInstance instance)
+DECL|method|initCompInstanceDir (SliderFileSystem fs, ContainerLaunchService.ComponentLaunchContext compLaunchContext, ComponentInstance instance)
 specifier|public
 specifier|static
 name|Path
@@ -896,6 +974,11 @@ name|initCompInstanceDir
 parameter_list|(
 name|SliderFileSystem
 name|fs
+parameter_list|,
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchContext
 parameter_list|,
 name|ComponentInstance
 name|instance
@@ -918,9 +1001,16 @@ argument_list|,
 literal|"components"
 argument_list|)
 argument_list|,
-name|instance
+name|compLaunchContext
 operator|.
-name|getCompName
+name|getServiceVersion
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|compLaunchContext
+operator|.
+name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -951,7 +1041,7 @@ return|;
 block|}
 comment|// 1. Create all config files for a component on hdfs for localization
 comment|// 2. Add the config file to localResource
-DECL|method|createConfigFileAndAddLocalResource ( AbstractLauncher launcher, SliderFileSystem fs, Component component, Map<String, String> tokensForSubstitution, ComponentInstance instance, ServiceContext context)
+DECL|method|createConfigFileAndAddLocalResource ( AbstractLauncher launcher, SliderFileSystem fs, ContainerLaunchService.ComponentLaunchContext compLaunchContext, Map<String, String> tokensForSubstitution, ComponentInstance instance, ServiceContext context)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -964,8 +1054,10 @@ parameter_list|,
 name|SliderFileSystem
 name|fs
 parameter_list|,
-name|Component
-name|component
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchContext
 parameter_list|,
 name|Map
 argument_list|<
@@ -990,6 +1082,8 @@ init|=
 name|initCompInstanceDir
 argument_list|(
 name|fs
+argument_list|,
+name|compLaunchContext
 argument_list|,
 name|instance
 argument_list|)
@@ -1094,7 +1188,7 @@ control|(
 name|ConfigFile
 name|originalFile
 range|:
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()
@@ -2011,7 +2105,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Get initial component token map to be substituted into config values.    * @return tokens to replace    */
-DECL|method|initCompTokensForSubstitute ( ComponentInstance instance, Container container)
+DECL|method|initCompTokensForSubstitute ( ComponentInstance instance, Container container, ContainerLaunchService.ComponentLaunchContext componentLaunchContext)
 specifier|public
 specifier|static
 name|Map
@@ -2027,6 +2121,11 @@ name|instance
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|componentLaunchContext
 parameter_list|)
 block|{
 name|Map
@@ -2048,10 +2147,7 @@ name|put
 argument_list|(
 name|COMPONENT_NAME
 argument_list|,
-name|instance
-operator|.
-name|getCompSpec
-argument_list|()
+name|componentLaunchContext
 operator|.
 name|getName
 argument_list|()
@@ -2063,10 +2159,7 @@ name|put
 argument_list|(
 name|COMPONENT_NAME_LC
 argument_list|,
-name|instance
-operator|.
-name|getCompSpec
-argument_list|()
+name|componentLaunchContext
 operator|.
 name|getName
 argument_list|()

@@ -132,11 +132,9 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|api
+name|conf
 operator|.
-name|records
-operator|.
-name|Component
+name|YarnServiceConstants
 import|;
 end_import
 
@@ -152,9 +150,9 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|conf
+name|containerlaunch
 operator|.
-name|YarnServiceConstants
+name|ContainerLaunchService
 import|;
 end_import
 
@@ -524,7 +522,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|buildContainerLaunchContext (AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf, Container container)
+DECL|method|buildContainerLaunchContext (AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf, Container container, ContainerLaunchService.ComponentLaunchContext compLaunchContext)
 specifier|public
 name|void
 name|buildContainerLaunchContext
@@ -546,24 +544,17 @@ name|yarnConf
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchContext
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|SliderException
 block|{
-name|Component
-name|component
-init|=
-name|instance
-operator|.
-name|getComponent
-argument_list|()
-operator|.
-name|getComponentSpec
-argument_list|()
-decl_stmt|;
-empty_stmt|;
 name|processArtifact
 argument_list|(
 name|launcher
@@ -624,6 +615,8 @@ argument_list|(
 name|instance
 argument_list|,
 name|container
+argument_list|,
+name|compLaunchContext
 argument_list|)
 decl_stmt|;
 name|tokensForSubstitution
@@ -642,7 +635,7 @@ name|ServiceUtils
 operator|.
 name|buildEnvMap
 argument_list|(
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()
@@ -781,7 +774,7 @@ name|launcher
 argument_list|,
 name|fileSystem
 argument_list|,
-name|component
+name|compLaunchContext
 argument_list|,
 name|tokensForSubstitution
 argument_list|,
@@ -794,7 +787,7 @@ comment|// substitute launch command
 name|String
 name|launchCommand
 init|=
-name|component
+name|compLaunchContext
 operator|.
 name|getLaunchCommand
 argument_list|()
@@ -869,7 +862,7 @@ name|CONTAINER_RETRY_MAX
 argument_list|,
 name|DEFAULT_CONTAINER_RETRY_MAX
 argument_list|,
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()
@@ -885,7 +878,7 @@ name|CONTAINER_RETRY_INTERVAL
 argument_list|,
 name|DEFAULT_CONTAINER_RETRY_INTERVAL
 argument_list|,
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()
@@ -901,7 +894,7 @@ name|CONTAINER_FAILURES_VALIDITY_INTERVAL
 argument_list|,
 name|DEFAULT_CONTAINER_FAILURES_VALIDITY_INTERVAL
 argument_list|,
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()

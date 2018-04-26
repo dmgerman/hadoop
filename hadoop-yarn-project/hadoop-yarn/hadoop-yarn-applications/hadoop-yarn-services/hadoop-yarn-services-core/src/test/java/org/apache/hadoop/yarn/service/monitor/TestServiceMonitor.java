@@ -457,6 +457,13 @@ argument_list|()
 decl_stmt|;
 name|exampleApp
 operator|.
+name|setVersion
+argument_list|(
+literal|"v1"
+argument_list|)
+expr_stmt|;
+name|exampleApp
+operator|.
 name|setId
 argument_list|(
 name|applicationId

@@ -44,8 +44,8 @@ block|,
 DECL|enumConstant|UPGRADE
 name|UPGRADE
 block|,
-DECL|enumConstant|STOP_UPGRADE
-name|STOP_UPGRADE
+DECL|enumConstant|CHECK_STABLE
+name|CHECK_STABLE
 block|}
 end_enum
 
