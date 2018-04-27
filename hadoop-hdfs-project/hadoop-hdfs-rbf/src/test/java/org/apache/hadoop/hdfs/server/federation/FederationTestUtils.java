@@ -560,13 +560,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mockito
+name|apache
 operator|.
-name|internal
+name|hadoop
 operator|.
-name|util
-operator|.
-name|reflection
+name|test
 operator|.
 name|Whitebox
 import|;

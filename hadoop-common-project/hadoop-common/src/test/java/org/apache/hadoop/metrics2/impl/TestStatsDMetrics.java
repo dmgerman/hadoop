@@ -230,9 +230,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|hadoop
+operator|.
+name|test
+operator|.
+name|Whitebox
 import|;
 end_import
 
@@ -240,15 +244,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|internal
-operator|.
-name|util
-operator|.
-name|reflection
-operator|.
-name|Whitebox
+name|Test
 import|;
 end_import
 

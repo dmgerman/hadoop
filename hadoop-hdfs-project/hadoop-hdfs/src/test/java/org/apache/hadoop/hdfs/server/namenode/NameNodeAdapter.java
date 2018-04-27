@@ -500,9 +500,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|mockito
+name|apache
 operator|.
-name|Mockito
+name|hadoop
+operator|.
+name|test
+operator|.
+name|Whitebox
 import|;
 end_import
 
@@ -512,13 +516,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|internal
-operator|.
-name|util
-operator|.
-name|reflection
-operator|.
-name|Whitebox
+name|Mockito
 import|;
 end_import
 
