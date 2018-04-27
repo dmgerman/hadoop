@@ -3921,6 +3921,9 @@ name|now
 argument_list|)
 expr_stmt|;
 block|}
+name|String
+name|output
+init|=
 name|Shell
 operator|.
 name|execCommand
@@ -3929,7 +3932,7 @@ name|cmd
 argument_list|,
 literal|"-R"
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -3942,7 +3945,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"renewed ticket"
+literal|"Renewed ticket. kinit output: {}"
+argument_list|,
+name|output
 argument_list|)
 expr_stmt|;
 block|}
