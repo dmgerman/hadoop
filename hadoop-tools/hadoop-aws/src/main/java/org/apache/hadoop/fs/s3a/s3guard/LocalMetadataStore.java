@@ -1264,6 +1264,14 @@ argument_list|,
 name|meta
 argument_list|)
 expr_stmt|;
+name|put
+argument_list|(
+name|meta
+operator|.
+name|getListing
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|put (Collection<PathMetadata> metas)
 specifier|public
