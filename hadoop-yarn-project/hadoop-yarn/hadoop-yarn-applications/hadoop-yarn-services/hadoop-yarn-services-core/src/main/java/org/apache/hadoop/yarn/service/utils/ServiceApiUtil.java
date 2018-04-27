@@ -1578,6 +1578,15 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The supplied Docker client config is "
+operator|+
+name|dockerClientConfig
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
