@@ -6409,13 +6409,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Updating with new AMRMToken"
-argument_list|)
-expr_stmt|;
 name|currentUGI
 operator|.
 name|addToken
