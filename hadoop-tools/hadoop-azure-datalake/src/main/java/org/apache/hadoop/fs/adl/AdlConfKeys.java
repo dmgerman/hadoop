@@ -410,6 +410,15 @@ name|ADL_ENABLEUPN_FOR_OWNERGROUP_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|ADL_HTTP_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ADL_HTTP_TIMEOUT
+init|=
+literal|"adl.http.timeout"
+decl_stmt|;
 DECL|method|addDeprecatedKeys ()
 specifier|public
 specifier|static

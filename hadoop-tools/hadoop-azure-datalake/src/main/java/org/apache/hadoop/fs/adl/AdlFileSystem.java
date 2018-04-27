@@ -1249,6 +1249,45 @@ operator|+
 name|clusterType
 argument_list|)
 expr_stmt|;
+name|int
+name|timeout
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|ADL_HTTP_TIMEOUT
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|timeout
+operator|>
+literal|0
+condition|)
+block|{
+comment|// only set timeout if specified in config. Otherwise use SDK default
+name|options
+operator|.
+name|setDefaultTimeout
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"No valid ADL SDK timeout configured: using SDK default."
+argument_list|)
+expr_stmt|;
+block|}
 name|adlClient
 operator|.
 name|setOptions
@@ -1695,6 +1734,18 @@ parameter_list|()
 block|{
 return|return
 name|azureTokenProvider
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAdlClient ()
+specifier|public
+name|ADLStoreClient
+name|getAdlClient
+parameter_list|()
+block|{
+return|return
+name|adlClient
 return|;
 block|}
 comment|/**    * Constructing home directory locally is fine as long as Hadoop    * local user name and ADL user name relationship story is not fully baked    * yet.    *    * @return Hadoop local user home directory.    */

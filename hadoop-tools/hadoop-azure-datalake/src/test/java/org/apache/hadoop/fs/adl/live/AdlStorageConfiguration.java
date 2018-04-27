@@ -320,6 +320,28 @@ name|getConfiguration
 argument_list|()
 expr_stmt|;
 block|}
+return|return
+name|createStorageConnector
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+DECL|method|createStorageConnector ( Configuration fsConfig)
+specifier|public
+specifier|synchronized
+specifier|static
+name|FileSystem
+name|createStorageConnector
+parameter_list|(
+name|Configuration
+name|fsConfig
+parameter_list|)
+throws|throws
+name|URISyntaxException
+throws|,
+name|IOException
+block|{
 if|if
 condition|(
 operator|!
@@ -334,7 +356,7 @@ block|}
 name|String
 name|fileSystem
 init|=
-name|conf
+name|fsConfig
 operator|.
 name|get
 argument_list|(
@@ -372,7 +394,7 @@ name|?
 argument_list|>
 name|clazz
 init|=
-name|conf
+name|fsConfig
 operator|.
 name|getClass
 argument_list|(
@@ -393,7 +415,7 @@ name|newInstance
 argument_list|(
 name|clazz
 argument_list|,
-name|conf
+name|fsConfig
 argument_list|)
 decl_stmt|;
 name|fs
@@ -406,7 +428,7 @@ argument_list|(
 name|fileSystem
 argument_list|)
 argument_list|,
-name|conf
+name|fsConfig
 argument_list|)
 expr_stmt|;
 return|return
