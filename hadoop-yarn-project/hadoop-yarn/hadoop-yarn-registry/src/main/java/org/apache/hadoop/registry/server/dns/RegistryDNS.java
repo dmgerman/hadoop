@@ -752,6 +752,16 @@ name|java
 operator|.
 name|nio
 operator|.
+name|BufferUnderflowException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
 name|ByteBuffer
 import|;
 end_import
@@ -3984,6 +3994,14 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
+catch|catch
+parameter_list|(
+name|BufferUnderflowException
+name|e
+parameter_list|)
+block|{
+comment|// Ignore system monitor ping packets
 block|}
 finally|finally
 block|{
