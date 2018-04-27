@@ -90,7 +90,7 @@ specifier|private
 name|String
 name|uri
 decl_stmt|;
-comment|/**    * Resource location for a service, e.g.    * /ws/v1/services/helloworld    *    **/
+comment|/**    * Resource location for a service, e.g.    * /app/v1/services/helloworld    *    **/
 DECL|method|getUri ()
 specifier|public
 name|String
