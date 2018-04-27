@@ -460,6 +460,25 @@ name|YARN_SERVICE_PREFIX
 operator|+
 literal|"container-health-threshold."
 decl_stmt|;
+comment|/**    * Upgrade feature enabled for services.    */
+DECL|field|YARN_SERVICE_UPGRADE_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_SERVICE_UPGRADE_ENABLED
+init|=
+literal|"yarn.service.upgrade.enabled"
+decl_stmt|;
+DECL|field|YARN_SERVICE_UPGRADE_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|YARN_SERVICE_UPGRADE_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * The container health threshold percent when explicitly set for a specific    * component or globally for all components, will schedule a health check    * monitor to periodically check for the percentage of healthy containers. It    * runs the check at a specified/default poll frequency. It allows a component    * to be below the health threshold for a specified/default window after which    * it considers the service to be unhealthy and triggers a service stop. When    * health threshold percent is enabled, CONTAINER_FAILURE_THRESHOLD is    * ignored.    */
 DECL|field|CONTAINER_HEALTH_THRESHOLD_PERCENT
 specifier|public

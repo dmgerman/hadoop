@@ -76,6 +76,12 @@ name|ERROR_DUPLICATE_ENTRY
 init|=
 literal|"Duplicate entry for "
 decl_stmt|;
+DECL|field|SERVICE_UPGRADE_DISABLED
+name|String
+name|SERVICE_UPGRADE_DISABLED
+init|=
+literal|"Service upgrade is disabled."
+decl_stmt|;
 block|}
 end_interface
 

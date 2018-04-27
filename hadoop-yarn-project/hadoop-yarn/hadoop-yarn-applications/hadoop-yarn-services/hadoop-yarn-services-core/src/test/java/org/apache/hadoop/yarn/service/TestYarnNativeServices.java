@@ -2444,6 +2444,16 @@ argument_list|(
 name|NUM_NMS
 argument_list|)
 expr_stmt|;
+name|getConf
+argument_list|()
+operator|.
+name|setBoolean
+argument_list|(
+name|YARN_SERVICE_UPGRADE_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|ServiceClient
 name|client
 init|=
