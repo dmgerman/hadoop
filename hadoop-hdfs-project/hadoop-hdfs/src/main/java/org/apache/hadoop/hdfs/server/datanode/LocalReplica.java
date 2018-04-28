@@ -810,6 +810,8 @@ name|fileIoProvider
 argument_list|)
 decl_stmt|;
 try|try
+block|{
+try|try
 init|(
 name|FileInputStream
 name|in
@@ -854,6 +856,7 @@ operator|*
 literal|1024
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
