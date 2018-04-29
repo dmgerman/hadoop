@@ -192,6 +192,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|sps
+operator|.
+name|StoragePolicySatisfyManager
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -484,6 +504,9 @@ argument_list|)
 expr_stmt|;
 comment|// Adding directory in the pending queue, so FileInodeIdCollector
 comment|// process directory child in batch and recursively
+name|StoragePolicySatisfyManager
+name|spsManager
+init|=
 name|fsd
 operator|.
 name|getBlockManager
@@ -491,6 +514,15 @@ argument_list|()
 operator|.
 name|getSPSManager
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|spsManager
+operator|!=
+literal|null
+condition|)
+block|{
+name|spsManager
 operator|.
 name|addPathId
 argument_list|(
@@ -500,6 +532,7 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 finally|finally
@@ -557,6 +590,9 @@ else|else
 block|{
 comment|// Adding directory in the pending queue, so FileInodeIdCollector process
 comment|// directory child in batch and recursively
+name|StoragePolicySatisfyManager
+name|spsManager
+init|=
 name|fsd
 operator|.
 name|getBlockManager
@@ -564,6 +600,15 @@ argument_list|()
 operator|.
 name|getSPSManager
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|spsManager
+operator|!=
+literal|null
+condition|)
+block|{
+name|spsManager
 operator|.
 name|addPathId
 argument_list|(
@@ -573,6 +618,7 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|true
 return|;

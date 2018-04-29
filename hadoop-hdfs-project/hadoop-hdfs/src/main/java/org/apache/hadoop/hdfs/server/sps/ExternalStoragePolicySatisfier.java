@@ -535,11 +535,6 @@ argument_list|,
 name|sps
 argument_list|)
 decl_stmt|;
-name|externalHandler
-operator|.
-name|init
-argument_list|()
-expr_stmt|;
 name|sps
 operator|.
 name|init
@@ -855,7 +850,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Movement attempted blocks"
+literal|"Movement attempted blocks:{}"
 argument_list|,
 name|actualBlockMovements
 argument_list|)

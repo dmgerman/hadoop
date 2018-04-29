@@ -82,13 +82,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
-name|StoragePolicySatisfierMode
+name|StorageType
 import|;
 end_import
 
@@ -102,11 +98,43 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
+operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMoveAttemptFinished
+name|DatanodeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|StoragePolicySatisfierMode
 import|;
 end_import
 
@@ -254,13 +282,19 @@ name|T
 name|spsPath
 parameter_list|)
 function_decl|;
-comment|/**    * Notify the details of storage movement attempt finished blocks.    *    * @param moveAttemptFinishedBlks    *          - array contains all the blocks that are attempted to move    */
-DECL|method|notifyStorageMovementAttemptFinishedBlks ( BlocksStorageMoveAttemptFinished moveAttemptFinishedBlks)
+comment|/**    * Given node is reporting that it received a certain movement attempt    * finished block.    *    * @param dnInfo    *          - reported datanode    * @param storageType    *          - storage type    * @param block    *          - block that is attempted to move    */
+DECL|method|notifyStorageMovementAttemptFinishedBlk (DatanodeInfo dnInfo, StorageType storageType, Block block)
 name|void
-name|notifyStorageMovementAttemptFinishedBlks
+name|notifyStorageMovementAttemptFinishedBlk
 parameter_list|(
-name|BlocksStorageMoveAttemptFinished
-name|moveAttemptFinishedBlks
+name|DatanodeInfo
+name|dnInfo
+parameter_list|,
+name|StorageType
+name|storageType
+parameter_list|,
+name|Block
+name|block
 parameter_list|)
 function_decl|;
 block|}

@@ -2837,32 +2837,6 @@ name|SlowDiskReports
 operator|.
 name|EMPTY_REPORT
 decl_stmt|;
-comment|// Get the blocks storage move attempt finished blocks
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|results
-init|=
-name|dn
-operator|.
-name|getStoragePolicySatisfyWorker
-argument_list|()
-operator|.
-name|getBlocksMovementsStatusHandler
-argument_list|()
-operator|.
-name|getMoveAttemptFinishedBlocks
-argument_list|()
-decl_stmt|;
-name|BlocksStorageMoveAttemptFinished
-name|storageMoveAttemptFinishedBlks
-init|=
-name|getStorageMoveAttemptFinishedBlocks
-argument_list|(
-name|results
-argument_list|)
-decl_stmt|;
 name|HeartbeatResponse
 name|response
 init|=
@@ -2909,8 +2883,6 @@ argument_list|,
 name|slowPeers
 argument_list|,
 name|slowDisks
-argument_list|,
-name|storageMoveAttemptFinishedBlks
 argument_list|)
 decl_stmt|;
 if|if
@@ -2925,21 +2897,6 @@ name|scheduleNextOutlierReport
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Remove the blocks movement results after successfully transferring
-comment|// to namenode.
-name|dn
-operator|.
-name|getStoragePolicySatisfyWorker
-argument_list|()
-operator|.
-name|getBlocksMovementsStatusHandler
-argument_list|()
-operator|.
-name|remove
-argument_list|(
-name|results
-argument_list|)
-expr_stmt|;
 return|return
 name|response
 return|;

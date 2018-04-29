@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -118,14 +132,20 @@ specifier|final
 name|DatanodeInfo
 name|target
 decl_stmt|;
+DECL|field|targetType
+specifier|private
+specifier|final
+name|StorageType
+name|targetType
+decl_stmt|;
 DECL|field|status
 specifier|private
 specifier|final
 name|BlockMovementStatus
 name|status
 decl_stmt|;
-comment|/**    * Construct movement attempt finished info.    *    * @param block    *          block    * @param src    *          src datanode    * @param target    *          target datanode    * @param status    *          movement status    */
-DECL|method|BlockMovementAttemptFinished (Block block, DatanodeInfo src, DatanodeInfo target, BlockMovementStatus status)
+comment|/**    * Construct movement attempt finished info.    *    * @param block    *          block    * @param src    *          src datanode    * @param target    *          target datanode    * @param targetType    *          target storage type    * @param status    *          movement status    */
+DECL|method|BlockMovementAttemptFinished (Block block, DatanodeInfo src, DatanodeInfo target, StorageType targetType, BlockMovementStatus status)
 specifier|public
 name|BlockMovementAttemptFinished
 parameter_list|(
@@ -137,6 +157,9 @@ name|src
 parameter_list|,
 name|DatanodeInfo
 name|target
+parameter_list|,
+name|StorageType
+name|targetType
 parameter_list|,
 name|BlockMovementStatus
 name|status
@@ -162,6 +185,12 @@ name|target
 expr_stmt|;
 name|this
 operator|.
+name|targetType
+operator|=
+name|targetType
+expr_stmt|;
+name|this
+operator|.
 name|status
 operator|=
 name|status
@@ -176,6 +205,28 @@ parameter_list|()
 block|{
 return|return
 name|block
+return|;
+block|}
+comment|/**    * @return the target datanode where it moved the block.    */
+DECL|method|getTargetDatanode ()
+specifier|public
+name|DatanodeInfo
+name|getTargetDatanode
+parameter_list|()
+block|{
+return|return
+name|target
+return|;
+block|}
+comment|/**    * @return target storage type.    */
+DECL|method|getTargetType ()
+specifier|public
+name|StorageType
+name|getTargetType
+parameter_list|()
+block|{
+return|return
+name|targetType
 return|;
 block|}
 comment|/**    * @return block movement status code.    */
@@ -235,6 +286,16 @@ operator|.
 name|append
 argument_list|(
 name|target
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" target type: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|targetType
 argument_list|)
 operator|.
 name|append

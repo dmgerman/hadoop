@@ -106,18 +106,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|Future
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|SynchronousQueue
 import|;
 end_import
@@ -302,6 +290,26 @@ name|common
 operator|.
 name|sps
 operator|.
+name|BlockDispatcher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|sps
+operator|.
 name|BlockMovementAttemptFinished
 import|;
 end_import
@@ -378,26 +386,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
-operator|.
-name|sps
-operator|.
-name|BlockDispatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|BlockStorageMovementCommand
@@ -456,20 +444,6 @@ name|LoggerFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/**  * StoragePolicySatisfyWorker handles the storage policy satisfier commands.  * These commands would be issued from NameNode as part of Datanode's heart beat  * response. BPOfferService delegates the work to this class for handling  * BlockStorageMovement commands.  */
 end_comment
@@ -518,20 +492,14 @@ specifier|final
 name|ExecutorService
 name|moveExecutor
 decl_stmt|;
-DECL|field|moverCompletionService
 specifier|private
 specifier|final
 name|CompletionService
 argument_list|<
 name|BlockMovementAttemptFinished
 argument_list|>
+DECL|field|moverCompletionService
 name|moverCompletionService
-decl_stmt|;
-DECL|field|handler
-specifier|private
-specifier|final
-name|BlocksMovementsStatusHandler
-name|handler
 decl_stmt|;
 DECL|field|movementTracker
 specifier|private
@@ -550,7 +518,7 @@ specifier|final
 name|BlockDispatcher
 name|blkDispatcher
 decl_stmt|;
-DECL|method|StoragePolicySatisfyWorker (Configuration conf, DataNode datanode)
+DECL|method|StoragePolicySatisfyWorker (Configuration conf, DataNode datanode, BlocksMovementsStatusHandler handler)
 specifier|public
 name|StoragePolicySatisfyWorker
 parameter_list|(
@@ -559,6 +527,9 @@ name|conf
 parameter_list|,
 name|DataNode
 name|datanode
+parameter_list|,
+name|BlocksMovementsStatusHandler
+name|handler
 parameter_list|)
 block|{
 name|this
@@ -567,7 +538,7 @@ name|datanode
 operator|=
 name|datanode
 expr_stmt|;
-comment|// Defaulting to 10. This is to minimise the number of move ops.
+comment|// Defaulting to 10. This is to minimize the number of move ops.
 name|moverThreads
 operator|=
 name|conf
@@ -596,12 +567,6 @@ argument_list|<>
 argument_list|(
 name|moveExecutor
 argument_list|)
-expr_stmt|;
-name|handler
-operator|=
-operator|new
-name|BlocksMovementsStatusHandler
-argument_list|()
 expr_stmt|;
 name|movementTracker
 operator|=
@@ -664,7 +629,6 @@ name|getConnectToDnViaHostname
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO: Needs to manage the number of concurrent moves per DataNode.
 block|}
 comment|/**    * Start StoragePolicySatisfyWorker, which will start block movement tracker    * thread to track the completion of block movements.    */
 DECL|method|start ()
@@ -678,7 +642,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stop StoragePolicySatisfyWorker, which will stop block movement tracker    * thread.    */
+comment|/**    * Stop StoragePolicySatisfyWorker, which will terminate executor service and    * stop block movement tracker thread.    */
 DECL|method|stop ()
 name|void
 name|stop
@@ -694,30 +658,40 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-block|}
-comment|/**    * Timed wait to stop BlockStorageMovement tracker daemon thread.    */
-DECL|method|waitToFinishWorkerThread ()
-name|void
-name|waitToFinishWorkerThread
-parameter_list|()
-block|{
+name|moveExecutor
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 try|try
 block|{
-name|movementTrackerThread
+name|moveExecutor
 operator|.
-name|join
+name|awaitTermination
 argument_list|(
-literal|3000
+literal|500
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ignore
+name|e
 parameter_list|)
 block|{
-comment|// ignore
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Interrupted while waiting for mover thread to terminate"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|initializeBlockMoverThreadPool (int num)
@@ -897,29 +871,11 @@ argument_list|,
 name|blkMovingInfo
 argument_list|)
 decl_stmt|;
-name|Future
-argument_list|<
-name|BlockMovementAttemptFinished
-argument_list|>
-name|moveCallable
-init|=
 name|moverCompletionService
 operator|.
 name|submit
 argument_list|(
 name|blockMovingTask
-argument_list|)
-decl_stmt|;
-name|movementTracker
-operator|.
-name|addBlock
-argument_list|(
-name|blkMovingInfo
-operator|.
-name|getBlock
-argument_list|()
-argument_list|,
-name|moveCallable
 argument_list|)
 expr_stmt|;
 block|}
@@ -1001,6 +957,11 @@ argument_list|,
 name|blkMovingInfo
 operator|.
 name|getTarget
+argument_list|()
+argument_list|,
+name|blkMovingInfo
+operator|.
+name|getTargetStorageType
 argument_list|()
 argument_list|,
 name|status
@@ -1163,17 +1124,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getBlocksMovementsStatusHandler ()
-name|BlocksMovementsStatusHandler
-name|getBlocksMovementsStatusHandler
-parameter_list|()
-block|{
-return|return
-name|handler
-return|;
-block|}
 comment|/**    * Drop the in-progress SPS work queues.    */
 DECL|method|dropSPSWork ()
 specifier|public
@@ -1191,16 +1141,6 @@ literal|"So, none of the SPS Worker queued block movements will"
 operator|+
 literal|" be scheduled."
 argument_list|)
-expr_stmt|;
-name|movementTracker
-operator|.
-name|removeAll
-argument_list|()
-expr_stmt|;
-name|handler
-operator|.
-name|removeAll
-argument_list|()
 expr_stmt|;
 block|}
 block|}

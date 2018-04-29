@@ -2156,9 +2156,11 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
+name|namenode
 operator|.
-name|BlockReportContext
+name|sps
+operator|.
+name|StoragePolicySatisfyManager
 import|;
 end_import
 
@@ -2176,7 +2178,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMoveAttemptFinished
+name|BlockReportContext
 import|;
 end_import
 
@@ -9273,7 +9275,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMoveAttemptFinished storageMovementFinishedBlks)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -9315,9 +9317,6 @@ annotation|@
 name|Nonnull
 name|SlowDiskReports
 name|slowDisks
-parameter_list|,
-name|BlocksStorageMoveAttemptFinished
-name|storageMovementFinishedBlks
 parameter_list|)
 throws|throws
 name|IOException
@@ -9356,8 +9355,6 @@ argument_list|,
 name|slowPeers
 argument_list|,
 name|slowDisks
-argument_list|,
-name|storageMovementFinishedBlks
 argument_list|)
 return|;
 block|}
@@ -14273,8 +14270,8 @@ literal|"Not supported by Standby Namenode."
 argument_list|)
 throw|;
 block|}
-name|boolean
-name|isSPSRunning
+name|StoragePolicySatisfyManager
+name|spsMgr
 init|=
 name|namesystem
 operator|.
@@ -14283,9 +14280,22 @@ argument_list|()
 operator|.
 name|getSPSManager
 argument_list|()
+decl_stmt|;
+name|boolean
+name|isInternalSatisfierRunning
+init|=
+operator|(
+name|spsMgr
+operator|!=
+literal|null
+condition|?
+name|spsMgr
 operator|.
 name|isInternalSatisfierRunning
 argument_list|()
+else|:
+literal|false
+operator|)
 decl_stmt|;
 name|namesystem
 operator|.
@@ -14299,7 +14309,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 return|return
-name|isSPSRunning
+name|isInternalSatisfierRunning
 return|;
 block|}
 annotation|@
@@ -14331,6 +14341,47 @@ operator|new
 name|StandbyException
 argument_list|(
 literal|"Not supported by Standby Namenode."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getSPSManager
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Satisfier is not running inside namenode, so status "
+operator|+
+literal|"can't be returned."
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Satisfier is not running inside namenode, "
+operator|+
+literal|"so status can't be returned."
 argument_list|)
 throw|;
 block|}
@@ -14390,48 +14441,9 @@ literal|"Not supported by Standby Namenode."
 argument_list|)
 throw|;
 block|}
-comment|// Check that SPS daemon service is running inside namenode
-if|if
-condition|(
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|getSPSManager
-argument_list|()
-operator|.
-name|getMode
-argument_list|()
-operator|==
-name|StoragePolicySatisfierMode
-operator|.
-name|INTERNAL
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"SPS service is internally enabled and running inside "
-operator|+
-literal|"namenode, so external SPS is not allowed to fetch the path Ids"
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"SPS service is internally enabled and running"
-operator|+
-literal|" inside namenode, so external SPS is not allowed to fetch"
-operator|+
-literal|" the path Ids"
-argument_list|)
-throw|;
-block|}
-name|Long
-name|pathId
+comment|// Check that SPS is enabled externally
+name|StoragePolicySatisfyManager
+name|spsMgr
 init|=
 name|namesystem
 operator|.
@@ -14440,6 +14452,72 @@ argument_list|()
 operator|.
 name|getSPSManager
 argument_list|()
+decl_stmt|;
+name|StoragePolicySatisfierMode
+name|spsMode
+init|=
+operator|(
+name|spsMgr
+operator|!=
+literal|null
+condition|?
+name|spsMgr
+operator|.
+name|getMode
+argument_list|()
+else|:
+name|StoragePolicySatisfierMode
+operator|.
+name|NONE
+operator|)
+decl_stmt|;
+if|if
+condition|(
+name|spsMode
+operator|!=
+name|StoragePolicySatisfierMode
+operator|.
+name|EXTERNAL
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"SPS service mode is {}, so external SPS service is "
+operator|+
+literal|"not allowed to fetch the path Ids"
+argument_list|,
+name|spsMode
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"SPS service mode is "
+operator|+
+name|spsMode
+operator|+
+literal|", so "
+operator|+
+literal|"external SPS service is not allowed to fetch the path Ids"
+argument_list|)
+throw|;
+block|}
+name|Long
+name|pathId
+init|=
+name|spsMgr
 operator|.
 name|getNextPathId
 argument_list|()

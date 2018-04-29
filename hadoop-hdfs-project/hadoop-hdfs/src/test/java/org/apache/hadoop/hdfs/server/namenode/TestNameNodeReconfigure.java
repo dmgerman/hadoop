@@ -242,6 +242,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|sps
+operator|.
+name|StoragePolicySatisfyManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -1334,7 +1354,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Since DFS_STORAGE_POLICY_ENABLED_KEY is disabled, SPS can't be enabled.
-name|assertEquals
+name|assertNull
 argument_list|(
 literal|"SPS shouldn't start as "
 operator|+
@@ -1343,8 +1363,6 @@ operator|.
 name|DFS_STORAGE_POLICY_ENABLED_KEY
 operator|+
 literal|" is disabled"
-argument_list|,
-literal|false
 argument_list|,
 name|nameNode
 operator|.
@@ -1355,9 +1373,6 @@ name|getBlockManager
 argument_list|()
 operator|.
 name|getSPSManager
-argument_list|()
-operator|.
-name|isInternalSatisfierRunning
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1807,14 +1822,9 @@ name|boolean
 name|isSatisfierRunning
 parameter_list|)
 block|{
-name|assertEquals
-argument_list|(
-name|property
-operator|+
-literal|" has wrong value"
-argument_list|,
-name|isSatisfierRunning
-argument_list|,
+name|StoragePolicySatisfyManager
+name|spsMgr
+init|=
 name|nameNode
 operator|.
 name|getNamesystem
@@ -1825,9 +1835,30 @@ argument_list|()
 operator|.
 name|getSPSManager
 argument_list|()
+decl_stmt|;
+name|boolean
+name|isInternalSatisfierRunning
+init|=
+name|spsMgr
+operator|!=
+literal|null
+condition|?
+name|spsMgr
 operator|.
 name|isInternalSatisfierRunning
 argument_list|()
+else|:
+literal|false
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|property
+operator|+
+literal|" has wrong value"
+argument_list|,
+name|isSatisfierRunning
+argument_list|,
+name|isInternalSatisfierRunning
 argument_list|)
 expr_stmt|;
 name|String

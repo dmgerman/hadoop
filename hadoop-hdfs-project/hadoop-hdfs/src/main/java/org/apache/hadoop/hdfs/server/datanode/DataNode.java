@@ -8463,6 +8463,8 @@ name|getConf
 argument_list|()
 argument_list|,
 name|this
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|storagePolicySatisfyWorker
@@ -11248,20 +11250,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-comment|// Waiting to finish SPS worker thread.
-if|if
-condition|(
-name|storagePolicySatisfyWorker
-operator|!=
-literal|null
-condition|)
-block|{
-name|storagePolicySatisfyWorker
-operator|.
-name|waitToFinishWorkerThread
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Check if there is a disk failure asynchronously    * and if so, handle the error.    */
 DECL|method|checkDiskErrorAsync (FsVolumeSpi volume)

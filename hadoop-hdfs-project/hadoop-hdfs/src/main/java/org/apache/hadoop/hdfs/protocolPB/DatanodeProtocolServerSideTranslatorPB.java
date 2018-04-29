@@ -1125,16 +1125,6 @@ operator|.
 name|getSlowDisksList
 argument_list|()
 argument_list|)
-argument_list|,
-name|PBHelper
-operator|.
-name|convertBlksMovReport
-argument_list|(
-name|request
-operator|.
-name|getStorageMoveAttemptFinishedBlks
-argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

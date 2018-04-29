@@ -94,6 +94,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -115,6 +135,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -480,24 +510,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlocksStorageMoveAttemptFinished
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|StripedBlockUtil
@@ -649,16 +661,6 @@ name|isRunning
 init|=
 literal|false
 decl_stmt|;
-DECL|field|spsMode
-specifier|private
-specifier|volatile
-name|StoragePolicySatisfierMode
-name|spsMode
-init|=
-name|StoragePolicySatisfierMode
-operator|.
-name|NONE
-decl_stmt|;
 DECL|field|spsWorkMultiplier
 specifier|private
 name|int
@@ -774,25 +776,35 @@ literal|null
 decl_stmt|;
 DECL|field|assignedBlocks
 specifier|private
-name|List
+name|Map
 argument_list|<
 name|Block
+argument_list|,
+name|Set
+argument_list|<
+name|StorageTypeNodePair
+argument_list|>
 argument_list|>
 name|assignedBlocks
 init|=
 literal|null
 decl_stmt|;
-DECL|method|BlocksMovingAnalysis (Status status, List<Block> blockMovingInfo)
+DECL|method|BlocksMovingAnalysis (Status status, Map<Block, Set<StorageTypeNodePair>> assignedBlocks)
 name|BlocksMovingAnalysis
 parameter_list|(
 name|Status
 name|status
 parameter_list|,
-name|List
+name|Map
 argument_list|<
 name|Block
+argument_list|,
+name|Set
+argument_list|<
+name|StorageTypeNodePair
 argument_list|>
-name|blockMovingInfo
+argument_list|>
+name|assignedBlocks
 parameter_list|)
 block|{
 name|this
@@ -805,7 +817,7 @@ name|this
 operator|.
 name|assignedBlocks
 operator|=
-name|blockMovingInfo
+name|assignedBlocks
 expr_stmt|;
 block|}
 block|}
@@ -948,7 +960,7 @@ return|return;
 block|}
 if|if
 condition|(
-name|spsMode
+name|serviceMode
 operator|==
 name|StoragePolicySatisfierMode
 operator|.
@@ -1001,7 +1013,7 @@ name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|spsMode
+name|serviceMode
 operator|.
 name|toString
 argument_list|()
@@ -1021,7 +1033,7 @@ name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|spsMode
+name|serviceMode
 operator|.
 name|toString
 argument_list|()
@@ -1032,12 +1044,6 @@ block|}
 name|isRunning
 operator|=
 literal|true
-expr_stmt|;
-name|this
-operator|.
-name|spsMode
-operator|=
-name|serviceMode
 expr_stmt|;
 comment|// Ensure that all the previously submitted block movements(if any) have to
 comment|// be stopped in all datanodes.
@@ -1500,7 +1506,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block analysis status:{} for the file path:{}."
+literal|"Block analysis status:{} for the file id:{}."
 operator|+
 literal|" Adding to attempt monitor queue for the storage "
 operator|+
@@ -1512,7 +1518,7 @@ name|status
 argument_list|,
 name|fileStatus
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1522,12 +1528,6 @@ operator|.
 name|storageMovementsMonitor
 operator|.
 name|add
-argument_list|(
-operator|new
-name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
 name|itemInfo
 operator|.
@@ -1551,7 +1551,6 @@ operator|.
 name|getRetryCount
 argument_list|()
 argument_list|)
-argument_list|)
 expr_stmt|;
 break|break;
 case|case
@@ -1569,7 +1568,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding trackID:{} for the file path:{} back to"
+literal|"Adding trackID:{} for the file id:{} back to"
 operator|+
 literal|" retry queue as none of the blocks found its eligible"
 operator|+
@@ -1579,7 +1578,7 @@ name|trackId
 argument_list|,
 name|fileStatus
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1604,7 +1603,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding trackID:{} for the file path:{} back to "
+literal|"Adding trackID:{} for the file id:{} back to "
 operator|+
 literal|"retry queue as some of the blocks are low redundant."
 argument_list|,
@@ -1612,7 +1611,7 @@ name|trackId
 argument_list|,
 name|fileStatus
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1637,7 +1636,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding trackID:{} for the file path:{} back to "
+literal|"Adding trackID:{} for the file id:{} back to "
 operator|+
 literal|"retry queue as some of the blocks movement failed."
 argument_list|,
@@ -1645,7 +1644,7 @@ name|trackId
 argument_list|,
 name|fileStatus
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1667,7 +1666,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block analysis status:{} for the file path:{}."
+literal|"Block analysis status:{} for the file id:{}."
 operator|+
 literal|" So, Cleaning up the Xattrs."
 argument_list|,
@@ -1677,7 +1676,7 @@ name|status
 argument_list|,
 name|fileStatus
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1927,7 +1926,7 @@ literal|" this to the next retry iteration"
 argument_list|,
 name|fileInfo
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1942,7 +1941,7 @@ operator|.
 name|ANALYSIS_SKIPPED_FOR_RETRY
 argument_list|,
 operator|new
-name|ArrayList
+name|HashMap
 argument_list|<>
 argument_list|()
 argument_list|)
@@ -1979,7 +1978,7 @@ literal|" So, skipping the analysis."
 argument_list|,
 name|fileInfo
 operator|.
-name|getPath
+name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1994,7 +1993,7 @@ operator|.
 name|BLOCKS_TARGET_PAIRING_SKIPPED
 argument_list|,
 operator|new
-name|ArrayList
+name|HashMap
 argument_list|<>
 argument_list|()
 argument_list|)
@@ -2155,7 +2154,7 @@ operator|.
 name|BLOCKS_TARGET_PAIRING_SKIPPED
 argument_list|,
 operator|new
-name|ArrayList
+name|HashMap
 argument_list|<>
 argument_list|()
 argument_list|)
@@ -2301,17 +2300,20 @@ operator|.
 name|FEW_LOW_REDUNDANCY_BLOCKS
 expr_stmt|;
 block|}
-name|List
+name|Map
 argument_list|<
 name|Block
+argument_list|,
+name|Set
+argument_list|<
+name|StorageTypeNodePair
 argument_list|>
-name|assignedBlockIds
+argument_list|>
+name|assignedBlocks
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+name|HashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -2341,14 +2343,71 @@ argument_list|,
 name|blkMovingInfo
 argument_list|)
 expr_stmt|;
-name|assignedBlockIds
+name|StorageTypeNodePair
+name|nodeStorage
+init|=
+operator|new
+name|StorageTypeNodePair
+argument_list|(
+name|blkMovingInfo
 operator|.
-name|add
+name|getTargetStorageType
+argument_list|()
+argument_list|,
+name|blkMovingInfo
+operator|.
+name|getTarget
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Set
+argument_list|<
+name|StorageTypeNodePair
+argument_list|>
+name|nodesWithStorage
+init|=
+name|assignedBlocks
+operator|.
+name|get
 argument_list|(
 name|blkMovingInfo
 operator|.
 name|getBlock
 argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nodesWithStorage
+operator|==
+literal|null
+condition|)
+block|{
+name|nodesWithStorage
+operator|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|assignedBlocks
+operator|.
+name|put
+argument_list|(
+name|blkMovingInfo
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|nodesWithStorage
+argument_list|)
+expr_stmt|;
+block|}
+name|nodesWithStorage
+operator|.
+name|add
+argument_list|(
+name|nodeStorage
 argument_list|)
 expr_stmt|;
 name|blockCount
@@ -2387,7 +2446,7 @@ name|BlocksMovingAnalysis
 argument_list|(
 name|status
 argument_list|,
-name|assignedBlockIds
+name|assignedBlocks
 argument_list|)
 return|;
 block|}
@@ -2542,6 +2601,21 @@ name|asList
 argument_list|(
 name|storages
 argument_list|)
+argument_list|)
+decl_stmt|;
+comment|// Add existing storages into exclude nodes to avoid choosing this as
+comment|// remote target later.
+name|List
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|excludeNodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|existingBlockStorages
 argument_list|)
 decl_stmt|;
 comment|// if expected type exists in source node already, local movement would be
@@ -2730,6 +2804,8 @@ argument_list|,
 name|targetDns
 argument_list|,
 name|ecPolicy
+argument_list|,
+name|excludeNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -2737,8 +2813,8 @@ return|return
 name|foundMatchingTargetNodesForBlock
 return|;
 block|}
-comment|/**    * Find the good target node for each source node for which block storages was    * misplaced.    *    * @param blockMovingInfos    *          - list of block source and target node pair    * @param blockInfo    *          - Block    * @param sourceWithStorageList    *          - Source Datanode with storages list    * @param expectedTypes    *          - Expecting storages to move    * @param targetDns    *          - Available DNs for expected storage types    * @return false if some of the block locations failed to find target node to    *         satisfy the storage policy    */
-DECL|method|findSourceAndTargetToMove ( List<BlockMovingInfo> blockMovingInfos, LocatedBlock blockInfo, List<StorageTypeNodePair> sourceWithStorageList, List<StorageType> expectedTypes, EnumMap<StorageType, List<DatanodeWithStorage.StorageDetails>> targetDns, ErasureCodingPolicy ecPolicy)
+comment|/**    * Find the good target node for each source node for which block storages was    * misplaced.    *    * @param blockMovingInfos    *          - list of block source and target node pair    * @param blockInfo    *          - Block    * @param sourceWithStorageList    *          - Source Datanode with storages list    * @param expectedTypes    *          - Expecting storages to move    * @param targetDns    *          - Available DNs for expected storage types    * @param ecPolicy    *          - erasure coding policy of sps invoked file    * @param excludeNodes    *          - existing source nodes, which has replica copy    * @return false if some of the block locations failed to find target node to    *         satisfy the storage policy    */
+DECL|method|findSourceAndTargetToMove ( List<BlockMovingInfo> blockMovingInfos, LocatedBlock blockInfo, List<StorageTypeNodePair> sourceWithStorageList, List<StorageType> expectedTypes, EnumMap<StorageType, List<DatanodeWithStorage.StorageDetails>> targetDns, ErasureCodingPolicy ecPolicy, List<DatanodeInfo> excludeNodes)
 specifier|private
 name|boolean
 name|findSourceAndTargetToMove
@@ -2779,23 +2855,18 @@ name|targetDns
 parameter_list|,
 name|ErasureCodingPolicy
 name|ecPolicy
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|excludeNodes
 parameter_list|)
 block|{
 name|boolean
 name|foundMatchingTargetNodesForBlock
 init|=
 literal|true
-decl_stmt|;
-name|List
-argument_list|<
-name|DatanodeInfo
-argument_list|>
-name|excludeNodes
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
 decl_stmt|;
 comment|// Looping over all the source node locations and choose the target
 comment|// storage within same node if possible. This is done separately to
@@ -2937,16 +3008,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// To avoid choosing this excludeNodes as targets later
-name|excludeNodes
+block|}
+comment|// If all the sources and targets are paired within same node, then simply
+comment|// return.
+if|if
+condition|(
+name|expectedTypes
 operator|.
-name|add
-argument_list|(
-name|existingTypeNodePair
-operator|.
-name|dn
-argument_list|)
-expr_stmt|;
+name|size
+argument_list|()
+operator|<=
+literal|0
+condition|)
+block|{
+return|return
+name|foundMatchingTargetNodesForBlock
+return|;
 block|}
 comment|// Looping over all the source node locations. Choose a remote target
 comment|// storage node if it was not found out within same node.
@@ -3886,7 +3963,6 @@ return|;
 block|}
 comment|/**    * Keeps datanode with its respective storage type.    */
 DECL|class|StorageTypeNodePair
-specifier|private
 specifier|static
 specifier|final
 class|class
@@ -3905,7 +3981,6 @@ name|DatanodeInfo
 name|dn
 decl_stmt|;
 DECL|method|StorageTypeNodePair (StorageType storageType, DatanodeInfo dn)
-specifier|private
 name|StorageTypeNodePair
 parameter_list|(
 name|StorageType
@@ -3927,6 +4002,68 @@ name|dn
 operator|=
 name|dn
 expr_stmt|;
+block|}
+DECL|method|getDatanodeInfo ()
+specifier|public
+name|DatanodeInfo
+name|getDatanodeInfo
+parameter_list|()
+block|{
+return|return
+name|dn
+return|;
+block|}
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
+block|{
+return|return
+name|storageType
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StringBuilder
+argument_list|()
+operator|.
+name|append
+argument_list|(
+literal|"StorageTypeNodePair(\n  "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"DatanodeInfo: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|dn
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", StorageType: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|storageType
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 block|}
 specifier|private
@@ -4874,38 +5011,33 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Receives set of storage movement attempt finished blocks report.    *    * @param moveAttemptFinishedBlks    *          set of storage movement attempt finished blocks.    */
-DECL|method|notifyStorageMovementAttemptFinishedBlks ( BlocksStorageMoveAttemptFinished moveAttemptFinishedBlks)
+comment|/**    * Receives storage movement attempt finished block report.    *    * @param dnInfo    *          reported datanode    * @param storageType    *          - storage type    * @param block    *          movement attempt finished block.    */
+annotation|@
+name|Override
+DECL|method|notifyStorageMovementAttemptFinishedBlk (DatanodeInfo dnInfo, StorageType storageType, Block block)
 specifier|public
 name|void
-name|notifyStorageMovementAttemptFinishedBlks
+name|notifyStorageMovementAttemptFinishedBlk
 parameter_list|(
-name|BlocksStorageMoveAttemptFinished
-name|moveAttemptFinishedBlks
+name|DatanodeInfo
+name|dnInfo
+parameter_list|,
+name|StorageType
+name|storageType
+parameter_list|,
+name|Block
+name|block
 parameter_list|)
 block|{
-if|if
-condition|(
-name|moveAttemptFinishedBlks
-operator|.
-name|getBlocks
-argument_list|()
-operator|.
-name|length
-operator|<=
-literal|0
-condition|)
-block|{
-return|return;
-block|}
 name|storageMovementsMonitor
 operator|.
-name|notifyMovementTriedBlocks
+name|notifyReportedBlock
 argument_list|(
-name|moveAttemptFinishedBlks
-operator|.
-name|getBlocks
-argument_list|()
+name|dnInfo
+argument_list|,
+name|storageType
+argument_list|,
+name|block
 argument_list|)
 expr_stmt|;
 block|}
@@ -4987,14 +5119,14 @@ decl_stmt|;
 DECL|field|blocks
 specifier|private
 specifier|final
-name|List
+name|Set
 argument_list|<
 name|Block
 argument_list|>
 name|blocks
 decl_stmt|;
-comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      */
-DECL|method|AttemptedItemInfo (T rootId, T trackId, long lastAttemptedOrReportedTime, List<Block> blocks, int retryCount)
+comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      * @param blocks      *          scheduled blocks      * @param retryCount      *          file retry count      */
+DECL|method|AttemptedItemInfo (T rootId, T trackId, long lastAttemptedOrReportedTime, Set<Block> blocks, int retryCount)
 name|AttemptedItemInfo
 parameter_list|(
 name|T
@@ -5006,7 +5138,7 @@ parameter_list|,
 name|long
 name|lastAttemptedOrReportedTime
 parameter_list|,
-name|List
+name|Set
 argument_list|<
 name|Block
 argument_list|>
@@ -5063,7 +5195,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getBlocks ()
-name|List
+name|Set
 argument_list|<
 name|Block
 argument_list|>
@@ -5475,6 +5607,25 @@ expr_stmt|;
 return|return
 name|spsWorkMultiplier
 return|;
+block|}
+comment|/**    * Sets external listener for testing.    *    * @param blkMovementListener    *          block movement listener callback object    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockMovementListener (BlockMovementListener blkMovementListener)
+name|void
+name|setBlockMovementListener
+parameter_list|(
+name|BlockMovementListener
+name|blkMovementListener
+parameter_list|)
+block|{
+name|storageMovementsMonitor
+operator|.
+name|setBlockMovementListener
+argument_list|(
+name|blkMovementListener
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
