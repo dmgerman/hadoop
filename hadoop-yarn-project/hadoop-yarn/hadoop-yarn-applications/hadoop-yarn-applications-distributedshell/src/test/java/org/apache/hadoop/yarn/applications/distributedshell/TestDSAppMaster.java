@@ -744,13 +744,6 @@ name|getAllocatedContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Mockito
-operator|.
-name|verifyZeroInteractions
-argument_list|(
-name|mockClient
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -879,7 +872,7 @@ name|assertEquals
 argument_list|(
 literal|"Wrong final container allocation count"
 argument_list|,
-literal|4
+literal|2
 argument_list|,
 name|master
 operator|.
@@ -893,7 +886,7 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect number of threads launched"
 argument_list|,
-literal|4
+literal|2
 argument_list|,
 name|master
 operator|.
@@ -913,10 +906,6 @@ argument_list|(
 literal|"1"
 argument_list|,
 literal|"2"
-argument_list|,
-literal|"3"
-argument_list|,
-literal|"4"
 argument_list|)
 argument_list|,
 name|master
