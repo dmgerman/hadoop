@@ -36,6 +36,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -45,6 +59,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|DF
 import|;
 end_import
 
@@ -135,6 +163,11 @@ specifier|private
 name|FileIoProvider
 name|fileIoProvider
 decl_stmt|;
+DECL|field|usage
+specifier|private
+name|DF
+name|usage
+decl_stmt|;
 DECL|method|FsVolumeImplBuilder ()
 specifier|public
 name|FsVolumeImplBuilder
@@ -153,6 +186,10 @@ operator|=
 literal|null
 expr_stmt|;
 name|conf
+operator|=
+literal|null
+expr_stmt|;
+name|usage
 operator|=
 literal|null
 expr_stmt|;
@@ -247,6 +284,26 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setUsage (DF newUsage)
+name|FsVolumeImplBuilder
+name|setUsage
+parameter_list|(
+name|DF
+name|newUsage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|usage
+operator|=
+name|newUsage
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 name|FsVolumeImpl
 name|build
@@ -297,6 +354,31 @@ name|conf
 argument_list|)
 return|;
 block|}
+if|if
+condition|(
+literal|null
+operator|==
+name|usage
+condition|)
+block|{
+comment|// set usage unless overridden by unit tests
+name|usage
+operator|=
+operator|new
+name|DF
+argument_list|(
+name|sd
+operator|.
+name|getCurrentDir
+argument_list|()
+operator|.
+name|getParentFile
+argument_list|()
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|FsVolumeImpl
@@ -322,6 +404,8 @@ literal|null
 argument_list|)
 argument_list|,
 name|conf
+argument_list|,
+name|usage
 argument_list|)
 return|;
 block|}
