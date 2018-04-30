@@ -1151,6 +1151,15 @@ argument_list|(
 literal|"(?<=^|,)([^:\\x00]+):([^:\\x00]+):([a-z]+)"
 argument_list|)
 decl_stmt|;
+DECL|field|HOST_NAME_LENGTH
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|HOST_NAME_LENGTH
+init|=
+literal|64
+decl_stmt|;
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -2501,6 +2510,30 @@ operator|+
 name|hostname
 operator|+
 literal|"' doesn't match docker hostname pattern"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|hostname
+operator|.
+name|length
+argument_list|()
+operator|>
+name|HOST_NAME_LENGTH
+condition|)
+block|{
+throw|throw
+operator|new
+name|ContainerExecutionException
+argument_list|(
+literal|"Hostname can not be greater than "
+operator|+
+name|HOST_NAME_LENGTH
+operator|+
+literal|" characters: "
+operator|+
+name|hostname
 argument_list|)
 throw|;
 block|}
