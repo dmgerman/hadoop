@@ -564,7 +564,7 @@ name|allocationTags
 argument_list|,
 name|Long
 operator|::
-name|max
+name|min
 argument_list|)
 expr_stmt|;
 block|}
@@ -588,7 +588,7 @@ name|allocationTags
 argument_list|,
 name|Long
 operator|::
-name|min
+name|max
 argument_list|)
 expr_stmt|;
 block|}
@@ -629,7 +629,7 @@ name|allocationTags
 argument_list|,
 name|Long
 operator|::
-name|max
+name|min
 argument_list|)
 expr_stmt|;
 block|}
@@ -653,7 +653,7 @@ name|allocationTags
 argument_list|,
 name|Long
 operator|::
-name|min
+name|max
 argument_list|)
 expr_stmt|;
 block|}
