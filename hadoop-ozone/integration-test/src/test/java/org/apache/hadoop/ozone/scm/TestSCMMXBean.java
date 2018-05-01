@@ -58,6 +58,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|StorageContainerManager
 import|;
 end_import

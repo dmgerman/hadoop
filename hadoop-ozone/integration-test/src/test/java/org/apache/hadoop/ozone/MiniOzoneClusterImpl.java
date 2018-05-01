@@ -280,6 +280,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|SCMStorage
 import|;
 end_import
@@ -381,6 +383,8 @@ operator|.
 name|hdds
 operator|.
 name|scm
+operator|.
+name|server
 operator|.
 name|StorageContainerManager
 import|;
@@ -923,9 +927,9 @@ block|}
 comment|/**    * Returns an RPC proxy connected to this cluster's StorageContainerManager    * for accessing container location information.  Callers take ownership of    * the proxy and must close it when done.    *    * @return RPC proxy for accessing container location information    * @throws IOException if there is an I/O error    */
 annotation|@
 name|Override
-DECL|method|getStorageContainerLocationClient ()
 specifier|public
 name|StorageContainerLocationProtocolClientSideTranslatorPB
+DECL|method|getStorageContainerLocationClient ()
 name|getStorageContainerLocationClient
 parameter_list|()
 throws|throws
@@ -1140,6 +1144,9 @@ operator|+
 literal|"-"
 operator|+
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|getScmInfo
 argument_list|()

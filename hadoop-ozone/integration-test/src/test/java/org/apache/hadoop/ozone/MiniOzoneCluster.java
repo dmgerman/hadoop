@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -57,6 +57,8 @@ operator|.
 name|hdds
 operator|.
 name|scm
+operator|.
+name|server
 operator|.
 name|StorageContainerManager
 import|;
@@ -188,6 +190,26 @@ specifier|public
 interface|interface
 name|MiniOzoneCluster
 block|{
+comment|/**    * Returns the Builder to construct MiniOzoneCluster.    *    * @param conf OzoneConfiguration    *    * @return MiniOzoneCluster builder    */
+DECL|method|newBuilder (OzoneConfiguration conf)
+specifier|static
+name|Builder
+name|newBuilder
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|new
+name|MiniOzoneClusterImpl
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns the configuration object associated with the MiniOzoneCluster.    *    * @return Configuration    */
 DECL|method|getConf ()
 name|Configuration
@@ -260,8 +282,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Returns StorageContainerLocationClient to communicate with    * {@link StorageContainerManager} associated with the MiniOzoneCluster.    *    * @return StorageContainerLocation Client    * @throws IOException    */
-DECL|method|getStorageContainerLocationClient ()
 name|StorageContainerLocationProtocolClientSideTranslatorPB
+DECL|method|getStorageContainerLocationClient ()
 name|getStorageContainerLocationClient
 parameter_list|()
 throws|throws
@@ -307,27 +329,12 @@ name|void
 name|shutdown
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the Builder to construct MiniOzoneCluster.    *    * @param conf OzoneConfiguration    *    * @return MiniOzoneCluster builder    */
-DECL|method|newBuilder (OzoneConfiguration conf)
-specifier|static
-name|Builder
-name|newBuilder
-parameter_list|(
-name|OzoneConfiguration
-name|conf
-parameter_list|)
-block|{
-return|return
-operator|new
-name|MiniOzoneClusterImpl
-operator|.
-name|Builder
-argument_list|(
-name|conf
-argument_list|)
-return|;
-block|}
 comment|/**    * Builder class for MiniOzoneCluster.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"CheckStyle"
+argument_list|)
 DECL|class|Builder
 specifier|abstract
 class|class

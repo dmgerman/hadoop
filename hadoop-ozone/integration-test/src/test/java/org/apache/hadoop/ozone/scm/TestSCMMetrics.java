@@ -132,6 +132,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|StorageContainerManager
 import|;
 end_import
@@ -564,6 +566,9 @@ argument_list|()
 decl_stmt|;
 name|scmManager
 operator|.
+name|getDatanodeProtocolServer
+argument_list|()
+operator|.
 name|sendContainerReport
 argument_list|(
 name|request
@@ -702,6 +707,9 @@ name|getUuid
 argument_list|()
 decl_stmt|;
 name|scmManager
+operator|.
+name|getDatanodeProtocolServer
+argument_list|()
 operator|.
 name|sendContainerReport
 argument_list|(
@@ -867,6 +875,9 @@ argument_list|)
 expr_stmt|;
 name|scmManager
 operator|.
+name|getDatanodeProtocolServer
+argument_list|()
+operator|.
 name|sendContainerReport
 argument_list|(
 name|createContainerReport
@@ -900,6 +911,9 @@ literal|1
 argument_list|)
 expr_stmt|;
 name|scmManager
+operator|.
+name|getDatanodeProtocolServer
+argument_list|()
 operator|.
 name|sendContainerReport
 argument_list|(
@@ -1188,6 +1202,9 @@ name|datanodeUuid
 argument_list|)
 decl_stmt|;
 name|scmManager
+operator|.
+name|getDatanodeProtocolServer
+argument_list|()
 operator|.
 name|sendContainerReport
 argument_list|(

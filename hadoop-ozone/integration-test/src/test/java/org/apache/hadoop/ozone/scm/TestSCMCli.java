@@ -46,6 +46,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|StorageContainerManager
 import|;
 end_import
@@ -885,6 +887,9 @@ try|try
 block|{
 name|scm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|getContainer
 argument_list|(
 name|containerName
@@ -951,6 +956,9 @@ name|container
 init|=
 name|scm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|getContainer
 argument_list|(
 name|containerName
@@ -987,6 +995,9 @@ name|Pipeline
 name|scmPipeline
 init|=
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|getContainer
 argument_list|(
@@ -2891,6 +2902,9 @@ name|Pipeline
 name|container
 init|=
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|getContainer
 argument_list|(

@@ -80,6 +80,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|SCMStorage
 import|;
 end_import
@@ -268,6 +270,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|StorageContainerManager
 import|;
 end_import
@@ -283,6 +287,8 @@ operator|.
 name|hdds
 operator|.
 name|scm
+operator|.
+name|server
 operator|.
 name|StorageContainerManager
 operator|.
@@ -855,6 +861,9 @@ try|try
 block|{
 name|mockScm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|deleteContainer
 argument_list|(
 literal|"container1"
@@ -912,6 +921,9 @@ name|Pipeline
 name|pipeLine2
 init|=
 name|mockScm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
@@ -978,6 +990,9 @@ name|Pipeline
 name|pipeLine3
 init|=
 name|mockScm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1056,6 +1071,9 @@ block|}
 try|try
 block|{
 name|mockScm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|getContainer
 argument_list|(
@@ -2728,6 +2746,9 @@ name|ScmInfo
 name|scmInfo
 init|=
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|getScmInfo
 argument_list|()

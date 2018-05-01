@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm
+DECL|package|org.apache.hadoop.hdds.scm.server
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|hdds
 operator|.
 name|scm
+operator|.
+name|server
 package|;
 end_package
 
@@ -29,6 +31,22 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
 import|;
 end_import
 

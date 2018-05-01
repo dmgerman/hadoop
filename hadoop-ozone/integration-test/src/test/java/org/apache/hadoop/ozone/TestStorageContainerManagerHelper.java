@@ -1201,6 +1201,9 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|getContainer
 argument_list|(
 name|containerName

@@ -92,6 +92,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|StorageContainerManager
 import|;
 end_import
@@ -3562,6 +3564,17 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+name|commandQueue
+operator|.
+name|getCommand
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+return|;
 block|}
 else|else
 block|{
@@ -3574,15 +3587,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|commandQueue
-operator|.
-name|getCommand
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
-argument_list|)
+literal|null
 return|;
 block|}
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */

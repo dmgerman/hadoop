@@ -108,6 +108,8 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|server
+operator|.
 name|StorageContainerManager
 import|;
 end_import
@@ -394,6 +396,9 @@ argument_list|)
 decl_stmt|;
 name|scm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|allocateContainer
 argument_list|(
 name|xceiverClientManager
@@ -550,6 +555,9 @@ argument_list|)
 decl_stmt|;
 name|scm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|allocateContainer
 argument_list|(
 name|xceiverClientManager
@@ -645,6 +653,9 @@ operator|++
 control|)
 block|{
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
@@ -798,6 +809,9 @@ literal|"container-01234"
 decl_stmt|;
 name|scm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|allocateContainer
 argument_list|(
 name|xceiverClientManager
@@ -847,6 +861,9 @@ init|=
 literal|"container-56789"
 decl_stmt|;
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1101,6 +1118,9 @@ literal|5
 argument_list|)
 decl_stmt|;
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1472,6 +1492,9 @@ argument_list|)
 decl_stmt|;
 name|scm
 operator|.
+name|getClientProtocolServer
+argument_list|()
+operator|.
 name|allocateContainer
 argument_list|(
 name|xceiverClientManager
@@ -1567,6 +1590,9 @@ literal|5
 argument_list|)
 decl_stmt|;
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1698,6 +1724,9 @@ literal|5
 argument_list|)
 decl_stmt|;
 name|scm
+operator|.
+name|getClientProtocolServer
+argument_list|()
 operator|.
 name|allocateContainer
 argument_list|(
