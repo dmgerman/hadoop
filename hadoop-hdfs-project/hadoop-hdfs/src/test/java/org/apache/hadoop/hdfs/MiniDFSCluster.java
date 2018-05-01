@@ -13147,7 +13147,7 @@ return|return
 operator|new
 name|File
 argument_list|(
-name|getBaseDirectory
+name|determineDfsBaseDir
 argument_list|()
 argument_list|,
 name|getStorageDirPath
