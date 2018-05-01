@@ -2998,6 +2998,11 @@ name|DEFAULT_ASYNC_SCHEDULER_INTERVAL
 init|=
 literal|5
 decl_stmt|;
+DECL|field|asyncMaxPendingBacklogs
+specifier|private
+name|long
+name|asyncMaxPendingBacklogs
+decl_stmt|;
 DECL|method|CapacityScheduler ()
 specifier|public
 name|CapacityScheduler
@@ -3559,6 +3564,23 @@ operator|new
 name|ResourceCommitterService
 argument_list|(
 name|this
+argument_list|)
+expr_stmt|;
+name|asyncMaxPendingBacklogs
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|SCHEDULE_ASYNCHRONOUSLY_MAXIMUM_PENDING_BACKLOGS
+argument_list|,
+name|CapacitySchedulerConfiguration
+operator|.
+name|DEFAULT_SCHEDULE_ASYNCHRONOUSLY_MAXIMUM_PENDING_BACKLOGS
 argument_list|)
 expr_stmt|;
 block|}
@@ -4397,7 +4419,9 @@ operator|.
 name|getAsyncSchedulingPendingBacklogs
 argument_list|()
 operator|>
-literal|100
+name|cs
+operator|.
+name|asyncMaxPendingBacklogs
 condition|)
 block|{
 name|Thread
