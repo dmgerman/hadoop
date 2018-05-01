@@ -3469,6 +3469,34 @@ return|return
 name|port
 return|;
 block|}
+comment|/**    * Return an @{@link InetAddress} to bind to. If bindWildCardAddress is true    * than returns null.    *    * @param localAddr    * @param bindWildCardAddress    * @returns InetAddress    */
+DECL|method|bindToLocalAddress (InetAddress localAddr, boolean bindWildCardAddress)
+specifier|public
+specifier|static
+name|InetAddress
+name|bindToLocalAddress
+parameter_list|(
+name|InetAddress
+name|localAddr
+parameter_list|,
+name|boolean
+name|bindWildCardAddress
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|bindWildCardAddress
+condition|)
+block|{
+return|return
+name|localAddr
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
