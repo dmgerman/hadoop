@@ -1069,6 +1069,13 @@ literal|".sink.mysink0.roll-interval"
 argument_list|,
 literal|"1h"
 argument_list|)
+operator|.
+name|add
+argument_list|(
+literal|"*.queue.capacity"
+argument_list|,
+literal|2
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
