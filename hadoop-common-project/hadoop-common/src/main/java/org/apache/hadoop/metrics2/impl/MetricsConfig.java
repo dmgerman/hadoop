@@ -770,21 +770,32 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"loaded properties from "
-operator|+
+literal|"Loaded properties from {}"
+argument_list|,
 name|fname
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Properties: {}"
+argument_list|,
 name|toString
 argument_list|(
 name|cf
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|MetricsConfig
 name|mc
 init|=
@@ -800,10 +811,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Metrics Config: {}"
+argument_list|,
 name|mc
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -830,6 +840,17 @@ literal|"Could not locate"
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Could not locate file {}"
+argument_list|,
+name|fname
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 continue|continue;
 block|}
 throw|throw
@@ -1017,11 +1038,6 @@ argument_list|>
 argument_list|()
 block|{
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
 name|Override
 specifier|public
 name|Iterator
@@ -1124,28 +1140,17 @@ name|key
 argument_list|)
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"returning '"
-operator|+
+literal|"Returning '{}' for key: {}"
+argument_list|,
 name|value
-operator|+
-literal|"' for key: "
-operator|+
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|value
 return|;
@@ -1177,9 +1182,11 @@ name|clsName
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 try|try
 block|{
 name|Class
@@ -1275,8 +1282,11 @@ condition|?
 literal|"class"
 else|:
 name|prefix
-operator|+
+operator|.
+name|concat
+argument_list|(
 literal|".class"
+argument_list|)
 decl_stmt|;
 name|String
 name|clsName
@@ -1290,6 +1300,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Class name for prefix {} is {}"
+argument_list|,
+name|prefix
+argument_list|,
 name|clsName
 argument_list|)
 expr_stmt|;
@@ -1324,9 +1338,11 @@ name|pluginLoader
 operator|!=
 literal|null
 condition|)
+block|{
 return|return
 name|pluginLoader
 return|;
+block|}
 specifier|final
 name|ClassLoader
 name|defaultLoader
@@ -1353,9 +1369,11 @@ name|purls
 operator|==
 literal|null
 condition|)
+block|{
 return|return
 name|defaultLoader
 return|;
+block|}
 name|Iterable
 argument_list|<
 name|String
@@ -1419,6 +1437,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Parsing URL for {}"
+argument_list|,
 name|jar
 argument_list|)
 expr_stmt|;
@@ -1462,8 +1482,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"using plugin jars: "
-operator|+
+literal|"Using plugin jars: {}"
+argument_list|,
 name|Iterables
 operator|.
 name|toString
@@ -1555,9 +1575,11 @@ operator|.
 name|isEmpty
 argument_list|()
 condition|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 name|MetricsFilter
 name|filter
 init|=
@@ -1572,9 +1594,11 @@ name|filter
 operator|!=
 literal|null
 condition|)
+block|{
 return|return
 name|filter
 return|;
+block|}
 comment|// glob filter is assumed if pattern is specified but class is not.
 name|filter
 operator|=
