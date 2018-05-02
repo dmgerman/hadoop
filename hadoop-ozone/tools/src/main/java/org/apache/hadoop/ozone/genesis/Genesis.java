@@ -153,16 +153,9 @@ operator|.
 name|getSimpleName
 argument_list|()
 argument_list|)
-operator|.
-name|include
-argument_list|(
-name|BenchMarkRocksDbStore
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
+comment|// Commenting this test out, till we support either a command line or a config
+comment|// file based ability to run tests.
+comment|//        .include(BenchMarkRocksDbStore.class.getSimpleName())
 operator|.
 name|warmupIterations
 argument_list|(
@@ -172,6 +165,13 @@ operator|.
 name|measurementIterations
 argument_list|(
 literal|20
+argument_list|)
+operator|.
+name|addProfiler
+argument_list|(
+name|GenesisMemoryProfiler
+operator|.
+name|class
 argument_list|)
 operator|.
 name|shouldDoGC
