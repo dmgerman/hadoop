@@ -1676,7 +1676,7 @@ argument_list|()
 expr_stmt|;
 comment|// Setup file system to inject startup conditions
 name|FileSystem
-name|fs
+name|fileSystem
 init|=
 name|spy
 argument_list|(
@@ -1717,7 +1717,7 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|)
 operator|.
 name|getFileStatus
@@ -1734,7 +1734,7 @@ try|try
 block|{
 name|initAndStartStore
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|)
 expr_stmt|;
 block|}
@@ -1768,7 +1768,7 @@ argument_list|()
 expr_stmt|;
 name|verify
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|,
 name|times
 argument_list|(
@@ -1809,7 +1809,7 @@ argument_list|()
 expr_stmt|;
 comment|// Setup file system to inject startup conditions
 name|FileSystem
-name|fs
+name|fileSystem
 init|=
 name|spy
 argument_list|(
@@ -1850,7 +1850,7 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|)
 operator|.
 name|getFileStatus
@@ -1872,7 +1872,7 @@ argument_list|)
 operator|.
 name|when
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|)
 operator|.
 name|mkdirs
@@ -1889,7 +1889,7 @@ try|try
 block|{
 name|initAndStartStore
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1922,7 +1922,7 @@ argument_list|()
 expr_stmt|;
 name|verify
 argument_list|(
-name|fs
+name|fileSystem
 argument_list|,
 name|times
 argument_list|(
