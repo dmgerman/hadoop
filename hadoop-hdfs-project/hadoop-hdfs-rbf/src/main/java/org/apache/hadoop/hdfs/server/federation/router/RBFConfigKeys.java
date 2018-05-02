@@ -680,6 +680,26 @@ name|DFS_ROUTER_CLIENT_MAX_ATTEMPTS_DEFAULT
 init|=
 literal|3
 decl_stmt|;
+DECL|field|DFS_ROUTER_CLIENT_REJECT_OVERLOAD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_ROUTER_CLIENT_REJECT_OVERLOAD
+init|=
+name|FEDERATION_ROUTER_PREFIX
+operator|+
+literal|"client.reject.overload"
+decl_stmt|;
+DECL|field|DFS_ROUTER_CLIENT_REJECT_OVERLOAD_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_ROUTER_CLIENT_REJECT_OVERLOAD_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// HDFS Router State Store connection
 DECL|field|FEDERATION_FILE_RESOLVER_CLIENT_CLASS
 specifier|public

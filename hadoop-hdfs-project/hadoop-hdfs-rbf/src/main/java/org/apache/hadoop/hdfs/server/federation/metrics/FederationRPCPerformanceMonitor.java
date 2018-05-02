@@ -680,6 +680,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|proxyOpFailureClientOverloaded ()
+specifier|public
+name|void
+name|proxyOpFailureClientOverloaded
+parameter_list|()
+block|{
+name|metrics
+operator|.
+name|incrProxyOpFailureClientOverloaded
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|proxyOpNotImplemented ()
 specifier|public
 name|void

@@ -146,6 +146,12 @@ name|void
 name|proxyOpFailureCommunicate
 parameter_list|()
 function_decl|;
+comment|/**    * Failed to proxy an operation to a Namenode because the client was    * overloaded.    */
+DECL|method|proxyOpFailureClientOverloaded ()
+name|void
+name|proxyOpFailureClientOverloaded
+parameter_list|()
+function_decl|;
 comment|/**    * Failed to proxy an operation because it is not implemented.    */
 DECL|method|proxyOpNotImplemented ()
 name|void

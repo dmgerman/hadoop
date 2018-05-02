@@ -309,6 +309,16 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Number of operations to hit a client overloaded Router"
+argument_list|)
+DECL|field|proxyOpFailureClientOverloaded
+specifier|private
+name|MutableCounterLong
+name|proxyOpFailureClientOverloaded
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"Number of operations not implemented"
 argument_list|)
 DECL|field|proxyOpNotImplemented
@@ -542,6 +552,33 @@ parameter_list|()
 block|{
 return|return
 name|proxyOpFailureCommunicate
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|incrProxyOpFailureClientOverloaded ()
+specifier|public
+name|void
+name|incrProxyOpFailureClientOverloaded
+parameter_list|()
+block|{
+name|proxyOpFailureClientOverloaded
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProxyOpFailureClientOverloaded ()
+specifier|public
+name|long
+name|getProxyOpFailureClientOverloaded
+parameter_list|()
+block|{
+return|return
+name|proxyOpFailureClientOverloaded
 operator|.
 name|value
 argument_list|()

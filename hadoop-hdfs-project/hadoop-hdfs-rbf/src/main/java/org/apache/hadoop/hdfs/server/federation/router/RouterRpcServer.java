@@ -2528,10 +2528,6 @@ name|RemoteException
 operator|.
 name|class
 argument_list|,
-name|StandbyException
-operator|.
-name|class
-argument_list|,
 name|SafeModeException
 operator|.
 name|class
@@ -2557,6 +2553,17 @@ operator|.
 name|class
 argument_list|,
 name|IOException
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rpcServer
+operator|.
+name|addSuppressedLoggingExceptions
+argument_list|(
+name|StandbyException
 operator|.
 name|class
 argument_list|)
@@ -2925,7 +2932,7 @@ name|boolean
 name|supported
 parameter_list|)
 throws|throws
-name|RouterSafeModeException
+name|StandbyException
 throws|,
 name|UnsupportedOperationException
 block|{
@@ -2982,7 +2989,7 @@ name|OperationCategory
 name|op
 parameter_list|)
 throws|throws
-name|RouterSafeModeException
+name|StandbyException
 block|{
 comment|// Log the function we are currently calling.
 if|if
@@ -3070,14 +3077,20 @@ expr_stmt|;
 block|}
 throw|throw
 operator|new
-name|RouterSafeModeException
+name|StandbyException
 argument_list|(
+literal|"Router "
+operator|+
 name|router
 operator|.
 name|getRouterId
 argument_list|()
-argument_list|,
+operator|+
+literal|" is in safe mode and cannot handle "
+operator|+
 name|op
+operator|+
+literal|" requests"
 argument_list|)
 throw|;
 block|}

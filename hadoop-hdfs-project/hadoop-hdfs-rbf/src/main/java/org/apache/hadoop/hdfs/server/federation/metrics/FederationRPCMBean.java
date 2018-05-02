@@ -98,6 +98,11 @@ name|long
 name|getProxyOpFailureStandby
 parameter_list|()
 function_decl|;
+DECL|method|getProxyOpFailureClientOverloaded ()
+name|long
+name|getProxyOpFailureClientOverloaded
+parameter_list|()
+function_decl|;
 DECL|method|getProxyOpNotImplemented ()
 name|long
 name|getProxyOpNotImplemented
