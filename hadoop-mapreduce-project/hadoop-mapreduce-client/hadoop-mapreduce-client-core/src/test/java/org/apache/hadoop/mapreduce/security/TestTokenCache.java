@@ -382,6 +382,8 @@ argument_list|,
 name|credentials
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|verify
@@ -686,6 +688,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|checkToken
@@ -707,6 +711,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|checkToken
@@ -728,6 +734,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|Token
@@ -778,6 +786,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|TokenCache
@@ -789,6 +799,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|TokenCache
@@ -800,6 +812,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|checkToken
@@ -1389,6 +1403,8 @@ argument_list|,
 name|creds
 argument_list|,
 name|conf
+argument_list|,
+name|renewer
 argument_list|)
 expr_stmt|;
 name|String

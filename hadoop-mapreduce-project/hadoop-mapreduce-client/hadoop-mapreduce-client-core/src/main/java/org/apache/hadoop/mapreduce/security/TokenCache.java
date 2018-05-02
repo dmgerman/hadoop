@@ -54,6 +54,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -453,6 +467,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|String
+name|masterPrincipal
+init|=
+name|Master
+operator|.
+name|getMasterPrincipal
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|FileSystem
@@ -468,6 +492,8 @@ argument_list|,
 name|credentials
 argument_list|,
 name|conf
+argument_list|,
+name|masterPrincipal
 argument_list|)
 expr_stmt|;
 block|}
@@ -556,7 +582,7 @@ literal|false
 return|;
 block|}
 comment|/**    * get delegation token for a specific FS    * @param fs    * @param credentials    * @param conf    * @throws IOException    */
-DECL|method|obtainTokensForNamenodesInternal (FileSystem fs, Credentials credentials, Configuration conf)
+DECL|method|obtainTokensForNamenodesInternal (FileSystem fs, Credentials credentials, Configuration conf, String renewer)
 specifier|static
 name|void
 name|obtainTokensForNamenodesInternal
@@ -569,6 +595,9 @@ name|credentials
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -590,27 +619,14 @@ name|conf
 argument_list|)
 condition|)
 block|{
-name|delegTokenRenewer
-operator|=
-name|Master
-operator|.
-name|getMasterPrincipal
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
-name|delegTokenRenewer
-operator|==
-literal|null
-operator|||
-name|delegTokenRenewer
+name|StringUtils
 operator|.
-name|length
-argument_list|()
-operator|==
-literal|0
+name|isEmpty
+argument_list|(
+name|renewer
+argument_list|)
 condition|)
 block|{
 throw|throw
@@ -620,6 +636,13 @@ argument_list|(
 literal|"Can't get Master Kerberos principal for use as renewer"
 argument_list|)
 throw|;
+block|}
+else|else
+block|{
+name|delegTokenRenewer
+operator|=
+name|renewer
+expr_stmt|;
 block|}
 block|}
 name|mergeBinaryTokens
