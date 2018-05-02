@@ -6108,8 +6108,8 @@ block|{
 comment|// Sanity check
 return|return;
 block|}
-name|RMAppAttempt
-name|attempt
+name|RMApp
+name|app
 init|=
 name|rmContext
 operator|.
@@ -6123,6 +6123,18 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
+name|RMAppAttempt
+name|attempt
+init|=
+name|app
 operator|.
 name|getCurrentAppAttempt
 argument_list|()
@@ -6146,6 +6158,7 @@ argument_list|,
 name|requestType
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|setApplicationHeadroomForMetrics (Resource headroom)
