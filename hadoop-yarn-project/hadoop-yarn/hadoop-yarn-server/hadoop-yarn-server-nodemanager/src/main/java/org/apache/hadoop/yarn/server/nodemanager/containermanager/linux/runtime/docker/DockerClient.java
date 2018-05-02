@@ -168,28 +168,6 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|container
-operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
 name|localizer
 operator|.
 name|ResourceLocalizationService
@@ -681,7 +659,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|writeCommandToTempFile (DockerCommand cmd, Container container, Context nmContext)
+DECL|method|writeCommandToTempFile (DockerCommand cmd, ContainerId containerId, Context nmContext)
 specifier|public
 name|String
 name|writeCommandToTempFile
@@ -689,8 +667,8 @@ parameter_list|(
 name|DockerCommand
 name|cmd
 parameter_list|,
-name|Container
-name|container
+name|ContainerId
+name|containerId
 parameter_list|,
 name|Context
 name|nmContext
@@ -698,14 +676,6 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 block|{
-name|ContainerId
-name|containerId
-init|=
-name|container
-operator|.
-name|getContainerId
-argument_list|()
-decl_stmt|;
 name|String
 name|filePrefix
 init|=

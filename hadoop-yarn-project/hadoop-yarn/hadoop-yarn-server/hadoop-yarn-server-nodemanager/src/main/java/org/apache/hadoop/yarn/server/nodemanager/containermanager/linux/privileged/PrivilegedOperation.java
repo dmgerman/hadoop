@@ -218,8 +218,20 @@ name|ADD_NUMA_PARAMS
 argument_list|(
 literal|""
 argument_list|)
-block|;
+block|,
 comment|// no CLI switch supported yet.
+DECL|enumConstant|REMOVE_DOCKER_CONTAINER
+name|REMOVE_DOCKER_CONTAINER
+argument_list|(
+literal|"--remove-docker-container"
+argument_list|)
+block|,
+DECL|enumConstant|INSPECT_DOCKER_CONTAINER
+name|INSPECT_DOCKER_CONTAINER
+argument_list|(
+literal|"--inspect-docker-container"
+argument_list|)
+block|;
 DECL|field|option
 specifier|private
 specifier|final
