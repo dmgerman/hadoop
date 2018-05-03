@@ -1425,9 +1425,10 @@ name|Epoch
 operator|.
 name|newInstance
 argument_list|(
+name|nextEpoch
+argument_list|(
 name|currentEpoch
-operator|+
-literal|1
+argument_list|)
 argument_list|)
 operator|.
 name|getProto
@@ -1457,9 +1458,10 @@ name|Epoch
 operator|.
 name|newInstance
 argument_list|(
+name|nextEpoch
+argument_list|(
 name|currentEpoch
-operator|+
-literal|1
+argument_list|)
 argument_list|)
 operator|.
 name|getProto

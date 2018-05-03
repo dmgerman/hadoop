@@ -1054,6 +1054,11 @@ specifier|protected
 name|long
 name|baseEpoch
 decl_stmt|;
+DECL|field|epochRange
+specifier|private
+name|long
+name|epochRange
+decl_stmt|;
 DECL|field|resourceManager
 specifier|protected
 name|ResourceManager
@@ -4266,6 +4271,21 @@ operator|.
 name|DEFAULT_RM_EPOCH
 argument_list|)
 expr_stmt|;
+name|epochRange
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_EPOCH_RANGE
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_EPOCH_RANGE
+argument_list|)
+expr_stmt|;
 name|initInternal
 argument_list|(
 name|conf
@@ -4479,6 +4499,43 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+comment|/**    * Compute the next epoch value by incrementing by one.    * Wraps around if the epoch range is exceeded so that    * when federation is enabled epoch collisions can be avoided.    */
+DECL|method|nextEpoch (long epoch)
+specifier|protected
+name|long
+name|nextEpoch
+parameter_list|(
+name|long
+name|epoch
+parameter_list|)
+block|{
+name|long
+name|epochVal
+init|=
+name|epoch
+operator|-
+name|baseEpoch
+operator|+
+literal|1
+decl_stmt|;
+if|if
+condition|(
+name|epochRange
+operator|>
+literal|0
+condition|)
+block|{
+name|epochVal
+operator|%=
+name|epochRange
+expr_stmt|;
+block|}
+return|return
+name|epochVal
+operator|+
+name|baseEpoch
+return|;
+block|}
 comment|/**    * Blocking API    * The derived class must recover state from the store and return a new     * RMState object populated with that state    * This must not be called on the dispatcher thread    */
 DECL|method|loadState ()
 specifier|public

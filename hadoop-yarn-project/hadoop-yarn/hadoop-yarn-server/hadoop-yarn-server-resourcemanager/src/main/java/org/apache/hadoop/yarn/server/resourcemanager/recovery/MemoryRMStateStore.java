@@ -397,9 +397,10 @@ name|epoch
 decl_stmt|;
 name|epoch
 operator|=
+name|nextEpoch
+argument_list|(
 name|epoch
-operator|+
-literal|1
+argument_list|)
 expr_stmt|;
 return|return
 name|currentEpoch
