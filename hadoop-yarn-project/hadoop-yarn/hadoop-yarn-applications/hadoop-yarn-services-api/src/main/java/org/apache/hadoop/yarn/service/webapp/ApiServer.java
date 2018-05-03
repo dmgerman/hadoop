@@ -1361,7 +1361,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Service name can not be null."
+literal|"Service name cannot be null."
 argument_list|)
 throw|;
 block|}
@@ -1429,8 +1429,6 @@ block|}
 catch|catch
 parameter_list|(
 name|IllegalArgumentException
-decl||
-name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
@@ -1442,6 +1440,49 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|serviceStatus
+operator|.
+name|setCode
+argument_list|(
+name|ERROR_CODE_APP_NAME_INVALID
+argument_list|)
+expr_stmt|;
+return|return
+name|Response
+operator|.
+name|status
+argument_list|(
+name|Status
+operator|.
+name|NOT_FOUND
+argument_list|)
+operator|.
+name|entity
+argument_list|(
+name|serviceStatus
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|serviceStatus
+operator|.
+name|setDiagnostics
+argument_list|(
+literal|"Service "
+operator|+
+name|appName
+operator|+
+literal|" not found"
 argument_list|)
 expr_stmt|;
 name|serviceStatus

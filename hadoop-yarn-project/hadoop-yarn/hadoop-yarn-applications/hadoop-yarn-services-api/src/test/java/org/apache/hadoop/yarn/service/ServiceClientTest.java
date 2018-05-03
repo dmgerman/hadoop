@@ -262,6 +262,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -447,18 +457,16 @@ parameter_list|(
 name|String
 name|appName
 parameter_list|)
+throws|throws
+name|FileNotFoundException
 block|{
 if|if
 condition|(
-name|appName
-operator|!=
-literal|null
-operator|&&
-name|appName
+literal|"jenkins"
 operator|.
 name|equals
 argument_list|(
-literal|"jenkins"
+name|appName
 argument_list|)
 condition|)
 block|{
@@ -470,8 +478,14 @@ else|else
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
-argument_list|()
+name|FileNotFoundException
+argument_list|(
+literal|"Service "
+operator|+
+name|appName
+operator|+
+literal|" not found"
+argument_list|)
 throw|;
 block|}
 block|}
