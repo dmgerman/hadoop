@@ -4313,6 +4313,12 @@ argument_list|,
 name|runCommand
 argument_list|)
 decl_stmt|;
+comment|// Some failures here are acceptable. Let the calling executor decide.
+name|launchOp
+operator|.
+name|disableFailureLogging
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|privilegedOperationExecutor
@@ -4339,24 +4345,6 @@ name|PrivilegedOperationException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Launch container failed. Exception: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Docker command used: "
-operator|+
-name|runCommand
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|ContainerExecutionException
@@ -4481,6 +4469,12 @@ argument_list|,
 name|startCommand
 argument_list|)
 decl_stmt|;
+comment|// Some failures here are acceptable. Let the calling executor decide.
+name|launchOp
+operator|.
+name|disableFailureLogging
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|privilegedOperationExecutor
@@ -4507,29 +4501,11 @@ name|PrivilegedOperationException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Relaunch container failed. Exception: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Docker command used: "
-operator|+
-name|startCommand
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|ContainerExecutionException
 argument_list|(
-literal|"Launch container failed"
+literal|"Relaunch container failed"
 argument_list|,
 name|e
 operator|.

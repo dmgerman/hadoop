@@ -619,6 +619,12 @@ name|tcCommandFile
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Some failures here are acceptable. Let the calling executor decide.
+name|launchOp
+operator|.
+name|disableFailureLogging
+argument_list|()
+expr_stmt|;
 comment|//List<String> -> stored as List -> fetched/converted to List<String>
 comment|//we can't do better here thanks to type-erasure
 annotation|@
@@ -671,15 +677,6 @@ name|PrivilegedOperationException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Launch container failed. Exception: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|ContainerExecutionException
