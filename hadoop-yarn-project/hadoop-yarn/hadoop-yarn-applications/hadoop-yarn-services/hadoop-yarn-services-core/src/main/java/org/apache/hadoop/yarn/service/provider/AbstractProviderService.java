@@ -783,6 +783,18 @@ argument_list|,
 name|context
 argument_list|)
 expr_stmt|;
+comment|// handles static files (like normal file / archive file) for localization.
+name|ProviderUtils
+operator|.
+name|handleStaticFilesForLocalization
+argument_list|(
+name|launcher
+argument_list|,
+name|fileSystem
+argument_list|,
+name|compLaunchContext
+argument_list|)
+expr_stmt|;
 comment|// substitute launch command
 name|String
 name|launchCommand

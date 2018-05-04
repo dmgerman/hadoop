@@ -170,6 +170,12 @@ name|APP_CONF_DIR
 init|=
 literal|"conf"
 decl_stmt|;
+DECL|field|APP_RESOURCES_DIR
+name|String
+name|APP_RESOURCES_DIR
+init|=
+literal|"resources"
+decl_stmt|;
 DECL|field|APP_LIB_DIR
 name|String
 name|APP_LIB_DIR
