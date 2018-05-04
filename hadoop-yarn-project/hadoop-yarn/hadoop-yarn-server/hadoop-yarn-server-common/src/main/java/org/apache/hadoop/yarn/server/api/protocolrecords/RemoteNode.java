@@ -214,6 +214,74 @@ return|return
 name|remoteNode
 return|;
 block|}
+comment|/**    * Create new Instance.    * @param nodeId NodeId.    * @param httpAddress Http address.    * @param rackName Rack Name.    * @param nodePartition Node Partition.    * @return RemoteNode Instance.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance (NodeId nodeId, String httpAddress, String rackName, String nodePartition)
+specifier|public
+specifier|static
+name|RemoteNode
+name|newInstance
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|,
+name|String
+name|httpAddress
+parameter_list|,
+name|String
+name|rackName
+parameter_list|,
+name|String
+name|nodePartition
+parameter_list|)
+block|{
+name|RemoteNode
+name|remoteNode
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RemoteNode
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|remoteNode
+operator|.
+name|setNodeId
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
+name|remoteNode
+operator|.
+name|setHttpAddress
+argument_list|(
+name|httpAddress
+argument_list|)
+expr_stmt|;
+name|remoteNode
+operator|.
+name|setRackName
+argument_list|(
+name|rackName
+argument_list|)
+expr_stmt|;
+name|remoteNode
+operator|.
+name|setNodePartition
+argument_list|(
+name|nodePartition
+argument_list|)
+expr_stmt|;
+return|return
+name|remoteNode
+return|;
+block|}
 comment|/**    * Get {@link NodeId}.    * @return NodeId.    */
 annotation|@
 name|Private
@@ -296,6 +364,33 @@ name|rackName
 parameter_list|)
 function_decl|;
 comment|/**    * Use the underlying {@link NodeId} comparator.    * @param other RemoteNode.    * @return Comparison.    */
+comment|/**    * Get Node Partition.    * @return Node Partition.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getNodePartition ()
+specifier|public
+specifier|abstract
+name|String
+name|getNodePartition
+parameter_list|()
+function_decl|;
+comment|/**    * Set Node Partition.    * @param nodePartition    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodePartition (String nodePartition)
+specifier|public
+specifier|abstract
+name|void
+name|setNodePartition
+parameter_list|(
+name|String
+name|nodePartition
+parameter_list|)
+function_decl|;
 annotation|@
 name|Override
 DECL|method|compareTo (RemoteNode other)
@@ -350,6 +445,13 @@ operator|+
 literal|"httpAddress="
 operator|+
 name|getHttpAddress
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"partition="
+operator|+
+name|getNodePartition
 argument_list|()
 operator|+
 literal|"}"
