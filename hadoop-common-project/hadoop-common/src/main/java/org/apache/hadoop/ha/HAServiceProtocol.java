@@ -173,6 +173,12 @@ argument_list|(
 literal|"standby"
 argument_list|)
 block|,
+DECL|enumConstant|OBSERVER
+name|OBSERVER
+argument_list|(
+literal|"observer"
+argument_list|)
+block|,
 DECL|enumConstant|STOPPING
 name|STOPPING
 argument_list|(
@@ -307,6 +313,23 @@ DECL|method|transitionToStandby (StateChangeRequestInfo reqInfo)
 specifier|public
 name|void
 name|transitionToStandby
+parameter_list|(
+name|StateChangeRequestInfo
+name|reqInfo
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+throws|,
+name|AccessControlException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    * Request service to transition to observer state. No operation, if the    * service is already in observer state.    *    * @throws ServiceFailedException    *           if transition from standby to observer fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
+annotation|@
+name|Idempotent
+DECL|method|transitionToObserver (StateChangeRequestInfo reqInfo)
+name|void
+name|transitionToObserver
 parameter_list|(
 name|StateChangeRequestInfo
 name|reqInfo

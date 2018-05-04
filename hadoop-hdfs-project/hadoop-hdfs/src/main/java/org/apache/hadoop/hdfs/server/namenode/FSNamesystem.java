@@ -10382,6 +10382,18 @@ argument_list|()
 operator|.
 name|getServiceState
 argument_list|()
+operator|||
+name|HAServiceState
+operator|.
+name|OBSERVER
+operator|==
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getServiceState
+argument_list|()
 return|;
 block|}
 comment|/**    * return a list of blocks&amp; their locations on {@code datanode} whose    * total size is {@code size}    *    * @param datanode on which blocks are located    * @param size total size of blocks    * @param minimumBlockSize    */

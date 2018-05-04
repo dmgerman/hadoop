@@ -4575,6 +4575,12 @@ operator|==
 name|HAServiceState
 operator|.
 name|STANDBY
+operator|||
+name|state
+operator|==
+name|HAServiceState
+operator|.
+name|OBSERVER
 condition|)
 block|{
 name|ibrManager

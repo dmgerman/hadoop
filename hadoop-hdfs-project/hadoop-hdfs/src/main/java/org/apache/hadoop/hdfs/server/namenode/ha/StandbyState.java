@@ -144,6 +144,7 @@ name|StandbyState
 extends|extends
 name|HAState
 block|{
+comment|// TODO: consider implementing a ObserverState instead of using the flag.
 DECL|field|isObserver
 specifier|private
 specifier|final
@@ -171,6 +172,12 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|isObserver
+condition|?
+name|HAServiceState
+operator|.
+name|OBSERVER
+else|:
 name|HAServiceState
 operator|.
 name|STANDBY
@@ -206,6 +213,27 @@ operator|==
 name|NameNode
 operator|.
 name|ACTIVE_STATE
+operator|||
+operator|(
+operator|!
+name|isObserver
+operator|&&
+name|s
+operator|==
+name|NameNode
+operator|.
+name|OBSERVER_STATE
+operator|)
+operator|||
+operator|(
+name|isObserver
+operator|&&
+name|s
+operator|==
+name|NameNode
+operator|.
+name|STANDBY_STATE
+operator|)
 condition|)
 block|{
 name|setStateInternal
@@ -215,21 +243,6 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
-return|return;
-block|}
-if|if
-condition|(
-name|isObserver
-operator|&&
-name|s
-operator|==
-name|NameNode
-operator|.
-name|STANDBY_STATE
-condition|)
-block|{
-comment|// To guard against the exception in the following super call.
-comment|// The other case, standby -> observer, should not happen.
 return|return;
 block|}
 name|super

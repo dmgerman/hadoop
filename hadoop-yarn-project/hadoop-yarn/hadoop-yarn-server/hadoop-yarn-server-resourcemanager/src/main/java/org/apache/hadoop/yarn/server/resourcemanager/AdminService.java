@@ -2512,6 +2512,29 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|transitionToObserver ( StateChangeRequestInfo reqInfo)
+specifier|public
+specifier|synchronized
+name|void
+name|transitionToObserver
+parameter_list|(
+name|StateChangeRequestInfo
+name|reqInfo
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Should NOT get here, as RMHAServiceTarget doesn't support observer.
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"Does not support transition to Observer"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Return the HA status of this RM. This includes the current state and    * whether the RM is ready to become active.    *    * @return {@link HAServiceStatus} of the current RM    * @throws IOException if the caller does not have permissions    */
 annotation|@
 name|Override

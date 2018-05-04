@@ -9298,12 +9298,19 @@ operator|==
 name|OBSERVER_STATE
 condition|)
 block|{
-comment|// TODO: we may need to remove this when enabling failover for observer
 throw|throw
 operator|new
 name|ServiceFailedException
 argument_list|(
-literal|"Cannot transition from Observer to Active"
+literal|"Cannot transition from '"
+operator|+
+name|OBSERVER_STATE
+operator|+
+literal|"' to '"
+operator|+
+name|ACTIVE_STATE
+operator|+
+literal|"'"
 argument_list|)
 throw|;
 block|}
@@ -9346,19 +9353,66 @@ literal|"HA for namenode is not enabled"
 argument_list|)
 throw|;
 block|}
+name|state
+operator|.
+name|setState
+argument_list|(
+name|haContext
+argument_list|,
+name|STANDBY_STATE
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|transitionToObserver ()
+specifier|synchronized
+name|void
+name|transitionToObserver
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+throws|,
+name|AccessControlException
+block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
-name|state
-operator|==
-name|OBSERVER_STATE
+operator|!
+name|haEnabled
 condition|)
 block|{
-comment|// TODO: we may need to remove this when enabling failover for observer
 throw|throw
 operator|new
 name|ServiceFailedException
 argument_list|(
-literal|"Cannot transition from Observer to Standby"
+literal|"HA for namenode is not enabled"
+argument_list|)
+throw|;
+block|}
+comment|// Transition from ACTIVE to OBSERVER is forbidden.
+if|if
+condition|(
+name|state
+operator|==
+name|ACTIVE_STATE
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"Cannot transition from '"
+operator|+
+name|ACTIVE_STATE
+operator|+
+literal|"' to '"
+operator|+
+name|OBSERVER_STATE
+operator|+
+literal|"'"
 argument_list|)
 throw|;
 block|}
@@ -9368,7 +9422,7 @@ name|setState
 argument_list|(
 name|haContext
 argument_list|,
-name|STANDBY_STATE
+name|OBSERVER_STATE
 argument_list|)
 expr_stmt|;
 block|}
@@ -9596,7 +9650,6 @@ name|String
 name|getState
 parameter_list|()
 block|{
-comment|// TODO: maybe we should return a different result for observer namenode?
 name|String
 name|servStateStr
 init|=

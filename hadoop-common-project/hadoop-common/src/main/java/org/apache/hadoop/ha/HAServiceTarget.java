@@ -565,6 +565,17 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * @return true if this target supports the Observer state, false otherwise.    */
+DECL|method|supportObserver ()
+specifier|public
+name|boolean
+name|supportObserver
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

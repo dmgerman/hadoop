@@ -10567,6 +10567,41 @@ block|}
 annotation|@
 name|Override
 comment|// HAServiceProtocol
+DECL|method|transitionToObserver (StateChangeRequestInfo req)
+specifier|public
+specifier|synchronized
+name|void
+name|transitionToObserver
+parameter_list|(
+name|StateChangeRequestInfo
+name|req
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+throws|,
+name|AccessControlException
+throws|,
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|nn
+operator|.
+name|checkHaStateChange
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
+name|nn
+operator|.
+name|transitionToObserver
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
 DECL|method|getServiceStatus ()
 specifier|public
 specifier|synchronized
