@@ -140,6 +140,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -325,6 +335,46 @@ operator|new
 name|DynamoDBMetadataStore
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+operator|.
+name|setup
+argument_list|()
+expr_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"Test only applies when DynamoDB is used for S3Guard"
+argument_list|,
+name|getConfiguration
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|Constants
+operator|.
+name|S3_METADATA_STORE_IMPL
+argument_list|)
+operator|.
+name|equals
+argument_list|(
+name|Constants
+operator|.
+name|S3GUARD_METASTORE_DYNAMO
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Check the existence of a given DynamoDB table.
 DECL|method|exist (DynamoDB dynamoDB, String tableName)
