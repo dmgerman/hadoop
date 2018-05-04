@@ -2743,6 +2743,11 @@ name|ret
 init|=
 literal|null
 decl_stmt|;
+name|OutputStream
+name|os
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -2752,14 +2757,18 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|writeJson
-argument_list|(
-name|jsonOutput
-argument_list|,
+name|os
+operator|=
 name|conn
 operator|.
 name|getOutputStream
 argument_list|()
+expr_stmt|;
+name|writeJson
+argument_list|(
+name|jsonOutput
+argument_list|,
+name|os
 argument_list|)
 expr_stmt|;
 block|}
@@ -2769,6 +2778,24 @@ parameter_list|(
 name|IOException
 name|ex
 parameter_list|)
+block|{
+comment|// The payload is not serialized if getOutputStream fails.
+comment|// Calling getInputStream will issue the put/post request with no payload
+comment|// which causes HTTP 500 server error.
+if|if
+condition|(
+name|os
+operator|==
+literal|null
+condition|)
+block|{
+name|conn
+operator|.
+name|disconnect
+argument_list|()
+expr_stmt|;
+block|}
+else|else
 block|{
 name|IOUtils
 operator|.
@@ -2780,6 +2807,7 @@ name|getInputStream
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
