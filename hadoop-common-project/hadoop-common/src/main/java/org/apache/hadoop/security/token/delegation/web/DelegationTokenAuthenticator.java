@@ -366,9 +366,8 @@ implements|implements
 name|Authenticator
 block|{
 DECL|field|LOG
-specifier|public
+specifier|private
 specifier|static
-specifier|final
 name|Logger
 name|LOG
 init|=

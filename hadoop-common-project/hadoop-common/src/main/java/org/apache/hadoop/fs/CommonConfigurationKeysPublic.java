@@ -1594,26 +1594,6 @@ init|=
 literal|100
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
-DECL|field|KMS_CLIENT_COPY_LEGACY_TOKEN_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KMS_CLIENT_COPY_LEGACY_TOKEN_KEY
-init|=
-literal|"hadoop.security.kms.client.copy.legacy.token"
-decl_stmt|;
-comment|/**  Default value is true. */
-DECL|field|KMS_CLIENT_COPY_LEGACY_TOKEN_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|KMS_CLIENT_COPY_LEGACY_TOKEN_DEFAULT
-init|=
-literal|true
-decl_stmt|;
-comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|KMS_CLIENT_FAILOVER_SLEEP_MAX_MILLIS_KEY
 specifier|public
 specifier|static
