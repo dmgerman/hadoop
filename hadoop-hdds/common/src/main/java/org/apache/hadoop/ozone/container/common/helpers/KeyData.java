@@ -60,6 +60,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -118,17 +134,11 @@ specifier|public
 class|class
 name|KeyData
 block|{
-DECL|field|containerName
+DECL|field|blockID
 specifier|private
 specifier|final
-name|String
-name|containerName
-decl_stmt|;
-DECL|field|keyName
-specifier|private
-specifier|final
-name|String
-name|keyName
+name|BlockID
+name|blockID
 decl_stmt|;
 DECL|field|metadata
 specifier|private
@@ -152,29 +162,20 @@ name|ChunkInfo
 argument_list|>
 name|chunks
 decl_stmt|;
-comment|/**    * Constructs a KeyData Object.    *    * @param containerName    * @param keyName    */
-DECL|method|KeyData (String containerName, String keyName)
+comment|/**    * Constructs a KeyData Object.    *    * @param blockID    */
+DECL|method|KeyData (BlockID blockID)
 specifier|public
 name|KeyData
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerName
+name|blockID
 operator|=
-name|containerName
-expr_stmt|;
-name|this
-operator|.
-name|keyName
-operator|=
-name|keyName
+name|blockID
 expr_stmt|;
 name|this
 operator|.
@@ -207,15 +208,15 @@ init|=
 operator|new
 name|KeyData
 argument_list|(
+name|BlockID
+operator|.
+name|getFromProtobuf
+argument_list|(
 name|data
 operator|.
-name|getContainerName
+name|getBlockID
 argument_list|()
-argument_list|,
-name|data
-operator|.
-name|getName
-argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 for|for
@@ -301,20 +302,13 @@ argument_list|()
 decl_stmt|;
 name|builder
 operator|.
-name|setContainerName
+name|setBlockID
 argument_list|(
 name|this
 operator|.
-name|containerName
-argument_list|)
-expr_stmt|;
-name|builder
+name|blockID
 operator|.
-name|setName
-argument_list|(
-name|this
-operator|.
-name|getKeyName
+name|getProtobuf
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -519,26 +513,43 @@ return|return
 name|chunks
 return|;
 block|}
-comment|/**    * Returns container Name.    * @return String.    */
-DECL|method|getContainerName ()
+comment|/**    * Returns container ID.    * @return long.    */
+DECL|method|getContainerID ()
 specifier|public
-name|String
-name|getContainerName
+name|long
+name|getContainerID
 parameter_list|()
 block|{
 return|return
-name|containerName
+name|blockID
+operator|.
+name|getContainerID
+argument_list|()
 return|;
 block|}
-comment|/**    * Returns KeyName.    * @return String.    */
-DECL|method|getKeyName ()
+comment|/**    * Returns LocalID.    * @return long.    */
+DECL|method|getLocalID ()
 specifier|public
-name|String
-name|getKeyName
+name|long
+name|getLocalID
 parameter_list|()
 block|{
 return|return
-name|keyName
+name|blockID
+operator|.
+name|getLocalID
+argument_list|()
+return|;
+block|}
+comment|/**    * Return Block ID.    * @return BlockID.    */
+DECL|method|getBlockID ()
+specifier|public
+name|BlockID
+name|getBlockID
+parameter_list|()
+block|{
+return|return
+name|blockID
 return|;
 block|}
 comment|/**    * Sets Chunk list.    *    * @param chunks - List of chunks.    */

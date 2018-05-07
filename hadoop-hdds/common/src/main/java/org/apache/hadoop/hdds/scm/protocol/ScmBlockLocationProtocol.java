@@ -150,16 +150,6 @@ name|List
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
 begin_comment
 comment|/**  * ScmBlockLocationProtocol is used by an HDFS node to find the set of nodes  * to read/write a block.  */
 end_comment
@@ -170,23 +160,6 @@ specifier|public
 interface|interface
 name|ScmBlockLocationProtocol
 block|{
-comment|/**    * Find the set of nodes to read/write a block, as    * identified by the block key.  This method supports batch lookup by    * passing multiple keys.    *    * @param keys batch of block keys to find    * @return allocated blocks for each block key    * @throws IOException if there is any failure    */
-DECL|method|getBlockLocations (Set<String> keys)
-name|Set
-argument_list|<
-name|AllocatedBlock
-argument_list|>
-name|getBlockLocations
-parameter_list|(
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|keys
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner)
 name|AllocatedBlock

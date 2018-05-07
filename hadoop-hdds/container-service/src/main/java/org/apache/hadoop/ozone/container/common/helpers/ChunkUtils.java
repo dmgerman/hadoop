@@ -98,28 +98,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|StorageContainerException
 import|;
 end_import
@@ -596,16 +574,13 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param pipeline - pipeline.    * @param data - container data.    * @param info - chunk info.    * @return File    * @throws StorageContainerException    */
-DECL|method|validateChunk (Pipeline pipeline, ContainerData data, ChunkInfo info)
+comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param data - container data.    * @param info - chunk info.    * @return File    * @throws StorageContainerException    */
+DECL|method|validateChunk (ContainerData data, ChunkInfo info)
 specifier|public
 specifier|static
 name|File
 name|validateChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
 name|ContainerData
 name|data
 parameter_list|,
@@ -632,8 +607,6 @@ name|chunkFile
 init|=
 name|getChunkFile
 argument_list|(
-name|pipeline
-argument_list|,
 name|data
 argument_list|,
 name|info
@@ -698,16 +671,13 @@ return|return
 name|chunkFile
 return|;
 block|}
-comment|/**    * Validates that Path to chunk file exists.    *    * @param pipeline - Container Info.    * @param data - Container Data    * @param info - Chunk info    * @return - File.    * @throws StorageContainerException    */
-DECL|method|getChunkFile (Pipeline pipeline, ContainerData data, ChunkInfo info)
+comment|/**    * Validates that Path to chunk file exists.    *    * @param data - Container Data    * @param info - Chunk info    * @return - File.    * @throws StorageContainerException    */
+DECL|method|getChunkFile (ContainerData data, ChunkInfo info)
 specifier|public
 specifier|static
 name|File
 name|getChunkFile
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
 name|ContainerData
 name|data
 parameter_list|,
@@ -717,6 +687,15 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|data
+argument_list|,
+literal|"Container data can't be null"
+argument_list|)
+expr_stmt|;
 name|Logger
 name|log
 init|=
@@ -732,19 +711,22 @@ decl_stmt|;
 if|if
 condition|(
 name|data
-operator|==
-literal|null
+operator|.
+name|getContainerID
+argument_list|()
+operator|<
+literal|0
 condition|)
 block|{
 name|log
 operator|.
 name|error
 argument_list|(
-literal|"Invalid container Name: {}"
+literal|"Invalid container id: {}"
 argument_list|,
-name|pipeline
+name|data
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -752,13 +734,13 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Unable to find the container Name:"
+literal|"Unable to find the container id:"
 operator|+
 literal|" "
 operator|+
-name|pipeline
+name|data
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|CONTAINER_NOT_FOUND
@@ -1612,14 +1594,14 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setPipeline
+name|setBlockID
 argument_list|(
 name|msg
 operator|.
 name|getReadChunk
 argument_list|()
 operator|.
-name|getPipeline
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;

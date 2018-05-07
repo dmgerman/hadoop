@@ -76,6 +76,16 @@ name|UriInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
 begin_comment
 comment|/**  * UserArgs is used to package caller info  * and pass it down to file system.  */
 end_comment
@@ -303,9 +313,22 @@ name|getGroups
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|groups
+operator|!=
+literal|null
+condition|?
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
+name|groups
+argument_list|,
+name|groups
+operator|.
+name|length
+argument_list|)
+else|:
+literal|null
 return|;
 block|}
 comment|/**    * Sets the group list.    *    * @param groups list of groups    */
@@ -319,12 +342,29 @@ index|[]
 name|groups
 parameter_list|)
 block|{
+if|if
+condition|(
+name|groups
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|groups
 operator|=
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
 name|groups
+argument_list|,
+name|groups
+operator|.
+name|length
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the resource Name.    *    * @return String Resource.    */
 DECL|method|getResourceName ()

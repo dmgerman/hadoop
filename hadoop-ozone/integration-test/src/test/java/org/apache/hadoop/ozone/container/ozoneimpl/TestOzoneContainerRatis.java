@@ -381,7 +381,7 @@ name|runTestOzoneContainerViaDataNode
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTest ( String testName, RpcType rpc, int numNodes, CheckedBiConsumer<String, XceiverClientSpi, Exception> test)
+DECL|method|runTest ( String testName, RpcType rpc, int numNodes, CheckedBiConsumer<Long, XceiverClientSpi, Exception> test)
 specifier|private
 specifier|static
 name|void
@@ -398,7 +398,7 @@ name|numNodes
 parameter_list|,
 name|CheckedBiConsumer
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|XceiverClientSpi
 argument_list|,
@@ -496,8 +496,6 @@ name|ContainerTestHelper
 operator|.
 name|createPipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|CollectionUtils
 operator|.
 name|as

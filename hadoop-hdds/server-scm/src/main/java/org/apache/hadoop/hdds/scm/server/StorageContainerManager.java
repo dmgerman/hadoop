@@ -776,7 +776,6 @@ block|}
 argument_list|)
 DECL|class|StorageContainerManager
 specifier|public
-specifier|final
 class|class
 name|StorageContainerManager
 extends|extends
@@ -1047,8 +1046,6 @@ name|getScmNodeManager
 argument_list|()
 argument_list|,
 name|scmContainerManager
-argument_list|,
-name|cacheSize
 argument_list|)
 expr_stmt|;
 name|scmAdminUsernames
@@ -2287,13 +2284,13 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getContainerInfo (String containerName)
+DECL|method|getContainerInfo (long containerID)
 specifier|public
 name|ContainerInfo
 name|getContainerInfo
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -2303,7 +2300,7 @@ name|scmContainerManager
 operator|.
 name|getContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 return|;
 block|}

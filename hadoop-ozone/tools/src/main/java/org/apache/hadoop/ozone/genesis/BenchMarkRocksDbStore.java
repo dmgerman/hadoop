@@ -433,7 +433,7 @@ name|toBytes
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|writeBufferSize
 argument_list|)
@@ -446,7 +446,7 @@ name|setMaxWriteBufferNumber
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|maxWriteBufferNumber
 argument_list|)
@@ -458,7 +458,7 @@ name|setMaxBackgroundFlushes
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|maxBackgroundFlushes
 argument_list|)
@@ -486,7 +486,7 @@ name|toBytes
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|blockSize
 argument_list|)
@@ -499,7 +499,7 @@ name|setMaxOpenFiles
 argument_list|(
 name|Integer
 operator|.
-name|valueOf
+name|parseInt
 argument_list|(
 name|maxOpenFiles
 argument_list|)
@@ -520,7 +520,7 @@ name|toBytes
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|maxBytesForLevelBase
 argument_list|)
@@ -572,7 +572,7 @@ name|toBytes
 argument_list|(
 name|Long
 operator|.
-name|valueOf
+name|parseLong
 argument_list|(
 name|maxBytesForLevelBase
 argument_list|)

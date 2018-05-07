@@ -703,9 +703,7 @@ name|containerMapping
 operator|.
 name|listContainer
 argument_list|(
-literal|null
-argument_list|,
-literal|null
+literal|0
 argument_list|,
 name|Integer
 operator|.
@@ -1011,8 +1009,8 @@ name|CLEANUP
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * allocates a new container based on the type, replication etc.    *    * @param selector -- Pipeline selector class.    * @param type -- Replication type.    * @param replicationFactor - Replication replicationFactor.    * @param containerName - Container Name.    * @return Container Info.    * @throws IOException  on Failure.    */
-DECL|method|allocateContainer (PipelineSelector selector, HddsProtos .ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, final String containerName, String owner)
+comment|/**    * allocates a new container based on the type, replication etc.    *    * @param selector -- Pipeline selector class.    * @param type -- Replication type.    * @param replicationFactor - Replication replicationFactor.    * @return Container Info.    * @throws IOException  on Failure.    */
+DECL|method|allocateContainer (PipelineSelector selector, HddsProtos .ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
 specifier|public
 name|ContainerInfo
 name|allocateContainer
@@ -1030,10 +1028,6 @@ operator|.
 name|ReplicationFactor
 name|replicationFactor
 parameter_list|,
-specifier|final
-name|String
-name|containerName
-parameter_list|,
 name|String
 name|owner
 parameter_list|)
@@ -1050,8 +1044,6 @@ argument_list|(
 name|type
 argument_list|,
 name|replicationFactor
-argument_list|,
-name|containerName
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -1079,11 +1071,6 @@ name|ContainerInfo
 operator|.
 name|Builder
 argument_list|()
-operator|.
-name|setContainerName
-argument_list|(
-name|containerName
-argument_list|)
 operator|.
 name|setState
 argument_list|(
@@ -1227,10 +1214,7 @@ literal|"event: %s."
 argument_list|,
 name|info
 operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|info

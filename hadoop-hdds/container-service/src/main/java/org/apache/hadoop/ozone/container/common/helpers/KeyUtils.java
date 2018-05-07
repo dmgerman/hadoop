@@ -279,7 +279,7 @@ name|getDB
 argument_list|(
 name|container
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|container
@@ -306,7 +306,7 @@ literal|"Unable to open DB. DB Name: %s, Path: %s. ex: %s"
 argument_list|,
 name|container
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|container
@@ -375,7 +375,7 @@ name|removeDB
 argument_list|(
 name|container
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;

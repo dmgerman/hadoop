@@ -50,6 +50,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -191,20 +205,6 @@ operator|.
 name|pipelines
 operator|.
 name|PipelineSelector
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
 import|;
 end_import
 
@@ -363,38 +363,6 @@ operator|.
 name|lease
 operator|.
 name|LeaseManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|MetadataKeyFilters
-operator|.
-name|KeyPrefixFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|MetadataKeyFilters
-operator|.
-name|MetadataKeyFilter
 import|;
 end_import
 
@@ -986,14 +954,14 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|getContainer (final String containerName)
+DECL|method|getContainer (final long containerID)
 specifier|public
 name|ContainerInfo
 name|getContainer
 parameter_list|(
 specifier|final
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1016,11 +984,11 @@ name|containerStore
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|Longs
 operator|.
-name|getBytes
+name|toByteArray
 argument_list|(
-name|encoding
+name|containerID
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1037,7 +1005,7 @@ name|SCMException
 argument_list|(
 literal|"Specified key does not exist. key : "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|SCMException
 operator|.
@@ -1088,7 +1056,7 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|listContainer (String startName, String prefixName, int count)
+DECL|method|listContainer (long startContainerID, int count)
 specifier|public
 name|List
 argument_list|<
@@ -1096,11 +1064,8 @@ name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -1142,30 +1107,21 @@ literal|"No container exists in current db"
 argument_list|)
 throw|;
 block|}
-name|MetadataKeyFilter
-name|prefixFilter
-init|=
-operator|new
-name|KeyPrefixFilter
-argument_list|(
-name|prefixName
-argument_list|)
-decl_stmt|;
 name|byte
 index|[]
 name|startKey
 init|=
-name|startName
-operator|==
-literal|null
+name|startContainerID
+operator|<=
+literal|0
 condition|?
 literal|null
 else|:
-name|DFSUtil
+name|Longs
 operator|.
-name|string2Bytes
+name|toByteArray
 argument_list|(
-name|startName
+name|startContainerID
 argument_list|)
 decl_stmt|;
 name|List
@@ -1191,7 +1147,7 @@ name|startKey
 argument_list|,
 name|count
 argument_list|,
-name|prefixFilter
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Transform the values into the pipelines.
@@ -1263,10 +1219,10 @@ return|return
 name|containerList
 return|;
 block|}
-comment|/**    * Allocates a new container.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name of the container.    * @param owner - The string name of the Service that owns this container.    * @return - Pipeline that makes up this container.    * @throws IOException - Exception    */
+comment|/**    * Allocates a new container.    *    * @param replicationFactor - replication factor of the container.    * @param owner - The string name of the Service that owns this container.    * @return - Pipeline that makes up this container.    * @throws IOException - Exception    */
 annotation|@
 name|Override
-DECL|method|allocateContainer ( ReplicationType type, ReplicationFactor replicationFactor, final String containerName, String owner)
+DECL|method|allocateContainer ( ReplicationType type, ReplicationFactor replicationFactor, String owner)
 specifier|public
 name|ContainerInfo
 name|allocateContainer
@@ -1277,34 +1233,12 @@ parameter_list|,
 name|ReplicationFactor
 name|replicationFactor
 parameter_list|,
-specifier|final
-name|String
-name|containerName
-parameter_list|,
 name|String
 name|owner
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|containerName
-operator|.
-name|isEmpty
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|ContainerInfo
 name|containerInfo
 decl_stmt|;
@@ -1338,45 +1272,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|byte
-index|[]
-name|containerBytes
-init|=
-name|containerStore
-operator|.
-name|get
-argument_list|(
-name|containerName
-operator|.
-name|getBytes
-argument_list|(
-name|encoding
-argument_list|)
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|containerBytes
-operator|!=
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"Specified container already exists. key : "
-operator|+
-name|containerName
-argument_list|,
-name|SCMException
-operator|.
-name|ResultCodes
-operator|.
-name|CONTAINER_EXISTS
-argument_list|)
-throw|;
-block|}
 name|containerInfo
 operator|=
 name|containerStateManager
@@ -1389,21 +1284,28 @@ name|type
 argument_list|,
 name|replicationFactor
 argument_list|,
-name|containerName
-argument_list|,
 name|owner
 argument_list|)
 expr_stmt|;
+name|byte
+index|[]
+name|containerIDBytes
+init|=
+name|Longs
+operator|.
+name|toByteArray
+argument_list|(
+name|containerInfo
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|containerStore
 operator|.
 name|put
 argument_list|(
-name|containerName
-operator|.
-name|getBytes
-argument_list|(
-name|encoding
-argument_list|)
+name|containerIDBytes
 argument_list|,
 name|containerInfo
 operator|.
@@ -1427,16 +1329,16 @@ return|return
 name|containerInfo
 return|;
 block|}
-comment|/**    * Deletes a container from SCM.    *    * @param containerName - Container name    * @throws IOException if container doesn't exist or container store failed    *                     to delete the    *                     specified key.    */
+comment|/**    * Deletes a container from SCM.    *    * @param containerID - Container ID    * @throws IOException if container doesn't exist or container store failed    *                     to delete the    *                     specified key.    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (String containerName)
+DECL|method|deleteContainer (long containerID)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1452,11 +1354,11 @@ name|byte
 index|[]
 name|dbKey
 init|=
-name|containerName
+name|Longs
 operator|.
-name|getBytes
+name|toByteArray
 argument_list|(
-name|encoding
+name|containerID
 argument_list|)
 decl_stmt|;
 name|byte
@@ -1483,7 +1385,7 @@ name|SCMException
 argument_list|(
 literal|"Failed to delete container "
 operator|+
-name|containerName
+name|containerID
 operator|+
 literal|", reason : "
 operator|+
@@ -1517,15 +1419,15 @@ block|}
 comment|/**    * {@inheritDoc} Used by client to update container state on SCM.    */
 annotation|@
 name|Override
-DECL|method|updateContainerState ( String containerName, HddsProtos.LifeCycleEvent event)
+DECL|method|updateContainerState ( long containerID, HddsProtos.LifeCycleEvent event)
 specifier|public
 name|HddsProtos
 operator|.
 name|LifeCycleState
 name|updateContainerState
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|HddsProtos
 operator|.
@@ -1549,11 +1451,11 @@ name|byte
 index|[]
 name|dbKey
 init|=
-name|containerName
+name|Longs
 operator|.
-name|getBytes
+name|toByteArray
 argument_list|(
-name|encoding
+name|containerID
 argument_list|)
 decl_stmt|;
 name|byte
@@ -1580,7 +1482,7 @@ name|SCMException
 argument_list|(
 literal|"Failed to update container state"
 operator|+
-name|containerName
+name|containerID
 operator|+
 literal|", reason : container doesn't exist."
 argument_list|,
@@ -1649,7 +1551,7 @@ lambda|->
 block|{
 name|updateContainerState
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|HddsProtos
 operator|.
@@ -1839,13 +1741,15 @@ name|byte
 index|[]
 name|dbKey
 init|=
-name|datanodeState
-operator|.
-name|getContainerNameBytes
-argument_list|()
+name|Longs
 operator|.
 name|toByteArray
+argument_list|(
+name|datanodeState
+operator|.
+name|getContainerID
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|lock
 operator|.
@@ -1935,7 +1839,7 @@ literal|"Closing the Container: {}"
 argument_list|,
 name|newState
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1961,7 +1865,7 @@ argument_list|()
 argument_list|,
 name|datanodeState
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2012,11 +1916,11 @@ argument_list|()
 decl_stmt|;
 name|builder
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
 name|knownState
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2177,7 +2081,7 @@ name|getContainer
 argument_list|(
 name|newState
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2226,7 +2130,7 @@ name|updateContainerState
 argument_list|(
 name|scmInfo
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|HddsProtos
@@ -2259,7 +2163,7 @@ literal|"update container state, current container state: {}."
 argument_list|,
 name|newState
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|state
@@ -2413,7 +2317,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 name|failedContainers
 init|=
@@ -2437,14 +2341,14 @@ name|byte
 index|[]
 name|dbKey
 init|=
+name|Longs
+operator|.
+name|toByteArray
+argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
-operator|.
-name|getBytes
-argument_list|(
-name|encoding
 argument_list|)
 decl_stmt|;
 name|byte
@@ -2509,14 +2413,6 @@ argument_list|(
 name|info
 operator|.
 name|getAllocatedBytes
-argument_list|()
-argument_list|)
-operator|.
-name|setContainerName
-argument_list|(
-name|oldInfo
-operator|.
-name|getContainerName
 argument_list|()
 argument_list|)
 operator|.
@@ -2591,7 +2487,7 @@ literal|"in container store, a deleted container?"
 argument_list|,
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2609,7 +2505,7 @@ name|add
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;

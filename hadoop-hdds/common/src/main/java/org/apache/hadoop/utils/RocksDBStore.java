@@ -1996,6 +1996,10 @@ argument_list|(
 name|statMBeanName
 argument_list|)
 expr_stmt|;
+name|statMBeanName
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(

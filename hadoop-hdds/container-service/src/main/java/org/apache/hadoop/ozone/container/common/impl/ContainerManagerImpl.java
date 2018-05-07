@@ -128,28 +128,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|StorageContainerException
 import|;
 end_import
@@ -1083,11 +1061,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// TODO: consider primitive collection like eclipse-collections
+comment|// to avoid autoboxing overhead
 specifier|private
 specifier|final
 name|ConcurrentSkipListMap
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|ContainerStatus
 argument_list|>
@@ -1599,6 +1579,16 @@ argument_list|,
 literal|"Container Name  to container key mapping is null"
 argument_list|)
 expr_stmt|;
+name|long
+name|containerID
+init|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|keyName
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|String
@@ -1691,7 +1681,7 @@ name|containerMap
 operator|.
 name|put
 argument_list|(
-name|keyName
+name|containerID
 argument_list|,
 operator|new
 name|ContainerStatus
@@ -1772,7 +1762,7 @@ name|containerMap
 operator|.
 name|put
 argument_list|(
-name|keyName
+name|containerID
 argument_list|,
 operator|new
 name|ContainerStatus
@@ -1949,7 +1939,7 @@ name|containerMap
 operator|.
 name|put
 argument_list|(
-name|keyName
+name|containerID
 argument_list|,
 name|containerStatus
 argument_list|)
@@ -1983,7 +1973,7 @@ name|containerMap
 operator|.
 name|put
 argument_list|(
-name|keyName
+name|containerID
 argument_list|,
 operator|new
 name|ContainerStatus
@@ -2027,17 +2017,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates a container with the given name.    *    * @param pipeline -- Nodes which make up this container.    * @param containerData - Container Name and metadata.    * @throws StorageContainerException - Exception    */
+comment|/**    * Creates a container with the given name.    *    * @param containerData - Container Name and metadata.    * @throws StorageContainerException - Exception    */
 annotation|@
 name|Override
-DECL|method|createContainer (Pipeline pipeline, ContainerData containerData)
+DECL|method|createContainer (ContainerData containerData)
 specifier|public
 name|void
 name|createContainer
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
 name|ContainerData
 name|containerData
 parameter_list|)
@@ -2066,7 +2053,7 @@ name|containsKey
 argument_list|(
 name|containerData
 operator|.
-name|getName
+name|getContainerID
 argument_list|()
 argument_list|)
 condition|)
@@ -2079,7 +2066,7 @@ literal|"container already exists. {}"
 argument_list|,
 name|containerData
 operator|.
-name|getName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2279,10 +2266,15 @@ decl_stmt|;
 name|String
 name|containerName
 init|=
+name|Long
+operator|.
+name|toString
+argument_list|(
 name|containerData
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -2491,7 +2483,7 @@ literal|"cleanup partially created artifacts. "
 argument_list|,
 name|containerData
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|ex
@@ -2534,19 +2526,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Deletes an existing container.    *    * @param pipeline - nodes that make this container.    * @param containerName - name of the container.    * @param forceDelete - whether this container should be deleted forcibly.    * @throws StorageContainerException    */
+comment|/**    * Deletes an existing container.    *    * @param containerID - ID of the container.    * @param forceDelete - whether this container should be deleted forcibly.    * @throws StorageContainerException    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (Pipeline pipeline, String containerName, boolean forceDelete)
+DECL|method|deleteContainer (long containerID, boolean forceDelete)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|boolean
 name|forceDelete
@@ -2556,25 +2545,13 @@ name|StorageContainerException
 block|{
 name|Preconditions
 operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|,
-literal|"Container name cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
 name|checkState
 argument_list|(
-name|containerName
-operator|.
-name|length
-argument_list|()
-operator|>
+name|containerID
+operator|>=
 literal|0
 argument_list|,
-literal|"Container name length cannot be zero."
+literal|"Container ID cannot be negative."
 argument_list|)
 expr_stmt|;
 name|writeLock
@@ -2586,10 +2563,7 @@ if|if
 condition|(
 name|isOpen
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerID
 argument_list|)
 condition|)
 block|{
@@ -2610,7 +2584,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 if|if
@@ -2624,18 +2598,18 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No such container. Name: {}"
+literal|"No such container. ID: {}"
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"No such container. Name : "
+literal|"No such container. ID : "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_NOT_FOUND
 argument_list|)
@@ -2655,9 +2629,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Invalid container data. Name: {}"
+literal|"Invalid container data. ID: {}"
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2666,7 +2640,7 @@ name|StorageContainerException
 argument_list|(
 literal|"Invalid container data. Name : "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_NOT_FOUND
 argument_list|)
@@ -2690,7 +2664,7 @@ name|containerMap
 operator|.
 name|remove
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}
@@ -2712,13 +2686,23 @@ parameter_list|)
 block|{
 comment|// TODO : An I/O error during delete can leave partial artifacts on the
 comment|// disk. We will need the cleaner thread to cleanup this information.
+name|String
+name|errMsg
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Failed to cleanup container. ID: %d"
+argument_list|,
+name|containerID
+argument_list|)
+decl_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to cleanup container. Name: {}"
-argument_list|,
-name|containerName
+name|errMsg
 argument_list|,
 name|e
 argument_list|)
@@ -2727,7 +2711,7 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-name|containerName
+name|errMsg
 argument_list|,
 name|e
 argument_list|,
@@ -2742,22 +2726,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * A simple interface for container Iterations.    *<p/>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param prefix -  Return keys that match this prefix.    * @param count - how many to return    * @param prevKey - Previous Key Value or empty String.    * @param data - Actual containerData    * @throws StorageContainerException    */
+comment|/**    * A simple interface for container Iterations.    *<p/>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param startContainerID -  Return containers with ID>= startContainerID.    * @param count - how many to return    * @param data - Actual containerData    * @throws StorageContainerException    */
 annotation|@
 name|Override
-DECL|method|listContainer (String prefix, long count, String prevKey, List<ContainerData> data)
+DECL|method|listContainer (long startContainerID, long count, List<ContainerData> data)
 specifier|public
 name|void
 name|listContainer
 parameter_list|(
-name|String
-name|prefix
+name|long
+name|startContainerID
 parameter_list|,
 name|long
 name|count
-parameter_list|,
-name|String
-name|prevKey
 parameter_list|,
 name|List
 argument_list|<
@@ -2768,7 +2749,6 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 block|{
-comment|// TODO : Support list with Prefix and PrevKey
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -2778,6 +2758,30 @@ argument_list|,
 literal|"Internal assertion: data cannot be null"
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|startContainerID
+operator|>=
+literal|0
+argument_list|,
+literal|"Start container ID cannot be negative"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|count
+operator|>
+literal|0
+argument_list|,
+literal|"max number of containers returned "
+operator|+
+literal|"must be positive"
+argument_list|)
+expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -2785,7 +2789,7 @@ try|try
 block|{
 name|ConcurrentNavigableMap
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|ContainerStatus
 argument_list|>
@@ -2793,14 +2797,9 @@ name|map
 decl_stmt|;
 if|if
 condition|(
-name|prevKey
+name|startContainerID
 operator|==
-literal|null
-operator|||
-name|prevKey
-operator|.
-name|isEmpty
-argument_list|()
+literal|0
 condition|)
 block|{
 name|map
@@ -2826,7 +2825,7 @@ name|containerMap
 operator|.
 name|tailMap
 argument_list|(
-name|prevKey
+name|startContainerID
 argument_list|,
 literal|false
 argument_list|)
@@ -2882,41 +2881,29 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get metadata about a specific container.    *    * @param containerName - Name of the container    * @return ContainerData - Container Data.    * @throws StorageContainerException    */
+comment|/**    * Get metadata about a specific container.    *    * @param containerID - ID of the container    * @return ContainerData - Container Data.    * @throws StorageContainerException    */
 annotation|@
 name|Override
-DECL|method|readContainer (String containerName)
+DECL|method|readContainer (long containerID)
 specifier|public
 name|ContainerData
 name|readContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|StorageContainerException
 block|{
 name|Preconditions
 operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|,
-literal|"Container name cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
 name|checkState
 argument_list|(
-name|containerName
-operator|.
-name|length
-argument_list|()
-operator|>
+name|containerID
+operator|>=
 literal|0
 argument_list|,
-literal|"Container name length cannot be zero."
+literal|"Container ID cannot be negative."
 argument_list|)
 expr_stmt|;
 if|if
@@ -2926,7 +2913,7 @@ name|containerMap
 operator|.
 name|containsKey
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 condition|)
 block|{
@@ -2934,9 +2921,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Unable to find the container. Name: "
+literal|"Unable to find the container. ID: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_NOT_FOUND
 argument_list|)
@@ -2949,7 +2936,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|getContainer
@@ -2966,9 +2953,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Invalid container data. Name: "
+literal|"Invalid container data. ID: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_INTERNAL_ERROR
 argument_list|)
@@ -2978,16 +2965,16 @@ return|return
 name|cData
 return|;
 block|}
-comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    *    * @param containerName - Name of the container.    * @throws StorageContainerException    */
+comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    *    * @param containerID - ID of the container.    * @throws StorageContainerException    */
 annotation|@
 name|Override
-DECL|method|closeContainer (String containerName)
+DECL|method|closeContainer (long containerID)
 specifier|public
 name|void
 name|closeContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -2999,7 +2986,7 @@ name|containerData
 init|=
 name|readContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 name|containerData
@@ -3079,7 +3066,7 @@ name|containerMap
 operator|.
 name|put
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|status
 argument_list|)
@@ -3087,16 +3074,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateContainer (Pipeline pipeline, String containerName, ContainerData data, boolean forceUpdate)
+DECL|method|updateContainer (long containerID, ContainerData data, boolean forceUpdate)
 specifier|public
 name|void
 name|updateContainer
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|ContainerData
 name|data
@@ -3109,20 +3093,13 @@ name|StorageContainerException
 block|{
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkState
 argument_list|(
-name|pipeline
+name|containerID
+operator|>=
+literal|0
 argument_list|,
-literal|"Pipeline cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|,
-literal|"Container name cannot be null"
+literal|"Container ID cannot be negative."
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -3170,7 +3147,7 @@ name|containerMap
 operator|.
 name|containsKey
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 condition|)
 block|{
@@ -3180,7 +3157,7 @@ name|StorageContainerException
 argument_list|(
 literal|"Container doesn't exist. Name :"
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_NOT_FOUND
 argument_list|)
@@ -3235,7 +3212,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|getContainer
@@ -3277,9 +3254,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Update a closed container is not allowed. Name: "
+literal|"Update a closed container is not allowed. ID: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|UNSUPPORTED_REQUEST
 argument_list|)
@@ -3323,9 +3300,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Container file not exists or corrupted. Name: "
+literal|"Container file not exists or corrupted. ID: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_INTERNAL_ERROR
 argument_list|)
@@ -3424,7 +3401,7 @@ name|containerMap
 operator|.
 name|replace
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|newStatus
 argument_list|)
@@ -3484,9 +3461,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Failed to restore container data from the backup. Name: "
+literal|"Failed to restore container data from the backup. ID: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_INTERNAL_ERROR
 argument_list|)
@@ -3591,16 +3568,16 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Checks if a container exists.    *    * @param containerName - Name of the container.    * @return true if the container is open false otherwise.    * @throws StorageContainerException - Throws Exception if we are not able to    *                                   find the container.    */
+comment|/**    * Checks if a container exists.    *    * @param containerID - ID of the container.    * @return true if the container is open false otherwise.    * @throws StorageContainerException - Throws Exception if we are not able to    *                                   find the container.    */
 annotation|@
 name|Override
-DECL|method|isOpen (String containerName)
+DECL|method|isOpen (long containerID)
 specifier|public
 name|boolean
 name|isOpen
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -3613,7 +3590,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 if|if
@@ -3629,7 +3606,7 @@ name|StorageContainerException
 argument_list|(
 literal|"Container status not found: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_NOT_FOUND
 argument_list|)
@@ -3657,7 +3634,7 @@ name|StorageContainerException
 argument_list|(
 literal|"Container not found: "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|CONTAINER_NOT_FOUND
 argument_list|)
@@ -3714,7 +3691,7 @@ DECL|method|getContainerMap ()
 specifier|public
 name|ConcurrentSkipListMap
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|ContainerStatus
 argument_list|>
@@ -4224,14 +4201,14 @@ argument_list|()
 decl_stmt|;
 name|ciBuilder
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
 name|container
 operator|.
 name|getContainer
 argument_list|()
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
@@ -4462,7 +4439,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|incrPendingDeletionBlocks (int numBlocks, String containerId)
+DECL|method|incrPendingDeletionBlocks (int numBlocks, long containerId)
 specifier|public
 name|void
 name|incrPendingDeletionBlocks
@@ -4470,7 +4447,7 @@ parameter_list|(
 name|int
 name|numBlocks
 parameter_list|,
-name|String
+name|long
 name|containerId
 parameter_list|)
 block|{
@@ -4506,7 +4483,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|decrPendingDeletionBlocks (int numBlocks, String containerId)
+DECL|method|decrPendingDeletionBlocks (int numBlocks, long containerId)
 specifier|public
 name|void
 name|decrPendingDeletionBlocks
@@ -4514,7 +4491,7 @@ parameter_list|(
 name|int
 name|numBlocks
 parameter_list|,
-name|String
+name|long
 name|containerId
 parameter_list|)
 block|{
@@ -4548,16 +4525,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Increase the read count of the container.    *    * @param containerName - Name of the container.    */
+comment|/**    * Increase the read count of the container.    *    * @param containerId - ID of the container.    */
 annotation|@
 name|Override
-DECL|method|incrReadCount (String containerName)
+DECL|method|incrReadCount (long containerId)
 specifier|public
 name|void
 name|incrReadCount
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4567,7 +4544,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 name|status
@@ -4576,13 +4553,13 @@ name|incrReadCount
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getReadCount (String containerName)
+DECL|method|getReadCount (long containerId)
 specifier|public
 name|long
 name|getReadCount
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4592,7 +4569,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4602,16 +4579,16 @@ name|getReadCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Increse the read counter for bytes read from the container.    *    * @param containerName - Name of the container.    * @param readBytes     - bytes read from the container.    */
+comment|/**    * Increse the read counter for bytes read from the container.    *    * @param containerId - ID of the container.    * @param readBytes     - bytes read from the container.    */
 annotation|@
 name|Override
-DECL|method|incrReadBytes (String containerName, long readBytes)
+DECL|method|incrReadBytes (long containerId, long readBytes)
 specifier|public
 name|void
 name|incrReadBytes
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|readBytes
@@ -4624,7 +4601,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 name|status
@@ -4635,13 +4612,13 @@ name|readBytes
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getReadBytes (String containerName)
+DECL|method|getReadBytes (long containerId)
 specifier|public
 name|long
 name|getReadBytes
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|readLock
@@ -4656,7 +4633,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4673,16 +4650,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Increase the write count of the container.    *    * @param containerName - Name of the container.    */
+comment|/**    * Increase the write count of the container.    *    * @param containerId - Name of the container.    */
 annotation|@
 name|Override
-DECL|method|incrWriteCount (String containerName)
+DECL|method|incrWriteCount (long containerId)
 specifier|public
 name|void
 name|incrWriteCount
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4692,7 +4669,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 name|status
@@ -4701,13 +4678,13 @@ name|incrWriteCount
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getWriteCount (String containerName)
+DECL|method|getWriteCount (long containerId)
 specifier|public
 name|long
 name|getWriteCount
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4717,7 +4694,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4727,16 +4704,16 @@ name|getWriteCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Increse the write counter for bytes write into the container.    *    * @param containerName - Name of the container.    * @param writeBytes    - bytes write into the container.    */
+comment|/**    * Increse the write counter for bytes write into the container.    *    * @param containerId   - ID of the container.    * @param writeBytes    - bytes write into the container.    */
 annotation|@
 name|Override
-DECL|method|incrWriteBytes (String containerName, long writeBytes)
+DECL|method|incrWriteBytes (long containerId, long writeBytes)
 specifier|public
 name|void
 name|incrWriteBytes
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|writeBytes
@@ -4749,7 +4726,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 name|status
@@ -4760,13 +4737,13 @@ name|writeBytes
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getWriteBytes (String containerName)
+DECL|method|getWriteBytes (long containerId)
 specifier|public
 name|long
 name|getWriteBytes
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4776,7 +4753,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4786,16 +4763,16 @@ name|getWriteBytes
 argument_list|()
 return|;
 block|}
-comment|/**    * Increase the bytes used by the container.    *    * @param containerName - Name of the container.    * @param used          - additional bytes used by the container.    * @return the current bytes used.    */
+comment|/**    * Increase the bytes used by the container.    *    * @param containerId   - ID of the container.    * @param used          - additional bytes used by the container.    * @return the current bytes used.    */
 annotation|@
 name|Override
-DECL|method|incrBytesUsed (String containerName, long used)
+DECL|method|incrBytesUsed (long containerId, long used)
 specifier|public
 name|long
 name|incrBytesUsed
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|used
@@ -4808,7 +4785,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4820,16 +4797,16 @@ name|used
 argument_list|)
 return|;
 block|}
-comment|/**    * Decrease the bytes used by the container.    *    * @param containerName - Name of the container.    * @param used          - additional bytes reclaimed by the container.    * @return the current bytes used.    */
+comment|/**    * Decrease the bytes used by the container.    *    * @param containerId   - ID of the container.    * @param used          - additional bytes reclaimed by the container.    * @return the current bytes used.    */
 annotation|@
 name|Override
-DECL|method|decrBytesUsed (String containerName, long used)
+DECL|method|decrBytesUsed (long containerId, long used)
 specifier|public
 name|long
 name|decrBytesUsed
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|used
@@ -4842,7 +4819,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4854,13 +4831,13 @@ name|used
 argument_list|)
 return|;
 block|}
-DECL|method|getBytesUsed (String containerName)
+DECL|method|getBytesUsed (long containerId)
 specifier|public
 name|long
 name|getBytesUsed
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4870,7 +4847,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return
@@ -4880,16 +4857,16 @@ name|getBytesUsed
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the number of keys in the container.    *    * @param containerName - Name of the container.    * @return the current key count.    */
+comment|/**    * Get the number of keys in the container.    *    * @param containerId - ID of the container.    * @return the current key count.    */
 annotation|@
 name|Override
-DECL|method|getNumKeys (String containerName)
+DECL|method|getNumKeys (long containerId)
 specifier|public
 name|long
 name|getNumKeys
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 block|{
 name|ContainerStatus
@@ -4899,7 +4876,7 @@ name|containerMap
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerId
 argument_list|)
 decl_stmt|;
 return|return

@@ -618,8 +618,6 @@ init|=
 operator|new
 name|Pipeline
 argument_list|(
-literal|"setup"
-argument_list|,
 name|pipelineChannel
 argument_list|)
 decl_stmt|;

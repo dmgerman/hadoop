@@ -1018,13 +1018,10 @@ control|)
 block|{
 try|try
 block|{
-name|DeletedBlocksTransaction
-name|block
+name|byte
+index|[]
+name|deleteBlockBytes
 init|=
-name|DeletedBlocksTransaction
-operator|.
-name|parseFrom
-argument_list|(
 name|deletedStore
 operator|.
 name|get
@@ -1036,6 +1033,33 @@ argument_list|(
 name|txID
 argument_list|)
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|deleteBlockBytes
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Delete txID {} not found"
+argument_list|,
+name|txID
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+name|DeletedBlocksTransaction
+name|block
+init|=
+name|DeletedBlocksTransaction
+operator|.
+name|parseFrom
+argument_list|(
+name|deleteBlockBytes
 argument_list|)
 decl_stmt|;
 name|DeletedBlocksTransaction
@@ -1149,7 +1173,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|constructNewTransaction (long txID, String containerName, List<String> blocks)
+DECL|method|constructNewTransaction (long txID, long containerID, List<Long> blocks)
 specifier|private
 name|DeletedBlocksTransaction
 name|constructNewTransaction
@@ -1157,12 +1181,12 @@ parameter_list|(
 name|long
 name|txID
 parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 name|blocks
 parameter_list|)
@@ -1178,12 +1202,12 @@ argument_list|(
 name|txID
 argument_list|)
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
-name|addAllBlockID
+name|addAllLocalID
 argument_list|(
 name|blocks
 argument_list|)
@@ -1273,20 +1297,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@inheritDoc}    *    * @param containerName - container name.    * @param blocks - blocks that belong to the same container.    * @throws IOException    */
+comment|/**    * {@inheritDoc}    *    * @param containerID - container ID.    * @param blocks - blocks that belong to the same container.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|addTransaction (String containerName, List<String> blocks)
+DECL|method|addTransaction (long containerID, List<Long> blocks)
 specifier|public
 name|void
 name|addTransaction
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 name|blocks
 parameter_list|)
@@ -1316,7 +1340,7 @@ name|lastTxID
 operator|+
 literal|1
 argument_list|,
-name|containerName
+name|containerID
 argument_list|,
 name|blocks
 argument_list|)
@@ -1490,18 +1514,18 @@ block|}
 comment|/**    * {@inheritDoc}    *    * @param containerBlocksMap a map of containerBlocks.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|addTransactions (Map<String, List<String>> containerBlocksMap)
+DECL|method|addTransactions (Map<Long, List<Long>> containerBlocksMap)
 specifier|public
 name|void
 name|addTransactions
 parameter_list|(
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 argument_list|>
 name|containerBlocksMap
@@ -1534,11 +1558,11 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 argument_list|>
 name|entry

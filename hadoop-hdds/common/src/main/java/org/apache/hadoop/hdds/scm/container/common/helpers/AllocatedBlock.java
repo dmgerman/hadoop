@@ -24,6 +24,22 @@ name|helpers
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
 begin_comment
 comment|/**  * Allocated block wraps the result returned from SCM#allocateBlock which  * contains a Pipeline and the key.  */
 end_comment
@@ -40,10 +56,10 @@ specifier|private
 name|Pipeline
 name|pipeline
 decl_stmt|;
-DECL|field|key
+DECL|field|blockID
 specifier|private
-name|String
-name|key
+name|BlockID
+name|blockID
 decl_stmt|;
 comment|// Indicates whether the client should create container before writing block.
 DECL|field|shouldCreateContainer
@@ -63,10 +79,10 @@ specifier|private
 name|Pipeline
 name|pipeline
 decl_stmt|;
-DECL|field|key
+DECL|field|blockID
 specifier|private
-name|String
-name|key
+name|BlockID
+name|blockID
 decl_stmt|;
 DECL|field|shouldCreateContainer
 specifier|private
@@ -92,20 +108,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setKey (String k)
+DECL|method|setBlockID (BlockID blockID)
 specifier|public
 name|Builder
-name|setKey
+name|setBlockID
 parameter_list|(
-name|String
-name|k
+name|BlockID
+name|blockID
 parameter_list|)
 block|{
 name|this
 operator|.
-name|key
+name|blockID
 operator|=
-name|k
+name|blockID
 expr_stmt|;
 return|return
 name|this
@@ -142,22 +158,22 @@ name|AllocatedBlock
 argument_list|(
 name|pipeline
 argument_list|,
-name|key
+name|blockID
 argument_list|,
 name|shouldCreateContainer
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|AllocatedBlock (Pipeline pipeline, String key, boolean shouldCreateContainer)
+DECL|method|AllocatedBlock (Pipeline pipeline, BlockID blockID, boolean shouldCreateContainer)
 specifier|private
 name|AllocatedBlock
 parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
-name|String
-name|key
+name|BlockID
+name|blockID
 parameter_list|,
 name|boolean
 name|shouldCreateContainer
@@ -171,9 +187,9 @@ name|pipeline
 expr_stmt|;
 name|this
 operator|.
-name|key
+name|blockID
 operator|=
-name|key
+name|blockID
 expr_stmt|;
 name|this
 operator|.
@@ -192,14 +208,14 @@ return|return
 name|pipeline
 return|;
 block|}
-DECL|method|getKey ()
+DECL|method|getBlockID ()
 specifier|public
-name|String
-name|getKey
+name|BlockID
+name|getBlockID
 parameter_list|()
 block|{
 return|return
-name|key
+name|blockID
 return|;
 block|}
 DECL|method|getCreateContainer ()

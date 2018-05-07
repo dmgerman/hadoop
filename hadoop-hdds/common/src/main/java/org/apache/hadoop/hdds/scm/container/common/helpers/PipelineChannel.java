@@ -215,6 +215,8 @@ specifier|private
 name|String
 name|name
 decl_stmt|;
+comment|// TODO: change to long based id
+comment|//private long id;
 DECL|method|PipelineChannel (String leaderID, LifeCycleState lifeCycleState, ReplicationType replicationType, ReplicationFactor replicationFactor, String name)
 specifier|public
 name|PipelineChannel

@@ -432,14 +432,11 @@ block|}
 comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
-DECL|method|createContainer (String containerId, String owner)
+DECL|method|createContainer (String owner)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|createContainer
 parameter_list|(
-name|String
-name|containerId
-parameter_list|,
 name|String
 name|owner
 parameter_list|)
@@ -453,8 +450,8 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-name|Pipeline
-name|pipeline
+name|ContainerInfo
+name|container
 init|=
 name|storageContainerLocationClient
 operator|.
@@ -470,10 +467,16 @@ operator|.
 name|getFactor
 argument_list|()
 argument_list|,
-name|containerId
-argument_list|,
 name|owner
 argument_list|)
+decl_stmt|;
+name|Pipeline
+name|pipeline
+init|=
+name|container
+operator|.
+name|getPipeline
+argument_list|()
 decl_stmt|;
 name|client
 operator|=
@@ -482,6 +485,11 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|container
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Allocated State means that SCM has allocated this pipeline in its
@@ -526,19 +534,18 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO : Container Client State needs to be updated.
-comment|// TODO : Return ContainerInfo instead of Pipeline
 name|createContainer
 argument_list|(
-name|containerId
-argument_list|,
 name|client
 argument_list|,
-name|pipeline
+name|container
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|pipeline
+name|container
 return|;
 block|}
 finally|finally
@@ -560,20 +567,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Create a container over pipeline specified by the SCM.    *    * @param containerId - Container ID    * @param client - Client to communicate with Datanodes    * @param pipeline - A pipeline that is already created.    * @throws IOException    */
-DECL|method|createContainer (String containerId, XceiverClientSpi client, Pipeline pipeline)
+comment|/**    * Create a container over pipeline specified by the SCM.    *    * @param client - Client to communicate with Datanodes.    * @param containerId - Container ID.    * @throws IOException    */
+DECL|method|createContainer (XceiverClientSpi client, long containerId)
 specifier|public
 name|void
 name|createContainer
 parameter_list|(
-name|String
-name|containerId
-parameter_list|,
 name|XceiverClientSpi
 name|client
 parameter_list|,
-name|Pipeline
-name|pipeline
+name|long
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException
@@ -619,6 +623,8 @@ operator|.
 name|createContainer
 argument_list|(
 name|client
+argument_list|,
+name|containerId
 argument_list|,
 name|traceID
 argument_list|)
@@ -668,14 +674,20 @@ name|containerId
 operator|+
 literal|" leader:"
 operator|+
-name|pipeline
+name|client
+operator|.
+name|getPipeline
+argument_list|()
 operator|.
 name|getLeader
 argument_list|()
 operator|+
 literal|" machines:"
 operator|+
-name|pipeline
+name|client
+operator|.
+name|getPipeline
+argument_list|()
 operator|.
 name|getMachines
 argument_list|()
@@ -720,34 +732,15 @@ comment|//
 comment|// 2. Talk to Datanodes to create the pipeline.
 comment|//
 comment|// 3. update SCM that pipeline creation was successful.
-name|storageContainerLocationClient
-operator|.
-name|notifyObjectStageChange
-argument_list|(
-name|ObjectStageChangeRequestProto
-operator|.
-name|Type
-operator|.
-name|pipeline
-argument_list|,
-name|pipeline
-operator|.
-name|getPipelineName
-argument_list|()
-argument_list|,
-name|ObjectStageChangeRequestProto
-operator|.
-name|Op
-operator|.
-name|create
-argument_list|,
-name|ObjectStageChangeRequestProto
-operator|.
-name|Stage
-operator|.
-name|begin
-argument_list|)
-expr_stmt|;
+comment|// TODO: this has not been fully implemented on server side
+comment|// SCMClientProtocolServer#notifyObjectStageChange
+comment|// TODO: when implement the pipeline state machine, change
+comment|// the pipeline name (string) to pipeline id (long)
+comment|//storageContainerLocationClient.notifyObjectStageChange(
+comment|//    ObjectStageChangeRequestProto.Type.pipeline,
+comment|//    pipeline.getPipelineName(),
+comment|//    ObjectStageChangeRequestProto.Op.create,
+comment|//    ObjectStageChangeRequestProto.Stage.begin);
 name|client
 operator|.
 name|createPipeline
@@ -763,34 +756,11 @@ name|getMachines
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|storageContainerLocationClient
-operator|.
-name|notifyObjectStageChange
-argument_list|(
-name|ObjectStageChangeRequestProto
-operator|.
-name|Type
-operator|.
-name|pipeline
-argument_list|,
-name|pipeline
-operator|.
-name|getPipelineName
-argument_list|()
-argument_list|,
-name|ObjectStageChangeRequestProto
-operator|.
-name|Op
-operator|.
-name|create
-argument_list|,
-name|ObjectStageChangeRequestProto
-operator|.
-name|Stage
-operator|.
-name|complete
-argument_list|)
-expr_stmt|;
+comment|//storageContainerLocationClient.notifyObjectStageChange(
+comment|//    ObjectStageChangeRequestProto.Type.pipeline,
+comment|//    pipeline.getPipelineName(),
+comment|//    ObjectStageChangeRequestProto.Op.create,
+comment|//    ObjectStageChangeRequestProto.Stage.complete);
 comment|// TODO : Should we change the state on the client side ??
 comment|// That makes sense, but it is not needed for the client to work.
 name|LOG
@@ -809,9 +779,9 @@ block|}
 comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
-DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String containerId, String owner)
+DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|createContainer
 parameter_list|(
 name|HddsProtos
@@ -823,9 +793,6 @@ name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|factor
-parameter_list|,
-name|String
-name|containerId
 parameter_list|,
 name|String
 name|owner
@@ -841,8 +808,8 @@ decl_stmt|;
 try|try
 block|{
 comment|// allocate container on SCM.
-name|Pipeline
-name|pipeline
+name|ContainerInfo
+name|container
 init|=
 name|storageContainerLocationClient
 operator|.
@@ -852,10 +819,16 @@ name|type
 argument_list|,
 name|factor
 argument_list|,
-name|containerId
-argument_list|,
 name|owner
 argument_list|)
+decl_stmt|;
+name|Pipeline
+name|pipeline
+init|=
+name|container
+operator|.
+name|getPipeline
+argument_list|()
 decl_stmt|;
 name|client
 operator|=
@@ -864,6 +837,11 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|container
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Allocated State means that SCM has allocated this pipeline in its
@@ -887,7 +865,6 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO : Return ContainerInfo instead of Pipeline
 comment|// connect to pipeline leader and allocate container on leader datanode.
 name|client
 operator|=
@@ -896,19 +873,25 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|container
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|createContainer
 argument_list|(
-name|containerId
-argument_list|,
 name|client
 argument_list|,
-name|pipeline
+name|container
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|pipeline
+name|container
 return|;
 block|}
 finally|finally
@@ -1014,11 +997,14 @@ block|}
 comment|/**    * Delete the container, this will release any resource it uses.    * @param pipeline - Pipeline that represents the container.    * @param force - True to forcibly delete the container.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (Pipeline pipeline, boolean force)
+DECL|method|deleteContainer (long containerID, Pipeline pipeline, boolean force)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
+name|long
+name|containerID
+parameter_list|,
 name|Pipeline
 name|pipeline
 parameter_list|,
@@ -1042,6 +1028,8 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|containerID
 argument_list|)
 expr_stmt|;
 name|String
@@ -1061,6 +1049,8 @@ name|deleteContainer
 argument_list|(
 name|client
 argument_list|,
+name|containerID
+argument_list|,
 name|force
 argument_list|,
 name|traceID
@@ -1070,10 +1060,7 @@ name|storageContainerLocationClient
 operator|.
 name|deleteContainer
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerID
 argument_list|)
 expr_stmt|;
 if|if
@@ -1090,10 +1077,7 @@ name|debug
 argument_list|(
 literal|"Deleted container {}, leader: {}, machines: {} "
 argument_list|,
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerID
 argument_list|,
 name|pipeline
 operator|.
@@ -1130,7 +1114,7 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|listContainer (String startName, String prefixName, int count)
+DECL|method|listContainer (long startContainerID, int count)
 specifier|public
 name|List
 argument_list|<
@@ -1138,11 +1122,8 @@ name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -1155,9 +1136,7 @@ name|storageContainerLocationClient
 operator|.
 name|listContainer
 argument_list|(
-name|startName
-argument_list|,
-name|prefixName
+name|startContainerID
 argument_list|,
 name|count
 argument_list|)
@@ -1166,11 +1145,14 @@ block|}
 comment|/**    * Get meta data from an existing container.    *    * @param pipeline - pipeline that represents the container.    * @return ContainerInfo - a message of protobuf which has basic info    * of a container.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|readContainer (Pipeline pipeline)
+DECL|method|readContainer (long containerID, Pipeline pipeline)
 specifier|public
 name|ContainerData
 name|readContainer
 parameter_list|(
+name|long
+name|containerID
+parameter_list|,
 name|Pipeline
 name|pipeline
 parameter_list|)
@@ -1191,6 +1173,8 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|containerID
 argument_list|)
 expr_stmt|;
 name|String
@@ -1213,10 +1197,7 @@ name|readContainer
 argument_list|(
 name|client
 argument_list|,
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerID
 argument_list|,
 name|traceID
 argument_list|)
@@ -1235,10 +1216,7 @@ name|debug
 argument_list|(
 literal|"Read container {}, leader: {}, machines: {} "
 argument_list|,
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerID
 argument_list|,
 name|pipeline
 operator|.
@@ -1281,12 +1259,12 @@ block|}
 comment|/**    * Given an id, return the pipeline associated with the container.    * @param containerId - String Container ID    * @return Pipeline of the existing container, corresponding to the given id.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|getContainer (String containerId)
+DECL|method|getContainer (long containerId)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|String
+name|long
 name|containerId
 parameter_list|)
 throws|throws
@@ -1304,11 +1282,14 @@ block|}
 comment|/**    * Close a container.    *    * @param pipeline the container to be closed.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|closeContainer (Pipeline pipeline)
+DECL|method|closeContainer (long containerId, Pipeline pipeline)
 specifier|public
 name|void
 name|closeContainer
 parameter_list|(
+name|long
+name|containerId
+parameter_list|,
 name|Pipeline
 name|pipeline
 parameter_list|)
@@ -1340,6 +1321,8 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|containerId
 argument_list|)
 expr_stmt|;
 name|String
@@ -1351,14 +1334,6 @@ name|randomUUID
 argument_list|()
 operator|.
 name|toString
-argument_list|()
-decl_stmt|;
-name|String
-name|containerId
-init|=
-name|pipeline
-operator|.
-name|getContainerName
 argument_list|()
 decl_stmt|;
 name|storageContainerLocationClient
@@ -1391,6 +1366,8 @@ operator|.
 name|closeContainer
 argument_list|(
 name|client
+argument_list|,
+name|containerId
 argument_list|,
 name|traceID
 argument_list|)
@@ -1441,21 +1418,21 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Get the the current usage information.    * @param pipeline - Pipeline    * @return the size of the given container.    * @throws IOException    */
+comment|/**    * Get the the current usage information.    * @param containerID - ID of the container.    * @return the size of the given container.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|getContainerSize (Pipeline pipeline)
+DECL|method|getContainerSize (long containerID)
 specifier|public
 name|long
 name|getContainerSize
 parameter_list|(
-name|Pipeline
-name|pipeline
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO : Pipeline can be null, handle it correctly.
+comment|// TODO : Fix this, it currently returns the capacity but not the current usage.
 name|long
 name|size
 init|=

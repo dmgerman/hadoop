@@ -192,7 +192,7 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseContainerForBlockDeletion (int count, Map<String, ContainerStatus> candidateContainers)
+DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerStatus> candidateContainers)
 specifier|public
 name|List
 argument_list|<
@@ -205,7 +205,7 @@ name|count
 parameter_list|,
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|ContainerStatus
 argument_list|>
@@ -307,7 +307,7 @@ operator|.
 name|getContainer
 argument_list|()
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|entry

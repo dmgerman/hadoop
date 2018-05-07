@@ -40,7 +40,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
+name|StorageContainerException
 import|;
 end_import
 
@@ -54,15 +54,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
+name|client
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|StorageContainerException
+name|BlockID
 import|;
 end_import
 
@@ -116,14 +110,11 @@ specifier|public
 interface|interface
 name|KeyManager
 block|{
-comment|/**    * Puts or overwrites a key.    *    * @param pipeline - Pipeline.    * @param data     - Key Data.    * @throws IOException    */
-DECL|method|putKey (Pipeline pipeline, KeyData data)
+comment|/**    * Puts or overwrites a key.    *    * @param data     - Key Data.    * @throws IOException    */
+DECL|method|putKey (KeyData data)
 name|void
 name|putKey
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
 name|KeyData
 name|data
 parameter_list|)
@@ -141,36 +132,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes an existing Key.    *    * @param pipeline - Pipeline.    * @param keyName  Key Data.    * @throws StorageContainerException    */
-DECL|method|deleteKey (Pipeline pipeline, String keyName)
+comment|/**    * Deletes an existing Key.    *    * @param blockID - ID of the block.    * @throws StorageContainerException    */
+DECL|method|deleteKey (BlockID blockID)
 name|void
 name|deleteKey
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List keys in a container.    *    * @param pipeline - pipeline.    * @param prefix   - Prefix in needed.    * @param startKey  - Key to start from, EMPTY_STRING to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
-DECL|method|listKey (Pipeline pipeline, String prefix, String startKey, int count)
+comment|/**    * List keys in a container.    *    * @param containerID - ID of the container.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
+DECL|method|listKey (long containerID, long startLocalID, int count)
 name|List
 argument_list|<
 name|KeyData
 argument_list|>
 name|listKey
 parameter_list|(
-name|Pipeline
-name|pipeline
+name|long
+name|containerID
 parameter_list|,
-name|String
-name|prefix
-parameter_list|,
-name|String
-name|startKey
+name|long
+name|startLocalID
 parameter_list|,
 name|int
 name|count

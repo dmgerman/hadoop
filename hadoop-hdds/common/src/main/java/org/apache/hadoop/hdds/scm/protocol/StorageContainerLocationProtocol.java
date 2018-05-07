@@ -159,8 +159,8 @@ interface|interface
 name|StorageContainerLocationProtocol
 block|{
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
-DECL|method|allocateContainer (HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String containerName, String owner)
-name|Pipeline
+DECL|method|allocateContainer (HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)
+name|ContainerInfo
 name|allocateContainer
 parameter_list|(
 name|HddsProtos
@@ -174,38 +174,32 @@ name|ReplicationFactor
 name|factor
 parameter_list|,
 name|String
-name|containerName
-parameter_list|,
-name|String
 name|owner
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Ask SCM the location of the container. SCM responds with a group of    * nodes where this container and its replicas are located.    *    * @param containerName - Name of the container.    * @return Pipeline - the pipeline where container locates.    * @throws IOException    */
-DECL|method|getContainer (String containerName)
-name|Pipeline
+comment|/**    * Ask SCM the location of the container. SCM responds with a group of    * nodes where this container and its replicas are located.    *    * @param containerID - ID of the container.    * @return ContainerInfo - the container info such as where the pipeline    *                         is located.    * @throws IOException    */
+DECL|method|getContainer (long containerID)
+name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Ask SCM a list of containers with a range of container names    * and the limit of count.    * Search container names between start name(exclusive), and    * use prefix name to filter the result. the max size of the    * searching range cannot exceed the value of count.    *    * @param startName start name, if null, start searching at the head.    * @param prefixName prefix name, if null, then filter is disabled.    * @param count count, if count< 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of container.    * @throws IOException    */
-DECL|method|listContainer (String startName, String prefixName, int count)
+comment|/**    * Ask SCM a list of containers with a range of container names    * and the limit of count.    * Search container names between start name(exclusive), and    * use prefix name to filter the result. the max size of the    * searching range cannot exceed the value of count.    *    * @param startContainerID start container ID.    * @param count count, if count< 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of container.    * @throws IOException    */
+DECL|method|listContainer (long startContainerID, int count)
 name|List
 argument_list|<
 name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -213,13 +207,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes a container in SCM.    *    * @param containerName    * @throws IOException    *   if failed to delete the container mapping from db store    *   or container doesn't exist.    */
-DECL|method|deleteContainer (String containerName)
+comment|/**    * Deletes a container in SCM.    *    * @param containerID    * @throws IOException    *   if failed to delete the container mapping from db store    *   or container doesn't exist.    */
+DECL|method|deleteContainer (long containerID)
 name|void
 name|deleteContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -250,8 +244,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Notify from client when begin or finish creating objects like pipeline    * or containers on datanodes.    * Container will be in Operational state after that.    * @param type object type    * @param name object name    * @param op operation type (e.g., create, close, delete)    * @param stage creation stage    */
-DECL|method|notifyObjectStageChange ( ObjectStageChangeRequestProto.Type type, String name, ObjectStageChangeRequestProto.Op op, ObjectStageChangeRequestProto.Stage stage)
+comment|/**    * Notify from client when begin or finish creating objects like pipeline    * or containers on datanodes.    * Container will be in Operational state after that.    * @param type object type    * @param id object id    * @param op operation type (e.g., create, close, delete)    * @param stage creation stage    */
+DECL|method|notifyObjectStageChange ( ObjectStageChangeRequestProto.Type type, long id, ObjectStageChangeRequestProto.Op op, ObjectStageChangeRequestProto.Stage stage)
 name|void
 name|notifyObjectStageChange
 parameter_list|(
@@ -260,8 +254,8 @@ operator|.
 name|Type
 name|type
 parameter_list|,
-name|String
-name|name
+name|long
+name|id
 parameter_list|,
 name|ObjectStageChangeRequestProto
 operator|.

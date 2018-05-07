@@ -283,7 +283,7 @@ name|getContainer
 argument_list|(
 name|tx
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -323,7 +323,7 @@ literal|"Container {} not found, continue to process next"
 argument_list|,
 name|tx
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -405,16 +405,13 @@ if|if
 condition|(
 name|t
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|tx
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
-argument_list|)
 condition|)
 block|{
 name|hasContained

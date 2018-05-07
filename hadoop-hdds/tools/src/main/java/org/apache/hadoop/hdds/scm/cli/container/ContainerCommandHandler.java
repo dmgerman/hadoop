@@ -706,13 +706,6 @@ name|options
 argument_list|)
 expr_stmt|;
 comment|// for create container options.
-name|CreateContainerHandler
-operator|.
-name|addOptions
-argument_list|(
-name|options
-argument_list|)
-expr_stmt|;
 name|DeleteContainerHandler
 operator|.
 name|addOptions

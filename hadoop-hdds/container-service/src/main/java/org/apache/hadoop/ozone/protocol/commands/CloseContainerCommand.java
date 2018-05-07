@@ -111,24 +111,24 @@ argument_list|<
 name|SCMCloseContainerCmdResponseProto
 argument_list|>
 block|{
-DECL|field|containerName
+DECL|field|containerID
 specifier|private
-name|String
-name|containerName
+name|long
+name|containerID
 decl_stmt|;
-DECL|method|CloseContainerCommand (String containerName)
+DECL|method|CloseContainerCommand (long containerID)
 specifier|public
 name|CloseContainerCommand
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerName
+name|containerID
 operator|=
-name|containerName
+name|containerID
 expr_stmt|;
 block|}
 comment|/**    * Returns the type of this command.    *    * @return Type    */
@@ -174,9 +174,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|build
@@ -206,19 +206,19 @@ name|CloseContainerCommand
 argument_list|(
 name|closeContainerProto
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getContainerName ()
+DECL|method|getContainerID ()
 specifier|public
-name|String
-name|getContainerName
+name|long
+name|getContainerID
 parameter_list|()
 block|{
 return|return
-name|containerName
+name|containerID
 return|;
 block|}
 block|}

@@ -645,14 +645,6 @@ name|datanodes
 control|)
 block|{
 comment|// Create a single member pipe line
-name|String
-name|containerName
-init|=
-name|OzoneUtils
-operator|.
-name|getRequestID
-argument_list|()
-decl_stmt|;
 name|DatanodeDetails
 name|datanodeDetails
 init|=
@@ -707,8 +699,6 @@ init|=
 operator|new
 name|Pipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|pipelineChannel
 argument_list|)
 decl_stmt|;

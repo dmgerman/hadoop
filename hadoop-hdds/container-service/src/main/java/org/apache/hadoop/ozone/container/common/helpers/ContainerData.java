@@ -196,12 +196,6 @@ specifier|public
 class|class
 name|ContainerData
 block|{
-DECL|field|containerName
-specifier|private
-specifier|final
-name|String
-name|containerName
-decl_stmt|;
 DECL|field|metadata
 specifier|private
 specifier|final
@@ -242,7 +236,7 @@ name|maxSize
 decl_stmt|;
 DECL|field|containerID
 specifier|private
-name|Long
+name|long
 name|containerID
 decl_stmt|;
 DECL|field|state
@@ -252,15 +246,12 @@ operator|.
 name|LifeCycleState
 name|state
 decl_stmt|;
-comment|/**    * Constructs a  ContainerData Object.    *    * @param containerName - Name    */
-DECL|method|ContainerData (String containerName, Long containerID, Configuration conf)
+comment|/**    * Constructs a  ContainerData Object.    *    * @param containerID - ID    * @param conf - Configuration    */
+DECL|method|ContainerData (long containerID, Configuration conf)
 specifier|public
 name|ContainerData
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
-name|Long
+name|long
 name|containerID
 parameter_list|,
 name|Configuration
@@ -275,12 +266,6 @@ operator|new
 name|TreeMap
 argument_list|<>
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|containerName
-operator|=
-name|containerName
 expr_stmt|;
 name|this
 operator|.
@@ -354,11 +339,6 @@ init|=
 operator|new
 name|ContainerData
 argument_list|(
-name|protoData
-operator|.
-name|getName
-argument_list|()
-argument_list|,
 name|protoData
 operator|.
 name|getContainerID
@@ -552,16 +532,6 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|builder
-operator|.
-name|setName
-argument_list|(
-name|this
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|builder
 operator|.
 name|setContainerID
@@ -774,17 +744,6 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the name of the container.    *    * @return - name    */
-DECL|method|getContainerName ()
-specifier|public
-name|String
-name|getContainerName
-parameter_list|()
-block|{
-return|return
-name|containerName
-return|;
-block|}
 comment|/**    * Adds metadata.    */
 DECL|method|addMetadata (String key, String value)
 specifier|public
@@ -953,17 +912,8 @@ name|path
 expr_stmt|;
 block|}
 comment|/**    * This function serves as the generic key for ContainerCache class. Both    * ContainerData and ContainerKeyData overrides this function to appropriately    * return the right name that can  be used in ContainerCache.    *    * @return String Name.    */
-DECL|method|getName ()
-specifier|public
-name|String
-name|getName
-parameter_list|()
-block|{
-return|return
-name|getContainerName
-argument_list|()
-return|;
-block|}
+comment|// TODO: check the ContainerCache class to see if we are using the ContainerID instead.
+comment|/*    public String getName() {     return getContainerID();   }*/
 comment|/**    * Get container file path.    * @return - Physical path where container file and checksum is stored.    */
 DECL|method|getContainerPath ()
 specifier|public
@@ -996,7 +946,7 @@ comment|/**    * Get container ID.    * @return - container ID.    */
 DECL|method|getContainerID ()
 specifier|public
 specifier|synchronized
-name|Long
+name|long
 name|getContainerID
 parameter_list|()
 block|{
@@ -1084,7 +1034,7 @@ name|sha256Hex
 argument_list|(
 name|this
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 operator|+
 name|Long

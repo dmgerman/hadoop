@@ -267,17 +267,14 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is    * needed and based on the replication type in the request appropriate    * Interface is invoked.    *    * @param containerName Name of the container    * @param replicationFactor - Replication Factor    * @return a Pipeline.    */
-DECL|method|getPipeline (String containerName, ReplicationFactor replicationFactor, ReplicationType replicationType)
+comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is    * needed and based on the replication type in the request appropriate    * Interface is invoked.    *    * @param replicationFactor - Replication Factor    * @return a Pipeline.    */
+DECL|method|getPipeline ( ReplicationFactor replicationFactor, ReplicationType replicationType)
 specifier|public
 specifier|synchronized
 specifier|final
 name|Pipeline
 name|getPipeline
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
 name|ReplicationFactor
 name|replicationFactor
 parameter_list|,
@@ -307,14 +304,18 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"created new pipelineChannel:{} for container:{}"
+literal|"created new pipelineChannel:{} for container with "
+operator|+
+literal|"replicationType:{} replicationFactor:{}"
 argument_list|,
 name|pipelineChannel
 operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|containerName
+name|replicationType
+argument_list|,
+name|replicationFactor
 argument_list|)
 expr_stmt|;
 name|activePipelineChannels
@@ -347,14 +348,18 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"re-used pipelineChannel:{} for container:{}"
+literal|"re-used pipelineChannel:{} for container with "
+operator|+
+literal|"replicationType:{} replicationFactor:{}"
 argument_list|,
 name|pipelineChannel
 operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|containerName
+name|replicationType
+argument_list|,
+name|replicationFactor
 argument_list|)
 expr_stmt|;
 block|}
@@ -385,8 +390,6 @@ return|return
 operator|new
 name|Pipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|pipelineChannel
 argument_list|)
 return|;

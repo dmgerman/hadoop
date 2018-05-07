@@ -321,14 +321,14 @@ return|return
 name|cache
 return|;
 block|}
-comment|/**    * Closes a db instance.    *    * @param container - name of the container to be closed.    * @param db - db instance to close.    */
-DECL|method|closeDB (String container, MetadataStore db)
+comment|/**    * Closes a db instance.    *    * @param containerID - ID of the container to be closed.    * @param db - db instance to close.    */
+DECL|method|closeDB (long containerID, MetadataStore db)
 specifier|private
 name|void
 name|closeDB
 parameter_list|(
-name|String
-name|container
+name|long
+name|containerID
 parameter_list|,
 name|MetadataStore
 name|db
@@ -361,7 +361,7 @@ name|error
 argument_list|(
 literal|"Error closing DB. Container: "
 operator|+
-name|container
+name|containerID
 argument_list|,
 name|e
 argument_list|)
@@ -418,12 +418,17 @@ argument_list|()
 decl_stmt|;
 name|closeDB
 argument_list|(
+operator|(
+operator|(
+name|Number
+operator|)
 name|iterator
 operator|.
 name|getKey
 argument_list|()
+operator|)
 operator|.
-name|toString
+name|longValue
 argument_list|()
 argument_list|,
 name|db
@@ -478,12 +483,17 @@ argument_list|()
 decl_stmt|;
 name|closeDB
 argument_list|(
+operator|(
+operator|(
+name|Number
+operator|)
 name|entry
 operator|.
 name|getKey
 argument_list|()
+operator|)
 operator|.
-name|toString
+name|longValue
 argument_list|()
 argument_list|,
 name|db
@@ -502,14 +512,14 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerName - Name of the container.    * @return MetadataStore.    */
-DECL|method|getDB (String containerName, String containerDBPath)
+comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerID - ID of the container.    * @return MetadataStore.    */
+DECL|method|getDB (long containerID, String containerDBPath)
 specifier|public
 name|MetadataStore
 name|getDB
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|String
 name|containerDBPath
@@ -519,20 +529,13 @@ name|IOException
 block|{
 name|Preconditions
 operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
 name|checkState
 argument_list|(
-operator|!
-name|containerName
-operator|.
-name|isEmpty
-argument_list|()
+name|containerID
+operator|>=
+literal|0
+argument_list|,
+literal|"Container ID cannot be negative."
 argument_list|)
 expr_stmt|;
 name|lock
@@ -552,7 +555,7 @@ name|this
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 if|if
@@ -590,7 +593,7 @@ name|this
 operator|.
 name|put
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|db
 argument_list|)
@@ -612,7 +615,7 @@ name|error
 argument_list|(
 literal|"Error opening DB. Container:{} ContainerPath:{}"
 argument_list|,
-name|containerName
+name|containerID
 argument_list|,
 name|containerDBPath
 argument_list|,
@@ -632,32 +635,25 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove a DB handler from cache.    *    * @param containerName - Name of the container.    */
-DECL|method|removeDB (String containerName)
+comment|/**    * Remove a DB handler from cache.    *    * @param containerID - ID of the container.    */
+DECL|method|removeDB (long containerID)
 specifier|public
 name|void
 name|removeDB
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
 name|checkState
 argument_list|(
-operator|!
-name|containerName
-operator|.
-name|isEmpty
-argument_list|()
+name|containerID
+operator|>=
+literal|0
+argument_list|,
+literal|"Container ID cannot be negative."
 argument_list|)
 expr_stmt|;
 name|lock
@@ -677,12 +673,12 @@ name|this
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 name|closeDB
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|db
 argument_list|)
@@ -691,7 +687,7 @@ name|this
 operator|.
 name|remove
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}

@@ -804,7 +804,7 @@ literal|"Received SCM container close request for container {}"
 argument_list|,
 name|closeContainer
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;

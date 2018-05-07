@@ -156,17 +156,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Creates a block deletion transaction and adds that into the log.    *    * @param containerName - container name.    * @param blocks - blocks that belong to the same container.    *    * @throws IOException    */
-DECL|method|addTransaction (String containerName, List<String> blocks)
+comment|/**    * Creates a block deletion transaction and adds that into the log.    *    * @param containerID - container ID.    * @param blocks - blocks that belong to the same container.    *    * @throws IOException    */
+DECL|method|addTransaction (long containerID, List<Long> blocks)
 name|void
 name|addTransaction
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 name|blocks
 parameter_list|)
@@ -174,17 +174,17 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates block deletion transactions for a set of containers,    * add into the log and persist them atomically. An object key    * might be stored in multiple containers and multiple blocks,    * this API ensures that these updates are done in atomic manner    * so if any of them fails, the entire operation fails without    * any updates to the log. Note, this doesn't mean to create only    * one transaction, it creates multiple transactions (depends on the    * number of containers) together (on success) or non (on failure).    *    * @param containerBlocksMap a map of containerBlocks.    * @throws IOException    */
-DECL|method|addTransactions (Map<String, List<String>> containerBlocksMap)
+DECL|method|addTransactions (Map<Long, List<Long>> containerBlocksMap)
 name|void
 name|addTransactions
 parameter_list|(
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|List
 argument_list|<
-name|String
+name|Long
 argument_list|>
 argument_list|>
 name|containerBlocksMap

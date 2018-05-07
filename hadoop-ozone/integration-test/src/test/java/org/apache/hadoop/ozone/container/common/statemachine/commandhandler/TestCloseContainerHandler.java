@@ -603,12 +603,12 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|String
-name|containerName
+name|long
+name|containerID
 init|=
 name|ksmKeyLocationInfo
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -619,7 +619,7 @@ name|isContainerClosed
 argument_list|(
 name|cluster
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -658,7 +658,7 @@ argument_list|,
 operator|new
 name|CloseContainerCommand
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -672,7 +672,7 @@ name|isContainerClosed
 argument_list|(
 name|cluster
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 argument_list|,
 literal|500
@@ -691,12 +691,12 @@ name|isContainerClosed
 argument_list|(
 name|cluster
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|isContainerClosed (MiniOzoneCluster cluster, String containerName)
+DECL|method|isContainerClosed (MiniOzoneCluster cluster, long containerID)
 specifier|private
 name|Boolean
 name|isContainerClosed
@@ -704,8 +704,8 @@ parameter_list|(
 name|MiniOzoneCluster
 name|cluster
 parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|ContainerData
@@ -736,7 +736,7 @@ argument_list|()
 operator|.
 name|readContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 return|return

@@ -333,7 +333,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|Long
 argument_list|>
@@ -512,7 +512,7 @@ name|containsKey
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 condition|)
@@ -527,7 +527,7 @@ name|get
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -565,7 +565,7 @@ name|remove
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -645,7 +645,7 @@ name|CloseContainerCommand
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 argument_list|)
@@ -660,7 +660,7 @@ name|containsKey
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 condition|)
@@ -671,7 +671,7 @@ name|put
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|TimeUnit
@@ -746,7 +746,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|Long
 argument_list|>

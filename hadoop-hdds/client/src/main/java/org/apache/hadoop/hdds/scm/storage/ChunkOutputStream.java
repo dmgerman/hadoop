@@ -142,6 +142,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -232,11 +248,11 @@ name|ChunkOutputStream
 extends|extends
 name|OutputStream
 block|{
-DECL|field|containerKey
+DECL|field|blockID
 specifier|private
 specifier|final
-name|String
-name|containerKey
+name|BlockID
+name|blockID
 decl_stmt|;
 DECL|field|key
 specifier|private
@@ -289,13 +305,13 @@ specifier|private
 name|int
 name|chunkSize
 decl_stmt|;
-comment|/**    * Creates a new ChunkOutputStream.    *    * @param containerKey container key    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    * @param chunkSize chunk size    */
-DECL|method|ChunkOutputStream (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize)
+comment|/**    * Creates a new ChunkOutputStream.    *    * @param blockID block ID    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    * @param chunkSize chunk size    */
+DECL|method|ChunkOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize)
 specifier|public
 name|ChunkOutputStream
 parameter_list|(
-name|String
-name|containerKey
+name|BlockID
+name|blockID
 parameter_list|,
 name|String
 name|key
@@ -315,9 +331,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|containerKey
+name|blockID
 operator|=
-name|containerKey
+name|blockID
 expr_stmt|;
 name|this
 operator|.
@@ -367,20 +383,12 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setContainerName
+name|setBlockID
 argument_list|(
-name|xceiverClient
+name|blockID
 operator|.
-name|getPipeline
+name|getProtobuf
 argument_list|()
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-operator|.
-name|setName
-argument_list|(
-name|containerKey
 argument_list|)
 operator|.
 name|addMetadata
@@ -981,7 +989,7 @@ name|xceiverClient
 argument_list|,
 name|chunk
 argument_list|,
-name|key
+name|blockID
 argument_list|,
 name|data
 argument_list|,

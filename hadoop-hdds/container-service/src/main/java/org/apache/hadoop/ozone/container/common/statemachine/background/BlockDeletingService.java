@@ -989,7 +989,7 @@ literal|"No under deletion block found in container : {}"
 argument_list|,
 name|containerData
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1013,7 +1013,7 @@ literal|"Container : {}, To-Delete blocks : {}"
 argument_list|,
 name|containerData
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|toDeleteBlocks
@@ -1249,7 +1249,7 @@ argument_list|()
 argument_list|,
 name|containerData
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1270,7 +1270,7 @@ literal|"Container: {}, deleted blocks: {}, task elapsed time: {}ms"
 argument_list|,
 name|containerData
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|succeedBlocks

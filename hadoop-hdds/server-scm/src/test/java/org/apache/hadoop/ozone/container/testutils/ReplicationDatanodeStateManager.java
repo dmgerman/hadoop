@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -239,8 +253,8 @@ name|Random
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get Container Report as if it is from a datanode in the cluster.    * @param containerName - Container Name.    * @param poolName - Pool Name.    * @param dataNodeCount - Datanode Count.    * @return List of Container Reports.    */
-DECL|method|getContainerReport ( String containerName, String poolName, int dataNodeCount)
+comment|/**    * Get Container Report as if it is from a datanode in the cluster.    * @param containerID - Container ID.    * @param poolName - Pool Name.    * @param dataNodeCount - Datanode Count.    * @return List of Container Reports.    */
+DECL|method|getContainerReport ( long containerID, String poolName, int dataNodeCount)
 specifier|public
 name|List
 argument_list|<
@@ -248,8 +262,8 @@ name|ContainerReportsRequestProto
 argument_list|>
 name|getContainerReport
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|String
 name|poolName
@@ -313,11 +327,6 @@ literal|"required container reports"
 argument_list|)
 throw|;
 block|}
-name|int
-name|containerID
-init|=
-literal|1
-decl_stmt|;
 while|while
 condition|(
 name|containerList
@@ -384,9 +393,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|setFinalhash
@@ -395,7 +404,12 @@ name|DigestUtils
 operator|.
 name|sha256Hex
 argument_list|(
-name|containerName
+name|Longs
+operator|.
+name|toByteArray
+argument_list|(
+name|containerID
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.

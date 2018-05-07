@@ -40,6 +40,22 @@ name|KeyData
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class contains methods that define the translation between the Ozone  * domain model and the storage container domain model.  */
 end_comment
@@ -50,18 +66,15 @@ specifier|final
 class|class
 name|OzoneContainerTranslation
 block|{
-comment|/**    * Creates key data intended for reading a container key.    *    * @param containerName container name    * @param containerKey container key    * @return KeyData intended for reading the container key    */
-DECL|method|containerKeyDataForRead (String containerName, String containerKey)
+comment|/**    * Creates key data intended for reading a container key.    *    * @param blockID - ID of the block.    * @return KeyData intended for reading the container key    */
+DECL|method|containerKeyDataForRead (BlockID blockID)
 specifier|public
 specifier|static
 name|KeyData
 name|containerKeyDataForRead
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
-name|String
-name|containerKey
+name|BlockID
+name|blockID
 parameter_list|)
 block|{
 return|return
@@ -70,14 +83,12 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setContainerName
+name|setBlockID
 argument_list|(
-name|containerName
-argument_list|)
+name|blockID
 operator|.
-name|setName
-argument_list|(
-name|containerKey
+name|getProtobuf
+argument_list|()
 argument_list|)
 operator|.
 name|build

@@ -160,47 +160,50 @@ specifier|public
 interface|interface
 name|ScmClient
 block|{
-comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param containerId - String container ID    * @return Pipeline    * @throws IOException    */
-DECL|method|createContainer (String containerId, String owner)
-name|Pipeline
+comment|/**    * Creates a Container on SCM and returns the pipeline.    * @return ContainerInfo    * @throws IOException    */
+DECL|method|createContainer (String owner)
+name|ContainerInfo
 name|createContainer
 parameter_list|(
-name|String
-name|containerId
-parameter_list|,
 name|String
 name|owner
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets a container by Name -- Throws if the container does not exist.    * @param containerId - String Container ID    * @return Pipeline    * @throws IOException    */
-DECL|method|getContainer (String containerId)
-name|Pipeline
+comment|/**    * Gets a container by Name -- Throws if the container does not exist.    * @param containerId - Container ID    * @return Pipeline    * @throws IOException    */
+DECL|method|getContainer (long containerId)
+name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|String
+name|long
 name|containerId
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Close a container by name.    *    * @param pipeline the container to be closed.    * @throws IOException    */
-DECL|method|closeContainer (Pipeline pipeline)
+comment|/**    * Close a container.    *    * @param containerId - ID of the container.    * @param pipeline - Pipeline where the container is located.    * @throws IOException    */
+DECL|method|closeContainer (long containerId, Pipeline pipeline)
 name|void
 name|closeContainer
 parameter_list|(
+name|long
+name|containerId
+parameter_list|,
 name|Pipeline
 name|pipeline
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes an existing container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
-DECL|method|deleteContainer (Pipeline pipeline, boolean force)
+comment|/**    * Deletes an existing container.    * @param containerId - ID of the container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
+DECL|method|deleteContainer (long containerId, Pipeline pipeline, boolean force)
 name|void
 name|deleteContainer
 parameter_list|(
+name|long
+name|containerId
+parameter_list|,
 name|Pipeline
 name|pipeline
 parameter_list|,
@@ -210,19 +213,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Lists a range of containers and get their info.    *    * @param startName start name, if null, start searching at the head.    * @param prefixName prefix name, if null, then filter is disabled.    * @param count count, if count< 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of pipeline.    * @throws IOException    */
-DECL|method|listContainer (String startName, String prefixName, int count)
+comment|/**    * Lists a range of containers and get their info.    *    * @param startContainerID start containerID.    * @param count count must be> 0.    *    * @return a list of pipeline.    * @throws IOException    */
+DECL|method|listContainer (long startContainerID, int count)
 name|List
 argument_list|<
 name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -230,31 +230,34 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Read meta data from an existing container.    * @param pipeline - Pipeline that represents the container.    * @return ContainerInfo    * @throws IOException    */
-DECL|method|readContainer (Pipeline pipeline)
+comment|/**    * Read meta data from an existing container.    * @param containerID - ID of the container.    * @param pipeline - Pipeline where the container is located.    * @return ContainerInfo    * @throws IOException    */
+DECL|method|readContainer (long containerID, Pipeline pipeline)
 name|ContainerData
 name|readContainer
 parameter_list|(
+name|long
+name|containerID
+parameter_list|,
 name|Pipeline
 name|pipeline
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets the container size -- Computed by SCM from Container Reports.    * @param pipeline - Pipeline    * @return number of bytes used by this container.    * @throws IOException    */
-DECL|method|getContainerSize (Pipeline pipeline)
+comment|/**    * Gets the container size -- Computed by SCM from Container Reports.    * @param containerID - ID of the container.    * @return number of bytes used by this container.    * @throws IOException    */
+DECL|method|getContainerSize (long containerID)
 name|long
 name|getContainerSize
 parameter_list|(
-name|Pipeline
-name|pipeline
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param type - Replication Type.    * @param replicationFactor - Replication Factor    * @param containerId - Container ID    * @return Pipeline    * @throws IOException - in case of error.    */
-DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String containerId, String owner)
-name|Pipeline
+comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param type - Replication Type.    * @param replicationFactor - Replication Factor    * @return ContainerInfo    * @throws IOException - in case of error.    */
+DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
+name|ContainerInfo
 name|createContainer
 parameter_list|(
 name|HddsProtos
@@ -266,9 +269,6 @@ name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
-parameter_list|,
-name|String
-name|containerId
 parameter_list|,
 name|String
 name|owner

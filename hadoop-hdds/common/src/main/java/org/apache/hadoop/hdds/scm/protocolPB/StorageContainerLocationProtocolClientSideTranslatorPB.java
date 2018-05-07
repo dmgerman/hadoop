@@ -40,20 +40,6 @@ name|com
 operator|.
 name|google
 operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Strings
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
 name|protobuf
 operator|.
 name|RpcController
@@ -567,12 +553,12 @@ operator|=
 name|rpcProxy
 expr_stmt|;
 block|}
-comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container. Ozone/SCM only    * supports replication factor of either 1 or 3.    * @param type - Replication Type    * @param factor - Replication Count    * @param containerName - Name    * @return    * @throws IOException    */
+comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container. Ozone/SCM only    * supports replication factor of either 1 or 3.    * @param type - Replication Type    * @param factor - Replication Count    * @return    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String containerName, String owner)
+DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|allocateContainer
 parameter_list|(
 name|HddsProtos
@@ -586,38 +572,11 @@ name|ReplicationFactor
 name|factor
 parameter_list|,
 name|String
-name|containerName
-parameter_list|,
-name|String
 name|owner
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|,
-literal|"Container Name cannot be Null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|containerName
-operator|.
-name|isEmpty
-argument_list|()
-argument_list|,
-literal|"Container name cannot"
-operator|+
-literal|" be empty"
-argument_list|)
-expr_stmt|;
 name|ContainerRequestProto
 name|request
 init|=
@@ -625,11 +584,6 @@ name|ContainerRequestProto
 operator|.
 name|newBuilder
 argument_list|()
-operator|.
-name|setContainerName
-argument_list|(
-name|containerName
-argument_list|)
 operator|.
 name|setReplicationFactor
 argument_list|(
@@ -715,48 +669,37 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|Pipeline
+name|ContainerInfo
 operator|.
-name|getFromProtoBuf
+name|fromProtobuf
 argument_list|(
 name|response
 operator|.
-name|getPipeline
+name|getContainerInfo
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getContainer (String containerName)
+DECL|method|getContainer (long containerID)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|Preconditions
 operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|,
-literal|"Container Name cannot be Null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
 name|checkState
 argument_list|(
-operator|!
-name|containerName
-operator|.
-name|isEmpty
-argument_list|()
+name|containerID
+operator|>=
+literal|0
 argument_list|,
-literal|"Container name cannot be empty"
+literal|"Container ID cannot be negative"
 argument_list|)
 expr_stmt|;
 name|GetContainerRequestProto
@@ -767,9 +710,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|build
@@ -790,13 +733,13 @@ name|request
 argument_list|)
 decl_stmt|;
 return|return
-name|Pipeline
+name|ContainerInfo
 operator|.
-name|getFromProtoBuf
+name|fromProtobuf
 argument_list|(
 name|response
 operator|.
-name|getPipeline
+name|getContainerInfo
 argument_list|()
 argument_list|)
 return|;
@@ -820,7 +763,7 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|listContainer (String startName, String prefixName, int count)
+DECL|method|listContainer (long startContainerID, int count)
 specifier|public
 name|List
 argument_list|<
@@ -828,11 +771,8 @@ name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -840,6 +780,28 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|startContainerID
+operator|>=
+literal|0
+argument_list|,
+literal|"Container ID cannot be negative."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|count
+operator|>
+literal|0
+argument_list|,
+literal|"Container count must be greater than 0."
+argument_list|)
+expr_stmt|;
 name|SCMListContainerRequestProto
 operator|.
 name|Builder
@@ -850,36 +812,13 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|prefixName
-operator|!=
-literal|null
-condition|)
-block|{
 name|builder
 operator|.
-name|setPrefixName
+name|setStartContainerID
 argument_list|(
-name|prefixName
+name|startContainerID
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|startName
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|setStartName
-argument_list|(
-name|startName
-argument_list|)
-expr_stmt|;
-block|}
 name|builder
 operator|.
 name|setCount
@@ -966,16 +905,16 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Ask SCM to delete a container by name. SCM will remove    * the container mapping in its database.    *    * @param containerName    * @throws IOException    */
+comment|/**    * Ask SCM to delete a container by name. SCM will remove    * the container mapping in its database.    *    * @param containerID    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (String containerName)
+DECL|method|deleteContainer (long containerID)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -984,15 +923,11 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-operator|!
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
-name|containerName
-argument_list|)
+name|containerID
+operator|>=
+literal|0
 argument_list|,
-literal|"Container name cannot be null or empty"
+literal|"Container ID cannot be negative"
 argument_list|)
 expr_stmt|;
 name|SCMDeleteContainerRequestProto
@@ -1003,9 +938,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setContainerName
+name|setContainerID
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|build
@@ -1152,10 +1087,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Notify from client that creates object on datanodes.    * @param type object type    * @param name object name    * @param op operation type (e.g., create, close, delete)    * @param stage object creation stage : begin/complete    */
+comment|/**    * Notify from client that creates object on datanodes.    * @param type object type    * @param id object id    * @param op operation type (e.g., create, close, delete)    * @param stage object creation stage : begin/complete    */
 annotation|@
 name|Override
-DECL|method|notifyObjectStageChange ( ObjectStageChangeRequestProto.Type type, String name, ObjectStageChangeRequestProto.Op op, ObjectStageChangeRequestProto.Stage stage)
+DECL|method|notifyObjectStageChange ( ObjectStageChangeRequestProto.Type type, long id, ObjectStageChangeRequestProto.Op op, ObjectStageChangeRequestProto.Stage stage)
 specifier|public
 name|void
 name|notifyObjectStageChange
@@ -1165,8 +1100,8 @@ operator|.
 name|Type
 name|type
 parameter_list|,
-name|String
-name|name
+name|long
+name|id
 parameter_list|,
 name|ObjectStageChangeRequestProto
 operator|.
@@ -1185,15 +1120,11 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-operator|!
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
-name|name
-argument_list|)
+name|id
+operator|>=
+literal|0
 argument_list|,
-literal|"Object name cannot be null or empty"
+literal|"Object id cannot be negative."
 argument_list|)
 expr_stmt|;
 name|ObjectStageChangeRequestProto
@@ -1209,9 +1140,9 @@ argument_list|(
 name|type
 argument_list|)
 operator|.
-name|setName
+name|setId
 argument_list|(
-name|name
+name|id
 argument_list|)
 operator|.
 name|setOp

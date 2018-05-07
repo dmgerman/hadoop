@@ -851,7 +851,7 @@ throw|;
 block|}
 block|}
 comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is needed    * and based on the replication type in the request appropriate Interface is    * invoked.    */
-DECL|method|getReplicationPipeline (ReplicationType replicationType, HddsProtos.ReplicationFactor replicationFactor, String containerName)
+DECL|method|getReplicationPipeline (ReplicationType replicationType, HddsProtos.ReplicationFactor replicationFactor)
 specifier|public
 name|Pipeline
 name|getReplicationPipeline
@@ -863,9 +863,6 @@ name|HddsProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
-parameter_list|,
-name|String
-name|containerName
 parameter_list|)
 throws|throws
 name|IOException
@@ -891,9 +888,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Getting replication pipeline for {} : Replication {}"
+literal|"Getting replication pipeline forReplicationType {} : ReplicationFactor {}"
 argument_list|,
-name|containerName
+name|replicationType
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|replicationFactor
 operator|.
@@ -906,8 +906,6 @@ name|manager
 operator|.
 name|getPipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|replicationFactor
 argument_list|,
 name|replicationType

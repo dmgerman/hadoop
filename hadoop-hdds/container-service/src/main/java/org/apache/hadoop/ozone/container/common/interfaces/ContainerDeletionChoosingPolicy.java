@@ -115,7 +115,7 @@ interface|interface
 name|ContainerDeletionChoosingPolicy
 block|{
 comment|/**    * Chooses desired containers for block deletion.    * @param count    *          how many to return    * @param candidateContainers    *          candidate containers collection    * @return container data list    * @throws StorageContainerException    */
-DECL|method|chooseContainerForBlockDeletion (int count, Map<String, ContainerStatus> candidateContainers)
+DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerStatus> candidateContainers)
 name|List
 argument_list|<
 name|ContainerData
@@ -127,7 +127,7 @@ name|count
 parameter_list|,
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|ContainerStatus
 argument_list|>

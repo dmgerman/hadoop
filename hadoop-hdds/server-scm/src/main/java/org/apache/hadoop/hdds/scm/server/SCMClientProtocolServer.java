@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -775,9 +789,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateContainer (HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String containerName, String owner)
+DECL|method|allocateContainer (HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|allocateContainer
 parameter_list|(
 name|HddsProtos
@@ -791,15 +805,13 @@ name|ReplicationFactor
 name|factor
 parameter_list|,
 name|String
-name|containerName
-parameter_list|,
-name|String
 name|owner
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|scm
+name|getScm
+argument_list|()
 operator|.
 name|checkAdminAccess
 argument_list|()
@@ -816,24 +828,19 @@ name|replicationType
 argument_list|,
 name|factor
 argument_list|,
-name|containerName
-argument_list|,
 name|owner
 argument_list|)
-operator|.
-name|getPipeline
-argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainer (String containerName)
+DECL|method|getContainer (long containerID)
 specifier|public
-name|Pipeline
+name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -846,16 +853,13 @@ argument_list|()
 operator|.
 name|getContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
-operator|.
-name|getPipeline
-argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|listContainer (String startName, String prefixName, int count)
+DECL|method|listContainer (long startContainerID, int count)
 specifier|public
 name|List
 argument_list|<
@@ -863,11 +867,8 @@ name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -883,9 +884,7 @@ argument_list|()
 operator|.
 name|listContainer
 argument_list|(
-name|startName
-argument_list|,
-name|prefixName
+name|startContainerID
 argument_list|,
 name|count
 argument_list|)
@@ -893,18 +892,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteContainer (String containerName)
+DECL|method|deleteContainer (long containerID)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|scm
+name|getScm
+argument_list|()
 operator|.
 name|checkAdminAccess
 argument_list|()
@@ -916,7 +916,7 @@ argument_list|()
 operator|.
 name|deleteContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}
@@ -1045,7 +1045,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|notifyObjectStageChange (StorageContainerLocationProtocolProtos .ObjectStageChangeRequestProto.Type type, String name, StorageContainerLocationProtocolProtos.ObjectStageChangeRequestProto.Op op, StorageContainerLocationProtocolProtos .ObjectStageChangeRequestProto.Stage stage)
+DECL|method|notifyObjectStageChange (StorageContainerLocationProtocolProtos .ObjectStageChangeRequestProto.Type type, long id, StorageContainerLocationProtocolProtos.ObjectStageChangeRequestProto.Op op, StorageContainerLocationProtocolProtos .ObjectStageChangeRequestProto.Stage stage)
 specifier|public
 name|void
 name|notifyObjectStageChange
@@ -1057,8 +1057,8 @@ operator|.
 name|Type
 name|type
 parameter_list|,
-name|String
-name|name
+name|long
+name|id
 parameter_list|,
 name|StorageContainerLocationProtocolProtos
 operator|.
@@ -1081,11 +1081,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Object type {} name {} op {} new stage {}"
+literal|"Object type {} id {} op {} new stage {}"
 argument_list|,
 name|type
 argument_list|,
-name|name
+name|id
 argument_list|,
 name|op
 argument_list|,
@@ -1138,7 +1138,7 @@ argument_list|()
 operator|.
 name|updateContainerState
 argument_list|(
-name|name
+name|id
 argument_list|,
 name|HddsProtos
 operator|.
@@ -1157,7 +1157,7 @@ argument_list|()
 operator|.
 name|updateContainerState
 argument_list|(
-name|name
+name|id
 argument_list|,
 name|HddsProtos
 operator|.
@@ -1203,7 +1203,7 @@ argument_list|()
 operator|.
 name|updateContainerState
 argument_list|(
-name|name
+name|id
 argument_list|,
 name|HddsProtos
 operator|.
@@ -1222,7 +1222,7 @@ argument_list|()
 operator|.
 name|updateContainerState
 argument_list|(
-name|name
+name|id
 argument_list|,
 name|HddsProtos
 operator|.
@@ -1471,6 +1471,18 @@ argument_list|)
 expr_stmt|;
 return|return
 name|resultList
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getScm ()
+specifier|public
+name|StorageContainerManager
+name|getScm
+parameter_list|()
+block|{
+return|return
+name|scm
 return|;
 block|}
 comment|/**    * Query the System for Nodes.    *    * @param nodeState - NodeState that we are interested in matching.    * @return Set of Datanodes that match the NodeState.    */

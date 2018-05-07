@@ -146,7 +146,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
+name|ContainerInfo
 import|;
 end_import
 
@@ -287,12 +287,12 @@ name|CONTAINER_INFO
 init|=
 literal|"info"
 decl_stmt|;
-DECL|field|OPT_CONTAINER_NAME
+DECL|field|OPT_CONTAINER_ID
 specifier|protected
 specifier|static
 specifier|final
 name|String
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 init|=
 literal|"c"
 decl_stmt|;
@@ -350,7 +350,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 argument_list|)
 condition|)
 block|{
@@ -382,33 +382,38 @@ return|return;
 block|}
 block|}
 name|String
-name|containerName
+name|containerID
 init|=
 name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 argument_list|)
 decl_stmt|;
-name|Pipeline
-name|pipeline
+name|ContainerInfo
+name|container
 init|=
 name|getScmClient
 argument_list|()
 operator|.
 name|getContainer
 argument_list|(
-name|containerName
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|containerID
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|pipeline
+name|container
 argument_list|,
-literal|"Pipeline cannot be null"
+literal|"Container cannot be null"
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -419,18 +424,23 @@ argument_list|()
 operator|.
 name|readContainer
 argument_list|(
-name|pipeline
+name|container
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getPipeline
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Print container report info.
 name|logOut
 argument_list|(
-literal|"Container Name: %s"
+literal|"Container id: %s"
 argument_list|,
-name|containerData
-operator|.
-name|getName
-argument_list|()
+name|containerID
 argument_list|)
 expr_stmt|;
 name|String
@@ -552,7 +562,10 @@ name|logOut
 argument_list|(
 literal|"LeaderID: %s"
 argument_list|,
-name|pipeline
+name|container
+operator|.
+name|getPipeline
+argument_list|()
 operator|.
 name|getLeader
 argument_list|()
@@ -564,7 +577,10 @@ expr_stmt|;
 name|String
 name|machinesStr
 init|=
-name|pipeline
+name|container
+operator|.
+name|getPipeline
+argument_list|()
 operator|.
 name|getMachines
 argument_list|()
@@ -651,23 +667,23 @@ name|options
 parameter_list|)
 block|{
 name|Option
-name|containerNameOpt
+name|containerIdOpt
 init|=
 operator|new
 name|Option
 argument_list|(
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify container name"
+literal|"Specify container id"
 argument_list|)
 decl_stmt|;
 name|options
 operator|.
 name|addOption
 argument_list|(
-name|containerNameOpt
+name|containerIdOpt
 argument_list|)
 expr_stmt|;
 block|}

@@ -120,6 +120,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -202,11 +218,11 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|field|key
+DECL|field|blockID
 specifier|private
 specifier|final
-name|String
-name|key
+name|BlockID
+name|blockID
 decl_stmt|;
 DECL|field|traceID
 specifier|private
@@ -256,13 +272,13 @@ specifier|private
 name|int
 name|bufferIndex
 decl_stmt|;
-comment|/**    * Creates a new ChunkInputStream.    *    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
-DECL|method|ChunkInputStream (String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
+comment|/**    * Creates a new ChunkInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
+DECL|method|ChunkInputStream (BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
 specifier|public
 name|ChunkInputStream
 parameter_list|(
-name|String
-name|key
+name|BlockID
+name|blockID
 parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
@@ -282,9 +298,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|key
+name|blockID
 operator|=
-name|key
+name|blockID
 expr_stmt|;
 name|this
 operator|.
@@ -825,7 +841,7 @@ argument_list|(
 name|chunkIndex
 argument_list|)
 argument_list|,
-name|key
+name|blockID
 argument_list|,
 name|traceID
 argument_list|)
@@ -943,7 +959,10 @@ name|pos
 operator|+
 literal|" container key: "
 operator|+
-name|key
+name|blockID
+operator|.
+name|getLocalID
+argument_list|()
 argument_list|)
 throw|;
 block|}

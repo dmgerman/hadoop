@@ -399,6 +399,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
 name|dbPath
 operator|.
 name|getParentFile
@@ -406,7 +408,21 @@ argument_list|()
 operator|.
 name|mkdirs
 argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Db path {} created."
+argument_list|,
+name|dbPath
+operator|.
+name|getParentFile
+argument_list|()
+argument_list|)
 expr_stmt|;
+block|}
 name|db
 operator|=
 name|JniDBFactory

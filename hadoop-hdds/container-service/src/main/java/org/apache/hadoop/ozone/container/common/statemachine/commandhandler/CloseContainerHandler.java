@@ -256,10 +256,12 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|String
-name|containerName
+comment|// TODO: define this as INVALID_CONTAINER_ID in HddsConsts.java (TBA)
+name|long
+name|containerID
 init|=
-literal|"UNKNOWN"
+operator|-
+literal|1
 decl_stmt|;
 try|try
 block|{
@@ -276,11 +278,11 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|containerName
+name|containerID
 operator|=
 name|closeContainerProto
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 expr_stmt|;
 name|container
@@ -290,7 +292,7 @@ argument_list|()
 operator|.
 name|closeContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}
@@ -306,7 +308,7 @@ name|error
 argument_list|(
 literal|"Can't close container "
 operator|+
-name|containerName
+name|containerID
 argument_list|,
 name|e
 argument_list|)

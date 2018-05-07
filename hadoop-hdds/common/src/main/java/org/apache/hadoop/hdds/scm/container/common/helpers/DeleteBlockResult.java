@@ -25,6 +25,22 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -54,10 +70,10 @@ specifier|public
 class|class
 name|DeleteBlockResult
 block|{
-DECL|field|key
+DECL|field|blockID
 specifier|private
-name|String
-name|key
+name|BlockID
+name|blockID
 decl_stmt|;
 DECL|field|result
 specifier|private
@@ -66,13 +82,13 @@ operator|.
 name|Result
 name|result
 decl_stmt|;
-DECL|method|DeleteBlockResult (final String key, final DeleteScmBlockResult.Result result)
+DECL|method|DeleteBlockResult (final BlockID blockID, final DeleteScmBlockResult.Result result)
 specifier|public
 name|DeleteBlockResult
 parameter_list|(
 specifier|final
-name|String
-name|key
+name|BlockID
+name|blockID
 parameter_list|,
 specifier|final
 name|DeleteScmBlockResult
@@ -83,9 +99,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|key
+name|blockID
 operator|=
-name|key
+name|blockID
 expr_stmt|;
 name|this
 operator|.
@@ -94,15 +110,15 @@ operator|=
 name|result
 expr_stmt|;
 block|}
-comment|/**    * Get key deleted.    * @return key name.    */
-DECL|method|getKey ()
+comment|/**    * Get block id deleted.    * @return block id.    */
+DECL|method|getBlockID ()
 specifier|public
-name|String
-name|getKey
+name|BlockID
+name|getBlockID
 parameter_list|()
 block|{
 return|return
-name|key
+name|blockID
 return|;
 block|}
 comment|/**    * Get key deletion result.    * @return key deletion result.    */

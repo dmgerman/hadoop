@@ -122,30 +122,27 @@ name|Mapping
 extends|extends
 name|Closeable
 block|{
-comment|/**    * Returns the ContainerInfo from the container name.    *    * @param containerName - Name    * @return - ContainerInfo such as creation state and the pipeline.    * @throws IOException    */
-DECL|method|getContainer (String containerName)
+comment|/**    * Returns the ContainerInfo from the container ID.    *    * @param containerID - ID of container.    * @return - ContainerInfo such as creation state and the pipeline.    * @throws IOException    */
+DECL|method|getContainer (long containerID)
 name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns containers under certain conditions.    * Search container names from start name(exclusive),    * and use prefix name to filter the result. The max    * size of the searching range cannot exceed the    * value of count.    *    * @param startName start name, if null, start searching at the head.    * @param prefixName prefix name, if null, then filter is disabled.    * @param count count, if count< 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of container.    * @throws IOException    */
-DECL|method|listContainer (String startName, String prefixName, int count)
+comment|/**    * Returns containers under certain conditions.    * Search container IDs from start ID(exclusive),    * The max size of the searching range cannot exceed the    * value of count.    *    * @param startContainerID start containerID,>=0, start searching at the head if 0.    * @param count count must be>= 0    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big.    *    * @return a list of container.    * @throws IOException    */
+DECL|method|listContainer (long startContainerID, int count)
 name|List
 argument_list|<
 name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|String
-name|startName
-parameter_list|,
-name|String
-name|prefixName
+name|long
+name|startContainerID
 parameter_list|,
 name|int
 name|count
@@ -153,8 +150,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name.    * @param owner    * @return - Container Info.    * @throws IOException    */
-DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String containerName, String owner)
+comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param owner    * @return - Container Info.    * @throws IOException    */
+DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
 name|ContainerInfo
 name|allocateContainer
 parameter_list|(
@@ -169,34 +166,31 @@ name|ReplicationFactor
 name|replicationFactor
 parameter_list|,
 name|String
-name|containerName
-parameter_list|,
-name|String
 name|owner
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes a container from SCM.    *    * @param containerName - Container Name    * @throws IOException    */
-DECL|method|deleteContainer (String containerName)
+comment|/**    * Deletes a container from SCM.    *    * @param containerID - Container ID    * @throws IOException    */
+DECL|method|deleteContainer (long containerID)
 name|void
 name|deleteContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Update container state.    * @param containerName - Container Name    * @param event - container life cycle event    * @return - new container state    * @throws IOException    */
-DECL|method|updateContainerState (String containerName, HddsProtos.LifeCycleEvent event)
+comment|/**    * Update container state.    * @param containerID - Container ID    * @param event - container life cycle event    * @return - new container state    * @throws IOException    */
+DECL|method|updateContainerState (long containerID, HddsProtos.LifeCycleEvent event)
 name|HddsProtos
 operator|.
 name|LifeCycleState
 name|updateContainerState
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|HddsProtos
 operator|.

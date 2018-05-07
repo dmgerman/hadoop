@@ -765,7 +765,7 @@ name|getContainerData
 argument_list|(
 name|keyInfo
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -795,7 +795,7 @@ name|getContainerInfo
 argument_list|(
 name|keyInfo
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -817,14 +817,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getContainerData (String containerName)
+DECL|method|getContainerData (long containerID)
 specifier|private
 specifier|static
 name|ContainerData
 name|getContainerData
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|ContainerData
@@ -860,7 +860,7 @@ name|containerManager
 operator|.
 name|readContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}

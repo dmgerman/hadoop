@@ -52,15 +52,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
+name|protocol
 operator|.
-name|container
+name|proto
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|Pipeline
+name|HddsProtos
 import|;
 end_import
 
@@ -74,11 +70,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|client
 operator|.
-name|proto
-operator|.
-name|HddsProtos
+name|BlockID
 import|;
 end_import
 
@@ -148,25 +142,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    *  Give the key to the block, get the pipeline info.    * @param key - key to the block.    * @return - Pipeline that used to access the block.    * @throws IOException    */
-DECL|method|getBlock (String key)
-name|Pipeline
-name|getBlock
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Deletes a list of blocks in an atomic operation. Internally, SCM    * writes these blocks into a {@link DeletedBlockLog} and deletes them    * from SCM DB. If this is successful, given blocks are entering pending    * deletion state and becomes invisible from SCM namespace.    *    * @param blockIDs block IDs. This is often the list of blocks of    *                 a particular object key.    * @throws IOException if exception happens, non of the blocks is deleted.    */
-DECL|method|deleteBlocks (List<String> blockIDs)
+DECL|method|deleteBlocks (List<BlockID> blockIDs)
 name|void
 name|deleteBlocks
 parameter_list|(
 name|List
 argument_list|<
-name|String
+name|BlockID
 argument_list|>
 name|blockIDs
 parameter_list|)

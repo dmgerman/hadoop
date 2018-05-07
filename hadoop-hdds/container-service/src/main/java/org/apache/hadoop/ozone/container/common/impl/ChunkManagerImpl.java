@@ -68,28 +68,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|StorageContainerException
 import|;
 end_import
@@ -123,6 +101,22 @@ operator|.
 name|ozone
 operator|.
 name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
 import|;
 end_import
 
@@ -415,19 +409,16 @@ operator|=
 name|manager
 expr_stmt|;
 block|}
-comment|/**    * writes a given chunk.    *    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @throws StorageContainerException    */
+comment|/**    * writes a given chunk.    *    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @throws StorageContainerException    */
 annotation|@
 name|Override
-DECL|method|writeChunk (Pipeline pipeline, String keyName, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
+DECL|method|writeChunk (BlockID blockID, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
 specifier|public
 name|void
 name|writeChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
@@ -457,26 +448,28 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|pipeline
+name|blockID
 argument_list|,
-literal|"Pipeline cannot be null"
+literal|"Block ID cannot be null."
 argument_list|)
 expr_stmt|;
-name|String
-name|containerName
+name|long
+name|containerID
 init|=
-name|pipeline
+name|blockID
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 decl_stmt|;
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkState
 argument_list|(
-name|containerName
+name|containerID
+operator|>=
+literal|0
 argument_list|,
-literal|"Container name cannot be null"
+literal|"Container ID cannot be negative"
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -486,7 +479,7 @@ name|containerManager
 operator|.
 name|readContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 name|File
@@ -496,8 +489,6 @@ name|ChunkUtils
 operator|.
 name|validateChunk
 argument_list|(
-name|pipeline
-argument_list|,
 name|container
 argument_list|,
 name|info
@@ -560,7 +551,7 @@ name|tmpChunkFile
 argument_list|,
 name|chunkFile
 argument_list|,
-name|containerName
+name|containerID
 argument_list|,
 name|info
 operator|.
@@ -604,7 +595,7 @@ name|containerManager
 operator|.
 name|incrBytesUsed
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|newSize
 operator|-
@@ -615,14 +606,14 @@ name|containerManager
 operator|.
 name|incrWriteCount
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|containerManager
 operator|.
 name|incrWriteBytes
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|info
 operator|.
@@ -758,7 +749,7 @@ argument_list|)
 return|;
 block|}
 comment|// Commit the chunk by renaming the temporary chunk file to chunk file
-DECL|method|commitChunk (File tmpChunkFile, File chunkFile, String containerName, long chunkLen)
+DECL|method|commitChunk (File tmpChunkFile, File chunkFile, long containerID, long chunkLen)
 specifier|private
 name|void
 name|commitChunk
@@ -769,8 +760,8 @@ parameter_list|,
 name|File
 name|chunkFile
 parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|long
 name|chunkLen
@@ -816,7 +807,7 @@ name|containerManager
 operator|.
 name|incrBytesUsed
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|sizeDiff
 argument_list|)
@@ -825,33 +816,30 @@ name|containerManager
 operator|.
 name|incrWriteCount
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|containerManager
 operator|.
 name|incrWriteBytes
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|chunkLen
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * reads the data defined by a chunk.    *    * @param pipeline - container pipeline.    * @param keyName - Name of the Key    * @param info - ChunkInfo.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+comment|/**    * reads the data defined by a chunk.    *    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
 annotation|@
 name|Override
-DECL|method|readChunk (Pipeline pipeline, String keyName, ChunkInfo info)
+DECL|method|readChunk (BlockID blockID, ChunkInfo info)
 specifier|public
 name|byte
 index|[]
 name|readChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
@@ -870,26 +858,28 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|pipeline
+name|blockID
 argument_list|,
-literal|"Pipeline cannot be null"
+literal|"Block ID cannot be null."
 argument_list|)
 expr_stmt|;
-name|String
-name|containerName
+name|long
+name|containerID
 init|=
-name|pipeline
+name|blockID
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 decl_stmt|;
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkState
 argument_list|(
-name|containerName
+name|containerID
+operator|>=
+literal|0
 argument_list|,
-literal|"Container name cannot be null"
+literal|"Container ID cannot be negative"
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -899,7 +889,7 @@ name|containerManager
 operator|.
 name|readContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 name|File
@@ -909,8 +899,6 @@ name|ChunkUtils
 operator|.
 name|getChunkFile
 argument_list|(
-name|pipeline
-argument_list|,
 name|container
 argument_list|,
 name|info
@@ -932,14 +920,14 @@ name|containerManager
 operator|.
 name|incrReadCount
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|containerManager
 operator|.
 name|incrReadBytes
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|chunkFile
 operator|.
@@ -1027,19 +1015,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Deletes a given chunk.    *    * @param pipeline - Pipeline.    * @param keyName - Key Name    * @param info - Chunk Info    * @throws StorageContainerException    */
+comment|/**    * Deletes a given chunk.    *    * @param blockID - ID of the block.    * @param info - Chunk Info    * @throws StorageContainerException    */
 annotation|@
 name|Override
-DECL|method|deleteChunk (Pipeline pipeline, String keyName, ChunkInfo info)
+DECL|method|deleteChunk (BlockID blockID, ChunkInfo info)
 specifier|public
 name|void
 name|deleteChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
@@ -1058,26 +1043,28 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|pipeline
+name|blockID
 argument_list|,
-literal|"Pipeline cannot be null"
+literal|"Block ID cannot be null."
 argument_list|)
 expr_stmt|;
-name|String
-name|containerName
+name|long
+name|containerID
 init|=
-name|pipeline
+name|blockID
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 decl_stmt|;
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkState
 argument_list|(
-name|containerName
+name|containerID
+operator|>=
+literal|0
 argument_list|,
-literal|"Container name cannot be null"
+literal|"Container ID cannot be negative"
 argument_list|)
 expr_stmt|;
 name|File
@@ -1087,13 +1074,11 @@ name|ChunkUtils
 operator|.
 name|getChunkFile
 argument_list|(
-name|pipeline
-argument_list|,
 name|containerManager
 operator|.
 name|readContainer
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 argument_list|,
 name|info
@@ -1134,7 +1119,7 @@ name|containerManager
 operator|.
 name|decrBytesUsed
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 name|chunkFile
 operator|.

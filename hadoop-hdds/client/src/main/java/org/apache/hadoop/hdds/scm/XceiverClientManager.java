@@ -318,7 +318,7 @@ specifier|private
 specifier|final
 name|Cache
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|XceiverClientSpi
 argument_list|>
@@ -431,7 +431,7 @@ argument_list|(
 operator|new
 name|RemovalListener
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|XceiverClientSpi
 argument_list|>
@@ -445,7 +445,7 @@ name|onRemoval
 parameter_list|(
 name|RemovalNotification
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|XceiverClientSpi
 argument_list|>
@@ -486,7 +486,7 @@ DECL|method|getClientCache ()
 specifier|public
 name|Cache
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|XceiverClientSpi
 argument_list|>
@@ -498,13 +498,16 @@ name|clientCache
 return|;
 block|}
 comment|/**    * Acquires a XceiverClientSpi connected to a container capable of    * storing the specified key.    *    * If there is already a cached XceiverClientSpi, simply return    * the cached otherwise create a new one.    *    * @param pipeline the container pipeline for the client connection    * @return XceiverClientSpi connected to a container    * @throws IOException if a XceiverClientSpi cannot be acquired    */
-DECL|method|acquireClient (Pipeline pipeline)
+DECL|method|acquireClient (Pipeline pipeline, long containerID)
 specifier|public
 name|XceiverClientSpi
 name|acquireClient
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -553,6 +556,8 @@ init|=
 name|getClient
 argument_list|(
 name|pipeline
+argument_list|,
+name|containerID
 argument_list|)
 decl_stmt|;
 name|info
@@ -594,25 +599,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getClient (Pipeline pipeline)
+DECL|method|getClient (Pipeline pipeline, long containerID)
 specifier|private
 name|XceiverClientSpi
 name|getClient
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|containerName
-init|=
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 return|return
@@ -620,7 +620,7 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|containerName
+name|containerID
 argument_list|,
 operator|new
 name|Callable

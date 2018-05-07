@@ -76,12 +76,6 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|field|containerName
-specifier|private
-specifier|final
-name|String
-name|containerName
-decl_stmt|;
 DECL|field|finalhash
 specifier|private
 specifier|final
@@ -154,13 +148,13 @@ operator|=
 name|containerID
 expr_stmt|;
 block|}
-comment|/**    * Constructs the ContainerReport.    *    * @param containerName - Container Name.    * @param finalhash - Final Hash.    */
-DECL|method|ContainerReport (String containerName, String finalhash)
+comment|/**    * Constructs the ContainerReport.    *    * @param containerID - Container ID.    * @param finalhash - Final Hash.    */
+DECL|method|ContainerReport (long containerID, String finalhash)
 specifier|public
 name|ContainerReport
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|String
 name|finalhash
@@ -168,9 +162,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|containerName
+name|containerID
 operator|=
-name|containerName
+name|containerID
 expr_stmt|;
 name|this
 operator|.
@@ -247,7 +241,7 @@ name|ContainerReport
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|info
@@ -401,17 +395,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|report
-return|;
-block|}
-comment|/**    * Gets the container name.    *    * @return - Name    */
-DECL|method|getContainerName ()
-specifier|public
-name|String
-name|getContainerName
-parameter_list|()
-block|{
-return|return
-name|containerName
 return|;
 block|}
 comment|/**    * Returns the final signature for this container.    *    * @return - hash    */
@@ -623,14 +606,6 @@ name|ContainerInfo
 operator|.
 name|newBuilder
 argument_list|()
-operator|.
-name|setContainerName
-argument_list|(
-name|this
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
 operator|.
 name|setKeyCount
 argument_list|(

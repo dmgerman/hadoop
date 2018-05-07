@@ -451,7 +451,7 @@ name|append
 argument_list|(
 name|kli
 operator|.
-name|getBlockID
+name|getLocalID
 argument_list|()
 argument_list|)
 operator|.

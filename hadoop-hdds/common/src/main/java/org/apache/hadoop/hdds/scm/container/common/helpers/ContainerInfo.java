@@ -195,25 +195,16 @@ specifier|private
 name|String
 name|owner
 decl_stmt|;
-DECL|field|containerName
-specifier|private
-name|String
-name|containerName
-decl_stmt|;
 DECL|field|containerID
 specifier|private
 name|long
 name|containerID
 decl_stmt|;
-DECL|method|ContainerInfo ( long containerID, final String containerName, HddsProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner)
+DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner)
 name|ContainerInfo
 parameter_list|(
 name|long
 name|containerID
-parameter_list|,
-specifier|final
-name|String
-name|containerName
 parameter_list|,
 name|HddsProtos
 operator|.
@@ -244,12 +235,6 @@ operator|.
 name|containerID
 operator|=
 name|containerID
-expr_stmt|;
-name|this
-operator|.
-name|containerName
-operator|=
-name|containerName
 expr_stmt|;
 name|this
 operator|.
@@ -409,16 +394,6 @@ argument_list|)
 expr_stmt|;
 name|builder
 operator|.
-name|setContainerName
-argument_list|(
-name|info
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
 name|setContainerID
 argument_list|(
 name|info
@@ -442,16 +417,6 @@ parameter_list|()
 block|{
 return|return
 name|containerID
-return|;
-block|}
-DECL|method|getContainerName ()
-specifier|public
-name|String
-name|getContainerName
-parameter_list|()
-block|{
-return|return
-name|containerName
 return|;
 block|}
 DECL|method|getState ()
@@ -703,14 +668,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|builder
-operator|.
-name|setContainerName
-argument_list|(
-name|getContainerName
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|builder
 operator|.
@@ -771,10 +728,6 @@ literal|", owner="
 operator|+
 name|owner
 operator|+
-literal|", containerName='"
-operator|+
-name|containerName
-operator|+
 literal|'}'
 return|;
 block|}
@@ -834,16 +787,12 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 name|that
 operator|.
-name|pipeline
-operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 comment|// TODO : Fix this later. If we add these factors some tests fail.
@@ -885,9 +834,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
@@ -1014,11 +961,6 @@ DECL|field|owner
 specifier|private
 name|String
 name|owner
-decl_stmt|;
-DECL|field|containerName
-specifier|private
-name|String
-name|containerName
 decl_stmt|;
 DECL|field|containerID
 specifier|private
@@ -1188,25 +1130,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setContainerName (String container)
-specifier|public
-name|Builder
-name|setContainerName
-parameter_list|(
-name|String
-name|container
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containerName
-operator|=
-name|container
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|build ()
 specifier|public
 name|ContainerInfo
@@ -1218,8 +1141,6 @@ operator|new
 name|ContainerInfo
 argument_list|(
 name|containerID
-argument_list|,
-name|containerName
 argument_list|,
 name|state
 argument_list|,

@@ -458,7 +458,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|Integer
 argument_list|>
@@ -1127,7 +1127,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1140,7 +1140,7 @@ name|merge
 argument_list|(
 name|info
 operator|.
-name|getContainerName
+name|getContainerID
 argument_list|()
 argument_list|,
 literal|1
@@ -1162,7 +1162,7 @@ comment|/**    * Filter the containers based on specific rules.    *    * @param
 end_comment
 
 begin_function
-DECL|method|filterContainer ( Predicate<Map.Entry<String, Integer>> predicate)
+DECL|method|filterContainer ( Predicate<Map.Entry<Long, Integer>> predicate)
 specifier|public
 name|List
 argument_list|<
@@ -1170,7 +1170,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|Integer
 argument_list|>
@@ -1183,7 +1183,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|Long
 argument_list|,
 name|Integer
 argument_list|>

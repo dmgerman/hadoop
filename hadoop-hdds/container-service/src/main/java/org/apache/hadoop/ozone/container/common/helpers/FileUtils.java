@@ -226,7 +226,7 @@ argument_list|)
 expr_stmt|;
 name|readChunkresponse
 operator|.
-name|setPipeline
+name|setBlockID
 argument_list|(
 name|msg
 operator|.
@@ -236,7 +236,10 @@ operator|.
 name|getKey
 argument_list|()
 operator|.
-name|getPipeline
+name|getKeyData
+argument_list|()
+operator|.
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;

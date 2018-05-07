@@ -146,7 +146,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
+name|ContainerInfo
 import|;
 end_import
 
@@ -230,12 +230,12 @@ name|OPT_FORCE
 init|=
 literal|"f"
 decl_stmt|;
-DECL|field|OPT_CONTAINER_NAME
+DECL|field|OPT_CONTAINER_ID
 specifier|protected
 specifier|static
 specifier|final
 name|String
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 init|=
 literal|"c"
 decl_stmt|;
@@ -287,7 +287,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 argument_list|)
 condition|)
 block|{
@@ -319,29 +319,34 @@ return|return;
 block|}
 block|}
 name|String
-name|containerName
+name|containerID
 init|=
 name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 argument_list|)
 decl_stmt|;
-name|Pipeline
-name|pipeline
+name|ContainerInfo
+name|container
 init|=
 name|getScmClient
 argument_list|()
 operator|.
 name|getContainer
 argument_list|(
-name|containerName
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|containerID
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|pipeline
+name|container
 operator|==
 literal|null
 condition|)
@@ -352,7 +357,7 @@ name|IOException
 argument_list|(
 literal|"Cannot delete an non-exist container "
 operator|+
-name|containerName
+name|containerID
 argument_list|)
 throw|;
 block|}
@@ -360,7 +365,7 @@ name|logOut
 argument_list|(
 literal|"Deleting container : %s."
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|getScmClient
@@ -368,7 +373,15 @@ argument_list|()
 operator|.
 name|deleteContainer
 argument_list|(
-name|pipeline
+name|container
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getPipeline
+argument_list|()
 argument_list|,
 name|cmd
 operator|.
@@ -382,7 +395,7 @@ name|logOut
 argument_list|(
 literal|"Container %s deleted."
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}
@@ -465,11 +478,11 @@ init|=
 operator|new
 name|Option
 argument_list|(
-name|OPT_CONTAINER_NAME
+name|OPT_CONTAINER_ID
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify container name"
+literal|"Specify container id"
 argument_list|)
 decl_stmt|;
 name|options

@@ -80,16 +80,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -101,6 +91,20 @@ operator|.
 name|digest
 operator|.
 name|DigestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|RandomUtils
 import|;
 end_import
 
@@ -1498,12 +1502,9 @@ init|=
 operator|new
 name|ContainerReport
 argument_list|(
-name|UUID
+name|RandomUtils
 operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
+name|nextLong
 argument_list|()
 argument_list|,
 name|DigestUtils

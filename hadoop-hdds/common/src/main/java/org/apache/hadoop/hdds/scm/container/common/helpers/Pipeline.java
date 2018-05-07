@@ -361,11 +361,6 @@ name|filters
 argument_list|)
 expr_stmt|;
 block|}
-DECL|field|containerName
-specifier|private
-name|String
-name|containerName
-decl_stmt|;
 DECL|field|pipelineChannel
 specifier|private
 name|PipelineChannel
@@ -380,24 +375,15 @@ name|byte
 index|[]
 name|data
 decl_stmt|;
-comment|/**    * Constructs a new pipeline data structure.    *    * @param containerName - Container    * @param pipelineChannel - transport information for this container    */
-DECL|method|Pipeline (String containerName, PipelineChannel pipelineChannel)
+comment|/**    * Constructs a new pipeline data structure.    *    * @param pipelineChannel - transport information for this container    */
+DECL|method|Pipeline (PipelineChannel pipelineChannel)
 specifier|public
 name|Pipeline
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
 name|PipelineChannel
 name|pipelineChannel
 parameter_list|)
 block|{
-name|this
-operator|.
-name|containerName
-operator|=
-name|containerName
-expr_stmt|;
 name|this
 operator|.
 name|pipelineChannel
@@ -446,11 +432,6 @@ return|return
 operator|new
 name|Pipeline
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|,
 name|pipelineChannel
 argument_list|)
 return|;
@@ -623,15 +604,6 @@ argument_list|()
 decl_stmt|;
 name|builder
 operator|.
-name|setContainerName
-argument_list|(
-name|this
-operator|.
-name|containerName
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
 name|setPipelineChannel
 argument_list|(
 name|this
@@ -647,17 +619,6 @@ name|builder
 operator|.
 name|build
 argument_list|()
-return|;
-block|}
-comment|/**    * Returns containerName if available.    *    * @return String.    */
-DECL|method|getContainerName ()
-specifier|public
-name|String
-name|getContainerName
-parameter_list|()
-block|{
-return|return
-name|containerName
 return|;
 block|}
 comment|/**    * Returns private data that is set on this pipeline.    *    * @return blob, the user can interpret it any way they like.    */
@@ -856,18 +817,6 @@ name|id
 else|:
 name|id
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|b
-operator|.
-name|append
-argument_list|(
-literal|"] container:"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|containerName
 argument_list|)
 expr_stmt|;
 name|b

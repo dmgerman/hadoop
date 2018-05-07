@@ -82,28 +82,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|StorageContainerException
 import|;
 end_import
@@ -308,30 +286,24 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Creates a container with the given name.    *    * @param pipeline      -- Nodes which make up this container.    * @param containerData - Container Name and metadata.    * @throws StorageContainerException    */
-DECL|method|createContainer (Pipeline pipeline, ContainerData containerData)
+comment|/**    * Creates a container with the given name.    *    * @param containerData - Container Name and metadata.    * @throws StorageContainerException    */
+DECL|method|createContainer (ContainerData containerData)
 name|void
 name|createContainer
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
 name|ContainerData
 name|containerData
 parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Deletes an existing container.    *    * @param pipeline      - nodes that make this container.    * @param containerName - name of the container.    * @param forceDelete   - whether this container should be deleted forcibly.    * @throws StorageContainerException    */
-DECL|method|deleteContainer (Pipeline pipeline, String containerName, boolean forceDelete)
+comment|/**    * Deletes an existing container.    *    * @param containerID - ID of the container.    * @param forceDelete   - whether this container should be deleted forcibly.    * @throws StorageContainerException    */
+DECL|method|deleteContainer (long containerID, boolean forceDelete)
 name|void
 name|deleteContainer
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|boolean
 name|forceDelete
@@ -339,16 +311,13 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Update an existing container.    *    * @param pipeline container nodes    * @param containerName name of the container    * @param data container data    * @param forceUpdate if true, update container forcibly.    * @throws StorageContainerException    */
-DECL|method|updateContainer (Pipeline pipeline, String containerName, ContainerData data, boolean forceUpdate)
+comment|/**    * Update an existing container.    *    * @param containerID ID of the container    * @param data container data    * @param forceUpdate if true, update container forcibly.    * @throws StorageContainerException    */
+DECL|method|updateContainer (long containerID, ContainerData data, boolean forceUpdate)
 name|void
 name|updateContainer
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|ContainerData
 name|data
@@ -359,19 +328,16 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * As simple interface for container Iterations.    *    * @param prefix - Return only values matching this prefix    * @param count   - how many to return    * @param prevKey - Previous key - Server returns results from this point.    * @param data    - Actual containerData    * @throws StorageContainerException    */
-DECL|method|listContainer (String prefix, long count, String prevKey, List<ContainerData> data)
+comment|/**    * As simple interface for container Iterations.    *    * @param startContainerID -  Return containers with ID>= startContainerID.    * @param count - how many to return    * @param data - Actual containerData    * @throws StorageContainerException    */
+DECL|method|listContainer (long startContainerID, long count, List<ContainerData> data)
 name|void
 name|listContainer
 parameter_list|(
-name|String
-name|prefix
+name|long
+name|startContainerID
 parameter_list|,
 name|long
 name|count
-parameter_list|,
-name|String
-name|prevKey
 parameter_list|,
 name|List
 argument_list|<
@@ -396,37 +362,37 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Get metadata about a specific container.    *    * @param containerName - Name of the container    * @return ContainerData - Container Data.    * @throws StorageContainerException    */
-DECL|method|readContainer (String containerName)
+comment|/**    * Get metadata about a specific container.    *    * @param containerID - ID of the container.    * @return ContainerData - Container Data.    * @throws StorageContainerException    */
+DECL|method|readContainer (long containerID)
 name|ContainerData
 name|readContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    * @param containerName - Name of the container.    * @throws StorageContainerException    */
-DECL|method|closeContainer (String containerName)
+comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    * @param containerID - ID of the container.    * @throws StorageContainerException    */
+DECL|method|closeContainer (long containerID)
 name|void
 name|closeContainer
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|StorageContainerException
 throws|,
 name|NoSuchAlgorithmException
 function_decl|;
-comment|/**    * Checks if a container exists.    * @param containerName - Name of the container.    * @return true if the container is open false otherwise.    * @throws StorageContainerException  - Throws Exception if we are not    * able to find the container.    */
-DECL|method|isOpen (String containerName)
+comment|/**    * Checks if a container exists.    * @param containerID - ID of the container.    * @return true if the container is open false otherwise.    * @throws StorageContainerException  - Throws Exception if we are not    * able to find the container.    */
+DECL|method|isOpen (long containerID)
 name|boolean
 name|isOpen
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -497,111 +463,111 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Increase pending deletion blocks count number of specified container.    *    * @param numBlocks    *          increment  count number    * @param containerId    *          container id    */
-DECL|method|incrPendingDeletionBlocks (int numBlocks, String containerId)
+DECL|method|incrPendingDeletionBlocks (int numBlocks, long containerId)
 name|void
 name|incrPendingDeletionBlocks
 parameter_list|(
 name|int
 name|numBlocks
 parameter_list|,
-name|String
+name|long
 name|containerId
 parameter_list|)
 function_decl|;
 comment|/**    * Decrease pending deletion blocks count number of specified container.    *    * @param numBlocks    *          decrement count number    * @param containerId    *          container id    */
-DECL|method|decrPendingDeletionBlocks (int numBlocks, String containerId)
+DECL|method|decrPendingDeletionBlocks (int numBlocks, long containerId)
 name|void
 name|decrPendingDeletionBlocks
 parameter_list|(
 name|int
 name|numBlocks
 parameter_list|,
-name|String
+name|long
 name|containerId
 parameter_list|)
 function_decl|;
-comment|/**    * Increase the read count of the container.    * @param containerName - Name of the container.    */
-DECL|method|incrReadCount (String containerName)
+comment|/**    * Increase the read count of the container.    * @param containerId - ID of the container.    */
+DECL|method|incrReadCount (long containerId)
 name|void
 name|incrReadCount
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 function_decl|;
-comment|/**    * Increse the read counter for bytes read from the container.    * @param containerName - Name of the container.    * @param readBytes - bytes read from the container.    */
-DECL|method|incrReadBytes (String containerName, long readBytes)
+comment|/**    * Increse the read counter for bytes read from the container.    * @param containerId - ID of the container.    * @param readBytes - bytes read from the container.    */
+DECL|method|incrReadBytes (long containerId, long readBytes)
 name|void
 name|incrReadBytes
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|readBytes
 parameter_list|)
 function_decl|;
-comment|/**    * Increase the write count of the container.    * @param containerName - Name of the container.    */
-DECL|method|incrWriteCount (String containerName)
+comment|/**    * Increase the write count of the container.    * @param containerId - ID of the container.    */
+DECL|method|incrWriteCount (long containerId)
 name|void
 name|incrWriteCount
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 function_decl|;
-comment|/**    * Increase the write counter for bytes write into the container.    * @param containerName - Name of the container.    * @param writeBytes - bytes write into the container.    */
-DECL|method|incrWriteBytes (String containerName, long writeBytes)
+comment|/**    * Increase the write counter for bytes write into the container.    * @param containerId - ID of the container.    * @param writeBytes - bytes write into the container.    */
+DECL|method|incrWriteBytes (long containerId, long writeBytes)
 name|void
 name|incrWriteBytes
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|writeBytes
 parameter_list|)
 function_decl|;
-comment|/**    * Increase the bytes used by the container.    * @param containerName - Name of the container.    * @param used - additional bytes used by the container.    * @return the current bytes used.    */
-DECL|method|incrBytesUsed (String containerName, long used)
+comment|/**    * Increase the bytes used by the container.    * @param containerId - ID of the container.    * @param used - additional bytes used by the container.    * @return the current bytes used.    */
+DECL|method|incrBytesUsed (long containerId, long used)
 name|long
 name|incrBytesUsed
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|used
 parameter_list|)
 function_decl|;
-comment|/**    * Decrease the bytes used by the container.    * @param containerName - Name of the container.    * @param used - additional bytes reclaimed by the container.    * @return the current bytes used.    */
-DECL|method|decrBytesUsed (String containerName, long used)
+comment|/**    * Decrease the bytes used by the container.    * @param containerId - ID of the container.    * @param used - additional bytes reclaimed by the container.    * @return the current bytes used.    */
+DECL|method|decrBytesUsed (long containerId, long used)
 name|long
 name|decrBytesUsed
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|,
 name|long
 name|used
 parameter_list|)
 function_decl|;
-comment|/**    * Get the bytes used by the container.    * @param containerName - Name of the container.    * @return the current bytes used by the container.    */
-DECL|method|getBytesUsed (String containerName)
+comment|/**    * Get the bytes used by the container.    * @param containerId - ID of the container.    * @return the current bytes used by the container.    */
+DECL|method|getBytesUsed (long containerId)
 name|long
 name|getBytesUsed
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 function_decl|;
-comment|/**    * Get the number of keys in the container.    * @param containerName - Name of the container.    * @return the current key count.    */
-DECL|method|getNumKeys (String containerName)
+comment|/**    * Get the number of keys in the container.    * @param containerId - ID of the container.    * @return the current key count.    */
+DECL|method|getNumKeys (long containerId)
 name|long
 name|getNumKeys
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerId
 parameter_list|)
 function_decl|;
 comment|/**    * Get the container report state to send via HB to SCM.    * @return container report state.    */

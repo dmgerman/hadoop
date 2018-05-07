@@ -40,28 +40,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|StorageContainerException
 import|;
 end_import
@@ -81,6 +59,22 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|BlockID
 import|;
 end_import
 
@@ -114,16 +108,13 @@ specifier|public
 interface|interface
 name|ChunkManager
 block|{
-comment|/**    * writes a given chunk.    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @param stage - Chunk Stage write.    * @throws StorageContainerException    */
-DECL|method|writeChunk (Pipeline pipeline, String keyName, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
+comment|/**    * writes a given chunk.    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param stage - Chunk Stage write.    * @throws StorageContainerException    */
+DECL|method|writeChunk (BlockID blockID, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
 name|void
 name|writeChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
@@ -140,17 +131,14 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * reads the data defined by a chunk.    * @param pipeline - container pipeline.    * @param keyName - Name of the Key    * @param info - ChunkInfo.    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
-DECL|method|readChunk (Pipeline pipeline, String keyName, ChunkInfo info)
+comment|/**    * reads the data defined by a chunk.    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+DECL|method|readChunk (BlockID blockID, ChunkInfo info)
 name|byte
 index|[]
 name|readChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
@@ -158,16 +146,13 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Deletes a given chunk.    * @param pipeline  - Pipeline.    * @param keyName   - Key Name    * @param info  - Chunk Info    * @throws StorageContainerException    */
-DECL|method|deleteChunk (Pipeline pipeline, String keyName, ChunkInfo info)
+comment|/**    * Deletes a given chunk.    * @param blockID - ID of the block.    * @param info  - Chunk Info    * @throws StorageContainerException    */
+DECL|method|deleteChunk (BlockID blockID, ChunkInfo info)
 name|void
 name|deleteChunk
 parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info

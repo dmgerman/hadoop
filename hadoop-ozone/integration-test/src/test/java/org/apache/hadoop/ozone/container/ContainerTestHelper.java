@@ -70,6 +70,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|client
+operator|.
+name|BlockID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|protocol
 operator|.
 name|DatanodeDetails
@@ -131,6 +147,24 @@ operator|.
 name|ContainerProtos
 operator|.
 name|ContainerCommandResponseProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
 import|;
 end_import
 
@@ -360,6 +394,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -537,23 +585,18 @@ expr_stmt|;
 block|}
 comment|// TODO: mock multi-node pipeline
 comment|/**    * Create a pipeline with single node replica.    *    * @return Pipeline with single node in it.    * @throws IOException    */
-DECL|method|createSingleNodePipeline (String containerName)
+DECL|method|createSingleNodePipeline ()
 specifier|public
 specifier|static
 name|Pipeline
 name|createSingleNodePipeline
-parameter_list|(
-name|String
-name|containerName
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
 return|return
 name|createPipeline
 argument_list|(
-name|containerName
-argument_list|,
 literal|1
 argument_list|)
 return|;
@@ -684,15 +727,12 @@ name|datanodeDetails
 return|;
 block|}
 comment|/**    * Create a pipeline with single node replica.    *    * @return Pipeline with single node in it.    * @throws IOException    */
-DECL|method|createPipeline (String containerName, int numNodes)
+DECL|method|createPipeline (int numNodes)
 specifier|public
 specifier|static
 name|Pipeline
 name|createPipeline
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
 name|int
 name|numNodes
 parameter_list|)
@@ -749,21 +789,16 @@ block|}
 return|return
 name|createPipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|ids
 argument_list|)
 return|;
 block|}
-DECL|method|createPipeline ( String containerName, Iterable<DatanodeDetails> ids)
+DECL|method|createPipeline ( Iterable<DatanodeDetails> ids)
 specifier|public
 specifier|static
 name|Pipeline
 name|createPipeline
 parameter_list|(
-name|String
-name|containerName
-parameter_list|,
 name|Iterable
 argument_list|<
 name|DatanodeDetails
@@ -890,21 +925,19 @@ return|return
 operator|new
 name|Pipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|pipelineChannel
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a ChunkInfo for testing.    *    * @param keyName - Name of the key    * @param seqNo - Chunk number.    * @return ChunkInfo    * @throws IOException    */
-DECL|method|getChunk (String keyName, int seqNo, long offset, long len)
+comment|/**    * Creates a ChunkInfo for testing.    *    * @param keyID - ID of the key    * @param seqNo - Chunk number.    * @return ChunkInfo    * @throws IOException    */
+DECL|method|getChunk (long keyID, int seqNo, long offset, long len)
 specifier|public
 specifier|static
 name|ChunkInfo
 name|getChunk
 parameter_list|(
-name|String
-name|keyName
+name|long
+name|keyID
 parameter_list|,
 name|int
 name|seqNo
@@ -928,9 +961,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s.data.%d"
+literal|"%d.data.%d"
 argument_list|,
-name|keyName
+name|keyID
 argument_list|,
 name|seqNo
 argument_list|)
@@ -1029,8 +1062,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns a writeChunk Request.    *    * @param pipeline - A set of machines where this container lives.    * @param containerName - Name of the container.    * @param keyName - Name of the Key this chunk is part of.    * @param datalen - Length of data.    * @return ContainerCommandRequestProto    * @throws IOException    * @throws NoSuchAlgorithmException    */
-DECL|method|getWriteChunkRequest ( Pipeline pipeline, String containerName, String keyName, int datalen)
+comment|/**    * Returns a writeChunk Request.    *    * @param pipeline - A set of machines where this container lives.    * @param blockID - Block ID of the chunk.    * @param datalen - Length of data.    * @return ContainerCommandRequestProto    * @throws IOException    * @throws NoSuchAlgorithmException    */
+DECL|method|getWriteChunkRequest ( Pipeline pipeline, BlockID blockID, int datalen)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
@@ -1039,11 +1072,8 @@ parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
-name|String
-name|containerName
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|int
 name|datalen
@@ -1057,11 +1087,11 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"writeChunk {} (key={}) to pipeline="
+literal|"writeChunk {} (blockID={}) to pipeline="
 argument_list|,
 name|datalen
 argument_list|,
-name|keyName
+name|blockID
 argument_list|,
 name|pipeline
 argument_list|)
@@ -1086,8 +1116,6 @@ init|=
 operator|new
 name|Pipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|pipeline
 operator|.
 name|getPipelineChannel
@@ -1096,19 +1124,12 @@ argument_list|)
 decl_stmt|;
 name|writeRequest
 operator|.
-name|setPipeline
+name|setBlockID
 argument_list|(
-name|newPipeline
+name|blockID
 operator|.
-name|getProtobufMessage
+name|getProtobuf
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|writeRequest
-operator|.
-name|setKeyName
-argument_list|(
-name|keyName
 argument_list|)
 expr_stmt|;
 name|byte
@@ -1125,7 +1146,10 @@ name|info
 init|=
 name|getChunk
 argument_list|(
-name|keyName
+name|blockID
+operator|.
+name|getLocalID
+argument_list|()
 argument_list|,
 literal|0
 argument_list|,
@@ -1224,8 +1248,8 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns PutSmallFile Request that we can send to the container.    *    * @param pipeline - Pipeline    * @param containerName - ContainerName.    * @param keyName - KeyName    * @param dataLen - Number of bytes in the data    * @return ContainerCommandRequestProto    */
-DECL|method|getWriteSmallFileRequest ( Pipeline pipeline, String containerName, String keyName, int dataLen)
+comment|/**    * Returns PutSmallFile Request that we can send to the container.    *    * @param pipeline - Pipeline    * @param blockID - Block ID of the small file.    * @param dataLen - Number of bytes in the data    * @return ContainerCommandRequestProto    */
+DECL|method|getWriteSmallFileRequest ( Pipeline pipeline, BlockID blockID, int dataLen)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
@@ -1234,11 +1258,8 @@ parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
-name|String
-name|containerName
-parameter_list|,
-name|String
-name|keyName
+name|BlockID
+name|blockID
 parameter_list|,
 name|int
 name|dataLen
@@ -1266,8 +1287,6 @@ init|=
 operator|new
 name|Pipeline
 argument_list|(
-name|containerName
-argument_list|,
 name|pipeline
 operator|.
 name|getPipelineChannel
@@ -1288,7 +1307,10 @@ name|info
 init|=
 name|getChunk
 argument_list|(
-name|keyName
+name|blockID
+operator|.
+name|getLocalID
+argument_list|()
 argument_list|,
 literal|0
 argument_list|,
@@ -1318,25 +1340,13 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|putRequest
-operator|.
-name|setPipeline
-argument_list|(
-name|newPipeline
-operator|.
-name|getProtobufMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|KeyData
 name|keyData
 init|=
 operator|new
 name|KeyData
 argument_list|(
-name|containerName
-argument_list|,
-name|keyName
+name|blockID
 argument_list|)
 decl_stmt|;
 name|List
@@ -1469,12 +1479,15 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getReadSmallFileRequest ( ContainerProtos.PutKeyRequestProto putKey)
+DECL|method|getReadSmallFileRequest ( Pipeline pipeline, ContainerProtos.PutKeyRequestProto putKey)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getReadSmallFileRequest
 parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
 name|ContainerProtos
 operator|.
 name|PutKeyRequestProto
@@ -1497,24 +1510,13 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|Pipeline
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|putKey
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|ContainerCommandRequestProto
 name|getKey
 init|=
 name|getKeyRequest
 argument_list|(
+name|pipeline
+argument_list|,
 name|putKey
 argument_list|)
 decl_stmt|;
@@ -1589,13 +1591,16 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns a read Request.    *    * @param request writeChunkRequest.    * @return Request.    * @throws IOException    * @throws NoSuchAlgorithmException    */
-DECL|method|getReadChunkRequest ( ContainerProtos.WriteChunkRequestProto request)
+comment|/**    * Returns a read Request.    *    * @param pipeline pipeline.    * @param request writeChunkRequest.    * @return Request.    * @throws IOException    * @throws NoSuchAlgorithmException    */
+DECL|method|getReadChunkRequest ( Pipeline pipeline, ContainerProtos.WriteChunkRequestProto request)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getReadChunkRequest
 parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
 name|ContainerProtos
 operator|.
 name|WriteChunkRequestProto
@@ -1610,17 +1615,14 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"readChunk key={} from pipeline={}"
+literal|"readChunk blockID={} from pipeline={}"
 argument_list|,
 name|request
 operator|.
-name|getKeyName
+name|getBlockID
 argument_list|()
 argument_list|,
-name|request
-operator|.
-name|getPipeline
-argument_list|()
+name|pipeline
 argument_list|)
 expr_stmt|;
 name|ContainerProtos
@@ -1637,36 +1639,13 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|Pipeline
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|request
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|readRequest
 operator|.
-name|setPipeline
+name|setBlockID
 argument_list|(
 name|request
 operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|readRequest
-operator|.
-name|setKeyName
-argument_list|(
-name|request
-operator|.
-name|getKeyName
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1741,13 +1720,16 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns a delete Request.    *    * @param writeRequest - write request    * @return request    * @throws IOException    * @throws NoSuchAlgorithmException    */
-DECL|method|getDeleteChunkRequest ( ContainerProtos.WriteChunkRequestProto writeRequest)
+comment|/**    * Returns a delete Request.    *    * @param pipeline pipeline.    * @param writeRequest - write request    * @return request    * @throws IOException    * @throws NoSuchAlgorithmException    */
+DECL|method|getDeleteChunkRequest ( Pipeline pipeline, ContainerProtos.WriteChunkRequestProto writeRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getDeleteChunkRequest
 parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
 name|ContainerProtos
 operator|.
 name|WriteChunkRequestProto
@@ -1762,32 +1744,16 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"deleteChunk key={} from pipeline={}"
+literal|"deleteChunk blockID={} from pipeline={}"
 argument_list|,
 name|writeRequest
 operator|.
-name|getKeyName
+name|getBlockID
 argument_list|()
 argument_list|,
-name|writeRequest
-operator|.
-name|getPipeline
-argument_list|()
+name|pipeline
 argument_list|)
 expr_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|Pipeline
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|writeRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|ContainerProtos
 operator|.
 name|DeleteChunkRequestProto
@@ -1804,16 +1770,6 @@ argument_list|()
 decl_stmt|;
 name|deleteRequest
 operator|.
-name|setPipeline
-argument_list|(
-name|writeRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|deleteRequest
-operator|.
 name|setChunkData
 argument_list|(
 name|writeRequest
@@ -1824,11 +1780,11 @@ argument_list|)
 expr_stmt|;
 name|deleteRequest
 operator|.
-name|setKeyName
+name|setBlockID
 argument_list|(
 name|writeRequest
 operator|.
-name|getKeyName
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1894,14 +1850,14 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Returns a create container command for test purposes. There are a bunch of    * tests where we need to just send a request and get a reply.    *    * @return ContainerCommandRequestProto.    */
-DECL|method|getCreateContainerRequest ( String containerName, Pipeline pipeline)
+DECL|method|getCreateContainerRequest ( long containerID, Pipeline pipeline)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getCreateContainerRequest
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|Pipeline
 name|pipeline
@@ -1915,7 +1871,7 @@ name|trace
 argument_list|(
 literal|"addContainer: {}"
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|ContainerProtos
@@ -1948,24 +1904,9 @@ argument_list|()
 decl_stmt|;
 name|containerData
 operator|.
-name|setName
+name|setContainerID
 argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
-name|createRequest
-operator|.
-name|setPipeline
-argument_list|(
-name|ContainerTestHelper
-operator|.
-name|createSingleNodePipeline
-argument_list|(
-name|containerName
-argument_list|)
-operator|.
-name|getProtobufMessage
-argument_list|()
+name|containerID
 argument_list|)
 expr_stmt|;
 name|createRequest
@@ -1975,6 +1916,16 @@ argument_list|(
 name|containerData
 operator|.
 name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|createRequest
+operator|.
+name|setPipeline
+argument_list|(
+name|pipeline
+operator|.
+name|getProtobufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2039,15 +1990,15 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Return an update container command for test purposes.    * Creates a container data based on the given meta data,    * and request to update an existing container with it.    *    * @param containerName    * @param metaData    * @return    * @throws IOException    */
-DECL|method|getUpdateContainerRequest ( String containerName, Map<String, String> metaData)
+comment|/**    * Return an update container command for test purposes.    * Creates a container data based on the given meta data,    * and request to update an existing container with it.    *    * @param containerID    * @param metaData    * @return    * @throws IOException    */
+DECL|method|getUpdateContainerRequest ( long containerID, Map<String, String> metaData)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getUpdateContainerRequest
 parameter_list|(
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|Map
 argument_list|<
@@ -2090,9 +2041,9 @@ argument_list|()
 decl_stmt|;
 name|containerData
 operator|.
-name|setName
+name|setContainerID
 argument_list|(
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|String
@@ -2183,9 +2134,7 @@ init|=
 name|ContainerTestHelper
 operator|.
 name|createSingleNodePipeline
-argument_list|(
-name|containerName
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|updateRequestBuilder
 operator|.
@@ -2355,13 +2304,16 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the PutKeyRequest for test purpose.    *    * @param writeRequest - Write Chunk Request.    * @return - Request    */
-DECL|method|getPutKeyRequest ( ContainerProtos.WriteChunkRequestProto writeRequest)
+comment|/**    * Returns the PutKeyRequest for test purpose.    * @param pipeline - pipeline.    * @param writeRequest - Write Chunk Request.    * @return - Request    */
+DECL|method|getPutKeyRequest ( Pipeline pipeline, ContainerProtos.WriteChunkRequestProto writeRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getPutKeyRequest
 parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
 name|ContainerProtos
 operator|.
 name|WriteChunkRequestProto
@@ -2376,28 +2328,10 @@ literal|"putKey: {} to pipeline={}"
 argument_list|,
 name|writeRequest
 operator|.
-name|getKeyName
-argument_list|()
-argument_list|,
-name|writeRequest
-operator|.
-name|getPipeline
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|Pipeline
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|writeRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|ContainerProtos
 operator|.
 name|PutKeyRequestProto
@@ -2412,34 +2346,21 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|putRequest
-operator|.
-name|setPipeline
-argument_list|(
-name|writeRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|KeyData
 name|keyData
 init|=
 operator|new
 name|KeyData
 argument_list|(
+name|BlockID
+operator|.
+name|getFromProtobuf
+argument_list|(
 name|writeRequest
 operator|.
-name|getPipeline
+name|getBlockID
 argument_list|()
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|,
-name|writeRequest
-operator|.
-name|getKeyName
-argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|List
@@ -2543,52 +2464,44 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets a GetKeyRequest for test purpose.    *    * @param putKeyRequest - putKeyRequest.    * @return - Request    */
-DECL|method|getKeyRequest ( ContainerProtos.PutKeyRequestProto putKeyRequest)
+comment|/**    * Gets a GetKeyRequest for test purpose.    * @param  pipeline - pipeline    * @param putKeyRequest - putKeyRequest.    * @return - Request    * immediately.    */
+DECL|method|getKeyRequest ( Pipeline pipeline, ContainerProtos.PutKeyRequestProto putKeyRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getKeyRequest
 parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
 name|ContainerProtos
 operator|.
 name|PutKeyRequestProto
 name|putKeyRequest
 parameter_list|)
 block|{
-name|LOG
+name|HddsProtos
 operator|.
-name|trace
-argument_list|(
-literal|"getKey: name={} from pipeline={}"
-argument_list|,
+name|BlockID
+name|blockID
+init|=
 name|putKeyRequest
 operator|.
 name|getKeyData
 argument_list|()
 operator|.
-name|getName
+name|getBlockID
 argument_list|()
-argument_list|,
-name|putKeyRequest
+decl_stmt|;
+name|LOG
 operator|.
-name|getPipeline
-argument_list|()
+name|trace
+argument_list|(
+literal|"getKey: blockID={}"
+argument_list|,
+name|blockID
 argument_list|)
 expr_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|Pipeline
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|putKeyRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|ContainerProtos
 operator|.
 name|GetKeyRequestProto
@@ -2619,28 +2532,9 @@ argument_list|()
 decl_stmt|;
 name|keyData
 operator|.
-name|setContainerName
+name|setBlockID
 argument_list|(
-name|putKeyRequest
-operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|keyData
-operator|.
-name|setName
-argument_list|(
-name|putKeyRequest
-operator|.
-name|getKeyData
-argument_list|()
-operator|.
-name|getName
-argument_list|()
+name|blockID
 argument_list|)
 expr_stmt|;
 name|getRequest
@@ -2648,16 +2542,6 @@ operator|.
 name|setKeyData
 argument_list|(
 name|keyData
-argument_list|)
-expr_stmt|;
-name|getRequest
-operator|.
-name|setPipeline
-argument_list|(
-name|putKeyRequest
-operator|.
-name|getPipeline
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|ContainerCommandRequestProto
@@ -2808,13 +2692,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param putKeyRequest - putKeyRequest.    * @return - Request    */
-DECL|method|getDeleteKeyRequest ( ContainerProtos.PutKeyRequestProto putKeyRequest)
+comment|/**    * @param pipeline - pipeline.    * @param putKeyRequest - putKeyRequest.    * @return - Request    */
+DECL|method|getDeleteKeyRequest ( Pipeline pipeline, ContainerProtos.PutKeyRequestProto putKeyRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
 name|getDeleteKeyRequest
 parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
 name|ContainerProtos
 operator|.
 name|PutKeyRequestProto
@@ -2825,35 +2712,17 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"deleteKey: name={} from pipeline={}"
+literal|"deleteKey: name={}"
 argument_list|,
 name|putKeyRequest
 operator|.
 name|getKeyData
 argument_list|()
 operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|putKeyRequest
-operator|.
-name|getPipeline
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|Pipeline
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|putKeyRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|ContainerProtos
 operator|.
 name|DeleteKeyRequestProto
@@ -2870,24 +2739,14 @@ argument_list|()
 decl_stmt|;
 name|delRequest
 operator|.
-name|setPipeline
-argument_list|(
-name|putKeyRequest
-operator|.
-name|getPipeline
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|delRequest
-operator|.
-name|setName
+name|setBlockID
 argument_list|(
 name|putKeyRequest
 operator|.
 name|getKeyData
 argument_list|()
 operator|.
-name|getName
+name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2952,8 +2811,8 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns a close container request.    * @param pipeline - pipeline    * @return ContainerCommandRequestProto.    */
-DECL|method|getCloseContainer ( Pipeline pipeline)
+comment|/**    * Returns a close container request.    * @param pipeline - pipeline    * @param containerID - ID of the container.    * @return ContainerCommandRequestProto.    */
+DECL|method|getCloseContainer ( Pipeline pipeline, long containerID)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
@@ -2961,15 +2820,11 @@ name|getCloseContainer
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|long
+name|containerID
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|pipeline
-argument_list|)
-expr_stmt|;
 name|ContainerProtos
 operator|.
 name|CloseContainerRequestProto
@@ -2982,12 +2837,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setPipeline
+name|setContainerID
 argument_list|(
-name|pipeline
-operator|.
-name|getProtobufMessage
-argument_list|()
+name|containerID
 argument_list|)
 operator|.
 name|build
@@ -3046,8 +2898,8 @@ return|return
 name|cmd
 return|;
 block|}
-comment|/**    * Returns a simple request without traceId.    * @param pipeline - pipeline    * @return ContainerCommandRequestProto without traceId.    */
-DECL|method|getRequestWithoutTraceId ( Pipeline pipeline)
+comment|/**    * Returns a simple request without traceId.    * @param pipeline - pipeline    * @param containerID - ID of the container.    * @return ContainerCommandRequestProto without traceId.    */
+DECL|method|getRequestWithoutTraceId ( Pipeline pipeline, long containerID)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
@@ -3055,6 +2907,9 @@ name|getRequestWithoutTraceId
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|Preconditions
@@ -3076,12 +2931,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setPipeline
+name|setContainerID
 argument_list|(
-name|pipeline
-operator|.
-name|getProtobufMessage
-argument_list|()
+name|containerID
 argument_list|)
 operator|.
 name|build
@@ -3130,7 +2982,7 @@ name|cmd
 return|;
 block|}
 comment|/**    * Returns a delete container request.    * @param pipeline - pipeline    * @return ContainerCommandRequestProto.    */
-DECL|method|getDeleteContainer ( Pipeline pipeline, boolean forceDelete)
+DECL|method|getDeleteContainer ( Pipeline pipeline, long containerID, boolean forceDelete)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
@@ -3138,6 +2990,9 @@ name|getDeleteContainer
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|long
+name|containerID
 parameter_list|,
 name|boolean
 name|forceDelete
@@ -3162,20 +3017,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setName
+name|setContainerID
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-operator|.
-name|setPipeline
-argument_list|(
-name|pipeline
-operator|.
-name|getProtobufMessage
-argument_list|()
+name|containerID
 argument_list|)
 operator|.
 name|setForceDelete
@@ -3229,6 +3073,86 @@ argument_list|()
 argument_list|)
 operator|.
 name|build
+argument_list|()
+return|;
+block|}
+DECL|method|sleep (long milliseconds)
+specifier|private
+specifier|static
+name|void
+name|sleep
+parameter_list|(
+name|long
+name|milliseconds
+parameter_list|)
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|milliseconds
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|getTestBlockID (long containerID)
+specifier|public
+specifier|static
+name|BlockID
+name|getTestBlockID
+parameter_list|(
+name|long
+name|containerID
+parameter_list|)
+block|{
+comment|// Add 2ms delay so that localID based on UtcTime
+comment|// won't collide.
+name|sleep
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|BlockID
+argument_list|(
+name|containerID
+argument_list|,
+name|Time
+operator|.
+name|getUtcTime
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getTestContainerID ()
+specifier|public
+specifier|static
+name|long
+name|getTestContainerID
+parameter_list|()
+block|{
+return|return
+name|Time
+operator|.
+name|getUtcTime
 argument_list|()
 return|;
 block|}
