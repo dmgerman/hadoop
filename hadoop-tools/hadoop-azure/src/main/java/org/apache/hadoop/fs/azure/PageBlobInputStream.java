@@ -124,6 +124,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -173,6 +183,20 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSExceptionMessages
 import|;
 end_import
 
@@ -317,10 +341,16 @@ index|[]
 name|currentBuffer
 decl_stmt|;
 comment|// The current byte offset we're at in the buffer.
-DECL|field|currentOffsetInBuffer
+DECL|field|currentBufferOffset
 specifier|private
 name|int
-name|currentOffsetInBuffer
+name|currentBufferOffset
+decl_stmt|;
+comment|// The current buffer length
+DECL|field|currentBufferLength
+specifier|private
+name|int
+name|currentBufferLength
 decl_stmt|;
 comment|// Maximum number of pages to get per any one request.
 DECL|field|MAX_PAGES_PER_DOWNLOAD
@@ -813,11 +843,9 @@ name|currentBuffer
 operator|!=
 literal|null
 operator|&&
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|<
-name|currentBuffer
-operator|.
-name|length
+name|currentBufferLength
 return|;
 block|}
 comment|/**    * Check our buffer and download more from the server if needed.    * If data is not available in the buffer, method downloads maximum    * page blob download size (4MB) or if there is less then 4MB left,    * all remaining pages.    * If we are on the last page, method will return true even if    * we reached the end of stream.    * @return true if there's more data in the buffer, false if buffer is empty    *         and we reached the end of the blob.    * @throws IOException    */
@@ -844,6 +872,14 @@ block|}
 name|currentBuffer
 operator|=
 literal|null
+expr_stmt|;
+name|currentBufferOffset
+operator|=
+literal|0
+expr_stmt|;
+name|currentBufferLength
+operator|=
+literal|0
 expr_stmt|;
 if|if
 condition|(
@@ -913,12 +949,13 @@ argument_list|,
 name|opContext
 argument_list|)
 expr_stmt|;
-name|currentBuffer
-operator|=
+name|validateDataIntegrity
+argument_list|(
 name|baos
 operator|.
 name|toByteArray
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -943,29 +980,25 @@ name|currentOffsetInBlob
 operator|+=
 name|bufferSize
 expr_stmt|;
-name|currentOffsetInBuffer
-operator|=
-name|PAGE_HEADER_SIZE
-expr_stmt|;
-comment|// Since we just downloaded a new buffer, validate its consistency.
-name|validateCurrentBufferConsistency
-argument_list|()
-expr_stmt|;
 return|return
 literal|true
 return|;
 block|}
-DECL|method|validateCurrentBufferConsistency ()
+DECL|method|validateDataIntegrity (byte[] buffer)
 specifier|private
 name|void
-name|validateCurrentBufferConsistency
-parameter_list|()
+name|validateDataIntegrity
+parameter_list|(
+name|byte
+index|[]
+name|buffer
+parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|currentBuffer
+name|buffer
 operator|.
 name|length
 operator|%
@@ -980,20 +1013,30 @@ name|AssertionError
 argument_list|(
 literal|"Unexpected buffer size: "
 operator|+
-name|currentBuffer
+name|buffer
 operator|.
 name|length
 argument_list|)
 throw|;
 block|}
 name|int
+name|bufferLength
+init|=
+literal|0
+decl_stmt|;
+name|int
 name|numberOfPages
 init|=
-name|currentBuffer
+name|buffer
 operator|.
 name|length
 operator|/
 name|PAGE_SIZE
+decl_stmt|;
+name|long
+name|totalPagesAfterCurrent
+init|=
+name|numberOfPagesRemaining
 decl_stmt|;
 for|for
 control|(
@@ -1010,6 +1053,10 @@ name|page
 operator|++
 control|)
 block|{
+comment|// Calculate the number of pages that exist in the blob after this one
+name|totalPagesAfterCurrent
+operator|--
+expr_stmt|;
 name|short
 name|currentPageSize
 init|=
@@ -1017,29 +1064,14 @@ name|getPageSize
 argument_list|(
 name|blob
 argument_list|,
-name|currentBuffer
+name|buffer
 argument_list|,
 name|page
 operator|*
 name|PAGE_SIZE
 argument_list|)
 decl_stmt|;
-comment|// Calculate the number of pages that exist after this one
-comment|// in the blob.
-name|long
-name|totalPagesAfterCurrent
-init|=
-operator|(
-name|numberOfPages
-operator|-
-name|page
-operator|-
-literal|1
-operator|)
-operator|+
-name|numberOfPagesRemaining
-decl_stmt|;
-comment|// Only the last page is allowed to be not filled completely.
+comment|// Only the last page can be partially filled.
 if|if
 condition|(
 name|currentPageSize
@@ -1071,7 +1103,25 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
+name|bufferLength
+operator|+=
+name|currentPageSize
+operator|+
+name|PAGE_HEADER_SIZE
+expr_stmt|;
 block|}
+name|currentBufferOffset
+operator|=
+name|PAGE_HEADER_SIZE
+expr_stmt|;
+name|currentBufferLength
+operator|=
+name|bufferLength
+expr_stmt|;
+name|currentBuffer
+operator|=
+name|buffer
+expr_stmt|;
 block|}
 comment|// Reads the page size from the page header at the given offset.
 DECL|method|getPageSize (CloudPageBlobWrapper blob, byte[] data, int offset)
@@ -1220,7 +1270,7 @@ name|arraycopy
 argument_list|(
 name|currentBuffer
 argument_list|,
-name|currentOffsetInBuffer
+name|currentBufferOffset
 argument_list|,
 name|outputBuffer
 argument_list|,
@@ -1257,7 +1307,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|+=
 name|numBytesToRead
 expr_stmt|;
@@ -1331,7 +1381,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Skips over and discards n bytes of data from this input stream.    * @param n the number of bytes to be skipped.    * @return the actual number of bytes skipped.    */
+comment|/**    * Skips over and discards<code>n</code> bytes of data from this input    * stream. The<code>skip</code> method may, for a variety of reasons, end    * up skipping over some smaller number of bytes, possibly<code>0</code>.    * This may result from any of a number of conditions; reaching end of file    * before<code>n</code> bytes have been skipped is only one possibility.    * The actual number of bytes skipped is returned. If {@code n} is    * negative, the {@code skip} method for class {@code InputStream} always    * returns 0, and no bytes are skipped. Subclasses may handle the negative    * value differently.    *    *<p> The<code>skip</code> method of this class creates a    * byte array and then repeatedly reads into it until<code>n</code> bytes    * have been read or the end of the stream has been reached. Subclasses are    * encouraged to provide a more efficient implementation of this method.    * For instance, the implementation may depend on the ability to seek.    *    * @param      n   the number of bytes to be skipped.    * @return     the actual number of bytes skipped.    * @exception  IOException  if the stream does not support seek,    *                          or if some other I/O error occurs.    */
 annotation|@
 name|Override
 DECL|method|skip (long n)
@@ -1431,22 +1481,47 @@ name|skipped
 init|=
 name|skippedWithinBuffer
 decl_stmt|;
-comment|// Empty the current buffer, we're going beyond it.
-name|currentBuffer
-operator|=
-literal|null
-expr_stmt|;
-comment|// Skip over whole pages as necessary without retrieving them from the
-comment|// server.
+if|if
+condition|(
+name|n
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+name|skipped
+return|;
+block|}
+if|if
+condition|(
+name|numberOfPagesRemaining
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|FSExceptionMessages
+operator|.
+name|CANNOT_SEEK_PAST_EOF
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|numberOfPagesRemaining
+operator|>
+literal|1
+condition|)
+block|{
+comment|// skip over as many pages as we can, but we must read the last
+comment|// page as it may not be full
 name|long
 name|pagesToSkipOver
 init|=
-name|Math
-operator|.
-name|max
-argument_list|(
-literal|0
-argument_list|,
 name|Math
 operator|.
 name|min
@@ -1458,7 +1533,6 @@ argument_list|,
 name|numberOfPagesRemaining
 operator|-
 literal|1
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|numberOfPagesRemaining
@@ -1483,6 +1557,7 @@ name|pagesToSkipOver
 operator|*
 name|PAGE_DATA_SIZE
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|n
@@ -1601,7 +1676,7 @@ comment|// filled last page) remain.
 name|int
 name|currentPageIndex
 init|=
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|/
 name|PAGE_SIZE
 decl_stmt|;
@@ -1647,7 +1722,7 @@ name|PAGE_DATA_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|+=
 name|n
 operator|%
@@ -1709,11 +1784,11 @@ decl_stmt|;
 if|if
 condition|(
 name|n
-operator|<
+operator|<=
 name|remainingBytesInCurrentPage
 condition|)
 block|{
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|+=
 name|n
 expr_stmt|;
@@ -1759,7 +1834,7 @@ name|int
 name|currentDataOffsetInPage
 init|=
 operator|(
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|%
 name|PAGE_SIZE
 operator|)
@@ -1834,7 +1909,7 @@ name|int
 name|numberOfPages
 parameter_list|)
 block|{
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|=
 name|getCurrentPageStartInBuffer
 argument_list|()
@@ -1858,7 +1933,7 @@ return|return
 name|PAGE_SIZE
 operator|*
 operator|(
-name|currentOffsetInBuffer
+name|currentBufferOffset
 operator|/
 name|PAGE_SIZE
 operator|)
