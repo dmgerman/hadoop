@@ -936,6 +936,22 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+comment|//try renaming a non-existing snapshot to itself
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-renameSnapshot /sub1 sn.nonexist sn.nonexist"
+argument_list|,
+literal|1
+argument_list|,
+literal|"renameSnapshot: The snapshot sn.nonexist "
+operator|+
+literal|"does not exist for directory /sub1"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 comment|//try renaming to existing snapshots
 name|DFSTestUtil
 operator|.
