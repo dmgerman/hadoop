@@ -3204,6 +3204,14 @@ argument_list|(
 name|container
 argument_list|,
 name|nm
+argument_list|,
+name|schedulerApp
+operator|.
+name|getQueue
+argument_list|()
+operator|.
+name|getQueueName
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// recover RMContainer
@@ -3409,7 +3417,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|recoverAndCreateContainer (NMContainerStatus status, RMNode node)
+DECL|method|recoverAndCreateContainer (NMContainerStatus status, RMNode node, String queueName)
 specifier|private
 name|RMContainer
 name|recoverAndCreateContainer
@@ -3419,6 +3427,9 @@ name|status
 parameter_list|,
 name|RMNode
 name|node
+parameter_list|,
+name|String
+name|queueName
 parameter_list|)
 block|{
 name|Container
@@ -3555,6 +3566,18 @@ name|getNodeLabelExpression
 argument_list|()
 argument_list|)
 decl_stmt|;
+operator|(
+operator|(
+name|RMContainerImpl
+operator|)
+name|rmContainer
+operator|)
+operator|.
+name|setQueueName
+argument_list|(
+name|queueName
+argument_list|)
+expr_stmt|;
 return|return
 name|rmContainer
 return|;
