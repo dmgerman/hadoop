@@ -616,17 +616,13 @@ block|}
 comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto - Datanode Details    * @return SCM Command.    */
 annotation|@
 name|Override
-DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, String[] scmAddresses)
+DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto)
 specifier|public
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetailsProto
-parameter_list|,
-name|String
-index|[]
-name|scmAddresses
 parameter_list|)
 throws|throws
 name|IOException

@@ -1190,7 +1190,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|register ( HddsProtos.DatanodeDetailsProto datanodeDetails, String[] scmAddresses)
+DECL|method|register ( HddsProtos.DatanodeDetailsProto datanodeDetails)
 specifier|public
 name|SCMRegisteredCmdResponseProto
 name|register
@@ -1199,10 +1199,6 @@ name|HddsProtos
 operator|.
 name|DatanodeDetailsProto
 name|datanodeDetails
-parameter_list|,
-name|String
-index|[]
-name|scmAddresses
 parameter_list|)
 throws|throws
 name|IOException
@@ -1220,14 +1216,12 @@ name|register
 argument_list|(
 name|datanodeDetails
 argument_list|)
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getRegisteredResponse ( SCMCommand cmd, StorageContainerDatanodeProtocolProtos.SCMNodeAddressList addressList)
+DECL|method|getRegisteredResponse ( SCMCommand cmd)
 specifier|public
 specifier|static
 name|SCMRegisteredCmdResponseProto
@@ -1235,11 +1229,6 @@ name|getRegisteredResponse
 parameter_list|(
 name|SCMCommand
 name|cmd
-parameter_list|,
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMNodeAddressList
-name|addressList
 parameter_list|)
 block|{
 name|Preconditions

@@ -826,22 +826,18 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto DatanodDetailsProto.    * @param scmAddresses - List of SCMs this datanode is configured to    * communicate.    * @return SCM Command.    */
+comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto DatanodDetailsProto.    * @return SCM Command.    */
 annotation|@
 name|Override
 specifier|public
 name|StorageContainerDatanodeProtocolProtos
-DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, String[] scmAddresses)
+DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto)
 operator|.
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetailsProto
-parameter_list|,
-name|String
-index|[]
-name|scmAddresses
 parameter_list|)
 throws|throws
 name|IOException

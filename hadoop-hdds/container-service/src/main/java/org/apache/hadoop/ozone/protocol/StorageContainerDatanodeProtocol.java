@@ -304,17 +304,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    * @param scmAddresses - List of SCMs this datanode is configured to    *                     communicate.    * @return SCM Command.    */
-DECL|method|register (DatanodeDetailsProto datanodeDetails, String[] scmAddresses)
+comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    *    * @return SCM Command.    */
+DECL|method|register (DatanodeDetailsProto datanodeDetails)
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetails
-parameter_list|,
-name|String
-index|[]
-name|scmAddresses
 parameter_list|)
 throws|throws
 name|IOException

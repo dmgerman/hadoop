@@ -396,15 +396,6 @@ name|datanodeDetails
 operator|.
 name|getProtoBufMessage
 argument_list|()
-argument_list|,
-name|conf
-operator|.
-name|getStrings
-argument_list|(
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_NAMES
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|Preconditions
