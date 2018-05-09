@@ -1773,6 +1773,72 @@ name|String
 name|keyPrefix
 parameter_list|)
 block|{
+comment|// remove the protocol from path string to be able to compare
+name|String
+name|bucket
+init|=
+name|status
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+name|String
+name|statusTranslatedPath
+init|=
+literal|""
+decl_stmt|;
+if|if
+condition|(
+name|bucket
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|bucket
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// if there's a bucket, (well defined host in Uri) the pathToParentKey
+comment|// can be used to get the path from the status
+name|statusTranslatedPath
+operator|=
+name|PathMetadataDynamoDBTranslation
+operator|.
+name|pathToParentKey
+argument_list|(
+name|status
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// if there's no bucket in the path the pathToParentKey will fail, so
+comment|// this is the fallback to get the path from status
+name|statusTranslatedPath
+operator|=
+name|status
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Note: S3 doesn't track modification time on directories, so for
 comment|// consistency with the DynamoDB implementation we ignore that here
 return|return
@@ -1789,13 +1855,7 @@ operator|.
 name|isDirectory
 argument_list|()
 operator|&&
-name|status
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+name|statusTranslatedPath
 operator|.
 name|startsWith
 argument_list|(
