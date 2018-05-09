@@ -6873,6 +6873,26 @@ literal|60
 operator|*
 literal|1000L
 decl_stmt|;
+DECL|field|DFS_JOURNALNODE_EDIT_CACHE_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_JOURNALNODE_EDIT_CACHE_SIZE_KEY
+init|=
+literal|"dfs.journalnode.edit-cache-size.bytes"
+decl_stmt|;
+DECL|field|DFS_JOURNALNODE_EDIT_CACHE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_JOURNALNODE_EDIT_CACHE_SIZE_DEFAULT
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 comment|// Journal-node related configs for the client side.
 DECL|field|DFS_QJOURNAL_QUEUE_SIZE_LIMIT_KEY
 specifier|public
