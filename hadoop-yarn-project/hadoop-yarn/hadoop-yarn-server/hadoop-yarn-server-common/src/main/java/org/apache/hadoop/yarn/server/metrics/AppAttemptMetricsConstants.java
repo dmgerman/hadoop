@@ -170,6 +170,24 @@ name|STATE_INFO
 init|=
 literal|"YARN_APPLICATION_ATTEMPT_STATE"
 decl_stmt|;
+DECL|field|MASTER_NODE_ADDRESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MASTER_NODE_ADDRESS
+init|=
+literal|"YARN_APPLICATION_ATTEMPT_MASTER_NODE_ADDRESS"
+decl_stmt|;
+DECL|field|MASTER_NODE_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MASTER_NODE_ID
+init|=
+literal|"YARN_APPLICATION_ATTEMPT_MASTER_NODE_ID"
+decl_stmt|;
 block|}
 end_class
 
