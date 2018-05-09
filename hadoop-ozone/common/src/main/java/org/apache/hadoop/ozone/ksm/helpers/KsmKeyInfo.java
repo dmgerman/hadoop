@@ -126,7 +126,6 @@ decl_stmt|;
 comment|// name of key client specified
 DECL|field|keyName
 specifier|private
-specifier|final
 name|String
 name|keyName
 decl_stmt|;
@@ -296,6 +295,22 @@ block|{
 return|return
 name|keyName
 return|;
+block|}
+DECL|method|setKeyName (String keyName)
+specifier|public
+name|void
+name|setKeyName
+parameter_list|(
+name|String
+name|keyName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|keyName
+operator|=
+name|keyName
+expr_stmt|;
 block|}
 DECL|method|getDataSize ()
 specifier|public

@@ -1070,6 +1070,32 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|renameKey (KeyArgs args, String toKeyName)
+specifier|public
+name|void
+name|renameKey
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|,
+name|String
+name|toKeyName
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not yet implemented"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Returns a list of Key.    *    * @param args KeyArgs    * @return BucketList    * @throws IOException    */
 annotation|@
 name|Override

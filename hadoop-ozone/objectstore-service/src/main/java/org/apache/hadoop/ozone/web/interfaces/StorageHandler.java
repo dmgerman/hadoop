@@ -566,6 +566,22 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
+comment|/**    * Renames an existing key within a bucket.    *    * @param args KeyArgs    * @param toKeyName New name to be used for the key    * @throws OzoneException    */
+DECL|method|renameKey (KeyArgs args, String toKeyName)
+name|void
+name|renameKey
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|,
+name|String
+name|toKeyName
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
 comment|/**    * Returns a list of Key.    *    * @param args KeyArgs    *    * @return BucketList    *    * @throws IOException    */
 DECL|method|listKeys (ListArgs args)
 name|ListKeys

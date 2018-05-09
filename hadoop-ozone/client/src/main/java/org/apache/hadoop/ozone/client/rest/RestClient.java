@@ -4013,6 +4013,36 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|renameKey (String volumeName, String bucketName, String fromKeyName, String toKeyName)
+specifier|public
+name|void
+name|renameKey
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|fromKeyName
+parameter_list|,
+name|String
+name|toKeyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not yet implemented."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|listKeys (String volumeName, String bucketName, String keyPrefix, String prevKey, int maxListResult)
 specifier|public
 name|List

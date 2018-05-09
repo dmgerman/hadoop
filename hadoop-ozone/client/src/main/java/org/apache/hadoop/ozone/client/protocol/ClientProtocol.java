@@ -604,6 +604,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Renames an existing key within a bucket.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param fromKeyName Name of the Key to be renamed    * @param toKeyName New name to be used for the Key    * @throws IOException    */
+DECL|method|renameKey (String volumeName, String bucketName, String fromKeyName, String toKeyName)
+name|void
+name|renameKey
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|fromKeyName
+parameter_list|,
+name|String
+name|toKeyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Returns list of Keys in {Volume/Bucket} that matches the keyPrefix,    * size of the returned list depends on maxListResult. The caller has    * to make multiple calls to read all keys.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyPrefix Bucket prefix to match    * @param prevKey Starting point of the list, this key is excluded    * @param maxListResult Max number of buckets to return.    * @return {@code List<OzoneKey>}    * @throws IOException    */
 DECL|method|listKeys (String volumeName, String bucketName, String keyPrefix, String prevKey, int maxListResult)
 name|List

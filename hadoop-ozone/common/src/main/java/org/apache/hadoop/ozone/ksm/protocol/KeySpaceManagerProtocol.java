@@ -407,13 +407,27 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Look up for the container of an existing key.    *    * @param args the args of the key.    * @return KsmKeyInfo isntacne that client uses to talk to container.    * @throws IOException    */
+comment|/**    * Look up for the container of an existing key.    *    * @param args the args of the key.    * @return KsmKeyInfo instance that client uses to talk to container.    * @throws IOException    */
 DECL|method|lookupKey (KsmKeyArgs args)
 name|KsmKeyInfo
 name|lookupKey
 parameter_list|(
 name|KsmKeyArgs
 name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Rename an existing key within a bucket    * @param args the args of the key.    * @param toKeyName New name to be used for the Key    */
+DECL|method|renameKey (KsmKeyArgs args, String toKeyName)
+name|void
+name|renameKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|,
+name|String
+name|toKeyName
 parameter_list|)
 throws|throws
 name|IOException
