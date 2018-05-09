@@ -68,20 +68,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -229,7 +215,7 @@ block|{
 return|return
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KEYTAB_FILE
+name|SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
 return|;
 block|}
 DECL|method|getSpnegoPrincipal ()
@@ -241,9 +227,9 @@ name|getSpnegoPrincipal
 parameter_list|()
 block|{
 return|return
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
+name|SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
 return|;
 block|}
 DECL|method|getEnabledKey ()

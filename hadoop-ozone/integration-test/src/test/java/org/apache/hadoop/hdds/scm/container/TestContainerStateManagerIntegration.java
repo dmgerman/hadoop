@@ -212,6 +212,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authentication
+operator|.
+name|client
+operator|.
+name|AuthenticationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -676,6 +694,8 @@ throws|,
 name|TimeoutException
 throws|,
 name|InterruptedException
+throws|,
+name|AuthenticationException
 block|{
 comment|// Allocate 5 containers in ALLOCATED state and 5 in CREATING state
 for|for

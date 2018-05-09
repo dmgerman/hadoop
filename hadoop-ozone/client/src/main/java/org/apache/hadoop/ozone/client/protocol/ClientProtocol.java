@@ -44,6 +44,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneAcl
@@ -216,11 +232,34 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|KerberosInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * An implementer of this interface is capable of connecting to Ozone Cluster  * and perform client operations. The protocol used for communication is  * determined by the implementation class specified by  * property<code>ozone.client.protocol</code>. The build-in implementation  * includes: {@link org.apache.hadoop.ozone.client.rpc.RpcClient} for RPC and  * {@link  org.apache.hadoop.ozone.client.rest.RestClient} for REST.  */
 end_comment
 
 begin_interface
+annotation|@
+name|KerberosInfo
+argument_list|(
+name|serverPrincipal
+operator|=
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+argument_list|)
 DECL|interface|ClientProtocol
 specifier|public
 interface|interface

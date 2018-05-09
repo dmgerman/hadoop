@@ -138,6 +138,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|authentication
+operator|.
+name|client
+operator|.
+name|AuthenticationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|test
 operator|.
 name|GenericTestUtils
@@ -325,6 +343,8 @@ throws|,
 name|TimeoutException
 throws|,
 name|IOException
+throws|,
+name|AuthenticationException
 function_decl|;
 comment|/**    * Restarts OzoneManager instance.    *    * @throws IOException    */
 DECL|method|restartOzoneManager ()

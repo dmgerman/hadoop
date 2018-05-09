@@ -1771,6 +1771,14 @@ argument_list|(
 name|xmlFilename
 argument_list|)
 expr_stmt|;
+comment|// Remove hadoop property set in ozone-default.xml
+name|xmlKeyValueMap
+operator|.
+name|remove
+argument_list|(
+literal|"hadoop.custom.tags"
+argument_list|)
+expr_stmt|;
 name|LOG_XML
 operator|.
 name|debug

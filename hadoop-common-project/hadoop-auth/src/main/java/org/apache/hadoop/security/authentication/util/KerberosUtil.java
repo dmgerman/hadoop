@@ -845,6 +845,7 @@ block|}
 block|}
 comment|/* Return fqdn of the current host */
 DECL|method|getLocalHostName ()
+specifier|public
 specifier|static
 name|String
 name|getLocalHostName
