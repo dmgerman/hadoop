@@ -87,7 +87,7 @@ name|setBlockID
 argument_list|(
 name|blockID
 operator|.
-name|getProtobuf
+name|getDatanodeBlockIDProtobuf
 argument_list|()
 argument_list|)
 operator|.

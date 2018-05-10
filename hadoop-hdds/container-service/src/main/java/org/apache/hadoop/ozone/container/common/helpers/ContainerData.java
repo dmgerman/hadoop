@@ -100,7 +100,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HddsProtos
+name|ContainerProtos
+operator|.
+name|ContainerLifeCycleState
 import|;
 end_import
 
@@ -241,9 +243,7 @@ name|containerID
 decl_stmt|;
 DECL|field|state
 specifier|private
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 name|state
 decl_stmt|;
 comment|/**    * Constructs a  ContainerData Object.    *    * @param containerID - ID    * @param conf - Configuration    */
@@ -308,9 +308,7 @@ name|this
 operator|.
 name|state
 operator|=
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 operator|.
 name|OPEN
 expr_stmt|;
@@ -633,14 +631,14 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|HddsProtos
+name|ContainerProtos
 operator|.
 name|KeyValue
 operator|.
 name|Builder
 name|keyValBuilder
 init|=
-name|HddsProtos
+name|ContainerProtos
 operator|.
 name|KeyValue
 operator|.
@@ -954,15 +952,13 @@ return|return
 name|containerID
 return|;
 block|}
-DECL|method|setState (HddsProtos.LifeCycleState state)
+DECL|method|setState (ContainerLifeCycleState state)
 specifier|public
 specifier|synchronized
 name|void
 name|setState
 parameter_list|(
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 name|state
 parameter_list|)
 block|{
@@ -976,9 +972,7 @@ block|}
 DECL|method|getState ()
 specifier|public
 specifier|synchronized
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 name|getState
 parameter_list|()
 block|{
@@ -997,9 +991,7 @@ name|isOpen
 parameter_list|()
 block|{
 return|return
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 operator|.
 name|OPEN
 operator|==
@@ -1017,9 +1009,7 @@ block|{
 comment|// TODO: closed or closing here
 name|setState
 argument_list|(
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 operator|.
 name|CLOSED
 argument_list|)

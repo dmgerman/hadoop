@@ -200,7 +200,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HddsProtos
+name|ContainerProtos
+operator|.
+name|ContainerLifeCycleState
 import|;
 end_import
 
@@ -451,9 +453,7 @@ operator|.
 name|getState
 argument_list|()
 operator|==
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ContainerLifeCycleState
 operator|.
 name|OPEN
 condition|?

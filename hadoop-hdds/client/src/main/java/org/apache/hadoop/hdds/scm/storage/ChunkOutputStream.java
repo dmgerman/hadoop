@@ -134,7 +134,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HddsProtos
+name|ContainerProtos
 operator|.
 name|KeyValue
 import|;
@@ -387,7 +387,7 @@ name|setBlockID
 argument_list|(
 name|blockID
 operator|.
-name|getProtobuf
+name|getDatanodeBlockIDProtobuf
 argument_list|()
 argument_list|)
 operator|.
