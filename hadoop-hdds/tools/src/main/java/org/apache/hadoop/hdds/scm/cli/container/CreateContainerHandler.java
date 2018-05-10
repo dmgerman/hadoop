@@ -211,6 +211,20 @@ name|IOException
 block|{
 if|if
 condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|HELP_OP
+argument_list|)
+condition|)
+block|{
+name|displayHelp
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 operator|!
 name|cmd
 operator|.
@@ -275,13 +289,13 @@ name|printHelp
 argument_list|(
 name|CMD_WIDTH
 argument_list|,
-literal|"hdfs scm -container -create<option>"
+literal|"hdfs scm -container -create"
 argument_list|,
-literal|"where<option> is"
+literal|null
 argument_list|,
 name|options
 argument_list|,
-literal|""
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
