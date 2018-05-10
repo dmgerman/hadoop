@@ -3246,6 +3246,25 @@ name|DEFAULT_RM_CLIENT_THREAD_COUNT
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|server
+operator|.
+name|addTerseExceptions
+argument_list|(
+name|ApplicationNotFoundException
+operator|.
+name|class
+argument_list|,
+name|ApplicationAttemptNotFoundException
+operator|.
+name|class
+argument_list|,
+name|ContainerNotFoundException
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 comment|// Enable service authorization?
 if|if
 condition|(
