@@ -802,6 +802,26 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|updateContainer (Container container)
+specifier|public
+name|List
+argument_list|<
+name|PrivilegedOperation
+argument_list|>
+name|updateContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ResourceHandlerException
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|postComplete (ContainerId containerId)
 specifier|public
 name|List

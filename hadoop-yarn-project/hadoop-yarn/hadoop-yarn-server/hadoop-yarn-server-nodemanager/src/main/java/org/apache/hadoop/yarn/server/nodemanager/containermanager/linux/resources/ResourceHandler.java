@@ -188,7 +188,7 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
-comment|/**    * Require state for container that was already launched    *    * @param containerId if of the container being reacquired.    * @return (possibly empty) list of operations that require elevated    * privileges    * @throws ResourceHandlerException    */
+comment|/**    * Require state for container that was already launched    *    * @param containerId id of the container being reacquired.    * @return (possibly empty) list of operations that require elevated    * privileges    * @throws ResourceHandlerException    */
 DECL|method|reacquireContainer (ContainerId containerId)
 name|List
 argument_list|<
@@ -202,7 +202,21 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
-comment|/**    * Perform any tasks necessary after container completion    * @param containerId of the container that was completed.    * @return (possibly empty) list of operations that require elevated    * privileges    * @throws ResourceHandlerException    */
+comment|/**    * Update state for container that was already launched    *    * @param container the container being updated.    * @return (possibly empty) list of operations that require elevated    * privileges    * @throws ResourceHandlerException    */
+DECL|method|updateContainer (Container container)
+name|List
+argument_list|<
+name|PrivilegedOperation
+argument_list|>
+name|updateContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ResourceHandlerException
+function_decl|;
+comment|/**    * Perform any tasks necessary after container completion.    * @param containerId of the container that was completed.    * @return (possibly empty) list of operations that require elevated    * privileges    * @throws ResourceHandlerException    */
 DECL|method|postComplete (ContainerId containerId)
 name|List
 argument_list|<

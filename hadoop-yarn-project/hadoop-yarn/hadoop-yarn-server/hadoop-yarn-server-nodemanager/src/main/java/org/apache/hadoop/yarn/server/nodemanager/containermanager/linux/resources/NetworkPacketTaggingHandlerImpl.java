@@ -514,6 +514,26 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|updateContainer (Container container)
+specifier|public
+name|List
+argument_list|<
+name|PrivilegedOperation
+argument_list|>
+name|updateContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ResourceHandlerException
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Cleanup operation once container is completed - deletes cgroup.    *    * @param containerId of the container that was completed.    * @return a list of PrivilegedOperations.    * @throws ResourceHandlerException    */
 annotation|@
 name|Override
