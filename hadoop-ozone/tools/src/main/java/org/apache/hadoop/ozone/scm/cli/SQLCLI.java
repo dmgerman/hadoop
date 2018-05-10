@@ -36,6 +36,32 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ByteString
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -751,7 +777,7 @@ name|CREATE_CONTAINER_INFO
 init|=
 literal|"CREATE TABLE containerInfo ("
 operator|+
-literal|"containerName TEXT PRIMARY KEY NOT NULL, "
+literal|"containerID LONG PRIMARY KEY NOT NULL, "
 operator|+
 literal|"leaderUUID TEXT NOT NULL)"
 decl_stmt|;
@@ -794,9 +820,9 @@ specifier|final
 name|String
 name|INSERT_CONTAINER_INFO
 init|=
-literal|"INSERT INTO containerInfo (containerName, leaderUUID) "
+literal|"INSERT INTO containerInfo (containerID, leaderUUID) "
 operator|+
-literal|"VALUES (\"%s\", \"%s\")"
+literal|"VALUES (\"%d\", \"%s\")"
 decl_stmt|;
 DECL|field|INSERT_DATANODE_INFO
 specifier|private
@@ -819,31 +845,6 @@ name|String
 name|INSERT_CONTAINER_MEMBERS
 init|=
 literal|"INSERT INTO containerMembers (containerName, datanodeUUID) "
-operator|+
-literal|"VALUES (\"%s\", \"%s\")"
-decl_stmt|;
-comment|// for block.db
-DECL|field|CREATE_BLOCK_CONTAINER
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|CREATE_BLOCK_CONTAINER
-init|=
-literal|"CREATE TABLE blockContainer ("
-operator|+
-literal|"blockKey TEXT PRIMARY KEY NOT NULL, "
-operator|+
-literal|"containerName TEXT NOT NULL)"
-decl_stmt|;
-DECL|field|INSERT_BLOCK_CONTAINER
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|INSERT_BLOCK_CONTAINER
-init|=
-literal|"INSERT INTO blockContainer (blockKey, containerName) "
 operator|+
 literal|"VALUES (\"%s\", \"%s\")"
 decl_stmt|;
@@ -1565,35 +1566,6 @@ literal|"Converting container DB"
 argument_list|)
 expr_stmt|;
 name|convertContainerDB
-argument_list|(
-name|dbPath
-argument_list|,
-name|outPath
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|dbName
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|BLOCK_DB
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Converting block DB"
-argument_list|)
-expr_stmt|;
-name|convertBlockDB
 argument_list|(
 name|dbPath
 argument_list|,
@@ -2455,15 +2427,14 @@ name|value
 parameter_list|)
 lambda|->
 block|{
-name|String
-name|containerName
+name|long
+name|containerID
 init|=
-operator|new
-name|String
+name|Longs
+operator|.
+name|fromByteArray
 argument_list|(
 name|key
-argument_list|,
-name|encoding
 argument_list|)
 decl_stmt|;
 name|ContainerInfo
@@ -2503,7 +2474,7 @@ name|insertContainerDB
 argument_list|(
 name|conn
 argument_list|,
-name|containerName
+name|containerID
 argument_list|,
 name|containerInfo
 operator|.
@@ -2539,8 +2510,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Insert into the sqlite DB of container.db.    * @param conn the connection to the sqlite DB.    * @param containerName the name of the container.    * @param pipeline the actual container pipeline object.    * @param uuidChecked the uuid that has been already inserted.    * @throws SQLException throws exception.    */
-DECL|method|insertContainerDB (Connection conn, String containerName, Pipeline pipeline, Set<String> uuidChecked)
+comment|/**    * Insert into the sqlite DB of container.db.    * @param conn the connection to the sqlite DB.    * @param containerID the id of the container.    * @param pipeline the actual container pipeline object.    * @param uuidChecked the uuid that has been already inserted.    * @throws SQLException throws exception.    */
+DECL|method|insertContainerDB (Connection conn, long containerID, Pipeline pipeline, Set<String> uuidChecked)
 specifier|private
 name|void
 name|insertContainerDB
@@ -2548,8 +2519,8 @@ parameter_list|(
 name|Connection
 name|conn
 parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|,
 name|Pipeline
 name|pipeline
@@ -2569,7 +2540,7 @@ name|info
 argument_list|(
 literal|"Insert to sql container db, for container {}"
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 expr_stmt|;
 name|String
@@ -2581,7 +2552,7 @@ name|format
 argument_list|(
 name|INSERT_CONTAINER_INFO
 argument_list|,
-name|containerName
+name|containerID
 argument_list|,
 name|pipeline
 operator|.
@@ -2702,7 +2673,7 @@ name|format
 argument_list|(
 name|INSERT_CONTAINER_MEMBERS
 argument_list|,
-name|containerName
+name|containerID
 argument_list|,
 name|uuid
 argument_list|)
@@ -2722,157 +2693,6 @@ argument_list|(
 literal|"Insertion completed."
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Converts block.db to sqlite. This is rather simple db, the schema has only    * one table:    *    * blockContainer    * --------------------------    * blockKey*  | containerName    * --------------------------    *    * @param dbPath path to container db.    * @param outPath path to output sqlite    * @throws IOException throws exception.    */
-DECL|method|convertBlockDB (Path dbPath, Path outPath)
-specifier|private
-name|void
-name|convertBlockDB
-parameter_list|(
-name|Path
-name|dbPath
-parameter_list|,
-name|Path
-name|outPath
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Create tables for sql block db."
-argument_list|)
-expr_stmt|;
-name|File
-name|dbFile
-init|=
-name|dbPath
-operator|.
-name|toFile
-argument_list|()
-decl_stmt|;
-try|try
-init|(
-name|MetadataStore
-name|dbStore
-init|=
-name|MetadataStoreBuilder
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|setDbFile
-argument_list|(
-name|dbFile
-argument_list|)
-operator|.
-name|build
-argument_list|()
-init|;
-name|Connection
-name|conn
-operator|=
-name|connectDB
-argument_list|(
-name|outPath
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-init|)
-block|{
-name|executeSQL
-argument_list|(
-name|conn
-argument_list|,
-name|CREATE_BLOCK_CONTAINER
-argument_list|)
-expr_stmt|;
-name|dbStore
-operator|.
-name|iterate
-argument_list|(
-literal|null
-argument_list|,
-parameter_list|(
-name|key
-parameter_list|,
-name|value
-parameter_list|)
-lambda|->
-block|{
-name|String
-name|blockKey
-init|=
-name|DFSUtilClient
-operator|.
-name|bytes2String
-argument_list|(
-name|key
-argument_list|)
-decl_stmt|;
-name|String
-name|containerName
-init|=
-name|DFSUtilClient
-operator|.
-name|bytes2String
-argument_list|(
-name|value
-argument_list|)
-decl_stmt|;
-name|String
-name|insertBlockContainer
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-name|INSERT_BLOCK_CONTAINER
-argument_list|,
-name|blockKey
-argument_list|,
-name|containerName
-argument_list|)
-decl_stmt|;
-try|try
-block|{
-name|executeSQL
-argument_list|(
-name|conn
-argument_list|,
-name|insertBlockContainer
-argument_list|)
-expr_stmt|;
-return|return
-literal|true
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|SQLException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Converts nodePool.db to sqlite. The schema of sql db:    * two tables, nodePool and datanodeInfo (the same datanode Info as for    * container.db).    *    * nodePool    * ---------------------------------------------------------    * datanodeUUID* | poolName*    * ---------------------------------------------------------    *    * datanodeInfo:    * ---------------------------------------------------------    * hostname | datanodeUUid* | xferPort | ipcPort    * ---------------------------------------------------------    *    * --------------------------------    * |containerPort    * --------------------------------    *    * @param dbPath path to container db.    * @param outPath path to output sqlite    * @throws IOException throws exception.    */
 DECL|method|convertNodePoolDB (Path dbPath, Path outPath)
