@@ -48,6 +48,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -172,6 +186,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|closeLock
+specifier|private
+specifier|final
+name|Object
+name|closeLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|field|manageOsCache
 specifier|private
 specifier|final
@@ -204,6 +228,7 @@ name|identifier
 decl_stmt|;
 DECL|field|readaheadRequest
 specifier|private
+specifier|volatile
 name|ReadaheadRequest
 name|readaheadRequest
 decl_stmt|;
@@ -284,6 +309,17 @@ name|identifier
 expr_stmt|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|getFd ()
+name|FileDescriptor
+name|getFd
+parameter_list|()
+block|{
+return|return
+name|fd
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|nextChunk ()
 specifier|public
@@ -292,6 +328,19 @@ name|nextChunk
 parameter_list|()
 throws|throws
 name|Exception
+block|{
+synchronized|synchronized
+init|(
+name|closeLock
+init|)
+block|{
+if|if
+condition|(
+name|fd
+operator|.
+name|valid
+argument_list|()
+condition|)
 block|{
 if|if
 condition|(
@@ -331,6 +380,14 @@ name|nextChunk
 argument_list|()
 return|;
 block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|close ()
@@ -340,6 +397,11 @@ name|close
 parameter_list|()
 throws|throws
 name|Exception
+block|{
+synchronized|synchronized
+init|(
+name|closeLock
+init|)
 block|{
 if|if
 condition|(
@@ -353,9 +415,18 @@ operator|.
 name|cancel
 argument_list|()
 expr_stmt|;
+name|readaheadRequest
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
+name|fd
+operator|.
+name|valid
+argument_list|()
+operator|&&
 name|manageOsCache
 operator|&&
 name|getEndOffset
@@ -408,17 +479,26 @@ argument_list|(
 literal|"Failed to manage OS cache for "
 operator|+
 name|identifier
+operator|+
+literal|" fd "
+operator|+
+name|fd
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// fd becomes invalid upon closing
 name|super
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

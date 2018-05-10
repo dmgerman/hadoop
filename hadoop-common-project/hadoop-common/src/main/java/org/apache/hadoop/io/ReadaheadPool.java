@@ -711,6 +711,14 @@ comment|// It's also possible that we'll end up requesting readahead on some
 comment|// other FD, which may be wasted work, but won't cause a problem.
 try|try
 block|{
+if|if
+condition|(
+name|fd
+operator|.
+name|valid
+argument_list|()
+condition|)
+block|{
 name|NativeIO
 operator|.
 name|POSIX
@@ -731,6 +739,7 @@ argument_list|,
 name|POSIX_FADV_WILLNEED
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
