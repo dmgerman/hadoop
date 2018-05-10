@@ -3431,6 +3431,24 @@ return|return
 name|resource
 return|;
 block|}
+DECL|method|newEmptyResource ()
+specifier|public
+specifier|static
+name|Resource
+name|newEmptyResource
+parameter_list|()
+block|{
+return|return
+name|recordFactory
+operator|.
+name|newRecordInstance
+argument_list|(
+name|Resource
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
 DECL|method|newURL (String scheme, String host, int port, String file)
 specifier|public
 specifier|static
