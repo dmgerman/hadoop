@@ -612,11 +612,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
 name|ozone
 operator|.
-name|Constants
+name|OzoneConsts
 operator|.
 name|OZONE_URI_SCHEME
 import|;
@@ -648,11 +646,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
 name|ozone
 operator|.
-name|Constants
+name|OzoneConsts
 operator|.
 name|OZONE_URI_DELIMITER
 import|;

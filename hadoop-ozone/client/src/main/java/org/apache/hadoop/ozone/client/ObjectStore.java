@@ -339,15 +339,16 @@ throws|throws
 name|IOException
 block|{
 return|return
-operator|new
-name|VolumeIterator
+name|listVolumes
 argument_list|(
 name|volumePrefix
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns Iterator to iterate over the List of volumes owned by a specific    * user. The result can be restricted using volume prefix, will return all    * volumes if volume prefix is null. If user is null, returns the volume of    * current user.    *    * @param user User Name    * @param volumePrefix Volume prefix to match    * @return {@code Iterator<OzoneVolume>}    */
-DECL|method|listVolumes (String user, String volumePrefix)
+comment|/**    * Returns Iterator to iterate over all the volumes after prevVolume in object    * store. If prevVolume is null it iterates from the first volume.    * The result can be restricted using volume prefix, will return all    * volumes if volume prefix is null.    *    * @param volumePrefix Volume prefix to match    * @param prevVolume Volumes will be listed after this volume name    * @return {@code Iterator<OzoneVolume>}    */
+DECL|method|listVolumes (String volumePrefix, String prevVolume)
 specifier|public
 name|Iterator
 argument_list|<
@@ -356,10 +357,43 @@ argument_list|>
 name|listVolumes
 parameter_list|(
 name|String
+name|volumePrefix
+parameter_list|,
+name|String
+name|prevVolume
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|VolumeIterator
+argument_list|(
+literal|null
+argument_list|,
+name|volumePrefix
+argument_list|,
+name|prevVolume
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns Iterator to iterate over the list of volumes after prevVolume owned    * by a specific user. The result can be restricted using volume prefix, will    * return all volumes if volume prefix is null. If user is not null, returns    * the volume of current user.    *    * @param user User Name    * @param volumePrefix Volume prefix to match    * @param prevVolume Volumes will be listed after this volume name    * @return {@code Iterator<OzoneVolume>}    */
+DECL|method|listVolumesByUser (String user, String volumePrefix, String prevVolume)
+specifier|public
+name|Iterator
+argument_list|<
+name|OzoneVolume
+argument_list|>
+name|listVolumesByUser
+parameter_list|(
+name|String
 name|user
 parameter_list|,
 name|String
 name|volumePrefix
+parameter_list|,
+name|String
+name|prevVolume
 parameter_list|)
 throws|throws
 name|IOException
@@ -392,6 +426,8 @@ argument_list|(
 name|user
 argument_list|,
 name|volumePrefix
+argument_list|,
+name|prevVolume
 argument_list|)
 return|;
 block|}
@@ -467,24 +503,8 @@ specifier|private
 name|OzoneVolume
 name|currentValue
 decl_stmt|;
-comment|/**      * Creates an Iterator to iterate over all volumes in the cluster,      * which matches the volume prefix.      * @param volPrefix prefix to match      */
-DECL|method|VolumeIterator (String volPrefix)
-name|VolumeIterator
-parameter_list|(
-name|String
-name|volPrefix
-parameter_list|)
-block|{
-name|this
-argument_list|(
-literal|null
-argument_list|,
-name|volPrefix
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * Creates an Iterator to iterate over all volumes of the user,      * which matches volume prefix.      * @param user user name      * @param volPrefix volume prefix to match      */
-DECL|method|VolumeIterator (String user, String volPrefix)
+comment|/**      * Creates an Iterator to iterate over all volumes after prevVolume of the user.      * If prevVolume is null it iterates from the first volume. The returned volumes      * match volume prefix.      * @param user user name      * @param volPrefix volume prefix to match      */
+DECL|method|VolumeIterator (String user, String volPrefix, String prevVolume)
 name|VolumeIterator
 parameter_list|(
 name|String
@@ -492,6 +512,9 @@ name|user
 parameter_list|,
 name|String
 name|volPrefix
+parameter_list|,
+name|String
+name|prevVolume
 parameter_list|)
 block|{
 name|this
@@ -518,7 +541,7 @@ name|currentIterator
 operator|=
 name|getNextListOfVolumes
 argument_list|(
-literal|null
+name|prevVolume
 argument_list|)
 operator|.
 name|iterator

@@ -926,10 +926,37 @@ name|keyPrefix
 parameter_list|)
 block|{
 return|return
+name|listKeys
+argument_list|(
+name|keyPrefix
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns Iterator to iterate over all keys after prevKey in the bucket.    * If prevKey is null it iterates from the first key in the bucket.    * The result can be restricted using key prefix, will return all    * keys if key prefix is null.    *    * @param keyPrefix Bucket prefix to match    * @param prevKey Keys will be listed after this key name    * @return {@code Iterator<OzoneKey>}    */
+DECL|method|listKeys (String keyPrefix, String prevKey)
+specifier|public
+name|Iterator
+argument_list|<
+name|OzoneKey
+argument_list|>
+name|listKeys
+parameter_list|(
+name|String
+name|keyPrefix
+parameter_list|,
+name|String
+name|prevKey
+parameter_list|)
+block|{
+return|return
 operator|new
 name|KeyIterator
 argument_list|(
 name|keyPrefix
+argument_list|,
+name|prevKey
 argument_list|)
 return|;
 block|}
@@ -1055,12 +1082,15 @@ specifier|private
 name|OzoneKey
 name|currentValue
 decl_stmt|;
-comment|/**      * Creates an Iterator to iterate over all keys in the bucket,      * which matches volume prefix.      * @param keyPrefix      */
-DECL|method|KeyIterator (String keyPrefix)
+comment|/**      * Creates an Iterator to iterate over all keys after prevKey in the bucket.      * If prevKey is null it iterates from the first key in the bucket.      * The returned keys match key prefix.      * @param keyPrefix      */
+DECL|method|KeyIterator (String keyPrefix, String prevKey)
 name|KeyIterator
 parameter_list|(
 name|String
 name|keyPrefix
+parameter_list|,
+name|String
+name|prevKey
 parameter_list|)
 block|{
 name|this
@@ -1081,7 +1111,7 @@ name|currentIterator
 operator|=
 name|getNextListOfKeys
 argument_list|(
-literal|null
+name|prevKey
 argument_list|)
 operator|.
 name|iterator

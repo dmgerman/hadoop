@@ -122,6 +122,22 @@ name|ozone
 operator|.
 name|client
 operator|.
+name|OzoneClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
 name|rest
 operator|.
 name|OzoneException
@@ -700,7 +716,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid ozone URI"
 argument_list|)
@@ -767,7 +783,7 @@ operator|=
 name|userAuth
 expr_stmt|;
 block|}
-comment|/**    * create volume.    *    * @param volumeName - volume name 3 - 63 chars, small letters.    * @param onBehalfOf - The user on behalf we are making the call for    * @param quota      - Quota's are specified in a specific format. it is    *                   integer(MB|GB|TB), for example 100TB.    * @throws OzoneRestClientException    */
+comment|/**    * create volume.    *    * @param volumeName - volume name 3 - 63 chars, small letters.    * @param onBehalfOf - The user on behalf we are making the call for    * @param quota      - Quota's are specified in a specific format. it is    *                   integer(MB|GB|TB), for example 100TB.    * @throws OzoneClientException    */
 DECL|method|createVolume (String volumeName, String onBehalfOf, String quota)
 specifier|public
 name|OzoneVolume
@@ -884,7 +900,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1000,7 +1016,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1195,7 +1211,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1475,7 +1491,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1579,7 +1595,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1633,7 +1649,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid new owner name"
 argument_list|)
@@ -1717,7 +1733,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1766,7 +1782,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid quota"
 argument_list|)
@@ -1853,7 +1869,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1968,7 +1984,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -2056,7 +2072,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -2300,7 +2316,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -2539,7 +2555,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid key Name"
 argument_list|)
@@ -2554,7 +2570,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid data stream"
 argument_list|)
@@ -2685,7 +2701,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -2759,7 +2775,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid key Name"
 argument_list|)
@@ -2774,7 +2790,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Invalid download path"
 argument_list|)
@@ -2879,7 +2895,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -3089,7 +3105,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|e
 operator|.

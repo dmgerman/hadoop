@@ -29,15 +29,6 @@ specifier|final
 class|class
 name|Constants
 block|{
-DECL|field|OZONE_URI_SCHEME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_URI_SCHEME
-init|=
-literal|"o3"
-decl_stmt|;
 DECL|field|OZONE_DEFAULT_USER
 specifier|public
 specifier|static
@@ -46,15 +37,6 @@ name|String
 name|OZONE_DEFAULT_USER
 init|=
 literal|"hdfs"
-decl_stmt|;
-DECL|field|OZONE_HTTP_SCHEME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_HTTP_SCHEME
-init|=
-literal|"http://"
 decl_stmt|;
 DECL|field|OZONE_USER_DIR
 specifier|public
@@ -84,15 +66,6 @@ name|String
 name|BUFFER_TMP_KEY
 init|=
 literal|"hadoop.tmp.dir"
-decl_stmt|;
-DECL|field|OZONE_URI_DELIMITER
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_URI_DELIMITER
-init|=
-literal|"/"
 decl_stmt|;
 comment|/** Page size for Ozone listing operation. */
 DECL|field|LISTING_PAGE_SIZE

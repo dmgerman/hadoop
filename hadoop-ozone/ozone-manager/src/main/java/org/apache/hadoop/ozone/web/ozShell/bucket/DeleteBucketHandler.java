@@ -46,11 +46,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
 name|client
 operator|.
-name|OzoneRestClientException
+name|OzoneVolume
 import|;
 end_import
 
@@ -64,11 +62,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
 name|client
 operator|.
-name|OzoneVolume
+name|OzoneClientException
 import|;
 end_import
 
@@ -202,11 +198,6 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
-DECL|field|rootName
-specifier|private
-name|String
-name|rootName
-decl_stmt|;
 comment|/**    * Executes the Client Calls.    *    * @param cmd - CommandLine    *    * @throws IOException    * @throws OzoneException    * @throws URISyntaxException    */
 annotation|@
 name|Override
@@ -240,7 +231,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Incorrect call : deleteBucket is missing"
 argument_list|)
@@ -291,7 +282,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"volume and bucket name required in delete Bucket"
 argument_list|)
@@ -356,53 +347,13 @@ name|bucketName
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|cmd
-operator|.
-name|hasOption
-argument_list|(
-name|Shell
-operator|.
-name|RUNAS
-argument_list|)
-condition|)
-block|{
-name|rootName
-operator|=
-literal|"hdfs"
-expr_stmt|;
-block|}
-else|else
-block|{
-name|rootName
-operator|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
-expr_stmt|;
-block|}
-name|client
-operator|.
-name|setEndPointURI
-argument_list|(
-name|ozoneURI
-argument_list|)
-expr_stmt|;
-name|client
-operator|.
-name|setUserAuth
-argument_list|(
-name|rootName
-argument_list|)
-expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
 name|client
+operator|.
+name|getObjectStore
+argument_list|()
 operator|.
 name|getVolume
 argument_list|(

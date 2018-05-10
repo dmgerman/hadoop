@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.client
+DECL|package|org.apache.hadoop.ozone.client
 package|package
 name|org
 operator|.
@@ -13,8 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|ozone
-operator|.
-name|web
 operator|.
 name|client
 package|;
@@ -43,17 +41,17 @@ comment|/**  * This exception is thrown by the Ozone Clients.  */
 end_comment
 
 begin_class
-DECL|class|OzoneRestClientException
+DECL|class|OzoneClientException
 specifier|public
 class|class
-name|OzoneRestClientException
+name|OzoneClientException
 extends|extends
 name|OzoneException
 block|{
 comment|/**    * Constructor that allows the shortMessage.    *    * @param shortMessage Short Message    */
-DECL|method|OzoneRestClientException (String shortMessage)
+DECL|method|OzoneClientException (String shortMessage)
 specifier|public
-name|OzoneRestClientException
+name|OzoneClientException
 parameter_list|(
 name|String
 name|shortMessage
@@ -70,9 +68,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor that allows a shortMessage and an exception.    *    * @param shortMessage short message    * @param ex exception    */
-DECL|method|OzoneRestClientException (String shortMessage, Exception ex)
+DECL|method|OzoneClientException (String shortMessage, Exception ex)
 specifier|public
-name|OzoneRestClientException
+name|OzoneClientException
 parameter_list|(
 name|String
 name|shortMessage
@@ -94,9 +92,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor that allows the shortMessage and a longer message.    *    * @param shortMessage Short Message    * @param message long error message    */
-DECL|method|OzoneRestClientException (String shortMessage, String message)
+DECL|method|OzoneClientException (String shortMessage, String message)
 specifier|public
-name|OzoneRestClientException
+name|OzoneClientException
 parameter_list|(
 name|String
 name|shortMessage

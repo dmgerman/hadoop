@@ -628,10 +628,37 @@ name|bucketPrefix
 parameter_list|)
 block|{
 return|return
+name|listBuckets
+argument_list|(
+name|bucketPrefix
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns Iterator to iterate over all buckets after prevBucket in the volume.    * If prevBucket is null it iterates from the first bucket in the volume.    * The result can be restricted using bucket prefix, will return all    * buckets if bucket prefix is null.    *    * @param bucketPrefix Bucket prefix to match    * @param prevBucket Buckets are listed after this bucket    * @return {@code Iterator<OzoneBucket>}    */
+DECL|method|listBuckets (String bucketPrefix, String prevBucket)
+specifier|public
+name|Iterator
+argument_list|<
+name|OzoneBucket
+argument_list|>
+name|listBuckets
+parameter_list|(
+name|String
+name|bucketPrefix
+parameter_list|,
+name|String
+name|prevBucket
+parameter_list|)
+block|{
+return|return
 operator|new
 name|BucketIterator
 argument_list|(
 name|bucketPrefix
+argument_list|,
+name|prevBucket
 argument_list|)
 return|;
 block|}
@@ -711,12 +738,16 @@ specifier|private
 name|OzoneBucket
 name|currentValue
 decl_stmt|;
-comment|/**      * Creates an Iterator to iterate over all buckets in the volume,      * which matches volume prefix.      * @param bucketPrefix      */
-DECL|method|BucketIterator (String bucketPrefix)
+comment|/**      * Creates an Iterator to iterate over all buckets after prevBucket in the volume.      * If prevBucket is null it iterates from the first bucket in the volume.      * The returned buckets match bucket prefix.      * @param bucketPrefix      */
+DECL|method|BucketIterator (String bucketPrefix, String prevBucket)
+specifier|public
 name|BucketIterator
 parameter_list|(
 name|String
 name|bucketPrefix
+parameter_list|,
+name|String
+name|prevBucket
 parameter_list|)
 block|{
 name|this
@@ -737,7 +768,7 @@ name|currentIterator
 operator|=
 name|getNextListOfBuckets
 argument_list|(
-literal|null
+name|prevBucket
 argument_list|)
 operator|.
 name|iterator

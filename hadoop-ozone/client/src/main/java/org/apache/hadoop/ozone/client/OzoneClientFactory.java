@@ -840,8 +840,8 @@ name|error
 argument_list|(
 name|message
 operator|+
-literal|" exception:"
-operator|+
+literal|" exception: "
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

@@ -76,6 +76,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -149,7 +163,7 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|,
-name|Constants
+name|OzoneConsts
 operator|.
 name|OZONE_URI_SCHEME
 argument_list|,

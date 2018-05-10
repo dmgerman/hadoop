@@ -92,6 +92,22 @@ name|ozone
 operator|.
 name|client
 operator|.
+name|OzoneClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
 name|rest
 operator|.
 name|OzoneException
@@ -877,7 +893,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1093,7 +1109,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -1242,7 +1258,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1385,7 +1401,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1512,7 +1528,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -1593,7 +1609,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -1756,7 +1772,7 @@ throw|;
 block|}
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http result"
 argument_list|)
@@ -1942,7 +1958,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|e
 operator|.
@@ -2039,7 +2055,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -2227,7 +2243,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 name|ex
 operator|.
@@ -2317,7 +2333,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneRestClientException
+name|OzoneClientException
 argument_list|(
 literal|"Unexpected null in http payload."
 argument_list|)
