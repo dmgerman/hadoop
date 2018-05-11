@@ -410,6 +410,13 @@ name|LOG_DIRS
 argument_list|(
 literal|"LOG_DIRS"
 argument_list|)
+block|,
+comment|/**      * $YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE      * Final, Docker run support ENTRY_POINT.      */
+DECL|enumConstant|YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE
+name|YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE
+argument_list|(
+literal|"YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE"
+argument_list|)
 block|;
 DECL|field|variable
 specifier|private

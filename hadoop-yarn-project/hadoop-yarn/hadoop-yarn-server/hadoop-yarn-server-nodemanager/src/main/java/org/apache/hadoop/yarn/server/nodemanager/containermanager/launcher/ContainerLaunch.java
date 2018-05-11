@@ -9188,6 +9188,44 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Based on discussion in YARN-7654, for ENTRY_POINT enabled
+comment|// docker container, we forward user defined environment variables
+comment|// without node manager environment variables.  This is the reason
+comment|// that we skip sanitizeEnv method.
+name|boolean
+name|overrideDisable
+init|=
+name|Boolean
+operator|.
+name|parseBoolean
+argument_list|(
+name|environment
+operator|.
+name|get
+argument_list|(
+name|Environment
+operator|.
+name|YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE
+operator|.
+name|name
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|overrideDisable
+condition|)
+block|{
+name|environment
+operator|.
+name|remove
+argument_list|(
+literal|"WORK_DIR"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 comment|/**      * Non-modifiable environment variables      */
 name|addToEnvMap
 argument_list|(
