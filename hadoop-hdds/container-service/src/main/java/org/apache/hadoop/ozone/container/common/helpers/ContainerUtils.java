@@ -374,22 +374,6 @@ name|CONTAINER_EXTENSION
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|CONTAINER_META
-import|;
-end_import
-
 begin_comment
 comment|/**  * A set of helper functions to create proper responses.  */
 end_comment
@@ -877,8 +861,8 @@ name|containerID
 argument_list|)
 return|;
 block|}
-comment|/**    * Verifies that this in indeed a new container.    *    * @param containerFile - Container File to verify    * @param metadataFile - metadata File to verify    * @throws IOException    */
-DECL|method|verifyIsNewContainer (File containerFile, File metadataFile)
+comment|/**    * Verifies that this in indeed a new container.    *    * @param containerFile - Container File to verify    * @throws IOException    */
+DECL|method|verifyIsNewContainer (File containerFile)
 specifier|public
 specifier|static
 name|void
@@ -886,9 +870,6 @@ name|verifyIsNewContainer
 parameter_list|(
 name|File
 name|containerFile
-parameter_list|,
-name|File
-name|metadataFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -932,40 +913,6 @@ argument_list|(
 literal|"container already exists on "
 operator|+
 literal|"disk."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|metadataFile
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"metadata found on disk, but missing container. Refusing to"
-operator|+
-literal|" write this container. File: {} "
-argument_list|,
-name|metadataFile
-operator|.
-name|toPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|FileAlreadyExistsException
-argument_list|(
-operator|(
-literal|"metadata found on disk, but "
-operator|+
-literal|"missing container. Refusing to write this container."
-operator|)
 argument_list|)
 throw|;
 block|}
@@ -1032,35 +979,6 @@ argument_list|(
 literal|"creation of a new container file failed. File: {}"
 argument_list|,
 name|containerFile
-operator|.
-name|toPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"creation of a new container file failed."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|metadataFile
-operator|.
-name|createNewFile
-argument_list|()
-condition|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"creation of the metadata file failed. File: {}"
-argument_list|,
-name|metadataFile
 operator|.
 name|toPath
 argument_list|()
@@ -1285,45 +1203,6 @@ throw|;
 block|}
 return|return
 name|metadataPath
-return|;
-block|}
-comment|/**    * Returns Metadata location.    *    * @param containerData - Data    * @param location - Path    * @return Path    */
-DECL|method|getMetadataFile (ContainerData containerData, Path location)
-specifier|public
-specifier|static
-name|File
-name|getMetadataFile
-parameter_list|(
-name|ContainerData
-name|containerData
-parameter_list|,
-name|Path
-name|location
-parameter_list|)
-block|{
-return|return
-name|location
-operator|.
-name|resolve
-argument_list|(
-name|Long
-operator|.
-name|toString
-argument_list|(
-name|containerData
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-operator|.
-name|concat
-argument_list|(
-name|CONTAINER_META
-argument_list|)
-argument_list|)
-operator|.
-name|toFile
-argument_list|()
 return|;
 block|}
 comment|/**    * Returns container file location.    *    * @param containerData - Data    * @param location - Root path    * @return Path    */
@@ -1668,36 +1547,11 @@ name|CONTAINER_EXTENSION
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Path
-name|metaPath
-init|=
-name|Paths
-operator|.
-name|get
-argument_list|(
-name|rootPath
-operator|.
-name|concat
-argument_list|(
-name|CONTAINER_META
-argument_list|)
-argument_list|)
-decl_stmt|;
 name|FileUtils
 operator|.
 name|forceDelete
 argument_list|(
 name|containerPath
-operator|.
-name|toFile
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|FileUtils
-operator|.
-name|forceDelete
-argument_list|(
-name|metaPath
 operator|.
 name|toFile
 argument_list|()

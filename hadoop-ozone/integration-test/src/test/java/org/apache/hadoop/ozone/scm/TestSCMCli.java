@@ -2122,11 +2122,6 @@ name|openStatus
 argument_list|,
 name|data
 operator|.
-name|getHash
-argument_list|()
-argument_list|,
-name|data
-operator|.
 name|getDBPath
 argument_list|()
 argument_list|,

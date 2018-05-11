@@ -468,29 +468,6 @@ argument_list|,
 name|openStatus
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|containerData
-operator|.
-name|getHash
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|logOut
-argument_list|(
-literal|"Container Hash: %s"
-argument_list|,
-name|containerData
-operator|.
-name|getHash
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|logOut
 argument_list|(
 literal|"Container DB Path: %s"
