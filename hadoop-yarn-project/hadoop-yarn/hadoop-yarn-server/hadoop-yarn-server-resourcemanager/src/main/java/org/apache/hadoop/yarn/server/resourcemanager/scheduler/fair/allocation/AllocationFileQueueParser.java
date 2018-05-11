@@ -1625,6 +1625,13 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
+comment|// reservable queue has been already configured as parent
+if|if
+condition|(
+operator|!
+name|isReservable
+condition|)
+block|{
 name|builder
 operator|.
 name|configuredQueues
@@ -1636,6 +1643,7 @@ argument_list|,
 name|queueName
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
