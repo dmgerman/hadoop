@@ -252,6 +252,16 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|bucketInfo
+operator|.
+name|setAcls
+argument_list|(
+name|bucket
+operator|.
+name|getAcls
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|bucketInfo
 return|;
