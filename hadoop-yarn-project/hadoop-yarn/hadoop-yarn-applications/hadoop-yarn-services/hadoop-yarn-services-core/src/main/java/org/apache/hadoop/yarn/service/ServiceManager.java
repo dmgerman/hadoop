@@ -1387,14 +1387,11 @@ name|STABLE
 return|;
 block|}
 comment|/**    * Service state gets directly modified by ServiceMaster and Component.    * This is a problem for upgrade and flexing. For now, invoking    * ServiceMaster.checkAndUpdateServiceState here to make it easy to fix    * this in future.    */
-DECL|method|checkAndUpdateServiceState (boolean isIncrement)
+DECL|method|checkAndUpdateServiceState ()
 specifier|public
 name|void
 name|checkAndUpdateServiceState
-parameter_list|(
-name|boolean
-name|isIncrement
-parameter_list|)
+parameter_list|()
 block|{
 name|writeLock
 operator|.
@@ -1424,8 +1421,6 @@ argument_list|(
 name|this
 operator|.
 name|scheduler
-argument_list|,
-name|isIncrement
 argument_list|)
 expr_stmt|;
 block|}

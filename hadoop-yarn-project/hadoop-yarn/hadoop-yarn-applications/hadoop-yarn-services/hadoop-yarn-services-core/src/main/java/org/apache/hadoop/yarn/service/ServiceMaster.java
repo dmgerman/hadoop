@@ -1710,7 +1710,7 @@ comment|// of a READY state component of a service
 end_comment
 
 begin_function
-DECL|method|checkAndUpdateServiceState ( ServiceScheduler scheduler, boolean isIncrement)
+DECL|method|checkAndUpdateServiceState ( ServiceScheduler scheduler)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -1719,9 +1719,6 @@ name|checkAndUpdateServiceState
 parameter_list|(
 name|ServiceScheduler
 name|scheduler
-parameter_list|,
-name|boolean
-name|isIncrement
 parameter_list|)
 block|{
 name|ServiceState
@@ -1735,29 +1732,7 @@ operator|.
 name|getState
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|isIncrement
-condition|)
-block|{
-comment|// set it to STARTED every time a component moves out of STABLE state
-name|scheduler
-operator|.
-name|getApp
-argument_list|()
-operator|.
-name|setState
-argument_list|(
-name|ServiceState
-operator|.
-name|STARTED
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// otherwise check the state of all components
+comment|// Check the state of all components
 name|boolean
 name|isStable
 init|=
@@ -1867,7 +1842,6 @@ operator|.
 name|STARTED
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 if|if

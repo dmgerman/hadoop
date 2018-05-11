@@ -3176,7 +3176,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Flex compa up to 4, which is more containers than the no of NMs
+comment|// Flex compa up to 5, which is more containers than the no of NMs
 name|Map
 argument_list|<
 name|String
@@ -3190,6 +3190,154 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|compCounts
+operator|.
+name|put
+argument_list|(
+literal|"compa"
+argument_list|,
+literal|5L
+argument_list|)
+expr_stmt|;
+name|exampleApp
+operator|.
+name|getComponent
+argument_list|(
+literal|"compa"
+argument_list|)
+operator|.
+name|setNumberOfContainers
+argument_list|(
+literal|5L
+argument_list|)
+expr_stmt|;
+name|client
+operator|.
+name|flexByRestService
+argument_list|(
+name|exampleApp
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|compCounts
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+comment|// 10 secs is enough for the container to be started. The down side of
+comment|// this test is that it has to wait that long. Setting a higher wait time
+comment|// will add to the total time taken by tests to run.
+name|waitForServiceToBeStable
+argument_list|(
+name|client
+argument_list|,
+name|exampleApp
+argument_list|,
+literal|10000
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Service should not be in a stable state. It should throw "
+operator|+
+literal|"a timeout exception."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Check that service state is not STABLE and only 3 containers are
+comment|// running and the fourth one should not get allocated.
+name|service
+operator|=
+name|client
+operator|.
+name|getStatus
+argument_list|(
+name|exampleApp
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|component
+operator|=
+name|service
+operator|.
+name|getComponent
+argument_list|(
+literal|"compa"
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNotEquals
+argument_list|(
+literal|"Service state should not be STABLE"
+argument_list|,
+name|ServiceState
+operator|.
+name|STABLE
+argument_list|,
+name|service
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Component state should be FLEXING"
+argument_list|,
+name|ComponentState
+operator|.
+name|FLEXING
+argument_list|,
+name|component
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"3 containers are expected to be running"
+argument_list|,
+literal|3
+argument_list|,
+name|component
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Flex compa down to 4 now, which is still more containers than the no of
+comment|// NMs. This tests the usecase that flex down does not kill any of the
+comment|// currently running containers since the required number of containers are
+comment|// still higher than the currently running number of containers. However,
+comment|// component state will still be FLEXING and service state not STABLE.
+name|compCounts
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
 name|compCounts
 operator|.
 name|put
@@ -3326,6 +3474,56 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Finally flex compa down to 3, which is exactly the number of containers
+comment|// currently running. This will bring the component and service states to
+comment|// STABLE.
+name|compCounts
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|compCounts
+operator|.
+name|put
+argument_list|(
+literal|"compa"
+argument_list|,
+literal|3L
+argument_list|)
+expr_stmt|;
+name|exampleApp
+operator|.
+name|getComponent
+argument_list|(
+literal|"compa"
+argument_list|)
+operator|.
+name|setNumberOfContainers
+argument_list|(
+literal|3L
+argument_list|)
+expr_stmt|;
+name|client
+operator|.
+name|flexByRestService
+argument_list|(
+name|exampleApp
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|compCounts
+argument_list|)
+expr_stmt|;
+name|waitForServiceToBeStable
+argument_list|(
+name|client
+argument_list|,
+name|exampleApp
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
