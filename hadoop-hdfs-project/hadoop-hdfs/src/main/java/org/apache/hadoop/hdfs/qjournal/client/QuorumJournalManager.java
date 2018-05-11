@@ -670,6 +670,13 @@ specifier|final
 name|int
 name|maxTxnsPerRpc
 decl_stmt|;
+comment|// Whether or not in-progress tailing is enabled in the configuration
+DECL|field|inProgressTailingEnabled
+specifier|private
+specifier|final
+name|boolean
+name|inProgressTailingEnabled
+decl_stmt|;
 comment|// Timeouts for which the QJM will wait for each of the following actions.
 DECL|field|startSegmentTimeoutMs
 specifier|private
@@ -978,6 +985,23 @@ argument_list|,
 literal|"Must specify %s greater than 0!"
 argument_list|,
 name|QJM_RPC_MAX_TXNS_KEY
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inProgressTailingEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_INPROGRESS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_INPROGRESS_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// Configure timeouts.
@@ -2280,22 +2304,6 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
-name|boolean
-name|updateCommittedTxId
-init|=
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_TAILEDITS_INPROGRESS_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_TAILEDITS_INPROGRESS_DEFAULT
-argument_list|)
-decl_stmt|;
 return|return
 operator|new
 name|QuorumOutputStream
@@ -2307,8 +2315,6 @@ argument_list|,
 name|outputBufferCapacity
 argument_list|,
 name|writeTxnsTimeoutMs
-argument_list|,
-name|updateCommittedTxId
 argument_list|)
 return|;
 block|}
@@ -2631,9 +2637,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Some calls will use inProgressOK to get in-progress edits even if
+comment|// the cache used for RPC calls is not enabled; fall back to using the
+comment|// streaming mechanism to serve such requests
 if|if
 condition|(
 name|inProgressOk
+operator|&&
+name|inProgressTailingEnabled
 condition|)
 block|{
 name|LOG

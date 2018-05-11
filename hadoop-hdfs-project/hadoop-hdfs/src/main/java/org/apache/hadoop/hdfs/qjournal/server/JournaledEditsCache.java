@@ -277,6 +277,25 @@ DECL|class|JournaledEditsCache
 class|class
 name|JournaledEditsCache
 block|{
+DECL|field|INVALID_LAYOUT_VERSION
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|INVALID_LAYOUT_VERSION
+init|=
+literal|0
+decl_stmt|;
+DECL|field|INVALID_TXN_ID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|INVALID_TXN_ID
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** The capacity, in bytes, of this cache. */
 DECL|field|capacity
 specifier|private
@@ -322,9 +341,7 @@ specifier|private
 name|int
 name|layoutVersion
 init|=
-name|Integer
-operator|.
-name|MAX_VALUE
+name|INVALID_LAYOUT_VERSION
 decl_stmt|;
 comment|/** Stores the serialized version of the header for the current version. */
 DECL|field|layoutHeader
@@ -332,7 +349,7 @@ specifier|private
 name|ByteBuffer
 name|layoutHeader
 decl_stmt|;
-comment|/**    * The lowest/highest transaction IDs present in the cache. -1 if there are no    * transactions in the cache.    */
+comment|/**    * The lowest/highest transaction IDs present in the cache.    * {@value INVALID_TXN_ID} if there are no transactions in the cache.    */
 DECL|field|lowestTxnId
 specifier|private
 name|long
@@ -468,12 +485,11 @@ argument_list|)
 expr_stmt|;
 name|initialize
 argument_list|(
-operator|-
-literal|1
+name|INVALID_TXN_ID
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Fetch the data for edits starting at the specific transaction ID, fetching    * up to {@code maxTxns} transactions. Populates a list of output buffers    * which contains a serialized version of the edits, and returns the count of    * edits contained within the serialized buffers. The serialized edits are    * prefixed with a standard edit log header containing information about the    * layout version. The transactions returned are guaranteed to have contiguous    * transaction IDs.    *    * If {@code requestedStartTxn} is higher than the highest transaction which    * has been added to this cache, a response with an empty buffer and a    * transaction count of 0 will be returned. If {@code requestedStartTxn} is    * lower than the lowest transaction currently contained in this cache, or no    * transactions have yet been added to the cache, an exception will be thrown.    * @param requestedStartTxn The ID of the first transaction to return. If any    *                          transactions are returned, it is guaranteed that    *                          the first one will have this ID.    * @param maxTxns The maximum number of transactions to return.    * @param outputBuffers A list to populate with output buffers. When    *                      concatenated, these form a full response.    * @return The number of transactions contained within the set of output    *         buffers.    * @throws IOException If transactions are requested which cannot be served    *                     by this cache.    */
+comment|/**    * Fetch the data for edits starting at the specific transaction ID, fetching    * up to {@code maxTxns} transactions. Populates a list of output buffers    * which contains a serialized version of the edits, and returns the count of    * edits contained within the serialized buffers. The serialized edits are    * prefixed with a standard edit log header containing information about the    * layout version. The transactions returned are guaranteed to have contiguous    * transaction IDs.    *    * If {@code requestedStartTxn} is higher than the highest transaction which    * has been added to this cache, a response with an empty buffer and a    * transaction count of 0 will be returned. If {@code requestedStartTxn} is    * lower than the lowest transaction currently contained in this cache, or no    * transactions have yet been added to the cache, an exception will be thrown.    *    * @param requestedStartTxn The ID of the first transaction to return. If any    *                          transactions are returned, it is guaranteed that    *                          the first one will have this ID.    * @param maxTxns The maximum number of transactions to return.    * @param outputBuffers A list to populate with output buffers. When    *                      concatenated, these form a full response.    * @return The number of transactions contained within the set of output    *         buffers.    * @throws IOException If transactions are requested which cannot be served    *                     by this cache.    */
 DECL|method|retrieveEdits (long requestedStartTxn, int maxTxns, List<ByteBuffer> outputBuffers)
 name|int
 name|retrieveEdits
@@ -512,8 +528,8 @@ block|{
 if|if
 condition|(
 name|lowestTxnId
-operator|<
-literal|0
+operator|==
+name|INVALID_TXN_ID
 operator|||
 name|requestedStartTxn
 operator|<
@@ -802,7 +818,7 @@ return|return
 name|txnCount
 return|;
 block|}
-comment|/**    * Store a batch of serialized edits into this cache. Removes old batches    * as necessary to keep the total size of the cache below the capacity.    * See the class Javadoc for more info.    *    * This attempts to always handle malformed inputs gracefully rather than    * throwing an exception, to allow the rest of the Journal's operations    * to proceed normally.    * @param inputData A buffer containing edits in serialized form    * @param newStartTxn The txn ID of the first edit in {@code inputData}    * @param newEndTxn The txn ID of the last edit in {@code inputData}    * @param newLayoutVersion The version of the layout used to serialize    *                         the edits    */
+comment|/**    * Store a batch of serialized edits into this cache. Removes old batches    * as necessary to keep the total size of the cache below the capacity.    * See the class Javadoc for more info.    *    * This attempts to always handle malformed inputs gracefully rather than    * throwing an exception, to allow the rest of the Journal's operations    * to proceed normally.    *    * @param inputData A buffer containing edits in serialized form    * @param newStartTxn The txn ID of the first edit in {@code inputData}    * @param newEndTxn The txn ID of the last edit in {@code inputData}    * @param newLayoutVersion The version of the layout used to serialize    *                         the edits    */
 DECL|method|storeEdits (byte[] inputData, long newStartTxn, long newEndTxn, int newLayoutVersion)
 name|void
 name|storeEdits
@@ -919,27 +935,39 @@ expr_stmt|;
 return|return;
 block|}
 block|}
+elseif|else
 if|if
 condition|(
 name|lowestTxnId
-operator|<
-literal|0
-operator|||
-operator|(
+operator|==
+name|INVALID_TXN_ID
+condition|)
+block|{
+name|Journal
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initializing edits cache starting from txn ID "
+operator|+
+name|newStartTxn
+argument_list|)
+expr_stmt|;
+name|initialize
+argument_list|(
+name|newStartTxn
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 name|highestTxnId
 operator|+
 literal|1
-operator|)
 operator|!=
 name|newStartTxn
-condition|)
-block|{
-comment|// Cache initialization step
-if|if
-condition|(
-name|lowestTxnId
-operator|>=
-literal|0
 condition|)
 block|{
 comment|// Cache is out of sync; clear to avoid storing noncontiguous regions
@@ -957,7 +985,7 @@ literal|"Edits cache is out of sync; "
 operator|+
 literal|"looked for next txn id at %d but got start txn id for "
 operator|+
-literal|"cache put request at %d"
+literal|"cache put request at %d. Reinitializing at new request."
 argument_list|,
 name|highestTxnId
 operator|+
@@ -967,7 +995,6 @@ name|newStartTxn
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|initialize
 argument_list|(
 name|newStartTxn
@@ -1040,8 +1067,7 @@ condition|)
 block|{
 name|initialize
 argument_list|(
-operator|-
-literal|1
+name|INVALID_TXN_ID
 argument_list|)
 expr_stmt|;
 name|Journal
@@ -1060,7 +1086,9 @@ literal|"large to fit into the cache: startTxn = %d, endTxn = %d, "
 operator|+
 literal|"input length = %d. The capacity of the cache (%s) must be "
 operator|+
-literal|"increased for it to work properly (current capacity %d)"
+literal|"increased for it to work properly (current capacity %d)."
+operator|+
+literal|"Cache is now empty."
 argument_list|,
 name|newStartTxn
 argument_list|,
@@ -1124,7 +1152,7 @@ name|length
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Skip through a given stream of edits until the given transaction ID is    * found. Return the number of bytes that appear prior to the given    * transaction.    * @param buf A buffer containing a stream of serialized edits    * @param txnId The transaction ID to search for    * @return The number of bytes appearing in {@code buf}<i>before</i>    *         the start of the transaction with ID {@code txnId}.    */
+comment|/**    * Skip through a given stream of edits until the given transaction ID is    * found. Return the number of bytes that appear prior to the given    * transaction.    *    * @param buf A buffer containing a stream of serialized edits    * @param txnId The transaction ID to search for    * @return The number of bytes appearing in {@code buf}<i>before</i>    *         the start of the transaction with ID {@code txnId}.    */
 DECL|method|findTransactionPosition (byte[] buf, long txnId)
 specifier|private
 name|int
@@ -1215,7 +1243,7 @@ operator|)
 name|previousPos
 return|;
 block|}
-comment|/**    * Update the layout version of the cache. This clears out all existing    * entries, and populates the new layout version and header for that version.    * @param newLayoutVersion The new layout version to be stored in the cache    * @param newStartTxn The new lowest transaction in the cache    */
+comment|/**    * Update the layout version of the cache. This clears out all existing    * entries, and populates the new layout version and header for that version.    *    * @param newLayoutVersion The new layout version to be stored in the cache    * @param newStartTxn The new lowest transaction in the cache    */
 DECL|method|updateLayoutVersion (int newLayoutVersion, long newStartTxn)
 specifier|private
 name|void
@@ -1230,19 +1258,68 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|StringBuilder
+name|logMsg
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+operator|.
+name|append
+argument_list|(
+literal|"Updating edits cache to use layout version "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|newLayoutVersion
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" starting from txn ID "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|newStartTxn
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|layoutVersion
+operator|!=
+name|INVALID_LAYOUT_VERSION
+condition|)
+block|{
+name|logMsg
+operator|.
+name|append
+argument_list|(
+literal|"; previous version was "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|layoutVersion
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"; old entries will be cleared."
+argument_list|)
+expr_stmt|;
+block|}
 name|Journal
 operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Updating edits cache to use layout version "
-operator|+
-name|newLayoutVersion
-operator|+
-literal|"; previously was "
-operator|+
-name|layoutVersion
+name|logMsg
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|initialize
@@ -1287,7 +1364,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize the cache back to a clear state.    * @param newInitialTxnId The new lowest transaction ID stored in the cache.    *                        -1 if the cache is to remain empty at this time.    */
+comment|/**    * Initialize the cache back to a clear state.    *    * @param newInitialTxnId The new lowest transaction ID stored in the cache.    *                        This should be {@value INVALID_TXN_ID} if the cache    *                        is to remain empty at this time.    */
 DECL|method|initialize (long newInitialTxnId)
 specifier|private
 name|void
@@ -1316,11 +1393,11 @@ name|initialTxnId
 expr_stmt|;
 name|highestTxnId
 operator|=
-operator|-
-literal|1
+name|INVALID_TXN_ID
 expr_stmt|;
+comment|// this will be set later
 block|}
-comment|/**    * Return the underlying data buffer used to store information about the    * given transaction ID.    * @param txnId Transaction ID whose containing buffer should be fetched.    * @return The data buffer for the transaction    */
+comment|/**    * Return the underlying data buffer used to store information about the    * given transaction ID.    *    * @param txnId Transaction ID whose containing buffer should be fetched.    * @return The data buffer for the transaction    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getRawDataForTests (long txnId)
@@ -1368,8 +1445,8 @@ block|{
 if|if
 condition|(
 name|lowestTxnId
-operator|<
-literal|0
+operator|==
+name|INVALID_TXN_ID
 condition|)
 block|{
 return|return

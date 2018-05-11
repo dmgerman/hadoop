@@ -4965,6 +4965,18 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+comment|// One last sync whose transactions are not expected to be seen in the
+comment|// input streams because the JournalNodes have not updated their concept
+comment|// of the committed transaction ID yet
+name|writeTxns
+argument_list|(
+name|stm
+argument_list|,
+literal|12
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 name|futureThrows
 argument_list|(
 operator|new

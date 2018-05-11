@@ -5582,6 +5582,17 @@ name|getJournalCTime
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getJournaledEditsCache ()
+name|JournaledEditsCache
+name|getJournaledEditsCache
+parameter_list|()
+block|{
+return|return
+name|cache
+return|;
+block|}
 block|}
 end_class
 
