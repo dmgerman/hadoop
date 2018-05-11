@@ -548,6 +548,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|QueueState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueUserACLInfo
 import|;
 end_import
@@ -5381,6 +5399,32 @@ name|queueErrorMsg
 argument_list|)
 throw|;
 block|}
+block|}
+comment|// When recovering apps in this queue but queue is in STOPPED state,
+comment|// that means its previous state was DRAINING. So we auto transit
+comment|// the state to DRAINING for recovery.
+if|if
+condition|(
+name|queue
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|QueueState
+operator|.
+name|STOPPED
+condition|)
+block|{
+operator|(
+operator|(
+name|LeafQueue
+operator|)
+name|queue
+operator|)
+operator|.
+name|recoverDrainingState
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Submit to the queue
 try|try
