@@ -2347,10 +2347,10 @@ name|container
 argument_list|)
 return|;
 block|}
-DECL|method|init (HttpServletResponse response)
+DECL|method|initForReadableEndpoints (HttpServletResponse response)
 specifier|protected
 name|void
-name|init
+name|initForReadableEndpoints
 parameter_list|(
 name|HttpServletResponse
 name|response

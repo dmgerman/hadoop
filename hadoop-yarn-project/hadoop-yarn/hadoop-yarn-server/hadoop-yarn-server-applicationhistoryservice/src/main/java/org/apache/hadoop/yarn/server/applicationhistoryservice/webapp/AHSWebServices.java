@@ -1117,7 +1117,7 @@ name|HttpServletResponse
 name|res
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -1361,7 +1361,7 @@ argument_list|>
 name|applicationTypes
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -1464,7 +1464,7 @@ name|String
 name|appId
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -1540,7 +1540,7 @@ name|String
 name|appId
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -1624,7 +1624,7 @@ name|String
 name|appAttemptId
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -1710,7 +1710,7 @@ name|String
 name|appAttemptId
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -1804,7 +1804,7 @@ name|String
 name|containerId
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -2004,7 +2004,7 @@ name|containerId
 init|=
 literal|null
 decl_stmt|;
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)
@@ -2634,7 +2634,7 @@ name|boolean
 name|redirected_from_node
 parameter_list|)
 block|{
-name|init
+name|initForReadableEndpoints
 argument_list|(
 name|res
 argument_list|)

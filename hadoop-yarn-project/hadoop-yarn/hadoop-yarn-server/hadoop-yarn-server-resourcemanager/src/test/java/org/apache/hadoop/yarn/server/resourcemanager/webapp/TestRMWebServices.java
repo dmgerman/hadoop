@@ -5265,11 +5265,9 @@ decl_stmt|;
 name|HttpServletRequest
 name|mockHsr
 init|=
-name|mock
+name|mockHttpServletRequestByUserName
 argument_list|(
-name|HttpServletRequest
-operator|.
-name|class
+literal|"non-admin"
 argument_list|)
 decl_stmt|;
 name|ApplicationACLsManager
