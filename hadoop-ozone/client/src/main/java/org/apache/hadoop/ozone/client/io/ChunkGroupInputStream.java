@@ -74,6 +74,8 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
 name|proto
 operator|.
 name|ContainerProtos

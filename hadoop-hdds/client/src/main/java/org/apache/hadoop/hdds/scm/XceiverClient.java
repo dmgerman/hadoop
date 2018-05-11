@@ -48,6 +48,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -60,6 +68,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -72,6 +88,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -84,6 +108,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -98,6 +130,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -114,6 +154,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -128,6 +176,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|io
 operator|.
 name|netty
@@ -221,6 +277,8 @@ operator|.
 name|hdds
 operator|.
 name|protocol
+operator|.
+name|datanode
 operator|.
 name|proto
 operator|.

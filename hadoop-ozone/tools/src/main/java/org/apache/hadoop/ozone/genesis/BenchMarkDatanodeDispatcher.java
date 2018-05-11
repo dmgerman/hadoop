@@ -20,6 +20,14 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|shaded
+operator|.
 name|com
 operator|.
 name|google
@@ -504,6 +512,8 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -523,6 +533,8 @@ operator|.
 name|hdds
 operator|.
 name|protocol
+operator|.
+name|datanode
 operator|.
 name|proto
 operator|.
@@ -544,6 +556,8 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -563,6 +577,8 @@ operator|.
 name|hdds
 operator|.
 name|protocol
+operator|.
+name|datanode
 operator|.
 name|proto
 operator|.
@@ -584,6 +600,8 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -603,6 +621,8 @@ operator|.
 name|hdds
 operator|.
 name|protocol
+operator|.
+name|datanode
 operator|.
 name|proto
 operator|.
@@ -624,6 +644,8 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -643,6 +665,8 @@ operator|.
 name|hdds
 operator|.
 name|protocol
+operator|.
+name|datanode
 operator|.
 name|proto
 operator|.

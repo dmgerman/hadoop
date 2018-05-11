@@ -48,6 +48,8 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
 name|proto
 operator|.
 name|ContainerProtos
@@ -195,20 +197,6 @@ operator|.
 name|test
 operator|.
 name|GenericTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
 import|;
 end_import
 
