@@ -390,6 +390,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|Artifact
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerState
 import|;
 end_import
@@ -1289,6 +1309,50 @@ name|event
 parameter_list|)
 block|{
 comment|// Query container status for ip and host
+name|boolean
+name|cancelOnSuccess
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+name|compInstance
+operator|.
+name|getCompSpec
+argument_list|()
+operator|.
+name|getArtifact
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|compInstance
+operator|.
+name|getCompSpec
+argument_list|()
+operator|.
+name|getArtifact
+argument_list|()
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|Artifact
+operator|.
+name|TypeEnum
+operator|.
+name|DOCKER
+condition|)
+block|{
+comment|// A docker container might get a different IP if the container is
+comment|// relaunched by the NM, so we need to keep checking the status.
+comment|// This is a temporary fix until the NM provides a callback for
+comment|// container relaunch (see YARN-8265).
+name|cancelOnSuccess
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|compInstance
 operator|.
 name|containerStatusFuture
@@ -1314,6 +1378,8 @@ name|getContainerId
 argument_list|()
 argument_list|,
 name|compInstance
+argument_list|,
+name|cancelOnSuccess
 argument_list|)
 argument_list|,
 literal|0
@@ -2498,6 +2564,11 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|boolean
+name|doRegistryUpdate
+init|=
+literal|true
+decl_stmt|;
 if|if
 condition|(
 name|container
@@ -2505,10 +2576,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|String
+name|existingIP
+init|=
 name|container
 operator|.
-name|setIp
-argument_list|(
+name|getIp
+argument_list|()
+decl_stmt|;
+name|String
+name|newIP
+init|=
 name|StringUtils
 operator|.
 name|join
@@ -2520,6 +2598,12 @@ operator|.
 name|getIPs
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|container
+operator|.
+name|setIp
+argument_list|(
+name|newIP
 argument_list|)
 expr_stmt|;
 name|container
@@ -2534,7 +2618,28 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|existingIP
+operator|!=
+literal|null
+operator|&&
+name|newIP
+operator|.
+name|equals
+argument_list|(
+name|existingIP
+argument_list|)
+condition|)
+block|{
+name|doRegistryUpdate
+operator|=
+literal|false
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|timelineServiceEnabled
+operator|&&
+name|doRegistryUpdate
 condition|)
 block|{
 name|serviceTimelinePublisher
@@ -2546,6 +2651,43 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|doRegistryUpdate
+condition|)
+block|{
+name|cleanupRegistry
+argument_list|(
+name|status
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|getCompInstanceId
+argument_list|()
+operator|+
+literal|" new IP = "
+operator|+
+name|status
+operator|.
+name|getIPs
+argument_list|()
+operator|+
+literal|", host = "
+operator|+
+name|status
+operator|.
+name|getHost
+argument_list|()
+operator|+
+literal|", updating registry"
+argument_list|)
+expr_stmt|;
 name|updateServiceRecord
 argument_list|(
 name|yarnRegistryOperations
@@ -2553,6 +2695,7 @@ argument_list|,
 name|status
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getCompName ()
 specifier|public
@@ -3209,7 +3352,12 @@ specifier|private
 name|ComponentInstance
 name|instance
 decl_stmt|;
-DECL|method|ContainerStatusRetriever (ServiceScheduler scheduler, ContainerId containerId, ComponentInstance instance)
+DECL|field|cancelOnSuccess
+specifier|private
+name|boolean
+name|cancelOnSuccess
+decl_stmt|;
+DECL|method|ContainerStatusRetriever (ServiceScheduler scheduler, ContainerId containerId, ComponentInstance instance, boolean cancelOnSuccess)
 name|ContainerStatusRetriever
 parameter_list|(
 name|ServiceScheduler
@@ -3220,6 +3368,9 @@ name|containerId
 parameter_list|,
 name|ComponentInstance
 name|instance
+parameter_list|,
+name|boolean
+name|cancelOnSuccess
 parameter_list|)
 block|{
 name|this
@@ -3254,6 +3405,12 @@ operator|.
 name|instance
 operator|=
 name|instance
+expr_stmt|;
+name|this
+operator|.
+name|cancelOnSuccess
+operator|=
+name|cancelOnSuccess
 expr_stmt|;
 block|}
 DECL|method|run ()
@@ -3365,6 +3522,11 @@ argument_list|(
 name|status
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|cancelOnSuccess
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -3399,6 +3561,7 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|cancelContainerStatusRetriever ()
