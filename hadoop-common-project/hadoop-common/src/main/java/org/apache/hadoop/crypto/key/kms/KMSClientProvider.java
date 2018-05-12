@@ -2371,7 +2371,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"KMSClientProvider for KMS url: {} delegation token service: {}"
 operator|+
