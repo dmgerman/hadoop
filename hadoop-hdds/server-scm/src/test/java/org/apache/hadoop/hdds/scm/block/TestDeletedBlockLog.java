@@ -40,6 +40,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|RandomUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|hdds
@@ -698,7 +712,6 @@ name|i
 operator|++
 control|)
 block|{
-comment|//String containerName = "container-" + UUID.randomUUID().toString();
 name|long
 name|containerID
 init|=
@@ -744,7 +757,6 @@ name|j
 operator|++
 control|)
 block|{
-comment|//blocks.add("block-" + UUID.randomUUID().toString());
 name|long
 name|localID
 init|=
@@ -1891,7 +1903,7 @@ init|=
 literal|0L
 decl_stmt|;
 name|DatanodeDetails
-name|dnDd1
+name|dnId1
 init|=
 name|DatanodeDetails
 operator|.
@@ -2066,7 +2078,7 @@ name|mappingService
 argument_list|,
 name|containerID
 argument_list|,
-name|dnDd1
+name|dnId1
 argument_list|)
 expr_stmt|;
 block|}
@@ -2210,7 +2222,7 @@ name|transactions
 operator|.
 name|getDatanodeTransactions
 argument_list|(
-name|dnDd1
+name|dnId1
 operator|.
 name|getUuid
 argument_list|()
@@ -2300,6 +2312,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Add new TX in dnID2, then dnID2 will reach maximum value.
+name|containerID
+operator|=
+name|RandomUtils
+operator|.
+name|nextLong
+argument_list|()
+expr_stmt|;
 name|builder
 operator|=
 name|DeletedBlocksTransaction
