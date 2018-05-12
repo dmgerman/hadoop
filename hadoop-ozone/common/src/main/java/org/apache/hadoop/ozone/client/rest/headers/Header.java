@@ -321,6 +321,15 @@ name|OZONE_LIST_QUERY_ROOTSCAN
 init|=
 literal|"root-scan"
 decl_stmt|;
+DECL|field|OZONE_RENAME_TO_KEY_PARAM_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_RENAME_TO_KEY_PARAM_NAME
+init|=
+literal|"toKey"
+decl_stmt|;
 DECL|method|Header ()
 specifier|private
 name|Header
