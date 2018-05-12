@@ -2111,7 +2111,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|formatStrWithHash
+name|formatStr
 argument_list|,
 name|container
 operator|.
