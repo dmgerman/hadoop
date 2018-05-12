@@ -85,7 +85,9 @@ name|id
 operator|>
 literal|0
 argument_list|,
-literal|"Container ID should be a positive int"
+literal|"Container ID should be a positive long. "
+operator|+
+name|id
 argument_list|)
 expr_stmt|;
 name|this

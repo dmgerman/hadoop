@@ -217,6 +217,12 @@ name|UNEXPECTED_CONTAINER_STATE
 block|,
 DECL|enumConstant|SCM_NOT_INITIALIZED
 name|SCM_NOT_INITIALIZED
+block|,
+DECL|enumConstant|DUPLICATE_DATANODE
+name|DUPLICATE_DATANODE
+block|,
+DECL|enumConstant|NO_SUCH_DATANODE
+name|NO_SUCH_DATANODE
 block|}
 block|}
 end_class

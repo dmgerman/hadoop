@@ -4,11 +4,11 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more
 end_comment
 
 begin_comment
-comment|/**  * Container States package.  */
+comment|/**  * Node States package.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.container.states
+DECL|package|org.apache.hadoop.hdds.scm.node.states
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
+name|node
 operator|.
 name|states
 package|;
