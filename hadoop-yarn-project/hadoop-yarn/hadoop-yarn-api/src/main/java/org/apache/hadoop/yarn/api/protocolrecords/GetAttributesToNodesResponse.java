@@ -21,7 +21,27 @@ package|;
 end_package
 
 begin_import
-import|import static
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -37,7 +57,7 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
@@ -82,7 +102,25 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeAttribute
+name|NodeAttributeKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeToAttributeValue
 import|;
 end_import
 
@@ -102,28 +140,8 @@ name|Records
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
 begin_comment
-comment|/**  *<p>  * The response sent by the<code>ResourceManager</code> to a client requesting  * attributes to hostname mapping.  *</p>  *  * @see ApplicationClientProtocol#getAttributesToNodes  * (GetAttributesToNodesRequest)  */
+comment|/**  *<p>  * The response sent by the<code>ResourceManager</code> to a client requesting  * node to attribute value mapping for all or given set of Node AttributeKey's.  *</p>  *  * @see ApplicationClientProtocol#getAttributesToNodes  *      (GetAttributesToNodesRequest)  */
 end_comment
 
 begin_class
@@ -137,7 +155,7 @@ specifier|abstract
 class|class
 name|GetAttributesToNodesResponse
 block|{
-DECL|method|newInstance ( Map<NodeAttribute, Set<String>> map)
+DECL|method|newInstance ( Map<NodeAttributeKey, List<NodeToAttributeValue>> map)
 specifier|public
 specifier|static
 name|GetAttributesToNodesResponse
@@ -145,11 +163,11 @@ name|newInstance
 parameter_list|(
 name|Map
 argument_list|<
-name|NodeAttribute
+name|NodeAttributeKey
 argument_list|,
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeToAttributeValue
 argument_list|>
 argument_list|>
 name|map
@@ -182,7 +200,7 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setAttributeToNodes (Map<NodeAttribute, Set<String>> map)
+DECL|method|setAttributeToNodes ( Map<NodeAttributeKey, List<NodeToAttributeValue>> map)
 specifier|public
 specifier|abstract
 name|void
@@ -190,17 +208,17 @@ name|setAttributeToNodes
 parameter_list|(
 name|Map
 argument_list|<
-name|NodeAttribute
+name|NodeAttributeKey
 argument_list|,
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeToAttributeValue
 argument_list|>
 argument_list|>
 name|map
 parameter_list|)
 function_decl|;
-comment|/*    * Get attributes to node hostname mapping.    *    * @return Map<NodeAttribute, Set<String>> node attributes to hostname    * mapping.    */
+comment|/**    * Get mapping of NodeAttributeKey to its associated mapping of list of    * NodeToAttributeValuenode to attribute value.    *    * @return Map<NodeAttributeKey, List<NodeToAttributeValue>> node attributes    *         to list of NodeToAttributeValuenode.    */
 annotation|@
 name|Public
 annotation|@
@@ -210,11 +228,11 @@ specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|NodeAttribute
+name|NodeAttributeKey
 argument_list|,
-name|Set
+name|List
 argument_list|<
-name|String
+name|NodeToAttributeValue
 argument_list|>
 argument_list|>
 name|getAttributesToNodes

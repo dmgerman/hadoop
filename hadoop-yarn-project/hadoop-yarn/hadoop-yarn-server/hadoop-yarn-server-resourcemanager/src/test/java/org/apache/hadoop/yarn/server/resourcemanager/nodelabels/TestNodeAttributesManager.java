@@ -2114,7 +2114,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|NodeAttribute
-name|att
+name|attr
 init|=
 name|clusterAttributes
 operator|.
@@ -2130,7 +2130,10 @@ name|assertEquals
 argument_list|(
 literal|"dist-node-attribute-v2_0"
 argument_list|,
-name|att
+name|attr
+operator|.
+name|getAttributeKey
+argument_list|()
 operator|.
 name|getAttributeName
 argument_list|()
@@ -2144,7 +2147,10 @@ name|NodeAttribute
 operator|.
 name|PREFIX_DISTRIBUTED
 argument_list|,
-name|att
+name|attr
+operator|.
+name|getAttributeKey
+argument_list|()
 operator|.
 name|getAttributePrefix
 argument_list|()
@@ -2156,7 +2162,7 @@ name|assertEquals
 argument_list|(
 literal|"dist_v3_0"
 argument_list|,
-name|att
+name|attr
 operator|.
 name|getAttributeValue
 argument_list|()

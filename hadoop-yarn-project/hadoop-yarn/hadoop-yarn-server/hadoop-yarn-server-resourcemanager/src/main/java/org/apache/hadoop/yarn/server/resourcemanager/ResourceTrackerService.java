@@ -4001,6 +4001,9 @@ name|equals
 argument_list|(
 name|nodeAttribute
 operator|.
+name|getAttributeKey
+argument_list|()
+operator|.
 name|getAttributePrefix
 argument_list|()
 argument_list|)

@@ -161,18 +161,23 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|nodeAttribute
+name|NodeAttributeKey
+name|nodeAttributeKey
+init|=
+name|NodeAttributeKey
 operator|.
-name|setAttributePrefix
+name|newInstance
 argument_list|(
 name|attributePrefix
+argument_list|,
+name|attributeName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|nodeAttribute
 operator|.
-name|setAttributeName
+name|setAttributeKey
 argument_list|(
-name|attributeName
+name|nodeAttributeKey
 argument_list|)
 expr_stmt|;
 name|nodeAttribute
@@ -197,50 +202,25 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getAttributePrefix ()
+DECL|method|getAttributeKey ()
 specifier|public
 specifier|abstract
-name|String
-name|getAttributePrefix
+name|NodeAttributeKey
+name|getAttributeKey
 parameter_list|()
 function_decl|;
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setAttributePrefix (String attributePrefix)
+DECL|method|setAttributeKey (NodeAttributeKey attributeKey)
 specifier|public
 specifier|abstract
 name|void
-name|setAttributePrefix
+name|setAttributeKey
 parameter_list|(
-name|String
-name|attributePrefix
-parameter_list|)
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getAttributeName ()
-specifier|public
-specifier|abstract
-name|String
-name|getAttributeName
-parameter_list|()
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|setAttributeName (String attributeName)
-specifier|public
-specifier|abstract
-name|void
-name|setAttributeName
-parameter_list|(
-name|String
-name|attributeName
+name|NodeAttributeKey
+name|attributeKey
 parameter_list|)
 function_decl|;
 annotation|@

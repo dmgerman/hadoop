@@ -4577,7 +4577,9 @@ block|{
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 block|}

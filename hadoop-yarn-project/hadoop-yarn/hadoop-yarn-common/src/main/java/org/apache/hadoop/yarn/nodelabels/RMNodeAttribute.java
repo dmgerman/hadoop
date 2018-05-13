@@ -24,7 +24,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
+name|HashMap
 import|;
 end_import
 
@@ -34,7 +34,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
 import|;
 end_import
 
@@ -112,14 +112,16 @@ decl_stmt|;
 comment|// TODO need to revisit whether we need to make this concurrent implementation
 DECL|field|nodes
 specifier|private
-name|Set
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|AttributeValue
 argument_list|>
 name|nodes
 init|=
 operator|new
-name|HashSet
+name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -134,6 +136,9 @@ block|{
 name|this
 argument_list|(
 name|attribute
+operator|.
+name|getAttributeKey
+argument_list|()
 operator|.
 name|getAttributeName
 argument_list|()
@@ -225,20 +230,25 @@ name|getAttributeType
 argument_list|()
 return|;
 block|}
-DECL|method|addNode (String node)
+DECL|method|addNode (String node, AttributeValue attributeValue)
 specifier|public
 name|void
 name|addNode
 parameter_list|(
 name|String
 name|node
+parameter_list|,
+name|AttributeValue
+name|attributeValue
 parameter_list|)
 block|{
 name|nodes
 operator|.
-name|add
+name|put
 argument_list|(
 name|node
+argument_list|,
+name|attributeValue
 argument_list|)
 expr_stmt|;
 block|}
@@ -261,18 +271,22 @@ expr_stmt|;
 block|}
 DECL|method|getAssociatedNodeIds ()
 specifier|public
-name|Set
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|AttributeValue
 argument_list|>
 name|getAssociatedNodeIds
 parameter_list|()
 block|{
 return|return
 operator|new
-name|HashSet
+name|HashMap
 argument_list|<
 name|String
+argument_list|,
+name|AttributeValue
 argument_list|>
 argument_list|(
 name|nodes

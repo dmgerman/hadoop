@@ -149,6 +149,9 @@ name|prefix
 operator|=
 name|nodeAttribute
 operator|.
+name|getAttributeKey
+argument_list|()
+operator|.
 name|getAttributePrefix
 argument_list|()
 expr_stmt|;
@@ -157,6 +160,9 @@ operator|.
 name|name
 operator|=
 name|nodeAttribute
+operator|.
+name|getAttributeKey
+argument_list|()
 operator|.
 name|getAttributeName
 argument_list|()

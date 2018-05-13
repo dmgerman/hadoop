@@ -692,6 +692,9 @@ switch|switch
 condition|(
 name|att
 operator|.
+name|getAttributeKey
+argument_list|()
+operator|.
 name|getAttributeName
 argument_list|()
 condition|)
@@ -794,6 +797,9 @@ argument_list|(
 literal|"Unexpected attribute name "
 operator|+
 name|att
+operator|.
+name|getAttributeKey
+argument_list|()
 operator|.
 name|getAttributeName
 argument_list|()

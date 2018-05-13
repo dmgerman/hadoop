@@ -100,6 +100,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeAttributeKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -203,7 +221,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a set of node attributes whose prefix is one of the given    * prefixes; if the prefix set is null or empty, all attributes are returned;    * if prefix set is given but no mapping could be found, an empty set    * is returned.    *    * @param prefix set of prefix string's for which the attributes needs to    *          returned    * @return set of node Attributes    */
+comment|/**    * Returns a set of node attributes whose prefix is one of the given    * prefixes; if the prefix set is null or empty, all attributes are returned;    * if prefix set is given but no mapping could be found, an empty set    * is returned.    *    * @param prefix set of prefix string's for which the attributes needs to    *          returned    * @return Set of node Attributes    */
 DECL|method|getClusterNodeAttributes ( Set<String> prefix)
 specifier|public
 specifier|abstract
@@ -220,24 +238,26 @@ argument_list|>
 name|prefix
 parameter_list|)
 function_decl|;
-comment|/**    * Given a attribute set, return what all Nodes have attribute mapped to it.    * If the attributes set is null or empty, all attributes mapping are    * returned.    *    * @return a Map of attributes to set of hostnames.    */
-DECL|method|getAttributesToNodes ( Set<NodeAttribute> attributes)
+comment|/**    * Return a map of Nodes to attribute value for the given NodeAttributeKeys.    * If the attributeKeys set is null or empty, then mapping for all attributes    * are returned.    *    * @return a Map of attributeKeys to a map of hostnames to its attribute    *         values.    */
+DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|NodeAttribute
+name|NodeAttributeKey
 argument_list|,
-name|Set
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|AttributeValue
 argument_list|>
 argument_list|>
 name|getAttributesToNodes
 parameter_list|(
 name|Set
 argument_list|<
-name|NodeAttribute
+name|NodeAttributeKey
 argument_list|>
 name|attributes
 parameter_list|)
