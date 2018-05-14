@@ -2350,6 +2350,8 @@ name|createOM
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|AuthenticationException
 block|{
 name|configureOM
 argument_list|()

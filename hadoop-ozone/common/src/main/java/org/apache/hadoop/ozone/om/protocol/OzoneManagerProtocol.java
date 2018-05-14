@@ -68,6 +68,22 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|OMConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|helpers
 operator|.
 name|OmBucketArgs
@@ -276,11 +292,34 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|KerberosInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Protocol to talk to OM.  */
 end_comment
 
 begin_interface
+annotation|@
+name|KerberosInfo
+argument_list|(
+name|serverPrincipal
+operator|=
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_KERBEROS_PRINCIPAL_KEY
+argument_list|)
 DECL|interface|OzoneManagerProtocol
 specifier|public
 interface|interface

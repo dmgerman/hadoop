@@ -42,20 +42,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|OzoneConsts
 import|;
 end_import
@@ -251,7 +237,7 @@ block|{
 return|return
 name|OMConfigKeys
 operator|.
-name|OZONE_OM_KEYTAB_FILE
+name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE
 return|;
 block|}
 DECL|method|getSpnegoPrincipal ()
@@ -263,9 +249,9 @@ name|getSpnegoPrincipal
 parameter_list|()
 block|{
 return|return
-name|OzoneConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
+name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
 return|;
 block|}
 DECL|method|getEnabledKey ()
