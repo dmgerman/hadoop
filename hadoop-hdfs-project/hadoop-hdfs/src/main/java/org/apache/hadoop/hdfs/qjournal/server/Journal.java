@@ -1270,6 +1270,10 @@ argument_list|(
 literal|"Latest log is "
 operator|+
 name|latestLog
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 if|if
@@ -1296,6 +1300,10 @@ operator|+
 literal|" has no transactions. "
 operator|+
 literal|"moving it aside and looking for previous log"
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|latestLog
@@ -1355,9 +1363,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Formatting "
+literal|"Formatting journal id : "
 operator|+
-name|this
+name|journalId
 operator|+
 literal|" with namespace info: "
 operator|+
@@ -1616,6 +1624,10 @@ literal|"<= last promise "
 operator|+
 name|getLastPromisedEpoch
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -1700,6 +1712,10 @@ name|Server
 operator|.
 name|getRemoteIp
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|lastPromisedEpoch
@@ -1801,6 +1817,10 @@ operator|!=
 literal|null
 argument_list|,
 literal|"Can't write, no segment open"
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 if|if
@@ -1829,6 +1849,10 @@ operator|+
 literal|" but current segment is "
 operator|+
 name|curSegmentTxId
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 decl_stmt|;
 name|abortCurSegment
@@ -1851,6 +1875,10 @@ operator|+
 literal|" expecting nextTxId="
 operator|+
 name|nextTxId
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|long
@@ -1881,6 +1909,10 @@ operator|+
 literal|"-"
 operator|+
 name|lastTxnId
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -2011,6 +2043,10 @@ operator|+
 name|milliSeconds
 operator|+
 literal|"ms"
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -2140,6 +2176,10 @@ name|lastPromisedEpoch
 operator|.
 name|get
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -2180,7 +2220,7 @@ name|currentEpochIpcSerial
 argument_list|,
 literal|"IPC serial %s from client %s was not higher than prior highest "
 operator|+
-literal|"IPC serial %s"
+literal|"IPC serial %s ; journal id: %s"
 argument_list|,
 name|reqInfo
 operator|.
@@ -2193,6 +2233,8 @@ name|getRemoteIp
 argument_list|()
 argument_list|,
 name|currentEpochIpcSerial
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 name|currentEpochIpcSerial
@@ -2237,6 +2279,10 @@ name|reqInfo
 operator|.
 name|getCommittedTxId
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|committedTxnId
@@ -2298,6 +2344,10 @@ name|lastWriterEpoch
 operator|.
 name|get
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -2343,6 +2393,10 @@ name|getSingularStorageDir
 argument_list|()
 operator|+
 literal|" not formatted"
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -2481,6 +2535,10 @@ operator|+
 literal|". "
 operator|+
 literal|"Aborting the current segment in order to begin the new one."
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 comment|// The writer may have lost a connection to us and is now
@@ -2530,6 +2588,10 @@ operator|+
 literal|" beginning at "
 operator|+
 name|txid
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -2569,6 +2631,10 @@ operator|+
 name|existing
 operator|+
 literal|" seems to contain valid transactions"
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -2612,6 +2678,10 @@ name|Server
 operator|.
 name|getRemoteIp
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|lastWriterEpoch
@@ -2727,7 +2797,7 @@ literal|1
 argument_list|,
 literal|"Trying to finalize in-progress log segment %s to end at "
 operator|+
-literal|"txid %s but only written up to txid %s"
+literal|"txid %s but only written up to txid %s ; journal id: %s"
 argument_list|,
 name|startTxId
 argument_list|,
@@ -2736,6 +2806,8 @@ argument_list|,
 name|nextTxId
 operator|-
 literal|1
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 comment|// No need to validate the edit log if the client is finalizing
@@ -2773,6 +2845,10 @@ operator|+
 literal|"transaction ID "
 operator|+
 name|startTxId
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -2802,7 +2878,9 @@ argument_list|()
 operator|+
 literal|" about to be "
 operator|+
-literal|"finalized"
+literal|"finalized ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|elf
@@ -2827,7 +2905,9 @@ name|endTxId
 argument_list|,
 literal|"Trying to finalize in-progress log segment %s to end at "
 operator|+
-literal|"txid %s but log %s on disk only contains up to txid %s"
+literal|"txid %s but log %s on disk only contains up to txid %s "
+operator|+
+literal|"; journal id: %s"
 argument_list|,
 name|startTxId
 argument_list|,
@@ -2842,6 +2922,8 @@ name|elf
 operator|.
 name|getLastTxId
 argument_list|()
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -2875,6 +2957,10 @@ operator|+
 literal|" with different endTxId "
 operator|+
 name|endTxId
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -2969,6 +3055,10 @@ argument_list|(
 literal|"Unable to delete paxos file "
 operator|+
 name|paxosFile
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -3183,6 +3273,10 @@ operator|+
 literal|" appears to be empty. "
 operator|+
 literal|"Moving it aside..."
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|elf
@@ -3246,6 +3340,10 @@ name|shortDebugString
 argument_list|(
 name|ret
 argument_list|)
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 return|return
@@ -3466,6 +3564,10 @@ name|shortDebugString
 argument_list|(
 name|resp
 argument_list|)
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 return|return
@@ -3530,7 +3632,7 @@ argument_list|()
 operator|>=
 name|segmentTxId
 argument_list|,
-literal|"bad recovery state for segment %s: %s"
+literal|"bad recovery state for segment %s: %s ; journal id: %s"
 argument_list|,
 name|segmentTxId
 argument_list|,
@@ -3540,6 +3642,8 @@ name|shortDebugString
 argument_list|(
 name|segment
 argument_list|)
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 name|PersistedRecoveryPaxosData
@@ -3596,11 +3700,15 @@ operator|.
 name|getEpoch
 argument_list|()
 argument_list|,
-literal|"Bad paxos transition, out-of-order epochs.\nOld: %s\nNew: %s\n"
+literal|"Bad paxos transition, out-of-order epochs.\nOld: %s\nNew: "
+operator|+
+literal|"%s\nJournalId: %s\n"
 argument_list|,
 name|oldData
 argument_list|,
 name|newData
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -3654,7 +3762,9 @@ argument_list|(
 name|segment
 argument_list|)
 operator|+
-literal|": no current segment in place"
+literal|": no current segment in place ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 comment|// Update the highest txid for lag metrics
@@ -3698,7 +3808,9 @@ argument_list|(
 name|currentSegment
 argument_list|)
 operator|+
-literal|" is not the right length"
+literal|" is not the right length ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 comment|// Paranoid sanity check: if the new log is shorter than the log we
@@ -3762,6 +3874,10 @@ name|committedTxnId
 operator|.
 name|get
 argument_list|()
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 throw|;
 block|}
@@ -3774,9 +3890,11 @@ operator|.
 name|getIsInProgress
 argument_list|()
 argument_list|,
-literal|"Should never be asked to synchronize a different log on top of an "
+literal|"Should never be asked to synchronize a different log on top of "
 operator|+
-literal|"already-finalized segment"
+literal|"an already-finalized segment ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 comment|// If we're shortening the log, update our highest txid
@@ -3831,7 +3949,9 @@ argument_list|(
 name|segment
 argument_list|)
 operator|+
-literal|": already have up-to-date logs"
+literal|": already have up-to-date logs ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -3915,6 +4035,10 @@ name|shortDebugString
 argument_list|(
 name|newData
 argument_list|)
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -3936,9 +4060,11 @@ operator|.
 name|hasEndTxId
 argument_list|()
 argument_list|,
-literal|"invalid segment: %s"
+literal|"invalid segment: %s ; journal id: %s"
 argument_list|,
 name|seg
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 return|return
@@ -4218,6 +4344,10 @@ operator|+
 literal|" -> "
 operator|+
 name|dst
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 name|FileUtil
@@ -4306,11 +4436,13 @@ argument_list|()
 operator|==
 name|segmentTxId
 argument_list|,
-literal|"Bad persisted data for segment %s: %s"
+literal|"Bad persisted data for segment %s: %s ; journal id: %s"
 argument_list|,
 name|segmentTxId
 argument_list|,
 name|ret
+argument_list|,
+name|journalId
 argument_list|)
 expr_stmt|;
 return|return
@@ -4535,6 +4667,11 @@ operator|.
 name|info
 argument_list|(
 literal|"Starting upgrade of edits directory: "
+operator|+
+name|storage
+operator|.
+name|getRoot
+argument_list|()
 operator|+
 literal|".\n   old LV = "
 operator|+
@@ -4953,7 +5090,9 @@ argument_list|()
 operator|+
 literal|" doesn't exist. Aborting tmp "
 operator|+
-literal|"segment move to current directory"
+literal|"segment move to current directory ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 return|return
@@ -5016,6 +5155,10 @@ operator|+
 literal|" to "
 operator|+
 name|finalFile
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
@@ -5035,6 +5178,10 @@ operator|+
 literal|"last committed transaction id. Aborting move to final file"
 operator|+
 name|finalFile
+operator|+
+literal|" ; journal id: "
+operator|+
+name|journalId
 argument_list|)
 expr_stmt|;
 block|}
