@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -883,8 +897,9 @@ argument_list|()
 return|;
 block|}
 comment|/**    * When seeking into a new block group, create blockReader for each internal    * block in the group.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|blockSeekTo (long target)
-specifier|private
 specifier|synchronized
 name|void
 name|blockSeekTo
@@ -2023,12 +2038,8 @@ name|reportCheckSumFailure
 argument_list|(
 name|corruptedBlocks
 argument_list|,
-name|currentLocatedBlock
-operator|.
-name|getLocations
+name|getCurrentBlockLocationsLength
 argument_list|()
-operator|.
-name|length
 argument_list|,
 literal|true
 argument_list|)
