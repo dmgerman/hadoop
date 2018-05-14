@@ -880,11 +880,8 @@ name|Exception
 block|{
 name|dispatcher
 operator|=
-operator|new
-name|AsyncDispatcher
-argument_list|(
-literal|"NM Timeline dispatcher"
-argument_list|)
+name|createDispatcher
+argument_list|()
 expr_stmt|;
 name|dispatcher
 operator|.
@@ -972,6 +969,20 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|createDispatcher ()
+specifier|protected
+name|AsyncDispatcher
+name|createDispatcher
+parameter_list|()
+block|{
+return|return
+operator|new
+name|AsyncDispatcher
+argument_list|(
+literal|"NM Timeline dispatcher"
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
@@ -1100,6 +1111,18 @@ name|TimelinePublishEvent
 operator|)
 name|event
 operator|)
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|STOP_TIMELINE_CLIENT
+case|:
+name|removeAndStopTimelineClient
+argument_list|(
+name|event
 operator|.
 name|getApplicationId
 argument_list|()
@@ -2395,11 +2418,6 @@ name|TimelinePublishEvent
 extends|extends
 name|NMTimelineEvent
 block|{
-DECL|field|appId
-specifier|private
-name|ApplicationId
-name|appId
-decl_stmt|;
 DECL|field|entityToPublish
 specifier|private
 name|TimelineEntity
@@ -2422,17 +2440,8 @@ name|NMTimelineEventType
 operator|.
 name|TIMELINE_ENTITY_PUBLISH
 argument_list|,
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|appId
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|appId
-operator|=
-name|appId
 expr_stmt|;
 name|this
 operator|.
@@ -2440,16 +2449,6 @@ name|entityToPublish
 operator|=
 name|entity
 expr_stmt|;
-block|}
-DECL|method|getApplicationId ()
-specifier|public
-name|ApplicationId
-name|getApplicationId
-parameter_list|()
-block|{
-return|return
-name|appId
-return|;
 block|}
 DECL|method|getTimelineEntityToPublish ()
 specifier|public
@@ -2577,6 +2576,34 @@ DECL|method|stopTimelineClient (ApplicationId appId)
 specifier|public
 name|void
 name|stopTimelineClient
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|NMTimelineEvent
+argument_list|(
+name|NMTimelineEventType
+operator|.
+name|STOP_TIMELINE_CLIENT
+argument_list|,
+name|appId
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|removeAndStopTimelineClient (ApplicationId appId)
+specifier|private
+name|void
+name|removeAndStopTimelineClient
 parameter_list|(
 name|ApplicationId
 name|appId

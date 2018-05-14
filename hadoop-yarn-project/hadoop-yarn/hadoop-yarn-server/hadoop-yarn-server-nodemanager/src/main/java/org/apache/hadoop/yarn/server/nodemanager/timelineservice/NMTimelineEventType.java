@@ -35,7 +35,11 @@ block|{
 comment|// Publish the NM Timeline entity
 DECL|enumConstant|TIMELINE_ENTITY_PUBLISH
 name|TIMELINE_ENTITY_PUBLISH
-block|, }
+block|,
+comment|// Stop and remove timeline client
+DECL|enumConstant|STOP_TIMELINE_CLIENT
+name|STOP_TIMELINE_CLIENT
+block|}
 end_enum
 
 end_unit
