@@ -633,6 +633,8 @@ argument_list|,
 name|fileLen
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|verifyStorageCapacity
 argument_list|(
 name|cluster
@@ -722,6 +724,23 @@ argument_list|,
 name|capacities
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|verifyStorageCapacity ( final MiniDFSCluster cluster, final long[] capacities)
 specifier|private
