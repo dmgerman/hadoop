@@ -7215,6 +7215,16 @@ name|e
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|keytabURI
+operator|.
+name|getScheme
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 switch|switch
 condition|(
 name|keytabURI
@@ -7306,7 +7316,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Adding "
 operator|+
@@ -7328,7 +7338,7 @@ literal|"file"
 case|:
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Using a keytab from localhost: "
 operator|+
@@ -7341,12 +7351,25 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unsupported URI scheme "
+literal|"Unsupported keytab URI scheme "
 operator|+
 name|keytabURI
 argument_list|)
 expr_stmt|;
 break|break;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unsupported keytab URI scheme "
+operator|+
+name|keytabURI
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|updateLifetime (String serviceName, long lifetime)
