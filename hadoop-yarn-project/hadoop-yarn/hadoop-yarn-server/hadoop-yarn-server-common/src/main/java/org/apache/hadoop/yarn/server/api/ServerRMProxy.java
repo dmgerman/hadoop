@@ -164,6 +164,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|interface|ServerRMProtocols
+specifier|private
+interface|interface
+name|ServerRMProtocols
+extends|extends
+name|DistributedSchedulingAMProtocol
+extends|,
+name|ResourceTracker
+block|{
+comment|//Add nothing
+block|}
 DECL|method|ServerRMProxy ()
 specifier|private
 name|ServerRMProxy
@@ -430,7 +441,7 @@ name|protocol
 operator|.
 name|isAssignableFrom
 argument_list|(
-name|ResourceTracker
+name|ServerRMProtocols
 operator|.
 name|class
 argument_list|)
