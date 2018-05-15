@@ -488,7 +488,7 @@ argument_list|,
 literal|"alpha"
 argument_list|)
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
