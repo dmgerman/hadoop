@@ -1846,6 +1846,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// should fail
+comment|// reset namenode backup address because Windows does not release
+comment|// port used previously properly.
+name|backup_config
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BACKUP_ADDRESS_KEY
+argument_list|,
+name|THIS_HOST
+argument_list|)
+expr_stmt|;
 comment|// bind http server to a different port
 name|backup_config
 operator|.
