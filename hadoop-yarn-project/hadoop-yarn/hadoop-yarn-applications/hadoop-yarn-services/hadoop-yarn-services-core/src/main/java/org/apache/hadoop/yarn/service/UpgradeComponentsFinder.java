@@ -452,6 +452,13 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|currentComp
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
 operator|!
 name|Objects
 operator|.
@@ -527,7 +534,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"changes to component readiness check not supported by upgrade"
+literal|"changes to component readiness check not supported by "
+operator|+
+literal|"upgrade"
 argument_list|)
 throw|;
 block|}
@@ -608,7 +617,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"changes to component placement policy not supported by upgrade"
+literal|"changes to component placement policy not supported by "
+operator|+
+literal|"upgrade"
 argument_list|)
 throw|;
 block|}
@@ -697,6 +708,28 @@ argument_list|(
 name|component
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"addition/deletion of components not supported by upgrade. "
+operator|+
+literal|"Could not find component "
+operator|+
+name|component
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" in "
+operator|+
+literal|"current service definition."
+argument_list|)
+throw|;
 block|}
 block|}
 argument_list|)
