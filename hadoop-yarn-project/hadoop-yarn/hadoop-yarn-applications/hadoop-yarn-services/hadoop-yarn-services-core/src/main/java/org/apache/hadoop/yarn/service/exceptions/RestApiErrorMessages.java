@@ -308,6 +308,22 @@ name|ERROR_KEYTAB_URI_INVALID
 init|=
 literal|"Invalid keytab URI: %s"
 decl_stmt|;
+DECL|field|ERROR_COMP_INSTANCE_DOES_NOT_NEED_UPGRADE
+name|String
+name|ERROR_COMP_INSTANCE_DOES_NOT_NEED_UPGRADE
+init|=
+literal|"The component instance "
+operator|+
+literal|"(%s) does not need an upgrade."
+decl_stmt|;
+DECL|field|ERROR_COMP_DOES_NOT_NEED_UPGRADE
+name|String
+name|ERROR_COMP_DOES_NOT_NEED_UPGRADE
+init|=
+literal|"The component (%s) does not need"
+operator|+
+literal|" an upgrade."
+decl_stmt|;
 block|}
 end_interface
 

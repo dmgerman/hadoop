@@ -17221,6 +17221,27 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -components<Components>                 Works with -upgrade option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          trigger the upgrade of specified"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          components of the application."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -destroy<Application Name>              Destroys a saved application"
 argument_list|)
 expr_stmt|;

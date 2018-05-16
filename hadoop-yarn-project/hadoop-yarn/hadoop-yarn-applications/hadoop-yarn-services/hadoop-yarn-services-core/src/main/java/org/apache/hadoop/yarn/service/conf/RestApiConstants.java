@@ -103,6 +103,22 @@ literal|"/"
 operator|+
 name|COMP_INSTANCES
 decl_stmt|;
+DECL|field|COMPONENTS
+name|String
+name|COMPONENTS
+init|=
+literal|"components"
+decl_stmt|;
+DECL|field|COMPONENTS_PATH
+name|String
+name|COMPONENTS_PATH
+init|=
+name|SERVICE_PATH
+operator|+
+literal|"/"
+operator|+
+name|COMPONENTS
+decl_stmt|;
 comment|// Query param
 DECL|field|SERVICE_NAME
 name|String

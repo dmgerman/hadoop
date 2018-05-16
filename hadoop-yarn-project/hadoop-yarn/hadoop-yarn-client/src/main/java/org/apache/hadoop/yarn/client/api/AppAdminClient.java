@@ -666,6 +666,31 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    * Upgrade components of a long running service.    *    * @param appName    the name of the application.    * @param components the name of the components.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionUpgradeComponents (String appName, List<String> components)
+specifier|public
+specifier|abstract
+name|int
+name|actionUpgradeComponents
+parameter_list|(
+name|String
+name|appName
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|components
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
 block|}
 end_class
 

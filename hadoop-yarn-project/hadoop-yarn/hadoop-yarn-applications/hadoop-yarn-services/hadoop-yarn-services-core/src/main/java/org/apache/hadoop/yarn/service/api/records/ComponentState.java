@@ -86,11 +86,14 @@ block|{
 DECL|enumConstant|FLEXING
 DECL|enumConstant|STABLE
 DECL|enumConstant|NEEDS_UPGRADE
+DECL|enumConstant|UPGRADING
 name|FLEXING
 block|,
 name|STABLE
 block|,
 name|NEEDS_UPGRADE
+block|,
+name|UPGRADING
 block|; }
 end_enum
 
