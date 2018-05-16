@@ -9501,9 +9501,10 @@ literal|"$$"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// variables here will be forced in, even if the container has specified them.
+comment|// variables here will be forced in, even if the container has
+comment|// specified them.
 name|String
-name|nmAdminUserEnv
+name|defEnvStr
 init|=
 name|conf
 operator|.
@@ -9511,20 +9512,22 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_ADMIN_USER_ENV
-argument_list|,
-name|YarnConfiguration
-operator|.
 name|DEFAULT_NM_ADMIN_USER_ENV
 argument_list|)
 decl_stmt|;
 name|Apps
 operator|.
-name|setEnvFromInputString
+name|setEnvFromInputProperty
 argument_list|(
 name|environment
 argument_list|,
-name|nmAdminUserEnv
+name|YarnConfiguration
+operator|.
+name|NM_ADMIN_USER_ENV
+argument_list|,
+name|defEnvStr
+argument_list|,
+name|conf
 argument_list|,
 name|File
 operator|.
@@ -9537,13 +9540,15 @@ name|addAll
 argument_list|(
 name|Apps
 operator|.
-name|getEnvVarsFromInputString
+name|getEnvVarsFromInputProperty
 argument_list|(
-name|nmAdminUserEnv
-argument_list|,
-name|File
+name|YarnConfiguration
 operator|.
-name|pathSeparator
+name|NM_ADMIN_USER_ENV
+argument_list|,
+name|defEnvStr
+argument_list|,
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
