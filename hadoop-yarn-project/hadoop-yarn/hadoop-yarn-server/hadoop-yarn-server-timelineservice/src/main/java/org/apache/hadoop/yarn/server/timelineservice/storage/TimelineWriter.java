@@ -104,6 +104,26 @@ name|records
 operator|.
 name|timelineservice
 operator|.
+name|TimelineDomain
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
 name|TimelineEntities
 import|;
 end_import
@@ -201,6 +221,20 @@ name|data
 parameter_list|,
 name|UserGroupInformation
 name|callerUgi
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Stores {@link TimelineDomain} object to the timeline    * store. Any errors occurring for individual write request objects will be    * reported in the response.    *    * @param context a {@link TimelineCollectorContext}    * @param domain a {@link TimelineDomain} object.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException if there is any exception encountered while storing or    *           writing entities to the back end storage.    */
+DECL|method|write (TimelineCollectorContext context, TimelineDomain domain)
+name|TimelineWriteResponse
+name|write
+parameter_list|(
+name|TimelineCollectorContext
+name|context
+parameter_list|,
+name|TimelineDomain
+name|domain
 parameter_list|)
 throws|throws
 name|IOException

@@ -245,7 +245,7 @@ literal|".table.name"
 decl_stmt|;
 comment|/** default value for domain table name. */
 DECL|field|DEFAULT_TABLE_NAME
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String

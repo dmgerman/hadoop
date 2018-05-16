@@ -168,6 +168,26 @@ name|records
 operator|.
 name|timelineservice
 operator|.
+name|TimelineDomain
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|timelineservice
+operator|.
 name|TimelineEntities
 import|;
 end_import
@@ -496,6 +516,27 @@ expr_stmt|;
 block|}
 return|return
 name|response
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|write (TimelineCollectorContext context, TimelineDomain domain)
+specifier|public
+name|TimelineWriteResponse
+name|write
+parameter_list|(
+name|TimelineCollectorContext
+name|context
+parameter_list|,
+name|TimelineDomain
+name|domain
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO implementation for storing domain into FileSystem
+return|return
+literal|null
 return|;
 block|}
 DECL|method|write (String clusterId, String userId, String flowName, String flowVersion, long flowRun, String appId, TimelineEntity entity, TimelineWriteResponse response)
