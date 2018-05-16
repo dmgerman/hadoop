@@ -582,9 +582,19 @@ literal|"verifyMeta"
 argument_list|,
 literal|"verifyMeta -meta<metadata-file> [-block<block-file>]"
 argument_list|,
-literal|"  Verify HDFS metadata and block files.  If a block file is specified, we\n"
+literal|"  Verify HDFS metadata and block files.  If a block file is specified, we"
 operator|+
-literal|"  will verify that the checksums in the metadata file match the block\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|"  will verify that the checksums in the metadata file match the block"
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 operator|+
 literal|"  file."
 argument_list|)
@@ -630,7 +640,10 @@ name|println
 argument_list|(
 name|helpText
 operator|+
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -1209,13 +1222,49 @@ literal|"computeMeta -block<block-file> -out<output-metadata-file>"
 argument_list|,
 literal|"  Compute HDFS metadata from the specified block file, and save it"
 operator|+
-literal|" to\n  the specified output metadata file.\n\n"
+literal|" to"
 operator|+
-literal|"**NOTE: Use at your own risk!\n If the block file is corrupt"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 operator|+
-literal|" and you overwrite it's meta file, \n it will show up"
+literal|"  the specified output metadata file."
 operator|+
-literal|" as good in HDFS, but you can't read the data.\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|"**NOTE: Use at your own risk!"
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|" If the block file is corrupt"
+operator|+
+literal|" and you overwrite it's meta file, "
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|" it will show up"
+operator|+
+literal|" as good in HDFS, but you can't read the data."
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 operator|+
 literal|" Only use as a last measure, and when you are 100% certain"
 operator|+
@@ -1319,7 +1368,10 @@ name|println
 argument_list|(
 name|helpText
 operator|+
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -1613,7 +1665,12 @@ literal|"recoverLease"
 argument_list|,
 literal|"recoverLease -path<path> [-retries<num-retries>]"
 argument_list|,
-literal|"  Recover the lease on the specified path.  The path must reside on an\n"
+literal|"  Recover the lease on the specified path.  The path must reside on an"
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 operator|+
 literal|"  HDFS filesystem.  The default number of retries is 1."
 argument_list|)
@@ -1668,7 +1725,10 @@ name|println
 argument_list|(
 name|helpText
 operator|+
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -2194,7 +2254,10 @@ name|command
 operator|.
 name|helpText
 operator|+
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
