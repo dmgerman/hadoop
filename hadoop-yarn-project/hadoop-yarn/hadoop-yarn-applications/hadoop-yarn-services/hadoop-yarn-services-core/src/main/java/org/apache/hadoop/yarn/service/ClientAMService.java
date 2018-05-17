@@ -160,6 +160,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -979,7 +997,11 @@ operator|.
 name|scheduler
 operator|.
 name|setGracefulStop
-argument_list|()
+argument_list|(
+name|FinalApplicationStatus
+operator|.
+name|ENDED
+argument_list|)
 expr_stmt|;
 comment|// Stop the service in 2 seconds delay to make sure this rpc call is completed.
 comment|// shutdown hook will be executed which will stop AM gracefully.
@@ -1073,6 +1095,23 @@ name|IOException
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Upgrading service to version {} by {}"
+argument_list|,
+name|request
+operator|.
+name|getVersion
+argument_list|()
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|context
 operator|.
 name|getServiceManager
@@ -1088,23 +1127,6 @@ argument_list|,
 name|request
 operator|.
 name|getAutoFinalize
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Upgrading service to version {} by {}"
-argument_list|,
-name|request
-operator|.
-name|getVersion
-argument_list|()
-argument_list|,
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
 argument_list|()
 argument_list|)
 expr_stmt|;

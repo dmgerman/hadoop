@@ -263,6 +263,16 @@ name|serviceManager
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getService ()
+specifier|public
+name|Service
+name|getService
+parameter_list|()
+block|{
+return|return
+name|service
+return|;
+block|}
 block|}
 end_class
 
