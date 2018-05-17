@@ -1080,6 +1080,14 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|dfs
+index|[
+name|i
+index|]
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 name|cluster
 operator|.
@@ -5003,6 +5011,11 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+name|ctx
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test that blocks which are in the wrong location are ignored.    */
 annotation|@
@@ -5361,6 +5374,11 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+name|ctx
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test concurrent append and scan.    * @throws Exception    */
 annotation|@
@@ -5708,11 +5726,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|fs
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 comment|// verify that volume scanner does not find bad blocks after append.
 name|waitForRescan
 argument_list|(
@@ -5733,6 +5746,11 @@ name|Level
 operator|.
 name|INFO
 argument_list|)
+expr_stmt|;
+name|ctx
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|waitForRescan (final TestScanResultHandler.Info info, final int numExpectedBlocks)
