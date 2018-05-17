@@ -314,6 +314,7 @@ init|=
 name|newJobCommitter
 argument_list|()
 decl_stmt|;
+comment|// this should fail
 name|intercept
 argument_list|(
 name|PathExistsException
@@ -337,27 +338,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|intercept
-argument_list|(
-name|PathExistsException
-operator|.
-name|class
-argument_list|,
-name|InternalCommitterConstants
-operator|.
-name|E_DEST_EXISTS
-argument_list|,
-literal|"Should throw an exception because the path exists"
-argument_list|,
-parameter_list|()
-lambda|->
+comment|// but there are no checks in job commit (HADOOP-15469)
 name|committer
 operator|.
 name|commitJob
 argument_list|(
 name|getJob
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|reset
@@ -410,13 +397,6 @@ name|commitJob
 argument_list|(
 name|getJob
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|verifyExistenceChecked
-argument_list|(
-name|mockS3
-argument_list|,
-name|OUTPUT_PATH
 argument_list|)
 expr_stmt|;
 name|verifyCompletion

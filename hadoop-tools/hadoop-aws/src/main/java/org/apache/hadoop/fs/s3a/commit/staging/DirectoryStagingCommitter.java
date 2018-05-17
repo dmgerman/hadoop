@@ -417,31 +417,8 @@ block|{
 case|case
 name|FAIL
 case|:
-comment|// this was checked in setupJob, but this avoids some cases where
-comment|// output was created while the job was processing
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|outputPath
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|PathExistsException
-argument_list|(
-name|outputPath
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|E_DEST_EXISTS
-argument_list|)
-throw|;
-block|}
+comment|// this was checked in setupJob; temporary files may have been
+comment|// created, so do not check again.
 break|break;
 case|case
 name|APPEND
