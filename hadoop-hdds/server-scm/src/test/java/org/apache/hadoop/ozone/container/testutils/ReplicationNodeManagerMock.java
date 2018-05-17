@@ -709,10 +709,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any SCM.    *    * @param dd DatanodeDetailsProto    *    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any SCM.    *    * @param dd DatanodeDetailsProto    * @param nodeReport SCMNodeReport    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (HddsProtos.DatanodeDetailsProto dd)
+DECL|method|register (HddsProtos.DatanodeDetailsProto dd, SCMNodeReport nodeReport)
 specifier|public
 name|SCMCommand
 name|register
@@ -721,6 +721,9 @@ name|HddsProtos
 operator|.
 name|DatanodeDetailsProto
 name|dd
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 block|{
 return|return

@@ -613,16 +613,22 @@ return|return
 name|resp
 return|;
 block|}
-comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto - Datanode Details    * @return SCM Command.    */
+comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto - Datanode Details    * @param nodeReport - Node Report.    * @param containerReportsRequestProto - Container Reports.    * @return SCM Command.    */
 annotation|@
 name|Override
-DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto)
+DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport, ContainerReportsRequestProto containerReportsRequestProto)
 specifier|public
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetailsProto
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
+parameter_list|,
+name|ContainerReportsRequestProto
+name|containerReportsRequestProto
 parameter_list|)
 throws|throws
 name|IOException
@@ -642,6 +648,20 @@ operator|.
 name|setDatanodeDetails
 argument_list|(
 name|datanodeDetailsProto
+argument_list|)
+expr_stmt|;
+name|req
+operator|.
+name|setContainerReport
+argument_list|(
+name|containerReportsRequestProto
+argument_list|)
+expr_stmt|;
+name|req
+operator|.
+name|setNodeReport
+argument_list|(
+name|nodeReport
 argument_list|)
 expr_stmt|;
 specifier|final

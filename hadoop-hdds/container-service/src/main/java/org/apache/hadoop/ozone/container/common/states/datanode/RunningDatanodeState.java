@@ -596,6 +596,17 @@ name|getDatanodeDetails
 argument_list|()
 argument_list|)
 operator|.
+name|setOzoneContainer
+argument_list|(
+name|context
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getContainer
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;

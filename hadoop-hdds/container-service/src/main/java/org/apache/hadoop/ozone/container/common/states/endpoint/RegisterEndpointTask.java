@@ -90,22 +90,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|ScmConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|protocol
 operator|.
 name|DatanodeDetails
@@ -148,7 +132,65 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMRegisteredCmdResponseProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|ozoneimpl
+operator|.
+name|OzoneContainer
 import|;
 end_import
 
@@ -276,10 +318,16 @@ specifier|private
 name|DatanodeDetails
 name|datanodeDetails
 decl_stmt|;
-comment|/**    * Creates a register endpoint task.    *    * @param rpcEndPoint - endpoint    * @param conf - conf    */
+DECL|field|datanodeContainerManager
+specifier|private
+specifier|final
+name|OzoneContainer
+name|datanodeContainerManager
+decl_stmt|;
+comment|/**    * Creates a register endpoint task.    *    * @param rpcEndPoint - endpoint    * @param conf - conf    * @param ozoneContainer - container    */
 annotation|@
 name|VisibleForTesting
-DECL|method|RegisterEndpointTask (EndpointStateMachine rpcEndPoint, Configuration conf)
+DECL|method|RegisterEndpointTask (EndpointStateMachine rpcEndPoint, Configuration conf, OzoneContainer ozoneContainer)
 specifier|public
 name|RegisterEndpointTask
 parameter_list|(
@@ -288,6 +336,9 @@ name|rpcEndPoint
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|OzoneContainer
+name|ozoneContainer
 parameter_list|)
 block|{
 name|this
@@ -301,6 +352,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|datanodeContainerManager
+operator|=
+name|ozoneContainer
 expr_stmt|;
 block|}
 comment|/**    * Get the DatanodeDetails.    *    * @return DatanodeDetailsProto    */
@@ -381,6 +438,22 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|ContainerReportsRequestProto
+name|contianerReport
+init|=
+name|datanodeContainerManager
+operator|.
+name|getContainerReport
+argument_list|()
+decl_stmt|;
+name|SCMNodeReport
+name|nodeReport
+init|=
+name|datanodeContainerManager
+operator|.
+name|getNodeReport
+argument_list|()
+decl_stmt|;
 comment|// TODO : Add responses to the command Queue.
 name|SCMRegisteredCmdResponseProto
 name|response
@@ -396,6 +469,10 @@ name|datanodeDetails
 operator|.
 name|getProtoBufMessage
 argument_list|()
+argument_list|,
+name|nodeReport
+argument_list|,
+name|contianerReport
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -566,6 +643,11 @@ specifier|private
 name|DatanodeDetails
 name|datanodeDetails
 decl_stmt|;
+DECL|field|container
+specifier|private
+name|OzoneContainer
+name|container
+decl_stmt|;
 comment|/**      * Constructs the builder class.      */
 DECL|method|Builder ()
 specifier|public
@@ -627,6 +709,26 @@ operator|.
 name|datanodeDetails
 operator|=
 name|dnDetails
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets the ozonecontainer.      * @param ozoneContainer      * @return Builder      */
+DECL|method|setOzoneContainer (OzoneContainer ozoneContainer)
+specifier|public
+name|Builder
+name|setOzoneContainer
+parameter_list|(
+name|OzoneContainer
+name|ozoneContainer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|container
+operator|=
+name|ozoneContainer
 expr_stmt|;
 return|return
 name|this
@@ -710,6 +812,30 @@ literal|"construct RegisterEndpoint task"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|container
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Container is not specified"
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Container is not specified to "
+operator|+
+literal|"constrict RegisterEndpoint task"
+argument_list|)
+throw|;
+block|}
 name|RegisterEndpointTask
 name|task
 init|=
@@ -723,6 +849,10 @@ argument_list|,
 name|this
 operator|.
 name|conf
+argument_list|,
+name|this
+operator|.
+name|container
 argument_list|)
 decl_stmt|;
 name|task

@@ -304,13 +304,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    *    * @return SCM Command.    */
-DECL|method|register (DatanodeDetailsProto datanodeDetails)
+comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - Node Report.    * @param containerReportsRequestProto - Container Reports.    * @return SCM Command.    */
+DECL|method|register (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ContainerReportsRequestProto containerReportsRequestProto)
 name|SCMRegisteredCmdResponseProto
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetails
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
+parameter_list|,
+name|ContainerReportsRequestProto
+name|containerReportsRequestProto
 parameter_list|)
 throws|throws
 name|IOException

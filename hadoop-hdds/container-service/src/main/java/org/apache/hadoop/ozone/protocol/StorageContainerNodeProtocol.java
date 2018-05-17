@@ -163,13 +163,16 @@ name|SCMVersionRequestProto
 name|versionRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Register the node if the node finds that it is not registered with any SCM.    * @param datanodeDetails DatanodeDetails    * @return  SCMHeartbeatResponseProto    */
-DECL|method|register (DatanodeDetailsProto datanodeDetails)
+comment|/**    * Register the node if the node finds that it is not registered with any SCM.    * @param datanodeDetails DatanodeDetails    * @param nodeReport SCMNodeReport    * @return  SCMHeartbeatResponseProto    */
+DECL|method|register (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport)
 name|SCMCommand
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetails
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 function_decl|;
 comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @param reportState - container report.    * @return SCMheartbeat response list    */

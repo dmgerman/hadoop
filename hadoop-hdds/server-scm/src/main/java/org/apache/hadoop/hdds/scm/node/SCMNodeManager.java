@@ -3100,16 +3100,19 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetailsProto - Send datanodeDetails with Node info.    *                   This function generates and assigns new datanode ID    *                   for the datanode. This allows SCM to be run independent    *                   of Namenode if required.    *    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetailsProto - Send datanodeDetails with Node info.    *                   This function generates and assigns new datanode ID    *                   for the datanode. This allows SCM to be run independent    *                   of Namenode if required.    * @param nodeReport NodeReport.    *    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeDetailsProto datanodeDetailsProto)
+DECL|method|register (DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport)
 specifier|public
 name|SCMCommand
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetailsProto
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 block|{
 name|String
@@ -3329,6 +3332,17 @@ name|build
 argument_list|()
 return|;
 block|}
+comment|// Updating Node Report, as registration is successful
+name|updateNodeStat
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|,
+name|nodeReport
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info

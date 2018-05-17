@@ -1385,6 +1385,11 @@ name|datanodeDetails
 operator|.
 name|getProtoBufMessage
 argument_list|()
+argument_list|,
+name|TestUtils
+operator|.
+name|createNodeReport
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|List
