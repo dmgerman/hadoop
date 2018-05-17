@@ -3358,6 +3358,19 @@ finally|finally
 block|{
 try|try
 block|{
+try|try
+block|{
+comment|// Cleanup distributed cache
+name|localDistributedCacheManager
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+try|try
+block|{
 name|fs
 operator|.
 name|delete
@@ -3371,6 +3384,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// delete submit dir
+block|}
+finally|finally
+block|{
 name|localFs
 operator|.
 name|delete
@@ -3381,12 +3397,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// delete local copy
-comment|// Cleanup distributed cache
-name|localDistributedCacheManager
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
+block|}
 block|}
 catch|catch
 parameter_list|(

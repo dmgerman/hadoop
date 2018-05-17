@@ -598,6 +598,13 @@ name|File
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|classLoaderCreated
+specifier|private
+name|URLClassLoader
+name|classLoaderCreated
+init|=
+literal|null
+decl_stmt|;
 DECL|field|setupCalled
 specifier|private
 name|boolean
@@ -608,6 +615,7 @@ decl_stmt|;
 comment|/**    * Set up the distributed cache by localizing the resources, and updating    * the configuration with references to the localized resources.    * @param conf    * @throws IOException    */
 DECL|method|setup (JobConf conf, JobID jobId)
 specifier|public
+specifier|synchronized
 name|void
 name|setup
 parameter_list|(
@@ -1431,6 +1439,7 @@ block|}
 comment|/**     * Are the resources that should be added to the classpath?     * Should be called after setup().    *     */
 DECL|method|hasLocalClasspaths ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|hasLocalClasspaths
 parameter_list|()
@@ -1460,6 +1469,7 @@ block|}
 comment|/**    * Creates a class loader that includes the designated    * files and archives.    */
 DECL|method|makeClassLoader (final ClassLoader parent)
 specifier|public
+specifier|synchronized
 name|ClassLoader
 name|makeClassLoader
 parameter_list|(
@@ -1470,6 +1480,21 @@ parameter_list|)
 throws|throws
 name|MalformedURLException
 block|{
+if|if
+condition|(
+name|classLoaderCreated
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"A classloader was already created"
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|URL
 index|[]
@@ -1557,7 +1582,8 @@ name|ClassLoader
 name|run
 parameter_list|()
 block|{
-return|return
+name|classLoaderCreated
+operator|=
 operator|new
 name|URLClassLoader
 argument_list|(
@@ -1565,6 +1591,9 @@ name|urls
 argument_list|,
 name|parent
 argument_list|)
+expr_stmt|;
+return|return
+name|classLoaderCreated
 return|;
 block|}
 block|}
@@ -1573,12 +1602,74 @@ return|;
 block|}
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|classLoaderCreated
+operator|!=
+literal|null
+condition|)
+block|{
+name|AccessController
+operator|.
+name|doPrivileged
+argument_list|(
+operator|new
+name|PrivilegedAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
+name|classLoaderCreated
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|classLoaderCreated
+operator|=
+literal|null
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to close classloader created "
+operator|+
+literal|"by LocalDistributedCacheManager"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|File
