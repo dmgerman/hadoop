@@ -1960,10 +1960,15 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 expr_stmt|;
-specifier|final
 name|MiniDFSCluster
 name|cluster
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|cluster
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -1979,7 +1984,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -2204,7 +2209,8 @@ name|bpId
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// check that block report is not processed and registration didn't change.
+comment|// check that block report is not processed and registration didn't
+comment|// change.
 name|dnd
 operator|.
 name|setForceRegistration
@@ -2242,8 +2248,8 @@ name|bpId
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// heartbeat should trigger re-registration, and next block report should
-comment|// not change registration.
+comment|// heartbeat should trigger re-registration, and next block report
+comment|// should not change registration.
 name|waitForHeartbeat
 argument_list|(
 name|dn
@@ -2473,6 +2479,23 @@ name|bpId
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|waitForHeartbeat (final DataNode dn, final DatanodeDescriptor dnd)
 specifier|private
