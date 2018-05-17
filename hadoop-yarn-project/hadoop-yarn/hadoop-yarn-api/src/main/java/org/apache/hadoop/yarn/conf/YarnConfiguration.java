@@ -4890,6 +4890,27 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/**    * Define how many aggregated log files per application per NM we can have    * in remote file system.    */
+DECL|field|NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
+init|=
+name|NM_PREFIX
+operator|+
+literal|"log-aggregation.num-log-files-per-app"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
+name|DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
+init|=
+literal|30
+decl_stmt|;
 comment|/**    * Number of threads used in log cleanup. Only applicable if Log aggregation    * is disabled    */
 DECL|field|NM_LOG_DELETION_THREADS_COUNT
 specifier|public

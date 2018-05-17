@@ -660,30 +660,6 @@ literal|0777
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// This is temporary solution. The configuration will be deleted once
-comment|// we find a more scalable method to only write a single log file per LRS.
-DECL|field|NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
-init|=
-name|YarnConfiguration
-operator|.
-name|NM_PREFIX
-operator|+
-literal|"log-aggregation.num-log-files-per-app"
-decl_stmt|;
-specifier|private
-specifier|static
-specifier|final
-name|int
-DECL|field|DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
-name|DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
-init|=
-literal|30
-decl_stmt|;
 comment|// This is temporary solution. The configuration will be deleted once we have
 comment|// the FileSystem API to check whether append operation is supported or not.
 DECL|field|LOG_AGGREGATION_FS_SUPPORT_APPEND
@@ -755,8 +731,12 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
+name|YarnConfiguration
+operator|.
 name|NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
 argument_list|,
+name|YarnConfiguration
+operator|.
 name|DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
 argument_list|)
 decl_stmt|;
@@ -771,6 +751,8 @@ name|this
 operator|.
 name|retentionSize
 operator|=
+name|YarnConfiguration
+operator|.
 name|DEFAULT_NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
 expr_stmt|;
 block|}
