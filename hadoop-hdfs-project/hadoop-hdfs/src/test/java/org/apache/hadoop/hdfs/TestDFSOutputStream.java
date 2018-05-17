@@ -1409,7 +1409,7 @@ name|Path
 argument_list|(
 name|baseDir
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 argument_list|,
 literal|"testPreventOverflow"
