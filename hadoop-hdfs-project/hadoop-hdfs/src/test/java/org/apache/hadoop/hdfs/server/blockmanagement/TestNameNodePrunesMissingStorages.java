@@ -2362,6 +2362,13 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+try|try
+block|{
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 comment|// Create two files to ensure each storage has a block
 name|DFSTestUtil
 operator|.
@@ -2628,7 +2635,8 @@ argument_list|,
 name|numFailedStoragesWithBlocks
 argument_list|)
 expr_stmt|;
-comment|// Heartbeat manager removes the blocks associated with this failed storage
+comment|// Heartbeat manager removes the blocks associated with this failed
+comment|// storage
 name|bm
 operator|.
 name|getDatanodeManager
@@ -2679,6 +2687,23 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 end_class
