@@ -135,7 +135,6 @@ end_comment
 begin_class
 DECL|class|SchedulerRequestKey
 specifier|public
-specifier|final
 class|class
 name|SchedulerRequestKey
 implements|implements
