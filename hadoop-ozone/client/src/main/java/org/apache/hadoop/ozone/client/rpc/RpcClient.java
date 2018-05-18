@@ -884,6 +884,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|HEAD
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1183,10 +1195,7 @@ name|omVersion
 argument_list|,
 name|omAddress
 argument_list|,
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|ugi
 argument_list|,
 name|conf
 argument_list|,
@@ -1263,10 +1272,7 @@ name|scmVersion
 argument_list|,
 name|scmAddress
 argument_list|,
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|ugi
 argument_list|,
 name|conf
 argument_list|,
