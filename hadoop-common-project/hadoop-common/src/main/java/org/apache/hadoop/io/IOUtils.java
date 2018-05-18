@@ -1536,6 +1536,19 @@ operator|.
 name|isDirectory
 argument_list|()
 decl_stmt|;
+comment|// HDFS-13586, FileChannel.open fails with AccessDeniedException
+comment|// for any directory, ignore.
+if|if
+condition|(
+name|isDir
+operator|&&
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+return|return;
+block|}
 comment|// If the file is a directory we have to open read-only, for regular files
 comment|// we must open r/w for the fsync to have an effect. See
 comment|// http://blog.httrack.com/blog/2013/11/15/
