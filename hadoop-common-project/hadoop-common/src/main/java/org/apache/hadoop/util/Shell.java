@@ -4926,6 +4926,42 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Static method to return the memory lock limit for datanode.    * @param ulimit max value at which memory locked should be capped.    * @return long value specifying the memory lock limit.    */
+DECL|method|getMemlockLimit (Long ulimit)
+specifier|public
+specifier|static
+name|Long
+name|getMemlockLimit
+parameter_list|(
+name|Long
+name|ulimit
+parameter_list|)
+block|{
+if|if
+condition|(
+name|WINDOWS
+condition|)
+block|{
+comment|// HDFS-13560: if ulimit is too large on Windows, Windows will complain
+comment|// "1450: Insufficient system resources exist to complete the requested
+comment|// service". Thus, cap Windows memory lock limit at Integer.MAX_VALUE.
+return|return
+name|Math
+operator|.
+name|min
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|,
+name|ulimit
+argument_list|)
+return|;
+block|}
+return|return
+name|ulimit
+return|;
+block|}
 block|}
 end_class
 

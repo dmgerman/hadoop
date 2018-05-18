@@ -138,6 +138,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+operator|.
+name|getMemlockLimit
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|hamcrest
 operator|.
 name|core
@@ -2355,9 +2371,12 @@ specifier|private
 name|long
 name|maxLockedMemory
 init|=
+name|getMemlockLimit
+argument_list|(
 name|Long
 operator|.
 name|MAX_VALUE
+argument_list|)
 decl_stmt|;
 DECL|field|hasTransientStorage
 specifier|private

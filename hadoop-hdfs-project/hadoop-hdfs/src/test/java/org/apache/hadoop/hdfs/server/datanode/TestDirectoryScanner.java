@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+operator|.
+name|getMemlockLimit
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|hamcrest
 operator|.
 name|MatcherAssert
@@ -960,9 +976,12 @@ name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
 argument_list|,
+name|getMemlockLimit
+argument_list|(
 name|Long
 operator|.
 name|MAX_VALUE
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
