@@ -1699,6 +1699,19 @@ name|HADOOP_TOKEN_FILE_LOCATION
 init|=
 literal|"HADOOP_TOKEN_FILE_LOCATION"
 decl_stmt|;
+DECL|method|isInitialized ()
+specifier|public
+specifier|static
+name|boolean
+name|isInitialized
+parameter_list|()
+block|{
+return|return
+name|conf
+operator|!=
+literal|null
+return|;
+block|}
 comment|/**     * A method to initialize the fields that depend on a configuration.    * Must be called before useKerberos or groups is used.    */
 DECL|method|ensureInitialized ()
 specifier|private
@@ -1709,9 +1722,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|conf
-operator|==
-literal|null
+operator|!
+name|isInitialized
+argument_list|()
 condition|)
 block|{
 synchronized|synchronized
@@ -1723,9 +1736,9 @@ init|)
 block|{
 if|if
 condition|(
-name|conf
-operator|==
-literal|null
+operator|!
+name|isInitialized
+argument_list|()
 condition|)
 block|{
 comment|// someone might have beat us

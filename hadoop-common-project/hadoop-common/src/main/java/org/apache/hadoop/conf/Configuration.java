@@ -1368,6 +1368,12 @@ condition|(
 name|resource
 operator|instanceof
 name|String
+operator|||
+operator|!
+name|UserGroupInformation
+operator|.
+name|isInitialized
+argument_list|()
 condition|)
 block|{
 return|return
