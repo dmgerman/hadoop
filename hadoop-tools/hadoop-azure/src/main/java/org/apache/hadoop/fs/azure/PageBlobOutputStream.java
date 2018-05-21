@@ -1547,6 +1547,49 @@ name|ByteArrayOutputStream
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|waitForLastFlushCompletion ()
+specifier|synchronized
+name|void
+name|waitForLastFlushCompletion
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+if|if
+condition|(
+name|lastQueuedTask
+operator|!=
+literal|null
+condition|)
+block|{
+name|lastQueuedTask
+operator|.
+name|waitTillDone
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e1
+parameter_list|)
+block|{
+comment|// Restore the interrupted status
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Extend the page blob file if we are close to the end.    */
 DECL|method|conditionalExtendFile ()
 specifier|private
