@@ -192,7 +192,7 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerStatus> candidateContainers)
+DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerData> candidateContainers)
 specifier|public
 name|List
 argument_list|<
@@ -207,7 +207,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|candidateContainers
 parameter_list|)
@@ -239,12 +239,12 @@ name|LinkedList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|ContainerStatus
+name|ContainerData
 index|[]
 name|values
 init|=
 operator|new
-name|ContainerStatus
+name|ContainerData
 index|[
 name|candidateContainers
 operator|.
@@ -255,7 +255,7 @@ decl_stmt|;
 comment|// to get a shuffle list
 for|for
 control|(
-name|ContainerStatus
+name|ContainerData
 name|entry
 range|:
 name|DFSUtil
@@ -286,9 +286,6 @@ operator|.
 name|add
 argument_list|(
 name|entry
-operator|.
-name|getContainer
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|currentCount
@@ -303,9 +300,6 @@ operator|+
 literal|"pending deletion blocks num: {}."
 argument_list|,
 name|entry
-operator|.
-name|getContainer
-argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

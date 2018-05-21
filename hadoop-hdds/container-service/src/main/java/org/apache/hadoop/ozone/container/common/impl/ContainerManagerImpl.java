@@ -86,20 +86,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|StorageType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdds
 operator|.
 name|scm
@@ -181,6 +167,28 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerLifeCycleState
 import|;
 end_import
 
@@ -279,26 +287,6 @@ operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMStorageReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|StorageTypeProto
 import|;
 end_import
 
@@ -1107,7 +1095,7 @@ name|ConcurrentSkipListMap
 argument_list|<
 name|Long
 argument_list|,
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 DECL|field|containerMap
 name|containerMap
@@ -1675,17 +1663,28 @@ comment|// Sometimes container metadata might have been created but empty,
 comment|// when loading the info we get a null, this often means last time
 comment|// SCM was ending up at some middle phase causing that the metadata
 comment|// was not populated. Such containers are marked as inactive.
+name|ContainerData
+name|cData
+init|=
+operator|new
+name|ContainerData
+argument_list|(
+name|containerID
+argument_list|,
+name|conf
+argument_list|,
+name|ContainerLifeCycleState
+operator|.
+name|INVALID
+argument_list|)
+decl_stmt|;
 name|containerMap
 operator|.
 name|put
 argument_list|(
 name|containerID
 argument_list|,
-operator|new
-name|ContainerStatus
-argument_list|(
-literal|null
-argument_list|)
+name|cData
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1701,15 +1700,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|ContainerStatus
-name|containerStatus
-init|=
-operator|new
-name|ContainerStatus
-argument_list|(
-name|containerData
-argument_list|)
-decl_stmt|;
 comment|// Initialize pending deletion blocks count in in-memory
 comment|// container status.
 name|MetadataStore
@@ -1755,7 +1745,7 @@ name|getDeletingKeyFilter
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|containerStatus
+name|containerData
 operator|.
 name|incrPendingDeletionBlocks
 argument_list|(
@@ -1856,7 +1846,7 @@ operator|.
 name|sum
 argument_list|()
 expr_stmt|;
-name|containerStatus
+name|containerData
 operator|.
 name|setBytesUsed
 argument_list|(
@@ -1869,7 +1859,7 @@ name|put
 argument_list|(
 name|containerID
 argument_list|,
-name|containerStatus
+name|containerData
 argument_list|)
 expr_stmt|;
 block|}
@@ -1895,17 +1885,28 @@ argument_list|)
 expr_stmt|;
 comment|// TODO : Add this file to a recovery Queue.
 comment|// Remember that this container is busted and we cannot use it.
+name|ContainerData
+name|cData
+init|=
+operator|new
+name|ContainerData
+argument_list|(
+name|containerID
+argument_list|,
+name|conf
+argument_list|,
+name|ContainerLifeCycleState
+operator|.
+name|INVALID
+argument_list|)
+decl_stmt|;
 name|containerMap
 operator|.
 name|put
 argument_list|(
 name|containerID
 argument_list|,
-operator|new
-name|ContainerStatus
-argument_list|(
-literal|null
-argument_list|)
+name|cData
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2472,8 +2473,8 @@ name|UNCLOSED_CONTAINER_IO
 argument_list|)
 throw|;
 block|}
-name|ContainerStatus
-name|status
+name|ContainerData
+name|containerData
 init|=
 name|containerMap
 operator|.
@@ -2484,7 +2485,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|status
+name|containerData
 operator|==
 literal|null
 condition|)
@@ -2512,12 +2513,11 @@ throw|;
 block|}
 if|if
 condition|(
-name|status
+operator|!
+name|containerData
 operator|.
-name|getContainer
+name|isValid
 argument_list|()
-operator|==
-literal|null
 condition|)
 block|{
 name|LOG
@@ -2545,10 +2545,7 @@ name|ContainerUtils
 operator|.
 name|removeContainer
 argument_list|(
-name|status
-operator|.
-name|getContainer
-argument_list|()
+name|containerData
 argument_list|,
 name|conf
 argument_list|,
@@ -2686,7 +2683,7 @@ name|ConcurrentNavigableMap
 argument_list|<
 name|Long
 argument_list|,
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|map
 decl_stmt|;
@@ -2733,7 +2730,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|ContainerStatus
+name|ContainerData
 name|entry
 range|:
 name|map
@@ -2754,9 +2751,6 @@ operator|.
 name|add
 argument_list|(
 name|entry
-operator|.
-name|getContainer
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|currentCount
@@ -2833,9 +2827,6 @@ name|get
 argument_list|(
 name|containerID
 argument_list|)
-operator|.
-name|getContainer
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2948,22 +2939,13 @@ comment|// false means we have some internal error that is happening to this
 comment|// container. This is a way to track damaged containers if we have an
 comment|// I/O failure, this allows us to take quick action in case of container
 comment|// issues.
-name|ContainerStatus
-name|status
-init|=
-operator|new
-name|ContainerStatus
-argument_list|(
-name|containerData
-argument_list|)
-decl_stmt|;
 name|containerMap
 operator|.
 name|put
 argument_list|(
 name|containerID
 argument_list|,
-name|status
+name|containerData
 argument_list|)
 expr_stmt|;
 block|}
@@ -3109,9 +3091,6 @@ name|get
 argument_list|(
 name|containerID
 argument_list|)
-operator|.
-name|getContainer
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -3283,22 +3262,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Update the in-memory map
-name|ContainerStatus
-name|newStatus
-init|=
-operator|new
-name|ContainerStatus
-argument_list|(
-name|data
-argument_list|)
-decl_stmt|;
 name|containerMap
 operator|.
 name|replace
 argument_list|(
 name|containerID
 argument_list|,
-name|newStatus
+name|data
 argument_list|)
 expr_stmt|;
 block|}
@@ -3478,8 +3448,8 @@ throws|throws
 name|StorageContainerException
 block|{
 specifier|final
-name|ContainerStatus
-name|status
+name|ContainerData
+name|containerData
 init|=
 name|containerMap
 operator|.
@@ -3490,35 +3460,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|status
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Container status not found: "
-operator|+
-name|containerID
-argument_list|,
-name|CONTAINER_NOT_FOUND
-argument_list|)
-throw|;
-block|}
-specifier|final
-name|ContainerData
-name|cData
-init|=
-name|status
-operator|.
-name|getContainer
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|cData
+name|containerData
 operator|==
 literal|null
 condition|)
@@ -3536,7 +3478,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|cData
+name|containerData
 operator|.
 name|isOpen
 argument_list|()
@@ -3588,7 +3530,7 @@ name|ConcurrentSkipListMap
 argument_list|<
 name|Long
 argument_list|,
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|getContainerMap
 parameter_list|()
@@ -3919,15 +3861,12 @@ argument_list|()
 operator|.
 name|filter
 argument_list|(
-name|containerStatus
+name|containerData
 lambda|->
 operator|!
-name|containerStatus
+name|containerData
 operator|.
 name|getValue
-argument_list|()
-operator|.
-name|getContainer
 argument_list|()
 operator|.
 name|isOpen
@@ -3936,14 +3875,11 @@ argument_list|)
 operator|.
 name|map
 argument_list|(
-name|containerStatus
+name|containerData
 lambda|->
-name|containerStatus
+name|containerData
 operator|.
 name|getValue
-argument_list|()
-operator|.
-name|getContainer
 argument_list|()
 argument_list|)
 operator|.
@@ -3979,7 +3915,7 @@ comment|// And we can never get the exact state since close might happen
 comment|// after we iterate a point.
 name|List
 argument_list|<
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|containers
 init|=
@@ -4031,7 +3967,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ContainerStatus
+name|ContainerData
 name|container
 range|:
 name|containers
@@ -4057,9 +3993,6 @@ name|setContainerID
 argument_list|(
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -4067,9 +4000,6 @@ operator|.
 name|setSize
 argument_list|(
 name|container
-operator|.
-name|getContainer
-argument_list|()
 operator|.
 name|getMaxSize
 argument_list|()
@@ -4079,9 +4009,6 @@ name|setUsed
 argument_list|(
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
 name|getBytesUsed
 argument_list|()
 argument_list|)
@@ -4089,9 +4016,6 @@ operator|.
 name|setKeyCount
 argument_list|(
 name|container
-operator|.
-name|getContainer
-argument_list|()
 operator|.
 name|getKeyCount
 argument_list|()
@@ -4126,17 +4050,6 @@ argument_list|(
 name|container
 operator|.
 name|getWriteBytes
-argument_list|()
-argument_list|)
-operator|.
-name|setContainerID
-argument_list|(
-name|container
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4281,8 +4194,8 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4291,7 +4204,7 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|status
+name|cData
 operator|.
 name|incrPendingDeletionBlocks
 argument_list|(
@@ -4325,8 +4238,8 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4335,7 +4248,7 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|status
+name|cData
 operator|.
 name|decrPendingDeletionBlocks
 argument_list|(
@@ -4362,8 +4275,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4372,7 +4285,7 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|status
+name|cData
 operator|.
 name|incrReadCount
 argument_list|()
@@ -4387,8 +4300,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4398,13 +4311,13 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|getReadCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Increse the read counter for bytes read from the container.    *    * @param containerId - ID of the container.    * @param readBytes     - bytes read from the container.    */
+comment|/**    * Increase the read counter for bytes read from the container.    *    * @param containerId - ID of the container.    * @param readBytes     - bytes read from the container.    */
 annotation|@
 name|Override
 DECL|method|incrReadBytes (long containerId, long readBytes)
@@ -4419,8 +4332,8 @@ name|long
 name|readBytes
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4429,7 +4342,7 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|status
+name|cData
 operator|.
 name|incrReadBytes
 argument_list|(
@@ -4437,6 +4350,7 @@ name|readBytes
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Returns number of bytes read from the container.    * @param containerId    * @return    */
 DECL|method|getReadBytes (long containerId)
 specifier|public
 name|long
@@ -4451,8 +4365,8 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4462,7 +4376,7 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|getReadBytes
 argument_list|()
@@ -4487,8 +4401,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4497,7 +4411,7 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|status
+name|cData
 operator|.
 name|incrWriteCount
 argument_list|()
@@ -4512,8 +4426,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4523,7 +4437,7 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|getWriteCount
 argument_list|()
@@ -4544,8 +4458,8 @@ name|long
 name|writeBytes
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4554,7 +4468,7 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-name|status
+name|cData
 operator|.
 name|incrWriteBytes
 argument_list|(
@@ -4571,8 +4485,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4582,7 +4496,7 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|getWriteBytes
 argument_list|()
@@ -4603,8 +4517,8 @@ name|long
 name|used
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4614,7 +4528,7 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|incrBytesUsed
 argument_list|(
@@ -4637,8 +4551,8 @@ name|long
 name|used
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4648,7 +4562,7 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|decrBytesUsed
 argument_list|(
@@ -4665,8 +4579,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4676,7 +4590,7 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
 name|getBytesUsed
 argument_list|()
@@ -4694,8 +4608,8 @@ name|long
 name|containerId
 parameter_list|)
 block|{
-name|ContainerStatus
-name|status
+name|ContainerData
+name|cData
 init|=
 name|containerMap
 operator|.
@@ -4705,9 +4619,9 @@ name|containerId
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|cData
 operator|.
-name|getNumKeys
+name|getKeyCount
 argument_list|()
 return|;
 block|}

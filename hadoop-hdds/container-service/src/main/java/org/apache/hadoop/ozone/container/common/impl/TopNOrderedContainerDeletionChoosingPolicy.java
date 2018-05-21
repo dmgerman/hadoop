@@ -196,21 +196,21 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** customized comparator used to compare differentiate container status. **/
-DECL|field|CONTAINER_STATUS_COMPARATOR
+comment|/** customized comparator used to compare differentiate container data. **/
+DECL|field|CONTAINER_DATA_COMPARATOR
 specifier|private
 specifier|static
 specifier|final
 name|Comparator
 argument_list|<
-name|ContainerStatus
+name|ContainerData
 argument_list|>
-name|CONTAINER_STATUS_COMPARATOR
+name|CONTAINER_DATA_COMPARATOR
 init|=
 operator|new
 name|Comparator
 argument_list|<
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 argument_list|()
 block|{
@@ -220,10 +220,10 @@ specifier|public
 name|int
 name|compare
 parameter_list|(
-name|ContainerStatus
+name|ContainerData
 name|c1
 parameter_list|,
-name|ContainerStatus
+name|ContainerData
 name|c2
 parameter_list|)
 block|{
@@ -248,7 +248,7 @@ block|}
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerStatus> candidateContainers)
+DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerData> candidateContainers)
 specifier|public
 name|List
 argument_list|<
@@ -263,7 +263,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|candidateContainers
 parameter_list|)
@@ -292,7 +292,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|orderedList
 init|=
@@ -317,7 +317,7 @@ name|sort
 argument_list|(
 name|orderedList
 argument_list|,
-name|CONTAINER_STATUS_COMPARATOR
+name|CONTAINER_DATA_COMPARATOR
 argument_list|)
 expr_stmt|;
 comment|// get top N list ordered by pending deletion blocks' number
@@ -328,7 +328,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|ContainerStatus
+name|ContainerData
 name|entry
 range|:
 name|orderedList
@@ -356,9 +356,6 @@ operator|.
 name|add
 argument_list|(
 name|entry
-operator|.
-name|getContainer
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|currentCount
@@ -373,9 +370,6 @@ operator|+
 literal|"pending deletion blocks num: {}."
 argument_list|,
 name|entry
-operator|.
-name|getContainer
-argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

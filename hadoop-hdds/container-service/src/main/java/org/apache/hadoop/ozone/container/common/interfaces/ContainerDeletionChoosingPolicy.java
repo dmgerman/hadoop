@@ -66,26 +66,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|impl
-operator|.
-name|ContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -115,7 +95,7 @@ interface|interface
 name|ContainerDeletionChoosingPolicy
 block|{
 comment|/**    * Chooses desired containers for block deletion.    * @param count    *          how many to return    * @param candidateContainers    *          candidate containers collection    * @return container data list    * @throws StorageContainerException    */
-DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerStatus> candidateContainers)
+DECL|method|chooseContainerForBlockDeletion (int count, Map<Long, ContainerData> candidateContainers)
 name|List
 argument_list|<
 name|ContainerData
@@ -129,7 +109,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|ContainerStatus
+name|ContainerData
 argument_list|>
 name|candidateContainers
 parameter_list|)
