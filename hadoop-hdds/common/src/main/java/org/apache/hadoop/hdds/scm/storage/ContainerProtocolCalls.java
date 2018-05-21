@@ -1209,6 +1209,17 @@ argument_list|(
 name|containerID
 argument_list|)
 expr_stmt|;
+name|containerData
+operator|.
+name|setContainerType
+argument_list|(
+name|ContainerProtos
+operator|.
+name|ContainerType
+operator|.
+name|KeyValueContainer
+argument_list|)
+expr_stmt|;
 name|createRequest
 operator|.
 name|setContainerData
