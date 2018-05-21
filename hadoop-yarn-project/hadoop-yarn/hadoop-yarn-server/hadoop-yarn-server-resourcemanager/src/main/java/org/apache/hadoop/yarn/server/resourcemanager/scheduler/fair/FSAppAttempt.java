@@ -4114,6 +4114,33 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Resource ask %s fits in available node resources %s, "
+operator|+
+literal|"but no container was allocated"
+argument_list|,
+name|capability
+argument_list|,
+name|available
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|Resources
 operator|.
@@ -5164,7 +5191,15 @@ name|updateAMDiagnosticMsg
 argument_list|(
 name|resource
 argument_list|,
-literal|" exceeds current queue or its parents maximum resource allowed)."
+literal|" exceeds current queue or its parents maximum resource allowed). "
+operator|+
+literal|"Max share of queue: "
+operator|+
+name|getQueue
+argument_list|()
+operator|.
+name|getMaxShare
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|ret
