@@ -180,26 +180,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMCommandResponseProto
 import|;
 end_import
@@ -368,11 +348,6 @@ name|AtomicInteger
 argument_list|(
 literal|0
 argument_list|)
-decl_stmt|;
-DECL|field|reportState
-specifier|private
-name|ReportState
-name|reportState
 decl_stmt|;
 DECL|field|containerReportsCount
 specifier|private
@@ -751,7 +726,7 @@ specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMHeartbeatResponseProto
-DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport, ReportState scmReportState)
+DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport)
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeDetailsProto
@@ -759,9 +734,6 @@ name|datanodeDetailsProto
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
-parameter_list|,
-name|ReportState
-name|scmReportState
 parameter_list|)
 throws|throws
 name|IOException
@@ -775,12 +747,6 @@ name|heartbeatCount
 operator|.
 name|incrementAndGet
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|reportState
-operator|=
-name|scmReportState
 expr_stmt|;
 name|sleepIfNeeded
 argument_list|()
@@ -1183,18 +1149,6 @@ name|getDefaultInstanceForType
 argument_list|()
 return|;
 block|}
-DECL|method|getReportState ()
-specifier|public
-name|ReportState
-name|getReportState
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|reportState
-return|;
-block|}
 comment|/**    * Reset the mock Scm for test to get a fresh start without rebuild MockScm.    */
 DECL|method|reset ()
 specifier|public
@@ -1215,30 +1169,6 @@ name|set
 argument_list|(
 literal|0
 argument_list|)
-expr_stmt|;
-name|reportState
-operator|=
-name|ReportState
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setState
-argument_list|(
-name|ReportState
-operator|.
-name|states
-operator|.
-name|noContainerReports
-argument_list|)
-operator|.
-name|setCount
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|build
-argument_list|()
 expr_stmt|;
 name|containerReportsCount
 operator|.

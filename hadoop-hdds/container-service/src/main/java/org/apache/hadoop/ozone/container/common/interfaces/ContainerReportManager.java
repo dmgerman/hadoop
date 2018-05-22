@@ -22,26 +22,6 @@ name|interfaces
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ReportState
-import|;
-end_import
-
 begin_comment
 comment|/**  * Interface for container report manager operations.  */
 end_comment
@@ -52,10 +32,10 @@ specifier|public
 interface|interface
 name|ContainerReportManager
 block|{
-comment|/**    * Get the container report state.    * @return the container report state.    */
-DECL|method|getContainerReportState ()
-name|ReportState
-name|getContainerReportState
+comment|/**    * Check if we have to send container report.    * @return true if container report has to be sent.    */
+DECL|method|shouldSendContainerReport ()
+name|boolean
+name|shouldSendContainerReport
 parameter_list|()
 function_decl|;
 block|}

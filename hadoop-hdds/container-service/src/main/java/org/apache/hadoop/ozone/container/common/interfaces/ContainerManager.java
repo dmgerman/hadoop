@@ -172,26 +172,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMNodeReport
 import|;
 end_import
@@ -569,12 +549,6 @@ parameter_list|(
 name|long
 name|containerId
 parameter_list|)
-function_decl|;
-comment|/**    * Get the container report state to send via HB to SCM.    * @return container report state.    */
-DECL|method|getContainerReportState ()
-name|ReportState
-name|getContainerReportState
-parameter_list|()
 function_decl|;
 block|}
 end_interface

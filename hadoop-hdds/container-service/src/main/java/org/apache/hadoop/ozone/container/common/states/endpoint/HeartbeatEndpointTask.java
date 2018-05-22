@@ -481,13 +481,6 @@ name|context
 operator|.
 name|getNodeReport
 argument_list|()
-argument_list|,
-name|this
-operator|.
-name|context
-operator|.
-name|getContainerReportState
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|processResponse

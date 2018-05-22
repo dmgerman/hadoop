@@ -166,26 +166,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMNodeReport
 import|;
 end_import
@@ -1524,10 +1504,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response list    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat ( HddsProtos.DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ReportState containerReportState)
+DECL|method|sendHeartbeat ( HddsProtos.DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport)
 specifier|public
 name|List
 argument_list|<
@@ -1542,9 +1522,6 @@ name|datanodeDetails
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
-parameter_list|,
-name|ReportState
-name|containerReportState
 parameter_list|)
 block|{
 if|if

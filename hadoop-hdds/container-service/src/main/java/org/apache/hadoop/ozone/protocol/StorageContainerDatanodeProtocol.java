@@ -148,26 +148,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMHeartbeatResponseProto
 import|;
 end_import
@@ -287,8 +267,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - node report state    * @param reportState - container report state.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
-DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ReportState reportState)
+comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - node report state    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport)
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
@@ -297,9 +277,6 @@ name|datanodeDetails
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
-parameter_list|,
-name|ReportState
-name|reportState
 parameter_list|)
 throws|throws
 name|IOException

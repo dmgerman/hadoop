@@ -158,26 +158,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMHeartbeatRequestProto
 import|;
 end_import
@@ -525,7 +505,7 @@ block|}
 comment|/**    * Send by datanode to SCM.    *    * @param datanodeDetailsProto - Datanode Details    * @param nodeReport - node report    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat ( DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport, ReportState reportState)
+DECL|method|sendHeartbeat ( DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport)
 specifier|public
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
@@ -535,9 +515,6 @@ name|datanodeDetailsProto
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
-parameter_list|,
-name|ReportState
-name|reportState
 parameter_list|)
 throws|throws
 name|IOException
@@ -564,13 +541,6 @@ operator|.
 name|setNodeReport
 argument_list|(
 name|nodeReport
-argument_list|)
-expr_stmt|;
-name|req
-operator|.
-name|setContainerReportState
-argument_list|(
-name|reportState
 argument_list|)
 expr_stmt|;
 specifier|final

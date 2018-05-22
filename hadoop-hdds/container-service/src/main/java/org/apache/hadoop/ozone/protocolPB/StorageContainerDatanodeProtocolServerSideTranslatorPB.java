@@ -414,11 +414,6 @@ name|request
 operator|.
 name|getNodeReport
 argument_list|()
-argument_list|,
-name|request
-operator|.
-name|getContainerReportState
-argument_list|()
 argument_list|)
 return|;
 block|}

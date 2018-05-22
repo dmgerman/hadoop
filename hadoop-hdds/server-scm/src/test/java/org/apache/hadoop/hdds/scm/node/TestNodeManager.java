@@ -168,46 +168,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMNodeReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMStorageReport
 import|;
 end_import
@@ -699,33 +659,6 @@ specifier|private
 name|File
 name|testDir
 decl_stmt|;
-DECL|field|reportState
-specifier|private
-name|ReportState
-name|reportState
-init|=
-name|ReportState
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setState
-argument_list|(
-name|ReportState
-operator|.
-name|states
-operator|.
-name|noContainerReports
-argument_list|)
-operator|.
-name|setCount
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|thrown
@@ -939,8 +872,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1086,8 +1017,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1192,8 +1121,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1299,8 +1226,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Let us just wait for 2 seconds to prove that HBs are not processed.
@@ -1455,8 +1380,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1556,8 +1479,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 decl_stmt|;
 return|return
@@ -1687,8 +1608,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2011,8 +1930,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Heartbeat all other nodes.
@@ -2034,8 +1951,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2067,8 +1982,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2168,8 +2081,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2316,8 +2227,6 @@ argument_list|(
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2458,8 +2367,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2472,8 +2379,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2486,8 +2391,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Sleep so that heartbeat processing thread gets to run.
@@ -2570,8 +2473,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2584,8 +2485,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2598,8 +2497,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2619,8 +2516,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2715,8 +2610,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2729,8 +2622,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2750,8 +2641,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2957,8 +2846,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2971,8 +2858,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2985,8 +2870,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -3075,8 +2958,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -3406,8 +3287,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -4089,8 +3968,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|String
@@ -4228,8 +4105,6 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|,
 literal|null
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -4445,8 +4320,6 @@ name|createNodeReport
 argument_list|(
 name|reports
 argument_list|)
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -4750,8 +4623,6 @@ name|createNodeReport
 argument_list|(
 name|reports
 argument_list|)
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -5261,8 +5132,6 @@ name|createNodeReport
 argument_list|(
 name|reports
 argument_list|)
-argument_list|,
-name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Wait up to 5 seconds so that the dead node becomes healthy

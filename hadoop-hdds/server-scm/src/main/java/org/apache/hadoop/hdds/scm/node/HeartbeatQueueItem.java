@@ -66,26 +66,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReportState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
 name|SCMNodeReport
 import|;
 end_import
@@ -131,13 +111,8 @@ specifier|private
 name|SCMNodeReport
 name|nodeReport
 decl_stmt|;
-DECL|field|containerReportState
-specifier|private
-name|ReportState
-name|containerReportState
-decl_stmt|;
-comment|/**    *    * @param datanodeDetails - datanode ID of the heartbeat.    * @param recvTimestamp - heartbeat receive timestamp.    * @param nodeReport - node report associated with the heartbeat if any.    * @param containerReportState - container report state.    */
-DECL|method|HeartbeatQueueItem (DatanodeDetails datanodeDetails, long recvTimestamp, SCMNodeReport nodeReport, ReportState containerReportState)
+comment|/**    *    * @param datanodeDetails - datanode ID of the heartbeat.    * @param recvTimestamp - heartbeat receive timestamp.    * @param nodeReport - node report associated with the heartbeat if any.    */
+DECL|method|HeartbeatQueueItem (DatanodeDetails datanodeDetails, long recvTimestamp, SCMNodeReport nodeReport)
 name|HeartbeatQueueItem
 parameter_list|(
 name|DatanodeDetails
@@ -148,9 +123,6 @@ name|recvTimestamp
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
-parameter_list|,
-name|ReportState
-name|containerReportState
 parameter_list|)
 block|{
 name|this
@@ -170,12 +142,6 @@ operator|.
 name|nodeReport
 operator|=
 name|nodeReport
-expr_stmt|;
-name|this
-operator|.
-name|containerReportState
-operator|=
-name|containerReportState
 expr_stmt|;
 block|}
 comment|/**    * @return datanode ID.    */
@@ -198,17 +164,6 @@ parameter_list|()
 block|{
 return|return
 name|nodeReport
-return|;
-block|}
-comment|/**    * @return container report state.    */
-DECL|method|getContainerReportState ()
-specifier|public
-name|ReportState
-name|getContainerReportState
-parameter_list|()
-block|{
-return|return
-name|containerReportState
 return|;
 block|}
 comment|/**    * @return heartbeat receive timestamp.    */
@@ -238,11 +193,6 @@ DECL|field|nodeReport
 specifier|private
 name|SCMNodeReport
 name|nodeReport
-decl_stmt|;
-DECL|field|containerReportState
-specifier|private
-name|ReportState
-name|containerReportState
 decl_stmt|;
 DECL|field|recvTimestamp
 specifier|private
@@ -290,25 +240,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setContainerReportState (ReportState crs)
-specifier|public
-name|Builder
-name|setContainerReportState
-parameter_list|(
-name|ReportState
-name|crs
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containerReportState
-operator|=
-name|crs
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setRecvTimestamp (long recvTime)
@@ -345,8 +276,6 @@ argument_list|,
 name|recvTimestamp
 argument_list|,
 name|nodeReport
-argument_list|,
-name|containerReportState
 argument_list|)
 return|;
 block|}

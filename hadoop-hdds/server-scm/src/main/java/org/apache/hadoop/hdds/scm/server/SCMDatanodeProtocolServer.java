@@ -1115,7 +1115,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sendHeartbeat ( HddsProtos.DatanodeDetailsProto datanodeDetails, StorageContainerDatanodeProtocolProtos.SCMNodeReport nodeReport, StorageContainerDatanodeProtocolProtos.ReportState reportState)
+DECL|method|sendHeartbeat ( HddsProtos.DatanodeDetailsProto datanodeDetails, StorageContainerDatanodeProtocolProtos.SCMNodeReport nodeReport)
 specifier|public
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
@@ -1129,11 +1129,6 @@ name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMNodeReport
 name|nodeReport
-parameter_list|,
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ReportState
-name|reportState
 parameter_list|)
 throws|throws
 name|IOException
@@ -1154,8 +1149,6 @@ argument_list|(
 name|datanodeDetails
 argument_list|,
 name|nodeReport
-argument_list|,
-name|reportState
 argument_list|)
 decl_stmt|;
 name|List
