@@ -832,7 +832,7 @@ name|config
 operator|.
 name|get
 argument_list|(
-literal|"ozone.system.tags"
+literal|"ozone.tags.system"
 argument_list|)
 operator|.
 name|split
