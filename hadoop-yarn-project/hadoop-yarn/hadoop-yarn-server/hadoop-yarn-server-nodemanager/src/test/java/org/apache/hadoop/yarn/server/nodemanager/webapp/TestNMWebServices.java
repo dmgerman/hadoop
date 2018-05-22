@@ -1152,16 +1152,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|PrintWriter
 import|;
 end_import
@@ -2978,9 +2968,7 @@ name|void
 name|testContainerLogsWithNewAPI
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|JSONException
+name|Exception
 block|{
 specifier|final
 name|ContainerId
@@ -3063,9 +3051,7 @@ name|void
 name|testContainerLogsWithOldAPI
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|JSONException
+name|Exception
 block|{
 specifier|final
 name|ContainerId
@@ -4560,7 +4546,7 @@ name|ContainerId
 name|containerId
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 specifier|final
 name|String

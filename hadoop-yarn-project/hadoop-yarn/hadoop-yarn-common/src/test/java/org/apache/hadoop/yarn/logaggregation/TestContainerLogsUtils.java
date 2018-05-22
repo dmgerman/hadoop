@@ -359,7 +359,7 @@ name|boolean
 name|deleteRemoteLogDir
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|UserGroupInformation
 name|ugi
@@ -706,7 +706,7 @@ name|FileSystem
 name|fs
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Path
 name|path

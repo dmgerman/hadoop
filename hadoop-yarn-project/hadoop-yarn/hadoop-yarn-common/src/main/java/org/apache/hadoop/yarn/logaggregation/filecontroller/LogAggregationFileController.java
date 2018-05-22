@@ -827,13 +827,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Close the writer.    */
+comment|/**    * Close the writer.    * @throws LogAggregationDFSException if the closing of the writer fails    *         (for example due to HDFS quota being exceeded)    */
 DECL|method|closeWriter ()
 specifier|public
 specifier|abstract
 name|void
 name|closeWriter
 parameter_list|()
+throws|throws
+name|LogAggregationDFSException
 function_decl|;
 comment|/**    * Write the log content.    * @param logKey the log key    * @param logValue the log content    * @throws IOException if fails to write the logs    */
 DECL|method|write (LogKey logKey, LogValue logValue)
