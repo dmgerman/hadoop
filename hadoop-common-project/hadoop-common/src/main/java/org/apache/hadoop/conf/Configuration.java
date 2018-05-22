@@ -1073,7 +1073,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Provides access to configuration parameters.  *  *<h4 id="Resources">Resources</h4>  *  *<p>Configurations are specified by resources. A resource contains a set of  * name/value pairs as XML data. Each resource is named by either a   *<code>String</code> or by a {@link Path}. If named by a<code>String</code>,   * then the classpath is examined for a file with that name.  If named by a   *<code>Path</code>, then the local filesystem is examined directly, without   * referring to the classpath.  *  *<p>Unless explicitly turned off, Hadoop by default specifies two   * resources, loaded in-order from the classpath:<ol>  *<li><tt>  *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">  * core-default.xml</a></tt>: Read-only defaults for hadoop.</li>  *<li><tt>core-site.xml</tt>: Site-specific configuration for a given hadoop  * installation.</li>  *</ol>  * Applications may add additional resources, which are loaded  * subsequent to these resources in the order they are added.  *   *<h4 id="FinalParams">Final Parameters</h4>  *  *<p>Configuration parameters may be declared<i>final</i>.   * Once a resource declares a value final, no subsequently-loaded   * resource can alter that value.    * For example, one might define a final parameter with:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.hosts.include&lt;/name&gt;  *&lt;value&gt;/etc/hadoop/conf/hosts.include&lt;/value&gt;  *<b>&lt;final&gt;true&lt;/final&gt;</b>  *&lt;/property&gt;</pre></tt>  *  * Administrators typically define parameters as final in   *<tt>core-site.xml</tt> for values that user applications may not alter.  *  *<h4 id="VariableExpansion">Variable Expansion</h4>  *  *<p>Value strings are first processed for<i>variable expansion</i>. The  * available properties are:<ol>  *<li>Other properties defined in this Configuration; and, if a name is  * undefined here,</li>  *<li>Environment variables in {@link System#getenv()} if a name starts with  * "env.", or</li>  *<li>Properties in {@link System#getProperties()}.</li>  *</ol>  *  *<p>For example, if a configuration resource contains the following property  * definitions:   *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;basedir&lt;/name&gt;  *&lt;value&gt;/user/${<i>user.name</i>}&lt;/value&gt;  *&lt;/property&gt;  *    *&lt;property&gt;  *&lt;name&gt;tempdir&lt;/name&gt;  *&lt;value&gt;${<i>basedir</i>}/tmp&lt;/value&gt;  *&lt;/property&gt;  *  *&lt;property&gt;  *&lt;name&gt;otherdir&lt;/name&gt;  *&lt;value&gt;${<i>env.BASE_DIR</i>}/other&lt;/value&gt;  *&lt;/property&gt;  *</pre></tt>  *  *<p>When<tt>conf.get("tempdir")</tt> is called, then<tt>${<i>basedir</i>}</tt>  * will be resolved to another property in this Configuration, while  *<tt>${<i>user.name</i>}</tt> would then ordinarily be resolved to the value  * of the System property with that name.  *<p>When<tt>conf.get("otherdir")</tt> is called, then<tt>${<i>env.BASE_DIR</i>}</tt>  * will be resolved to the value of the<tt>${<i>BASE_DIR</i>}</tt> environment variable.  * It supports<tt>${<i>env.NAME:-default</i>}</tt> and<tt>${<i>env.NAME-default</i>}</tt> notations.  * The former is resolved to "default" if<tt>${<i>NAME</i>}</tt> environment variable is undefined  * or its value is empty.  * The latter behaves the same way only if<tt>${<i>NAME</i>}</tt> is undefined.  *<p>By default, warnings will be given to any deprecated configuration   * parameters and these are suppressible by configuring  *<tt>log4j.logger.org.apache.hadoop.conf.Configuration.deprecation</tt> in  * log4j.properties file.  *  *<h4 id="Tags">Tags</h4>  *  *<p>Optionally we can tag related properties together by using tag  * attributes. System tags are defined by hadoop.system.tags property. Users  * can define there own custom tags in  hadoop.custom.tags property.  *  *<p>For example, we can tag existing property as:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.replication&lt;/name&gt;  *&lt;value&gt;3&lt;/value&gt;  *&lt;tag&gt;HDFS,REQUIRED&lt;/tag&gt;  *&lt;/property&gt;  *  *&lt;property&gt;  *&lt;name&gt;dfs.data.transfer.protection&lt;/name&gt;  *&lt;value&gt;3&lt;/value&gt;  *&lt;tag&gt;HDFS,SECURITY&lt;/tag&gt;  *&lt;/property&gt;  *</pre></tt>  *<p> Properties marked with tags can be retrieved with<tt>conf  * .getAllPropertiesByTag("HDFS")</tt> or<tt>conf.getAllPropertiesByTags  * (Arrays.asList("YARN","SECURITY"))</tt>.</p>  */
+comment|/**  * Provides access to configuration parameters.  *  *<h4 id="Resources">Resources</h4>  *  *<p>Configurations are specified by resources. A resource contains a set of  * name/value pairs as XML data. Each resource is named by either a   *<code>String</code> or by a {@link Path}. If named by a<code>String</code>,   * then the classpath is examined for a file with that name.  If named by a   *<code>Path</code>, then the local filesystem is examined directly, without   * referring to the classpath.  *  *<p>Unless explicitly turned off, Hadoop by default specifies two   * resources, loaded in-order from the classpath:<ol>  *<li><tt>  *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">  * core-default.xml</a></tt>: Read-only defaults for hadoop.</li>  *<li><tt>core-site.xml</tt>: Site-specific configuration for a given hadoop  * installation.</li>  *</ol>  * Applications may add additional resources, which are loaded  * subsequent to these resources in the order they are added.  *   *<h4 id="FinalParams">Final Parameters</h4>  *  *<p>Configuration parameters may be declared<i>final</i>.   * Once a resource declares a value final, no subsequently-loaded   * resource can alter that value.    * For example, one might define a final parameter with:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.hosts.include&lt;/name&gt;  *&lt;value&gt;/etc/hadoop/conf/hosts.include&lt;/value&gt;  *<b>&lt;final&gt;true&lt;/final&gt;</b>  *&lt;/property&gt;</pre></tt>  *  * Administrators typically define parameters as final in   *<tt>core-site.xml</tt> for values that user applications may not alter.  *  *<h4 id="VariableExpansion">Variable Expansion</h4>  *  *<p>Value strings are first processed for<i>variable expansion</i>. The  * available properties are:<ol>  *<li>Other properties defined in this Configuration; and, if a name is  * undefined here,</li>  *<li>Environment variables in {@link System#getenv()} if a name starts with  * "env.", or</li>  *<li>Properties in {@link System#getProperties()}.</li>  *</ol>  *  *<p>For example, if a configuration resource contains the following property  * definitions:   *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;basedir&lt;/name&gt;  *&lt;value&gt;/user/${<i>user.name</i>}&lt;/value&gt;  *&lt;/property&gt;  *    *&lt;property&gt;  *&lt;name&gt;tempdir&lt;/name&gt;  *&lt;value&gt;${<i>basedir</i>}/tmp&lt;/value&gt;  *&lt;/property&gt;  *  *&lt;property&gt;  *&lt;name&gt;otherdir&lt;/name&gt;  *&lt;value&gt;${<i>env.BASE_DIR</i>}/other&lt;/value&gt;  *&lt;/property&gt;  *</pre></tt>  *  *<p>When<tt>conf.get("tempdir")</tt> is called, then<tt>${<i>basedir</i>}</tt>  * will be resolved to another property in this Configuration, while  *<tt>${<i>user.name</i>}</tt> would then ordinarily be resolved to the value  * of the System property with that name.  *<p>When<tt>conf.get("otherdir")</tt> is called, then<tt>${<i>env.BASE_DIR</i>}</tt>  * will be resolved to the value of the<tt>${<i>BASE_DIR</i>}</tt> environment variable.  * It supports<tt>${<i>env.NAME:-default</i>}</tt> and<tt>${<i>env.NAME-default</i>}</tt> notations.  * The former is resolved to "default" if<tt>${<i>NAME</i>}</tt> environment variable is undefined  * or its value is empty.  * The latter behaves the same way only if<tt>${<i>NAME</i>}</tt> is undefined.  *<p>By default, warnings will be given to any deprecated configuration   * parameters and these are suppressible by configuring  *<tt>log4j.logger.org.apache.hadoop.conf.Configuration.deprecation</tt> in  * log4j.properties file.  *  *<h4 id="Tags">Tags</h4>  *  *<p>Optionally we can tag related properties together by using tag  * attributes. System tags are defined by hadoop.tags.system property. Users  * can define there own custom tags in  hadoop.tags.custom property.  *  *<p>For example, we can tag existing property as:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.replication&lt;/name&gt;  *&lt;value&gt;3&lt;/value&gt;  *&lt;tag&gt;HDFS,REQUIRED&lt;/tag&gt;  *&lt;/property&gt;  *  *&lt;property&gt;  *&lt;name&gt;dfs.data.transfer.protection&lt;/name&gt;  *&lt;value&gt;3&lt;/value&gt;  *&lt;tag&gt;HDFS,SECURITY&lt;/tag&gt;  *&lt;/property&gt;  *</pre></tt>  *<p> Properties marked with tags can be retrieved with<tt>conf  * .getAllPropertiesByTag("HDFS")</tt> or<tt>conf.getAllPropertiesByTags  * (Arrays.asList("YARN","SECURITY"))</tt>.</p>  */
 end_comment
 
 begin_class
@@ -12219,7 +12219,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Add tags defined in HADOOP_SYSTEM_TAGS, HADOOP_CUSTOM_TAGS.    * @param prop    */
+comment|/**    * Add tags defined in HADOOP_TAGS_SYSTEM, HADOOP_TAGS_CUSTOM.    * @param prop    */
 DECL|method|addTags (Properties prop)
 specifier|public
 name|void
@@ -12232,6 +12232,105 @@ block|{
 comment|// Get all system tags
 try|try
 block|{
+if|if
+condition|(
+name|prop
+operator|.
+name|containsKey
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_TAGS_SYSTEM
+argument_list|)
+condition|)
+block|{
+name|String
+name|systemTags
+init|=
+name|prop
+operator|.
+name|getProperty
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_TAGS_SYSTEM
+argument_list|)
+decl_stmt|;
+name|Arrays
+operator|.
+name|stream
+argument_list|(
+name|systemTags
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+argument_list|)
+operator|.
+name|forEach
+argument_list|(
+name|tag
+lambda|->
+name|TAGS
+operator|.
+name|add
+argument_list|(
+name|tag
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Get all custom tags
+if|if
+condition|(
+name|prop
+operator|.
+name|containsKey
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_TAGS_CUSTOM
+argument_list|)
+condition|)
+block|{
+name|String
+name|customTags
+init|=
+name|prop
+operator|.
+name|getProperty
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_TAGS_CUSTOM
+argument_list|)
+decl_stmt|;
+name|Arrays
+operator|.
+name|stream
+argument_list|(
+name|customTags
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+argument_list|)
+operator|.
+name|forEach
+argument_list|(
+name|tag
+lambda|->
+name|TAGS
+operator|.
+name|add
+argument_list|(
+name|tag
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|prop

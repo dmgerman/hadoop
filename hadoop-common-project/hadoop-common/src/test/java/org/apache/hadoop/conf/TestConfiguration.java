@@ -15192,14 +15192,14 @@ argument_list|()
 expr_stmt|;
 name|appendProperty
 argument_list|(
-literal|"hadoop.system.tags"
+literal|"hadoop.tags.system"
 argument_list|,
 literal|"YARN,HDFS,NAMENODE"
 argument_list|)
 expr_stmt|;
 name|appendProperty
 argument_list|(
-literal|"hadoop.custom.tags"
+literal|"hadoop.tags.custom"
 argument_list|,
 literal|"MYCUSTOMTAG"
 argument_list|)

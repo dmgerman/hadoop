@@ -1801,6 +1801,7 @@ argument_list|,
 name|HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS
 argument_list|)
 decl_stmt|;
+comment|/**    * @deprecated Please use    * {@link CommonConfigurationKeysPublic#HADOOP_TAGS_SYSTEM} instead    * See https://issues.apache.org/jira/browse/HADOOP-15474    */
 DECL|field|HADOOP_SYSTEM_TAGS
 specifier|public
 specifier|static
@@ -1810,6 +1811,7 @@ name|HADOOP_SYSTEM_TAGS
 init|=
 literal|"hadoop.system.tags"
 decl_stmt|;
+comment|/**    * @deprecated Please use    * {@link CommonConfigurationKeysPublic#HADOOP_TAGS_CUSTOM} instead    * See https://issues.apache.org/jira/browse/HADOOP-15474    */
 DECL|field|HADOOP_CUSTOM_TAGS
 specifier|public
 specifier|static
@@ -1818,6 +1820,24 @@ name|String
 name|HADOOP_CUSTOM_TAGS
 init|=
 literal|"hadoop.custom.tags"
+decl_stmt|;
+DECL|field|HADOOP_TAGS_SYSTEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_TAGS_SYSTEM
+init|=
+literal|"hadoop.tags.system"
+decl_stmt|;
+DECL|field|HADOOP_TAGS_CUSTOM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_TAGS_CUSTOM
+init|=
+literal|"hadoop.tags.custom"
 decl_stmt|;
 block|}
 end_class
