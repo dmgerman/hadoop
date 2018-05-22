@@ -1352,7 +1352,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 import|;
 end_import
 
@@ -1370,7 +1370,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 import|;
 end_import
 
@@ -2344,14 +2344,14 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 argument_list|,
 name|conf
 operator|.
 name|get
 argument_list|(
-name|OZONE_SCM_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2395,9 +2395,9 @@ name|login
 argument_list|(
 name|conf
 argument_list|,
-name|OZONE_SCM_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|,
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|socAddr
 operator|.

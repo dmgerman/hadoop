@@ -813,7 +813,7 @@ name|get
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1014,7 +1014,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"scm/"
 operator|+
@@ -1067,7 +1067,7 @@ name|OMConfigKeys
 operator|.
 name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
 argument_list|,
-literal|"HTTP_KSM/"
+literal|"HTTP_OM/"
 operator|+
 name|host
 operator|+
@@ -1112,7 +1112,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|,
 name|scmKeytab
 operator|.
@@ -1323,7 +1323,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|,
 literal|""
 argument_list|)
@@ -1370,7 +1370,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"scm/_HOST@EXAMPLE.com"
 argument_list|)
@@ -1381,7 +1381,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|,
 literal|"/etc/security/keytabs/scm.keytab"
 argument_list|)

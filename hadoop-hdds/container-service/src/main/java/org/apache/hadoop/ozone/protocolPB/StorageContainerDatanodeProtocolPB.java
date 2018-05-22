@@ -119,7 +119,7 @@ name|serverPrincipal
 operator|=
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 name|clientPrincipal
 operator|=
