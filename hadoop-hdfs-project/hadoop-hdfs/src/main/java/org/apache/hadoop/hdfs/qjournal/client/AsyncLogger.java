@@ -88,6 +88,26 @@ name|protocol
 operator|.
 name|QJournalProtocolProtos
 operator|.
+name|GetJournaledEditsResponseProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|qjournal
+operator|.
+name|protocol
+operator|.
+name|QJournalProtocolProtos
+operator|.
 name|GetJournalStateResponseProto
 import|;
 end_import
@@ -393,6 +413,22 @@ name|newEpoch
 parameter_list|(
 name|long
 name|epoch
+parameter_list|)
+function_decl|;
+comment|/**    * Fetch journaled edits from the cache.    */
+DECL|method|getJournaledEdits ( long fromTxnId, int maxTransactions)
+specifier|public
+name|ListenableFuture
+argument_list|<
+name|GetJournaledEditsResponseProto
+argument_list|>
+name|getJournaledEdits
+parameter_list|(
+name|long
+name|fromTxnId
+parameter_list|,
+name|int
+name|maxTransactions
 parameter_list|)
 function_decl|;
 comment|/**    * Fetch the list of edit logs available on the remote node.    */
