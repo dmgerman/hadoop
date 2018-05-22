@@ -302,7 +302,7 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|i
 operator|+
@@ -315,7 +315,7 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|i
 operator|+
@@ -343,7 +343,7 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|i
 operator|+
@@ -358,7 +358,7 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|i
 operator|+
