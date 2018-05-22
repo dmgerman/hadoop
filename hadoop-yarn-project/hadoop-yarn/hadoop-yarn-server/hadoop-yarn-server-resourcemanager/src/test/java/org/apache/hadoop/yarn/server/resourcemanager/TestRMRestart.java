@@ -5897,6 +5897,21 @@ operator|.
 name|FAILED
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|app0
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+name|loadedApp0
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// no new attempt is created.
 name|Assert
 operator|.
