@@ -20,6 +20,18 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ByteString
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -134,12 +146,24 @@ name|String
 name|ipAddr
 decl_stmt|;
 comment|// IP address
+DECL|field|ipAddrBytes
+specifier|private
+name|ByteString
+name|ipAddrBytes
+decl_stmt|;
+comment|// ipAddr ByteString to save on PB serde
 DECL|field|hostName
 specifier|private
 name|String
 name|hostName
 decl_stmt|;
 comment|// hostname claimed by datanode
+DECL|field|hostNameBytes
+specifier|private
+name|ByteString
+name|hostNameBytes
+decl_stmt|;
+comment|// hostName ByteString to save on PB serde
 DECL|field|peerHostName
 specifier|private
 name|String
@@ -182,6 +206,13 @@ specifier|final
 name|String
 name|datanodeUuid
 decl_stmt|;
+comment|// datanodeUuid ByteString to save on PB serde
+DECL|field|datanodeUuidBytes
+specifier|private
+specifier|final
+name|ByteString
+name|datanodeUuidBytes
+decl_stmt|;
 DECL|method|DatanodeID (DatanodeID from)
 specifier|public
 name|DatanodeID
@@ -223,10 +254,25 @@ argument_list|()
 argument_list|,
 name|from
 operator|.
+name|getIpAddrBytes
+argument_list|()
+argument_list|,
+name|from
+operator|.
 name|getHostName
 argument_list|()
 argument_list|,
+name|from
+operator|.
+name|getHostNameBytes
+argument_list|()
+argument_list|,
 name|datanodeUuid
+argument_list|,
+name|getByteString
+argument_list|(
+name|datanodeUuid
+argument_list|)
 argument_list|,
 name|from
 operator|.
@@ -286,9 +332,79 @@ name|int
 name|ipcPort
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|ipAddr
+argument_list|,
+name|getByteString
+argument_list|(
+name|ipAddr
+argument_list|)
+argument_list|,
+name|hostName
+argument_list|,
+name|getByteString
+argument_list|(
+name|hostName
+argument_list|)
+argument_list|,
+name|datanodeUuid
+argument_list|,
+name|getByteString
+argument_list|(
+name|datanodeUuid
+argument_list|)
+argument_list|,
+name|xferPort
+argument_list|,
+name|infoPort
+argument_list|,
+name|infoSecurePort
+argument_list|,
+name|ipcPort
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DatanodeID (String ipAddr, ByteString ipAddrBytes, String hostName, ByteString hostNameBytes, String datanodeUuid, ByteString datanodeUuidBytes, int xferPort, int infoPort, int infoSecurePort, int ipcPort)
+specifier|private
+name|DatanodeID
+parameter_list|(
+name|String
+name|ipAddr
+parameter_list|,
+name|ByteString
+name|ipAddrBytes
+parameter_list|,
+name|String
+name|hostName
+parameter_list|,
+name|ByteString
+name|hostNameBytes
+parameter_list|,
+name|String
+name|datanodeUuid
+parameter_list|,
+name|ByteString
+name|datanodeUuidBytes
+parameter_list|,
+name|int
+name|xferPort
+parameter_list|,
+name|int
+name|infoPort
+parameter_list|,
+name|int
+name|infoSecurePort
+parameter_list|,
+name|int
+name|ipcPort
+parameter_list|)
+block|{
 name|setIpAndXferPort
 argument_list|(
 name|ipAddr
+argument_list|,
+name|ipAddrBytes
 argument_list|,
 name|xferPort
 argument_list|)
@@ -301,6 +417,12 @@ name|hostName
 expr_stmt|;
 name|this
 operator|.
+name|hostNameBytes
+operator|=
+name|hostNameBytes
+expr_stmt|;
+name|this
+operator|.
 name|datanodeUuid
 operator|=
 name|checkDatanodeUuid
@@ -310,6 +432,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|datanodeUuidBytes
+operator|=
+name|datanodeUuidBytes
+expr_stmt|;
+name|this
+operator|.
 name|infoPort
 operator|=
 name|infoPort
@@ -326,6 +454,38 @@ name|ipcPort
 operator|=
 name|ipcPort
 expr_stmt|;
+block|}
+DECL|method|getByteString (String str)
+specifier|private
+specifier|static
+name|ByteString
+name|getByteString
+parameter_list|(
+name|String
+name|str
+parameter_list|)
+block|{
+if|if
+condition|(
+name|str
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|ByteString
+operator|.
+name|copyFromUtf8
+argument_list|(
+name|str
+argument_list|)
+return|;
+block|}
+return|return
+name|ByteString
+operator|.
+name|EMPTY
+return|;
 block|}
 DECL|method|setIpAddr (String ipAddr)
 specifier|public
@@ -341,17 +501,25 @@ name|setIpAndXferPort
 argument_list|(
 name|ipAddr
 argument_list|,
+name|getByteString
+argument_list|(
+name|ipAddr
+argument_list|)
+argument_list|,
 name|xferPort
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setIpAndXferPort (String ipAddr, int xferPort)
+DECL|method|setIpAndXferPort (String ipAddr, ByteString ipAddrBytes, int xferPort)
 specifier|private
 name|void
 name|setIpAndXferPort
 parameter_list|(
 name|String
 name|ipAddr
+parameter_list|,
+name|ByteString
+name|ipAddrBytes
 parameter_list|,
 name|int
 name|xferPort
@@ -363,6 +531,12 @@ operator|.
 name|ipAddr
 operator|=
 name|ipAddr
+expr_stmt|;
+name|this
+operator|.
+name|ipAddrBytes
+operator|=
+name|ipAddrBytes
 expr_stmt|;
 name|this
 operator|.
@@ -408,6 +582,16 @@ return|return
 name|datanodeUuid
 return|;
 block|}
+DECL|method|getDatanodeUuidBytes ()
+specifier|public
+name|ByteString
+name|getDatanodeUuidBytes
+parameter_list|()
+block|{
+return|return
+name|datanodeUuidBytes
+return|;
+block|}
 DECL|method|checkDatanodeUuid (String uuid)
 specifier|private
 name|String
@@ -451,6 +635,16 @@ return|return
 name|ipAddr
 return|;
 block|}
+DECL|method|getIpAddrBytes ()
+specifier|public
+name|ByteString
+name|getIpAddrBytes
+parameter_list|()
+block|{
+return|return
+name|ipAddrBytes
+return|;
+block|}
 comment|/**    * @return hostname    */
 DECL|method|getHostName ()
 specifier|public
@@ -460,6 +654,16 @@ parameter_list|()
 block|{
 return|return
 name|hostName
+return|;
+block|}
+DECL|method|getHostNameBytes ()
+specifier|public
+name|ByteString
+name|getHostNameBytes
+parameter_list|()
+block|{
+return|return
+name|hostNameBytes
 return|;
 block|}
 comment|/**    * @return hostname from the actual connection    */
@@ -740,6 +944,11 @@ argument_list|(
 name|nodeReg
 operator|.
 name|getIpAddr
+argument_list|()
+argument_list|,
+name|nodeReg
+operator|.
+name|getIpAddrBytes
 argument_list|()
 argument_list|,
 name|nodeReg
