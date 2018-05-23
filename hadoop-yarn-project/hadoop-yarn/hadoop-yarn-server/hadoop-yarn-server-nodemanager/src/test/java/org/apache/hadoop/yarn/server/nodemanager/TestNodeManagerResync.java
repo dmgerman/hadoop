@@ -1454,11 +1454,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|testContainerPreservationOnResyncImpl (TestNodeManager1 nm, boolean isWorkPreservingRestartEnabled)
 specifier|protected
 name|void
@@ -1665,7 +1660,7 @@ block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"unchecked"
+literal|"resource"
 argument_list|)
 annotation|@
 name|Test
@@ -1699,6 +1694,8 @@ init|=
 name|createNMConfig
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|nm
 operator|.
 name|init
@@ -1754,12 +1751,11 @@ init|)
 block|{
 while|while
 condition|(
+operator|!
 name|isNMShutdownCalled
 operator|.
 name|get
 argument_list|()
-operator|==
-literal|false
 condition|)
 block|{
 try|try
@@ -1775,7 +1771,7 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{         }
+block|{           }
 block|}
 block|}
 name|Assert
@@ -1790,16 +1786,20 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|nm
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"unchecked"
+literal|"resource"
 argument_list|)
 annotation|@
 name|Test
@@ -1844,6 +1844,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|nm
 operator|.
 name|init
@@ -1935,15 +1937,24 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|nm
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 comment|// This is to test when NM gets the resync response from last heart beat, it
 comment|// should be able to send the already-sent-via-last-heart-beat container
 comment|// statuses again when it re-register with RM.
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"resource"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testNMSentContainerStatusOnResync ()
@@ -2360,6 +2371,8 @@ init|=
 name|createNMConfig
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|nm
 operator|.
 name|init
@@ -2385,7 +2398,7 @@ parameter_list|(
 name|BrokenBarrierException
 name|e
 parameter_list|)
-block|{     }
+block|{       }
 name|Assert
 operator|.
 name|assertFalse
@@ -2396,11 +2409,15 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|nm
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|// This can be used as a common base class for testing NM resync behavior.
 DECL|class|TestNodeStatusUpdaterResync
