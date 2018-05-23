@@ -785,6 +785,17 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|baseDir
+argument_list|(
+name|GenericTestUtils
+operator|.
+name|getRandomizedTestDir
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
