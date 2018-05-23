@@ -14337,11 +14337,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|util
+operator|!=
+literal|null
+condition|)
+block|{
 name|util
 operator|.
 name|shutdownMiniCluster
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|verifyRowKeyForSubApplication (byte[] rowKey, String suAppUser, String cluster, String user, TimelineEntity te)
 specifier|private
