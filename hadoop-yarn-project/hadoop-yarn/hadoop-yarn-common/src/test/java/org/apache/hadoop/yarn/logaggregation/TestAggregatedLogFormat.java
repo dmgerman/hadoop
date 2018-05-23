@@ -1643,7 +1643,12 @@ operator|(
 name|logUploadedTime
 condition|?
 operator|(
-literal|"\nLog Upload Time:"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|"Log Upload Time:"
 operator|+
 name|Times
 operator|.
@@ -1663,7 +1668,12 @@ literal|0
 operator|)
 operator|+
 operator|(
-literal|"\nLogLength:"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|"LogLength:"
 operator|+
 name|numChars
 operator|)
@@ -1671,19 +1681,45 @@ operator|.
 name|length
 argument_list|()
 operator|+
-literal|"\nLog Contents:\n"
+operator|(
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+literal|"Log Contents:"
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|)
 operator|.
 name|length
 argument_list|()
 operator|+
 name|numChars
 operator|+
+operator|(
 literal|"\n"
+operator|)
 operator|.
 name|length
 argument_list|()
 operator|+
-literal|"\nEnd of LogType:stdout\n"
+operator|(
+literal|"End of LogType:stdout"
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+operator|)
 operator|.
 name|length
 argument_list|()
