@@ -462,7 +462,9 @@ name|netlock
 init|=
 operator|new
 name|ReentrantReadWriteLock
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 decl_stmt|;
 comment|// keeping the constructor because other components like MR still uses this.
 DECL|method|NetworkTopology ()
