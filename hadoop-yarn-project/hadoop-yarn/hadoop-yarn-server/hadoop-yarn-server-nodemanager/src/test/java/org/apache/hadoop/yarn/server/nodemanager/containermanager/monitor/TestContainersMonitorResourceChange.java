@@ -1139,10 +1139,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testContainersResourceChange ()
+DECL|method|testContainersResourceChangePolling ()
 specifier|public
 name|void
-name|testContainersResourceChange
+name|testContainersResourceChangePolling
 parameter_list|()
 throws|throws
 name|Exception
@@ -1157,6 +1157,17 @@ operator|.
 name|NM_CONTAINER_MON_INTERVAL_MS
 argument_list|,
 literal|20L
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_MEMORY_RESOURCE_ENFORCED
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|containersMonitor

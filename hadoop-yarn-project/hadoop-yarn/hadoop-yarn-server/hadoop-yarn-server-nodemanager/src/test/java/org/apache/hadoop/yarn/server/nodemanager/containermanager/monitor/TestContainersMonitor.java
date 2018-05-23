@@ -947,6 +947,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_MEMORY_RESOURCE_ENFORCED
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|setup

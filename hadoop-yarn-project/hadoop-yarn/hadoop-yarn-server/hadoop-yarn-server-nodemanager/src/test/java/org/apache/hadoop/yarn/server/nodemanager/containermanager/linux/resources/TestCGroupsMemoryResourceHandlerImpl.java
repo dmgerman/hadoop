@@ -401,13 +401,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Pmem check should not be allowed to run with cgroups"
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -415,7 +408,13 @@ name|ResourceHandlerException
 name|re
 parameter_list|)
 block|{
-comment|// do nothing
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Pmem check should be allowed to run with cgroups"
+argument_list|)
+expr_stmt|;
 block|}
 name|conf
 operator|.
@@ -448,13 +447,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Vmem check should not be allowed to run with cgroups"
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -462,7 +454,13 @@ name|ResourceHandlerException
 name|re
 parameter_list|)
 block|{
-comment|// do nothing
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Vmem check should be allowed to run with cgroups"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@

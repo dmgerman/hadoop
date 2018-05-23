@@ -5105,6 +5105,72 @@ name|DEFAULT_NM_VMEM_PMEM_RATIO
 init|=
 literal|2.1f
 decl_stmt|;
+comment|/** Specifies whether to do memory check on overall usage. */
+DECL|field|NM_ELASTIC_MEMORY_CONTROL_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_ELASTIC_MEMORY_CONTROL_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"elastic-memory-control.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_NM_ELASTIC_MEMORY_CONTROL_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_ELASTIC_MEMORY_CONTROL_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/** Specifies the OOM handler code. */
+DECL|field|NM_ELASTIC_MEMORY_CONTROL_OOM_HANDLER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_ELASTIC_MEMORY_CONTROL_OOM_HANDLER
+init|=
+name|NM_PREFIX
+operator|+
+literal|"elastic-memory-control.oom-handler"
+decl_stmt|;
+comment|/** The path to the OOM listener.*/
+DECL|field|NM_ELASTIC_MEMORY_CONTROL_OOM_LISTENER_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_ELASTIC_MEMORY_CONTROL_OOM_LISTENER_PATH
+init|=
+name|NM_PREFIX
+operator|+
+literal|"elastic-memory-control.oom-listener.path"
+decl_stmt|;
+comment|/** Maximum time in seconds to resolve an OOM situation. */
+DECL|field|NM_ELASTIC_MEMORY_CONTROL_OOM_TIMEOUT_SEC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_ELASTIC_MEMORY_CONTROL_OOM_TIMEOUT_SEC
+init|=
+name|NM_PREFIX
+operator|+
+literal|"elastic-memory-control.timeout-sec"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|Integer
+DECL|field|DEFAULT_NM_ELASTIC_MEMORY_CONTROL_OOM_TIMEOUT_SEC
+name|DEFAULT_NM_ELASTIC_MEMORY_CONTROL_OOM_TIMEOUT_SEC
+init|=
+literal|5
+decl_stmt|;
 comment|/** Number of Virtual CPU Cores which can be allocated for containers.*/
 DECL|field|NM_VCORES
 specifier|public
@@ -6686,18 +6752,6 @@ init|=
 name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.path"
-decl_stmt|;
-comment|/**     * The UNIX group that the linux-container-executor should run as.    * This is intended to be set as part of container-executor.cfg.     */
-DECL|field|NM_LINUX_CONTAINER_GROUP
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NM_LINUX_CONTAINER_GROUP
-init|=
-name|NM_PREFIX
-operator|+
-literal|"linux-container-executor.group"
 decl_stmt|;
 comment|/**    * True if linux-container-executor should limit itself to one user    * when running in non-secure mode.    */
 DECL|field|NM_NONSECURE_MODE_LIMIT_USERS
