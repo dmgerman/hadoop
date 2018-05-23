@@ -7951,6 +7951,22 @@ name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Get status of upgrade - finalized or not.    * @return true if upgrade is finalized or if no upgrade is in progress and    * false otherwise.    * @throws IOException    */
+DECL|method|upgradeStatus ()
+specifier|public
+name|boolean
+name|upgradeStatus
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|upgradeStatus
+argument_list|()
+return|;
+block|}
 comment|/**    * Rolling upgrade: prepare/finalize/query.    */
 DECL|method|rollingUpgrade (RollingUpgradeAction action)
 specifier|public

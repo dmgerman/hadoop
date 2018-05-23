@@ -585,6 +585,18 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Upgrade actions.    */
+DECL|enum|UpgradeAction
+specifier|public
+enum|enum
+name|UpgradeAction
+block|{
+DECL|enumConstant|QUERY
+DECL|enumConstant|FINALIZE
+name|QUERY
+block|,
+name|FINALIZE
+block|;   }
 comment|// type of the datanode report
 DECL|enum|DatanodeReportType
 specifier|public

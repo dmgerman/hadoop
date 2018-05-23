@@ -9270,6 +9270,38 @@ begin_function
 unit|}    @
 name|Override
 comment|// ClientProtocol
+DECL|method|upgradeStatus ()
+specifier|public
+name|boolean
+name|upgradeStatus
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|String
+name|methodName
+init|=
+name|getMethodName
+argument_list|()
+decl_stmt|;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Operation \""
+operator|+
+name|methodName
+operator|+
+literal|"\" is not supported"
+argument_list|)
+throw|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|rollingUpgrade (RollingUpgradeAction action)
 specifier|public
 name|RollingUpgradeInfo

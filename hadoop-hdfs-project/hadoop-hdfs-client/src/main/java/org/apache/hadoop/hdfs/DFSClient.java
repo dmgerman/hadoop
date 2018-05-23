@@ -11033,6 +11033,39 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * @see ClientProtocol#upgradeStatus()    */
+DECL|method|upgradeStatus ()
+specifier|public
+name|boolean
+name|upgradeStatus
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
+try|try
+init|(
+name|TraceScope
+name|ignored
+init|=
+name|tracer
+operator|.
+name|newScope
+argument_list|(
+literal|"isUpgradeFinalized"
+argument_list|)
+init|)
+block|{
+return|return
+name|namenode
+operator|.
+name|upgradeStatus
+argument_list|()
+return|;
+block|}
+block|}
 DECL|method|rollingUpgrade (RollingUpgradeAction action)
 name|RollingUpgradeInfo
 name|rollingUpgrade

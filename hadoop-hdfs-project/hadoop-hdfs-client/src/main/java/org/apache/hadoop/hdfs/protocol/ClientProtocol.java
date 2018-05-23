@@ -1395,6 +1395,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get status of upgrade - finalized or not.    * @return true if upgrade is finalized or if no upgrade is in progress and    * false otherwise.    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|upgradeStatus ()
+name|boolean
+name|upgradeStatus
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Rolling upgrade operations.    * @param action either query, prepare or finalize.    * @return rolling upgrade information. On query, if no upgrade is in    * progress, returns null.    */
 annotation|@
 name|Idempotent
