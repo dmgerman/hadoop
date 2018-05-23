@@ -753,13 +753,19 @@ name|preferDirectBuffer
 argument_list|()
 return|;
 block|}
-DECL|method|resetCurStripeBuffer ()
+DECL|method|resetCurStripeBuffer (boolean shouldAllocateBuf)
+specifier|private
 name|void
 name|resetCurStripeBuffer
-parameter_list|()
+parameter_list|(
+name|boolean
+name|shouldAllocateBuf
+parameter_list|)
 block|{
 if|if
 condition|(
+name|shouldAllocateBuf
+operator|&&
 name|curStripeBuf
 operator|==
 literal|null
@@ -780,11 +786,19 @@ name|dataBlkNum
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|curStripeBuf
+operator|!=
+literal|null
+condition|)
+block|{
 name|curStripeBuf
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 name|curStripeRange
 operator|=
 operator|new
@@ -1055,7 +1069,9 @@ name|closeCurrentBlockReaders
 parameter_list|()
 block|{
 name|resetCurStripeBuffer
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -1487,7 +1503,9 @@ throws|throws
 name|IOException
 block|{
 name|resetCurStripeBuffer
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 comment|// compute stripe range based on pos
 specifier|final

@@ -533,6 +533,34 @@ comment|// unlikely that we'll loop even once, unless the system clock has a
 comment|// poor granularity.
 block|}
 block|}
+comment|/**    * Get the size of the buffer pool, for the specified buffer type.    *    * @param direct Whether the size is returned for direct buffers    * @return The size    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|size (boolean direct)
+specifier|public
+name|int
+name|size
+parameter_list|(
+name|boolean
+name|direct
+parameter_list|)
+block|{
+return|return
+name|getBufferTree
+argument_list|(
+name|direct
+argument_list|)
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
