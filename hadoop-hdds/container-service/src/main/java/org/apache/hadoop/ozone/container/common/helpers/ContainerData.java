@@ -1291,6 +1291,22 @@ name|state
 operator|)
 return|;
 block|}
+comment|/**    * checks if the container is closed.    * @return - boolean    */
+DECL|method|isClosed ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isClosed
+parameter_list|()
+block|{
+return|return
+name|ContainerLifeCycleState
+operator|.
+name|CLOSED
+operator|==
+name|state
+return|;
+block|}
 comment|/**    * Marks this container as closed.    */
 DECL|method|closeContainer ()
 specifier|public

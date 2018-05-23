@@ -432,12 +432,12 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Gets container reports.    * @return List of all closed containers.    * @throws IOException    */
-DECL|method|getContainerReports ()
+DECL|method|getClosedContainerReports ()
 name|List
 argument_list|<
 name|ContainerData
 argument_list|>
-name|getContainerReports
+name|getClosedContainerReports
 parameter_list|()
 throws|throws
 name|IOException

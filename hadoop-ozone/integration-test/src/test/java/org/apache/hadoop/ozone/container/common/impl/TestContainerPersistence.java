@@ -2062,7 +2062,7 @@ name|reports
 init|=
 name|containerManager
 operator|.
-name|getContainerReports
+name|getClosedContainerReports
 argument_list|()
 decl_stmt|;
 name|Assert

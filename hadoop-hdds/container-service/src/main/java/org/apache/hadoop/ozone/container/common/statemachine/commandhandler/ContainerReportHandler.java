@@ -289,7 +289,7 @@ decl_stmt|;
 try|try
 block|{
 name|ContainerReportsRequestProto
-name|contianerReport
+name|containerReport
 init|=
 name|container
 operator|.
@@ -316,7 +316,7 @@ argument_list|()
 operator|.
 name|sendContainerReport
 argument_list|(
-name|contianerReport
+name|containerReport
 argument_list|)
 expr_stmt|;
 block|}

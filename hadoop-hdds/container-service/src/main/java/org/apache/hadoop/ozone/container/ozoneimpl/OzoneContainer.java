@@ -1308,13 +1308,13 @@ return|;
 block|}
 comment|// TODO: remove getContainerReports
 comment|/**    * Returns the list of closed containers.    * @return - List of closed containers.    * @throws IOException    */
-DECL|method|getContainerReports ()
+DECL|method|getClosedContainerReports ()
 specifier|public
 name|List
 argument_list|<
 name|ContainerData
 argument_list|>
-name|getContainerReports
+name|getClosedContainerReports
 parameter_list|()
 throws|throws
 name|IOException
@@ -1324,7 +1324,7 @@ name|this
 operator|.
 name|manager
 operator|.
-name|getContainerReports
+name|getClosedContainerReports
 argument_list|()
 return|;
 block|}
