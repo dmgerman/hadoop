@@ -7870,6 +7870,15 @@ argument_list|(
 name|serviceName
 argument_list|)
 expr_stmt|;
+name|appSpec
+operator|.
+name|setState
+argument_list|(
+name|ServiceState
+operator|.
+name|STOPPED
+argument_list|)
+expr_stmt|;
 name|ApplicationId
 name|currentAppId
 init|=
