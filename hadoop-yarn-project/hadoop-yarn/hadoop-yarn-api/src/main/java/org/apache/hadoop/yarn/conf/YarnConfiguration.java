@@ -6681,6 +6681,30 @@ name|DEFAULT_NM_DOCKER_STOP_GRACE_PERIOD
 init|=
 literal|10
 decl_stmt|;
+comment|/** The default list of read-only mounts to be bind-mounted into all    *  Docker containers that use DockerContainerRuntime. */
+DECL|field|NM_DOCKER_DEFAULT_RO_MOUNTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_DEFAULT_RO_MOUNTS
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"default-ro-mounts"
+decl_stmt|;
+comment|/** The default list of read-write mounts to be bind-mounted into all    *  Docker containers that use DockerContainerRuntime. */
+DECL|field|NM_DOCKER_DEFAULT_RW_MOUNTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_DEFAULT_RW_MOUNTS
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"default-rw-mounts"
+decl_stmt|;
 comment|/** The mode in which the Java Container Sandbox should run detailed by    *  the JavaSandboxLinuxContainerRuntime. */
 DECL|field|YARN_CONTAINER_SANDBOX
 specifier|public
