@@ -3069,7 +3069,11 @@ literal|null
 return|;
 block|}
 throw|throw
+operator|new
+name|IOException
+argument_list|(
 name|e
+argument_list|)
 throw|;
 block|}
 catch|catch

@@ -7743,7 +7743,7 @@ operator|.
 name|thenThrow
 argument_list|(
 operator|new
-name|IOException
+name|RuntimeException
 argument_list|(
 literal|"Best effort test exception"
 argument_list|)
@@ -7821,7 +7821,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
