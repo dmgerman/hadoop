@@ -454,6 +454,13 @@ specifier|final
 name|Semaphore
 name|semaphore
 decl_stmt|;
+DECL|field|closed
+specifier|private
+name|boolean
+name|closed
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    *    * @param pipeline - Pipeline that defines the machines.    * @param config -- Ozone Config    */
 DECL|method|XceiverClient (Pipeline pipeline, Configuration config)
 specifier|public
@@ -521,6 +528,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"This channel is not connected."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|channel
@@ -664,6 +684,65 @@ name|channel
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|reconnect ()
+specifier|public
+name|void
+name|reconnect
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|connect
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|channel
+operator|==
+literal|null
+operator|||
+operator|!
+name|channel
+operator|.
+name|isActive
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"This channel is not connected."
+argument_list|)
+throw|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error while connecting: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Returns if the exceiver client connects to a server.    *    * @return True if the connection is alive, false otherwise.    */
 annotation|@
 name|VisibleForTesting
@@ -688,6 +767,10 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|closed
+operator|=
+literal|true
+expr_stmt|;
 if|if
 condition|(
 name|group
@@ -753,13 +836,9 @@ argument_list|()
 operator|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"This channel is not connected."
-argument_list|)
-throw|;
+name|reconnect
+argument_list|()
+expr_stmt|;
 block|}
 name|XceiverClientHandler
 name|handler
@@ -880,13 +959,9 @@ argument_list|()
 operator|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"This channel is not connected."
-argument_list|)
-throw|;
+name|reconnect
+argument_list|()
+expr_stmt|;
 block|}
 name|XceiverClientHandler
 name|handler

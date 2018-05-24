@@ -310,24 +310,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|client
-operator|.
-name|OzoneRestClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdds
 operator|.
 name|scm
@@ -968,7 +950,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates an {@link OzoneRestClient} connected to this cluster's REST    * service. Callers take ownership of the client and must close it when done.    *    * @return OzoneRestClient connected to this cluster's REST service    * @throws OzoneException if Ozone encounters an error creating the client    */
+comment|/**    * Creates an {@link OzoneClient} connected to this cluster's REST    * service. Callers take ownership of the client and must close it when done.    *    * @return OzoneRestClient connected to this cluster's REST service    * @throws OzoneException if Ozone encounters an error creating the client    */
 annotation|@
 name|Override
 DECL|method|getRestClient ()
