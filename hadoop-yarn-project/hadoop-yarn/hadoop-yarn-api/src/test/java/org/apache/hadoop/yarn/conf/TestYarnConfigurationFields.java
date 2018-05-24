@@ -616,6 +616,15 @@ operator|.
 name|YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
 argument_list|)
 expr_stmt|;
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DISPLAY_APPS_FOR_LOGGED_IN_USER
+argument_list|)
+expr_stmt|;
 comment|// Allocate for usage
 name|xmlPropsToSkipCompare
 operator|=

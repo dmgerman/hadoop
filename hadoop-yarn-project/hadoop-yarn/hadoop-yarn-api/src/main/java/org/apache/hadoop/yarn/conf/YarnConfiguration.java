@@ -579,6 +579,24 @@ argument_list|)
 block|,     }
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDeprecations
+argument_list|(
+operator|new
+name|DeprecationDelta
+index|[]
+block|{
+operator|new
+name|DeprecationDelta
+argument_list|(
+literal|"yarn.resourcemanager.display.per-user-apps"
+argument_list|,
+name|FILTER_ENTITY_LIST_BY_USER
+argument_list|)
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 comment|//Configurations
 DECL|field|YARN_PREFIX
@@ -11599,7 +11617,9 @@ name|NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX
 operator|+
 literal|"opts"
 decl_stmt|;
-comment|/*    * Support to view apps for given user in secure cluster.    */
+comment|/**    * Support to view apps for given user in secure cluster.    * @deprecated This field is deprecated for {@link #FILTER_ENTITY_LIST_BY_USER}    */
+annotation|@
+name|Deprecated
 DECL|field|DISPLAY_APPS_FOR_LOGGED_IN_USER
 specifier|public
 specifier|static
@@ -11610,6 +11630,15 @@ init|=
 name|RM_PREFIX
 operator|+
 literal|"display.per-user-apps"
+decl_stmt|;
+DECL|field|FILTER_ENTITY_LIST_BY_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILTER_ENTITY_LIST_BY_USER
+init|=
+literal|"yarn.webapp.filter-entity-list-by-user"
 decl_stmt|;
 DECL|field|DEFAULT_DISPLAY_APPS_FOR_LOGGED_IN_USER
 specifier|public

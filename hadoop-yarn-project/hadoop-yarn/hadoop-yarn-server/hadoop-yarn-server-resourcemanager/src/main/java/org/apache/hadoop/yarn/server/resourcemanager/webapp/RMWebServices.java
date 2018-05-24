@@ -3358,10 +3358,10 @@ name|isCentralizedNodeLabelConfiguration
 init|=
 literal|true
 decl_stmt|;
-DECL|field|displayPerUserApps
+DECL|field|filterAppsByUser
 specifier|private
 name|boolean
-name|displayPerUserApps
+name|filterAppsByUser
 init|=
 literal|false
 decl_stmt|;
@@ -3417,7 +3417,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|displayPerUserApps
+name|filterAppsByUser
 operator|=
 name|conf
 operator|.
@@ -3425,7 +3425,7 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|DISPLAY_APPS_FOR_LOGGED_IN_USER
+name|FILTER_ENTITY_LIST_BY_USER
 argument_list|,
 name|YarnConfiguration
 operator|.
@@ -5662,7 +5662,7 @@ comment|// Given RM is configured to display apps per user, skip apps to which
 comment|// this caller doesn't have access to view.
 if|if
 condition|(
-name|displayPerUserApps
+name|filterAppsByUser
 operator|&&
 operator|!
 name|allowAccess
