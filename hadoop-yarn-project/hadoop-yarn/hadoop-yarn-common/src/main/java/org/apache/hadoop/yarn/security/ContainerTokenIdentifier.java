@@ -1582,7 +1582,9 @@ argument_list|()
 condition|)
 block|{
 return|return
-literal|null
+name|ContainerType
+operator|.
+name|TASK
 return|;
 block|}
 return|return
@@ -1612,7 +1614,9 @@ argument_list|()
 condition|)
 block|{
 return|return
-literal|null
+name|ExecutionType
+operator|.
+name|GUARANTEED
 return|;
 block|}
 return|return
