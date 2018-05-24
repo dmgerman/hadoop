@@ -3490,7 +3490,14 @@ name|fixedByteStringCache
 operator|.
 name|put
 argument_list|(
+operator|new
+name|Text
+argument_list|(
 name|key
+operator|.
+name|copyBytes
+argument_list|()
+argument_list|)
 argument_list|,
 name|value
 argument_list|)
