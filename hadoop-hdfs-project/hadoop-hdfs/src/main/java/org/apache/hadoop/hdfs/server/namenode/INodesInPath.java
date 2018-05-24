@@ -2197,12 +2197,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|DFSUtil
-operator|.
-name|byteArray2PathString
-argument_list|(
-name|path
-argument_list|)
+name|getPath
+argument_list|()
 argument_list|)
 operator|.
 name|append
