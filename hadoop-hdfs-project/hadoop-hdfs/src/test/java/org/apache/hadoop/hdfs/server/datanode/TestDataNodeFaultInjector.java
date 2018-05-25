@@ -534,7 +534,7 @@ name|getClass
 argument_list|()
 argument_list|)
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 argument_list|,
 name|GenericTestUtils
