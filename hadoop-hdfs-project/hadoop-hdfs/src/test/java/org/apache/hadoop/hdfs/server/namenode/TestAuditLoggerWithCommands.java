@@ -7998,7 +7998,10 @@ argument_list|()
 operator|.
 name|split
 argument_list|(
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 operator|.
 name|length
@@ -8013,7 +8016,10 @@ argument_list|()
 operator|.
 name|split
 argument_list|(
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 index|[
 name|length
