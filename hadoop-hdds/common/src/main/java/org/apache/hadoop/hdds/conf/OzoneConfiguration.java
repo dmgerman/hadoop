@@ -580,6 +580,8 @@ operator|.
 name|getValue
 argument_list|()
 operator|+
+literal|" "
+operator|+
 name|this
 operator|.
 name|getTag
