@@ -1383,6 +1383,16 @@ init|=
 literal|"hadoop.security.crypto.jce.provider"
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_CRYPTO_JCEKS_KEY_SERIALFILTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_CRYPTO_JCEKS_KEY_SERIALFILTER
+init|=
+literal|"hadoop.security.crypto.jceks.key.serialfilter"
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY
 specifier|public
 specifier|static

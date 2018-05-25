@@ -266,6 +266,22 @@ name|KeyGenerator
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_CRYPTO_JCEKS_KEY_SERIALFILTER
+import|;
+end_import
+
 begin_comment
 comment|/**  * A provider of secret key material for Hadoop applications. Provides an  * abstraction to separate key storage from users of encryption. It  * is intended to support getting or storing keys in a variety of ways,  * including third party bindings.  *<P/>  *<code>KeyProvider</code> implementations must be thread safe.  */
 end_comment
@@ -328,6 +344,34 @@ init|=
 name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SECURITY_KEY_DEFAULT_BITLENGTH_DEFAULT
+decl_stmt|;
+DECL|field|JCEKS_KEY_SERIALFILTER_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JCEKS_KEY_SERIALFILTER_DEFAULT
+init|=
+literal|"java.lang.Enum;"
+operator|+
+literal|"java.security.KeyRep;"
+operator|+
+literal|"java.security.KeyRep$Type;"
+operator|+
+literal|"javax.crypto.spec.SecretKeySpec;"
+operator|+
+literal|"org.apache.hadoop.crypto.key.JavaKeyStoreProvider$KeyMetadata;"
+operator|+
+literal|"!*"
+decl_stmt|;
+DECL|field|JCEKS_KEY_SERIAL_FILTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JCEKS_KEY_SERIAL_FILTER
+init|=
+literal|"jceks.key.serialFilter"
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -2011,6 +2055,42 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// Added for HADOOP-15473. Configured serialFilter property fixes
+comment|// java.security.UnrecoverableKeyException in JDK 8u171.
+if|if
+condition|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+name|JCEKS_KEY_SERIAL_FILTER
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|String
+name|serialFilter
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|HADOOP_SECURITY_CRYPTO_JCEKS_KEY_SERIALFILTER
+argument_list|,
+name|JCEKS_KEY_SERIALFILTER_DEFAULT
+argument_list|)
+decl_stmt|;
+name|System
+operator|.
+name|setProperty
+argument_list|(
+name|JCEKS_KEY_SERIAL_FILTER
+argument_list|,
+name|serialFilter
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Return the provider configuration.    *     * @return the provider configuration    */
 DECL|method|getConf ()
