@@ -1080,6 +1080,8 @@ argument_list|,
 name|selectedCandidates
 argument_list|,
 name|totalPreemptedResourceAllowed
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 comment|// Subtract from respective user's resource usage once a container is

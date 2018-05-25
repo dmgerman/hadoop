@@ -2813,28 +2813,6 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|isAnyMajorResourceZero (ResourceCalculator rc, Resource resource)
-specifier|public
-specifier|static
-name|boolean
-name|isAnyMajorResourceZero
-parameter_list|(
-name|ResourceCalculator
-name|rc
-parameter_list|,
-name|Resource
-name|resource
-parameter_list|)
-block|{
-return|return
-name|rc
-operator|.
-name|isAnyMajorResourceZero
-argument_list|(
-name|resource
-argument_list|)
-return|;
-block|}
 DECL|method|normalizeDown (ResourceCalculator calculator, Resource resource, Resource factor)
 specifier|public
 specifier|static

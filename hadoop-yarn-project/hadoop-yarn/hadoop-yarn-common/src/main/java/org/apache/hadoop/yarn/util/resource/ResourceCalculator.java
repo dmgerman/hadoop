@@ -578,12 +578,12 @@ name|Resource
 name|bigger
 parameter_list|)
 function_decl|;
-comment|/**    * Check if resource has any major resource types (which are all NodeManagers    * included) a zero value.    *    * @param resource resource    * @return returns true if any resource is zero.    */
-DECL|method|isAnyMajorResourceZero (Resource resource)
+comment|/**    * Check if resource has any major resource types (which are all NodeManagers    * included) a zero value or negative value.    *    * @param resource resource    * @return returns true if any resource is zero.    */
+DECL|method|isAnyMajorResourceZeroOrNegative (Resource resource)
 specifier|public
 specifier|abstract
 name|boolean
-name|isAnyMajorResourceZero
+name|isAnyMajorResourceZeroOrNegative
 parameter_list|(
 name|Resource
 name|resource
@@ -601,6 +601,17 @@ name|r
 parameter_list|,
 name|Resource
 name|stepFactor
+parameter_list|)
+function_decl|;
+comment|/**    * Check if resource has any major resource types (which are all NodeManagers    * included) has a>0 value.    *    * @param resource resource    * @return returns true if any resource is>0    */
+DECL|method|isAnyMajorResourceAboveZero (Resource resource)
+specifier|public
+specifier|abstract
+name|boolean
+name|isAnyMajorResourceAboveZero
+parameter_list|(
+name|Resource
+name|resource
 parameter_list|)
 function_decl|;
 block|}

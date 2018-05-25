@@ -756,12 +756,8 @@ name|accepted
 init|=
 name|Resources
 operator|.
-name|min
+name|componentwiseMin
 argument_list|(
-name|rc
-argument_list|,
-name|clusterResource
-argument_list|,
 name|absMaxCapIdealAssignedDelta
 argument_list|,
 name|Resources
@@ -825,6 +821,33 @@ argument_list|(
 name|rc
 argument_list|,
 name|accepted
+argument_list|)
+expr_stmt|;
+comment|// accept should never be< 0
+name|accepted
+operator|=
+name|Resources
+operator|.
+name|componentwiseMax
+argument_list|(
+name|accepted
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// or more than offered
+name|accepted
+operator|=
+name|Resources
+operator|.
+name|componentwiseMin
+argument_list|(
+name|accepted
+argument_list|,
+name|avail
 argument_list|)
 expr_stmt|;
 name|Resource

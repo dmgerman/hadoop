@@ -216,11 +216,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|isReservedPreemptionCandidatesSelector
-specifier|private
-name|boolean
-name|isReservedPreemptionCandidatesSelector
-decl_stmt|;
 comment|/**    * PreemptableResourceCalculator constructor    *    * @param preemptionContext    * @param isReservedPreemptionCandidatesSelector this will be set by    * different implementation of candidate selectors, please refer to    * TempQueuePerPartition#offer for details.    */
 DECL|method|PreemptableResourceCalculator ( CapacitySchedulerPreemptionContext preemptionContext, boolean isReservedPreemptionCandidatesSelector)
 specifier|public
@@ -367,7 +362,12 @@ name|computeFixpointAllocation
 argument_list|(
 name|tot_guarant
 argument_list|,
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
 name|nonZeroGuarQueues
+argument_list|)
 argument_list|,
 name|unassigned
 argument_list|,

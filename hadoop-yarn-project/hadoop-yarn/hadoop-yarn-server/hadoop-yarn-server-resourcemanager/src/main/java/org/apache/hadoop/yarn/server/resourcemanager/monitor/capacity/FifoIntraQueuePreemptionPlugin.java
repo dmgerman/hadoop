@@ -1331,12 +1331,10 @@ name|none
 argument_list|()
 argument_list|)
 operator|||
-name|Resources
-operator|.
-name|isAnyMajorResourceZero
-argument_list|(
 name|rc
-argument_list|,
+operator|.
+name|isAnyMajorResourceZeroOrNegative
+argument_list|(
 name|queueReassignableResource
 argument_list|)
 condition|)

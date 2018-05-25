@@ -70,9 +70,29 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|util
 operator|.
-name|YarnConfiguration
+name|resource
+operator|.
+name|DefaultResourceCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|DominantResourceCalculator
 import|;
 end_import
 
@@ -125,26 +145,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -192,6 +192,18 @@ name|verify
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
 begin_class
 DECL|class|TestPreemptionForQueueWithPriorities
 specifier|public
@@ -200,22 +212,6 @@ name|TestPreemptionForQueueWithPriorities
 extends|extends
 name|ProportionalCapacityPreemptionPolicyMockFramework
 block|{
-comment|// Initialize resource map
-DECL|field|riMap
-specifier|private
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceInformation
-argument_list|>
-name|riMap
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -224,95 +220,11 @@ name|void
 name|setup
 parameter_list|()
 block|{
-comment|// Initialize mandatory resources
-name|ResourceInformation
-name|memory
-init|=
-name|ResourceInformation
-operator|.
-name|newInstance
-argument_list|(
-name|ResourceInformation
-operator|.
-name|MEMORY_MB
-operator|.
-name|getName
+name|rc
+operator|=
+operator|new
+name|DefaultResourceCalculator
 argument_list|()
-argument_list|,
-name|ResourceInformation
-operator|.
-name|MEMORY_MB
-operator|.
-name|getUnits
-argument_list|()
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
-argument_list|)
-decl_stmt|;
-name|ResourceInformation
-name|vcores
-init|=
-name|ResourceInformation
-operator|.
-name|newInstance
-argument_list|(
-name|ResourceInformation
-operator|.
-name|VCORES
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|ResourceInformation
-operator|.
-name|VCORES
-operator|.
-name|getUnits
-argument_list|()
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
-argument_list|)
-decl_stmt|;
-name|riMap
-operator|.
-name|put
-argument_list|(
-name|ResourceInformation
-operator|.
-name|MEMORY_URI
-argument_list|,
-name|memory
-argument_list|)
-expr_stmt|;
-name|riMap
-operator|.
-name|put
-argument_list|(
-name|ResourceInformation
-operator|.
-name|VCORES_URI
-argument_list|,
-name|vcores
-argument_list|)
-expr_stmt|;
-name|ResourceUtils
-operator|.
-name|initializeResourcesFromResourceInformationMap
-argument_list|(
-name|riMap
-argument_list|)
 expr_stmt|;
 name|super
 operator|.
@@ -1130,7 +1042,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/**      * When a queue has multiple hierarchy and different priorities:      *      *<pre>      * root      * - a (capacity=30), p=1      *   - a1 (capacity=40), p=1      *   - a2 (capacity=60), p=1      * - b (capacity=30), p=1      *   - b1 (capacity=50), p=1      *   - b1 (capacity=50), p=2      * - c (capacity=40), p=2      *</pre>      */
+comment|/**      * When a queue has multiple hierarchy and different priorities:      *      *<pre>      * root      * - a (capacity=30), p=1      *   - a1 (capacity=40), p=1      *   - a2 (capacity=60), p=1      * - b (capacity=30), p=1      *   - b1 (capacity=50), p=1      *   - b2 (capacity=50), p=2      * - c (capacity=40), p=1      *</pre>      */
 name|String
 name|labelsConfig
 init|=
@@ -1150,19 +1062,19 @@ comment|// guaranteed,max,used,pending
 literal|"root(=[100 100 100 100]);"
 operator|+
 comment|//root
-literal|"-a(=[30 100 40 50]){priority=1};"
+literal|"-a(=[29 100 40 50]){priority=1};"
 operator|+
 comment|// a
 literal|"--a1(=[12 100 20 50]){priority=1};"
 operator|+
 comment|// a1
-literal|"--a2(=[18 100 20 50]){priority=1};"
+literal|"--a2(=[17 100 20 50]){priority=1};"
 operator|+
 comment|// a2
-literal|"-b(=[30 100 59 50]){priority=1};"
+literal|"-b(=[31 100 59 50]){priority=1};"
 operator|+
 comment|// b
-literal|"--b1(=[15 100 30 50]){priority=1};"
+literal|"--b1(=[16 100 30 50]){priority=1};"
 operator|+
 comment|// b1
 literal|"--b2(=[15 100 29 50]){priority=2};"
@@ -1187,7 +1099,7 @@ comment|// app3 in b1
 literal|"b2\t(1,1,n1,,29,false);"
 operator|+
 comment|// app4 in b2
-literal|"c\t(1,1,n1,,29,false)"
+literal|"c\t(1,1,n1,,1,false)"
 decl_stmt|;
 comment|// app5 in c
 name|buildEnv
@@ -1214,7 +1126,7 @@ name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|5
+literal|6
 argument_list|)
 argument_list|)
 operator|.
@@ -1239,8 +1151,10 @@ name|verify
 argument_list|(
 name|mDisp
 argument_list|,
-name|never
-argument_list|()
+name|times
+argument_list|(
+literal|1
+argument_list|)
 argument_list|)
 operator|.
 name|handle
@@ -1266,7 +1180,7 @@ name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|15
+literal|13
 argument_list|)
 argument_list|)
 operator|.
@@ -1293,7 +1207,7 @@ name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|9
+literal|10
 argument_list|)
 argument_list|)
 operator|.
@@ -1403,8 +1317,10 @@ name|verify
 argument_list|(
 name|mDisp
 argument_list|,
-name|never
-argument_list|()
+name|times
+argument_list|(
+literal|3
+argument_list|)
 argument_list|)
 operator|.
 name|handle
@@ -1696,6 +1612,162 @@ argument_list|(
 name|getAppAttemptId
 argument_list|(
 literal|3
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|test3ResourceTypesInterQueuePreemption ()
+specifier|public
+name|void
+name|test3ResourceTypesInterQueuePreemption
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|rc
+operator|=
+operator|new
+name|DominantResourceCalculator
+argument_list|()
+expr_stmt|;
+name|when
+argument_list|(
+name|cs
+operator|.
+name|getResourceCalculator
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|rc
+argument_list|)
+expr_stmt|;
+comment|// Initialize resource map
+name|String
+name|RESOURCE_1
+init|=
+literal|"res1"
+decl_stmt|;
+name|riMap
+operator|.
+name|put
+argument_list|(
+name|RESOURCE_1
+argument_list|,
+name|ResourceInformation
+operator|.
+name|newInstance
+argument_list|(
+name|RESOURCE_1
+argument_list|,
+literal|""
+argument_list|,
+literal|0
+argument_list|,
+name|ResourceTypes
+operator|.
+name|COUNTABLE
+argument_list|,
+literal|0
+argument_list|,
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|ResourceUtils
+operator|.
+name|initializeResourcesFromResourceInformationMap
+argument_list|(
+name|riMap
+argument_list|)
+expr_stmt|;
+comment|/**      * Queue structure is:      *      *<pre>      *              root      *           /  \  \      *          a    b  c      *</pre>      *  A / B / C have 33.3 / 33.3 / 33.4 resources      *  Total cluster resource have mem=30, cpu=18, GPU=6      *  A uses mem=6, cpu=3, GPU=3      *  B uses mem=6, cpu=3, GPU=3      *  C is asking mem=1,cpu=1,GPU=1      *      *  We expect it can preempt from one of the jobs      */
+name|String
+name|labelsConfig
+init|=
+literal|"=30:18:6,true;"
+decl_stmt|;
+name|String
+name|nodesConfig
+init|=
+literal|"n1= res=30:18:6;"
+decl_stmt|;
+comment|// n1 is default partition
+name|String
+name|queuesConfig
+init|=
+comment|// guaranteed,max,used,pending
+literal|"root(=[30:18:6 30:18:6 12:12:6 1:1:1]){priority=1};"
+operator|+
+comment|//root
+literal|"-a(=[10:6:2 10:6:2 6:6:3 0:0:0]){priority=1};"
+operator|+
+comment|// a
+literal|"-b(=[10:6:2 10:6:2 6:6:3 0:0:0]){priority=1};"
+operator|+
+comment|// b
+literal|"-c(=[10:6:2 10:6:2 0:0:0 1:1:1]){priority=2}"
+decl_stmt|;
+comment|// c
+name|String
+name|appsConfig
+init|=
+comment|//queueName\t(priority,resource,host,expression,#repeat,reserved)
+literal|"a\t"
+comment|// app1 in a1
+operator|+
+literal|"(1,2:2:1,n1,,3,false);"
+operator|+
+literal|"b\t"
+comment|// app2 in b2
+operator|+
+literal|"(1,2:2:1,n1,,3,false)"
+decl_stmt|;
+name|buildEnv
+argument_list|(
+name|labelsConfig
+argument_list|,
+name|nodesConfig
+argument_list|,
+name|queuesConfig
+argument_list|,
+name|appsConfig
+argument_list|)
+expr_stmt|;
+name|policy
+operator|.
+name|editSchedule
+argument_list|()
+expr_stmt|;
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|1
 argument_list|)
 argument_list|)
 argument_list|)
