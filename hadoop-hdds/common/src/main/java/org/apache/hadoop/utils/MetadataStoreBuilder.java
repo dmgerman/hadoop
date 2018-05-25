@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -83,6 +97,26 @@ operator|.
 name|rocksdb
 operator|.
 name|StatsLevel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -196,6 +230,23 @@ specifier|public
 class|class
 name|MetadataStoreBuilder
 block|{
+annotation|@
+name|VisibleForTesting
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|MetadataStoreBuilder
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|dbFile
 specifier|private
 name|File
@@ -217,6 +268,11 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|dbType
+specifier|private
+name|String
+name|dbType
 decl_stmt|;
 DECL|method|newBuilder ()
 specifier|public
@@ -307,6 +363,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/**    * Set the container DB Type.    * @param type    * @return MetadataStoreBuilder    */
+DECL|method|setDBType (String type)
+specifier|public
+name|MetadataStoreBuilder
+name|setDBType
+parameter_list|(
+name|String
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dbType
+operator|=
+name|type
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|MetadataStore
@@ -338,9 +414,22 @@ name|store
 init|=
 literal|null
 decl_stmt|;
-name|String
-name|impl
-init|=
+if|if
+condition|(
+name|dbType
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"dbType is null, using "
+argument_list|)
+expr_stmt|;
+name|dbType
+operator|=
 name|conf
 operator|==
 literal|null
@@ -361,14 +450,36 @@ name|OzoneConfigKeys
 operator|.
 name|OZONE_METADATA_STORE_IMPL_DEFAULT
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"dbType is null, using dbType {} from ozone configuration"
+argument_list|,
+name|dbType
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Using dbType {} for metastore"
+argument_list|,
+name|dbType
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|OZONE_METADATA_STORE_IMPL_LEVELDB
 operator|.
 name|equals
 argument_list|(
-name|impl
+name|dbType
 argument_list|)
 condition|)
 block|{
@@ -419,7 +530,7 @@ name|OZONE_METADATA_STORE_IMPL_ROCKSDB
 operator|.
 name|equals
 argument_list|(
-name|impl
+name|dbType
 argument_list|)
 condition|)
 block|{
@@ -565,7 +676,7 @@ name|OZONE_METADATA_STORE_IMPL_ROCKSDB
 operator|+
 literal|", but met "
 operator|+
-name|impl
+name|dbType
 argument_list|)
 throw|;
 block|}

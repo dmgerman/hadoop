@@ -512,14 +512,17 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerID - ID of the container.    * @return MetadataStore.    */
-DECL|method|getDB (long containerID, String containerDBPath)
+comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerID - ID of the container.    * @param containerDBType - DB type of the container.    * @param containerDBPath - DB path of the container.    * @return MetadataStore.    */
+DECL|method|getDB (long containerID, String containerDBType, String containerDBPath)
 specifier|public
 name|MetadataStore
 name|getDB
 parameter_list|(
 name|long
 name|containerID
+parameter_list|,
+name|String
+name|containerDBType
 parameter_list|,
 name|String
 name|containerDBPath
@@ -584,6 +587,11 @@ operator|.
 name|setCreateIfMissing
 argument_list|(
 literal|false
+argument_list|)
+operator|.
+name|setDBType
+argument_list|(
+name|containerDBType
 argument_list|)
 operator|.
 name|build

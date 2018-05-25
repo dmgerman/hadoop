@@ -290,6 +290,11 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
+name|getContainerDBType
+argument_list|()
+argument_list|,
+name|container
+operator|.
 name|getDBPath
 argument_list|()
 argument_list|)
