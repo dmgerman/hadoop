@@ -806,6 +806,67 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * verifies that bucket / volume name is a valid DNS name.    *    * @param resourceNames Array of bucket / volume names to be verified.    */
+DECL|method|verifyResourceName (String... resourceNames)
+specifier|public
+specifier|static
+name|void
+name|verifyResourceName
+parameter_list|(
+name|String
+modifier|...
+name|resourceNames
+parameter_list|)
+block|{
+for|for
+control|(
+name|String
+name|resourceName
+range|:
+name|resourceNames
+control|)
+block|{
+name|HddsClientUtils
+operator|.
+name|verifyResourceName
+argument_list|(
+name|resourceName
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Checks that object parameters passed as reference is not null.    *    * @param references Array of object references to be checked.    * @param<T>    */
+DECL|method|checkNotNull (T... references)
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+parameter_list|>
+name|void
+name|checkNotNull
+parameter_list|(
+name|T
+modifier|...
+name|references
+parameter_list|)
+block|{
+for|for
+control|(
+name|T
+name|ref
+range|:
+name|references
+control|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|ref
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Returns the cache value to be used for list calls.    * @param conf Configuration object    * @return list cache size    */
 DECL|method|getListCacheSize (Configuration conf)
 specifier|public
