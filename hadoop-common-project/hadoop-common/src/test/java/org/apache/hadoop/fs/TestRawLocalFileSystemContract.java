@@ -186,10 +186,11 @@ name|Path
 argument_list|(
 name|GenericTestUtils
 operator|.
-name|getTempPath
-argument_list|(
-literal|""
-argument_list|)
+name|getRandomizedTestDir
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 decl_stmt|;
 annotation|@
