@@ -60,7 +60,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -219,6 +239,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -474,6 +512,21 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|// assignedApps keeps track of applications that have no appAttempts
+DECL|field|assignedApps
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|assignedApps
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|// get a lock with fair distribution for app list updates
 DECL|field|rwl
 specifier|private
@@ -653,6 +706,18 @@ name|app
 argument_list|)
 expr_stmt|;
 block|}
+comment|// when an appAttempt is created for an application, we'd like to move
+comment|// it over from assignedApps to either runnableApps or nonRunnableApps
+name|assignedApps
+operator|.
+name|remove
+argument_list|(
+name|app
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|incUsedResource
 argument_list|(
 name|app
@@ -1954,6 +2019,35 @@ return|return
 name|numPendingApps
 return|;
 block|}
+DECL|method|getNumAssignedApps ()
+specifier|public
+name|int
+name|getNumAssignedApps
+parameter_list|()
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|assignedApps
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * TODO: Based on how frequently this is called, we might want to club    * counting pending and active apps in the same method.    */
 DECL|method|getNumActiveApps ()
 specifier|public
@@ -2530,6 +2624,40 @@ operator|+
 literal|"}"
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * This method is called when an application is assigned to this queue    * for book-keeping purposes (to be able to determine if the queue is empty).    * @param applicationId the application's id    */
+DECL|method|addAssignedApp (ApplicationId applicationId)
+specifier|public
+name|void
+name|addAssignedApp
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|)
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|assignedApps
+operator|.
+name|add
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

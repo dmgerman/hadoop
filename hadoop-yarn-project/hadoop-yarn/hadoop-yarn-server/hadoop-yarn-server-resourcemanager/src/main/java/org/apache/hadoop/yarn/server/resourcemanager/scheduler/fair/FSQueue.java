@@ -662,6 +662,13 @@ name|preemptable
 init|=
 literal|true
 decl_stmt|;
+DECL|field|isDynamic
+specifier|private
+name|boolean
+name|isDynamic
+init|=
+literal|true
+decl_stmt|;
 DECL|method|FSQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSQueue
@@ -2591,6 +2598,32 @@ name|StringBuilder
 name|sb
 parameter_list|)
 function_decl|;
+DECL|method|isDynamic ()
+specifier|public
+name|boolean
+name|isDynamic
+parameter_list|()
+block|{
+return|return
+name|isDynamic
+return|;
+block|}
+DECL|method|setDynamic (boolean dynamic)
+specifier|public
+name|void
+name|setDynamic
+parameter_list|(
+name|boolean
+name|dynamic
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isDynamic
+operator|=
+name|dynamic
+expr_stmt|;
+block|}
 block|}
 end_class
 

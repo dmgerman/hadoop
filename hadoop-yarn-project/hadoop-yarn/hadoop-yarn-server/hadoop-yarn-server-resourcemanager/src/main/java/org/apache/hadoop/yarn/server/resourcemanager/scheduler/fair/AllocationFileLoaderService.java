@@ -696,6 +696,7 @@ name|fs
 decl_stmt|;
 DECL|field|reloadListener
 specifier|private
+specifier|final
 name|Listener
 name|reloadListener
 decl_stmt|;
@@ -720,13 +721,18 @@ name|running
 init|=
 literal|true
 decl_stmt|;
-DECL|method|AllocationFileLoaderService ()
+DECL|method|AllocationFileLoaderService (Listener reloadListener)
 specifier|public
 name|AllocationFileLoaderService
-parameter_list|()
+parameter_list|(
+name|Listener
+name|reloadListener
+parameter_list|)
 block|{
 name|this
 argument_list|(
+name|reloadListener
+argument_list|,
 name|SystemClock
 operator|.
 name|getInstance
@@ -742,10 +748,13 @@ name|Permission
 argument_list|>
 name|defaultPermissions
 decl_stmt|;
-DECL|method|AllocationFileLoaderService (Clock clock)
+DECL|method|AllocationFileLoaderService (Listener reloadListener, Clock clock)
 specifier|public
 name|AllocationFileLoaderService
 parameter_list|(
+name|Listener
+name|reloadListener
+parameter_list|,
 name|Clock
 name|clock
 parameter_list|)
@@ -765,6 +774,12 @@ operator|.
 name|clock
 operator|=
 name|clock
+expr_stmt|;
+name|this
+operator|.
+name|reloadListener
+operator|=
+name|reloadListener
 expr_stmt|;
 block|}
 annotation|@
@@ -824,6 +839,11 @@ condition|)
 block|{
 try|try
 block|{
+name|reloadListener
+operator|.
+name|onCheck
+argument_list|()
+expr_stmt|;
 name|long
 name|time
 init|=
@@ -1280,23 +1300,6 @@ block|}
 return|return
 name|allocPath
 return|;
-block|}
-DECL|method|setReloadListener (Listener reloadListener)
-specifier|public
-specifier|synchronized
-name|void
-name|setReloadListener
-parameter_list|(
-name|Listener
-name|reloadListener
-parameter_list|)
-block|{
-name|this
-operator|.
-name|reloadListener
-operator|=
-name|reloadListener
-expr_stmt|;
 block|}
 comment|/**    * Updates the allocation list from the allocation config file. This file is    * expected to be in the XML format specified in the design doc.    *    * @throws IOException if the config file cannot be read.    * @throws AllocationConfigurationException if allocations are invalid.    * @throws ParserConfigurationException if XML parser is misconfigured.    * @throws SAXException if config file is malformed.    */
 DECL|method|reloadAllocations ()
@@ -1902,6 +1905,11 @@ name|info
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|onCheck ()
+name|void
+name|onCheck
+parameter_list|()
 function_decl|;
 block|}
 block|}
