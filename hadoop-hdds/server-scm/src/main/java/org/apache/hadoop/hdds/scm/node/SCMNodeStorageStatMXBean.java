@@ -36,6 +36,36 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|impl
+operator|.
+name|StorageLocationReport
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -102,6 +132,18 @@ DECL|method|getTotalFreeSpace ()
 name|long
 name|getTotalFreeSpace
 parameter_list|()
+function_decl|;
+comment|/**    * Returns the set of disks for a given Datanode.    * @return set of storage volumes    */
+DECL|method|getStorageVolumes (UUID datanodeId)
+name|Set
+argument_list|<
+name|StorageLocationReport
+argument_list|>
+name|getStorageVolumes
+parameter_list|(
+name|UUID
+name|datanodeId
+parameter_list|)
 function_decl|;
 block|}
 end_interface
