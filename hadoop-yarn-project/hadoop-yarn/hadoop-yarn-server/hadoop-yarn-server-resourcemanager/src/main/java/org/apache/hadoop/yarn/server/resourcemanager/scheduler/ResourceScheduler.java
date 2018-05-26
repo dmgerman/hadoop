@@ -233,6 +233,12 @@ name|SchedulerNode
 name|schedulerNode
 parameter_list|)
 function_decl|;
+comment|/**    * Reset scheduler metrics.    */
+DECL|method|resetSchedulerMetrics ()
+name|void
+name|resetSchedulerMetrics
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

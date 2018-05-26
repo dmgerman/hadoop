@@ -6508,6 +6508,12 @@ operator|.
 name|clearQueueMetrics
 argument_list|()
 expr_stmt|;
+name|getResourceScheduler
+argument_list|()
+operator|.
+name|resetSchedulerMetrics
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|initialize

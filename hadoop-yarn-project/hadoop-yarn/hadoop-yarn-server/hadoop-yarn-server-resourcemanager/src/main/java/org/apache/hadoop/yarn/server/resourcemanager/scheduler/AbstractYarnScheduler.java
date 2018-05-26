@@ -7137,6 +7137,16 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resetSchedulerMetrics ()
+specifier|public
+name|void
+name|resetSchedulerMetrics
+parameter_list|()
+block|{
+comment|// reset scheduler metrics
+block|}
 block|}
 end_class
 
