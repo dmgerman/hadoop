@@ -550,7 +550,7 @@ specifier|final
 name|int
 name|ZK_SESSION_TIMEOUT_DEFAULT
 init|=
-literal|5
+literal|10
 operator|*
 literal|1000
 decl_stmt|;
