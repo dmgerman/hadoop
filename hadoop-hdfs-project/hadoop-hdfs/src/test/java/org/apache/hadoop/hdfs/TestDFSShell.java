@@ -19694,20 +19694,28 @@ name|origErr
 argument_list|)
 expr_stmt|;
 block|}
-name|assertEquals
+name|assertTrue
 argument_list|(
 literal|"Error message is not the expected error message"
-argument_list|,
-literal|"setrep: Requested replication factor of 1 is less than "
 operator|+
-literal|"the required minimum of 2 for /tmp/TestDFSShell-"
-operator|+
-literal|"testSetrepLow/testFileForSetrepLow\n"
+name|bao
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|bao
 operator|.
 name|toString
 argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"setrep: Requested replication factor of 1 is less than "
+operator|+
+literal|"the required minimum of 2 for /tmp/TestDFSShell-"
+operator|+
+literal|"testSetrepLow/testFileForSetrepLow"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
