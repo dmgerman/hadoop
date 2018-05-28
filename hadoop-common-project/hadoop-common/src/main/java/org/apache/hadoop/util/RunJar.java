@@ -417,6 +417,16 @@ name|HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES
 init|=
 literal|"HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES"
 decl_stmt|;
+comment|/**    * Environment key for disabling unjar in client code.    */
+DECL|field|HADOOP_CLIENT_SKIP_UNJAR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_CLIENT_SKIP_UNJAR
+init|=
+literal|"HADOOP_CLIENT_SKIP_UNJAR"
+decl_stmt|;
 comment|/**    * Buffer size for copy the content of compressed file to new file.    */
 DECL|field|BUFFER_SIZE
 specifier|private
@@ -430,7 +440,6 @@ decl_stmt|;
 comment|/**    * Unpack a jar file into a directory.    *    * This version unpacks all files inside the jar regardless of filename.    *    * @param jarFile the .jar file to unpack    * @param toDir the destination directory into which to unpack the jar    *    * @throws IOException if an I/O error has occurred or toDir    * cannot be created and does not already exist    */
 DECL|method|unJar (File jarFile, File toDir)
 specifier|public
-specifier|static
 name|void
 name|unJar
 parameter_list|(
@@ -1330,6 +1339,13 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|skipUnjar
+argument_list|()
+condition|)
+block|{
 name|unJar
 argument_list|(
 name|file
@@ -1337,6 +1353,7 @@ argument_list|,
 name|workDir
 argument_list|)
 expr_stmt|;
+block|}
 name|ClassLoader
 name|loader
 init|=
@@ -1793,6 +1810,25 @@ operator|.
 name|getenv
 argument_list|(
 name|HADOOP_USE_CLIENT_CLASSLOADER
+argument_list|)
+argument_list|)
+return|;
+block|}
+DECL|method|skipUnjar ()
+name|boolean
+name|skipUnjar
+parameter_list|()
+block|{
+return|return
+name|Boolean
+operator|.
+name|parseBoolean
+argument_list|(
+name|System
+operator|.
+name|getenv
+argument_list|(
+name|HADOOP_CLIENT_SKIP_UNJAR
 argument_list|)
 argument_list|)
 return|;

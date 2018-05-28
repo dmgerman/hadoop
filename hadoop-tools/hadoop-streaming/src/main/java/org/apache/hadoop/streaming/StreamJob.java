@@ -724,6 +724,22 @@ name|Tool
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|RunJar
+operator|.
+name|MATCH_ANY
+import|;
+end_import
+
 begin_comment
 comment|/** All the client-side work happens here.  * (Jar packaging, MapRed job submission and monitoring)  */
 end_comment
@@ -5926,6 +5942,8 @@ name|jar_
 argument_list|)
 argument_list|,
 name|wd
+argument_list|,
+name|MATCH_ANY
 argument_list|)
 expr_stmt|;
 block|}
