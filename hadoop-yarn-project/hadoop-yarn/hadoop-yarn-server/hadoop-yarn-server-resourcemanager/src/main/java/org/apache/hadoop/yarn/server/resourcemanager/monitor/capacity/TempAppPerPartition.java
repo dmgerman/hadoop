@@ -145,6 +145,11 @@ specifier|final
 name|ApplicationId
 name|applicationId
 decl_stmt|;
+DECL|field|tempUser
+specifier|private
+name|TempUserPerPartition
+name|tempUser
+decl_stmt|;
 DECL|field|app
 name|FiCaSchedulerApp
 name|app
@@ -589,6 +594,30 @@ name|toBeDeduct
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|setTempUserPerPartition (TempUserPerPartition tu)
+specifier|public
+name|void
+name|setTempUserPerPartition
+parameter_list|(
+name|TempUserPerPartition
+name|tu
+parameter_list|)
+block|{
+name|tempUser
+operator|=
+name|tu
+expr_stmt|;
+block|}
+DECL|method|getTempUserPerPartition ()
+specifier|public
+name|TempUserPerPartition
+name|getTempUserPerPartition
+parameter_list|()
+block|{
+return|return
+name|tempUser
+return|;
 block|}
 block|}
 end_class

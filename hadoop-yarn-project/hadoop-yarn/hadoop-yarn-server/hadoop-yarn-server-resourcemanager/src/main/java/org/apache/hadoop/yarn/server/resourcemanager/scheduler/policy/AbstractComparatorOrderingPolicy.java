@@ -130,20 +130,6 @@ name|CommonNodeLabelsManager
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/**  * An OrderingPolicy which can serve as a baseclass for policies which can be  * expressed in terms of comparators  */
 end_comment
@@ -423,8 +409,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getComparator ()
 specifier|public
 name|Comparator
