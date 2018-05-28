@@ -610,6 +610,16 @@ return|return
 name|prefix
 return|;
 block|}
+DECL|method|getRequest ()
+specifier|public
+name|HttpServletRequest
+name|getRequest
+parameter_list|()
+block|{
+return|return
+name|request
+return|;
+block|}
 block|}
 DECL|field|context
 specifier|private

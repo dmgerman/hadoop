@@ -443,7 +443,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|error
 return|;
@@ -458,7 +459,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|status
 return|;
@@ -473,7 +475,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|devMode
 return|;
@@ -488,7 +491,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|injector
 return|;
@@ -528,9 +532,11 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
-name|request
+name|getRequest
+argument_list|()
 return|;
 block|}
 DECL|method|response ()
@@ -543,7 +549,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|response
 return|;
@@ -563,7 +570,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|moreParams
 argument_list|()
@@ -585,7 +593,8 @@ return|return
 name|context
 argument_list|()
 operator|.
-name|rc
+name|requestContext
+argument_list|()
 operator|.
 name|cookies
 argument_list|()
