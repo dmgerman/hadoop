@@ -771,6 +771,8 @@ argument_list|,
 name|APPLICATION_ID
 argument_list|)
 decl_stmt|;
+name|assertTrue
+argument_list|(
 name|DockerClientConfigHandler
 operator|.
 name|writeDockerCredentialsToPath
@@ -778,6 +780,7 @@ argument_list|(
 name|outFile
 argument_list|,
 name|credentials
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue

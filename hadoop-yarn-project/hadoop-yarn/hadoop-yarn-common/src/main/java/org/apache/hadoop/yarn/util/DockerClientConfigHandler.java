@@ -765,11 +765,11 @@ return|return
 name|credentials
 return|;
 block|}
-comment|/**    * Extract the Docker related tokens from the Credentials and write the Docker    * client configuration to the supplied File.    *    * @param outConfigFile the File to write the Docker client configuration to.    * @param credentials the populated Credentials object.    * @throws IOException if the write fails.    */
+comment|/**    * Extract the Docker related tokens from the Credentials and write the Docker    * client configuration to the supplied File.    *    * @param outConfigFile the File to write the Docker client configuration to.    * @param credentials the populated Credentials object.    * @throws IOException if the write fails.    * @return true if a Docker credential is found in the supplied credentials.    */
 DECL|method|writeDockerCredentialsToPath (File outConfigFile, Credentials credentials)
 specifier|public
 specifier|static
-name|void
+name|boolean
 name|writeDockerCredentialsToPath
 parameter_list|(
 name|File
@@ -780,6 +780,21 @@ name|credentials
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|boolean
+name|foundDockerCred
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|credentials
+operator|.
+name|numberOfTokens
+argument_list|()
+operator|>
+literal|0
+condition|)
 block|{
 name|ObjectMapper
 name|mapper
@@ -804,21 +819,6 @@ operator|.
 name|createObjectNode
 argument_list|()
 decl_stmt|;
-name|boolean
-name|foundDockerCred
-init|=
-literal|false
-decl_stmt|;
-if|if
-condition|(
-name|credentials
-operator|.
-name|numberOfTokens
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
 for|for
 control|(
 name|Token
@@ -931,7 +931,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
 if|if
 condition|(
 name|foundDockerCred
@@ -973,6 +972,10 @@ name|UTF_8
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+return|return
+name|foundDockerCred
+return|;
 block|}
 block|}
 end_class
