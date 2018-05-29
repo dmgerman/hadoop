@@ -88,7 +88,7 @@ specifier|public
 interface|interface
 name|SCMNodeStorageStatMXBean
 block|{
-comment|/**    * Get the capacity of the dataNode    * @param datanodeID Datanode Id    * @return long    */
+comment|/**    * Get the capacity of the dataNode.    * @param datanodeID Datanode Id    * @return long    */
 DECL|method|getCapacity (UUID datanodeID)
 name|long
 name|getCapacity
@@ -115,7 +115,7 @@ name|UUID
 name|datanodeId
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the total capacity of all dataNodes    * @return long    */
+comment|/**    * Returns the total capacity of all dataNodes.    * @return long    */
 DECL|method|getTotalCapacity ()
 name|long
 name|getTotalCapacity

@@ -365,7 +365,7 @@ block|}
 end_class
 
 begin_comment
-comment|/**    * Removes datanode Entry from the map    * @param datanodeID - Datanode ID.    */
+comment|/**    * Removes datanode Entry from the map.    * @param datanodeID - Datanode ID.    */
 end_comment
 
 begin_function

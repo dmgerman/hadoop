@@ -888,7 +888,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Getting replication pipeline forReplicationType {} : ReplicationFactor {}"
+literal|"Getting replication pipeline forReplicationType {} :"
+operator|+
+literal|" ReplicationFactor {}"
 argument_list|,
 name|replicationType
 operator|.

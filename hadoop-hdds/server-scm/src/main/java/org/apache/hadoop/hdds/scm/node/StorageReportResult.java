@@ -222,7 +222,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setFullVolumeSet ( Set<StorageLocationReport> fullVolumes)
+DECL|method|setFullVolumeSet ( Set<StorageLocationReport> fullVolumesSet)
 specifier|public
 name|ReportResultBuilder
 name|setFullVolumeSet
@@ -231,20 +231,20 @@ name|Set
 argument_list|<
 name|StorageLocationReport
 argument_list|>
-name|fullVolumes
+name|fullVolumesSet
 parameter_list|)
 block|{
 name|this
 operator|.
 name|fullVolumes
 operator|=
-name|fullVolumes
+name|fullVolumesSet
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setFailedVolumeSet ( Set<StorageLocationReport> failedVolumes)
+DECL|method|setFailedVolumeSet ( Set<StorageLocationReport> failedVolumesSet)
 specifier|public
 name|ReportResultBuilder
 name|setFailedVolumeSet
@@ -253,14 +253,14 @@ name|Set
 argument_list|<
 name|StorageLocationReport
 argument_list|>
-name|failedVolumes
+name|failedVolumesSet
 parameter_list|)
 block|{
 name|this
 operator|.
 name|failedVolumes
 operator|=
-name|failedVolumes
+name|failedVolumesSet
 expr_stmt|;
 return|return
 name|this

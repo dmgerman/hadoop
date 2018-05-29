@@ -333,7 +333,7 @@ specifier|private
 name|ObjectName
 name|scmNodeStorageInfoBean
 decl_stmt|;
-comment|/**    * constructs the scmNodeStorageReportMap object    */
+comment|/**    * constructs the scmNodeStorageReportMap object.    */
 DECL|method|SCMNodeStorageStatMap (OzoneConfiguration conf)
 specifier|public
 name|SCMNodeStorageStatMap
@@ -381,6 +381,7 @@ name|HDDS_DATANODE_STORAGE_UTILIZATION_CRITICAL_THRESHOLD_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Enum that Describes what we should do at various thresholds.    */
 DECL|enum|UtilizationThreshold
 specifier|public
 enum|enum
@@ -1485,7 +1486,7 @@ return|return
 name|remaining
 return|;
 block|}
-comment|/**    * removes the dataNode from scmNodeStorageReportMap    * @param datanodeID    * @throws SCMException in case the dataNode is not found in the map.    */
+comment|/**    * removes the dataNode from scmNodeStorageReportMap.    * @param datanodeID    * @throws SCMException in case the dataNode is not found in the map.    */
 DECL|method|removeDatanode (UUID datanodeID)
 specifier|public
 name|void
@@ -1597,7 +1598,7 @@ operator|/
 name|multiplier
 return|;
 block|}
-comment|/**    * get the scmUsed ratio    */
+comment|/**    * get the scmUsed ratio.    */
 DECL|method|getScmUsedratio (long scmUsed, long capacity)
 specifier|public
 name|double

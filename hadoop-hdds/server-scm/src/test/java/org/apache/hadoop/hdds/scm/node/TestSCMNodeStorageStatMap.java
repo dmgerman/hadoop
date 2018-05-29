@@ -304,6 +304,10 @@ name|ConcurrentHashMap
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Node Storage Map.  */
+end_comment
+
 begin_class
 DECL|class|TestSCMNodeStorageStatMap
 specifier|public
@@ -320,6 +324,7 @@ init|=
 literal|100
 decl_stmt|;
 DECL|field|capacity
+specifier|private
 specifier|final
 name|long
 name|capacity
@@ -331,6 +336,7 @@ operator|.
 name|GB
 decl_stmt|;
 DECL|field|used
+specifier|private
 specifier|final
 name|long
 name|used
@@ -342,6 +348,7 @@ operator|.
 name|GB
 decl_stmt|;
 DECL|field|remaining
+specifier|private
 specifier|final
 name|long
 name|remaining
@@ -1006,7 +1013,7 @@ name|next
 argument_list|()
 decl_stmt|;
 name|long
-name|capacity
+name|reportCapacity
 init|=
 name|report
 operator|.
@@ -1014,7 +1021,7 @@ name|getCapacity
 argument_list|()
 decl_stmt|;
 name|long
-name|used
+name|reportScmUsed
 init|=
 name|report
 operator|.
@@ -1022,7 +1029,7 @@ name|getScmUsed
 argument_list|()
 decl_stmt|;
 name|long
-name|remaining
+name|reportRemaining
 init|=
 name|report
 operator|.
@@ -1039,11 +1046,11 @@ name|TestUtils
 operator|.
 name|createStorageReport
 argument_list|(
-name|capacity
+name|reportCapacity
 argument_list|,
-name|used
+name|reportScmUsed
 argument_list|,
-name|remaining
+name|reportRemaining
 argument_list|,
 name|path
 argument_list|,
@@ -1160,9 +1167,9 @@ name|TestUtils
 operator|.
 name|createStorageReport
 argument_list|(
-name|capacity
+name|reportCapacity
 argument_list|,
-name|capacity
+name|reportCapacity
 argument_list|,
 literal|0
 argument_list|,
@@ -1249,12 +1256,12 @@ argument_list|)
 operator|.
 name|setScmUsed
 argument_list|(
-name|capacity
+name|reportCapacity
 argument_list|)
 operator|.
 name|setCapacity
 argument_list|(
-name|capacity
+name|reportCapacity
 argument_list|)
 operator|.
 name|setRemaining
