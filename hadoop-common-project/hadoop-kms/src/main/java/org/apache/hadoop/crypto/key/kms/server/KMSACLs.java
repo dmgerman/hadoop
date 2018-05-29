@@ -1445,7 +1445,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"user is in {}"
+literal|"user is not in {}"
 argument_list|,
 name|blacklist
 operator|.
@@ -1460,7 +1460,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"user is not in {}"
+literal|"user is in {}"
 argument_list|,
 name|blacklist
 operator|.
