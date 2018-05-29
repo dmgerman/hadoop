@@ -874,7 +874,7 @@ name|Mockito
 operator|.
 name|eq
 argument_list|(
-literal|"resources/destFile1"
+literal|"destFile1"
 argument_list|)
 argument_list|,
 name|any
@@ -901,7 +901,7 @@ name|Mockito
 operator|.
 name|eq
 argument_list|(
-literal|"resources/destFile_2"
+literal|"destFile_2"
 argument_list|)
 argument_list|,
 name|any
@@ -928,7 +928,7 @@ name|Mockito
 operator|.
 name|eq
 argument_list|(
-literal|"resources/sourceFile4"
+literal|"sourceFile4"
 argument_list|)
 argument_list|,
 name|any
