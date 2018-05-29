@@ -78,6 +78,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|interfaces
+operator|.
+name|StorageLocationReportMXBean
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -93,8 +113,11 @@ end_comment
 begin_class
 DECL|class|StorageLocationReport
 specifier|public
+specifier|final
 class|class
 name|StorageLocationReport
+implements|implements
+name|StorageLocationReportMXBean
 block|{
 DECL|field|id
 specifier|private
@@ -265,6 +288,21 @@ parameter_list|()
 block|{
 return|return
 name|storageLocation
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStorageTypeName ()
+specifier|public
+name|String
+name|getStorageTypeName
+parameter_list|()
+block|{
+return|return
+name|storageType
+operator|.
+name|name
+argument_list|()
 return|;
 block|}
 DECL|method|getStorageType ()
@@ -710,141 +748,141 @@ specifier|private
 name|String
 name|storageLocation
 decl_stmt|;
-comment|/**      * Sets the storageId.      *      * @param id storageId      * @return StorageLocationReport.Builder      */
-DECL|method|setId (String id)
+comment|/**      * Sets the storageId.      *      * @param idValue storageId      * @return StorageLocationReport.Builder      */
+DECL|method|setId (String idValue)
 specifier|public
 name|Builder
 name|setId
 parameter_list|(
 name|String
-name|id
+name|idValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|id
 operator|=
-name|id
+name|idValue
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets whether the volume failed or not.      *      * @param failed whether volume failed or not      * @return StorageLocationReport.Builder      */
-DECL|method|setFailed (boolean failed)
+comment|/**      * Sets whether the volume failed or not.      *      * @param failedValue whether volume failed or not      * @return StorageLocationReport.Builder      */
+DECL|method|setFailed (boolean failedValue)
 specifier|public
 name|Builder
 name|setFailed
 parameter_list|(
 name|boolean
-name|failed
+name|failedValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|failed
 operator|=
-name|failed
+name|failedValue
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the capacity of volume.      *      * @param capacity capacity      * @return StorageLocationReport.Builder      */
-DECL|method|setCapacity (long capacity)
+comment|/**      * Sets the capacity of volume.      *      * @param capacityValue capacity      * @return StorageLocationReport.Builder      */
+DECL|method|setCapacity (long capacityValue)
 specifier|public
 name|Builder
 name|setCapacity
 parameter_list|(
 name|long
-name|capacity
+name|capacityValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|capacity
 operator|=
-name|capacity
+name|capacityValue
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the scmUsed Value.      *      * @param scmUsed storage space used by scm      * @return StorageLocationReport.Builder      */
-DECL|method|setScmUsed (long scmUsed)
+comment|/**      * Sets the scmUsed Value.      *      * @param scmUsedValue storage space used by scm      * @return StorageLocationReport.Builder      */
+DECL|method|setScmUsed (long scmUsedValue)
 specifier|public
 name|Builder
 name|setScmUsed
 parameter_list|(
 name|long
-name|scmUsed
+name|scmUsedValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|scmUsed
 operator|=
-name|scmUsed
+name|scmUsedValue
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the remaining free space value.      *      * @param remaining remaining free space      * @return StorageLocationReport.Builder      */
-DECL|method|setRemaining (long remaining)
+comment|/**      * Sets the remaining free space value.      *      * @param remainingValue remaining free space      * @return StorageLocationReport.Builder      */
+DECL|method|setRemaining (long remainingValue)
 specifier|public
 name|Builder
 name|setRemaining
 parameter_list|(
 name|long
-name|remaining
+name|remainingValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|remaining
 operator|=
-name|remaining
+name|remainingValue
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the storageType.      *      * @param storageType type of the storage used      * @return StorageLocationReport.Builder      */
-DECL|method|setStorageType (StorageType storageType)
+comment|/**      * Sets the storageType.      *      * @param storageTypeValue type of the storage used      * @return StorageLocationReport.Builder      */
+DECL|method|setStorageType (StorageType storageTypeValue)
 specifier|public
 name|Builder
 name|setStorageType
 parameter_list|(
 name|StorageType
-name|storageType
+name|storageTypeValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|storageType
 operator|=
-name|storageType
+name|storageTypeValue
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the storageLocation.      *      * @param storageLocation location of the volume      * @return StorageLocationReport.Builder      */
-DECL|method|setStorageLocation (String storageLocation)
+comment|/**      * Sets the storageLocation.      *      * @param storageLocationValue location of the volume      * @return StorageLocationReport.Builder      */
+DECL|method|setStorageLocation (String storageLocationValue)
 specifier|public
 name|Builder
 name|setStorageLocation
 parameter_list|(
 name|String
-name|storageLocation
+name|storageLocationValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|storageLocation
 operator|=
-name|storageLocation
+name|storageLocationValue
 expr_stmt|;
 return|return
 name|this

@@ -24,26 +24,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|impl
-operator|.
-name|StorageLocationReport
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -64,7 +44,7 @@ name|ContainerLocationManagerMXBean
 block|{
 comment|/**    * Returns an array of storage location usage report.    *    * @return storage location usage report.    */
 DECL|method|getLocationReport ()
-name|StorageLocationReport
+name|StorageLocationReportMXBean
 index|[]
 name|getLocationReport
 parameter_list|()
