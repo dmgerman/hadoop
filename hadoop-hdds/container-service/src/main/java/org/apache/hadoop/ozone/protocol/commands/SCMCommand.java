@@ -48,7 +48,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
+name|SCMCommandProto
 import|;
 end_import
 
@@ -72,7 +72,9 @@ comment|/**    * Returns the type of this command.    * @return Type    */
 DECL|method|getType ()
 specifier|public
 specifier|abstract
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 name|getType
 parameter_list|()
 function_decl|;

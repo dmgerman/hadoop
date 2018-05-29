@@ -30,6 +30,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -76,7 +92,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -207,11 +223,14 @@ name|getStateManager
 parameter_list|()
 function_decl|;
 comment|/**    * Process container report from Datanode.    *    * @param reports Container report    */
-DECL|method|processContainerReports (ContainerReportsRequestProto reports)
+DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports)
 name|void
 name|processContainerReports
 parameter_list|(
-name|ContainerReportsRequestProto
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerReportsProto
 name|reports
 parameter_list|)
 throws|throws

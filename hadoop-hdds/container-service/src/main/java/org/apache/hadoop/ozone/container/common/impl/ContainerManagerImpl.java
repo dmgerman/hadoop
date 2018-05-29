@@ -264,7 +264,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -284,7 +284,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -304,7 +304,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -3897,7 +3897,7 @@ annotation|@
 name|Override
 DECL|method|getNodeReport ()
 specifier|public
-name|SCMNodeReport
+name|NodeReportProto
 name|getNodeReport
 parameter_list|()
 throws|throws
@@ -3912,12 +3912,12 @@ operator|.
 name|getLocationReport
 argument_list|()
 decl_stmt|;
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|Builder
 name|nrb
 init|=
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -3939,12 +3939,12 @@ name|i
 operator|++
 control|)
 block|{
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|Builder
 name|srb
 init|=
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -4040,7 +4040,7 @@ annotation|@
 name|Override
 DECL|method|getContainerReport ()
 specifier|public
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 name|getContainerReport
 parameter_list|()
 throws|throws
@@ -4078,36 +4078,16 @@ name|toList
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 operator|.
 name|Builder
 name|crBuilder
 init|=
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-comment|// TODO: support delta based container report
-name|crBuilder
-operator|.
-name|setDatanodeDetails
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
-argument_list|)
-operator|.
-name|setType
-argument_list|(
-name|ContainerReportsRequestProto
-operator|.
-name|reportType
-operator|.
-name|fullReport
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|ContainerData

@@ -68,6 +68,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|SCMHeartbeatRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|ContainerBlocksDeletionACKProto
 import|;
 end_import
@@ -108,27 +128,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerReportsResponseProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -168,7 +168,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -188,7 +188,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 import|;
 end_import
 
@@ -267,44 +267,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - node report state    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
-DECL|method|sendHeartbeat (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport)
+comment|/**    * Used by data node to send a Heartbeat.    * @param heartbeat Heartbeat    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+DECL|method|sendHeartbeat (SCMHeartbeatRequestProto heartbeat)
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeDetailsProto
-name|datanodeDetails
-parameter_list|,
-name|SCMNodeReport
-name|nodeReport
+name|SCMHeartbeatRequestProto
+name|heartbeat
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - Node Report.    * @param containerReportsRequestProto - Container Reports.    * @return SCM Command.    */
-DECL|method|register (DatanodeDetailsProto datanodeDetails, SCMNodeReport nodeReport, ContainerReportsRequestProto containerReportsRequestProto)
-name|SCMRegisteredCmdResponseProto
+DECL|method|register (DatanodeDetailsProto datanodeDetails, NodeReportProto nodeReport, ContainerReportsProto containerReportsRequestProto)
+name|SCMRegisteredResponseProto
 name|register
 parameter_list|(
 name|DatanodeDetailsProto
 name|datanodeDetails
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|,
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 name|containerReportsRequestProto
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Send a container report.    * @param reports -- Container report.    * @return container reports response.    * @throws IOException    */
-DECL|method|sendContainerReport ( ContainerReportsRequestProto reports)
-name|ContainerReportsResponseProto
-name|sendContainerReport
-parameter_list|(
-name|ContainerReportsRequestProto
-name|reports
 parameter_list|)
 throws|throws
 name|IOException

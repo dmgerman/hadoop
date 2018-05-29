@@ -50,7 +50,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCloseContainerCmdResponseProto
+name|SCMCommandProto
 import|;
 end_import
 
@@ -70,29 +70,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMCmdType
-operator|.
-name|closeContainerCommand
+name|CloseContainerCommandProto
 import|;
 end_import
 
@@ -108,7 +86,7 @@ name|CloseContainerCommand
 extends|extends
 name|SCMCommand
 argument_list|<
-name|SCMCloseContainerCmdResponseProto
+name|CloseContainerCommandProto
 argument_list|>
 block|{
 DECL|field|containerID
@@ -136,11 +114,17 @@ annotation|@
 name|Override
 DECL|method|getType ()
 specifier|public
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 name|getType
 parameter_list|()
 block|{
 return|return
+name|SCMCommandProto
+operator|.
+name|Type
+operator|.
 name|closeContainerCommand
 return|;
 block|}
@@ -164,12 +148,12 @@ return|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|SCMCloseContainerCmdResponseProto
+name|CloseContainerCommandProto
 name|getProto
 parameter_list|()
 block|{
 return|return
-name|SCMCloseContainerCmdResponseProto
+name|CloseContainerCommandProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -183,13 +167,13 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getFromProtobuf ( SCMCloseContainerCmdResponseProto closeContainerProto)
+DECL|method|getFromProtobuf ( CloseContainerCommandProto closeContainerProto)
 specifier|public
 specifier|static
 name|CloseContainerCommand
 name|getFromProtobuf
 parameter_list|(
-name|SCMCloseContainerCmdResponseProto
+name|CloseContainerCommandProto
 name|closeContainerProto
 parameter_list|)
 block|{

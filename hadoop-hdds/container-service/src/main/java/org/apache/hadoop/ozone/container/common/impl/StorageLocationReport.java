@@ -52,7 +52,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -443,18 +443,18 @@ block|}
 comment|/**    * Returns the SCMStorageReport protoBuf message for the Storage Location    * report.    * @return SCMStorageReport    * @throws IOException In case, the storage type specified is invalid.    */
 DECL|method|getProtoBufMessage ()
 specifier|public
-name|SCMStorageReport
+name|StorageReportProto
 name|getProtoBufMessage
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|Builder
 name|srb
 init|=
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -509,13 +509,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Returns the StorageLocationReport from the protoBuf message.    * @param report SCMStorageReport    * @return StorageLocationReport    * @throws IOException in case of invalid storage type    */
-DECL|method|getFromProtobuf (SCMStorageReport report)
+DECL|method|getFromProtobuf (StorageReportProto report)
 specifier|public
 specifier|static
 name|StorageLocationReport
 name|getFromProtobuf
 parameter_list|(
-name|SCMStorageReport
+name|StorageReportProto
 name|report
 parameter_list|)
 throws|throws

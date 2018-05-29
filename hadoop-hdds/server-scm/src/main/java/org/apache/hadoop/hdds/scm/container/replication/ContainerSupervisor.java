@@ -166,7 +166,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -1494,28 +1494,18 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Adds a container report to appropriate inProgress Pool.    * @param containerReport  -- Container report for a specific container from    * a datanode.    */
-DECL|method|handleContainerReport ( ContainerReportsRequestProto containerReport)
+DECL|method|handleContainerReport (DatanodeDetails datanodeDetails, ContainerReportsProto containerReport)
 specifier|public
 name|void
 name|handleContainerReport
 parameter_list|(
-name|ContainerReportsRequestProto
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerReportsProto
 name|containerReport
 parameter_list|)
 block|{
-name|DatanodeDetails
-name|datanodeDetails
-init|=
-name|DatanodeDetails
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|containerReport
-operator|.
-name|getDatanodeDetails
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|inProgressPoolListLock
 operator|.
 name|readLock
@@ -1561,6 +1551,8 @@ name|ppool
 operator|.
 name|handleContainerReport
 argument_list|(
+name|datanodeDetails
+argument_list|,
 name|containerReport
 argument_list|)
 expr_stmt|;
@@ -1580,10 +1572,7 @@ literal|" Container Name: {}"
 argument_list|,
 name|poolName
 argument_list|,
-name|containerReport
-operator|.
-name|getDatanodeDetails
-argument_list|()
+name|datanodeDetails
 argument_list|)
 expr_stmt|;
 block|}

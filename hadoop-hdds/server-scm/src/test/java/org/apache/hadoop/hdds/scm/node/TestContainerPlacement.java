@@ -242,7 +242,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -777,7 +777,7 @@ name|id
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 init|=
@@ -805,9 +805,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 name|TestUtils
 operator|.

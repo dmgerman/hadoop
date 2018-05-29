@@ -290,7 +290,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
+name|SCMCommandProto
 import|;
 end_import
 
@@ -1799,9 +1799,6 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1828,7 +1825,9 @@ operator|.
 name|getType
 argument_list|()
 operator|==
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 operator|.
 name|deleteBlocksCommand
 condition|)

@@ -84,7 +84,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -104,7 +104,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -923,7 +923,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reportList
 init|=
@@ -1038,7 +1038,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 init|=
@@ -1096,17 +1096,17 @@ argument_list|)
 expr_stmt|;
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|Builder
 name|nrb
 init|=
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|SCMStorageReport
+name|StorageReportProto
 name|srb
 init|=
 name|reportSet
@@ -1227,10 +1227,10 @@ name|STORAGE_OUT_OF_SPACE
 argument_list|)
 expr_stmt|;
 comment|// Mark a disk failed
-name|SCMStorageReport
+name|StorageReportProto
 name|srb2
 init|=
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|newBuilder
 argument_list|()

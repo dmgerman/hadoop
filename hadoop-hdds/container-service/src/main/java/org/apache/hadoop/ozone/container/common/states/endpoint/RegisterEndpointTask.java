@@ -132,7 +132,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -152,7 +152,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -172,7 +172,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 import|;
 end_import
 
@@ -438,7 +438,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 name|contianerReport
 init|=
 name|datanodeContainerManager
@@ -446,7 +446,7 @@ operator|.
 name|getContainerReport
 argument_list|()
 decl_stmt|;
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 init|=
 name|datanodeContainerManager
@@ -455,7 +455,7 @@ name|getNodeReport
 argument_list|()
 decl_stmt|;
 comment|// TODO : Add responses to the command Queue.
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 name|response
 init|=
 name|rpcEndPoint

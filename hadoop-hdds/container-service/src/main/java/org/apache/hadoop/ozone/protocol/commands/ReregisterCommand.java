@@ -36,7 +36,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
+name|SCMCommandProto
 import|;
 end_import
 
@@ -56,29 +56,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
-operator|.
-name|reregisterCommand
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMReregisterCmdResponseProto
+name|ReregisterCommandProto
 import|;
 end_import
 
@@ -94,7 +72,7 @@ name|ReregisterCommand
 extends|extends
 name|SCMCommand
 argument_list|<
-name|SCMReregisterCmdResponseProto
+name|ReregisterCommandProto
 argument_list|>
 block|{
 comment|/**    * Returns the type of this command.    *    * @return Type    */
@@ -102,11 +80,17 @@ annotation|@
 name|Override
 DECL|method|getType ()
 specifier|public
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 name|getType
 parameter_list|()
 block|{
 return|return
+name|SCMCommandProto
+operator|.
+name|Type
+operator|.
 name|reregisterCommand
 return|;
 block|}
@@ -130,12 +114,12 @@ return|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|SCMReregisterCmdResponseProto
+name|ReregisterCommandProto
 name|getProto
 parameter_list|()
 block|{
 return|return
-name|SCMReregisterCmdResponseProto
+name|ReregisterCommandProto
 operator|.
 name|newBuilder
 argument_list|()

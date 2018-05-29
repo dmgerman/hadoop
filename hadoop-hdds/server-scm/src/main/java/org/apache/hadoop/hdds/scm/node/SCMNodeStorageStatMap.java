@@ -84,7 +84,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -202,7 +202,47 @@ name|java
 operator|.
 name|util
 operator|.
-name|*
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -707,7 +747,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|processNodeReport (UUID datanodeID, StorageContainerDatanodeProtocolProtos.SCMNodeReport nodeReport)
+DECL|method|processNodeReport (UUID datanodeID, StorageContainerDatanodeProtocolProtos.NodeReportProto nodeReport)
 specifier|public
 name|StorageReportResult
 name|processNodeReport
@@ -717,7 +757,7 @@ name|datanodeID
 parameter_list|,
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 throws|throws
@@ -787,7 +827,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|storageReports
 init|=
@@ -798,7 +838,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|SCMStorageReport
+name|StorageReportProto
 name|report
 range|:
 name|storageReports

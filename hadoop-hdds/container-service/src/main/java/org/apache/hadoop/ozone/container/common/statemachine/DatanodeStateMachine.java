@@ -116,7 +116,7 @@ name|statemachine
 operator|.
 name|commandhandler
 operator|.
-name|CloseContainerHandler
+name|CloseContainerCommandHandler
 import|;
 end_import
 
@@ -553,7 +553,7 @@ operator|.
 name|addHandler
 argument_list|(
 operator|new
-name|CloseContainerHandler
+name|CloseContainerCommandHandler
 argument_list|()
 argument_list|)
 operator|.
@@ -688,7 +688,7 @@ argument_list|)
 expr_stmt|;
 name|context
 operator|.
-name|setReportState
+name|setNodeReport
 argument_list|(
 name|container
 operator|.

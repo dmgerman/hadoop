@@ -179,24 +179,6 @@ operator|.
 name|proto
 operator|.
 name|HddsProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
 operator|.
 name|NodeState
 import|;
@@ -218,7 +200,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -255,6 +237,24 @@ operator|.
 name|protocol
 operator|.
 name|VersionResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|commands
+operator|.
+name|RegisteredCommand
 import|;
 end_import
 
@@ -689,20 +689,18 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any SCM.    *    * @param dd DatanodeDetailsProto    * @param nodeReport SCMNodeReport    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any SCM.    *    * @param dd DatanodeDetailsProto    * @param nodeReport NodeReportProto    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (HddsProtos.DatanodeDetailsProto dd, SCMNodeReport nodeReport)
+DECL|method|register (DatanodeDetails dd, NodeReportProto nodeReport)
 specifier|public
-name|SCMCommand
+name|RegisteredCommand
 name|register
 parameter_list|(
-name|HddsProtos
-operator|.
-name|DatanodeDetailsProto
+name|DatanodeDetails
 name|dd
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 block|{
@@ -713,7 +711,7 @@ block|}
 comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param dd - Datanode Details.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (HddsProtos.DatanodeDetailsProto dd, SCMNodeReport nodeReport)
+DECL|method|sendHeartbeat (DatanodeDetails dd, NodeReportProto nodeReport)
 specifier|public
 name|List
 argument_list|<
@@ -721,12 +719,10 @@ name|SCMCommand
 argument_list|>
 name|sendHeartbeat
 parameter_list|(
-name|HddsProtos
-operator|.
-name|DatanodeDetailsProto
+name|DatanodeDetails
 name|dd
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 block|{

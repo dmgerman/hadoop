@@ -48,7 +48,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -68,7 +68,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -234,9 +234,6 @@ operator|.
 name|register
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -245,26 +242,26 @@ return|return
 name|datanodeDetails
 return|;
 block|}
-comment|/**    * Create Node Report object.    * @return SCMNodeReport    */
-DECL|method|createNodeReport (List<SCMStorageReport> reports)
+comment|/**    * Create Node Report object.    * @return NodeReportProto    */
+DECL|method|createNodeReport ( List<StorageReportProto> reports)
 specifier|public
 specifier|static
-name|SCMNodeReport
+name|NodeReportProto
 name|createNodeReport
 parameter_list|(
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 parameter_list|)
 block|{
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|Builder
 name|nodeReport
 init|=
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -289,7 +286,7 @@ specifier|public
 specifier|static
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|createStorageReport
 parameter_list|(
@@ -317,7 +314,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reportList
 init|=
@@ -355,12 +352,12 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|Builder
 name|srb
 init|=
-name|SCMStorageReport
+name|StorageReportProto
 operator|.
 name|newBuilder
 argument_list|()

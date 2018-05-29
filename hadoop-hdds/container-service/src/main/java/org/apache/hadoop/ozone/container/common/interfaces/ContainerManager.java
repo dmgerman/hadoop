@@ -152,7 +152,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -172,7 +172,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -417,7 +417,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get the Node Report of container storage usage.    * @return node report.    */
 DECL|method|getNodeReport ()
-name|SCMNodeReport
+name|NodeReportProto
 name|getNodeReport
 parameter_list|()
 throws|throws
@@ -425,7 +425,7 @@ name|IOException
 function_decl|;
 comment|/**    * Gets container report.    * @return container report.    * @throws IOException    */
 DECL|method|getContainerReport ()
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 name|getContainerReport
 parameter_list|()
 throws|throws

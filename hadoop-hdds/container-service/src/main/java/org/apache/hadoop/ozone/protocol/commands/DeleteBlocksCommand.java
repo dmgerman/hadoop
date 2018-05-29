@@ -36,6 +36,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|SCMCommandProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|DeletedBlocksTransaction
 import|;
 end_import
@@ -56,27 +76,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMDeleteBlocksCmdResponseProto
+name|DeleteBlocksCommandProto
 import|;
 end_import
 
@@ -102,7 +102,7 @@ name|DeleteBlocksCommand
 extends|extends
 name|SCMCommand
 argument_list|<
-name|SCMDeleteBlocksCmdResponseProto
+name|DeleteBlocksCommandProto
 argument_list|>
 block|{
 DECL|field|blocksTobeDeleted
@@ -150,12 +150,16 @@ annotation|@
 name|Override
 DECL|method|getType ()
 specifier|public
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 name|getType
 parameter_list|()
 block|{
 return|return
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 operator|.
 name|deleteBlocksCommand
 return|;
@@ -177,13 +181,13 @@ name|toByteArray
 argument_list|()
 return|;
 block|}
-DECL|method|getFromProtobuf ( SCMDeleteBlocksCmdResponseProto deleteBlocksProto)
+DECL|method|getFromProtobuf ( DeleteBlocksCommandProto deleteBlocksProto)
 specifier|public
 specifier|static
 name|DeleteBlocksCommand
 name|getFromProtobuf
 parameter_list|(
-name|SCMDeleteBlocksCmdResponseProto
+name|DeleteBlocksCommandProto
 name|deleteBlocksProto
 parameter_list|)
 block|{
@@ -200,12 +204,12 @@ return|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|SCMDeleteBlocksCmdResponseProto
+name|DeleteBlocksCommandProto
 name|getProto
 parameter_list|()
 block|{
 return|return
-name|SCMDeleteBlocksCmdResponseProto
+name|DeleteBlocksCommandProto
 operator|.
 name|newBuilder
 argument_list|()

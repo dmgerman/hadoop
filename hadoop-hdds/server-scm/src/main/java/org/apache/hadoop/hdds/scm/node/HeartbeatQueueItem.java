@@ -66,7 +66,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -108,11 +108,11 @@ name|recvTimestamp
 decl_stmt|;
 DECL|field|nodeReport
 specifier|private
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 decl_stmt|;
 comment|/**    *    * @param datanodeDetails - datanode ID of the heartbeat.    * @param recvTimestamp - heartbeat receive timestamp.    * @param nodeReport - node report associated with the heartbeat if any.    */
-DECL|method|HeartbeatQueueItem (DatanodeDetails datanodeDetails, long recvTimestamp, SCMNodeReport nodeReport)
+DECL|method|HeartbeatQueueItem (DatanodeDetails datanodeDetails, long recvTimestamp, NodeReportProto nodeReport)
 name|HeartbeatQueueItem
 parameter_list|(
 name|DatanodeDetails
@@ -121,7 +121,7 @@ parameter_list|,
 name|long
 name|recvTimestamp
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 block|{
@@ -158,7 +158,7 @@ block|}
 comment|/**    * @return node report.    */
 DECL|method|getNodeReport ()
 specifier|public
-name|SCMNodeReport
+name|NodeReportProto
 name|getNodeReport
 parameter_list|()
 block|{
@@ -191,7 +191,7 @@ name|datanodeDetails
 decl_stmt|;
 DECL|field|nodeReport
 specifier|private
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 decl_stmt|;
 DECL|field|recvTimestamp
@@ -221,20 +221,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setNodeReport (SCMNodeReport scmNodeReport)
+DECL|method|setNodeReport (NodeReportProto report)
 specifier|public
 name|Builder
 name|setNodeReport
 parameter_list|(
-name|SCMNodeReport
-name|scmNodeReport
+name|NodeReportProto
+name|report
 parameter_list|)
 block|{
 name|this
 operator|.
 name|nodeReport
 operator|=
-name|scmNodeReport
+name|report
 expr_stmt|;
 return|return
 name|this

@@ -58,6 +58,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -132,27 +152,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -1196,7 +1196,7 @@ block|}
 comment|/**    * Returns node report of container storage usage.    */
 DECL|method|getNodeReport ()
 specifier|public
-name|SCMNodeReport
+name|NodeReportProto
 name|getNodeReport
 parameter_list|()
 throws|throws
@@ -1291,7 +1291,7 @@ block|}
 comment|/**    * Returns container report.    * @return - container report.    * @throws IOException    */
 DECL|method|getContainerReport ()
 specifier|public
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 name|getContainerReport
 parameter_list|()
 throws|throws

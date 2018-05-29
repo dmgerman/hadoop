@@ -86,6 +86,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -300,7 +316,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -1696,12 +1712,15 @@ block|}
 comment|/**    * Process container report from Datanode.    *<p>    * Processing follows a very simple logic for time being.    *<p>    * 1. Datanodes report the current State -- denoted by the datanodeState    *<p>    * 2. We are the older SCM state from the Database -- denoted by    * the knownState.    *<p>    * 3. We copy the usage etc. from currentState to newState and log that    * newState to the DB. This allows us SCM to bootup again and read the    * state of the world from the DB, and then reconcile the state from    * container reports, when they arrive.    *    * @param reports Container report    */
 annotation|@
 name|Override
-DECL|method|processContainerReports (ContainerReportsRequestProto reports)
+DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports)
 specifier|public
 name|void
 name|processContainerReports
 parameter_list|(
-name|ContainerReportsRequestProto
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerReportsProto
 name|reports
 parameter_list|)
 throws|throws
@@ -1724,6 +1743,8 @@ name|containerSupervisor
 operator|.
 name|handleContainerReport
 argument_list|(
+name|datanodeDetails
+argument_list|,
 name|reports
 argument_list|)
 expr_stmt|;
@@ -1858,10 +1879,7 @@ literal|" {}, for container: {}, reason: container doesn't exist in"
 operator|+
 literal|"container database."
 argument_list|,
-name|reports
-operator|.
-name|getDatanodeDetails
-argument_list|()
+name|datanodeDetails
 argument_list|,
 name|datanodeState
 operator|.

@@ -54,7 +54,9 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 import|;
 end_import
 
@@ -231,7 +233,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|SCMCmdType
+name|Type
 argument_list|,
 name|CommandHandler
 argument_list|>

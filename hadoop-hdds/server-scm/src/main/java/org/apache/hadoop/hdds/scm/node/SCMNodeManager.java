@@ -222,26 +222,6 @@ name|proto
 operator|.
 name|HddsProtos
 operator|.
-name|DatanodeDetailsProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
 name|NodeState
 import|;
 end_import
@@ -262,7 +242,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -282,7 +262,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 operator|.
 name|ErrorCode
 import|;
@@ -304,7 +284,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -2485,7 +2465,7 @@ operator|.
 name|getUuid
 argument_list|()
 decl_stmt|;
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 init|=
 name|hbItem
@@ -2679,7 +2659,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateNodeStat (UUID dnId, SCMNodeReport nodeReport)
+DECL|method|updateNodeStat (UUID dnId, NodeReportProto nodeReport)
 specifier|private
 name|void
 name|updateNodeStat
@@ -2687,7 +2667,7 @@ parameter_list|(
 name|UUID
 name|dnId
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 block|{
@@ -2757,7 +2737,7 @@ literal|0
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|storageReports
 init|=
@@ -2768,7 +2748,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|SCMStorageReport
+name|StorageReportProto
 name|report
 range|:
 name|storageReports
@@ -2967,18 +2947,18 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetailsProto - Send datanodeDetails with Node info.    *                   This function generates and assigns new datanode ID    *                   for the datanode. This allows SCM to be run independent    *                   of Namenode if required.    * @param nodeReport NodeReport.    *    * @return SCMHeartbeatResponseProto    */
+comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetails - Send datanodeDetails with Node info.    *                   This function generates and assigns new datanode ID    *                   for the datanode. This allows SCM to be run independent    *                   of Namenode if required.    * @param nodeReport NodeReport.    *    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport)
+DECL|method|register ( DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
 specifier|public
-name|SCMCommand
+name|RegisteredCommand
 name|register
 parameter_list|(
-name|DatanodeDetailsProto
-name|datanodeDetailsProto
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 block|{
@@ -2991,16 +2971,6 @@ name|String
 name|ip
 init|=
 literal|null
-decl_stmt|;
-name|DatanodeDetails
-name|datanodeDetails
-init|=
-name|DatanodeDetails
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|datanodeDetailsProto
-argument_list|)
 decl_stmt|;
 name|InetAddress
 name|dnAddress
@@ -3047,7 +3017,7 @@ name|ip
 argument_list|)
 expr_stmt|;
 block|}
-name|SCMCommand
+name|RegisteredCommand
 name|responseCommand
 init|=
 name|verifyDatanodeUUID
@@ -3286,9 +3256,9 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Verifies the datanode does not have a valid UUID already.    *    * @param datanodeDetails - Datanode Details.    * @return SCMCommand    */
-DECL|method|verifyDatanodeUUID (DatanodeDetails datanodeDetails)
+DECL|method|verifyDatanodeUUID ( DatanodeDetails datanodeDetails)
 specifier|private
-name|SCMCommand
+name|RegisteredCommand
 name|verifyDatanodeUUID
 parameter_list|(
 name|DatanodeDetails
@@ -3363,10 +3333,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetailsProto - DatanodeDetailsProto.    * @param nodeReport - node report.    * @return SCMheartbeat response.    * @throws IOException    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - DatanodeDetailsProto.    * @param nodeReport - node report.    * @return SCMheartbeat response.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat ( DatanodeDetailsProto datanodeDetailsProto, SCMNodeReport nodeReport)
+DECL|method|sendHeartbeat ( DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
 specifier|public
 name|List
 argument_list|<
@@ -3374,10 +3344,10 @@ name|SCMCommand
 argument_list|>
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeDetailsProto
-name|datanodeDetailsProto
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
-name|SCMNodeReport
+name|NodeReportProto
 name|nodeReport
 parameter_list|)
 block|{
@@ -3385,34 +3355,13 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|datanodeDetailsProto
+name|datanodeDetails
 argument_list|,
 literal|"Heartbeat is missing "
 operator|+
 literal|"DatanodeDetails."
 argument_list|)
 expr_stmt|;
-name|DatanodeDetails
-name|datanodeDetails
-init|=
-name|DatanodeDetails
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|datanodeDetailsProto
-argument_list|)
-decl_stmt|;
-comment|// Checking for NULL to make sure that we don't get
-comment|// an exception from ConcurrentList.
-comment|// This could be a problem in tests, if this function is invoked via
-comment|// protobuf, transport layer will guarantee that this is not null.
-if|if
-condition|(
-name|datanodeDetails
-operator|!=
-literal|null
-condition|)
-block|{
 name|heartbeatQueue
 operator|.
 name|add
@@ -3447,20 +3396,6 @@ operator|.
 name|getUuid
 argument_list|()
 argument_list|)
-return|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Datanode ID in heartbeat is null"
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */

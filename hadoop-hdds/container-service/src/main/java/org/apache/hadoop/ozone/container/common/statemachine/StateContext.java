@@ -52,7 +52,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMNodeReport
+name|NodeReportProto
 import|;
 end_import
 
@@ -349,10 +349,10 @@ operator|.
 name|DatanodeStates
 name|state
 decl_stmt|;
-DECL|field|nrState
+DECL|field|dnReport
 specifier|private
-name|SCMNodeReport
-name|nrState
+name|NodeReportProto
+name|dnReport
 decl_stmt|;
 comment|/**    * Constructs a StateContext.    *    * @param conf   - Configration    * @param state  - State    * @param parent Parent State Machine    */
 DECL|method|StateContext (Configuration conf, DatanodeStateMachine.DatanodeStates state, DatanodeStateMachine parent)
@@ -410,9 +410,9 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|nrState
+name|dnReport
 operator|=
-name|SCMNodeReport
+name|NodeReportProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -567,29 +567,29 @@ block|}
 comment|/**    * Returns the node report of the datanode state context.    * @return the node report.    */
 DECL|method|getNodeReport ()
 specifier|public
-name|SCMNodeReport
+name|NodeReportProto
 name|getNodeReport
 parameter_list|()
 block|{
 return|return
-name|nrState
+name|dnReport
 return|;
 block|}
-comment|/**    * Sets the storage location report of the datanode state context.    * @param nrReport - node report    */
-DECL|method|setReportState (SCMNodeReport nrReport)
+comment|/**    * Sets the storage location report of the datanode state context.    * @param nodeReport node report    */
+DECL|method|setNodeReport (NodeReportProto nodeReport)
 specifier|public
 name|void
-name|setReportState
+name|setNodeReport
 parameter_list|(
-name|SCMNodeReport
-name|nrReport
+name|NodeReportProto
+name|nodeReport
 parameter_list|)
 block|{
 name|this
 operator|.
-name|nrState
+name|dnReport
 operator|=
-name|nrReport
+name|nodeReport
 expr_stmt|;
 block|}
 comment|/**    * Returns the next task to get executed by the datanode state machine.    * @return A callable that will be executed by the    * {@link DatanodeStateMachine}    */

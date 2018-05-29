@@ -40,7 +40,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCloseContainerCmdResponseProto
+name|SCMCommandProto
 import|;
 end_import
 
@@ -60,7 +60,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
+name|CloseContainerCommandProto
 import|;
 end_import
 
@@ -175,14 +175,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Container Report handler.  */
+comment|/**  * Handler for close container command received from SCM.  */
 end_comment
 
 begin_class
-DECL|class|CloseContainerHandler
+DECL|class|CloseContainerCommandHandler
 specifier|public
 class|class
-name|CloseContainerHandler
+name|CloseContainerCommandHandler
 implements|implements
 name|CommandHandler
 block|{
@@ -196,7 +196,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|CloseContainerHandler
+name|CloseContainerCommandHandler
 operator|.
 name|class
 argument_list|)
@@ -212,9 +212,9 @@ name|long
 name|totalTime
 decl_stmt|;
 comment|/**    * Constructs a ContainerReport handler.    */
-DECL|method|CloseContainerHandler ()
+DECL|method|CloseContainerCommandHandler ()
 specifier|public
-name|CloseContainerHandler
+name|CloseContainerCommandHandler
 parameter_list|()
 block|{   }
 comment|/**    * Handles a given SCM command.    *    * @param command           - SCM Command    * @param container         - Ozone Container.    * @param context           - Current Context.    * @param connectionManager - The SCMs that we are talking to.    */
@@ -265,10 +265,10 @@ literal|1
 decl_stmt|;
 try|try
 block|{
-name|SCMCloseContainerCmdResponseProto
+name|CloseContainerCommandProto
 name|closeContainerProto
 init|=
-name|SCMCloseContainerCmdResponseProto
+name|CloseContainerCommandProto
 operator|.
 name|parseFrom
 argument_list|(
@@ -337,12 +337,16 @@ annotation|@
 name|Override
 DECL|method|getCommandType ()
 specifier|public
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 name|getCommandType
 parameter_list|()
 block|{
 return|return
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 operator|.
 name|closeContainerCommand
 return|;

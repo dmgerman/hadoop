@@ -50,7 +50,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCmdType
+name|SCMRegisteredResponseProto
 import|;
 end_import
 
@@ -70,27 +70,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMRegisteredCmdResponseProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 operator|.
 name|ErrorCode
 import|;
@@ -105,11 +85,6 @@ DECL|class|RegisteredCommand
 specifier|public
 class|class
 name|RegisteredCommand
-extends|extends
-name|SCMCommand
-argument_list|<
-name|SCMRegisteredCmdResponseProto
-argument_list|>
 block|{
 DECL|field|datanodeUUID
 specifier|private
@@ -237,21 +212,6 @@ name|Builder
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the type of this command.    *    * @return Type    */
-annotation|@
-name|Override
-DECL|method|getType ()
-specifier|public
-name|SCMCmdType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|SCMCmdType
-operator|.
-name|registeredCommand
-return|;
-block|}
 comment|/**    * Returns datanode UUID.    *    * @return - Datanode ID.    */
 DECL|method|getDatanodeUUID ()
 specifier|public
@@ -308,8 +268,6 @@ name|ipAddress
 return|;
 block|}
 comment|/**    * Gets the protobuf message of this object.    *    * @return A protobuf message.    */
-annotation|@
-name|Override
 DECL|method|getProtoBufMessage ()
 specifier|public
 name|byte
@@ -317,12 +275,12 @@ index|[]
 name|getProtoBufMessage
 parameter_list|()
 block|{
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -435,12 +393,12 @@ name|this
 return|;
 block|}
 comment|/**      * Create this object from a Protobuf message.      *      * @param response - RegisteredCmdResponseProto      * @return RegisteredCommand      */
-DECL|method|getFromProtobuf (SCMRegisteredCmdResponseProto response)
+DECL|method|getFromProtobuf (SCMRegisteredResponseProto response)
 specifier|public
 name|RegisteredCommand
 name|getFromProtobuf
 parameter_list|(
-name|SCMRegisteredCmdResponseProto
+name|SCMRegisteredResponseProto
 name|response
 parameter_list|)
 block|{

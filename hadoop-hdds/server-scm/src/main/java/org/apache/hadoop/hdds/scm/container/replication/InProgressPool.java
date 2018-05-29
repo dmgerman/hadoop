@@ -138,7 +138,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsRequestProto
+name|ContainerReportsProto
 import|;
 end_import
 
@@ -700,12 +700,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Queues a container Report for handling. This is done in a worker thread    * since decoding a container report might be compute intensive . We don't    * want to block since we have asked for bunch of container reports    * from a set of datanodes.    *    * @param containerReport - ContainerReport    */
-DECL|method|handleContainerReport ( ContainerReportsRequestProto containerReport)
+DECL|method|handleContainerReport (DatanodeDetails datanodeDetails, ContainerReportsProto containerReport)
 specifier|public
 name|void
 name|handleContainerReport
 parameter_list|(
-name|ContainerReportsRequestProto
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerReportsProto
 name|containerReport
 parameter_list|)
 block|{
@@ -724,6 +727,8 @@ name|submit
 argument_list|(
 name|processContainerReport
 argument_list|(
+name|datanodeDetails
+argument_list|,
 name|containerReport
 argument_list|)
 argument_list|)
@@ -742,12 +747,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|processContainerReport ( ContainerReportsRequestProto reports)
+DECL|method|processContainerReport (DatanodeDetails datanodeDetails, ContainerReportsProto reports)
 specifier|private
 name|Runnable
 name|processContainerReport
 parameter_list|(
-name|ContainerReportsRequestProto
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerReportsProto
 name|reports
 parameter_list|)
 block|{
@@ -755,19 +763,6 @@ return|return
 parameter_list|()
 lambda|->
 block|{
-name|DatanodeDetails
-name|datanodeDetails
-init|=
-name|DatanodeDetails
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|reports
-operator|.
-name|getDatanodeDetails
-argument_list|()
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|processedNodeSet

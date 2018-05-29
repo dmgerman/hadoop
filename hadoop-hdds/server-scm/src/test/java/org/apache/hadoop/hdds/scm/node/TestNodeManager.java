@@ -58,6 +58,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMCommandProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -168,7 +188,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMStorageReport
+name|StorageReportProto
 import|;
 end_import
 
@@ -566,26 +586,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|SCMCmdType
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|hamcrest
 operator|.
 name|CoreMatchers
@@ -867,9 +867,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1012,9 +1009,6 @@ name|getDatanodeDetails
 argument_list|(
 name|nodeManager
 argument_list|)
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1116,9 +1110,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1221,9 +1212,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1313,7 +1301,7 @@ name|dnId
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 init|=
@@ -1352,9 +1340,6 @@ operator|.
 name|register
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 name|TestUtils
 operator|.
@@ -1375,9 +1360,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1474,9 +1456,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1501,7 +1480,9 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|SCMCmdType
+name|SCMCommandProto
+operator|.
+name|Type
 operator|.
 name|reregisterCommand
 argument_list|)
@@ -1603,9 +1584,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1925,9 +1903,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1946,9 +1921,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -1977,9 +1949,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2076,9 +2045,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2362,9 +2328,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2374,9 +2337,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2386,9 +2346,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|deadNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2468,9 +2425,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2480,9 +2434,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2492,9 +2443,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|deadNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2511,9 +2459,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2605,9 +2550,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2617,9 +2559,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2636,9 +2575,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2841,9 +2777,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|healthyNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2853,9 +2786,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|staleNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2865,9 +2795,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|deadNode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -2953,9 +2880,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -3282,9 +3206,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dn
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -3963,9 +3884,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -4100,9 +4018,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanode
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 literal|null
 argument_list|)
@@ -4282,7 +4197,7 @@ name|dnId
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 init|=
@@ -4310,9 +4225,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 name|TestUtils
 operator|.
@@ -4585,7 +4497,7 @@ name|dnId
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 init|=
@@ -4613,9 +4525,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 name|TestUtils
 operator|.
@@ -5094,7 +5003,7 @@ name|dnId
 decl_stmt|;
 name|List
 argument_list|<
-name|SCMStorageReport
+name|StorageReportProto
 argument_list|>
 name|reports
 init|=
@@ -5122,9 +5031,6 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getProtoBufMessage
-argument_list|()
 argument_list|,
 name|TestUtils
 operator|.
