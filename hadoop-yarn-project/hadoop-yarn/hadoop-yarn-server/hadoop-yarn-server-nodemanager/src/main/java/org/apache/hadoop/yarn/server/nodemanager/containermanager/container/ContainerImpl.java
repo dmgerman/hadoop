@@ -8428,6 +8428,19 @@ name|exitCode
 argument_list|)
 condition|)
 block|{
+comment|// Updates to the retry context should  be protected from concurrent
+comment|// writes. It should only be called from this transition.
+name|container
+operator|.
+name|retryPolicy
+operator|.
+name|updateRetryContext
+argument_list|(
+name|container
+operator|.
+name|windowRetryContext
+argument_list|)
+expr_stmt|;
 name|container
 operator|.
 name|storeRetryContext
