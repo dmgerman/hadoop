@@ -603,7 +603,7 @@ name|Resource
 name|stepFactor
 parameter_list|)
 function_decl|;
-comment|/**    * Check if resource has any major resource types (which are all NodeManagers    * included) has a>0 value.    *    * @param resource resource    * @return returns true if any resource is>0    */
+comment|/**    * Check if resource has any major resource types (which are all NodeManagers    * included) has a {@literal>} 0 value.    *    * @param resource resource    * @return returns true if any resource is {@literal>} 0    */
 DECL|method|isAnyMajorResourceAboveZero (Resource resource)
 specifier|public
 specifier|abstract
