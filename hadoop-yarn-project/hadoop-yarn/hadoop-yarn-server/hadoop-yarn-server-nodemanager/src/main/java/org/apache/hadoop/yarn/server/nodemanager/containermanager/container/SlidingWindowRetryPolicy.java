@@ -379,7 +379,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Updates remaining retries and the restart time when    * required in the retryContext.    *<p>    * When failuresValidityInterval is> 0, it also removes time entries from    *<code>restartTimes</code> which are outside the validity interval.    */
+comment|/**    * Updates remaining retries and the restart time when    * required in the retryContext.    *<p>    * When failuresValidityInterval is {@literal>} 0, it also removes time    * entries from<code>restartTimes</code> which are outside the validity    * interval.    */
 DECL|method|updateRetryContext (RetryContext retryContext)
 specifier|protected
 name|void
