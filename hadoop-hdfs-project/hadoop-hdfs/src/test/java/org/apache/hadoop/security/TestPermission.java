@@ -2338,7 +2338,19 @@ argument_list|()
 argument_list|,
 name|startsWith
 argument_list|(
-literal|"User null does not belong to"
+literal|"User "
+operator|+
+name|userfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|file
+argument_list|)
+operator|.
+name|getOwner
+argument_list|()
+operator|+
+literal|" does not belong to"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2524,7 +2536,15 @@ name|startsWith
 argument_list|(
 literal|"User "
 operator|+
-name|NOUSER
+name|userfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|file
+argument_list|)
+operator|.
+name|getOwner
+argument_list|()
 operator|+
 literal|" is not a super user (non-super user cannot change owner)"
 argument_list|)
@@ -2670,7 +2690,15 @@ name|startsWith
 argument_list|(
 literal|"User "
 operator|+
-name|NOUSER
+name|userfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|file
+argument_list|)
+operator|.
+name|getOwner
+argument_list|()
 operator|+
 literal|" is not a super user (non-super user cannot change owner)"
 argument_list|)
