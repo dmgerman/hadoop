@@ -374,6 +374,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -421,6 +435,16 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
 import|;
 end_import
 
@@ -1503,6 +1527,18 @@ literal|"need to specify capacities for two storages."
 argument_list|)
 expr_stmt|;
 comment|// Write a file and restart the cluster
+name|File
+name|basedir
+init|=
+operator|new
+name|File
+argument_list|(
+name|GenericTestUtils
+operator|.
+name|getRandomizedTempPath
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -1512,6 +1548,8 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|,
+name|basedir
 argument_list|)
 operator|.
 name|numDataNodes
