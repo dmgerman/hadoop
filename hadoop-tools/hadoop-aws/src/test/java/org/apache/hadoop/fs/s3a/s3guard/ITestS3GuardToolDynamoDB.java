@@ -324,20 +324,6 @@ name|AbstractS3GuardToolTestBase
 block|{
 annotation|@
 name|Override
-DECL|method|newMetadataStore ()
-specifier|protected
-name|MetadataStore
-name|newMetadataStore
-parameter_list|()
-block|{
-return|return
-operator|new
-name|DynamoDBMetadataStore
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|setup ()
 specifier|public
 name|void

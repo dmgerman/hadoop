@@ -299,20 +299,6 @@ literal|"-verbose"
 block|}
 decl_stmt|;
 annotation|@
-name|Override
-DECL|method|newMetadataStore ()
-specifier|protected
-name|MetadataStore
-name|newMetadataStore
-parameter_list|()
-block|{
-return|return
-operator|new
-name|LocalMetadataStore
-argument_list|()
-return|;
-block|}
-annotation|@
 name|Test
 DECL|method|testImportCommand ()
 specifier|public
