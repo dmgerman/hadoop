@@ -336,8 +336,16 @@ literal|"_"
 operator|+
 name|id
 operator|.
-name|getRatisPort
-argument_list|()
+name|getPort
+argument_list|(
+name|DatanodeDetails
+operator|.
+name|Port
+operator|.
+name|Name
+operator|.
+name|RATIS
+argument_list|)
 return|;
 block|}
 DECL|method|toRaftPeerAddressString (DatanodeDetails id)
@@ -359,8 +367,16 @@ literal|":"
 operator|+
 name|id
 operator|.
-name|getRatisPort
-argument_list|()
+name|getPort
+argument_list|(
+name|DatanodeDetails
+operator|.
+name|Port
+operator|.
+name|Name
+operator|.
+name|RATIS
+argument_list|)
 return|;
 block|}
 DECL|method|toRaftPeerId (DatanodeDetails id)
