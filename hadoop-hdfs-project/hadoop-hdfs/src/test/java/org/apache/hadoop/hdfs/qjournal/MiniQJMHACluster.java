@@ -319,6 +319,11 @@ name|forceRemoteEditsOnly
 init|=
 literal|false
 decl_stmt|;
+DECL|field|baseDir
+specifier|private
+name|String
+name|baseDir
+decl_stmt|;
 DECL|method|Builder (Configuration conf)
 specifier|public
 name|Builder
@@ -396,6 +401,25 @@ name|startOpt
 operator|=
 name|startOpt
 expr_stmt|;
+block|}
+DECL|method|baseDir (String d)
+specifier|public
+name|Builder
+name|baseDir
+parameter_list|(
+name|String
+name|d
+parameter_list|)
+block|{
+name|this
+operator|.
+name|baseDir
+operator|=
+name|d
+expr_stmt|;
+return|return
+name|this
+return|;
 block|}
 DECL|method|setNumNameNodes (int nns)
 specifier|public
@@ -601,6 +625,13 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|baseDir
+argument_list|(
+name|builder
+operator|.
+name|baseDir
 argument_list|)
 operator|.
 name|format
