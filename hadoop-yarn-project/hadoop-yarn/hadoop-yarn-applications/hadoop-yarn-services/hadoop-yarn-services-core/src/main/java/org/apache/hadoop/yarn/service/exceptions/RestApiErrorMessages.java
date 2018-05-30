@@ -260,6 +260,32 @@ literal|"Quicklinks specified at"
 operator|+
 literal|" component level, needs corresponding values set at service level"
 decl_stmt|;
+comment|// Note: %sin is not a typo. Constraint name is optional so the error messages
+comment|// below handle that scenario by adding a space if name is specified.
+DECL|field|ERROR_PLACEMENT_POLICY_CONSTRAINT_TYPE_NULL
+name|String
+name|ERROR_PLACEMENT_POLICY_CONSTRAINT_TYPE_NULL
+init|=
+literal|"Type not specified "
+operator|+
+literal|"for constraint %sin placement policy of component %s."
+decl_stmt|;
+DECL|field|ERROR_PLACEMENT_POLICY_CONSTRAINT_SCOPE_NULL
+name|String
+name|ERROR_PLACEMENT_POLICY_CONSTRAINT_SCOPE_NULL
+init|=
+literal|"Scope not specified "
+operator|+
+literal|"for constraint %sin placement policy of component %s."
+decl_stmt|;
+DECL|field|ERROR_PLACEMENT_POLICY_CONSTRAINT_TAGS_NULL
+name|String
+name|ERROR_PLACEMENT_POLICY_CONSTRAINT_TAGS_NULL
+init|=
+literal|"Tag(s) not specified "
+operator|+
+literal|"for constraint %sin placement policy of component %s."
+decl_stmt|;
 DECL|field|ERROR_PLACEMENT_POLICY_TAG_NAME_NOT_SAME
 name|String
 name|ERROR_PLACEMENT_POLICY_TAG_NAME_NOT_SAME

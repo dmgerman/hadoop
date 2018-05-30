@@ -4794,6 +4794,13 @@ name|finalConstraint
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|placementPolicy
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|org
@@ -5169,6 +5176,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|ResourceSizing
 name|resourceSizing
