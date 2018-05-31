@@ -626,6 +626,27 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * StandbyNode will hold namesystem lock to apply at most this many journal    * transactions.    * It will then release the lock and re-acquire it to load more transactions.    * By default the write lock is held for the entire journal segment.    * Fine-grained locking allows read requests to get through.    */
+DECL|field|DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_KEY
+init|=
+literal|"dfs.ha.tail-edits.max-txns-per-lock"
+decl_stmt|;
+DECL|field|DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_DEFAULT
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 DECL|field|tailerThread
 specifier|private
 specifier|final
@@ -750,6 +771,13 @@ specifier|private
 specifier|final
 name|boolean
 name|inProgressOk
+decl_stmt|;
+comment|/**    * Release the namesystem lock after loading this many transactions.    * Then re-acquire the lock to load more edits.    */
+DECL|field|maxTxnsPerLock
+specifier|private
+specifier|final
+name|long
+name|maxTxnsPerLock
 decl_stmt|;
 DECL|method|EditLogTailer (FSNamesystem namesystem, Configuration conf)
 specifier|public
@@ -1064,6 +1092,19 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_HA_TAILEDITS_INPROGRESS_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxTxnsPerLock
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_KEY
+argument_list|,
+name|DFS_HA_TAILEDITS_MAX_TXNS_PER_LOCK_DEFAULT
 argument_list|)
 expr_stmt|;
 name|nnCount
@@ -1419,6 +1460,12 @@ argument_list|(
 name|streams
 argument_list|,
 name|namesystem
+argument_list|,
+name|maxTxnsPerLock
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

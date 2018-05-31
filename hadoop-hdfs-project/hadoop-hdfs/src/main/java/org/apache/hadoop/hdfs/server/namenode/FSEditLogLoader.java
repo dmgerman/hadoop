@@ -1823,6 +1823,10 @@ name|edits
 argument_list|,
 name|expectedStartingTxId
 argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
 literal|null
 argument_list|,
 literal|null
@@ -1830,7 +1834,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Load an edit log, and apply the changes to the in-memory structure    * This is where we apply edits that we've been writing to disk all    * along.    */
-DECL|method|loadFSEdits (EditLogInputStream edits, long expectedStartingTxId, StartupOption startOpt, MetaRecoveryContext recovery)
+DECL|method|loadFSEdits (EditLogInputStream edits, long expectedStartingTxId, long maxTxnsToRead, StartupOption startOpt, MetaRecoveryContext recovery)
 name|long
 name|loadFSEdits
 parameter_list|(
@@ -1839,6 +1843,9 @@ name|edits
 parameter_list|,
 name|long
 name|expectedStartingTxId
+parameter_list|,
+name|long
+name|maxTxnsToRead
 parameter_list|,
 name|StartupOption
 name|startOpt
@@ -1901,6 +1908,10 @@ name|edits
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|" maxTxnsToRead = "
+operator|+
+name|maxTxnsToRead
 argument_list|)
 expr_stmt|;
 name|long
@@ -1913,6 +1924,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|expectedStartingTxId
+argument_list|,
+name|maxTxnsToRead
 argument_list|,
 name|startOpt
 argument_list|,
@@ -2010,13 +2023,50 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSDirectory
-name|fsDir
-init|=
-name|fsNamesys
+return|return
+name|loadEditRecords
+argument_list|(
+name|in
+argument_list|,
+name|closeOnExit
+argument_list|,
+name|expectedStartingTxId
+argument_list|,
+name|Long
 operator|.
-name|dir
-decl_stmt|;
+name|MAX_VALUE
+argument_list|,
+name|startOpt
+argument_list|,
+name|recovery
+argument_list|)
+return|;
+block|}
+DECL|method|loadEditRecords (EditLogInputStream in, boolean closeOnExit, long expectedStartingTxId, long maxTxnsToRead, StartupOption startOpt, MetaRecoveryContext recovery)
+name|long
+name|loadEditRecords
+parameter_list|(
+name|EditLogInputStream
+name|in
+parameter_list|,
+name|boolean
+name|closeOnExit
+parameter_list|,
+name|long
+name|expectedStartingTxId
+parameter_list|,
+name|long
+name|maxTxnsToRead
+parameter_list|,
+name|StartupOption
+name|startOpt
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|EnumMap
 argument_list|<
 name|FSEditLogOpCodes
@@ -2065,6 +2115,13 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
+name|FSDirectory
+name|fsDir
+init|=
+name|fsNamesys
+operator|.
+name|dir
+decl_stmt|;
 name|fsDir
 operator|.
 name|writeLock
@@ -2665,6 +2722,15 @@ expr_stmt|;
 name|totalEdits
 operator|++
 expr_stmt|;
+if|if
+condition|(
+name|numEdits
+operator|>=
+name|maxTxnsToRead
+condition|)
+block|{
+break|break;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2781,7 +2847,33 @@ argument_list|(
 name|opCounts
 argument_list|)
 expr_stmt|;
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"maxTxnsToRead = "
+operator|+
+name|maxTxnsToRead
+operator|+
+literal|" actual edits read = "
+operator|+
+name|numEdits
+argument_list|)
+expr_stmt|;
 block|}
+assert|assert
+name|numEdits
+operator|<=
+name|maxTxnsToRead
+operator|||
+name|numEdits
+operator|==
+literal|1
+operator|:
+literal|"should read at least one txn, but not more than the configured max"
+assert|;
 block|}
 return|return
 name|numEdits

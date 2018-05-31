@@ -3724,6 +3724,10 @@ name|editStreams
 argument_list|,
 name|target
 argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
 name|startOpt
 argument_list|,
 name|recovery
@@ -4359,14 +4363,18 @@ name|editStreams
 argument_list|,
 name|target
 argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
 literal|null
 argument_list|,
 literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, StartupOption startOpt, MetaRecoveryContext recovery)
-specifier|private
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, long maxTxnsToRead, StartupOption startOpt, MetaRecoveryContext recovery)
+specifier|public
 name|long
 name|loadEdits
 parameter_list|(
@@ -4378,6 +4386,9 @@ name|editStreams
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|,
+name|long
+name|maxTxnsToRead
 parameter_list|,
 name|StartupOption
 name|startOpt
@@ -4480,6 +4491,8 @@ name|lastAppliedTxId
 operator|+
 literal|1
 argument_list|,
+name|maxTxnsToRead
+argument_list|,
 name|startOpt
 argument_list|,
 name|recovery
@@ -4509,6 +4522,10 @@ operator|!=
 name|HdfsServerConstants
 operator|.
 name|INVALID_TXID
+operator|&&
+name|recovery
+operator|!=
+literal|null
 condition|)
 block|{
 name|lastAppliedTxId
