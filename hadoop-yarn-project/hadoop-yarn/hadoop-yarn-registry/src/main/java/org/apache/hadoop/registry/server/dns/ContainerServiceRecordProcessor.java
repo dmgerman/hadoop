@@ -818,6 +818,9 @@ argument_list|()
 block|,
 name|getContainerIDName
 argument_list|()
+block|,
+name|getComponentName
+argument_list|()
 block|}
 argument_list|)
 expr_stmt|;
