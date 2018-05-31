@@ -60,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -1258,8 +1272,10 @@ return|return
 name|addr
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|isValidUrl (String url)
-specifier|private
+specifier|public
 name|boolean
 name|isValidUrl
 parameter_list|(
@@ -1305,6 +1321,48 @@ name|HttpURLConnection
 operator|.
 name|HTTP_OK
 expr_stmt|;
+comment|// If security is enabled, any valid RM which can give 401 Unauthorized is
+comment|// good enough to access. Since AM doesn't have enough credential, auth
+comment|// cannot be completed and hence 401 is fine in such case.
+if|if
+condition|(
+operator|!
+name|isValid
+operator|&&
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|isValid
+operator|=
+operator|(
+name|conn
+operator|.
+name|getResponseCode
+argument_list|()
+operator|==
+name|HttpURLConnection
+operator|.
+name|HTTP_UNAUTHORIZED
+operator|)
+operator|||
+operator|(
+name|conn
+operator|.
+name|getResponseCode
+argument_list|()
+operator|==
+name|HttpURLConnection
+operator|.
+name|HTTP_FORBIDDEN
+operator|)
+expr_stmt|;
+return|return
+name|isValid
+return|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1314,7 +1372,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
 literal|"Failed to connect to "
 operator|+
