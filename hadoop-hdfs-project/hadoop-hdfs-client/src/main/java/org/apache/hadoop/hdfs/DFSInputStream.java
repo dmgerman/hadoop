@@ -3046,11 +3046,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to connect to {} for block {}, "
+literal|"Failed to connect to {} for file {} for block "
 operator|+
-literal|"add to deadNodes and continue. "
+literal|"{}, add to deadNodes and continue. "
 argument_list|,
 name|targetAddr
+argument_list|,
+name|src
 argument_list|,
 name|targetBlock
 operator|.
