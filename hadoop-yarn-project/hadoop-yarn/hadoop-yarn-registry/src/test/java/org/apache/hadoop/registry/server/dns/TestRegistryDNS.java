@@ -621,7 +621,7 @@ literal|"{\n"
 operator|+
 literal|"  \"type\" : \"JSONServiceRecord\",\n"
 operator|+
-literal|"  \"description\" : \"COMP-NAME\",\n"
+literal|"  \"description\" : \"httpd-1\",\n"
 operator|+
 literal|"  \"external\" : [ ],\n"
 operator|+
@@ -633,7 +633,37 @@ literal|"  \"yarn:persistence\" : \"container\",\n"
 operator|+
 literal|"  \"yarn:ip\" : \"172.17.0.19\",\n"
 operator|+
-literal|"  \"yarn:hostname\" : \"0a134d6329ba\"\n"
+literal|"  \"yarn:hostname\" : \"host1\",\n"
+operator|+
+literal|"  \"yarn:component\" : \"httpd\"\n"
+operator|+
+literal|"}\n"
+decl_stmt|;
+DECL|field|CONTAINER_RECORD2
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_RECORD2
+init|=
+literal|"{\n"
+operator|+
+literal|"  \"type\" : \"JSONServiceRecord\",\n"
+operator|+
+literal|"  \"description\" : \"httpd-2\",\n"
+operator|+
+literal|"  \"external\" : [ ],\n"
+operator|+
+literal|"  \"internal\" : [ ],\n"
+operator|+
+literal|"  \"yarn:id\" : \"container_e50_1451931954322_0016_01_000003\",\n"
+operator|+
+literal|"  \"yarn:persistence\" : \"container\",\n"
+operator|+
+literal|"  \"yarn:ip\" : \"172.17.0.20\",\n"
+operator|+
+literal|"  \"yarn:hostname\" : \"host2\",\n"
+operator|+
+literal|"  \"yarn:component\" : \"httpd\"\n"
 operator|+
 literal|"}\n"
 decl_stmt|;
@@ -648,7 +678,7 @@ literal|"{\n"
 operator|+
 literal|"  \"type\" : \"JSONServiceRecord\",\n"
 operator|+
-literal|"  \"description\" : \"COMP-NAME\",\n"
+literal|"  \"description\" : \"httpd-1\",\n"
 operator|+
 literal|"  \"external\" : [ ],\n"
 operator|+
@@ -656,7 +686,9 @@ literal|"  \"internal\" : [ ],\n"
 operator|+
 literal|"  \"yarn:id\" : \"container_e50_1451931954322_0016_01_000002\",\n"
 operator|+
-literal|"  \"yarn:persistence\" : \"container\"\n"
+literal|"  \"yarn:persistence\" : \"container\",\n"
+operator|+
+literal|"  \"yarn:component\" : \"httpd\"\n"
 operator|+
 literal|"}\n"
 decl_stmt|;
@@ -671,7 +703,7 @@ literal|"{\n"
 operator|+
 literal|"  \"type\" : \"JSONServiceRecord\",\n"
 operator|+
-literal|"  \"description\" : \"COMP-NAME\",\n"
+literal|"  \"description\" : \"httpd-1\",\n"
 operator|+
 literal|"  \"external\" : [ ],\n"
 operator|+
@@ -681,7 +713,9 @@ literal|"  \"yarn:id\" : \"container_e50_1451931954322_0016_01_000003\",\n"
 operator|+
 literal|"  \"yarn:ip\" : \"172.17.0.19\",\n"
 operator|+
-literal|"  \"yarn:hostname\" : \"0a134d6329bb\"\n"
+literal|"  \"yarn:hostname\" : \"0a134d6329bb\",\n"
+operator|+
+literal|"  \"yarn:component\" : \"httpd\""
 operator|+
 literal|"}\n"
 decl_stmt|;
@@ -1243,7 +1277,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -1462,7 +1496,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -1553,7 +1587,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -1706,7 +1740,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -2832,7 +2866,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 name|Type
 operator|.
@@ -3278,7 +3312,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -3313,7 +3347,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"comp-name.test1.root.dev.test."
+literal|"httpd-1.test1.root.dev.test."
 argument_list|,
 operator|(
 operator|(
@@ -3871,6 +3905,109 @@ operator|.
 name|CNAME
 argument_list|)
 decl_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testMultiARecord ()
+specifier|public
+name|void
+name|testMultiARecord
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|ServiceRecord
+name|record
+init|=
+name|getMarshal
+argument_list|()
+operator|.
+name|fromBytes
+argument_list|(
+literal|"somepath"
+argument_list|,
+name|CONTAINER_RECORD
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|ServiceRecord
+name|record2
+init|=
+name|getMarshal
+argument_list|()
+operator|.
+name|fromBytes
+argument_list|(
+literal|"somepath"
+argument_list|,
+name|CONTAINER_RECORD2
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|getRegistryDNS
+argument_list|()
+operator|.
+name|register
+argument_list|(
+literal|"/registry/users/root/services/org-apache-slider/test1/components/"
+operator|+
+literal|"ctr-e50-1451931954322-0016-01-000002"
+argument_list|,
+name|record
+argument_list|)
+expr_stmt|;
+name|getRegistryDNS
+argument_list|()
+operator|.
+name|register
+argument_list|(
+literal|"/registry/users/root/services/org-apache-slider/test1/components/"
+operator|+
+literal|"ctr-e50-1451931954322-0016-01-000003"
+argument_list|,
+name|record2
+argument_list|)
+expr_stmt|;
+comment|// start assessing whether correct records are available
+name|Record
+index|[]
+name|recs
+init|=
+name|assertDNSQuery
+argument_list|(
+literal|"httpd.test1.root.dev.test."
+argument_list|,
+literal|2
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"not an ARecord"
+argument_list|,
+name|recs
+index|[
+literal|0
+index|]
+operator|instanceof
+name|ARecord
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"not an ARecord"
+argument_list|,
+name|recs
+index|[
+literal|1
+index|]
+operator|instanceof
+name|ARecord
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getRegistryDNS ()
 specifier|public

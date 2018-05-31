@@ -64,7 +64,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|NotImplementedException
 import|;
@@ -1437,7 +1437,9 @@ comment|//not invoked by anybody
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 annotation|@
@@ -1690,7 +1692,9 @@ comment|/* Should not be invoked by anyone. */
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 annotation|@
@@ -1710,7 +1714,9 @@ comment|/* Should not be invoked by anyone. */
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 annotation|@
@@ -1730,7 +1736,9 @@ comment|/* Should not be invoked by anyone. */
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 annotation|@
@@ -1745,7 +1753,9 @@ comment|/* Should not be invoked by anyone.  Normally used to set token service 
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 block|}

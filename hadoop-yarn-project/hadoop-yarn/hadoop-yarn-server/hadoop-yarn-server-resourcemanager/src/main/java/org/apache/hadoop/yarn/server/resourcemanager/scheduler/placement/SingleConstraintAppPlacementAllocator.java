@@ -40,6 +40,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1301,6 +1315,21 @@ literal|"Only GUARANTEED execution type is supported."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Node partition
+name|String
+name|nodePartition
+init|=
+literal|null
+decl_stmt|;
+comment|// Target allocation tags
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|targetAllocationTags
+init|=
+literal|null
+decl_stmt|;
 name|PlacementConstraint
 name|constraint
 init|=
@@ -1309,6 +1338,13 @@ operator|.
 name|getPlacementConstraint
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|constraint
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// We only accept SingleConstraint
 name|PlacementConstraint
 operator|.
@@ -1461,21 +1497,6 @@ literal|"TargetExpression should not be null or empty"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Set node partition
-name|String
-name|nodePartition
-init|=
-literal|null
-decl_stmt|;
-comment|// Target allocation tags
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|targetAllocationTags
-init|=
-literal|null
-decl_stmt|;
 for|for
 control|(
 name|PlacementConstraint
@@ -1549,8 +1570,8 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// This means we have duplicated node partition entry inside placement
-comment|// constraint, which might be set by mistake.
+comment|// This means we have duplicated node partition entry
+comment|// inside placement constraint, which might be set by mistake.
 name|throwExceptionWithMetaInfo
 argument_list|(
 literal|"Only one node partition targetExpression is allowed"
@@ -1703,12 +1724,30 @@ block|{
 comment|// That means we don't have ALLOCATION_TAG specified
 name|throwExceptionWithMetaInfo
 argument_list|(
-literal|"Couldn't find target expression with type == ALLOCATION_TAG, it is "
+literal|"Couldn't find target expression with type == ALLOCATION_TAG,"
 operator|+
-literal|"required to include one and only one target expression with "
+literal|" it is required to include one and only one target"
 operator|+
-literal|"type == ALLOCATION_TAG"
+literal|" expression with type == ALLOCATION_TAG"
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// If this scheduling request doesn't contain a placement constraint,
+comment|// we set allocation tags an empty set.
+if|if
+condition|(
+name|targetAllocationTags
+operator|==
+literal|null
+condition|)
+block|{
+name|targetAllocationTags
+operator|=
+name|ImmutableSet
+operator|.
+name|of
+argument_list|()
 expr_stmt|;
 block|}
 if|if
