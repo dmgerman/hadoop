@@ -591,6 +591,15 @@ name|HDDS_REST_HTTP_ADDRESS_DEFAULT
 init|=
 literal|"0.0.0.0:9880"
 decl_stmt|;
+DECL|field|HDDS_DATANODE_DIR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_DATANODE_DIR_KEY
+init|=
+literal|"hdds.datanode.dir"
+decl_stmt|;
 DECL|field|HDDS_REST_CSRF_ENABLED_KEY
 specifier|public
 specifier|static
