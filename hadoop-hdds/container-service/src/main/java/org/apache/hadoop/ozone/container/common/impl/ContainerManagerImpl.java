@@ -3526,7 +3526,7 @@ name|isOpen
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns LifeCycle State of the container    * @param containerID - Id of the container    * @return LifeCycle State of the container    * @throws StorageContainerException    */
+comment|/**    * Returns LifeCycle State of the container.    * @param containerID - Id of the container    * @return LifeCycle State of the container    * @throws StorageContainerException    */
 DECL|method|getState (long containerID)
 specifier|private
 name|HddsProtos
