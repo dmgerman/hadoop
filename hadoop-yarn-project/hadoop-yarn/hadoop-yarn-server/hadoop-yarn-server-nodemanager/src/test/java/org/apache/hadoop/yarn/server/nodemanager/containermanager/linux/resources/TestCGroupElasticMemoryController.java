@@ -46,6 +46,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|yarn
@@ -240,6 +268,22 @@ name|when
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeMacOS
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test for elastic non-strict memory controller based on cgroups.  */
 end_comment
@@ -250,6 +294,22 @@ specifier|public
 class|class
 name|TestCGroupElasticMemoryController
 block|{
+DECL|field|LOG
+specifier|protected
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|TestCGroupElasticMemoryController
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|conf
 specifier|private
 name|YarnConfiguration
@@ -295,9 +355,6 @@ parameter_list|()
 throws|throws
 name|YarnException
 block|{
-name|CGroupElasticMemoryController
-name|controller
-init|=
 operator|new
 name|CGroupElasticMemoryController
 argument_list|(
@@ -313,7 +370,7 @@ literal|false
 argument_list|,
 literal|10000
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 comment|/**    * Test that the OOM logic is pluggable.    * @throws YarnException on exception    */
 annotation|@
@@ -372,9 +429,6 @@ argument_list|(
 literal|""
 argument_list|)
 expr_stmt|;
-name|CGroupElasticMemoryController
-name|controller
-init|=
 operator|new
 name|CGroupElasticMemoryController
 argument_list|(
@@ -390,11 +444,16 @@ literal|false
 argument_list|,
 literal|10000
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 comment|/**    * Test that the handler is notified about multiple OOM events.    * @throws Exception on exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testMultipleOOMEvents ()
 specifier|public
 name|void
@@ -586,6 +645,11 @@ block|}
 comment|/**    * Test the scenario that the controller is stopped before.    * the child process starts    * @throws Exception one exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testStopBeforeStart ()
 specifier|public
 name|void
@@ -783,6 +847,10 @@ comment|/**    * Test the edge case that OOM is never resolved.    * @throws Exc
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|,
 name|expected
 operator|=
 name|YarnRuntimeException
@@ -981,6 +1049,10 @@ comment|/**    * Test the edge case that OOM cannot be resolved due to the lack 
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|,
 name|expected
 operator|=
 name|YarnRuntimeException
@@ -1184,6 +1256,11 @@ block|}
 comment|/**    * Test that node manager can exit listening.    * This is done by running a long running listener for 10 seconds.    * Then we wait for 2 seconds and stop listening.    * @throws Exception exception occurred    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testNormalExit ()
 specifier|public
 name|void
@@ -1192,6 +1269,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// TODO This may hang on Linux
+name|assumeMacOS
+argument_list|()
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -1206,6 +1287,16 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|ExecutorService
+name|service
+init|=
+name|Executors
+operator|.
+name|newFixedThreadPool
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|FileUtils
@@ -1214,7 +1305,7 @@ name|writeStringToFile
 argument_list|(
 name|script
 argument_list|,
-literal|"#!/bin/bash\nsleep 10000;\n"
+literal|"#!/bin/bash\nsleep 10000;"
 argument_list|,
 name|Charset
 operator|.
@@ -1329,15 +1420,13 @@ argument_list|,
 name|handler
 argument_list|)
 decl_stmt|;
-name|ExecutorService
-name|service
+name|long
+name|start
 init|=
-name|Executors
+name|System
 operator|.
-name|newFixedThreadPool
-argument_list|(
-literal|1
-argument_list|)
+name|currentTimeMillis
+argument_list|()
 decl_stmt|;
 name|service
 operator|.
@@ -1370,10 +1459,36 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Calling process destroy in %d ms"
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|start
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|controller
 operator|.
 name|stopListening
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Called process destroy."
+argument_list|)
 expr_stmt|;
 block|}
 argument_list|)
@@ -1386,6 +1501,11 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|service
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|String
@@ -1448,9 +1568,6 @@ argument_list|(
 literal|""
 argument_list|)
 expr_stmt|;
-name|CGroupElasticMemoryController
-name|controller
-init|=
 operator|new
 name|CGroupElasticMemoryController
 argument_list|(
@@ -1466,7 +1583,7 @@ literal|false
 argument_list|,
 literal|10
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 block|}
 end_class
