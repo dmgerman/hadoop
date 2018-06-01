@@ -2200,11 +2200,15 @@ literal|"keep_containers_across_application_attempts"
 argument_list|,
 literal|false
 argument_list|,
-literal|"Flag to indicate whether to keep containers across application attempts."
+literal|"Flag to indicate whether to keep containers across application "
+operator|+
+literal|"attempts."
 operator|+
 literal|" If the flag is true, running containers will not be killed when"
 operator|+
-literal|" application attempt fails and these containers will be retrieved by"
+literal|" application attempt fails and these containers will be "
+operator|+
+literal|"retrieved by"
 operator|+
 literal|" the new application attempt "
 argument_list|)
@@ -5312,6 +5316,19 @@ name|shellCmdPriority
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|keepContainers
+condition|)
+block|{
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"--keep_containers_across_application_attempts"
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|Map

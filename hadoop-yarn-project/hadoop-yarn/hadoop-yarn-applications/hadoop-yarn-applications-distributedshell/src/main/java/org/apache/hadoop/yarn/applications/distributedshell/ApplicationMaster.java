@@ -1922,6 +1922,13 @@ name|Resource
 argument_list|>
 name|resourceProfiles
 decl_stmt|;
+DECL|field|keepContainersAcrossAttempts
+specifier|private
+name|boolean
+name|keepContainersAcrossAttempts
+init|=
+literal|false
+decl_stmt|;
 comment|// Counter for completed containers ( complete denotes successful or failed )
 DECL|field|numCompletedContainers
 specifier|private
@@ -2928,6 +2935,27 @@ name|opts
 operator|.
 name|addOption
 argument_list|(
+literal|"keep_containers_across_application_attempts"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Flag to indicate whether to keep containers across application "
+operator|+
+literal|"attempts."
+operator|+
+literal|" If the flag is true, running containers will not be killed when"
+operator|+
+literal|" application attempt fails and these containers will be "
+operator|+
+literal|"retrieved by"
+operator|+
+literal|" the new application attempt "
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
 literal|"help"
 argument_list|,
 literal|false
@@ -3881,6 +3909,15 @@ argument_list|(
 literal|"container_resource_profile"
 argument_list|,
 literal|""
+argument_list|)
+expr_stmt|;
+name|keepContainersAcrossAttempts
+operator|=
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"keep_containers_across_application_attempts"
 argument_list|)
 expr_stmt|;
 if|if
@@ -6274,18 +6311,45 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|onShutdownRequest ()
 annotation|@
 name|Override
-DECL|method|onShutdownRequest ()
 specifier|public
 name|void
 name|onShutdownRequest
 parameter_list|()
 block|{
+if|if
+condition|(
+name|keepContainersAcrossAttempts
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutdown request received. Ignoring since "
+operator|+
+literal|"keep_containers_across_application_attempts is enabled"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutdown request received. Processing since "
+operator|+
+literal|"keep_containers_across_application_attempts is disabled"
+argument_list|)
+expr_stmt|;
 name|done
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
