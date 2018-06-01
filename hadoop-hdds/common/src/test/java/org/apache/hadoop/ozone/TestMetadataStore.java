@@ -17,6 +17,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
 import|import
 name|com
 operator|.
@@ -527,6 +543,23 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_METADATA_STORE_IMPL_ROCKSDB
+operator|.
+name|equals
+argument_list|(
+name|storeImpl
+argument_list|)
+condition|)
+block|{
+comment|// The initialization of RocksDB fails on Windows
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
+block|}
 name|testDir
 operator|=
 name|GenericTestUtils
@@ -658,6 +691,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|store
+operator|!=
+literal|null
+condition|)
+block|{
 name|store
 operator|.
 name|close
@@ -668,6 +708,14 @@ operator|.
 name|destroy
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|testDir
+operator|!=
+literal|null
+condition|)
+block|{
 name|FileUtils
 operator|.
 name|deleteDirectory
@@ -675,6 +723,7 @@ argument_list|(
 name|testDir
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getBytes (String str)
 specifier|private
