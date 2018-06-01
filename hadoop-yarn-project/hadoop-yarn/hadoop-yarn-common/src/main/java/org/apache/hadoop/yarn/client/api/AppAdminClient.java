@@ -691,6 +691,28 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    * Operation to be performed by the RM after an application has completed.    *    * @param appName  the name of the application.    * @param userName the name of the user.    * @return exit code    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionCleanUp (String appName, String userName)
+specifier|public
+specifier|abstract
+name|int
+name|actionCleanUp
+parameter_list|(
+name|String
+name|appName
+parameter_list|,
+name|String
+name|userName
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
 block|}
 end_class
 
