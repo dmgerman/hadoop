@@ -7093,11 +7093,27 @@ name|HttpServletResponse
 operator|.
 name|SC_FORBIDDEN
 argument_list|,
+literal|"Unauthenticated users are not "
+operator|+
+literal|"authorized to access this page."
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
 literal|"User "
 operator|+
 name|remoteUser
 operator|+
-literal|" is unauthorized to access this page."
+literal|" is unauthorized to access the page "
+operator|+
+name|request
+operator|.
+name|getRequestURI
+argument_list|()
+operator|+
+literal|"."
 argument_list|)
 expr_stmt|;
 return|return
