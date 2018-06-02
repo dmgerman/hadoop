@@ -4981,6 +4981,14 @@ init|=
 name|getTimelineReaderManager
 argument_list|()
 decl_stmt|;
+name|Configuration
+name|config
+init|=
+name|timelineReaderManager
+operator|.
+name|getConfig
+argument_list|()
+decl_stmt|;
 name|Set
 argument_list|<
 name|TimelineEntity
@@ -5130,10 +5138,7 @@ if|if
 condition|(
 name|isDisplayEntityPerUserFilterEnabled
 argument_list|(
-name|timelineReaderManager
-operator|.
-name|getConfig
-argument_list|()
+name|config
 argument_list|)
 condition|)
 block|{
@@ -5196,6 +5201,8 @@ condition|(
 operator|!
 name|validateAuthUserWithEntityUser
 argument_list|(
+name|timelineReaderManager
+argument_list|,
 name|callerUGI
 argument_list|,
 name|userId
@@ -10706,6 +10713,20 @@ name|config
 parameter_list|)
 block|{
 return|return
+operator|!
+name|config
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_READ_AUTH_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_TIMELINE_SERVICE_READ_AUTH_ENABLED
+argument_list|)
+operator|&&
 name|config
 operator|.
 name|getBoolean
@@ -10718,11 +10739,15 @@ literal|false
 argument_list|)
 return|;
 block|}
-DECL|method|validateAuthUserWithEntityUser (UserGroupInformation ugi, String entityUser)
+comment|// TODO to be removed/modified once ACL story has played
+DECL|method|validateAuthUserWithEntityUser ( TimelineReaderManager readerManager, UserGroupInformation ugi, String entityUser)
 specifier|private
 name|boolean
 name|validateAuthUserWithEntityUser
 parameter_list|(
+name|TimelineReaderManager
+name|readerManager
+parameter_list|,
 name|UserGroupInformation
 name|ugi
 parameter_list|,
@@ -10773,12 +10798,21 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+operator|(
+name|readerManager
+operator|.
+name|checkAccess
+argument_list|(
+name|ugi
+argument_list|)
+operator|||
 name|authUser
 operator|.
 name|equals
 argument_list|(
 name|requestedUser
 argument_list|)
+operator|)
 return|;
 block|}
 block|}
