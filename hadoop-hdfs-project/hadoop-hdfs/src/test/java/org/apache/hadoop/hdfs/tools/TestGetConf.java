@@ -2299,7 +2299,10 @@ name|buffer
 operator|.
 name|append
 argument_list|(
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|expected1
@@ -2691,7 +2694,10 @@ argument_list|)
 expr_stmt|;
 name|actual1
 operator|=
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 expr_stmt|;
 name|expected1
 operator|=
@@ -2773,7 +2779,10 @@ argument_list|)
 expr_stmt|;
 name|actual1
 operator|=
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
