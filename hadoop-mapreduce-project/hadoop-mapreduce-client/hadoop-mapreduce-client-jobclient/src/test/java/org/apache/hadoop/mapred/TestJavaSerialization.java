@@ -571,6 +571,11 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testMapReduceJob ()
 specifier|public
@@ -785,6 +790,8 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|InputStream
 name|is
 init|=
@@ -797,7 +804,8 @@ index|[
 literal|0
 index|]
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|String
 name|reduceOutput
 init|=
@@ -824,12 +832,7 @@ name|reduceOutput
 operator|.
 name|split
 argument_list|(
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"line.separator"
-argument_list|)
+literal|"\n"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -879,11 +882,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|is
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 comment|/**    * HADOOP-4466:    * This test verifies the JavSerialization impl can write to    * SequenceFiles. by virtue other SequenceFileOutputFormat is not     * coupled to Writable types, if so, the job will fail.    *    */
 annotation|@
