@@ -410,6 +410,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|Executors
 import|;
 end_import
@@ -654,6 +666,12 @@ operator|new
 name|VolumeCheckContext
 argument_list|()
 decl_stmt|;
+DECL|field|checkVolumeResultHandlerExecutorService
+specifier|private
+specifier|final
+name|ExecutorService
+name|checkVolumeResultHandlerExecutorService
+decl_stmt|;
 comment|/**    * @param conf Configuration object.    * @param timer {@link Timer} object used for throttling checks.    */
 DECL|method|DatasetVolumeChecker (Configuration conf, Timer timer)
 specifier|public
@@ -872,6 +890,30 @@ operator|.
 name|build
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkVolumeResultHandlerExecutorService
+operator|=
+name|Executors
+operator|.
+name|newCachedThreadPool
+argument_list|(
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"VolumeCheck ResultHandler thread %d"
+argument_list|)
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|build
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1406,6 +1448,8 @@ argument_list|)
 argument_list|,
 name|callback
 argument_list|)
+argument_list|,
+name|checkVolumeResultHandlerExecutorService
 argument_list|)
 expr_stmt|;
 return|return
