@@ -222,7 +222,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/** Construct a client-side proxy object. */
-DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth)
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 parameter_list|<
 name|T
 parameter_list|>
@@ -261,6 +261,9 @@ name|connectionRetryPolicy
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException

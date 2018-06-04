@@ -659,6 +659,8 @@ argument_list|,
 name|connectionRetryPolicy
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -669,7 +671,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth)
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|public
 parameter_list|<
 name|T
@@ -709,6 +711,9 @@ name|connectionRetryPolicy
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -735,6 +740,8 @@ argument_list|,
 name|connectionRetryPolicy
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -915,7 +922,12 @@ specifier|private
 name|AtomicBoolean
 name|fallbackToSimpleAuth
 decl_stmt|;
-DECL|method|Invoker (Class<?> protocol, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth)
+DECL|field|alignmentContext
+specifier|private
+name|AlignmentContext
+name|alignmentContext
+decl_stmt|;
+DECL|method|Invoker (Class<?> protocol, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|private
 name|Invoker
 parameter_list|(
@@ -945,6 +957,9 @@ name|connectionRetryPolicy
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -982,6 +997,12 @@ operator|.
 name|fallbackToSimpleAuth
 operator|=
 name|fallbackToSimpleAuth
+expr_stmt|;
+name|this
+operator|.
+name|alignmentContext
+operator|=
+name|alignmentContext
 expr_stmt|;
 block|}
 comment|/**      * This constructor takes a connectionId, instead of creating a new one.      */
@@ -1359,6 +1380,8 @@ argument_list|,
 name|remoteId
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}

@@ -212,6 +212,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|AlignmentContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -483,6 +497,18 @@ block|{
 return|return
 name|fallbackToSimpleAuth
 return|;
+block|}
+DECL|method|getAlignmentContext ()
+specifier|public
+specifier|synchronized
+name|AlignmentContext
+name|getAlignmentContext
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+comment|// by default the context is null
 block|}
 comment|/**    * ProxyInfo to a NameNode. Includes its address.    */
 DECL|class|NNProxyInfo

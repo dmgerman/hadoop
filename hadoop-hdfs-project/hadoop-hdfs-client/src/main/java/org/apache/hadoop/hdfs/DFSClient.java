@@ -2252,20 +2252,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|Client
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|RPC
 import|;
 end_import
@@ -2821,12 +2807,6 @@ specifier|private
 specifier|final
 name|long
 name|serverDefaultsValidityPeriod
-decl_stmt|;
-DECL|field|alignmentContext
-specifier|private
-specifier|final
-name|ClientGCIContext
-name|alignmentContext
 decl_stmt|;
 DECL|method|getConf ()
 specifier|public
@@ -3597,21 +3577,6 @@ argument_list|,
 name|nnFallbackToSimpleAuth
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|alignmentContext
-operator|=
-operator|new
-name|ClientGCIContext
-argument_list|()
-expr_stmt|;
-name|Client
-operator|.
-name|setAlignmentContext
-argument_list|(
-name|alignmentContext
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Return the socket addresses to use with each configured    * local interface. Local interfaces may be specified by IP    * address, IP address range using CIDR notation, interface    * name (e.g. eth0) or sub-interface name (e.g. eth0:0).    * The socket addresses consist of the IPs for the interfaces    * and the ephemeral port (port 0). If an IP, IP range, or    * interface name matches an interface with sub-interfaces    * only the IP of the interface is used. Sub-interfaces can    * be used by specifying them explicitly (by IP or name).    *    * @return SocketAddresses for the configured local interfaces,    *    or an empty array if none are configured    * @throws UnknownHostException if a given interface name is invalid    */
 DECL|method|getLocalInterfaceAddrs ( String interfaceNames[])
@@ -4136,17 +4101,6 @@ parameter_list|()
 block|{
 return|return
 name|clientRunning
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getAlignmentContext ()
-name|ClientGCIContext
-name|getAlignmentContext
-parameter_list|()
-block|{
-return|return
-name|alignmentContext
 return|;
 block|}
 DECL|method|getLastLeaseRenewal ()

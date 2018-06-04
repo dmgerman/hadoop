@@ -937,28 +937,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|field|alignmentContext
-specifier|private
-specifier|static
-name|AlignmentContext
-name|alignmentContext
-decl_stmt|;
-comment|/** Set alignment context to use to fetch state alignment info from RPC. */
-DECL|method|setAlignmentContext (AlignmentContext ac)
-specifier|public
-specifier|static
-name|void
-name|setAlignmentContext
-parameter_list|(
-name|AlignmentContext
-name|ac
-parameter_list|)
-block|{
-name|alignmentContext
-operator|=
-name|ac
-expr_stmt|;
-block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1769,6 +1747,11 @@ specifier|final
 name|Object
 name|externalHandler
 decl_stmt|;
+DECL|field|alignmentContext
+specifier|private
+name|AlignmentContext
+name|alignmentContext
+decl_stmt|;
 DECL|method|Call (RPC.RpcKind rpcKind, Writable param)
 specifier|private
 name|Call
@@ -1931,6 +1914,24 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**      * Set an AlignmentContext for the call to update when call is done.      *      * @param ac alignment context to update.      */
+DECL|method|setAlignmentContext (AlignmentContext ac)
+specifier|public
+specifier|synchronized
+name|void
+name|setAlignmentContext
+parameter_list|(
+name|AlignmentContext
+name|ac
+parameter_list|)
+block|{
+name|this
+operator|.
+name|alignmentContext
+operator|=
+name|ac
+expr_stmt|;
 block|}
 comment|/** Set the exception when there is an error.      * Notify the caller the call is done.      *       * @param error exception thrown by the call; either local or remote      */
 DECL|method|setException (IOException error)
@@ -4916,6 +4917,8 @@ name|retry
 argument_list|,
 name|clientId
 argument_list|,
+name|call
+operator|.
 name|alignmentContext
 argument_list|)
 decl_stmt|;
@@ -5260,14 +5263,17 @@ argument_list|(
 name|value
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
+name|call
+operator|.
 name|alignmentContext
 operator|!=
 literal|null
 condition|)
 block|{
+name|call
+operator|.
 name|alignmentContext
 operator|.
 name|receiveResponseState
@@ -5275,6 +5281,7 @@ argument_list|(
 name|header
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// verify that packet length was correct
 if|if
@@ -6004,6 +6011,52 @@ operator|.
 name|RPC_SERVICE_CLASS_DEFAULT
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
+specifier|public
+name|Writable
+name|call
+parameter_list|(
+name|RPC
+operator|.
+name|RpcKind
+name|rpcKind
+parameter_list|,
+name|Writable
+name|rpcRequest
+parameter_list|,
+name|ConnectionId
+name|remoteId
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|call
+argument_list|(
+name|rpcKind
+argument_list|,
+name|rpcRequest
+argument_list|,
+name|remoteId
+argument_list|,
+name|RPC
+operator|.
+name|RPC_SERVICE_CLASS_DEFAULT
+argument_list|,
+name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 return|;
 block|}
@@ -6064,7 +6117,6 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc response.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @return the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
 DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, int serviceClass, AtomicBoolean fallbackToSimpleAuth)
 name|Writable
 name|call
@@ -6089,6 +6141,51 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|call
+argument_list|(
+name|rpcKind
+argument_list|,
+name|rpcRequest
+argument_list|,
+name|remoteId
+argument_list|,
+name|serviceClass
+argument_list|,
+name|fallbackToSimpleAuth
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc response.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @param alignmentContext - state alignment context    * @return the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
+DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, int serviceClass, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
+name|Writable
+name|call
+parameter_list|(
+name|RPC
+operator|.
+name|RpcKind
+name|rpcKind
+parameter_list|,
+name|Writable
+name|rpcRequest
+parameter_list|,
+name|ConnectionId
+name|remoteId
+parameter_list|,
+name|int
+name|serviceClass
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 specifier|final
 name|Call
 name|call
@@ -6100,6 +6197,13 @@ argument_list|,
 name|rpcRequest
 argument_list|)
 decl_stmt|;
+name|call
+operator|.
+name|setAlignmentContext
+argument_list|(
+name|alignmentContext
+argument_list|)
+expr_stmt|;
 specifier|final
 name|Connection
 name|connection
