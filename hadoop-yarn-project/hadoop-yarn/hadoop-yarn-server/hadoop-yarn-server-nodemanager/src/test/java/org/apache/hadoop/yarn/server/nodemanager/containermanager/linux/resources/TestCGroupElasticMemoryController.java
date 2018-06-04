@@ -268,22 +268,6 @@ name|when
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|PlatformAssumptions
-operator|.
-name|assumeMacOS
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test for elastic non-strict memory controller based on cgroups.  */
 end_comment
@@ -1253,7 +1237,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test that node manager can exit listening.    * This is done by running a long running listener for 10 seconds.    * Then we wait for 2 seconds and stop listening.    * @throws Exception exception occurred    */
+comment|/**    * Test that node manager can exit listening.    * This is done by running a long running listener for 10000 seconds.    * Then we wait for 2 seconds and stop listening.    * We do not use a script this time to avoid leaking the child process.    * @throws Exception exception occurred    */
 annotation|@
 name|Test
 argument_list|(
@@ -1269,10 +1253,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// TODO This may hang on Linux
-name|assumeMacOS
-argument_list|()
-expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -1281,10 +1261,7 @@ name|YarnConfiguration
 operator|.
 name|NM_ELASTIC_MEMORY_CONTROL_OOM_LISTENER_PATH
 argument_list|,
-name|script
-operator|.
-name|getAbsolutePath
-argument_list|()
+literal|"sleep"
 argument_list|)
 expr_stmt|;
 name|ExecutorService
@@ -1299,34 +1276,6 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|FileUtils
-operator|.
-name|writeStringToFile
-argument_list|(
-name|script
-argument_list|,
-literal|"#!/bin/bash\nsleep 10000;"
-argument_list|,
-name|Charset
-operator|.
-name|defaultCharset
-argument_list|()
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Could not set executable"
-argument_list|,
-name|script
-operator|.
-name|setExecutable
-argument_list|(
-literal|true
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|CGroupsHandler
 name|cgroups
 init|=
@@ -1337,6 +1286,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// This will be passed to sleep as an argument
 name|when
 argument_list|(
 name|cgroups
@@ -1353,7 +1303,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|""
+literal|"10000"
 argument_list|)
 expr_stmt|;
 name|when
@@ -1505,26 +1455,6 @@ name|service
 operator|.
 name|shutdown
 argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Could not clean up script %s"
-argument_list|,
-name|script
-operator|.
-name|getAbsolutePath
-argument_list|()
-argument_list|)
-argument_list|,
-name|script
-operator|.
-name|delete
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 block|}

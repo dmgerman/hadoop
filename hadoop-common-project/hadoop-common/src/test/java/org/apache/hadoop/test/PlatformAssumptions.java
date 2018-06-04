@@ -67,20 +67,6 @@ argument_list|(
 literal|"Windows"
 argument_list|)
 decl_stmt|;
-DECL|field|MAC_OS
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|MAC_OS
-init|=
-name|OS_NAME
-operator|.
-name|startsWith
-argument_list|(
-literal|"Mac OS X"
-argument_list|)
-decl_stmt|;
 DECL|method|PlatformAssumptions ()
 specifier|private
 name|PlatformAssumptions
@@ -143,30 +129,6 @@ operator|new
 name|AssumptionViolatedException
 argument_list|(
 literal|"Expected Windows platform but got "
-operator|+
-name|OS_NAME
-argument_list|)
-throw|;
-block|}
-block|}
-DECL|method|assumeMacOS ()
-specifier|public
-specifier|static
-name|void
-name|assumeMacOS
-parameter_list|()
-block|{
-if|if
-condition|(
-operator|!
-name|MAC_OS
-condition|)
-block|{
-throw|throw
-operator|new
-name|AssumptionViolatedException
-argument_list|(
-literal|"Expected MacOS platform but got "
 operator|+
 name|OS_NAME
 argument_list|)
