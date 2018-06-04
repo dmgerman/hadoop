@@ -5634,6 +5634,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Process new container information
+comment|// NOTICE: it is possible to not find the NodeID as a node can be
+comment|// decommissioned at the same time. Skip updates if node is null.
 name|SchedulerNode
 name|schedulerNode
 init|=
@@ -5659,11 +5661,19 @@ name|schedulerNode
 argument_list|)
 decl_stmt|;
 comment|// Notify Scheduler Node updated.
+if|if
+condition|(
+name|schedulerNode
+operator|!=
+literal|null
+condition|)
+block|{
 name|schedulerNode
 operator|.
 name|notifyNodeUpdate
 argument_list|()
 expr_stmt|;
+block|}
 comment|// Process completed containers
 name|Resource
 name|releasedResources
@@ -5697,8 +5707,6 @@ decl_stmt|;
 comment|// If the node is decommissioning, send an update to have the total
 comment|// resource equal to the used resource, so no available resource to
 comment|// schedule.
-comment|// TODO YARN-5128: Fix possible race-condition when request comes in before
-comment|// update is propagated
 if|if
 condition|(
 name|nm
@@ -5709,6 +5717,10 @@ operator|==
 name|NodeState
 operator|.
 name|DECOMMISSIONING
+operator|&&
+name|schedulerNode
+operator|!=
+literal|null
 condition|)
 block|{
 name|this
@@ -5753,6 +5765,13 @@ argument_list|,
 name|releasedContainers
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|schedulerNode
+operator|!=
+literal|null
+condition|)
+block|{
 name|updateNodeResourceUtilization
 argument_list|(
 name|nm
@@ -5760,6 +5779,7 @@ argument_list|,
 name|schedulerNode
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Now node data structures are up-to-date and ready for scheduling.
 if|if
 condition|(
@@ -5779,10 +5799,18 @@ name|nm
 operator|+
 literal|" availableResource: "
 operator|+
+operator|(
+name|schedulerNode
+operator|==
+literal|null
+condition|?
+literal|"unknown (decommissioned)"
+else|:
 name|schedulerNode
 operator|.
 name|getUnallocatedResource
 argument_list|()
+operator|)
 argument_list|)
 expr_stmt|;
 block|}

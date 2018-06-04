@@ -5276,8 +5276,13 @@ condition|)
 block|{
 return|return;
 block|}
+comment|// A decommissioned node might be removed before we get here
 if|if
 condition|(
+name|node
+operator|!=
+literal|null
+operator|&&
 name|Resources
 operator|.
 name|greaterThanOrEqual
