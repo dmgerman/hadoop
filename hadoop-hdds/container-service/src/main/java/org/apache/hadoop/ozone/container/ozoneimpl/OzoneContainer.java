@@ -510,6 +510,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -717,6 +727,15 @@ specifier|final
 name|BlockDeletingService
 name|blockDeletingService
 decl_stmt|;
+DECL|field|locations
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|locations
+decl_stmt|;
 comment|/**    * Creates a network endpoint and enables Ozone container.    *    * @param ozoneConfig - Config    * @throws IOException    */
 DECL|method|OzoneContainer ( DatanodeDetails datanodeDetails, Configuration ozoneConfig)
 specifier|public
@@ -737,17 +756,13 @@ name|ozoneConfig
 operator|=
 name|ozoneConfig
 expr_stmt|;
-name|List
-argument_list|<
-name|StorageLocation
-argument_list|>
 name|locations
-init|=
+operator|=
 operator|new
 name|LinkedList
 argument_list|<>
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|String
 index|[]
 name|paths
@@ -1006,6 +1021,26 @@ name|dispatcher
 argument_list|)
 block|}
 expr_stmt|;
+block|}
+DECL|method|getLocations ()
+specifier|public
+name|List
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|getLocations
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableList
+argument_list|(
+name|this
+operator|.
+name|locations
+argument_list|)
+return|;
 block|}
 comment|/**    * Starts serving requests to ozone container.    *    * @throws IOException    */
 DECL|method|start ()

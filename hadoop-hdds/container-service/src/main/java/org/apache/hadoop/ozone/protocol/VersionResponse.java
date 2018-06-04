@@ -295,6 +295,26 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getValue (String key)
+specifier|public
+name|String
+name|getValue
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|values
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+return|;
+block|}
 comment|/**    * Return a protobuf message.    * @return SCMVersionResponseProto.    */
 DECL|method|getProtobufMessage ()
 specifier|public

@@ -564,6 +564,14 @@ argument_list|(
 name|endpoint
 argument_list|,
 name|conf
+argument_list|,
+name|context
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getContainer
+argument_list|()
 argument_list|)
 return|;
 case|case

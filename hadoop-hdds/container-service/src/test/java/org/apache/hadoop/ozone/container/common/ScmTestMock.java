@@ -401,6 +401,52 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|scmUuid
+specifier|private
+name|UUID
+name|scmUuid
+decl_stmt|;
+DECL|method|ScmTestMock ()
+specifier|public
+name|ScmTestMock
+parameter_list|()
+block|{
+name|scmUuid
+operator|=
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Return scmUuid.    * @return UUID    */
+DECL|method|getScmUuid ()
+specifier|public
+name|UUID
+name|getScmUuid
+parameter_list|()
+block|{
+return|return
+name|scmUuid
+return|;
+block|}
+comment|/**    * set scmUuid.    * @param id    */
+DECL|method|setSCMUuid (UUID id)
+specifier|public
+name|void
+name|setSCMUuid
+parameter_list|(
+name|UUID
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scmUuid
+operator|=
+name|id
+expr_stmt|;
+block|}
 comment|/**    * Returns the number of heartbeats made to this class.    *    * @return int    */
 DECL|method|getHeartbeatCount ()
 specifier|public
@@ -680,6 +726,16 @@ argument_list|,
 name|versionInfo
 operator|.
 name|getDescription
+argument_list|()
+argument_list|)
+operator|.
+name|addValue
+argument_list|(
+literal|"scmUuid"
+argument_list|,
+name|scmUuid
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 operator|.
