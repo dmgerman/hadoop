@@ -1895,11 +1895,7 @@ name|allocsLoader
 operator|=
 operator|new
 name|AllocationFileLoaderService
-argument_list|(
-operator|new
-name|AllocationReloadListener
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|queueMgr
 operator|=
@@ -7176,6 +7172,15 @@ operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|allocsLoader
+operator|.
+name|setReloadListener
+argument_list|(
+operator|new
+name|AllocationReloadListener
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// If we fail to load allocations file on initialize, we want to fail
