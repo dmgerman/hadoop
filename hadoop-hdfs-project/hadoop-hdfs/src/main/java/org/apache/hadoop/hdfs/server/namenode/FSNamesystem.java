@@ -13497,6 +13497,12 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
+operator|!
+name|iip
+operator|.
+name|isRaw
+argument_list|()
+operator|&&
 name|provider
 operator|!=
 literal|null
