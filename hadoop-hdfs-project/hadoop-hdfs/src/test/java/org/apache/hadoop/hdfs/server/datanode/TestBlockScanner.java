@@ -833,6 +833,18 @@ name|numNameServices
 operator|=
 name|numNameServices
 expr_stmt|;
+name|File
+name|basedir
+init|=
+operator|new
+name|File
+argument_list|(
+name|GenericTestUtils
+operator|.
+name|getRandomizedTempPath
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|MiniDFSCluster
 operator|.
 name|Builder
@@ -844,6 +856,8 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|,
+name|basedir
 argument_list|)
 operator|.
 name|numDataNodes
