@@ -24,15 +24,13 @@ end_package
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|protobuf
 operator|.
-name|conf
-operator|.
-name|Configuration
+name|GeneratedMessage
 import|;
 end_import
 
@@ -44,15 +42,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|conf
 operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|NodeReportProto
+name|Configuration
 import|;
 end_import
 
@@ -164,7 +156,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -342,17 +354,21 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|reports
+specifier|private
+specifier|final
+name|Queue
+argument_list|<
+name|GeneratedMessage
+argument_list|>
+name|reports
+decl_stmt|;
 DECL|field|state
 specifier|private
 name|DatanodeStateMachine
 operator|.
 name|DatanodeStates
 name|state
-decl_stmt|;
-DECL|field|dnReport
-specifier|private
-name|NodeReportProto
-name|dnReport
 decl_stmt|;
 comment|/**    * Constructs a StateContext.    *    * @param conf   - Configration    * @param state  - State    * @param parent Parent State Machine    */
 DECL|method|StateContext (Configuration conf, DatanodeStateMachine.DatanodeStates state, DatanodeStateMachine parent)
@@ -396,6 +412,13 @@ name|LinkedList
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|reports
+operator|=
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|()
+expr_stmt|;
 name|lock
 operator|=
 operator|new
@@ -409,13 +432,6 @@ name|AtomicLong
 argument_list|(
 literal|0
 argument_list|)
-expr_stmt|;
-name|dnReport
-operator|=
-name|NodeReportProto
-operator|.
-name|getDefaultInstance
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Returns the ContainerStateMachine class that holds this state.    *    * @return ContainerStateMachine.    */
@@ -564,33 +580,139 @@ operator|=
 name|state
 expr_stmt|;
 block|}
-comment|/**    * Returns the node report of the datanode state context.    * @return the node report.    */
-DECL|method|getNodeReport ()
+comment|/**    * Adds the report to report queue.    *    * @param report report to be added    */
+DECL|method|addReport (GeneratedMessage report)
 specifier|public
-name|NodeReportProto
-name|getNodeReport
+name|void
+name|addReport
+parameter_list|(
+name|GeneratedMessage
+name|report
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|reports
+init|)
+block|{
+name|reports
+operator|.
+name|add
+argument_list|(
+name|report
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns the next report, or null if the report queue is empty.    *    * @return report    */
+DECL|method|getNextReport ()
+specifier|public
+name|GeneratedMessage
+name|getNextReport
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|reports
+init|)
+block|{
+return|return
+name|reports
+operator|.
+name|poll
+argument_list|()
+return|;
+block|}
+block|}
+comment|/**    * Returns all the available reports from the report queue, or empty list if    * the queue is empty.    *    * @return List<reports>    */
+DECL|method|getAllAvailableReports ()
+specifier|public
+name|List
+argument_list|<
+name|GeneratedMessage
+argument_list|>
+name|getAllAvailableReports
 parameter_list|()
 block|{
 return|return
-name|dnReport
+name|getReports
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
 return|;
 block|}
-comment|/**    * Sets the storage location report of the datanode state context.    * @param nodeReport node report    */
-DECL|method|setNodeReport (NodeReportProto nodeReport)
+comment|/**    * Returns available reports from the report queue with a max limit on    * list size, or empty list if the queue is empty.    *    * @return List<reports>    */
+DECL|method|getReports (int maxLimit)
 specifier|public
-name|void
-name|setNodeReport
+name|List
+argument_list|<
+name|GeneratedMessage
+argument_list|>
+name|getReports
 parameter_list|(
-name|NodeReportProto
-name|nodeReport
+name|int
+name|maxLimit
 parameter_list|)
 block|{
-name|this
+name|List
+argument_list|<
+name|GeneratedMessage
+argument_list|>
+name|results
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|reports
+init|)
+block|{
+name|GeneratedMessage
+name|report
+init|=
+name|reports
 operator|.
-name|dnReport
-operator|=
-name|nodeReport
+name|poll
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|results
+operator|.
+name|size
+argument_list|()
+operator|<
+name|maxLimit
+operator|&&
+name|report
+operator|!=
+literal|null
+condition|)
+block|{
+name|results
+operator|.
+name|add
+argument_list|(
+name|report
+argument_list|)
 expr_stmt|;
+name|report
+operator|=
+name|reports
+operator|.
+name|poll
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+return|return
+name|results
+return|;
 block|}
 comment|/**    * Returns the next task to get executed by the datanode state machine.    * @return A callable that will be executed by the    * {@link DatanodeStateMachine}    */
 annotation|@
