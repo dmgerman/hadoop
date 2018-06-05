@@ -930,6 +930,18 @@ name|CODER_NAME
 argument_list|)
 expr_stmt|;
 block|}
+name|File
+name|basedir
+init|=
+operator|new
+name|File
+argument_list|(
+name|GenericTestUtils
+operator|.
+name|getRandomizedTempPath
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -938,6 +950,8 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|,
+name|basedir
 argument_list|)
 operator|.
 name|numDataNodes
