@@ -10058,6 +10058,12 @@ specifier|volatile
 name|long
 name|bytesReadDistanceOfFiveOrLarger
 decl_stmt|;
+DECL|field|bytesReadErasureCoded
+specifier|private
+specifier|volatile
+name|long
+name|bytesReadErasureCoded
+decl_stmt|;
 comment|/**        * Add another StatisticsData object to this one.        */
 DECL|method|add (StatisticsData other)
 name|void
@@ -10138,6 +10144,14 @@ operator|+=
 name|other
 operator|.
 name|bytesReadDistanceOfFiveOrLarger
+expr_stmt|;
+name|this
+operator|.
+name|bytesReadErasureCoded
+operator|+=
+name|other
+operator|.
+name|bytesReadErasureCoded
 expr_stmt|;
 block|}
 comment|/**        * Negate the values of all statistics.        */
@@ -10226,6 +10240,15 @@ operator|-
 name|this
 operator|.
 name|bytesReadDistanceOfFiveOrLarger
+expr_stmt|;
+name|this
+operator|.
+name|bytesReadErasureCoded
+operator|=
+operator|-
+name|this
+operator|.
+name|bytesReadErasureCoded
 expr_stmt|;
 block|}
 annotation|@
@@ -10346,6 +10369,16 @@ parameter_list|()
 block|{
 return|return
 name|bytesReadDistanceOfFiveOrLarger
+return|;
+block|}
+DECL|method|getBytesReadErasureCoded ()
+specifier|public
+name|long
+name|getBytesReadErasureCoded
+parameter_list|()
+block|{
+return|return
+name|bytesReadErasureCoded
 return|;
 block|}
 block|}
@@ -10931,6 +10964,24 @@ operator|+=
 name|count
 expr_stmt|;
 block|}
+comment|/**      * Increment the bytes read on erasure-coded files in the statistics.      * @param newBytes the additional bytes read      */
+DECL|method|incrementBytesReadErasureCoded (long newBytes)
+specifier|public
+name|void
+name|incrementBytesReadErasureCoded
+parameter_list|(
+name|long
+name|newBytes
+parameter_list|)
+block|{
+name|getThreadStatistics
+argument_list|()
+operator|.
+name|bytesReadErasureCoded
+operator|+=
+name|newBytes
+expr_stmt|;
+block|}
 comment|/**      * Increment the bytes read by the network distance in the statistics      * In the common network topology setup, distance value should be an even      * number such as 0, 2, 4, 6. To make it more general, we group distance      * by {1, 2}, {3, 4} and {5 and beyond} for accounting.      * @param distance the network distance      * @param newBytes the additional bytes read      */
 DECL|method|incrementBytesReadByDistance (int distance, long newBytes)
 specifier|public
@@ -11450,6 +11501,59 @@ parameter_list|()
 block|{
 return|return
 name|all
+return|;
+block|}
+block|}
+argument_list|)
+return|;
+block|}
+comment|/**      * Get the total number of bytes read on erasure-coded files.      * @return the number of bytes      */
+DECL|method|getBytesReadErasureCoded ()
+specifier|public
+name|long
+name|getBytesReadErasureCoded
+parameter_list|()
+block|{
+return|return
+name|visitAll
+argument_list|(
+operator|new
+name|StatisticsAggregator
+argument_list|<
+name|Long
+argument_list|>
+argument_list|()
+block|{
+specifier|private
+name|long
+name|bytesReadErasureCoded
+init|=
+literal|0
+decl_stmt|;
+annotation|@
+name|Override
+specifier|public
+name|void
+name|accept
+parameter_list|(
+name|StatisticsData
+name|data
+parameter_list|)
+block|{
+name|bytesReadErasureCoded
+operator|+=
+name|data
+operator|.
+name|bytesReadErasureCoded
+expr_stmt|;
+block|}
+specifier|public
+name|Long
+name|aggregate
+parameter_list|()
+block|{
+return|return
+name|bytesReadErasureCoded
 return|;
 block|}
 block|}

@@ -151,6 +151,8 @@ block|,
 literal|"bytesReadDistanceOfThreeOrFour"
 block|,
 literal|"bytesReadDistanceOfFiveOrLarger"
+block|,
+literal|"bytesReadErasureCoded"
 block|}
 decl_stmt|;
 DECL|class|LongStatisticIterator
@@ -417,6 +419,15 @@ return|return
 name|data
 operator|.
 name|getBytesReadDistanceOfFiveOrLarger
+argument_list|()
+return|;
+case|case
+literal|"bytesReadErasureCoded"
+case|:
+return|return
+name|data
+operator|.
+name|getBytesReadErasureCoded
 argument_list|()
 return|;
 default|default:
