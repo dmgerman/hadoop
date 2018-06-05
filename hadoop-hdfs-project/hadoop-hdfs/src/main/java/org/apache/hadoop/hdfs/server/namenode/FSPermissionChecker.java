@@ -299,7 +299,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Class that helps in checking file system permission.  * The state of this class need not be synchronized as it has data structures that  * are read-only.  *   * Some of the helper methods are gaurded by {@link FSNamesystem#readLock()}.  */
+comment|/**   * Class that helps in checking file system permission.  * The state of this class need not be synchronized as it has data structures that  * are read-only.  *   * Some of the helper methods are guarded by {@link FSNamesystem#readLock()}.  */
 end_comment
 
 begin_class
