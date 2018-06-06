@@ -196,6 +196,12 @@ specifier|final
 name|AtomicLong
 name|writeCount
 decl_stmt|;
+DECL|field|bytesUsed
+specifier|private
+specifier|final
+name|AtomicLong
+name|bytesUsed
+decl_stmt|;
 comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    */
 DECL|method|ContainerData (ContainerType type, long containerId)
 specifier|public
@@ -279,6 +285,16 @@ expr_stmt|;
 name|this
 operator|.
 name|writeBytes
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|bytesUsed
 operator|=
 operator|new
 name|AtomicLong
@@ -629,6 +645,85 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Sets the number of bytes used by the container.    * @param used    */
+DECL|method|setBytesUsed (long used)
+specifier|public
+name|void
+name|setBytesUsed
+parameter_list|(
+name|long
+name|used
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bytesUsed
+operator|.
+name|set
+argument_list|(
+name|used
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the number of bytes used by the container.    * @return the number of bytes used by the container.    */
+DECL|method|getBytesUsed ()
+specifier|public
+name|long
+name|getBytesUsed
+parameter_list|()
+block|{
+return|return
+name|bytesUsed
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Increase the number of bytes used by the container.    * @param used number of bytes used by the container.    * @return the current number of bytes used by the container afert increase.    */
+DECL|method|incrBytesUsed (long used)
+specifier|public
+name|long
+name|incrBytesUsed
+parameter_list|(
+name|long
+name|used
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|bytesUsed
+operator|.
+name|addAndGet
+argument_list|(
+name|used
+argument_list|)
+return|;
+block|}
+comment|/**    * Decrease the number of bytes used by the container.    * @param reclaimed the number of bytes reclaimed from the container.    * @return the current number of bytes used by the container after decrease.    */
+DECL|method|decrBytesUsed (long reclaimed)
+specifier|public
+name|long
+name|decrBytesUsed
+parameter_list|(
+name|long
+name|reclaimed
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|bytesUsed
+operator|.
+name|addAndGet
+argument_list|(
+operator|-
+literal|1L
+operator|*
+name|reclaimed
+argument_list|)
+return|;
 block|}
 block|}
 end_class

@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -134,6 +148,17 @@ name|KeyValueContainerData
 name|containerData
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|containerData
+argument_list|,
+literal|"KeyValueContainerData cannot "
+operator|+
+literal|"be null"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|containerData
@@ -153,7 +178,7 @@ name|cData
 parameter_list|)
 throws|throws
 name|StorageContainerException
-block|{    }
+block|{     }
 annotation|@
 name|Override
 DECL|method|delete (boolean forceDelete)
@@ -187,11 +212,9 @@ specifier|public
 name|ContainerData
 name|getContainerData
 parameter_list|()
-throws|throws
-name|StorageContainerException
 block|{
 return|return
-literal|null
+name|containerData
 return|;
 block|}
 annotation|@
