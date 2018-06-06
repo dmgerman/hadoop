@@ -289,7 +289,7 @@ name|Path
 argument_list|(
 name|url
 operator|.
-name|getPath
+name|toURI
 argument_list|()
 argument_list|)
 argument_list|)
