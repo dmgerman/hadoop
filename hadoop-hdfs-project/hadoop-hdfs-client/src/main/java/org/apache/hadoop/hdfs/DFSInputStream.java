@@ -2140,10 +2140,8 @@ return|;
 block|}
 throw|throw
 operator|new
-name|IOException
+name|CannotObtainBlockLengthException
 argument_list|(
-literal|"Cannot obtain block length for "
-operator|+
 name|locatedblock
 argument_list|)
 throw|;
