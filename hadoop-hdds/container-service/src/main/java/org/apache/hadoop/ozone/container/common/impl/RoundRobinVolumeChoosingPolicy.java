@@ -121,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Choose volumes in round-robin order.  * Use fine-grained locks to synchronize volume choosing.  */
+comment|/**  * Choose volumes in round-robin order.  * The caller should synchronize access to the list of volumes.  */
 end_comment
 
 begin_class

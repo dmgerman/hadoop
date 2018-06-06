@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -76,7 +90,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|File
 import|;
 end_import
 
@@ -84,13 +98,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|io
 operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicLong
+name|IOException
 import|;
 end_import
 
@@ -137,6 +147,12 @@ specifier|private
 name|VolumeState
 name|state
 decl_stmt|;
+comment|// Space usage calculator
+DECL|field|usage
+specifier|private
+name|VolumeUsage
+name|usage
+decl_stmt|;
 comment|// Capacity configured. This is useful when we want to
 comment|// limit the visible capacity for tests. If negative, then we just
 comment|// query from the filesystem.
@@ -145,24 +161,18 @@ specifier|private
 name|long
 name|configuredCapacity
 decl_stmt|;
-DECL|field|scmUsed
-specifier|private
-specifier|volatile
-name|AtomicLong
-name|scmUsed
-init|=
-operator|new
-name|AtomicLong
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 DECL|class|Builder
 specifier|public
 specifier|static
 class|class
 name|Builder
 block|{
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|rootDir
 specifier|private
 specifier|final
@@ -184,12 +194,15 @@ specifier|private
 name|long
 name|configuredCapacity
 decl_stmt|;
-DECL|method|Builder (Path rootDir)
+DECL|method|Builder (Path rootDir, Configuration conf)
 specifier|public
 name|Builder
 parameter_list|(
 name|Path
 name|rootDir
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -198,13 +211,22 @@ name|rootDir
 operator|=
 name|rootDir
 expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 block|}
-DECL|method|Builder (String rootDirStr)
+DECL|method|Builder (String rootDirStr, Configuration conf)
 specifier|public
 name|Builder
 parameter_list|(
 name|String
 name|rootDirStr
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -216,6 +238,12 @@ name|Path
 argument_list|(
 name|rootDirStr
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 DECL|method|storageType (StorageType storageType)
@@ -299,6 +327,8 @@ parameter_list|(
 name|Builder
 name|b
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -308,6 +338,56 @@ name|b
 operator|.
 name|rootDir
 expr_stmt|;
+name|File
+name|root
+init|=
+operator|new
+name|File
+argument_list|(
+name|rootDir
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Boolean
+name|succeeded
+init|=
+name|root
+operator|.
+name|isDirectory
+argument_list|()
+operator|||
+name|root
+operator|.
+name|mkdirs
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|succeeded
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to create the volume root dir at : {}"
+argument_list|,
+name|root
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to create the volume root dir at "
+operator|+
+name|root
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|storageType
@@ -367,6 +447,20 @@ operator|.
 name|NOT_FORMATTED
 operator|)
 expr_stmt|;
+name|this
+operator|.
+name|usage
+operator|=
+operator|new
+name|VolumeUsage
+argument_list|(
+name|root
+argument_list|,
+name|b
+operator|.
+name|conf
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -375,7 +469,7 @@ literal|"Creating Volume : "
 operator|+
 name|rootDir
 operator|+
-literal|" of  storage type : "
+literal|" of storage type : "
 operator|+
 name|storageType
 operator|+
@@ -385,42 +479,113 @@ name|configuredCapacity
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addSpaceUsed (long spaceUsed)
+DECL|method|getCapacity ()
 specifier|public
-name|void
-name|addSpaceUsed
-parameter_list|(
 name|long
-name|spaceUsed
-parameter_list|)
+name|getCapacity
+parameter_list|()
 block|{
-name|this
+return|return
+name|configuredCapacity
+operator|<
+literal|0
+condition|?
+name|usage
 operator|.
-name|scmUsed
-operator|.
-name|getAndAdd
-argument_list|(
-name|spaceUsed
-argument_list|)
-expr_stmt|;
+name|getCapacity
+argument_list|()
+else|:
+name|configuredCapacity
+return|;
 block|}
 DECL|method|getAvailable ()
 specifier|public
 name|long
 name|getAvailable
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
-name|configuredCapacity
-operator|-
-name|scmUsed
+name|usage
 operator|.
-name|get
+name|getAvailable
 argument_list|()
 return|;
 block|}
-DECL|method|setState (VolumeState state)
+DECL|method|getScmUsed ()
 specifier|public
+name|long
+name|getScmUsed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|usage
+operator|.
+name|getScmUsed
+argument_list|()
+return|;
+block|}
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|VolumeState
+operator|.
+name|NON_EXISTENT
+expr_stmt|;
+name|shutdownUsageThread
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|failVolume ()
+name|void
+name|failVolume
+parameter_list|()
+block|{
+name|setState
+argument_list|(
+name|VolumeState
+operator|.
+name|FAILED
+argument_list|)
+expr_stmt|;
+name|shutdownUsageThread
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|shutdownUsageThread ()
+specifier|private
+name|void
+name|shutdownUsageThread
+parameter_list|()
+block|{
+if|if
+condition|(
+name|usage
+operator|!=
+literal|null
+condition|)
+block|{
+name|usage
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+name|usage
+operator|=
+literal|null
+expr_stmt|;
+block|}
+DECL|method|setState (VolumeState state)
 name|void
 name|setState
 parameter_list|(
