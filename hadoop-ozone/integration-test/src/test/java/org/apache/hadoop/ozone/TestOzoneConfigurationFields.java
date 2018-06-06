@@ -117,6 +117,13 @@ name|errorIfMissingXmlProps
 operator|=
 literal|true
 expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"hadoop.tags.custom"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

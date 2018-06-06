@@ -125,6 +125,15 @@ specifier|final
 class|class
 name|OzoneConfigKeys
 block|{
+DECL|field|OZONE_TAGS_SYSTEM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_TAGS_SYSTEM_KEY
+init|=
+literal|"ozone.tags.system"
+decl_stmt|;
 DECL|field|DFS_CONTAINER_IPC_PORT
 specifier|public
 specifier|static
