@@ -4810,6 +4810,34 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|target
+operator|==
+literal|null
+operator|||
+name|linkname
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can not create a symLink with a target = "
+operator|+
+name|target
+operator|+
+literal|" and link ="
+operator|+
+name|linkname
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 comment|// Run the input paths through Java's File so that they are converted to the
 comment|// native OS form
 name|File
