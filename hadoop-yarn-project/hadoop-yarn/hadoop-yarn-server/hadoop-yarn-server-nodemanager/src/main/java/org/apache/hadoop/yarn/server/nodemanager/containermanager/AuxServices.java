@@ -1919,7 +1919,11 @@ name|AuxiliaryServiceWithCustomClassLoader
 operator|.
 name|getInstance
 argument_list|(
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|,
 name|className
 argument_list|,
@@ -1990,7 +1994,11 @@ name|newInstance
 argument_list|(
 name|sClass
 argument_list|,
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2113,7 +2121,11 @@ name|s
 operator|.
 name|init
 argument_list|(
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
