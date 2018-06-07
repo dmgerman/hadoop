@@ -98,6 +98,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|node
+operator|.
+name|NodeManager
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -235,6 +253,12 @@ name|reports
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Returns the nodeManager.    * @return NodeManager    */
+DECL|method|getNodeManager ()
+name|NodeManager
+name|getNodeManager
+parameter_list|()
 function_decl|;
 block|}
 end_interface

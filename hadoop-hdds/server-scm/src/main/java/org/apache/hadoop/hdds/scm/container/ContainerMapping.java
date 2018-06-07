@@ -2552,6 +2552,18 @@ throw|;
 block|}
 block|}
 annotation|@
+name|Override
+DECL|method|getNodeManager ()
+specifier|public
+name|NodeManager
+name|getNodeManager
+parameter_list|()
+block|{
+return|return
+name|nodeManager
+return|;
+block|}
+annotation|@
 name|VisibleForTesting
 DECL|method|getContainerStore ()
 specifier|public

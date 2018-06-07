@@ -1645,6 +1645,28 @@ name|type
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the containerInfo for the given container id.    * @param containerID id of the container    * @return ContainerInfo containerInfo    * @throws IOException    */
+DECL|method|getContainer (ContainerID containerID)
+specifier|public
+name|ContainerInfo
+name|getContainer
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|)
+block|{
+return|return
+name|containers
+operator|.
+name|getContainerInfo
+argument_list|(
+name|containerID
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()
