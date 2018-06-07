@@ -1102,6 +1102,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getContainerLaunchTime ()
+specifier|public
+name|long
+name|getContainerLaunchTime
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getResourceMappings ()
 specifier|public
 name|ResourceMappings
