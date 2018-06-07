@@ -924,6 +924,24 @@ name|f
 parameter_list|)
 block|{
 comment|/* NB: Use readSymbolicLink in java.nio.file.Path once available. Could      * use getCanonicalPath in File to get the target of the symlink but that      * does not indicate if the given path refers to a symlink.      */
+if|if
+condition|(
+name|f
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can not read a null symLink"
+argument_list|)
+expr_stmt|;
+return|return
+literal|""
+return|;
+block|}
 try|try
 block|{
 return|return
