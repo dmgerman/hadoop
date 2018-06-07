@@ -335,6 +335,8 @@ literal|"  * Web: Run a viewer to expose read-only WebHDFS API.\n"
 operator|+
 literal|"    -addr specifies the address to listen. (localhost:5978 by default)\n"
 operator|+
+literal|"    It does not support secure mode nor HTTPS.\n"
+operator|+
 literal|"  * Delimited (experimental): Generate a text file with all of the elements common\n"
 operator|+
 literal|"    to both inodes and inodes-under-construction, separated by a\n"
@@ -975,6 +977,8 @@ name|createSocketAddr
 argument_list|(
 name|addr
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 init|)
 block|{
