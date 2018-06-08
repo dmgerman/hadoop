@@ -295,7 +295,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|ugi
-specifier|private
+specifier|protected
 specifier|final
 name|UserGroupInformation
 name|ugi
@@ -317,7 +317,7 @@ init|=
 literal|0
 decl_stmt|;
 DECL|field|factory
-specifier|private
+specifier|protected
 specifier|final
 name|HAProxyFactory
 argument_list|<
@@ -652,6 +652,28 @@ argument_list|(
 name|currentProxyIndex
 argument_list|)
 decl_stmt|;
+return|return
+name|getProxy
+argument_list|(
+name|current
+argument_list|)
+return|;
+block|}
+DECL|method|getProxy (AddressRpcProxyPair<T> current)
+specifier|protected
+name|ProxyInfo
+argument_list|<
+name|T
+argument_list|>
+name|getProxy
+parameter_list|(
+name|AddressRpcProxyPair
+argument_list|<
+name|T
+argument_list|>
+name|current
+parameter_list|)
+block|{
 if|if
 condition|(
 name|current
@@ -769,7 +791,7 @@ expr_stmt|;
 block|}
 comment|/**    * A little pair object to store the address and connected RPC proxy object to    * an NN. Note that {@link AddressRpcProxyPair#namenode} may be null.    */
 DECL|class|AddressRpcProxyPair
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|AddressRpcProxyPair
