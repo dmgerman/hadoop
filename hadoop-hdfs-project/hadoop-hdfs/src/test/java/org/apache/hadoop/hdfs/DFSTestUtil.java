@@ -10446,6 +10446,13 @@ name|getName
 argument_list|()
 argument_list|)
 operator|.
+name|blockSize
+argument_list|(
+literal|1024
+operator|*
+literal|1024
+argument_list|)
+operator|.
 name|build
 argument_list|()
 init|)

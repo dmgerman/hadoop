@@ -626,9 +626,9 @@ name|BLOCK_SIZE
 init|=
 literal|1
 operator|<<
-literal|14
+literal|20
 decl_stmt|;
-comment|// 16k
+comment|// 1MB
 DECL|field|ecPolicy
 specifier|private
 name|ErasureCodingPolicy
