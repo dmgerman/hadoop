@@ -118,6 +118,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|fail
 import|;
 end_import
@@ -3536,6 +3548,105 @@ argument_list|,
 name|TimeUnit
 operator|.
 name|SECONDS
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testFormatTimeSortable ()
+specifier|public
+name|void
+name|testFormatTimeSortable
+parameter_list|()
+block|{
+name|long
+name|timeDiff
+init|=
+literal|523452311
+decl_stmt|;
+name|String
+name|timeDiffStr
+init|=
+literal|"99hrs, 59mins, 59sec"
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect time diff string returned"
+argument_list|,
+name|timeDiffStr
+argument_list|,
+name|StringUtils
+operator|.
+name|formatTimeSortable
+argument_list|(
+name|timeDiff
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIsAlpha ()
+specifier|public
+name|void
+name|testIsAlpha
+parameter_list|()
+block|{
+name|assertTrue
+argument_list|(
+literal|"Reported hello as non-alpha string"
+argument_list|,
+name|StringUtils
+operator|.
+name|isAlpha
+argument_list|(
+literal|"hello"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"Reported hello1 as alpha string"
+argument_list|,
+name|StringUtils
+operator|.
+name|isAlpha
+argument_list|(
+literal|"hello1"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testEscapeHTML ()
+specifier|public
+name|void
+name|testEscapeHTML
+parameter_list|()
+block|{
+name|String
+name|htmlStr
+init|=
+literal|"<p>Hello. How are you?</p>"
+decl_stmt|;
+name|String
+name|escapedStr
+init|=
+literal|"&lt;p&gt;Hello. How are you?&lt;/p&gt;"
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect escaped HTML string returned"
+argument_list|,
+name|escapedStr
+argument_list|,
+name|StringUtils
+operator|.
+name|escapeHTML
+argument_list|(
+name|htmlStr
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -126,6 +126,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -227,6 +237,18 @@ operator|.
 name|Shell
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
 import|;
 end_import
 
@@ -2530,6 +2552,27 @@ name|isJavaVersionAtLeast
 argument_list|(
 literal|8
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIsBashSupported ()
+specifier|public
+name|void
+name|testIsBashSupported
+parameter_list|()
+throws|throws
+name|InterruptedIOException
+block|{
+name|assumeTrue
+argument_list|(
+literal|"Bash is not supported"
+argument_list|,
+name|Shell
+operator|.
+name|checkIsBashSupported
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
