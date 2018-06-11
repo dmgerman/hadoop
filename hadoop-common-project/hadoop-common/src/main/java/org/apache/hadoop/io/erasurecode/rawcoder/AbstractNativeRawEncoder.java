@@ -104,6 +104,20 @@ name|ByteBuffer
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Abstract native raw encoder for all native coders to extend with.  */
 end_comment
@@ -135,6 +149,18 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Protect ISA-L coder data structure in native layer from being accessed and
+comment|// updated concurrently by the init, release and encode functions.
+DECL|field|encoderLock
+specifier|protected
+specifier|final
+name|ReentrantReadWriteLock
+name|encoderLock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
+decl_stmt|;
 DECL|method|AbstractNativeRawEncoder (ErasureCoderOptions coderOptions)
 specifier|public
 name|AbstractNativeRawEncoder
@@ -153,7 +179,6 @@ annotation|@
 name|Override
 DECL|method|doEncode (ByteBufferEncodingState encodingState)
 specifier|protected
-specifier|synchronized
 name|void
 name|doEncode
 parameter_list|(
@@ -162,6 +187,16 @@ name|encodingState
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|encoderLock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -328,6 +363,18 @@ argument_list|,
 name|outputOffsets
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|encoderLock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|performEncodeImpl ( ByteBuffer[] inputs, int[] inputOffsets, int dataLen, ByteBuffer[] outputs, int[] outputOffsets)
 specifier|protected
