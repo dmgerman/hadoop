@@ -116,11 +116,44 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+comment|/**    * Constructs KeyValueContainerData object.    * @param type - containerType    * @param id - ContainerId    * @param layOutVersion    */
+DECL|method|KeyValueContainerData (ContainerProtos.ContainerType type, long id, int layOutVersion)
+specifier|public
+name|KeyValueContainerData
+parameter_list|(
+name|ContainerProtos
+operator|.
+name|ContainerType
+name|type
+parameter_list|,
+name|long
+name|id
+parameter_list|,
+name|int
+name|layOutVersion
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|type
+argument_list|,
+name|id
+argument_list|,
+name|layOutVersion
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|=
+literal|0
+expr_stmt|;
+block|}
 comment|/**    * Returns path.    *    * @return - path    */
-DECL|method|getDBPath ()
+DECL|method|getDbPath ()
 specifier|public
 name|String
-name|getDBPath
+name|getDbPath
 parameter_list|()
 block|{
 return|return
@@ -128,10 +161,10 @@ name|dbPath
 return|;
 block|}
 comment|/**    * Sets path.    *    * @param path - String.    */
-DECL|method|setDBPath (String path)
+DECL|method|setDbPath (String path)
 specifier|public
 name|void
-name|setDBPath
+name|setDbPath
 parameter_list|(
 name|String
 name|path
@@ -145,10 +178,10 @@ name|path
 expr_stmt|;
 block|}
 comment|/**    * Get container file path.    * @return - Physical path where container file and checksum is stored.    */
-DECL|method|getContainerPath ()
+DECL|method|getContainerFilePath ()
 specifier|public
 name|String
-name|getContainerPath
+name|getContainerFilePath
 parameter_list|()
 block|{
 return|return
@@ -156,10 +189,10 @@ name|containerFilePath
 return|;
 block|}
 comment|/**    * Set container Path.    * @param containerPath - File path.    */
-DECL|method|setContainerPath (String containerPath)
+DECL|method|setContainerFilePath (String containerPath)
 specifier|public
 name|void
-name|setContainerPath
+name|setContainerFilePath
 parameter_list|(
 name|String
 name|containerPath

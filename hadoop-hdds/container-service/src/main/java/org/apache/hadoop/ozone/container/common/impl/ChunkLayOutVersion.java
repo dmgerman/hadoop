@@ -22,6 +22,20 @@ name|impl
 package|;
 end_package
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Defines layout versions for the Chunks.  */
 end_comment
@@ -85,6 +99,61 @@ name|description
 operator|=
 name|description
 expr_stmt|;
+block|}
+comment|/**    * Return ChunkLayOutVersion object for the chunkVersion.    * @param chunkVersion    * @return ChunkLayOutVersion    */
+DECL|method|getChunkLayOutVersion (int chunkVersion)
+specifier|public
+specifier|static
+name|ChunkLayOutVersion
+name|getChunkLayOutVersion
+parameter_list|(
+name|int
+name|chunkVersion
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+name|chunkVersion
+operator|<=
+name|ChunkLayOutVersion
+operator|.
+name|getLatestVersion
+argument_list|()
+operator|.
+name|getVersion
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|ChunkLayOutVersion
+name|chunkLayOutVersion
+range|:
+name|CHUNK_LAYOUT_VERSION_INFOS
+control|)
+block|{
+if|if
+condition|(
+name|chunkLayOutVersion
+operator|.
+name|getVersion
+argument_list|()
+operator|==
+name|chunkVersion
+condition|)
+block|{
+return|return
+name|chunkLayOutVersion
+return|;
+block|}
+block|}
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Returns all versions.    *    * @return Version info array.    */
 DECL|method|getAllVersions ()
