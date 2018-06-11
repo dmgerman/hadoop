@@ -944,7 +944,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Exception while loading allocation file: "
 operator|+
