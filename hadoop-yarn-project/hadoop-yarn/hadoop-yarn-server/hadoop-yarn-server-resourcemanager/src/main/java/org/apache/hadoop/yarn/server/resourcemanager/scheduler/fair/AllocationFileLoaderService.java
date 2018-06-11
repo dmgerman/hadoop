@@ -1090,8 +1090,9 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Path to XML file containing allocations. If the    * path is relative, it is searched for in the    * classpath, but loaded like a regular File.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getAllocationFile (Configuration conf)
-specifier|public
 name|Path
 name|getAllocationFile
 parameter_list|(
