@@ -1858,6 +1858,7 @@ decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|allocConf
+specifier|volatile
 name|AllocationConfiguration
 name|allocConf
 decl_stmt|;
