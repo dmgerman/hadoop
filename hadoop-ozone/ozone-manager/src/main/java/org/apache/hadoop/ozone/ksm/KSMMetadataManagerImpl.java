@@ -1905,6 +1905,9 @@ name|filter
 init|=
 operator|new
 name|KeyPrefixFilter
+argument_list|()
+operator|.
+name|addFilter
 argument_list|(
 name|getKeyWithDBPrefix
 argument_list|(
@@ -2401,6 +2404,9 @@ name|filter
 init|=
 operator|new
 name|KeyPrefixFilter
+argument_list|()
+operator|.
+name|addFilter
 argument_list|(
 name|OzoneConsts
 operator|.
@@ -2731,6 +2737,9 @@ name|openKeyFilter
 init|=
 operator|new
 name|KeyPrefixFilter
+argument_list|()
+operator|.
+name|addFilter
 argument_list|(
 name|OPEN_KEY_PREFIX
 argument_list|)

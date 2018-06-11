@@ -52,6 +52,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -113,6 +127,20 @@ operator|.
 name|helpers
 operator|.
 name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
 import|;
 end_import
 
@@ -1696,8 +1724,8 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Initialize pending deletion blocks count in in-memory
-comment|// container status.
+comment|// Initialize pending deletion blocks and deleted blocks count in
+comment|// in-memory containerData.
 name|MetadataStore
 name|metadata
 init|=
@@ -1741,6 +1769,46 @@ name|getDeletingKeyFilter
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|byte
+index|[]
+name|transactionID
+init|=
+name|metadata
+operator|.
+name|get
+argument_list|(
+name|DFSUtil
+operator|.
+name|string2Bytes
+argument_list|(
+name|OzoneConsts
+operator|.
+name|DELETE_TRANSACTION_KEY_PREFIX
+operator|+
+name|containerID
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|transactionID
+operator|!=
+literal|null
+condition|)
+block|{
+name|containerData
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|Longs
+operator|.
+name|fromByteArray
+argument_list|(
+name|transactionID
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|containerData
 operator|.
 name|incrPendingDeletionBlocks
@@ -4144,6 +4212,14 @@ name|getState
 argument_list|(
 name|containerId
 argument_list|)
+argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+name|container
+operator|.
+name|getDeleteTransactionId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|crBuilder

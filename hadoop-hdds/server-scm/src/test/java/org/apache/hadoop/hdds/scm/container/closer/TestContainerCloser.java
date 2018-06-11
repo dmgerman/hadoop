@@ -1256,6 +1256,11 @@ name|setWriteBytes
 argument_list|(
 literal|2000000000L
 argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
 name|reports
 operator|.

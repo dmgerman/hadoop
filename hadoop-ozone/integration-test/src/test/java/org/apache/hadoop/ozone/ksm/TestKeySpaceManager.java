@@ -4728,6 +4728,9 @@ operator|new
 name|MetadataKeyFilters
 operator|.
 name|KeyPrefixFilter
+argument_list|()
+operator|.
+name|addFilter
 argument_list|(
 name|DELETING_KEY_PREFIX
 argument_list|)

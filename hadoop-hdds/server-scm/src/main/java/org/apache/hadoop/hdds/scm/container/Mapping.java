@@ -144,6 +144,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Mapping class contains the mapping from a name to a pipeline mapping. This is  * used by SCM when allocating new locations and when looking up a key.  */
 end_comment
@@ -250,6 +260,22 @@ name|datanodeDetails
 parameter_list|,
 name|ContainerReportsProto
 name|reports
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Update deleteTransactionId according to deleteTransactionMap.    *    * @param deleteTransactionMap Maps the containerId to latest delete    *                             transaction id for the container.    * @throws IOException    */
+DECL|method|updateDeleteTransactionId (Map<Long, Long> deleteTransactionMap)
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|deleteTransactionMap
 parameter_list|)
 throws|throws
 name|IOException
