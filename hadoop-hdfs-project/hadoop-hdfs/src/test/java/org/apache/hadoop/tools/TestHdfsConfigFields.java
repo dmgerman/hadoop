@@ -110,6 +110,12 @@ name|class
 block|,
 name|HdfsClientConfigKeys
 operator|.
+name|Failover
+operator|.
+name|class
+block|,
+name|HdfsClientConfigKeys
+operator|.
 name|StripedRead
 operator|.
 name|class
