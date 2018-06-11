@@ -64,17 +64,17 @@ name|KeyValueContainerData
 extends|extends
 name|ContainerData
 block|{
-comment|// Path to Level DB/RocksDB Store.
-DECL|field|dbPath
+comment|// Path to Container metadata Level DB/RocksDB Store and .container file.
+DECL|field|metadataPath
 specifier|private
 name|String
-name|dbPath
+name|metadataPath
 decl_stmt|;
-comment|// Path to Physical file system where container and checksum are stored.
-DECL|field|containerFilePath
+comment|// Path to Physical file system where chunks are stored.
+DECL|field|chunksPath
 specifier|private
 name|String
-name|containerFilePath
+name|chunksPath
 decl_stmt|;
 comment|//Type of DB used to store key to chunks mapping
 DECL|field|containerDBType
@@ -149,22 +149,22 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Returns path.    *    * @return - path    */
-DECL|method|getDbPath ()
+comment|/**    * Returns container metadata path.    *    * @return - path    */
+DECL|method|getMetadataPath ()
 specifier|public
 name|String
-name|getDbPath
+name|getMetadataPath
 parameter_list|()
 block|{
 return|return
-name|dbPath
+name|metadataPath
 return|;
 block|}
-comment|/**    * Sets path.    *    * @param path - String.    */
-DECL|method|setDbPath (String path)
+comment|/**    * Sets container metadata path.    *    * @param path - String.    */
+DECL|method|setMetadataPath (String path)
 specifier|public
 name|void
-name|setDbPath
+name|setMetadataPath
 parameter_list|(
 name|String
 name|path
@@ -172,37 +172,37 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|dbPath
+name|metadataPath
 operator|=
 name|path
 expr_stmt|;
 block|}
-comment|/**    * Get container file path.    * @return - Physical path where container file and checksum is stored.    */
-DECL|method|getContainerFilePath ()
+comment|/**    * Get chunks path.    * @return - Physical path where container file and checksum is stored.    */
+DECL|method|getChunksPath ()
 specifier|public
 name|String
-name|getContainerFilePath
+name|getChunksPath
 parameter_list|()
 block|{
 return|return
-name|containerFilePath
+name|chunksPath
 return|;
 block|}
-comment|/**    * Set container Path.    * @param containerPath - File path.    */
-DECL|method|setContainerFilePath (String containerPath)
+comment|/**    * Set chunks Path.    * @param chunkPath - File path.    */
+DECL|method|setChunksPath (String chunkPath)
 specifier|public
 name|void
-name|setContainerFilePath
+name|setChunksPath
 parameter_list|(
 name|String
-name|containerPath
+name|chunkPath
 parameter_list|)
 block|{
 name|this
 operator|.
-name|containerFilePath
+name|chunksPath
 operator|=
-name|containerPath
+name|chunkPath
 expr_stmt|;
 block|}
 comment|/**    * Returns the DBType used for the container.    * @return containerDBType    */

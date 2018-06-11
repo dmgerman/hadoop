@@ -521,14 +521,14 @@ argument_list|)
 expr_stmt|;
 name|kvData
 operator|.
-name|setContainerFilePath
+name|setChunksPath
 argument_list|(
 name|path
 argument_list|)
 expr_stmt|;
 name|kvData
 operator|.
-name|setDbPath
+name|setMetadataPath
 argument_list|(
 name|path
 argument_list|)
@@ -583,7 +583,7 @@ name|path
 argument_list|,
 name|kvData
 operator|.
-name|getContainerFilePath
+name|getChunksPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -593,7 +593,7 @@ name|path
 argument_list|,
 name|kvData
 operator|.
-name|getDbPath
+name|getMetadataPath
 argument_list|()
 argument_list|)
 expr_stmt|;
