@@ -216,11 +216,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -5679,7 +5677,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -5992,7 +5990,10 @@ operator|.
 name|getLimit
 argument_list|()
 decl_stmt|;
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|start
 init|=
 name|request
@@ -6000,7 +6001,10 @@ operator|.
 name|getStartRange
 argument_list|()
 decl_stmt|;
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|finish
 init|=
 name|request
@@ -6416,7 +6420,7 @@ operator|&&
 operator|!
 name|start
 operator|.
-name|containsLong
+name|contains
 argument_list|(
 name|application
 operator|.
@@ -6436,7 +6440,7 @@ operator|&&
 operator|!
 name|finish
 operator|.
-name|containsLong
+name|contains
 argument_list|(
 name|application
 operator|.

@@ -28,11 +28,11 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringEscapeUtils
 operator|.
-name|escapeJavaScript
+name|escapeEcmaScript
 import|;
 end_import
 
@@ -929,7 +929,7 @@ name|join
 argument_list|(
 literal|"  $('"
 argument_list|,
-name|escapeJavaScript
+name|escapeEcmaScript
 argument_list|(
 name|selector
 argument_list|)
@@ -1132,7 +1132,7 @@ name|join
 argument_list|(
 literal|"  $('"
 argument_list|,
-name|escapeJavaScript
+name|escapeEcmaScript
 argument_list|(
 name|selector
 argument_list|)

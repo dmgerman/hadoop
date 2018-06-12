@@ -72,11 +72,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -376,13 +374,19 @@ operator|.
 name|MAX_VALUE
 decl_stmt|;
 DECL|field|start
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|start
 init|=
 literal|null
 decl_stmt|;
 DECL|field|finish
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|finish
 init|=
 literal|null
@@ -642,7 +646,7 @@ name|setStartBegin
 argument_list|(
 name|start
 operator|.
-name|getMinimumLong
+name|getMinimum
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -652,7 +656,7 @@ name|setStartEnd
 argument_list|(
 name|start
 operator|.
-name|getMaximumLong
+name|getMaximum
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -670,7 +674,7 @@ name|setFinishBegin
 argument_list|(
 name|finish
 operator|.
-name|getMinimumLong
+name|getMinimum
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -680,7 +684,7 @@ name|setFinishEnd
 argument_list|(
 name|finish
 operator|.
-name|getMaximumLong
+name|getMaximum
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1659,7 +1663,10 @@ annotation|@
 name|Override
 DECL|method|getStartRange ()
 specifier|public
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|getStartRange
 parameter_list|()
 block|{
@@ -1730,8 +1737,9 @@ name|this
 operator|.
 name|start
 operator|=
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|begin
 argument_list|,
@@ -1748,12 +1756,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setStartRange (LongRange range)
+DECL|method|setStartRange (Range<Long> range)
 specifier|public
 name|void
 name|setStartRange
 parameter_list|(
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|range
 parameter_list|)
 block|{
@@ -1809,8 +1820,9 @@ name|this
 operator|.
 name|start
 operator|=
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|begin
 argument_list|,
@@ -1822,7 +1834,10 @@ annotation|@
 name|Override
 DECL|method|getFinishRange ()
 specifier|public
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|getFinishRange
 parameter_list|()
 block|{
@@ -1893,8 +1908,9 @@ name|this
 operator|.
 name|finish
 operator|=
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|begin
 argument_list|,
@@ -1911,12 +1927,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setFinishRange (LongRange range)
+DECL|method|setFinishRange (Range<Long> range)
 specifier|public
 name|void
 name|setFinishRange
 parameter_list|(
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|range
 parameter_list|)
 block|{
@@ -1970,8 +1989,9 @@ name|this
 operator|.
 name|finish
 operator|=
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|begin
 argument_list|,

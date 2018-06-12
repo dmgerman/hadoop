@@ -146,11 +146,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -1169,8 +1167,9 @@ name|request
 operator|.
 name|setStartRange
 argument_list|(
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|sBegin
 argument_list|,

@@ -36,11 +36,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -6575,16 +6573,17 @@ name|typeValueCache
 operator|.
 name|put
 argument_list|(
-name|LongRange
+name|Range
 operator|.
 name|class
 argument_list|,
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
-literal|1000
+literal|1000L
 argument_list|,
-literal|2000
+literal|2000L
 argument_list|)
 argument_list|)
 expr_stmt|;

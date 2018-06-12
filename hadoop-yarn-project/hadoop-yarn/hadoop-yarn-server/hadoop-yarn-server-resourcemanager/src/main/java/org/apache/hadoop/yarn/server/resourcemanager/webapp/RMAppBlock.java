@@ -90,7 +90,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringEscapeUtils
 import|;
@@ -1245,11 +1245,11 @@ literal|"N/A"
 else|:
 name|StringEscapeUtils
 operator|.
-name|escapeJavaScript
+name|escapeEcmaScript
 argument_list|(
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|nodeLink
 argument_list|)
