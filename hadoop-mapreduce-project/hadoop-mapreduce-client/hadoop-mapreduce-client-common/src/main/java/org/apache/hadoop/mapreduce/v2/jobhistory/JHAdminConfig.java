@@ -242,6 +242,27 @@ operator|*
 literal|1000l
 decl_stmt|;
 comment|//1 day
+comment|/** Always scan user dir, irrespective of dir modification time.*/
+DECL|field|MR_HISTORY_ALWAYS_SCAN_USER_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_ALWAYS_SCAN_USER_DIR
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"always-scan-user-dir"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_ALWAYS_SCAN_USER_DIR
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_MR_HISTORY_ALWAYS_SCAN_USER_DIR
+init|=
+literal|false
+decl_stmt|;
 comment|/** The number of threads to handle client API requests.*/
 DECL|field|MR_HISTORY_CLIENT_THREAD_COUNT
 specifier|public

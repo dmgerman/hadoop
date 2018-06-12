@@ -1857,8 +1857,29 @@ comment|// modTime == newModTime doesn't means no file update in the directory,
 comment|// so we need to have additional check.
 comment|// Note: modTime (X second Y millisecond) could be casted to X second or
 comment|// X+1 second.
+comment|// MAPREDUCE-7101: Some Cloud FileSystems do not currently update the
+comment|// modification time of directories. For these, we scan every time if
+comment|// the 'alwaysScan' is true.
+name|boolean
+name|alwaysScan
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HISTORY_ALWAYS_SCAN_USER_DIR
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_ALWAYS_SCAN_USER_DIR
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
+name|alwaysScan
+operator|||
 name|modTime
 operator|!=
 name|newModTime
