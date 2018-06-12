@@ -268,6 +268,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|LongWritable
 import|;
 end_import
@@ -3078,8 +3092,18 @@ argument_list|)
 expr_stmt|;
 comment|// Ensure getReaders call works and also ignores
 comment|// hidden filenames (_ or . prefixes)
+name|MapFile
+operator|.
+name|Reader
+index|[]
+name|readers
+init|=
+block|{}
+decl_stmt|;
 try|try
 block|{
+name|readers
+operator|=
 name|MapFileOutputFormat
 operator|.
 name|getReaders
@@ -3089,26 +3113,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"Fail to read from MapFileOutputFormat: "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
 comment|// validate output
 name|validateMapFileOutputContent
 argument_list|(
@@ -3125,6 +3129,18 @@ argument_list|,
 name|outDir
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanupWithLogger
+argument_list|(
+literal|null
+argument_list|,
+name|readers
+argument_list|)
+expr_stmt|;
 name|FileUtil
 operator|.
 name|fullyDelete
@@ -3139,6 +3155,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
