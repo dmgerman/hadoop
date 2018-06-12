@@ -312,6 +312,20 @@ name|zookeeper
 operator|.
 name|data
 operator|.
+name|ACL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
+name|data
+operator|.
 name|Stat
 import|;
 end_import
@@ -410,6 +424,15 @@ specifier|private
 name|ZKCuratorManager
 name|zkManager
 decl_stmt|;
+comment|/** ACLs for ZooKeeper. */
+DECL|field|zkAcl
+specifier|private
+name|List
+argument_list|<
+name|ACL
+argument_list|>
+name|zkAcl
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|initDriver ()
@@ -460,6 +483,17 @@ name|zkManager
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|zkAcl
+operator|=
+name|ZKCuratorManager
+operator|.
+name|getZKAcls
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -524,6 +558,8 @@ operator|.
 name|createRootDirRecursively
 argument_list|(
 name|checkPath
+argument_list|,
+name|zkAcl
 argument_list|)
 expr_stmt|;
 return|return

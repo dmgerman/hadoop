@@ -1130,6 +1130,32 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|createRootDirRecursively
+argument_list|(
+name|path
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Utility function to ensure that the configured base znode exists.    * This recursively creates the znode as well as all of its parents.    * @param path Path of the znode to create.    * @param zkAcl ACLs for ZooKeeper.    * @throws Exception If it cannot create the file.    */
+DECL|method|createRootDirRecursively (String path, List<ACL> zkAcl)
+specifier|public
+name|void
+name|createRootDirRecursively
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|List
+argument_list|<
+name|ACL
+argument_list|>
+name|zkAcl
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|String
 index|[]
 name|pathParts
@@ -1209,6 +1235,8 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|zkAcl
 argument_list|)
 expr_stmt|;
 block|}
