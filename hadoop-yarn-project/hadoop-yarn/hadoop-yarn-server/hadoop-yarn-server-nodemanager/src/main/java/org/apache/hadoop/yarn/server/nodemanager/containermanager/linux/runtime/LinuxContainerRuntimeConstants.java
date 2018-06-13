@@ -637,6 +637,27 @@ argument_list|,
 literal|"signal"
 argument_list|)
 decl_stmt|;
+DECL|field|PROCFS
+specifier|public
+specifier|static
+specifier|final
+name|Attribute
+argument_list|<
+name|String
+argument_list|>
+name|PROCFS
+init|=
+name|Attribute
+operator|.
+name|attribute
+argument_list|(
+name|String
+operator|.
+name|class
+argument_list|,
+literal|"procfs"
+argument_list|)
+decl_stmt|;
 block|}
 end_class
 
