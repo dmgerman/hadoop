@@ -6809,6 +6809,28 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|actionStartAndGetId
+argument_list|(
+name|serviceName
+argument_list|)
+expr_stmt|;
+return|return
+name|EXIT_SUCCESS
+return|;
+block|}
+DECL|method|actionStartAndGetId (String serviceName)
+specifier|public
+name|ApplicationId
+name|actionStartAndGetId
+parameter_list|(
+name|String
+name|serviceName
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
 name|ServiceApiUtil
 operator|.
 name|validateNameFormat
@@ -6958,7 +6980,7 @@ name|appJson
 argument_list|)
 expr_stmt|;
 return|return
-literal|0
+name|appId
 return|;
 block|}
 else|else
@@ -6970,6 +6992,14 @@ argument_list|(
 literal|"Finalize service {} upgrade"
 argument_list|)
 expr_stmt|;
+name|ApplicationId
+name|appId
+init|=
+name|getAppId
+argument_list|(
+name|serviceName
+argument_list|)
+decl_stmt|;
 name|ApplicationReport
 name|appReport
 init|=
@@ -6977,10 +7007,7 @@ name|yarnClient
 operator|.
 name|getApplicationReport
 argument_list|(
-name|getAppId
-argument_list|(
-name|serviceName
-argument_list|)
+name|appId
 argument_list|)
 decl_stmt|;
 if|if
@@ -7037,7 +7064,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-literal|0
+name|appId
 return|;
 block|}
 block|}
