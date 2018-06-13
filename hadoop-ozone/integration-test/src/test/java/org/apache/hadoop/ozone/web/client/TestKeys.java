@@ -206,6 +206,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|MiniOzoneCluster
@@ -740,7 +756,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -760,7 +776,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -793,6 +809,30 @@ operator|.
 name|rules
 operator|.
 name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|runner
+operator|.
+name|RunWith
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|runners
+operator|.
+name|Parameterized
 import|;
 end_import
 
@@ -877,6 +917,16 @@ operator|.
 name|file
 operator|.
 name|Paths
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
 import|;
 end_import
 
@@ -1007,6 +1057,13 @@ comment|/**  * Test Ozone Key Lifecycle.  */
 end_comment
 
 begin_class
+annotation|@
+name|RunWith
+argument_list|(
+name|Parameterized
+operator|.
+name|class
+argument_list|)
 DECL|class|TestKeys
 specifier|public
 class|class
@@ -1080,12 +1137,66 @@ name|ReplicationType
 operator|.
 name|STAND_ALONE
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *    * @throws IOException    */
+DECL|field|shouldUseGrpc
+specifier|private
+specifier|static
+name|boolean
+name|shouldUseGrpc
+decl_stmt|;
 annotation|@
-name|BeforeClass
-DECL|method|init ()
+name|Parameterized
+operator|.
+name|Parameters
+DECL|method|withGrpc ()
 specifier|public
 specifier|static
+name|Collection
+argument_list|<
+name|Object
+index|[]
+argument_list|>
+name|withGrpc
+parameter_list|()
+block|{
+return|return
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+operator|new
+name|Object
+index|[]
+index|[]
+block|{
+block|{
+literal|false
+block|}
+block|,
+block|{
+literal|true
+block|}
+block|}
+argument_list|)
+return|;
+block|}
+DECL|method|TestKeys (boolean useGrpc)
+specifier|public
+name|TestKeys
+parameter_list|(
+name|boolean
+name|useGrpc
+parameter_list|)
+block|{
+name|shouldUseGrpc
+operator|=
+name|useGrpc
+expr_stmt|;
+block|}
+comment|/**    * Create a MiniDFSCluster for testing.    *    * @throws IOException    */
+annotation|@
+name|Before
+DECL|method|init ()
+specifier|public
 name|void
 name|init
 parameter_list|()
@@ -1112,6 +1223,17 @@ argument_list|,
 name|TimeUnit
 operator|.
 name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|DFS_CONTAINER_GRPC_ENABLED_KEY
+argument_list|,
+name|shouldUseGrpc
 argument_list|)
 expr_stmt|;
 name|path
@@ -1182,10 +1304,9 @@ expr_stmt|;
 block|}
 comment|/**    * shutdown MiniDFSCluster.    */
 annotation|@
-name|AfterClass
+name|After
 DECL|method|shutdown ()
 specifier|public
-specifier|static
 name|void
 name|shutdown
 parameter_list|()
