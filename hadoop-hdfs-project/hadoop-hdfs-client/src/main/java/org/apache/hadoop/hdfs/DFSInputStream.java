@@ -560,6 +560,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ClientDatanodeProtocol
 import|;
 end_import
@@ -2124,10 +2140,8 @@ return|;
 block|}
 throw|throw
 operator|new
-name|IOException
+name|CannotObtainBlockLengthException
 argument_list|(
-literal|"Cannot obtain block length for "
-operator|+
 name|locatedblock
 argument_list|)
 throw|;
@@ -3046,11 +3060,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to connect to {} for block {}, "
+literal|"Failed to connect to {} for file {} for block "
 operator|+
-literal|"add to deadNodes and continue. "
+literal|"{}, add to deadNodes and continue. "
 argument_list|,
 name|targetAddr
+argument_list|,
+name|src
 argument_list|,
 name|targetBlock
 operator|.
@@ -5409,6 +5425,26 @@ argument_list|,
 name|nread
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|readStatistics
+operator|.
+name|getBlockType
+argument_list|()
+operator|==
+name|BlockType
+operator|.
+name|STRIPED
+condition|)
+block|{
+name|dfsClient
+operator|.
+name|updateFileSystemECReadStats
+argument_list|(
+name|nread
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|nread

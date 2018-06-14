@@ -1821,7 +1821,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Asserts that the NumOps and quantiles for a metric have been changed at    * some point to a non-zero value.    *     * @param prefix of the metric    * @param rb MetricsRecordBuilder with the metric    */
+comment|/**    * Asserts that the NumOps and quantiles for a metric with value name    * "Latency" have been changed at some point to a non-zero value.    *     * @param prefix of the metric    * @param rb MetricsRecordBuilder with the metric    */
 DECL|method|assertQuantileGauges (String prefix, MetricsRecordBuilder rb)
 specifier|public
 specifier|static
@@ -1833,6 +1833,33 @@ name|prefix
 parameter_list|,
 name|MetricsRecordBuilder
 name|rb
+parameter_list|)
+block|{
+name|assertQuantileGauges
+argument_list|(
+name|prefix
+argument_list|,
+name|rb
+argument_list|,
+literal|"Latency"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Asserts that the NumOps and quantiles for a metric have been changed at    * some point to a non-zero value, for the specified value name of the    * metrics (e.g., "Latency", "Count").    *    * @param prefix of the metric    * @param rb MetricsRecordBuilder with the metric    * @param valueName the value name for the metric    */
+DECL|method|assertQuantileGauges (String prefix, MetricsRecordBuilder rb, String valueName)
+specifier|public
+specifier|static
+name|void
+name|assertQuantileGauges
+parameter_list|(
+name|String
+name|prefix
+parameter_list|,
+name|MetricsRecordBuilder
+name|rb
+parameter_list|,
+name|String
+name|valueName
 parameter_list|)
 block|{
 name|verify
@@ -1875,7 +1902,9 @@ name|nameTemplate
 init|=
 name|prefix
 operator|+
-literal|"%dthPercentileLatency"
+literal|"%dthPercentile"
+operator|+
+name|valueName
 decl_stmt|;
 name|int
 name|percentile

@@ -331,7 +331,7 @@ class|class
 name|QueueManager
 block|{
 DECL|field|LOG
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|Log
@@ -528,9 +528,7 @@ name|leafQueues
 init|=
 operator|new
 name|CopyOnWriteArrayList
-argument_list|<
-name|FSLeafQueue
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|queues
@@ -546,11 +544,7 @@ name|queues
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|FSQueue
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|incompatibleQueuesPendingRemoval
@@ -676,7 +670,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a leaf queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a leaf queue, i.e. it already exists as a    * parent queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+comment|/**    * Get a leaf queue by name, creating it if the create param is    * true and is necessary.    * If the queue is not or can not be a leaf queue, i.e. it already exists as a    * parent queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
 DECL|method|getLeafQueue (String name, boolean create)
 specifier|public
 name|FSLeafQueue
@@ -701,7 +695,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getLeafQueue ( String name, boolean create, boolean recomputeSteadyShares)
-specifier|public
+specifier|private
 name|FSLeafQueue
 name|getLeafQueue
 parameter_list|(
@@ -749,7 +743,7 @@ operator|)
 name|queue
 return|;
 block|}
-comment|/**    * Remove a leaf queue if empty    * @param name name of the queue    * @return true if queue was removed or false otherwise    */
+comment|/**    * Remove a leaf queue if empty.    * @param name name of the queue    * @return true if queue was removed or false otherwise    */
 DECL|method|removeLeafQueue (String name)
 specifier|public
 name|boolean
@@ -790,7 +784,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a parent queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a parent queue, i.e. it already exists as a    * leaf queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+comment|/**    * Get a parent queue by name, creating it if the create param is    * true and is necessary.    * If the queue is not or can not be a parent queue,    * i.e. it already exists as a    * leaf queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
 DECL|method|getParentQueue (String name, boolean create)
 specifier|public
 name|FSParentQueue
@@ -1292,7 +1286,9 @@ literal|"Can't create queue '"
 operator|+
 name|queueName
 operator|+
-literal|"'."
+literal|"',"
+operator|+
+literal|"the child scheduling policy is not allowed by parent queue!"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1430,6 +1426,7 @@ return|;
 block|}
 comment|/**    * For the given child queue, set the max resources based on the    * parent queue's default child resource settings. This method assumes that    * the child queue is ad hoc and hence does not do any safety checks around    * overwriting existing max resource settings.    *    * @param parent the parent queue    * @param child the child queue    * @param queueConf the {@link AllocationConfiguration}    */
 DECL|method|setChildResourceLimits (FSParentQueue parent, FSQueue child, AllocationConfiguration queueConf)
+specifier|private
 name|void
 name|setChildResourceLimits
 parameter_list|(
@@ -1549,8 +1546,8 @@ argument_list|(
 name|queueToCreate
 argument_list|)
 expr_stmt|;
-comment|// Ensure queueToCreate is not root and doesn't have the default queue in its
-comment|// ancestry.
+comment|// Ensure queueToCreate is not root and doesn't
+comment|// have the default queue in its ancestry.
 if|if
 condition|(
 name|queueToCreate
@@ -2204,7 +2201,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Get a collection of all leaf queues    */
+comment|/**    * Get a collection of all leaf queues.    */
 DECL|method|getLeafQueues ()
 specifier|public
 name|Collection
@@ -2224,7 +2221,7 @@ name|leafQueues
 return|;
 block|}
 block|}
-comment|/**    * Get a collection of all queues    */
+comment|/**    * Get a collection of all queues.    */
 DECL|method|getQueues ()
 specifier|public
 name|Collection
@@ -2254,6 +2251,7 @@ block|}
 block|}
 DECL|method|ensureRootPrefix (String name)
 specifier|private
+specifier|static
 name|String
 name|ensureRootPrefix
 parameter_list|(
@@ -2304,7 +2302,8 @@ name|AllocationConfiguration
 name|queueConf
 parameter_list|)
 block|{
-comment|// Create leaf queues and the parent queues in a leaf's ancestry if they do not exist
+comment|// Create leaf queues and the parent queues in a leaf's
+comment|// ancestry if they do not exist
 synchronized|synchronized
 init|(
 name|queues

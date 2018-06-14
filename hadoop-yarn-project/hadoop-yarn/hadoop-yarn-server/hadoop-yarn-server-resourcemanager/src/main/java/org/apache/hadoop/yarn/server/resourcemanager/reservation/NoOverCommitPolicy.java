@@ -253,14 +253,19 @@ name|ResourceOverCommitException
 argument_list|(
 literal|"Resources at time "
 operator|+
-literal|" would be overcommitted by "
+name|reservation
+operator|.
+name|getStartTime
+argument_list|()
 operator|+
-literal|"accepting reservation: "
+literal|" would be overcommitted by accepting reservation: "
 operator|+
 name|reservation
 operator|.
 name|getReservationId
 argument_list|()
+argument_list|,
+name|p
 argument_list|)
 throw|;
 block|}

@@ -1169,14 +1169,30 @@ argument_list|(
 name|tEvent
 argument_list|)
 expr_stmt|;
-comment|// sync sending of finish event to avoid possibility of saving application
-comment|// finished state in RMStateStore save without publishing in ATS.
-name|putEntity
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
 argument_list|(
+operator|new
+name|TimelineV1PublishEvent
+argument_list|(
+name|SystemMetricsEventType
+operator|.
+name|PUBLISH_ENTITY
+argument_list|,
 name|entity
+argument_list|,
+name|app
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// sync event so that ATS update is done without fail.
 block|}
 annotation|@
 name|SuppressWarnings

@@ -36,6 +36,26 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|HddsProtos
@@ -89,6 +109,19 @@ operator|.
 name|ReplicationType
 name|getServerType
 parameter_list|()
+function_decl|;
+comment|/**    * submits a containerRequest to be performed by the replication pipeline.    * @param request ContainerCommandRequest    */
+DECL|method|submitRequest (ContainerProtos.ContainerCommandRequestProto request)
+name|void
+name|submitRequest
+parameter_list|(
+name|ContainerProtos
+operator|.
+name|ContainerCommandRequestProto
+name|request
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

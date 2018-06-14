@@ -242,6 +242,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|LINE_SEPARATOR
+specifier|private
+specifier|final
+name|String
+name|LINE_SEPARATOR
+init|=
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testHumanPrinter ()
@@ -318,17 +329,25 @@ literal|"\n"
 operator|+
 literal|"|Group Name                    |Counter name                  |Map Value |Reduce Value|Total Value|\n"
 operator|+
-literal|"---------------------------------------------------------------------------------------\n"
+literal|"---------------------------------------------------------------------------------------"
 operator|+
-literal|"|group1                        |counter1                      |5         |5         |5         \n"
+name|LINE_SEPARATOR
 operator|+
-literal|"|group1                        |counter2                      |10        |10        |10        \n"
+literal|"|group1                        |counter1                      |5         |5         |5         "
 operator|+
-literal|"|group2                        |counter1                      |15        |15        |15        \n"
+name|LINE_SEPARATOR
 operator|+
-literal|"\n"
+literal|"|group1                        |counter2                      |10        |10        |10        "
 operator|+
-literal|"=====================================\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"|group2                        |counter1                      |15        |15        |15        "
+operator|+
+literal|"\n\n"
+operator|+
+literal|"====================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -350,13 +369,17 @@ literal|"Cleanup\t1\t1\t\t0\t0\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\
 operator|+
 literal|"============================\n"
 operator|+
-literal|"\n"
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
-literal|"Analysis\n"
+literal|"Analysis"
 operator|+
-literal|"=========\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"========="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -366,19 +389,33 @@ literal|"Average time taken by map tasks: 5sec\n"
 operator|+
 literal|"Worse performing map tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_m_000007 7sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"task_1317928501754_0001_m_000006 6sec\n"
+literal|"task_1317928501754_0001_m_000007 7sec"
 operator|+
-literal|"task_1317928501754_0001_m_000005 5sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"task_1317928501754_0001_m_000004 4sec\n"
+literal|"task_1317928501754_0001_m_000006 6sec"
 operator|+
-literal|"task_1317928501754_0001_m_000003 3sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last map task task_1317928501754_0001_m_000007 finished at (relative to the Job launch time): 6-Oct-2011 19:15:16 (14sec)\n"
+literal|"task_1317928501754_0001_m_000005 5sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000004 4sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000003 3sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"The last map task task_1317928501754_0001_m_000007 finished at (relative to the Job launch time): 6-Oct-2011 19:15:16 (14sec)"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -388,11 +425,17 @@ literal|"Average time taken by shuffle tasks: 8sec\n"
 operator|+
 literal|"Worse performing shuffle tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_r_000008 8sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last shuffle task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)\n"
+literal|"task_1317928501754_0001_r_000008 8sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"The last shuffle task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -402,13 +445,21 @@ literal|"Average time taken by reduce tasks: 0sec\n"
 operator|+
 literal|"Worse performing reduce tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_r_000008 0sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last reduce task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)\n"
+literal|"task_1317928501754_0001_r_000008 0sec"
 operator|+
-literal|"=========\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"The last reduce task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"========="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -416,9 +467,13 @@ literal|"FAILED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_m_000002\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\t\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000002\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -426,9 +481,13 @@ literal|"FAILED task attempts by nodes\n"
 operator|+
 literal|"Hostname\tFailedTasks\n"
 operator|+
-literal|"===============================\n"
+literal|"==============================="
 operator|+
-literal|"localhost\ttask_1317928501754_0001_m_000002, \n"
+name|LINE_SEPARATOR
+operator|+
+literal|"localhost\ttask_1317928501754_0001_m_000002, "
+operator|+
+name|LINE_SEPARATOR
 argument_list|,
 name|outStr
 argument_list|)
@@ -525,17 +584,25 @@ literal|"\n"
 operator|+
 literal|"|Group Name                    |Counter name                  |Map Value |Reduce Value|Total Value|\n"
 operator|+
-literal|"---------------------------------------------------------------------------------------\n"
+literal|"---------------------------------------------------------------------------------------"
 operator|+
-literal|"|group1                        |counter1                      |5         |5         |5         \n"
+name|LINE_SEPARATOR
 operator|+
-literal|"|group1                        |counter2                      |10        |10        |10        \n"
+literal|"|group1                        |counter1                      |5         |5         |5         "
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"|group1                        |counter2                      |10        |10        |10        "
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"|group2                        |counter1                      |15        |15        |15        \n"
 operator|+
 literal|"\n"
 operator|+
-literal|"=====================================\n"
+literal|"====================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -557,13 +624,17 @@ literal|"Cleanup\t1\t1\t\t0\t0\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\
 operator|+
 literal|"============================\n"
 operator|+
-literal|"\n"
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
-literal|"Analysis\n"
+literal|"Analysis"
 operator|+
-literal|"=========\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"========="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -573,19 +644,33 @@ literal|"Average time taken by map tasks: 5sec\n"
 operator|+
 literal|"Worse performing map tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_m_000007 7sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"task_1317928501754_0001_m_000006 6sec\n"
+literal|"task_1317928501754_0001_m_000007 7sec"
 operator|+
-literal|"task_1317928501754_0001_m_000005 5sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"task_1317928501754_0001_m_000004 4sec\n"
+literal|"task_1317928501754_0001_m_000006 6sec"
 operator|+
-literal|"task_1317928501754_0001_m_000003 3sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last map task task_1317928501754_0001_m_000007 finished at (relative to the Job launch time): 6-Oct-2011 19:15:16 (14sec)\n"
+literal|"task_1317928501754_0001_m_000005 5sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000004 4sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000003 3sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"The last map task task_1317928501754_0001_m_000007 finished at (relative to the Job launch time): 6-Oct-2011 19:15:16 (14sec)"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -595,11 +680,17 @@ literal|"Average time taken by shuffle tasks: 8sec\n"
 operator|+
 literal|"Worse performing shuffle tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_r_000008 8sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last shuffle task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)\n"
+literal|"task_1317928501754_0001_r_000008 8sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"The last shuffle task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -609,13 +700,21 @@ literal|"Average time taken by reduce tasks: 0sec\n"
 operator|+
 literal|"Worse performing reduce tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_r_000008 0sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last reduce task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)\n"
+literal|"task_1317928501754_0001_r_000008 0sec"
 operator|+
-literal|"=========\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"The last reduce task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"========="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -623,9 +722,13 @@ literal|"FAILED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_m_000002\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\t\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000002\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -633,9 +736,13 @@ literal|"SUCCEEDED JOB_SETUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_s_000001\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_s_000001\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -643,49 +750,69 @@ literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"task_1317928501754_0001_m_000006\t6-Oct-2011 19:15:08\t6-Oct-2011 19:15:14 (6sec)\t\t\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"\n"
 operator|+
 literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"task_1317928501754_0001_m_000005\t6-Oct-2011 19:15:07\t6-Oct-2011 19:15:12 (5sec)\t\t\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"\n"
 operator|+
 literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"task_1317928501754_0001_m_000004\t6-Oct-2011 19:15:06\t6-Oct-2011 19:15:10 (4sec)\t\t\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"\n"
 operator|+
 literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"task_1317928501754_0001_m_000003\t6-Oct-2011 19:15:05\t6-Oct-2011 19:15:08 (3sec)\t\t\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"\n"
 operator|+
 literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"task_1317928501754_0001_m_000007\t6-Oct-2011 19:15:09\t6-Oct-2011 19:15:16 (7sec)\t\t\n"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -693,9 +820,13 @@ literal|"SUCCEEDED REDUCE task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_r_000008\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_r_000008\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -703,9 +834,13 @@ literal|"SUCCEEDED JOB_CLEANUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_c_000009\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_c_000009\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -713,9 +848,13 @@ literal|"JOB_SETUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_s_000001_1\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_s_000001_1\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_s_000001_1\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_s_000001_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -725,17 +864,31 @@ literal|"TaskId\t\tStartTime\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
 literal|"====================================================\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"attempt_1317928501754_0001_m_000002_1\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000002_1\n"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"attempt_1317928501754_0001_m_000006_1\t6-Oct-2011 19:15:08\t6-Oct-2011 19:15:14 (6sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000006_1\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"attempt_1317928501754_0001_m_000005_1\t6-Oct-2011 19:15:07\t6-Oct-2011 19:15:12 (5sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000005_1\n"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"attempt_1317928501754_0001_m_000004_1\t6-Oct-2011 19:15:06\t6-Oct-2011 19:15:10 (4sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000004_1\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"attempt_1317928501754_0001_m_000003_1\t6-Oct-2011 19:15:05\t6-Oct-2011 19:15:08 (3sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000003_1\n"
 operator|+
+name|LINE_SEPARATOR
+operator|+
 literal|"attempt_1317928501754_0001_m_000007_1\t6-Oct-2011 19:15:09\t6-Oct-2011 19:15:16 (7sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000007_1\n"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -743,9 +896,13 @@ literal|"REDUCE task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tShuffleFinished\tSortFinished\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_r_000008_1\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t6-Oct-2011 19:15:18 (0sec)6-Oct-2011 19:15:18 (8sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_r_000008_1\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_r_000008_1\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t6-Oct-2011 19:15:18 (0sec)6-Oct-2011 19:15:18 (8sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_r_000008_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -753,9 +910,13 @@ literal|"JOB_CLEANUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_c_000009_1\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_c_000009_1\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_c_000009_1\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_c_000009_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -763,9 +924,13 @@ literal|"FAILED task attempts by nodes\n"
 operator|+
 literal|"Hostname\tFailedTasks\n"
 operator|+
-literal|"===============================\n"
+literal|"==============================="
 operator|+
-literal|"localhost\ttask_1317928501754_0001_m_000002, \n"
+name|LINE_SEPARATOR
+operator|+
+literal|"localhost\ttask_1317928501754_0001_m_000002, "
+operator|+
+name|LINE_SEPARATOR
 argument_list|,
 name|outStr
 argument_list|)
@@ -803,17 +968,25 @@ literal|"\n"
 operator|+
 literal|"|Group Name                    |Counter name                  |Map Value |Reduce Value|Total Value|\n"
 operator|+
-literal|"---------------------------------------------------------------------------------------\n"
+literal|"---------------------------------------------------------------------------------------"
 operator|+
-literal|"|group1                        |counter1                      |5         |5         |5         \n"
+name|LINE_SEPARATOR
 operator|+
-literal|"|group1                        |counter2                      |10        |10        |10        \n"
+literal|"|group1                        |counter1                      |5         |5         |5         "
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"|group1                        |counter2                      |10        |10        |10        "
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"|group2                        |counter1                      |15        |15        |15        \n"
 operator|+
 literal|"\n"
 operator|+
-literal|"=====================================\n"
+literal|"====================================="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -835,13 +1008,17 @@ literal|"Cleanup\t1\t1\t\t0\t0\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\
 operator|+
 literal|"============================\n"
 operator|+
-literal|"\n"
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
-literal|"Analysis\n"
+literal|"Analysis"
 operator|+
-literal|"=========\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"========="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -851,19 +1028,33 @@ literal|"Average time taken by map tasks: 5sec\n"
 operator|+
 literal|"Worse performing map tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_m_000007 7sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"task_1317928501754_0001_m_000006 6sec\n"
+literal|"task_1317928501754_0001_m_000007 7sec"
 operator|+
-literal|"task_1317928501754_0001_m_000005 5sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"task_1317928501754_0001_m_000004 4sec\n"
+literal|"task_1317928501754_0001_m_000006 6sec"
 operator|+
-literal|"task_1317928501754_0001_m_000003 3sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last map task task_1317928501754_0001_m_000007 finished at (relative to the Job launch time): 6-Oct-2011 19:15:16 (14sec)\n"
+literal|"task_1317928501754_0001_m_000005 5sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000004 4sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000003 3sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"The last map task task_1317928501754_0001_m_000007 finished at (relative to the Job launch time): 6-Oct-2011 19:15:16 (14sec)"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -873,11 +1064,17 @@ literal|"Average time taken by shuffle tasks: 8sec\n"
 operator|+
 literal|"Worse performing shuffle tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_r_000008 8sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last shuffle task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)\n"
+literal|"task_1317928501754_0001_r_000008 8sec"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"The last shuffle task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -887,13 +1084,21 @@ literal|"Average time taken by reduce tasks: 0sec\n"
 operator|+
 literal|"Worse performing reduce tasks: \n"
 operator|+
-literal|"TaskId\t\tTimetaken\n"
+literal|"TaskId\t\tTimetaken"
 operator|+
-literal|"task_1317928501754_0001_r_000008 0sec\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"The last reduce task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)\n"
+literal|"task_1317928501754_0001_r_000008 0sec"
 operator|+
-literal|"=========\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"The last reduce task task_1317928501754_0001_r_000008 finished at (relative to the Job launch time): 6-Oct-2011 19:15:18 (16sec)"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"========="
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -901,9 +1106,13 @@ literal|"FAILED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_m_000002\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\t\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000002\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -911,19 +1120,13 @@ literal|"SUCCEEDED JOB_SETUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_s_000001\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\t\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"\n"
+literal|"task_1317928501754_0001_s_000001\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\t"
 operator|+
-literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
-operator|+
-literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
-operator|+
-literal|"====================================================\n"
-operator|+
-literal|"task_1317928501754_0001_m_000007\t6-Oct-2011 19:15:09\t6-Oct-2011 19:15:16 (7sec)\t\t\n"
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -931,19 +1134,13 @@ literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_m_000006\t6-Oct-2011 19:15:08\t6-Oct-2011 19:15:14 (6sec)\t\t\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"\n"
+literal|"task_1317928501754_0001_m_000007\t6-Oct-2011 19:15:09\t6-Oct-2011 19:15:16 (7sec)\t\t"
 operator|+
-literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
-operator|+
-literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
-operator|+
-literal|"====================================================\n"
-operator|+
-literal|"task_1317928501754_0001_m_000005\t6-Oct-2011 19:15:07\t6-Oct-2011 19:15:12 (5sec)\t\t\n"
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -951,9 +1148,13 @@ literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_m_000004\t6-Oct-2011 19:15:06\t6-Oct-2011 19:15:10 (4sec)\t\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000006\t6-Oct-2011 19:15:08\t6-Oct-2011 19:15:14 (6sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -961,9 +1162,41 @@ literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_m_000003\t6-Oct-2011 19:15:05\t6-Oct-2011 19:15:08 (3sec)\t\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000005\t6-Oct-2011 19:15:07\t6-Oct-2011 19:15:12 (5sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"\n"
+operator|+
+literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
+operator|+
+literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
+operator|+
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000004\t6-Oct-2011 19:15:06\t6-Oct-2011 19:15:10 (4sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"\n"
+operator|+
+literal|"SUCCEEDED MAP task list for job_1317928501754_0001\n"
+operator|+
+literal|"TaskId\t\tStartTime\tFinishTime\tError\tInputSplits\n"
+operator|+
+literal|"===================================================="
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_m_000003\t6-Oct-2011 19:15:05\t6-Oct-2011 19:15:08 (3sec)\t\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -971,9 +1204,13 @@ literal|"SUCCEEDED REDUCE task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_r_000008\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_r_000008\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -981,9 +1218,13 @@ literal|"SUCCEEDED JOB_CLEANUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tError\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"task_1317928501754_0001_c_000009\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\t\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"task_1317928501754_0001_c_000009\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\t"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -991,9 +1232,13 @@ literal|"JOB_SETUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_s_000001_1\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_s_000001_1\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_s_000001_1\t6-Oct-2011 19:15:03\t6-Oct-2011 19:15:04 (1sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_s_000001_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -1001,19 +1246,33 @@ literal|"MAP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_m_000007_1\t6-Oct-2011 19:15:09\t6-Oct-2011 19:15:16 (7sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000007_1\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"attempt_1317928501754_0001_m_000002_1\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000002_1\n"
+literal|"attempt_1317928501754_0001_m_000007_1\t6-Oct-2011 19:15:09\t6-Oct-2011 19:15:16 (7sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000007_1"
 operator|+
-literal|"attempt_1317928501754_0001_m_000006_1\t6-Oct-2011 19:15:08\t6-Oct-2011 19:15:14 (6sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000006_1\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"attempt_1317928501754_0001_m_000005_1\t6-Oct-2011 19:15:07\t6-Oct-2011 19:15:12 (5sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000005_1\n"
+literal|"attempt_1317928501754_0001_m_000002_1\t6-Oct-2011 19:15:04\t6-Oct-2011 19:15:06 (2sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000002_1"
 operator|+
-literal|"attempt_1317928501754_0001_m_000004_1\t6-Oct-2011 19:15:06\t6-Oct-2011 19:15:10 (4sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000004_1\n"
+name|LINE_SEPARATOR
 operator|+
-literal|"attempt_1317928501754_0001_m_000003_1\t6-Oct-2011 19:15:05\t6-Oct-2011 19:15:08 (3sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000003_1\n"
+literal|"attempt_1317928501754_0001_m_000006_1\t6-Oct-2011 19:15:08\t6-Oct-2011 19:15:14 (6sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000006_1"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_m_000005_1\t6-Oct-2011 19:15:07\t6-Oct-2011 19:15:12 (5sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000005_1"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_m_000004_1\t6-Oct-2011 19:15:06\t6-Oct-2011 19:15:10 (4sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000004_1"
+operator|+
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_m_000003_1\t6-Oct-2011 19:15:05\t6-Oct-2011 19:15:08 (3sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_m_000003_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -1021,9 +1280,13 @@ literal|"REDUCE task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tShuffleFinished\tSortFinished\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_r_000008_1\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t6-Oct-2011 19:15:18 (0sec)6-Oct-2011 19:15:18 (8sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_r_000008_1\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_r_000008_1\t6-Oct-2011 19:15:10\t6-Oct-2011 19:15:18 (8sec)\t6-Oct-2011 19:15:18 (0sec)6-Oct-2011 19:15:18 (8sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_r_000008_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -1031,9 +1294,13 @@ literal|"JOB_CLEANUP task list for job_1317928501754_0001\n"
 operator|+
 literal|"TaskId\t\tStartTime\tFinishTime\tHostName\tError\tTaskLogs\n"
 operator|+
-literal|"====================================================\n"
+literal|"===================================================="
 operator|+
-literal|"attempt_1317928501754_0001_c_000009_1\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_c_000009_1\n"
+name|LINE_SEPARATOR
+operator|+
+literal|"attempt_1317928501754_0001_c_000009_1\t6-Oct-2011 19:15:11\t6-Oct-2011 19:15:20 (9sec)\tlocalhost\thttp://t:1234/tasklog?attemptid=attempt_1317928501754_0001_c_000009_1"
+operator|+
+name|LINE_SEPARATOR
 operator|+
 literal|"\n"
 operator|+
@@ -1041,9 +1308,13 @@ literal|"FAILED task attempts by nodes\n"
 operator|+
 literal|"Hostname\tFailedTasks\n"
 operator|+
-literal|"===============================\n"
+literal|"==============================="
 operator|+
-literal|"localhost\ttask_1317928501754_0001_m_000002, \n"
+name|LINE_SEPARATOR
+operator|+
+literal|"localhost\ttask_1317928501754_0001_m_000002, "
+operator|+
+name|LINE_SEPARATOR
 argument_list|,
 name|outStr
 argument_list|)

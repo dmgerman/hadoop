@@ -210,6 +210,18 @@ name|URISyntaxException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helpers for Ratis tests.  */
 end_comment
@@ -284,6 +296,10 @@ name|clazz
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|conf
 operator|=
@@ -504,6 +520,10 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 specifier|final
 name|MiniOzoneCluster
@@ -524,6 +544,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|cluster
+operator|.
+name|waitForClusterToBeReady
+argument_list|()
+expr_stmt|;
 return|return
 name|cluster
 return|;

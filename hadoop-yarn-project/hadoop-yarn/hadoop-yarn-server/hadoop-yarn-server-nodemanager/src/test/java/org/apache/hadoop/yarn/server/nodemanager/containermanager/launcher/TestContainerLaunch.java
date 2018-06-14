@@ -10663,7 +10663,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10690,7 +10690,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10726,7 +10726,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10791,7 +10791,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10808,7 +10808,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10825,7 +10825,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10853,7 +10853,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10870,7 +10870,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10887,7 +10887,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10921,7 +10921,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10938,7 +10938,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -10955,7 +10955,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11052,7 +11052,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11076,7 +11076,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11111,7 +11111,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11219,7 +11219,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11245,7 +11245,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11284,7 +11284,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11402,7 +11402,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11423,7 +11423,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11449,7 +11449,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11481,7 +11481,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11520,7 +11520,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -11554,7 +11554,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 operator|.
@@ -13774,13 +13774,30 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|// invalid env
+name|String
+name|invalidEnv
+init|=
+literal|"version${foo.version}"
+decl_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|invalidEnv
+operator|=
+literal|"version%foo%<>^&|=:version%"
+expr_stmt|;
+block|}
 name|env
 operator|.
 name|put
 argument_list|(
 literal|"testVar"
 argument_list|,
-literal|"version${foo.version}"
+name|invalidEnv
 argument_list|)
 expr_stmt|;
 name|validateShellExecutorForDifferentEnvs
@@ -13818,13 +13835,30 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|// invalid env
+name|String
+name|invalidEnv
+init|=
+literal|"/abc:/${foo.path}:/$bar"
+decl_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|invalidEnv
+operator|=
+literal|"/abc:/%foo%<>^&|=:path%:/%bar%"
+expr_stmt|;
+block|}
 name|env
 operator|.
 name|put
 argument_list|(
 literal|"testPath"
 argument_list|,
-literal|"/abc:/${foo.path}:/$bar"
+name|invalidEnv
 argument_list|)
 expr_stmt|;
 name|validateShellExecutorForDifferentEnvs

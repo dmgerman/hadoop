@@ -98,6 +98,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|node
+operator|.
+name|NodeManager
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -123,6 +141,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -235,6 +263,28 @@ name|reports
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Update deleteTransactionId according to deleteTransactionMap.    *    * @param deleteTransactionMap Maps the containerId to latest delete    *                             transaction id for the container.    * @throws IOException    */
+DECL|method|updateDeleteTransactionId (Map<Long, Long> deleteTransactionMap)
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|deleteTransactionMap
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns the nodeManager.    * @return NodeManager    */
+DECL|method|getNodeManager ()
+name|NodeManager
+name|getNodeManager
+parameter_list|()
 function_decl|;
 block|}
 end_interface

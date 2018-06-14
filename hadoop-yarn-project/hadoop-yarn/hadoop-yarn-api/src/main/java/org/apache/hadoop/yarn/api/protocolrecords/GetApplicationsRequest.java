@@ -48,11 +48,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -217,7 +215,7 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance ( ApplicationsRequestScope scope, Set<String> users, Set<String> queues, Set<String> applicationTypes, Set<String> applicationTags, EnumSet<YarnApplicationState> applicationStates, LongRange startRange, LongRange finishRange, Long limit)
+DECL|method|newInstance ( ApplicationsRequestScope scope, Set<String> users, Set<String> queues, Set<String> applicationTypes, Set<String> applicationTags, EnumSet<YarnApplicationState> applicationStates, Range<Long> startRange, Range<Long> finishRange, Long limit)
 specifier|public
 specifier|static
 name|GetApplicationsRequest
@@ -256,10 +254,16 @@ name|YarnApplicationState
 argument_list|>
 name|applicationStates
 parameter_list|,
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|startRange
 parameter_list|,
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|finishRange
 parameter_list|,
 name|Long
@@ -341,12 +345,12 @@ name|setStartRange
 argument_list|(
 name|startRange
 operator|.
-name|getMinimumLong
+name|getMinimum
 argument_list|()
 argument_list|,
 name|startRange
 operator|.
-name|getMaximumLong
+name|getMaximum
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -364,12 +368,12 @@ name|setFinishRange
 argument_list|(
 name|finishRange
 operator|.
-name|getMinimumLong
+name|getMinimum
 argument_list|()
 argument_list|,
 name|finishRange
 operator|.
-name|getMaximumLong
+name|getMaximum
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -744,7 +748,7 @@ name|long
 name|limit
 parameter_list|)
 function_decl|;
-comment|/**    * Get the range of start times to filter applications on    *    * @return {@link LongRange} of start times to filter applications on    */
+comment|/**    * Get the range of start times to filter applications on    *    * @return {@link Range} of start times to filter applications on    */
 annotation|@
 name|Private
 annotation|@
@@ -752,7 +756,10 @@ name|Unstable
 DECL|method|getStartRange ()
 specifier|public
 specifier|abstract
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|getStartRange
 parameter_list|()
 function_decl|;
@@ -761,13 +768,16 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setStartRange (LongRange range)
+DECL|method|setStartRange (Range<Long> range)
 specifier|public
 specifier|abstract
 name|void
 name|setStartRange
 parameter_list|(
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|range
 parameter_list|)
 function_decl|;
@@ -791,7 +801,7 @@ parameter_list|)
 throws|throws
 name|IllegalArgumentException
 function_decl|;
-comment|/**    * Get the range of finish times to filter applications on    *    * @return {@link LongRange} of finish times to filter applications on    */
+comment|/**    * Get the range of finish times to filter applications on    *    * @return {@link Range} of finish times to filter applications on    */
 annotation|@
 name|Private
 annotation|@
@@ -799,7 +809,10 @@ name|Unstable
 DECL|method|getFinishRange ()
 specifier|public
 specifier|abstract
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|getFinishRange
 parameter_list|()
 function_decl|;
@@ -808,13 +821,16 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setFinishRange (LongRange range)
+DECL|method|setFinishRange (Range<Long> range)
 specifier|public
 specifier|abstract
 name|void
 name|setFinishRange
 parameter_list|(
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|range
 parameter_list|)
 function_decl|;

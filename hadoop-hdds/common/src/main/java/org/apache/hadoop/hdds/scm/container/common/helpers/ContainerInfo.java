@@ -196,6 +196,18 @@ name|Comparator
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|max
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class wraps ozone container info.  */
 end_comment
@@ -320,7 +332,12 @@ specifier|private
 name|long
 name|containerID
 decl_stmt|;
-DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner)
+DECL|field|deleteTransactionId
+specifier|private
+name|long
+name|deleteTransactionId
+decl_stmt|;
+DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId)
 name|ContainerInfo
 parameter_list|(
 name|long
@@ -348,6 +365,9 @@ name|stateEnterTime
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|long
+name|deleteTransactionId
 parameter_list|)
 block|{
 name|this
@@ -406,6 +426,12 @@ operator|.
 name|owner
 operator|=
 name|owner
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+name|deleteTransactionId
 expr_stmt|;
 block|}
 comment|/**    * Needed for serialization findbugs.    */
@@ -522,6 +548,16 @@ name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|builder
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+name|info
+operator|.
+name|getDeleteTransactionId
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|builder
 operator|.
@@ -635,6 +671,35 @@ block|{
 return|return
 name|numberOfKeys
 return|;
+block|}
+DECL|method|getDeleteTransactionId ()
+specifier|public
+name|long
+name|getDeleteTransactionId
+parameter_list|()
+block|{
+return|return
+name|deleteTransactionId
+return|;
+block|}
+DECL|method|updateDeleteTransactionId (long transactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|transactionId
+parameter_list|)
+block|{
+name|deleteTransactionId
+operator|=
+name|max
+argument_list|(
+name|transactionId
+argument_list|,
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|containerID ()
 specifier|public
@@ -769,6 +834,13 @@ name|setContainerID
 argument_list|(
 name|getContainerID
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+name|deleteTransactionId
 argument_list|)
 expr_stmt|;
 if|if
@@ -1105,6 +1177,11 @@ specifier|private
 name|long
 name|containerID
 decl_stmt|;
+DECL|field|deleteTransactionId
+specifier|private
+name|long
+name|deleteTransactionId
+decl_stmt|;
 DECL|method|setContainerID (long id)
 specifier|public
 name|Builder
@@ -1268,6 +1345,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setDeleteTransactionId (long deleteTransactionId)
+specifier|public
+name|Builder
+name|setDeleteTransactionId
+parameter_list|(
+name|long
+name|deleteTransactionId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+name|deleteTransactionId
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|ContainerInfo
@@ -1293,6 +1389,8 @@ argument_list|,
 name|stateEnterTime
 argument_list|,
 name|owner
+argument_list|,
+name|deleteTransactionId
 argument_list|)
 return|;
 block|}

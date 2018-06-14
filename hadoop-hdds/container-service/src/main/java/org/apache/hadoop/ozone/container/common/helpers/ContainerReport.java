@@ -56,6 +56,18 @@ name|ContainerInfo
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|max
+import|;
+end_import
+
 begin_comment
 comment|/**  * Container Report iterates the closed containers and sends a container report  * to SCM.  */
 end_comment
@@ -121,6 +133,11 @@ DECL|field|containerID
 specifier|private
 name|long
 name|containerID
+decl_stmt|;
+DECL|field|deleteTransactionId
+specifier|private
+name|long
+name|deleteTransactionId
 decl_stmt|;
 DECL|method|getContainerID ()
 specifier|public
@@ -213,6 +230,12 @@ operator|.
 name|writeBytes
 operator|=
 literal|0L
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+literal|0
 expr_stmt|;
 block|}
 comment|/**    * Gets a containerReport from protobuf class.    *    * @param info - ContainerInfo.    * @return - ContainerReport.    */
@@ -379,6 +402,25 @@ argument_list|(
 name|info
 operator|.
 name|getWriteBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|info
+operator|.
+name|hasDeleteTransactionId
+argument_list|()
+condition|)
+block|{
+name|report
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|info
+operator|.
+name|getDeleteTransactionId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -594,6 +636,27 @@ operator|=
 name|bytesUsed
 expr_stmt|;
 block|}
+DECL|method|updateDeleteTransactionId (long transactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|transactionId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+name|max
+argument_list|(
+name|transactionId
+argument_list|,
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Gets a containerInfo protobuf message from ContainerReports.    *    * @return ContainerInfo    */
 DECL|method|getProtoBufMessage ()
 specifier|public
@@ -677,6 +740,13 @@ name|this
 operator|.
 name|getContainerID
 argument_list|()
+argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+name|this
+operator|.
+name|deleteTransactionId
 argument_list|)
 operator|.
 name|build

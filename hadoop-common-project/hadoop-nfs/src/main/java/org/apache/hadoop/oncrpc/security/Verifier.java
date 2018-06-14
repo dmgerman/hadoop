@@ -121,6 +121,27 @@ name|flavor
 operator|==
 name|AuthFlavor
 operator|.
+name|AUTH_SYS
+condition|)
+block|{
+comment|// Added in HADOOP-15307 based on HDFS-5085:
+comment|// When the auth flavor is AUTH_SYS, the corresponding verifier is
+comment|// AUTH_NONE. I.e., it is impossible to have a verifier with auth
+comment|// flavor AUTH_SYS.
+name|verifer
+operator|=
+operator|new
+name|VerifierNone
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|flavor
+operator|==
+name|AuthFlavor
+operator|.
 name|RPCSEC_GSS
 condition|)
 block|{
@@ -137,7 +158,7 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Unsupported verifier flavor"
+literal|"Unsupported verifier flavor: "
 operator|+
 name|flavor
 argument_list|)

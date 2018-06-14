@@ -30,11 +30,11 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 import|;
 end_import
 
@@ -46,11 +46,11 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringEscapeUtils
 operator|.
-name|escapeJavaScript
+name|escapeEcmaScript
 import|;
 end_import
 
@@ -983,9 +983,9 @@ name|str
 parameter_list|)
 block|{
 return|return
-name|escapeJavaScript
+name|escapeEcmaScript
 argument_list|(
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|str
 argument_list|)

@@ -184,6 +184,18 @@ name|AtomicLong
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|max
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class maintains the information about a container in the ozone world.  *<p>  * A container is a name, along with metadata- which is a set of key value  * pair.  */
 end_comment
@@ -252,6 +264,11 @@ DECL|field|numPendingDeletionBlocks
 specifier|private
 name|int
 name|numPendingDeletionBlocks
+decl_stmt|;
+DECL|field|deleteTransactionId
+specifier|private
+name|long
+name|deleteTransactionId
 decl_stmt|;
 DECL|field|readBytes
 specifier|private
@@ -342,6 +359,12 @@ expr_stmt|;
 name|this
 operator|.
 name|numPendingDeletionBlocks
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
 operator|=
 literal|0
 expr_stmt|;
@@ -456,6 +479,12 @@ expr_stmt|;
 name|this
 operator|.
 name|numPendingDeletionBlocks
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
 operator|=
 literal|0
 expr_stmt|;
@@ -1185,7 +1214,8 @@ name|path
 expr_stmt|;
 block|}
 comment|/**    * This function serves as the generic key for ContainerCache class. Both    * ContainerData and ContainerKeyData overrides this function to appropriately    * return the right name that can  be used in ContainerCache.    *    * @return String Name.    */
-comment|// TODO: check the ContainerCache class to see if we are using the ContainerID instead.
+comment|// TODO: check the ContainerCache class to see if
+comment|// we are using the ContainerID instead.
 comment|/*    public String getName() {     return getContainerID();   }*/
 comment|/**    * Get container file path.    * @return - Physical path where container file and checksum is stored.    */
 DECL|method|getContainerPath ()
@@ -1486,6 +1516,37 @@ return|return
 name|this
 operator|.
 name|numPendingDeletionBlocks
+return|;
+block|}
+comment|/**    * Sets deleteTransactionId to latest delete transactionId for the container.    *    * @param transactionId latest transactionId of the container.    */
+DECL|method|updateDeleteTransactionId (long transactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|transactionId
+parameter_list|)
+block|{
+name|deleteTransactionId
+operator|=
+name|max
+argument_list|(
+name|transactionId
+argument_list|,
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Return the latest deleteTransactionId of the container.    */
+DECL|method|getDeleteTransactionId ()
+specifier|public
+name|long
+name|getDeleteTransactionId
+parameter_list|()
+block|{
+return|return
+name|deleteTransactionId
 return|;
 block|}
 comment|/**    * Get the number of bytes read from the container.    * @return the number of bytes read from the container.    */

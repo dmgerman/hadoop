@@ -252,9 +252,16 @@ name|ContainerId
 name|getContainerId
 parameter_list|()
 function_decl|;
+comment|/**    * The timestamp when the container start request is received.    */
 DECL|method|getContainerStartTime ()
 name|long
 name|getContainerStartTime
+parameter_list|()
+function_decl|;
+comment|/**    * The timestamp when the container is allowed to be launched.    */
+DECL|method|getContainerLaunchTime ()
+name|long
+name|getContainerLaunchTime
 parameter_list|()
 function_decl|;
 DECL|method|getResource ()

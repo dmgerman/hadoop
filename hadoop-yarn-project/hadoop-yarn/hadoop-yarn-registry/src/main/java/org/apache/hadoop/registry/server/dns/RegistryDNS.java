@@ -5277,6 +5277,8 @@ name|response
 argument_list|,
 name|name
 argument_list|,
+name|type
+argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
@@ -5365,7 +5367,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Lookup record from upstream DNS servers.    */
-DECL|method|remoteLookup (Message response, Name name, int iterations)
+DECL|method|remoteLookup (Message response, Name name, int type, int iterations)
 specifier|private
 name|byte
 name|remoteLookup
@@ -5375,6 +5377,9 @@ name|response
 parameter_list|,
 name|Name
 name|name
+parameter_list|,
+name|int
+name|type
 parameter_list|,
 name|int
 name|iterations
@@ -5389,9 +5394,7 @@ name|getRecords
 argument_list|(
 name|name
 argument_list|,
-name|Type
-operator|.
-name|ANY
+name|type
 argument_list|)
 decl_stmt|;
 try|try
@@ -5479,6 +5482,10 @@ argument_list|(
 name|response
 argument_list|,
 name|cname
+argument_list|,
+name|Type
+operator|.
+name|CNAME
 argument_list|,
 name|iterations
 operator|+

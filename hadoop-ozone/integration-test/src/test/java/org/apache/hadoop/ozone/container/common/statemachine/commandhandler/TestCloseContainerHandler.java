@@ -659,6 +659,12 @@ operator|new
 name|CloseContainerCommand
 argument_list|(
 name|containerID
+argument_list|,
+name|HddsProtos
+operator|.
+name|ReplicationType
+operator|.
+name|STAND_ALONE
 argument_list|)
 argument_list|)
 expr_stmt|;

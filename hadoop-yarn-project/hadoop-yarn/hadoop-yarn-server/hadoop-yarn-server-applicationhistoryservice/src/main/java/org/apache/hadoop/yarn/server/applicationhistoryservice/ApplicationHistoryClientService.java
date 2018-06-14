@@ -1230,7 +1230,7 @@ operator|.
 name|getStartRange
 argument_list|()
 operator|.
-name|getMinimumLong
+name|getMinimum
 argument_list|()
 decl_stmt|;
 name|long
@@ -1252,7 +1252,7 @@ operator|.
 name|getStartRange
 argument_list|()
 operator|.
-name|getMaximumLong
+name|getMaximum
 argument_list|()
 decl_stmt|;
 name|GetApplicationsResponse

@@ -398,7 +398,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"does not exist."
+literal|"is not found"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -592,7 +592,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"does not exist."
+literal|"is not found"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -721,7 +721,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"does not exist."
+literal|"is not found"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -824,6 +824,12 @@ operator|.
 name|exists
 argument_list|()
 argument_list|)
+expr_stmt|;
+comment|// Create a container outside of the WASB FileSystem
+name|container
+operator|.
+name|create
+argument_list|()
 expr_stmt|;
 comment|// But a write should.
 name|assertTrue

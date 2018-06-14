@@ -40,7 +40,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|RandomStringUtils
 import|;
@@ -1003,10 +1003,6 @@ expr_stmt|;
 name|String
 name|expectedMessage
 init|=
-name|shouldUseGrpc
-condition|?
-literal|"Channel shutdown invoked"
-else|:
 literal|"This channel is not connected."
 decl_stmt|;
 try|try
@@ -1305,10 +1301,6 @@ decl_stmt|;
 name|String
 name|expectedMessage
 init|=
-name|shouldUseGrpc
-condition|?
-literal|"Channel shutdown invoked"
-else|:
 literal|"This channel is not connected."
 decl_stmt|;
 try|try

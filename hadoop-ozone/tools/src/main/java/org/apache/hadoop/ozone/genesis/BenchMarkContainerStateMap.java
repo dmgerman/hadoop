@@ -551,6 +551,11 @@ argument_list|(
 name|x
 argument_list|)
 operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -649,6 +654,11 @@ argument_list|(
 name|y
 argument_list|)
 operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -731,6 +741,11 @@ name|setContainerID
 argument_list|(
 name|currentCount
 operator|++
+argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
 argument_list|)
 operator|.
 name|build
@@ -1098,6 +1113,11 @@ operator|.
 name|setContainerID
 argument_list|(
 name|cid
+argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
 argument_list|)
 operator|.
 name|build

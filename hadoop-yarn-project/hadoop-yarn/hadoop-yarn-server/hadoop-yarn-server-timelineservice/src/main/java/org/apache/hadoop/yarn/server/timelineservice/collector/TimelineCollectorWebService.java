@@ -636,6 +636,26 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|IllegalFormatException
+import|;
+end_import
+
 begin_comment
 comment|/**  * The main per-node REST end point for timeline service writes. It is  * essentially a container service that routes requests to the appropriate  * per-app services.  */
 end_comment
@@ -992,9 +1012,14 @@ expr_stmt|;
 throw|throw
 operator|new
 name|NotFoundException
-argument_list|()
+argument_list|(
+literal|"Application: "
+operator|+
+name|appId
+operator|+
+literal|" is not found"
+argument_list|)
 throw|;
-comment|// different exception?
 block|}
 name|boolean
 name|isAsync
@@ -1076,7 +1101,29 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|NotFoundException
+decl||
+name|ForbiddenException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|WebApplicationException
+argument_list|(
+name|e
+argument_list|,
+name|Response
+operator|.
+name|Status
+operator|.
+name|INTERNAL_SERVER_ERROR
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1268,9 +1315,14 @@ expr_stmt|;
 throw|throw
 operator|new
 name|NotFoundException
-argument_list|()
+argument_list|(
+literal|"Application: "
+operator|+
+name|appId
+operator|+
+literal|" is not found"
+argument_list|)
 throw|;
-comment|// different exception?
 block|}
 name|domain
 operator|.
@@ -1303,7 +1355,27 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|NotFoundException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|WebApplicationException
+argument_list|(
+name|e
+argument_list|,
+name|Response
+operator|.
+name|Status
+operator|.
+name|INTERNAL_SERVER_ERROR
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1371,7 +1443,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IllegalFormatException
 name|e
 parameter_list|)
 block|{

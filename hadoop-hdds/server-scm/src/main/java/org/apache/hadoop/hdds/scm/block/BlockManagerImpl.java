@@ -1512,18 +1512,28 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// We update SCM DB first, so if this step fails, we end up here,
-comment|// nothing gets into the delLog so no blocks will be accidentally
-comment|// removed. If we write the log first, once log is written, the
-comment|// async deleting service will start to scan and might be picking
-comment|// up some blocks to do real deletions, that might cause data loss.
 try|try
 block|{
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|deleteTransactionsMap
+init|=
 name|deletedBlockLog
 operator|.
 name|addTransactions
 argument_list|(
 name|containerBlocks
+argument_list|)
+decl_stmt|;
+name|containerManager
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|deleteTransactionsMap
 argument_list|)
 expr_stmt|;
 block|}

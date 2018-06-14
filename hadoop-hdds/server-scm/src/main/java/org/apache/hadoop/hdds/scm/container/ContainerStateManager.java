@@ -1124,6 +1124,11 @@ name|incrementAndGet
 argument_list|()
 argument_list|)
 operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -1300,6 +1305,40 @@ argument_list|(
 name|info
 argument_list|)
 return|;
+block|}
+comment|/**    * Update deleteTransactionId for a container.    *    * @param containerID ContainerID of the container whose delete    *                    transactionId needs to be updated.    * @param transactionId latest transactionId to be updated for the container    */
+DECL|method|updateDeleteTransactionId (Long containerID, long transactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|Long
+name|containerID
+parameter_list|,
+name|long
+name|transactionId
+parameter_list|)
+block|{
+name|containers
+operator|.
+name|getContainerMap
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
+name|containerID
+argument_list|)
+argument_list|)
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|transactionId
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Return a container matching the attributes specified.    *    * @param size - Space needed in the Container.    * @param owner - Owner of the container - A specific nameservice.    * @param type - Replication Type {StandAlone, Ratis}    * @param factor - Replication Factor {ONE, THREE}    * @param state - State of the Container-- {Open, Allocated etc.}    * @return ContainerInfo, null if there is no match found.    */
 DECL|method|getMatchingContainer (final long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
@@ -1642,6 +1681,28 @@ argument_list|,
 name|factor
 argument_list|,
 name|type
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the containerInfo for the given container id.    * @param containerID id of the container    * @return ContainerInfo containerInfo    * @throws IOException    */
+DECL|method|getContainer (ContainerID containerID)
+specifier|public
+name|ContainerInfo
+name|getContainer
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|)
+block|{
+return|return
+name|containers
+operator|.
+name|getContainerInfo
+argument_list|(
+name|containerID
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 return|;
 block|}

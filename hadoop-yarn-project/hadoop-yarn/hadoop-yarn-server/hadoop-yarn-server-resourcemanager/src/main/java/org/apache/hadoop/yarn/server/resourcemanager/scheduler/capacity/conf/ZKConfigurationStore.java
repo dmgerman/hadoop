@@ -564,6 +564,8 @@ operator|.
 name|createRootDirRecursively
 argument_list|(
 name|znodeParentPath
+argument_list|,
+name|zkAcl
 argument_list|)
 expr_stmt|;
 name|zkManager

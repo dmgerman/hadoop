@@ -230,6 +230,22 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_TAGS_SYSTEM_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * A servlet to print out the running configuration data.  */
 end_comment
@@ -832,7 +848,7 @@ name|config
 operator|.
 name|get
 argument_list|(
-literal|"ozone.tags.system"
+name|OZONE_TAGS_SYSTEM_KEY
 argument_list|)
 operator|.
 name|split

@@ -13969,6 +13969,30 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|updateFileSystemECReadStats (int nRead)
+name|void
+name|updateFileSystemECReadStats
+parameter_list|(
+name|int
+name|nRead
+parameter_list|)
+block|{
+if|if
+condition|(
+name|stats
+operator|!=
+literal|null
+condition|)
+block|{
+name|stats
+operator|.
+name|incrementBytesReadErasureCoded
+argument_list|(
+name|nRead
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Create hedged reads thread pool, HEDGED_READ_THREAD_POOL, if    * it does not already exist.    * @param num Number of threads for hedged reads thread pool.    * If zero, skip hedged reads thread pool creation.    */
 DECL|method|initThreadsNumForHedgedReads (int num)
 specifier|private

@@ -346,6 +346,9 @@ name|Name
 operator|.
 name|RATIS
 argument_list|)
+operator|.
+name|getValue
+argument_list|()
 return|;
 block|}
 DECL|method|toRaftPeerAddressString (DatanodeDetails id)
@@ -377,6 +380,9 @@ name|Name
 operator|.
 name|RATIS
 argument_list|)
+operator|.
+name|getValue
+argument_list|()
 return|;
 block|}
 DECL|method|toRaftPeerId (DatanodeDetails id)

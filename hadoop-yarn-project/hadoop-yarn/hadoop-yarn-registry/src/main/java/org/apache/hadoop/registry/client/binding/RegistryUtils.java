@@ -56,7 +56,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 import|;
@@ -1033,6 +1033,24 @@ init|=
 name|currentUsernameUnencoded
 argument_list|()
 decl_stmt|;
+return|return
+name|registryUser
+argument_list|(
+name|shortUserName
+argument_list|)
+return|;
+block|}
+comment|/**    * Convert the given user name formatted for the registry.    *    * @param shortUserName    * @return converted user name    */
+DECL|method|registryUser (String shortUserName)
+specifier|public
+specifier|static
+name|String
+name|registryUser
+parameter_list|(
+name|String
+name|shortUserName
+parameter_list|)
+block|{
 name|String
 name|encodedName
 init|=

@@ -248,6 +248,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -1511,12 +1521,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@inheritDoc}    *    * @param containerBlocksMap a map of containerBlocks.    * @throws IOException    */
+comment|/**    * {@inheritDoc}    *    * @param containerBlocksMap a map of containerBlocks.    * @return Mapping from containerId to latest transactionId for the container.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|addTransactions (Map<Long, List<Long>> containerBlocksMap)
+DECL|method|addTransactions ( Map<Long, List<Long>> containerBlocksMap)
 specifier|public
-name|void
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
 name|addTransactions
 parameter_list|(
 name|Map
@@ -1538,6 +1553,19 @@ name|batch
 init|=
 operator|new
 name|BatchOperation
+argument_list|()
+decl_stmt|;
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|deleteTransactionsMap
+init|=
+operator|new
+name|HashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|lock
@@ -1606,6 +1634,18 @@ name|getValue
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|deleteTransactionsMap
+operator|.
+name|put
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|currentLatestID
+argument_list|)
+expr_stmt|;
 name|batch
 operator|.
 name|put
@@ -1644,6 +1684,9 @@ argument_list|(
 name|batch
 argument_list|)
 expr_stmt|;
+return|return
+name|deleteTransactionsMap
+return|;
 block|}
 finally|finally
 block|{

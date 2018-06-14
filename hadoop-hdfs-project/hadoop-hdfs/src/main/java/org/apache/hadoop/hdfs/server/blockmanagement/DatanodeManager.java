@@ -7878,7 +7878,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Marking all datandoes as stale"
+literal|"Marking all datanodes as stale"
 argument_list|)
 expr_stmt|;
 synchronized|synchronized

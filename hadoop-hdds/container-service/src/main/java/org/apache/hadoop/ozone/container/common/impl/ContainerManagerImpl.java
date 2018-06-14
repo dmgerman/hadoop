@@ -52,6 +52,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -113,6 +127,20 @@ operator|.
 name|helpers
 operator|.
 name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
 import|;
 end_import
 
@@ -507,26 +535,6 @@ operator|.
 name|interfaces
 operator|.
 name|ContainerManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|interfaces
-operator|.
-name|ContainerReportManager
 import|;
 end_import
 
@@ -1179,20 +1187,10 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|datanodeDetails
-specifier|private
-name|DatanodeDetails
-name|datanodeDetails
-decl_stmt|;
 DECL|field|containerDeletionChooser
 specifier|private
 name|ContainerDeletionChoosingPolicy
 name|containerDeletionChooser
-decl_stmt|;
-DECL|field|containerReportManager
-specifier|private
-name|ContainerReportManager
-name|containerReportManager
 decl_stmt|;
 comment|/**    * Init call that sets up a container Manager.    *    * @param config - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param dnDetails - DatanodeDetails.    * @throws IOException    */
 annotation|@
@@ -1269,12 +1267,6 @@ operator|.
 name|conf
 operator|=
 name|config
-expr_stmt|;
-name|this
-operator|.
-name|datanodeDetails
-operator|=
-name|dnDetails
 expr_stmt|;
 name|readLock
 argument_list|()
@@ -1546,16 +1538,6 @@ argument_list|,
 name|config
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|containerReportManager
-operator|=
-operator|new
-name|ContainerReportManagerImpl
-argument_list|(
-name|config
-argument_list|)
-expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1742,8 +1724,8 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Initialize pending deletion blocks count in in-memory
-comment|// container status.
+comment|// Initialize pending deletion blocks and deleted blocks count in
+comment|// in-memory containerData.
 name|MetadataStore
 name|metadata
 init|=
@@ -1787,6 +1769,46 @@ name|getDeletingKeyFilter
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|byte
+index|[]
+name|transactionID
+init|=
+name|metadata
+operator|.
+name|get
+argument_list|(
+name|DFSUtil
+operator|.
+name|string2Bytes
+argument_list|(
+name|OzoneConsts
+operator|.
+name|DELETE_TRANSACTION_KEY_PREFIX
+operator|+
+name|containerID
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|transactionID
+operator|!=
+literal|null
+condition|)
+block|{
+name|containerData
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|Longs
+operator|.
+name|fromByteArray
+argument_list|(
+name|transactionID
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|containerData
 operator|.
 name|incrPendingDeletionBlocks
@@ -3526,7 +3548,7 @@ name|isOpen
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns LifeCycle State of the container    * @param containerID - Id of the container    * @return LifeCycle State of the container    * @throws StorageContainerException    */
+comment|/**    * Returns LifeCycle State of the container.    * @param containerID - Id of the container    * @return LifeCycle State of the container    * @throws StorageContainerException    */
 DECL|method|getState (long containerID)
 specifier|private
 name|HddsProtos
@@ -4190,6 +4212,14 @@ name|getState
 argument_list|(
 name|containerId
 argument_list|)
+argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+name|container
+operator|.
+name|getDeleteTransactionId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|crBuilder

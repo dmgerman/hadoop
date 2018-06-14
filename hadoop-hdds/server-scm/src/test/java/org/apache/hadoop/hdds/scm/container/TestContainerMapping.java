@@ -1214,6 +1214,11 @@ operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
 name|reports
 operator|.
@@ -1391,6 +1396,11 @@ name|info
 operator|.
 name|getContainerID
 argument_list|()
+argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+literal|0
 argument_list|)
 expr_stmt|;
 name|reports

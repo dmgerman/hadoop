@@ -80,7 +80,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|RandomStringUtils
 import|;
@@ -383,6 +383,20 @@ operator|.
 name|utils
 operator|.
 name|OzoneUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|MetadataKeyFilters
 import|;
 end_import
 
@@ -938,6 +952,9 @@ name|filter
 init|=
 operator|new
 name|KeyPrefixFilter
+argument_list|()
+operator|.
+name|addFilter
 argument_list|(
 name|OzoneConsts
 operator|.
@@ -1150,7 +1167,10 @@ name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|,
-name|filter
+name|MetadataKeyFilters
+operator|.
+name|getNormalKeyFilter
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|kvs

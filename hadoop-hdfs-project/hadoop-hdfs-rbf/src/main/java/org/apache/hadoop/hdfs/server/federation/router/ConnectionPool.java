@@ -130,6 +130,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -794,6 +808,21 @@ operator|.
 name|connectionPoolId
 return|;
 block|}
+comment|/**    * Get the clientIndex used to calculate index for lookup.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getClientIndex ()
+specifier|public
+name|AtomicInteger
+name|getClientIndex
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|clientIndex
+return|;
+block|}
 comment|/**    * Return the next connection round-robin.    *    * @return Connection context.    */
 DECL|method|getConnection ()
 specifier|protected
@@ -834,6 +863,7 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
+comment|// Inc and mask off sign bit, lookup index should be non-negative int
 name|int
 name|threadIndex
 init|=
@@ -843,6 +873,8 @@ name|clientIndex
 operator|.
 name|getAndIncrement
 argument_list|()
+operator|&
+literal|0x7FFFFFFF
 decl_stmt|;
 for|for
 control|(

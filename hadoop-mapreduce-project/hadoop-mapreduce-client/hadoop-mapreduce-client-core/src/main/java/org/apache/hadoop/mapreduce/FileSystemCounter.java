@@ -54,6 +54,9 @@ name|LARGE_READ_OPS
 block|,
 DECL|enumConstant|WRITE_OPS
 name|WRITE_OPS
+block|,
+DECL|enumConstant|BYTES_READ_EC
+name|BYTES_READ_EC
 block|, }
 end_enum
 

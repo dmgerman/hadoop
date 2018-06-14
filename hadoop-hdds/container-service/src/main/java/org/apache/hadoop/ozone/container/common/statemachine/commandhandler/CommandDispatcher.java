@@ -400,6 +400,23 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getCloseContainerHandler ()
+specifier|public
+name|CommandHandler
+name|getCloseContainerHandler
+parameter_list|()
+block|{
+return|return
+name|handlerMap
+operator|.
+name|get
+argument_list|(
+name|Type
+operator|.
+name|closeContainerCommand
+argument_list|)
+return|;
+block|}
 comment|/**    * Dispatch the command to the correct handler.    *    * @param command - SCM Command.    */
 DECL|method|handle (SCMCommand command)
 specifier|public

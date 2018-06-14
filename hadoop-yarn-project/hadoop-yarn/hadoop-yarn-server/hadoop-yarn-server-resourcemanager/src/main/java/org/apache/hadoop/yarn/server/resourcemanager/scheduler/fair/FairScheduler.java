@@ -1858,6 +1858,7 @@ decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|allocConf
+specifier|volatile
 name|AllocationConfiguration
 name|allocConf
 decl_stmt|;
@@ -1895,11 +1896,7 @@ name|allocsLoader
 operator|=
 operator|new
 name|AllocationFileLoaderService
-argument_list|(
-operator|new
-name|AllocationReloadListener
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|queueMgr
 operator|=
@@ -5569,10 +5566,18 @@ specifier|final
 name|NodeId
 name|nodeID
 init|=
+operator|(
+name|node
+operator|!=
+literal|null
+condition|?
 name|node
 operator|.
 name|getNodeID
 argument_list|()
+else|:
+literal|null
+operator|)
 decl_stmt|;
 if|if
 condition|(
@@ -7176,6 +7181,15 @@ operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|allocsLoader
+operator|.
+name|setReloadListener
+argument_list|(
+operator|new
+name|AllocationReloadListener
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// If we fail to load allocations file on initialize, we want to fail

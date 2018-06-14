@@ -194,7 +194,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 import|;
@@ -5289,6 +5289,20 @@ return|return
 name|this
 operator|.
 name|startTime
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getContainerLaunchTime ()
+specifier|public
+name|long
+name|getContainerLaunchTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|containerLaunchStartTime
 return|;
 block|}
 annotation|@

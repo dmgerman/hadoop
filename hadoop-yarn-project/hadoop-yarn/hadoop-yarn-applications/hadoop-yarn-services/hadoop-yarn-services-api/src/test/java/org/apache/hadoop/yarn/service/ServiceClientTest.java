@@ -593,10 +593,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|actionStart (String serviceName)
+DECL|method|actionStartAndGetId (String serviceName)
 specifier|public
-name|int
-name|actionStart
+name|ApplicationId
+name|actionStartAndGetId
 parameter_list|(
 name|String
 name|serviceName
@@ -645,7 +645,7 @@ name|appId
 argument_list|)
 expr_stmt|;
 return|return
-name|EXIT_SUCCESS
+name|appId
 return|;
 block|}
 else|else

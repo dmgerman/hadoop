@@ -56,11 +56,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -475,8 +473,9 @@ operator|.
 name|getStartRange
 argument_list|()
 argument_list|,
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|startBegin
 argument_list|,
@@ -495,8 +494,9 @@ operator|.
 name|getFinishRange
 argument_list|()
 argument_list|,
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|finishBegin
 argument_list|,

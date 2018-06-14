@@ -1861,6 +1861,8 @@ operator|.
 name|createRootDirRecursively
 argument_list|(
 name|znodeWorkingPath
+argument_list|,
+name|zkAcl
 argument_list|)
 expr_stmt|;
 name|create

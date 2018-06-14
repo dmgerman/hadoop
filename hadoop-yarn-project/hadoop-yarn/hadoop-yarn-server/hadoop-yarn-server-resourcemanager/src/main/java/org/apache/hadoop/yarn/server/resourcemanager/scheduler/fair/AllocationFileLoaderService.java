@@ -696,7 +696,6 @@ name|fs
 decl_stmt|;
 DECL|field|reloadListener
 specifier|private
-specifier|final
 name|Listener
 name|reloadListener
 decl_stmt|;
@@ -721,18 +720,13 @@ name|running
 init|=
 literal|true
 decl_stmt|;
-DECL|method|AllocationFileLoaderService (Listener reloadListener)
+DECL|method|AllocationFileLoaderService ()
 specifier|public
 name|AllocationFileLoaderService
-parameter_list|(
-name|Listener
-name|reloadListener
-parameter_list|)
+parameter_list|()
 block|{
 name|this
 argument_list|(
-name|reloadListener
-argument_list|,
 name|SystemClock
 operator|.
 name|getInstance
@@ -748,13 +742,10 @@ name|Permission
 argument_list|>
 name|defaultPermissions
 decl_stmt|;
-DECL|method|AllocationFileLoaderService (Listener reloadListener, Clock clock)
+DECL|method|AllocationFileLoaderService (Clock clock)
 specifier|public
 name|AllocationFileLoaderService
 parameter_list|(
-name|Listener
-name|reloadListener
-parameter_list|,
 name|Clock
 name|clock
 parameter_list|)
@@ -774,12 +765,6 @@ operator|.
 name|clock
 operator|=
 name|clock
-expr_stmt|;
-name|this
-operator|.
-name|reloadListener
-operator|=
-name|reloadListener
 expr_stmt|;
 block|}
 annotation|@
@@ -959,7 +944,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Exception while loading allocation file: "
 operator|+
@@ -1105,8 +1090,9 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Path to XML file containing allocations. If the    * path is relative, it is searched for in the    * classpath, but loaded like a regular File.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getAllocationFile (Configuration conf)
-specifier|public
 name|Path
 name|getAllocationFile
 parameter_list|(
@@ -1300,6 +1286,23 @@ block|}
 return|return
 name|allocPath
 return|;
+block|}
+DECL|method|setReloadListener (Listener reloadListener)
+specifier|public
+specifier|synchronized
+name|void
+name|setReloadListener
+parameter_list|(
+name|Listener
+name|reloadListener
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reloadListener
+operator|=
+name|reloadListener
+expr_stmt|;
 block|}
 comment|/**    * Updates the allocation list from the allocation config file. This file is    * expected to be in the XML format specified in the design doc.    *    * @throws IOException if the config file cannot be read.    * @throws AllocationConfigurationException if allocations are invalid.    * @throws ParserConfigurationException if XML parser is misconfigured.    * @throws SAXException if config file is malformed.    */
 DECL|method|reloadAllocations ()
@@ -1907,10 +1910,11 @@ throws|throws
 name|IOException
 function_decl|;
 DECL|method|onCheck ()
+specifier|default
 name|void
 name|onCheck
 parameter_list|()
-function_decl|;
+block|{     }
 block|}
 block|}
 end_class

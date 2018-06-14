@@ -128,7 +128,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringEscapeUtils
 operator|.
@@ -504,7 +504,7 @@ name|print
 argument_list|(
 name|quote
 condition|?
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|String
 operator|.
@@ -1547,7 +1547,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|value
 argument_list|)

@@ -222,7 +222,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 import|;
@@ -701,6 +701,24 @@ operator|.
 name|records
 operator|.
 name|YarnApplicationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|AppAdminClient
 import|;
 end_import
 
@@ -8510,6 +8528,140 @@ expr_stmt|;
 block|}
 empty_stmt|;
 block|}
+comment|/**    * Attempt to perform a type-specific cleanup after application has completed.    *    * @param app application to clean up    */
+DECL|method|appAdminClientCleanUp (RMAppImpl app)
+specifier|static
+name|void
+name|appAdminClientCleanUp
+parameter_list|(
+name|RMAppImpl
+name|app
+parameter_list|)
+block|{
+try|try
+block|{
+name|AppAdminClient
+name|client
+init|=
+name|AppAdminClient
+operator|.
+name|createAppAdminClient
+argument_list|(
+name|app
+operator|.
+name|applicationType
+argument_list|,
+name|app
+operator|.
+name|conf
+argument_list|)
+decl_stmt|;
+name|int
+name|result
+init|=
+name|client
+operator|.
+name|actionCleanUp
+argument_list|(
+name|app
+operator|.
+name|name
+argument_list|,
+name|app
+operator|.
+name|user
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|result
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Type-specific cleanup of application "
+operator|+
+name|app
+operator|.
+name|applicationId
+operator|+
+literal|" of type "
+operator|+
+name|app
+operator|.
+name|applicationType
+operator|+
+literal|" succeeded"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Type-specific cleanup of application "
+operator|+
+name|app
+operator|.
+name|applicationId
+operator|+
+literal|" of type "
+operator|+
+name|app
+operator|.
+name|applicationType
+operator|+
+literal|" did not succeed with exit"
+operator|+
+literal|" code "
+operator|+
+name|result
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// no AppAdminClient class has been specified for the application type,
+comment|// so this does not need to be logged
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Could not run type-specific cleanup on application "
+operator|+
+name|app
+operator|.
+name|applicationId
+operator|+
+literal|" of type "
+operator|+
+name|app
+operator|.
+name|applicationType
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|class|FinalTransition
 specifier|private
 specifier|static
@@ -8703,6 +8855,11 @@ name|app
 operator|.
 name|clearUnusedFields
 argument_list|()
+expr_stmt|;
+name|appAdminClientCleanUp
+argument_list|(
+name|app
+argument_list|)
 expr_stmt|;
 block|}
 empty_stmt|;

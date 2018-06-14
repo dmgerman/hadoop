@@ -8684,6 +8684,27 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"read.authentication.enabled"
 decl_stmt|;
+comment|/**    * The name for setting that controls how often in-memory app level    * aggregation is kicked off in timeline collector.    */
+DECL|field|TIMELINE_SERVICE_AGGREGATION_INTERVAL_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_AGGREGATION_INTERVAL_SECS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"app-aggregation-interval-secs"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_TIMELINE_SERVICE_AGGREGATION_INTERVAL_SECS
+name|DEFAULT_TIMELINE_SERVICE_AGGREGATION_INTERVAL_SECS
+init|=
+literal|15
+decl_stmt|;
 comment|/**    * The default setting for authentication checks for reading timeline    * service v2 data.    */
 DECL|field|DEFAULT_TIMELINE_SERVICE_READ_AUTH_ENABLED
 specifier|public

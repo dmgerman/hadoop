@@ -793,6 +793,8 @@ operator|.
 name|getProperty
 argument_list|(
 literal|"test.build.data"
+argument_list|,
+literal|"target/test-dir"
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -839,6 +841,8 @@ operator|.
 name|getProperty
 argument_list|(
 literal|"test.build.data"
+argument_list|,
+literal|"target/test-dir"
 argument_list|)
 argument_list|)
 decl_stmt|;

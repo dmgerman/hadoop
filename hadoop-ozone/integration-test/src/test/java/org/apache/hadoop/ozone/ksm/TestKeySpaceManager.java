@@ -26,7 +26,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|RandomStringUtils
 import|;
@@ -43,6 +43,24 @@ operator|.
 name|fs
 operator|.
 name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|client
+operator|.
+name|HddsClientUtils
 import|;
 end_import
 
@@ -4728,6 +4746,9 @@ operator|new
 name|MetadataKeyFilters
 operator|.
 name|KeyPrefixFilter
+argument_list|()
+operator|.
+name|addFilter
 argument_list|(
 name|DELETING_KEY_PREFIX
 argument_list|)
@@ -7891,9 +7912,9 @@ operator|.
 name|assertTrue
 argument_list|(
 operator|(
-name|OzoneUtils
+name|HddsClientUtils
 operator|.
-name|formatDate
+name|formatDateTime
 argument_list|(
 name|keyInfo
 operator|.
@@ -7916,9 +7937,9 @@ operator|.
 name|assertTrue
 argument_list|(
 operator|(
-name|OzoneUtils
+name|HddsClientUtils
 operator|.
-name|formatDate
+name|formatDateTime
 argument_list|(
 name|keyInfo
 operator|.
