@@ -48,6 +48,24 @@ name|protocol
 operator|.
 name|proto
 operator|.
+name|HddsProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMCommandProto
@@ -94,12 +112,24 @@ specifier|private
 name|long
 name|containerID
 decl_stmt|;
-DECL|method|CloseContainerCommand (long containerID)
+DECL|field|replicationType
+specifier|private
+name|HddsProtos
+operator|.
+name|ReplicationType
+name|replicationType
+decl_stmt|;
+DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType)
 specifier|public
 name|CloseContainerCommand
 parameter_list|(
 name|long
 name|containerID
+parameter_list|,
+name|HddsProtos
+operator|.
+name|ReplicationType
+name|replicationType
 parameter_list|)
 block|{
 name|this
@@ -107,6 +137,12 @@ operator|.
 name|containerID
 operator|=
 name|containerID
+expr_stmt|;
+name|this
+operator|.
+name|replicationType
+operator|=
+name|replicationType
 expr_stmt|;
 block|}
 comment|/**    * Returns the type of this command.    *    * @return Type    */
@@ -163,6 +199,11 @@ argument_list|(
 name|containerID
 argument_list|)
 operator|.
+name|setReplicationType
+argument_list|(
+name|replicationType
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -191,6 +232,11 @@ argument_list|(
 name|closeContainerProto
 operator|.
 name|getContainerID
+argument_list|()
+argument_list|,
+name|closeContainerProto
+operator|.
+name|getReplicationType
 argument_list|()
 argument_list|)
 return|;

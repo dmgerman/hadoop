@@ -647,6 +647,14 @@ name|info
 operator|.
 name|getContainerID
 argument_list|()
+argument_list|,
+name|pipeline
+operator|.
+name|getPipelineChannel
+argument_list|()
+operator|.
+name|getType
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -369,6 +369,14 @@ name|containerID
 operator|.
 name|getId
 argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getPipeline
+argument_list|()
+operator|.
+name|getType
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

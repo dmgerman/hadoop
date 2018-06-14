@@ -1587,6 +1587,19 @@ return|return
 name|commandsHandled
 return|;
 block|}
+comment|/**    * returns the Command Dispatcher.    * @return CommandDispatcher    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getCommandDispatcher ()
+specifier|public
+name|CommandDispatcher
+name|getCommandDispatcher
+parameter_list|()
+block|{
+return|return
+name|commandDispatcher
+return|;
+block|}
 block|}
 end_class
 
