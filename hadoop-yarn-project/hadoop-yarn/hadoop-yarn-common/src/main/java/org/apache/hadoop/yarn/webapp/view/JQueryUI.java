@@ -441,7 +441,7 @@ name|script
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/jquery/jquery-ui-1.9.1.custom.min.js"
+literal|"static/jquery/jquery-ui-1.12.1.custom.min.js"
 argument_list|)
 argument_list|)
 operator|.
