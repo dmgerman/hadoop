@@ -213,7 +213,10 @@ name|HadoopExecutors
 operator|.
 name|newScheduledThreadPool
 argument_list|(
-literal|1
+name|publishers
+operator|.
+name|size
+argument_list|()
 argument_list|,
 operator|new
 name|ThreadFactoryBuilder
