@@ -1852,17 +1852,15 @@ comment|// All nodes have been walked over and marked as completed or all blocks
 comment|// have been assigned. The rest should be handled via rackLock assignment.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG: Terminated node allocation with : CompletedNodes: "
-operator|+
+literal|"Terminated node allocation with : CompletedNodes: {}, size left: {}"
+argument_list|,
 name|completedNodes
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|", size left: "
-operator|+
+argument_list|,
 name|totalLength
 argument_list|)
 expr_stmt|;
