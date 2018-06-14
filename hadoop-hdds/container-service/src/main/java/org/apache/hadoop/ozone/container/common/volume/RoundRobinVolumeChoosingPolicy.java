@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.impl
+DECL|package|org.apache.hadoop.ozone.container.common.volume
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|container
 operator|.
 name|common
 operator|.
-name|impl
+name|volume
 package|;
 end_package
 
@@ -162,14 +162,14 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseVolume (List<VolumeInfo> volumes, long maxContainerSize)
+DECL|method|chooseVolume (List<HddsVolume> volumes, long maxContainerSize)
 specifier|public
-name|VolumeInfo
+name|HddsVolume
 name|chooseVolume
 parameter_list|(
 name|List
 argument_list|<
-name|VolumeInfo
+name|HddsVolume
 argument_list|>
 name|volumes
 parameter_list|,
@@ -238,7 +238,7 @@ literal|true
 condition|)
 block|{
 specifier|final
-name|VolumeInfo
+name|HddsVolume
 name|volume
 init|=
 name|volumes

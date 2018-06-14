@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.impl
+DECL|package|org.apache.hadoop.ozone.container.common.volume
 package|package
 name|org
 operator|.
@@ -18,9 +18,23 @@ name|container
 operator|.
 name|common
 operator|.
-name|impl
+name|volume
 package|;
 end_package
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
 
 begin_import
 import|import
@@ -836,6 +850,25 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Only for testing. Do not use otherwise.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setScmUsageForTesting (GetSpaceUsed scmUsageForTest)
+specifier|public
+name|void
+name|setScmUsageForTesting
+parameter_list|(
+name|GetSpaceUsed
+name|scmUsageForTest
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scmUsage
+operator|=
+name|scmUsageForTest
+expr_stmt|;
 block|}
 block|}
 end_class

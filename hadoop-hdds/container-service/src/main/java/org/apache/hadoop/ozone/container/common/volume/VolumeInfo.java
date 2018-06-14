@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.impl
+DECL|package|org.apache.hadoop.ozone.container.common.volume
 package|package
 name|org
 operator|.
@@ -18,9 +18,23 @@ name|container
 operator|.
 name|common
 operator|.
-name|impl
+name|volume
 package|;
 end_package
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
 
 begin_import
 import|import
@@ -46,7 +60,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|GetSpaceUsed
 import|;
 end_import
 
@@ -133,7 +147,7 @@ decl_stmt|;
 DECL|field|rootDir
 specifier|private
 specifier|final
-name|Path
+name|String
 name|rootDir
 decl_stmt|;
 DECL|field|storageType
@@ -141,11 +155,6 @@ specifier|private
 specifier|final
 name|StorageType
 name|storageType
-decl_stmt|;
-DECL|field|state
-specifier|private
-name|VolumeState
-name|state
 decl_stmt|;
 comment|// Space usage calculator
 DECL|field|usage
@@ -161,6 +170,7 @@ specifier|private
 name|long
 name|configuredCapacity
 decl_stmt|;
+comment|/**    * Builder for VolumeInfo.    */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -176,7 +186,7 @@ decl_stmt|;
 DECL|field|rootDir
 specifier|private
 specifier|final
-name|Path
+name|String
 name|rootDir
 decl_stmt|;
 DECL|field|storageType
@@ -184,120 +194,68 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
-DECL|field|state
-specifier|private
-name|VolumeState
-name|state
-decl_stmt|;
 DECL|field|configuredCapacity
 specifier|private
 name|long
 name|configuredCapacity
 decl_stmt|;
-DECL|method|Builder (Path rootDir, Configuration conf)
-specifier|public
-name|Builder
-parameter_list|(
-name|Path
-name|rootDir
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rootDir
-operator|=
-name|rootDir
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
-block|}
-DECL|method|Builder (String rootDirStr, Configuration conf)
+DECL|method|Builder (String root, Configuration config)
 specifier|public
 name|Builder
 parameter_list|(
 name|String
-name|rootDirStr
+name|root
 parameter_list|,
 name|Configuration
-name|conf
+name|config
 parameter_list|)
 block|{
 name|this
 operator|.
 name|rootDir
 operator|=
-operator|new
-name|Path
-argument_list|(
-name|rootDirStr
-argument_list|)
+name|root
 expr_stmt|;
 name|this
 operator|.
 name|conf
 operator|=
-name|conf
+name|config
 expr_stmt|;
 block|}
-DECL|method|storageType (StorageType storageType)
+DECL|method|storageType (StorageType st)
 specifier|public
 name|Builder
 name|storageType
 parameter_list|(
 name|StorageType
-name|storageType
+name|st
 parameter_list|)
 block|{
 name|this
 operator|.
 name|storageType
 operator|=
-name|storageType
+name|st
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|volumeState (VolumeState state)
-specifier|public
-name|Builder
-name|volumeState
-parameter_list|(
-name|VolumeState
-name|state
-parameter_list|)
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|configuredCapacity (long configuredCapacity)
+DECL|method|configuredCapacity (long capacity)
 specifier|public
 name|Builder
 name|configuredCapacity
 parameter_list|(
 name|long
-name|configuredCapacity
+name|capacity
 parameter_list|)
 block|{
 name|this
 operator|.
 name|configuredCapacity
 operator|=
-name|configuredCapacity
+name|capacity
 expr_stmt|;
 return|return
 name|this
@@ -344,10 +302,9 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|rootDir
+name|this
 operator|.
-name|toString
-argument_list|()
+name|rootDir
 argument_list|)
 decl_stmt|;
 name|Boolean
@@ -429,26 +386,6 @@ operator|)
 expr_stmt|;
 name|this
 operator|.
-name|state
-operator|=
-operator|(
-name|b
-operator|.
-name|state
-operator|!=
-literal|null
-condition|?
-name|b
-operator|.
-name|state
-else|:
-name|VolumeState
-operator|.
-name|NOT_FORMATTED
-operator|)
-expr_stmt|;
-name|this
-operator|.
 name|usage
 operator|=
 operator|new
@@ -459,23 +396,6 @@ argument_list|,
 name|b
 operator|.
 name|conf
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Creating Volume : "
-operator|+
-name|rootDir
-operator|+
-literal|" of storage type : "
-operator|+
-name|storageType
-operator|+
-literal|" and capacity : "
-operator|+
-name|configuredCapacity
 argument_list|)
 expr_stmt|;
 block|}
@@ -528,41 +448,8 @@ name|getScmUsed
 argument_list|()
 return|;
 block|}
-DECL|method|shutdown ()
-name|void
-name|shutdown
-parameter_list|()
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|VolumeState
-operator|.
-name|NON_EXISTENT
-expr_stmt|;
-name|shutdownUsageThread
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|failVolume ()
-name|void
-name|failVolume
-parameter_list|()
-block|{
-name|setState
-argument_list|(
-name|VolumeState
-operator|.
-name|FAILED
-argument_list|)
-expr_stmt|;
-name|shutdownUsageThread
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|shutdownUsageThread ()
-specifier|private
+specifier|protected
 name|void
 name|shutdownUsageThread
 parameter_list|()
@@ -585,40 +472,9 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|setState (VolumeState state)
-name|void
-name|setState
-parameter_list|(
-name|VolumeState
-name|state
-parameter_list|)
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-block|}
-DECL|method|isFailed ()
-specifier|public
-name|boolean
-name|isFailed
-parameter_list|()
-block|{
-return|return
-operator|(
-name|state
-operator|==
-name|VolumeState
-operator|.
-name|FAILED
-operator|)
-return|;
-block|}
 DECL|method|getRootDir ()
 specifier|public
-name|Path
+name|String
 name|getRootDir
 parameter_list|()
 block|{
@@ -640,23 +496,26 @@ operator|.
 name|storageType
 return|;
 block|}
-DECL|enum|VolumeState
+comment|/**    * Only for testing. Do not use otherwise.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setScmUsageForTesting (GetSpaceUsed scmUsageForTest)
 specifier|public
-enum|enum
-name|VolumeState
+name|void
+name|setScmUsageForTesting
+parameter_list|(
+name|GetSpaceUsed
+name|scmUsageForTest
+parameter_list|)
 block|{
-DECL|enumConstant|NORMAL
-name|NORMAL
-block|,
-DECL|enumConstant|FAILED
-name|FAILED
-block|,
-DECL|enumConstant|NON_EXISTENT
-name|NON_EXISTENT
-block|,
-DECL|enumConstant|NOT_FORMATTED
-name|NOT_FORMATTED
-block|,   }
+name|usage
+operator|.
+name|setScmUsageForTesting
+argument_list|(
+name|scmUsageForTest
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

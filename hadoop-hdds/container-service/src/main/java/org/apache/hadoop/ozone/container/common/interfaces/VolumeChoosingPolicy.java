@@ -50,9 +50,9 @@ name|container
 operator|.
 name|common
 operator|.
-name|impl
+name|volume
 operator|.
-name|VolumeInfo
+name|HddsVolume
 import|;
 end_import
 
@@ -91,13 +91,13 @@ interface|interface
 name|VolumeChoosingPolicy
 block|{
 comment|/**    * Choose a volume to place a container,    * given a list of volumes and the max container size sought for storage.    *    * The implementations of this interface must be thread-safe.    *    * @param volumes - a list of available volumes.    * @param maxContainerSize - the maximum size of the container for which a    *                         volume is sought.    * @return the chosen volume.    * @throws IOException when disks are unavailable or are full.    */
-DECL|method|chooseVolume (List<VolumeInfo> volumes, long maxContainerSize)
-name|VolumeInfo
+DECL|method|chooseVolume (List<HddsVolume> volumes, long maxContainerSize)
+name|HddsVolume
 name|chooseVolume
 parameter_list|(
 name|List
 argument_list|<
-name|VolumeInfo
+name|HddsVolume
 argument_list|>
 name|volumes
 parameter_list|,
