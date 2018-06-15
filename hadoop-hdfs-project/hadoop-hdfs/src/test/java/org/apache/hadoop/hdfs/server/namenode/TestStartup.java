@@ -4395,8 +4395,15 @@ name|assertEquals
 argument_list|(
 literal|"NN dir should be created after NN startup."
 argument_list|,
+operator|new
+name|File
+argument_list|(
 name|nnDirStr
+argument_list|)
 argument_list|,
+operator|new
+name|File
+argument_list|(
 name|nnDirs
 operator|.
 name|iterator
@@ -4407,6 +4414,7 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -4442,10 +4450,14 @@ name|assertTrue
 argument_list|(
 literal|"Setting NN dir read only should succeed."
 argument_list|,
-name|nnDir
+name|FileUtil
 operator|.
-name|setReadOnly
-argument_list|()
+name|setWritable
+argument_list|(
+name|nnDir
+argument_list|,
+literal|false
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -4507,10 +4519,12 @@ name|assertTrue
 argument_list|(
 literal|"Setting NN dir should succeed."
 argument_list|,
-name|nnDir
+name|FileUtil
 operator|.
 name|setWritable
 argument_list|(
+name|nnDir
+argument_list|,
 literal|true
 argument_list|)
 argument_list|)
