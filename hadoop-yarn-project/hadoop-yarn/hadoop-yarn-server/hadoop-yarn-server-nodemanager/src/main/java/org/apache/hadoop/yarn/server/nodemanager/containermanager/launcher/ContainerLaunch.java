@@ -78,26 +78,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1720,12 +1700,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// dispatcher not typed
 DECL|method|call ()
 specifier|public
 name|Integer
@@ -2747,11 +2721,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|validateContainerState ()
 specifier|protected
 name|boolean
@@ -3407,11 +3376,6 @@ return|return
 name|localResources
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|launchContainer (ContainerStartContext ctx)
 specifier|protected
 name|int
@@ -3453,11 +3417,6 @@ return|return
 name|launchPrep
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|relaunchContainer (ContainerStartContext ctx)
 specifier|protected
 name|int
@@ -3716,11 +3675,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|handleContainerExitCode (int exitCode, Path containerLogDir)
 specifier|protected
 name|void
@@ -3897,11 +3851,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Tries to tail and fetch TAIL_SIZE_IN_BYTES of data from the error log.    * ErrorLog filename is not fixed and depends upon app, hence file name    * pattern is used.    *    * @param containerID    * @param ret    * @param containerLogDir    * @param diagnosticInfo    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|handleContainerExitWithFailure (ContainerId containerID, int ret, Path containerLogDir, StringBuilder diagnosticInfo)
 specifier|protected
 name|void
@@ -4718,12 +4667,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Cleanup the container.    * Cancels the launch if launch has not started yet or signals    * the executor to not execute the process if not already done so.    * Also, sends a SIGTERM followed by a SIGKILL to the process if    * the process id is available.    * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// dispatcher not typed
 DECL|method|cleanupContainer ()
 specifier|public
 name|void
@@ -5277,12 +5220,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Send a signal to the container.    *    *    * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// dispatcher not typed
 DECL|method|signalContainer (SignalContainerCommand command)
 specifier|public
 name|void
@@ -5977,12 +5914,6 @@ name|signal
 return|;
 block|}
 comment|/**    * Pause the container.    * Cancels the launch if the container isn't launched yet. Otherwise asks the    * executor to pause the container.    * @throws IOException in case of errors.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// dispatcher not typed
 DECL|method|pauseContainer ()
 specifier|public
 name|void
@@ -6173,12 +6104,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Resume the container.    * Cancels the launch if the container isn't launched yet. Otherwise asks the    * executor to pause the container.    * @throws IOException in case of error.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// dispatcher not typed
 DECL|method|resumeContainer ()
 specifier|public
 name|void
@@ -7544,6 +7469,11 @@ name|UnixShellScriptBuilder
 extends|extends
 name|ShellScriptBuilder
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unused"
+argument_list|)
 DECL|method|errorCheck ()
 specifier|private
 name|void
@@ -9000,91 +8930,6 @@ block|}
 return|return
 name|deps
 return|;
-block|}
-block|}
-DECL|method|putEnvIfNotNull ( Map<String, String> environment, String variable, String value)
-specifier|private
-specifier|static
-name|void
-name|putEnvIfNotNull
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|environment
-parameter_list|,
-name|String
-name|variable
-parameter_list|,
-name|String
-name|value
-parameter_list|)
-block|{
-if|if
-condition|(
-name|value
-operator|!=
-literal|null
-condition|)
-block|{
-name|environment
-operator|.
-name|put
-argument_list|(
-name|variable
-argument_list|,
-name|value
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|putEnvIfAbsent ( Map<String, String> environment, String variable)
-specifier|private
-specifier|static
-name|void
-name|putEnvIfAbsent
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|environment
-parameter_list|,
-name|String
-name|variable
-parameter_list|)
-block|{
-if|if
-condition|(
-name|environment
-operator|.
-name|get
-argument_list|(
-name|variable
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-name|putEnvIfNotNull
-argument_list|(
-name|environment
-argument_list|,
-name|variable
-argument_list|,
-name|System
-operator|.
-name|getenv
-argument_list|(
-name|variable
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|addToEnvMap ( Map<String, String> envMap, Set<String> envSet, String envName, String envValue)
