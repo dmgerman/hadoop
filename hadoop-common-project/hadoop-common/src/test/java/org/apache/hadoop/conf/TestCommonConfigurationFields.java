@@ -506,6 +506,20 @@ argument_list|(
 literal|"fs.azure."
 argument_list|)
 expr_stmt|;
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.abfs.impl"
+argument_list|)
+expr_stmt|;
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.abfss.impl"
+argument_list|)
+expr_stmt|;
 comment|// ADL properties are in a different subtree
 comment|// - org.apache.hadoop.hdfs.web.ADLConfKeys
 name|xmlPrefixToSkipCompare
