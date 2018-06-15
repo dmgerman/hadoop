@@ -3621,6 +3621,29 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// One minute
+DECL|field|DFS_BALANCER_MAX_ITERATION_TIME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_BALANCER_MAX_ITERATION_TIME_KEY
+init|=
+literal|"dfs.balancer.max-iteration-time"
+decl_stmt|;
+DECL|field|DFS_BALANCER_MAX_ITERATION_TIME_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_BALANCER_MAX_ITERATION_TIME_DEFAULT
+init|=
+literal|20
+operator|*
+literal|60
+operator|*
+literal|1000L
+decl_stmt|;
+comment|// 20 mins
 DECL|field|DFS_MOVER_MOVEDWINWIDTH_KEY
 specifier|public
 specifier|static
