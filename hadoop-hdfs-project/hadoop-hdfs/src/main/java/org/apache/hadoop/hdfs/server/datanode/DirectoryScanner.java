@@ -824,7 +824,7 @@ name|sz
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Merges {@code that} ScanInfoPerBlockPool into this one      *      * @param the ScanInfoPerBlockPool to merge      */
+comment|/**      * Merges {@code that} ScanInfoPerBlockPool into this one      *      * @param that ScanInfoPerBlockPool to merge      */
 DECL|method|addAll (ScanInfoPerBlockPool that)
 specifier|public
 name|void
