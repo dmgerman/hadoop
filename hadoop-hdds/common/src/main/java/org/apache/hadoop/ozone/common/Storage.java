@@ -198,7 +198,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|STORAGE_DIR_CURRENT
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -214,6 +214,15 @@ name|String
 name|STORAGE_FILE_VERSION
 init|=
 literal|"VERSION"
+decl_stmt|;
+DECL|field|CONTAINER_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_DIR
+init|=
+literal|"containerdir"
 decl_stmt|;
 DECL|field|nodeType
 specifier|private

@@ -524,6 +524,24 @@ name|KSM_DB_NAME
 init|=
 literal|"ksm.db"
 decl_stmt|;
+DECL|field|STORAGE_DIR_CHUNKS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_DIR_CHUNKS
+init|=
+literal|"chunks"
+decl_stmt|;
+DECL|field|CONTAINER_FILE_CHECKSUM_EXTENSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_FILE_CHECKSUM_EXTENSION
+init|=
+literal|".chksm"
+decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning
 specifier|public

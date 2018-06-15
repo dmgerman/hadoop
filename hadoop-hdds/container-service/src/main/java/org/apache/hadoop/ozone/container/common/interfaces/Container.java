@@ -52,6 +52,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|RwLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -66,11 +82,31 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|volume
+operator|.
+name|VolumeSet
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
-name|security
+name|util
 operator|.
-name|NoSuchAlgorithmException
+name|Map
 import|;
 end_import
 
@@ -83,14 +119,22 @@ DECL|interface|Container
 specifier|public
 interface|interface
 name|Container
+extends|extends
+name|RwLock
 block|{
 comment|/**    * Creates a container.    *    * @throws StorageContainerException    */
-DECL|method|create (ContainerData containerData)
+DECL|method|create (VolumeSet volumeSet, VolumeChoosingPolicy volumeChoosingPolicy, String scmId)
 name|void
 name|create
 parameter_list|(
-name|ContainerData
-name|containerData
+name|VolumeSet
+name|volumeSet
+parameter_list|,
+name|VolumeChoosingPolicy
+name|volumeChoosingPolicy
+parameter_list|,
+name|String
+name|scmId
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -106,11 +150,19 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Update the container.    *    * @param forceUpdate if true, update container forcibly.    * @throws StorageContainerException    */
-DECL|method|update (boolean forceUpdate)
+comment|/**    * Update the container.    *    * @param metaData    * @param forceUpdate if true, update container forcibly.    * @throws StorageContainerException    */
+DECL|method|update (Map<String, String> metaData, boolean forceUpdate)
 name|void
 name|update
 parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metaData
+parameter_list|,
 name|boolean
 name|forceUpdate
 parameter_list|)
@@ -132,8 +184,6 @@ name|close
 parameter_list|()
 throws|throws
 name|StorageContainerException
-throws|,
-name|NoSuchAlgorithmException
 function_decl|;
 block|}
 end_interface

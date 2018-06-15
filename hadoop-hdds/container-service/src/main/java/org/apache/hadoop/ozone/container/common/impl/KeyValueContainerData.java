@@ -48,6 +48,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -87,6 +97,13 @@ DECL|field|numPendingDeletionBlocks
 specifier|private
 name|int
 name|numPendingDeletionBlocks
+decl_stmt|;
+DECL|field|dbFile
+specifier|private
+name|File
+name|dbFile
+init|=
+literal|null
 decl_stmt|;
 comment|/**    * Constructs KeyValueContainerData object.    * @param type - containerType    * @param id - ContainerId    */
 DECL|method|KeyValueContainerData (ContainerProtos.ContainerType type, long id)
@@ -148,6 +165,32 @@ name|numPendingDeletionBlocks
 operator|=
 literal|0
 expr_stmt|;
+block|}
+comment|/**    * Sets Container dbFile. This should be called only during creation of    * KeyValue container.    * @param containerDbFile    */
+DECL|method|setDbFile (File containerDbFile)
+specifier|public
+name|void
+name|setDbFile
+parameter_list|(
+name|File
+name|containerDbFile
+parameter_list|)
+block|{
+name|dbFile
+operator|=
+name|containerDbFile
+expr_stmt|;
+block|}
+comment|/**    * Returns container DB file.    * @return dbFile    */
+DECL|method|getDbFile ()
+specifier|public
+name|File
+name|getDbFile
+parameter_list|()
+block|{
+return|return
+name|dbFile
+return|;
 block|}
 comment|/**    * Returns container metadata path.    *    * @return - path    */
 DECL|method|getMetadataPath ()
