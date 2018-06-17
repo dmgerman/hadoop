@@ -4310,7 +4310,7 @@ operator|=
 name|inheritParentEnv
 expr_stmt|;
 block|}
-comment|/**      * Returns the timeout value set for the executor's sub-commands.      * @return The timeout value in seconds      */
+comment|/**      * Returns the timeout value set for the executor's sub-commands.      * @return The timeout value in milliseconds      */
 annotation|@
 name|VisibleForTesting
 DECL|method|getTimeoutInterval ()
