@@ -755,6 +755,31 @@ argument_list|(
 name|B1
 argument_list|)
 decl_stmt|;
+try|try
+block|{
+comment|// Temporary workaround while RawLocalFS supports only second precision
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 comment|// modify the file by appending data
 name|appendFile
 argument_list|(
