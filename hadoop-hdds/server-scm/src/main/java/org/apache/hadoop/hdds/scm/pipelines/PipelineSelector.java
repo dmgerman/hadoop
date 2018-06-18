@@ -100,28 +100,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|PipelineChannel
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
 name|placement
 operator|.
 name|algorithms
@@ -553,7 +531,7 @@ comment|/**    * Translates a list of nodes, ordered such that the first is the 
 DECL|method|newPipelineFromNodes ( List<DatanodeDetails> nodes, LifeCycleState state, ReplicationType replicationType, ReplicationFactor replicationFactor, String name)
 specifier|public
 specifier|static
-name|PipelineChannel
+name|Pipeline
 name|newPipelineFromNodes
 parameter_list|(
 name|List
@@ -607,11 +585,11 @@ operator|.
 name|getUuidString
 argument_list|()
 decl_stmt|;
-name|PipelineChannel
-name|pipelineChannel
+name|Pipeline
+name|pipeline
 init|=
 operator|new
-name|PipelineChannel
+name|Pipeline
 argument_list|(
 name|leaderId
 argument_list|,
@@ -632,7 +610,7 @@ range|:
 name|nodes
 control|)
 block|{
-name|pipelineChannel
+name|pipeline
 operator|.
 name|addMember
 argument_list|(
@@ -641,7 +619,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|pipelineChannel
+name|pipeline
 return|;
 block|}
 comment|/**    * Create pluggable container placement policy implementation instance.    *    * @param nodeManager - SCM node manager.    * @param conf - configuration.    * @return SCM container placement policy implementation instance.    */

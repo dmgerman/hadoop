@@ -54,7 +54,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|PipelineChannel
+name|Pipeline
 import|;
 end_import
 
@@ -411,11 +411,11 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Allocates a new standalone PipelineChannel from the free nodes.    *    * @param factor - One    * @return PipelineChannel.    */
-DECL|method|allocatePipelineChannel (ReplicationFactor factor)
+comment|/**    * Allocates a new standalone Pipeline from the free nodes.    *    * @param factor - One    * @return Pipeline.    */
+DECL|method|allocatePipeline (ReplicationFactor factor)
 specifier|public
-name|PipelineChannel
-name|allocatePipelineChannel
+name|Pipeline
+name|allocatePipeline
 parameter_list|(
 name|ReplicationFactor
 name|factor

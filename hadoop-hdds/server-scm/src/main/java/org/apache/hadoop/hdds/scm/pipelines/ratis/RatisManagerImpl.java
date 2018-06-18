@@ -102,28 +102,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|PipelineChannel
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
 name|placement
 operator|.
 name|algorithms
@@ -461,11 +439,11 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Allocates a new ratis PipelineChannel from the free nodes.    *    * @param factor - One or Three    * @return PipelineChannel.    */
-DECL|method|allocatePipelineChannel (ReplicationFactor factor)
+comment|/**    * Allocates a new ratis Pipeline from the free nodes.    *    * @param factor - One or Three    * @return PipelineChannel.    */
+DECL|method|allocatePipeline (ReplicationFactor factor)
 specifier|public
-name|PipelineChannel
-name|allocatePipelineChannel
+name|Pipeline
+name|allocatePipeline
 parameter_list|(
 name|ReplicationFactor
 name|factor
@@ -563,7 +541,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocating a new ratis pipelineChannel of size: {}"
+literal|"Allocating a new ratis pipeline of size: {}"
 argument_list|,
 name|count
 argument_list|)
@@ -590,8 +568,8 @@ name|length
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|PipelineChannel
-name|pipelineChannel
+name|Pipeline
+name|pipeline
 init|=
 name|PipelineSelector
 operator|.
@@ -610,15 +588,6 @@ argument_list|,
 name|factor
 argument_list|,
 name|conduitName
-argument_list|)
-decl_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-operator|new
-name|Pipeline
-argument_list|(
-name|pipelineChannel
 argument_list|)
 decl_stmt|;
 try|try
@@ -660,7 +629,7 @@ literal|null
 return|;
 block|}
 return|return
-name|pipelineChannel
+name|pipeline
 return|;
 block|}
 block|}

@@ -52,28 +52,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|PipelineChannel
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|protocol
 operator|.
 name|DatanodeDetails
@@ -231,34 +209,34 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|activePipelineChannels
+DECL|field|activePipelines
 specifier|private
 specifier|final
 name|List
 argument_list|<
-name|PipelineChannel
+name|Pipeline
 argument_list|>
-name|activePipelineChannels
+name|activePipelines
 decl_stmt|;
-DECL|field|conduitsIndex
+DECL|field|pipelineIndex
 specifier|private
 specifier|final
 name|AtomicInteger
-name|conduitsIndex
+name|pipelineIndex
 decl_stmt|;
 DECL|method|PipelineManager ()
 specifier|public
 name|PipelineManager
 parameter_list|()
 block|{
-name|activePipelineChannels
+name|activePipelines
 operator|=
 operator|new
 name|LinkedList
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|conduitsIndex
+name|pipelineIndex
 operator|=
 operator|new
 name|AtomicInteger
@@ -284,18 +262,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/**      * In the Ozone world, we have a very simple policy.      *      * 1. Try to create a pipelineChannel if there are enough free nodes.      *      * 2. This allows all nodes to part of a pipelineChannel quickly.      *      * 3. if there are not enough free nodes, return conduits in a      * round-robin fashion.      *      * TODO: Might have to come up with a better algorithm than this.      * Create a new placement policy that returns conduits in round robin      * fashion.      */
-name|PipelineChannel
-name|pipelineChannel
+comment|/**      * In the Ozone world, we have a very simple policy.      *      * 1. Try to create a pipeline if there are enough free nodes.      *      * 2. This allows all nodes to part of a pipeline quickly.      *      * 3. if there are not enough free nodes, return conduits in a      * round-robin fashion.      *      * TODO: Might have to come up with a better algorithm than this.      * Create a new placement policy that returns conduits in round robin      * fashion.      */
+name|Pipeline
+name|pipeline
 init|=
-name|allocatePipelineChannel
+name|allocatePipeline
 argument_list|(
 name|replicationFactor
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|pipelineChannel
+name|pipeline
 operator|!=
 literal|null
 condition|)
@@ -304,13 +282,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"created new pipelineChannel:{} for container with "
+literal|"created new pipeline:{} for container with "
 operator|+
 literal|"replicationType:{} replicationFactor:{}"
 argument_list|,
-name|pipelineChannel
+name|pipeline
 operator|.
-name|getName
+name|getPipelineName
 argument_list|()
 argument_list|,
 name|replicationType
@@ -318,19 +296,19 @@ argument_list|,
 name|replicationFactor
 argument_list|)
 expr_stmt|;
-name|activePipelineChannels
+name|activePipelines
 operator|.
 name|add
 argument_list|(
-name|pipelineChannel
+name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-name|pipelineChannel
+name|pipeline
 operator|=
-name|findOpenPipelineChannel
+name|findOpenPipeline
 argument_list|(
 name|replicationType
 argument_list|,
@@ -339,7 +317,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|pipelineChannel
+name|pipeline
 operator|!=
 literal|null
 condition|)
@@ -348,13 +326,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"re-used pipelineChannel:{} for container with "
+literal|"re-used pipeline:{} for container with "
 operator|+
 literal|"replicationType:{} replicationFactor:{}"
 argument_list|,
-name|pipelineChannel
+name|pipeline
 operator|.
-name|getName
+name|getPipelineName
 argument_list|()
 argument_list|,
 name|replicationType
@@ -366,7 +344,7 @@ block|}
 block|}
 if|if
 condition|(
-name|pipelineChannel
+name|pipeline
 operator|==
 literal|null
 condition|)
@@ -375,9 +353,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Get pipelineChannel call failed. We are not able to find"
+literal|"Get pipeline call failed. We are not able to find"
 operator|+
-literal|"free nodes or operational pipelineChannel."
+literal|"free nodes or operational pipeline."
 argument_list|)
 expr_stmt|;
 return|return
@@ -387,11 +365,7 @@ block|}
 else|else
 block|{
 return|return
-operator|new
-name|Pipeline
-argument_list|(
-name|pipelineChannel
-argument_list|)
+name|pipeline
 return|;
 block|}
 block|}
@@ -431,11 +405,11 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|allocatePipelineChannel ( ReplicationFactor replicationFactor)
+DECL|method|allocatePipeline ( ReplicationFactor replicationFactor)
 specifier|public
 specifier|abstract
-name|PipelineChannel
-name|allocatePipelineChannel
+name|Pipeline
+name|allocatePipeline
 parameter_list|(
 name|ReplicationFactor
 name|replicationFactor
@@ -443,11 +417,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Find a PipelineChannel that is operational.    *    * @return - Pipeline or null    */
-DECL|method|findOpenPipelineChannel ( ReplicationType type, ReplicationFactor factor)
+comment|/**    * Find a Pipeline that is operational.    *    * @return - Pipeline or null    */
+DECL|method|findOpenPipeline ( ReplicationType type, ReplicationFactor factor)
 specifier|private
-name|PipelineChannel
-name|findOpenPipelineChannel
+name|Pipeline
+name|findOpenPipeline
 parameter_list|(
 name|ReplicationType
 name|type
@@ -456,8 +430,8 @@ name|ReplicationFactor
 name|factor
 parameter_list|)
 block|{
-name|PipelineChannel
-name|pipelineChannel
+name|Pipeline
+name|pipeline
 init|=
 literal|null
 decl_stmt|;
@@ -470,7 +444,7 @@ literal|1
 decl_stmt|;
 if|if
 condition|(
-name|activePipelineChannels
+name|activePipelines
 operator|.
 name|size
 argument_list|()
@@ -514,10 +488,10 @@ argument_list|()
 control|)
 block|{
 comment|// Just walk the list in a circular way.
-name|PipelineChannel
+name|Pipeline
 name|temp
 init|=
-name|activePipelineChannels
+name|activePipelines
 operator|.
 name|get
 argument_list|(
@@ -530,7 +504,7 @@ else|:
 name|startIndex
 argument_list|)
 decl_stmt|;
-comment|// if we find an operational pipelineChannel just return that.
+comment|// if we find an operational pipeline just return that.
 if|if
 condition|(
 operator|(
@@ -563,7 +537,7 @@ name|type
 operator|)
 condition|)
 block|{
-name|pipelineChannel
+name|pipeline
 operator|=
 name|temp
 expr_stmt|;
@@ -571,10 +545,10 @@ break|break;
 block|}
 block|}
 return|return
-name|pipelineChannel
+name|pipeline
 return|;
 block|}
-comment|/**    * gets the next index of the PipelineChannel to get.    *    * @return index in the link list to get.    */
+comment|/**    * gets the next index of the Pipeline to get.    *    * @return index in the link list to get.    */
 DECL|method|getNextIndex ()
 specifier|private
 name|int
@@ -582,12 +556,12 @@ name|getNextIndex
 parameter_list|()
 block|{
 return|return
-name|conduitsIndex
+name|pipelineIndex
 operator|.
 name|incrementAndGet
 argument_list|()
 operator|%
-name|activePipelineChannels
+name|activePipelines
 operator|.
 name|size
 argument_list|()
