@@ -11403,11 +11403,9 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"File"
-operator|+
 name|f
 operator|+
-literal|" does not exist."
+literal|" is not found"
 argument_list|)
 throw|;
 block|}
