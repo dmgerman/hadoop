@@ -3767,8 +3767,16 @@ name|TICKET_RENEW_WINDOW
 argument_list|)
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|shouldRelogin ()
-specifier|private
+specifier|public
 name|boolean
 name|shouldRelogin
 parameter_list|()
