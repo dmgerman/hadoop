@@ -120,16 +120,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Assume
 import|;
 end_import
@@ -292,6 +282,20 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|HadoopTestBase
+import|;
+end_import
+
 begin_comment
 comment|/**  * Main test class for MetadataStore implementations.  * Implementations should each create a test by subclassing this and  * overriding {@link #createContract()}.  * If your implementation may return missing results for recently set paths,  * override {@link MetadataStoreTestBase#allowMissing()}.  */
 end_comment
@@ -303,7 +307,7 @@ specifier|abstract
 class|class
 name|MetadataStoreTestBase
 extends|extends
-name|Assert
+name|HadoopTestBase
 block|{
 DECL|field|LOG
 specifier|private

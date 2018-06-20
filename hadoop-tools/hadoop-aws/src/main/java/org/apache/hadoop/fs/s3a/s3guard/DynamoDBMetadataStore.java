@@ -1274,6 +1274,15 @@ name|IOException
 block|{
 name|Preconditions
 operator|.
+name|checkNotNull
+argument_list|(
+name|fs
+argument_list|,
+literal|"Null filesystem"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
 name|checkArgument
 argument_list|(
 name|fs
