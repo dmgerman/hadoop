@@ -3688,6 +3688,8 @@ name|s3Dir
 operator|==
 literal|null
 operator|)
+argument_list|,
+literal|"The path does not exist in metadata store and on s3."
 argument_list|)
 expr_stmt|;
 if|if
