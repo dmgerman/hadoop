@@ -21691,7 +21691,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"StorageInfo TreeSet fill ratio {} : {}{}"
 argument_list|,
