@@ -2545,6 +2545,9 @@ literal|null
 operator|&&
 name|jarParent
 operator|.
+name|normalize
+argument_list|()
+operator|.
 name|equals
 argument_list|(
 name|normalizedLinkPath
