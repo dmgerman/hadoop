@@ -1240,31 +1240,9 @@ name|DiskValidatorFactory
 operator|.
 name|getInstance
 argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|DISK_VALIDATOR
-argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_DISK_VALIDATOR
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Disk Validator: "
-operator|+
-name|YarnConfiguration
-operator|.
-name|DISK_VALIDATOR
-operator|+
-literal|" is loaded."
 argument_list|)
 expr_stmt|;
 name|this
