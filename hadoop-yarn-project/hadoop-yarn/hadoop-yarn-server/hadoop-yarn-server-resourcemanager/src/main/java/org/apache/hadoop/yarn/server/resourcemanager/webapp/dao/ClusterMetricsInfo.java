@@ -538,7 +538,7 @@ name|availableVirtualCores
 operator|+
 name|allocatedVirtualCores
 operator|+
-name|containersReserved
+name|reservedVirtualCores
 expr_stmt|;
 comment|// TODO, add support of other schedulers to get total used resources
 comment|// across partition.
