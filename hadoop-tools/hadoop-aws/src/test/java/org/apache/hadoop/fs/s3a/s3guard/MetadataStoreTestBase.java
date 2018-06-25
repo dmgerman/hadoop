@@ -4305,7 +4305,7 @@ literal|"Directory "
 operator|+
 name|pathStr
 operator|+
-literal|" in cache"
+literal|" is null in cache"
 argument_list|,
 name|dirMeta
 argument_list|)
