@@ -88,6 +88,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|fasterxml
@@ -153,6 +163,34 @@ operator|.
 name|databind
 operator|.
 name|ObjectMapper
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|databind
+operator|.
+name|ObjectReader
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|databind
+operator|.
+name|ObjectWriter
 import|;
 end_import
 
@@ -335,6 +373,62 @@ specifier|final
 name|ObjectMapper
 name|mapper
 decl_stmt|;
+DECL|field|WRITER
+specifier|private
+specifier|static
+specifier|final
+name|ObjectWriter
+name|WRITER
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+operator|.
+name|writerWithDefaultPrettyPrinter
+argument_list|()
+decl_stmt|;
+DECL|field|MAP_READER
+specifier|private
+specifier|static
+specifier|final
+name|ObjectReader
+name|MAP_READER
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+operator|.
+name|readerFor
+argument_list|(
+name|Map
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|/**    * @return an ObjectWriter which pretty-prints its output    */
+DECL|method|writer ()
+specifier|public
+specifier|static
+name|ObjectWriter
+name|writer
+parameter_list|()
+block|{
+return|return
+name|WRITER
+return|;
+block|}
+comment|/**    * @return an ObjectReader which returns simple Maps.    */
+DECL|method|mapReader ()
+specifier|public
+specifier|static
+name|ObjectReader
+name|mapReader
+parameter_list|()
+block|{
+return|return
+name|MAP_READER
+return|;
+block|}
 comment|/**    * Create an instance bound to a specific type.    * @param classType class to marshall    * @param failOnUnknownProperties fail if an unknown property is encountered.    * @param pretty generate pretty (indented) output?    */
 DECL|method|JsonSerialization (Class<T> classType, boolean failOnUnknownProperties, boolean pretty)
 specifier|public
