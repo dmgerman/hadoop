@@ -6015,6 +6015,8 @@ operator|.
 name|class
 argument_list|,
 name|params
+argument_list|,
+literal|false
 argument_list|)
 operator|.
 name|withHttpSpnegoPrincipalKey
