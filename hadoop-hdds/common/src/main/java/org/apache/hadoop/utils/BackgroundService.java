@@ -614,9 +614,7 @@ name|get
 argument_list|(
 name|serviceTimeout
 argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
+name|unit
 argument_list|)
 else|:
 name|taskResultFuture

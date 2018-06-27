@@ -955,6 +955,10 @@ name|svcInterval
 argument_list|,
 name|serviceTimeout
 argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|,
 name|ozoneConfig
 argument_list|)
 expr_stmt|;
