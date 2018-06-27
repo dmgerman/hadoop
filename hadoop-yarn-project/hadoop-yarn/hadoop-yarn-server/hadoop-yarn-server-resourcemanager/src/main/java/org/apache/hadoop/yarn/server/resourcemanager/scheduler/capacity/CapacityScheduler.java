@@ -4179,6 +4179,25 @@ operator|.
 name|getAllNodes
 argument_list|()
 decl_stmt|;
+comment|// If nodes size is 0 (when there are no node managers registered,
+comment|// we can return from here itself.
+name|int
+name|nodeSize
+init|=
+name|nodes
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|nodeSize
+operator|==
+literal|0
+condition|)
+block|{
+return|return;
+block|}
 name|int
 name|start
 init|=
@@ -4186,10 +4205,7 @@ name|random
 operator|.
 name|nextInt
 argument_list|(
-name|nodes
-operator|.
-name|size
-argument_list|()
+name|nodeSize
 argument_list|)
 decl_stmt|;
 comment|// To avoid too verbose DEBUG logging, only print debug log once for
@@ -4396,6 +4412,11 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|int
+name|debuggingLogCounter
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 operator|!
@@ -4457,6 +4478,42 @@ argument_list|(
 name|cs
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// Adding a debug log here to ensure that the thread is alive
+comment|// and running fine.
+if|if
+condition|(
+name|debuggingLogCounter
+operator|++
+operator|>
+literal|10000
+condition|)
+block|{
+name|debuggingLogCounter
+operator|=
+literal|0
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"AsyncScheduleThread["
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|"] is running!"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 block|}
