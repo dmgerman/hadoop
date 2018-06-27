@@ -307,12 +307,6 @@ name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the NodePoolManager associated with the NodeManager.    * @return NodePoolManager    */
-DECL|method|getNodePoolManager ()
-name|NodePoolManager
-name|getNodePoolManager
-parameter_list|()
-function_decl|;
 comment|/**    * Wait for the heartbeat is processed by NodeManager.    * @return true if heartbeat has been processed.    */
 annotation|@
 name|VisibleForTesting
