@@ -492,13 +492,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
 name|server
 operator|.
-name|report
+name|events
 operator|.
-name|SCMDatanodeHeartbeatDispatcher
+name|EventPublisher
 import|;
 end_import
 
@@ -911,7 +909,7 @@ specifier|final
 name|SCMDatanodeHeartbeatDispatcher
 name|heartbeatDispatcher
 decl_stmt|;
-DECL|method|SCMDatanodeProtocolServer (final OzoneConfiguration conf, StorageContainerManager scm)
+DECL|method|SCMDatanodeProtocolServer (final OzoneConfiguration conf, StorageContainerManager scm, EventPublisher eventPublisher)
 specifier|public
 name|SCMDatanodeProtocolServer
 parameter_list|(
@@ -921,6 +919,9 @@ name|conf
 parameter_list|,
 name|StorageContainerManager
 name|scm
+parameter_list|,
+name|EventPublisher
+name|eventPublisher
 parameter_list|)
 throws|throws
 name|IOException
@@ -932,6 +933,15 @@ argument_list|(
 name|scm
 argument_list|,
 literal|"SCM cannot be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|eventPublisher
+argument_list|,
+literal|"EventPublisher cannot be null"
 argument_list|)
 expr_stmt|;
 name|this
@@ -953,6 +963,14 @@ argument_list|,
 name|OZONE_SCM_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
+name|heartbeatDispatcher
+operator|=
+operator|new
+name|SCMDatanodeHeartbeatDispatcher
+argument_list|(
+name|eventPublisher
+argument_list|)
+expr_stmt|;
 name|RPC
 operator|.
 name|setProtocolEngine
@@ -1023,34 +1041,6 @@ name|datanodeRpcAddr
 argument_list|,
 name|datanodeRpcServer
 argument_list|)
-expr_stmt|;
-name|heartbeatDispatcher
-operator|=
-name|SCMDatanodeHeartbeatDispatcher
-operator|.
-name|newBuilder
-argument_list|(
-name|conf
-argument_list|,
-name|scm
-argument_list|)
-operator|.
-name|addHandlerFor
-argument_list|(
-name|NodeReportProto
-operator|.
-name|class
-argument_list|)
-operator|.
-name|addHandlerFor
-argument_list|(
-name|ContainerReportsProto
-operator|.
-name|class
-argument_list|)
-operator|.
-name|build
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|start ()
@@ -1738,11 +1728,6 @@ expr_stmt|;
 name|datanodeRpcServer
 operator|.
 name|stop
-argument_list|()
-expr_stmt|;
-name|heartbeatDispatcher
-operator|.
-name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
