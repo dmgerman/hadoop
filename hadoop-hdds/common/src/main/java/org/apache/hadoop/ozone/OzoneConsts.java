@@ -443,15 +443,6 @@ name|BLOCK_DB
 init|=
 literal|"block.db"
 decl_stmt|;
-DECL|field|NODEPOOL_DB
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NODEPOOL_DB
-init|=
-literal|"nodepool.db"
-decl_stmt|;
 DECL|field|OPEN_CONTAINERS_DB
 specifier|public
 specifier|static

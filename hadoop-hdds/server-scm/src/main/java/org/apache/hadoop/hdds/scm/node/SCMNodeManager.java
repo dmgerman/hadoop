@@ -546,18 +546,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|GeneratedMessage
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|slf4j
@@ -1085,12 +1073,6 @@ name|ObjectName
 name|nmInfoBean
 decl_stmt|;
 comment|// Node pool manager.
-DECL|field|nodePoolManager
-specifier|private
-specifier|final
-name|SCMNodePoolManager
-name|nodePoolManager
-decl_stmt|;
 DECL|field|scmManager
 specifier|private
 specifier|final
@@ -1363,16 +1345,6 @@ argument_list|)
 expr_stmt|;
 name|registerMXBean
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|nodePoolManager
-operator|=
-operator|new
-name|SCMNodePoolManager
-argument_list|(
-name|conf
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -2954,11 +2926,6 @@ block|{
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;
-name|nodePoolManager
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 name|executorService
 operator|.
 name|shutdown
@@ -3242,60 +3209,6 @@ argument_list|(
 literal|"Leaving startup chill mode."
 argument_list|)
 expr_stmt|;
-block|}
-comment|// TODO: define node pool policy for non-default node pool.
-comment|// For now, all nodes are added to the "DefaultNodePool" upon registration
-comment|// if it has not been added to any node pool yet.
-try|try
-block|{
-if|if
-condition|(
-name|nodePoolManager
-operator|.
-name|getNodePool
-argument_list|(
-name|datanodeDetails
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-name|nodePoolManager
-operator|.
-name|addNode
-argument_list|(
-name|SCMNodePoolManager
-operator|.
-name|DEFAULT_NODEPOOL
-argument_list|,
-name|datanodeDetails
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// TODO: make sure registration failure is handled correctly.
-return|return
-name|RegisteredCommand
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setErrorCode
-argument_list|(
-name|ErrorCode
-operator|.
-name|errorNodeNotPermitted
-argument_list|)
-operator|.
-name|build
-argument_list|()
-return|;
 block|}
 comment|// Updating Node Report, as registration is successful
 name|updateNodeStat
@@ -3594,18 +3507,6 @@ name|getUuid
 argument_list|()
 argument_list|)
 argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getNodePoolManager ()
-specifier|public
-name|NodePoolManager
-name|getNodePoolManager
-parameter_list|()
-block|{
-return|return
-name|nodePoolManager
 return|;
 block|}
 annotation|@
