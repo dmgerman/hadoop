@@ -734,6 +734,31 @@ name|NodeUpdateType
 name|nodeUpdateType
 parameter_list|)
 block|{}
+comment|/**    * Set the node attributes of node.    *    * @param nodeAttributes set of node attributes.    */
+DECL|method|setNodeAttributes (Set<NodeAttribute> nodeAttributes)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeAttributes
+parameter_list|(
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+name|nodeAttributes
+parameter_list|)
+function_decl|;
+comment|/**    * Get node attributes of node.    * @return the set of node attributes.    */
+DECL|method|getNodeAttributes ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+name|getNodeAttributes
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

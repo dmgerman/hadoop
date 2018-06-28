@@ -21,6 +21,42 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeAttribute
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeAttributeType
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -13104,6 +13140,10 @@ operator|.
 name|RUNNING
 argument_list|,
 literal|false
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13281,6 +13321,20 @@ operator|.
 name|println
 argument_list|(
 literal|"\tNode-Labels : a,b,c,x,y,z"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tNode Attributes : rm.yarn.io/GPU(STRING)=ARM"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\t                  rm.yarn.io/CPU(STRING)=ARM"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -13572,6 +13626,13 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|"\tNode Attributes : "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"\tResource Utilization by Node : PMem:2048 MB, VMem:4096 MB, VCores:8.0"
 argument_list|)
 expr_stmt|;
@@ -13676,6 +13737,8 @@ operator|.
 name|RUNNING
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|)
@@ -13855,6 +13918,13 @@ operator|.
 name|println
 argument_list|(
 literal|"\tNode-Labels : a,b,c,x,y,z"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tNode Attributes : "
 argument_list|)
 expr_stmt|;
 name|pw
@@ -16619,10 +16689,12 @@ argument_list|,
 literal|true
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
-DECL|method|getNodeReports (int noOfNodes, NodeState state, boolean emptyNodeLabel)
+DECL|method|getNodeReports (int noOfNodes, NodeState state, boolean emptyNodeLabel, boolean emptyAttributes)
 specifier|private
 name|List
 argument_list|<
@@ -16638,6 +16710,9 @@ name|state
 parameter_list|,
 name|boolean
 name|emptyNodeLabel
+parameter_list|,
+name|boolean
+name|emptyAttributes
 parameter_list|)
 block|{
 return|return
@@ -16650,10 +16725,12 @@ argument_list|,
 name|emptyNodeLabel
 argument_list|,
 literal|false
+argument_list|,
+name|emptyAttributes
 argument_list|)
 return|;
 block|}
-DECL|method|getNodeReports (int noOfNodes, NodeState state, boolean emptyNodeLabel, boolean emptyResourceUtilization)
+DECL|method|getNodeReports (int noOfNodes, NodeState state, boolean emptyNodeLabel, boolean emptyResourceUtilization, boolean emptyAttributes)
 specifier|private
 name|List
 argument_list|<
@@ -16672,6 +16749,9 @@ name|emptyNodeLabel
 parameter_list|,
 name|boolean
 name|emptyResourceUtilization
+parameter_list|,
+name|boolean
+name|emptyAttributes
 parameter_list|)
 block|{
 name|List
@@ -16843,6 +16923,49 @@ operator|.
 name|setNodeUtilization
 argument_list|(
 name|nodeUtilization
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|emptyAttributes
+condition|)
+block|{
+name|nodeReport
+operator|.
+name|setNodeAttributes
+argument_list|(
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+name|NodeAttribute
+operator|.
+name|newInstance
+argument_list|(
+literal|"GPU"
+argument_list|,
+name|NodeAttributeType
+operator|.
+name|STRING
+argument_list|,
+literal|"ARM"
+argument_list|)
+argument_list|,
+name|NodeAttribute
+operator|.
+name|newInstance
+argument_list|(
+literal|"CPU"
+argument_list|,
+name|NodeAttributeType
+operator|.
+name|STRING
+argument_list|,
+literal|"ARM"
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

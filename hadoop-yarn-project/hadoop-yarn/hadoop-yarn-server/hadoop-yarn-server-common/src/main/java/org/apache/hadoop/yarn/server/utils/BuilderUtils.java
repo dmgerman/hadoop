@@ -566,6 +566,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeAttribute
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -1620,10 +1638,12 @@ argument_list|,
 name|decommissioningTimeout
 argument_list|,
 name|nodeUpdateType
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization, Integer decommissioningTimeout, NodeUpdateType nodeUpdateType)
+DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization, Integer decommissioningTimeout, NodeUpdateType nodeUpdateType, Set<NodeAttribute> attrs)
 specifier|public
 specifier|static
 name|NodeReport
@@ -1673,6 +1693,12 @@ name|decommissioningTimeout
 parameter_list|,
 name|NodeUpdateType
 name|nodeUpdateType
+parameter_list|,
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+name|attrs
 parameter_list|)
 block|{
 name|NodeReport
@@ -1783,6 +1809,13 @@ operator|.
 name|setNodeUpdateType
 argument_list|(
 name|nodeUpdateType
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeAttributes
+argument_list|(
+name|attrs
 argument_list|)
 expr_stmt|;
 return|return

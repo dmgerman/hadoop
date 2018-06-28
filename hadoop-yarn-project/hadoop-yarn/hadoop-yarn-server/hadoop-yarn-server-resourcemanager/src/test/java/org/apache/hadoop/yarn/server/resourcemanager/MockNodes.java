@@ -1437,20 +1437,18 @@ annotation|@
 name|Override
 DECL|method|getAllNodeAttributes ()
 specifier|public
-name|Map
-argument_list|<
-name|String
-argument_list|,
 name|Set
 argument_list|<
 name|NodeAttribute
-argument_list|>
 argument_list|>
 name|getAllNodeAttributes
 parameter_list|()
 block|{
 return|return
-literal|null
+name|Collections
+operator|.
+name|emptySet
+argument_list|()
 return|;
 block|}
 annotation|@

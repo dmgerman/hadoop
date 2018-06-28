@@ -9015,7 +9015,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|YarnException
 name|ex
 parameter_list|)
 block|{
@@ -9028,6 +9028,9 @@ argument_list|,
 literal|" Following nodes does not exist : [host5]"
 argument_list|,
 name|ex
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getMessage
 argument_list|()
@@ -9131,7 +9134,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|YarnException
 name|ex
 parameter_list|)
 block|{
@@ -9144,6 +9147,9 @@ argument_list|,
 literal|" Following nodes does not exist : [host4:8889, host2:8889]"
 argument_list|,
 name|ex
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getMessage
 argument_list|()
@@ -9324,7 +9330,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|YarnException
 name|ex
 parameter_list|)
 block|{
@@ -9339,6 +9345,9 @@ operator|+
 literal|"rm.yarn.io"
 argument_list|,
 name|ex
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getMessage
 argument_list|()

@@ -505,31 +505,11 @@ name|RMContext
 name|getRMContext
 parameter_list|()
 function_decl|;
-comment|/**    * Sets node attributes per prefix.    * @param prefix node attribute prefix    * @param nodeAttributes node attributes    */
-DECL|method|setNodeAttributes (String prefix, Set<NodeAttribute> nodeAttributes)
-name|void
-name|setNodeAttributes
-parameter_list|(
-name|String
-name|prefix
-parameter_list|,
-name|Set
-argument_list|<
-name|NodeAttribute
-argument_list|>
-name|nodeAttributes
-parameter_list|)
-function_decl|;
-comment|/**    * @return all node attributes grouped by their prefix as a map.    */
+comment|/**    * @return all node attributes as a Set.    */
 DECL|method|getAllNodeAttributes ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
 name|Set
 argument_list|<
 name|NodeAttribute
-argument_list|>
 argument_list|>
 name|getAllNodeAttributes
 parameter_list|()

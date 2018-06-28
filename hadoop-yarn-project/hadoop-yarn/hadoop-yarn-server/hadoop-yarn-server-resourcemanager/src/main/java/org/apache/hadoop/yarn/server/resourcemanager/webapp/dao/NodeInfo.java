@@ -732,16 +732,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add attributes
-name|Map
-argument_list|<
-name|String
-argument_list|,
 name|Set
 argument_list|<
 name|NodeAttribute
 argument_list|>
-argument_list|>
-name|nodeAttributes
+name|attrs
 init|=
 name|ni
 operator|.
@@ -754,27 +749,6 @@ operator|new
 name|NodeAttributesInfo
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|nodeAttributes
-operator|!=
-literal|null
-condition|)
-block|{
-for|for
-control|(
-name|Set
-argument_list|<
-name|NodeAttribute
-argument_list|>
-name|attrs
-range|:
-name|nodeAttributes
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
 for|for
 control|(
 name|NodeAttribute
@@ -801,8 +775,6 @@ argument_list|(
 name|info
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 comment|// add allocation tags
 name|allocationTags

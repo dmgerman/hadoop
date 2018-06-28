@@ -7484,6 +7484,17 @@ name|getNumContainers
 argument_list|()
 expr_stmt|;
 block|}
+name|Set
+argument_list|<
+name|NodeAttribute
+argument_list|>
+name|attrs
+init|=
+name|rmNode
+operator|.
+name|getAllNodeAttributes
+argument_list|()
+decl_stmt|;
 name|NodeReport
 name|report
 init|=
@@ -7551,6 +7562,8 @@ name|getDecommissioningTimeout
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+name|attrs
 argument_list|)
 decl_stmt|;
 return|return
