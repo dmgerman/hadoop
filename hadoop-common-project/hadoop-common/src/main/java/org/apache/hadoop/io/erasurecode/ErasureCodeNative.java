@@ -151,11 +151,9 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Loading ISA-L failed"
-argument_list|,
-name|t
+name|problem
 argument_list|)
 expr_stmt|;
 block|}
