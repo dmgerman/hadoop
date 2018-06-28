@@ -484,6 +484,13 @@ name|String
 argument_list|>
 name|params
 decl_stmt|;
+DECL|field|loadExistingFilters
+specifier|public
+name|boolean
+name|loadExistingFilters
+init|=
+literal|true
+decl_stmt|;
 block|}
 DECL|field|name
 specifier|final
@@ -907,7 +914,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|withServlet (String name, String pathSpec, Class<? extends HttpServlet> servlet, Map<String, String> params)
+DECL|method|withServlet (String name, String pathSpec, Class<? extends HttpServlet> servlet, Map<String, String> params,boolean loadExistingFilters)
 specifier|public
 name|Builder
 argument_list|<
@@ -936,6 +943,9 @@ argument_list|,
 name|String
 argument_list|>
 name|params
+parameter_list|,
+name|boolean
+name|loadExistingFilters
 parameter_list|)
 block|{
 name|ServletStruct
@@ -968,6 +978,12 @@ operator|.
 name|params
 operator|=
 name|params
+expr_stmt|;
+name|struct
+operator|.
+name|loadExistingFilters
+operator|=
+name|loadExistingFilters
 expr_stmt|;
 name|servlets
 operator|.
@@ -1396,6 +1412,17 @@ name|spec
 argument_list|)
 condition|)
 block|{
+comment|// The servlet told us to not load-existing filters, but we still want
+comment|// to add the default authentication filter always, so add it to the
+comment|// pathList
+if|if
+condition|(
+operator|!
+name|s
+operator|.
+name|loadExistingFilters
+condition|)
+block|{
 name|pathList
 operator|.
 name|add
@@ -1405,6 +1432,7 @@ operator|.
 name|spec
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -1846,11 +1874,10 @@ control|)
 block|{
 if|if
 condition|(
+operator|!
 name|struct
 operator|.
-name|params
-operator|!=
-literal|null
+name|loadExistingFilters
 condition|)
 block|{
 name|server

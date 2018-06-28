@@ -54,6 +54,12 @@ name|ERROR_COMPONENT_NAME_INVALID
 init|=
 literal|"Component name must be no more than %s characters: %s"
 decl_stmt|;
+DECL|field|ERROR_COMPONENT_NAME_CONFLICTS_WITH_SERVICE_NAME
+name|String
+name|ERROR_COMPONENT_NAME_CONFLICTS_WITH_SERVICE_NAME
+init|=
+literal|"Component name %s must not be same as service name %s"
+decl_stmt|;
 DECL|field|ERROR_USER_NAME_INVALID
 name|String
 name|ERROR_USER_NAME_INVALID

@@ -456,6 +456,12 @@ name|String
 name|description
 parameter_list|)
 function_decl|;
+comment|/**    * Verify container is in final states.    * @return true/false based on container's state    */
+DECL|method|isContainerInFinalStates ()
+name|boolean
+name|isContainerInFinalStates
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -234,7 +234,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 import|;
@@ -3688,6 +3688,8 @@ name|s3Dir
 operator|==
 literal|null
 operator|)
+argument_list|,
+literal|"The path does not exist in metadata store and on s3."
 argument_list|)
 expr_stmt|;
 if|if

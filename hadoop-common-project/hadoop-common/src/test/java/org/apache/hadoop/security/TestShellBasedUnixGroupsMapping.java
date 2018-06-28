@@ -801,6 +801,117 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getTimeoutInterval (String timeout)
+specifier|public
+name|long
+name|getTimeoutInterval
+parameter_list|(
+name|String
+name|timeout
+parameter_list|)
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|String
+name|userName
+init|=
+literal|"foobarnonexistinguser"
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_KEY
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
+name|TestDelayedGroupCommand
+name|mapping
+init|=
+name|ReflectionUtils
+operator|.
+name|newInstance
+argument_list|(
+name|TestDelayedGroupCommand
+operator|.
+name|class
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+name|ShellCommandExecutor
+name|executor
+init|=
+name|mapping
+operator|.
+name|createGroupExecutor
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+return|return
+name|executor
+operator|.
+name|getTimeoutInterval
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Test
+DECL|method|testShellTimeOutConf ()
+specifier|public
+name|void
+name|testShellTimeOutConf
+parameter_list|()
+block|{
+comment|// Test a 1 second max-runtime timeout
+name|assertEquals
+argument_list|(
+literal|"Expected the group names executor to carry the configured timeout"
+argument_list|,
+literal|1000L
+argument_list|,
+name|getTimeoutInterval
+argument_list|(
+literal|"1s"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Test a 1 minute max-runtime timeout
+name|assertEquals
+argument_list|(
+literal|"Expected the group names executor to carry the configured timeout"
+argument_list|,
+literal|60000L
+argument_list|,
+name|getTimeoutInterval
+argument_list|(
+literal|"1m"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Test a 1 millisecond max-runtime timeout
+name|assertEquals
+argument_list|(
+literal|"Expected the group names executor to carry the configured timeout"
+argument_list|,
+literal|1L
+argument_list|,
+name|getTimeoutInterval
+argument_list|(
+literal|"1"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|class|TestGroupResolvable
 specifier|private
 class|class
@@ -1032,7 +1143,7 @@ specifier|private
 name|Long
 name|timeoutSecs
 init|=
-literal|2L
+literal|1L
 decl_stmt|;
 DECL|method|TestDelayedGroupCommand ()
 name|TestDelayedGroupCommand
@@ -1145,7 +1256,7 @@ decl_stmt|;
 name|long
 name|testTimeout
 init|=
-literal|1L
+literal|500L
 decl_stmt|;
 comment|// Test a 1 second max-runtime timeout
 name|conf
@@ -1154,7 +1265,7 @@ name|setLong
 argument_list|(
 name|CommonConfigurationKeys
 operator|.
-name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_KEY
 argument_list|,
 name|testTimeout
 argument_list|)
@@ -1350,7 +1461,7 @@ name|defaultTimeout
 init|=
 name|CommonConfigurationKeys
 operator|.
-name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS_DEFAULT
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_DEFAULT
 decl_stmt|;
 name|mapping
 operator|=

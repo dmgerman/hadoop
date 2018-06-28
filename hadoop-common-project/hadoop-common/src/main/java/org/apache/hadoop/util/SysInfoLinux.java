@@ -962,6 +962,46 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    *    * Wrapper for Long.parseLong() that returns zero if the value is    * invalid. Under some circumstances, swapFree in /proc/meminfo can    * go negative, reported as a very large decimal value.    */
+DECL|method|safeParseLong (String strVal)
+specifier|private
+name|long
+name|safeParseLong
+parameter_list|(
+name|String
+name|strVal
+parameter_list|)
+block|{
+name|long
+name|parsedVal
+decl_stmt|;
+try|try
+block|{
+name|parsedVal
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|strVal
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|nfe
+parameter_list|)
+block|{
+name|parsedVal
+operator|=
+literal|0
+expr_stmt|;
+block|}
+return|return
+name|parsedVal
+return|;
+block|}
 comment|/**    * Read /proc/meminfo, parse and compute memory information.    * @param readAgain if false, read only on the first time    */
 DECL|method|readProcMemInfoFile (boolean readAgain)
 specifier|private
@@ -1155,9 +1195,7 @@ condition|)
 block|{
 name|ramSizeFree
 operator|=
-name|Long
-operator|.
-name|parseLong
+name|safeParseLong
 argument_list|(
 name|mat
 operator|.
@@ -1186,9 +1224,7 @@ condition|)
 block|{
 name|swapSizeFree
 operator|=
-name|Long
-operator|.
-name|parseLong
+name|safeParseLong
 argument_list|(
 name|mat
 operator|.

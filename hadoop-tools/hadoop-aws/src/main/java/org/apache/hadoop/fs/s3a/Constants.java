@@ -1095,6 +1095,20 @@ name|S3GUARD_DDB_TABLE_NAME_KEY
 init|=
 literal|"fs.s3a.s3guard.ddb.table"
 decl_stmt|;
+comment|/**    * Test table name to use during DynamoDB integration test.    *    * The table will be modified, and deleted in the end of the tests.    * If this value is not set, the integration tests that would be destructive    * won't run.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+init|=
+literal|"fs.s3a.s3guard.ddb.test.table"
+decl_stmt|;
 comment|/**    * Whether to create the DynamoDB table if the table does not exist.    */
 annotation|@
 name|InterfaceStability

@@ -6484,13 +6484,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAppDiognosticEventOnUnassignedTask ()
+DECL|method|testAppDiagnosticEventOnUnassignedTask ()
 specifier|public
 name|void
-name|testAppDiognosticEventOnUnassignedTask
+name|testAppDiagnosticEventOnUnassignedTask
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ApplicationId
 name|appId
@@ -7482,13 +7480,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAppDiognosticEventOnNewTask ()
+DECL|method|testAppDiagnosticEventOnNewTask ()
 specifier|public
 name|void
-name|testAppDiognosticEventOnNewTask
+name|testAppDiagnosticEventOnNewTask
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ApplicationId
 name|appId

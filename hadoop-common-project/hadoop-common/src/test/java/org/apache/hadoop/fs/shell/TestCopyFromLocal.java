@@ -26,7 +26,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|RandomStringUtils
 import|;
@@ -40,9 +40,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
-operator|.
-name|math
+name|lang3
 operator|.
 name|RandomUtils
 import|;
@@ -347,6 +345,8 @@ name|RandomUtils
 operator|.
 name|nextInt
 argument_list|(
+literal|0
+argument_list|,
 literal|5
 argument_list|)
 decl_stmt|;
@@ -392,6 +392,8 @@ name|RandomUtils
 operator|.
 name|nextInt
 argument_list|(
+literal|0
+argument_list|,
 literal|10
 argument_list|)
 decl_stmt|;
@@ -771,6 +773,8 @@ name|RandomUtils
 operator|.
 name|nextInt
 argument_list|(
+literal|0
+argument_list|,
 name|maxThreads
 operator|-
 literal|1

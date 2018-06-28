@@ -164,11 +164,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
-name|math
-operator|.
-name|LongRange
+name|Range
 import|;
 end_import
 
@@ -3823,7 +3821,7 @@ argument_list|(
 name|currentSegment
 argument_list|)
 operator|.
-name|containsLong
+name|contains
 argument_list|(
 name|committedTxnId
 operator|.
@@ -3837,7 +3835,7 @@ argument_list|(
 name|segment
 argument_list|)
 operator|.
-name|containsLong
+name|contains
 argument_list|(
 name|committedTxnId
 operator|.
@@ -3906,7 +3904,7 @@ argument_list|(
 name|currentSegment
 argument_list|)
 operator|.
-name|containsLong
+name|contains
 argument_list|(
 name|highestWrittenTxId
 argument_list|)
@@ -4044,7 +4042,10 @@ expr_stmt|;
 block|}
 DECL|method|txnRange (SegmentStateProto seg)
 specifier|private
-name|LongRange
+name|Range
+argument_list|<
+name|Long
+argument_list|>
 name|txnRange
 parameter_list|(
 name|SegmentStateProto
@@ -4068,8 +4069,9 @@ name|journalId
 argument_list|)
 expr_stmt|;
 return|return
-operator|new
-name|LongRange
+name|Range
+operator|.
+name|between
 argument_list|(
 name|seg
 operator|.

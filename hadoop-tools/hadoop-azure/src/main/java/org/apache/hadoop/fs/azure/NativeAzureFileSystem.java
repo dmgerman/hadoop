@@ -346,7 +346,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringUtils
 import|;
@@ -11403,11 +11403,9 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"File"
-operator|+
 name|f
 operator|+
-literal|" does not exist."
+literal|" is not found"
 argument_list|)
 throw|;
 block|}

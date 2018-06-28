@@ -1921,7 +1921,7 @@ argument_list|,
 name|chunksDir
 argument_list|)
 expr_stmt|;
-comment|// set timeout value as 1ms to trigger timeout behavior
+comment|// set timeout value as 1ns to trigger timeout behavior
 name|long
 name|timeout
 init|=
@@ -1935,9 +1935,20 @@ name|BlockDeletingService
 argument_list|(
 name|containerManager
 argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toNanos
+argument_list|(
 literal|1000
+argument_list|)
 argument_list|,
 name|timeout
+argument_list|,
+name|TimeUnit
+operator|.
+name|NANOSECONDS
 argument_list|,
 name|conf
 argument_list|)
@@ -2035,9 +2046,20 @@ name|BlockDeletingService
 argument_list|(
 name|containerManager
 argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toNanos
+argument_list|(
 literal|1000
+argument_list|)
 argument_list|,
 name|timeout
+argument_list|,
+name|TimeUnit
+operator|.
+name|NANOSECONDS
 argument_list|,
 name|conf
 argument_list|)

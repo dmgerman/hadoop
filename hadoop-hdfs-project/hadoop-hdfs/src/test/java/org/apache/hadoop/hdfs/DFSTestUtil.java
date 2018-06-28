@@ -718,20 +718,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
-operator|.
-name|UnhandledException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -14083,7 +14069,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|UnhandledException
+name|RuntimeException
 argument_list|(
 literal|"Test failed due to unexpected exception"
 argument_list|,

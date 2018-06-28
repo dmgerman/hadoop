@@ -162,7 +162,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|NotImplementedException
 import|;
@@ -1181,7 +1181,9 @@ block|{
 throw|throw
 operator|new
 name|NotImplementedException
-argument_list|()
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
 throw|;
 block|}
 comment|/**    * drainTo defers to each sub-queue. Note that draining from a FairCallQueue    * to another FairCallQueue will likely fail, since the incoming calls    * may be scheduled differently in the new FairCallQueue. Nonetheless this    * method is provided for completeness.    */

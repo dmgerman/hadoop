@@ -1152,6 +1152,11 @@ specifier|private
 name|BlockPlacementPolicies
 name|placementPolicies
 decl_stmt|;
+DECL|field|maxIterationTime
+specifier|private
+name|long
+name|maxIterationTime
+decl_stmt|;
 DECL|class|Allocator
 specifier|static
 class|class
@@ -2097,23 +2102,6 @@ name|void
 name|dispatch
 parameter_list|()
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Start moving "
-operator|+
-name|this
-argument_list|)
-expr_stmt|;
-assert|assert
-operator|!
-operator|(
-name|reportedBlock
-operator|instanceof
-name|DBlockStriped
-operator|)
-assert|;
 name|Socket
 name|sock
 init|=
@@ -2133,6 +2121,52 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|source
+operator|.
+name|isIterationOver
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cancel moving "
+operator|+
+name|this
+operator|+
+literal|" as iteration is already cancelled due to"
+operator|+
+literal|" dfs.balancer.max-iteration-time is passed."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block move cancelled."
+argument_list|)
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Start moving "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+assert|assert
+operator|!
+operator|(
+name|reportedBlock
+operator|instanceof
+name|DBlockStriped
+operator|)
+assert|;
 name|sock
 operator|.
 name|connect
@@ -4058,6 +4092,17 @@ name|boolean
 name|isIterationOver
 parameter_list|()
 block|{
+if|if
+condition|(
+name|maxIterationTime
+operator|<
+literal|0
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 return|return
 operator|(
 name|Time
@@ -4067,7 +4112,7 @@ argument_list|()
 operator|-
 name|startTime
 operator|>
-name|MAX_ITERATION_TIME
+name|maxIterationTime
 operator|)
 return|;
 block|}
@@ -4770,20 +4815,6 @@ operator|>
 literal|0
 return|;
 block|}
-DECL|field|MAX_ITERATION_TIME
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|MAX_ITERATION_TIME
-init|=
-literal|20
-operator|*
-literal|60
-operator|*
-literal|1000L
-decl_stmt|;
-comment|// 20 mins
 comment|/**      * This method iteratively does the following: it first selects a block to      * move, then sends a request to the proxy source to start the block move      * when the source's block list falls below a threshold, it asks the      * namenode for more blocks. It terminates when it has dispatch enough block      * move tasks or it has received enough blocks from the namenode, or the      * elapsed time of the iteration has exceeded the max time limit.      *      * @param delay - time to sleep before sending getBlocks. Intended to      * disperse Balancer RPCs to NameNode for large clusters. See HDFS-11384.      */
 DECL|method|dispatchBlocks (long delay)
 specifier|private
@@ -5091,7 +5122,7 @@ name|info
 argument_list|(
 literal|"The maximum iteration time ("
 operator|+
-name|MAX_ITERATION_TIME
+name|maxIterationTime
 operator|/
 literal|1000
 operator|+
@@ -5201,11 +5232,14 @@ literal|0
 argument_list|,
 name|maxNoMoveInterval
 argument_list|,
+operator|-
+literal|1
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, long getBlocksSize, long getBlocksMinBlockSize, int blockMoveTimeout, int maxNoMoveInterval, Configuration conf)
+DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, long getBlocksSize, long getBlocksMinBlockSize, int blockMoveTimeout, int maxNoMoveInterval, long maxIterationTime, Configuration conf)
 name|Dispatcher
 parameter_list|(
 name|NameNodeConnector
@@ -5246,6 +5280,9 @@ name|blockMoveTimeout
 parameter_list|,
 name|int
 name|maxNoMoveInterval
+parameter_list|,
+name|long
+name|maxIterationTime
 parameter_list|,
 name|Configuration
 name|conf
@@ -5425,6 +5462,12 @@ name|cluster
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxIterationTime
+operator|=
+name|maxIterationTime
 expr_stmt|;
 block|}
 DECL|method|getDistributedFileSystem ()

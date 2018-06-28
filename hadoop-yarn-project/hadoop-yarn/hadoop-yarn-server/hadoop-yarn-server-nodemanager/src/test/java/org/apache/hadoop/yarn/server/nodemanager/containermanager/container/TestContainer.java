@@ -4317,7 +4317,7 @@ name|finishTime
 operator|.
 name|value
 argument_list|()
-operator|>
+operator|>=
 name|containerMetrics
 operator|.
 name|startTime

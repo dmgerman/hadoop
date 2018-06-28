@@ -4337,11 +4337,17 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+try|try
+init|(
+name|FSDataOutputStream
+name|stream
+init|=
 name|builder
 operator|.
 name|build
 argument_list|()
-expr_stmt|;
+init|)
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -4417,6 +4423,7 @@ name|getFileDefault
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Test set 0 to replication, block size and buffer size
 name|builder
 operator|=

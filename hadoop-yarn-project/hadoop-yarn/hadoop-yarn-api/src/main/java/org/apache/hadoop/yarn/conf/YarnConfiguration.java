@@ -1037,7 +1037,7 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_RM_SCHEDULER_PORT
 decl_stmt|;
-comment|/** Miniumum request grant-able by the RM scheduler. */
+comment|/** Minimum request grant-able by the RM scheduler. */
 DECL|field|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 specifier|public
 specifier|static

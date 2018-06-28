@@ -565,6 +565,68 @@ literal|"DirectMap2M:     2027520 kB\n"
 operator|+
 literal|"DirectMap1G:    132120576 kB\n"
 decl_stmt|;
+DECL|field|MEMINFO_FORMAT3
+specifier|static
+specifier|final
+name|String
+name|MEMINFO_FORMAT3
+init|=
+literal|"MemTotal:      %d kB\n"
+operator|+
+literal|"MemFree:         %s kB\n"
+operator|+
+literal|"Buffers:        138244 kB\n"
+operator|+
+literal|"Cached:         947780 kB\n"
+operator|+
+literal|"SwapCached:     142880 kB\n"
+operator|+
+literal|"Active:        3229888 kB\n"
+operator|+
+literal|"Inactive:       %d kB\n"
+operator|+
+literal|"SwapTotal:     %d kB\n"
+operator|+
+literal|"SwapFree:      %s kB\n"
+operator|+
+literal|"Dirty:          122012 kB\n"
+operator|+
+literal|"Writeback:           0 kB\n"
+operator|+
+literal|"AnonPages:     2710792 kB\n"
+operator|+
+literal|"Mapped:          24740 kB\n"
+operator|+
+literal|"Slab:           132528 kB\n"
+operator|+
+literal|"SReclaimable:   105096 kB\n"
+operator|+
+literal|"SUnreclaim:      27432 kB\n"
+operator|+
+literal|"PageTables:      11448 kB\n"
+operator|+
+literal|"NFS_Unstable:        0 kB\n"
+operator|+
+literal|"Bounce:              0 kB\n"
+operator|+
+literal|"CommitLimit:   4125904 kB\n"
+operator|+
+literal|"Committed_AS:  4143556 kB\n"
+operator|+
+literal|"VmallocTotal: 34359738367 kB\n"
+operator|+
+literal|"VmallocUsed:      1632 kB\n"
+operator|+
+literal|"VmallocChunk: 34359736375 kB\n"
+operator|+
+literal|"HugePages_Total:     %d\n"
+operator|+
+literal|"HugePages_Free:      0\n"
+operator|+
+literal|"HugePages_Rsvd:      0\n"
+operator|+
+literal|"Hugepagesize:     2048 kB"
+decl_stmt|;
 DECL|field|CPUINFO_FORMAT
 specifier|static
 specifier|final
@@ -1540,6 +1602,183 @@ operator|(
 name|memTotal
 operator|-
 name|hardwareCorrupt
+operator|-
+operator|(
+name|nrHugePages
+operator|*
+literal|2048
+operator|)
+operator|+
+name|swapTotal
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test parsing /proc/meminfo    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|parsingProcMemFileWithBadValues ()
+specifier|public
+name|void
+name|parsingProcMemFileWithBadValues
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|long
+name|memTotal
+init|=
+literal|4058864L
+decl_stmt|;
+name|long
+name|memFree
+init|=
+literal|0L
+decl_stmt|;
+comment|// bad value should return 0
+name|long
+name|inactive
+init|=
+literal|567732L
+decl_stmt|;
+name|long
+name|swapTotal
+init|=
+literal|2096472L
+decl_stmt|;
+name|long
+name|swapFree
+init|=
+literal|0L
+decl_stmt|;
+comment|// bad value should return 0
+name|int
+name|nrHugePages
+init|=
+literal|10
+decl_stmt|;
+name|String
+name|badFreeValue
+init|=
+literal|"18446744073709551596"
+decl_stmt|;
+name|File
+name|tempFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|FAKE_MEMFILE
+argument_list|)
+decl_stmt|;
+name|tempFile
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
+name|FileWriter
+name|fWriter
+init|=
+operator|new
+name|FileWriter
+argument_list|(
+name|FAKE_MEMFILE
+argument_list|)
+decl_stmt|;
+name|fWriter
+operator|.
+name|write
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|MEMINFO_FORMAT3
+argument_list|,
+name|memTotal
+argument_list|,
+name|badFreeValue
+argument_list|,
+name|inactive
+argument_list|,
+name|swapTotal
+argument_list|,
+name|badFreeValue
+argument_list|,
+name|nrHugePages
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|fWriter
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getAvailablePhysicalMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memFree
+operator|+
+name|inactive
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getAvailableVirtualMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memFree
+operator|+
+name|inactive
+operator|+
+name|swapFree
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getPhysicalMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memTotal
+operator|-
+operator|(
+name|nrHugePages
+operator|*
+literal|2048
+operator|)
+operator|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|plugin
+operator|.
+name|getVirtualMemorySize
+argument_list|()
+argument_list|,
+literal|1024L
+operator|*
+operator|(
+name|memTotal
 operator|-
 operator|(
 name|nrHugePages

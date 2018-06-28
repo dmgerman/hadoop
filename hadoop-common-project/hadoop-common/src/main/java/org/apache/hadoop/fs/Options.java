@@ -244,6 +244,24 @@ name|csumOpt
 argument_list|)
 return|;
 block|}
+DECL|method|progress (Progressable prog)
+specifier|public
+specifier|static
+name|Progress
+name|progress
+parameter_list|(
+name|Progressable
+name|prog
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Progress
+argument_list|(
+name|prog
+argument_list|)
+return|;
+block|}
 DECL|method|perms (FsPermission perm)
 specifier|public
 specifier|static

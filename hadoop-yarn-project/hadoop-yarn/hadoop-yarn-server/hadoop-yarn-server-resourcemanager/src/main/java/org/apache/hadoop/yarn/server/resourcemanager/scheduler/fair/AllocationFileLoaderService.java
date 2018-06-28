@@ -824,11 +824,17 @@ condition|)
 block|{
 try|try
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|reloadListener
 operator|.
 name|onCheck
 argument_list|()
 expr_stmt|;
+block|}
 name|long
 name|time
 init|=

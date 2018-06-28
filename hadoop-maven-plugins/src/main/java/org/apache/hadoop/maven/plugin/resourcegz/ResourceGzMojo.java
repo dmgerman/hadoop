@@ -26,11 +26,9 @@ name|com
 operator|.
 name|google
 operator|.
-name|inject
+name|common
 operator|.
-name|internal
-operator|.
-name|util
+name|collect
 operator|.
 name|Lists
 import|;

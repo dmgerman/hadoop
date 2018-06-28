@@ -846,7 +846,7 @@ argument_list|)
 condition|)
 block|{
 name|Resource
-name|queueGuranteedResource
+name|queueGuaranteedResource
 init|=
 name|childQueue
 operator|.
@@ -907,7 +907,7 @@ operator|.
 name|getQueueCapacities
 argument_list|()
 decl_stmt|;
-name|queueGuranteedResource
+name|queueGuaranteedResource
 operator|=
 name|Resources
 operator|.
@@ -925,7 +925,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// make queueGuranteed>= minimum_allocation to avoid divided by 0.
-name|queueGuranteedResource
+name|queueGuaranteedResource
 operator|=
 name|Resources
 operator|.
@@ -935,7 +935,7 @@ name|rc
 argument_list|,
 name|totalPartitionResource
 argument_list|,
-name|queueGuranteedResource
+name|queueGuaranteedResource
 argument_list|,
 name|minimumAllocation
 argument_list|)
@@ -977,7 +977,7 @@ name|totalPartitionResource
 argument_list|,
 name|usedResource
 argument_list|,
-name|queueGuranteedResource
+name|queueGuaranteedResource
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -1002,7 +1002,7 @@ name|totalPartitionResource
 argument_list|,
 name|resResource
 argument_list|,
-name|queueGuranteedResource
+name|queueGuaranteedResource
 argument_list|)
 expr_stmt|;
 name|absoluteReservedCapacity
@@ -1146,7 +1146,7 @@ block|{
 comment|// Calculate guaranteed resource for a label in a queue by below logic.
 comment|// (total label resource) * (absolute capacity of label in that queue)
 name|Resource
-name|queueGuranteedResource
+name|queueGuaranteedResource
 init|=
 name|queue
 operator|.
@@ -1171,7 +1171,7 @@ name|rc
 argument_list|,
 name|cluster
 argument_list|,
-name|queueGuranteedResource
+name|queueGuaranteedResource
 argument_list|,
 name|queue
 operator|.
@@ -1193,7 +1193,7 @@ name|Resources
 operator|.
 name|subtractFrom
 argument_list|(
-name|queueGuranteedResource
+name|queueGuaranteedResource
 argument_list|,
 name|queue
 operator|.
