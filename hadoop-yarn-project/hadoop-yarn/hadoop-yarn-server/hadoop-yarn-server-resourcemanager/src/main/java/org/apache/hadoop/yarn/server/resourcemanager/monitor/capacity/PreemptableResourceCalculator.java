@@ -216,8 +216,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * PreemptableResourceCalculator constructor    *    * @param preemptionContext    * @param isReservedPreemptionCandidatesSelector this will be set by    * different implementation of candidate selectors, please refer to    * TempQueuePerPartition#offer for details.    */
-DECL|method|PreemptableResourceCalculator ( CapacitySchedulerPreemptionContext preemptionContext, boolean isReservedPreemptionCandidatesSelector)
+comment|/**    * PreemptableResourceCalculator constructor    *    * @param preemptionContext    * @param isReservedPreemptionCandidatesSelector this will be set by    * different implementation of candidate selectors, please refer to    * TempQueuePerPartition#offer for details.    * @param allowQueuesBalanceAfterAllQueuesSatisfied    */
+DECL|method|PreemptableResourceCalculator ( CapacitySchedulerPreemptionContext preemptionContext, boolean isReservedPreemptionCandidatesSelector, boolean allowQueuesBalanceAfterAllQueuesSatisfied)
 specifier|public
 name|PreemptableResourceCalculator
 parameter_list|(
@@ -226,6 +226,9 @@ name|preemptionContext
 parameter_list|,
 name|boolean
 name|isReservedPreemptionCandidatesSelector
+parameter_list|,
+name|boolean
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 parameter_list|)
 block|{
 name|super
@@ -233,6 +236,8 @@ argument_list|(
 name|preemptionContext
 argument_list|,
 name|isReservedPreemptionCandidatesSelector
+argument_list|,
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 argument_list|)
 expr_stmt|;
 block|}

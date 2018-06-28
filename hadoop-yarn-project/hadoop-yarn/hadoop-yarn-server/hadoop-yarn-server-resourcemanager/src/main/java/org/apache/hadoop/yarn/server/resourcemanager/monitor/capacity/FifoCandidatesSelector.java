@@ -252,6 +252,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -325,7 +335,12 @@ specifier|private
 name|PreemptableResourceCalculator
 name|preemptableAmountCalculator
 decl_stmt|;
-DECL|method|FifoCandidatesSelector (CapacitySchedulerPreemptionContext preemptionContext, boolean includeReservedResource)
+DECL|field|allowQueuesBalanceAfterAllQueuesSatisfied
+specifier|private
+name|boolean
+name|allowQueuesBalanceAfterAllQueuesSatisfied
+decl_stmt|;
+DECL|method|FifoCandidatesSelector (CapacitySchedulerPreemptionContext preemptionContext, boolean includeReservedResource, boolean allowQueuesBalanceAfterAllQueuesSatisfied)
 name|FifoCandidatesSelector
 parameter_list|(
 name|CapacitySchedulerPreemptionContext
@@ -333,12 +348,21 @@ name|preemptionContext
 parameter_list|,
 name|boolean
 name|includeReservedResource
+parameter_list|,
+name|boolean
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|preemptionContext
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|allowQueuesBalanceAfterAllQueuesSatisfied
+operator|=
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 expr_stmt|;
 name|preemptableAmountCalculator
 operator|=
@@ -348,6 +372,8 @@ argument_list|(
 name|preemptionContext
 argument_list|,
 name|includeReservedResource
+argument_list|,
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 argument_list|)
 expr_stmt|;
 block|}
@@ -384,6 +410,22 @@ name|Resource
 name|totalPreemptionAllowed
 parameter_list|)
 block|{
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|curCandidates
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|// Calculate how much resources we need to preempt
 name|preemptableAmountCalculator
 operator|.
@@ -613,6 +655,8 @@ name|clusterResource
 argument_list|,
 name|selectedCandidates
 argument_list|,
+name|curCandidates
+argument_list|,
 name|totalPreemptionAllowed
 argument_list|,
 literal|false
@@ -699,6 +743,8 @@ name|skippedAMSize
 argument_list|,
 name|selectedCandidates
 argument_list|,
+name|curCandidates
+argument_list|,
 name|totalPreemptionAllowed
 argument_list|)
 expr_stmt|;
@@ -734,6 +780,8 @@ name|clusterResource
 argument_list|,
 name|selectedCandidates
 argument_list|,
+name|curCandidates
+argument_list|,
 name|skippedAMContainerlist
 argument_list|,
 name|resToObtainByPartition
@@ -759,11 +807,11 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|selectedCandidates
+name|curCandidates
 return|;
 block|}
 comment|/**    * As more resources are needed for preemption, saved AMContainers has to be    * rescanned. Such AMContainers can be preemptionCandidates based on resToObtain, but    * maxAMCapacityForThisQueue resources will be still retained.    *    * @param clusterResource    * @param preemptMap    * @param skippedAMContainerlist    * @param skippedAMSize    * @param maxAMCapacityForThisQueue    */
-DECL|method|preemptAMContainers (Resource clusterResource, Map<ApplicationAttemptId, Set<RMContainer>> preemptMap, List<RMContainer> skippedAMContainerlist, Map<String, Resource> resToObtainByPartition, Resource skippedAMSize, Resource maxAMCapacityForThisQueue, Resource totalPreemptionAllowed)
+DECL|method|preemptAMContainers (Resource clusterResource, Map<ApplicationAttemptId, Set<RMContainer>> preemptMap, Map<ApplicationAttemptId, Set<RMContainer>> curCandidates, List<RMContainer> skippedAMContainerlist, Map<String, Resource> resToObtainByPartition, Resource skippedAMSize, Resource maxAMCapacityForThisQueue, Resource totalPreemptionAllowed)
 specifier|private
 name|void
 name|preemptAMContainers
@@ -781,6 +829,17 @@ name|RMContainer
 argument_list|>
 argument_list|>
 name|preemptMap
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|curCandidates
 parameter_list|,
 name|List
 argument_list|<
@@ -864,6 +923,8 @@ name|clusterResource
 argument_list|,
 name|preemptMap
 argument_list|,
+name|curCandidates
+argument_list|,
 name|totalPreemptionAllowed
 argument_list|,
 literal|false
@@ -895,7 +956,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Given a target preemption for a specific application, select containers    * to preempt (after unreserving all reservation for that app).    */
-DECL|method|preemptFrom (FiCaSchedulerApp app, Resource clusterResource, Map<String, Resource> resToObtainByPartition, List<RMContainer> skippedAMContainerlist, Resource skippedAMSize, Map<ApplicationAttemptId, Set<RMContainer>> selectedContainers, Resource totalPreemptionAllowed)
+DECL|method|preemptFrom (FiCaSchedulerApp app, Resource clusterResource, Map<String, Resource> resToObtainByPartition, List<RMContainer> skippedAMContainerlist, Resource skippedAMSize, Map<ApplicationAttemptId, Set<RMContainer>> selectedContainers, Map<ApplicationAttemptId, Set<RMContainer>> curCandidates, Resource totalPreemptionAllowed)
 specifier|private
 name|void
 name|preemptFrom
@@ -933,6 +994,17 @@ name|RMContainer
 argument_list|>
 argument_list|>
 name|selectedContainers
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|curCandidates
 parameter_list|,
 name|Resource
 name|totalPreemptionAllowed
@@ -1011,6 +1083,8 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|selectedContainers
+argument_list|,
+name|curCandidates
 argument_list|,
 name|totalPreemptionAllowed
 argument_list|,
@@ -1183,12 +1257,24 @@ name|clusterResource
 argument_list|,
 name|selectedContainers
 argument_list|,
+name|curCandidates
+argument_list|,
 name|totalPreemptionAllowed
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getAllowQueuesBalanceAfterAllQueuesSatisfied ()
+specifier|public
+name|boolean
+name|getAllowQueuesBalanceAfterAllQueuesSatisfied
+parameter_list|()
+block|{
+return|return
+name|allowQueuesBalanceAfterAllQueuesSatisfied
+return|;
 block|}
 block|}
 end_class

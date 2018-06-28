@@ -70,6 +70,28 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -1768,6 +1790,166 @@ argument_list|(
 name|getAppAttemptId
 argument_list|(
 literal|1
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testPriorityPreemptionForBalanceBetweenSatisfiedQueues ()
+specifier|public
+name|void
+name|testPriorityPreemptionForBalanceBetweenSatisfiedQueues
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|/**      * All queues are beyond guarantee, c has higher priority than b.      * c ask for more resource, and there is no idle left, c should preempt      * some resource from b but wonât let b under its guarantee.      *      * Queue structure is:      *      *<pre>      *        root      *       / |  \      *      a  b   c      *</pre>      *      * For priorities      * - a=1      * - b=1      * - c=2      *      */
+name|String
+name|labelsConfig
+init|=
+literal|"=100,true"
+decl_stmt|;
+comment|// default partition
+name|String
+name|nodesConfig
+init|=
+literal|"n1="
+decl_stmt|;
+comment|// only one node
+name|String
+name|queuesConfig
+init|=
+comment|// guaranteed,max,used,pending
+literal|"root(=[100 100 100 100]);"
+operator|+
+comment|//root
+literal|"-a(=[30 100 0 0]){priority=1};"
+operator|+
+comment|// a
+literal|"-b(=[30 100 40 50]){priority=1};"
+operator|+
+comment|// b
+literal|"-c(=[40 100 60 25]){priority=2}"
+decl_stmt|;
+comment|// c
+name|String
+name|appsConfig
+init|=
+comment|//queueName\t(priority,resource,host,expression,#repeat,reserved)
+literal|"b\t(1,1,n1,,40,false);"
+operator|+
+comment|// app1 in b
+literal|"c\t(1,1,n1,,60,false)"
+decl_stmt|;
+comment|// app2 in c
+name|buildEnv
+argument_list|(
+name|labelsConfig
+argument_list|,
+name|nodesConfig
+argument_list|,
+name|queuesConfig
+argument_list|,
+name|appsConfig
+argument_list|)
+expr_stmt|;
+name|CapacitySchedulerConfiguration
+name|newConf
+init|=
+operator|new
+name|CapacitySchedulerConfiguration
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|boolean
+name|isPreemptionToBalanceRequired
+init|=
+literal|true
+decl_stmt|;
+name|newConf
+operator|.
+name|setBoolean
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREEMPTION_TO_BALANCE_QUEUES_BEYOND_GUARANTEED
+argument_list|,
+name|isPreemptionToBalanceRequired
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|newConf
+argument_list|)
+expr_stmt|;
+name|policy
+operator|.
+name|editSchedule
+argument_list|()
+expr_stmt|;
+comment|// IdealAssigned b: 30 c: 70. initIdealAssigned: b: 30 c: 40, even though
+comment|// b and c has same relativeAssigned=1.0f(idealAssigned / guaranteed),
+comment|// since c has higher priority, c will be put in mostUnderServedQueue and
+comment|// get all remain 30 capacity.
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|10
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|2
 argument_list|)
 argument_list|)
 argument_list|)

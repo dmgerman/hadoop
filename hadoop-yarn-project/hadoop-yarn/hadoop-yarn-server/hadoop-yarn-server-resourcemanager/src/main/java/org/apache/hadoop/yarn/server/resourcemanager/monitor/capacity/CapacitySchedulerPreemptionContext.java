@@ -319,6 +319,11 @@ name|float
 name|getMaxAllowableLimitForIntraQueuePreemption
 parameter_list|()
 function_decl|;
+DECL|method|getDefaultMaximumKillWaitTimeout ()
+name|long
+name|getDefaultMaximumKillWaitTimeout
+parameter_list|()
+function_decl|;
 annotation|@
 name|Unstable
 DECL|method|getIntraQueuePreemptionOrderPolicy ()
