@@ -630,7 +630,7 @@ name|DeleteBlocksCommandHandler
 argument_list|(
 name|container
 operator|.
-name|getContainerManager
+name|getContainerSet
 argument_list|()
 argument_list|,
 name|conf

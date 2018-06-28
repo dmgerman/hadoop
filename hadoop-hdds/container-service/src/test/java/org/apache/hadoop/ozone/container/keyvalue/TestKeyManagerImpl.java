@@ -538,12 +538,6 @@ operator|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|ContainerProtos
-operator|.
-name|ContainerType
-operator|.
-name|KeyValueContainer
-argument_list|,
 literal|1L
 argument_list|)
 expr_stmt|;

@@ -339,12 +339,6 @@ init|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|ContainerProtos
-operator|.
-name|ContainerType
-operator|.
-name|KeyValueContainer
-argument_list|,
 name|containerId
 argument_list|)
 decl_stmt|;
@@ -885,12 +879,6 @@ init|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|ContainerProtos
-operator|.
-name|ContainerType
-operator|.
-name|KeyValueContainer
-argument_list|,
 name|i
 argument_list|)
 decl_stmt|;

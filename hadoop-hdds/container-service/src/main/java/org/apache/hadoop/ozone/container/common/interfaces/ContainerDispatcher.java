@@ -39,6 +39,26 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
 operator|.
 name|ContainerCommandRequestProto
 import|;
@@ -96,6 +116,26 @@ DECL|method|shutdown ()
 name|void
 name|shutdown
 parameter_list|()
+function_decl|;
+comment|/**    * Returns the handler for the specified containerType.    * @param containerType    * @return    */
+DECL|method|getHandler (ContainerProtos.ContainerType containerType)
+name|Handler
+name|getHandler
+parameter_list|(
+name|ContainerProtos
+operator|.
+name|ContainerType
+name|containerType
+parameter_list|)
+function_decl|;
+comment|/**    * If scmId is not set, this will set scmId, otherwise it is a no-op.    * @param scmId    */
+DECL|method|setScmId (String scmId)
+name|void
+name|setScmId
+parameter_list|(
+name|String
+name|scmId
+parameter_list|)
 function_decl|;
 block|}
 end_interface

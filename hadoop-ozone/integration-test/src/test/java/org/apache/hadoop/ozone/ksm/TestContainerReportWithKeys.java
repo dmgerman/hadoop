@@ -188,7 +188,7 @@ name|container
 operator|.
 name|common
 operator|.
-name|helpers
+name|impl
 operator|.
 name|ContainerData
 import|;
@@ -208,9 +208,9 @@ name|container
 operator|.
 name|common
 operator|.
-name|interfaces
+name|impl
 operator|.
-name|ContainerManager
+name|ContainerSet
 import|;
 end_import
 
@@ -769,23 +769,7 @@ name|getContainerID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"DN Container Data:  keyCount: {} used: {} "
-argument_list|,
-name|cd
-operator|.
-name|getKeyCount
-argument_list|()
-argument_list|,
-name|cd
-operator|.
-name|getBytesUsed
-argument_list|()
-argument_list|)
-expr_stmt|;
+comment|/*    LOG.info("DN Container Data:  keyCount: {} used: {} ",         cd.getKeyCount(), cd.getBytesUsed());*/
 name|ContainerInfo
 name|cinfo
 init|=
@@ -832,7 +816,7 @@ name|containerData
 decl_stmt|;
 try|try
 block|{
-name|ContainerManager
+name|ContainerSet
 name|containerManager
 init|=
 name|cluster
@@ -851,17 +835,20 @@ operator|.
 name|getContainer
 argument_list|()
 operator|.
-name|getContainerManager
+name|getContainerSet
 argument_list|()
 decl_stmt|;
 name|containerData
 operator|=
 name|containerManager
 operator|.
-name|readContainer
+name|getContainer
 argument_list|(
 name|containerID
 argument_list|)
+operator|.
+name|getContainerData
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch

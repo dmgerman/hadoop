@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -830,7 +844,7 @@ name|VolumeChoosingPolicy
 name|volumeChoosingPolicy
 decl_stmt|;
 comment|// TODO : Add metrics and populate it.
-DECL|method|getInstance (Configuration config, ContainerSet contSet, VolumeSet volSet, String scmID)
+DECL|method|getInstance (Configuration config, ContainerSet contSet, VolumeSet volSet)
 specifier|public
 specifier|static
 name|KeyValueHandler
@@ -844,9 +858,6 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volSet
-parameter_list|,
-name|String
-name|scmID
 parameter_list|)
 block|{
 if|if
@@ -866,8 +877,6 @@ argument_list|,
 name|contSet
 argument_list|,
 name|volSet
-argument_list|,
-name|scmID
 argument_list|)
 expr_stmt|;
 block|}
@@ -875,7 +884,7 @@ return|return
 name|INSTANCE
 return|;
 block|}
-DECL|method|KeyValueHandler (Configuration config, ContainerSet contSet, VolumeSet volSet, String scmID)
+DECL|method|KeyValueHandler (Configuration config, ContainerSet contSet, VolumeSet volSet)
 specifier|private
 name|KeyValueHandler
 parameter_list|(
@@ -887,9 +896,6 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volSet
-parameter_list|,
-name|String
-name|scmID
 parameter_list|)
 block|{
 name|super
@@ -899,8 +905,6 @@ argument_list|,
 name|contSet
 argument_list|,
 name|volSet
-argument_list|,
-name|scmID
 argument_list|)
 expr_stmt|;
 name|containerType
@@ -1150,6 +1154,34 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getChunkManager ()
+specifier|public
+name|ChunkManager
+name|getChunkManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|chunkManager
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getKeyManager ()
+specifier|public
+name|KeyManager
+name|getKeyManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|keyManager
+return|;
+block|}
 comment|/**    * Handles Create Container Request. If successful, adds the container to    * ContainerSet.    */
 DECL|method|handleCreateContainer ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
@@ -1251,8 +1283,6 @@ init|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|containerType
-argument_list|,
 name|containerID
 argument_list|)
 decl_stmt|;

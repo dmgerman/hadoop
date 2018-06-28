@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.keyvalue
+DECL|package|org.apache.hadoop.ozone.container.common.impl
 package|package
 name|org
 operator|.
@@ -16,7 +16,9 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|keyvalue
+name|common
+operator|.
+name|impl
 package|;
 end_package
 
@@ -62,15 +64,35 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
+operator|.
+name|scm
 operator|.
 name|container
 operator|.
 name|common
 operator|.
-name|impl
+name|helpers
 operator|.
-name|ContainerData
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|keyvalue
+operator|.
+name|KeyValueContainerData
 import|;
 end_import
 
@@ -336,29 +358,74 @@ name|Representer
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|keyvalue
+operator|.
+name|KeyValueContainerData
+operator|.
+name|YAML_FIELDS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|keyvalue
+operator|.
+name|KeyValueContainerData
+operator|.
+name|YAML_TAG
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class for creating and reading .container files.  */
 end_comment
 
 begin_class
-DECL|class|KeyValueYaml
+DECL|class|ContainerDataYaml
 specifier|public
 specifier|final
 class|class
-name|KeyValueYaml
+name|ContainerDataYaml
 block|{
-DECL|method|KeyValueYaml ()
+DECL|method|ContainerDataYaml ()
 specifier|private
-name|KeyValueYaml
+name|ContainerDataYaml
 parameter_list|()
 block|{    }
 comment|/**    * Creates a .container file in yaml format.    *    * @param containerFile    * @param containerData    * @throws IOException    */
-DECL|method|createContainerFile (File containerFile, ContainerData containerData)
+DECL|method|createContainerFile (ContainerProtos.ContainerType containerType, File containerFile, ContainerData containerData)
 specifier|public
 specifier|static
 name|void
 name|createContainerFile
 parameter_list|(
+name|ContainerProtos
+operator|.
+name|ContainerType
+name|containerType
+parameter_list|,
 name|File
 name|containerFile
 parameter_list|,
@@ -386,6 +453,15 @@ argument_list|,
 literal|"containerData cannot be null"
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|containerType
+argument_list|,
+literal|"containerType cannot be null"
+argument_list|)
+expr_stmt|;
 name|PropertyUtils
 name|propertyUtils
 init|=
@@ -409,11 +485,19 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+switch|switch
+condition|(
+name|containerType
+condition|)
+block|{
+case|case
+name|KeyValueContainer
+case|:
 name|Representer
 name|representer
 init|=
 operator|new
-name|KeyValueContainerDataRepresenter
+name|ContainerDataRepresenter
 argument_list|()
 decl_stmt|;
 name|representer
@@ -431,18 +515,16 @@ name|KeyValueContainerData
 operator|.
 name|class
 argument_list|,
-operator|new
-name|Tag
-argument_list|(
-literal|"KeyValueContainerData"
-argument_list|)
+name|KeyValueContainerData
+operator|.
+name|YAML_TAG
 argument_list|)
 expr_stmt|;
 name|Constructor
 name|keyValueDataConstructor
 init|=
 operator|new
-name|KeyValueDataConstructor
+name|ContainerDataConstructor
 argument_list|()
 decl_stmt|;
 name|Yaml
@@ -485,12 +567,32 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+break|break;
+default|default:
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Unrecognized container Type "
+operator|+
+literal|"format "
+operator|+
+name|containerType
+argument_list|,
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNKNOWN_CONTAINER_TYPE
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Read the yaml file, and return containerData.    *    * @param containerFile    * @throws IOException    */
 DECL|method|readContainerFile (File containerFile)
 specifier|public
 specifier|static
-name|KeyValueContainerData
+name|ContainerData
 name|readContainerFile
 parameter_list|(
 name|File
@@ -513,8 +615,8 @@ name|input
 init|=
 literal|null
 decl_stmt|;
-name|KeyValueContainerData
-name|keyValueContainerData
+name|ContainerData
+name|containerData
 decl_stmt|;
 try|try
 block|{
@@ -545,7 +647,7 @@ name|Representer
 name|representer
 init|=
 operator|new
-name|KeyValueContainerDataRepresenter
+name|ContainerDataRepresenter
 argument_list|()
 decl_stmt|;
 name|representer
@@ -555,26 +657,11 @@ argument_list|(
 name|propertyUtils
 argument_list|)
 expr_stmt|;
-name|representer
-operator|.
-name|addClassTag
-argument_list|(
-name|KeyValueContainerData
-operator|.
-name|class
-argument_list|,
-operator|new
-name|Tag
-argument_list|(
-literal|"KeyValueContainerData"
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|Constructor
-name|keyValueDataConstructor
+name|containerDataConstructor
 init|=
 operator|new
-name|KeyValueDataConstructor
+name|ContainerDataConstructor
 argument_list|()
 decl_stmt|;
 name|Yaml
@@ -583,7 +670,7 @@ init|=
 operator|new
 name|Yaml
 argument_list|(
-name|keyValueDataConstructor
+name|containerDataConstructor
 argument_list|,
 name|representer
 argument_list|)
@@ -605,10 +692,10 @@ argument_list|(
 name|containerFile
 argument_list|)
 expr_stmt|;
-name|keyValueContainerData
+name|containerData
 operator|=
 operator|(
-name|KeyValueContainerData
+name|ContainerData
 operator|)
 name|yaml
 operator|.
@@ -635,15 +722,15 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|keyValueContainerData
+name|containerData
 return|;
 block|}
 comment|/**    * Representer class to define which fields need to be stored in yaml file.    */
-DECL|class|KeyValueContainerDataRepresenter
+DECL|class|ContainerDataRepresenter
 specifier|private
 specifier|static
 class|class
-name|KeyValueContainerDataRepresenter
+name|ContainerDataRepresenter
 extends|extends
 name|Representer
 block|{
@@ -694,6 +781,8 @@ name|Property
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// When a new Container type is added, we need to add what fields need
+comment|// to be filtered here
 if|if
 condition|(
 name|type
@@ -723,63 +812,13 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-comment|// When a new field needs to be added, it needs to be added here.
 if|if
 condition|(
-name|name
+name|YAML_FIELDS
 operator|.
-name|equals
+name|contains
 argument_list|(
-literal|"containerType"
-argument_list|)
-operator|||
 name|name
-operator|.
-name|equals
-argument_list|(
-literal|"containerId"
-argument_list|)
-operator|||
-name|name
-operator|.
-name|equals
-argument_list|(
-literal|"layOutVersion"
-argument_list|)
-operator|||
-name|name
-operator|.
-name|equals
-argument_list|(
-literal|"state"
-argument_list|)
-operator|||
-name|name
-operator|.
-name|equals
-argument_list|(
-literal|"metadata"
-argument_list|)
-operator|||
-name|name
-operator|.
-name|equals
-argument_list|(
-literal|"metadataPath"
-argument_list|)
-operator|||
-name|name
-operator|.
-name|equals
-argument_list|(
-literal|"chunksPath"
-argument_list|)
-operator|||
-name|name
-operator|.
-name|equals
-argument_list|(
-literal|"containerDBType"
 argument_list|)
 condition|)
 block|{
@@ -799,30 +838,28 @@ return|;
 block|}
 block|}
 comment|/**    * Constructor class for KeyValueData, which will be used by Yaml.    */
-DECL|class|KeyValueDataConstructor
+DECL|class|ContainerDataConstructor
 specifier|private
 specifier|static
 class|class
-name|KeyValueDataConstructor
+name|ContainerDataConstructor
 extends|extends
 name|Constructor
 block|{
-DECL|method|KeyValueDataConstructor ()
-name|KeyValueDataConstructor
+DECL|method|ContainerDataConstructor ()
+name|ContainerDataConstructor
 parameter_list|()
 block|{
 comment|//Adding our own specific constructors for tags.
+comment|// When a new Container type is added, we need to add yamlConstructor
+comment|// for that
 name|this
 operator|.
 name|yamlConstructors
 operator|.
 name|put
 argument_list|(
-operator|new
-name|Tag
-argument_list|(
-literal|"KeyValueContainerData"
-argument_list|)
+name|YAML_TAG
 argument_list|,
 operator|new
 name|ConstructKeyValueContainerData
@@ -882,49 +919,6 @@ argument_list|(
 name|mnode
 argument_list|)
 decl_stmt|;
-name|String
-name|type
-init|=
-operator|(
-name|String
-operator|)
-name|nodes
-operator|.
-name|get
-argument_list|(
-literal|"containerType"
-argument_list|)
-decl_stmt|;
-name|ContainerProtos
-operator|.
-name|ContainerType
-name|containerType
-init|=
-name|ContainerProtos
-operator|.
-name|ContainerType
-operator|.
-name|KeyValueContainer
-decl_stmt|;
-if|if
-condition|(
-name|type
-operator|.
-name|equals
-argument_list|(
-literal|"KeyValueContainer"
-argument_list|)
-condition|)
-block|{
-name|containerType
-operator|=
-name|ContainerProtos
-operator|.
-name|ContainerType
-operator|.
-name|KeyValueContainer
-expr_stmt|;
-block|}
 comment|//Needed this, as TAG.INT type is by default converted to Long.
 name|long
 name|layOutVersion
@@ -954,8 +948,6 @@ init|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|containerType
-argument_list|,
 operator|(
 name|long
 operator|)

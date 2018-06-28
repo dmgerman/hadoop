@@ -194,16 +194,6 @@ name|KeyValueHandler
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Dispatcher sends ContainerCommandRequests to Handler. Each Container Type  * should have an implementation for Handler.  */
 end_comment
@@ -234,11 +224,10 @@ name|volumeSet
 decl_stmt|;
 DECL|field|scmID
 specifier|protected
-specifier|final
 name|String
 name|scmID
 decl_stmt|;
-DECL|method|Handler (Configuration config, ContainerSet contSet, VolumeSet volumeSet, String scmID)
+DECL|method|Handler (Configuration config, ContainerSet contSet, VolumeSet volumeSet)
 specifier|protected
 name|Handler
 parameter_list|(
@@ -250,9 +239,6 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volumeSet
-parameter_list|,
-name|String
-name|scmID
 parameter_list|)
 block|{
 name|conf
@@ -269,14 +255,8 @@ name|volumeSet
 operator|=
 name|volumeSet
 expr_stmt|;
-name|this
-operator|.
-name|scmID
-operator|=
-name|scmID
-expr_stmt|;
 block|}
-DECL|method|getHandlerForContainerType (ContainerType containerType, Configuration config, ContainerSet contSet, VolumeSet volumeSet, String scmID)
+DECL|method|getHandlerForContainerType (ContainerType containerType, Configuration config, ContainerSet contSet, VolumeSet volumeSet)
 specifier|public
 specifier|static
 name|Handler
@@ -293,9 +273,6 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volumeSet
-parameter_list|,
-name|String
-name|scmID
 parameter_list|)
 block|{
 switch|switch
@@ -316,8 +293,6 @@ argument_list|,
 name|contSet
 argument_list|,
 name|volumeSet
-argument_list|,
-name|scmID
 argument_list|)
 return|;
 default|default:
@@ -349,6 +324,22 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+DECL|method|setScmID (String scmId)
+specifier|public
+name|void
+name|setScmID
+parameter_list|(
+name|String
+name|scmId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scmID
+operator|=
+name|scmId
+expr_stmt|;
 block|}
 block|}
 end_class

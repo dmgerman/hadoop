@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -62,6 +76,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|yaml
+operator|.
+name|snakeyaml
+operator|.
+name|nodes
+operator|.
+name|Tag
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -74,9 +102,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|util
 operator|.
-name|IOException
+name|List
 import|;
 end_import
 
@@ -102,6 +130,52 @@ name|KeyValueContainerData
 extends|extends
 name|ContainerData
 block|{
+comment|// Yaml Tag used for KeyValueContainerData.
+DECL|field|YAML_TAG
+specifier|public
+specifier|static
+specifier|final
+name|Tag
+name|YAML_TAG
+init|=
+operator|new
+name|Tag
+argument_list|(
+literal|"KeyValueContainerData"
+argument_list|)
+decl_stmt|;
+comment|// Fields need to be stored in .container file.
+DECL|field|YAML_FIELDS
+specifier|public
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|YAML_FIELDS
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
+literal|"containerType"
+argument_list|,
+literal|"containerId"
+argument_list|,
+literal|"layOutVersion"
+argument_list|,
+literal|"state"
+argument_list|,
+literal|"metadata"
+argument_list|,
+literal|"metadataPath"
+argument_list|,
+literal|"chunksPath"
+argument_list|,
+literal|"containerDBType"
+argument_list|)
+decl_stmt|;
 comment|// Path to Container metadata Level DB/RocksDB Store and .container file.
 DECL|field|metadataPath
 specifier|private
@@ -133,23 +207,22 @@ name|dbFile
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Constructs KeyValueContainerData object.    * @param type - containerType    * @param id - ContainerId    */
-DECL|method|KeyValueContainerData (ContainerProtos.ContainerType type, long id)
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    */
+DECL|method|KeyValueContainerData (long id)
 specifier|public
 name|KeyValueContainerData
 parameter_list|(
-name|ContainerProtos
-operator|.
-name|ContainerType
-name|type
-parameter_list|,
 name|long
 name|id
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|type
+name|ContainerProtos
+operator|.
+name|ContainerType
+operator|.
+name|KeyValueContainer
 argument_list|,
 name|id
 argument_list|)
@@ -161,16 +234,11 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Constructs KeyValueContainerData object.    * @param type - containerType    * @param id - ContainerId    * @param layOutVersion    */
-DECL|method|KeyValueContainerData (ContainerProtos.ContainerType type, long id, int layOutVersion)
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    */
+DECL|method|KeyValueContainerData (long id, int layOutVersion)
 specifier|public
 name|KeyValueContainerData
 parameter_list|(
-name|ContainerProtos
-operator|.
-name|ContainerType
-name|type
-parameter_list|,
 name|long
 name|id
 parameter_list|,
@@ -180,7 +248,11 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|type
+name|ContainerProtos
+operator|.
+name|ContainerType
+operator|.
+name|KeyValueContainer
 argument_list|,
 name|id
 argument_list|,

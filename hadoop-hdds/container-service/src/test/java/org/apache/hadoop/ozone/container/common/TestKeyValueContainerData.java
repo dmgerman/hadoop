@@ -164,8 +164,6 @@ init|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|containerType
-argument_list|,
 name|containerId
 argument_list|)
 decl_stmt|;

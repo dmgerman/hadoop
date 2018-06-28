@@ -682,6 +682,16 @@ name|initialize
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getVolumeInfo ()
+specifier|public
+name|VolumeInfo
+name|getVolumeInfo
+parameter_list|()
+block|{
+return|return
+name|volumeInfo
+return|;
+block|}
 comment|/**    * Initializes the volume.    * Creates the Version file if not present,    * otherwise returns with IOException.    * @throws IOException    */
 DECL|method|initialize ()
 specifier|private

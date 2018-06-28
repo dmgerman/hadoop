@@ -26,6 +26,26 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|interfaces
+operator|.
+name|Handler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|ratis
 operator|.
 name|shaded
@@ -1723,6 +1743,34 @@ name|void
 name|shutdown
 parameter_list|()
 block|{     }
+annotation|@
+name|Override
+DECL|method|getHandler (ContainerProtos.ContainerType containerType)
+specifier|public
+name|Handler
+name|getHandler
+parameter_list|(
+name|ContainerProtos
+operator|.
+name|ContainerType
+name|containerType
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setScmId (String scmId)
+specifier|public
+name|void
+name|setScmId
+parameter_list|(
+name|String
+name|scmId
+parameter_list|)
+block|{      }
 block|}
 block|}
 end_class

@@ -374,12 +374,11 @@ name|volumeSet
 decl_stmt|;
 DECL|field|scmID
 specifier|private
-specifier|final
 name|String
 name|scmID
 decl_stmt|;
 comment|/**    * Constructs an OzoneContainer that receives calls from    * XceiverServerHandler.    */
-DECL|method|HddsDispatcher (Configuration config, ContainerSet contSet, VolumeSet volumes, String scmId)
+DECL|method|HddsDispatcher (Configuration config, ContainerSet contSet, VolumeSet volumes)
 specifier|public
 name|HddsDispatcher
 parameter_list|(
@@ -391,12 +390,9 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volumes
-parameter_list|,
-name|String
-name|scmId
 parameter_list|)
 block|{
-comment|// TODO: Pass ContainerSet, VolumeSet and scmID, intialize metrics
+comment|//TODO: initialize metrics
 name|this
 operator|.
 name|conf
@@ -414,12 +410,6 @@ operator|.
 name|volumeSet
 operator|=
 name|volumes
-expr_stmt|;
-name|this
-operator|.
-name|scmID
-operator|=
-name|scmId
 expr_stmt|;
 name|this
 operator|.
@@ -458,8 +448,6 @@ argument_list|,
 name|containerSet
 argument_list|,
 name|volumeSet
-argument_list|,
-name|scmID
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -604,7 +592,7 @@ block|}
 name|Handler
 name|handler
 init|=
-name|getHandlerForContainerType
+name|getHandler
 argument_list|(
 name|containerType
 argument_list|)
@@ -660,14 +648,16 @@ argument_list|)
 return|;
 block|}
 annotation|@
-name|VisibleForTesting
-DECL|method|getHandlerForContainerType (ContainerType type)
+name|Override
+DECL|method|getHandler (ContainerProtos.ContainerType containerType)
 specifier|public
 name|Handler
-name|getHandlerForContainerType
+name|getHandler
 parameter_list|(
+name|ContainerProtos
+operator|.
 name|ContainerType
-name|type
+name|containerType
 parameter_list|)
 block|{
 return|return
@@ -675,9 +665,75 @@ name|handlers
 operator|.
 name|get
 argument_list|(
-name|type
+name|containerType
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setScmId (String scmId)
+specifier|public
+name|void
+name|setScmId
+parameter_list|(
+name|String
+name|scmId
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|scmId
+argument_list|,
+literal|"scmId Cannot be null"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|scmID
+operator|==
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|scmID
+operator|=
+name|scmId
+expr_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|ContainerType
+argument_list|,
+name|Handler
+argument_list|>
+name|handlerMap
+range|:
+name|handlers
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|handlerMap
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|setScmID
+argument_list|(
+name|scmID
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|getContainerID (ContainerCommandRequestProto request)
 specifier|private
