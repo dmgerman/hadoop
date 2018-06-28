@@ -550,6 +550,17 @@ name|long
 name|containerId
 parameter_list|)
 function_decl|;
+DECL|method|updateDeleteTransactionId (long containerId, long deleteTransactionId)
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|containerId
+parameter_list|,
+name|long
+name|deleteTransactionId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

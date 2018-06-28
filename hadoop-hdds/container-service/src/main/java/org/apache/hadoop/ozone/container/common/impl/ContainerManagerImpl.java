@@ -4794,6 +4794,33 @@ name|getKeyCount
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|updateDeleteTransactionId (long containerId, long deleteTransactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|containerId
+parameter_list|,
+name|long
+name|deleteTransactionId
+parameter_list|)
+block|{
+name|containerMap
+operator|.
+name|get
+argument_list|(
+name|containerId
+argument_list|)
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
