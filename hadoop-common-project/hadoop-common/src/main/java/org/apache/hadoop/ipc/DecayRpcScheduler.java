@@ -250,7 +250,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|exception
 operator|.
@@ -2017,7 +2017,7 @@ literal|"decayCurrentCounts exception: "
 operator|+
 name|ExceptionUtils
 operator|.
-name|getFullStackTrace
+name|getStackTrace
 argument_list|(
 name|ex
 argument_list|)

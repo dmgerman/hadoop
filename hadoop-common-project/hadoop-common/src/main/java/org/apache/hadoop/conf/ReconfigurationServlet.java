@@ -24,7 +24,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
+name|lang3
 operator|.
 name|StringEscapeUtils
 import|;
@@ -298,7 +298,7 @@ literal|"<title>%s Reconfiguration Utility</title>%n"
 argument_list|,
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|nodeName
 argument_list|)
@@ -319,7 +319,7 @@ literal|"<h1>%s Reconfiguration Utility</h1>%n"
 argument_list|,
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|nodeName
 argument_list|)
@@ -459,7 +459,7 @@ literal|"<font color=\"red\">"
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|c
 operator|.
@@ -482,7 +482,7 @@ name|print
 argument_list|(
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|c
 operator|.
@@ -498,7 +498,7 @@ literal|"<input type=\"hidden\" name=\""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|c
 operator|.
@@ -509,7 +509,7 @@ literal|"\" value=\""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|c
 operator|.
@@ -537,7 +537,7 @@ literal|"<it>default</it>"
 else|:
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|c
 operator|.
@@ -558,7 +558,7 @@ literal|"<it>default</it>"
 else|:
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|c
 operator|.
@@ -709,7 +709,7 @@ name|param
 init|=
 name|StringEscapeUtils
 operator|.
-name|unescapeHtml
+name|unescapeHtml4
 argument_list|(
 name|rawParam
 argument_list|)
@@ -719,7 +719,7 @@ name|value
 init|=
 name|StringEscapeUtils
 operator|.
-name|unescapeHtml
+name|unescapeHtml4
 argument_list|(
 name|req
 operator|.
@@ -811,7 +811,7 @@ literal|"<p>Changed \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|param
 argument_list|)
@@ -820,7 +820,7 @@ literal|"\" from \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|oldConf
 operator|.
@@ -914,7 +914,7 @@ literal|"<p>Changed \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|param
 argument_list|)
@@ -923,7 +923,7 @@ literal|"\" from default to \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|value
 argument_list|)
@@ -942,7 +942,7 @@ literal|"<p>Changed \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|param
 argument_list|)
@@ -951,7 +951,7 @@ literal|"\" from \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|oldConf
 operator|.
@@ -965,7 +965,7 @@ literal|"\" to \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|value
 argument_list|)
@@ -1010,7 +1010,7 @@ literal|"<p>\""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|param
 argument_list|)
@@ -1019,7 +1019,7 @@ literal|"\" not changed because value has changed from \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|value
 argument_list|)
@@ -1028,7 +1028,7 @@ literal|"\" to \""
 operator|+
 name|StringEscapeUtils
 operator|.
-name|escapeHtml
+name|escapeHtml4
 argument_list|(
 name|newConf
 operator|.
