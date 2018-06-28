@@ -698,7 +698,7 @@ return|;
 block|}
 comment|// This function "accepts" all the resources it can (pending) and return
 comment|// the unused ones
-DECL|method|offer (Resource avail, ResourceCalculator rc, Resource clusterResource, boolean considersReservedResource)
+DECL|method|offer (Resource avail, ResourceCalculator rc, Resource clusterResource, boolean considersReservedResource, boolean allowQueueBalanceAfterAllSafisfied)
 name|Resource
 name|offer
 parameter_list|(
@@ -713,6 +713,9 @@ name|clusterResource
 parameter_list|,
 name|boolean
 name|considersReservedResource
+parameter_list|,
+name|boolean
+name|allowQueueBalanceAfterAllSafisfied
 parameter_list|)
 block|{
 name|Resource
@@ -801,6 +804,13 @@ comment|// Why only for leaf queue?
 comment|// Because for a satisfied parent queue, it could have some under-utilized
 comment|// leaf queues. Such under-utilized leaf queue could preemption resources
 comment|// from over-utilized leaf queue located at other hierarchies.
+comment|// Allow queues can continue grow and balance even if all queues are satisfied.
+if|if
+condition|(
+operator|!
+name|allowQueueBalanceAfterAllSafisfied
+condition|)
+block|{
 name|accepted
 operator|=
 name|filterByMaxDeductAssigned
@@ -812,6 +822,7 @@ argument_list|,
 name|accepted
 argument_list|)
 expr_stmt|;
+block|}
 comment|// accepted so far contains the "quota acceptable" amount, we now filter by
 comment|// locality acceptable
 name|accepted

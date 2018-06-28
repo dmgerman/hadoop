@@ -995,6 +995,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|KeeperException
 block|{
 name|Preconditions
 operator|.
@@ -1006,6 +1008,17 @@ argument_list|,
 literal|"ensureParentZNode() may not be called while in the election"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|zkClient
+operator|==
+literal|null
+condition|)
+block|{
+name|createConnection
+argument_list|()
+expr_stmt|;
+block|}
 name|String
 name|pathParts
 index|[]

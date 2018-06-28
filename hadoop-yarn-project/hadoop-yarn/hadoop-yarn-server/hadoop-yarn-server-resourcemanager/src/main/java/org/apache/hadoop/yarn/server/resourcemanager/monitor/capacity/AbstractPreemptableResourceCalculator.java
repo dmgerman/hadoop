@@ -236,6 +236,11 @@ specifier|private
 name|Resource
 name|stepFactor
 decl_stmt|;
+DECL|field|allowQueuesBalanceAfterAllQueuesSatisfied
+specifier|private
+name|boolean
+name|allowQueuesBalanceAfterAllQueuesSatisfied
+decl_stmt|;
 DECL|class|TQComparator
 specifier|static
 class|class
@@ -401,8 +406,8 @@ operator|)
 return|;
 block|}
 block|}
-comment|/**    * PreemptableResourceCalculator constructor.    *    * @param preemptionContext context    * @param isReservedPreemptionCandidatesSelector    *          this will be set by different implementation of candidate    *          selectors, please refer to TempQueuePerPartition#offer for    *          details.    */
-DECL|method|AbstractPreemptableResourceCalculator ( CapacitySchedulerPreemptionContext preemptionContext, boolean isReservedPreemptionCandidatesSelector)
+comment|/**    * PreemptableResourceCalculator constructor.    *    * @param preemptionContext context    * @param isReservedPreemptionCandidatesSelector    *          this will be set by different implementation of candidate    *          selectors, please refer to TempQueuePerPartition#offer for    *          details.    * @param allowQueuesBalanceAfterAllQueuesSatisfied    *          Should resources be preempted from an over-served queue when the    *          requesting queues are all at or over their guarantees?    *          An example is, there're 10 queues under root, guaranteed resource    *          of them are all 10%.    *          Assume there're two queues are using resources, queueA uses 10%    *          queueB uses 90%. For all queues are guaranteed, but it's not fair    *          for queueA.    *          We wanna make this behavior can be configured. By default it is    *          not allowed.    *    */
+DECL|method|AbstractPreemptableResourceCalculator ( CapacitySchedulerPreemptionContext preemptionContext, boolean isReservedPreemptionCandidatesSelector, boolean allowQueuesBalanceAfterAllQueuesSatisfied)
 specifier|public
 name|AbstractPreemptableResourceCalculator
 parameter_list|(
@@ -411,6 +416,9 @@ name|preemptionContext
 parameter_list|,
 name|boolean
 name|isReservedPreemptionCandidatesSelector
+parameter_list|,
+name|boolean
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 parameter_list|)
 block|{
 name|context
@@ -429,6 +437,12 @@ operator|.
 name|isReservedPreemptionCandidatesSelector
 operator|=
 name|isReservedPreemptionCandidatesSelector
+expr_stmt|;
+name|this
+operator|.
+name|allowQueuesBalanceAfterAllQueuesSatisfied
+operator|=
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 expr_stmt|;
 name|stepFactor
 operator|=
@@ -838,6 +852,8 @@ argument_list|,
 name|totGuarant
 argument_list|,
 name|isReservedPreemptionCandidatesSelector
+argument_list|,
+name|allowQueuesBalanceAfterAllQueuesSatisfied
 argument_list|)
 decl_stmt|;
 name|Resource

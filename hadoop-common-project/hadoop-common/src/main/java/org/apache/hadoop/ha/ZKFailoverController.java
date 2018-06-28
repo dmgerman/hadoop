@@ -1404,6 +1404,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|KeeperException
 block|{
 if|if
 condition|(

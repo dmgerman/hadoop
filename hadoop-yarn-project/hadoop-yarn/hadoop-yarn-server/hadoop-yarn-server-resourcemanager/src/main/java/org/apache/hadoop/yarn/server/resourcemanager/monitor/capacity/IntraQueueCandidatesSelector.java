@@ -754,6 +754,22 @@ name|Resource
 name|totalPreemptedResourceAllowed
 parameter_list|)
 block|{
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|curCandidates
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|// 1. Calculate the abnormality within each queue one by one.
 name|computeIntraQueuePreemptionDemand
 argument_list|(
@@ -948,6 +964,8 @@ name|app
 argument_list|,
 name|selectedCandidates
 argument_list|,
+name|curCandidates
+argument_list|,
 name|clusterResource
 argument_list|,
 name|totalPreemptedResourceAllowed
@@ -973,7 +991,7 @@ block|}
 block|}
 block|}
 return|return
-name|selectedCandidates
+name|curCandidates
 return|;
 block|}
 DECL|method|initializeUsageAndUserLimitForCompute (Resource clusterResource, String partition, LeafQueue leafQueue, Map<String, Resource> rollingResourceUsagePerUser)
@@ -1067,7 +1085,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|preemptFromLeastStarvedApp (LeafQueue leafQueue, FiCaSchedulerApp app, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource clusterResource, Resource totalPreemptedResourceAllowed, Map<String, Resource> resToObtainByPartition, Map<String, Resource> rollingResourceUsagePerUser)
+DECL|method|preemptFromLeastStarvedApp (LeafQueue leafQueue, FiCaSchedulerApp app, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Map<ApplicationAttemptId, Set<RMContainer>> curCandidates, Resource clusterResource, Resource totalPreemptedResourceAllowed, Map<String, Resource> resToObtainByPartition, Map<String, Resource> rollingResourceUsagePerUser)
 specifier|private
 name|void
 name|preemptFromLeastStarvedApp
@@ -1088,6 +1106,17 @@ name|RMContainer
 argument_list|>
 argument_list|>
 name|selectedCandidates
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+argument_list|>
+name|curCandidates
 parameter_list|,
 name|Resource
 name|clusterResource
@@ -1316,6 +1345,8 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|selectedCandidates
+argument_list|,
+name|curCandidates
 argument_list|,
 name|totalPreemptedResourceAllowed
 argument_list|,
