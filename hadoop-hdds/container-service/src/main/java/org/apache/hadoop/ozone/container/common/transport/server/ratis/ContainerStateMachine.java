@@ -1068,9 +1068,6 @@ operator|.
 name|getCreateContainer
 argument_list|()
 operator|.
-name|getContainerData
-argument_list|()
-operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
@@ -1388,9 +1385,6 @@ init|=
 name|requestProto
 operator|.
 name|getCreateContainer
-argument_list|()
-operator|.
-name|getContainerData
 argument_list|()
 operator|.
 name|getContainerID

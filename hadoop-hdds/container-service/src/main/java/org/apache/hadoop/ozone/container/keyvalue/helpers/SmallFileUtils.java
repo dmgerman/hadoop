@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.helpers
+DECL|package|org.apache.hadoop.ozone.container.keyvalue.helpers
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|common
+name|keyvalue
 operator|.
 name|helpers
 package|;
@@ -33,6 +33,66 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ChunkInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ContainerUtils
 import|;
 end_import
 
@@ -73,6 +133,30 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+operator|.
+name|ContainerCommandRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerCommandResponseProto
 import|;
 end_import
 
@@ -81,29 +165,25 @@ comment|/**  * File Utils are helper routines used by putSmallFile and getSmallF
 end_comment
 
 begin_class
-DECL|class|FileUtils
+DECL|class|SmallFileUtils
 specifier|public
 specifier|final
 class|class
-name|FileUtils
+name|SmallFileUtils
 block|{
 comment|/**    * Never Constructed.    */
-DECL|method|FileUtils ()
+DECL|method|SmallFileUtils ()
 specifier|private
-name|FileUtils
+name|SmallFileUtils
 parameter_list|()
 block|{   }
 comment|/**    * Gets a response for the putSmallFile RPC.    * @param msg - ContainerCommandRequestProto    * @return - ContainerCommandResponseProto    */
+DECL|method|getPutFileResponseSuccess ( ContainerCommandRequestProto msg)
 specifier|public
 specifier|static
-name|ContainerProtos
-operator|.
 name|ContainerCommandResponseProto
-DECL|method|getPutFileResponse (ContainerProtos.ContainerCommandRequestProto msg)
-name|getPutFileResponse
+name|getPutFileResponseSuccess
 parameter_list|(
-name|ContainerProtos
-operator|.
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
@@ -122,8 +202,6 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|ContainerProtos
-operator|.
 name|ContainerCommandResponseProto
 operator|.
 name|Builder
@@ -131,17 +209,9 @@ name|builder
 init|=
 name|ContainerUtils
 operator|.
-name|getContainerResponse
+name|getSuccessResponseBuilder
 argument_list|(
 name|msg
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|SUCCESS
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 name|builder
@@ -170,16 +240,12 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Gets a response to the read small file call.    * @param msg - Msg    * @param data  - Data    * @param info  - Info    * @return    Response.    */
+DECL|method|getGetSmallFileResponseSuccess ( ContainerCommandRequestProto msg, byte[] data, ChunkInfo info)
 specifier|public
 specifier|static
-name|ContainerProtos
-operator|.
 name|ContainerCommandResponseProto
-DECL|method|getGetSmallFileResponse (ContainerProtos.ContainerCommandRequestProto msg, byte[] data, ChunkInfo info)
-name|getGetSmallFileResponse
+name|getGetSmallFileResponseSuccess
 parameter_list|(
-name|ContainerProtos
-operator|.
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|,
@@ -246,9 +312,6 @@ operator|.
 name|getKey
 argument_list|()
 operator|.
-name|getKeyData
-argument_list|()
-operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
@@ -277,8 +340,6 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerProtos
-operator|.
 name|ContainerCommandResponseProto
 operator|.
 name|Builder
@@ -286,17 +347,9 @@ name|builder
 init|=
 name|ContainerUtils
 operator|.
-name|getContainerResponse
+name|getSuccessResponseBuilder
 argument_list|(
 name|msg
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|SUCCESS
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 name|builder

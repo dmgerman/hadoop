@@ -62,6 +62,26 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|HddsProtos
@@ -375,16 +395,30 @@ else|else
 block|{
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
 literal|"Container already exists with container Id {}"
 argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Container already exists with "
+operator|+
+literal|"container Id "
+operator|+
+name|containerId
+argument_list|,
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_EXISTS
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Returns the Container with specified containerId.    * @param containerId    * @return Container    */

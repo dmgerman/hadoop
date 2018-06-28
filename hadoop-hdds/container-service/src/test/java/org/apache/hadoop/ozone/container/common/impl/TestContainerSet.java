@@ -142,6 +142,38 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|keyvalue
+operator|.
+name|KeyValueContainerData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -246,6 +278,18 @@ name|assertTrue
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class used to test ContainerSet operations.  */
 end_comment
@@ -340,6 +384,8 @@ argument_list|(
 name|result
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|result
 operator|=
 name|containerSet
@@ -349,11 +395,32 @@ argument_list|(
 name|keyValueContainer
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|fail
 argument_list|(
-name|result
+literal|"Adding same container ID twice should fail."
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|StorageContainerException
+name|ex
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Container already exists with"
+operator|+
+literal|" container Id "
+operator|+
+name|containerId
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 comment|//getContainer
 name|KeyValueContainer
 name|container

@@ -887,6 +887,20 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|int
+name|chunksCount
+init|=
+name|putKeyRequest
+operator|.
+name|getPutKey
+argument_list|()
+operator|.
+name|getKeyData
+argument_list|()
+operator|.
+name|getChunksCount
+argument_list|()
+decl_stmt|;
 name|ContainerTestHelper
 operator|.
 name|verifyGetKey
@@ -894,6 +908,8 @@ argument_list|(
 name|request
 argument_list|,
 name|response
+argument_list|,
+name|chunksCount
 argument_list|)
 expr_stmt|;
 comment|// Delete Key
@@ -1858,6 +1874,20 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|int
+name|chunksCount
+init|=
+name|putKeyRequest
+operator|.
+name|getPutKey
+argument_list|()
+operator|.
+name|getKeyData
+argument_list|()
+operator|.
+name|getChunksCount
+argument_list|()
+decl_stmt|;
 name|ContainerTestHelper
 operator|.
 name|verifyGetKey
@@ -1865,6 +1895,8 @@ argument_list|(
 name|request
 argument_list|,
 name|response
+argument_list|,
+name|chunksCount
 argument_list|)
 expr_stmt|;
 comment|// Delete Key must fail on a closed container.

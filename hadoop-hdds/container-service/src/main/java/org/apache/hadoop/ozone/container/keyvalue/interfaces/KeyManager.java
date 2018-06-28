@@ -144,16 +144,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param data - Key Data.    * @return Key Data.    * @throws IOException    */
-DECL|method|getKey (Container container, KeyData data)
+comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the Key.    * @return Key Data.    * @throws IOException    */
+DECL|method|getKey (Container container, BlockID blockID)
 name|KeyData
 name|getKey
 parameter_list|(
 name|Container
 name|container
 parameter_list|,
-name|KeyData
-name|data
+name|BlockID
+name|blockID
 parameter_list|)
 throws|throws
 name|IOException

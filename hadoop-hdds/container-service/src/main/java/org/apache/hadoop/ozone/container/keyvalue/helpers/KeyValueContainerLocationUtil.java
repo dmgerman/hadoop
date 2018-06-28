@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.keyvalue
+DECL|package|org.apache.hadoop.ozone.container.keyvalue.helpers
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|container
 operator|.
 name|keyvalue
+operator|.
+name|helpers
 package|;
 end_package
 

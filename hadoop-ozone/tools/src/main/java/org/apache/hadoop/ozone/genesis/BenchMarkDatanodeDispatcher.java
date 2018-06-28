@@ -1325,13 +1325,6 @@ argument_list|()
 decl_stmt|;
 name|createRequest
 operator|.
-name|setContainerData
-argument_list|(
-name|ContainerData
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
 name|setContainerID
 argument_list|(
 name|containerID
@@ -1339,7 +1332,6 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|ContainerCommandRequestProto
 operator|.
@@ -1719,16 +1711,13 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getGetKeyCommand ( BlockID blockID, String chunkKey)
+DECL|method|getGetKeyCommand (BlockID blockID)
 specifier|private
 name|ContainerCommandRequestProto
 name|getGetKeyCommand
 parameter_list|(
 name|BlockID
 name|blockID
-parameter_list|,
-name|String
-name|chunkKey
 parameter_list|)
 block|{
 name|GetKeyRequestProto
@@ -1741,14 +1730,12 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setKeyData
-argument_list|(
-name|getKeyData
+name|setBlockID
 argument_list|(
 name|blockID
-argument_list|,
-name|chunkKey
-argument_list|)
+operator|.
+name|getDatanodeBlockIDProtobuf
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ContainerCommandRequestProto
@@ -2022,12 +2009,6 @@ init|=
 name|getRandomBlockID
 argument_list|()
 decl_stmt|;
-name|String
-name|chunkKey
-init|=
-name|getNewChunkToWrite
-argument_list|()
-decl_stmt|;
 name|bmdd
 operator|.
 name|dispatcher
@@ -2037,8 +2018,6 @@ argument_list|(
 name|getGetKeyCommand
 argument_list|(
 name|blockID
-argument_list|,
-name|chunkKey
 argument_list|)
 argument_list|)
 expr_stmt|;

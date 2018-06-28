@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.keyvalue
+DECL|package|org.apache.hadoop.ozone.container.keyvalue.impl
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|container
 operator|.
 name|keyvalue
+operator|.
+name|impl
 package|;
 end_package
 
@@ -134,6 +136,24 @@ name|container
 operator|.
 name|keyvalue
 operator|.
+name|KeyValueContainerData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|keyvalue
+operator|.
 name|helpers
 operator|.
 name|KeyUtils
@@ -157,26 +177,6 @@ operator|.
 name|helpers
 operator|.
 name|KeyData
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|impl
-operator|.
-name|KeyValueContainerData
 import|;
 end_import
 
@@ -492,8 +492,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param data - Key Data.    * @return Key Data.    * @throws IOException    */
-DECL|method|getKey (Container container, KeyData data)
+comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the key.    * @return Key Data.    * @throws IOException    */
+DECL|method|getKey (Container container, BlockID blockID)
 specifier|public
 name|KeyData
 name|getKey
@@ -501,8 +501,8 @@ parameter_list|(
 name|Container
 name|container
 parameter_list|,
-name|KeyData
-name|data
+name|BlockID
+name|blockID
 parameter_list|)
 throws|throws
 name|IOException
@@ -511,23 +511,21 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|data
+name|blockID
 argument_list|,
-literal|"Key data cannot be null"
+literal|"BlockID cannot be null in GetKet request"
 argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|data
+name|blockID
 operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-literal|"Container name cannot"
-operator|+
-literal|" be null"
+literal|"Container name cannot be null"
 argument_list|)
 expr_stmt|;
 name|KeyValueContainerData
@@ -576,7 +574,7 @@ name|Longs
 operator|.
 name|toByteArray
 argument_list|(
-name|data
+name|blockID
 operator|.
 name|getLocalID
 argument_list|()

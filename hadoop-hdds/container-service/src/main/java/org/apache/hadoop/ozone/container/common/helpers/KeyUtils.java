@@ -431,7 +431,7 @@ block|{
 return|return
 name|ContainerUtils
 operator|.
-name|getContainerResponse
+name|getSuccessResponse
 argument_list|(
 name|msg
 argument_list|)
@@ -487,17 +487,9 @@ name|builder
 init|=
 name|ContainerUtils
 operator|.
-name|getContainerResponse
+name|getSuccessResponseBuilder
 argument_list|(
 name|msg
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|SUCCESS
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 name|builder

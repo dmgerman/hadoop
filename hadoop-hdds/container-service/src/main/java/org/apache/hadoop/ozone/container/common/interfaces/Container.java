@@ -32,6 +32,48 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerLifeCycleState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -177,6 +219,12 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 function_decl|;
+comment|/**    * Get the Container Lifecycle state.    *    * @return ContainerLifeCycleState - Container State.    * @throws StorageContainerException    */
+DECL|method|getContainerState ()
+name|ContainerLifeCycleState
+name|getContainerState
+parameter_list|()
+function_decl|;
 comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    *    * @throws StorageContainerException    */
 DECL|method|close ()
 name|void
@@ -184,6 +232,14 @@ name|close
 parameter_list|()
 throws|throws
 name|StorageContainerException
+function_decl|;
+comment|/**    * Return the ContainerType for the container.    */
+DECL|method|getContainerType ()
+name|ContainerProtos
+operator|.
+name|ContainerType
+name|getContainerType
+parameter_list|()
 function_decl|;
 block|}
 end_interface
