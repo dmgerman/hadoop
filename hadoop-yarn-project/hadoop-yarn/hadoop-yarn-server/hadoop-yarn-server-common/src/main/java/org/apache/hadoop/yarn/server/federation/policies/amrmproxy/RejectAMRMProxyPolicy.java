@@ -30,16 +30,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -51,16 +41,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
 import|;
 end_import
 
@@ -234,19 +214,6 @@ name|RejectAMRMProxyPolicy
 extends|extends
 name|AbstractAMRMProxyPolicy
 block|{
-DECL|field|knownClusterIds
-specifier|private
-name|Set
-argument_list|<
-name|SubClusterId
-argument_list|>
-name|knownClusterIds
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|reinitialize (FederationPolicyInitializationContext policyContext)
