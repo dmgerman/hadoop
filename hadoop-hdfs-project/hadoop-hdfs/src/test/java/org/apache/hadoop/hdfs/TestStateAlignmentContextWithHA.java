@@ -493,7 +493,7 @@ specifier|static
 specifier|final
 name|List
 argument_list|<
-name|ClientGCIContext
+name|ClientGSIContext
 argument_list|>
 name|AC_LIST
 init|=
@@ -520,7 +520,7 @@ decl_stmt|;
 DECL|field|spy
 specifier|private
 specifier|static
-name|ClientGCIContext
+name|ClientGSIContext
 name|spy
 decl_stmt|;
 DECL|field|dfs
@@ -557,7 +557,7 @@ argument_list|>
 block|{
 DECL|field|alignmentContext
 specifier|private
-name|ClientGCIContext
+name|ClientGSIContext
 name|alignmentContext
 decl_stmt|;
 DECL|method|AlignmentContextProxyProvider ( Configuration conf, URI uri, Class<T> xface, HAProxyFactory<T> factory)
@@ -610,7 +610,7 @@ condition|?
 name|spy
 else|:
 operator|new
-name|ClientGCIContext
+name|ClientGSIContext
 argument_list|()
 operator|)
 expr_stmt|;
@@ -640,7 +640,7 @@ comment|// AbstractNNFailoverProxyProvider
 DECL|method|getAlignmentContext ()
 specifier|public
 specifier|synchronized
-name|ClientGCIContext
+name|ClientGSIContext
 name|getAlignmentContext
 parameter_list|()
 block|{
@@ -666,7 +666,7 @@ argument_list|>
 block|{
 DECL|field|alignmentContext
 specifier|private
-name|ClientGCIContext
+name|ClientGSIContext
 name|alignmentContext
 decl_stmt|;
 DECL|method|SpyConfiguredContextProxyProvider ( Configuration conf, URI uri, Class<T> xface, HAProxyFactory<T> factory)
@@ -718,7 +718,7 @@ condition|?
 name|spy
 else|:
 operator|new
-name|ClientGCIContext
+name|ClientGSIContext
 argument_list|()
 operator|)
 expr_stmt|;
@@ -1070,7 +1070,7 @@ name|confCopy
 argument_list|)
 init|)
 block|{
-name|ClientGCIContext
+name|ClientGSIContext
 name|clientState
 init|=
 name|getContext
@@ -1343,7 +1343,7 @@ name|CONF
 argument_list|)
 init|)
 block|{
-name|ClientGCIContext
+name|ClientGSIContext
 name|clientState
 init|=
 name|getContext
@@ -1405,14 +1405,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ClientGCIContext
+name|ClientGSIContext
 name|alignmentContext
 init|=
 operator|new
-name|ClientGCIContext
+name|ClientGSIContext
 argument_list|()
 decl_stmt|;
-name|ClientGCIContext
+name|ClientGSIContext
 name|spiedAlignContext
 init|=
 name|Mockito
@@ -1662,14 +1662,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ClientGCIContext
+name|ClientGSIContext
 name|alignmentContext
 init|=
 operator|new
-name|ClientGCIContext
+name|ClientGSIContext
 argument_list|()
 decl_stmt|;
-name|ClientGCIContext
+name|ClientGSIContext
 name|spiedAlignContext
 init|=
 name|Mockito
@@ -2148,7 +2148,7 @@ block|}
 block|}
 DECL|method|getContext (int clientCreationIndex)
 specifier|private
-name|ClientGCIContext
+name|ClientGSIContext
 name|getContext
 parameter_list|(
 name|int

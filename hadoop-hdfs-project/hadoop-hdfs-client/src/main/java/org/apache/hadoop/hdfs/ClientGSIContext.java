@@ -109,7 +109,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the client side implementation responsible for receiving  * state alignment info from server(s).  */
+comment|/**  * Global State Id context for the client.  *<p/>  * This is the client side implementation responsible for receiving  * state alignment info from server(s).  */
 end_comment
 
 begin_class
@@ -121,9 +121,9 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Stable
-DECL|class|ClientGCIContext
+DECL|class|ClientGSIContext
 class|class
-name|ClientGCIContext
+name|ClientGSIContext
 implements|implements
 name|AlignmentContext
 block|{
