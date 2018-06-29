@@ -1274,7 +1274,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER
 argument_list|,
-literal|","
+literal|"\t"
 argument_list|)
 expr_stmt|;
 name|conf
