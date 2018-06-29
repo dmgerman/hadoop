@@ -1061,6 +1061,13 @@ argument_list|(
 name|dbFile
 argument_list|)
 expr_stmt|;
+name|containerData
+operator|.
+name|setVolume
+argument_list|(
+name|containerVolume
+argument_list|)
+expr_stmt|;
 comment|// Create .container file and .chksm file
 name|createContainerFile
 argument_list|(

@@ -421,10 +421,10 @@ specifier|private
 name|KeyData
 name|keyData
 decl_stmt|;
-DECL|field|keyValueContainerManager
+DECL|field|keyManager
 specifier|private
 name|KeyManagerImpl
-name|keyValueContainerManager
+name|keyManager
 decl_stmt|;
 DECL|field|blockID
 specifier|private
@@ -655,7 +655,7 @@ name|chunkList
 argument_list|)
 expr_stmt|;
 comment|// Create KeyValueContainerManager
-name|keyValueContainerManager
+name|keyManager
 operator|=
 operator|new
 name|KeyManagerImpl
@@ -675,7 +675,7 @@ throws|throws
 name|Exception
 block|{
 comment|//Put Key
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|putKey
 argument_list|(
@@ -688,7 +688,7 @@ comment|//Get Key
 name|KeyData
 name|fromGetKeyData
 init|=
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|getKey
 argument_list|(
@@ -778,7 +778,7 @@ block|{
 try|try
 block|{
 comment|//Put Key
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|putKey
 argument_list|(
@@ -788,7 +788,7 @@ name|keyData
 argument_list|)
 expr_stmt|;
 comment|//Delete Key
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|deleteKey
 argument_list|(
@@ -797,6 +797,39 @@ argument_list|,
 name|blockID
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|keyManager
+operator|.
+name|getKey
+argument_list|(
+name|keyValueContainer
+argument_list|,
+name|blockID
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"testDeleteKey"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|StorageContainerException
+name|ex
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Unable to find the key"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -823,7 +856,7 @@ name|Exception
 block|{
 try|try
 block|{
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|putKey
 argument_list|(
@@ -838,7 +871,7 @@ name|KeyData
 argument_list|>
 name|listKeyData
 init|=
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|listKey
 argument_list|(
@@ -970,7 +1003,7 @@ argument_list|(
 name|chunkList
 argument_list|)
 expr_stmt|;
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|putKey
 argument_list|(
@@ -982,7 +1015,7 @@ expr_stmt|;
 block|}
 name|listKeyData
 operator|=
-name|keyValueContainerManager
+name|keyManager
 operator|.
 name|listKey
 argument_list|(
@@ -1034,7 +1067,21 @@ name|Exception
 block|{
 try|try
 block|{
-name|keyValueContainerManager
+name|keyData
+operator|=
+operator|new
+name|KeyData
+argument_list|(
+operator|new
+name|BlockID
+argument_list|(
+literal|1L
+argument_list|,
+literal|2L
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|keyManager
 operator|.
 name|getKey
 argument_list|(

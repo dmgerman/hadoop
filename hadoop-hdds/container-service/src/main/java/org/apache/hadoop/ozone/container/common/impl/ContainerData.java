@@ -88,6 +88,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|volume
+operator|.
+name|HddsVolume
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -221,6 +241,11 @@ specifier|private
 specifier|final
 name|AtomicLong
 name|bytesUsed
+decl_stmt|;
+DECL|field|volume
+specifier|private
+name|HddsVolume
+name|volume
 decl_stmt|;
 comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    */
 DECL|method|ContainerData (ContainerType type, long containerId)
@@ -855,6 +880,34 @@ literal|1L
 operator|*
 name|reclaimed
 argument_list|)
+return|;
+block|}
+comment|/**    * Set the Volume for the Container.    * This should be called only from the createContainer.    * @param hddsVolume    */
+DECL|method|setVolume (HddsVolume hddsVolume)
+specifier|public
+name|void
+name|setVolume
+parameter_list|(
+name|HddsVolume
+name|hddsVolume
+parameter_list|)
+block|{
+name|this
+operator|.
+name|volume
+operator|=
+name|hddsVolume
+expr_stmt|;
+block|}
+comment|/**    * Returns the volume of the Container.    * @return HddsVolume    */
+DECL|method|getVolume ()
+specifier|public
+name|HddsVolume
+name|getVolume
+parameter_list|()
+block|{
+return|return
+name|volume
 return|;
 block|}
 block|}

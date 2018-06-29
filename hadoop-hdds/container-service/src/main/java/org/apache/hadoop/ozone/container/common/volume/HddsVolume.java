@@ -321,6 +321,12 @@ specifier|private
 name|VolumeState
 name|state
 decl_stmt|;
+DECL|field|volumeIOStats
+specifier|private
+specifier|final
+name|VolumeIOStats
+name|volumeIOStats
+decl_stmt|;
 comment|// VERSION file properties
 DECL|field|storageID
 specifier|private
@@ -611,6 +617,14 @@ operator|=
 name|b
 operator|.
 name|datanodeUuid
+expr_stmt|;
+name|this
+operator|.
+name|volumeIOStats
+operator|=
+operator|new
+name|VolumeIOStats
+argument_list|()
 expr_stmt|;
 name|VolumeInfo
 operator|.
@@ -1360,6 +1374,16 @@ name|VolumeState
 operator|.
 name|FAILED
 operator|)
+return|;
+block|}
+DECL|method|getVolumeIOStats ()
+specifier|public
+name|VolumeIOStats
+name|getVolumeIOStats
+parameter_list|()
+block|{
+return|return
+name|volumeIOStats
 return|;
 block|}
 DECL|method|failVolume ()
