@@ -1294,6 +1294,17 @@ specifier|private
 name|NodeStatusUpdater
 name|nodeStatusUpdater
 decl_stmt|;
+DECL|field|resyncingWithRM
+specifier|private
+name|AtomicBoolean
+name|resyncingWithRM
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
 DECL|field|nodeResourceMonitor
 specifier|private
 name|NodeResourceMonitor
@@ -2579,11 +2590,8 @@ name|this
 operator|.
 name|dispatcher
 operator|=
-operator|new
-name|AsyncDispatcher
-argument_list|(
-literal|"NM Event dispatcher"
-argument_list|)
+name|createNMDispatcher
+argument_list|()
 expr_stmt|;
 name|nodeHealthChecker
 operator|=
@@ -3114,7 +3122,26 @@ name|void
 name|resyncWithRM
 parameter_list|()
 block|{
-comment|//we do not want to block dispatcher thread here
+comment|// Create a thread for resync because we do not want to block dispatcher
+comment|// thread here. Also use locking to make sure only one thread is running at
+comment|// a time.
+if|if
+condition|(
+name|this
+operator|.
+name|resyncingWithRM
+operator|.
+name|getAndSet
+argument_list|(
+literal|true
+argument_list|)
+condition|)
+block|{
+comment|// Some other thread is already created for resyncing, do nothing
+block|}
+else|else
+block|{
+comment|// We have got the lock, create a new thread
 operator|new
 name|Thread
 argument_list|()
@@ -3218,12 +3245,24 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+comment|// Release lock
+name|resyncingWithRM
+operator|.
+name|set
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Reregisters all collectors known by this node to the RM. This method is    * called when the RM needs to resync with the node.    */
 DECL|method|reregisterCollectors ()
@@ -4730,6 +4769,21 @@ parameter_list|()
 block|{
 return|return
 name|containerManager
+return|;
+block|}
+comment|/**    * Unit test friendly.    */
+DECL|method|createNMDispatcher ()
+specifier|protected
+name|AsyncDispatcher
+name|createNMDispatcher
+parameter_list|()
+block|{
+return|return
+operator|new
+name|AsyncDispatcher
+argument_list|(
+literal|"NM Event dispatcher"
+argument_list|)
 return|;
 block|}
 comment|//For testing
