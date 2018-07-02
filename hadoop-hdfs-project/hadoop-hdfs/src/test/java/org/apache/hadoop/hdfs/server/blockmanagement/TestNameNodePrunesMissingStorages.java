@@ -1849,16 +1849,22 @@ name|out
 operator|=
 literal|null
 expr_stmt|;
+comment|// Delete old version file
+name|success
+operator|=
+name|versionFile
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+name|success
+operator|&=
 name|newVersionFile
 operator|.
 name|renameTo
 argument_list|(
 name|versionFile
 argument_list|)
-expr_stmt|;
-name|success
-operator|=
-literal|true
 expr_stmt|;
 block|}
 finally|finally
