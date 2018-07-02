@@ -7731,11 +7731,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|corruptionMap
-operator|.
-name|isEmpty
-argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
 for|for

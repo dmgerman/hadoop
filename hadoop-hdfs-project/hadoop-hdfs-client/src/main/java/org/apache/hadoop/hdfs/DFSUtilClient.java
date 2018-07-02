@@ -4079,21 +4079,6 @@ argument_list|>
 argument_list|>
 name|corruptionMap
 decl_stmt|;
-DECL|method|CorruptedBlocks ()
-specifier|public
-name|CorruptedBlocks
-parameter_list|()
-block|{
-name|this
-operator|.
-name|corruptionMap
-operator|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-expr_stmt|;
-block|}
 comment|/**      * Indicate a block replica on the specified datanode is corrupted      */
 DECL|method|addCorruptedBlock (ExtendedBlock blk, DatanodeInfo node)
 specifier|public
@@ -4107,6 +4092,21 @@ name|DatanodeInfo
 name|node
 parameter_list|)
 block|{
+if|if
+condition|(
+name|corruptionMap
+operator|==
+literal|null
+condition|)
+block|{
+name|corruptionMap
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
 name|Set
 argument_list|<
 name|DatanodeInfo
@@ -4164,7 +4164,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * @return the map that contains all the corruption entries.      */
+comment|/**      * @return the map that contains all the corruption entries, or null if      * there were no corrupted entries      */
 DECL|method|getCorruptionMap ()
 specifier|public
 name|Map

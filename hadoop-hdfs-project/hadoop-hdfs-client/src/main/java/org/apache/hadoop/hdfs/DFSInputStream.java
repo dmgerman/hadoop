@@ -6880,9 +6880,8 @@ decl_stmt|;
 if|if
 condition|(
 name|corruptedBlockMap
-operator|.
-name|isEmpty
-argument_list|()
+operator|==
+literal|null
 condition|)
 block|{
 return|return;
