@@ -6009,7 +6009,7 @@ name|assertResponseStatusCode
 argument_list|(
 name|Status
 operator|.
-name|NOT_FOUND
+name|FORBIDDEN
 argument_list|,
 name|response
 operator|.
