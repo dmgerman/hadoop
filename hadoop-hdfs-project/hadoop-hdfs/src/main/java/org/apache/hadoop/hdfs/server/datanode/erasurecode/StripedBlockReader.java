@@ -715,11 +715,6 @@ operator|.
 name|getCachingStrategy
 argument_list|()
 argument_list|,
-name|datanode
-operator|.
-name|getTracer
-argument_list|()
-argument_list|,
 operator|-
 literal|1
 argument_list|)

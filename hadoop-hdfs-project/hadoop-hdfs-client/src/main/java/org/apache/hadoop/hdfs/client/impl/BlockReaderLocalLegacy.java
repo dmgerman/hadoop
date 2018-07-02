@@ -474,34 +474,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|core
-operator|.
-name|TraceScope
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|core
-operator|.
-name|Tracer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -961,14 +933,8 @@ specifier|private
 name|long
 name|blockId
 decl_stmt|;
-DECL|field|tracer
-specifier|private
-specifier|final
-name|Tracer
-name|tracer
-decl_stmt|;
 comment|/**    * The only way this object can be instantiated.    */
-DECL|method|newBlockReader (DfsClientConf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length, StorageType storageType, Tracer tracer)
+DECL|method|newBlockReader (DfsClientConf conf, UserGroupInformation userGroupInformation, Configuration configuration, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, long startOffset, long length, StorageType storageType)
 specifier|static
 name|BlockReaderLocalLegacy
 name|newBlockReader
@@ -1005,9 +971,6 @@ name|length
 parameter_list|,
 name|StorageType
 name|storageType
-parameter_list|,
-name|Tracer
-name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1254,8 +1217,6 @@ argument_list|,
 name|firstChunkOffset
 argument_list|,
 name|checksumIn
-argument_list|,
-name|tracer
 argument_list|)
 expr_stmt|;
 block|}
@@ -1275,8 +1236,6 @@ argument_list|,
 name|startOffset
 argument_list|,
 name|dataIn
-argument_list|,
-name|tracer
 argument_list|)
 expr_stmt|;
 block|}
@@ -1608,7 +1567,7 @@ operator|/
 name|bytesPerChecksum
 return|;
 block|}
-DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, long startOffset, FileInputStream dataIn, Tracer tracer)
+DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, long startOffset, FileInputStream dataIn)
 specifier|private
 name|BlockReaderLocalLegacy
 parameter_list|(
@@ -1626,9 +1585,6 @@ name|startOffset
 parameter_list|,
 name|FileInputStream
 name|dataIn
-parameter_list|,
-name|Tracer
-name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1663,12 +1619,10 @@ argument_list|,
 name|startOffset
 argument_list|,
 literal|null
-argument_list|,
-name|tracer
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, long startOffset, DataChecksum checksum, boolean verifyChecksum, FileInputStream dataIn, long firstChunkOffset, FileInputStream checksumIn, Tracer tracer)
+DECL|method|BlockReaderLocalLegacy (ShortCircuitConf conf, String hdfsfile, ExtendedBlock block, long startOffset, DataChecksum checksum, boolean verifyChecksum, FileInputStream dataIn, long firstChunkOffset, FileInputStream checksumIn)
 specifier|private
 name|BlockReaderLocalLegacy
 parameter_list|(
@@ -1698,9 +1652,6 @@ name|firstChunkOffset
 parameter_list|,
 name|FileInputStream
 name|checksumIn
-parameter_list|,
-name|Tracer
-name|tracer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1910,12 +1861,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|this
-operator|.
-name|tracer
-operator|=
-name|tracer
-expr_stmt|;
 block|}
 comment|/**    * Reads bytes into a buffer until EOF or the buffer's limit is reached    */
 DECL|method|fillBuffer (FileInputStream stream, ByteBuffer buf)
@@ -1931,23 +1876,6 @@ name|buf
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-try|try
-init|(
-name|TraceScope
-name|ignored
-init|=
-name|tracer
-operator|.
-name|newScope
-argument_list|(
-literal|"BlockReaderLocalLegacy#fillBuffer("
-operator|+
-name|blockId
-operator|+
-literal|")"
-argument_list|)
-init|)
 block|{
 name|int
 name|bytesRead
@@ -2017,7 +1945,6 @@ block|}
 return|return
 name|bytesRead
 return|;
-block|}
 block|}
 comment|/**    * Utility method used by read(ByteBuffer) to partially copy a ByteBuffer into    * another.    */
 DECL|method|writeSlice (ByteBuffer from, ByteBuffer to, int length)
