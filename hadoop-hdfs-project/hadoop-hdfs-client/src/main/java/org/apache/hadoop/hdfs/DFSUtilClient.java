@@ -2430,6 +2430,7 @@ return|;
 block|}
 comment|/**    * Returns the configured address for all NameNodes in the cluster.    * @param conf configuration    * @param defaultAddress default address to return in case key is not found.    * @param keys Set of keys to look for in the order of preference    * @return a map(nameserviceId to map(namenodeId to InetSocketAddress))    */
 DECL|method|getAddresses ( Configuration conf, String defaultAddress, String... keys)
+specifier|public
 specifier|static
 name|Map
 argument_list|<
@@ -2587,6 +2588,7 @@ name|ret
 return|;
 block|}
 DECL|method|getAddressesForNameserviceId ( Configuration conf, String nsId, String defaultValue, String... keys)
+specifier|public
 specifier|static
 name|Map
 argument_list|<

@@ -915,6 +915,7 @@ name|nnId
 expr_stmt|;
 block|}
 DECL|method|getNnId ()
+specifier|public
 name|String
 name|getNnId
 parameter_list|()
