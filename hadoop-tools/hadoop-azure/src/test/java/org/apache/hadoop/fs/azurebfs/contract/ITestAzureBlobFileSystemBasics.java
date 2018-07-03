@@ -78,6 +78,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Before
 import|;
 end_import
@@ -151,7 +161,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// If contract tests are running in parallel, some root level tests in this file will fail
+comment|// If all contract tests are running in parallel, some root level tests in FileSystemContractBaseTest will fail
 comment|// due to the race condition. Hence for this contract test it should be tested in different container
 name|dependencyInjectedContractTest
 operator|=
@@ -188,6 +198,27 @@ operator|.
 name|dependencyInjectedContractTest
 operator|.
 name|getFileSystem
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|testCleanup ()
+specifier|public
+name|void
+name|testCleanup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// This contract test is not using existing container for test,
+comment|// instead it creates its own temp container for test, hence we need to destroy
+comment|// it after the test.
+name|this
+operator|.
+name|dependencyInjectedContractTest
+operator|.
+name|testCleanup
 argument_list|()
 expr_stmt|;
 block|}

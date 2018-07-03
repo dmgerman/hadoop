@@ -2879,13 +2879,16 @@ name|out
 operator|.
 name|println
 argument_list|(
-operator|(
-literal|"Creating test file {} of size: {} "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Creating test file %s of size: %d "
+argument_list|,
 name|TEST_FILE_PATH
-operator|+
+argument_list|,
 name|TEST_FILE_SIZE
-operator|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ContractTestUtils
@@ -2944,9 +2947,14 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Closing stream {}"
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Closing stream %s"
+argument_list|,
 name|outputStream
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ContractTestUtils

@@ -142,26 +142,6 @@ name|fs
 operator|.
 name|azurebfs
 operator|.
-name|contracts
-operator|.
-name|services
-operator|.
-name|ConfigurationService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
 name|constants
 operator|.
 name|AbfsHttpConstants
@@ -282,11 +262,11 @@ specifier|final
 name|String
 name|filesystem
 decl_stmt|;
-DECL|field|configurationService
+DECL|field|abfsConfiguration
 specifier|private
 specifier|final
-name|ConfigurationService
-name|configurationService
+name|AbfsConfiguration
+name|abfsConfiguration
 decl_stmt|;
 DECL|field|userAgent
 specifier|private
@@ -294,7 +274,7 @@ specifier|final
 name|String
 name|userAgent
 decl_stmt|;
-DECL|method|AbfsClient (final URL baseUrl, final SharedKeyCredentials sharedKeyCredentials, final ConfigurationService configurationService, final ExponentialRetryPolicy exponentialRetryPolicy)
+DECL|method|AbfsClient (final URL baseUrl, final SharedKeyCredentials sharedKeyCredentials, final AbfsConfiguration abfsConfiguration, final ExponentialRetryPolicy exponentialRetryPolicy)
 specifier|public
 name|AbfsClient
 parameter_list|(
@@ -307,8 +287,8 @@ name|SharedKeyCredentials
 name|sharedKeyCredentials
 parameter_list|,
 specifier|final
-name|ConfigurationService
-name|configurationService
+name|AbfsConfiguration
+name|abfsConfiguration
 parameter_list|,
 specifier|final
 name|ExponentialRetryPolicy
@@ -357,9 +337,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|configurationService
+name|abfsConfiguration
 operator|=
-name|configurationService
+name|abfsConfiguration
 expr_stmt|;
 name|this
 operator|.

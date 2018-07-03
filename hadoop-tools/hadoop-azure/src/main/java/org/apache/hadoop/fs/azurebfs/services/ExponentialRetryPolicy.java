@@ -40,8 +40,13 @@ name|HttpURLConnection
 import|;
 end_import
 
+begin_comment
+comment|/**  * Retry policy used by AbfsClient.  * */
+end_comment
+
 begin_class
 DECL|class|ExponentialRetryPolicy
+specifier|public
 class|class
 name|ExponentialRetryPolicy
 block|{
@@ -152,6 +157,7 @@ name|retryCount
 decl_stmt|;
 comment|/**    * Initializes a new instance of the {@link ExponentialRetryPolicy} class.    */
 DECL|method|ExponentialRetryPolicy ()
+specifier|public
 name|ExponentialRetryPolicy
 parameter_list|()
 block|{
@@ -169,6 +175,7 @@ expr_stmt|;
 block|}
 comment|/**    * Initializes a new instance of the {@link ExponentialRetryPolicy} class.    *    * @param retryCount The maximum number of retry attempts.    * @param minBackoff The minimum backoff time.    * @param maxBackoff The maximum backoff time.    * @param deltaBackoff The value that will be used to calculate a random delta in the exponential delay    *                     between retries.    */
 DECL|method|ExponentialRetryPolicy (final int retryCount, final int minBackoff, final int maxBackoff, final int deltaBackoff)
+specifier|public
 name|ExponentialRetryPolicy
 parameter_list|(
 specifier|final

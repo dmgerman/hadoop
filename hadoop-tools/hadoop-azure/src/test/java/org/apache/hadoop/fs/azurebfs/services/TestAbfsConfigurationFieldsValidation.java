@@ -411,15 +411,15 @@ comment|/**  * Test ConfigurationServiceFieldsValidation.  */
 end_comment
 
 begin_class
-DECL|class|TestConfigurationServiceFieldsValidation
+DECL|class|TestAbfsConfigurationFieldsValidation
 specifier|public
 class|class
-name|TestConfigurationServiceFieldsValidation
+name|TestAbfsConfigurationFieldsValidation
 block|{
-DECL|field|configService
+DECL|field|abfsConfiguration
 specifier|private
-name|ConfigurationServiceImpl
-name|configService
+name|AbfsConfiguration
+name|abfsConfiguration
 decl_stmt|;
 DECL|field|INT_KEY
 specifier|private
@@ -618,9 +618,9 @@ specifier|private
 name|boolean
 name|boolField
 decl_stmt|;
-DECL|method|TestConfigurationServiceFieldsValidation ()
+DECL|method|TestAbfsConfigurationFieldsValidation ()
 specifier|public
-name|TestConfigurationServiceFieldsValidation
+name|TestAbfsConfigurationFieldsValidation
 parameter_list|()
 throws|throws
 name|Exception
@@ -761,10 +761,10 @@ operator|.
 name|encodedAccountKey
 argument_list|)
 expr_stmt|;
-name|configService
+name|abfsConfiguration
 operator|=
 operator|new
-name|ConfigurationServiceImpl
+name|AbfsConfiguration
 argument_list|(
 name|configuration
 argument_list|)
@@ -823,7 +823,7 @@ name|assertEquals
 argument_list|(
 name|TEST_INT
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|validateInt
 argument_list|(
@@ -849,7 +849,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_LONG
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|validateLong
 argument_list|(
@@ -875,7 +875,7 @@ name|assertEquals
 argument_list|(
 literal|"stringValue"
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|validateString
 argument_list|(
@@ -903,7 +903,7 @@ name|this
 operator|.
 name|encodedString
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|validateBase64String
 argument_list|(
@@ -929,7 +929,7 @@ name|assertEquals
 argument_list|(
 literal|true
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|validateBoolean
 argument_list|(
@@ -955,7 +955,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_WRITE_BUFFER_SIZE
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getWriteBufferSize
 argument_list|()
@@ -965,7 +965,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_READ_BUFFER_SIZE
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getReadBufferSize
 argument_list|()
@@ -975,7 +975,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_MIN_BACKOFF_INTERVAL
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getMinBackoffIntervalMilliseconds
 argument_list|()
@@ -985,7 +985,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_MAX_BACKOFF_INTERVAL
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getMaxBackoffIntervalMilliseconds
 argument_list|()
@@ -995,7 +995,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_BACKOFF_INTERVAL
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getBackoffIntervalMilliseconds
 argument_list|()
@@ -1005,7 +1005,7 @@ name|assertEquals
 argument_list|(
 name|DEFAULT_MAX_RETRY_ATTEMPTS
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getMaxIoRetries
 argument_list|()
@@ -1015,7 +1015,7 @@ name|assertEquals
 argument_list|(
 name|MAX_AZURE_BLOCK_SIZE
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getAzureBlockSize
 argument_list|()
@@ -1025,7 +1025,7 @@ name|assertEquals
 argument_list|(
 name|AZURE_BLOCK_LOCATION_HOST_DEFAULT
 argument_list|,
-name|configService
+name|abfsConfiguration
 operator|.
 name|getAzureBlockLocationHost
 argument_list|()
@@ -1045,7 +1045,7 @@ block|{
 name|String
 name|accountKey
 init|=
-name|configService
+name|abfsConfiguration
 operator|.
 name|getStorageAccountKey
 argument_list|(
@@ -1079,7 +1079,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|configService
+name|abfsConfiguration
 operator|.
 name|getStorageAccountKey
 argument_list|(

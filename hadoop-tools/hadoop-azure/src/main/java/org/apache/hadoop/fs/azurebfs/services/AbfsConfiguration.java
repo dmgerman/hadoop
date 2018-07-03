@@ -58,30 +58,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Inject
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Singleton
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -320,26 +296,6 @@ name|fs
 operator|.
 name|azurebfs
 operator|.
-name|contracts
-operator|.
-name|services
-operator|.
-name|ConfigurationService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
 name|diagnostics
 operator|.
 name|Base64StringConfigurationBasicValidator
@@ -418,9 +374,11 @@ name|StringConfigurationBasicValidator
 import|;
 end_import
 
+begin_comment
+comment|/**  * Configuration for Azure Blob FileSystem.  */
+end_comment
+
 begin_class
-annotation|@
-name|Singleton
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -429,11 +387,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|ConfigurationServiceImpl
+DECL|class|AbfsConfiguration
+specifier|public
 class|class
-name|ConfigurationServiceImpl
-implements|implements
-name|ConfigurationService
+name|AbfsConfiguration
 block|{
 DECL|field|configuration
 specifier|private
@@ -783,10 +740,9 @@ name|String
 argument_list|>
 name|storageAccountKeys
 decl_stmt|;
-annotation|@
-name|Inject
-DECL|method|ConfigurationServiceImpl (final Configuration configuration)
-name|ConfigurationServiceImpl
+DECL|method|AbfsConfiguration (final Configuration configuration)
+specifier|public
+name|AbfsConfiguration
 parameter_list|(
 specifier|final
 name|Configuration
@@ -981,8 +937,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|isEmulator ()
 specifier|public
 name|boolean
@@ -1005,8 +959,6 @@ literal|false
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|isSecureMode ()
 specifier|public
 name|boolean
@@ -1019,8 +971,6 @@ operator|.
 name|isSecure
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getStorageAccountKey (final String accountName)
 specifier|public
 name|String
@@ -1068,8 +1018,6 @@ return|return
 name|accountKey
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getConfiguration ()
 specifier|public
 name|Configuration
@@ -1082,8 +1030,6 @@ operator|.
 name|configuration
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getWriteBufferSize ()
 specifier|public
 name|int
@@ -1096,8 +1042,6 @@ operator|.
 name|writeBufferSize
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getReadBufferSize ()
 specifier|public
 name|int
@@ -1110,8 +1054,6 @@ operator|.
 name|readBufferSize
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getMinBackoffIntervalMilliseconds ()
 specifier|public
 name|int
@@ -1124,8 +1066,6 @@ operator|.
 name|minBackoffInterval
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getMaxBackoffIntervalMilliseconds ()
 specifier|public
 name|int
@@ -1138,8 +1078,6 @@ operator|.
 name|maxBackoffInterval
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getBackoffIntervalMilliseconds ()
 specifier|public
 name|int
@@ -1152,8 +1090,6 @@ operator|.
 name|backoffInterval
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getMaxIoRetries ()
 specifier|public
 name|int
@@ -1166,8 +1102,6 @@ operator|.
 name|maxIoRetries
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getAzureBlockSize ()
 specifier|public
 name|long
@@ -1180,8 +1114,6 @@ operator|.
 name|azureBlockSize
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getAzureBlockLocationHost ()
 specifier|public
 name|String
@@ -1194,8 +1126,6 @@ operator|.
 name|azureBlockLocationHost
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getMaxConcurrentWriteThreads ()
 specifier|public
 name|int
@@ -1208,8 +1138,6 @@ operator|.
 name|maxConcurrentWriteThreads
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getMaxConcurrentReadThreads ()
 specifier|public
 name|int
@@ -1222,8 +1150,6 @@ operator|.
 name|maxConcurrentReadThreads
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getTolerateOobAppends ()
 specifier|public
 name|boolean
@@ -1236,8 +1162,6 @@ operator|.
 name|tolerateOobAppends
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getAzureAtomicRenameDirs ()
 specifier|public
 name|String
@@ -1250,8 +1174,6 @@ operator|.
 name|azureAtomicDirs
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getCreateRemoteFileSystemDuringInitialization ()
 specifier|public
 name|boolean
@@ -1264,8 +1186,6 @@ operator|.
 name|createRemoteFileSystemDuringInitialization
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|getReadAheadQueueDepth ()
 specifier|public
 name|int
