@@ -134,6 +134,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -150,17 +160,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -276,13 +276,13 @@ argument_list|(
 name|OPT_CONTAINER_ID
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|getScmClient
 argument_list|()
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|Long
 operator|.
@@ -323,12 +323,10 @@ name|closeContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;

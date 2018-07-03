@@ -481,14 +481,19 @@ argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkArgument
 argument_list|(
 name|info
 operator|.
-name|getPipeline
+name|getReplicationFactor
 argument_list|()
+operator|.
+name|getNumber
+argument_list|()
+operator|>
+literal|0
 argument_list|,
-literal|"Pipeline cannot be null"
+literal|"ExpectedReplicaCount should be greater than 0"
 argument_list|)
 expr_stmt|;
 try|try
@@ -578,10 +583,7 @@ name|insert
 argument_list|(
 name|info
 operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getFactor
+name|getReplicationFactor
 argument_list|()
 argument_list|,
 name|id
@@ -593,10 +595,7 @@ name|insert
 argument_list|(
 name|info
 operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getType
+name|getReplicationType
 argument_list|()
 argument_list|,
 name|id

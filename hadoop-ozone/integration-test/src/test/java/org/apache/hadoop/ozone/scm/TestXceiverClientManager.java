@@ -80,7 +80,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -583,7 +583,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|storageContainerLocationClient
@@ -617,6 +617,9 @@ argument_list|()
 argument_list|,
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -633,7 +636,7 @@ name|getRefcount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|storageContainerLocationClient
@@ -666,6 +669,9 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -696,6 +702,9 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -815,7 +824,7 @@ operator|.
 name|getClientCache
 argument_list|()
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|storageContainerLocationClient
@@ -850,6 +859,9 @@ argument_list|()
 argument_list|,
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -881,7 +893,7 @@ name|getPipeline
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|storageContainerLocationClient
@@ -915,6 +927,9 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -951,6 +966,9 @@ name|getIfPresent
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -985,6 +1003,9 @@ name|client1
 argument_list|,
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1014,6 +1035,9 @@ argument_list|(
 name|client1
 argument_list|,
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1134,7 +1158,7 @@ operator|.
 name|getClientCache
 argument_list|()
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|storageContainerLocationClient
@@ -1167,6 +1191,9 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1203,7 +1230,7 @@ name|getRefcount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|storageContainerLocationClient
@@ -1236,6 +1263,9 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1271,6 +1301,9 @@ operator|.
 name|getIfPresent
 argument_list|(
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1312,6 +1345,9 @@ argument_list|(
 name|client1
 argument_list|,
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

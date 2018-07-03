@@ -72,7 +72,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -557,7 +557,7 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|storageContainerLocationClient
@@ -592,6 +592,9 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -603,6 +606,9 @@ argument_list|(
 name|client
 argument_list|,
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -618,6 +624,9 @@ operator|.
 name|getTestBlockID
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -707,7 +716,7 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|storageContainerLocationClient
@@ -742,6 +751,9 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -753,6 +765,9 @@ argument_list|(
 name|client
 argument_list|,
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -784,6 +799,9 @@ operator|.
 name|getTestBlockID
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -840,7 +858,7 @@ name|nonExistContainerID
 init|=
 literal|8888L
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|storageContainerLocationClient
@@ -875,6 +893,9 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -886,6 +907,9 @@ argument_list|(
 name|client
 argument_list|,
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -901,6 +925,9 @@ operator|.
 name|getTestBlockID
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

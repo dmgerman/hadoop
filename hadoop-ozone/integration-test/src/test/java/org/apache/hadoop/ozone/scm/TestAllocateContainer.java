@@ -24,20 +24,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|RandomStringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|hdds
@@ -50,7 +36,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -129,28 +115,6 @@ operator|.
 name|protocolPB
 operator|.
 name|StorageContainerLocationProtocolClientSideTranslatorPB
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|Pipeline
 import|;
 end_import
 
@@ -379,7 +343,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|storageContainerLocationClient

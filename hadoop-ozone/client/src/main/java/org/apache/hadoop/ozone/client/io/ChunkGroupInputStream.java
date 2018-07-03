@@ -92,15 +92,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
+name|client
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|ContainerInfo
+name|BlockID
 import|;
 end_import
 
@@ -114,9 +108,15 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|client
+name|scm
 operator|.
-name|BlockID
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -1410,12 +1410,12 @@ operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
-name|ContainerInfo
-name|container
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|storageContainerLocationClient
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|containerID
 argument_list|)
@@ -1427,7 +1427,7 @@ name|xceiverClientManager
 operator|.
 name|acquireClient
 argument_list|(
-name|container
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()

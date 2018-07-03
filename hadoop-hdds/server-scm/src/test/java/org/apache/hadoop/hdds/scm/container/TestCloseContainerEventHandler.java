@@ -100,7 +100,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -647,11 +647,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Container with id : "
-operator|+
-name|id
-operator|+
-literal|" does not exist"
+literal|"Failed to update the container state"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -682,8 +678,8 @@ operator|.
 name|LOG
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -710,7 +706,10 @@ init|=
 operator|new
 name|ContainerID
 argument_list|(
-name|info
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -719,7 +718,7 @@ decl_stmt|;
 name|DatanodeDetails
 name|datanode
 init|=
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -831,7 +830,10 @@ argument_list|,
 operator|new
 name|ContainerID
 argument_list|(
-name|info
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -912,8 +914,8 @@ operator|.
 name|LOG
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -940,7 +942,10 @@ init|=
 operator|new
 name|ContainerID
 argument_list|(
-name|info
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -984,7 +989,7 @@ control|(
 name|DatanodeDetails
 name|details
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -1018,7 +1023,7 @@ control|(
 name|DatanodeDetails
 name|details
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -1104,14 +1109,7 @@ name|CloseContainerEventHandler
 operator|.
 name|CLOSE_CONTAINER_EVENT
 argument_list|,
-operator|new
-name|ContainerID
-argument_list|(
-name|info
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
+name|id
 argument_list|)
 expr_stmt|;
 name|eventQueue
@@ -1131,7 +1129,7 @@ control|(
 name|DatanodeDetails
 name|details
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()

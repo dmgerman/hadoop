@@ -146,7 +146,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -916,8 +916,8 @@ name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerInfo
-name|containerInfo
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|containerManager
 operator|.
@@ -946,7 +946,7 @@ operator|.
 name|getNumber
 argument_list|()
 argument_list|,
-name|containerInfo
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()

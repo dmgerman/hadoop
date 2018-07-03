@@ -132,7 +132,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -1213,8 +1213,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ContainerInfo
-name|container
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|cluster
 operator|.
@@ -1224,7 +1224,7 @@ operator|.
 name|getClientProtocolServer
 argument_list|()
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|containerID
 argument_list|)
@@ -1232,7 +1232,7 @@ decl_stmt|;
 name|DatanodeDetails
 name|leadDN
 init|=
-name|container
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()

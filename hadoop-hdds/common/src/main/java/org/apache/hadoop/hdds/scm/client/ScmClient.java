@@ -52,6 +52,28 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -164,7 +186,7 @@ name|ScmClient
 block|{
 comment|/**    * Creates a Container on SCM and returns the pipeline.    * @return ContainerInfo    * @throws IOException    */
 DECL|method|createContainer (String owner)
-name|ContainerInfo
+name|ContainerWithPipeline
 name|createContainer
 parameter_list|(
 name|String
@@ -177,6 +199,17 @@ comment|/**    * Gets a container by Name -- Throws if the container does not ex
 DECL|method|getContainer (long containerId)
 name|ContainerInfo
 name|getContainer
+parameter_list|(
+name|long
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets a container by Name -- Throws if the container does not exist.    * @param containerId - Container ID    * @return ContainerWithPipeline    * @throws IOException    */
+DECL|method|getContainerWithPipeline (long containerId)
+name|ContainerWithPipeline
+name|getContainerWithPipeline
 parameter_list|(
 name|long
 name|containerId
@@ -198,6 +231,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Close a container.    *    * @param containerId - ID of the container.    * @throws IOException    */
+DECL|method|closeContainer (long containerId)
+name|void
+name|closeContainer
+parameter_list|(
+name|long
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Deletes an existing container.    * @param containerId - ID of the container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
 DECL|method|deleteContainer (long containerId, Pipeline pipeline, boolean force)
 name|void
@@ -208,6 +252,20 @@ name|containerId
 parameter_list|,
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|boolean
+name|force
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deletes an existing container.    * @param containerId - ID of the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
+DECL|method|deleteContainer (long containerId, boolean force)
+name|void
+name|deleteContainer
+parameter_list|(
+name|long
+name|containerId
 parameter_list|,
 name|boolean
 name|force
@@ -246,6 +304,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Read meta data from an existing container.    * @param containerID - ID of the container.    * @return ContainerInfo    * @throws IOException    */
+DECL|method|readContainer (long containerID)
+name|ContainerData
+name|readContainer
+parameter_list|(
+name|long
+name|containerID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Gets the container size -- Computed by SCM from Container Reports.    * @param containerID - ID of the container.    * @return number of bytes used by this container.    * @throws IOException    */
 DECL|method|getContainerSize (long containerID)
 name|long
@@ -259,7 +328,7 @@ name|IOException
 function_decl|;
 comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param type - Replication Type.    * @param replicationFactor - Replication Factor    * @return ContainerInfo    * @throws IOException - in case of error.    */
 DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
-name|ContainerInfo
+name|ContainerWithPipeline
 name|createContainer
 parameter_list|(
 name|HddsProtos

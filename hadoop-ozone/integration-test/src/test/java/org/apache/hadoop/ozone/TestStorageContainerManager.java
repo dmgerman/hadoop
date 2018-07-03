@@ -86,7 +86,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -929,7 +929,7 @@ block|}
 block|}
 try|try
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|mockClientServer
@@ -999,7 +999,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container3
 init|=
 name|mockClientServer

@@ -54,6 +54,28 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -160,7 +182,7 @@ name|StorageContainerLocationProtocol
 block|{
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
 DECL|method|allocateContainer (HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)
-name|ContainerInfo
+name|ContainerWithPipeline
 name|allocateContainer
 parameter_list|(
 name|HddsProtos
@@ -183,6 +205,17 @@ comment|/**    * Ask SCM the location of the container. SCM responds with a grou
 DECL|method|getContainer (long containerID)
 name|ContainerInfo
 name|getContainer
+parameter_list|(
+name|long
+name|containerID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Ask SCM the location of the container. SCM responds with a group of    * nodes where this container and its replicas are located.    *    * @param containerID - ID of the container.    * @return ContainerWithPipeline - the container info with the pipeline.    * @throws IOException    */
+DECL|method|getContainerWithPipeline (long containerID)
+name|ContainerWithPipeline
+name|getContainerWithPipeline
 parameter_list|(
 name|long
 name|containerID

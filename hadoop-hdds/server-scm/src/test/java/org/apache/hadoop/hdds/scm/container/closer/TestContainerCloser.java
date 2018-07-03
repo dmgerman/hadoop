@@ -138,6 +138,28 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -622,8 +644,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -643,6 +665,14 @@ name|ONE
 argument_list|,
 literal|"ozone"
 argument_list|)
+decl_stmt|;
+name|ContainerInfo
+name|info
+init|=
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 decl_stmt|;
 comment|//Execute these state transitions so that we can close the container.
 name|mapping
@@ -694,7 +724,7 @@ decl_stmt|;
 name|DatanodeDetails
 name|datanode
 init|=
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -856,8 +886,8 @@ operator|.
 name|SECONDS
 argument_list|)
 expr_stmt|;
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -877,6 +907,14 @@ name|ONE
 argument_list|,
 literal|"ozone"
 argument_list|)
+decl_stmt|;
+name|ContainerInfo
+name|info
+init|=
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 decl_stmt|;
 comment|//Execute these state transitions so that we can close the container.
 name|mapping
@@ -916,7 +954,7 @@ decl_stmt|;
 name|DatanodeDetails
 name|datanodeDetails
 init|=
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -924,7 +962,7 @@ operator|.
 name|getLeader
 argument_list|()
 decl_stmt|;
-comment|// Send this command twice and assert we have only one command in the queue.
+comment|// Send this command twice and assert we have only one command in queue.
 name|sendContainerReport
 argument_list|(
 name|info
@@ -1080,8 +1118,8 @@ name|x
 operator|++
 control|)
 block|{
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -1101,6 +1139,14 @@ name|ONE
 argument_list|,
 literal|"ozone"
 argument_list|)
+decl_stmt|;
+name|ContainerInfo
+name|info
+init|=
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 decl_stmt|;
 name|mapping
 operator|.

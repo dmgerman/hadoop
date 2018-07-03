@@ -489,9 +489,28 @@ argument_list|(
 name|CLOSED
 argument_list|)
 operator|.
-name|setPipeline
+name|setPipelineName
 argument_list|(
 name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationType
+argument_list|(
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationFactor
+argument_list|(
+name|pipeline
+operator|.
+name|getFactor
+argument_list|()
 argument_list|)
 comment|// This is bytes allocated for blocks inside container, not the
 comment|// container size
@@ -592,9 +611,28 @@ argument_list|(
 name|OPEN
 argument_list|)
 operator|.
-name|setPipeline
+name|setPipelineName
 argument_list|(
 name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationType
+argument_list|(
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationFactor
+argument_list|(
+name|pipeline
+operator|.
+name|getFactor
+argument_list|()
 argument_list|)
 comment|// This is bytes allocated for blocks inside container, not the
 comment|// container size
@@ -680,9 +718,28 @@ argument_list|(
 name|OPEN
 argument_list|)
 operator|.
-name|setPipeline
+name|setPipelineName
 argument_list|(
 name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationType
+argument_list|(
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationFactor
+argument_list|(
+name|pipeline
+operator|.
+name|getFactor
+argument_list|()
 argument_list|)
 comment|// This is bytes allocated for blocks inside container, not the
 comment|// container size
@@ -1049,9 +1106,28 @@ argument_list|(
 name|CLOSED
 argument_list|)
 operator|.
-name|setPipeline
+name|setPipelineName
 argument_list|(
 name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationType
+argument_list|(
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+operator|.
+name|setReplicationFactor
+argument_list|(
+name|pipeline
+operator|.
+name|getFactor
+argument_list|()
 argument_list|)
 comment|// This is bytes allocated for blocks inside container, not the
 comment|// container size

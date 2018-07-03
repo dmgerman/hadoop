@@ -60,6 +60,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|server
 operator|.
 name|StorageContainerManager
@@ -993,10 +1015,13 @@ operator|.
 name|getClientProtocolServer
 argument_list|()
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|containerID
 argument_list|)
+operator|.
+name|getContainerInfo
+argument_list|()
 decl_stmt|;
 return|return
 name|container
@@ -1055,7 +1080,7 @@ comment|// ****************************************
 comment|// 1. Test to delete a non-empty container.
 comment|// ****************************************
 comment|// Create an non-empty container
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|containerOperationClient
@@ -1089,12 +1114,10 @@ name|readContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 argument_list|,
@@ -1118,6 +1141,9 @@ name|toByteArray
 argument_list|(
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -1135,6 +1161,9 @@ argument_list|(
 name|containerExist
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1159,6 +1188,9 @@ operator|.
 name|toString
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1217,6 +1249,9 @@ name|containerExist
 argument_list|(
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -1229,12 +1264,10 @@ name|closeContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1285,6 +1318,9 @@ name|containerExist
 argument_list|(
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -1308,6 +1344,9 @@ operator|.
 name|toString
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1344,6 +1383,9 @@ name|containerExist
 argument_list|(
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -1353,7 +1395,7 @@ comment|// ****************************************
 comment|// 2. Test to delete an empty container.
 comment|// ****************************************
 comment|// Create an empty container
-name|ContainerInfo
+name|ContainerWithPipeline
 name|emptyContainer
 init|=
 name|containerOperationClient
@@ -1380,12 +1422,10 @@ name|closeContainer
 argument_list|(
 name|emptyContainer
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1396,6 +1436,9 @@ argument_list|(
 name|containerExist
 argument_list|(
 name|emptyContainer
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1420,6 +1463,9 @@ operator|.
 name|toString
 argument_list|(
 name|emptyContainer
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1452,6 +1498,9 @@ name|containerExist
 argument_list|(
 name|emptyContainer
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -1459,7 +1508,7 @@ argument_list|)
 expr_stmt|;
 comment|// After the container is deleted,
 comment|// another container can now be recreated.
-name|ContainerInfo
+name|ContainerWithPipeline
 name|newContainer
 init|=
 name|containerOperationClient
@@ -1487,6 +1536,9 @@ argument_list|(
 name|containerExist
 argument_list|(
 name|newContainer
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1606,25 +1658,6 @@ literal|"LeaderID: %s\n"
 operator|+
 literal|"Datanodes: [%s]\n"
 decl_stmt|;
-name|String
-name|formatStrWithHash
-init|=
-literal|"Container id: %s\n"
-operator|+
-literal|"Container State: %s\n"
-operator|+
-literal|"Container Hash: %s\n"
-operator|+
-literal|"Container DB Path: %s\n"
-operator|+
-literal|"Container Path: %s\n"
-operator|+
-literal|"Container Metadata: {%s}\n"
-operator|+
-literal|"LeaderID: %s\n"
-operator|+
-literal|"Datanodes: [%s]\n"
-decl_stmt|;
 comment|// Test a non-exist container
 name|String
 name|containerID
@@ -1673,7 +1706,7 @@ name|exitCode
 argument_list|)
 expr_stmt|;
 comment|// Create an empty container.
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|containerOperationClient
@@ -1707,12 +1740,10 @@ name|readContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 argument_list|,
@@ -1736,6 +1767,9 @@ operator|.
 name|toString
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1793,6 +1827,9 @@ argument_list|(
 name|formatStr
 argument_list|,
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1870,12 +1907,10 @@ name|readContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 argument_list|,
@@ -1922,6 +1957,9 @@ name|toString
 argument_list|(
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -1967,6 +2005,9 @@ argument_list|(
 name|formatStr
 argument_list|,
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -2018,12 +2059,10 @@ name|closeContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2044,6 +2083,9 @@ operator|.
 name|toString
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -2082,12 +2124,10 @@ name|readContainer
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainerInfo
 argument_list|()
-argument_list|,
-name|container
 operator|.
-name|getPipeline
+name|getContainerID
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2114,6 +2154,9 @@ argument_list|(
 name|formatStr
 argument_list|,
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -2293,7 +2336,7 @@ name|index
 operator|++
 control|)
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|containerOperationClient
@@ -2319,6 +2362,9 @@ operator|.
 name|add
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2654,6 +2700,9 @@ argument_list|,
 name|containerOwner
 argument_list|)
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
@@ -2665,10 +2714,13 @@ operator|.
 name|getClientProtocolServer
 argument_list|()
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|containerID
 argument_list|)
+operator|.
+name|getContainerInfo
+argument_list|()
 decl_stmt|;
 name|assertNotNull
 argument_list|(
