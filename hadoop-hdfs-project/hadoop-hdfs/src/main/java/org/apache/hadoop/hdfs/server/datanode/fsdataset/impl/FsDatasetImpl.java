@@ -10038,6 +10038,18 @@ name|ExtendedBlock
 name|b
 parameter_list|)
 block|{
+comment|// If block passed is null, we should return false.
+if|if
+condition|(
+name|b
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 return|return
 name|isValid
 argument_list|(
@@ -10063,6 +10075,18 @@ name|ExtendedBlock
 name|b
 parameter_list|)
 block|{
+comment|// If block passed is null, we should return false.
+if|if
+condition|(
+name|b
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 return|return
 name|isValid
 argument_list|(
