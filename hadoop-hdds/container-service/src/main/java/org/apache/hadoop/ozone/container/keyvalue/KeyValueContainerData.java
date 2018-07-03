@@ -146,7 +146,7 @@ argument_list|)
 decl_stmt|;
 comment|// Fields need to be stored in .container file.
 DECL|field|YAML_FIELDS
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|List
@@ -174,6 +174,8 @@ argument_list|,
 literal|"chunksPath"
 argument_list|,
 literal|"containerDBType"
+argument_list|,
+literal|"maxSizeGB"
 argument_list|)
 decl_stmt|;
 comment|// Path to Container metadata Level DB/RocksDB Store and .container file.
@@ -207,13 +209,16 @@ name|dbFile
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    */
-DECL|method|KeyValueContainerData (long id)
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param size - maximum size of the container    */
+DECL|method|KeyValueContainerData (long id, int size)
 specifier|public
 name|KeyValueContainerData
 parameter_list|(
 name|long
 name|id
+parameter_list|,
+name|int
+name|size
 parameter_list|)
 block|{
 name|super
@@ -225,6 +230,8 @@ operator|.
 name|KeyValueContainer
 argument_list|,
 name|id
+argument_list|,
+name|size
 argument_list|)
 expr_stmt|;
 name|this
@@ -234,8 +241,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    */
-DECL|method|KeyValueContainerData (long id, int layOutVersion)
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size of the container    */
+DECL|method|KeyValueContainerData (long id, int layOutVersion, int size)
 specifier|public
 name|KeyValueContainerData
 parameter_list|(
@@ -244,6 +251,9 @@ name|id
 parameter_list|,
 name|int
 name|layOutVersion
+parameter_list|,
+name|int
+name|size
 parameter_list|)
 block|{
 name|super
@@ -257,6 +267,8 @@ argument_list|,
 name|id
 argument_list|,
 name|layOutVersion
+argument_list|,
+name|size
 argument_list|)
 expr_stmt|;
 name|this
@@ -613,6 +625,20 @@ name|builder
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|getYamlFields ()
+specifier|public
+specifier|static
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getYamlFields
+parameter_list|()
+block|{
+return|return
+name|YAML_FIELDS
 return|;
 block|}
 block|}

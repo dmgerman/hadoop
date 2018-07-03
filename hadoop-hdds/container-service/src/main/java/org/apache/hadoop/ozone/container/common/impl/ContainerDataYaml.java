@@ -194,6 +194,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -355,26 +365,6 @@ operator|.
 name|representer
 operator|.
 name|Representer
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|keyvalue
-operator|.
-name|KeyValueContainerData
-operator|.
-name|YAML_FIELDS
 import|;
 end_import
 
@@ -795,6 +785,17 @@ name|class
 argument_list|)
 condition|)
 block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|yamlFields
+init|=
+name|KeyValueContainerData
+operator|.
+name|getYamlFields
+argument_list|()
+decl_stmt|;
 comment|// filter properties
 for|for
 control|(
@@ -814,7 +815,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|YAML_FIELDS
+name|yamlFields
 operator|.
 name|contains
 argument_list|(
@@ -941,6 +942,27 @@ name|int
 operator|)
 name|layOutVersion
 decl_stmt|;
+name|long
+name|size
+init|=
+operator|(
+name|long
+operator|)
+name|nodes
+operator|.
+name|get
+argument_list|(
+literal|"maxSizeGB"
+argument_list|)
+decl_stmt|;
+name|int
+name|maxSize
+init|=
+operator|(
+name|int
+operator|)
+name|size
+decl_stmt|;
 comment|//When a new field is added, it needs to be added here.
 name|KeyValueContainerData
 name|kvData
@@ -959,6 +981,8 @@ literal|"containerId"
 argument_list|)
 argument_list|,
 name|lv
+argument_list|,
+name|maxSize
 argument_list|)
 decl_stmt|;
 name|kvData

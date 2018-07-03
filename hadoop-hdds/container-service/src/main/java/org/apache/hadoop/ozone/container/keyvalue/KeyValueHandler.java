@@ -314,6 +314,22 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|container
 operator|.
 name|common
@@ -1007,6 +1023,12 @@ specifier|private
 name|VolumeChoosingPolicy
 name|volumeChoosingPolicy
 decl_stmt|;
+DECL|field|maxContainerSizeGB
+specifier|private
+specifier|final
+name|int
+name|maxContainerSizeGB
+decl_stmt|;
 comment|// TODO : Add metrics and populate it.
 DECL|method|getInstance (Configuration config, ContainerSet contSet, VolumeSet volSet, ContainerMetrics metrics)
 specifier|public
@@ -1107,6 +1129,21 @@ operator|=
 operator|new
 name|RoundRobinVolumeChoosingPolicy
 argument_list|()
+expr_stmt|;
+name|maxContainerSizeGB
+operator|=
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_CONTAINER_SIZE_GB
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1458,6 +1495,8 @@ operator|new
 name|KeyValueContainerData
 argument_list|(
 name|containerID
+argument_list|,
+name|maxContainerSizeGB
 argument_list|)
 decl_stmt|;
 comment|// TODO: Add support to add metadataList to ContainerData. Add metadata

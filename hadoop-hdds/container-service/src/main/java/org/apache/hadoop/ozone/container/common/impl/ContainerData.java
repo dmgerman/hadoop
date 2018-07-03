@@ -211,6 +211,12 @@ specifier|private
 name|ContainerLifeCycleState
 name|state
 decl_stmt|;
+DECL|field|maxSizeGB
+specifier|private
+specifier|final
+name|int
+name|maxSizeGB
+decl_stmt|;
 comment|/** parameters for read/write statistics on the container. **/
 DECL|field|readBytes
 specifier|private
@@ -242,13 +248,19 @@ specifier|final
 name|AtomicLong
 name|bytesUsed
 decl_stmt|;
+DECL|field|keyCount
+specifier|private
+specifier|final
+name|AtomicLong
+name|keyCount
+decl_stmt|;
 DECL|field|volume
 specifier|private
 name|HddsVolume
 name|volume
 decl_stmt|;
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    */
-DECL|method|ContainerData (ContainerType type, long containerId)
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size    */
+DECL|method|ContainerData (ContainerType type, long containerId, int size)
 specifier|public
 name|ContainerData
 parameter_list|(
@@ -257,6 +269,9 @@ name|type
 parameter_list|,
 name|long
 name|containerId
+parameter_list|,
+name|int
+name|size
 parameter_list|)
 block|{
 name|this
@@ -350,9 +365,25 @@ argument_list|(
 literal|0L
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|keyCount
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxSizeGB
+operator|=
+name|size
+expr_stmt|;
 block|}
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    */
-DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion)
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size    */
+DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, int size)
 specifier|public
 name|ContainerData
 parameter_list|(
@@ -364,6 +395,9 @@ name|containerId
 parameter_list|,
 name|int
 name|layOutVersion
+parameter_list|,
+name|int
+name|size
 parameter_list|)
 block|{
 name|this
@@ -451,6 +485,22 @@ argument_list|(
 literal|0L
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|keyCount
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxSizeGB
+operator|=
+name|size
+expr_stmt|;
 block|}
 comment|/**    * Returns the containerId.    */
 DECL|method|getContainerId ()
@@ -503,6 +553,17 @@ name|state
 operator|=
 name|state
 expr_stmt|;
+block|}
+comment|/**    * Return's maximum size of the container in GB.    * @return maxSizeGB    */
+DECL|method|getMaxSizeGB ()
+specifier|public
+name|int
+name|getMaxSizeGB
+parameter_list|()
+block|{
+return|return
+name|maxSizeGB
+return|;
 block|}
 comment|/**    * Returns the layOutVersion of the actual container data format.    * @return layOutVersion    */
 DECL|method|getLayOutVersion ()
@@ -909,6 +970,72 @@ block|{
 return|return
 name|volume
 return|;
+block|}
+comment|/**    * Increments the number of keys in the container.    */
+DECL|method|incrKeyCount ()
+specifier|public
+name|void
+name|incrKeyCount
+parameter_list|()
+block|{
+name|this
+operator|.
+name|keyCount
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Decrements number of keys in the container.    */
+DECL|method|decrKeyCount ()
+specifier|public
+name|void
+name|decrKeyCount
+parameter_list|()
+block|{
+name|this
+operator|.
+name|keyCount
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Returns number of keys in the container.    * @return key count    */
+DECL|method|getKeyCount ()
+specifier|public
+name|long
+name|getKeyCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|keyCount
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Set's number of keys in the container.    * @param count    */
+DECL|method|setKeyCount (long count)
+specifier|public
+name|void
+name|setKeyCount
+parameter_list|(
+name|long
+name|count
+parameter_list|)
+block|{
+name|this
+operator|.
+name|keyCount
+operator|.
+name|set
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

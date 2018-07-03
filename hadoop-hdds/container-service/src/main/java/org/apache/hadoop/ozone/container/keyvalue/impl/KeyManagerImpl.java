@@ -491,6 +491,15 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Increment keycount here
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|incrKeyCount
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the key.    * @return Key Data.    * @throws IOException    */
 DECL|method|getKey (Container container, BlockID blockID)
@@ -759,6 +768,15 @@ name|delete
 argument_list|(
 name|kKey
 argument_list|)
+expr_stmt|;
+comment|// Decrement keycount here
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|decrKeyCount
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * List keys in a container.    *    * @param container - Container from which keys need to be listed.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */

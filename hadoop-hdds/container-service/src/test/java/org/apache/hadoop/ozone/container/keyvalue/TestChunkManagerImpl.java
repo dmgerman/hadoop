@@ -573,6 +573,8 @@ operator|new
 name|KeyValueContainerData
 argument_list|(
 literal|1L
+argument_list|,
+literal|5
 argument_list|)
 expr_stmt|;
 name|keyValueContainer

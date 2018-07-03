@@ -340,6 +340,8 @@ operator|new
 name|KeyValueContainerData
 argument_list|(
 name|containerId
+argument_list|,
+literal|5
 argument_list|)
 decl_stmt|;
 name|kvData
@@ -880,6 +882,8 @@ operator|new
 name|KeyValueContainerData
 argument_list|(
 name|i
+argument_list|,
+literal|5
 argument_list|)
 decl_stmt|;
 if|if
