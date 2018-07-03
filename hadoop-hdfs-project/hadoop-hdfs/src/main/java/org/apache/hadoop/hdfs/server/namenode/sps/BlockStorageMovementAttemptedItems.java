@@ -345,7 +345,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A monitor class for checking whether block storage movements attempt  * completed or not. If this receives block storage movement attempt  * status(either success or failure) from DN then it will just remove the  * entries from tracking. If there is no DN reports about movement attempt  * finished for a longer time period, then such items will retries automatically  * after timeout. The default timeout would be 5 minutes.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
+comment|/**  * A monitor class for checking whether block storage movements attempt  * completed or not. If this receives block storage movement attempt  * status(either success or failure) from DN then it will just remove the  * entries from tracking. If there is no DN reports about movement attempt  * finished for a longer time period, then such items will retries automatically  * after timeout. The default timeout would be 5 minutes.  */
 end_comment
 
 begin_class
@@ -353,9 +353,6 @@ DECL|class|BlockStorageMovementAttemptedItems
 specifier|public
 class|class
 name|BlockStorageMovementAttemptedItems
-parameter_list|<
-name|T
-parameter_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -380,9 +377,6 @@ specifier|final
 name|List
 argument_list|<
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|>
 name|storageMovementAttemptedItems
 decl_stmt|;
@@ -425,10 +419,11 @@ name|timerThread
 init|=
 literal|null
 decl_stmt|;
-DECL|field|blkMovementListener
+DECL|field|context
 specifier|private
-name|BlockMovementListener
-name|blkMovementListener
+specifier|final
+name|Context
+name|context
 decl_stmt|;
 comment|//
 comment|// It might take anywhere between 5 to 10 minutes before
@@ -464,38 +459,26 @@ comment|// minimum value
 DECL|field|blockStorageMovementNeeded
 specifier|private
 name|BlockStorageMovementNeeded
-argument_list|<
-name|T
-argument_list|>
 name|blockStorageMovementNeeded
 decl_stmt|;
 DECL|field|service
 specifier|private
 specifier|final
 name|SPSService
-argument_list|<
-name|T
-argument_list|>
 name|service
 decl_stmt|;
-DECL|method|BlockStorageMovementAttemptedItems (SPSService<T> service, BlockStorageMovementNeeded<T> unsatisfiedStorageMovementFiles, BlockMovementListener blockMovementListener)
+DECL|method|BlockStorageMovementAttemptedItems (SPSService service, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles, Context context)
 specifier|public
 name|BlockStorageMovementAttemptedItems
 parameter_list|(
 name|SPSService
-argument_list|<
-name|T
-argument_list|>
 name|service
 parameter_list|,
 name|BlockStorageMovementNeeded
-argument_list|<
-name|T
-argument_list|>
 name|unsatisfiedStorageMovementFiles
 parameter_list|,
-name|BlockMovementListener
-name|blockMovementListener
+name|Context
+name|context
 parameter_list|)
 block|{
 name|this
@@ -589,22 +572,22 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|blkMovementListener
+name|context
 operator|=
-name|blockMovementListener
+name|context
 expr_stmt|;
 block|}
-comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param itemInfo    *          - tracking info    */
-DECL|method|add (T startPath, T file, long monotonicNow, Map<Block, Set<StorageTypeNodePair>> assignedBlocks, int retryCount)
+comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param startPathId    *          - start satisfier path identifier    * @param fileId    *          - file identifier    * @param monotonicNow    *          - time now    * @param assignedBlocks    *          - assigned blocks for block movement    * @param retryCount    *          - retry count    */
+DECL|method|add (long startPathId, long fileId, long monotonicNow, Map<Block, Set<StorageTypeNodePair>> assignedBlocks, int retryCount)
 specifier|public
 name|void
 name|add
 parameter_list|(
-name|T
-name|startPath
+name|long
+name|startPathId
 parameter_list|,
-name|T
-name|file
+name|long
+name|fileId
 parameter_list|,
 name|long
 name|monotonicNow
@@ -625,20 +608,14 @@ name|retryCount
 parameter_list|)
 block|{
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|itemInfo
 init|=
 operator|new
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
-name|startPath
+name|startPathId
 argument_list|,
-name|file
+name|fileId
 argument_list|,
 name|monotonicNow
 argument_list|,
@@ -813,27 +790,30 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
-comment|// listener if it is plugged-in
-if|if
-condition|(
-name|blkMovementListener
-operator|!=
-literal|null
-condition|)
-block|{
-name|blkMovementListener
+name|Block
+index|[]
+name|mFinishedBlocks
+init|=
+operator|new
+name|Block
+index|[
+literal|1
+index|]
+decl_stmt|;
+name|mFinishedBlocks
+index|[
+literal|0
+index|]
+operator|=
+name|reportedBlock
+expr_stmt|;
+name|context
 operator|.
 name|notifyMovementTriedBlocks
 argument_list|(
-operator|new
-name|Block
-index|[]
-block|{
-name|reportedBlock
-block|}
+name|mFinishedBlocks
 argument_list|)
 expr_stmt|;
-block|}
 comment|// All the block locations has reported.
 if|if
 condition|(
@@ -1089,9 +1069,6 @@ block|{
 name|Iterator
 argument_list|<
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|>
 name|iter
 init|=
@@ -1115,9 +1092,6 @@ argument_list|()
 condition|)
 block|{
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|itemInfo
 init|=
 name|iter
@@ -1137,7 +1111,7 @@ operator|+
 name|selfRetryTimeout
 condition|)
 block|{
-name|T
+name|long
 name|file
 init|=
 name|itemInfo
@@ -1146,16 +1120,10 @@ name|getFile
 argument_list|()
 decl_stmt|;
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|candidate
 init|=
 operator|new
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
 name|itemInfo
 operator|.
@@ -1244,9 +1212,6 @@ block|{
 name|Iterator
 argument_list|<
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|>
 name|iterator
 init|=
@@ -1264,9 +1229,6 @@ argument_list|()
 condition|)
 block|{
 name|AttemptedItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|attemptedItemInfo
 init|=
 name|iterator
@@ -1301,9 +1263,6 @@ name|add
 argument_list|(
 operator|new
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
 name|attemptedItemInfo
 operator|.
@@ -1403,24 +1362,6 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Sets external listener for testing.    *    * @param blkMoveListener    *          block movement listener callback object    */
-annotation|@
-name|VisibleForTesting
-DECL|method|setBlockMovementListener (BlockMovementListener blkMoveListener)
-name|void
-name|setBlockMovementListener
-parameter_list|(
-name|BlockMovementListener
-name|blkMoveListener
-parameter_list|)
-block|{
-name|this
-operator|.
-name|blkMovementListener
-operator|=
-name|blkMoveListener
-expr_stmt|;
 block|}
 block|}
 end_class

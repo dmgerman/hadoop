@@ -416,7 +416,7 @@ comment|/**    * @return Gets the next available sps path, otherwise null. This 
 annotation|@
 name|AtMostOnce
 DECL|method|getNextSPSPath ()
-name|String
+name|Long
 name|getNextSPSPath
 parameter_list|()
 throws|throws

@@ -120,6 +120,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtilClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DistributedFileSystem
 import|;
 end_import
@@ -251,9 +265,6 @@ class|class
 name|ExternalSPSFilePathCollector
 implements|implements
 name|FileCollector
-argument_list|<
-name|String
-argument_list|>
 block|{
 DECL|field|LOG
 specifier|public
@@ -279,9 +290,6 @@ decl_stmt|;
 DECL|field|service
 specifier|private
 name|SPSService
-argument_list|<
-name|String
-argument_list|>
 name|service
 decl_stmt|;
 DECL|field|maxQueueLimitToScan
@@ -289,14 +297,11 @@ specifier|private
 name|int
 name|maxQueueLimitToScan
 decl_stmt|;
-DECL|method|ExternalSPSFilePathCollector (SPSService<String> service)
+DECL|method|ExternalSPSFilePathCollector (SPSService service)
 specifier|public
 name|ExternalSPSFilePathCollector
 parameter_list|(
 name|SPSService
-argument_list|<
-name|String
-argument_list|>
 name|service
 parameter_list|)
 block|{
@@ -391,12 +396,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Recursively scan the given path and add the file info to SPS service for    * processing.    */
-DECL|method|processPath (String startID, String childPath)
+DECL|method|processPath (Long startID, String childPath)
 specifier|private
 name|long
 name|processPath
 parameter_list|(
-name|String
+name|Long
 name|startID
 parameter_list|,
 name|String
@@ -510,16 +515,6 @@ name|getPartialListing
 argument_list|()
 control|)
 block|{
-name|String
-name|childFullPath
-init|=
-name|child
-operator|.
-name|getFullName
-argument_list|(
-name|childPath
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|child
@@ -534,13 +529,13 @@ name|addFileToProcess
 argument_list|(
 operator|new
 name|ItemInfo
-argument_list|<
-name|String
-argument_list|>
 argument_list|(
 name|startID
 argument_list|,
-name|childFullPath
+name|child
+operator|.
+name|getFileId
+argument_list|()
 argument_list|)
 argument_list|,
 literal|false
@@ -556,6 +551,16 @@ comment|// increment to be satisfied file count
 block|}
 else|else
 block|{
+name|String
+name|childFullPathName
+init|=
+name|child
+operator|.
+name|getFullName
+argument_list|(
+name|childPath
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|child
@@ -567,7 +572,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|childFullPath
+name|childFullPathName
 operator|.
 name|endsWith
 argument_list|(
@@ -577,9 +582,9 @@ name|SEPARATOR
 argument_list|)
 condition|)
 block|{
-name|childFullPath
+name|childFullPathName
 operator|=
-name|childFullPath
+name|childFullPathName
 operator|+
 name|Path
 operator|.
@@ -592,7 +597,7 @@ name|processPath
 argument_list|(
 name|startID
 argument_list|,
-name|childFullPath
+name|childFullPathName
 argument_list|)
 expr_stmt|;
 block|}
@@ -754,13 +759,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|scanAndCollectFiles (String path)
+DECL|method|scanAndCollectFiles (long pathId)
 specifier|public
 name|void
 name|scanAndCollectFiles
 parameter_list|(
-name|String
-name|path
+name|long
+name|pathId
 parameter_list|)
 throws|throws
 name|IOException
@@ -783,14 +788,27 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|Path
+name|filePath
+init|=
+name|DFSUtilClient
+operator|.
+name|makePathFromFileId
+argument_list|(
+name|pathId
+argument_list|)
+decl_stmt|;
 name|long
 name|pendingSatisfyItemsCount
 init|=
 name|processPath
 argument_list|(
-name|path
+name|pathId
 argument_list|,
-name|path
+name|filePath
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Check whether the given path contains any item to be tracked
@@ -813,14 +831,14 @@ literal|"There is no pending items to satisfy the given path "
 operator|+
 literal|"inodeId:{}"
 argument_list|,
-name|path
+name|pathId
 argument_list|)
 expr_stmt|;
 name|service
 operator|.
 name|addAllFilesToProcess
 argument_list|(
-name|path
+name|pathId
 argument_list|,
 operator|new
 name|ArrayList
@@ -837,7 +855,7 @@ name|service
 operator|.
 name|markScanCompletedForPath
 argument_list|(
-name|path
+name|pathId
 argument_list|)
 expr_stmt|;
 block|}

@@ -220,15 +220,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets the file path corresponds to the given file id.    *    * @param inodeId    *          file id    * @return string file path    */
-DECL|method|getFilePath (Long inodeId)
-name|String
-name|getFilePath
-parameter_list|(
-name|Long
-name|inodeId
-parameter_list|)
-function_decl|;
 block|}
 end_interface
 

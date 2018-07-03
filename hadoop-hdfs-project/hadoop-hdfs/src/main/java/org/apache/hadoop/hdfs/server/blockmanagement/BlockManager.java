@@ -18637,9 +18637,6 @@ literal|null
 condition|)
 block|{
 name|SPSService
-argument_list|<
-name|Long
-argument_list|>
 name|sps
 init|=
 name|getSPSManager

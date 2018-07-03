@@ -1747,7 +1747,7 @@ name|ServiceException
 block|{
 try|try
 block|{
-name|String
+name|Long
 name|nextSPSPath
 init|=
 name|impl

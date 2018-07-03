@@ -605,14 +605,8 @@ DECL|class|StoragePolicySatisfier
 specifier|public
 class|class
 name|StoragePolicySatisfier
-parameter_list|<
-name|T
-parameter_list|>
 implements|implements
 name|SPSService
-argument_list|<
-name|T
-argument_list|>
 implements|,
 name|Runnable
 block|{
@@ -640,17 +634,11 @@ decl_stmt|;
 DECL|field|storageMovementNeeded
 specifier|private
 name|BlockStorageMovementNeeded
-argument_list|<
-name|T
-argument_list|>
 name|storageMovementNeeded
 decl_stmt|;
 DECL|field|storageMovementsMonitor
 specifier|private
 name|BlockStorageMovementAttemptedItems
-argument_list|<
-name|T
-argument_list|>
 name|storageMovementsMonitor
 decl_stmt|;
 DECL|field|isRunning
@@ -681,15 +669,7 @@ decl_stmt|;
 DECL|field|ctxt
 specifier|private
 name|Context
-argument_list|<
-name|T
-argument_list|>
 name|ctxt
-decl_stmt|;
-DECL|field|blockMoveTaskHandler
-specifier|private
-name|BlockMoveTaskHandler
-name|blockMoveTaskHandler
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -700,9 +680,6 @@ decl_stmt|;
 DECL|field|dnCacheMgr
 specifier|private
 name|DatanodeCacheManager
-argument_list|<
-name|T
-argument_list|>
 name|dnCacheMgr
 decl_stmt|;
 DECL|method|StoragePolicySatisfier (Configuration conf)
@@ -821,32 +798,14 @@ name|assignedBlocks
 expr_stmt|;
 block|}
 block|}
-DECL|method|init (final Context<T> context, final FileCollector<T> fileIDCollector, final BlockMoveTaskHandler blockMovementTaskHandler, final BlockMovementListener blockMovementListener)
+DECL|method|init (final Context context)
 specifier|public
 name|void
 name|init
 parameter_list|(
 specifier|final
 name|Context
-argument_list|<
-name|T
-argument_list|>
 name|context
-parameter_list|,
-specifier|final
-name|FileCollector
-argument_list|<
-name|T
-argument_list|>
-name|fileIDCollector
-parameter_list|,
-specifier|final
-name|BlockMoveTaskHandler
-name|blockMovementTaskHandler
-parameter_list|,
-specifier|final
-name|BlockMovementListener
-name|blockMovementListener
 parameter_list|)
 block|{
 name|this
@@ -861,13 +820,8 @@ name|storageMovementNeeded
 operator|=
 operator|new
 name|BlockStorageMovementNeeded
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
 name|context
-argument_list|,
-name|fileIDCollector
 argument_list|)
 expr_stmt|;
 name|this
@@ -876,22 +830,13 @@ name|storageMovementsMonitor
 operator|=
 operator|new
 name|BlockStorageMovementAttemptedItems
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
 name|this
 argument_list|,
 name|storageMovementNeeded
 argument_list|,
-name|blockMovementListener
+name|context
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|blockMoveTaskHandler
-operator|=
-name|blockMovementTaskHandler
 expr_stmt|;
 name|this
 operator|.
@@ -1088,9 +1033,6 @@ name|dnCacheMgr
 operator|=
 operator|new
 name|DatanodeCacheManager
-argument_list|<
-name|T
-argument_list|>
 argument_list|(
 name|conf
 argument_list|)
@@ -1315,9 +1257,6 @@ block|}
 try|try
 block|{
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|itemInfo
 init|=
 literal|null
@@ -1389,7 +1328,7 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|T
+name|long
 name|trackId
 init|=
 name|itemInfo
@@ -1754,11 +1693,7 @@ condition|(
 name|retryItem
 condition|)
 block|{
-name|itemInfo
-operator|.
-name|increRetryCount
-argument_list|()
-expr_stmt|;
+comment|// itemInfo.increRetryCount();
 name|this
 operator|.
 name|storageMovementNeeded
@@ -2327,7 +2262,7 @@ block|{
 comment|// Check for at least one block storage movement has been chosen
 try|try
 block|{
-name|blockMoveTaskHandler
+name|ctxt
 operator|.
 name|submitMoveTask
 argument_list|(
@@ -5046,9 +4981,6 @@ name|VisibleForTesting
 DECL|method|getAttemptedItemsMonitor ()
 specifier|public
 name|BlockStorageMovementAttemptedItems
-argument_list|<
-name|T
-argument_list|>
 name|getAttemptedItemsMonitor
 parameter_list|()
 block|{
@@ -5079,12 +5011,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Clear queues for given track id.    */
-DECL|method|clearQueue (T trackId)
+DECL|method|clearQueue (long trackId)
 specifier|public
 name|void
 name|clearQueue
 parameter_list|(
-name|T
+name|long
 name|trackId
 parameter_list|)
 block|{
@@ -5102,14 +5034,8 @@ specifier|final
 specifier|static
 class|class
 name|AttemptedItemInfo
-parameter_list|<
-name|T
-parameter_list|>
 extends|extends
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 block|{
 DECL|field|lastAttemptedOrReportedTime
 specifier|private
@@ -5126,13 +5052,13 @@ argument_list|>
 name|blocks
 decl_stmt|;
 comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      * @param blocks      *          scheduled blocks      * @param retryCount      *          file retry count      */
-DECL|method|AttemptedItemInfo (T rootId, T trackId, long lastAttemptedOrReportedTime, Set<Block> blocks, int retryCount)
+DECL|method|AttemptedItemInfo (long rootId, long trackId, long lastAttemptedOrReportedTime, Set<Block> blocks, int retryCount)
 name|AttemptedItemInfo
 parameter_list|(
-name|T
+name|long
 name|rootId
 parameter_list|,
-name|T
+name|long
 name|trackId
 parameter_list|,
 name|long
@@ -5237,15 +5163,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addFileToProcess (ItemInfo<T> trackInfo, boolean scanCompleted)
+DECL|method|addFileToProcess (ItemInfo trackInfo, boolean scanCompleted)
 specifier|public
 name|void
 name|addFileToProcess
 parameter_list|(
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|trackInfo
 parameter_list|,
 name|boolean
@@ -5287,20 +5210,17 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addAllFilesToProcess (T startPath, List<ItemInfo<T>> itemInfoList, boolean scanCompleted)
+DECL|method|addAllFilesToProcess (long startPath, List<ItemInfo> itemInfoList, boolean scanCompleted)
 specifier|public
 name|void
 name|addAllFilesToProcess
 parameter_list|(
-name|T
+name|long
 name|startPath
 parameter_list|,
 name|List
 argument_list|<
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|>
 name|itemInfoList
 parameter_list|,
@@ -5353,9 +5273,6 @@ name|VisibleForTesting
 DECL|method|getStorageMovementQueue ()
 specifier|public
 name|BlockStorageMovementNeeded
-argument_list|<
-name|T
-argument_list|>
 name|getStorageMovementQueue
 parameter_list|()
 block|{
@@ -5365,12 +5282,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|markScanCompletedForPath (T inodeId)
+DECL|method|markScanCompletedForPath (long inodeId)
 specifier|public
 name|void
 name|markScanCompletedForPath
 parameter_list|(
-name|T
+name|long
 name|inodeId
 parameter_list|)
 block|{
@@ -5607,25 +5524,6 @@ expr_stmt|;
 return|return
 name|spsWorkMultiplier
 return|;
-block|}
-comment|/**    * Sets external listener for testing.    *    * @param blkMovementListener    *          block movement listener callback object    */
-annotation|@
-name|VisibleForTesting
-DECL|method|setBlockMovementListener (BlockMovementListener blkMovementListener)
-name|void
-name|setBlockMovementListener
-parameter_list|(
-name|BlockMovementListener
-name|blkMovementListener
-parameter_list|)
-block|{
-name|storageMovementsMonitor
-operator|.
-name|setBlockMovementListener
-argument_list|(
-name|blkMovementListener
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class

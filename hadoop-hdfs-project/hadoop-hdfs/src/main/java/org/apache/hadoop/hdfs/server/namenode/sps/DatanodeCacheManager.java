@@ -227,9 +227,6 @@ DECL|class|DatanodeCacheManager
 specifier|public
 class|class
 name|DatanodeCacheManager
-parameter_list|<
-name|T
-parameter_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -310,15 +307,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Returns the live datanodes and its storage details, which has available    * space (> 0) to schedule block moves. This will return array of datanodes    * from its local cache. It has a configurable refresh interval in millis and    * periodically refresh the datanode cache by fetching latest    * {@link Context#getLiveDatanodeStorageReport()} once it elapsed refresh    * interval.    *    * @throws IOException    */
-DECL|method|getLiveDatanodeStorageReport ( Context<T> spsContext)
+DECL|method|getLiveDatanodeStorageReport ( Context spsContext)
 specifier|public
 name|DatanodeMap
 name|getLiveDatanodeStorageReport
 parameter_list|(
 name|Context
-argument_list|<
-name|T
-argument_list|>
 name|spsContext
 parameter_list|)
 throws|throws

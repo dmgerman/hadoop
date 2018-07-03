@@ -1725,7 +1725,7 @@ annotation|@
 name|Override
 DECL|method|getNextSPSPath ()
 specifier|public
-name|String
+name|Long
 name|getNextSPSPath
 parameter_list|()
 throws|throws

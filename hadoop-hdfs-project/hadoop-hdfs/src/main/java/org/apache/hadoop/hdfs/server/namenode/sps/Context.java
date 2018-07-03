@@ -100,6 +100,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|BlockStoragePolicy
 import|;
 end_import
@@ -168,6 +184,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlockStorageMovementCommand
+operator|.
+name|BlockMovingInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetworkTopology
@@ -189,7 +225,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An interface for the communication between SPS and Namenode module.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
+comment|/**  * An interface for the communication between SPS and Namenode module.  */
 end_comment
 
 begin_interface
@@ -205,9 +241,6 @@ DECL|interface|Context
 specifier|public
 interface|interface
 name|Context
-parameter_list|<
-name|T
-parameter_list|>
 block|{
 comment|/**    * Returns true if the SPS is running, false otherwise.    */
 DECL|method|isRunning ()
@@ -252,11 +285,11 @@ name|datanodeMap
 parameter_list|)
 function_decl|;
 comment|/**    * Returns true if the give file exists in the Namespace.    *    * @param filePath    *          - file info    * @return true if the given file exists, false otherwise.    */
-DECL|method|isFileExist (T filePath)
+DECL|method|isFileExist (long filePath)
 name|boolean
 name|isFileExist
 parameter_list|(
-name|T
+name|long
 name|filePath
 parameter_list|)
 function_decl|;
@@ -276,11 +309,11 @@ name|addDropPreviousSPSWorkAtDNs
 parameter_list|()
 function_decl|;
 comment|/**    * Remove the hint which was added to track SPS call.    *    * @param spsPath    *          - user invoked satisfier path    * @throws IOException    */
-DECL|method|removeSPSHint (T spsPath)
+DECL|method|removeSPSHint (long spsPath)
 name|void
 name|removeSPSHint
 parameter_list|(
-name|T
+name|long
 name|spsPath
 parameter_list|)
 throws|throws
@@ -293,11 +326,11 @@ name|getNumLiveDataNodes
 parameter_list|()
 function_decl|;
 comment|/**    * Get the file info for a specific file.    *    * @param file    *          file path    * @return file status metadata information    */
-DECL|method|getFileInfo (T file)
+DECL|method|getFileInfo (long file)
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
-name|T
+name|long
 name|file
 parameter_list|)
 throws|throws
@@ -314,16 +347,16 @@ name|IOException
 function_decl|;
 comment|/**    * @return next SPS path info to process.    */
 DECL|method|getNextSPSPath ()
-name|T
+name|Long
 name|getNextSPSPath
 parameter_list|()
 function_decl|;
 comment|/**    * Removes the SPS path id.    */
-DECL|method|removeSPSPathId (T pathId)
+DECL|method|removeSPSPathId (long pathId)
 name|void
 name|removeSPSPathId
 parameter_list|(
-name|T
+name|long
 name|pathId
 parameter_list|)
 function_decl|;
@@ -332,6 +365,40 @@ DECL|method|removeAllSPSPathIds ()
 name|void
 name|removeAllSPSPathIds
 parameter_list|()
+function_decl|;
+comment|/**    * Do scan and collects the files under that directory and adds to the given    * BlockStorageMovementNeeded.    *    * @param filePath    *          file path    */
+DECL|method|scanAndCollectFiles (long filePath)
+name|void
+name|scanAndCollectFiles
+parameter_list|(
+name|long
+name|filePath
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+function_decl|;
+comment|/**    * Handles the block move tasks. BlockMovingInfo must contain the required    * info to move the block, that source location, destination location and    * storage types.    */
+DECL|method|submitMoveTask (BlockMovingInfo blkMovingInfo)
+name|void
+name|submitMoveTask
+parameter_list|(
+name|BlockMovingInfo
+name|blkMovingInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This can be used to notify to the SPS about block movement attempt    * finished. Then SPS will re-check whether it needs retry or not.    *    * @param moveAttemptFinishedBlks    *          list of movement attempt finished blocks    */
+DECL|method|notifyMovementTriedBlocks (Block[] moveAttemptFinishedBlks)
+name|void
+name|notifyMovementTriedBlocks
+parameter_list|(
+name|Block
+index|[]
+name|moveAttemptFinishedBlks
+parameter_list|)
 function_decl|;
 block|}
 end_interface

@@ -139,7 +139,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An interface for SPSService, which exposes life cycle and processing APIs.  *  * @param<T>  *          is identifier of inode or full path name of inode. Internal sps will  *          use the file inodeId for the block movement. External sps will use  *          file string path representation for the block movement.  */
+comment|/**  * An interface for SPSService, which exposes life cycle and processing APIs.  */
 end_comment
 
 begin_interface
@@ -155,32 +155,14 @@ DECL|interface|SPSService
 specifier|public
 interface|interface
 name|SPSService
-parameter_list|<
-name|T
-parameter_list|>
 block|{
-comment|/**    * Initializes the helper services.    *    * @param ctxt    *          - context is an helper service to provide communication channel    *          between NN and SPS    * @param fileCollector    *          - a helper service for scanning the files under a given directory    *          id    * @param handler    *          - a helper service for moving the blocks    * @param blkMovementListener    *          - listener to know about block movement attempt completion    */
-DECL|method|init (Context<T> ctxt, FileCollector<T> fileCollector, BlockMoveTaskHandler handler, BlockMovementListener blkMovementListener)
+comment|/**    * Initializes the helper services.    *    * @param ctxt    *          - context is an helper service to provide communication channel    *          between NN and SPS    */
+DECL|method|init (Context ctxt)
 name|void
 name|init
 parameter_list|(
 name|Context
-argument_list|<
-name|T
-argument_list|>
 name|ctxt
-parameter_list|,
-name|FileCollector
-argument_list|<
-name|T
-argument_list|>
-name|fileCollector
-parameter_list|,
-name|BlockMoveTaskHandler
-name|handler
-parameter_list|,
-name|BlockMovementListener
-name|blkMovementListener
 parameter_list|)
 function_decl|;
 comment|/**    * Starts the SPS service. Make sure to initialize the helper services before    * invoking this method.    *    * @param reconfigStart    *          - to indicate whether the SPS startup requested from    *          reconfiguration service    * @param spsMode sps service mode    */
@@ -217,34 +199,28 @@ name|isRunning
 parameter_list|()
 function_decl|;
 comment|/**    * Adds the Item information(file etc) to processing queue.    *    * @param itemInfo    *          file info object for which need to satisfy the policy    */
-DECL|method|addFileToProcess (ItemInfo<T> itemInfo, boolean scanCompleted)
+DECL|method|addFileToProcess (ItemInfo itemInfo, boolean scanCompleted)
 name|void
 name|addFileToProcess
 parameter_list|(
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 name|itemInfo
 parameter_list|,
 name|boolean
 name|scanCompleted
 parameter_list|)
 function_decl|;
-comment|/**    * Adds all the Item information(file etc) to processing queue.    *    * @param startPath    *          - directory/file, on which SPS was called.    * @param itemInfoList    *          - list of item infos    * @param scanCompleted    *          - whether the scanning of directory fully done with itemInfoList    */
-DECL|method|addAllFilesToProcess (T startPath, List<ItemInfo<T>> itemInfoList, boolean scanCompleted)
+comment|/**    * Adds all the Item information(file etc) to processing queue.    *    * @param startPathId    *          - directoryId/fileId, on which SPS was called.    * @param itemInfoList    *          - list of item infos    * @param scanCompleted    *          - whether the scanning of directory fully done with itemInfoList    */
+DECL|method|addAllFilesToProcess (long startPathId, List<ItemInfo> itemInfoList, boolean scanCompleted)
 name|void
 name|addAllFilesToProcess
 parameter_list|(
-name|T
-name|startPath
+name|long
+name|startPathId
 parameter_list|,
 name|List
 argument_list|<
 name|ItemInfo
-argument_list|<
-name|T
-argument_list|>
 argument_list|>
 name|itemInfoList
 parameter_list|,
@@ -259,11 +235,11 @@ name|processingQueueSize
 parameter_list|()
 function_decl|;
 comment|/**    * Clear inodeId present in the processing queue.    */
-DECL|method|clearQueue (T spsPath)
+DECL|method|clearQueue (long spsPath)
 name|void
 name|clearQueue
 parameter_list|(
-name|T
+name|long
 name|spsPath
 parameter_list|)
 function_decl|;
@@ -273,12 +249,12 @@ name|Configuration
 name|getConf
 parameter_list|()
 function_decl|;
-comment|/**    * Marks the scanning of directory if finished.    *    * @param spsPath    *          - satisfier path    */
-DECL|method|markScanCompletedForPath (T spsPath)
+comment|/**    * Marks the scanning of directory if finished.    *    * @param spsPath    *          - satisfier path id    */
+DECL|method|markScanCompletedForPath (long spsPath)
 name|void
 name|markScanCompletedForPath
 parameter_list|(
-name|T
+name|long
 name|spsPath
 parameter_list|)
 function_decl|;
