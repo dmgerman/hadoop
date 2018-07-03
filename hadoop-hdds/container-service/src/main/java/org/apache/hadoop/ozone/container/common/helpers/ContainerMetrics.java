@@ -611,10 +611,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|incContainerOpcMetrics (ContainerProtos.Type type)
+DECL|method|incContainerOpsMetrics (ContainerProtos.Type type)
 specifier|public
 name|void
-name|incContainerOpcMetrics
+name|incContainerOpsMetrics
 parameter_list|(
 name|ContainerProtos
 operator|.

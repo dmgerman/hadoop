@@ -136,6 +136,26 @@ name|container
 operator|.
 name|common
 operator|.
+name|helpers
+operator|.
+name|ContainerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|impl
 operator|.
 name|ContainerSet
@@ -257,6 +277,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -281,12 +311,14 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|mockito
 operator|.
 name|Mockito
+operator|.
+name|doCallRealMethod
 import|;
 end_import
 
@@ -650,6 +682,34 @@ argument_list|)
 operator|.
 name|thenCallRealMethod
 argument_list|()
+expr_stmt|;
+name|doCallRealMethod
+argument_list|()
+operator|.
+name|when
+argument_list|(
+name|dispatcher
+argument_list|)
+operator|.
+name|setMetricsForTesting
+argument_list|(
+name|any
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|dispatcher
+operator|.
+name|setMetricsForTesting
+argument_list|(
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|ContainerMetrics
+operator|.
+name|class
+argument_list|)
+argument_list|)
 expr_stmt|;
 comment|// Test Create Container Request handling
 name|ContainerCommandRequestProto
@@ -1363,7 +1423,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getDummyCommandRequestProto (ContainerProtos.Type cmdType)
+DECL|method|getDummyCommandRequestProto ( ContainerProtos.Type cmdType)
 specifier|private
 name|ContainerCommandRequestProto
 name|getDummyCommandRequestProto

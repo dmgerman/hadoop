@@ -772,7 +772,7 @@ argument_list|()
 decl_stmt|;
 name|metrics
 operator|.
-name|incContainerOpcMetrics
+name|incContainerOpsMetrics
 argument_list|(
 name|cmdType
 argument_list|)

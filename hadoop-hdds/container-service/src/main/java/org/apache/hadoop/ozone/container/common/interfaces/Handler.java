@@ -24,22 +24,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|jersey
-operator|.
-name|spi
-operator|.
-name|resource
-operator|.
-name|Singleton
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -126,13 +110,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
-operator|.
-name|scm
+name|ozone
 operator|.
 name|container
 operator|.
-name|ContainerID
+name|common
+operator|.
+name|helpers
+operator|.
+name|ContainerMetrics
 import|;
 end_import
 
@@ -227,7 +213,13 @@ specifier|protected
 name|String
 name|scmID
 decl_stmt|;
-DECL|method|Handler (Configuration config, ContainerSet contSet, VolumeSet volumeSet)
+DECL|field|metrics
+specifier|protected
+specifier|final
+name|ContainerMetrics
+name|metrics
+decl_stmt|;
+DECL|method|Handler (Configuration config, ContainerSet contSet, VolumeSet volumeSet, ContainerMetrics containerMetrics)
 specifier|protected
 name|Handler
 parameter_list|(
@@ -239,6 +231,9 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volumeSet
+parameter_list|,
+name|ContainerMetrics
+name|containerMetrics
 parameter_list|)
 block|{
 name|conf
@@ -255,8 +250,14 @@ name|volumeSet
 operator|=
 name|volumeSet
 expr_stmt|;
+name|this
+operator|.
+name|metrics
+operator|=
+name|containerMetrics
+expr_stmt|;
 block|}
-DECL|method|getHandlerForContainerType (ContainerType containerType, Configuration config, ContainerSet contSet, VolumeSet volumeSet)
+DECL|method|getHandlerForContainerType (ContainerType containerType, Configuration config, ContainerSet contSet, VolumeSet volumeSet, ContainerMetrics metrics)
 specifier|public
 specifier|static
 name|Handler
@@ -273,6 +274,9 @@ name|contSet
 parameter_list|,
 name|VolumeSet
 name|volumeSet
+parameter_list|,
+name|ContainerMetrics
+name|metrics
 parameter_list|)
 block|{
 switch|switch
@@ -293,6 +297,8 @@ argument_list|,
 name|contSet
 argument_list|,
 name|volumeSet
+argument_list|,
+name|metrics
 argument_list|)
 return|;
 default|default:
