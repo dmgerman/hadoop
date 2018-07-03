@@ -2160,6 +2160,28 @@ name|PURPOSE
 init|=
 literal|"Alter metadata store IO capacity"
 decl_stmt|;
+DECL|field|READ_CAP_INVALID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|READ_CAP_INVALID
+init|=
+literal|"Read capacity must have "
+operator|+
+literal|"value greater than or equal to 1."
+decl_stmt|;
+DECL|field|WRITE_CAP_INVALID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WRITE_CAP_INVALID
+init|=
+literal|"Write capacity must have "
+operator|+
+literal|"value greater than or equal to 1."
+decl_stmt|;
 DECL|field|USAGE
 specifier|private
 specifier|static
@@ -2331,6 +2353,22 @@ name|readCap
 argument_list|)
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|readCap
+argument_list|)
+operator|>
+literal|0
+argument_list|,
+name|READ_CAP_INVALID
+argument_list|)
+expr_stmt|;
 name|S3GuardTool
 operator|.
 name|println
@@ -2373,6 +2411,22 @@ name|writeCap
 argument_list|)
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|writeCap
+argument_list|)
+operator|>
+literal|0
+argument_list|,
+name|WRITE_CAP_INVALID
+argument_list|)
+expr_stmt|;
 name|S3GuardTool
 operator|.
 name|println
