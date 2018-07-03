@@ -671,10 +671,20 @@ operator|.
 name|RESERVED
 condition|)
 block|{
-comment|// This is a reserved container
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// This is a reserved container
+comment|// Since re-reservation could happen again and again for already
+comment|// reserved containers. only do this in debug log.
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Reserved container "
 operator|+
@@ -701,6 +711,7 @@ operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
+block|}
 name|assignment
 operator|.
 name|getAssignmentInformation

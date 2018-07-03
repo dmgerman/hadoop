@@ -7374,6 +7374,14 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -7392,6 +7400,7 @@ name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|allocation
 return|;
@@ -8452,6 +8461,34 @@ name|boolean
 name|withNodeHeartbeat
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Trying to schedule on node: "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|", available: "
+operator|+
+name|node
+operator|.
+name|getUnallocatedResource
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Backward compatible way to make sure previous behavior which allocation
 comment|// driven by node heartbeat works.
 if|if
@@ -8471,7 +8508,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Trying to schedule on a removed node, please double check."
+literal|"Trying to schedule on a removed node, please double check, "
+operator|+
+literal|"nodeId="
+operator|+
+name|node
+operator|.
+name|getNodeID
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -8521,7 +8565,19 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Trying to schedule for a finished app, please double check."
+literal|"Trying to schedule for a finished app, please double check. nodeId="
+operator|+
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+operator|+
+literal|" container="
+operator|+
+name|reservedContainer
+operator|.
+name|getContainerId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -8529,9 +8585,17 @@ literal|null
 return|;
 block|}
 comment|// Try to fulfill the reservation
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Trying to fulfill reservation for application "
 operator|+
@@ -8548,6 +8612,7 @@ name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|LeafQueue
 name|queue
 init|=
@@ -8857,34 +8922,6 @@ block|}
 return|return
 literal|null
 return|;
-block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Trying to schedule on node: "
-operator|+
-name|node
-operator|.
-name|getNodeName
-argument_list|()
-operator|+
-literal|", available: "
-operator|+
-name|node
-operator|.
-name|getUnallocatedResource
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 return|return
 name|allocateOrReserveNewContainers
@@ -15034,6 +15071,28 @@ operator|.
 name|info
 argument_list|(
 literal|"Failed to accept allocation proposal"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Allocation proposal accepted="
+operator|+
+name|isSuccess
+operator|+
+literal|", proposal="
+operator|+
+name|request
 argument_list|)
 expr_stmt|;
 block|}
