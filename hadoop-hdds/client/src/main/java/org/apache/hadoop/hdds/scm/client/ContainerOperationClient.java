@@ -286,16 +286,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -954,22 +944,22 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Returns a set of Nodes that meet a query criteria.    *    * @param nodeStatuses - A set of criteria that we want the node to have.    * @param queryScope - Query scope - Cluster or pool.    * @param poolName - if it is pool, a pool name is required.    * @return A set of nodes that meet the requested criteria.    * @throws IOException    */
+comment|/**    * Returns a set of Nodes that meet a query criteria.    *    * @param nodeStatuses - Criteria that we want the node to have.    * @param queryScope - Query scope - Cluster or pool.    * @param poolName - if it is pool, a pool name is required.    * @return A set of nodes that meet the requested criteria.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|queryNode (EnumSet<HddsProtos.NodeState> nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
+DECL|method|queryNode (HddsProtos.NodeState nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
 specifier|public
-name|HddsProtos
-operator|.
-name|NodePool
-name|queryNode
-parameter_list|(
-name|EnumSet
+name|List
 argument_list|<
 name|HddsProtos
 operator|.
-name|NodeState
+name|Node
 argument_list|>
+name|queryNode
+parameter_list|(
+name|HddsProtos
+operator|.
+name|NodeState
 name|nodeStatuses
 parameter_list|,
 name|HddsProtos
@@ -1606,7 +1596,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO : Fix this, it currently returns the capacity but not the current usage.
+comment|// TODO : Fix this, it currently returns the capacity
+comment|// but not the current usage.
 name|long
 name|size
 init|=

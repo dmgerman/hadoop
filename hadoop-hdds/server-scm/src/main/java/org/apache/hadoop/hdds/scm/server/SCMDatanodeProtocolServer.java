@@ -1289,11 +1289,9 @@ operator|.
 name|getScmNodeManager
 argument_list|()
 operator|.
-name|sendHeartbeat
+name|processHeartbeat
 argument_list|(
 name|datanodeDetails
-argument_list|,
-name|nodeReport
 argument_list|)
 decl_stmt|;
 name|List

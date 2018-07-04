@@ -156,16 +156,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -251,20 +241,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    *  Queries a list of Node Statuses.    * @param nodeStatuses    * @return List of Datanodes.    */
-DECL|method|queryNode (EnumSet<HddsProtos.NodeState> nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
-name|HddsProtos
-operator|.
-name|NodePool
-name|queryNode
-parameter_list|(
-name|EnumSet
+comment|/**    *  Queries a list of Node Statuses.    * @param state    * @return List of Datanodes.    */
+DECL|method|queryNode (HddsProtos.NodeState state, HddsProtos.QueryScope queryScope, String poolName)
+name|List
 argument_list|<
 name|HddsProtos
 operator|.
-name|NodeState
+name|Node
 argument_list|>
-name|nodeStatuses
+name|queryNode
+parameter_list|(
+name|HddsProtos
+operator|.
+name|NodeState
+name|state
 parameter_list|,
 name|HddsProtos
 operator|.

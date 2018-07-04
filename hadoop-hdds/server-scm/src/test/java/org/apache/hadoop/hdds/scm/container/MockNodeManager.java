@@ -90,11 +90,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|UnregisteredNodeException
+name|node
+operator|.
+name|states
+operator|.
+name|NodeNotFoundException
 import|;
 end_import
 
@@ -149,26 +153,6 @@ operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|NodeReportProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|StorageReportProto
 import|;
 end_import
 
@@ -269,16 +253,6 @@ operator|.
 name|util
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
 import|;
 end_import
 
@@ -987,7 +961,7 @@ operator|=
 name|chillmode
 expr_stmt|;
 block|}
-comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
+comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws NodeNotFoundException    */
 annotation|@
 name|Override
 DECL|method|removeNode (DatanodeDetails node)
@@ -999,7 +973,7 @@ name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
-name|UnregisteredNodeException
+name|NodeNotFoundException
 block|{    }
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    *    * @param nodestate - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
 annotation|@
@@ -1240,19 +1214,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Used for testing.    *    * @return true if the HB check is done.    */
-annotation|@
-name|Override
-DECL|method|waitForHeartbeatProcessed ()
-specifier|public
-name|boolean
-name|waitForHeartbeatProcessed
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
 comment|/**    * Returns the node state of a specific node.    *    * @param dd - DatanodeDetails    * @return Healthy/Stale/Dead.    */
 annotation|@
 name|Override
@@ -1439,15 +1400,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{    }
-comment|/**    * When an object implementing interface<code>Runnable</code> is used to    * create a thread, starting the thread causes the object's<code>run</code>    * method to be called in that separately executing thread.    *<p>    * The general contract of the method<code>run</code> is that it may take any    * action whatsoever.    *    * @see Thread#run()    */
-annotation|@
-name|Override
-DECL|method|run ()
-specifier|public
-name|void
-name|run
-parameter_list|()
-block|{    }
 comment|/**    * Gets the version info from SCM.    *    * @param versionRequest - version Request.    * @return - returns SCM version info and other required information needed by    * datanode.    */
 annotation|@
 name|Override
@@ -1483,157 +1435,21 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - Datanode ID.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
+DECL|method|processHeartbeat (DatanodeDetails datanodeDetails)
 specifier|public
 name|List
 argument_list|<
 name|SCMCommand
 argument_list|>
-name|sendHeartbeat
+name|processHeartbeat
 parameter_list|(
 name|DatanodeDetails
 name|datanodeDetails
-parameter_list|,
-name|NodeReportProto
-name|nodeReport
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|(
-name|datanodeDetails
-operator|!=
-literal|null
-operator|)
-operator|&&
-operator|(
-name|nodeReport
-operator|!=
-literal|null
-operator|)
-operator|&&
-operator|(
-name|nodeReport
-operator|.
-name|getStorageReportCount
-argument_list|()
-operator|>
-literal|0
-operator|)
-condition|)
-block|{
-name|SCMNodeStat
-name|stat
-init|=
-name|this
-operator|.
-name|nodeMetricMap
-operator|.
-name|get
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|long
-name|totalCapacity
-init|=
-literal|0L
-decl_stmt|;
-name|long
-name|totalRemaining
-init|=
-literal|0L
-decl_stmt|;
-name|long
-name|totalScmUsed
-init|=
-literal|0L
-decl_stmt|;
-name|List
-argument_list|<
-name|StorageReportProto
-argument_list|>
-name|storageReports
-init|=
-name|nodeReport
-operator|.
-name|getStorageReportList
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|StorageReportProto
-name|report
-range|:
-name|storageReports
-control|)
-block|{
-name|totalCapacity
-operator|+=
-name|report
-operator|.
-name|getCapacity
-argument_list|()
-expr_stmt|;
-name|totalRemaining
-operator|+=
-name|report
-operator|.
-name|getRemaining
-argument_list|()
-expr_stmt|;
-name|totalScmUsed
-operator|+=
-name|report
-operator|.
-name|getScmUsed
-argument_list|()
-expr_stmt|;
-block|}
-name|aggregateStat
-operator|.
-name|subtract
-argument_list|(
-name|stat
-argument_list|)
-expr_stmt|;
-name|stat
-operator|.
-name|set
-argument_list|(
-name|totalCapacity
-argument_list|,
-name|totalScmUsed
-argument_list|,
-name|totalRemaining
-argument_list|)
-expr_stmt|;
-name|aggregateStat
-operator|.
-name|add
-argument_list|(
-name|stat
-argument_list|)
-expr_stmt|;
-name|nodeMetricMap
-operator|.
-name|put
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
-argument_list|,
-name|stat
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 literal|null
 return|;

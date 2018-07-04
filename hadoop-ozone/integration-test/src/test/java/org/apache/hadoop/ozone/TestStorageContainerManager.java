@@ -1784,7 +1784,7 @@ name|commands
 init|=
 name|nodeManager
 operator|.
-name|sendHeartbeat
+name|processHeartbeat
 argument_list|(
 name|nodeManager
 operator|.
@@ -1799,8 +1799,6 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 if|if

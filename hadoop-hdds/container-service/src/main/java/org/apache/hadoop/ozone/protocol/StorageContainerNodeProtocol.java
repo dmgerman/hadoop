@@ -169,19 +169,16 @@ name|NodeReportProto
 name|nodeReport
 parameter_list|)
 function_decl|;
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeDetails - Datanode ID.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
-DECL|method|sendHeartbeat (DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeDetails - Datanode ID.    * @return SCMheartbeat response list    */
+DECL|method|processHeartbeat (DatanodeDetails datanodeDetails)
 name|List
 argument_list|<
 name|SCMCommand
 argument_list|>
-name|sendHeartbeat
+name|processHeartbeat
 parameter_list|(
 name|DatanodeDetails
 name|datanodeDetails
-parameter_list|,
-name|NodeReportProto
-name|nodeReport
 parameter_list|)
 function_decl|;
 block|}

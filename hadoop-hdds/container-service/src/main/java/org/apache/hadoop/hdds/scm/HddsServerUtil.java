@@ -963,32 +963,6 @@ return|return
 name|deadNodeIntervalMs
 return|;
 block|}
-comment|/**    * Returns the maximum number of heartbeat to process per loop of the process    * thread.    * @param conf Configuration    * @return - int -- Number of HBs to process    */
-DECL|method|getMaxHBToProcessPerLoop (Configuration conf)
-specifier|public
-specifier|static
-name|int
-name|getMaxHBToProcessPerLoop
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS
-argument_list|,
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS_DEFAULT
-argument_list|)
-return|;
-block|}
 comment|/**    * Timeout value for the RPC from Datanode to SCM, primarily used for    * Heartbeats and container reports.    *    * @param conf - Ozone Config    * @return - Rpc timeout in Milliseconds.    */
 DECL|method|getScmRpcTimeOutInMilliseconds (Configuration conf)
 specifier|public

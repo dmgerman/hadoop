@@ -274,6 +274,7 @@ name|getDatanodeDetails
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// should we dispatch heartbeat through eventPublisher?
 if|if
 condition|(
 name|heartbeat

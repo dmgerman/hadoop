@@ -122,11 +122,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|UnregisteredNodeException
+name|node
+operator|.
+name|states
+operator|.
+name|NodeNotFoundException
 import|;
 end_import
 
@@ -255,16 +259,6 @@ operator|.
 name|commands
 operator|.
 name|SCMCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
 import|;
 end_import
 
@@ -418,7 +412,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
+comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws NodeNotFoundException    */
 annotation|@
 name|Override
 DECL|method|removeNode (DatanodeDetails node)
@@ -430,7 +424,7 @@ name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
-name|UnregisteredNodeException
+name|NodeNotFoundException
 block|{
 name|nodeStateMap
 operator|.
@@ -582,19 +576,6 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Wait for the heartbeat is processed by NodeManager.    *    * @return true if heartbeat has been processed.    */
-annotation|@
-name|Override
-DECL|method|waitForHeartbeatProcessed ()
-specifier|public
-name|boolean
-name|waitForHeartbeatProcessed
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
 comment|/**    * Returns the node state of a specific node.    *    * @param dd - DatanodeDetails    * @return Healthy/Stale/Dead.    */
 annotation|@
 name|Override
@@ -626,15 +607,6 @@ name|close
 parameter_list|()
 throws|throws
 name|IOException
-block|{    }
-comment|/**    * When an object implementing interface<code>Runnable</code> is used    * to create a thread, starting the thread causes the object's    *<code>run</code> method to be called in that separately executing    * thread.    *<p>    * The general contract of the method<code>run</code> is that it may    * take any action whatsoever.    *    * @see Thread#run()    */
-annotation|@
-name|Override
-DECL|method|run ()
-specifier|public
-name|void
-name|run
-parameter_list|()
 block|{    }
 comment|/**    * Gets the version info from SCM.    *    * @param versionRequest - version Request.    * @return - returns SCM version info and other required information needed by    * datanode.    */
 annotation|@
@@ -671,22 +643,19 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param dd - Datanode Details.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param dd - Datanode Details.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeDetails dd, NodeReportProto nodeReport)
+DECL|method|processHeartbeat (DatanodeDetails dd)
 specifier|public
 name|List
 argument_list|<
 name|SCMCommand
 argument_list|>
-name|sendHeartbeat
+name|processHeartbeat
 parameter_list|(
 name|DatanodeDetails
 name|dd
-parameter_list|,
-name|NodeReportProto
-name|nodeReport
 parameter_list|)
 block|{
 return|return

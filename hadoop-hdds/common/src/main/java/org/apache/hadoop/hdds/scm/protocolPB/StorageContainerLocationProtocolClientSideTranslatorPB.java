@@ -548,16 +548,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -1120,19 +1110,19 @@ block|}
 comment|/**    * Queries a list of Node Statuses.    *    * @param nodeStatuses    * @return List of Datanodes.    */
 annotation|@
 name|Override
-DECL|method|queryNode (EnumSet<HddsProtos.NodeState> nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
+DECL|method|queryNode (HddsProtos.NodeState nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
 specifier|public
-name|HddsProtos
-operator|.
-name|NodePool
-name|queryNode
-parameter_list|(
-name|EnumSet
+name|List
 argument_list|<
 name|HddsProtos
 operator|.
-name|NodeState
+name|Node
 argument_list|>
+name|queryNode
+parameter_list|(
+name|HddsProtos
+operator|.
+name|NodeState
 name|nodeStatuses
 parameter_list|,
 name|HddsProtos
@@ -1155,18 +1145,6 @@ argument_list|(
 name|nodeStatuses
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|nodeStatuses
-operator|.
-name|size
-argument_list|()
-operator|>
-literal|0
-argument_list|)
-expr_stmt|;
 name|NodeQueryRequestProto
 name|request
 init|=
@@ -1175,7 +1153,7 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|addAllQuery
+name|setState
 argument_list|(
 name|nodeStatuses
 argument_list|)
@@ -1210,7 +1188,7 @@ decl_stmt|;
 return|return
 name|response
 operator|.
-name|getDatanodes
+name|getDatanodesList
 argument_list|()
 return|;
 block|}
