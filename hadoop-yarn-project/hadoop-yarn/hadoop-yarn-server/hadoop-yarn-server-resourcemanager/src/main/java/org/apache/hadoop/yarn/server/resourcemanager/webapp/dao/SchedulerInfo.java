@@ -247,12 +247,12 @@ specifier|protected
 name|int
 name|maximumClusterPriority
 decl_stmt|;
+comment|// JAXB needs this
 DECL|method|SchedulerInfo ()
 specifier|public
 name|SchedulerInfo
 parameter_list|()
 block|{   }
-comment|// JAXB needs this
 DECL|method|SchedulerInfo (final ResourceManager rm)
 specifier|public
 name|SchedulerInfo
@@ -404,6 +404,13 @@ name|String
 name|getSchedulerResourceTypes
 parameter_list|()
 block|{
+if|if
+condition|(
+name|minAllocResource
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 name|Arrays
 operator|.
@@ -417,6 +424,10 @@ operator|.
 name|getResources
 argument_list|()
 argument_list|)
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 DECL|method|getMaxClusterLevelAppPriority ()
