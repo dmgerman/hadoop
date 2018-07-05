@@ -208,6 +208,11 @@ block|{
 name|super
 argument_list|(
 name|dir
+argument_list|,
+name|service
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -350,10 +355,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|canSubmitCurrentBatch ()
+DECL|method|shouldSubmitCurrentBatch ()
 specifier|protected
 name|boolean
-name|canSubmitCurrentBatch
+name|shouldSubmitCurrentBatch
 parameter_list|()
 block|{
 return|return

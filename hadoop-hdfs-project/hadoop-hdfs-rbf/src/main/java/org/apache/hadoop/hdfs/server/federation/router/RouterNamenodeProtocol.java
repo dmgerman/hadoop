@@ -1039,6 +1039,24 @@ return|;
 block|}
 end_function
 
+begin_function
+annotation|@
+name|Override
+DECL|method|getNextSPSPath ()
+specifier|public
+name|Long
+name|getNextSPSPath
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// not supported
+return|return
+literal|null
+return|;
+block|}
+end_function
+
 unit|}
 end_unit
 
