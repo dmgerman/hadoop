@@ -235,6 +235,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|SocketTimeoutException
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -601,7 +611,7 @@ annotation|@
 name|Retries
 operator|.
 name|OnceTranslated
-DECL|method|reopen (String reason, long targetPos, long length)
+DECL|method|reopen (String reason, long targetPos, long length, boolean forceAbort)
 specifier|private
 specifier|synchronized
 name|void
@@ -615,6 +625,9 @@ name|targetPos
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|boolean
+name|forceAbort
 parameter_list|)
 throws|throws
 name|IOException
@@ -636,7 +649,7 @@ literal|")"
 argument_list|,
 name|contentRangeFinish
 argument_list|,
-literal|false
+name|forceAbort
 argument_list|)
 expr_stmt|;
 block|}
@@ -1285,6 +1298,8 @@ argument_list|,
 name|targetPos
 argument_list|,
 name|len
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1447,6 +1462,29 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|SocketTimeoutException
+name|e
+parameter_list|)
+block|{
+name|onReadFailure
+argument_list|(
+name|e
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|b
+operator|=
+name|wrappedStream
+operator|.
+name|read
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -1456,6 +1494,8 @@ argument_list|(
 name|e
 argument_list|,
 literal|1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|b
@@ -1508,7 +1548,7 @@ annotation|@
 name|Retries
 operator|.
 name|OnceTranslated
-DECL|method|onReadFailure (IOException ioe, int length)
+DECL|method|onReadFailure (IOException ioe, int length, boolean forceAbort)
 specifier|private
 name|void
 name|onReadFailure
@@ -1518,6 +1558,9 @@ name|ioe
 parameter_list|,
 name|int
 name|length
+parameter_list|,
+name|boolean
+name|forceAbort
 parameter_list|)
 throws|throws
 name|IOException
@@ -1547,6 +1590,8 @@ argument_list|,
 name|pos
 argument_list|,
 name|length
+argument_list|,
+name|forceAbort
 argument_list|)
 expr_stmt|;
 block|}
@@ -1714,6 +1759,35 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|SocketTimeoutException
+name|e
+parameter_list|)
+block|{
+name|onReadFailure
+argument_list|(
+name|e
+argument_list|,
+name|len
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|bytes
+operator|=
+name|wrappedStream
+operator|.
+name|read
+argument_list|(
+name|buf
+argument_list|,
+name|off
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -1723,6 +1797,8 @@ argument_list|(
 name|e
 argument_list|,
 name|len
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|bytes
