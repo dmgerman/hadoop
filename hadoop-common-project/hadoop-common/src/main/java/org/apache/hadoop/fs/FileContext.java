@@ -731,7 +731,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * The FileContext is defined by.    *  1) defaultFS (slash)    *  2) wd    *  3) umask (Obtained by FsPermission.getUMask(conf))    */
+comment|/**    * The FileContext is defined by.    *  1) defaultFS (slash)    *  2) wd    *  3) umask (explicitly set via setUMask(),    *      falling back to FsPermission.getUMask(conf))    */
 DECL|field|defaultFS
 specifier|private
 specifier|final
@@ -745,6 +745,11 @@ name|Path
 name|workingDir
 decl_stmt|;
 comment|// Fully qualified
+DECL|field|umask
+specifier|private
+name|FsPermission
+name|umask
+decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|final
@@ -1674,12 +1679,20 @@ name|getUMask
 parameter_list|()
 block|{
 return|return
+operator|(
+name|umask
+operator|!=
+literal|null
+condition|?
+name|umask
+else|:
 name|FsPermission
 operator|.
 name|getUMask
 argument_list|(
 name|conf
 argument_list|)
+operator|)
 return|;
 block|}
 comment|/**    * Set umask to the supplied parameter.    * @param newUmask  the new umask    */
@@ -1693,14 +1706,11 @@ name|FsPermission
 name|newUmask
 parameter_list|)
 block|{
-name|FsPermission
+name|this
 operator|.
-name|setUMask
-argument_list|(
-name|conf
-argument_list|,
+name|umask
+operator|=
 name|newUmask
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Resolve the path following any symlinks or mount points    * @param f to be resolved    * @return fully qualified resolved path    *     * @throws FileNotFoundException  If<code>f</code> does not exist    * @throws AccessControlException if access denied    * @throws IOException If an IO Error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is not valid    */
