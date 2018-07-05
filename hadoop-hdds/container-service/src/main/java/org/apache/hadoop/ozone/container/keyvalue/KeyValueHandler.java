@@ -62,22 +62,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|jersey
-operator|.
-name|spi
-operator|.
-name|resource
-operator|.
-name|Singleton
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -965,8 +949,6 @@ comment|/**  * Handler for KeyValue Container type.  */
 end_comment
 
 begin_class
-annotation|@
-name|Singleton
 DECL|class|KeyValueHandler
 specifier|public
 class|class
@@ -990,16 +972,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|INSTANCE
-specifier|private
-specifier|static
-specifier|volatile
-name|KeyValueHandler
-name|INSTANCE
-init|=
-literal|null
-decl_stmt|;
-comment|// Singleton class
 DECL|field|containerType
 specifier|private
 specifier|final
@@ -1029,54 +1001,8 @@ specifier|final
 name|int
 name|maxContainerSizeGB
 decl_stmt|;
-comment|// TODO : Add metrics and populate it.
-DECL|method|getInstance (Configuration config, ContainerSet contSet, VolumeSet volSet, ContainerMetrics metrics)
-specifier|public
-specifier|static
-name|KeyValueHandler
-name|getInstance
-parameter_list|(
-name|Configuration
-name|config
-parameter_list|,
-name|ContainerSet
-name|contSet
-parameter_list|,
-name|VolumeSet
-name|volSet
-parameter_list|,
-name|ContainerMetrics
-name|metrics
-parameter_list|)
-block|{
-if|if
-condition|(
-name|INSTANCE
-operator|==
-literal|null
-condition|)
-block|{
-name|INSTANCE
-operator|=
-operator|new
-name|KeyValueHandler
-argument_list|(
-name|config
-argument_list|,
-name|contSet
-argument_list|,
-name|volSet
-argument_list|,
-name|metrics
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|INSTANCE
-return|;
-block|}
 DECL|method|KeyValueHandler (Configuration config, ContainerSet contSet, VolumeSet volSet, ContainerMetrics metrics)
-specifier|private
+specifier|public
 name|KeyValueHandler
 parameter_list|(
 name|Configuration

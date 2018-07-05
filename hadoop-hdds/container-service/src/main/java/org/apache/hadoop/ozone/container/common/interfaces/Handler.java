@@ -288,9 +288,8 @@ case|case
 name|KeyValueContainer
 case|:
 return|return
+operator|new
 name|KeyValueHandler
-operator|.
-name|getInstance
 argument_list|(
 name|config
 argument_list|,
