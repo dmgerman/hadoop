@@ -430,6 +430,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Tests fair scheduler configuration.  */
+end_comment
+
 begin_class
 DECL|class|TestFairSchedulerConfiguration
 specifier|public
