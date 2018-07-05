@@ -52,6 +52,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableMap
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -361,7 +375,7 @@ operator|.
 name|getContainerData
 argument_list|()
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 if|if
@@ -581,6 +595,27 @@ argument_list|()
 operator|.
 name|iterator
 argument_list|()
+return|;
+block|}
+comment|/**    * Return a copy of the containerMap    * @return containerMap    */
+DECL|method|getContainerMap ()
+specifier|public
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Container
+argument_list|>
+name|getContainerMap
+parameter_list|()
+block|{
+return|return
+name|ImmutableMap
+operator|.
+name|copyOf
+argument_list|(
+name|containerMap
+argument_list|)
 return|;
 block|}
 comment|/**    * A simple interface for container Iterations.    *<p/>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param startContainerId -  Return containers with Id>= startContainerId.    * @param count - how many to return    * @param data - Actual containerData    * @throws StorageContainerException    */
@@ -804,7 +839,7 @@ operator|.
 name|getContainerData
 argument_list|()
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 name|ContainerInfo
@@ -970,7 +1005,7 @@ literal|"Invalid Container state found: "
 operator|+
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 argument_list|,
 name|INVALID_CONTAINER_STATE
@@ -979,6 +1014,25 @@ throw|;
 block|}
 return|return
 name|state
+return|;
+block|}
+comment|// TODO: Implement BlockDeletingService
+DECL|method|chooseContainerForBlockDeletion ( int count)
+specifier|public
+name|List
+argument_list|<
+name|ContainerData
+argument_list|>
+name|chooseContainerForBlockDeletion
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+throws|throws
+name|StorageContainerException
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

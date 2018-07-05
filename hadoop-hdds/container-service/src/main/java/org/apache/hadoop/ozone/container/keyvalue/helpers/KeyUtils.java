@@ -325,15 +325,15 @@ specifier|private
 name|KeyUtils
 parameter_list|()
 block|{    }
-comment|/**    * Get a DB handler for a given container.    * If the handler doesn't exist in cache yet, first create one and    * add into cache. This function is called with containerManager    * ReadLock held.    *    * @param container container.    * @param conf configuration.    * @return MetadataStore handle.    * @throws StorageContainerException    */
-DECL|method|getDB (KeyValueContainerData container, Configuration conf)
+comment|/**    * Get a DB handler for a given container.    * If the handler doesn't exist in cache yet, first create one and    * add into cache. This function is called with containerManager    * ReadLock held.    *    * @param containerData containerData.    * @param conf configuration.    * @return MetadataStore handle.    * @throws StorageContainerException    */
+DECL|method|getDB (KeyValueContainerData containerData, Configuration conf)
 specifier|public
 specifier|static
 name|MetadataStore
 name|getDB
 parameter_list|(
 name|KeyValueContainerData
-name|container
+name|containerData
 parameter_list|,
 name|Configuration
 name|conf
@@ -345,7 +345,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|container
+name|containerData
 argument_list|)
 expr_stmt|;
 name|ContainerCache
@@ -369,7 +369,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|container
+name|containerData
 operator|.
 name|getDbFile
 argument_list|()
@@ -382,17 +382,17 @@ name|cache
 operator|.
 name|getDB
 argument_list|(
-name|container
+name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 argument_list|,
-name|container
+name|containerData
 operator|.
 name|getContainerDBType
 argument_list|()
 argument_list|,
-name|container
+name|containerData
 operator|.
 name|getDbFile
 argument_list|()
@@ -415,18 +415,21 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Unable to open DB Path: "
+literal|"Error opening DB. Container:%s "
 operator|+
-literal|"%s. ex: %s"
+literal|"ContainerPath:%s"
 argument_list|,
-name|container
+name|containerData
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|containerData
 operator|.
 name|getDbFile
 argument_list|()
-argument_list|,
-name|ex
 operator|.
-name|getMessage
+name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -485,7 +488,7 @@ name|removeDB
 argument_list|(
 name|container
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;

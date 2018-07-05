@@ -88,6 +88,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|container
 operator|.
 name|keyvalue
@@ -384,7 +398,7 @@ name|keyvalue
 operator|.
 name|KeyValueContainerData
 operator|.
-name|YAML_TAG
+name|KEYVALUE_YAML_TAG
 import|;
 end_import
 
@@ -507,7 +521,7 @@ name|class
 argument_list|,
 name|KeyValueContainerData
 operator|.
-name|YAML_TAG
+name|KEYVALUE_YAML_TAG
 argument_list|)
 expr_stmt|;
 name|Constructor
@@ -860,7 +874,7 @@ name|yamlConstructors
 operator|.
 name|put
 argument_list|(
-name|YAML_TAG
+name|KEYVALUE_YAML_TAG
 argument_list|,
 operator|new
 name|ConstructKeyValueContainerData
@@ -931,7 +945,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"layOutVersion"
+name|OzoneConsts
+operator|.
+name|LAYOUTVERSION
 argument_list|)
 decl_stmt|;
 name|int
@@ -952,7 +968,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"maxSizeGB"
+name|OzoneConsts
+operator|.
+name|MAX_SIZE_GB
 argument_list|)
 decl_stmt|;
 name|int
@@ -977,7 +995,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"containerId"
+name|OzoneConsts
+operator|.
+name|CONTAINER_ID
 argument_list|)
 argument_list|,
 name|lv
@@ -996,7 +1016,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"containerDBType"
+name|OzoneConsts
+operator|.
+name|CONTAINER_DB_TYPE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1011,7 +1033,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"metadataPath"
+name|OzoneConsts
+operator|.
+name|METADATA_PATH
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1026,7 +1050,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"chunksPath"
+name|OzoneConsts
+operator|.
+name|CHUNKS_PATH
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1045,7 +1071,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"metadata"
+name|OzoneConsts
+operator|.
+name|METADATA
 argument_list|)
 decl_stmt|;
 name|meta
@@ -1122,7 +1150,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"state"
+name|OzoneConsts
+operator|.
+name|STATE
 argument_list|)
 decl_stmt|;
 switch|switch
@@ -1195,7 +1225,9 @@ name|nodes
 operator|.
 name|get
 argument_list|(
-literal|"containerId"
+name|OzoneConsts
+operator|.
+name|CONTAINER_ID
 argument_list|)
 argument_list|)
 throw|;

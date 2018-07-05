@@ -536,9 +536,21 @@ name|chunkFile
 init|=
 name|ChunkUtils
 operator|.
-name|validateChunk
+name|getChunkFile
 argument_list|(
 name|containerData
+argument_list|,
+name|info
+argument_list|)
+decl_stmt|;
+name|boolean
+name|isOverwrite
+init|=
+name|ChunkUtils
+operator|.
+name|validateChunkForOverwrite
+argument_list|(
+name|chunkFile
 argument_list|,
 name|info
 argument_list|)
@@ -652,7 +664,12 @@ argument_list|,
 name|volumeIOStats
 argument_list|)
 expr_stmt|;
-comment|// Increment container stats here, as we directly write to chunk file.
+if|if
+condition|(
+operator|!
+name|isOverwrite
+condition|)
+block|{
 name|containerData
 operator|.
 name|incrBytesUsed
@@ -663,6 +680,7 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|containerData
 operator|.
 name|incrWriteCount

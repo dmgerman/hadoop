@@ -236,11 +236,9 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|common
+name|keyvalue
 operator|.
-name|impl
-operator|.
-name|ChunkManagerImpl
+name|KeyValueContainerData
 import|;
 end_import
 
@@ -258,7 +256,9 @@ name|container
 operator|.
 name|keyvalue
 operator|.
-name|KeyValueContainerData
+name|impl
+operator|.
+name|ChunkManagerImpl
 import|;
 end_import
 
@@ -1253,15 +1253,15 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param data - container data.    * @param info - chunk info.    * @return File    * @throws StorageContainerException    */
-DECL|method|validateChunk (KeyValueContainerData data, ChunkInfo info)
+comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param chunkFile - chunkFile to write data into.    * @param info - chunk info.    * @return boolean isOverwrite    * @throws StorageContainerException    */
+DECL|method|validateChunkForOverwrite (File chunkFile, ChunkInfo info)
 specifier|public
 specifier|static
-name|File
-name|validateChunk
+name|boolean
+name|validateChunkForOverwrite
 parameter_list|(
-name|KeyValueContainerData
-name|data
+name|File
+name|chunkFile
 parameter_list|,
 name|ChunkInfo
 name|info
@@ -1279,16 +1279,6 @@ argument_list|(
 name|ChunkManagerImpl
 operator|.
 name|class
-argument_list|)
-decl_stmt|;
-name|File
-name|chunkFile
-init|=
-name|getChunkFile
-argument_list|(
-name|data
-argument_list|,
-name|info
 argument_list|)
 decl_stmt|;
 if|if
@@ -1341,9 +1331,12 @@ name|OVERWRITE_FLAG_REQUIRED
 argument_list|)
 throw|;
 block|}
+return|return
+literal|true
+return|;
 block|}
 return|return
-name|chunkFile
+literal|false
 return|;
 block|}
 comment|/**    * Validates that Path to chunk file exists.    *    * @param containerData - Container Data    * @param info - Chunk info    * @return - File.    * @throws StorageContainerException    */
@@ -1612,18 +1605,18 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-literal|"Chunk data is null"
-argument_list|,
 name|data
+argument_list|,
+literal|"Chunk data is null"
 argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-literal|"Chunk Info is null"
-argument_list|,
 name|info
+argument_list|,
+literal|"Chunk Info is null"
 argument_list|)
 expr_stmt|;
 name|ReadChunkResponseProto

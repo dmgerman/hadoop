@@ -546,14 +546,9 @@ specifier|final
 name|AutoCloseableLock
 name|volumeSetLock
 decl_stmt|;
-DECL|field|dnDetails
-specifier|private
-specifier|final
-name|DatanodeDetails
-name|dnDetails
-decl_stmt|;
 DECL|field|datanodeUuid
 specifier|private
+specifier|final
 name|String
 name|datanodeUuid
 decl_stmt|;
@@ -562,12 +557,12 @@ specifier|private
 name|String
 name|clusterID
 decl_stmt|;
-DECL|method|VolumeSet (DatanodeDetails datanodeDetails, Configuration conf)
+DECL|method|VolumeSet (String dnUuid, Configuration conf)
 specifier|public
 name|VolumeSet
 parameter_list|(
-name|DatanodeDetails
-name|datanodeDetails
+name|String
+name|dnUuid
 parameter_list|,
 name|Configuration
 name|conf
@@ -577,7 +572,7 @@ name|DiskOutOfSpaceException
 block|{
 name|this
 argument_list|(
-name|datanodeDetails
+name|dnUuid
 argument_list|,
 literal|null
 argument_list|,
@@ -585,12 +580,12 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|VolumeSet (DatanodeDetails datanodeDetails, String clusterID, Configuration conf)
+DECL|method|VolumeSet (String dnUuid, String clusterID, Configuration conf)
 specifier|public
 name|VolumeSet
 parameter_list|(
-name|DatanodeDetails
-name|datanodeDetails
+name|String
+name|dnUuid
 parameter_list|,
 name|String
 name|clusterID
@@ -603,18 +598,9 @@ name|DiskOutOfSpaceException
 block|{
 name|this
 operator|.
-name|dnDetails
-operator|=
-name|datanodeDetails
-expr_stmt|;
-name|this
-operator|.
 name|datanodeUuid
 operator|=
-name|datanodeDetails
-operator|.
-name|getUuidString
-argument_list|()
+name|dnUuid
 expr_stmt|;
 name|this
 operator|.

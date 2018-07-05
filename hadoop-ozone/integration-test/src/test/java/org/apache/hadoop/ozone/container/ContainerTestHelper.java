@@ -497,6 +497,15 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+DECL|field|CONTAINER_MAX_SIZE_GB
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|CONTAINER_MAX_SIZE_GB
+init|=
+literal|1
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ContainerTestHelper ()
 specifier|private

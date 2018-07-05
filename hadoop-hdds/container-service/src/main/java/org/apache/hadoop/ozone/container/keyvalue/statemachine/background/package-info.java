@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.statemachine.background
+DECL|package|org.apache.hadoop.ozone.container.keyvalue.statemachine.background
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|common
+name|keyvalue
 operator|.
 name|statemachine
 operator|.

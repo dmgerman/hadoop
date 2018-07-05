@@ -592,6 +592,9 @@ operator|new
 name|VolumeSet
 argument_list|(
 name|datanodeDetails
+operator|.
+name|getUuidString
+argument_list|()
 argument_list|,
 name|conf
 argument_list|)

@@ -78,9 +78,9 @@ name|container
 operator|.
 name|common
 operator|.
-name|interfaces
+name|impl
 operator|.
-name|ContainerManager
+name|ContainerSet
 import|;
 end_import
 
@@ -96,7 +96,7 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|common
+name|keyvalue
 operator|.
 name|statemachine
 operator|.
@@ -200,12 +200,12 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|method|BlockDeletingServiceTestImpl (ContainerManager containerManager, int serviceInterval, Configuration conf)
+DECL|method|BlockDeletingServiceTestImpl (ContainerSet containerSet, int serviceInterval, Configuration conf)
 specifier|public
 name|BlockDeletingServiceTestImpl
 parameter_list|(
-name|ContainerManager
-name|containerManager
+name|ContainerSet
+name|containerSet
 parameter_list|,
 name|int
 name|serviceInterval
@@ -216,15 +216,11 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|containerManager
+name|containerSet
 argument_list|,
 name|serviceInterval
 argument_list|,
 name|SERVICE_TIMEOUT_IN_MILLISECONDS
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
 argument_list|,
 name|conf
 argument_list|)

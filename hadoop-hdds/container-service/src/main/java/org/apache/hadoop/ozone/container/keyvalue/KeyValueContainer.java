@@ -212,6 +212,46 @@ name|container
 operator|.
 name|common
 operator|.
+name|helpers
+operator|.
+name|ContainerUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|impl
+operator|.
+name|ContainerData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|impl
 operator|.
 name|ContainerDataYaml
@@ -879,7 +919,7 @@ name|containerId
 init|=
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 name|String
@@ -956,7 +996,7 @@ name|containerName
 argument_list|)
 decl_stmt|;
 comment|// Check if it is new Container.
-name|KeyValueContainerUtil
+name|ContainerUtils
 operator|.
 name|verifyIsNewContainer
 argument_list|(
@@ -1215,7 +1255,7 @@ name|containerId
 init|=
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 try|try
@@ -1477,7 +1517,7 @@ name|containerId
 init|=
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 try|try
@@ -1561,7 +1601,9 @@ name|StorageContainerException
 argument_list|(
 literal|"Container is an Inconsistent "
 operator|+
-literal|"state, missing required files(.container, .chksm)"
+literal|"state, missing required files(.container, .chksm). ContainerID: "
+operator|+
+name|containerId
 argument_list|,
 name|INVALID_CONTAINER_STATE
 argument_list|)
@@ -1804,7 +1846,7 @@ name|containerId
 init|=
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 try|try
@@ -1896,7 +1938,7 @@ name|containerId
 init|=
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 if|if
@@ -1921,7 +1963,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Invalid container data. Name : "
+literal|"Invalid container data. "
+operator|+
+literal|"ContainerID: "
 operator|+
 name|containerId
 argument_list|,
@@ -2103,7 +2147,7 @@ name|containerId
 init|=
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 decl_stmt|;
 if|if
@@ -2119,7 +2163,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Invalid container data. ID: {}"
+literal|"Invalid container data. ContainerID: {}"
 argument_list|,
 name|containerId
 argument_list|)
@@ -2130,7 +2174,7 @@ name|StorageContainerException
 argument_list|(
 literal|"Invalid container data. "
 operator|+
-literal|"Container Name : "
+literal|"ContainerID: "
 operator|+
 name|containerId
 argument_list|,
@@ -2154,7 +2198,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Updating a closed container is not allowed. ID: "
+literal|"Updating a closed container without force option is not allowed. "
+operator|+
+literal|"ContainerID: "
 operator|+
 name|containerId
 argument_list|,
@@ -2446,7 +2492,7 @@ argument_list|()
 argument_list|,
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 operator|+
 name|OzoneConsts
@@ -2473,7 +2519,7 @@ argument_list|()
 argument_list|,
 name|containerData
 operator|.
-name|getContainerId
+name|getContainerID
 argument_list|()
 operator|+
 name|OzoneConsts

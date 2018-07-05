@@ -58,7 +58,7 @@ name|container
 operator|.
 name|common
 operator|.
-name|helpers
+name|impl
 operator|.
 name|ContainerData
 import|;
@@ -86,6 +86,10 @@ end_import
 
 begin_comment
 comment|/**  * This interface is used for choosing desired containers for  * block deletion.  */
+end_comment
+
+begin_comment
+comment|// TODO: Fix ContainerDeletionChoosingPolicy to work with new StorageLayer
 end_comment
 
 begin_interface
