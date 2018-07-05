@@ -808,8 +808,6 @@ operator|.
 name|parseResourceConfigValue
 argument_list|(
 name|text
-argument_list|,
-literal|0L
 argument_list|)
 decl_stmt|;
 name|builder

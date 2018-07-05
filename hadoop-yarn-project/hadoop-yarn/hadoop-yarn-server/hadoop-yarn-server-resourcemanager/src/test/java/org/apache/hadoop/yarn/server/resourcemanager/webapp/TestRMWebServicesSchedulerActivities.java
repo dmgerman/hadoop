@@ -3271,9 +3271,7 @@ condition|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"Number of allocations is wrong in: "
-operator|+
-name|object
+literal|"Number of allocations is wrong"
 argument_list|,
 operator|(
 operator|(
