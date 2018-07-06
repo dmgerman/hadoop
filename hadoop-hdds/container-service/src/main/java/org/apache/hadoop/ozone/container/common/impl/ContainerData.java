@@ -188,6 +188,18 @@ name|AtomicLong
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|max
+import|;
+end_import
+
 begin_comment
 comment|/**  * ContainerData is the in-memory representation of container metadata and is  * represented on disk by the .container file.  */
 end_comment
@@ -292,6 +304,11 @@ DECL|field|volume
 specifier|private
 name|HddsVolume
 name|volume
+decl_stmt|;
+DECL|field|deleteTransactionId
+specifier|private
+name|long
+name|deleteTransactionId
 decl_stmt|;
 comment|/**    * Number of pending deletion blocks in container.    */
 DECL|field|numPendingDeletionBlocks
@@ -468,6 +485,12 @@ name|AtomicInteger
 argument_list|(
 literal|0
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+literal|0
 expr_stmt|;
 block|}
 comment|/**    * Returns the containerID.    */
@@ -1246,6 +1269,37 @@ name|builder
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+comment|/**    * Sets deleteTransactionId to latest delete transactionId for the container.    *    * @param transactionId latest transactionId of the container.    */
+DECL|method|updateDeleteTransactionId (long transactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|transactionId
+parameter_list|)
+block|{
+name|deleteTransactionId
+operator|=
+name|max
+argument_list|(
+name|transactionId
+argument_list|,
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Return the latest deleteTransactionId of the container.    */
+DECL|method|getDeleteTransactionId ()
+specifier|public
+name|long
+name|getDeleteTransactionId
+parameter_list|()
+block|{
+return|return
+name|deleteTransactionId
 return|;
 block|}
 block|}

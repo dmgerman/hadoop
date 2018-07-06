@@ -241,6 +241,15 @@ name|ContainerType
 name|getContainerType
 parameter_list|()
 function_decl|;
+comment|/**    * updates the DeleteTransactionId.    * @param deleteTransactionId    */
+DECL|method|updateDeleteTransactionId (long deleteTransactionId)
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|deleteTransactionId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

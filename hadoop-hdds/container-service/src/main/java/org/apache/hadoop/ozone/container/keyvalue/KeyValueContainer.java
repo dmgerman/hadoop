@@ -2320,6 +2320,25 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|updateDeleteTransactionId (long deleteTransactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|deleteTransactionId
+parameter_list|)
+block|{
+name|containerData
+operator|.
+name|updateDeleteTransactionId
+argument_list|(
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Acquire read lock.    */
 DECL|method|readLock ()
 specifier|public
