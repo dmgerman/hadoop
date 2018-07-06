@@ -246,7 +246,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|OzoneAclInfo
 import|;
@@ -266,7 +266,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|BucketInfo
 import|;
@@ -286,7 +286,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|KeyInfo
 import|;
@@ -306,7 +306,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|VolumeInfo
 import|;
@@ -326,7 +326,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|VolumeList
 import|;
@@ -604,7 +604,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_DB_NAME
+name|OM_DB_NAME
 import|;
 end_import
 
@@ -620,7 +620,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_USER_PREFIX
+name|OM_USER_PREFIX
 import|;
 end_import
 
@@ -636,7 +636,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_BUCKET_PREFIX
+name|OM_BUCKET_PREFIX
 import|;
 end_import
 
@@ -652,7 +652,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 import|;
 end_import
 
@@ -821,7 +821,7 @@ literal|"INSERT INTO openContainer (containerName, containerUsed) "
 operator|+
 literal|"VALUES (\"%s\", \"%s\")"
 decl_stmt|;
-comment|// for ksm.db
+comment|// for om.db
 DECL|field|CREATE_VOLUME_LIST
 specifier|private
 specifier|static
@@ -1532,7 +1532,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|KSM_DB_NAME
+name|OM_DB_NAME
 argument_list|)
 condition|)
 block|{
@@ -1540,10 +1540,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Converting ksm DB"
+literal|"Converting om DB"
 argument_list|)
 expr_stmt|;
-name|convertKSMDB
+name|convertOMDB
 argument_list|(
 name|dbPath
 argument_list|,
@@ -1640,11 +1640,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convert ksm.db to sqlite db file. With following schema.    * (* for primary key)    *    * 1. for key type USER, it contains a username and a list volumes    * volumeList    * --------------------------------    *   userName*     |  volumeName*    * --------------------------------    *    * 2. for key type VOLUME:    *    * volumeInfo    * ----------------------------------------------    * adminName | ownerName* | volumeName* | aclID    * ----------------------------------------------    *    * aclInfo    * ----------------------------------------------    * aclEntryID* | type* | userName* | rights    * ----------------------------------------------    *    * 3. for key type BUCKET    * bucketInfo    * --------------------------------------------------------    * volumeName* | bucketName* | versionEnabled | storageType    * --------------------------------------------------------    *    * TODO : the following table will be changed when key partition is added.    * Only has the minimum entries for test purpose now.    * 4. for key type KEY    * -----------------------------------------------    * volumeName* | bucketName* | keyName* | dataSize    * -----------------------------------------------    *    *    *    * @param dbPath    * @param outPath    * @throws Exception    */
-DECL|method|convertKSMDB (Path dbPath, Path outPath)
+comment|/**    * Convert om.db to sqlite db file. With following schema.    * (* for primary key)    *    * 1. for key type USER, it contains a username and a list volumes    * volumeList    * --------------------------------    *   userName*     |  volumeName*    * --------------------------------    *    * 2. for key type VOLUME:    *    * volumeInfo    * ----------------------------------------------    * adminName | ownerName* | volumeName* | aclID    * ----------------------------------------------    *    * aclInfo    * ----------------------------------------------    * aclEntryID* | type* | userName* | rights    * ----------------------------------------------    *    * 3. for key type BUCKET    * bucketInfo    * --------------------------------------------------------    * volumeName* | bucketName* | versionEnabled | storageType    * --------------------------------------------------------    *    * TODO : the following table will be changed when key partition is added.    * Only has the minimum entries for test purpose now.    * 4. for key type KEY    * -----------------------------------------------    * volumeName* | bucketName* | keyName* | dataSize    * -----------------------------------------------    *    *    *    * @param dbPath    * @param outPath    * @throws Exception    */
+DECL|method|convertOMDB (Path dbPath, Path outPath)
 specifier|private
 name|void
-name|convertKSMDB
+name|convertOMDB
 parameter_list|(
 name|Path
 name|dbPath
@@ -1659,7 +1659,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Create tables for sql ksm db."
+literal|"Create tables for sql om db."
 argument_list|)
 expr_stmt|;
 name|File
@@ -1773,7 +1773,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|insertKSMDB
+name|insertOMDB
 argument_list|(
 name|conn
 argument_list|,
@@ -1815,10 +1815,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|insertKSMDB (Connection conn, KeyType type, String keyName, byte[] value)
+DECL|method|insertOMDB (Connection conn, KeyType type, String keyName, byte[] value)
 specifier|private
 name|void
-name|insertKSMDB
+name|insertOMDB
 parameter_list|(
 name|Connection
 name|conn
@@ -2114,7 +2114,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unknown key from ksm.db"
+literal|"Unknown key from om.db"
 argument_list|)
 throw|;
 block|}
@@ -2134,7 +2134,7 @@ name|key
 operator|.
 name|startsWith
 argument_list|(
-name|KSM_USER_PREFIX
+name|OM_USER_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -2151,7 +2151,7 @@ name|key
 operator|.
 name|startsWith
 argument_list|(
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -2160,14 +2160,14 @@ name|key
 operator|.
 name|replaceFirst
 argument_list|(
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 argument_list|,
 literal|""
 argument_list|)
 operator|.
 name|contains
 argument_list|(
-name|KSM_BUCKET_PREFIX
+name|OM_BUCKET_PREFIX
 argument_list|)
 condition|?
 name|KeyType

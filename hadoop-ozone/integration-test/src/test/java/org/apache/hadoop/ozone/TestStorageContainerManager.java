@@ -170,6 +170,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmKeyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|commands
@@ -594,29 +612,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|ksm
-operator|.
-name|helpers
-operator|.
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 import|;
 end_import
 
@@ -1333,7 +1333,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|keyLocations
 init|=
@@ -1722,7 +1722,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|keyLocations
 init|=
@@ -1872,7 +1872,7 @@ literal|10000
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createDeleteTXLog (DeletedBlockLog delLog, Map<String, KsmKeyInfo> keyLocations, TestStorageContainerManagerHelper helper)
+DECL|method|createDeleteTXLog (DeletedBlockLog delLog, Map<String, OmKeyInfo> keyLocations, TestStorageContainerManagerHelper helper)
 specifier|private
 name|Map
 argument_list|<
@@ -1892,7 +1892,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|keyLocations
 parameter_list|,
@@ -1924,7 +1924,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|entry
 range|:
@@ -1970,7 +1970,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|KsmKeyInfo
+name|OmKeyInfo
 name|info
 range|:
 name|keyLocations
@@ -2035,7 +2035,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|KsmKeyInfo
+name|OmKeyInfo
 name|info
 range|:
 name|keyLocations
@@ -2046,7 +2046,7 @@ control|)
 block|{
 name|List
 argument_list|<
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 argument_list|>
 name|list
 init|=

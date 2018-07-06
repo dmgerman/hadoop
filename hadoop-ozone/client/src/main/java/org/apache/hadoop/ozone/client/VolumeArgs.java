@@ -182,7 +182,7 @@ return|return
 name|acls
 return|;
 block|}
-comment|/**    * Returns new builder class that builds a KsmVolumeArgs.    *    * @return Builder    */
+comment|/**    * Returns new builder class that builds a OmVolumeArgs.    *    * @return Builder    */
 DECL|method|newBuilder ()
 specifier|public
 specifier|static
@@ -200,7 +200,7 @@ name|Builder
 argument_list|()
 return|;
 block|}
-comment|/**    * Builder for KsmVolumeArgs.    */
+comment|/**    * Builder for OmVolumeArgs.    */
 DECL|class|Builder
 specifier|public
 specifier|static

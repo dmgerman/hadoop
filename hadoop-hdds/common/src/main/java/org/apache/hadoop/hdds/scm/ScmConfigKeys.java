@@ -390,7 +390,7 @@ name|OZONE_SCM_DATANODE_PORT_DEFAULT
 init|=
 literal|9861
 decl_stmt|;
-comment|// OZONE_KSM_PORT_DEFAULT = 9862
+comment|// OZONE_OM_PORT_DEFAULT = 9862
 DECL|field|OZONE_SCM_BLOCK_CLIENT_PORT_KEY
 specifier|public
 specifier|static

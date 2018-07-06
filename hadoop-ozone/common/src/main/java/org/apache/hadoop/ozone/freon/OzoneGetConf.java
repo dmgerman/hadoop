@@ -206,7 +206,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|KsmUtils
+name|OmUtils
 import|;
 end_import
 
@@ -315,12 +315,12 @@ operator|+
 literal|"that need to decommissioned."
 argument_list|)
 block|,
-DECL|enumConstant|KEYSPACEMANAGER
-name|KEYSPACEMANAGER
+DECL|enumConstant|OZONEMANAGER
+name|OZONEMANAGER
 argument_list|(
-literal|"-keyspacemanagers"
+literal|"-ozonemanagers"
 argument_list|,
-literal|"gets list of ozone key space manager nodes in the cluster"
+literal|"gets list of Ozone Manager nodes in the cluster"
 argument_list|)
 block|,
 DECL|enumConstant|STORAGECONTAINERMANAGER
@@ -376,14 +376,14 @@ name|StringUtils
 operator|.
 name|toLowerCase
 argument_list|(
-name|KEYSPACEMANAGER
+name|OZONEMANAGER
 operator|.
 name|getName
 argument_list|()
 argument_list|)
 argument_list|,
 operator|new
-name|KeySpaceManagersCommandHandler
+name|OzoneManagersCommandHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1168,11 +1168,11 @@ literal|0
 return|;
 block|}
 block|}
-comment|/**    * Handler for {@link Command#KEYSPACEMANAGER}.    */
-DECL|class|KeySpaceManagersCommandHandler
+comment|/**    * Handler for {@link Command#OZONEMANAGER}.    */
+DECL|class|OzoneManagersCommandHandler
 specifier|static
 class|class
-name|KeySpaceManagersCommandHandler
+name|OzoneManagersCommandHandler
 extends|extends
 name|CommandHandler
 block|{
@@ -1197,9 +1197,9 @@ name|tool
 operator|.
 name|printOut
 argument_list|(
-name|KsmUtils
+name|OmUtils
 operator|.
-name|getKsmAddress
+name|getOmAddress
 argument_list|(
 name|tool
 operator|.

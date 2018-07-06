@@ -162,7 +162,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|KsmUtils
+name|OmUtils
 import|;
 end_import
 
@@ -426,11 +426,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmBucketArgs
+name|OmBucketArgs
 import|;
 end_import
 
@@ -444,11 +444,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmBucketInfo
+name|OmBucketInfo
 import|;
 end_import
 
@@ -462,11 +462,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyArgs
+name|OmKeyArgs
 import|;
 end_import
 
@@ -480,11 +480,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyInfo
+name|OmKeyInfo
 import|;
 end_import
 
@@ -498,11 +498,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmVolumeArgs
+name|OmVolumeArgs
 import|;
 end_import
 
@@ -516,7 +516,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
@@ -534,7 +534,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
@@ -552,11 +552,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|protocolPB
 operator|.
-name|KeySpaceManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -570,11 +570,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|protocolPB
 operator|.
-name|KeySpaceManagerProtocolPB
+name|OzoneManagerProtocolPB
 import|;
 end_import
 
@@ -616,9 +616,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 import|;
 end_import
 
@@ -636,7 +636,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|ServicePort
 import|;
@@ -672,7 +672,7 @@ name|ozone
 operator|.
 name|protocolPB
 operator|.
-name|KSMPBHelper
+name|OMPBHelper
 import|;
 end_import
 
@@ -851,7 +851,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Ozone RPC Client Implementation, it connects to KSM, SCM and DataNode  * to execute client calls. This uses RPC protocol for communication  * with the servers.  */
+comment|/**  * Ozone RPC Client Implementation, it connects to OM, SCM and DataNode  * to execute client calls. This uses RPC protocol for communication  * with the servers.  */
 end_comment
 
 begin_class
@@ -892,9 +892,9 @@ name|storageContainerLocationClient
 decl_stmt|;
 specifier|private
 specifier|final
-name|KeySpaceManagerProtocolClientSideTranslatorPB
-DECL|field|keySpaceManagerClient
-name|keySpaceManagerClient
+name|OzoneManagerProtocolClientSideTranslatorPB
+DECL|field|ozoneManagerClient
+name|ozoneManagerClient
 decl_stmt|;
 DECL|field|xceiverClientManager
 specifier|private
@@ -975,13 +975,13 @@ name|conf
 operator|.
 name|getEnum
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_USER_RIGHTS
+name|OZONE_OM_USER_RIGHTS
 argument_list|,
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_USER_RIGHTS_DEFAULT
+name|OZONE_OM_USER_RIGHTS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -992,33 +992,33 @@ name|conf
 operator|.
 name|getEnum
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_GROUP_RIGHTS
+name|OZONE_OM_GROUP_RIGHTS
 argument_list|,
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_GROUP_RIGHTS_DEFAULT
+name|OZONE_OM_GROUP_RIGHTS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|long
-name|ksmVersion
+name|omVersion
 init|=
 name|RPC
 operator|.
 name|getProtocolVersion
 argument_list|(
-name|KeySpaceManagerProtocolPB
+name|OzoneManagerProtocolPB
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress
-name|ksmAddress
+name|omAddress
 init|=
-name|KsmUtils
+name|OmUtils
 operator|.
-name|getKsmAddressForClients
+name|getOmAddressForClients
 argument_list|(
 name|conf
 argument_list|)
@@ -1029,7 +1029,7 @@ name|setProtocolEngine
 argument_list|(
 name|conf
 argument_list|,
-name|KeySpaceManagerProtocolPB
+name|OzoneManagerProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -1040,22 +1040,22 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|=
 operator|new
-name|KeySpaceManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocolClientSideTranslatorPB
 argument_list|(
 name|RPC
 operator|.
 name|getProxy
 argument_list|(
-name|KeySpaceManagerProtocolPB
+name|OzoneManagerProtocolPB
 operator|.
 name|class
 argument_list|,
-name|ksmVersion
+name|omVersion
 argument_list|,
-name|ksmAddress
+name|omAddress
 argument_list|,
 name|UserGroupInformation
 operator|.
@@ -1236,7 +1236,7 @@ name|ServiceInfo
 argument_list|>
 name|services
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|getServiceList
 argument_list|()
@@ -1536,12 +1536,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|KsmVolumeArgs
+name|OmVolumeArgs
 operator|.
 name|Builder
 name|builder
 init|=
-name|KsmVolumeArgs
+name|OmVolumeArgs
 operator|.
 name|newBuilder
 argument_list|()
@@ -1601,7 +1601,7 @@ name|builder
 operator|.
 name|addOzoneAcls
 argument_list|(
-name|KSMPBHelper
+name|OMPBHelper
 operator|.
 name|convertOzoneAcl
 argument_list|(
@@ -1623,7 +1623,7 @@ argument_list|,
 name|quota
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|createVolume
 argument_list|(
@@ -1664,7 +1664,7 @@ argument_list|(
 name|owner
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|setOwner
 argument_list|(
@@ -1712,7 +1712,7 @@ operator|.
 name|sizeInBytes
 argument_list|()
 decl_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|setQuota
 argument_list|(
@@ -1742,10 +1742,10 @@ argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
-name|KsmVolumeArgs
+name|OmVolumeArgs
 name|volume
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|getVolumeInfo
 argument_list|(
@@ -1798,7 +1798,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|KSMPBHelper
+name|OMPBHelper
 operator|::
 name|convertOzoneAcl
 argument_list|)
@@ -1857,7 +1857,7 @@ argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|deleteVolume
 argument_list|(
@@ -1889,11 +1889,11 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|KsmVolumeArgs
+name|OmVolumeArgs
 argument_list|>
 name|volumes
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|listAllVolumes
 argument_list|(
@@ -1959,7 +1959,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|KSMPBHelper
+name|OMPBHelper
 operator|::
 name|convertOzoneAcl
 argument_list|)
@@ -2010,11 +2010,11 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|KsmVolumeArgs
+name|OmVolumeArgs
 argument_list|>
 name|volumes
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|listVolumeByUser
 argument_list|(
@@ -2082,7 +2082,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|KSMPBHelper
+name|OMPBHelper
 operator|::
 name|convertOzoneAcl
 argument_list|)
@@ -2323,12 +2323,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|KsmBucketInfo
+name|OmBucketInfo
 operator|.
 name|Builder
 name|builder
 init|=
-name|KsmBucketInfo
+name|OmBucketInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -2391,7 +2391,7 @@ argument_list|,
 name|storageType
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|createBucket
 argument_list|(
@@ -2440,12 +2440,12 @@ argument_list|(
 name|addAcls
 argument_list|)
 expr_stmt|;
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|Builder
 name|builder
 init|=
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|newBuilder
 argument_list|()
@@ -2467,7 +2467,7 @@ argument_list|(
 name|addAcls
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|setBucketProperty
 argument_list|(
@@ -2516,12 +2516,12 @@ argument_list|(
 name|removeAcls
 argument_list|)
 expr_stmt|;
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|Builder
 name|builder
 init|=
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|newBuilder
 argument_list|()
@@ -2543,7 +2543,7 @@ argument_list|(
 name|removeAcls
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|setBucketProperty
 argument_list|(
@@ -2589,12 +2589,12 @@ argument_list|(
 name|versioning
 argument_list|)
 expr_stmt|;
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|Builder
 name|builder
 init|=
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|newBuilder
 argument_list|()
@@ -2616,7 +2616,7 @@ argument_list|(
 name|versioning
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|setBucketProperty
 argument_list|(
@@ -2662,12 +2662,12 @@ argument_list|(
 name|storageType
 argument_list|)
 expr_stmt|;
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|Builder
 name|builder
 init|=
-name|KsmBucketArgs
+name|OmBucketArgs
 operator|.
 name|newBuilder
 argument_list|()
@@ -2689,7 +2689,7 @@ argument_list|(
 name|storageType
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|setBucketProperty
 argument_list|(
@@ -2725,7 +2725,7 @@ argument_list|,
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|deleteBucket
 argument_list|(
@@ -2776,10 +2776,10 @@ argument_list|,
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|KsmBucketInfo
+name|OmBucketInfo
 name|bucketArgs
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|getBucketInfo
 argument_list|(
@@ -2855,11 +2855,11 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|KsmBucketInfo
+name|OmBucketInfo
 argument_list|>
 name|buckets
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|listBuckets
 argument_list|(
@@ -2989,11 +2989,11 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -3054,7 +3054,7 @@ decl_stmt|;
 name|OpenKeySession
 name|openKey
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|openKey
 argument_list|(
@@ -3085,9 +3085,9 @@ argument_list|(
 name|storageContainerLocationClient
 argument_list|)
 operator|.
-name|setKsmClient
+name|setOmClient
 argument_list|(
-name|keySpaceManagerClient
+name|ozoneManagerClient
 argument_list|)
 operator|.
 name|setChunkSize
@@ -3205,11 +3205,11 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -3232,10 +3232,10 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|KsmKeyInfo
+name|OmKeyInfo
 name|keyInfo
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|lookupKey
 argument_list|(
@@ -3247,7 +3247,7 @@ name|lengthInputStream
 init|=
 name|ChunkGroupInputStream
 operator|.
-name|getFromKsmKeyInfo
+name|getFromOmKeyInfo
 argument_list|(
 name|keyInfo
 argument_list|,
@@ -3307,11 +3307,11 @@ argument_list|(
 name|keyName
 argument_list|)
 expr_stmt|;
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -3334,7 +3334,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|deleteKey
 argument_list|(
@@ -3382,11 +3382,11 @@ argument_list|,
 name|toKeyName
 argument_list|)
 expr_stmt|;
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -3409,7 +3409,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|renameKey
 argument_list|(
@@ -3449,11 +3449,11 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|keys
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|listKeys
 argument_list|(
@@ -3562,11 +3562,11 @@ argument_list|(
 name|keyName
 argument_list|)
 expr_stmt|;
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -3589,10 +3589,10 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|KsmKeyInfo
+name|OmKeyInfo
 name|keyInfo
 init|=
-name|keySpaceManagerClient
+name|ozoneManagerClient
 operator|.
 name|lookupKey
 argument_list|(
@@ -3660,7 +3660,7 @@ name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
-name|keySpaceManagerClient
+name|ozoneManagerClient
 argument_list|)
 expr_stmt|;
 name|IOUtils

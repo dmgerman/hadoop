@@ -461,14 +461,14 @@ name|DELETED_BLOCK_DB
 init|=
 literal|"deletedBlock.db"
 decl_stmt|;
-DECL|field|KSM_DB_NAME
+DECL|field|OM_DB_NAME
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KSM_DB_NAME
+name|OM_DB_NAME
 init|=
-literal|"ksm.db"
+literal|"om.db"
 decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning
@@ -568,44 +568,44 @@ name|OPEN_KEY_ID_DELIMINATOR
 init|=
 literal|"#"
 decl_stmt|;
-comment|/**    * KSM LevelDB prefixes.    *    * KSM DB stores metadata as KV pairs with certain prefixes,    * prefix is used to improve the performance to get related    * metadata.    *    * KSM DB Schema:    *  ----------------------------------------------------------    *  |  KEY                                     |     VALUE   |    *  ----------------------------------------------------------    *  | $userName                                |  VolumeList |    *  ----------------------------------------------------------    *  | /#volumeName                             |  VolumeInfo |    *  ----------------------------------------------------------    *  | /#volumeName/#bucketName                 |  BucketInfo |    *  ----------------------------------------------------------    *  | /volumeName/bucketName/keyName           |  KeyInfo    |    *  ----------------------------------------------------------    *  | #deleting#/volumeName/bucketName/keyName |  KeyInfo    |    *  ----------------------------------------------------------    */
-DECL|field|KSM_VOLUME_PREFIX
+comment|/**    * OM LevelDB prefixes.    *    * OM DB stores metadata as KV pairs with certain prefixes,    * prefix is used to improve the performance to get related    * metadata.    *    * OM DB Schema:    *  ----------------------------------------------------------    *  |  KEY                                     |     VALUE   |    *  ----------------------------------------------------------    *  | $userName                                |  VolumeList |    *  ----------------------------------------------------------    *  | /#volumeName                             |  VolumeInfo |    *  ----------------------------------------------------------    *  | /#volumeName/#bucketName                 |  BucketInfo |    *  ----------------------------------------------------------    *  | /volumeName/bucketName/keyName           |  KeyInfo    |    *  ----------------------------------------------------------    *  | #deleting#/volumeName/bucketName/keyName |  KeyInfo    |    *  ----------------------------------------------------------    */
+DECL|field|OM_VOLUME_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 init|=
 literal|"/#"
 decl_stmt|;
-DECL|field|KSM_BUCKET_PREFIX
+DECL|field|OM_BUCKET_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KSM_BUCKET_PREFIX
+name|OM_BUCKET_PREFIX
 init|=
 literal|"/#"
 decl_stmt|;
-DECL|field|KSM_KEY_PREFIX
+DECL|field|OM_KEY_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KSM_KEY_PREFIX
+name|OM_KEY_PREFIX
 init|=
 literal|"/"
 decl_stmt|;
-DECL|field|KSM_USER_PREFIX
+DECL|field|OM_USER_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KSM_USER_PREFIX
+name|OM_USER_PREFIX
 init|=
 literal|"$"
 decl_stmt|;
-comment|/**    * Max KSM Quota size of 1024 PB.    */
+comment|/**    * Max OM Quota size of 1024 PB.    */
 DECL|field|MAX_QUOTA_IN_BYTES
 specifier|public
 specifier|static
@@ -659,16 +659,16 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|// The ServiceListJSONServlet context attribute where KeySpaceManager
+comment|// The ServiceListJSONServlet context attribute where OzoneManager
 comment|// instance gets stored.
-DECL|field|KSM_CONTEXT_ATTRIBUTE
+DECL|field|OM_CONTEXT_ATTRIBUTE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|KSM_CONTEXT_ATTRIBUTE
+name|OM_CONTEXT_ATTRIBUTE
 init|=
-literal|"ozone.ksm"
+literal|"ozone.om"
 decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private

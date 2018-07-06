@@ -360,9 +360,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KeySpaceManager
+name|OzoneManager
 import|;
 end_import
 
@@ -376,11 +376,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyArgs
+name|OmKeyArgs
 import|;
 end_import
 
@@ -394,11 +394,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 import|;
 end_import
 
@@ -412,11 +412,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
 import|;
 end_import
 
@@ -600,11 +600,11 @@ name|scm
 init|=
 literal|null
 decl_stmt|;
-DECL|field|ksm
+DECL|field|om
 specifier|private
 specifier|static
-name|KeySpaceManager
-name|ksm
+name|OzoneManager
+name|om
 init|=
 literal|null
 decl_stmt|;
@@ -768,11 +768,11 @@ operator|.
 name|getContainerManager
 argument_list|()
 expr_stmt|;
-name|ksm
+name|om
 operator|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 expr_stmt|;
 name|scm
@@ -924,11 +924,11 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -976,11 +976,11 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|KsmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
 argument_list|>
-name|ksmKeyLocationInfoGroupList
+name|omKeyLocationInfoGroupList
 init|=
-name|ksm
+name|om
 operator|.
 name|lookupKey
 argument_list|(
@@ -997,7 +997,7 @@ name|assertTrue
 argument_list|(
 name|verifyBlocksCreated
 argument_list|(
-name|ksmKeyLocationInfoGroupList
+name|omKeyLocationInfoGroupList
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1016,7 +1016,7 @@ comment|// Delete transactionIds for the containers should be 0
 name|matchContainerTransactionIds
 argument_list|()
 expr_stmt|;
-name|ksm
+name|om
 operator|.
 name|deleteKey
 argument_list|(
@@ -1037,7 +1037,7 @@ name|assertTrue
 argument_list|(
 name|verifyBlocksDeleted
 argument_list|(
-name|ksmKeyLocationInfoGroupList
+name|omKeyLocationInfoGroupList
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1179,16 +1179,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyBlocksCreated ( List<KsmKeyLocationInfoGroup> ksmKeyLocationInfoGroups)
+DECL|method|verifyBlocksCreated ( List<OmKeyLocationInfoGroup> omKeyLocationInfoGroups)
 specifier|private
 name|boolean
 name|verifyBlocksCreated
 parameter_list|(
 name|List
 argument_list|<
-name|KsmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
 argument_list|>
-name|ksmKeyLocationInfoGroups
+name|omKeyLocationInfoGroups
 parameter_list|)
 throws|throws
 name|IOException
@@ -1261,20 +1261,20 @@ expr_stmt|;
 block|}
 block|}
 argument_list|,
-name|ksmKeyLocationInfoGroups
+name|omKeyLocationInfoGroups
 argument_list|)
 return|;
 block|}
-DECL|method|verifyBlocksDeleted ( List<KsmKeyLocationInfoGroup> ksmKeyLocationInfoGroups)
+DECL|method|verifyBlocksDeleted ( List<OmKeyLocationInfoGroup> omKeyLocationInfoGroups)
 specifier|private
 name|boolean
 name|verifyBlocksDeleted
 parameter_list|(
 name|List
 argument_list|<
-name|KsmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
 argument_list|>
-name|ksmKeyLocationInfoGroups
+name|omKeyLocationInfoGroups
 parameter_list|)
 throws|throws
 name|IOException
@@ -1400,11 +1400,11 @@ expr_stmt|;
 block|}
 block|}
 argument_list|,
-name|ksmKeyLocationInfoGroups
+name|omKeyLocationInfoGroups
 argument_list|)
 return|;
 block|}
-DECL|method|performOperationOnKeyContainers (Consumer<BlockID> consumer, List<KsmKeyLocationInfoGroup> ksmKeyLocationInfoGroups)
+DECL|method|performOperationOnKeyContainers (Consumer<BlockID> consumer, List<OmKeyLocationInfoGroup> omKeyLocationInfoGroups)
 specifier|private
 name|boolean
 name|performOperationOnKeyContainers
@@ -1417,9 +1417,9 @@ name|consumer
 parameter_list|,
 name|List
 argument_list|<
-name|KsmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
 argument_list|>
-name|ksmKeyLocationInfoGroups
+name|omKeyLocationInfoGroups
 parameter_list|)
 throws|throws
 name|IOException
@@ -1428,35 +1428,35 @@ try|try
 block|{
 for|for
 control|(
-name|KsmKeyLocationInfoGroup
-name|ksmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
+name|omKeyLocationInfoGroup
 range|:
-name|ksmKeyLocationInfoGroups
+name|omKeyLocationInfoGroups
 control|)
 block|{
 name|List
 argument_list|<
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 argument_list|>
-name|ksmKeyLocationInfos
+name|omKeyLocationInfos
 init|=
-name|ksmKeyLocationInfoGroup
+name|omKeyLocationInfoGroup
 operator|.
 name|getLocationList
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|KsmKeyLocationInfo
-name|ksmKeyLocationInfo
+name|OmKeyLocationInfo
+name|omKeyLocationInfo
 range|:
-name|ksmKeyLocationInfos
+name|omKeyLocationInfos
 control|)
 block|{
 name|BlockID
 name|blockID
 init|=
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getBlockID
 argument_list|()

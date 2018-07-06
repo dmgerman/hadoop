@@ -167,7 +167,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Storage information file. This Class defines the methods to check  * the consistency of the storage dir and the version file.  *<p>  * Local storage information is stored in a separate file VERSION.  * It contains type of the node,  * the storage layout version, the SCM id, and  * the KSM/SCM state creation time.  *  */
+comment|/**  * Storage information file. This Class defines the methods to check  * the consistency of the storage dir and the version file.  *<p>  * Local storage information is stored in a separate file VERSION.  * It contains type of the node,  * the storage layout version, the SCM id, and  * the OM/SCM state creation time.  *  */
 end_comment
 
 begin_class
@@ -483,7 +483,7 @@ name|Properties
 name|getNodeProperties
 parameter_list|()
 function_decl|;
-comment|/**    * Sets the Node properties spaecific to KSM/SCM.    */
+comment|/**    * Sets the Node properties spaecific to OM/SCM.    */
 DECL|method|setNodeProperties ()
 specifier|private
 name|void
@@ -548,7 +548,7 @@ name|STORAGE_DIR_CURRENT
 argument_list|)
 return|;
 block|}
-comment|/**    * File {@code VERSION} contains the following fields:    *<ol>    *<li>node type</li>    *<li>KSM/SCM state creation time</li>    *<li>other fields specific for this node type</li>    *</ol>    * The version file is always written last during storage directory updates.    * The existence of the version file indicates that all other files have    * been successfully written in the storage directory, the storage is valid    * and does not need to be recovered.    *    * @return the version file path    */
+comment|/**    * File {@code VERSION} contains the following fields:    *<ol>    *<li>node type</li>    *<li>OM/SCM state creation time</li>    *<li>other fields specific for this node type</li>    *</ol>    * The version file is always written last during storage directory updates.    * The existence of the version file indicates that all other files have    * been successfully written in the storage directory, the storage is valid    * and does not need to be recovered.    *    * @return the version file path    */
 DECL|method|getVersionFile ()
 specifier|private
 name|File

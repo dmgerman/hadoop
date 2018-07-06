@@ -532,9 +532,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KeySpaceManager
+name|OzoneManager
 import|;
 end_import
 
@@ -548,11 +548,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyArgs
+name|OmKeyArgs
 import|;
 end_import
 
@@ -566,11 +566,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyInfo
+name|OmKeyInfo
 import|;
 end_import
 
@@ -584,11 +584,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmVolumeArgs
+name|OmVolumeArgs
 import|;
 end_import
 
@@ -602,11 +602,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmBucketInfo
+name|OmBucketInfo
 import|;
 end_import
 
@@ -620,11 +620,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 import|;
 end_import
 
@@ -642,7 +642,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|Status
 import|;
@@ -4147,13 +4147,13 @@ name|count
 return|;
 block|}
 block|}
-DECL|method|countKsmKeys (KeySpaceManager ksm)
+DECL|method|countOmKeys (OzoneManager om)
 specifier|private
 name|int
-name|countKsmKeys
+name|countOmKeys
 parameter_list|(
-name|KeySpaceManager
-name|ksm
+name|OzoneManager
+name|om
 parameter_list|)
 throws|throws
 name|IOException
@@ -4165,11 +4165,11 @@ literal|0
 decl_stmt|;
 name|List
 argument_list|<
-name|KsmVolumeArgs
+name|OmVolumeArgs
 argument_list|>
 name|volumes
 init|=
-name|ksm
+name|om
 operator|.
 name|listAllVolumes
 argument_list|(
@@ -4184,7 +4184,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|KsmVolumeArgs
+name|OmVolumeArgs
 name|volume
 range|:
 name|volumes
@@ -4192,11 +4192,11 @@ control|)
 block|{
 name|List
 argument_list|<
-name|KsmBucketInfo
+name|OmBucketInfo
 argument_list|>
 name|buckets
 init|=
-name|ksm
+name|om
 operator|.
 name|listBuckets
 argument_list|(
@@ -4216,7 +4216,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|KsmBucketInfo
+name|OmBucketInfo
 name|bucket
 range|:
 name|buckets
@@ -4224,11 +4224,11 @@ control|)
 block|{
 name|List
 argument_list|<
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|keys
 init|=
-name|ksm
+name|om
 operator|.
 name|listKeys
 argument_list|(
@@ -4274,12 +4274,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|KeySpaceManager
-name|ksm
+name|OzoneManager
+name|ozoneManager
 init|=
 name|ozoneCluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 decl_stmt|;
 comment|// To avoid interference from other test cases,
@@ -4287,9 +4287,9 @@ comment|// we collect number of existing keys at the beginning
 name|int
 name|numOfExistedKeys
 init|=
-name|countKsmKeys
+name|countOmKeys
 argument_list|(
-name|ksm
+name|ozoneManager
 argument_list|)
 decl_stmt|;
 comment|// Keep tracking bucket keys info while creating them
@@ -4440,11 +4440,11 @@ control|)
 block|{
 name|List
 argument_list|<
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|createdKeys
 init|=
-name|ksm
+name|ozoneManager
 operator|.
 name|listKeys
 argument_list|(
@@ -4469,7 +4469,7 @@ comment|// Memorize chunks that has been created,
 comment|// so we can verify actual deletions at DN side later.
 for|for
 control|(
-name|KsmKeyInfo
+name|OmKeyInfo
 name|keyInfo
 range|:
 name|createdKeys
@@ -4477,7 +4477,7 @@ control|)
 block|{
 name|List
 argument_list|<
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 argument_list|>
 name|locations
 init|=
@@ -4491,7 +4491,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 name|location
 range|:
 name|locations
@@ -4638,7 +4638,7 @@ argument_list|,
 name|numOfCreatedKeys
 argument_list|)
 expr_stmt|;
-comment|// Ensure all keys are visible from KSM.
+comment|// Ensure all keys are visible from OM.
 comment|// Total number should be numOfCreated + numOfExisted
 name|Assert
 operator|.
@@ -4648,9 +4648,9 @@ literal|20
 operator|+
 name|numOfExistedKeys
 argument_list|,
-name|countKsmKeys
+name|countOmKeys
 argument_list|(
-name|ksm
+name|ozoneManager
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4720,11 +4720,11 @@ operator|>
 literal|0
 condition|)
 block|{
-name|KsmKeyArgs
+name|OmKeyArgs
 name|arg
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -4753,7 +4753,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|ksm
+name|ozoneManager
 operator|.
 name|deleteKey
 argument_list|(
@@ -4766,7 +4766,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// It should be pretty quick that keys are removed from KSM namespace,
+comment|// It should be pretty quick that keys are removed from OM namespace,
 comment|// because actual deletion happens in async mode.
 name|GenericTestUtils
 operator|.
@@ -4780,9 +4780,9 @@ block|{
 name|int
 name|num
 init|=
-name|countKsmKeys
+name|countOmKeys
 argument_list|(
-name|ksm
+name|ozoneManager
 argument_list|)
 decl_stmt|;
 return|return

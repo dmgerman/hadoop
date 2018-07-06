@@ -130,11 +130,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyInfo
+name|OmKeyInfo
 import|;
 end_import
 
@@ -148,11 +148,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 import|;
 end_import
 
@@ -1294,13 +1294,13 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|getFromKsmKeyInfo (KsmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocationClient, String requestId)
+DECL|method|getFromOmKeyInfo ( OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocationClient, String requestId)
 specifier|public
 specifier|static
 name|LengthInputStream
-name|getFromKsmKeyInfo
+name|getFromOmKeyInfo
 parameter_list|(
-name|KsmKeyInfo
+name|OmKeyInfo
 name|keyInfo
 parameter_list|,
 name|XceiverClientManager
@@ -1341,7 +1341,7 @@ argument_list|()
 expr_stmt|;
 name|List
 argument_list|<
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 argument_list|>
 name|keyLocationInfos
 init|=
@@ -1384,8 +1384,8 @@ name|i
 operator|++
 control|)
 block|{
-name|KsmKeyLocationInfo
-name|ksmKeyLocationInfo
+name|OmKeyLocationInfo
+name|omKeyLocationInfo
 init|=
 name|keyLocationInfos
 operator|.
@@ -1397,7 +1397,7 @@ decl_stmt|;
 name|BlockID
 name|blockID
 init|=
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getBlockID
 argument_list|()
@@ -1442,7 +1442,7 @@ literal|false
 decl_stmt|;
 name|containerKey
 operator|=
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getLocalID
 argument_list|()
@@ -1541,7 +1541,7 @@ init|=
 operator|new
 name|ChunkInputStream
 argument_list|(
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getBlockID
 argument_list|()
@@ -1561,7 +1561,7 @@ name|addStream
 argument_list|(
 name|inputStream
 argument_list|,
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getLength
 argument_list|()

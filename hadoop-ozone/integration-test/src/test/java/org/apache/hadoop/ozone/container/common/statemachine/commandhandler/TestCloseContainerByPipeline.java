@@ -298,11 +298,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyArgs
+name|OmKeyArgs
 import|;
 end_import
 
@@ -316,11 +316,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 import|;
 end_import
 
@@ -413,16 +413,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
 import|;
 end_import
 
@@ -638,11 +628,11 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|//get the name of a valid container
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -688,12 +678,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|KsmKeyLocationInfo
-name|ksmKeyLocationInfo
+name|OmKeyLocationInfo
+name|omKeyLocationInfo
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|lookupKey
@@ -720,7 +710,7 @@ decl_stmt|;
 name|long
 name|containerID
 init|=
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getContainerID
 argument_list|()
@@ -969,11 +959,11 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|//get the name of a valid container
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -1019,12 +1009,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|KsmKeyLocationInfo
-name|ksmKeyLocationInfo
+name|OmKeyLocationInfo
+name|omKeyLocationInfo
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|lookupKey
@@ -1051,7 +1041,7 @@ decl_stmt|;
 name|long
 name|containerID
 init|=
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getContainerID
 argument_list|()
@@ -1299,11 +1289,11 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|//get the name of a valid container
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -1349,12 +1339,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|KsmKeyLocationInfo
-name|ksmKeyLocationInfo
+name|OmKeyLocationInfo
+name|omKeyLocationInfo
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|lookupKey
@@ -1381,7 +1371,7 @@ decl_stmt|;
 name|long
 name|containerID
 init|=
-name|ksmKeyLocationInfo
+name|omKeyLocationInfo
 operator|.
 name|getContainerID
 argument_list|()

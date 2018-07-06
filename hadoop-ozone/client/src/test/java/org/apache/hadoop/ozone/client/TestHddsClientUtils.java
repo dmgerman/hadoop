@@ -58,9 +58,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 import|;
 end_import
 
@@ -160,9 +160,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|KsmUtils
+name|OmUtils
 operator|.
-name|getKsmAddress
+name|getOmAddress
 import|;
 end_import
 
@@ -374,10 +374,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testGetKSMAddress ()
+DECL|method|testGetOmAddress ()
 specifier|public
 name|void
-name|testGetKSMAddress
+name|testGetOmAddress
 parameter_list|()
 block|{
 specifier|final
@@ -394,9 +394,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
 argument_list|)
@@ -404,7 +404,7 @@ expr_stmt|;
 name|InetSocketAddress
 name|addr
 init|=
-name|getKsmAddress
+name|getOmAddress
 argument_list|(
 name|conf
 argument_list|)
@@ -431,28 +431,28 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_PORT_DEFAULT
+name|OZONE_OM_PORT_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Next try a client address with just a host name and port. Verify the port
-comment|// is ignored and the default KSM port is used.
+comment|// is ignored and the default OM port is used.
 name|conf
 operator|.
 name|set
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
 argument_list|)
 expr_stmt|;
 name|addr
 operator|=
-name|getKsmAddress
+name|getOmAddress
 argument_list|(
 name|conf
 argument_list|)
@@ -488,16 +488,16 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
 name|addr
 operator|=
-name|getKsmAddress
+name|getOmAddress
 argument_list|(
 name|conf
 argument_list|)
@@ -524,9 +524,9 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_PORT_DEFAULT
+name|OZONE_OM_PORT_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -568,7 +568,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
@@ -1244,7 +1244,7 @@ name|hostName
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getHttpServer
@@ -1261,7 +1261,7 @@ name|port
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getHttpServer
@@ -1305,7 +1305,7 @@ name|services
 operator|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getServiceList
@@ -1322,7 +1322,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Could not get service list from KSM"
+literal|"Could not get service list from OM"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1349,7 +1349,7 @@ name|HddsProtos
 operator|.
 name|NodeType
 operator|.
-name|KSM
+name|OM
 argument_list|)
 argument_list|)
 operator|.
@@ -1374,7 +1374,7 @@ name|port
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getRpcPort

@@ -90,9 +90,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KeySpaceManager
+name|OzoneManager
 import|;
 end_import
 
@@ -242,10 +242,10 @@ name|StorageContainerManager
 name|getStorageContainerManager
 parameter_list|()
 function_decl|;
-comment|/**    * Returns {@link KeySpaceManager} associated with this    * {@link MiniOzoneCluster} instance.    *    * @return {@link KeySpaceManager} instance    */
-DECL|method|getKeySpaceManager ()
-name|KeySpaceManager
-name|getKeySpaceManager
+comment|/**    * Returns {@link OzoneManager} associated with this    * {@link MiniOzoneCluster} instance.    *    * @return {@link OzoneManager} instance    */
+DECL|method|getOzoneManager ()
+name|OzoneManager
+name|getOzoneManager
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the list of {@link HddsDatanodeService} which are part of this    * {@link MiniOzoneCluster} instance.    *    * @return List of {@link HddsDatanodeService}    */
@@ -297,10 +297,10 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Restarts KeySpaceManager instance.    *    * @throws IOException    */
-DECL|method|restartKeySpaceManager ()
+comment|/**    * Restarts OzoneManager instance.    *    * @throws IOException    */
+DECL|method|restartOzoneManager ()
 name|void
-name|restartKeySpaceManager
+name|restartOzoneManager
 parameter_list|()
 throws|throws
 name|IOException
@@ -429,13 +429,13 @@ operator|.
 name|empty
 argument_list|()
 decl_stmt|;
-DECL|field|ksmId
+DECL|field|omId
 specifier|protected
 name|Optional
 argument_list|<
 name|String
 argument_list|>
-name|ksmId
+name|omId
 init|=
 name|Optional
 operator|.
@@ -457,10 +457,10 @@ init|=
 literal|true
 decl_stmt|;
 comment|// Use relative smaller number of handlers for testing
-DECL|field|numOfKsmHandlers
+DECL|field|numOfOmHandlers
 specifier|protected
 name|int
-name|numOfKsmHandlers
+name|numOfOmHandlers
 init|=
 literal|20
 decl_stmt|;
@@ -566,17 +566,17 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the KSM id.      *      * @param id KSM Id      *      * @return MiniOzoneCluster.Builder      */
-DECL|method|setKsmId (String id)
+comment|/**      * Sets the OM id.      *      * @param id OM Id      *      * @return MiniOzoneCluster.Builder      */
+DECL|method|setOmId (String id)
 specifier|public
 name|Builder
-name|setKsmId
+name|setOmId
 parameter_list|(
 name|String
 name|id
 parameter_list|)
 block|{
-name|ksmId
+name|omId
 operator|=
 name|Optional
 operator|.

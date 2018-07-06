@@ -161,7 +161,7 @@ return|return
 name|acls
 return|;
 block|}
-comment|/**    * Returns new builder class that builds a KsmBucketInfo.    *    * @return Builder    */
+comment|/**    * Returns new builder class that builds a OmBucketInfo.    *    * @return Builder    */
 DECL|method|newBuilder ()
 specifier|public
 specifier|static
@@ -179,7 +179,7 @@ name|Builder
 argument_list|()
 return|;
 block|}
-comment|/**    * Builder for KsmBucketInfo.    */
+comment|/**    * Builder for OmBucketInfo.    */
 DECL|class|Builder
 specifier|public
 specifier|static

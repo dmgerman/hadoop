@@ -252,11 +252,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyArgs
+name|OmKeyArgs
 import|;
 end_import
 
@@ -270,11 +270,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyInfo
+name|OmKeyInfo
 import|;
 end_import
 
@@ -577,7 +577,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|createKeys
 parameter_list|(
@@ -594,7 +594,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|KsmKeyInfo
+name|OmKeyInfo
 argument_list|>
 name|keyLocationMap
 init|=
@@ -860,11 +860,11 @@ range|:
 name|keyNames
 control|)
 block|{
-name|KsmKeyArgs
+name|OmKeyArgs
 name|arg
 init|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -887,12 +887,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|KsmKeyInfo
+name|OmKeyInfo
 name|location
 init|=
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|lookupKey
