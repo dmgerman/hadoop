@@ -187,6 +187,7 @@ end_comment
 begin_class
 DECL|class|Handler
 specifier|public
+specifier|abstract
 class|class
 name|Handler
 block|{
@@ -316,6 +317,7 @@ block|}
 block|}
 DECL|method|handle ( ContainerCommandRequestProto msg, Container container)
 specifier|public
+specifier|abstract
 name|ContainerCommandResponseProto
 name|handle
 parameter_list|(
@@ -325,11 +327,7 @@ parameter_list|,
 name|Container
 name|container
 parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
+function_decl|;
 DECL|method|setScmID (String scmId)
 specifier|public
 name|void
