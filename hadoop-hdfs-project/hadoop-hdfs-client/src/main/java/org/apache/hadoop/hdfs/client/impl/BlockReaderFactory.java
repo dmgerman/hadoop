@@ -2744,6 +2744,37 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|fis
+index|[
+literal|0
+index|]
+operator|==
+literal|null
+operator|||
+name|fis
+index|[
+literal|1
+index|]
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"the datanode "
+operator|+
+name|datanode
+operator|+
+literal|" failed to "
+operator|+
+literal|"pass a file descriptor (might have reached open file limit)."
+argument_list|)
+throw|;
+block|}
 name|ExtendedBlockId
 name|key
 init|=
