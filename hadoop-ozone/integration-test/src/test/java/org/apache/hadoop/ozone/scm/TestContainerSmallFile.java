@@ -935,7 +935,7 @@ name|thrown
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Unable to find the container"
+literal|"ContainerID 8888 does not exist"
 argument_list|)
 expr_stmt|;
 comment|// Try to read a invalid key

@@ -736,46 +736,6 @@ name|getChunksPath
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|MetadataStore
-name|db
-init|=
-name|KeyUtils
-operator|.
-name|getDB
-argument_list|(
-name|containerData
-argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
-comment|// If the container is not empty and cannot be deleted forcibly,
-comment|// then throw a SCE to stop deleting.
-if|if
-condition|(
-operator|!
-name|forceDelete
-operator|&&
-operator|!
-name|db
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Container cannot be deleted because it is not empty."
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|ERROR_CONTAINER_NOT_EMPTY
-argument_list|)
-throw|;
-block|}
 comment|// Close the DB connection and remove the DB handler from cache
 name|KeyUtils
 operator|.

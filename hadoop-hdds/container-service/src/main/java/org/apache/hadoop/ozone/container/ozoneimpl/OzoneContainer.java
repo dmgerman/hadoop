@@ -689,7 +689,7 @@ argument_list|(
 operator|new
 name|ContainerReader
 argument_list|(
-name|hddsVolumeRootDir
+name|volume
 argument_list|,
 name|containerSet
 argument_list|,
