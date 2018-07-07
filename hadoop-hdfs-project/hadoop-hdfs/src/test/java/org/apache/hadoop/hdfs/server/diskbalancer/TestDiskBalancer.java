@@ -1056,6 +1056,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Shutdown the DN first, to verify that calling diskbalancer APIs on
+comment|// uninitialized DN doesn't NPE
+name|dnNode
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|""
+argument_list|,
+name|dnNode
+operator|.
+name|getDiskBalancerStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
