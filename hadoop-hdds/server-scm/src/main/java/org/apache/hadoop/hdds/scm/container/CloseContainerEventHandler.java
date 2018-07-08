@@ -170,24 +170,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
-operator|.
-name|server
-operator|.
-name|events
-operator|.
-name|TypedEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|protocol
@@ -219,7 +201,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * In case of a node failure, volume failure, volume out of spapce, node  * out of space etc, CLOSE_CONTAINER_EVENT will be triggered.  * CloseContainerEventHandler is the handler for CLOSE_CONTAINER_EVENT.  * When a close container event is fired, a close command for the container  * should be sent to all the datanodes in the pipeline and containerStateManager  * needs to update the container state to Closing.  */
+comment|/**  * In case of a node failure, volume failure, volume out of spapce, node  * out of space etc, CLOSE_CONTAINER will be triggered.  * CloseContainerEventHandler is the handler for CLOSE_CONTAINER.  * When a close container event is fired, a close command for the container  * should be sent to all the datanodes in the pipeline and containerStateManager  * needs to update the container state to Closing.  */
 end_comment
 
 begin_class
@@ -245,25 +227,6 @@ operator|.
 name|getLogger
 argument_list|(
 name|CloseContainerEventHandler
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-DECL|field|CLOSE_CONTAINER_EVENT
-specifier|public
-specifier|static
-specifier|final
-name|TypedEvent
-argument_list|<
-name|ContainerID
-argument_list|>
-name|CLOSE_CONTAINER_EVENT
-init|=
-operator|new
-name|TypedEvent
-argument_list|<>
-argument_list|(
-name|ContainerID
 operator|.
 name|class
 argument_list|)

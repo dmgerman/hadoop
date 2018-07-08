@@ -734,6 +734,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|events
+operator|.
+name|SCMEvents
+operator|.
+name|DATANODE_COMMAND
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
@@ -1043,8 +1063,6 @@ name|eventQueue
 operator|.
 name|addHandler
 argument_list|(
-name|SCMNodeManager
-operator|.
 name|DATANODE_COMMAND
 argument_list|,
 name|nm
