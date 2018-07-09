@@ -100,6 +100,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|annotation
@@ -237,6 +253,8 @@ return|;
 block|}
 block|}
 comment|/**    * List the next batch of {@link FileRegion}s in the alias map starting from    * the given {@code marker}. To retrieve all {@link FileRegion}s stored in the    * alias map, multiple calls to this function might be required.    * @param marker the next block to get fileregions from.    * @return the {@link IterationResult} with a set of    * FileRegions and the next marker.    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|list (Optional<Block> marker)
 name|InMemoryAliasMap
 operator|.
@@ -255,6 +273,8 @@ function_decl|;
 comment|/**    * Gets the {@link ProvidedStorageLocation} associated with the    * specified block.    * @param block the block to lookup    * @return the associated {@link ProvidedStorageLocation}.    * @throws IOException    */
 annotation|@
 name|Nonnull
+annotation|@
+name|Idempotent
 DECL|method|read (@onnull Block block)
 name|Optional
 argument_list|<
@@ -271,6 +291,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Stores the block and it's associated {@link ProvidedStorageLocation}    * in the alias map.    * @param block    * @param providedStorageLocation    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|write (@onnull Block block, @Nonnull ProvidedStorageLocation providedStorageLocation)
 name|void
 name|write
@@ -289,6 +311,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the associated block pool id.    * @return the block pool id associated with the Namenode running    * the in-memory alias map.    */
+annotation|@
+name|Idempotent
 DECL|method|getBlockPoolId ()
 name|String
 name|getBlockPoolId

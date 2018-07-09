@@ -130,13 +130,35 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|ksm
+name|scm
+operator|.
+name|container
+operator|.
+name|common
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfoGroup
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmKeyLocationInfoGroup
 import|;
 end_import
 
@@ -210,11 +232,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyArgs
+name|OmKeyArgs
 import|;
 end_import
 
@@ -228,11 +250,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyInfo
+name|OmKeyInfo
 import|;
 end_import
 
@@ -246,11 +268,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 import|;
 end_import
 
@@ -264,7 +286,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
@@ -282,11 +304,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|protocolPB
 operator|.
-name|KeySpaceManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -506,11 +528,11 @@ specifier|private
 name|long
 name|byteOffset
 decl_stmt|;
-DECL|field|ksmClient
+DECL|field|omClient
 specifier|private
 specifier|final
-name|KeySpaceManagerProtocolClientSideTranslatorPB
-name|ksmClient
+name|OzoneManagerProtocolClientSideTranslatorPB
+name|omClient
 decl_stmt|;
 specifier|private
 specifier|final
@@ -521,7 +543,7 @@ decl_stmt|;
 DECL|field|keyArgs
 specifier|private
 specifier|final
-name|KsmKeyArgs
+name|OmKeyArgs
 name|keyArgs
 decl_stmt|;
 DECL|field|openID
@@ -568,7 +590,7 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|ksmClient
+name|omClient
 operator|=
 literal|null
 expr_stmt|;
@@ -647,7 +669,7 @@ return|return
 name|streamEntries
 return|;
 block|}
-DECL|method|ChunkGroupOutputStream ( OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, KeySpaceManagerProtocolClientSideTranslatorPB ksmClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type)
+DECL|method|ChunkGroupOutputStream ( OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type)
 specifier|public
 name|ChunkGroupOutputStream
 parameter_list|(
@@ -660,8 +682,8 @@ parameter_list|,
 name|StorageContainerLocationProtocolClientSideTranslatorPB
 name|scmClient
 parameter_list|,
-name|KeySpaceManagerProtocolClientSideTranslatorPB
-name|ksmClient
+name|OzoneManagerProtocolClientSideTranslatorPB
+name|omClient
 parameter_list|,
 name|int
 name|chunkSize
@@ -701,9 +723,9 @@ literal|0
 expr_stmt|;
 name|this
 operator|.
-name|ksmClient
+name|omClient
 operator|=
-name|ksmClient
+name|omClient
 expr_stmt|;
 name|this
 operator|.
@@ -711,7 +733,7 @@ name|scmClient
 operator|=
 name|scmClient
 expr_stmt|;
-name|KsmKeyInfo
+name|OmKeyInfo
 name|info
 init|=
 name|handler
@@ -724,7 +746,7 @@ operator|.
 name|keyArgs
 operator|=
 operator|new
-name|KsmKeyArgs
+name|OmKeyArgs
 operator|.
 name|Builder
 argument_list|()
@@ -818,12 +840,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * When a key is opened, it is possible that there are some blocks already    * allocated to it for this open session. In this case, to make use of these    * blocks, we need to add these blocks to stream entries. But, a key's version    * also includes blocks from previous versions, we need to avoid adding these    * old blocks to stream entries, because these old blocks should not be picked    * for write. To do this, the following method checks that, only those    * blocks created in this particular open version are added to stream entries.    *    * @param version the set of blocks that are pre-allocated.    * @param openVersion the version corresponding to the pre-allocation.    * @throws IOException    */
-DECL|method|addPreallocateBlocks (KsmKeyLocationInfoGroup version, long openVersion)
+DECL|method|addPreallocateBlocks (OmKeyLocationInfoGroup version, long openVersion)
 specifier|public
 name|void
 name|addPreallocateBlocks
 parameter_list|(
-name|KsmKeyLocationInfoGroup
+name|OmKeyLocationInfoGroup
 name|version
 parameter_list|,
 name|long
@@ -837,7 +859,7 @@ comment|// only the blocks allocated in this open session (block createVersion
 comment|// equals to open session version)
 for|for
 control|(
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 name|subKeyInfo
 range|:
 name|version
@@ -864,29 +886,37 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|checkKeyLocationInfo (KsmKeyLocationInfo subKeyInfo)
+DECL|method|checkKeyLocationInfo (OmKeyLocationInfo subKeyInfo)
 specifier|private
 name|void
 name|checkKeyLocationInfo
 parameter_list|(
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 name|subKeyInfo
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ContainerInfo
-name|container
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|scmClient
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|subKeyInfo
 operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|ContainerInfo
+name|container
+init|=
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 decl_stmt|;
 name|XceiverClientSpi
 name|xceiverClient
@@ -895,7 +925,7 @@ name|xceiverClientManager
 operator|.
 name|acquireClient
 argument_list|(
-name|container
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -1093,7 +1123,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|ksmClient
+name|omClient
 argument_list|)
 expr_stmt|;
 comment|// allocate a new block, if a exception happens, log an error and
@@ -1285,7 +1315,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|ksmClient
+name|omClient
 argument_list|)
 expr_stmt|;
 comment|// allocate a new block, if a exception happens, log an error and
@@ -1408,7 +1438,7 @@ name|writeLen
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Contact KSM to get a new block. Set the new block with the index (e.g.    * first block has index = 0, second has index = 1 etc.)    *    * The returned block is made to new ChunkOutputStreamEntry to write.    *    * @param index the index of the block.    * @throws IOException    */
+comment|/**    * Contact OM to get a new block. Set the new block with the index (e.g.    * first block has index = 0, second has index = 1 etc.)    *    * The returned block is made to new ChunkOutputStreamEntry to write.    *    * @param index the index of the block.    * @throws IOException    */
 DECL|method|allocateNewBlock (int index)
 specifier|private
 name|void
@@ -1420,10 +1450,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|KsmKeyLocationInfo
+name|OmKeyLocationInfo
 name|subKeyInfo
 init|=
-name|ksmClient
+name|omClient
 operator|.
 name|allocateBlock
 argument_list|(
@@ -1491,7 +1521,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Commit the key to KSM, this will add the blocks as the new key blocks.    *    * @throws IOException    */
+comment|/**    * Commit the key to OM, this will add the blocks as the new key blocks.    *    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -1551,7 +1581,7 @@ argument_list|(
 name|byteOffset
 argument_list|)
 expr_stmt|;
-name|ksmClient
+name|omClient
 operator|.
 name|commitKey
 argument_list|(
@@ -1594,10 +1624,10 @@ specifier|private
 name|StorageContainerLocationProtocolClientSideTranslatorPB
 name|scmClient
 decl_stmt|;
-DECL|field|ksmClient
+DECL|field|omClient
 specifier|private
-name|KeySpaceManagerProtocolClientSideTranslatorPB
-name|ksmClient
+name|OzoneManagerProtocolClientSideTranslatorPB
+name|omClient
 decl_stmt|;
 DECL|field|chunkSize
 specifier|private
@@ -1676,18 +1706,18 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setKsmClient ( KeySpaceManagerProtocolClientSideTranslatorPB client)
+DECL|method|setOmClient ( OzoneManagerProtocolClientSideTranslatorPB client)
 specifier|public
 name|Builder
-name|setKsmClient
+name|setOmClient
 parameter_list|(
-name|KeySpaceManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocolClientSideTranslatorPB
 name|client
 parameter_list|)
 block|{
 name|this
 operator|.
-name|ksmClient
+name|omClient
 operator|=
 name|client
 expr_stmt|;
@@ -1789,7 +1819,7 @@ name|xceiverManager
 argument_list|,
 name|scmClient
 argument_list|,
-name|ksmClient
+name|omClient
 argument_list|,
 name|chunkSize
 argument_list|,

@@ -272,9 +272,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 import|;
 end_import
 
@@ -694,9 +694,9 @@ argument_list|)
 expr_stmt|;
 name|copyClusterConfigs
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 argument_list|)
 expr_stmt|;
 name|copyClusterConfigs

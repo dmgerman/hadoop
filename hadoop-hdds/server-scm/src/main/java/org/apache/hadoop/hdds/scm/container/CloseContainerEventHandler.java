@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -88,6 +98,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|exceptions
 operator|.
 name|SCMException
@@ -138,24 +170,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
-operator|.
-name|server
-operator|.
-name|events
-operator|.
-name|TypedEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|protocol
@@ -187,7 +201,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * In case of a node failure, volume failure, volume out of spapce, node  * out of space etc, CLOSE_CONTAINER_EVENT will be triggered.  * CloseContainerEventHandler is the handler for CLOSE_CONTAINER_EVENT.  * When a close container event is fired, a close command for the container  * should be sent to all the datanodes in the pipeline and containerStateManager  * needs to update the container state to Closing.  */
+comment|/**  * In case of a node failure, volume failure, volume out of spapce, node  * out of space etc, CLOSE_CONTAINER will be triggered.  * CloseContainerEventHandler is the handler for CLOSE_CONTAINER.  * When a close container event is fired, a close command for the container  * should be sent to all the datanodes in the pipeline and containerStateManager  * needs to update the container state to Closing.  */
 end_comment
 
 begin_class
@@ -213,25 +227,6 @@ operator|.
 name|getLogger
 argument_list|(
 name|CloseContainerEventHandler
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-DECL|field|CLOSE_CONTAINER_EVENT
-specifier|public
-specifier|static
-specifier|final
-name|TypedEvent
-argument_list|<
-name|ContainerID
-argument_list|>
-name|CLOSE_CONTAINER_EVENT
-init|=
-operator|new
-name|TypedEvent
-argument_list|<>
-argument_list|(
-name|ContainerID
 operator|.
 name|class
 argument_list|)
@@ -283,24 +278,35 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerStateManager
-name|stateManager
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
-name|containerManager
-operator|.
-name|getStateManager
-argument_list|()
+literal|null
 decl_stmt|;
 name|ContainerInfo
 name|info
-init|=
-name|stateManager
+decl_stmt|;
+try|try
+block|{
+name|containerWithPipeline
+operator|=
+name|containerManager
 operator|.
-name|getContainer
+name|getContainerWithPipeline
 argument_list|(
 name|containerID
+operator|.
+name|getId
+argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+name|info
+operator|=
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|info
@@ -312,7 +318,32 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Container with id : {} does not exist"
+literal|"Failed to update the container state. Container with id : {} "
+operator|+
+literal|"does not exist"
+argument_list|,
+name|containerID
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to update the container state. Container with id : {} "
+operator|+
+literal|"does not exist"
 argument_list|,
 name|containerID
 operator|.
@@ -341,7 +372,7 @@ control|(
 name|DatanodeDetails
 name|datanode
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -372,10 +403,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getType
+name|getReplicationType
 argument_list|()
 argument_list|)
 argument_list|)
@@ -385,7 +413,10 @@ try|try
 block|{
 comment|// Finalize event will make sure the state of the container transitions
 comment|// from OPEN to CLOSING in containerStateManager.
-name|stateManager
+name|containerManager
+operator|.
+name|getStateManager
+argument_list|()
 operator|.
 name|updateContainerState
 argument_list|(

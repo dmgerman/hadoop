@@ -854,20 +854,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|htrace
-operator|.
-name|core
-operator|.
-name|Tracer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1069,12 +1055,6 @@ DECL|field|configuration
 specifier|private
 name|Configuration
 name|configuration
-decl_stmt|;
-comment|/**    * The HTrace tracer to use.    */
-DECL|field|tracer
-specifier|private
-name|Tracer
-name|tracer
 decl_stmt|;
 comment|/**    * Information about the domain socket path we should use to connect to the    * local peer-- or null if we haven't examined the local domain socket.    */
 DECL|field|pathInfo
@@ -1416,25 +1396,6 @@ operator|.
 name|configuration
 operator|=
 name|configuration
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|setTracer (Tracer tracer)
-specifier|public
-name|BlockReaderFactory
-name|setTracer
-parameter_list|(
-name|Tracer
-name|tracer
-parameter_list|)
-block|{
-name|this
-operator|.
-name|tracer
-operator|=
-name|tracer
 expr_stmt|;
 return|return
 name|this
@@ -1980,8 +1941,6 @@ argument_list|,
 name|length
 argument_list|,
 name|storageType
-argument_list|,
-name|tracer
 argument_list|)
 return|;
 block|}
@@ -2295,11 +2254,6 @@ operator|.
 name|setStorageType
 argument_list|(
 name|storageType
-argument_list|)
-operator|.
-name|setTracer
-argument_list|(
-name|tracer
 argument_list|)
 operator|.
 name|build
@@ -2790,6 +2744,37 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|fis
+index|[
+literal|0
+index|]
+operator|==
+literal|null
+operator|||
+name|fis
+index|[
+literal|1
+index|]
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"the datanode "
+operator|+
+name|datanode
+operator|+
+literal|" failed to "
+operator|+
+literal|"pass a file descriptor (might have reached open file limit)."
+argument_list|)
+throw|;
+block|}
 name|ExtendedBlockId
 name|key
 init|=
@@ -3902,8 +3887,6 @@ name|getPeerCache
 argument_list|()
 argument_list|,
 name|cachingStrategy
-argument_list|,
-name|tracer
 argument_list|,
 name|networkDistance
 argument_list|)

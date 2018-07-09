@@ -159,7 +159,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Command Queue is queue of commands for the datanode.  *<p>  * Node manager, container Manager and key space managers can queue commands for  * datanodes into this queue. These commands will be send in the order in which  * there where queued.  */
+comment|/**  * Command Queue is queue of commands for the datanode.  *<p>  * Node manager, container Manager and Ozone managers can queue commands for  * datanodes into this queue. These commands will be send in the order in which  * there where queued.  */
 end_comment
 
 begin_class

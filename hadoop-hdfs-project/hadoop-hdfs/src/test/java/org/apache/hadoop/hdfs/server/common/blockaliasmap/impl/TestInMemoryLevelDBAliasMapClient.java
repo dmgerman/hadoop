@@ -248,6 +248,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SERVICE_RPC_BIND_HOST_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|assertj
 operator|.
 name|core
@@ -2182,6 +2198,29 @@ literal|0
 index|]
 argument_list|)
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testServerBindHost ()
+specifier|public
+name|void
+name|testServerBindHost
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_BIND_HOST_KEY
+argument_list|,
+literal|"0.0.0.0"
+argument_list|)
+expr_stmt|;
+name|writeRead
+argument_list|()
 expr_stmt|;
 block|}
 block|}

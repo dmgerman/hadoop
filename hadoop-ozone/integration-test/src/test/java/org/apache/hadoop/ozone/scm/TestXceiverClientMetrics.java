@@ -208,7 +208,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -513,7 +513,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|storageContainerLocationClient
@@ -547,6 +547,9 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
@@ -559,6 +562,9 @@ operator|.
 name|getCreateContainerRequest
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -689,6 +695,9 @@ operator|.
 name|getTestBlockID
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

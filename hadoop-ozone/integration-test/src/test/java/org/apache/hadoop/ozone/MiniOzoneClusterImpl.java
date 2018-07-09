@@ -262,9 +262,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 import|;
 end_import
 
@@ -278,9 +278,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KeySpaceManager
+name|OzoneManager
 import|;
 end_import
 
@@ -312,9 +312,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMStorage
+name|OMStorage
 import|;
 end_import
 
@@ -641,7 +641,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * MiniOzoneCluster creates a complete in-process Ozone cluster suitable for  * running tests.  The cluster consists of a KeySpaceManager,  * StorageContainerManager and multiple DataNodes.  */
+comment|/**  * MiniOzoneCluster creates a complete in-process Ozone cluster suitable for  * running tests.  The cluster consists of a OzoneManager,  * StorageContainerManager and multiple DataNodes.  */
 end_comment
 
 begin_class
@@ -685,11 +685,11 @@ specifier|final
 name|StorageContainerManager
 name|scm
 decl_stmt|;
-DECL|field|ksm
+DECL|field|ozoneManager
 specifier|private
 specifier|final
-name|KeySpaceManager
-name|ksm
+name|OzoneManager
+name|ozoneManager
 decl_stmt|;
 DECL|field|hddsDatanodes
 specifier|private
@@ -701,15 +701,15 @@ argument_list|>
 name|hddsDatanodes
 decl_stmt|;
 comment|/**    * Creates a new MiniOzoneCluster.    *    * @throws IOException if there is an I/O error    */
-DECL|method|MiniOzoneClusterImpl (OzoneConfiguration conf, KeySpaceManager ksm, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
+DECL|method|MiniOzoneClusterImpl (OzoneConfiguration conf, OzoneManager ozoneManager, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
 specifier|private
 name|MiniOzoneClusterImpl
 parameter_list|(
 name|OzoneConfiguration
 name|conf
 parameter_list|,
-name|KeySpaceManager
-name|ksm
+name|OzoneManager
+name|ozoneManager
 parameter_list|,
 name|StorageContainerManager
 name|scm
@@ -729,9 +729,9 @@ name|conf
 expr_stmt|;
 name|this
 operator|.
-name|ksm
+name|ozoneManager
 operator|=
-name|ksm
+name|ozoneManager
 expr_stmt|;
 name|this
 operator|.
@@ -901,16 +901,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getKeySpaceManager ()
+DECL|method|getOzoneManager ()
 specifier|public
-name|KeySpaceManager
-name|getKeySpaceManager
+name|OzoneManager
+name|getOzoneManager
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|ksm
+name|ozoneManager
 return|;
 block|}
 annotation|@
@@ -1089,20 +1089,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|restartKeySpaceManager ()
+DECL|method|restartOzoneManager ()
 specifier|public
 name|void
-name|restartKeySpaceManager
+name|restartOzoneManager
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|ksm
+name|ozoneManager
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|ksm
+name|ozoneManager
 operator|.
 name|start
 argument_list|()
@@ -1316,7 +1316,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|ksm
+name|ozoneManager
 operator|!=
 literal|null
 condition|)
@@ -1325,15 +1325,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Shutting down the keySpaceManager"
+literal|"Shutting down the OzoneManager"
 argument_list|)
 expr_stmt|;
-name|ksm
+name|ozoneManager
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|ksm
+name|ozoneManager
 operator|.
 name|join
 argument_list|()
@@ -1475,13 +1475,13 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|KeySpaceManager
-name|ksm
+name|OzoneManager
+name|om
 init|=
-name|createKSM
+name|createOM
 argument_list|()
 decl_stmt|;
-name|ksm
+name|om
 operator|.
 name|start
 argument_list|()
@@ -1519,7 +1519,7 @@ name|MiniOzoneClusterImpl
 argument_list|(
 name|conf
 argument_list|,
-name|ksm
+name|om
 argument_list|,
 name|scm
 argument_list|,
@@ -1663,35 +1663,35 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**      * Creates a new KeySpaceManager instance.      *      * @return {@link KeySpaceManager}      *      * @throws IOException      */
-DECL|method|createKSM ()
+comment|/**      * Creates a new OzoneManager instance.      *      * @return {@link OzoneManager}      *      * @throws IOException      */
+DECL|method|createOM ()
 specifier|private
-name|KeySpaceManager
-name|createKSM
+name|OzoneManager
+name|createOM
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|configureKSM
+name|configureOM
 argument_list|()
 expr_stmt|;
-name|KSMStorage
-name|ksmStore
+name|OMStorage
+name|omStore
 init|=
 operator|new
-name|KSMStorage
+name|OMStorage
 argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|ksmStore
+name|omStore
 operator|.
 name|setClusterId
 argument_list|(
 name|clusterId
 argument_list|)
 expr_stmt|;
-name|ksmStore
+name|omStore
 operator|.
 name|setScmId
 argument_list|(
@@ -1701,11 +1701,11 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ksmStore
+name|omStore
 operator|.
-name|setKsmId
+name|setOmId
 argument_list|(
-name|ksmId
+name|omId
 operator|.
 name|orElse
 argument_list|(
@@ -1719,15 +1719,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ksmStore
+name|omStore
 operator|.
 name|initialize
 argument_list|()
 expr_stmt|;
 return|return
-name|KeySpaceManager
+name|OzoneManager
 operator|.
-name|createKSM
+name|createOm
 argument_list|(
 literal|null
 argument_list|,
@@ -2116,19 +2116,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|configureKSM ()
+DECL|method|configureOM ()
 specifier|private
 name|void
-name|configureKSM
+name|configureOM
 parameter_list|()
 block|{
 name|conf
 operator|.
 name|set
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -2137,9 +2137,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_HTTP_ADDRESS_KEY
+name|OZONE_OM_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -2148,11 +2148,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_HANDLER_COUNT_KEY
+name|OZONE_OM_HANDLER_COUNT_KEY
 argument_list|,
-name|numOfKsmHandlers
+name|numOfOmHandlers
 argument_list|)
 expr_stmt|;
 block|}

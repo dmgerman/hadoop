@@ -58,6 +58,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|MiniOzoneCluster
@@ -199,18 +221,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|charset
-operator|.
-name|Charset
 import|;
 end_import
 
@@ -402,7 +412,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Allocate a container and verify the container info
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|scm
@@ -463,6 +473,9 @@ name|assertEquals
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -511,10 +524,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getType
+name|getReplicationType
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -529,10 +539,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getFactor
+name|getReplicationFactor
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -553,7 +560,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Check there are two containers in ALLOCATED state after allocation
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|scm
@@ -611,10 +618,16 @@ name|assertNotEquals
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -667,7 +680,7 @@ name|i
 operator|++
 control|)
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|scm
@@ -695,6 +708,9 @@ operator|.
 name|add
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -712,6 +728,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -824,7 +843,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|scm
@@ -853,6 +872,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -869,6 +891,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -879,7 +904,7 @@ operator|.
 name|CREATED
 argument_list|)
 expr_stmt|;
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|scm
@@ -940,6 +965,9 @@ name|assertEquals
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -986,6 +1014,9 @@ name|assertEquals
 argument_list|(
 name|container2
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1000,6 +1031,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1016,6 +1050,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1065,6 +1102,9 @@ operator|.
 name|assertEquals
 argument_list|(
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1140,7 +1180,7 @@ argument_list|)
 expr_stmt|;
 comment|// Allocate container1 and update its state from ALLOCATED -> CREATING ->
 comment|// OPEN -> CLOSING -> CLOSED -> DELETING -> DELETED
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|scm
@@ -1206,6 +1246,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1258,6 +1301,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1312,6 +1358,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1364,6 +1413,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1418,6 +1470,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1471,6 +1526,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1520,7 +1578,7 @@ argument_list|)
 expr_stmt|;
 comment|// Allocate container1 and update its state from ALLOCATED -> CREATING ->
 comment|// DELETING
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container2
 init|=
 name|scm
@@ -1549,6 +1607,9 @@ name|updateContainerState
 argument_list|(
 name|container2
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1564,6 +1625,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container2
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1614,7 +1678,7 @@ argument_list|)
 expr_stmt|;
 comment|// Allocate container1 and update its state from ALLOCATED -> CREATING ->
 comment|// OPEN -> CLOSING -> CLOSED
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container3
 init|=
 name|scm
@@ -1643,6 +1707,9 @@ name|updateContainerState
 argument_list|(
 name|container3
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1658,6 +1725,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container3
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1675,6 +1745,9 @@ name|updateContainerState
 argument_list|(
 name|container3
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1690,6 +1763,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container3
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1749,7 +1825,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container1
 init|=
 name|scm
@@ -1778,6 +1854,9 @@ name|updateContainerState
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1793,6 +1872,9 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -1887,6 +1969,9 @@ name|assertEquals
 argument_list|(
 name|container1
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -1928,6 +2013,9 @@ operator|.
 name|toByteArray
 argument_list|(
 name|container1
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

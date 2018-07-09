@@ -50,7 +50,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -209,28 +209,6 @@ operator|.
 name|client
 operator|.
 name|ScmClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|Pipeline
 import|;
 end_import
 
@@ -486,7 +464,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ContainerInfo
+name|ContainerWithPipeline
 name|container
 init|=
 name|storageClient
@@ -512,6 +490,9 @@ name|assertEquals
 argument_list|(
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
@@ -520,6 +501,9 @@ operator|.
 name|getContainer
 argument_list|(
 name|container
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

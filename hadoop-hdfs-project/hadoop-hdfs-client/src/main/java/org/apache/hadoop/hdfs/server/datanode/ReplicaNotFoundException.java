@@ -103,7 +103,7 @@ specifier|static
 name|String
 name|NON_EXISTENT_REPLICA
 init|=
-literal|"Cannot append to a non-existent replica "
+literal|"Replica does not exist "
 decl_stmt|;
 DECL|field|UNEXPECTED_GS_REPLICA
 specifier|public

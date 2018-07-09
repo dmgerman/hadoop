@@ -26,6 +26,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|RandomUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -100,7 +114,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
+name|ContainerWithPipeline
 import|;
 end_import
 
@@ -229,16 +243,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -315,6 +319,26 @@ operator|.
 name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_CONTAINER_SIZE_GB
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|events
+operator|.
+name|SCMEvents
+operator|.
+name|CLOSE_CONTAINER
 import|;
 end_import
 
@@ -459,9 +483,7 @@ name|eventQueue
 operator|.
 name|addHandler
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
 operator|new
 name|CloseContainerEventHandler
@@ -531,9 +553,7 @@ name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
 operator|new
 name|ContainerID
@@ -542,11 +562,9 @@ name|Math
 operator|.
 name|abs
 argument_list|(
-operator|new
-name|Random
-argument_list|()
+name|RandomUtils
 operator|.
-name|nextLong
+name|nextInt
 argument_list|()
 argument_list|)
 argument_list|)
@@ -590,11 +608,9 @@ name|Math
 operator|.
 name|abs
 argument_list|(
-operator|new
-name|Random
-argument_list|()
+name|RandomUtils
 operator|.
-name|nextLong
+name|nextInt
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -618,9 +634,7 @@ name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
 operator|new
 name|ContainerID
@@ -647,11 +661,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Container with id : "
-operator|+
-name|id
-operator|+
-literal|" does not exist"
+literal|"Failed to update the container state"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -682,8 +692,8 @@ operator|.
 name|LOG
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -710,7 +720,10 @@ init|=
 operator|new
 name|ContainerID
 argument_list|(
-name|info
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -719,7 +732,7 @@ decl_stmt|;
 name|DatanodeDetails
 name|datanode
 init|=
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -741,9 +754,7 @@ name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
 name|id
 argument_list|)
@@ -824,14 +835,15 @@ name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
 operator|new
 name|ContainerID
 argument_list|(
-name|info
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -912,8 +924,8 @@ operator|.
 name|LOG
 argument_list|)
 decl_stmt|;
-name|ContainerInfo
-name|info
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|mapping
 operator|.
@@ -940,7 +952,10 @@ init|=
 operator|new
 name|ContainerID
 argument_list|(
-name|info
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -960,9 +975,7 @@ name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
 name|id
 argument_list|)
@@ -984,7 +997,7 @@ control|(
 name|DatanodeDetails
 name|details
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -1018,7 +1031,7 @@ control|(
 name|DatanodeDetails
 name|details
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -1100,18 +1113,9 @@ name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
-name|CloseContainerEventHandler
-operator|.
-name|CLOSE_CONTAINER_EVENT
+name|CLOSE_CONTAINER
 argument_list|,
-operator|new
-name|ContainerID
-argument_list|(
-name|info
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
+name|id
 argument_list|)
 expr_stmt|;
 name|eventQueue
@@ -1131,7 +1135,7 @@ control|(
 name|DatanodeDetails
 name|details
 range|:
-name|info
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()

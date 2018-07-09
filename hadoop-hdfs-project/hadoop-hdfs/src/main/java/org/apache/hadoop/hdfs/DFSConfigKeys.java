@@ -501,7 +501,9 @@ specifier|final
 name|String
 name|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS
 init|=
-literal|"dfs.provided.aliasmap.inmemory.dnrpc-address"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS
 decl_stmt|;
 DECL|field|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS_DEFAULT
 specifier|public
@@ -511,6 +513,15 @@ name|String
 name|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS_DEFAULT
 init|=
 literal|"0.0.0.0:50200"
+decl_stmt|;
+DECL|field|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_BIND_HOST
+init|=
+literal|"dfs.provided.aliasmap.inmemory.rpc.bind-host"
 decl_stmt|;
 DECL|field|DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR
 specifier|public

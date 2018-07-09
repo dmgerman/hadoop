@@ -417,7 +417,7 @@ literal|0
 argument_list|,
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getMetrics
@@ -454,7 +454,7 @@ literal|0
 argument_list|,
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getMetrics
@@ -491,7 +491,7 @@ literal|0
 argument_list|,
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getMetrics
@@ -528,7 +528,7 @@ literal|0
 argument_list|,
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getMetrics
@@ -565,7 +565,7 @@ literal|0
 argument_list|,
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getMetrics
@@ -602,7 +602,7 @@ literal|0
 argument_list|,
 name|cluster
 operator|.
-name|getKeySpaceManager
+name|getOzoneManager
 argument_list|()
 operator|.
 name|getMetrics

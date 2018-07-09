@@ -830,7 +830,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"SCM is informed by KSM to delete {} blocks"
+literal|"SCM is informed by OM to delete {} blocks"
 argument_list|,
 name|keyBlocksInfoList
 operator|.

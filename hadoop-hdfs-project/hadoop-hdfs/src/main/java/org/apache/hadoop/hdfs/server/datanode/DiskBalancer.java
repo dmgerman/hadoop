@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -552,8 +566,10 @@ specifier|public
 class|class
 name|DiskBalancer
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -3596,6 +3612,13 @@ operator|.
 name|nextBlock
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|block
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// A valid block is a finalized block, we iterate until we get
 comment|// finalized blocks
 if|if
@@ -3630,6 +3653,22 @@ block|{
 return|return
 name|block
 return|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"There are no blocks in the blockPool {}"
+argument_list|,
+name|iter
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 catch|catch
@@ -4530,6 +4569,33 @@ argument_list|()
 operator|.
 name|interrupt
 argument_list|()
+expr_stmt|;
+name|item
+operator|.
+name|incErrorCount
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|setExitFlag
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RuntimeException
+name|ex
+parameter_list|)
+block|{
+comment|// Exiting if any run time exceptions.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Got an unexpected Runtime Exception {}"
+argument_list|,
+name|ex
+argument_list|)
 expr_stmt|;
 name|item
 operator|.

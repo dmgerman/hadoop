@@ -3501,6 +3501,32 @@ argument_list|,
 name|reReservation
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Reserved container="
+operator|+
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|", on node="
+operator|+
+name|schedulerContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|+
+literal|" with resource="
+operator|+
+name|rmContainer
+operator|.
+name|getAllocatedOrReservedResource
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

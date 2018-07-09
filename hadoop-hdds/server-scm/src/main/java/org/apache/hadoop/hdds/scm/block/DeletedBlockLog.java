@@ -81,7 +81,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The DeletedBlockLog is a persisted log in SCM to keep tracking  * container blocks which are under deletion. It maintains info  * about under-deletion container blocks that notified by KSM,  * and the state how it is processed.  */
+comment|/**  * The DeletedBlockLog is a persisted log in SCM to keep tracking  * container blocks which are under deletion. It maintains info  * about under-deletion container blocks that notified by OM,  * and the state how it is processed.  */
 end_comment
 
 begin_interface

@@ -68,7 +68,7 @@ specifier|private
 name|long
 name|modificationTime
 decl_stmt|;
-comment|/**    * Constructs OzoneKey from KsmKeyInfo.    *    */
+comment|/**    * Constructs OzoneKey from OmKeyInfo.    *    */
 DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime)
 specifier|public
 name|OzoneKey

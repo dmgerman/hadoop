@@ -72,6 +72,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OmUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|client
 operator|.
 name|protocol
@@ -208,11 +222,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_HTTP_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 import|;
 end_import
 
@@ -226,47 +240,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_HTTP_BIND_PORT_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|ksm
-operator|.
-name|KSMConfigKeys
-operator|.
-name|OZONE_KSM_ADDRESS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|ksm
-operator|.
-name|KSMConfigKeys
-operator|.
-name|OZONE_KSM_PORT_DEFAULT
+name|OZONE_OM_HTTP_ADDRESS_KEY
 import|;
 end_import
 
@@ -390,15 +368,59 @@ name|config
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an OzoneClient which will use RPC protocol.    *    * @param ksmHost    *        hostname of KeySpaceManager to connect.    *    * @return OzoneClient    *    * @throws IOException    */
-DECL|method|getRpcClient (String ksmHost)
+comment|/**    * Returns an OzoneClient which will use RPC protocol.    *    * @param omHost    *        hostname of OzoneManager to connect.    *    * @return OzoneClient    *    * @throws IOException    */
+DECL|method|getRpcClient (String omHost)
 specifier|public
 specifier|static
 name|OzoneClient
 name|getRpcClient
 parameter_list|(
 name|String
-name|ksmHost
+name|omHost
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|config
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|()
+decl_stmt|;
+name|int
+name|port
+init|=
+name|OmUtils
+operator|.
+name|getOmRpcPort
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
+return|return
+name|getRpcClient
+argument_list|(
+name|omHost
+argument_list|,
+name|port
+argument_list|,
+name|config
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns an OzoneClient which will use RPC protocol.    *    * @param omHost    *        hostname of OzoneManager to connect.    *    * @param omRpcPort    *        RPC port of OzoneManager.    *    * @return OzoneClient    *    * @throws IOException    */
+DECL|method|getRpcClient (String omHost, Integer omRpcPort)
+specifier|public
+specifier|static
+name|OzoneClient
+name|getRpcClient
+parameter_list|(
+name|String
+name|omHost
+parameter_list|,
+name|Integer
+name|omRpcPort
 parameter_list|)
 throws|throws
 name|IOException
@@ -406,38 +428,9 @@ block|{
 return|return
 name|getRpcClient
 argument_list|(
-name|ksmHost
+name|omHost
 argument_list|,
-name|OZONE_KSM_PORT_DEFAULT
-argument_list|,
-operator|new
-name|OzoneConfiguration
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns an OzoneClient which will use RPC protocol.    *    * @param ksmHost    *        hostname of KeySpaceManager to connect.    *    * @param ksmRpcPort    *        RPC port of KeySpaceManager.    *    * @return OzoneClient    *    * @throws IOException    */
-DECL|method|getRpcClient (String ksmHost, Integer ksmRpcPort)
-specifier|public
-specifier|static
-name|OzoneClient
-name|getRpcClient
-parameter_list|(
-name|String
-name|ksmHost
-parameter_list|,
-name|Integer
-name|ksmRpcPort
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|getRpcClient
-argument_list|(
-name|ksmHost
-argument_list|,
-name|ksmRpcPort
+name|omRpcPort
 argument_list|,
 operator|new
 name|OzoneConfiguration
@@ -445,18 +438,18 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an OzoneClient which will use RPC protocol.    *    * @param ksmHost    *        hostname of KeySpaceManager to connect.    *    * @param ksmRpcPort    *        RPC port of KeySpaceManager.    *    * @param config    *        Configuration to be used for OzoneClient creation    *    * @return OzoneClient    *    * @throws IOException    */
-DECL|method|getRpcClient (String ksmHost, Integer ksmRpcPort, Configuration config)
+comment|/**    * Returns an OzoneClient which will use RPC protocol.    *    * @param omHost    *        hostname of OzoneManager to connect.    *    * @param omRpcPort    *        RPC port of OzoneManager.    *    * @param config    *        Configuration to be used for OzoneClient creation    *    * @return OzoneClient    *    * @throws IOException    */
+DECL|method|getRpcClient (String omHost, Integer omRpcPort, Configuration config)
 specifier|public
 specifier|static
 name|OzoneClient
 name|getRpcClient
 parameter_list|(
 name|String
-name|ksmHost
+name|omHost
 parameter_list|,
 name|Integer
-name|ksmRpcPort
+name|omRpcPort
 parameter_list|,
 name|Configuration
 name|config
@@ -468,14 +461,14 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|ksmHost
+name|omHost
 argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|ksmRpcPort
+name|omRpcPort
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -489,13 +482,13 @@ name|config
 operator|.
 name|set
 argument_list|(
-name|OZONE_KSM_ADDRESS_KEY
+name|OZONE_OM_ADDRESS_KEY
 argument_list|,
-name|ksmHost
+name|omHost
 operator|+
 literal|":"
 operator|+
-name|ksmRpcPort
+name|omRpcPort
 argument_list|)
 expr_stmt|;
 return|return
@@ -541,40 +534,59 @@ name|config
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an OzoneClient which will use REST protocol.    *    * @param ksmHost    *        hostname of KeySpaceManager to connect.    *    * @return OzoneClient    *    * @throws IOException    */
-DECL|method|getRestClient (String ksmHost)
+comment|/**    * Returns an OzoneClient which will use REST protocol.    *    * @param omHost    *        hostname of OzoneManager to connect.    *    * @return OzoneClient    *    * @throws IOException    */
+DECL|method|getRestClient (String omHost)
 specifier|public
 specifier|static
 name|OzoneClient
 name|getRestClient
 parameter_list|(
 name|String
-name|ksmHost
+name|omHost
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Configuration
+name|config
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|()
+decl_stmt|;
+name|int
+name|port
+init|=
+name|OmUtils
+operator|.
+name|getOmRestPort
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
 return|return
 name|getRestClient
 argument_list|(
-name|ksmHost
+name|omHost
 argument_list|,
-name|OZONE_KSM_HTTP_BIND_PORT_DEFAULT
+name|port
+argument_list|,
+name|config
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an OzoneClient which will use REST protocol.    *    * @param ksmHost    *        hostname of KeySpaceManager to connect.    *    * @param ksmHttpPort    *        HTTP port of KeySpaceManager.    *    * @return OzoneClient    *    * @throws IOException    */
-DECL|method|getRestClient (String ksmHost, Integer ksmHttpPort)
+comment|/**    * Returns an OzoneClient which will use REST protocol.    *    * @param omHost    *        hostname of OzoneManager to connect.    *    * @param omHttpPort    *        HTTP port of OzoneManager.    *    * @return OzoneClient    *    * @throws IOException    */
+DECL|method|getRestClient (String omHost, Integer omHttpPort)
 specifier|public
 specifier|static
 name|OzoneClient
 name|getRestClient
 parameter_list|(
 name|String
-name|ksmHost
+name|omHost
 parameter_list|,
 name|Integer
-name|ksmHttpPort
+name|omHttpPort
 parameter_list|)
 throws|throws
 name|IOException
@@ -582,9 +594,9 @@ block|{
 return|return
 name|getRestClient
 argument_list|(
-name|ksmHost
+name|omHost
 argument_list|,
-name|ksmHttpPort
+name|omHttpPort
 argument_list|,
 operator|new
 name|OzoneConfiguration
@@ -592,18 +604,18 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an OzoneClient which will use REST protocol.    *    * @param ksmHost    *        hostname of KeySpaceManager to connect.    *    * @param ksmHttpPort    *        HTTP port of KeySpaceManager.    *    * @param config    *        Configuration to be used for OzoneClient creation    *    * @return OzoneClient    *    * @throws IOException    */
-DECL|method|getRestClient (String ksmHost, Integer ksmHttpPort, Configuration config)
+comment|/**    * Returns an OzoneClient which will use REST protocol.    *    * @param omHost    *        hostname of OzoneManager to connect.    *    * @param omHttpPort    *        HTTP port of OzoneManager.    *    * @param config    *        Configuration to be used for OzoneClient creation    *    * @return OzoneClient    *    * @throws IOException    */
+DECL|method|getRestClient (String omHost, Integer omHttpPort, Configuration config)
 specifier|public
 specifier|static
 name|OzoneClient
 name|getRestClient
 parameter_list|(
 name|String
-name|ksmHost
+name|omHost
 parameter_list|,
 name|Integer
-name|ksmHttpPort
+name|omHttpPort
 parameter_list|,
 name|Configuration
 name|config
@@ -615,14 +627,14 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|ksmHost
+name|omHost
 argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|ksmHttpPort
+name|omHttpPort
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -636,13 +648,13 @@ name|config
 operator|.
 name|set
 argument_list|(
-name|OZONE_KSM_HTTP_ADDRESS_KEY
+name|OZONE_OM_HTTP_ADDRESS_KEY
 argument_list|,
-name|ksmHost
+name|omHost
 operator|+
 literal|":"
 operator|+
-name|ksmHttpPort
+name|omHttpPort
 argument_list|)
 expr_stmt|;
 return|return

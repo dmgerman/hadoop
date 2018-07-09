@@ -19,7 +19,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * KSM protocol buffer translators.  */
+comment|/**  * OM protocol buffer translators.  */
 end_comment
 
 end_unit

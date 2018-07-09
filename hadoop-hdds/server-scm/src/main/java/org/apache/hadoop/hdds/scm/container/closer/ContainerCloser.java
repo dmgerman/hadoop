@@ -90,6 +90,48 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
+name|SCMContainerInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|node
@@ -492,16 +534,17 @@ return|return
 name|CLEANUP_WATER_MARK
 return|;
 block|}
-comment|/**    * Sends a Container Close command to the data nodes where this container    * lives.    *    * @param info - ContainerInfo.    */
-DECL|method|close (HddsProtos.SCMContainerInfo info)
+comment|/**    * Sends a Container Close command to the data nodes where this container    * lives.    *    * @param info - ContainerInfo.    * @param pipeline    */
+DECL|method|close (SCMContainerInfo info, Pipeline pipeline)
 specifier|public
 name|void
 name|close
 parameter_list|(
-name|HddsProtos
-operator|.
 name|SCMContainerInfo
 name|info
+parameter_list|,
+name|Pipeline
+name|pipeline
 parameter_list|)
 block|{
 if|if
@@ -600,26 +643,14 @@ comment|// 3. SCM will see that datanode is closed from container reports, but i
 comment|// is possible that datanodes might get close commands since
 comment|// this queue can be emptied by a datanode after a close report is send
 comment|// to SCM. In that case also, data node will ignore this command.
-name|HddsProtos
-operator|.
-name|Pipeline
-name|pipeline
-init|=
-name|info
-operator|.
-name|getPipeline
-argument_list|()
-decl_stmt|;
 for|for
 control|(
-name|HddsProtos
-operator|.
-name|DatanodeDetailsProto
+name|DatanodeDetails
 name|datanodeDetails
 range|:
 name|pipeline
 operator|.
-name|getMembersList
+name|getMachines
 argument_list|()
 control|)
 block|{
@@ -627,12 +658,7 @@ name|nodeManager
 operator|.
 name|addDatanodeCommand
 argument_list|(
-name|DatanodeDetails
-operator|.
-name|getFromProtoBuf
-argument_list|(
 name|datanodeDetails
-argument_list|)
 operator|.
 name|getUuid
 argument_list|()
@@ -645,9 +671,9 @@ operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-name|pipeline
+name|info
 operator|.
-name|getType
+name|getReplicationType
 argument_list|()
 argument_list|)
 argument_list|)

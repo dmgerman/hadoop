@@ -390,7 +390,7 @@ name|OZONE_SCM_DATANODE_PORT_DEFAULT
 init|=
 literal|9861
 decl_stmt|;
-comment|// OZONE_KSM_PORT_DEFAULT = 9862
+comment|// OZONE_OM_PORT_DEFAULT = 9862
 DECL|field|OZONE_SCM_BLOCK_CLIENT_PORT_KEY
 specifier|public
 specifier|static
@@ -707,24 +707,6 @@ name|String
 name|OZONE_SCM_DEADNODE_INTERVAL_DEFAULT
 init|=
 literal|"10m"
-decl_stmt|;
-DECL|field|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS
-init|=
-literal|"ozone.scm.max.hb.count.to.process"
-decl_stmt|;
-DECL|field|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS_DEFAULT
-init|=
-literal|5000
 decl_stmt|;
 DECL|field|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 specifier|public

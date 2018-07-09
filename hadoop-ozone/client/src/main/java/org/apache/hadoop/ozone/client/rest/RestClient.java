@@ -470,9 +470,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 import|;
 end_import
 
@@ -486,7 +486,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
 name|helpers
 operator|.
@@ -508,7 +508,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|ServicePort
 import|;
@@ -1266,13 +1266,13 @@ name|conf
 operator|.
 name|getEnum
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_USER_RIGHTS
+name|OZONE_OM_USER_RIGHTS
 argument_list|,
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_USER_RIGHTS_DEFAULT
+name|OZONE_OM_USER_RIGHTS_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// TODO: Add new configuration parameter to configure RestServerSelector.
@@ -1362,9 +1362,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_HTTP_ADDRESS_KEY
+name|OZONE_OM_HTTP_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
 if|if
@@ -1378,9 +1378,9 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
-name|OZONE_KSM_HTTP_ADDRESS_KEY
+name|OZONE_OM_HTTP_ADDRESS_KEY
 operator|+
 literal|" must be defined. See"
 operator|+

@@ -50,6 +50,18 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ByteString
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -234,7 +246,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|OzoneAclInfo
 import|;
@@ -254,7 +266,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|BucketInfo
 import|;
@@ -274,7 +286,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|KeyInfo
 import|;
@@ -294,7 +306,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|VolumeInfo
 import|;
@@ -314,7 +326,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|VolumeList
 import|;
@@ -335,26 +347,6 @@ operator|.
 name|proto
 operator|.
 name|HddsProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|Pipeline
 import|;
 end_import
 
@@ -612,7 +604,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_DB_NAME
+name|OM_DB_NAME
 import|;
 end_import
 
@@ -628,7 +620,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_USER_PREFIX
+name|OM_USER_PREFIX
 import|;
 end_import
 
@@ -644,7 +636,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_BUCKET_PREFIX
+name|OM_BUCKET_PREFIX
 import|;
 end_import
 
@@ -660,7 +652,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 import|;
 end_import
 
@@ -735,22 +727,17 @@ literal|"CREATE TABLE containerInfo ("
 operator|+
 literal|"containerID LONG PRIMARY KEY NOT NULL, "
 operator|+
-literal|"leaderUUID TEXT NOT NULL)"
-decl_stmt|;
-DECL|field|CREATE_CONTAINER_MEMBERS
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|CREATE_CONTAINER_MEMBERS
-init|=
-literal|"CREATE TABLE containerMembers ("
+literal|"replicationType TEXT NOT NULL,"
 operator|+
-literal|"containerName TEXT NOT NULL, "
+literal|"replicationFactor TEXT NOT NULL,"
 operator|+
-literal|"datanodeUUID TEXT NOT NULL,"
+literal|"usedBytes LONG NOT NULL,"
 operator|+
-literal|"PRIMARY KEY(containerName, datanodeUUID));"
+literal|"allocatedBytes LONG NOT NULL,"
+operator|+
+literal|"owner TEXT,"
+operator|+
+literal|"numberOfKeys LONG)"
 decl_stmt|;
 DECL|field|CREATE_DATANODE_INFO
 specifier|private
@@ -776,9 +763,13 @@ specifier|final
 name|String
 name|INSERT_CONTAINER_INFO
 init|=
-literal|"INSERT INTO containerInfo (containerID, leaderUUID) "
+literal|"INSERT INTO containerInfo (containerID, replicationType, "
 operator|+
-literal|"VALUES (\"%d\", \"%s\")"
+literal|"replicationFactor, usedBytes, allocatedBytes, owner, "
+operator|+
+literal|"numberOfKeys) VALUES (\"%d\", \"%s\", \"%s\", \"%d\", \"%d\", "
+operator|+
+literal|"\"%s\", \"%d\")"
 decl_stmt|;
 DECL|field|INSERT_DATANODE_INFO
 specifier|private
@@ -830,7 +821,7 @@ literal|"INSERT INTO openContainer (containerName, containerUsed) "
 operator|+
 literal|"VALUES (\"%s\", \"%s\")"
 decl_stmt|;
-comment|// for ksm.db
+comment|// for om.db
 DECL|field|CREATE_VOLUME_LIST
 specifier|private
 specifier|static
@@ -1541,7 +1532,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|KSM_DB_NAME
+name|OM_DB_NAME
 argument_list|)
 condition|)
 block|{
@@ -1549,10 +1540,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Converting ksm DB"
+literal|"Converting om DB"
 argument_list|)
 expr_stmt|;
-name|convertKSMDB
+name|convertOMDB
 argument_list|(
 name|dbPath
 argument_list|,
@@ -1649,11 +1640,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Convert ksm.db to sqlite db file. With following schema.    * (* for primary key)    *    * 1. for key type USER, it contains a username and a list volumes    * volumeList    * --------------------------------    *   userName*     |  volumeName*    * --------------------------------    *    * 2. for key type VOLUME:    *    * volumeInfo    * ----------------------------------------------    * adminName | ownerName* | volumeName* | aclID    * ----------------------------------------------    *    * aclInfo    * ----------------------------------------------    * aclEntryID* | type* | userName* | rights    * ----------------------------------------------    *    * 3. for key type BUCKET    * bucketInfo    * --------------------------------------------------------    * volumeName* | bucketName* | versionEnabled | storageType    * --------------------------------------------------------    *    * TODO : the following table will be changed when key partition is added.    * Only has the minimum entries for test purpose now.    * 4. for key type KEY    * -----------------------------------------------    * volumeName* | bucketName* | keyName* | dataSize    * -----------------------------------------------    *    *    *    * @param dbPath    * @param outPath    * @throws Exception    */
-DECL|method|convertKSMDB (Path dbPath, Path outPath)
+comment|/**    * Convert om.db to sqlite db file. With following schema.    * (* for primary key)    *    * 1. for key type USER, it contains a username and a list volumes    * volumeList    * --------------------------------    *   userName*     |  volumeName*    * --------------------------------    *    * 2. for key type VOLUME:    *    * volumeInfo    * ----------------------------------------------    * adminName | ownerName* | volumeName* | aclID    * ----------------------------------------------    *    * aclInfo    * ----------------------------------------------    * aclEntryID* | type* | userName* | rights    * ----------------------------------------------    *    * 3. for key type BUCKET    * bucketInfo    * --------------------------------------------------------    * volumeName* | bucketName* | versionEnabled | storageType    * --------------------------------------------------------    *    * TODO : the following table will be changed when key partition is added.    * Only has the minimum entries for test purpose now.    * 4. for key type KEY    * -----------------------------------------------    * volumeName* | bucketName* | keyName* | dataSize    * -----------------------------------------------    *    *    *    * @param dbPath    * @param outPath    * @throws Exception    */
+DECL|method|convertOMDB (Path dbPath, Path outPath)
 specifier|private
 name|void
-name|convertKSMDB
+name|convertOMDB
 parameter_list|(
 name|Path
 name|dbPath
@@ -1668,7 +1659,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Create tables for sql ksm db."
+literal|"Create tables for sql om db."
 argument_list|)
 expr_stmt|;
 name|File
@@ -1782,7 +1773,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|insertKSMDB
+name|insertOMDB
 argument_list|(
 name|conn
 argument_list|,
@@ -1824,10 +1815,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|insertKSMDB (Connection conn, KeyType type, String keyName, byte[] value)
+DECL|method|insertOMDB (Connection conn, KeyType type, String keyName, byte[] value)
 specifier|private
 name|void
-name|insertKSMDB
+name|insertOMDB
 parameter_list|(
 name|Connection
 name|conn
@@ -2123,7 +2114,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unknown key from ksm.db"
+literal|"Unknown key from om.db"
 argument_list|)
 throw|;
 block|}
@@ -2143,7 +2134,7 @@ name|key
 operator|.
 name|startsWith
 argument_list|(
-name|KSM_USER_PREFIX
+name|OM_USER_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -2160,7 +2151,7 @@ name|key
 operator|.
 name|startsWith
 argument_list|(
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -2169,14 +2160,14 @@ name|key
 operator|.
 name|replaceFirst
 argument_list|(
-name|KSM_VOLUME_PREFIX
+name|OM_VOLUME_PREFIX
 argument_list|,
 literal|""
 argument_list|)
 operator|.
 name|contains
 argument_list|(
-name|KSM_BUCKET_PREFIX
+name|OM_BUCKET_PREFIX
 argument_list|)
 condition|?
 name|KeyType
@@ -2289,31 +2280,6 @@ argument_list|,
 name|CREATE_CONTAINER_INFO
 argument_list|)
 expr_stmt|;
-name|executeSQL
-argument_list|(
-name|conn
-argument_list|,
-name|CREATE_CONTAINER_MEMBERS
-argument_list|)
-expr_stmt|;
-name|executeSQL
-argument_list|(
-name|conn
-argument_list|,
-name|CREATE_DATANODE_INFO
-argument_list|)
-expr_stmt|;
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-name|uuidChecked
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
 name|dbStore
 operator|.
 name|iterate
@@ -2374,17 +2340,9 @@ name|insertContainerDB
 argument_list|(
 name|conn
 argument_list|,
-name|containerID
-argument_list|,
 name|containerInfo
-operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getProtobufMessage
-argument_list|()
 argument_list|,
-name|uuidChecked
+name|containerID
 argument_list|)
 expr_stmt|;
 return|return
@@ -2410,8 +2368,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Insert into the sqlite DB of container.db.    * @param conn the connection to the sqlite DB.    * @param containerID the id of the container.    * @param pipeline the actual container pipeline object.    * @param uuidChecked the uuid that has been already inserted.    * @throws SQLException throws exception.    */
-DECL|method|insertContainerDB (Connection conn, long containerID, Pipeline pipeline, Set<String> uuidChecked)
+comment|/**    * Insert into the sqlite DB of container.db.    * @param conn the connection to the sqlite DB.    * @param containerInfo    * @param containerID    * @throws SQLException throws exception.    */
+DECL|method|insertContainerDB (Connection conn, ContainerInfo containerInfo, long containerID)
 specifier|private
 name|void
 name|insertContainerDB
@@ -2419,17 +2377,11 @@ parameter_list|(
 name|Connection
 name|conn
 parameter_list|,
+name|ContainerInfo
+name|containerInfo
+parameter_list|,
 name|long
 name|containerID
-parameter_list|,
-name|Pipeline
-name|pipeline
-parameter_list|,
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|uuidChecked
 parameter_list|)
 throws|throws
 name|SQLException
@@ -2454,9 +2406,34 @@ name|INSERT_CONTAINER_INFO
 argument_list|,
 name|containerID
 argument_list|,
-name|pipeline
+name|containerInfo
 operator|.
-name|getLeaderID
+name|getReplicationType
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getReplicationFactor
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getUsedBytes
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getAllocatedBytes
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getOwner
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getNumberOfKeys
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2467,135 +2444,6 @@ argument_list|,
 name|insertContainerInfo
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|HddsProtos
-operator|.
-name|DatanodeDetailsProto
-name|dd
-range|:
-name|pipeline
-operator|.
-name|getMembersList
-argument_list|()
-control|)
-block|{
-name|String
-name|uuid
-init|=
-name|dd
-operator|.
-name|getUuid
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|uuidChecked
-operator|.
-name|contains
-argument_list|(
-name|uuid
-argument_list|)
-condition|)
-block|{
-comment|// we may also not use this checked set, but catch exception instead
-comment|// but this seems a bit cleaner.
-name|String
-name|ipAddr
-init|=
-name|dd
-operator|.
-name|getIpAddress
-argument_list|()
-decl_stmt|;
-name|String
-name|hostName
-init|=
-name|dd
-operator|.
-name|getHostName
-argument_list|()
-decl_stmt|;
-name|int
-name|containerPort
-init|=
-name|DatanodeDetails
-operator|.
-name|getFromProtoBuf
-argument_list|(
-name|dd
-argument_list|)
-operator|.
-name|getPort
-argument_list|(
-name|DatanodeDetails
-operator|.
-name|Port
-operator|.
-name|Name
-operator|.
-name|STANDALONE
-argument_list|)
-operator|.
-name|getValue
-argument_list|()
-decl_stmt|;
-name|String
-name|insertMachineInfo
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-name|INSERT_DATANODE_INFO
-argument_list|,
-name|hostName
-argument_list|,
-name|uuid
-argument_list|,
-name|ipAddr
-argument_list|,
-name|containerPort
-argument_list|)
-decl_stmt|;
-name|executeSQL
-argument_list|(
-name|conn
-argument_list|,
-name|insertMachineInfo
-argument_list|)
-expr_stmt|;
-name|uuidChecked
-operator|.
-name|add
-argument_list|(
-name|uuid
-argument_list|)
-expr_stmt|;
-block|}
-name|String
-name|insertContainerMembers
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-name|INSERT_CONTAINER_MEMBERS
-argument_list|,
-name|containerID
-argument_list|,
-name|uuid
-argument_list|)
-decl_stmt|;
-name|executeSQL
-argument_list|(
-name|conn
-argument_list|,
-name|insertContainerMembers
-argument_list|)
-expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info

@@ -4899,15 +4899,6 @@ name|ContainerExecutionException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Signal docker container failed. Exception: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|ContainerExecutionException
@@ -5825,6 +5816,15 @@ operator|new
 name|ContainerExecutionException
 argument_list|(
 name|msg
+argument_list|,
+name|PrivilegedOperation
+operator|.
+name|ResultCode
+operator|.
+name|INVALID_CONTAINER_PID
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 throw|;
 block|}

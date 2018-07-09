@@ -22,20 +22,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -86,11 +72,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|UnregisteredNodeException
+name|node
+operator|.
+name|states
+operator|.
+name|NodeNotFoundException
 import|;
 end_import
 
@@ -219,10 +209,8 @@ extends|,
 name|NodeManagerMXBean
 extends|,
 name|Closeable
-extends|,
-name|Runnable
 block|{
-comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws UnregisteredNodeException    */
+comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws NodeNotFoundException    */
 DECL|method|removeNode (DatanodeDetails node)
 name|void
 name|removeNode
@@ -231,7 +219,7 @@ name|DatanodeDetails
 name|node
 parameter_list|)
 throws|throws
-name|UnregisteredNodeException
+name|NodeNotFoundException
 function_decl|;
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    * @param nodeState - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
 DECL|method|getNodes (NodeState nodeState)
@@ -306,14 +294,6 @@ parameter_list|(
 name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
-function_decl|;
-comment|/**    * Wait for the heartbeat is processed by NodeManager.    * @return true if heartbeat has been processed.    */
-annotation|@
-name|VisibleForTesting
-DECL|method|waitForHeartbeatProcessed ()
-name|boolean
-name|waitForHeartbeatProcessed
-parameter_list|()
 function_decl|;
 comment|/**    * Returns the node state of a specific node.    * @param datanodeDetails DatanodeDetails    * @return Healthy/Stale/Dead.    */
 DECL|method|getNodeState (DatanodeDetails datanodeDetails)

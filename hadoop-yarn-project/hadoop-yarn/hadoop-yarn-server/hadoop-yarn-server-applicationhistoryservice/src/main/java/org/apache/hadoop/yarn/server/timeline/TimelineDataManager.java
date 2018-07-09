@@ -1052,10 +1052,46 @@ name|entity
 argument_list|)
 condition|)
 block|{
-name|entity
-operator|=
+specifier|final
+name|String
+name|user
+init|=
+name|callerUGI
+operator|!=
 literal|null
-expr_stmt|;
+condition|?
+name|callerUGI
+operator|.
+name|getShortUserName
+argument_list|()
+else|:
+literal|null
+decl_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|user
+operator|+
+literal|" is not allowed to get the timeline entity "
+operator|+
+literal|"{ id: "
+operator|+
+name|entity
+operator|.
+name|getEntityId
+argument_list|()
+operator|+
+literal|", type: "
+operator|+
+name|entity
+operator|.
+name|getEntityType
+argument_list|()
+operator|+
+literal|" }."
+argument_list|)
+throw|;
 block|}
 block|}
 return|return

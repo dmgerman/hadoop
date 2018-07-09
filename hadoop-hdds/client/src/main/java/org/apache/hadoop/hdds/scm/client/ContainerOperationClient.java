@@ -84,6 +84,28 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -264,16 +286,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -438,7 +450,7 @@ annotation|@
 name|Override
 DECL|method|createContainer (String owner)
 specifier|public
-name|ContainerInfo
+name|ContainerWithPipeline
 name|createContainer
 parameter_list|(
 name|String
@@ -454,8 +466,8 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-name|ContainerInfo
-name|container
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|storageContainerLocationClient
 operator|.
@@ -477,7 +489,7 @@ decl_stmt|;
 name|Pipeline
 name|pipeline
 init|=
-name|container
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -490,7 +502,10 @@ name|acquireClient
 argument_list|(
 name|pipeline
 argument_list|,
-name|container
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -542,14 +557,17 @@ name|createContainer
 argument_list|(
 name|client
 argument_list|,
-name|container
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|container
+name|containerWithPipeline
 return|;
 block|}
 finally|finally
@@ -785,7 +803,7 @@ annotation|@
 name|Override
 DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
 specifier|public
-name|ContainerInfo
+name|ContainerWithPipeline
 name|createContainer
 parameter_list|(
 name|HddsProtos
@@ -812,8 +830,8 @@ decl_stmt|;
 try|try
 block|{
 comment|// allocate container on SCM.
-name|ContainerInfo
-name|container
+name|ContainerWithPipeline
+name|containerWithPipeline
 init|=
 name|storageContainerLocationClient
 operator|.
@@ -829,7 +847,7 @@ decl_stmt|;
 name|Pipeline
 name|pipeline
 init|=
-name|container
+name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
@@ -842,7 +860,10 @@ name|acquireClient
 argument_list|(
 name|pipeline
 argument_list|,
-name|container
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -878,7 +899,10 @@ name|acquireClient
 argument_list|(
 name|pipeline
 argument_list|,
-name|container
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -888,14 +912,17 @@ name|createContainer
 argument_list|(
 name|client
 argument_list|,
-name|container
+name|containerWithPipeline
+operator|.
+name|getContainerInfo
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|container
+name|containerWithPipeline
 return|;
 block|}
 finally|finally
@@ -917,22 +944,22 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Returns a set of Nodes that meet a query criteria.    *    * @param nodeStatuses - A set of criteria that we want the node to have.    * @param queryScope - Query scope - Cluster or pool.    * @param poolName - if it is pool, a pool name is required.    * @return A set of nodes that meet the requested criteria.    * @throws IOException    */
+comment|/**    * Returns a set of Nodes that meet a query criteria.    *    * @param nodeStatuses - Criteria that we want the node to have.    * @param queryScope - Query scope - Cluster or pool.    * @param poolName - if it is pool, a pool name is required.    * @return A set of nodes that meet the requested criteria.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|queryNode (EnumSet<HddsProtos.NodeState> nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
+DECL|method|queryNode (HddsProtos.NodeState nodeStatuses, HddsProtos.QueryScope queryScope, String poolName)
 specifier|public
-name|HddsProtos
-operator|.
-name|NodePool
-name|queryNode
-parameter_list|(
-name|EnumSet
+name|List
 argument_list|<
 name|HddsProtos
 operator|.
-name|NodeState
+name|Node
 argument_list|>
+name|queryNode
+parameter_list|(
+name|HddsProtos
+operator|.
+name|NodeState
 name|nodeStatuses
 parameter_list|,
 name|HddsProtos
@@ -998,16 +1025,16 @@ name|nodePool
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete the container, this will release any resource it uses.    * @param pipeline - Pipeline that represents the container.    * @param force - True to forcibly delete the container.    * @throws IOException    */
+comment|/**    * Deletes an existing container.    *    * @param containerId - ID of the container.    * @param pipeline    - Pipeline that represents the container.    * @param force       - true to forcibly delete the container.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (long containerID, Pipeline pipeline, boolean force)
+DECL|method|deleteContainer (long containerId, Pipeline pipeline, boolean force)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
 name|long
-name|containerID
+name|containerId
 parameter_list|,
 name|Pipeline
 name|pipeline
@@ -1033,7 +1060,7 @@ name|acquireClient
 argument_list|(
 name|pipeline
 argument_list|,
-name|containerID
+name|containerId
 argument_list|)
 expr_stmt|;
 name|String
@@ -1053,7 +1080,7 @@ name|deleteContainer
 argument_list|(
 name|client
 argument_list|,
-name|containerID
+name|containerId
 argument_list|,
 name|force
 argument_list|,
@@ -1064,7 +1091,7 @@ name|storageContainerLocationClient
 operator|.
 name|deleteContainer
 argument_list|(
-name|containerID
+name|containerId
 argument_list|)
 expr_stmt|;
 if|if
@@ -1081,7 +1108,7 @@ name|debug
 argument_list|(
 literal|"Deleted container {}, leader: {}, machines: {} "
 argument_list|,
-name|containerID
+name|containerId
 argument_list|,
 name|pipeline
 operator|.
@@ -1115,6 +1142,44 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Delete the container, this will release any resource it uses.    * @param containerID - containerID.    * @param force - True to forcibly delete the container.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|deleteContainer (long containerID, boolean force)
+specifier|public
+name|void
+name|deleteContainer
+parameter_list|(
+name|long
+name|containerID
+parameter_list|,
+name|boolean
+name|force
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ContainerWithPipeline
+name|info
+init|=
+name|getContainerWithPipeline
+argument_list|(
+name|containerID
+argument_list|)
+decl_stmt|;
+name|deleteContainer
+argument_list|(
+name|containerID
+argument_list|,
+name|info
+operator|.
+name|getPipeline
+argument_list|()
+argument_list|,
+name|force
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
@@ -1146,7 +1211,7 @@ name|count
 argument_list|)
 return|;
 block|}
-comment|/**    * Get meta data from an existing container.    *    * @param pipeline - pipeline that represents the container.    * @return ContainerInfo - a message of protobuf which has basic info    * of a container.    * @throws IOException    */
+comment|/**    * Get meta data from an existing container.    *    * @param containerID - ID of the container.    * @param pipeline    - Pipeline where the container is located.    * @return ContainerInfo    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|readContainer (long containerID, Pipeline pipeline)
@@ -1260,6 +1325,40 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Get meta data from an existing container.    * @param containerID - ID of the container.    * @return ContainerInfo - a message of protobuf which has basic info    * of a container.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|readContainer (long containerID)
+specifier|public
+name|ContainerData
+name|readContainer
+parameter_list|(
+name|long
+name|containerID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ContainerWithPipeline
+name|info
+init|=
+name|getContainerWithPipeline
+argument_list|(
+name|containerID
+argument_list|)
+decl_stmt|;
+return|return
+name|readContainer
+argument_list|(
+name|containerID
+argument_list|,
+name|info
+operator|.
+name|getPipeline
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/**    * Given an id, return the pipeline associated with the container.    * @param containerId - String Container ID    * @return Pipeline of the existing container, corresponding to the given id.    * @throws IOException    */
 annotation|@
 name|Override
@@ -1278,6 +1377,29 @@ return|return
 name|storageContainerLocationClient
 operator|.
 name|getContainer
+argument_list|(
+name|containerId
+argument_list|)
+return|;
+block|}
+comment|/**    * Gets a container by Name -- Throws if the container does not exist.    *    * @param containerId - Container ID    * @return ContainerWithPipeline    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|getContainerWithPipeline (long containerId)
+specifier|public
+name|ContainerWithPipeline
+name|getContainerWithPipeline
+parameter_list|(
+name|long
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|storageContainerLocationClient
+operator|.
+name|getContainerWithPipeline
 argument_list|(
 name|containerId
 argument_list|)
@@ -1422,6 +1544,44 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Close a container.    *    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|closeContainer (long containerId)
+specifier|public
+name|void
+name|closeContainer
+parameter_list|(
+name|long
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|ContainerWithPipeline
+name|info
+init|=
+name|getContainerWithPipeline
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+name|Pipeline
+name|pipeline
+init|=
+name|info
+operator|.
+name|getPipeline
+argument_list|()
+decl_stmt|;
+name|closeContainer
+argument_list|(
+name|containerId
+argument_list|,
+name|pipeline
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get the the current usage information.    * @param containerID - ID of the container.    * @return the size of the given container.    * @throws IOException    */
 annotation|@
 name|Override
@@ -1436,7 +1596,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO : Fix this, it currently returns the capacity but not the current usage.
+comment|// TODO : Fix this, it currently returns the capacity
+comment|// but not the current usage.
 name|long
 name|size
 init|=

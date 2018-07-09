@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is the base CLI for scm, ksm and scmadm.  */
+comment|/**  * This class is the base CLI for scm, om and scmadm.  */
 end_comment
 
 begin_class

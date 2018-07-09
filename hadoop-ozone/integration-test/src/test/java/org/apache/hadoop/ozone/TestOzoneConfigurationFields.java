@@ -40,9 +40,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|ksm
+name|om
 operator|.
-name|KSMConfigKeys
+name|OMConfigKeys
 import|;
 end_import
 
@@ -104,7 +104,7 @@ name|ScmConfigKeys
 operator|.
 name|class
 block|,
-name|KSMConfigKeys
+name|OMConfigKeys
 operator|.
 name|class
 block|}

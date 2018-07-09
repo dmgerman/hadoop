@@ -182,7 +182,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 import|;
 end_import
 
@@ -745,7 +745,7 @@ argument_list|()
 operator|.
 name|endsWith
 argument_list|(
-name|KeySpaceManagerProtocolProtos
+name|OzoneManagerProtocolProtos
 operator|.
 name|Status
 operator|.

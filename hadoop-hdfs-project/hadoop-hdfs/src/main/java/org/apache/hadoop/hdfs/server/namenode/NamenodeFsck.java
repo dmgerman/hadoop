@@ -6347,11 +6347,6 @@ name|getConf
 argument_list|()
 argument_list|)
 operator|.
-name|setTracer
-argument_list|(
-name|tracer
-argument_list|)
-operator|.
 name|setRemotePeerFactory
 argument_list|(
 operator|new

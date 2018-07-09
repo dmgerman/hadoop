@@ -639,10 +639,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testNotifyOfResponse ()
+DECL|method|testNotifyOfResponseFromUnknownSubCluster ()
 specifier|public
 name|void
-name|testNotifyOfResponse
+name|testNotifyOfResponseFromUnknownSubCluster
 parameter_list|()
 throws|throws
 name|Exception
@@ -711,8 +711,6 @@ argument_list|(
 name|resourceRequests
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 operator|(
 operator|(
 name|FederationAMRMProxyPolicy
@@ -738,33 +736,6 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FederationPolicyException
-name|f
-parameter_list|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Expected: "
-operator|+
-name|f
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 operator|(
 operator|(
 name|FederationAMRMProxyPolicy
