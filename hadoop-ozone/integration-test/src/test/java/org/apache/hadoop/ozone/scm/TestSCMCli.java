@@ -2206,6 +2206,9 @@ name|formatStr
 argument_list|,
 name|container
 operator|.
+name|getContainerInfo
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
