@@ -312,6 +312,23 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|router
+operator|.
+name|isQuotaEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The quota system is disabled in Router."
+argument_list|)
+throw|;
+block|}
 comment|// Set quota for current path and its children mount table path.
 specifier|final
 name|List
@@ -435,6 +452,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|rpcServer
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|router
+operator|.
+name|isQuotaEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The quota system is disabled in Router."
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|List
 argument_list|<
