@@ -921,6 +921,22 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|setAMRegistrationRequest ( RegisterApplicationMasterRequest registerRequest)
+specifier|public
+name|void
+name|setAMRegistrationRequest
+parameter_list|(
+name|RegisterApplicationMasterRequest
+name|registerRequest
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amRegistrationRequest
+operator|=
+name|registerRequest
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)
@@ -1531,12 +1547,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// re register with RM, then retry allocate recursively
+comment|// re-register with RM, then retry allocate recursively
 name|registerApplicationMaster
 argument_list|(
 name|this
 operator|.
 name|amRegistrationRequest
+argument_list|)
+expr_stmt|;
+comment|// Reset responseId after re-register
+name|allocateRequest
+operator|.
+name|setResponseId
+argument_list|(
+literal|0
 argument_list|)
 expr_stmt|;
 return|return

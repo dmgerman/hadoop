@@ -744,6 +744,22 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|AMRMClientRelayer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -918,10 +934,10 @@ specifier|private
 name|AMRequestHandlerThread
 name|handlerThread
 decl_stmt|;
-DECL|field|rmProxy
+DECL|field|rmProxyRelayer
 specifier|private
-name|ApplicationMasterProtocol
-name|rmProxy
+name|AMRMClientRelayer
+name|rmProxyRelayer
 decl_stmt|;
 DECL|field|applicationId
 specifier|private
@@ -1089,7 +1105,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|rmProxy
+name|rmProxyRelayer
 operator|=
 literal|null
 expr_stmt|;
@@ -1251,8 +1267,11 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|rmProxy
+name|rmProxyRelayer
 operator|=
+operator|new
+name|AMRMClientRelayer
+argument_list|(
 name|createRMProxy
 argument_list|(
 name|ApplicationMasterProtocol
@@ -1268,6 +1287,7 @@ operator|.
 name|userUgi
 argument_list|,
 name|amrmToken
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1292,8 +1312,6 @@ name|registerRequest
 operator|=
 name|request
 expr_stmt|;
-comment|// Since we have setKeepContainersAcrossApplicationAttempts = true for UAM.
-comment|// We do not expect application already registered exception here
 name|LOG
 operator|.
 name|info
@@ -1310,7 +1328,7 @@ name|response
 init|=
 name|this
 operator|.
-name|rmProxy
+name|rmProxyRelayer
 operator|.
 name|registerApplicationMaster
 argument_list|(
@@ -1319,6 +1337,12 @@ operator|.
 name|registerRequest
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|lastResponseId
+operator|=
+literal|0
+expr_stmt|;
 for|for
 control|(
 name|Container
@@ -1332,7 +1356,7 @@ control|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"RegisterUAM returned existing running container "
 operator|+
@@ -1356,7 +1380,7 @@ control|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"RegisterUAM returned existing NM token for node "
 operator|+
@@ -1430,7 +1454,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|rmProxy
+name|rmProxyRelayer
 operator|==
 literal|null
 condition|)
@@ -1476,23 +1500,13 @@ throw|;
 block|}
 block|}
 return|return
-name|AMRMClientUtils
+name|this
 operator|.
-name|finishAMWithReRegister
+name|rmProxyRelayer
+operator|.
+name|finishApplicationMaster
 argument_list|(
 name|request
-argument_list|,
-name|this
-operator|.
-name|rmProxy
-argument_list|,
-name|this
-operator|.
-name|registerRequest
-argument_list|,
-name|this
-operator|.
-name|applicationId
 argument_list|)
 return|;
 block|}
@@ -1636,7 +1650,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|rmProxy
+name|rmProxyRelayer
 operator|==
 literal|null
 condition|)
@@ -1681,6 +1695,19 @@ return|return
 name|this
 operator|.
 name|applicationId
+return|;
+block|}
+comment|/**    * Returns the rmProxy relayer of this UAM.    *    * @return rmProxy relayer of the UAM    */
+DECL|method|getAMRMClientRelayer ()
+specifier|public
+name|AMRMClientRelayer
+name|getAMRMClientRelayer
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmProxyRelayer
 return|;
 block|}
 comment|/**    * Returns RM proxy for the specified protocol type. Unit test cases can    * override this method and return mock proxy instances.    *    * @param protocol protocal of the proxy    * @param config configuration    * @param user ugi for the proxy connection    * @param token token for the connection    * @param<T> type of the proxy    * @return the proxy instance    * @throws IOException if fails to create the proxy    */
@@ -2709,17 +2736,11 @@ expr_stmt|;
 name|AllocateResponse
 name|response
 init|=
-name|AMRMClientUtils
+name|rmProxyRelayer
 operator|.
-name|allocateWithReRegister
+name|allocate
 argument_list|(
 name|request
-argument_list|,
-name|rmProxy
-argument_list|,
-name|registerRequest
-argument_list|,
-name|applicationId
 argument_list|)
 decl_stmt|;
 if|if
