@@ -603,7 +603,7 @@ name|getVersion
 argument_list|()
 return|;
 block|}
-comment|/**    * Adds metadata.    */
+comment|/**    * Add/Update metadata.    * We should hold the container lock before updating the metadata as this    * will be persisted on disk. Unless, we are reconstructing ContainerData    * from protoBuf or from on disk .container file in which case lock is not    * required.    */
 DECL|method|addMetadata (String key, String value)
 specifier|public
 name|void
@@ -615,15 +615,6 @@ parameter_list|,
 name|String
 name|value
 parameter_list|)
-throws|throws
-name|IOException
-block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|metadata
-init|)
 block|{
 name|metadata
 operator|.
@@ -634,7 +625,6 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Retuns metadata of the container.    * @return metadata    */
 DECL|method|getMetadata ()
@@ -648,13 +638,6 @@ argument_list|>
 name|getMetadata
 parameter_list|()
 block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|metadata
-init|)
-block|{
 return|return
 name|Collections
 operator|.
@@ -666,6 +649,33 @@ name|metadata
 argument_list|)
 return|;
 block|}
+comment|/**    * Set metadata.    * We should hold the container lock before updating the metadata as this    * will be persisted on disk. Unless, we are reconstructing ContainerData    * from protoBuf or from on disk .container file in which case lock is not    * required.    */
+DECL|method|setMetadata (Map<String, String> metadataMap)
+specifier|public
+name|void
+name|setMetadata
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadataMap
+parameter_list|)
+block|{
+name|metadata
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|metadata
+operator|.
+name|putAll
+argument_list|(
+name|metadataMap
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * checks if the container is open.    * @return - boolean    */
 DECL|method|isOpen ()

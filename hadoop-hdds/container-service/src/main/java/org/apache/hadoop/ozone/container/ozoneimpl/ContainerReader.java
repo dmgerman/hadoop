@@ -558,6 +558,13 @@ operator|.
 name|listFiles
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|containerDirs
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|File
@@ -674,6 +681,7 @@ argument_list|,
 name|containerName
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
