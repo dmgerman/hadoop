@@ -438,6 +438,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|GetApplicationsRequestProto
 name|getProto
 parameter_list|()
@@ -1041,6 +1042,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationTypes ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -1061,6 +1063,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationTypes (Set<String> applicationTypes)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationTypes
 parameter_list|(
@@ -1146,6 +1149,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationTags ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -1166,6 +1170,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationTags (Set<String> tags)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationTags
 parameter_list|(
@@ -1244,6 +1249,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationStates ()
 specifier|public
+specifier|synchronized
 name|EnumSet
 argument_list|<
 name|YarnApplicationState
@@ -1305,6 +1311,7 @@ annotation|@
 name|Override
 DECL|method|getScope ()
 specifier|public
+specifier|synchronized
 name|ApplicationsRequestScope
 name|getScope
 parameter_list|()
@@ -1320,6 +1327,7 @@ return|;
 block|}
 DECL|method|setScope (ApplicationsRequestScope scope)
 specifier|public
+specifier|synchronized
 name|void
 name|setScope
 parameter_list|(
@@ -1354,6 +1362,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationStates (EnumSet<YarnApplicationState> applicationStates)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationStates
 parameter_list|(
@@ -1391,6 +1400,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationStates (Set<String> applicationStates)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationStates
 parameter_list|(
@@ -1477,6 +1487,7 @@ annotation|@
 name|Override
 DECL|method|getUsers ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -1495,6 +1506,7 @@ return|;
 block|}
 DECL|method|setUsers (Set<String> users)
 specifier|public
+specifier|synchronized
 name|void
 name|setUsers
 parameter_list|(
@@ -1532,6 +1544,7 @@ annotation|@
 name|Override
 DECL|method|getQueues ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -1552,6 +1565,7 @@ annotation|@
 name|Override
 DECL|method|setQueues (Set<String> queues)
 specifier|public
+specifier|synchronized
 name|void
 name|setQueues
 parameter_list|(
@@ -1589,6 +1603,7 @@ annotation|@
 name|Override
 DECL|method|getLimit ()
 specifier|public
+specifier|synchronized
 name|long
 name|getLimit
 parameter_list|()
@@ -1642,6 +1657,7 @@ annotation|@
 name|Override
 DECL|method|setLimit (long limit)
 specifier|public
+specifier|synchronized
 name|void
 name|setLimit
 parameter_list|(
@@ -1663,6 +1679,7 @@ annotation|@
 name|Override
 DECL|method|getStartRange ()
 specifier|public
+specifier|synchronized
 name|Range
 argument_list|<
 name|Long
@@ -1758,6 +1775,7 @@ annotation|@
 name|Override
 DECL|method|setStartRange (Range<Long> range)
 specifier|public
+specifier|synchronized
 name|void
 name|setStartRange
 parameter_list|(
@@ -1779,6 +1797,7 @@ annotation|@
 name|Override
 DECL|method|setStartRange (long begin, long end)
 specifier|public
+specifier|synchronized
 name|void
 name|setStartRange
 parameter_list|(
@@ -1834,6 +1853,7 @@ annotation|@
 name|Override
 DECL|method|getFinishRange ()
 specifier|public
+specifier|synchronized
 name|Range
 argument_list|<
 name|Long
@@ -1929,6 +1949,7 @@ annotation|@
 name|Override
 DECL|method|setFinishRange (Range<Long> range)
 specifier|public
+specifier|synchronized
 name|void
 name|setFinishRange
 parameter_list|(
@@ -1950,6 +1971,7 @@ annotation|@
 name|Override
 DECL|method|setFinishRange (long begin, long end)
 specifier|public
+specifier|synchronized
 name|void
 name|setFinishRange
 parameter_list|(
