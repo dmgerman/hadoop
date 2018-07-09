@@ -6361,7 +6361,7 @@ comment|// Not using the cached token here.. Creating a new token here
 comment|// everytime.
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Getting new token from {}, renewer:{}"
 argument_list|,
@@ -6401,7 +6401,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"New token received: ({})"
 argument_list|,
