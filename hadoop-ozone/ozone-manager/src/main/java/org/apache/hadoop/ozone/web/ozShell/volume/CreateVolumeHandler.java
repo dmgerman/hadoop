@@ -293,12 +293,25 @@ argument_list|(
 name|ozoneURIString
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+comment|// we need to skip the slash in the URI path
+comment|// getPath returns /volumeName needs to remove the initial slash.
+name|volumeName
+operator|=
 name|ozoneURI
 operator|.
 name|getPath
 argument_list|()
+operator|.
+name|replaceAll
+argument_list|(
+literal|"^/+"
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|volumeName
 operator|.
 name|isEmpty
 argument_list|()
@@ -312,20 +325,6 @@ literal|"Volume name is required to create a volume"
 argument_list|)
 throw|;
 block|}
-comment|// we need to skip the slash in the URI path
-comment|// getPath returns /volumeName needs to remove the first slash.
-name|volumeName
-operator|=
-name|ozoneURI
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|cmd
