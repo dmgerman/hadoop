@@ -7469,7 +7469,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/appattempts/{appattemptid}/containers/{containerid}"
+name|RMWSConsts
+operator|.
+name|GET_CONTAINER
 argument_list|)
 annotation|@
 name|Produces
@@ -7569,7 +7571,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/state"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_STATE
 argument_list|)
 annotation|@
 name|Produces
@@ -15980,7 +15984,9 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/scheduler-conf"
+name|RMWSConsts
+operator|.
+name|SCHEDULER_CONF
 argument_list|)
 annotation|@
 name|Produces
