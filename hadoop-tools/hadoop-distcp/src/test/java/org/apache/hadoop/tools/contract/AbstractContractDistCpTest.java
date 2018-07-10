@@ -2862,7 +2862,9 @@ name|builder
 operator|.
 name|withNumListstatusThreads
 argument_list|(
-literal|8
+name|DistCpOptions
+operator|.
+name|MAX_NUM_LISTSTATUS_THREADS
 argument_list|)
 operator|.
 name|build

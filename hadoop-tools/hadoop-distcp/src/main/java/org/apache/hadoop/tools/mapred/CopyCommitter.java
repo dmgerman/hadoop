@@ -2042,6 +2042,28 @@ argument_list|,
 name|sourceListing
 argument_list|)
 decl_stmt|;
+name|long
+name|sourceListingCompleted
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Source listing completed in {}"
+argument_list|,
+name|formatDuration
+argument_list|(
+name|sourceListingCompleted
+operator|-
+name|listingStart
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Similarly, create the listing of target-files. Sort alphabetically.
 name|Path
 name|targetListing
@@ -2154,13 +2176,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Listing completed in {}"
+literal|"Destination listing completed in {}"
 argument_list|,
 name|formatDuration
 argument_list|(
 name|deletionStart
 operator|-
-name|listingStart
+name|sourceListingCompleted
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2795,6 +2817,34 @@ comment|//
 comment|// Set up options to be the same from the CopyListing.buildListing's
 comment|// perspective, so to collect similar listings as when doing the copy
 comment|//
+comment|// thread count is picked up from the job
+name|int
+name|threads
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_LISTSTATUS_THREADS
+argument_list|,
+name|DistCpConstants
+operator|.
+name|DEFAULT_LISTSTATUS_THREADS
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Scanning destination directory {} with thread count: {}"
+argument_list|,
+name|targetFinalPath
+argument_list|,
+name|threads
+argument_list|)
+expr_stmt|;
 name|DistCpOptions
 name|options
 init|=
@@ -2816,6 +2866,11 @@ operator|.
 name|withSyncFolder
 argument_list|(
 name|syncFolder
+argument_list|)
+operator|.
+name|withNumListstatusThreads
+argument_list|(
+name|threads
 argument_list|)
 operator|.
 name|build
