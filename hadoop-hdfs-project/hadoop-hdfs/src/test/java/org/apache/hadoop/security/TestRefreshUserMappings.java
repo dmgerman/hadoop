@@ -310,6 +310,32 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|event
+operator|.
+name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -584,6 +610,19 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|setLogLevel
+argument_list|(
+name|Groups
+operator|.
+name|LOG
+argument_list|,
+name|Level
+operator|.
+name|DEBUG
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -696,7 +735,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"first attempt:"
+literal|"First attempt:"
 argument_list|)
 expr_stmt|;
 name|List
@@ -752,7 +791,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"second attempt, should be same:"
+literal|"Second attempt, should be the same:"
 argument_list|)
 expr_stmt|;
 name|List
@@ -827,6 +866,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Test refresh command
 name|admin
 operator|.
 name|run
@@ -840,7 +880,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"third attempt(after refresh command), should be different:"
+literal|"Third attempt(after refresh command), should be different:"
 argument_list|)
 expr_stmt|;
 name|List
@@ -934,14 +974,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// test time out
+comment|// Test timeout
 name|Thread
 operator|.
 name|sleep
 argument_list|(
 name|groupRefreshTimeoutSec
 operator|*
-literal|1100
+literal|1500
 argument_list|)
 expr_stmt|;
 name|System
@@ -950,7 +990,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"fourth attempt(after timeout), should be different:"
+literal|"Fourth attempt(after timeout), should be different:"
 argument_list|)
 expr_stmt|;
 name|List

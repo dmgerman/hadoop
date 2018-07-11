@@ -585,8 +585,9 @@ specifier|public
 class|class
 name|Groups
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|LOG
-specifier|private
 specifier|static
 specifier|final
 name|Logger
@@ -1599,6 +1600,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"GroupCacheLoader - load."
+argument_list|)
+expr_stmt|;
 name|TraceScope
 name|scope
 init|=
@@ -1749,6 +1757,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"GroupCacheLoader - reload (async)."
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
