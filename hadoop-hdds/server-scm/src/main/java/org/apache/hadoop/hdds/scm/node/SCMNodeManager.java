@@ -180,24 +180,6 @@ name|server
 operator|.
 name|events
 operator|.
-name|EventHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|server
-operator|.
-name|events
-operator|.
 name|EventPublisher
 import|;
 end_import
@@ -623,11 +605,6 @@ implements|implements
 name|NodeManager
 implements|,
 name|StorageContainerNodeProtocol
-implements|,
-name|EventHandler
-argument_list|<
-name|CommandForDatanode
-argument_list|>
 block|{
 annotation|@
 name|VisibleForTesting
@@ -724,7 +701,7 @@ name|StorageContainerManager
 name|scmManager
 decl_stmt|;
 comment|/**    * Constructs SCM machine Manager.    */
-DECL|method|SCMNodeManager (OzoneConfiguration conf, String clusterID, StorageContainerManager scmManager)
+DECL|method|SCMNodeManager (OzoneConfiguration conf, String clusterID, StorageContainerManager scmManager, EventPublisher eventPublisher)
 specifier|public
 name|SCMNodeManager
 parameter_list|(
@@ -736,6 +713,9 @@ name|clusterID
 parameter_list|,
 name|StorageContainerManager
 name|scmManager
+parameter_list|,
+name|EventPublisher
+name|eventPublisher
 parameter_list|)
 throws|throws
 name|IOException
@@ -748,6 +728,8 @@ operator|new
 name|NodeStateManager
 argument_list|(
 name|conf
+argument_list|,
+name|eventPublisher
 argument_list|)
 expr_stmt|;
 name|this
@@ -1921,6 +1903,10 @@ return|return
 name|nodeCountMap
 return|;
 block|}
+comment|// TODO:
+comment|// Since datanode commands are added through event queue, onMessage method
+comment|// should take care of adding commands to command queue.
+comment|// Refactor and remove all the usage of this method and delete this method.
 annotation|@
 name|Override
 DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)
@@ -1947,9 +1933,10 @@ name|command
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This method is called by EventQueue whenever someone adds a new    * DATANODE_COMMAND to the Queue.    *    * @param commandForDatanode DatanodeCommand    * @param ignored publisher    */
 annotation|@
 name|Override
-DECL|method|onMessage (CommandForDatanode commandForDatanode, EventPublisher publisher)
+DECL|method|onMessage (CommandForDatanode commandForDatanode, EventPublisher ignored)
 specifier|public
 name|void
 name|onMessage
@@ -1958,7 +1945,7 @@ name|CommandForDatanode
 name|commandForDatanode
 parameter_list|,
 name|EventPublisher
-name|publisher
+name|ignored
 parameter_list|)
 block|{
 name|addDatanodeCommand

@@ -342,6 +342,26 @@ name|CLOSE_CONTAINER
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|events
+operator|.
+name|SCMEvents
+operator|.
+name|DATANODE_COMMAND
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests the closeContainerEventHandler class.  */
 end_comment
@@ -490,6 +510,15 @@ name|CloseContainerEventHandler
 argument_list|(
 name|mapping
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|eventQueue
+operator|.
+name|addHandler
+argument_list|(
+name|DATANODE_COMMAND
+argument_list|,
+name|nodeManager
 argument_list|)
 expr_stmt|;
 block|}

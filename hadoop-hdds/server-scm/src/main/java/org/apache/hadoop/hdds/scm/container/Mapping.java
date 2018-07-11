@@ -180,24 +180,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|node
-operator|.
-name|NodeManager
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -373,19 +355,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the nodeManager.    * @return NodeManager    */
-DECL|method|getNodeManager ()
-name|NodeManager
-name|getNodeManager
-parameter_list|()
-function_decl|;
 comment|/**    * Returns the ContainerWithPipeline.    * @return NodeManager    */
-DECL|method|getMatchingContainerWithPipeline (final long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
-specifier|public
+DECL|method|getMatchingContainerWithPipeline (long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
 name|ContainerWithPipeline
 name|getMatchingContainerWithPipeline
 parameter_list|(
-specifier|final
 name|long
 name|size
 parameter_list|,
