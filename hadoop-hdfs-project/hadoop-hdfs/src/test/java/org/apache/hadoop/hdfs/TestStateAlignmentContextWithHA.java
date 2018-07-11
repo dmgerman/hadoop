@@ -617,6 +617,9 @@ expr_stmt|;
 operator|(
 operator|(
 name|ClientHAProxyFactory
+argument_list|<
+name|T
+argument_list|>
 operator|)
 name|factory
 operator|)

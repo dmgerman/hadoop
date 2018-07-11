@@ -122,6 +122,7 @@ name|InterfaceStability
 operator|.
 name|Stable
 DECL|class|ClientGSIContext
+specifier|public
 class|class
 name|ClientGSIContext
 implements|implements
