@@ -114,6 +114,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -845,20 +859,6 @@ operator|.
 name|state
 operator|.
 name|StateMachineFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
 import|;
 end_import
 
@@ -3733,6 +3733,22 @@ operator|.
 name|getFlowRunId
 argument_list|()
 return|;
+block|}
+DECL|method|setFlowContext (FlowContext fc)
+specifier|public
+name|void
+name|setFlowContext
+parameter_list|(
+name|FlowContext
+name|fc
+parameter_list|)
+block|{
+name|this
+operator|.
+name|flowContext
+operator|=
+name|fc
+expr_stmt|;
 block|}
 block|}
 end_class
