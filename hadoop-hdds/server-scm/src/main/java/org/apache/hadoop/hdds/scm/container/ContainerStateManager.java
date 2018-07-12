@@ -58,6 +58,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -1810,6 +1826,79 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{   }
+comment|/**    * Returns the latest list of DataNodes where replica for given containerId    * exist. Throws an SCMException if no entry is found for given containerId.    *    * @param containerID    * @return Set<DatanodeDetails>    */
+DECL|method|getContainerReplicas (ContainerID containerID)
+specifier|public
+name|Set
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|getContainerReplicas
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|)
+throws|throws
+name|SCMException
+block|{
+return|return
+name|containers
+operator|.
+name|getContainerReplicas
+argument_list|(
+name|containerID
+argument_list|)
+return|;
+block|}
+comment|/**    * Add a container Replica for given DataNode.    *    * @param containerID    * @param dn    */
+DECL|method|addContainerReplica (ContainerID containerID, DatanodeDetails dn)
+specifier|public
+name|void
+name|addContainerReplica
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|,
+name|DatanodeDetails
+name|dn
+parameter_list|)
+block|{
+name|containers
+operator|.
+name|addContainerReplica
+argument_list|(
+name|containerID
+argument_list|,
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Remove a container Replica for given DataNode.    *    * @param containerID    * @param dn    * @return True of dataNode is removed successfully else false.    */
+DECL|method|removeContainerReplica (ContainerID containerID, DatanodeDetails dn)
+specifier|public
+name|boolean
+name|removeContainerReplica
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|,
+name|DatanodeDetails
+name|dn
+parameter_list|)
+throws|throws
+name|SCMException
+block|{
+return|return
+name|containers
+operator|.
+name|removeContainerReplica
+argument_list|(
+name|containerID
+argument_list|,
+name|dn
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
