@@ -2724,6 +2724,8 @@ operator|.
 name|nextInt
 argument_list|(
 name|maxSleepTime
+operator|-
+name|minSleepTime
 argument_list|)
 operator|+
 name|minSleepTime
