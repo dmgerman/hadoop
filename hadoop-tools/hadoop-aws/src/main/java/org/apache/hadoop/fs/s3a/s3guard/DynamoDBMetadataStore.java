@@ -3066,7 +3066,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Max retries exceeded (%d) for DynamoDB"
+literal|"Max retries exceeded (%d) for DynamoDB. This may be"
+operator|+
+literal|" because write threshold of DynamoDB is set too low."
 argument_list|,
 name|retryCount
 argument_list|)
