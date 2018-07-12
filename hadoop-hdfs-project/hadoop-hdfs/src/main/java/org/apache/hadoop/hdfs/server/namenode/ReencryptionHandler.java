@@ -2946,6 +2946,11 @@ init|(
 name|reencryptionHandler
 init|)
 block|{
+if|if
+condition|(
+name|shouldPauseForTesting
+condition|)
+block|{
 name|reencryptionHandler
 operator|.
 name|wait
@@ -2953,6 +2958,7 @@ argument_list|(
 literal|30000
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|LOG
 operator|.
