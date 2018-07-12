@@ -30,6 +30,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|NodeReportProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -355,6 +375,18 @@ name|dnId
 parameter_list|,
 name|SCMCommand
 name|command
+parameter_list|)
+function_decl|;
+comment|/**    * Process node report.    *    * @param dnUuid    * @param nodeReport    */
+DECL|method|processNodeReport (UUID dnUuid, NodeReportProto nodeReport)
+name|void
+name|processNodeReport
+parameter_list|(
+name|UUID
+name|dnUuid
+parameter_list|,
+name|NodeReportProto
+name|nodeReport
 parameter_list|)
 function_decl|;
 block|}

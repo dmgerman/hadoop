@@ -762,6 +762,23 @@ name|command
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Empty implementation for processNodeReport.    * @param dnUuid    * @param nodeReport    */
+annotation|@
+name|Override
+DECL|method|processNodeReport (UUID dnUuid, NodeReportProto nodeReport)
+specifier|public
+name|void
+name|processNodeReport
+parameter_list|(
+name|UUID
+name|dnUuid
+parameter_list|,
+name|NodeReportProto
+name|nodeReport
+parameter_list|)
+block|{
+comment|// do nothing.
+block|}
 annotation|@
 name|Override
 DECL|method|onMessage (CommandForDatanode commandForDatanode, EventPublisher publisher)

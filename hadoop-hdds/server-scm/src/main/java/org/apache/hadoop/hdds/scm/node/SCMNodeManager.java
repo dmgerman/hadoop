@@ -1772,6 +1772,31 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Process node report.    *    * @param dnUuid    * @param nodeReport    */
+annotation|@
+name|Override
+DECL|method|processNodeReport (UUID dnUuid, NodeReportProto nodeReport)
+specifier|public
+name|void
+name|processNodeReport
+parameter_list|(
+name|UUID
+name|dnUuid
+parameter_list|,
+name|NodeReportProto
+name|nodeReport
+parameter_list|)
+block|{
+name|this
+operator|.
+name|updateNodeStat
+argument_list|(
+name|dnUuid
+argument_list|,
+name|nodeReport
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
 annotation|@
 name|Override
