@@ -142,11 +142,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang3
-operator|.
 name|text
 operator|.
-name|StrBuilder
+name|TextStringBuilder
 import|;
 end_import
 
@@ -2187,13 +2185,13 @@ name|DEFAULT_TOP
 return|;
 block|}
 comment|/**    * Put output line to log and string buffer.    * */
-DECL|method|recordOutput (final StrBuilder result, final String outputLine)
+DECL|method|recordOutput (final TextStringBuilder result, final String outputLine)
 specifier|protected
 name|void
 name|recordOutput
 parameter_list|(
 specifier|final
-name|StrBuilder
+name|TextStringBuilder
 name|result
 parameter_list|,
 specifier|final
@@ -2217,7 +2215,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Parse top number of nodes to be processed.    * @return top number of nodes to be processed.    */
-DECL|method|parseTopNodes (final CommandLine cmd, final StrBuilder result)
+DECL|method|parseTopNodes (final CommandLine cmd, final TextStringBuilder result)
 specifier|protected
 name|int
 name|parseTopNodes
@@ -2227,7 +2225,7 @@ name|CommandLine
 name|cmd
 parameter_list|,
 specifier|final
-name|StrBuilder
+name|TextStringBuilder
 name|result
 parameter_list|)
 throws|throws

@@ -5537,7 +5537,7 @@ name|currentTime
 init|=
 name|DateFormatUtils
 operator|.
-name|ISO_TIME_NO_T_FORMAT
+name|ISO_8601_EXTENDED_TIME_FORMAT
 operator|.
 name|format
 argument_list|(

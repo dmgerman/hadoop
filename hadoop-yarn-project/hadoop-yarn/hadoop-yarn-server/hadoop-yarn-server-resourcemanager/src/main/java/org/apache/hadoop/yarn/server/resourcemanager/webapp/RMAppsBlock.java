@@ -118,7 +118,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang3
+name|text
 operator|.
 name|StringEscapeUtils
 import|;

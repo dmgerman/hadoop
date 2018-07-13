@@ -100,11 +100,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang3
-operator|.
 name|text
 operator|.
-name|StrBuilder
+name|TextStringBuilder
 import|;
 end_import
 
@@ -431,11 +429,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|StrBuilder
+name|TextStringBuilder
 name|result
 init|=
 operator|new
-name|StrBuilder
+name|TextStringBuilder
 argument_list|()
 decl_stmt|;
 name|String

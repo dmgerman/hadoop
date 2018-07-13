@@ -148,11 +148,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang3
-operator|.
 name|text
 operator|.
-name|StrBuilder
+name|TextStringBuilder
 import|;
 end_import
 
@@ -3681,11 +3679,11 @@ name|baos
 parameter_list|)
 block|{
 specifier|final
-name|StrBuilder
+name|TextStringBuilder
 name|sb
 init|=
 operator|new
-name|StrBuilder
+name|TextStringBuilder
 argument_list|()
 decl_stmt|;
 specifier|final

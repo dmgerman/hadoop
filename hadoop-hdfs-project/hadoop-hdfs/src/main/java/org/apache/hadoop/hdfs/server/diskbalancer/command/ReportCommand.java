@@ -112,11 +112,9 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang3
-operator|.
 name|text
 operator|.
-name|StrBuilder
+name|TextStringBuilder
 import|;
 end_import
 
@@ -368,11 +366,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|StrBuilder
+name|TextStringBuilder
 name|result
 init|=
 operator|new
-name|StrBuilder
+name|TextStringBuilder
 argument_list|()
 decl_stmt|;
 name|String
@@ -486,7 +484,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleTopReport (final CommandLine cmd, final StrBuilder result, final String nodeFormat)
+DECL|method|handleTopReport (final CommandLine cmd, final TextStringBuilder result, final String nodeFormat)
 specifier|private
 name|void
 name|handleTopReport
@@ -496,7 +494,7 @@ name|CommandLine
 name|cmd
 parameter_list|,
 specifier|final
-name|StrBuilder
+name|TextStringBuilder
 name|result
 parameter_list|,
 specifier|final
@@ -650,7 +648,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|handleNodeReport (final CommandLine cmd, StrBuilder result, final String nodeFormat, final String volumeFormat)
+DECL|method|handleNodeReport (final CommandLine cmd, TextStringBuilder result, final String nodeFormat, final String volumeFormat)
 specifier|private
 name|void
 name|handleNodeReport
@@ -659,7 +657,7 @@ specifier|final
 name|CommandLine
 name|cmd
 parameter_list|,
-name|StrBuilder
+name|TextStringBuilder
 name|result
 parameter_list|,
 specifier|final
@@ -821,12 +819,12 @@ block|}
 block|}
 block|}
 comment|/**    * Put node report lines to string buffer.    */
-DECL|method|recordNodeReport (StrBuilder result, DiskBalancerDataNode dbdn, final String nodeFormat, final String volumeFormat)
+DECL|method|recordNodeReport (TextStringBuilder result, DiskBalancerDataNode dbdn, final String nodeFormat, final String volumeFormat)
 specifier|private
 name|void
 name|recordNodeReport
 parameter_list|(
-name|StrBuilder
+name|TextStringBuilder
 name|result
 parameter_list|,
 name|DiskBalancerDataNode
