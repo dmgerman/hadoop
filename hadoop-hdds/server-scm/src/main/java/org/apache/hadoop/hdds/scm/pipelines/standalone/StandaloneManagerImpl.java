@@ -54,28 +54,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|Pipeline
 import|;
 end_import
@@ -117,6 +95,24 @@ operator|.
 name|node
 operator|.
 name|NodeManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipelines
+operator|.
+name|Node2PipelineMap
 import|;
 end_import
 
@@ -388,7 +384,7 @@ argument_list|>
 name|standAloneMembers
 decl_stmt|;
 comment|/**    * Constructor for Standalone Node Manager Impl.    * @param nodeManager - Node Manager.    * @param placementPolicy - Placement Policy    * @param containerSize - Container Size.    */
-DECL|method|StandaloneManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long containerSize)
+DECL|method|StandaloneManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long containerSize, Node2PipelineMap map)
 specifier|public
 name|StandaloneManagerImpl
 parameter_list|(
@@ -400,10 +396,15 @@ name|placementPolicy
 parameter_list|,
 name|long
 name|containerSize
+parameter_list|,
+name|Node2PipelineMap
+name|map
 parameter_list|)
 block|{
 name|super
-argument_list|()
+argument_list|(
+name|map
+argument_list|)
 expr_stmt|;
 name|this
 operator|.

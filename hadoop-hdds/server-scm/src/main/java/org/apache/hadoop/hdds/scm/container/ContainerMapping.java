@@ -3114,6 +3114,18 @@ return|return
 name|containerStore
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPipelineSelector ()
+specifier|public
+name|PipelineSelector
+name|getPipelineSelector
+parameter_list|()
+block|{
+return|return
+name|pipelineSelector
+return|;
+block|}
 block|}
 end_class
 

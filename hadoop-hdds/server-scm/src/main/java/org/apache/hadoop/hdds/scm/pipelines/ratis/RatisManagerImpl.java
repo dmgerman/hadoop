@@ -84,28 +84,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|Pipeline
 import|;
 end_import
@@ -147,6 +125,24 @@ operator|.
 name|node
 operator|.
 name|NodeManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipelines
+operator|.
+name|Node2PipelineMap
 import|;
 end_import
 
@@ -421,7 +417,7 @@ argument_list|>
 name|ratisMembers
 decl_stmt|;
 comment|/**    * Constructs a Ratis Pipeline Manager.    *    * @param nodeManager    */
-DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf)
+DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf, Node2PipelineMap map)
 specifier|public
 name|RatisManagerImpl
 parameter_list|(
@@ -436,10 +432,15 @@ name|size
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|Node2PipelineMap
+name|map
 parameter_list|)
 block|{
 name|super
-argument_list|()
+argument_list|(
+name|map
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -570,7 +571,7 @@ argument_list|)
 expr_stmt|;
 comment|// Start all channel names with "Ratis", easy to grep the logs.
 name|String
-name|conduitName
+name|pipelineName
 init|=
 name|PREFIX
 operator|+
@@ -609,7 +610,7 @@ name|RATIS
 argument_list|,
 name|factor
 argument_list|,
-name|conduitName
+name|pipelineName
 argument_list|)
 decl_stmt|;
 try|try

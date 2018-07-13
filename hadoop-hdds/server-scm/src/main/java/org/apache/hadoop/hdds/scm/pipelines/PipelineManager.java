@@ -255,10 +255,19 @@ specifier|final
 name|AtomicInteger
 name|pipelineIndex
 decl_stmt|;
-DECL|method|PipelineManager ()
+DECL|field|node2PipelineMap
+specifier|private
+specifier|final
+name|Node2PipelineMap
+name|node2PipelineMap
+decl_stmt|;
+DECL|method|PipelineManager (Node2PipelineMap map)
 specifier|public
 name|PipelineManager
-parameter_list|()
+parameter_list|(
+name|Node2PipelineMap
+name|map
+parameter_list|)
 block|{
 name|activePipelines
 operator|=
@@ -282,6 +291,10 @@ name|WeakHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|node2PipelineMap
+operator|=
+name|map
+expr_stmt|;
 block|}
 comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is    * needed and based on the replication type in the request appropriate    * Interface is invoked.    *    * @param replicationFactor - Replication Factor    * @return a Pipeline.    */
 DECL|method|getPipeline ( ReplicationFactor replicationFactor, ReplicationType replicationType)
@@ -300,7 +313,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/**      * In the Ozone world, we have a very simple policy.      *      * 1. Try to create a pipeline if there are enough free nodes.      *      * 2. This allows all nodes to part of a pipeline quickly.      *      * 3. if there are not enough free nodes, return conduits in a      * round-robin fashion.      *      * TODO: Might have to come up with a better algorithm than this.      * Create a new placement policy that returns conduits in round robin      * fashion.      */
+comment|/**      * In the Ozone world, we have a very simple policy.      *      * 1. Try to create a pipeline if there are enough free nodes.      *      * 2. This allows all nodes to part of a pipeline quickly.      *      * 3. if there are not enough free nodes, return pipeline in a      * round-robin fashion.      *      * TODO: Might have to come up with a better algorithm than this.      * Create a new placement policy that returns pipelines in round robin      * fashion.      */
 name|Pipeline
 name|pipeline
 init|=
@@ -350,6 +363,13 @@ operator|.
 name|getPipelineName
 argument_list|()
 argument_list|,
+name|pipeline
+argument_list|)
+expr_stmt|;
+name|node2PipelineMap
+operator|.
+name|addPipeline
+argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
@@ -533,6 +553,33 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|removePipeline (Pipeline pipeline)
+specifier|public
+name|void
+name|removePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|activePipelines
+operator|.
+name|remove
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+name|activePipelineMap
+operator|.
+name|remove
+argument_list|(
+name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Find a Pipeline that is operational.    *    * @return - Pipeline or null    */
 DECL|method|findOpenPipeline ( ReplicationType type, ReplicationFactor factor)
 specifier|private
@@ -572,7 +619,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"No Operational conduits found. Returning null."
+literal|"No Operational pipelines found. Returning null."
 argument_list|)
 expr_stmt|;
 return|return
