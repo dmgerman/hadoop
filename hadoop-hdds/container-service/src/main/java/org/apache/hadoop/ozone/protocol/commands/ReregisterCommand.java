@@ -112,6 +112,19 @@ name|toByteArray
 argument_list|()
 return|;
 block|}
+comment|/**    * Not implemented for ReregisterCommand.    *    * @return cmdId.    */
+annotation|@
+name|Override
+DECL|method|getCmdId ()
+specifier|public
+name|long
+name|getCmdId
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 DECL|method|getProto ()
 specifier|public
 name|ReregisterCommandProto

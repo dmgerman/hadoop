@@ -199,6 +199,11 @@ specifier|private
 name|long
 name|totalTime
 decl_stmt|;
+DECL|field|cmdExecuted
+specifier|private
+name|boolean
+name|cmdExecuted
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|handle (SCMCommand command, OzoneContainer container, StateContext context, SCMConnectionManager connectionManager)
@@ -226,6 +231,27 @@ argument_list|(
 literal|"Replicate command is not yet handled"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|cmdExecuted
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|updateCommandStatus
+argument_list|(
+name|context
+argument_list|,
+name|command
+argument_list|,
+name|cmdExecuted
+argument_list|,
+name|LOG
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

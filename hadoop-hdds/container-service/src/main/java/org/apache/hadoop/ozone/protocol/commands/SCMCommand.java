@@ -42,6 +42,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsIdFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -68,6 +82,39 @@ extends|extends
 name|GeneratedMessage
 parameter_list|>
 block|{
+DECL|field|cmdId
+specifier|private
+name|long
+name|cmdId
+decl_stmt|;
+DECL|method|SCMCommand ()
+name|SCMCommand
+parameter_list|()
+block|{
+name|this
+operator|.
+name|cmdId
+operator|=
+name|HddsIdFactory
+operator|.
+name|getLongId
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|SCMCommand (long cmdId)
+name|SCMCommand
+parameter_list|(
+name|long
+name|cmdId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cmdId
+operator|=
+name|cmdId
+expr_stmt|;
+block|}
 comment|/**    * Returns the type of this command.    * @return Type    */
 DECL|method|getType ()
 specifier|public
@@ -87,6 +134,17 @@ index|[]
 name|getProtoBufMessage
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the commandId of this object.    * @return uuid.    */
+DECL|method|getCmdId ()
+specifier|public
+name|long
+name|getCmdId
+parameter_list|()
+block|{
+return|return
+name|cmdId
+return|;
+block|}
 block|}
 end_class
 

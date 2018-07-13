@@ -572,6 +572,11 @@ specifier|private
 name|long
 name|totalTime
 decl_stmt|;
+DECL|field|cmdExecuted
+specifier|private
+name|boolean
+name|cmdExecuted
+decl_stmt|;
 DECL|method|DeleteBlocksCommandHandler (ContainerSet cset, Configuration conf)
 specifier|public
 name|DeleteBlocksCommandHandler
@@ -615,6 +620,20 @@ parameter_list|,
 name|SCMConnectionManager
 name|connectionManager
 parameter_list|)
+block|{
+name|cmdExecuted
+operator|=
+literal|false
+expr_stmt|;
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -662,14 +681,6 @@ expr_stmt|;
 name|invocationCount
 operator|++
 expr_stmt|;
-name|long
-name|startTime
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-decl_stmt|;
 comment|// move blocks to deleting state.
 comment|// this is a metadata update, the actual deletion happens in another
 comment|// recycling thread.
@@ -1020,6 +1031,24 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|cmdExecuted
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|updateCommandStatus
+argument_list|(
+name|context
+argument_list|,
+name|command
+argument_list|,
+name|cmdExecuted
+argument_list|,
+name|LOG
+argument_list|)
+expr_stmt|;
 name|long
 name|endTime
 init|=
@@ -1035,7 +1064,8 @@ operator|-
 name|startTime
 expr_stmt|;
 block|}
-comment|/**    * Move a bunch of blocks from a container to deleting state.    * This is a meta update, the actual deletes happen in async mode.    *    * @param containerData - KeyValueContainerData    * @param delTX a block deletion transaction.    * @throws IOException if I/O error occurs.    */
+block|}
+comment|/**    * Move a bunch of blocks from a container to deleting state. This is a meta    * update, the actual deletes happen in async mode.    *    * @param containerData - KeyValueContainerData    * @param delTX a block deletion transaction.    * @throws IOException if I/O error occurs.    */
 DECL|method|deleteKeyValueContainerBlocks ( KeyValueContainerData containerData, DeletedBlocksTransaction delTX)
 specifier|private
 name|void

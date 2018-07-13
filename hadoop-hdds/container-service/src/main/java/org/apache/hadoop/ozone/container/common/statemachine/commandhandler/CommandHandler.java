@@ -120,6 +120,16 @@ name|SCMCommand
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Generic interface for handlers.  */
 end_comment
@@ -168,6 +178,60 @@ name|long
 name|getAverageRunTime
 parameter_list|()
 function_decl|;
+comment|/**    * Default implementation for updating command status.    */
+DECL|method|updateCommandStatus (StateContext context, SCMCommand command, boolean cmdExecuted, Logger log)
+specifier|default
+name|void
+name|updateCommandStatus
+parameter_list|(
+name|StateContext
+name|context
+parameter_list|,
+name|SCMCommand
+name|command
+parameter_list|,
+name|boolean
+name|cmdExecuted
+parameter_list|,
+name|Logger
+name|log
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|context
+operator|.
+name|updateCommandStatus
+argument_list|(
+name|command
+operator|.
+name|getCmdId
+argument_list|()
+argument_list|,
+name|cmdExecuted
+argument_list|)
+condition|)
+block|{
+name|log
+operator|.
+name|debug
+argument_list|(
+literal|"{} with cmdId:{} not found."
+argument_list|,
+name|command
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|command
+operator|.
+name|getCmdId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_interface
 

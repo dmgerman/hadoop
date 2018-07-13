@@ -18,56 +18,90 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|hdds
+name|util
 operator|.
-name|scm
+name|concurrent
 operator|.
-name|ScmConfigKeys
+name|atomic
+operator|.
+name|AtomicLong
 import|;
 end_import
 
 begin_comment
-comment|/**  * Config class for HDDS.  */
+comment|/**  * HDDS Id generator.  */
 end_comment
 
 begin_class
-DECL|class|HddsConfigKeys
+DECL|class|HddsIdFactory
 specifier|public
 specifier|final
 class|class
-name|HddsConfigKeys
+name|HddsIdFactory
 block|{
-DECL|method|HddsConfigKeys ()
+DECL|method|HddsIdFactory ()
 specifier|private
-name|HddsConfigKeys
+name|HddsIdFactory
 parameter_list|()
 block|{   }
-DECL|field|HDDS_COMMAND_STATUS_REPORT_INTERVAL
-specifier|public
+DECL|field|LONG_COUNTER
+specifier|private
 specifier|static
 specifier|final
-name|String
-name|HDDS_COMMAND_STATUS_REPORT_INTERVAL
+name|AtomicLong
+name|LONG_COUNTER
 init|=
-literal|"hdds.command.status.report.interval"
-decl_stmt|;
-DECL|field|HDDS_COMMAND_STATUS_REPORT_INTERVAL_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HDDS_COMMAND_STATUS_REPORT_INTERVAL_DEFAULT
-init|=
-name|ScmConfigKeys
+operator|new
+name|AtomicLong
+argument_list|(
+name|System
 operator|.
-name|OZONE_SCM_HEARBEAT_INTERVAL_DEFAULT
+name|currentTimeMillis
+argument_list|()
+argument_list|)
 decl_stmt|;
+comment|/**    * Returns an incrementing long. This class doesn't    * persist initial value for long Id's, so incremental id's after restart    * may collide with previously generated Id's.    *    * @return long    */
+DECL|method|getLongId ()
+specifier|public
+specifier|static
+name|long
+name|getLongId
+parameter_list|()
+block|{
+return|return
+name|LONG_COUNTER
+operator|.
+name|incrementAndGet
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns a uuid.    *    * @return UUID.    */
+DECL|method|getUUId ()
+specifier|public
+specifier|static
+name|UUID
+name|getUUId
+parameter_list|()
+block|{
+return|return
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

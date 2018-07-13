@@ -259,6 +259,11 @@ specifier|private
 name|long
 name|totalTime
 decl_stmt|;
+DECL|field|cmdExecuted
+specifier|private
+name|boolean
+name|cmdExecuted
+decl_stmt|;
 comment|/**    * Constructs a ContainerReport handler.    */
 DECL|method|CloseContainerCommandHandler ()
 specifier|public
@@ -295,6 +300,10 @@ argument_list|)
 expr_stmt|;
 name|invocationCount
 operator|++
+expr_stmt|;
+name|cmdExecuted
+operator|=
+literal|false
 expr_stmt|;
 name|long
 name|startTime
@@ -438,6 +447,10 @@ argument_list|,
 name|replicationType
 argument_list|)
 expr_stmt|;
+name|cmdExecuted
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -459,6 +472,17 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|updateCommandStatus
+argument_list|(
+name|context
+argument_list|,
+name|command
+argument_list|,
+name|cmdExecuted
+argument_list|,
+name|LOG
+argument_list|)
+expr_stmt|;
 name|long
 name|endTime
 init|=

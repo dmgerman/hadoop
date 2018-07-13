@@ -70,6 +70,26 @@ name|server
 operator|.
 name|SCMDatanodeHeartbeatDispatcher
 operator|.
+name|CommandStatusReportFromDatanode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|server
+operator|.
+name|SCMDatanodeHeartbeatDispatcher
+operator|.
 name|ContainerReportFromDatanode
 import|;
 end_import
@@ -159,7 +179,7 @@ specifier|final
 class|class
 name|SCMEvents
 block|{
-comment|/**    * NodeReports are  sent out by Datanodes. This report is    * received by SCMDatanodeHeartbeatDispatcher and NodeReport Event is    * generated.    */
+comment|/**    * NodeReports are  sent out by Datanodes. This report is received by    * SCMDatanodeHeartbeatDispatcher and NodeReport Event is generated.    */
 DECL|field|NODE_REPORT
 specifier|public
 specifier|static
@@ -181,7 +201,7 @@ argument_list|,
 literal|"Node_Report"
 argument_list|)
 decl_stmt|;
-comment|/**    * ContainerReports are send out by Datanodes. This report    * is received by SCMDatanodeHeartbeatDispatcher and Container_Report Event    * i generated.    */
+comment|/**    * ContainerReports are send out by Datanodes. This report is received by    * SCMDatanodeHeartbeatDispatcher and Container_Report Event    * isTestSCMDatanodeHeartbeatDispatcher generated.    */
 DECL|field|CONTAINER_REPORT
 specifier|public
 specifier|static
@@ -203,7 +223,29 @@ argument_list|,
 literal|"Container_Report"
 argument_list|)
 decl_stmt|;
-comment|/**    * When ever a command for the Datanode needs to be issued by any component    * inside SCM, a Datanode_Command event is generated. NodeManager listens    * to these events and dispatches them to Datanode for further processing.    */
+comment|/**    * A Command status report will be sent by datanodes. This repoort is received    * by SCMDatanodeHeartbeatDispatcher and CommandReport event is generated.    */
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|CommandStatusReportFromDatanode
+argument_list|>
+DECL|field|CMD_STATUS_REPORT
+name|CMD_STATUS_REPORT
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|CommandStatusReportFromDatanode
+operator|.
+name|class
+argument_list|,
+literal|"Cmd_Status_Report"
+argument_list|)
+decl_stmt|;
+comment|/**    * When ever a command for the Datanode needs to be issued by any component    * inside SCM, a Datanode_Command event is generated. NodeManager listens to    * these events and dispatches them to Datanode for further processing.    */
 DECL|field|DATANODE_COMMAND
 specifier|public
 specifier|static
@@ -225,7 +267,7 @@ argument_list|,
 literal|"Datanode_Command"
 argument_list|)
 decl_stmt|;
-comment|/**    * A Close Container Event can be triggered under many condition.    * Some of them are:    *    1. A Container is full, then we stop writing further information to    *    that container. DN's let SCM know that current state and sends a    *    informational message that allows SCM to close the container.    *    *    2. If a pipeline is open; for example Ratis; if a single node fails,    *    we will proactively close these containers.    *    *  Once a command is dispatched to DN, we will also listen to updates from    *  the datanode which lets us know that this command completed or timed out.    */
+comment|/**    * A Close Container Event can be triggered under many condition. Some of them    * are: 1. A Container is full, then we stop writing further information to    * that container. DN's let SCM know that current state and sends a    * informational message that allows SCM to close the container.    *<p>    * 2. If a pipeline is open; for example Ratis; if a single node fails, we    * will proactively close these containers.    *<p>    * Once a command is dispatched to DN, we will also listen to updates from the    * datanode which lets us know that this command completed or timed out.    */
 DECL|field|CLOSE_CONTAINER
 specifier|public
 specifier|static
@@ -247,7 +289,7 @@ argument_list|,
 literal|"Close_Container"
 argument_list|)
 decl_stmt|;
-comment|/**    * This event will be triggered whenever a new datanode is    * registered with SCM.    */
+comment|/**    * This event will be triggered whenever a new datanode is registered with    * SCM.    */
 DECL|field|NEW_NODE
 specifier|public
 specifier|static

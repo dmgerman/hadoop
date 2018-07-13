@@ -313,6 +313,17 @@ name|T
 name|getReport
 parameter_list|()
 function_decl|;
+comment|/**    * Returns {@link StateContext}.    *    * @return stateContext report    */
+DECL|method|getContext ()
+specifier|protected
+name|StateContext
+name|getContext
+parameter_list|()
+block|{
+return|return
+name|context
+return|;
+block|}
 block|}
 end_class
 
