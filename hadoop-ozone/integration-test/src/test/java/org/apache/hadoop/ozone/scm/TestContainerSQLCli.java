@@ -28,22 +28,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
-operator|.
-name|DatanodeDetails
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|scm
 operator|.
 name|node
@@ -835,6 +819,8 @@ argument_list|,
 name|nodeManager
 argument_list|,
 name|mapping
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// blockManager.allocateBlock() will create containers if there is none

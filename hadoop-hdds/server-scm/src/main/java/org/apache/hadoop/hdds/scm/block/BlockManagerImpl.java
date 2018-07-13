@@ -246,6 +246,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|server
+operator|.
+name|events
+operator|.
+name|EventPublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|util
@@ -636,8 +654,8 @@ specifier|private
 name|ObjectName
 name|mxBean
 decl_stmt|;
-comment|/**    * Constructor.    *    * @param conf - configuration.    * @param nodeManager - node manager.    * @param containerManager - container manager.    * @throws IOException    */
-DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final Mapping containerManager)
+comment|/**    * Constructor.    *    * @param conf - configuration.    * @param nodeManager - node manager.    * @param containerManager - container manager.    * @param eventPublisher - event publisher.    * @throws IOException    */
+DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final Mapping containerManager, EventPublisher eventPublisher)
 specifier|public
 name|BlockManagerImpl
 parameter_list|(
@@ -652,6 +670,9 @@ parameter_list|,
 specifier|final
 name|Mapping
 name|containerManager
+parameter_list|,
+name|EventPublisher
+name|eventPublisher
 parameter_list|)
 throws|throws
 name|IOException
@@ -784,6 +805,8 @@ argument_list|,
 name|containerManager
 argument_list|,
 name|nodeManager
+argument_list|,
+name|eventPublisher
 argument_list|,
 name|svcInterval
 argument_list|,

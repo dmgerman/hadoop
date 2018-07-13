@@ -92,6 +92,24 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|events
+operator|.
+name|SCMEvents
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|node
 operator|.
 name|NodeManager
@@ -151,6 +169,42 @@ operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|DeletedBlocksTransaction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|server
+operator|.
+name|events
+operator|.
+name|EventPublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|commands
+operator|.
+name|CommandForDatanode
 import|;
 end_import
 
@@ -393,6 +447,12 @@ specifier|final
 name|NodeManager
 name|nodeManager
 decl_stmt|;
+DECL|field|eventPublisher
+specifier|private
+specifier|final
+name|EventPublisher
+name|eventPublisher
+decl_stmt|;
 comment|// Block delete limit size is dynamically calculated based on container
 comment|// delete limit size (ozone.block.deleting.container.limit.per.interval)
 comment|// that configured for datanode. To ensure DN not wait for
@@ -409,7 +469,7 @@ specifier|private
 name|int
 name|blockDeleteLimitSize
 decl_stmt|;
-DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, long interval, long serviceTimeout, Configuration conf)
+DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, EventPublisher eventPublisher, long interval, long serviceTimeout, Configuration conf)
 specifier|public
 name|SCMBlockDeletingService
 parameter_list|(
@@ -421,6 +481,9 @@ name|mapper
 parameter_list|,
 name|NodeManager
 name|nodeManager
+parameter_list|,
+name|EventPublisher
+name|eventPublisher
 parameter_list|,
 name|long
 name|interval
@@ -464,6 +527,12 @@ operator|.
 name|nodeManager
 operator|=
 name|nodeManager
+expr_stmt|;
+name|this
+operator|.
+name|eventPublisher
+operator|=
+name|eventPublisher
 expr_stmt|;
 name|int
 name|containerLimit
@@ -729,9 +798,17 @@ comment|// TODO commandQueue needs a cap.
 comment|// We should stop caching new commands if num of un-processed
 comment|// command is bigger than a limit, e.g 50. In case datanode goes
 comment|// offline for sometime, the cached commands be flooded.
-name|nodeManager
+name|eventPublisher
 operator|.
-name|addDatanodeCommand
+name|fireEvent
+argument_list|(
+name|SCMEvents
+operator|.
+name|DATANODE_COMMAND
+argument_list|,
+operator|new
+name|CommandForDatanode
+argument_list|<>
 argument_list|(
 name|dnId
 argument_list|,
@@ -739,6 +816,7 @@ operator|new
 name|DeleteBlocksCommand
 argument_list|(
 name|dnTXs
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
