@@ -1643,15 +1643,23 @@ block|}
 block|}
 comment|// recover() guarantees syncList will have at least one replica with RWR
 comment|// or better state.
-assert|assert
+if|if
+condition|(
 name|minLength
-operator|!=
+operator|==
 name|Long
 operator|.
 name|MAX_VALUE
-operator|:
-literal|"wrong minLength"
-assert|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Incorrect block size"
+argument_list|)
+throw|;
+block|}
 name|newBlock
 operator|.
 name|setNumBytes
