@@ -800,16 +800,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Rule
 import|;
 end_import
@@ -4290,11 +4280,6 @@ return|;
 block|}
 annotation|@
 name|Test
-annotation|@
-name|Ignore
-argument_list|(
-literal|"Needs to be fixed for new SCM and Storage design"
-argument_list|)
 DECL|method|testDeleteKey ()
 specifier|public
 name|void

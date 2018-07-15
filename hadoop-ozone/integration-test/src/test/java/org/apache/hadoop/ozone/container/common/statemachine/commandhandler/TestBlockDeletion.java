@@ -508,16 +508,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -593,11 +583,6 @@ import|;
 end_import
 
 begin_class
-annotation|@
-name|Ignore
-argument_list|(
-literal|"Need to be fixed according to ContainerIO"
-argument_list|)
 DECL|class|TestBlockDeletion
 specifier|public
 class|class
@@ -617,11 +602,11 @@ specifier|static
 name|ObjectStore
 name|store
 decl_stmt|;
-DECL|field|dnContainerManager
+DECL|field|dnContainerSet
 specifier|private
 specifier|static
 name|ContainerSet
-name|dnContainerManager
+name|dnContainerSet
 init|=
 literal|null
 decl_stmt|;
@@ -777,7 +762,7 @@ operator|.
 name|getObjectStore
 argument_list|()
 expr_stmt|;
-name|dnContainerManager
+name|dnContainerSet
 operator|=
 name|cluster
 operator|.
@@ -1107,7 +1092,7 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|dnContainerManager
+name|dnContainerSet
 operator|.
 name|listContainer
 argument_list|(
@@ -1186,7 +1171,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|dnContainerManager
+name|dnContainerSet
 operator|.
 name|getContainer
 argument_list|(
@@ -1246,7 +1231,7 @@ argument_list|(
 operator|(
 name|KeyValueContainerData
 operator|)
-name|dnContainerManager
+name|dnContainerSet
 operator|.
 name|getContainer
 argument_list|(
@@ -1335,7 +1320,7 @@ argument_list|(
 operator|(
 name|KeyValueContainerData
 operator|)
-name|dnContainerManager
+name|dnContainerSet
 operator|.
 name|getContainer
 argument_list|(

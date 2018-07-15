@@ -216,8 +216,6 @@ DECL|method|getContainerData ()
 name|ContainerData
 name|getContainerData
 parameter_list|()
-throws|throws
-name|StorageContainerException
 function_decl|;
 comment|/**    * Get the Container Lifecycle state.    *    * @return ContainerLifeCycleState - Container State.    * @throws StorageContainerException    */
 DECL|method|getContainerState ()

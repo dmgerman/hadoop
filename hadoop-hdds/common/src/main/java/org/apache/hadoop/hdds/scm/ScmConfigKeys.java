@@ -896,14 +896,14 @@ name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
 init|=
 literal|20
 decl_stmt|;
-DECL|field|OZONE_SCM_CONTAINER_DELETION_CHOOSING_POLICY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|OZONE_SCM_CONTAINER_DELETION_CHOOSING_POLICY
+DECL|field|OZONE_SCM_KEY_VALUE_CONTAINER_DELETION_CHOOSING_POLICY
+name|OZONE_SCM_KEY_VALUE_CONTAINER_DELETION_CHOOSING_POLICY
 init|=
-literal|"ozone.scm.container.deletion-choosing.policy"
+literal|"ozone.scm.keyvalue.container.deletion-choosing.policy"
 decl_stmt|;
 DECL|field|OZONE_SCM_CONTAINER_CREATION_LEASE_TIMEOUT
 specifier|public
