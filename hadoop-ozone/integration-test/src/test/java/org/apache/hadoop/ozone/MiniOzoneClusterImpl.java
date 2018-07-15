@@ -2035,7 +2035,7 @@ condition|)
 block|{
 name|conf
 operator|.
-name|getTimeDuration
+name|setTimeDuration
 argument_list|(
 name|ScmConfigKeys
 operator|.
