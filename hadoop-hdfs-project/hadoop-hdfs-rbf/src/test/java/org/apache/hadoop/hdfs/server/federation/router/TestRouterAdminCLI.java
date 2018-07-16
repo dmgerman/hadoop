@@ -701,6 +701,9 @@ operator|.
 name|rpc
 argument_list|()
 operator|.
+name|safemode
+argument_list|()
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -3490,7 +3493,7 @@ operator|.
 name|getRouter
 argument_list|()
 operator|.
-name|getRpcServer
+name|getSafemodeService
 argument_list|()
 operator|.
 name|isInSafeMode
@@ -3541,7 +3544,7 @@ operator|.
 name|getRouter
 argument_list|()
 operator|.
-name|getRpcServer
+name|getSafemodeService
 argument_list|()
 operator|.
 name|isInSafeMode
@@ -3637,7 +3640,7 @@ operator|.
 name|getRouter
 argument_list|()
 operator|.
-name|getRpcServer
+name|getSafemodeService
 argument_list|()
 operator|.
 name|isInSafeMode

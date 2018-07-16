@@ -2168,6 +2168,18 @@ operator|.
 name|namenodeHeartbeatServices
 return|;
 block|}
+comment|/**    * Get the Router safe mode service    */
+DECL|method|getSafemodeService ()
+name|RouterSafemodeService
+name|getSafemodeService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|safemodeService
+return|;
+block|}
 block|}
 end_class
 

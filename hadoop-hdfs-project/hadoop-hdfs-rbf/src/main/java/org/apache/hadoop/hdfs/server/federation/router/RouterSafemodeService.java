@@ -153,6 +153,21 @@ specifier|final
 name|Router
 name|router
 decl_stmt|;
+comment|/**    * If we are in safe mode, fail requests as if a standby NN.    * Router can enter safe mode in two different ways:    *   1. upon start up: router enters this mode after service start, and will    *      exit after certain time threshold;    *   2. via admin command: router enters this mode via admin command:    *        dfsrouteradmin -safemode enter    *      and exit after admin command:    *        dfsrouteradmin -safemode leave    */
+comment|/** Whether Router is in safe mode */
+DECL|field|safeMode
+specifier|private
+specifier|volatile
+name|boolean
+name|safeMode
+decl_stmt|;
+comment|/** Whether the Router safe mode is set manually (i.e., via Router admin) */
+DECL|field|isSafeModeSetManually
+specifier|private
+specifier|volatile
+name|boolean
+name|isSafeModeSetManually
+decl_stmt|;
 comment|/** Interval in ms to wait post startup before allowing RPC requests. */
 DECL|field|startupInterval
 specifier|private
@@ -206,6 +221,40 @@ operator|=
 name|router
 expr_stmt|;
 block|}
+comment|/**    * Return whether the current Router is in safe mode.    */
+DECL|method|isInSafeMode ()
+name|boolean
+name|isInSafeMode
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|safeMode
+return|;
+block|}
+comment|/**    * Set the flag to indicate that the safe mode for this Router is set manually    * via the Router admin command.    */
+DECL|method|setManualSafeMode (boolean mode)
+name|void
+name|setManualSafeMode
+parameter_list|(
+name|boolean
+name|mode
+parameter_list|)
+block|{
+name|this
+operator|.
+name|safeMode
+operator|=
+name|mode
+expr_stmt|;
+name|this
+operator|.
+name|isSafeModeSetManually
+operator|=
+name|mode
+expr_stmt|;
+block|}
 comment|/**    * Enter safe mode.    */
 DECL|method|enter ()
 specifier|private
@@ -225,20 +274,9 @@ operator|=
 name|now
 argument_list|()
 expr_stmt|;
-name|RouterRpcServer
-name|rpcServer
-init|=
-name|router
-operator|.
-name|getRpcServer
-argument_list|()
-decl_stmt|;
-name|rpcServer
-operator|.
-name|setSafeMode
-argument_list|(
+name|safeMode
+operator|=
 literal|true
-argument_list|)
 expr_stmt|;
 name|router
 operator|.
@@ -308,20 +346,9 @@ name|timeInSafemode
 argument_list|)
 expr_stmt|;
 block|}
-name|RouterRpcServer
-name|rpcServer
-init|=
-name|router
-operator|.
-name|getRpcServer
-argument_list|()
-decl_stmt|;
-name|rpcServer
-operator|.
-name|setSafeMode
-argument_list|(
+name|safeMode
+operator|=
 literal|false
-argument_list|)
 expr_stmt|;
 name|router
 operator|.
@@ -499,14 +526,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|RouterRpcServer
-name|rpcServer
-init|=
-name|router
-operator|.
-name|getRpcServer
-argument_list|()
-decl_stmt|;
 name|StateStoreService
 name|stateStore
 init|=
@@ -545,10 +564,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|rpcServer
-operator|.
-name|isInSafeMode
-argument_list|()
+name|safeMode
 condition|)
 block|{
 name|enter
@@ -559,10 +575,10 @@ block|}
 elseif|else
 if|if
 condition|(
-name|rpcServer
-operator|.
-name|isInSafeMode
-argument_list|()
+name|safeMode
+operator|&&
+operator|!
+name|isSafeModeSetManually
 condition|)
 block|{
 comment|// Cache recently updated, leave safe mode

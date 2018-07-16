@@ -2137,13 +2137,6 @@ specifier|final
 name|FileSubclusterResolver
 name|subclusterResolver
 decl_stmt|;
-comment|/** If we are in safe mode, fail requests as if a standby NN. */
-DECL|field|safeMode
-specifier|private
-specifier|volatile
-name|boolean
-name|safeMode
-decl_stmt|;
 comment|/** Category of the operation that a thread is executing. */
 DECL|field|opCategory
 specifier|private
@@ -3056,9 +3049,24 @@ condition|)
 block|{
 return|return;
 block|}
+name|RouterSafemodeService
+name|safemodeService
+init|=
+name|router
+operator|.
+name|getSafemodeService
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|safeMode
+name|safemodeService
+operator|!=
+literal|null
+operator|&&
+name|safemodeService
+operator|.
+name|isInSafeMode
+argument_list|()
 condition|)
 block|{
 comment|// Throw standby exception, router is not available
@@ -3094,36 +3102,6 @@ literal|" requests"
 argument_list|)
 throw|;
 block|}
-block|}
-comment|/**    * In safe mode all RPC requests will fail and return a standby exception.    * The client will try another Router, similar to the client retry logic for    * HA.    *    * @param mode True if enabled, False if disabled.    */
-DECL|method|setSafeMode (boolean mode)
-specifier|public
-name|void
-name|setSafeMode
-parameter_list|(
-name|boolean
-name|mode
-parameter_list|)
-block|{
-name|this
-operator|.
-name|safeMode
-operator|=
-name|mode
-expr_stmt|;
-block|}
-comment|/**    * Check if the Router is in safe mode and cannot serve RPC calls.    *    * @return If the Router is in safe mode.    */
-DECL|method|isInSafeMode ()
-specifier|public
-name|boolean
-name|isInSafeMode
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|safeMode
-return|;
 block|}
 annotation|@
 name|Override
