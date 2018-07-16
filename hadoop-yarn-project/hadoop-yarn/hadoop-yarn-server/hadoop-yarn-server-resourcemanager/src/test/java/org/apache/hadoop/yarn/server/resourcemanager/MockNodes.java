@@ -1402,6 +1402,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRMContext ()
+specifier|public
+name|RMContext
+name|getRMContext
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getPhysicalResource ()
 specifier|public
 name|Resource

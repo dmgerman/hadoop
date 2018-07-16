@@ -7895,6 +7895,20 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getRMContext ()
+specifier|public
+name|RMContext
+name|getRMContext
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|context
+return|;
+block|}
 block|}
 end_class
 

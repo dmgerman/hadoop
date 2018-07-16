@@ -232,6 +232,24 @@ name|OpportunisticContainersStatus
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * Node managers information on available resources   * and other static information.  *  */
 end_comment
@@ -461,6 +479,12 @@ argument_list|,
 name|Long
 argument_list|>
 name|getAllocationTagsWithCount
+parameter_list|()
+function_decl|;
+comment|/**    * @return the RM context associated with this RM node.    */
+DECL|method|getRMContext ()
+name|RMContext
+name|getRMContext
 parameter_list|()
 function_decl|;
 block|}
