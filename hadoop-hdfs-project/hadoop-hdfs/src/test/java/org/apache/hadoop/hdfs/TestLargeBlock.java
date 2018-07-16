@@ -231,6 +231,14 @@ block|,
 literal|'F'
 block|}
 decl_stmt|;
+DECL|field|numDatanodes
+specifier|static
+specifier|final
+name|int
+name|numDatanodes
+init|=
+literal|3
+decl_stmt|;
 comment|// creates a file
 DECL|method|createFile (FileSystem fileSys, Path name, int repl, final long blockSize)
 specifier|static
@@ -720,7 +728,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|900000
+literal|1800000
 argument_list|)
 DECL|method|testLargeBlockSize ()
 specifier|public
@@ -789,6 +797,11 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+name|numDatanodes
 argument_list|)
 operator|.
 name|build
