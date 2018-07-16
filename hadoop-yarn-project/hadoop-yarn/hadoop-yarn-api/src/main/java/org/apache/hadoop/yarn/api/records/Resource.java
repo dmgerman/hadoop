@@ -332,29 +332,6 @@ name|VCORES_INDEX
 init|=
 literal|1
 decl_stmt|;
-comment|/**    * Return a new {@link Resource} instance with all resource values    * initialized to {@code value}.    * @param value the value to use for all resources    * @return a new {@link Resource} instance    */
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|newInstance (long value)
-specifier|public
-specifier|static
-name|Resource
-name|newInstance
-parameter_list|(
-name|long
-name|value
-parameter_list|)
-block|{
-return|return
-operator|new
-name|LightWeightResource
-argument_list|(
-name|value
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Public
 annotation|@
