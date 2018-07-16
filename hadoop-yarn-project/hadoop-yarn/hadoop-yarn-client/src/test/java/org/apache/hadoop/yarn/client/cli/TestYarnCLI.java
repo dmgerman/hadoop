@@ -18154,6 +18154,20 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -appTypes<Types>                Works with -list to specify the app type when application name is provided."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -components<arg>                Works with -list to filter instances based on input comma-separated list of component names."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -help                            Displays help for all commands."
 argument_list|)
 expr_stmt|;
@@ -18161,7 +18175,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -list<Application Attempt ID>   List containers for application attempt."
+literal|" -list<Application Name or Attempt ID>   List containers for application attempt  when application attempt ID is provided. When application name is provided, then it finds the instances of the application based on app's own implementation, and -appTypes option must be specified unless it is the default yarn-service type. With app name, it supports optional use of -version to filter instances based on app version, -components to filter instances based on component names, -states to filter instances based on instance state."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -18208,7 +18222,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -states<arg>                    Works with -list to filter instances based on input comma-separated list of instance states."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -status<Container ID>           Prints the status of the container."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -version<arg>                   Works with -list to filter instances based on input application version. "
 argument_list|)
 expr_stmt|;
 name|pw

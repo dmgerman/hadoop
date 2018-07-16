@@ -119,7 +119,6 @@ literal|"/"
 operator|+
 name|COMPONENTS
 decl_stmt|;
-comment|// Query param
 DECL|field|SERVICE_NAME
 name|String
 name|SERVICE_NAME
@@ -137,6 +136,24 @@ name|String
 name|COMP_INSTANCE_NAME
 init|=
 literal|"component_instance_name"
+decl_stmt|;
+DECL|field|PARAM_COMP_NAME
+name|String
+name|PARAM_COMP_NAME
+init|=
+literal|"componentName"
+decl_stmt|;
+DECL|field|PARAM_VERSION
+name|String
+name|PARAM_VERSION
+init|=
+literal|"version"
+decl_stmt|;
+DECL|field|PARAM_CONTAINER_STATE
+name|String
+name|PARAM_CONTAINER_STATE
+init|=
+literal|"containerState"
 decl_stmt|;
 DECL|field|MEDIA_TYPE_JSON_UTF8
 name|String
