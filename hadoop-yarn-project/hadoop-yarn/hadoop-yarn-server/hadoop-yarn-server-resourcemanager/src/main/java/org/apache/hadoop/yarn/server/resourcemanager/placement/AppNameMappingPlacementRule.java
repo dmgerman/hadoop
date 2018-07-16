@@ -478,7 +478,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Initialized queue mappings, override: "
+literal|"Initialized App Name queue mappings, override: "
 operator|+
 name|overrideWithQueueMappings
 argument_list|)
@@ -757,6 +757,22 @@ name|overrideWithQueueMappings
 operator|=
 name|overrideWithQueueMappings
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"get valid queue mapping from app name config: "
+operator|+
+name|newMappings
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|", override: "
+operator|+
+name|overrideWithQueueMappings
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -781,7 +797,7 @@ operator|==
 literal|null
 return|;
 block|}
-DECL|method|getAppPlacementContext (String user, ApplicationId applicationId)
+DECL|method|getAppPlacementContext (String user, String applicationName)
 specifier|private
 name|ApplicationPlacementContext
 name|getAppPlacementContext
@@ -789,8 +805,8 @@ parameter_list|(
 name|String
 name|user
 parameter_list|,
-name|ApplicationId
-name|applicationId
+name|String
+name|applicationName
 parameter_list|)
 throws|throws
 name|IOException
@@ -834,12 +850,7 @@ name|getPlacementContext
 argument_list|(
 name|mapping
 argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|applicationId
-argument_list|)
+name|applicationName
 argument_list|)
 return|;
 block|}
@@ -862,10 +873,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|applicationId
-operator|.
-name|toString
-argument_list|()
+name|applicationName
 argument_list|)
 condition|)
 block|{
@@ -905,12 +913,12 @@ operator|.
 name|getQueue
 argument_list|()
 decl_stmt|;
-name|ApplicationId
-name|applicationId
+name|String
+name|applicationName
 init|=
 name|asc
 operator|.
-name|getApplicationId
+name|getApplicationName
 argument_list|()
 decl_stmt|;
 if|if
@@ -936,7 +944,7 @@ name|getAppPlacementContext
 argument_list|(
 name|user
 argument_list|,
-name|applicationId
+name|applicationName
 argument_list|)
 decl_stmt|;
 if|if
@@ -978,7 +986,7 @@ name|info
 argument_list|(
 literal|"Application "
 operator|+
-name|applicationId
+name|applicationName
 operator|+
 literal|" mapping ["
 operator|+
@@ -1010,7 +1018,7 @@ name|message
 init|=
 literal|"Failed to submit application "
 operator|+
-name|applicationId
+name|applicationName
 operator|+
 literal|" reason: "
 operator|+
