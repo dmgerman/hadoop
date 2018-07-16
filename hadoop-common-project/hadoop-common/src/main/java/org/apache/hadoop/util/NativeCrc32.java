@@ -63,16 +63,13 @@ DECL|class|NativeCrc32
 class|class
 name|NativeCrc32
 block|{
-comment|/**    * Return true if the JNI-based native CRC extensions are available.    */
-DECL|method|isAvailable ()
-specifier|public
+DECL|field|isSparc
+specifier|private
 specifier|static
+specifier|final
 name|boolean
-name|isAvailable
-parameter_list|()
-block|{
-if|if
-condition|(
+name|isSparc
+init|=
 name|System
 operator|.
 name|getProperty
@@ -87,6 +84,18 @@ name|startsWith
 argument_list|(
 literal|"sparc"
 argument_list|)
+decl_stmt|;
+comment|/**    * Return true if the JNI-based native CRC extensions are available.    */
+DECL|method|isAvailable ()
+specifier|public
+specifier|static
+name|boolean
+name|isAvailable
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isSparc
 condition|)
 block|{
 return|return
