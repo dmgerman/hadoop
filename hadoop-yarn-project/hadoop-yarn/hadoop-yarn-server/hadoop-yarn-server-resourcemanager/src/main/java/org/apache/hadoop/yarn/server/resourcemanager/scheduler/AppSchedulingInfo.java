@@ -2675,6 +2675,15 @@ operator|.
 name|getAbstractUsersManager
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|schedulerKeys
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|abstractUsersManager
 operator|.
 name|activateApplication
@@ -2684,6 +2693,7 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|queue
