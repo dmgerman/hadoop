@@ -125,7 +125,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class to pack an AclEntry into an integer.<br>  * An ACL entry is represented by a 32-bit integer in Big Endian format.<br>  * The bits can be divided in four segments:<br>  * [0:1) || [1:3) || [3:6) || [6:7) || [7:32)<br>  *<br>  * [0:1) -- the scope of the entry (AclEntryScope)<br>  * [1:3) -- the type of the entry (AclEntryType)<br>  * [3:6) -- the permission of the entry (FsAction)<br>  * [6:7) -- A flag to indicate whether Named entry or not<br>  * [7:32) -- the name of the entry, which is an ID that points to a<br>  * string in the StringTableSection.<br>  */
+comment|/**  * Class to pack an AclEntry into an integer.<br>  * An ACL entry is represented by a 32-bit integer in Big Endian format.<br>  * The bits can be divided in four segments:<br>  * [0:1) || [1:3) || [3:6) || [6:7) || [7:32)<br>  *<br>  * [0:1) -- the scope of the entry (AclEntryScope)<br>  * [1:3) -- the type of the entry (AclEntryType)<br>  * [3:6) -- the permission of the entry (FsAction)<br>  * [6:7) -- A flag to indicate whether Named entry or not<br>  * [7:8) -- Reserved<br>  * [8:32) -- the name of the entry, which is an ID that points to a<br>  * string in the StringTableSection.<br>  */
 end_comment
 
 begin_enum
@@ -172,14 +172,24 @@ argument_list|,
 literal|1
 argument_list|)
 block|,
-DECL|enumConstant|NAME
-name|NAME
+DECL|enumConstant|RESERVED
+name|RESERVED
 argument_list|(
 name|NAMED_ENTRY_CHECK
 operator|.
 name|BITS
 argument_list|,
-literal|25
+literal|1
+argument_list|)
+block|,
+DECL|enumConstant|NAME
+name|NAME
+argument_list|(
+name|RESERVED
+operator|.
+name|BITS
+argument_list|,
+literal|24
 argument_list|)
 block|;
 DECL|field|BITS

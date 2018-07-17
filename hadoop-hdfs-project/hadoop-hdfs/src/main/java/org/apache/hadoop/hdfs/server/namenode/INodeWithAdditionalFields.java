@@ -170,7 +170,7 @@ name|MODE
 operator|.
 name|BITS
 argument_list|,
-literal|25
+literal|24
 argument_list|)
 block|,
 DECL|enumConstant|USER
@@ -180,7 +180,7 @@ name|GROUP
 operator|.
 name|BITS
 argument_list|,
-literal|23
+literal|24
 argument_list|)
 block|;
 DECL|field|BITS
