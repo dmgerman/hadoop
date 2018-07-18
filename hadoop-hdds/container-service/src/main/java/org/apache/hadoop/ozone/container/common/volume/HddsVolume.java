@@ -269,7 +269,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HddsVolume represents volume in a datanode. {@link VolumeSet} maitains a  * list of HddsVolumes, one for each volume in the Datanode.  * {@link VolumeInfo} in encompassed by this class.  */
+comment|/**  * HddsVolume represents volume in a datanode. {@link VolumeSet} maitains a  * list of HddsVolumes, one for each volume in the Datanode.  * {@link VolumeInfo} in encompassed by this class.  *  * The disk layout per volume is as follows:  * ../hdds/VERSION  * ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID>>/metadata  * ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID>>/<<dataDir>>  *  * Each hdds volume has its own VERSION file. The hdds volume will have one  * scmUuid directory for each SCM it is a part of (currently only one SCM is  * supported).  *  * During DN startup, if the VERSION file exists, we verify that the  * clusterID in the version file matches the clusterID from SCM.  */
 end_comment
 
 begin_class
@@ -533,39 +533,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|b
-operator|.
-name|volumeRootStr
-argument_list|,
-literal|"Volume root dir cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|b
-operator|.
-name|datanodeUuid
-argument_list|,
-literal|"DatanodeUUID cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|b
-operator|.
-name|conf
-argument_list|,
-literal|"Configuration cannot be null"
-argument_list|)
-expr_stmt|;
 name|StorageLocation
 name|location
 init|=
@@ -783,6 +750,28 @@ name|NORMAL
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+name|INCONSISTENT
+case|:
+comment|// Volume Root is in an inconsistent state. Skip loading this volume.
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Volume is in an "
+operator|+
+name|VolumeState
+operator|.
+name|INCONSISTENT
+operator|+
+literal|" state. Skipped loading volume: "
+operator|+
+name|hddsRootDir
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+throw|;
 default|default:
 throw|throw
 operator|new
@@ -814,10 +803,56 @@ name|exists
 argument_list|()
 condition|)
 block|{
+comment|// Volume Root does not exist.
 return|return
 name|VolumeState
 operator|.
 name|NON_EXISTENT
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|hddsRootDir
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+comment|// Volume Root exists but is not a directory.
+return|return
+name|VolumeState
+operator|.
+name|INCONSISTENT
+return|;
+block|}
+name|File
+index|[]
+name|files
+init|=
+name|hddsRootDir
+operator|.
+name|listFiles
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|files
+operator|==
+literal|null
+operator|||
+name|files
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Volume Root exists and is empty.
+return|return
+name|VolumeState
+operator|.
+name|NOT_FORMATTED
 return|;
 block|}
 if|if
@@ -830,12 +865,14 @@ name|exists
 argument_list|()
 condition|)
 block|{
+comment|// Volume Root is non empty but VERSION file does not exist.
 return|return
 name|VolumeState
 operator|.
-name|NOT_FORMATTED
+name|INCONSISTENT
 return|;
 block|}
+comment|// Volume Root and VERSION file exist.
 return|return
 name|VolumeState
 operator|.
@@ -1425,7 +1462,7 @@ name|shutdownUsageThread
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * VolumeState represents the different states a HddsVolume can be in.    */
+comment|/**    * VolumeState represents the different states a HddsVolume can be in.    * NORMAL          => Volume can be used for storage    * FAILED          => Volume has failed due and can no longer be used for    *                    storing containers.    * NON_EXISTENT    => Volume Root dir does not exist    * INCONSISTENT    => Volume Root dir is not empty but VERSION file is    *                    missing or Volume Root dir is not a directory    * NOT_FORMATTED   => Volume Root exists but not formatted (no VERSION file)    * NOT_INITIALIZED => VERSION file exists but has not been verified for    *                    correctness.    */
 DECL|enum|VolumeState
 specifier|public
 enum|enum
@@ -1439,6 +1476,9 @@ name|FAILED
 block|,
 DECL|enumConstant|NON_EXISTENT
 name|NON_EXISTENT
+block|,
+DECL|enumConstant|INCONSISTENT
+name|INCONSISTENT
 block|,
 DECL|enumConstant|NOT_FORMATTED
 name|NOT_FORMATTED

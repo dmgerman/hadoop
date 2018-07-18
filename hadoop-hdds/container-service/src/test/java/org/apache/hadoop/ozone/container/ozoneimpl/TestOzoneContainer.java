@@ -138,6 +138,26 @@ name|common
 operator|.
 name|volume
 operator|.
+name|HddsVolume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|volume
+operator|.
 name|RoundRobinVolumeChoosingPolicy
 import|;
 end_import
@@ -371,16 +391,6 @@ argument_list|()
 operator|.
 name|getAbsolutePath
 argument_list|()
-operator|+
-literal|","
-operator|+
-name|folder
-operator|.
-name|newFolder
-argument_list|()
-operator|.
-name|getAbsolutePath
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|conf
@@ -400,6 +410,17 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testBuildContainerMap ()
+specifier|public
+name|void
+name|testBuildContainerMap
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|volumeSet
 operator|=
 operator|new
@@ -419,6 +440,33 @@ operator|new
 name|RoundRobinVolumeChoosingPolicy
 argument_list|()
 expr_stmt|;
+comment|// Format the volumes
+for|for
+control|(
+name|HddsVolume
+name|volume
+range|:
+name|volumeSet
+operator|.
+name|getVolumesList
+argument_list|()
+control|)
+block|{
+name|volume
+operator|.
+name|format
+argument_list|(
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Add containers to disk
 for|for
 control|(
 name|int
@@ -466,17 +514,8 @@ name|scmId
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Test
-DECL|method|testBuildContainerMap ()
-specifier|public
-name|void
-name|testBuildContainerMap
-parameter_list|()
-throws|throws
-name|Exception
-block|{
+comment|// When OzoneContainer is started, the containers from disk should be
+comment|// loaded into the containerSet.
 name|OzoneContainer
 name|ozoneContainer
 init|=

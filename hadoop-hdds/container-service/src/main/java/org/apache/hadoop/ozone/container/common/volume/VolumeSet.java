@@ -1066,15 +1066,14 @@ block|}
 comment|// Add a volume to VolumeSet
 DECL|method|addVolume (String dataDir)
 specifier|public
-name|void
+name|boolean
 name|addVolume
 parameter_list|(
 name|String
 name|dataDir
 parameter_list|)
-throws|throws
-name|IOException
 block|{
+return|return
 name|addVolume
 argument_list|(
 name|dataDir
@@ -1083,12 +1082,12 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|// Add a volume to VolumeSet
 DECL|method|addVolume (String volumeRoot, StorageType storageType)
 specifier|public
-name|void
+name|boolean
 name|addVolume
 parameter_list|(
 name|String
@@ -1097,8 +1096,6 @@ parameter_list|,
 name|StorageType
 name|storageType
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|String
 name|hddsRoot
@@ -1109,6 +1106,9 @@ name|getHddsRoot
 argument_list|(
 name|volumeRoot
 argument_list|)
+decl_stmt|;
+name|boolean
+name|success
 decl_stmt|;
 try|try
 init|(
@@ -1139,6 +1139,10 @@ literal|"Volume : {} already exists in VolumeMap"
 argument_list|,
 name|hddsRoot
 argument_list|)
+expr_stmt|;
+name|success
+operator|=
+literal|false
 expr_stmt|;
 block|}
 else|else
@@ -1216,8 +1220,39 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to add volume "
+operator|+
+name|volumeRoot
+operator|+
+literal|" to VolumeSet"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+name|success
+operator|=
+literal|false
+expr_stmt|;
+block|}
+return|return
+name|success
+return|;
 block|}
 comment|// Mark a volume as failed
 DECL|method|failVolume (String dataDir)
