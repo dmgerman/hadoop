@@ -845,7 +845,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Aborting since the Request has failed with all KMS"
 operator|+

@@ -1576,13 +1576,6 @@ argument_list|(
 literal|"Cannot list keys for KeyProvider: "
 operator|+
 name|provider
-operator|+
-literal|": "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1790,12 +1783,7 @@ literal|" within KeyProvider: "
 operator|+
 name|provider
 operator|+
-literal|". "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
+literal|"."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1822,12 +1810,7 @@ literal|" within KeyProvider: "
 operator|+
 name|provider
 operator|+
-literal|". "
-operator|+
-name|e1
-operator|.
-name|toString
-argument_list|()
+literal|"."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2021,15 +2004,12 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" will not be deleted."
-argument_list|)
-expr_stmt|;
-name|e
-operator|.
-name|printStackTrace
+literal|" will not be deleted. "
+operator|+
+name|prettifyException
 argument_list|(
-name|getErr
-argument_list|()
+name|e
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2109,12 +2089,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has not been deleted. "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
+literal|" has not been deleted."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2405,12 +2380,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has not been created. "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
+literal|" has not been created."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2430,12 +2400,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has not been created. "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
+literal|" has not been created."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2455,12 +2420,7 @@ name|println
 argument_list|(
 name|keyName
 operator|+
-literal|" has not been created. "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
+literal|" has not been created."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2668,12 +2628,7 @@ literal|" within KeyProvider: "
 operator|+
 name|provider
 operator|+
-literal|". "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
+literal|"."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2697,6 +2652,67 @@ operator|+
 name|DESC
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|printException (Exception e)
+specifier|protected
+name|void
+name|printException
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|getErr
+argument_list|()
+operator|.
+name|println
+argument_list|(
+literal|"Executing command failed with "
+operator|+
+literal|"the following exception: "
+operator|+
+name|prettifyException
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|prettifyException (Exception e)
+specifier|private
+name|String
+name|prettifyException
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+return|return
+name|e
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+operator|.
+name|split
+argument_list|(
+literal|"\n"
+argument_list|)
+index|[
+literal|0
+index|]
+return|;
 block|}
 comment|/**    * main() entry point for the KeyShell.  While strictly speaking the    * return is void, it will System.exit() with a return code: 0 is for    * success and 1 for failure.    *    * @param args Command line arguments.    * @throws Exception    */
 DECL|method|main (String[] args)

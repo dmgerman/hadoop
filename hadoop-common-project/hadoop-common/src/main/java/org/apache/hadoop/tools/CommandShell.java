@@ -245,11 +245,9 @@ block|{
 name|printShellUsage
 argument_list|()
 expr_stmt|;
-name|e
-operator|.
-name|printStackTrace
+name|printException
 argument_list|(
-name|err
+name|e
 argument_list|)
 expr_stmt|;
 return|return
@@ -314,6 +312,23 @@ name|out
 operator|.
 name|flush
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|printException (Exception ex)
+specifier|protected
+name|void
+name|printException
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|ex
+operator|.
+name|printStackTrace
+argument_list|(
+name|err
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Base class for any subcommands of this shell command.    */
