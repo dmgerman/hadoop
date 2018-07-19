@@ -2648,6 +2648,12 @@ operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
+comment|// Pause the getGroups operation and this will delay the cache refresh
+name|FakeGroupMapping
+operator|.
+name|pause
+argument_list|()
+expr_stmt|;
 comment|// Now get the cache entry - it should return immediately
 comment|// with the old value and the cache will not have completed
 comment|// a request to getGroups yet.
@@ -2676,13 +2682,25 @@ name|getRequestCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Now sleep for a short time and re-check the request count. It should have
-comment|// increased, but the exception means the cache will not have updated
-name|Thread
+comment|// Resume the getGroups operation and the cache can get refreshed
+name|FakeGroupMapping
 operator|.
-name|sleep
+name|resume
+argument_list|()
+expr_stmt|;
+comment|// Now wait for the refresh done, because of the exception, we expect
+comment|// a onFailure callback gets called and the counter for failure is 1
+name|waitForGroupCounters
 argument_list|(
-literal|50
+name|groups
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|FakeGroupMapping
@@ -2719,13 +2737,20 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-comment|// Now sleep another short time - the 3rd call to getGroups above
-comment|// will have kicked off another refresh that updates the cache
-name|Thread
-operator|.
-name|sleep
+comment|// Now the 3rd call to getGroups above will have kicked off
+comment|// another refresh that updates the cache, since it no longer gives
+comment|// exception, we now expect the counter for success is 1.
+name|waitForGroupCounters
 argument_list|(
-literal|50
+name|groups
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|assertEquals
