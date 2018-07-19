@@ -2364,7 +2364,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-specifier|protected
+specifier|public
 specifier|static
 name|Set
 argument_list|<
