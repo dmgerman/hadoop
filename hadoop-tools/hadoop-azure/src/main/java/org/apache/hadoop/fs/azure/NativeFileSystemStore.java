@@ -251,6 +251,12 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Returns the file block size.  This is a fake value used for integration    * of the Azure store with Hadoop.    * @return The file block size.    */
+DECL|method|getHadoopBlockSize ()
+name|long
+name|getHadoopBlockSize
+parameter_list|()
+function_decl|;
 DECL|method|storeEmptyLinkFile (String key, String tempBlobKey, PermissionStatus permissionStatus)
 name|void
 name|storeEmptyLinkFile
@@ -278,7 +284,8 @@ throws|throws
 name|AzureException
 function_decl|;
 DECL|method|list (String prefix, final int maxListingCount, final int maxListingDepth)
-name|PartialListing
+name|FileMetadata
+index|[]
 name|list
 parameter_list|(
 name|String
@@ -291,48 +298,6 @@ parameter_list|,
 specifier|final
 name|int
 name|maxListingDepth
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-DECL|method|list (String prefix, final int maxListingCount, final int maxListingDepth, String priorLastKey)
-name|PartialListing
-name|list
-parameter_list|(
-name|String
-name|prefix
-parameter_list|,
-specifier|final
-name|int
-name|maxListingCount
-parameter_list|,
-specifier|final
-name|int
-name|maxListingDepth
-parameter_list|,
-name|String
-name|priorLastKey
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-DECL|method|listAll (String prefix, final int maxListingCount, final int maxListingDepth, String priorLastKey)
-name|PartialListing
-name|listAll
-parameter_list|(
-name|String
-name|prefix
-parameter_list|,
-specifier|final
-name|int
-name|maxListingCount
-parameter_list|,
-specifier|final
-name|int
-name|maxListingDepth
-parameter_list|,
-name|String
-name|priorLastKey
 parameter_list|)
 throws|throws
 name|IOException

@@ -152,16 +152,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Calendar
 import|;
 end_import
@@ -1033,6 +1023,15 @@ name|KEY_CONCURRENT_CONNECTION_VALUE_OUT
 init|=
 literal|"fs.azure.concurrentRequestCount.out"
 decl_stmt|;
+DECL|field|HADOOP_BLOCK_SIZE_PROPERTY_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|HADOOP_BLOCK_SIZE_PROPERTY_NAME
+init|=
+literal|"fs.azure.block.size"
+decl_stmt|;
 DECL|field|KEY_STREAM_MIN_READ_SIZE
 specifier|private
 specifier|static
@@ -1456,6 +1455,19 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|DEFAULT_HADOOP_BLOCK_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_HADOOP_BLOCK_SIZE
+init|=
+literal|512
+operator|*
+literal|1024
+operator|*
+literal|1024L
+decl_stmt|;
 DECL|field|DEFAULT_INPUT_STREAM_VERSION
 specifier|private
 specifier|static
@@ -1723,6 +1735,13 @@ name|boolean
 name|tolerateOobAppends
 init|=
 name|DEFAULT_READ_TOLERATE_CONCURRENT_APPEND
+decl_stmt|;
+DECL|field|hadoopBlockSize
+specifier|private
+name|long
+name|hadoopBlockSize
+init|=
+name|DEFAULT_HADOOP_BLOCK_SIZE
 decl_stmt|;
 DECL|field|downloadBlockSizeBytes
 specifier|private
@@ -3030,6 +3049,19 @@ argument_list|(
 name|KEY_WRITE_BLOCK_SIZE
 argument_list|,
 name|DEFAULT_UPLOAD_BLOCK_SIZE
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|hadoopBlockSize
+operator|=
+name|sessionConfiguration
+operator|.
+name|getLong
+argument_list|(
+name|HADOOP_BLOCK_SIZE_PROPERTY_NAME
+argument_list|,
+name|DEFAULT_HADOOP_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
 name|this
@@ -4684,6 +4716,19 @@ block|}
 block|}
 return|return
 literal|false
+return|;
+block|}
+comment|/**    * Returns the file block size.  This is a fake value used for integration    * of the Azure store with Hadoop.    */
+annotation|@
+name|Override
+DECL|method|getHadoopBlockSize ()
+specifier|public
+name|long
+name|getHadoopBlockSize
+parameter_list|()
+block|{
+return|return
+name|hadoopBlockSize
 return|;
 block|}
 comment|/**    * This should be called from any method that does any modifications to the    * underlying container: it makes sure to put the WASB current version in the    * container's metadata if it's not already there.    */
@@ -7419,6 +7464,8 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Implicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 return|;
 block|}
@@ -7515,6 +7562,8 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Explicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 return|;
 block|}
@@ -7555,6 +7604,8 @@ name|getPermissionStatus
 argument_list|(
 name|blob
 argument_list|)
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 return|;
 block|}
@@ -7684,6 +7735,8 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Implicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 return|;
 block|}
@@ -7853,7 +7906,8 @@ annotation|@
 name|Override
 DECL|method|list (String prefix, final int maxListingCount, final int maxListingDepth)
 specifier|public
-name|PartialListing
+name|FileMetadata
+index|[]
 name|list
 parameter_list|(
 name|String
@@ -7871,154 +7925,24 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|list
+name|listInternal
 argument_list|(
 name|prefix
 argument_list|,
 name|maxListingCount
 argument_list|,
 name|maxListingDepth
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|list (String prefix, final int maxListingCount, final int maxListingDepth, String priorLastKey)
-specifier|public
-name|PartialListing
-name|list
-parameter_list|(
-name|String
-name|prefix
-parameter_list|,
-specifier|final
-name|int
-name|maxListingCount
-parameter_list|,
-specifier|final
-name|int
-name|maxListingDepth
-parameter_list|,
-name|String
-name|priorLastKey
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|list
-argument_list|(
-name|prefix
-argument_list|,
-name|PATH_DELIMITER
-argument_list|,
-name|maxListingCount
-argument_list|,
-name|maxListingDepth
-argument_list|,
-name|priorLastKey
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|listAll (String prefix, final int maxListingCount, final int maxListingDepth, String priorLastKey)
-specifier|public
-name|PartialListing
-name|listAll
-parameter_list|(
-name|String
-name|prefix
-parameter_list|,
-specifier|final
-name|int
-name|maxListingCount
-parameter_list|,
-specifier|final
-name|int
-name|maxListingDepth
-parameter_list|,
-name|String
-name|priorLastKey
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|list
-argument_list|(
-name|prefix
-argument_list|,
-literal|null
-argument_list|,
-name|maxListingCount
-argument_list|,
-name|maxListingDepth
-argument_list|,
-name|priorLastKey
-argument_list|)
-return|;
-block|}
-comment|/**    * Searches the given list of {@link FileMetadata} objects for a directory    * with the given key.    *    * @param list    *          The list to search.    * @param key    *          The key to search for.    * @return The wanted directory, or null if not found.    */
-DECL|method|getFileMetadataInList ( final Iterable<FileMetadata> list, String key)
+DECL|method|listInternal (String prefix, final int maxListingCount, final int maxListingDepth)
 specifier|private
-specifier|static
 name|FileMetadata
-name|getFileMetadataInList
-parameter_list|(
-specifier|final
-name|Iterable
-argument_list|<
-name|FileMetadata
-argument_list|>
-name|list
-parameter_list|,
-name|String
-name|key
-parameter_list|)
-block|{
-for|for
-control|(
-name|FileMetadata
-name|current
-range|:
-name|list
-control|)
-block|{
-if|if
-condition|(
-name|current
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|key
-argument_list|)
-condition|)
-block|{
-return|return
-name|current
-return|;
-block|}
-block|}
-return|return
-literal|null
-return|;
-block|}
-DECL|method|list (String prefix, String delimiter, final int maxListingCount, final int maxListingDepth, String priorLastKey)
-specifier|private
-name|PartialListing
-name|list
+index|[]
+name|listInternal
 parameter_list|(
 name|String
 name|prefix
-parameter_list|,
-name|String
-name|delimiter
 parameter_list|,
 specifier|final
 name|int
@@ -8027,9 +7951,6 @@ parameter_list|,
 specifier|final
 name|int
 name|maxListingDepth
-parameter_list|,
-name|String
-name|priorLastKey
 parameter_list|)
 throws|throws
 name|IOException
@@ -8134,18 +8055,20 @@ name|enableFlatListing
 argument_list|)
 expr_stmt|;
 block|}
-name|ArrayList
+name|HashMap
 argument_list|<
+name|String
+argument_list|,
 name|FileMetadata
 argument_list|>
 name|fileMetadata
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|FileMetadata
-argument_list|>
-argument_list|()
+name|HashMap
+argument_list|<>
+argument_list|(
+literal|256
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -8248,6 +8171,8 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Explicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 expr_stmt|;
 block|}
@@ -8279,40 +8204,33 @@ name|getPermissionStatus
 argument_list|(
 name|blob
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Add the metadata to the list, but remove any existing duplicate
-comment|// entries first that we may have added by finding nested files.
-name|FileMetadata
-name|existing
-init|=
-name|getFileMetadataInList
-argument_list|(
-name|fileMetadata
 argument_list|,
-name|blobKey
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|existing
-operator|!=
-literal|null
-condition|)
-block|{
-name|fileMetadata
-operator|.
-name|remove
-argument_list|(
-name|existing
+name|hadoopBlockSize
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Add the metadata but remove duplicates.  Note that the azure
+comment|// storage java SDK returns two types of entries: CloudBlobWrappter
+comment|// and CloudDirectoryWrapper.  In the case where WASB generated the
+comment|// data, there will be an empty blob for each "directory", and we will
+comment|// receive a CloudBlobWrapper.  If there are also files within this
+comment|// "directory", we will also receive a CloudDirectoryWrapper.  To
+comment|// complicate matters, the data may not be generated by WASB, in
+comment|// which case we may not have an empty blob for each "directory".
+comment|// So, sometimes we receive both a CloudBlobWrapper and a
+comment|// CloudDirectoryWrapper for each directory, and sometimes we receive
+comment|// one or the other but not both.  We remove duplicates, but
+comment|// prefer CloudBlobWrapper over CloudDirectoryWrapper.
+comment|// Furthermore, it is very unfortunate that the list results are not
+comment|// ordered, and it is a partial list which uses continuation.  So
+comment|// the HashMap is the best structure to remove the duplicates, despite
+comment|// its potential large size.
 name|fileMetadata
 operator|.
-name|add
+name|put
 argument_list|(
+name|blobKey
+argument_list|,
 name|metadata
 argument_list|)
 expr_stmt|;
@@ -8394,26 +8312,31 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Implicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 decl_stmt|;
 comment|// Add the directory metadata to the list only if it's not already
-comment|// there.
+comment|// there.  See earlier note, we prefer CloudBlobWrapper over
+comment|// CloudDirectoryWrapper because it may have additional metadata (
+comment|// properties and ACLs).
 if|if
 condition|(
-name|getFileMetadataInList
-argument_list|(
+operator|!
 name|fileMetadata
-argument_list|,
+operator|.
+name|containsKey
+argument_list|(
 name|dirKey
 argument_list|)
-operator|==
-literal|null
 condition|)
 block|{
 name|fileMetadata
 operator|.
-name|add
+name|put
 argument_list|(
+name|dirKey
+argument_list|,
 name|directoryMetadata
 argument_list|)
 expr_stmt|;
@@ -8442,51 +8365,23 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Note: Original code indicated that this may be a hack.
-name|priorLastKey
-operator|=
-literal|null
-expr_stmt|;
-name|PartialListing
-name|listing
-init|=
-operator|new
-name|PartialListing
-argument_list|(
-name|priorLastKey
-argument_list|,
+return|return
 name|fileMetadata
+operator|.
+name|values
+argument_list|()
 operator|.
 name|toArray
 argument_list|(
 operator|new
 name|FileMetadata
-index|[]
-block|{}
-argument_list|)
-argument_list|,
-literal|0
-operator|==
+index|[
 name|fileMetadata
 operator|.
 name|size
 argument_list|()
-condition|?
-operator|new
-name|String
-index|[]
-block|{}
-else|:
-operator|new
-name|String
-index|[]
-block|{
-name|prefix
-block|}
+index|]
 argument_list|)
-decl_stmt|;
-return|return
-name|listing
 return|;
 block|}
 catch|catch
@@ -8506,8 +8401,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Build up a metadata list of blobs in an Azure blob directory. This method    * uses a in-order first traversal of blob directory structures to maintain    * the sorted order of the blob names.    *    * @param aCloudBlobDirectory Azure blob directory    * @param aFileMetadataList a list of file metadata objects for each    *                          non-directory blob.    * @param maxListingCount maximum length of the built up list.    */
-DECL|method|buildUpList (CloudBlobDirectoryWrapper aCloudBlobDirectory, ArrayList<FileMetadata> aFileMetadataList, final int maxListingCount, final int maxListingDepth)
+comment|/**    * Build up a metadata list of blobs in an Azure blob directory. This method    * uses a in-order first traversal of blob directory structures to maintain    * the sorted order of the blob names.    *    * @param aCloudBlobDirectory Azure blob directory    * @param metadataHashMap a map of file metadata objects for each    *                          non-directory blob.    * @param maxListingCount maximum length of the built up list.    */
+DECL|method|buildUpList (CloudBlobDirectoryWrapper aCloudBlobDirectory, HashMap<String, FileMetadata> metadataHashMap, final int maxListingCount, final int maxListingDepth)
 specifier|private
 name|void
 name|buildUpList
@@ -8515,11 +8410,13 @@ parameter_list|(
 name|CloudBlobDirectoryWrapper
 name|aCloudBlobDirectory
 parameter_list|,
-name|ArrayList
+name|HashMap
 argument_list|<
+name|String
+argument_list|,
 name|FileMetadata
 argument_list|>
-name|aFileMetadataList
+name|metadataHashMap
 parameter_list|,
 specifier|final
 name|int
@@ -8642,7 +8539,7 @@ name|maxListingCount
 operator|<=
 literal|0
 operator|||
-name|aFileMetadataList
+name|metadataHashMap
 operator|.
 name|size
 argument_list|()
@@ -8668,7 +8565,7 @@ literal|0
 operator|<
 name|maxListingCount
 operator|&&
-name|aFileMetadataList
+name|metadataHashMap
 operator|.
 name|size
 argument_list|()
@@ -8764,6 +8661,8 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Explicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 expr_stmt|;
 block|}
@@ -8795,40 +8694,33 @@ name|getPermissionStatus
 argument_list|(
 name|blob
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Add the directory metadata to the list only if it's not already
-comment|// there.
-name|FileMetadata
-name|existing
-init|=
-name|getFileMetadataInList
-argument_list|(
-name|aFileMetadataList
 argument_list|,
-name|blobKey
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|existing
-operator|!=
-literal|null
-condition|)
-block|{
-name|aFileMetadataList
-operator|.
-name|remove
-argument_list|(
-name|existing
+name|hadoopBlockSize
 argument_list|)
 expr_stmt|;
 block|}
-name|aFileMetadataList
+comment|// Add the metadata but remove duplicates.  Note that the azure
+comment|// storage java SDK returns two types of entries: CloudBlobWrappter
+comment|// and CloudDirectoryWrapper.  In the case where WASB generated the
+comment|// data, there will be an empty blob for each "directory", and we will
+comment|// receive a CloudBlobWrapper.  If there are also files within this
+comment|// "directory", we will also receive a CloudDirectoryWrapper.  To
+comment|// complicate matters, the data may not be generated by WASB, in
+comment|// which case we may not have an empty blob for each "directory".
+comment|// So, sometimes we receive both a CloudBlobWrapper and a
+comment|// CloudDirectoryWrapper for each directory, and sometimes we receive
+comment|// one or the other but not both.  We remove duplicates, but
+comment|// prefer CloudBlobWrapper over CloudDirectoryWrapper.
+comment|// Furthermore, it is very unfortunate that the list results are not
+comment|// ordered, and it is a partial list which uses continuation.  So
+comment|// the HashMap is the best structure to remove the duplicates, despite
+comment|// its potential large size.
+name|metadataHashMap
 operator|.
-name|add
+name|put
 argument_list|(
+name|blobKey
+argument_list|,
 name|metadata
 argument_list|)
 expr_stmt|;
@@ -8921,16 +8813,19 @@ argument_list|(
 name|directory
 argument_list|)
 decl_stmt|;
+comment|// Add the directory metadata to the list only if it's not already
+comment|// there.  See earlier note, we prefer CloudBlobWrapper over
+comment|// CloudDirectoryWrapper because it may have additional metadata (
+comment|// properties and ACLs).
 if|if
 condition|(
-name|getFileMetadataInList
+operator|!
+name|metadataHashMap
+operator|.
+name|containsKey
 argument_list|(
-name|aFileMetadataList
-argument_list|,
 name|dirKey
 argument_list|)
-operator|==
-literal|null
 condition|)
 block|{
 comment|// Reached the targeted listing depth. Return metadata for the
@@ -8956,13 +8851,17 @@ argument_list|,
 name|BlobMaterialization
 operator|.
 name|Implicit
+argument_list|,
+name|hadoopBlockSize
 argument_list|)
 decl_stmt|;
 comment|// Add the directory metadata to the list.
-name|aFileMetadataList
+name|metadataHashMap
 operator|.
-name|add
+name|put
 argument_list|(
+name|dirKey
+argument_list|,
 name|directoryMetadata
 argument_list|)
 expr_stmt|;

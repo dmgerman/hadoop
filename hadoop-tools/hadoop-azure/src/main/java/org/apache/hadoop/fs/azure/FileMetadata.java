@@ -42,6 +42,34 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|PermissionStatus
@@ -60,36 +88,14 @@ name|Private
 DECL|class|FileMetadata
 class|class
 name|FileMetadata
+extends|extends
+name|FileStatus
 block|{
+comment|// this is not final so that it can be cleared to save memory when not needed.
 DECL|field|key
 specifier|private
-specifier|final
 name|String
 name|key
-decl_stmt|;
-DECL|field|length
-specifier|private
-specifier|final
-name|long
-name|length
-decl_stmt|;
-DECL|field|lastModified
-specifier|private
-specifier|final
-name|long
-name|lastModified
-decl_stmt|;
-DECL|field|isDir
-specifier|private
-specifier|final
-name|boolean
-name|isDir
-decl_stmt|;
-DECL|field|permissionStatus
-specifier|private
-specifier|final
-name|PermissionStatus
-name|permissionStatus
 decl_stmt|;
 DECL|field|blobMaterialization
 specifier|private
@@ -97,8 +103,8 @@ specifier|final
 name|BlobMaterialization
 name|blobMaterialization
 decl_stmt|;
-comment|/**    * Constructs a FileMetadata object for a file.    *     * @param key    *          The key (path) to the file.    * @param length    *          The length in bytes of the file.    * @param lastModified    *          The last modified date (milliseconds since January 1, 1970 UTC.)    * @param permissionStatus    *          The permission for the file.    */
-DECL|method|FileMetadata (String key, long length, long lastModified, PermissionStatus permissionStatus)
+comment|/**    * Constructs a FileMetadata object for a file.    *     * @param key    *          The key (path) to the file.    * @param length    *          The length in bytes of the file.    * @param lastModified    *          The last modified date (milliseconds since January 1, 1970 UTC.)    * @param permissionStatus    *          The permission for the file.    * @param blockSize    *          The Hadoop file block size.    */
+DECL|method|FileMetadata (String key, long length, long lastModified, PermissionStatus permissionStatus, final long blockSize)
 specifier|public
 name|FileMetadata
 parameter_list|(
@@ -113,38 +119,51 @@ name|lastModified
 parameter_list|,
 name|PermissionStatus
 name|permissionStatus
+parameter_list|,
+specifier|final
+name|long
+name|blockSize
 parameter_list|)
 block|{
-name|this
-operator|.
-name|key
-operator|=
-name|key
-expr_stmt|;
-name|this
-operator|.
+name|super
+argument_list|(
 name|length
-operator|=
-name|length
-expr_stmt|;
-name|this
-operator|.
-name|lastModified
-operator|=
-name|lastModified
-expr_stmt|;
-name|this
-operator|.
-name|isDir
-operator|=
+argument_list|,
 literal|false
+argument_list|,
+literal|1
+argument_list|,
+name|blockSize
+argument_list|,
+name|lastModified
+argument_list|,
+literal|0
+argument_list|,
+name|permissionStatus
+operator|.
+name|getPermission
+argument_list|()
+argument_list|,
+name|permissionStatus
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
+name|permissionStatus
+operator|.
+name|getGroupName
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|permissionStatus
+name|key
 operator|=
-name|permissionStatus
+name|key
 expr_stmt|;
+comment|// Files are never implicit.
 name|this
 operator|.
 name|blobMaterialization
@@ -153,11 +172,9 @@ name|BlobMaterialization
 operator|.
 name|Explicit
 expr_stmt|;
-comment|// File are never
-comment|// implicit.
 block|}
-comment|/**    * Constructs a FileMetadata object for a directory.    *     * @param key    *          The key (path) to the directory.    * @param lastModified    *          The last modified date (milliseconds since January 1, 1970 UTC.)    * @param permissionStatus    *          The permission for the directory.    * @param blobMaterialization    *          Whether this is an implicit (no real blob backing it) or explicit    *          directory.    */
-DECL|method|FileMetadata (String key, long lastModified, PermissionStatus permissionStatus, BlobMaterialization blobMaterialization)
+comment|/**    * Constructs a FileMetadata object for a directory.    *     * @param key    *          The key (path) to the directory.    * @param lastModified    *          The last modified date (milliseconds since January 1, 1970 UTC.)    * @param permissionStatus    *          The permission for the directory.    * @param blobMaterialization    *          Whether this is an implicit (no real blob backing it) or explicit    *          directory.    * @param blockSize    *          The Hadoop file block size.    */
+DECL|method|FileMetadata (String key, long lastModified, PermissionStatus permissionStatus, BlobMaterialization blobMaterialization, final long blockSize)
 specifier|public
 name|FileMetadata
 parameter_list|(
@@ -172,37 +189,49 @@ name|permissionStatus
 parameter_list|,
 name|BlobMaterialization
 name|blobMaterialization
+parameter_list|,
+specifier|final
+name|long
+name|blockSize
 parameter_list|)
 block|{
-name|this
-operator|.
-name|key
-operator|=
-name|key
-expr_stmt|;
-name|this
-operator|.
-name|isDir
-operator|=
-literal|true
-expr_stmt|;
-name|this
-operator|.
-name|length
-operator|=
+name|super
+argument_list|(
 literal|0
+argument_list|,
+literal|true
+argument_list|,
+literal|1
+argument_list|,
+name|blockSize
+argument_list|,
+name|lastModified
+argument_list|,
+literal|0
+argument_list|,
+name|permissionStatus
+operator|.
+name|getPermission
+argument_list|()
+argument_list|,
+name|permissionStatus
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
+name|permissionStatus
+operator|.
+name|getGroupName
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|lastModified
+name|key
 operator|=
-name|lastModified
-expr_stmt|;
-name|this
-operator|.
-name|permissionStatus
-operator|=
-name|permissionStatus
+name|key
 expr_stmt|;
 name|this
 operator|.
@@ -211,16 +240,47 @@ operator|=
 name|blobMaterialization
 expr_stmt|;
 block|}
-DECL|method|isDir ()
+annotation|@
+name|Override
+DECL|method|getPath ()
 specifier|public
-name|boolean
-name|isDir
+name|Path
+name|getPath
 parameter_list|()
 block|{
+name|Path
+name|p
+init|=
+name|super
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|p
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Don't store this yet to reduce memory usage, as it will
+comment|// stay in the Eden Space and later we will update it
+comment|// with the full canonicalized path.
+name|p
+operator|=
+name|NativeAzureFileSystem
+operator|.
+name|keyToPath
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
 return|return
-name|isDir
+name|p
 return|;
 block|}
+comment|/**    * Returns the Azure storage key for the file.  Used internally by the framework.    *    * @return The key for the file.    */
 DECL|method|getKey ()
 specifier|public
 name|String
@@ -229,36 +289,6 @@ parameter_list|()
 block|{
 return|return
 name|key
-return|;
-block|}
-DECL|method|getLength ()
-specifier|public
-name|long
-name|getLength
-parameter_list|()
-block|{
-return|return
-name|length
-return|;
-block|}
-DECL|method|getLastModified ()
-specifier|public
-name|long
-name|getLastModified
-parameter_list|()
-block|{
-return|return
-name|lastModified
-return|;
-block|}
-DECL|method|getPermissionStatus ()
-specifier|public
-name|PermissionStatus
-name|getPermissionStatus
-parameter_list|()
-block|{
-return|return
-name|permissionStatus
 return|;
 block|}
 comment|/**    * Indicates whether this is an implicit directory (no real blob backing it)    * or an explicit one.    *     * @return Implicit if this is an implicit directory, or Explicit if it's an    *         explicit directory or a file.    */
@@ -272,33 +302,15 @@ return|return
 name|blobMaterialization
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
+DECL|method|removeKey ()
+name|void
+name|removeKey
 parameter_list|()
 block|{
-return|return
-literal|"FileMetadata["
-operator|+
 name|key
-operator|+
-literal|", "
-operator|+
-name|length
-operator|+
-literal|", "
-operator|+
-name|lastModified
-operator|+
-literal|", "
-operator|+
-name|permissionStatus
-operator|+
-literal|"]"
-return|;
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 end_class
