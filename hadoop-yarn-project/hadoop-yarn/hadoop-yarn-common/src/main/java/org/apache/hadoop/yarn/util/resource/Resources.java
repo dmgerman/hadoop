@@ -524,8 +524,6 @@ parameter_list|,
 name|ResourceInformation
 name|resourceInformation
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 throw|throw
 operator|new
@@ -550,8 +548,6 @@ parameter_list|,
 name|long
 name|value
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 throw|throw
 operator|new

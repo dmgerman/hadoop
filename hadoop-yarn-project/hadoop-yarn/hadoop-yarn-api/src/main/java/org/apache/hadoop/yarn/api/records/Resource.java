@@ -755,7 +755,7 @@ return|return
 name|list
 return|;
 block|}
-comment|/**    * Get ResourceInformation for a specified resource.    *    * @param resource name of the resource    * @return the ResourceInformation object for the resource    * @throws ResourceNotFoundException if the resource can't be found    */
+comment|/**    * Get ResourceInformation for a specified resource.    *    * @param resource name of the resource    * @return the ResourceInformation object for the resource    */
 annotation|@
 name|Public
 annotation|@
@@ -770,8 +770,6 @@ parameter_list|(
 name|String
 name|resource
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 name|Integer
 name|index
@@ -804,18 +802,9 @@ throw|throw
 operator|new
 name|ResourceNotFoundException
 argument_list|(
-literal|"Unknown resource '"
-operator|+
+name|this
+argument_list|,
 name|resource
-operator|+
-literal|"'. Known resources are "
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|resources
-argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -870,7 +859,7 @@ return|return
 name|ri
 return|;
 block|}
-comment|/**    * Get the value for a specified resource. No information about the units is    * returned.    *    * @param resource name of the resource    * @return the value for the resource    * @throws ResourceNotFoundException if the resource can't be found    */
+comment|/**    * Get the value for a specified resource. No information about the units is    * returned.    *    * @param resource name of the resource    * @return the value for the resource    */
 annotation|@
 name|Public
 annotation|@
@@ -885,8 +874,6 @@ parameter_list|(
 name|String
 name|resource
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 return|return
 name|getResourceInformation
@@ -898,7 +885,7 @@ name|getValue
 argument_list|()
 return|;
 block|}
-comment|/**    * Set the ResourceInformation object for a particular resource.    *    * @param resource the resource for which the ResourceInformation is provided    * @param resourceInformation ResourceInformation object    * @throws ResourceNotFoundException if the resource is not found    */
+comment|/**    * Set the ResourceInformation object for a particular resource.    *    * @param resource the resource for which the ResourceInformation is provided    * @param resourceInformation ResourceInformation object    */
 annotation|@
 name|Public
 annotation|@
@@ -916,8 +903,6 @@ parameter_list|,
 name|ResourceInformation
 name|resourceInformation
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 if|if
 condition|(
@@ -1024,24 +1009,11 @@ operator|.
 name|length
 condition|)
 block|{
-throw|throw
-operator|new
-name|ResourceNotFoundException
+name|throwExceptionWhenArrayOutOfBound
 argument_list|(
-literal|"Unknown resource at index '"
-operator|+
 name|index
-operator|+
-literal|"'. Valid resources are "
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|resources
 argument_list|)
-argument_list|)
-throw|;
+expr_stmt|;
 block|}
 name|ResourceInformation
 operator|.
@@ -1056,7 +1028,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the value of a resource in the ResourceInformation object. The unit of    * the value is assumed to be the one in the ResourceInformation object.    *    * @param resource the resource for which the value is provided.    * @param value    the value to set    * @throws ResourceNotFoundException if the resource is not found    */
+comment|/**    * Set the value of a resource in the ResourceInformation object. The unit of    * the value is assumed to be the one in the ResourceInformation object.    *    * @param resource the resource for which the value is provided.    * @param value    the value to set    */
 annotation|@
 name|Public
 annotation|@
@@ -1074,8 +1046,6 @@ parameter_list|,
 name|long
 name|value
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 if|if
 condition|(

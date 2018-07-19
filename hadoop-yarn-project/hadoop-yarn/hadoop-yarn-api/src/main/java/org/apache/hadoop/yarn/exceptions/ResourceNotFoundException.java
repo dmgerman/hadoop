@@ -24,6 +24,22 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|exception
+operator|.
+name|ExceptionUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -43,6 +59,24 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
 import|;
 end_import
 
@@ -75,6 +109,108 @@ name|serialVersionUID
 init|=
 literal|10081982L
 decl_stmt|;
+DECL|field|MESSAGE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|MESSAGE
+init|=
+literal|"The resource manager encountered a "
+operator|+
+literal|"problem that should not occur under normal circumstances. "
+operator|+
+literal|"Please report this error to the Hadoop community by opening a "
+operator|+
+literal|"JIRA ticket at http://issues.apache.org/jira and including the "
+operator|+
+literal|"following information:%n* Resource type requested: %s%n* Resource "
+operator|+
+literal|"object: %s%n* The stack trace for this exception: %s%n"
+operator|+
+literal|"After encountering this error, the resource manager is "
+operator|+
+literal|"in an inconsistent state. It is safe for the resource manager "
+operator|+
+literal|"to be restarted as the error encountered should be transitive. "
+operator|+
+literal|"If high availability is enabled, failing over to "
+operator|+
+literal|"a standby resource manager is also safe."
+decl_stmt|;
+DECL|method|ResourceNotFoundException (Resource resource, String type)
+specifier|public
+name|ResourceNotFoundException
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|type
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|MESSAGE
+argument_list|,
+name|type
+argument_list|,
+name|resource
+argument_list|,
+name|ExceptionUtils
+operator|.
+name|getStackTrace
+argument_list|(
+operator|new
+name|Exception
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ResourceNotFoundException (Resource resource, String type, Throwable cause)
+specifier|public
+name|ResourceNotFoundException
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|type
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|MESSAGE
+argument_list|,
+name|type
+argument_list|,
+name|resource
+argument_list|,
+name|ExceptionUtils
+operator|.
+name|getStackTrace
+argument_list|(
+name|cause
+argument_list|)
+argument_list|)
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|ResourceNotFoundException (String message)
 specifier|public
 name|ResourceNotFoundException
@@ -86,39 +222,6 @@ block|{
 name|super
 argument_list|(
 name|message
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|ResourceNotFoundException (Throwable cause)
-specifier|public
-name|ResourceNotFoundException
-parameter_list|(
-name|Throwable
-name|cause
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|cause
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|ResourceNotFoundException (String message, Throwable cause)
-specifier|public
-name|ResourceNotFoundException
-parameter_list|(
-name|String
-name|message
-parameter_list|,
-name|Throwable
-name|cause
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|,
-name|cause
 argument_list|)
 expr_stmt|;
 block|}

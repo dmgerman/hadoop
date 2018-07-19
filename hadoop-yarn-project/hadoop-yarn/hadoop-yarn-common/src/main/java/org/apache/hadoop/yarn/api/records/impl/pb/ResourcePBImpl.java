@@ -1081,8 +1081,6 @@ parameter_list|,
 name|long
 name|value
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 name|maybeInitBuilder
 argument_list|()
@@ -1123,9 +1121,10 @@ parameter_list|(
 name|String
 name|resource
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
+name|initResources
+argument_list|()
+expr_stmt|;
 return|return
 name|super
 operator|.
@@ -1145,8 +1144,6 @@ parameter_list|(
 name|String
 name|resource
 parameter_list|)
-throws|throws
-name|ResourceNotFoundException
 block|{
 return|return
 name|super
