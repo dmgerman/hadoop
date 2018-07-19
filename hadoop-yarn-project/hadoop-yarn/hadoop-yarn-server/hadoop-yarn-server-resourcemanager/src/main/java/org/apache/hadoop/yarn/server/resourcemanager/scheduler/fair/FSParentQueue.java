@@ -50,7 +50,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
+name|List
 import|;
 end_import
 
@@ -60,7 +60,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|TreeSet
 import|;
 end_import
 
@@ -1034,36 +1034,30 @@ return|return
 name|assigned
 return|;
 block|}
-comment|// Hold the write lock when sorting childQueues
-name|writeLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|Collections
-operator|.
-name|sort
+comment|// Sort the queues while holding a read lock on this parent only.
+comment|// The individual entries are not locked and can change which means that
+comment|// the collection of childQueues can not be sorted by calling Sort().
+comment|// Locking each childqueue to prevent changes would have a large
+comment|// performance impact.
+comment|// We do not have to handle the queue removal case as a queue must be
+comment|// empty before removal. Assigning an application to a queue and removal of
+comment|// that queue both need the scheduler lock.
+name|TreeSet
+argument_list|<
+name|FSQueue
+argument_list|>
+name|sortedChildQueues
+init|=
+operator|new
+name|TreeSet
+argument_list|<>
 argument_list|(
-name|childQueues
-argument_list|,
 name|policy
 operator|.
 name|getComparator
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-comment|/*      * We are releasing the lock between the sort and iteration of the      * "sorted" list. There could be changes to the list here:      * 1. Add a child queue to the end of the list, this doesn't affect      * container assignment.      * 2. Remove a child queue, this is probably good to take care of so we      * don't assign to a queue that is going to be removed shortly.      */
+decl_stmt|;
 name|readLock
 operator|.
 name|lock
@@ -1071,12 +1065,19 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|sortedChildQueues
+operator|.
+name|addAll
+argument_list|(
+name|childQueues
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|FSQueue
 name|child
 range|:
-name|childQueues
+name|sortedChildQueues
 control|)
 block|{
 name|assigned

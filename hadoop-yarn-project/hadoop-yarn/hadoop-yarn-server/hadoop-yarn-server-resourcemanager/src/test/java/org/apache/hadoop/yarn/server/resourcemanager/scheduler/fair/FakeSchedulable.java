@@ -635,6 +635,22 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|setResourceUsage (Resource usage)
+specifier|public
+name|void
+name|setResourceUsage
+parameter_list|(
+name|Resource
+name|usage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|usage
+operator|=
+name|usage
+expr_stmt|;
+block|}
 block|}
 end_class
 
