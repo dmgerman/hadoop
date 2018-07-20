@@ -273,6 +273,7 @@ name|none
 argument_list|()
 decl_stmt|;
 DECL|field|state
+specifier|private
 name|AllocationState
 name|state
 decl_stmt|;

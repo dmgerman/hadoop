@@ -1560,7 +1560,8 @@ if|if
 condition|(
 name|result
 operator|.
-name|state
+name|getAllocationState
+argument_list|()
 operator|==
 name|AllocationState
 operator|.
@@ -2613,7 +2614,8 @@ if|if
 condition|(
 name|allocation
 operator|.
-name|state
+name|getAllocationState
+argument_list|()
 operator|==
 name|AllocationState
 operator|.
@@ -2621,10 +2623,8 @@ name|LOCALITY_SKIPPED
 condition|)
 block|{
 name|allocation
-operator|.
-name|state
 operator|=
-name|AllocationState
+name|ContainerAllocation
 operator|.
 name|APP_SKIPPED
 expr_stmt|;
@@ -4150,7 +4150,8 @@ name|ALLOCATED
 operator|==
 name|result
 operator|.
-name|state
+name|getAllocationState
+argument_list|()
 operator|||
 name|AllocationState
 operator|.
@@ -4158,7 +4159,8 @@ name|RESERVED
 operator|==
 name|result
 operator|.
-name|state
+name|getAllocationState
+argument_list|()
 condition|)
 block|{
 name|result
