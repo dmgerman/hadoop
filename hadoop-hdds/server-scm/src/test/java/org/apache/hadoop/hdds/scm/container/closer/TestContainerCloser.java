@@ -364,6 +364,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_REPORT_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -431,22 +447,6 @@ operator|.
 name|LifeCycleEvent
 operator|.
 name|CREATED
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|OZONE_CONTAINER_REPORT_INTERVAL
 import|;
 end_import
 
@@ -542,7 +542,7 @@ name|configuration
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_CONTAINER_REPORT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -877,7 +877,7 @@ name|configuration
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_CONTAINER_REPORT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,

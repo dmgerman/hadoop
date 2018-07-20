@@ -106,6 +106,36 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -148,6 +178,22 @@ name|Configurable
 implements|,
 name|Runnable
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|ReportPublisher
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|config
 specifier|private
 name|Configuration
@@ -288,6 +334,8 @@ name|void
 name|publishReport
 parameter_list|()
 block|{
+try|try
+block|{
 name|context
 operator|.
 name|addReport
@@ -296,6 +344,23 @@ name|getReport
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception while publishing report."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the frequency in which this particular report has to be scheduled.    *    * @return report interval in milliseconds    */
 DECL|method|getReportFrequency ()
@@ -312,6 +377,8 @@ specifier|abstract
 name|T
 name|getReport
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Returns {@link StateContext}.    *    * @return stateContext report    */
 DECL|method|getContext ()

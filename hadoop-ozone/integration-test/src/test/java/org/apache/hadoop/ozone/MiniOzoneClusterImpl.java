@@ -548,6 +548,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_HEARTBEAT_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -2037,9 +2053,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 name|hbInterval
 operator|.
@@ -2058,9 +2072,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 name|DEFAULT_HB_INTERVAL_MS
 argument_list|,

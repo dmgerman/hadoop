@@ -17,18 +17,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -672,6 +660,34 @@ name|GenericTestUtils
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_HEARTBEAT_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test class that exercises the StorageContainerManager.  */
 end_comment
@@ -1206,9 +1222,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|5
 argument_list|,

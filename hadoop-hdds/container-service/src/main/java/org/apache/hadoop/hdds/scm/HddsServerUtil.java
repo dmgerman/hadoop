@@ -146,6 +146,38 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_HEARTBEAT_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_HEARTBEAT_INTERVAL_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -169,24 +201,6 @@ operator|.
 name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DEADNODE_INTERVAL_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL
 import|;
 end_import
 
@@ -743,11 +757,9 @@ name|conf
 operator|.
 name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_HEARBEAT_INTERVAL_DEFAULT
+name|HDDS_HEARTBEAT_INTERVAL_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.
@@ -872,7 +884,7 @@ literal|"Stale Node Interval MS is cannot be honored due to "
 operator|+
 literal|"mis-configured {}. ex:  {}"
 argument_list|,
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 name|ex
 argument_list|)

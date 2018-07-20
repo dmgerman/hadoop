@@ -548,11 +548,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
+name|HddsConfigKeys
 operator|.
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_DEADNODE_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 import|;
 end_import
 
@@ -570,7 +568,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|OZONE_SCM_DEADNODE_INTERVAL
 import|;
 end_import
 
@@ -1774,7 +1772,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -1864,7 +1862,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -1945,7 +1943,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -2353,7 +2351,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -3117,7 +3115,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -3468,7 +3466,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -4245,7 +4243,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,

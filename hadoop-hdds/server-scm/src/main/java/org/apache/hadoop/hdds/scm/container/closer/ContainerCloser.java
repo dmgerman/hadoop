@@ -278,11 +278,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
-name|OZONE_CONTAINER_REPORT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 import|;
 end_import
 
@@ -294,11 +294,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
-name|OZONE_CONTAINER_REPORT_INTERVAL_DEFAULT
+name|HDDS_CONTAINER_REPORT_INTERVAL_DEFAULT
 import|;
 end_import
 
@@ -480,9 +480,9 @@ name|configuration
 operator|.
 name|getTimeDuration
 argument_list|(
-name|OZONE_CONTAINER_REPORT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 argument_list|,
-name|OZONE_CONTAINER_REPORT_INTERVAL_DEFAULT
+name|HDDS_CONTAINER_REPORT_INTERVAL_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.

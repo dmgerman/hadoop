@@ -16,24 +16,8 @@ name|hdds
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|ScmConfigKeys
-import|;
-end_import
-
 begin_comment
-comment|/**  * Config class for HDDS.  */
+comment|/**  * This class contains constants for configuration keys and default values  * used in hdds.  */
 end_comment
 
 begin_class
@@ -43,11 +27,66 @@ specifier|final
 class|class
 name|HddsConfigKeys
 block|{
+comment|/**    * Do not instantiate.    */
 DECL|method|HddsConfigKeys ()
 specifier|private
 name|HddsConfigKeys
 parameter_list|()
 block|{   }
+DECL|field|HDDS_HEARTBEAT_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_HEARTBEAT_INTERVAL
+init|=
+literal|"hdds.heartbeat.interval"
+decl_stmt|;
+DECL|field|HDDS_HEARTBEAT_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_HEARTBEAT_INTERVAL_DEFAULT
+init|=
+literal|"30s"
+decl_stmt|;
+DECL|field|HDDS_NODE_REPORT_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_NODE_REPORT_INTERVAL
+init|=
+literal|"hdds.node.report.interval"
+decl_stmt|;
+DECL|field|HDDS_NODE_REPORT_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_NODE_REPORT_INTERVAL_DEFAULT
+init|=
+literal|"60s"
+decl_stmt|;
+DECL|field|HDDS_CONTAINER_REPORT_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_CONTAINER_REPORT_INTERVAL
+init|=
+literal|"hdds.container.report.interval"
+decl_stmt|;
+DECL|field|HDDS_CONTAINER_REPORT_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_CONTAINER_REPORT_INTERVAL_DEFAULT
+init|=
+literal|"60s"
+decl_stmt|;
 DECL|field|HDDS_COMMAND_STATUS_REPORT_INTERVAL
 specifier|public
 specifier|static
@@ -64,9 +103,7 @@ specifier|final
 name|String
 name|HDDS_COMMAND_STATUS_REPORT_INTERVAL_DEFAULT
 init|=
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_HEARBEAT_INTERVAL_DEFAULT
+literal|"60s"
 decl_stmt|;
 block|}
 end_class
