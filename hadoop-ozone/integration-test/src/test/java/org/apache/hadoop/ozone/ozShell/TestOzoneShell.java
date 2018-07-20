@@ -1785,6 +1785,28 @@ name|args
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|String
+name|output
+init|=
+name|out
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|output
+operator|.
+name|contains
+argument_list|(
+literal|"Volume "
+operator|+
+name|volumeName
+operator|+
+literal|" is deleted"
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// verify if volume has been deleted
 try|try
 block|{

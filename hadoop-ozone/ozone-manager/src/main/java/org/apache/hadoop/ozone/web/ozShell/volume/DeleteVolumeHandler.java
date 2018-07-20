@@ -278,6 +278,17 @@ argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|printf
+argument_list|(
+literal|"Volume %s is deleted%n"
+argument_list|,
+name|volumeName
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
