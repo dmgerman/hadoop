@@ -866,6 +866,23 @@ return|return
 name|lifeCycleState
 return|;
 block|}
+comment|/**    * Update the State of the pipeline.    */
+DECL|method|setLifeCycleState (HddsProtos.LifeCycleState nextState)
+specifier|public
+name|void
+name|setLifeCycleState
+parameter_list|(
+name|HddsProtos
+operator|.
+name|LifeCycleState
+name|nextState
+parameter_list|)
+block|{
+name|lifeCycleState
+operator|=
+name|nextState
+expr_stmt|;
+block|}
 comment|/**    * Gets the pipeline Name.    *    * @return - Name of the pipeline    */
 DECL|method|getPipelineName ()
 specifier|public

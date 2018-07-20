@@ -310,81 +310,17 @@ parameter_list|,
 name|ReplicationType
 name|replicationType
 parameter_list|)
-throws|throws
-name|IOException
 block|{
-comment|/**      * In the Ozone world, we have a very simple policy.      *      * 1. Try to create a pipeline if there are enough free nodes.      *      * 2. This allows all nodes to part of a pipeline quickly.      *      * 3. if there are not enough free nodes, return pipeline in a      * round-robin fashion.      *      * TODO: Might have to come up with a better algorithm than this.      * Create a new placement policy that returns pipelines in round robin      * fashion.      */
 name|Pipeline
 name|pipeline
 init|=
-name|allocatePipeline
-argument_list|(
-name|replicationFactor
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|pipeline
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"created new pipeline:{} for container with "
-operator|+
-literal|"replicationType:{} replicationFactor:{}"
-argument_list|,
-name|pipeline
-operator|.
-name|getPipelineName
-argument_list|()
-argument_list|,
-name|replicationType
-argument_list|,
-name|replicationFactor
-argument_list|)
-expr_stmt|;
-name|activePipelines
-operator|.
-name|add
-argument_list|(
-name|pipeline
-argument_list|)
-expr_stmt|;
-name|activePipelineMap
-operator|.
-name|put
-argument_list|(
-name|pipeline
-operator|.
-name|getPipelineName
-argument_list|()
-argument_list|,
-name|pipeline
-argument_list|)
-expr_stmt|;
-name|node2PipelineMap
-operator|.
-name|addPipeline
-argument_list|(
-name|pipeline
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|pipeline
-operator|=
 name|findOpenPipeline
 argument_list|(
 name|replicationType
 argument_list|,
 name|replicationFactor
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|pipeline
@@ -411,7 +347,6 @@ name|replicationFactor
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 if|if
 condition|(
 name|pipeline
@@ -425,7 +360,7 @@ name|error
 argument_list|(
 literal|"Get pipeline call failed. We are not able to find"
 operator|+
-literal|"free nodes or operational pipeline."
+literal|" operational pipeline."
 argument_list|)
 expr_stmt|;
 return|return
@@ -456,7 +391,7 @@ name|pipeline
 init|=
 literal|null
 decl_stmt|;
-comment|// 1. Check if pipeline channel already exists
+comment|// 1. Check if pipeline already exists
 if|if
 condition|(
 name|activePipelineMap
@@ -549,6 +484,17 @@ name|allocatePipeline
 parameter_list|(
 name|ReplicationFactor
 name|replicationFactor
+parameter_list|)
+function_decl|;
+comment|/**    * Initialize the pipeline    * TODO: move the initialization to Ozone Client later    */
+DECL|method|initializePipeline (Pipeline pipeline)
+specifier|public
+specifier|abstract
+name|void
+name|initializePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
 parameter_list|)
 throws|throws
 name|IOException
@@ -730,25 +676,85 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Creates a pipeline from a specified set of Nodes.    * @param pipelineID - Name of the pipeline    * @param datanodes - The list of datanodes that make this pipeline.    */
-DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
+comment|/**    * Creates a pipeline with a specified replication factor and type.    * @param replicationFactor - Replication Factor.    * @param replicationType - Replication Type.    */
+DECL|method|createPipeline (ReplicationFactor replicationFactor, ReplicationType replicationType)
 specifier|public
-specifier|abstract
-name|void
+name|Pipeline
 name|createPipeline
 parameter_list|(
-name|String
-name|pipelineID
+name|ReplicationFactor
+name|replicationFactor
 parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|datanodes
+name|ReplicationType
+name|replicationType
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
+block|{
+name|Pipeline
+name|pipeline
+init|=
+name|allocatePipeline
+argument_list|(
+name|replicationFactor
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|pipeline
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"created new pipeline:{} for container with "
+operator|+
+literal|"replicationType:{} replicationFactor:{}"
+argument_list|,
+name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|,
+name|replicationType
+argument_list|,
+name|replicationFactor
+argument_list|)
+expr_stmt|;
+name|activePipelines
+operator|.
+name|add
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+name|activePipelineMap
+operator|.
+name|put
+argument_list|(
+name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|,
+name|pipeline
+argument_list|)
+expr_stmt|;
+name|node2PipelineMap
+operator|.
+name|addPipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|pipeline
+return|;
+block|}
 comment|/**    * Close the  pipeline with the given clusterId.    */
 DECL|method|closePipeline (String pipelineID)
 specifier|public
