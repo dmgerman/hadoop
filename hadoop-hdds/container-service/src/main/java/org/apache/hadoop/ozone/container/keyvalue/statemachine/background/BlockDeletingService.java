@@ -984,7 +984,7 @@ decl_stmt|;
 DECL|field|containerData
 specifier|private
 specifier|final
-name|ContainerData
+name|KeyValueContainerData
 name|containerData
 decl_stmt|;
 DECL|method|BlockDeletingTask (ContainerData containerName, int priority)
@@ -1007,6 +1007,9 @@ name|this
 operator|.
 name|containerData
 operator|=
+operator|(
+name|KeyValueContainerData
+operator|)
 name|containerName
 expr_stmt|;
 block|}
@@ -1149,7 +1152,7 @@ name|File
 argument_list|(
 name|containerData
 operator|.
-name|getDataPath
+name|getChunksPath
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1174,7 +1177,7 @@ name|error
 argument_list|(
 literal|"Invalid container data dir {} : "
 operator|+
-literal|"not exist or not a directory"
+literal|"does not exist or not a directory"
 argument_list|,
 name|dataDir
 operator|.

@@ -93,15 +93,15 @@ specifier|private
 name|KeyValueContainerLocationUtil
 parameter_list|()
 block|{    }
-comment|/**    * Returns Container Metadata Location.    * @param baseDir    * @param scmId    * @param containerId    * @return containerMetadata Path    */
-DECL|method|getContainerMetaDataPath (String baseDir, String scmId, long containerId)
+comment|/**    * Returns Container Metadata Location.    * @param hddsVolumeDir base dir of the hdds volume where scm directories    *                      are stored    * @param scmId    * @param containerId    * @return containerMetadata Path to container metadata location where    * .container file will be stored.    */
+DECL|method|getContainerMetaDataPath (String hddsVolumeDir, String scmId, long containerId)
 specifier|public
 specifier|static
 name|File
 name|getContainerMetaDataPath
 parameter_list|(
 name|String
-name|baseDir
+name|hddsVolumeDir
 parameter_list|,
 name|String
 name|scmId
@@ -115,7 +115,7 @@ name|containerMetaDataPath
 init|=
 name|getBaseContainerLocation
 argument_list|(
-name|baseDir
+name|hddsVolumeDir
 argument_list|,
 name|scmId
 argument_list|,
@@ -187,15 +187,15 @@ name|chunksPath
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns base directory for specified container.    * @param baseDir    * @param scmId    * @param containerId    * @return base directory for container.    */
-DECL|method|getBaseContainerLocation (String baseDir, String scmId, long containerId)
+comment|/**    * Returns base directory for specified container.    * @param hddsVolumeDir    * @param scmId    * @param containerId    * @return base directory for container.    */
+DECL|method|getBaseContainerLocation (String hddsVolumeDir, String scmId, long containerId)
 specifier|private
 specifier|static
 name|String
 name|getBaseContainerLocation
 parameter_list|(
 name|String
-name|baseDir
+name|hddsVolumeDir
 parameter_list|,
 name|String
 name|scmId
@@ -208,7 +208,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|baseDir
+name|hddsVolumeDir
 argument_list|,
 literal|"Base Directory cannot be null"
 argument_list|)
@@ -244,7 +244,7 @@ decl_stmt|;
 name|String
 name|containerMetaDataPath
 init|=
-name|baseDir
+name|hddsVolumeDir
 operator|+
 name|File
 operator|.

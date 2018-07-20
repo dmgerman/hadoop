@@ -94,6 +94,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|container
 operator|.
 name|common
@@ -380,12 +394,6 @@ specifier|private
 name|String
 name|containerDBType
 decl_stmt|;
-comment|//Number of pending deletion blocks in container.
-DECL|field|numPendingDeletionBlocks
-specifier|private
-name|int
-name|numPendingDeletionBlocks
-decl_stmt|;
 DECL|field|dbFile
 specifier|private
 name|File
@@ -418,12 +426,6 @@ argument_list|,
 name|size
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|=
-literal|0
-expr_stmt|;
 block|}
 comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size of the container    */
 DECL|method|KeyValueContainerData (long id, int layOutVersion, int size)
@@ -455,12 +457,6 @@ argument_list|,
 name|size
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|=
-literal|0
-expr_stmt|;
 block|}
 comment|/**    * Sets Container dbFile. This should be called only during creation of    * KeyValue container.    * @param containerDbFile    */
 DECL|method|setDbFile (File containerDbFile)
@@ -488,9 +484,7 @@ return|return
 name|dbFile
 return|;
 block|}
-comment|/**    * Returns container metadata path.    */
-annotation|@
-name|Override
+comment|/**    * Returns container metadata path.    * @return - Physical path where container file and checksum is stored.    */
 DECL|method|getMetadataPath ()
 specifier|public
 name|String
@@ -518,24 +512,40 @@ operator|=
 name|path
 expr_stmt|;
 block|}
-comment|/**    * Get chunks path.    * @return - Physical path where container file and checksum is stored.    */
+comment|/**    * Returns the path to base dir of the container.    * @return Path to base dir    */
+DECL|method|getContainerPath ()
+specifier|public
+name|String
+name|getContainerPath
+parameter_list|()
+block|{
+if|if
+condition|(
+name|metadataPath
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|new
+name|File
+argument_list|(
+name|metadataPath
+argument_list|)
+operator|.
+name|getParent
+argument_list|()
+return|;
+block|}
+comment|/**    * Get chunks path.    * @return - Path where chunks are stored    */
 DECL|method|getChunksPath ()
 specifier|public
 name|String
 name|getChunksPath
-parameter_list|()
-block|{
-return|return
-name|chunksPath
-return|;
-block|}
-comment|/**    * Returns container chunks path.    */
-annotation|@
-name|Override
-DECL|method|getDataPath ()
-specifier|public
-name|String
-name|getDataPath
 parameter_list|()
 block|{
 return|return
@@ -585,51 +595,6 @@ operator|.
 name|containerDBType
 operator|=
 name|containerDBType
-expr_stmt|;
-block|}
-comment|/**    * Returns the number of pending deletion blocks in container.    * @return numPendingDeletionBlocks    */
-DECL|method|getNumPendingDeletionBlocks ()
-specifier|public
-name|int
-name|getNumPendingDeletionBlocks
-parameter_list|()
-block|{
-return|return
-name|numPendingDeletionBlocks
-return|;
-block|}
-comment|/**    * Increase the count of pending deletion blocks.    *    * @param numBlocks increment number    */
-DECL|method|incrPendingDeletionBlocks (int numBlocks)
-specifier|public
-name|void
-name|incrPendingDeletionBlocks
-parameter_list|(
-name|int
-name|numBlocks
-parameter_list|)
-block|{
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|+=
-name|numBlocks
-expr_stmt|;
-block|}
-comment|/**    * Decrease the count of pending deletion blocks.    *    * @param numBlocks decrement number    */
-DECL|method|decrPendingDeletionBlocks (int numBlocks)
-specifier|public
-name|void
-name|decrPendingDeletionBlocks
-parameter_list|(
-name|int
-name|numBlocks
-parameter_list|)
-block|{
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|-=
-name|numBlocks
 expr_stmt|;
 block|}
 comment|/**    * Returns a ProtoBuf Message from ContainerData.    *    * @return Protocol Buffer Message    */
@@ -926,14 +891,27 @@ name|hasContainerPath
 argument_list|()
 condition|)
 block|{
-name|data
-operator|.
-name|setContainerPath
-argument_list|(
+name|String
+name|metadataPath
+init|=
 name|protoData
 operator|.
 name|getContainerPath
 argument_list|()
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+name|OzoneConsts
+operator|.
+name|CONTAINER_META_PATH
+decl_stmt|;
+name|data
+operator|.
+name|setMetadataPath
+argument_list|(
+name|metadataPath
 argument_list|)
 expr_stmt|;
 block|}

@@ -316,9 +316,7 @@ name|CONTAINER_META
 init|=
 literal|".meta"
 decl_stmt|;
-comment|//  container storage is in the following format.
-comment|//  Data Volume basePath/containers/<containerName>/metadata and
-comment|//  Data Volume basePath/containers/<containerName>/data/...
+comment|// Refer to {@link ContainerReader} for container storage layout on disk.
 DECL|field|CONTAINER_PREFIX
 specifier|public
 specifier|static
@@ -336,15 +334,6 @@ name|String
 name|CONTAINER_META_PATH
 init|=
 literal|"metadata"
-decl_stmt|;
-DECL|field|CONTAINER_DATA_PATH
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONTAINER_DATA_PATH
-init|=
-literal|"data"
 decl_stmt|;
 DECL|field|CONTAINER_TEMPORARY_CHUNK_PREFIX
 specifier|public

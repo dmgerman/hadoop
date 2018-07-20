@@ -973,7 +973,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Simple tests to verify that container persistence works as expected.  */
+comment|/**  * Simple tests to verify that container persistence works as expected.  * Some of these tests are specific to {@link KeyValueContainer}. If a new  * {@link ContainerProtos.ContainerType} is added, the tests need to be  * modified.  */
 end_comment
 
 begin_class
@@ -2778,9 +2778,12 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-name|ContainerData
+name|KeyValueContainerData
 name|cNewData
 init|=
+operator|(
+name|KeyValueContainerData
+operator|)
 name|container
 operator|.
 name|getContainerData
@@ -2802,7 +2805,7 @@ name|get
 argument_list|(
 name|cNewData
 operator|.
-name|getDataPath
+name|getChunksPath
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4604,9 +4607,12 @@ operator|.
 name|getTestContainerID
 argument_list|()
 decl_stmt|;
-name|Container
+name|KeyValueContainer
 name|container
 init|=
+operator|(
+name|KeyValueContainer
+operator|)
 name|addContainer
 argument_list|(
 name|containerSet
@@ -4722,9 +4728,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Verify in-memory map
-name|ContainerData
+name|KeyValueContainerData
 name|actualNewData
 init|=
+operator|(
+name|KeyValueContainerData
+operator|)
 name|containerSet
 operator|.
 name|getContainer
@@ -4940,6 +4949,9 @@ expr_stmt|;
 comment|// Verify in-memory map
 name|actualNewData
 operator|=
+operator|(
+name|KeyValueContainerData
+operator|)
 name|containerSet
 operator|.
 name|getContainer

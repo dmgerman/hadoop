@@ -222,7 +222,7 @@ specifier|final
 name|String
 name|CONTAINER_DIR
 init|=
-literal|"containerdir"
+literal|"containerDir"
 decl_stmt|;
 DECL|field|nodeType
 specifier|private

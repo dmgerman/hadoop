@@ -884,7 +884,7 @@ name|maxSize
 argument_list|)
 decl_stmt|;
 name|String
-name|containerBasePath
+name|hddsVolumeDir
 init|=
 name|containerVolume
 operator|.
@@ -918,7 +918,7 @@ name|KeyValueContainerLocationUtil
 operator|.
 name|getContainerMetaDataPath
 argument_list|(
-name|containerBasePath
+name|hddsVolumeDir
 argument_list|,
 name|scmId
 argument_list|,
@@ -932,7 +932,7 @@ name|KeyValueContainerLocationUtil
 operator|.
 name|getChunksLocationPath
 argument_list|(
-name|containerBasePath
+name|hddsVolumeDir
 argument_list|,
 name|scmId
 argument_list|,

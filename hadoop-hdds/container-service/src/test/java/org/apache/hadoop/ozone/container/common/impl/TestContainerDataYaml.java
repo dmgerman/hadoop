@@ -823,7 +823,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"/hdds/current/aed-fg4-hji-jkl/containerdir0/1"
+literal|"/hdds/current/aed-fg4-hji-jkl/containerDir0/1"
 argument_list|,
 name|kvData
 operator|.
@@ -833,7 +833,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"/hdds/current/aed-fg4-hji-jkl/containerdir0/1"
+literal|"/hdds/current/aed-fg4-hji-jkl/containerDir0/1"
 argument_list|,
 name|kvData
 operator|.

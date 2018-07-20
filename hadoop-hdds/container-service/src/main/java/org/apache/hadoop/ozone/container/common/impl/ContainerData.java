@@ -38,6 +38,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -207,6 +217,7 @@ end_comment
 begin_class
 DECL|class|ContainerData
 specifier|public
+specifier|abstract
 class|class
 name|ContainerData
 block|{
@@ -224,12 +235,6 @@ specifier|private
 specifier|final
 name|long
 name|containerID
-decl_stmt|;
-comment|// Path to container root dir.
-DECL|field|containerPath
-specifier|private
-name|String
-name|containerPath
 decl_stmt|;
 comment|// Layout version of the container data
 DECL|field|layOutVersion
@@ -319,7 +324,7 @@ name|numPendingDeletionBlocks
 decl_stmt|;
 comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size    */
 DECL|method|ContainerData (ContainerType type, long containerId, int size)
-specifier|public
+specifier|protected
 name|ContainerData
 parameter_list|(
 name|ContainerType
@@ -352,7 +357,7 @@ expr_stmt|;
 block|}
 comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size    */
 DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, int size)
-specifier|public
+specifier|protected
 name|ContainerData
 parameter_list|(
 name|ContainerType
@@ -507,31 +512,11 @@ block|}
 comment|/**    * Returns the path to base dir of the container.    * @return Path to base dir.    */
 DECL|method|getContainerPath ()
 specifier|public
+specifier|abstract
 name|String
 name|getContainerPath
 parameter_list|()
-block|{
-return|return
-name|containerPath
-return|;
-block|}
-comment|/**    * Set the base dir path of the container.    * @param baseDir path to base dir    */
-DECL|method|setContainerPath (String baseDir)
-specifier|public
-name|void
-name|setContainerPath
-parameter_list|(
-name|String
-name|baseDir
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containerPath
-operator|=
-name|baseDir
-expr_stmt|;
-block|}
+function_decl|;
 comment|/**    * Returns the type of the container.    * @return ContainerType    */
 DECL|method|getContainerType ()
 specifier|public
@@ -1044,28 +1029,6 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns container metadata path.    */
-DECL|method|getMetadataPath ()
-specifier|public
-name|String
-name|getMetadataPath
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-comment|/**    * Returns container data path.    */
-DECL|method|getDataPath ()
-specifier|public
-name|String
-name|getDataPath
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
 comment|/**    * Increase the count of pending deletion blocks.    *    * @param numBlocks increment number    */
 DECL|method|incrPendingDeletionBlocks (int numBlocks)
 specifier|public
@@ -1128,159 +1091,13 @@ block|}
 comment|/**    * Returns a ProtoBuf Message from ContainerData.    *    * @return Protocol Buffer Message    */
 DECL|method|getProtoBufMessage ()
 specifier|public
+specifier|abstract
 name|ContainerProtos
 operator|.
 name|ContainerData
 name|getProtoBufMessage
 parameter_list|()
-block|{
-name|ContainerProtos
-operator|.
-name|ContainerData
-operator|.
-name|Builder
-name|builder
-init|=
-name|ContainerProtos
-operator|.
-name|ContainerData
-operator|.
-name|newBuilder
-argument_list|()
-decl_stmt|;
-name|builder
-operator|.
-name|setContainerID
-argument_list|(
-name|this
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|containerPath
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|setContainerPath
-argument_list|(
-name|this
-operator|.
-name|containerPath
-argument_list|)
-expr_stmt|;
-block|}
-name|builder
-operator|.
-name|setState
-argument_list|(
-name|this
-operator|.
-name|getState
-argument_list|()
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|entry
-range|:
-name|metadata
-operator|.
-name|entrySet
-argument_list|()
-control|)
-block|{
-name|ContainerProtos
-operator|.
-name|KeyValue
-operator|.
-name|Builder
-name|keyValBuilder
-init|=
-name|ContainerProtos
-operator|.
-name|KeyValue
-operator|.
-name|newBuilder
-argument_list|()
-decl_stmt|;
-name|builder
-operator|.
-name|addMetadata
-argument_list|(
-name|keyValBuilder
-operator|.
-name|setKey
-argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
-argument_list|)
-operator|.
-name|setValue
-argument_list|(
-name|entry
-operator|.
-name|getValue
-argument_list|()
-argument_list|)
-operator|.
-name|build
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|this
-operator|.
-name|getBytesUsed
-argument_list|()
-operator|>=
-literal|0
-condition|)
-block|{
-name|builder
-operator|.
-name|setBytesUsed
-argument_list|(
-name|this
-operator|.
-name|getBytesUsed
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|builder
-operator|.
-name|setContainerType
-argument_list|(
-name|containerType
-argument_list|)
-expr_stmt|;
-return|return
-name|builder
-operator|.
-name|build
-argument_list|()
-return|;
-block|}
+function_decl|;
 comment|/**    * Sets deleteTransactionId to latest delete transactionId for the container.    *    * @param transactionId latest transactionId of the container.    */
 DECL|method|updateDeleteTransactionId (long transactionId)
 specifier|public
