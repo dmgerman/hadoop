@@ -42,39 +42,15 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|metrics2
+name|hdds
 operator|.
-name|MetricsSource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|MetricsSystem
+name|HddsIdFactory
 import|;
 end_import
 
@@ -107,36 +83,6 @@ operator|.
 name|lease
 operator|.
 name|LeaseManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|MetricsAsserts
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|MetricsAsserts
-operator|.
-name|assertCounter
 import|;
 end_import
 
@@ -250,7 +196,7 @@ decl_stmt|;
 DECL|field|leaseManager
 name|LeaseManager
 argument_list|<
-name|UUID
+name|Long
 argument_list|>
 name|leaseManager
 decl_stmt|;
@@ -356,20 +302,20 @@ argument_list|(
 name|queue
 argument_list|)
 expr_stmt|;
-name|UUID
-name|uuid1
+name|long
+name|id1
 init|=
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 decl_stmt|;
-name|UUID
-name|uuid2
+name|long
+name|id2
 init|=
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 decl_stmt|;
 name|queue
@@ -381,7 +327,7 @@ argument_list|,
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|uuid1
+name|id1
 argument_list|,
 literal|"C1"
 argument_list|)
@@ -396,7 +342,7 @@ argument_list|,
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|uuid2
+name|id2
 argument_list|,
 literal|"C2"
 argument_list|)
@@ -433,7 +379,7 @@ argument_list|,
 operator|new
 name|ReplicationCompletedEvent
 argument_list|(
-name|uuid1
+name|id1
 argument_list|,
 literal|"C2"
 argument_list|,
@@ -489,7 +435,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|uuid2
+name|id2
 argument_list|,
 name|underReplicatedEvents
 operator|.
@@ -501,7 +447,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|UUID
+name|id
 argument_list|)
 expr_stmt|;
 block|}
@@ -566,9 +512,9 @@ init|=
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 argument_list|,
 literal|"C1"
@@ -592,9 +538,9 @@ argument_list|,
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 argument_list|,
 literal|"C2"
@@ -610,9 +556,9 @@ argument_list|,
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 argument_list|,
 literal|"C1"
@@ -798,9 +744,9 @@ init|=
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 argument_list|,
 literal|"C1"
@@ -812,9 +758,9 @@ init|=
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 argument_list|,
 literal|"C2"
@@ -826,9 +772,9 @@ init|=
 operator|new
 name|UnderreplicatedEvent
 argument_list|(
-name|UUID
+name|HddsIdFactory
 operator|.
-name|randomUUID
+name|getLongId
 argument_list|()
 argument_list|,
 literal|"C1"
@@ -870,7 +816,7 @@ name|ReplicationCompletedEvent
 argument_list|(
 name|event1
 operator|.
-name|UUID
+name|id
 argument_list|,
 literal|"C1"
 argument_list|,
@@ -993,7 +939,7 @@ argument_list|,
 name|ReplicationCompletedEvent
 argument_list|>
 block|{
-DECL|method|CommandWatcherExample (Event<UnderreplicatedEvent> startEvent, Event<ReplicationCompletedEvent> completionEvent, LeaseManager<UUID> leaseManager)
+DECL|method|CommandWatcherExample (Event<UnderreplicatedEvent> startEvent, Event<ReplicationCompletedEvent> completionEvent, LeaseManager<Long> leaseManager)
 specifier|public
 name|CommandWatcherExample
 parameter_list|(
@@ -1011,7 +957,7 @@ name|completionEvent
 parameter_list|,
 name|LeaseManager
 argument_list|<
-name|UUID
+name|Long
 argument_list|>
 name|leaseManager
 parameter_list|)
@@ -1091,11 +1037,11 @@ name|ReplicationCompletedEvent
 implements|implements
 name|IdentifiableEventPayload
 block|{
-DECL|field|UUID
+DECL|field|id
 specifier|private
 specifier|final
-name|UUID
-name|UUID
+name|long
+name|id
 decl_stmt|;
 DECL|field|containerId
 specifier|private
@@ -1109,12 +1055,12 @@ specifier|final
 name|String
 name|datanodeId
 decl_stmt|;
-DECL|method|ReplicationCompletedEvent (UUID UUID, String containerId, String datanodeId)
+DECL|method|ReplicationCompletedEvent (long id, String containerId, String datanodeId)
 specifier|public
 name|ReplicationCompletedEvent
 parameter_list|(
-name|UUID
-name|UUID
+name|long
+name|id
 parameter_list|,
 name|String
 name|containerId
@@ -1125,9 +1071,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|UUID
+name|id
 operator|=
-name|UUID
+name|id
 expr_stmt|;
 name|this
 operator|.
@@ -1142,14 +1088,14 @@ operator|=
 name|datanodeId
 expr_stmt|;
 block|}
-DECL|method|getUUID ()
+DECL|method|getId ()
 specifier|public
-name|UUID
-name|getUUID
+name|long
+name|getId
 parameter_list|()
 block|{
 return|return
-name|UUID
+name|id
 return|;
 block|}
 annotation|@
@@ -1253,11 +1199,11 @@ name|UnderreplicatedEvent
 implements|implements
 name|IdentifiableEventPayload
 block|{
-DECL|field|UUID
+DECL|field|id
 specifier|private
 specifier|final
-name|UUID
-name|UUID
+name|long
+name|id
 decl_stmt|;
 DECL|field|containerId
 specifier|private
@@ -1265,12 +1211,12 @@ specifier|final
 name|String
 name|containerId
 decl_stmt|;
-DECL|method|UnderreplicatedEvent (UUID UUID, String containerId)
+DECL|method|UnderreplicatedEvent (long id, String containerId)
 specifier|public
 name|UnderreplicatedEvent
 parameter_list|(
-name|UUID
-name|UUID
+name|long
+name|id
 parameter_list|,
 name|String
 name|containerId
@@ -1284,19 +1230,19 @@ name|containerId
 expr_stmt|;
 name|this
 operator|.
-name|UUID
+name|id
 operator|=
-name|UUID
+name|id
 expr_stmt|;
 block|}
-DECL|method|getUUID ()
+DECL|method|getId ()
 specifier|public
-name|UUID
-name|getUUID
+name|long
+name|getId
 parameter_list|()
 block|{
 return|return
-name|UUID
+name|id
 return|;
 block|}
 block|}

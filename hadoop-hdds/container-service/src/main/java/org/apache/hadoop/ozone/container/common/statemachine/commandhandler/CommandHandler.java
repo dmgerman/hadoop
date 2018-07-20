@@ -206,7 +206,7 @@ name|updateCommandStatus
 argument_list|(
 name|command
 operator|.
-name|getCmdId
+name|getId
 argument_list|()
 argument_list|,
 name|cmdExecuted
@@ -217,7 +217,7 @@ name|log
 operator|.
 name|debug
 argument_list|(
-literal|"{} with cmdId:{} not found."
+literal|"{} with Id:{} not found."
 argument_list|,
 name|command
 operator|.
@@ -226,7 +226,7 @@ argument_list|()
 argument_list|,
 name|command
 operator|.
-name|getCmdId
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;

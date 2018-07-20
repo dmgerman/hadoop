@@ -20,16 +20,6 @@ name|events
 package|;
 end_package
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
 begin_comment
 comment|/**  * Event with an additional unique identifier.  *  */
 end_comment
@@ -40,9 +30,9 @@ specifier|public
 interface|interface
 name|IdentifiableEventPayload
 block|{
-DECL|method|getUUID ()
-name|UUID
-name|getUUID
+DECL|method|getId ()
+name|long
+name|getId
 parameter_list|()
 function_decl|;
 block|}

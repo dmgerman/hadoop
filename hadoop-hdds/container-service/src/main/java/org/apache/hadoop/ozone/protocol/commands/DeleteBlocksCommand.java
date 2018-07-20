@@ -135,7 +135,7 @@ name|blocks
 expr_stmt|;
 block|}
 comment|// Should be called only for protobuf conversion
-DECL|method|DeleteBlocksCommand (List<DeletedBlocksTransaction> blocks, long cmdId)
+DECL|method|DeleteBlocksCommand (List<DeletedBlocksTransaction> blocks, long id)
 specifier|private
 name|DeleteBlocksCommand
 parameter_list|(
@@ -146,12 +146,12 @@ argument_list|>
 name|blocks
 parameter_list|,
 name|long
-name|cmdId
+name|id
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|cmdId
+name|id
 argument_list|)
 expr_stmt|;
 name|this
@@ -251,7 +251,7 @@ argument_list|()
 operator|.
 name|setCmdId
 argument_list|(
-name|getCmdId
+name|getId
 argument_list|()
 argument_list|)
 operator|.

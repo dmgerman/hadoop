@@ -66,6 +66,24 @@ name|SCMCommandProto
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|server
+operator|.
+name|events
+operator|.
+name|IdentifiableEventPayload
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that acts as the base class to convert between Java and SCM  * commands in protobuf format.  * @param<T>  */
 end_comment
@@ -81,11 +99,13 @@ name|T
 extends|extends
 name|GeneratedMessage
 parameter_list|>
+implements|implements
+name|IdentifiableEventPayload
 block|{
-DECL|field|cmdId
+DECL|field|id
 specifier|private
 name|long
-name|cmdId
+name|id
 decl_stmt|;
 DECL|method|SCMCommand ()
 name|SCMCommand
@@ -93,7 +113,7 @@ parameter_list|()
 block|{
 name|this
 operator|.
-name|cmdId
+name|id
 operator|=
 name|HddsIdFactory
 operator|.
@@ -101,18 +121,18 @@ name|getLongId
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|SCMCommand (long cmdId)
+DECL|method|SCMCommand (long id)
 name|SCMCommand
 parameter_list|(
 name|long
-name|cmdId
+name|id
 parameter_list|)
 block|{
 name|this
 operator|.
-name|cmdId
+name|id
 operator|=
-name|cmdId
+name|id
 expr_stmt|;
 block|}
 comment|/**    * Returns the type of this command.    * @return Type    */
@@ -135,14 +155,14 @@ name|getProtoBufMessage
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the commandId of this object.    * @return uuid.    */
-DECL|method|getCmdId ()
+DECL|method|getId ()
 specifier|public
 name|long
-name|getCmdId
+name|getId
 parameter_list|()
 block|{
 return|return
-name|cmdId
+name|id
 return|;
 block|}
 block|}

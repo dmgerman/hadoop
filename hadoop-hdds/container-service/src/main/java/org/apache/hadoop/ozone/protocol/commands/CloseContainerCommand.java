@@ -149,7 +149,7 @@ name|replicationType
 expr_stmt|;
 block|}
 comment|// Should be called only for protobuf conversion
-DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType, long cmdId)
+DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType, long id)
 specifier|private
 name|CloseContainerCommand
 parameter_list|(
@@ -162,12 +162,12 @@ name|ReplicationType
 name|replicationType
 parameter_list|,
 name|long
-name|cmdId
+name|id
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|cmdId
+name|id
 argument_list|)
 expr_stmt|;
 name|this
@@ -239,7 +239,7 @@ argument_list|)
 operator|.
 name|setCmdId
 argument_list|(
-name|getCmdId
+name|getId
 argument_list|()
 argument_list|)
 operator|.

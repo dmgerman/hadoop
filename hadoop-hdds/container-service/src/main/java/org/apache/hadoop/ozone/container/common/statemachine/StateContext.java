@@ -1170,7 +1170,7 @@ name|addCmdStatus
 argument_list|(
 name|cmd
 operator|.
-name|getCmdId
+name|getId
 argument_list|()
 argument_list|,
 name|CommandStatusBuilder
@@ -1182,7 +1182,7 @@ name|setCmdId
 argument_list|(
 name|cmd
 operator|.
-name|getCmdId
+name|getId
 argument_list|()
 argument_list|)
 operator|.

@@ -66,16 +66,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|UUID
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -344,7 +334,7 @@ specifier|private
 specifier|final
 name|LeaseManager
 argument_list|<
-name|UUID
+name|Long
 argument_list|>
 name|leaseManager
 decl_stmt|;
@@ -360,16 +350,16 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
-DECL|field|trackedEventsByUUID
+DECL|field|trackedEventsByID
 specifier|protected
 specifier|final
 name|Map
 argument_list|<
-name|UUID
+name|Long
 argument_list|,
 name|TIMEOUT_PAYLOAD
 argument_list|>
-name|trackedEventsByUUID
+name|trackedEventsByID
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -395,7 +385,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|UUID
+name|Long
 argument_list|,
 name|Long
 argument_list|>
@@ -405,7 +395,7 @@ operator|new
 name|HashedMap
 argument_list|()
 decl_stmt|;
-DECL|method|EventWatcher (String name, Event<TIMEOUT_PAYLOAD> startEvent, Event<COMPLETION_PAYLOAD> completionEvent, LeaseManager<UUID> leaseManager)
+DECL|method|EventWatcher (String name, Event<TIMEOUT_PAYLOAD> startEvent, Event<COMPLETION_PAYLOAD> completionEvent, LeaseManager<Long> leaseManager)
 specifier|public
 name|EventWatcher
 parameter_list|(
@@ -426,7 +416,7 @@ name|completionEvent
 parameter_list|,
 name|LeaseManager
 argument_list|<
-name|UUID
+name|Long
 argument_list|>
 name|leaseManager
 parameter_list|)
@@ -510,7 +500,7 @@ operator|=
 name|name
 expr_stmt|;
 block|}
-DECL|method|EventWatcher (Event<TIMEOUT_PAYLOAD> startEvent, Event<COMPLETION_PAYLOAD> completionEvent, LeaseManager<UUID> leaseManager)
+DECL|method|EventWatcher (Event<TIMEOUT_PAYLOAD> startEvent, Event<COMPLETION_PAYLOAD> completionEvent, LeaseManager<Long> leaseManager)
 specifier|public
 name|EventWatcher
 parameter_list|(
@@ -528,7 +518,7 @@ name|completionEvent
 parameter_list|,
 name|LeaseManager
 argument_list|<
-name|UUID
+name|Long
 argument_list|>
 name|leaseManager
 parameter_list|)
@@ -578,19 +568,19 @@ name|publisher
 parameter_list|)
 lambda|->
 block|{
-name|UUID
-name|uuid
+name|long
+name|id
 init|=
 name|completionPayload
 operator|.
-name|getUUID
+name|getId
 argument_list|()
 decl_stmt|;
 try|try
 block|{
 name|handleCompletion
 argument_list|(
-name|uuid
+name|id
 argument_list|,
 name|publisher
 argument_list|)
@@ -608,9 +598,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Completion event without active lease. UUID={}"
+literal|"Completion event without active lease. Id={}"
 argument_list|,
-name|uuid
+name|id
 argument_list|)
 expr_stmt|;
 block|}
@@ -655,12 +645,12 @@ operator|.
 name|incrementTrackedEvents
 argument_list|()
 expr_stmt|;
-name|UUID
+name|long
 name|identifier
 init|=
 name|payload
 operator|.
-name|getUUID
+name|getId
 argument_list|()
 decl_stmt|;
 name|startTrackingTimes
@@ -675,7 +665,7 @@ name|currentTimeMillis
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|trackedEventsByUUID
+name|trackedEventsByID
 operator|.
 name|put
 argument_list|(
@@ -695,7 +685,7 @@ try|try
 block|{
 name|Lease
 argument_list|<
-name|UUID
+name|Long
 argument_list|>
 name|lease
 init|=
@@ -753,14 +743,14 @@ block|{
 comment|//No problem at all. But timer is not reset.
 block|}
 block|}
-DECL|method|handleCompletion (UUID uuid, EventPublisher publisher)
+DECL|method|handleCompletion (long id, EventPublisher publisher)
 specifier|private
 specifier|synchronized
 name|void
 name|handleCompletion
 parameter_list|(
-name|UUID
-name|uuid
+name|long
+name|id
 parameter_list|,
 name|EventPublisher
 name|publisher
@@ -777,17 +767,17 @@ name|leaseManager
 operator|.
 name|release
 argument_list|(
-name|uuid
+name|id
 argument_list|)
 expr_stmt|;
 name|TIMEOUT_PAYLOAD
 name|payload
 init|=
-name|trackedEventsByUUID
+name|trackedEventsByID
 operator|.
 name|remove
 argument_list|(
-name|uuid
+name|id
 argument_list|)
 decl_stmt|;
 name|trackedEvents
@@ -804,7 +794,7 @@ name|startTrackingTimes
 operator|.
 name|remove
 argument_list|(
-name|uuid
+name|id
 argument_list|)
 decl_stmt|;
 name|metrics
@@ -827,7 +817,7 @@ name|payload
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleTimeout (EventPublisher publisher, UUID identifier)
+DECL|method|handleTimeout (EventPublisher publisher, long identifier)
 specifier|private
 specifier|synchronized
 name|void
@@ -836,7 +826,7 @@ parameter_list|(
 name|EventPublisher
 name|publisher
 parameter_list|,
-name|UUID
+name|long
 name|identifier
 parameter_list|)
 block|{
@@ -848,7 +838,7 @@ expr_stmt|;
 name|TIMEOUT_PAYLOAD
 name|payload
 init|=
-name|trackedEventsByUUID
+name|trackedEventsByID
 operator|.
 name|remove
 argument_list|(
@@ -868,7 +858,7 @@ name|remove
 argument_list|(
 name|payload
 operator|.
-name|getUUID
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -918,7 +908,7 @@ name|release
 argument_list|(
 name|payload
 operator|.
-name|getUUID
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -933,22 +923,22 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Completion event without active lease. UUID={}"
+literal|"Completion event without active lease. Id={}"
 argument_list|,
 name|payload
 operator|.
-name|getUUID
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|trackedEventsByUUID
+name|trackedEventsByID
 operator|.
 name|remove
 argument_list|(
 name|payload
 operator|.
-name|getUUID
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1003,7 +993,7 @@ name|predicate
 parameter_list|)
 block|{
 return|return
-name|trackedEventsByUUID
+name|trackedEventsByID
 operator|.
 name|values
 argument_list|()

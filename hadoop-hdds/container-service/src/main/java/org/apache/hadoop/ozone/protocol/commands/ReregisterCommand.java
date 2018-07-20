@@ -115,10 +115,10 @@ block|}
 comment|/**    * Not implemented for ReregisterCommand.    *    * @return cmdId.    */
 annotation|@
 name|Override
-DECL|method|getCmdId ()
+DECL|method|getId ()
 specifier|public
 name|long
-name|getCmdId
+name|getId
 parameter_list|()
 block|{
 return|return
