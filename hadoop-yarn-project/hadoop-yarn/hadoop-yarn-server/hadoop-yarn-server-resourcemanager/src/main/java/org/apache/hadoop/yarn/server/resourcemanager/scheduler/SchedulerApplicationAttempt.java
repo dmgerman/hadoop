@@ -6306,19 +6306,13 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|hasPendingResourceRequest (ResourceCalculator rc, String nodePartition, Resource cluster, SchedulingMode schedulingMode)
+DECL|method|hasPendingResourceRequest (String nodePartition, SchedulingMode schedulingMode)
 specifier|public
 name|boolean
 name|hasPendingResourceRequest
 parameter_list|(
-name|ResourceCalculator
-name|rc
-parameter_list|,
 name|String
 name|nodePartition
-parameter_list|,
-name|Resource
-name|cluster
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -6372,7 +6366,7 @@ name|pending
 operator|=
 name|Resources
 operator|.
-name|subtract
+name|subtractNonNegative
 argument_list|(
 name|pending
 argument_list|,
@@ -6393,31 +6387,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
+return|return
+operator|!
 name|Resources
 operator|.
-name|greaterThan
+name|isNone
 argument_list|(
-name|rc
-argument_list|,
-name|cluster
-argument_list|,
 name|pending
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
 argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 comment|/*    * Note that the behavior of appAttemptResourceUsage is different from queue's    * For queue, used = actual-used + reserved    * For app, used = actual-used.    *    * TODO (wangda): Need to make behaviors of queue/app's resource usage    * consistent    */

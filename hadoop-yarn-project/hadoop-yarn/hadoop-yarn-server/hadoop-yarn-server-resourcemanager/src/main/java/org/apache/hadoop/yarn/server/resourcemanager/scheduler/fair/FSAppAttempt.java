@@ -5149,12 +5149,8 @@ operator|&&
 comment|// The requested container must be able to fit on the node:
 name|Resources
 operator|.
-name|lessThanOrEqual
+name|fitsIn
 argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-literal|null
-argument_list|,
 name|resource
 argument_list|,
 name|node

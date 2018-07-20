@@ -1287,7 +1287,7 @@ else|:
 name|minQueueResource
 return|;
 block|}
-comment|/**    * Get the maximum resource allocation for the given queue. If the max in not    * set, return the default max.    *    * @param queue the target queue's name    * @return the max allocation on this queue    */
+comment|/**    * Get the maximum resource allocation for the given queue. If the max is not    * set, return the default max.    *    * @param queue the target queue's name    * @return the max allocation on this queue    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getMaxResources (String queue)

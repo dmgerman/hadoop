@@ -1351,7 +1351,7 @@ name|rhs
 argument_list|)
 return|;
 block|}
-comment|/**    * Subtract<code>rhs</code> from<code>lhs</code> and reset any negative    * values to zero.    * @param lhs {@link Resource} to subtract from    * @param rhs {@link Resource} to subtract    * @return the value of lhs after subtraction    */
+comment|/**    * Subtract {@code rhs} from {@code lhs} and reset any negative values to    * zero. This call will modify {@code lhs}.    *    * @param lhs {@link Resource} to subtract from    * @param rhs {@link Resource} to subtract    * @return the value of lhs after subtraction    */
 DECL|method|subtractFromNonNegative (Resource lhs, Resource rhs)
 specifier|public
 specifier|static
@@ -1410,6 +1410,32 @@ expr_stmt|;
 block|}
 return|return
 name|lhs
+return|;
+block|}
+comment|/**    * Subtract {@code rhs} from {@code lhs} and reset any negative values to    * zero. This call will operate on a copy of {@code lhs}, leaving {@code lhs}    * unmodified.    *    * @param lhs {@link Resource} to subtract from    * @param rhs {@link Resource} to subtract    * @return the value of lhs after subtraction    */
+DECL|method|subtractNonNegative (Resource lhs, Resource rhs)
+specifier|public
+specifier|static
+name|Resource
+name|subtractNonNegative
+parameter_list|(
+name|Resource
+name|lhs
+parameter_list|,
+name|Resource
+name|rhs
+parameter_list|)
+block|{
+return|return
+name|subtractFromNonNegative
+argument_list|(
+name|clone
+argument_list|(
+name|lhs
+argument_list|)
+argument_list|,
+name|rhs
+argument_list|)
 return|;
 block|}
 DECL|method|negate (Resource resource)

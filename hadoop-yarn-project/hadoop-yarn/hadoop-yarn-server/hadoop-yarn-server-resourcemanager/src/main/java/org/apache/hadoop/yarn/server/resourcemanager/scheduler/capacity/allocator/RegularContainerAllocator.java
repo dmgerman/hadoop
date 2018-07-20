@@ -4234,14 +4234,10 @@ name|application
 operator|.
 name|hasPendingResourceRequest
 argument_list|(
-name|rc
-argument_list|,
 name|candidates
 operator|.
 name|getPartition
 argument_list|()
-argument_list|,
-name|clusterResource
 argument_list|,
 name|schedulingMode
 argument_list|)
