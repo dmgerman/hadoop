@@ -105,6 +105,24 @@ name|HDDS_COMMAND_STATUS_REPORT_INTERVAL_DEFAULT
 init|=
 literal|"60s"
 decl_stmt|;
+DECL|field|HDDS_CONTAINER_ACTION_MAX_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_CONTAINER_ACTION_MAX_LIMIT
+init|=
+literal|"hdds.container.action.max.limit"
+decl_stmt|;
+DECL|field|HDDS_CONTAINER_ACTION_MAX_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HDDS_CONTAINER_ACTION_MAX_LIMIT_DEFAULT
+init|=
+literal|20
+decl_stmt|;
 block|}
 end_class
 
