@@ -227,12 +227,34 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
 name|junit
 operator|.
 name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
 import|;
 end_import
 
@@ -545,6 +567,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|volumeSet
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|checkVolumeExistsInVolumeSet (String volume)
 specifier|private
@@ -683,9 +710,6 @@ name|baseDir
 operator|+
 literal|"disk3"
 decl_stmt|;
-comment|//    File dir3 = new File(volume3, "hdds");
-comment|//    File[] files = dir3.listFiles();
-comment|//    System.out.println("------ " + files[0].getPath());
 name|boolean
 name|success
 init|=
@@ -1108,6 +1132,78 @@ argument_list|(
 name|volume
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testShutdown ()
+specifier|public
+name|void
+name|testShutdown
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|List
+argument_list|<
+name|HddsVolume
+argument_list|>
+name|volumesList
+init|=
+name|volumeSet
+operator|.
+name|getVolumesList
+argument_list|()
+decl_stmt|;
+name|volumeSet
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+comment|// Verify that the volumes are shutdown and the volumeUsage is set to null.
+for|for
+control|(
+name|HddsVolume
+name|volume
+range|:
+name|volumesList
+control|)
+block|{
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|volume
+operator|.
+name|getVolumeInfo
+argument_list|()
+operator|.
+name|getUsageForTesting
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+comment|// getAvailable() should throw null pointer exception as usage is null.
+name|volume
+operator|.
+name|getAvailable
+argument_list|()
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Volume shutdown failed."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NullPointerException
+name|ex
+parameter_list|)
+block|{
+comment|// Do Nothing. Exception is expected.
+block|}
+block|}
 block|}
 block|}
 end_class

@@ -93,22 +93,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|DatanodeDetails
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -139,6 +123,22 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|RunJar
+operator|.
+name|SHUTDOWN_HOOK_PRIORITY
 import|;
 end_import
 
@@ -358,6 +358,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ShutdownHookManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -556,6 +570,11 @@ DECL|field|clusterID
 specifier|private
 name|String
 name|clusterID
+decl_stmt|;
+DECL|field|shutdownHook
+specifier|private
+name|Runnable
+name|shutdownHook
 decl_stmt|;
 DECL|method|VolumeSet (String dnUuid, Configuration conf)
 specifier|public
@@ -921,6 +940,29 @@ literal|"No storage location configured"
 argument_list|)
 throw|;
 block|}
+comment|// Ensure volume threads are stopped and scm df is saved during shutdown.
+name|shutdownHook
+operator|=
+parameter_list|()
+lambda|->
+block|{
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+expr_stmt|;
+name|ShutdownHookManager
+operator|.
+name|get
+argument_list|()
+operator|.
+name|addShutdownHook
+argument_list|(
+name|shutdownHook
+argument_list|,
+name|SHUTDOWN_HOOK_PRIORITY
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * If Version file exists and the {@link VolumeSet#clusterID} is not set yet,    * assign it the value from Version file. Otherwise, check that the given    * id matches with the id from version file.    * @param idFromVersionFile value of the property from Version file    * @throws InconsistentStorageStateException    */
 DECL|method|checkAndSetClusterID (String idFromVersionFile)
@@ -1609,6 +1651,24 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|shutdownHook
+operator|!=
+literal|null
+condition|)
+block|{
+name|ShutdownHookManager
+operator|.
+name|get
+argument_list|()
+operator|.
+name|removeShutdownHook
+argument_list|(
+name|shutdownHook
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@

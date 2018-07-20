@@ -516,6 +516,19 @@ name|scmUsageForTest
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Only for testing. Do not use otherwise.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getUsageForTesting ()
+specifier|public
+name|VolumeUsage
+name|getUsageForTesting
+parameter_list|()
+block|{
+return|return
+name|usage
+return|;
+block|}
 block|}
 end_class
 

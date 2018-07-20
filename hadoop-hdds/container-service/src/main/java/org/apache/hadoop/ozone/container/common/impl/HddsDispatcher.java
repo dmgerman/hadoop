@@ -505,7 +505,14 @@ specifier|public
 name|void
 name|shutdown
 parameter_list|()
-block|{   }
+block|{
+comment|// Shutdown the volumes
+name|volumeSet
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|dispatch ( ContainerCommandRequestProto msg)
