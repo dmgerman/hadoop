@@ -184,6 +184,26 @@ name|proto
 operator|.
 name|HddsProtos
 operator|.
+name|LifeCycleState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
 name|NodeState
 import|;
 end_import
@@ -514,13 +534,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocating a new standalone pipeline of size: {}"
+literal|"Allocating a new standalone pipeline channel of size: {}"
 argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
 name|String
-name|pipelineName
+name|channelName
 init|=
 literal|"SA-"
 operator|+
@@ -544,6 +564,10 @@ name|newPipelineFromNodes
 argument_list|(
 name|newNodesList
 argument_list|,
+name|LifeCycleState
+operator|.
+name|OPEN
+argument_list|,
 name|ReplicationType
 operator|.
 name|STAND_ALONE
@@ -552,7 +576,7 @@ name|ReplicationFactor
 operator|.
 name|ONE
 argument_list|,
-name|pipelineName
+name|channelName
 argument_list|)
 return|;
 block|}
@@ -562,16 +586,25 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|initializePipeline (Pipeline pipeline)
+comment|/**    * Creates a pipeline from a specified set of Nodes.    *    * @param pipelineID - Name of the pipeline    * @param datanodes - The list of datanodes that make this pipeline.    */
+annotation|@
+name|Override
+DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
 specifier|public
 name|void
-name|initializePipeline
+name|createPipeline
 parameter_list|(
-name|Pipeline
-name|pipeline
+name|String
+name|pipelineID
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|datanodes
 parameter_list|)
 block|{
-comment|// Nothing to be done for standalone pipeline
+comment|//return newPipelineFromNodes(datanodes, pipelineID);
 block|}
 comment|/**    * Close the  pipeline with the given clusterId.    *    * @param pipelineID    */
 annotation|@

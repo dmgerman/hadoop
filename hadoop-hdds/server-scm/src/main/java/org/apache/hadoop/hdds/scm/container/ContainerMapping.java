@@ -2837,19 +2837,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|pipelineSelector
-operator|!=
-literal|null
-condition|)
-block|{
-name|pipelineSelector
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing ContainerMapping, we need to update    * this in the container store.    *    * @throws IOException on failure.    */
 annotation|@

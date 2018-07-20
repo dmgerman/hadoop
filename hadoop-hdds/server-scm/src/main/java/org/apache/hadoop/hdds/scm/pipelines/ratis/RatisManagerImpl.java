@@ -214,6 +214,26 @@ name|proto
 operator|.
 name|HddsProtos
 operator|.
+name|LifeCycleState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
 name|NodeState
 import|;
 end_import
@@ -442,7 +462,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Allocates a new ratis Pipeline from the free nodes.    *    * @param factor - One or Three    * @return Pipeline.    */
+comment|/**    * Allocates a new ratis Pipeline from the free nodes.    *    * @param factor - One or Three    * @return PipelineChannel.    */
 DECL|method|allocatePipeline (ReplicationFactor factor)
 specifier|public
 name|Pipeline
@@ -549,7 +569,7 @@ argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
-comment|// Start all pipeline names with "Ratis", easy to grep the logs.
+comment|// Start all channel names with "Ratis", easy to grep the logs.
 name|String
 name|pipelineName
 init|=
@@ -571,12 +591,18 @@ name|length
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
+name|Pipeline
+name|pipeline
+init|=
 name|PipelineSelector
 operator|.
 name|newPipelineFromNodes
 argument_list|(
 name|newNodesList
+argument_list|,
+name|LifeCycleState
+operator|.
+name|OPEN
 argument_list|,
 name|ReplicationType
 operator|.
@@ -586,26 +612,7 @@ name|factor
 argument_list|,
 name|pipelineName
 argument_list|)
-return|;
-block|}
-block|}
-block|}
-return|return
-literal|null
-return|;
-block|}
-DECL|method|initializePipeline (Pipeline pipeline)
-specifier|public
-name|void
-name|initializePipeline
-parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|//TODO:move the initialization from SCM to client
+decl_stmt|;
 try|try
 init|(
 name|XceiverClientRatis
@@ -630,14 +637,48 @@ operator|.
 name|getPipelineName
 argument_list|()
 argument_list|,
-name|pipeline
-operator|.
-name|getMachines
-argument_list|()
+name|newNodesList
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
 block|}
+return|return
+name|pipeline
+return|;
+block|}
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Creates a pipeline from a specified set of Nodes.    *    * @param pipelineID - Name of the pipeline    * @param datanodes - The list of datanodes that make this pipeline.    */
+annotation|@
+name|Override
+DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
+specifier|public
+name|void
+name|createPipeline
+parameter_list|(
+name|String
+name|pipelineID
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|datanodes
+parameter_list|)
+block|{    }
 comment|/**    * Close the  pipeline with the given clusterId.    *    * @param pipelineID    */
 annotation|@
 name|Override
