@@ -5,7 +5,6 @@ end_comment
 
 begin_package
 DECL|package|org.apache.hadoop.hdfs.server.datanode
-DECL|package|org.apache.hadoop.hdfs.server.datanode
 package|package
 name|org
 operator|.
@@ -3089,7 +3088,6 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|DataNode
-DECL|class|DataNode
 specifier|public
 class|class
 name|DataNode
@@ -3106,7 +3104,6 @@ name|DataNodeMXBean
 implements|,
 name|ReconfigurationProtocol
 block|{
-DECL|field|LOG
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -3131,7 +3128,6 @@ name|init
 argument_list|()
 expr_stmt|;
 block|}
-DECL|field|DN_CLIENTTRACE_FORMAT
 DECL|field|DN_CLIENTTRACE_FORMAT
 specifier|public
 specifier|static
@@ -3167,7 +3163,6 @@ literal|", duration(ns): %s"
 decl_stmt|;
 comment|// duration time
 DECL|field|ClientTraceLog
-DECL|field|ClientTraceLog
 specifier|static
 specifier|final
 name|Log
@@ -3187,7 +3182,6 @@ operator|+
 literal|".clienttrace"
 argument_list|)
 decl_stmt|;
-DECL|field|USAGE
 DECL|field|USAGE
 specifier|private
 specifier|static
@@ -3210,7 +3204,6 @@ operator|+
 literal|"  and rolling upgrades."
 decl_stmt|;
 DECL|field|CURRENT_BLOCK_FORMAT_VERSION
-DECL|field|CURRENT_BLOCK_FORMAT_VERSION
 specifier|static
 specifier|final
 name|int
@@ -3218,7 +3211,6 @@ name|CURRENT_BLOCK_FORMAT_VERSION
 init|=
 literal|1
 decl_stmt|;
-DECL|field|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
 DECL|field|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
 specifier|public
 specifier|static
@@ -3230,7 +3222,6 @@ operator|-
 literal|1
 decl_stmt|;
 DECL|field|MAX_VOLUME_FAILURES_TOLERATED_MSG
-DECL|field|MAX_VOLUME_FAILURES_TOLERATED_MSG
 specifier|public
 specifier|static
 specifier|final
@@ -3240,7 +3231,6 @@ init|=
 literal|"should be greater than -1"
 decl_stmt|;
 comment|/** A list of property that are reconfigurable at runtime. */
-DECL|field|RECONFIGURABLE_PROPERTIES
 DECL|field|RECONFIGURABLE_PROPERTIES
 specifier|private
 specifier|static
@@ -3266,7 +3256,6 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 DECL|field|METRICS_LOG
-DECL|field|METRICS_LOG
 specifier|public
 specifier|static
 specifier|final
@@ -3281,7 +3270,6 @@ literal|"DataNodeMetricsLog"
 argument_list|)
 decl_stmt|;
 DECL|field|DATANODE_HTRACE_PREFIX
-DECL|field|DATANODE_HTRACE_PREFIX
 specifier|private
 specifier|static
 specifier|final
@@ -3291,7 +3279,6 @@ init|=
 literal|"datanode.htrace."
 decl_stmt|;
 DECL|field|fileIoProvider
-DECL|field|fileIoProvider
 specifier|private
 specifier|final
 name|FileIoProvider
@@ -3300,7 +3287,6 @@ decl_stmt|;
 comment|/**    * Use {@link NetUtils#createSocketAddr(String)} instead.    */
 annotation|@
 name|Deprecated
-DECL|method|createSocketAddr (String target)
 DECL|method|createSocketAddr (String target)
 specifier|public
 specifier|static
@@ -3321,14 +3307,12 @@ argument_list|)
 return|;
 block|}
 DECL|field|shouldRun
-DECL|field|shouldRun
 specifier|volatile
 name|boolean
 name|shouldRun
 init|=
 literal|true
 decl_stmt|;
-DECL|field|shutdownForUpgrade
 DECL|field|shutdownForUpgrade
 specifier|volatile
 name|boolean
@@ -3337,7 +3321,6 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|shutdownInProgress
-DECL|field|shutdownInProgress
 specifier|private
 name|boolean
 name|shutdownInProgress
@@ -3345,12 +3328,10 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|blockPoolManager
-DECL|field|blockPoolManager
 specifier|private
 name|BlockPoolManager
 name|blockPoolManager
 decl_stmt|;
-DECL|field|data
 DECL|field|data
 specifier|volatile
 name|FsDatasetSpi
@@ -3364,14 +3345,12 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|clusterId
-DECL|field|clusterId
 specifier|private
 name|String
 name|clusterId
 init|=
 literal|null
 decl_stmt|;
-DECL|field|xmitsInProgress
 DECL|field|xmitsInProgress
 specifier|final
 name|AtomicInteger
@@ -3382,13 +3361,11 @@ name|AtomicInteger
 argument_list|()
 decl_stmt|;
 DECL|field|dataXceiverServer
-DECL|field|dataXceiverServer
 name|Daemon
 name|dataXceiverServer
 init|=
 literal|null
 decl_stmt|;
-DECL|field|xserver
 DECL|field|xserver
 name|DataXceiverServer
 name|xserver
@@ -3396,13 +3373,11 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|localDataXceiverServer
-DECL|field|localDataXceiverServer
 name|Daemon
 name|localDataXceiverServer
 init|=
 literal|null
 decl_stmt|;
-DECL|field|shortCircuitRegistry
 DECL|field|shortCircuitRegistry
 name|ShortCircuitRegistry
 name|shortCircuitRegistry
@@ -3410,19 +3385,16 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|threadGroup
-DECL|field|threadGroup
 name|ThreadGroup
 name|threadGroup
 init|=
 literal|null
 decl_stmt|;
 DECL|field|dnConf
-DECL|field|dnConf
 specifier|private
 name|DNConf
 name|dnConf
 decl_stmt|;
-DECL|field|heartbeatsDisabledForTests
 DECL|field|heartbeatsDisabledForTests
 specifier|private
 specifier|volatile
@@ -3432,7 +3404,6 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|cacheReportsDisabledForTests
-DECL|field|cacheReportsDisabledForTests
 specifier|private
 specifier|volatile
 name|boolean
@@ -3441,14 +3412,12 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|storage
-DECL|field|storage
 specifier|private
 name|DataStorage
 name|storage
 init|=
 literal|null
 decl_stmt|;
-DECL|field|httpServer
 DECL|field|httpServer
 specifier|private
 name|DatanodeHttpServer
@@ -3457,18 +3426,15 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|infoPort
-DECL|field|infoPort
 specifier|private
 name|int
 name|infoPort
 decl_stmt|;
 DECL|field|infoSecurePort
-DECL|field|infoSecurePort
 specifier|private
 name|int
 name|infoSecurePort
 decl_stmt|;
-DECL|field|metrics
 DECL|field|metrics
 name|DataNodeMetrics
 name|metrics
@@ -3476,25 +3442,21 @@ decl_stmt|;
 annotation|@
 name|Nullable
 DECL|field|peerMetrics
-DECL|field|peerMetrics
 specifier|private
 name|DataNodePeerMetrics
 name|peerMetrics
 decl_stmt|;
-DECL|field|diskMetrics
 DECL|field|diskMetrics
 specifier|private
 name|DataNodeDiskMetrics
 name|diskMetrics
 decl_stmt|;
 DECL|field|streamingAddr
-DECL|field|streamingAddr
 specifier|private
 name|InetSocketAddress
 name|streamingAddr
 decl_stmt|;
 comment|// See the note below in incrDatanodeNetworkErrors re: concurrency.
-DECL|field|datanodeNetworkCounts
 DECL|field|datanodeNetworkCounts
 specifier|private
 name|LoadingCache
@@ -3511,18 +3473,15 @@ argument_list|>
 name|datanodeNetworkCounts
 decl_stmt|;
 DECL|field|hostName
-DECL|field|hostName
 specifier|private
 name|String
 name|hostName
 decl_stmt|;
 DECL|field|id
-DECL|field|id
 specifier|private
 name|DatanodeID
 name|id
 decl_stmt|;
-DECL|field|fileDescriptorPassingDisabledReason
 DECL|field|fileDescriptorPassingDisabledReason
 specifier|final
 specifier|private
@@ -3530,16 +3489,13 @@ name|String
 name|fileDescriptorPassingDisabledReason
 decl_stmt|;
 DECL|field|isBlockTokenEnabled
-DECL|field|isBlockTokenEnabled
 name|boolean
 name|isBlockTokenEnabled
 decl_stmt|;
 DECL|field|blockPoolTokenSecretManager
-DECL|field|blockPoolTokenSecretManager
 name|BlockPoolTokenSecretManager
 name|blockPoolTokenSecretManager
 decl_stmt|;
-DECL|field|hasAnyBlockPoolRegistered
 DECL|field|hasAnyBlockPoolRegistered
 specifier|private
 name|boolean
@@ -3548,12 +3504,10 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|blockScanner
-DECL|field|blockScanner
 specifier|private
 name|BlockScanner
 name|blockScanner
 decl_stmt|;
-DECL|field|directoryScanner
 DECL|field|directoryScanner
 specifier|private
 name|DirectoryScanner
@@ -3562,7 +3516,6 @@ init|=
 literal|null
 decl_stmt|;
 comment|/** Activated plug-ins. */
-DECL|field|plugins
 DECL|field|plugins
 specifier|private
 name|List
@@ -3573,7 +3526,6 @@ name|plugins
 decl_stmt|;
 comment|// For InterDataNodeProtocol
 DECL|field|ipcServer
-DECL|field|ipcServer
 specifier|public
 name|RPC
 operator|.
@@ -3581,12 +3533,10 @@ name|Server
 name|ipcServer
 decl_stmt|;
 DECL|field|pauseMonitor
-DECL|field|pauseMonitor
 specifier|private
 name|JvmPauseMonitor
 name|pauseMonitor
 decl_stmt|;
-DECL|field|secureResources
 DECL|field|secureResources
 specifier|private
 name|SecureResources
@@ -3596,7 +3546,6 @@ literal|null
 decl_stmt|;
 comment|// dataDirs must be accessed while holding the DataNode lock.
 DECL|field|dataDirs
-DECL|field|dataDirs
 specifier|private
 name|List
 argument_list|<
@@ -3605,13 +3554,11 @@ argument_list|>
 name|dataDirs
 decl_stmt|;
 DECL|field|confVersion
-DECL|field|confVersion
 specifier|private
 specifier|final
 name|String
 name|confVersion
 decl_stmt|;
-DECL|field|maxNumberOfBlocksToLog
 DECL|field|maxNumberOfBlocksToLog
 specifier|private
 specifier|final
@@ -3619,13 +3566,11 @@ name|long
 name|maxNumberOfBlocksToLog
 decl_stmt|;
 DECL|field|pipelineSupportECN
-DECL|field|pipelineSupportECN
 specifier|private
 specifier|final
 name|boolean
 name|pipelineSupportECN
 decl_stmt|;
-DECL|field|usersWithLocalPathAccess
 DECL|field|usersWithLocalPathAccess
 specifier|private
 specifier|final
@@ -3636,28 +3581,23 @@ argument_list|>
 name|usersWithLocalPathAccess
 decl_stmt|;
 DECL|field|connectToDnViaHostname
-DECL|field|connectToDnViaHostname
 specifier|private
 specifier|final
 name|boolean
 name|connectToDnViaHostname
 decl_stmt|;
 DECL|field|readaheadPool
-DECL|field|readaheadPool
 name|ReadaheadPool
 name|readaheadPool
 decl_stmt|;
-DECL|field|saslClient
 DECL|field|saslClient
 name|SaslDataTransferClient
 name|saslClient
 decl_stmt|;
 DECL|field|saslServer
-DECL|field|saslServer
 name|SaslDataTransferServer
 name|saslServer
 decl_stmt|;
-DECL|field|dataNodeInfoBeanName
 DECL|field|dataNodeInfoBeanName
 specifier|private
 name|ObjectName
@@ -3665,25 +3605,21 @@ name|dataNodeInfoBeanName
 decl_stmt|;
 comment|// Test verification only
 DECL|field|lastDiskErrorCheck
-DECL|field|lastDiskErrorCheck
 specifier|private
 specifier|volatile
 name|long
 name|lastDiskErrorCheck
 decl_stmt|;
 DECL|field|supergroup
-DECL|field|supergroup
 specifier|private
 name|String
 name|supergroup
 decl_stmt|;
 DECL|field|isPermissionEnabled
-DECL|field|isPermissionEnabled
 specifier|private
 name|boolean
 name|isPermissionEnabled
 decl_stmt|;
-DECL|field|dnUserName
 DECL|field|dnUserName
 specifier|private
 name|String
@@ -3692,24 +3628,20 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|blockRecoveryWorker
-DECL|field|blockRecoveryWorker
 specifier|private
 name|BlockRecoveryWorker
 name|blockRecoveryWorker
 decl_stmt|;
-DECL|field|ecWorker
 DECL|field|ecWorker
 specifier|private
 name|ErasureCodingWorker
 name|ecWorker
 decl_stmt|;
 DECL|field|storagePolicySatisfyWorker
-DECL|field|storagePolicySatisfyWorker
 specifier|private
 name|StoragePolicySatisfyWorker
 name|storagePolicySatisfyWorker
 decl_stmt|;
-DECL|field|tracer
 DECL|field|tracer
 specifier|private
 specifier|final
@@ -3717,13 +3649,11 @@ name|Tracer
 name|tracer
 decl_stmt|;
 DECL|field|tracerConfigurationManager
-DECL|field|tracerConfigurationManager
 specifier|private
 specifier|final
 name|TracerConfigurationManager
 name|tracerConfigurationManager
 decl_stmt|;
-DECL|field|NUM_CORES
 DECL|field|NUM_CORES
 specifier|private
 specifier|static
@@ -3740,7 +3670,6 @@ name|availableProcessors
 argument_list|()
 decl_stmt|;
 DECL|field|CONGESTION_RATIO
-DECL|field|CONGESTION_RATIO
 specifier|private
 specifier|static
 specifier|final
@@ -3750,7 +3679,6 @@ init|=
 literal|1.5
 decl_stmt|;
 DECL|field|diskBalancer
-DECL|field|diskBalancer
 specifier|private
 name|DiskBalancer
 name|diskBalancer
@@ -3758,13 +3686,11 @@ decl_stmt|;
 annotation|@
 name|Nullable
 DECL|field|storageLocationChecker
-DECL|field|storageLocationChecker
 specifier|private
 specifier|final
 name|StorageLocationChecker
 name|storageLocationChecker
 decl_stmt|;
-DECL|field|volumeChecker
 DECL|field|volumeChecker
 specifier|private
 specifier|final
@@ -3772,13 +3698,11 @@ name|DatasetVolumeChecker
 name|volumeChecker
 decl_stmt|;
 DECL|field|socketFactory
-DECL|field|socketFactory
 specifier|private
 specifier|final
 name|SocketFactory
 name|socketFactory
 decl_stmt|;
-DECL|method|createTracer (Configuration conf)
 DECL|method|createTracer (Configuration conf)
 specifier|private
 specifier|static
@@ -3815,14 +3739,12 @@ argument_list|()
 return|;
 block|}
 DECL|field|oobTimeouts
-DECL|field|oobTimeouts
 specifier|private
 name|long
 index|[]
 name|oobTimeouts
 decl_stmt|;
 comment|/** timeout value of each OOB type */
-DECL|field|metricsLoggerTimer
 DECL|field|metricsLoggerTimer
 specifier|private
 name|ScheduledThreadPoolExecutor
@@ -3838,7 +3760,6 @@ name|LimitedPrivate
 argument_list|(
 literal|"HDFS"
 argument_list|)
-DECL|method|DataNode (final Configuration conf)
 DECL|method|DataNode (final Configuration conf)
 name|DataNode
 parameter_list|(
@@ -3980,7 +3901,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create the DataNode given a configuration, an array of dataDirs,    * and a namenode proxy.    */
-DECL|method|DataNode (final Configuration conf, final List<StorageLocation> dataDirs, final StorageLocationChecker storageLocationChecker, final SecureResources resources)
 DECL|method|DataNode (final Configuration conf, final List<StorageLocation> dataDirs, final StorageLocationChecker storageLocationChecker, final SecureResources resources)
 name|DataNode
 parameter_list|(
@@ -4444,7 +4364,6 @@ annotation|@
 name|Override
 comment|// ReconfigurableBase
 DECL|method|getNewConf ()
-DECL|method|getNewConf ()
 specifier|protected
 name|Configuration
 name|getNewConf
@@ -4459,7 +4378,6 @@ block|}
 comment|/**    * {@inheritdoc}.    */
 annotation|@
 name|Override
-DECL|method|reconfigurePropertyImpl (String property, String newVal)
 DECL|method|reconfigurePropertyImpl (String property, String newVal)
 specifier|public
 name|String
@@ -4804,7 +4722,6 @@ annotation|@
 name|Override
 comment|// Reconfigurable
 DECL|method|getReconfigurableProperties ()
-DECL|method|getReconfigurableProperties ()
 specifier|public
 name|Collection
 argument_list|<
@@ -4818,7 +4735,6 @@ name|RECONFIGURABLE_PROPERTIES
 return|;
 block|}
 comment|/**    * The ECN bit for the DataNode. The DataNode should return:    *<ul>    *<li>ECN.DISABLED when ECN is disabled.</li>    *<li>ECN.SUPPORTED when ECN is enabled but the DN still has capacity.</li>    *<li>ECN.CONGESTED when ECN is enabled and the DN is congested.</li>    *</ul>    */
-DECL|method|getECN ()
 DECL|method|getECN ()
 specifier|public
 name|PipelineAck
@@ -4873,7 +4789,6 @@ name|SUPPORTED
 return|;
 block|}
 DECL|method|getFileIoProvider ()
-DECL|method|getFileIoProvider ()
 specifier|public
 name|FileIoProvider
 name|getFileIoProvider
@@ -4887,13 +4802,11 @@ comment|/**    * Contains the StorageLocations for changed data volumes.    */
 annotation|@
 name|VisibleForTesting
 DECL|class|ChangedVolumes
-DECL|class|ChangedVolumes
 specifier|static
 class|class
 name|ChangedVolumes
 block|{
 comment|/** The storage locations of the newly added volumes. */
-DECL|field|newLocations
 DECL|field|newLocations
 name|List
 argument_list|<
@@ -4908,7 +4821,6 @@ argument_list|()
 decl_stmt|;
 comment|/** The storage locations of the volumes that are removed. */
 DECL|field|deactivateLocations
-DECL|field|deactivateLocations
 name|List
 argument_list|<
 name|StorageLocation
@@ -4921,7 +4833,6 @@ name|newArrayList
 argument_list|()
 decl_stmt|;
 comment|/** The unchanged locations that existed in the old configuration. */
-DECL|field|unchangedLocations
 DECL|field|unchangedLocations
 name|List
 argument_list|<
@@ -4938,7 +4849,6 @@ block|}
 comment|/**    * Parse the new DFS_DATANODE_DATA_DIR value in the configuration to detect    * changed volumes.    * @param newVolumes a comma separated string that specifies the data volumes.    * @return changed volumes.    * @throws IOException if none of the directories are specified in the    * configuration, or the storage type of a directory is changed.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|parseChangedVolumes (String newVolumes)
 DECL|method|parseChangedVolumes (String newVolumes)
 name|ChangedVolumes
 name|parseChangedVolumes
@@ -5361,7 +5271,6 @@ name|results
 return|;
 block|}
 comment|/**    * Attempts to reload data volumes with new configuration.    * @param newVolumes a comma separated string that specifies the data volumes.    * @throws IOException on error. If an IOException is thrown, some new volumes    * may have been successfully added and removed.    */
-DECL|method|refreshVolumes (String newVolumes)
 DECL|method|refreshVolumes (String newVolumes)
 specifier|private
 specifier|synchronized
@@ -5903,7 +5812,6 @@ block|}
 block|}
 comment|/**    * Remove volumes from DataNode.    * See {@link #removeVolumes(Collection, boolean)} for details.    *    * @param locations the StorageLocations of the volumes to be removed.    * @throws IOException    */
 DECL|method|removeVolumes (final Collection<StorageLocation> locations)
-DECL|method|removeVolumes (final Collection<StorageLocation> locations)
 specifier|private
 name|void
 name|removeVolumes
@@ -5937,7 +5845,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove volumes from DataNode.    *    * It does three things:    *<li>    *<ul>Remove volumes and block info from FsDataset.</ul>    *<ul>Remove volumes from DataStorage.</ul>    *<ul>Reset configuration DATA_DIR and {@link #dataDirs} to represent    *   active volumes.</ul>    *</li>    * @param storageLocations the absolute path of volumes.    * @param clearFailure if true, clears the failure information related to the    *                     volumes.    * @throws IOException    */
-DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocations, boolean clearFailure)
 DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocations, boolean clearFailure)
 specifier|private
 specifier|synchronized
@@ -6109,7 +6016,6 @@ throw|;
 block|}
 block|}
 DECL|method|setClusterId (final String nsCid, final String bpid )
-DECL|method|setClusterId (final String nsCid, final String bpid )
 specifier|private
 specifier|synchronized
 name|void
@@ -6166,7 +6072,6 @@ name|nsCid
 expr_stmt|;
 block|}
 comment|/**    * Returns the hostname for this datanode. If the hostname is not    * explicitly configured in the given config, then it is determined    * via the DNS class.    *    * @param config configuration    * @return the hostname (NB: may not be a FQDN)    * @throws UnknownHostException if the dfs.datanode.dns.interface    *    option is used and the hostname can not be determined    */
-DECL|method|getHostName (Configuration config)
 DECL|method|getHostName (Configuration config)
 specifier|private
 specifier|static
@@ -6282,7 +6187,6 @@ return|;
 block|}
 comment|/**    * @see DFSUtil#getHttpPolicy(org.apache.hadoop.conf.Configuration)    * for information related to the different configuration options and    * Http Policy is decided.    */
 DECL|method|startInfoServer ()
-DECL|method|startInfoServer ()
 specifier|private
 name|void
 name|startInfoServer
@@ -6367,7 +6271,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|startPlugins (Configuration conf)
 DECL|method|startPlugins (Configuration conf)
 specifier|private
 name|void
@@ -6473,7 +6376,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|initIpcServer ()
 DECL|method|initIpcServer ()
 specifier|private
 name|void
@@ -6746,7 +6648,6 @@ block|}
 block|}
 comment|/** Check whether the current user is in the superuser group. */
 DECL|method|checkSuperuserPrivilege ()
-DECL|method|checkSuperuserPrivilege ()
 specifier|private
 name|void
 name|checkSuperuserPrivilege
@@ -6847,7 +6748,6 @@ argument_list|()
 throw|;
 block|}
 DECL|method|shutdownPeriodicScanners ()
-DECL|method|shutdownPeriodicScanners ()
 specifier|private
 name|void
 name|shutdownPeriodicScanners
@@ -6863,7 +6763,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * See {@link DirectoryScanner}    */
-DECL|method|initDirectoryScanner (Configuration conf)
 DECL|method|initDirectoryScanner (Configuration conf)
 specifier|private
 specifier|synchronized
@@ -6974,7 +6873,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|shutdownDirectoryScanner ()
-DECL|method|shutdownDirectoryScanner ()
 specifier|private
 specifier|synchronized
 name|void
@@ -6996,7 +6894,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Initilizes {@link DiskBalancer}.    * @param  data - FSDataSet    * @param conf - Config    */
-DECL|method|initDiskBalancer (FsDatasetSpi data, Configuration conf)
 DECL|method|initDiskBalancer (FsDatasetSpi data, Configuration conf)
 specifier|private
 name|void
@@ -7053,7 +6950,6 @@ expr_stmt|;
 block|}
 comment|/**    * Shutdown disk balancer.    */
 DECL|method|shutdownDiskBalancer ()
-DECL|method|shutdownDiskBalancer ()
 specifier|private
 name|void
 name|shutdownDiskBalancer
@@ -7083,7 +6979,6 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-DECL|method|initDataXceiver ()
 DECL|method|initDataXceiver ()
 specifier|private
 name|void
@@ -7342,7 +7237,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getDomainPeerServer (Configuration conf, int port)
-DECL|method|getDomainPeerServer (Configuration conf, int port)
 specifier|private
 specifier|static
 name|DomainPeerServer
@@ -7518,7 +7412,6 @@ return|;
 block|}
 comment|// calls specific to BP
 DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isOnTransientStorage)
-DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isOnTransientStorage)
 specifier|public
 name|void
 name|notifyNamenodeReceivedBlock
@@ -7590,7 +7483,6 @@ block|}
 block|}
 comment|// calls specific to BP
 DECL|method|notifyNamenodeReceivingBlock ( ExtendedBlock block, String storageUuid)
-DECL|method|notifyNamenodeReceivingBlock ( ExtendedBlock block, String storageUuid)
 specifier|protected
 name|void
 name|notifyNamenodeReceivingBlock
@@ -7652,7 +7544,6 @@ block|}
 block|}
 comment|/** Notify the corresponding namenode to delete the block. */
 DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block, String storageUuid)
-DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block, String storageUuid)
 specifier|public
 name|void
 name|notifyNamenodeDeletedBlock
@@ -7712,7 +7603,6 @@ block|}
 block|}
 comment|/**    * Report a bad block which is hosted on the local DN.    */
 DECL|method|reportBadBlocks (ExtendedBlock block)
-DECL|method|reportBadBlocks (ExtendedBlock block)
 specifier|public
 name|void
 name|reportBadBlocks
@@ -7762,7 +7652,6 @@ expr_stmt|;
 block|}
 comment|/**    * Report a bad block which is hosted on the local DN.    *    * @param block the bad block which is hosted on the local DN    * @param volume the volume that block is stored in and the volume    *        must not be null    * @throws IOException    */
 DECL|method|reportBadBlocks (ExtendedBlock block, FsVolumeSpi volume)
-DECL|method|reportBadBlocks (ExtendedBlock block, FsVolumeSpi volume)
 specifier|public
 name|void
 name|reportBadBlocks
@@ -7804,7 +7693,6 @@ expr_stmt|;
 block|}
 comment|/**    * Report a bad block on another DN (eg if we received a corrupt replica    * from a remote host).    * @param srcDataNode the DN hosting the bad block    * @param block the block itself    */
 DECL|method|reportRemoteBadBlock (DatanodeInfo srcDataNode, ExtendedBlock block)
-DECL|method|reportRemoteBadBlock (DatanodeInfo srcDataNode, ExtendedBlock block)
 specifier|public
 name|void
 name|reportRemoteBadBlock
@@ -7836,7 +7724,6 @@ name|block
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|reportCorruptedBlocks ( DFSUtilClient.CorruptedBlocks corruptedBlocks)
 DECL|method|reportCorruptedBlocks ( DFSUtilClient.CorruptedBlocks corruptedBlocks)
 specifier|public
 name|void
@@ -7921,7 +7808,6 @@ block|}
 block|}
 comment|/**    * Try to send an error report to the NNs associated with the given    * block pool.    * @param bpid the block pool ID    * @param errCode error code to send    * @param errMsg textual message to send    */
 DECL|method|trySendErrorReport (String bpid, int errCode, String errMsg)
-DECL|method|trySendErrorReport (String bpid, int errCode, String errMsg)
 name|void
 name|trySendErrorReport
 parameter_list|(
@@ -7973,7 +7859,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Return the BPOfferService instance corresponding to the given block.    * @return the BPOS    * @throws IOException if no such BPOS can be found    */
-DECL|method|getBPOSForBlock (ExtendedBlock block)
 DECL|method|getBPOSForBlock (ExtendedBlock block)
 specifier|private
 name|BPOfferService
@@ -8033,7 +7918,6 @@ comment|// used only for testing
 annotation|@
 name|VisibleForTesting
 DECL|method|setHeartbeatsDisabledForTests ( boolean heartbeatsDisabledForTests)
-DECL|method|setHeartbeatsDisabledForTests ( boolean heartbeatsDisabledForTests)
 specifier|public
 name|void
 name|setHeartbeatsDisabledForTests
@@ -8052,7 +7936,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|areHeartbeatsDisabledForTests ()
-DECL|method|areHeartbeatsDisabledForTests ()
 name|boolean
 name|areHeartbeatsDisabledForTests
 parameter_list|()
@@ -8065,7 +7948,6 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|setCacheReportsDisabledForTest (boolean disabled)
 DECL|method|setCacheReportsDisabledForTest (boolean disabled)
 name|void
 name|setCacheReportsDisabledForTest
@@ -8084,7 +7966,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|areCacheReportsDisabledForTests ()
-DECL|method|areCacheReportsDisabledForTests ()
 name|boolean
 name|areCacheReportsDisabledForTests
 parameter_list|()
@@ -8096,7 +7977,6 @@ name|cacheReportsDisabledForTests
 return|;
 block|}
 comment|/**    * This method starts the data node with the specified conf.    *     * If conf's CONFIG_PROPERTY_SIMULATED property is set    * then a simulated storage based data node is created.    *     * @param dataDirectories - only for a non-simulated storage data node    * @throws IOException    */
-DECL|method|startDataNode (List<StorageLocation> dataDirectories, SecureResources resources )
 DECL|method|startDataNode (List<StorageLocation> dataDirectories, SecureResources resources )
 name|void
 name|startDataNode
@@ -8552,7 +8432,6 @@ block|}
 block|}
 comment|/**    * Checks if the DataNode has a secure configuration if security is enabled.    * There are 2 possible configurations that are considered secure:    * 1. The server has bound to privileged ports for RPC and HTTP via    *   SecureDataNodeStarter.    * 2. The configuration enables SASL on DataTransferProtocol and HTTPS (no    *   plain HTTP) for the HTTP server.  The SASL handshake guarantees    *   authentication of the RPC server before a client transmits a secret, such    *   as a block access token.  Similarly, SSL guarantees authentication of the    *   HTTP server before a client transmits a secret, such as a delegation    *   token.    * It is not possible to run with both privileged ports and SASL on    * DataTransferProtocol.  For backwards-compatibility, the connection logic    * must check if the target port is a privileged port, and if so, skip the    * SASL handshake.    *    * @param dnConf DNConf to check    * @param conf Configuration to check    * @param resources SecuredResources obtained for DataNode    * @throws RuntimeException if security enabled, but configuration is insecure    */
 DECL|method|checkSecureConfig (DNConf dnConf, Configuration conf, SecureResources resources)
-DECL|method|checkSecureConfig (DNConf dnConf, Configuration conf, SecureResources resources)
 specifier|private
 specifier|static
 name|void
@@ -8744,7 +8623,6 @@ argument_list|)
 throw|;
 block|}
 DECL|method|generateUuid ()
-DECL|method|generateUuid ()
 specifier|public
 specifier|static
 name|String
@@ -8762,7 +8640,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|getSaslClient ()
-DECL|method|getSaslClient ()
 specifier|public
 name|SaslDataTransferClient
 name|getSaslClient
@@ -8773,7 +8650,6 @@ name|saslClient
 return|;
 block|}
 comment|/**    * Verify that the DatanodeUuid has been initialized. If this is a new    * datanode then we generate a new Datanode Uuid and persist it to disk.    *    * @throws IOException    */
-DECL|method|checkDatanodeUuid ()
 DECL|method|checkDatanodeUuid ()
 specifier|synchronized
 name|void
@@ -8820,7 +8696,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a DatanodeRegistration for a specific block pool.    * @param nsInfo the namespace info from the first part of the NN handshake    */
-DECL|method|createBPRegistration (NamespaceInfo nsInfo)
 DECL|method|createBPRegistration (NamespaceInfo nsInfo)
 name|DatanodeRegistration
 name|createBPRegistration
@@ -8933,7 +8808,6 @@ return|;
 block|}
 comment|/**    * Check that the registration returned from a NameNode is consistent    * with the information in the storage. If the storage is fresh/unformatted,    * sets the storage ID based on this registration.    * Also updates the block pool's state in the secret manager.    */
 DECL|method|bpRegistrationSucceeded (DatanodeRegistration bpRegistration, String blockPoolId)
-DECL|method|bpRegistrationSucceeded (DatanodeRegistration bpRegistration, String blockPoolId)
 specifier|synchronized
 name|void
 name|bpRegistrationSucceeded
@@ -8997,7 +8871,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * After the block pool has contacted the NN, registers that block pool    * with the secret manager, updating it with the secrets provided by the NN.    * @throws IOException on error    */
-DECL|method|registerBlockPoolWithSecretManager ( DatanodeRegistration bpRegistration, String blockPoolId)
 DECL|method|registerBlockPoolWithSecretManager ( DatanodeRegistration bpRegistration, String blockPoolId)
 specifier|private
 specifier|synchronized
@@ -9177,7 +9050,6 @@ block|}
 block|}
 comment|/**    * Remove the given block pool from the block scanner, dataset, and storage.    */
 DECL|method|shutdownBlockPool (BPOfferService bpos)
-DECL|method|shutdownBlockPool (BPOfferService bpos)
 name|void
 name|shutdownBlockPool
 parameter_list|(
@@ -9251,7 +9123,6 @@ block|}
 block|}
 block|}
 comment|/**    * One of the Block Pools has successfully connected to its NN.    * This initializes the local storage for that block pool,    * checks consistency of the NN's cluster ID, etc.    *     * If this is the first block pool to register, this also initializes    * the datanode-scoped storage.    *     * @param bpos Block pool offer service    * @throws IOException if the NN is inconsistent with the local storage.    */
-DECL|method|initBlockPool (BPOfferService bpos)
 DECL|method|initBlockPool (BPOfferService bpos)
 name|void
 name|initBlockPool
@@ -9360,7 +9231,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getAllBpOs ()
-DECL|method|getAllBpOs ()
 name|List
 argument_list|<
 name|BPOfferService
@@ -9375,7 +9245,6 @@ name|getAllNamenodeThreads
 argument_list|()
 return|;
 block|}
-DECL|method|getBPOfferService (String bpid)
 DECL|method|getBPOfferService (String bpid)
 name|BPOfferService
 name|getBPOfferService
@@ -9394,7 +9263,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getBpOsCount ()
-DECL|method|getBpOsCount ()
 name|int
 name|getBpOsCount
 parameter_list|()
@@ -9410,7 +9278,6 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Initializes the {@link #data}. The initialization is done only once, when    * handshake with the the first namenode is completed.    */
-DECL|method|initStorage (final NamespaceInfo nsInfo)
 DECL|method|initStorage (final NamespaceInfo nsInfo)
 specifier|private
 name|void
@@ -9585,7 +9452,6 @@ block|}
 block|}
 comment|/**    * Determine the http server's effective addr    */
 DECL|method|getInfoAddr (Configuration conf)
-DECL|method|getInfoAddr (Configuration conf)
 specifier|public
 specifier|static
 name|InetSocketAddress
@@ -9612,7 +9478,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|registerMXBean ()
-DECL|method|registerMXBean ()
 specifier|private
 name|void
 name|registerMXBean
@@ -9635,7 +9500,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getXferServer ()
-DECL|method|getXferServer ()
 specifier|public
 name|DataXceiverServer
 name|getXferServer
@@ -9647,7 +9511,6 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getXferPort ()
 DECL|method|getXferPort ()
 specifier|public
 name|int
@@ -9662,7 +9525,6 @@ argument_list|()
 return|;
 block|}
 comment|/**    * @return name useful for logging    */
-DECL|method|getDisplayName ()
 DECL|method|getDisplayName ()
 specifier|public
 name|String
@@ -9681,7 +9543,6 @@ return|;
 block|}
 comment|/**    * NB: The datanode can perform data transfer on the streaming    * address however clients are given the IPC IP address for data    * transfer, and that may be a different address.    *     * @return socket address for data transfer    */
 DECL|method|getXferAddress ()
-DECL|method|getXferAddress ()
 specifier|public
 name|InetSocketAddress
 name|getXferAddress
@@ -9692,7 +9553,6 @@ name|streamingAddr
 return|;
 block|}
 comment|/**    * @return the datanode's IPC port    */
-DECL|method|getIpcPort ()
 DECL|method|getIpcPort ()
 specifier|public
 name|int
@@ -9712,7 +9572,6 @@ block|}
 comment|/**    * get BP registration by blockPool id    * @return BP registration object    * @throws IOException on error    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getDNRegistrationForBP (String bpid)
 DECL|method|getDNRegistrationForBP (String bpid)
 specifier|public
 name|DatanodeRegistration
@@ -9773,7 +9632,6 @@ return|;
 block|}
 comment|/**    * Creates either NIO or regular depending on socketWriteTimeout.    */
 DECL|method|newSocket ()
-DECL|method|newSocket ()
 specifier|public
 name|Socket
 name|newSocket
@@ -9789,7 +9647,6 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Connect to the NN. This is separated out for easier testing.    */
-DECL|method|connectToNN ( InetSocketAddress nnAddr)
 DECL|method|connectToNN ( InetSocketAddress nnAddr)
 name|DatanodeProtocolClientSideTranslatorPB
 name|connectToNN
@@ -9813,7 +9670,6 @@ return|;
 block|}
 comment|/**    * Connect to the NN for the lifeline protocol. This is separated out for    * easier testing.    *    * @param lifelineNnAddr address of lifeline RPC server    * @return lifeline RPC proxy    */
 DECL|method|connectToLifelineNN ( InetSocketAddress lifelineNnAddr)
-DECL|method|connectToLifelineNN ( InetSocketAddress lifelineNnAddr)
 name|DatanodeLifelineProtocolClientSideTranslatorPB
 name|connectToLifelineNN
 parameter_list|(
@@ -9834,7 +9690,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|createInterDataNodeProtocolProxy ( DatanodeID datanodeid, final Configuration conf, final int socketTimeout, final boolean connectToDnViaHostname)
 DECL|method|createInterDataNodeProtocolProxy ( DatanodeID datanodeid, final Configuration conf, final int socketTimeout, final boolean connectToDnViaHostname)
 specifier|public
 specifier|static
@@ -9968,7 +9823,6 @@ throw|;
 block|}
 block|}
 DECL|method|getMetrics ()
-DECL|method|getMetrics ()
 specifier|public
 name|DataNodeMetrics
 name|getMetrics
@@ -9978,7 +9832,6 @@ return|return
 name|metrics
 return|;
 block|}
-DECL|method|getDiskMetrics ()
 DECL|method|getDiskMetrics ()
 specifier|public
 name|DataNodeDiskMetrics
@@ -9990,7 +9843,6 @@ name|diskMetrics
 return|;
 block|}
 DECL|method|getPeerMetrics ()
-DECL|method|getPeerMetrics ()
 specifier|public
 name|DataNodePeerMetrics
 name|getPeerMetrics
@@ -10001,7 +9853,6 @@ name|peerMetrics
 return|;
 block|}
 comment|/** Ensure the authentication method is kerberos */
-DECL|method|checkKerberosAuthMethod (String msg)
 DECL|method|checkKerberosAuthMethod (String msg)
 specifier|private
 name|void
@@ -10053,7 +9904,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|checkBlockLocalPathAccess ()
 DECL|method|checkBlockLocalPathAccess ()
 specifier|private
 name|void
@@ -10109,7 +9959,6 @@ throw|;
 block|}
 block|}
 DECL|method|getMaxNumberOfBlocksToLog ()
-DECL|method|getMaxNumberOfBlocksToLog ()
 specifier|public
 name|long
 name|getMaxNumberOfBlocksToLog
@@ -10121,7 +9970,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getBlockLocalPathInfo (ExtendedBlock block, Token<BlockTokenIdentifier> token)
 DECL|method|getBlockLocalPathInfo (ExtendedBlock block, Token<BlockTokenIdentifier> token)
 specifier|public
 name|BlockLocalPathInfo
@@ -10234,7 +10082,6 @@ argument_list|(
 literal|"HDFS"
 argument_list|)
 DECL|class|ShortCircuitFdsUnsupportedException
-DECL|class|ShortCircuitFdsUnsupportedException
 specifier|static
 specifier|public
 class|class
@@ -10242,7 +10089,6 @@ name|ShortCircuitFdsUnsupportedException
 extends|extends
 name|IOException
 block|{
-DECL|field|serialVersionUID
 DECL|field|serialVersionUID
 specifier|private
 specifier|static
@@ -10252,7 +10098,6 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|ShortCircuitFdsUnsupportedException (String msg)
 DECL|method|ShortCircuitFdsUnsupportedException (String msg)
 specifier|public
 name|ShortCircuitFdsUnsupportedException
@@ -10276,7 +10121,6 @@ argument_list|(
 literal|"HDFS"
 argument_list|)
 DECL|class|ShortCircuitFdsVersionException
-DECL|class|ShortCircuitFdsVersionException
 specifier|static
 specifier|public
 class|class
@@ -10284,7 +10128,6 @@ name|ShortCircuitFdsVersionException
 extends|extends
 name|IOException
 block|{
-DECL|field|serialVersionUID
 DECL|field|serialVersionUID
 specifier|private
 specifier|static
@@ -10294,7 +10137,6 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|ShortCircuitFdsVersionException (String msg)
 DECL|method|ShortCircuitFdsVersionException (String msg)
 specifier|public
 name|ShortCircuitFdsVersionException
@@ -10310,7 +10152,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|requestShortCircuitFdsForRead (final ExtendedBlock blk, final Token<BlockTokenIdentifier> token, int maxVersion)
 DECL|method|requestShortCircuitFdsForRead (final ExtendedBlock blk, final Token<BlockTokenIdentifier> token, int maxVersion)
 name|FileInputStream
 index|[]
@@ -10459,7 +10300,6 @@ name|fis
 return|;
 block|}
 DECL|method|checkBlockToken (ExtendedBlock block, Token<BlockTokenIdentifier> token, AccessMode accessMode)
-DECL|method|checkBlockToken (ExtendedBlock block, Token<BlockTokenIdentifier> token, AccessMode accessMode)
 specifier|private
 name|void
 name|checkBlockToken
@@ -10548,7 +10388,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Shut down this instance of the datanode.    * Returns only after shutdown is complete.    * This method can only be called by the offerService thread.    * Otherwise, deadlock might occur.    */
-DECL|method|shutdown ()
 DECL|method|shutdown ()
 specifier|public
 name|void
@@ -11253,7 +11092,6 @@ expr_stmt|;
 block|}
 comment|/**    * Check if there is a disk failure asynchronously    * and if so, handle the error.    */
 DECL|method|checkDiskErrorAsync (FsVolumeSpi volume)
-DECL|method|checkDiskErrorAsync (FsVolumeSpi volume)
 specifier|public
 name|void
 name|checkDiskErrorAsync
@@ -11326,7 +11164,6 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleDiskError (String failedVolumes)
 DECL|method|handleDiskError (String failedVolumes)
 specifier|private
 name|void
@@ -11434,7 +11271,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getXceiverCount ()
-DECL|method|getXceiverCount ()
 specifier|public
 name|int
 name|getXceiverCount
@@ -11456,7 +11292,6 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getDatanodeNetworkCounts ()
 DECL|method|getDatanodeNetworkCounts ()
 specifier|public
 name|Map
@@ -11480,7 +11315,6 @@ name|asMap
 argument_list|()
 return|;
 block|}
-DECL|method|incrDatanodeNetworkErrors (String host)
 DECL|method|incrDatanodeNetworkErrors (String host)
 name|void
 name|incrDatanodeNetworkErrors
@@ -11566,7 +11400,6 @@ annotation|@
 name|Override
 comment|//DataNodeMXBean
 DECL|method|getXmitsInProgress ()
-DECL|method|getXmitsInProgress ()
 specifier|public
 name|int
 name|getXmitsInProgress
@@ -11581,7 +11414,6 @@ return|;
 block|}
 comment|/**    * Increments the xmitsInProgress count. xmitsInProgress count represents the    * number of data replication/reconstruction tasks running currently.    */
 DECL|method|incrementXmitsInProgress ()
-DECL|method|incrementXmitsInProgress ()
 specifier|public
 name|void
 name|incrementXmitsInProgress
@@ -11594,7 +11426,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Increments the xmitInProgress count by given value.    *    * @param delta the amount of xmitsInProgress to increase.    * @see #incrementXmitsInProgress()    */
-DECL|method|incrementXmitsInProcess (int delta)
 DECL|method|incrementXmitsInProcess (int delta)
 specifier|public
 name|void
@@ -11623,7 +11454,6 @@ expr_stmt|;
 block|}
 comment|/**    * Decrements the xmitsInProgress count    */
 DECL|method|decrementXmitsInProgress ()
-DECL|method|decrementXmitsInProgress ()
 specifier|public
 name|void
 name|decrementXmitsInProgress
@@ -11636,7 +11466,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Decrements the xmitsInProgress count by given value.    *    * @see #decrementXmitsInProgress()    */
-DECL|method|decrementXmitsInProgress (int delta)
 DECL|method|decrementXmitsInProgress (int delta)
 specifier|public
 name|void
@@ -11665,7 +11494,6 @@ name|delta
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|reportBadBlock (final BPOfferService bpos, final ExtendedBlock block, final String msg)
 DECL|method|reportBadBlock (final BPOfferService bpos, final ExtendedBlock block, final String msg)
 specifier|private
 name|void
@@ -11740,7 +11568,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|transferBlock (ExtendedBlock block, DatanodeInfo[] xferTargets, StorageType[] xferTargetStorageTypes, String[] xferTargetStorageIDs)
 DECL|method|transferBlock (ExtendedBlock block, DatanodeInfo[] xferTargets, StorageType[] xferTargetStorageTypes, String[] xferTargetStorageIDs)
 name|void
 name|transferBlock
@@ -12067,7 +11894,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|transferBlocks (String poolId, Block blocks[], DatanodeInfo[][] xferTargets, StorageType[][] xferTargetStorageTypes, String[][] xferTargetStorageIDs)
-DECL|method|transferBlocks (String poolId, Block blocks[], DatanodeInfo[][] xferTargets, StorageType[][] xferTargetStorageTypes, String[][] xferTargetStorageIDs)
 name|void
 name|transferBlocks
 parameter_list|(
@@ -12169,7 +11995,6 @@ block|}
 comment|/* ********************************************************************   Protocol when a client reads data from Datanode (Cur Ver: 9):      Client's Request :   =================          Processed in DataXceiver:      +----------------------------------------------+      | Common Header   | 1 byte OP == OP_READ_BLOCK |      +----------------------------------------------+            Processed in readBlock() :      +-------------------------------------------------------------------------+      | 8 byte Block ID | 8 byte genstamp | 8 byte start offset | 8 byte length |      +-------------------------------------------------------------------------+      |   vInt length   |<DFSClient id> |      +-----------------------------------+            Client sends optional response only at the end of receiving data.           DataNode Response :   ===================         In readBlock() :     If there is an error while initializing BlockSender :        +---------------------------+        | 2 byte OP_STATUS_ERROR    | and connection will be closed.        +---------------------------+     Otherwise        +---------------------------+        | 2 byte OP_STATUS_SUCCESS  |        +---------------------------+             Actual data, sent by BlockSender.sendBlock() :            ChecksumHeader :       +--------------------------------------------------+       | 1 byte CHECKSUM_TYPE | 4 byte BYTES_PER_CHECKSUM |       +--------------------------------------------------+       Followed by actual data in the form of PACKETS:        +------------------------------------+       | Sequence of data PACKETs ....      |       +------------------------------------+          A "PACKET" is defined further below.          The client reads data until it receives a packet with      "LastPacketInBlock" set to true or with a zero length. It then replies     to DataNode with one of the status codes:     - CHECKSUM_OK:    All the chunk checksums have been verified     - SUCCESS:        Data received; checksums not verified     - ERROR_CHECKSUM: (Currently not used) Detected invalid checksums        +---------------+       | 2 byte Status |       +---------------+          The DataNode expects all well behaved clients to send the 2 byte     status code. And if the the client doesn't, the DN will close the     connection. So the status code is optional in the sense that it     does not affect the correctness of the data. (And the client can     always reconnect.)          PACKET : Contains a packet header, checksum and data. Amount of data     ======== carried is set by BUFFER_SIZE.            +-----------------------------------------------------+       | 4 byte packet length (excluding packet header)      |       +-----------------------------------------------------+       | 8 byte offset in the block | 8 byte sequence number |       +-----------------------------------------------------+       | 1 byte isLastPacketInBlock                          |       +-----------------------------------------------------+       | 4 byte Length of actual data                        |       +-----------------------------------------------------+       | x byte checksum data. x is defined below            |       +-----------------------------------------------------+       | actual data ......                                  |       +-----------------------------------------------------+              x = (length of data + BYTE_PER_CHECKSUM - 1)/BYTES_PER_CHECKSUM *           CHECKSUM_SIZE                  CHECKSUM_SIZE depends on CHECKSUM_TYPE (usually, 4 for CRC32)              The above packet format is used while writing data to DFS also.       Not all the fields might be used while reading.         ************************************************************************ */
 comment|/**    * Used for transferring a block of data.  This class    * sends a piece of data to another DataNode.    */
 DECL|class|DataTransfer
-DECL|class|DataTransfer
 specifier|private
 class|class
 name|DataTransfer
@@ -12177,20 +12002,17 @@ implements|implements
 name|Runnable
 block|{
 DECL|field|targets
-DECL|field|targets
 specifier|final
 name|DatanodeInfo
 index|[]
 name|targets
 decl_stmt|;
 DECL|field|targetStorageTypes
-DECL|field|targetStorageTypes
 specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
 decl_stmt|;
-DECL|field|targetStorageIds
 DECL|field|targetStorageIds
 specifier|final
 specifier|private
@@ -12199,18 +12021,15 @@ index|[]
 name|targetStorageIds
 decl_stmt|;
 DECL|field|b
-DECL|field|b
 specifier|final
 name|ExtendedBlock
 name|b
 decl_stmt|;
 DECL|field|stage
-DECL|field|stage
 specifier|final
 name|BlockConstructionStage
 name|stage
 decl_stmt|;
-DECL|field|bpReg
 DECL|field|bpReg
 specifier|final
 specifier|private
@@ -12218,19 +12037,16 @@ name|DatanodeRegistration
 name|bpReg
 decl_stmt|;
 DECL|field|clientname
-DECL|field|clientname
 specifier|final
 name|String
 name|clientname
 decl_stmt|;
-DECL|field|cachingStrategy
 DECL|field|cachingStrategy
 specifier|final
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
 comment|/**      * Connect to the first item in the target list.  Pass along the       * entire target list, the block, and the data.      */
-DECL|method|DataTransfer (DatanodeInfo targets[], StorageType[] targetStorageTypes, String[] targetStorageIds, ExtendedBlock b, BlockConstructionStage stage, final String clientname)
 DECL|method|DataTransfer (DatanodeInfo targets[], StorageType[] targetStorageTypes, String[] targetStorageIds, ExtendedBlock b, BlockConstructionStage stage, final String clientname)
 name|DataTransfer
 parameter_list|(
@@ -12405,7 +12221,6 @@ block|}
 comment|/**      * Do the deed, write the bytes      */
 annotation|@
 name|Override
-DECL|method|run ()
 DECL|method|run ()
 specifier|public
 name|void
@@ -13025,7 +12840,6 @@ block|}
 block|}
 comment|/***    * Use BlockTokenSecretManager to generate block token for current user.    */
 DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode, StorageType[] storageTypes, String[] storageIds)
-DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|Token
 argument_list|<
@@ -13090,7 +12904,6 @@ return|;
 block|}
 comment|/**    * Returns a new DataEncryptionKeyFactory that generates a key from the    * BlockPoolTokenSecretManager, using the block pool ID of the given block.    *    * @param block for which the factory needs to create a key    * @return DataEncryptionKeyFactory for block's block pool ID    */
 DECL|method|getDataEncryptionKeyFactoryForBlock ( final ExtendedBlock block)
-DECL|method|getDataEncryptionKeyFactoryForBlock ( final ExtendedBlock block)
 specifier|public
 name|DataEncryptionKeyFactory
 name|getDataEncryptionKeyFactoryForBlock
@@ -13135,7 +12948,6 @@ return|;
 block|}
 comment|/**    * After a block becomes finalized, a datanode increases metric counter,    * notifies namenode, and adds it to the block scanner    * @param block block to close    * @param delHint hint on which excess block to delete    * @param storageUuid UUID of the storage where block is stored    */
 DECL|method|closeBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isTransientStorage)
-DECL|method|closeBlock (ExtendedBlock block, String delHint, String storageUuid, boolean isTransientStorage)
 name|void
 name|closeBlock
 parameter_list|(
@@ -13170,7 +12982,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Start a single datanode daemon and wait for it to finish.    *  If this thread is specifically interrupted, it will stop waiting.    */
-DECL|method|runDatanodeDaemon ()
 DECL|method|runDatanodeDaemon ()
 specifier|public
 name|void
@@ -13224,7 +13035,6 @@ expr_stmt|;
 block|}
 comment|/**    * A data node is considered to be up if one of the bp services is up    */
 DECL|method|isDatanodeUp ()
-DECL|method|isDatanodeUp ()
 specifier|public
 name|boolean
 name|isDatanodeUp
@@ -13260,7 +13070,6 @@ return|;
 block|}
 comment|/** Instantiate a single datanode object. This must be run by invoking    *  {@link DataNode#runDatanodeDaemon()} subsequently.     */
 DECL|method|instantiateDataNode (String args[], Configuration conf)
-DECL|method|instantiateDataNode (String args[], Configuration conf)
 specifier|public
 specifier|static
 name|DataNode
@@ -13288,7 +13097,6 @@ argument_list|)
 return|;
 block|}
 comment|/** Instantiate a single datanode object, along with its secure resources.     * This must be run by invoking{@link DataNode#runDatanodeDaemon()}     * subsequently.     */
-DECL|method|instantiateDataNode (String args [], Configuration conf, SecureResources resources)
 DECL|method|instantiateDataNode (String args [], Configuration conf, SecureResources resources)
 specifier|public
 specifier|static
@@ -13415,7 +13223,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getStorageLocations (Configuration conf)
-DECL|method|getStorageLocations (Configuration conf)
 specifier|public
 specifier|static
 name|List
@@ -13526,7 +13333,6 @@ comment|/** Instantiate& Start a single datanode daemon and wait for it to finis
 annotation|@
 name|VisibleForTesting
 DECL|method|createDataNode (String args[], Configuration conf)
-DECL|method|createDataNode (String args[], Configuration conf)
 specifier|public
 specifier|static
 name|DataNode
@@ -13560,7 +13366,6 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|method|createDataNode (String args[], Configuration conf, SecureResources resources)
 DECL|method|createDataNode (String args[], Configuration conf, SecureResources resources)
 specifier|public
 specifier|static
@@ -13609,7 +13414,6 @@ return|return
 name|dn
 return|;
 block|}
-DECL|method|join ()
 DECL|method|join ()
 name|void
 name|join
@@ -13681,7 +13485,6 @@ block|}
 block|}
 block|}
 comment|/**    * Make an instance of DataNode after ensuring that at least one of the    * given data directories (and their parent directories, if necessary)    * can be created.    * @param dataDirs List of directories, where the new DataNode instance should    * keep its files.    * @param conf Configuration instance to use.    * @param resources Secure resources needed to run under Kerberos    * @return DataNode instance for given list of data dirs and conf, or null if    * no directory from this directory list can be created.    * @throws IOException    */
-DECL|method|makeInstance (Collection<StorageLocation> dataDirs, Configuration conf, SecureResources resources)
 DECL|method|makeInstance (Collection<StorageLocation> dataDirs, Configuration conf, SecureResources resources)
 specifier|static
 name|DataNode
@@ -13785,7 +13588,6 @@ block|}
 annotation|@
 name|Override
 DECL|method|toString ()
-DECL|method|toString ()
 specifier|public
 name|String
 name|toString
@@ -13819,7 +13621,6 @@ literal|"}"
 return|;
 block|}
 DECL|method|printUsage (PrintStream out)
-DECL|method|printUsage (PrintStream out)
 specifier|private
 specifier|static
 name|void
@@ -13842,7 +13643,6 @@ block|}
 comment|/**    * Parse and verify command line arguments and set configuration parameters.    *    * @return false if passed argements are incorrect    */
 annotation|@
 name|VisibleForTesting
-DECL|method|parseArguments (String args[], Configuration conf)
 DECL|method|parseArguments (String args[], Configuration conf)
 specifier|static
 name|boolean
@@ -13996,7 +13796,6 @@ return|;
 comment|// Fail if more than one cmd specified!
 block|}
 DECL|method|setStartupOption (Configuration conf, StartupOption opt)
-DECL|method|setStartupOption (Configuration conf, StartupOption opt)
 specifier|private
 specifier|static
 name|void
@@ -14022,7 +13821,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getStartupOption (Configuration conf)
 DECL|method|getStartupOption (Configuration conf)
 specifier|static
 name|StartupOption
@@ -14060,7 +13858,6 @@ return|;
 block|}
 comment|/**    * This methods  arranges for the data node to send     * the block report at the next heartbeat.    */
 DECL|method|scheduleAllBlockReport (long delay)
-DECL|method|scheduleAllBlockReport (long delay)
 specifier|public
 name|void
 name|scheduleAllBlockReport
@@ -14093,7 +13890,6 @@ comment|/**    * Examples are adding and deleting blocks directly.    * The most
 annotation|@
 name|VisibleForTesting
 DECL|method|getFSDataset ()
-DECL|method|getFSDataset ()
 specifier|public
 name|FsDatasetSpi
 argument_list|<
@@ -14110,7 +13906,6 @@ annotation|@
 name|VisibleForTesting
 comment|/** @return the block scanner. */
 DECL|method|getBlockScanner ()
-DECL|method|getBlockScanner ()
 specifier|public
 name|BlockScanner
 name|getBlockScanner
@@ -14123,7 +13918,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getDirectoryScanner ()
-DECL|method|getDirectoryScanner ()
 name|DirectoryScanner
 name|getDirectoryScanner
 parameter_list|()
@@ -14135,7 +13929,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getBlockPoolTokenSecretManager ()
-DECL|method|getBlockPoolTokenSecretManager ()
 specifier|public
 name|BlockPoolTokenSecretManager
 name|getBlockPoolTokenSecretManager
@@ -14145,7 +13938,6 @@ return|return
 name|blockPoolTokenSecretManager
 return|;
 block|}
-DECL|method|secureMain (String args[], SecureResources resources)
 DECL|method|secureMain (String args[], SecureResources resources)
 specifier|public
 specifier|static
@@ -14257,7 +14049,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|main (String args[])
-DECL|method|main (String args[])
 specifier|public
 specifier|static
 name|void
@@ -14309,7 +14100,6 @@ annotation|@
 name|Override
 comment|// InterDatanodeProtocol
 DECL|method|initReplicaRecovery (RecoveringBlock rBlock)
-DECL|method|initReplicaRecovery (RecoveringBlock rBlock)
 specifier|public
 name|ReplicaRecoveryInfo
 name|initReplicaRecovery
@@ -14333,7 +14123,6 @@ comment|/**    * Update replica with the new generation stamp and length.      *
 annotation|@
 name|Override
 comment|// InterDatanodeProtocol
-DECL|method|updateReplicaUnderRecovery (final ExtendedBlock oldBlock, final long recoveryId, final long newBlockId, final long newLength)
 DECL|method|updateReplicaUnderRecovery (final ExtendedBlock oldBlock, final long recoveryId, final long newBlockId, final long newLength)
 specifier|public
 name|String
@@ -14439,7 +14228,6 @@ annotation|@
 name|Override
 comment|// ClientDataNodeProtocol
 DECL|method|getReplicaVisibleLength (final ExtendedBlock block)
-DECL|method|getReplicaVisibleLength (final ExtendedBlock block)
 specifier|public
 name|long
 name|getReplicaVisibleLength
@@ -14465,7 +14253,6 @@ name|block
 argument_list|)
 return|;
 block|}
-DECL|method|checkReadAccess (final ExtendedBlock block)
 DECL|method|checkReadAccess (final ExtendedBlock block)
 specifier|private
 name|void
@@ -14602,7 +14389,6 @@ block|}
 block|}
 block|}
 comment|/**    * Transfer a replica to the datanode targets.    * @param b the block to transfer.    *          The corresponding replica must be an RBW or a Finalized.    *          Its GS and numBytes will be set to    *          the stored GS and the visible length.     * @param targets targets to transfer the block to    * @param client client name    */
-DECL|method|transferReplicaForPipelineRecovery (final ExtendedBlock b, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIds, final String client)
 DECL|method|transferReplicaForPipelineRecovery (final ExtendedBlock b, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIds, final String client)
 name|void
 name|transferReplicaForPipelineRecovery
@@ -14886,7 +14672,6 @@ block|}
 block|}
 comment|/**    * Finalize a pending upgrade in response to DNA_FINALIZE.    * @param blockPoolId the block pool to finalize    */
 DECL|method|finalizeUpgradeForPool (String blockPoolId)
-DECL|method|finalizeUpgradeForPool (String blockPoolId)
 name|void
 name|finalizeUpgradeForPool
 parameter_list|(
@@ -14904,7 +14689,6 @@ name|blockPoolId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getStreamingAddr (Configuration conf)
 DECL|method|getStreamingAddr (Configuration conf)
 specifier|static
 name|InetSocketAddress
@@ -14934,7 +14718,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getSoftwareVersion ()
-DECL|method|getSoftwareVersion ()
 specifier|public
 name|String
 name|getSoftwareVersion
@@ -14950,7 +14733,6 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getVersion ()
 DECL|method|getVersion ()
 specifier|public
 name|String
@@ -14974,7 +14756,6 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getRpcPort ()
 DECL|method|getRpcPort ()
 specifier|public
 name|String
@@ -15015,7 +14796,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getDataPort ()
-DECL|method|getDataPort ()
 specifier|public
 name|String
 name|getDataPort
@@ -15055,7 +14835,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getHttpPort ()
-DECL|method|getHttpPort ()
 specifier|public
 name|String
 name|getHttpPort
@@ -15074,7 +14853,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getRevision ()
-DECL|method|getRevision ()
 specifier|public
 name|String
 name|getRevision
@@ -15089,7 +14867,6 @@ return|;
 block|}
 comment|/**    * @return the datanode's http port    */
 DECL|method|getInfoPort ()
-DECL|method|getInfoPort ()
 specifier|public
 name|int
 name|getInfoPort
@@ -15100,7 +14877,6 @@ name|infoPort
 return|;
 block|}
 comment|/**    * @return the datanode's https port    */
-DECL|method|getInfoSecurePort ()
 DECL|method|getInfoSecurePort ()
 specifier|public
 name|int
@@ -15115,7 +14891,6 @@ comment|/**    * Returned information is a JSON representation of a map with    
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getNamenodeAddresses ()
 DECL|method|getNamenodeAddresses ()
 specifier|public
 name|String
@@ -15204,7 +14979,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getDatanodeHostname ()
-DECL|method|getDatanodeHostname ()
 specifier|public
 name|String
 name|getDatanodeHostname
@@ -15220,7 +14994,6 @@ comment|/**    * Returned information is a JSON representation of an array,    *
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getBPServiceActorInfo ()
 DECL|method|getBPServiceActorInfo ()
 specifier|public
 name|String
@@ -15307,7 +15080,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getVolumeInfo ()
-DECL|method|getVolumeInfo ()
 specifier|public
 name|String
 name|getVolumeInfo
@@ -15338,7 +15110,6 @@ annotation|@
 name|Override
 comment|// DataNodeMXBean
 DECL|method|getClusterId ()
-DECL|method|getClusterId ()
 specifier|public
 specifier|synchronized
 name|String
@@ -15352,7 +15123,6 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getDiskBalancerStatus ()
 DECL|method|getDiskBalancerStatus ()
 specifier|public
 name|String
@@ -15393,7 +15163,6 @@ return|;
 block|}
 block|}
 DECL|method|refreshNamenodes (Configuration conf)
-DECL|method|refreshNamenodes (Configuration conf)
 specifier|public
 name|void
 name|refreshNamenodes
@@ -15415,7 +15184,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol
-DECL|method|refreshNamenodes ()
 DECL|method|refreshNamenodes ()
 specifier|public
 name|void
@@ -15444,7 +15212,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol
-DECL|method|deleteBlockPool (String blockPoolId, boolean force)
 DECL|method|deleteBlockPool (String blockPoolId, boolean force)
 specifier|public
 name|void
@@ -15519,7 +15286,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol
-DECL|method|shutdownDatanode (boolean forUpgrade)
 DECL|method|shutdownDatanode (boolean forUpgrade)
 specifier|public
 specifier|synchronized
@@ -15633,7 +15399,6 @@ annotation|@
 name|Override
 comment|//ClientDatanodeProtocol
 DECL|method|evictWriters ()
-DECL|method|evictWriters ()
 specifier|public
 name|void
 name|evictWriters
@@ -15660,7 +15425,6 @@ block|}
 annotation|@
 name|Override
 comment|//ClientDatanodeProtocol
-DECL|method|getDatanodeInfo ()
 DECL|method|getDatanodeInfo ()
 specifier|public
 name|DatanodeLocalInfo
@@ -15699,7 +15463,6 @@ annotation|@
 name|Override
 comment|// ClientDatanodeProtocol& ReconfigurationProtocol
 DECL|method|startReconfiguration ()
-DECL|method|startReconfiguration ()
 specifier|public
 name|void
 name|startReconfiguration
@@ -15717,7 +15480,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol& ReconfigurationProtocol
-DECL|method|getReconfigurationStatus ()
 DECL|method|getReconfigurationStatus ()
 specifier|public
 name|ReconfigurationTaskStatus
@@ -15737,7 +15499,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol& ReconfigurationProtocol
-DECL|method|listReconfigurableProperties ()
 DECL|method|listReconfigurableProperties ()
 specifier|public
 name|List
@@ -15759,7 +15520,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol
-DECL|method|triggerBlockReport (BlockReportOptions options)
 DECL|method|triggerBlockReport (BlockReportOptions options)
 specifier|public
 name|void
@@ -15815,7 +15575,6 @@ block|}
 block|}
 block|}
 comment|/**    * @param addr rpc address of the namenode    * @return true if the datanode is connected to a NameNode at the    * given address    */
-DECL|method|isConnectedToNN (InetSocketAddress addr)
 DECL|method|isConnectedToNN (InetSocketAddress addr)
 specifier|public
 name|boolean
@@ -15873,7 +15632,6 @@ return|;
 block|}
 comment|/**    * @param bpid block pool Id    * @return true - if BPOfferService thread is alive    */
 DECL|method|isBPServiceAlive (String bpid)
-DECL|method|isBPServiceAlive (String bpid)
 specifier|public
 name|boolean
 name|isBPServiceAlive
@@ -15906,7 +15664,6 @@ literal|false
 return|;
 block|}
 DECL|method|isRestarting ()
-DECL|method|isRestarting ()
 name|boolean
 name|isRestarting
 parameter_list|()
@@ -15916,7 +15673,6 @@ name|shutdownForUpgrade
 return|;
 block|}
 comment|/**    * A datanode is considered to be fully started if all the BP threads are    * alive and all the block pools are initialized.    *     * @return true - if the data node is fully started    */
-DECL|method|isDatanodeFullyStarted ()
 DECL|method|isDatanodeFullyStarted ()
 specifier|public
 name|boolean
@@ -15961,7 +15717,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getDatanodeId ()
-DECL|method|getDatanodeId ()
 specifier|public
 name|DatanodeID
 name|getDatanodeId
@@ -15973,7 +15728,6 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|clearAllBlockSecretKeys ()
 DECL|method|clearAllBlockSecretKeys ()
 specifier|public
 name|void
@@ -15989,7 +15743,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientDatanodeProtocol
-DECL|method|getBalancerBandwidth ()
 DECL|method|getBalancerBandwidth ()
 specifier|public
 name|long
@@ -16019,7 +15772,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|getDnConf ()
-DECL|method|getDnConf ()
 specifier|public
 name|DNConf
 name|getDnConf
@@ -16029,7 +15781,6 @@ return|return
 name|dnConf
 return|;
 block|}
-DECL|method|getDatanodeUuid ()
 DECL|method|getDatanodeUuid ()
 specifier|public
 name|String
@@ -16050,7 +15801,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|shouldRun ()
-DECL|method|shouldRun ()
 name|boolean
 name|shouldRun
 parameter_list|()
@@ -16062,7 +15812,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getStorage ()
-DECL|method|getStorage ()
 name|DataStorage
 name|getStorage
 parameter_list|()
@@ -16071,7 +15820,6 @@ return|return
 name|storage
 return|;
 block|}
-DECL|method|getShortCircuitRegistry ()
 DECL|method|getShortCircuitRegistry ()
 specifier|public
 name|ShortCircuitRegistry
@@ -16085,7 +15833,6 @@ block|}
 comment|/**    * Check the disk error synchronously.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|checkDiskError ()
 DECL|method|checkDiskError ()
 specifier|public
 name|void
@@ -16185,7 +15932,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|handleVolumeFailures (Set<FsVolumeSpi> unhealthyVolumes)
 DECL|method|handleVolumeFailures (Set<FsVolumeSpi> unhealthyVolumes)
 specifier|private
 name|void
@@ -16332,7 +16078,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getLastDiskErrorCheck ()
-DECL|method|getLastDiskErrorCheck ()
 specifier|public
 name|long
 name|getLastDiskErrorCheck
@@ -16344,7 +16089,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|listSpanReceivers ()
 DECL|method|listSpanReceivers ()
 specifier|public
 name|SpanReceiverInfo
@@ -16366,7 +16110,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addSpanReceiver (SpanReceiverInfo info)
 DECL|method|addSpanReceiver (SpanReceiverInfo info)
 specifier|public
 name|long
@@ -16392,7 +16135,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeSpanReceiver (long id)
 DECL|method|removeSpanReceiver (long id)
 specifier|public
 name|void
@@ -16416,7 +16158,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getBlockRecoveryWorker ()
-DECL|method|getBlockRecoveryWorker ()
 specifier|public
 name|BlockRecoveryWorker
 name|getBlockRecoveryWorker
@@ -16427,7 +16168,6 @@ name|blockRecoveryWorker
 return|;
 block|}
 DECL|method|getErasureCodingWorker ()
-DECL|method|getErasureCodingWorker ()
 specifier|public
 name|ErasureCodingWorker
 name|getErasureCodingWorker
@@ -16437,7 +16177,6 @@ return|return
 name|ecWorker
 return|;
 block|}
-DECL|method|connectToDN (DatanodeInfo datanodeID, int timeout, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken)
 DECL|method|connectToDN (DatanodeInfo datanodeID, int timeout, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken)
 name|IOStreamPair
 name|connectToDN
@@ -16494,7 +16233,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get timeout value of each OOB type from configuration    */
-DECL|method|initOOBTimeout ()
 DECL|method|initOOBTimeout ()
 specifier|private
 name|void
@@ -16601,7 +16339,6 @@ block|}
 block|}
 comment|/**    * Get the timeout to be used for transmitting the OOB type    * @return the timeout in milliseconds    */
 DECL|method|getOOBTimeout (Status status)
-DECL|method|getOOBTimeout (Status status)
 specifier|public
 name|long
 name|getOOBTimeout
@@ -16659,7 +16396,6 @@ index|]
 return|;
 block|}
 comment|/**    * Start a timer to periodically write DataNode metrics to the log file. This    * behavior can be disabled by configuration.    *    */
-DECL|method|startMetricsLogger ()
 DECL|method|startMetricsLogger ()
 specifier|protected
 name|void
@@ -16739,7 +16475,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|stopMetricsLogger ()
-DECL|method|stopMetricsLogger ()
 specifier|protected
 name|void
 name|stopMetricsLogger
@@ -16766,7 +16501,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getMetricsLoggerTimer ()
-DECL|method|getMetricsLoggerTimer ()
 name|ScheduledThreadPoolExecutor
 name|getMetricsLoggerTimer
 parameter_list|()
@@ -16775,7 +16509,6 @@ return|return
 name|metricsLoggerTimer
 return|;
 block|}
-DECL|method|getTracer ()
 DECL|method|getTracer ()
 specifier|public
 name|Tracer
@@ -16789,7 +16522,6 @@ block|}
 comment|/**    * Allows submission of a disk balancer Job.    * @param planID  - Hash value of the plan.    * @param planVersion - Plan version, reserved for future use. We have only    *                    version 1 now.    * @param planFile - Plan file name    * @param planData - Actual plan data in json format    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String planFile, String planData, boolean skipDateCheck)
 DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String planFile, String planData, boolean skipDateCheck)
 specifier|public
 name|void
@@ -16866,7 +16598,6 @@ comment|/**    * Cancels a running plan.    * @param planID - Hash string that i
 annotation|@
 name|Override
 DECL|method|cancelDiskBalancePlan (String planID)
-DECL|method|cancelDiskBalancePlan (String planID)
 specifier|public
 name|void
 name|cancelDiskBalancePlan
@@ -16893,7 +16624,6 @@ comment|/**    * Returns the status of current or last executed work plan.    * 
 annotation|@
 name|Override
 DECL|method|queryDiskBalancerPlan ()
-DECL|method|queryDiskBalancerPlan ()
 specifier|public
 name|DiskBalancerWorkStatus
 name|queryDiskBalancerPlan
@@ -16915,7 +16645,6 @@ block|}
 comment|/**    * Gets a runtime configuration value from  diskbalancer instance. For    * example : DiskBalancer bandwidth.    *    * @param key - String that represents the run time key value.    * @return value of the key as a string.    * @throws IOException - Throws if there is no such key    */
 annotation|@
 name|Override
-DECL|method|getDiskBalancerSetting (String key)
 DECL|method|getDiskBalancerSetting (String key)
 specifier|public
 name|String
@@ -16999,7 +16728,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setBlockScanner (BlockScanner blockScanner)
-DECL|method|setBlockScanner (BlockScanner blockScanner)
 name|void
 name|setBlockScanner
 parameter_list|(
@@ -17017,7 +16745,6 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getSendPacketDownstreamAvgInfo ()
 DECL|method|getSendPacketDownstreamAvgInfo ()
 specifier|public
 name|String
@@ -17040,7 +16767,6 @@ block|}
 annotation|@
 name|Override
 comment|// DataNodeMXBean
-DECL|method|getSlowDisks ()
 DECL|method|getSlowDisks ()
 specifier|public
 name|String
@@ -17084,7 +16810,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getVolumeReport ()
 DECL|method|getVolumeReport ()
 specifier|public
 name|List
@@ -17273,7 +16998,6 @@ name|volumeInfoList
 return|;
 block|}
 DECL|method|getDiskBalancer ()
-DECL|method|getDiskBalancer ()
 specifier|private
 name|DiskBalancer
 name|getDiskBalancer
@@ -17304,11 +17028,6 @@ operator|.
 name|diskBalancer
 return|;
 block|}
-block|}
-end_class
-
-begin_function
-DECL|method|getStoragePolicySatisfyWorker ()
 DECL|method|getStoragePolicySatisfyWorker ()
 name|StoragePolicySatisfyWorker
 name|getStoragePolicySatisfyWorker
@@ -17318,8 +17037,8 @@ return|return
 name|storagePolicySatisfyWorker
 return|;
 block|}
-end_function
+block|}
+end_class
 
-unit|}
 end_unit
 
