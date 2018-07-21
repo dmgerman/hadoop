@@ -689,6 +689,8 @@ argument_list|(
 operator|new
 name|ContainerReader
 argument_list|(
+name|volumeSet
+argument_list|,
 name|volume
 argument_list|,
 name|containerSet

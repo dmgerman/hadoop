@@ -414,6 +414,42 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|clusterId
+specifier|private
+name|String
+name|clusterId
+decl_stmt|;
+DECL|field|scmId
+specifier|private
+name|String
+name|scmId
+decl_stmt|;
+DECL|method|ScmTestMock ()
+specifier|public
+name|ScmTestMock
+parameter_list|()
+block|{
+name|clusterId
+operator|=
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+name|scmId
+operator|=
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Map of datanode to containers
 DECL|field|nodeContainers
 specifier|private
@@ -774,13 +810,7 @@ name|OzoneConsts
 operator|.
 name|SCM_ID
 argument_list|,
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+name|scmId
 argument_list|)
 operator|.
 name|addValue
@@ -789,13 +819,7 @@ name|OzoneConsts
 operator|.
 name|CLUSTER_ID
 argument_list|,
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+name|clusterId
 argument_list|)
 operator|.
 name|build
@@ -1382,6 +1406,34 @@ argument_list|(
 name|scmCmd
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Set scmId.    * @param id    */
+DECL|method|setScmId (String id)
+specifier|public
+name|void
+name|setScmId
+parameter_list|(
+name|String
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scmId
+operator|=
+name|id
+expr_stmt|;
+block|}
+comment|/**    * Set scmId.    * @return scmId    */
+DECL|method|getScmId ()
+specifier|public
+name|String
+name|getScmId
+parameter_list|()
+block|{
+return|return
+name|scmId
+return|;
 block|}
 block|}
 end_class

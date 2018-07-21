@@ -72,6 +72,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|scm
@@ -502,7 +516,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
+name|HDDS_DATANODE_DIR_KEY
 import|;
 end_import
 
@@ -514,11 +528,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|hdds
 operator|.
-name|DFSConfigKeys
+name|scm
 operator|.
-name|DFS_DATANODE_DATA_DIR_KEY
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
 import|;
 end_import
 
@@ -560,13 +576,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Changing it to 1, as current code checks for multiple scm directories,
+comment|// and fail if exists
 DECL|field|scmServerCount
 specifier|private
 specifier|final
 name|int
 name|scmServerCount
 init|=
-literal|3
+literal|1
 decl_stmt|;
 DECL|field|serverAddresses
 specifier|private
@@ -829,7 +847,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_DATANODE_DATA_DIR_KEY
+name|HDDS_DATANODE_DIR_KEY
 argument_list|,
 name|dataDir
 operator|.
@@ -1054,10 +1072,12 @@ comment|//ignore all execption from the shutdown
 block|}
 finally|finally
 block|{
-name|testRoot
+name|FileUtil
 operator|.
-name|delete
-argument_list|()
+name|fullyDelete
+argument_list|(
+name|testRoot
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1118,7 +1138,7 @@ operator|.
 name|size
 argument_list|()
 operator|==
-literal|3
+literal|1
 argument_list|,
 literal|1000
 argument_list|,

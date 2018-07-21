@@ -152,6 +152,26 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|volume
+operator|.
+name|VolumeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
 name|keyvalue
 operator|.
 name|KeyValueContainer
@@ -337,9 +357,18 @@ specifier|final
 name|File
 name|hddsVolumeDir
 decl_stmt|;
-DECL|method|ContainerReader (HddsVolume volume, ContainerSet cset, OzoneConfiguration conf)
+DECL|field|volumeSet
+specifier|private
+specifier|final
+name|VolumeSet
+name|volumeSet
+decl_stmt|;
+DECL|method|ContainerReader (VolumeSet volSet, HddsVolume volume, ContainerSet cset, OzoneConfiguration conf)
 name|ContainerReader
 parameter_list|(
+name|VolumeSet
+name|volSet
+parameter_list|,
 name|HddsVolume
 name|volume
 parameter_list|,
@@ -383,6 +412,12 @@ operator|.
 name|config
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|volumeSet
+operator|=
+name|volSet
 expr_stmt|;
 block|}
 annotation|@
@@ -484,9 +519,49 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Volume {} is empty with out metadata and chunks"
+literal|"IO error for the volume {}, skipped loading"
 argument_list|,
 name|hddsVolumeRootDir
+argument_list|)
+expr_stmt|;
+name|volumeSet
+operator|.
+name|failVolume
+argument_list|(
+name|hddsVolumeRootDir
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|scmDir
+operator|.
+name|length
+operator|>
+literal|1
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Volume {} is in Inconsistent state"
+argument_list|,
+name|hddsVolumeRootDir
+argument_list|)
+expr_stmt|;
+name|volumeSet
+operator|.
+name|failVolume
+argument_list|(
+name|hddsVolumeRootDir
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;
@@ -658,9 +733,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Missing container metadata files for Container: "
+literal|"Missing container metadata files for "
 operator|+
-literal|"{}"
+literal|"Container: {}"
 argument_list|,
 name|containerName
 argument_list|)
