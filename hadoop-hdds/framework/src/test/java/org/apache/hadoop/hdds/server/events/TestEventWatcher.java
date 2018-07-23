@@ -977,6 +977,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|onTimeout (EventPublisher publisher, UnderreplicatedEvent payload)
+specifier|protected
 name|void
 name|onTimeout
 parameter_list|(
@@ -1000,6 +1001,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|onFinished (EventPublisher publisher, UnderreplicatedEvent payload)
+specifier|protected
 name|void
 name|onFinished
 parameter_list|(
@@ -1028,7 +1030,6 @@ argument_list|()
 return|;
 block|}
 block|}
-empty_stmt|;
 DECL|class|ReplicationCompletedEvent
 specifier|private
 specifier|static

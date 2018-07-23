@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.replication
+DECL|package|org.apache.hadoop.hdds.scm.container.replication
 package|package
 name|org
 operator|.
@@ -12,7 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
+operator|.
+name|scm
 operator|.
 name|container
 operator|.
@@ -21,7 +23,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Ozone Container replicaton related classes.  */
+comment|/**  * HDDS (Closed) Container replicaton related classes.  */
 end_comment
 
 end_unit

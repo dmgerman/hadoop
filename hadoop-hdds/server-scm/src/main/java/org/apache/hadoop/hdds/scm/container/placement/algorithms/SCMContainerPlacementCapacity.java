@@ -26,15 +26,11 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
+name|List
 import|;
 end_import
 
@@ -49,6 +45,22 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -112,17 +124,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|hdds
+name|annotations
 operator|.
-name|protocol
-operator|.
-name|DatanodeDetails
+name|VisibleForTesting
 import|;
 end_import
 
@@ -143,16 +153,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -208,10 +208,10 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Called by SCM to choose datanodes.    *    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of datanodes.    * @throws SCMException  SCMException    */
+comment|/**    * Called by SCM to choose datanodes.    *    *    * @param excludedNodes - list of the datanodes to exclude.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of datanodes.    * @throws SCMException  SCMException    */
 annotation|@
 name|Override
-DECL|method|chooseDatanodes ( final int nodesRequired, final long sizeRequired)
+DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, final int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
@@ -219,6 +219,12 @@ name|DatanodeDetails
 argument_list|>
 name|chooseDatanodes
 parameter_list|(
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|excludedNodes
+parameter_list|,
 specifier|final
 name|int
 name|nodesRequired
@@ -240,6 +246,8 @@ name|super
 operator|.
 name|chooseDatanodes
 argument_list|(
+name|excludedNodes
+argument_list|,
 name|nodesRequired
 argument_list|,
 name|sizeRequired

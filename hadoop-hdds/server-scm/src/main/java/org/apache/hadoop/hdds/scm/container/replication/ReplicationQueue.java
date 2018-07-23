@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.replication
+DECL|package|org.apache.hadoop.hdds.scm.container.replication
 package|package
 name|org
 operator|.
@@ -12,7 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
+operator|.
+name|scm
 operator|.
 name|container
 operator|.
@@ -36,7 +38,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|PriorityQueue
+name|concurrent
+operator|.
+name|BlockingQueue
 import|;
 end_import
 
@@ -46,7 +50,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Queue
+name|concurrent
+operator|.
+name|PriorityBlockingQueue
 import|;
 end_import
 
@@ -63,27 +69,27 @@ block|{
 DECL|field|queue
 specifier|private
 specifier|final
-name|Queue
+name|BlockingQueue
 argument_list|<
 name|ReplicationRequest
 argument_list|>
 name|queue
 decl_stmt|;
 DECL|method|ReplicationQueue ()
+specifier|public
 name|ReplicationQueue
 parameter_list|()
 block|{
 name|queue
 operator|=
 operator|new
-name|PriorityQueue
+name|PriorityBlockingQueue
 argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
 DECL|method|add (ReplicationRequest repObj)
 specifier|public
-specifier|synchronized
 name|boolean
 name|add
 parameter_list|(
@@ -127,7 +133,6 @@ return|;
 block|}
 DECL|method|remove (ReplicationRequest repObj)
 specifier|public
-specifier|synchronized
 name|boolean
 name|remove
 parameter_list|(
@@ -147,7 +152,6 @@ block|}
 comment|/**    * Retrieves, but does not remove, the head of this queue,    * or returns {@code null} if this queue is empty.    *    * @return the head of this queue, or {@code null} if this queue is empty    */
 DECL|method|peek ()
 specifier|public
-specifier|synchronized
 name|ReplicationRequest
 name|peek
 parameter_list|()
@@ -159,24 +163,24 @@ name|peek
 argument_list|()
 return|;
 block|}
-comment|/**    * Retrieves and removes the head of this queue,    * or returns {@code null} if this queue is empty.    *    * @return the head of this queue, or {@code null} if this queue is empty    */
-DECL|method|poll ()
+comment|/**    * Retrieves and removes the head of this queue (blocking queue).    */
+DECL|method|take ()
 specifier|public
-specifier|synchronized
 name|ReplicationRequest
-name|poll
+name|take
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
 return|return
 name|queue
 operator|.
-name|poll
+name|take
 argument_list|()
 return|;
 block|}
 DECL|method|removeAll (List<ReplicationRequest> repObjs)
 specifier|public
-specifier|synchronized
 name|boolean
 name|removeAll
 parameter_list|(

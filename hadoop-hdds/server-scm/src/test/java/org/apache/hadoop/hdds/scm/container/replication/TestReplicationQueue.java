@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.replication
+DECL|package|org.apache.hadoop.hdds.scm.container.replication
 package|package
 name|org
 operator|.
@@ -12,7 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
+operator|.
+name|scm
 operator|.
 name|container
 operator|.
@@ -132,6 +134,8 @@ specifier|public
 name|void
 name|testDuplicateAddOp
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
 name|long
 name|contId
@@ -271,7 +275,7 @@ name|temp
 init|=
 name|replicationQueue
 operator|.
-name|poll
+name|take
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -291,6 +295,8 @@ specifier|public
 name|void
 name|testPollOp
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
 name|long
 name|contId
@@ -498,7 +504,7 @@ name|temp
 operator|=
 name|replicationQueue
 operator|.
-name|poll
+name|take
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -528,7 +534,7 @@ name|temp
 operator|=
 name|replicationQueue
 operator|.
-name|poll
+name|take
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -560,7 +566,7 @@ name|temp
 operator|=
 name|replicationQueue
 operator|.
-name|poll
+name|take
 argument_list|()
 expr_stmt|;
 name|Assert

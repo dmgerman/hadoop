@@ -320,8 +320,8 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *<p>    * Here are some invariants of container placement.    *<p>    * 1. We place containers only on healthy nodes.    * 2. We place containers on nodes with enough space for that container.    * 3. if a set of containers are requested, we either meet the required    * number of nodes or we fail that request.    *    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws SCMException SCM exception.    */
-DECL|method|chooseDatanodes (int nodesRequired, final long sizeRequired)
+comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *<p>    * Here are some invariants of container placement.    *<p>    * 1. We place containers only on healthy nodes.    * 2. We place containers on nodes with enough space for that container.    * 3. if a set of containers are requested, we either meet the required    * number of nodes or we fail that request.    *    *    * @param excludedNodes - datanodes with existing replicas    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws SCMException SCM exception.    */
+DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
@@ -329,6 +329,12 @@ name|DatanodeDetails
 argument_list|>
 name|chooseDatanodes
 parameter_list|(
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|excludedNodes
+parameter_list|,
 name|int
 name|nodesRequired
 parameter_list|,
@@ -356,6 +362,13 @@ operator|.
 name|HEALTHY
 argument_list|)
 decl_stmt|;
+name|healthyNodes
+operator|.
+name|removeAll
+argument_list|(
+name|excludedNodes
+argument_list|)
+expr_stmt|;
 name|String
 name|msg
 decl_stmt|;

@@ -952,6 +952,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|onTimeout (EventPublisher publisher, TIMEOUT_PAYLOAD payload)
+specifier|protected
 specifier|abstract
 name|void
 name|onTimeout
@@ -964,6 +965,7 @@ name|payload
 parameter_list|)
 function_decl|;
 DECL|method|onFinished (EventPublisher publisher, TIMEOUT_PAYLOAD payload)
+specifier|protected
 specifier|abstract
 name|void
 name|onFinished

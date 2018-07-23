@@ -206,6 +206,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -495,6 +505,11 @@ name|capacityPlacer
 operator|.
 name|chooseDatanodes
 argument_list|(
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+argument_list|,
 name|nodesRequired
 argument_list|,
 name|containerSize
@@ -520,6 +535,8 @@ name|randomPlacer
 operator|.
 name|chooseDatanodes
 argument_list|(
+name|nodesCapacity
+argument_list|,
 name|nodesRequired
 argument_list|,
 name|containerSize

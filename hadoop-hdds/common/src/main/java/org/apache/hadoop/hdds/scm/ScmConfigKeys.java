@@ -961,6 +961,24 @@ name|OZONE_SCM_CONTAINER_CLOSE_THRESHOLD_DEFAULT
 init|=
 literal|0.9f
 decl_stmt|;
+DECL|field|HDDS_SCM_WATCHER_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SCM_WATCHER_TIMEOUT
+init|=
+literal|"hdds.scm.watcher.timeout"
+decl_stmt|;
+DECL|field|HDDS_SCM_WATCHER_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SCM_WATCHER_TIMEOUT_DEFAULT
+init|=
+literal|"10m"
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
 specifier|private

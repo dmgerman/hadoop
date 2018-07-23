@@ -134,6 +134,30 @@ return|return
 name|name
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"TypedEvent{"
+operator|+
+literal|"payloadType="
+operator|+
+name|payloadType
+operator|+
+literal|", name='"
+operator|+
+name|name
+operator|+
+literal|'\''
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 
