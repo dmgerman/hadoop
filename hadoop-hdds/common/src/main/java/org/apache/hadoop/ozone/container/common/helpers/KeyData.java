@@ -108,6 +108,16 @@ name|TreeMap
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper class to convert Protobuf to Java classes.  */
 end_comment
@@ -497,7 +507,62 @@ return|return
 name|chunks
 return|;
 block|}
-comment|/**    * Returns container ID.    * @return long.    */
+comment|/**    * Adds chinkInfo to the list    */
+DECL|method|addChunk (ContainerProtos.ChunkInfo chunkInfo)
+specifier|public
+name|void
+name|addChunk
+parameter_list|(
+name|ContainerProtos
+operator|.
+name|ChunkInfo
+name|chunkInfo
+parameter_list|)
+block|{
+if|if
+condition|(
+name|chunks
+operator|==
+literal|null
+condition|)
+block|{
+name|chunks
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
+name|chunks
+operator|.
+name|add
+argument_list|(
+name|chunkInfo
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * removes the chunk.    */
+DECL|method|removeChunk (ContainerProtos.ChunkInfo chunkInfo)
+specifier|public
+name|void
+name|removeChunk
+parameter_list|(
+name|ContainerProtos
+operator|.
+name|ChunkInfo
+name|chunkInfo
+parameter_list|)
+block|{
+name|chunks
+operator|.
+name|remove
+argument_list|(
+name|chunkInfo
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Returns container ID.    *    * @return long.    */
 DECL|method|getContainerID ()
 specifier|public
 name|long
