@@ -786,8 +786,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"noteFailure {}"
-operator|+
+literal|"noteFailure"
+argument_list|,
 name|exception
 argument_list|)
 expr_stmt|;
