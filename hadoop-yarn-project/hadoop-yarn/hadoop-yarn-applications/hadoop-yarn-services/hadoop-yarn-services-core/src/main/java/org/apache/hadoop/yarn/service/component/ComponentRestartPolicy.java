@@ -121,6 +121,14 @@ name|Component
 name|component
 parameter_list|)
 function_decl|;
+DECL|method|allowContainerRetriesForInstance (ComponentInstance componentInstance)
+name|boolean
+name|allowContainerRetriesForInstance
+parameter_list|(
+name|ComponentInstance
+name|componentInstance
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

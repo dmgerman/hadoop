@@ -114,6 +114,24 @@ name|yarn
 operator|.
 name|service
 operator|.
+name|component
+operator|.
+name|ComponentRestartPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
 name|conf
 operator|.
 name|YarnServiceConf
@@ -881,7 +899,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|buildContainerRetry (AbstractLauncher launcher, Configuration yarnConf, ContainerLaunchService.ComponentLaunchContext compLaunchContext)
+DECL|method|buildContainerRetry (AbstractLauncher launcher, Configuration yarnConf, ContainerLaunchService.ComponentLaunchContext compLaunchContext, ComponentInstance instance)
 specifier|public
 name|void
 name|buildContainerRetry
@@ -896,9 +914,33 @@ name|ContainerLaunchService
 operator|.
 name|ComponentLaunchContext
 name|compLaunchContext
+parameter_list|,
+name|ComponentInstance
+name|instance
 parameter_list|)
 block|{
 comment|// By default retry forever every 30 seconds
+name|ComponentRestartPolicy
+name|restartPolicy
+init|=
+name|instance
+operator|.
+name|getComponent
+argument_list|()
+operator|.
+name|getRestartPolicyHandler
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|restartPolicy
+operator|.
+name|allowContainerRetriesForInstance
+argument_list|(
+name|instance
+argument_list|)
+condition|)
+block|{
 name|launcher
 operator|.
 name|setRetryContext
@@ -952,6 +994,7 @@ name|yarnConf
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|buildContainerLaunchContext (AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf, Container container, ContainerLaunchService.ComponentLaunchContext compLaunchContext)
 specifier|public
@@ -1107,6 +1150,8 @@ argument_list|,
 name|yarnConf
 argument_list|,
 name|compLaunchContext
+argument_list|,
+name|instance
 argument_list|)
 expr_stmt|;
 block|}

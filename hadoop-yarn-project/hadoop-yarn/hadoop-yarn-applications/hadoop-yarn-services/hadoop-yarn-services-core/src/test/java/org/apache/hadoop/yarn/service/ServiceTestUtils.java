@@ -1082,9 +1082,7 @@ literal|"terminating-comp1"
 argument_list|,
 literal|2
 argument_list|,
-literal|"sleep "
-operator|+
-literal|"1000"
+literal|"sleep 1000"
 argument_list|,
 name|Component
 operator|.

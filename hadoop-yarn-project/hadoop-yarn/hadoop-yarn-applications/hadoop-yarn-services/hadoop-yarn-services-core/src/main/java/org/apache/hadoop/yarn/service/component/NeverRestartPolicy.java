@@ -285,6 +285,21 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|allowContainerRetriesForInstance ( ComponentInstance componentInstance)
+annotation|@
+name|Override
+specifier|public
+name|boolean
+name|allowContainerRetriesForInstance
+parameter_list|(
+name|ComponentInstance
+name|componentInstance
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 
