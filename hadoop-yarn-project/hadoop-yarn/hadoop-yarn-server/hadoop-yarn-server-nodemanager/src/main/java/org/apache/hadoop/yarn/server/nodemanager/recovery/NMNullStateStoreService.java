@@ -427,8 +427,6 @@ parameter_list|,
 name|StartContainerRequest
 name|startRequest
 parameter_list|)
-throws|throws
-name|IOException
 block|{   }
 annotation|@
 name|Override

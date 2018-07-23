@@ -1248,7 +1248,6 @@ name|tmpDir
 decl_stmt|;
 DECL|field|metrics
 specifier|protected
-specifier|final
 name|NodeManagerMetrics
 name|metrics
 init|=

@@ -586,7 +586,8 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkMetrics (int launched, int completed, int failed, int killed, int initing, int running, int allocatedGB, int allocatedContainers, int availableGB, int allocatedVCores, int availableVCores)
-specifier|private
+specifier|public
+specifier|static
 name|void
 name|checkMetrics
 parameter_list|(

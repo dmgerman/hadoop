@@ -4520,9 +4520,6 @@ argument_list|(
 name|container
 argument_list|,
 name|rcs
-operator|.
-name|getStatus
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|app
