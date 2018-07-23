@@ -500,10 +500,6 @@ specifier|public
 enum|enum
 name|StoragePolicySatisfierMode
 block|{
-comment|/**      * This mode represents that SPS service is running inside Namenode and can      * accept any SPS call request.      */
-DECL|enumConstant|INTERNAL
-name|INTERNAL
-block|,
 comment|/**      * This mode represents that SPS service is running outside Namenode as an      * external service and can accept any SPS call request.      */
 DECL|enumConstant|EXTERNAL
 name|EXTERNAL
@@ -579,32 +575,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-block|}
-comment|/**    * Storage policy satisfy path status.    */
-DECL|enum|StoragePolicySatisfyPathStatus
-specifier|public
-enum|enum
-name|StoragePolicySatisfyPathStatus
-block|{
-comment|/**      * Scheduled but not yet processed. This will come only in case of      * directory. Directory will be added first in "pendingWorkForDirectory"      * queue and then later it is processed recursively.      */
-DECL|enumConstant|PENDING
-name|PENDING
-block|,
-comment|/**      * Satisfying the storage policy for path.      */
-DECL|enumConstant|IN_PROGRESS
-name|IN_PROGRESS
-block|,
-comment|/**      * Storage policy satisfied for the path.      */
-DECL|enumConstant|SUCCESS
-name|SUCCESS
-block|,
-comment|/**      * Few blocks failed to move and the path is still not      * fully satisfied the storage policy.      */
-DECL|enumConstant|FAILURE
-name|FAILURE
-block|,
-comment|/**      * Status not available.      */
-DECL|enumConstant|NOT_AVAILABLE
-name|NOT_AVAILABLE
 block|}
 DECL|enum|RollingUpgradeAction
 specifier|public

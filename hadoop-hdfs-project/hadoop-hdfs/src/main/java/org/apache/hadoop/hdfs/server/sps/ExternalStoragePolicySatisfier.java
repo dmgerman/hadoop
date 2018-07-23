@@ -421,37 +421,6 @@ argument_list|(
 name|spsConf
 argument_list|)
 expr_stmt|;
-name|boolean
-name|spsRunning
-decl_stmt|;
-name|spsRunning
-operator|=
-name|nnc
-operator|.
-name|getDistributedFileSystem
-argument_list|()
-operator|.
-name|getClient
-argument_list|()
-operator|.
-name|isInternalSatisfierRunning
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|spsRunning
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"Startup failed due to StoragePolicySatisfier"
-operator|+
-literal|" running inside Namenode."
-argument_list|)
-throw|;
-block|}
 name|ExternalSPSContext
 name|context
 init|=

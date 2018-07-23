@@ -340,24 +340,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|StoragePolicySatisfyPathStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -441,24 +423,6 @@ operator|.
 name|balancer
 operator|.
 name|Matcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
 import|;
 end_import
 
@@ -905,44 +869,6 @@ return|return;
 block|}
 if|if
 condition|(
-name|serviceMode
-operator|==
-name|StoragePolicySatisfierMode
-operator|.
-name|INTERNAL
-operator|&&
-name|ctxt
-operator|.
-name|isMoverRunning
-argument_list|()
-condition|)
-block|{
-name|isRunning
-operator|=
-literal|false
-expr_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Stopping StoragePolicySatisfier thread "
-operator|+
-literal|"as Mover ID file "
-operator|+
-name|HdfsServerConstants
-operator|.
-name|MOVER_ID_PATH
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" been opened. Maybe a Mover instance is running!"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-if|if
-condition|(
 name|reconfigStart
 condition|)
 block|{
@@ -989,11 +915,6 @@ block|}
 name|isRunning
 operator|=
 literal|true
-expr_stmt|;
-comment|// Ensure that all the previously submitted block movements(if any) have to
-comment|// be stopped in all datanodes.
-name|addDropSPSWorkCommandsToAllDNs
-argument_list|()
 expr_stmt|;
 name|storagePolicySatisfierThread
 operator|=
@@ -1088,9 +1009,6 @@ block|{
 name|storageMovementNeeded
 operator|.
 name|clearQueuesWithNotification
-argument_list|()
-expr_stmt|;
-name|addDropSPSWorkCommandsToAllDNs
 argument_list|()
 expr_stmt|;
 block|}
@@ -1199,19 +1117,6 @@ block|{
 return|return
 name|isRunning
 return|;
-block|}
-comment|/**    * Adding drop commands to all datanodes to stop performing the satisfier    * block movements, if any.    */
-DECL|method|addDropSPSWorkCommandsToAllDNs ()
-specifier|private
-name|void
-name|addDropSPSWorkCommandsToAllDNs
-parameter_list|()
-block|{
-name|ctxt
-operator|.
-name|addDropPreviousSPSWorkAtDNs
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -5010,24 +4915,6 @@ name|clearAll
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Clear queues for given track id.    */
-DECL|method|clearQueue (long trackId)
-specifier|public
-name|void
-name|clearQueue
-parameter_list|(
-name|long
-name|trackId
-parameter_list|)
-block|{
-name|storageMovementNeeded
-operator|.
-name|clearQueue
-argument_list|(
-name|trackId
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * This class contains information of an attempted blocks and its last    * attempted or reported time stamp. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
 DECL|class|AttemptedItemInfo
 specifier|final
@@ -5134,32 +5021,6 @@ operator|.
 name|blocks
 return|;
 block|}
-block|}
-comment|/**    * Returns sps invoked path status. This method is used by internal satisfy    * storage policy service.    *    * @param path    *          sps path    * @return storage policy satisfy path status    * @throws IOException    */
-DECL|method|checkStoragePolicySatisfyPathStatus ( String path)
-specifier|public
-name|StoragePolicySatisfyPathStatus
-name|checkStoragePolicySatisfyPathStatus
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|storageMovementNeeded
-operator|.
-name|getStatus
-argument_list|(
-name|ctxt
-operator|.
-name|getFileID
-argument_list|(
-name|path
-argument_list|)
-argument_list|)
-return|;
 block|}
 annotation|@
 name|Override

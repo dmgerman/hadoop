@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -108,29 +118,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
-name|StoragePolicySatisfyPathStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
-name|blockmanagement
+name|common
 operator|.
-name|BlockManager
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -190,8 +182,22 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
-comment|/**  * This manages satisfy storage policy invoked path ids and expose methods to  * process these path ids. It maintains sps mode(INTERNAL/EXTERNAL/NONE)  * configured by the administrator.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.INTERNAL}, then  * it will start internal sps daemon service inside namenode and process sps  * invoked path ids to satisfy the storage policy.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then  * it won't do anything, just maintains the sps invoked path ids. Administrator  * requires to start external sps service explicitly, to fetch the sps invoked  * path ids from namenode, then do necessary computations and block movement in  * order to satisfy the storage policy. Please refer  * {@link ExternalStoragePolicySatisfier} class to understand more about the  * external sps service functionality.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then it  * will disable the sps feature completely by clearing all queued up sps path's  * hint.  *  * This class is instantiated by the BlockManager.  */
+comment|/**  * This manages satisfy storage policy invoked path ids and expose methods to  * process these path ids. It maintains sps mode(EXTERNAL/NONE)  * configured by the administrator.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then  * it won't do anything, just maintains the sps invoked path ids. Administrator  * requires to start external sps service explicitly, to fetch the sps invoked  * path ids from namenode, then do necessary computations and block movement in  * order to satisfy the storage policy. Please refer  * {@link ExternalStoragePolicySatisfier} class to understand more about the  * external sps service functionality.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then it  * will disable the sps feature completely by clearing all queued up sps path's  * hint.  *  * This class is instantiated by the BlockManager.  */
 end_comment
 
 begin_class
@@ -255,13 +261,7 @@ specifier|final
 name|Namesystem
 name|namesystem
 decl_stmt|;
-DECL|field|blkMgr
-specifier|private
-specifier|final
-name|BlockManager
-name|blkMgr
-decl_stmt|;
-DECL|method|StoragePolicySatisfyManager (Configuration conf, Namesystem namesystem, BlockManager blkMgr)
+DECL|method|StoragePolicySatisfyManager (Configuration conf, Namesystem namesystem)
 specifier|public
 name|StoragePolicySatisfyManager
 parameter_list|(
@@ -270,9 +270,6 @@ name|conf
 parameter_list|,
 name|Namesystem
 name|namesystem
-parameter_list|,
-name|BlockManager
-name|blkMgr
 parameter_list|)
 block|{
 comment|// StoragePolicySatisfier(SPS) configs
@@ -340,6 +337,12 @@ name|Long
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|namesystem
+operator|=
+name|namesystem
+expr_stmt|;
 comment|// instantiate SPS service by just keeps config reference and not starting
 comment|// any supporting threads.
 name|spsService
@@ -350,20 +353,8 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|namesystem
-operator|=
-name|namesystem
-expr_stmt|;
-name|this
-operator|.
-name|blkMgr
-operator|=
-name|blkMgr
-expr_stmt|;
 block|}
-comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.INTERNAL}, then    * starts internal daemon service inside namenode.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything. Administrator requires to start external sps service    * explicitly.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled and won't do any action.    */
+comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything. Administrator requires to start external sps service    * explicitly.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled and won't do any action.    */
 DECL|method|start ()
 specifier|public
 name|void
@@ -396,54 +387,6 @@ condition|(
 name|mode
 condition|)
 block|{
-case|case
-name|INTERNAL
-case|:
-if|if
-condition|(
-name|spsService
-operator|.
-name|isRunning
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Storage policy satisfier is already running"
-operator|+
-literal|" as internal daemon service inside namenode."
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-comment|// starts internal daemon service inside namenode
-name|spsService
-operator|.
-name|init
-argument_list|(
-operator|new
-name|IntraSPSNameNodeContext
-argument_list|(
-name|namesystem
-argument_list|,
-name|blkMgr
-argument_list|,
-name|spsService
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|spsService
-operator|.
-name|start
-argument_list|(
-literal|false
-argument_list|,
-name|mode
-argument_list|)
-expr_stmt|;
-break|break;
 case|case
 name|EXTERNAL
 case|:
@@ -481,7 +424,7 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.INTERNAL}, then    * stops internal daemon service inside namenode.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything. Administrator requires to stop external sps service    * explicitly, if needed.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled and won't do any action.    */
+comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything. Administrator requires to stop external sps service    * explicitly, if needed.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled and won't do any action.    */
 DECL|method|stop ()
 specifier|public
 name|void
@@ -517,41 +460,6 @@ condition|(
 name|mode
 condition|)
 block|{
-case|case
-name|INTERNAL
-case|:
-name|removeAllPathIds
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|spsService
-operator|.
-name|isRunning
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Internal storage policy satisfier daemon service"
-operator|+
-literal|" is not running"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-comment|// stops internal daemon service running inside namenode
-name|spsService
-operator|.
-name|stop
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-break|break;
 case|case
 name|EXTERNAL
 case|:
@@ -619,7 +527,7 @@ block|}
 break|break;
 block|}
 block|}
-comment|/**    * Sets new sps mode. If the new mode is internal, then it will start internal    * sps service inside namenode. If the new mode is external, then stops    * internal sps service running(if any) inside namenode. If the new mode is    * none, then it will disable the sps feature completely by clearing all    * queued up sps path's hint.    */
+comment|/**    * Sets new sps mode. If the new mode is none, then it will disable the sps    * feature completely by clearing all queued up sps path's hint.    */
 DECL|method|changeModeEvent (StoragePolicySatisfierMode newMode)
 specifier|public
 name|void
@@ -675,57 +583,6 @@ condition|(
 name|newMode
 condition|)
 block|{
-case|case
-name|INTERNAL
-case|:
-if|if
-condition|(
-name|spsService
-operator|.
-name|isRunning
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Storage policy satisfier is already running as {} mode."
-argument_list|,
-name|mode
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|spsService
-operator|.
-name|init
-argument_list|(
-operator|new
-name|IntraSPSNameNodeContext
-argument_list|(
-name|this
-operator|.
-name|namesystem
-argument_list|,
-name|this
-operator|.
-name|blkMgr
-argument_list|,
-name|spsService
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|spsService
-operator|.
-name|start
-argument_list|(
-literal|true
-argument_list|,
-name|newMode
-argument_list|)
-expr_stmt|;
-break|break;
 case|case
 name|EXTERNAL
 case|:
@@ -794,7 +651,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|removeAllPathIds
+name|clearPathIds
 argument_list|()
 expr_stmt|;
 break|break;
@@ -825,96 +682,13 @@ operator|=
 name|newMode
 expr_stmt|;
 block|}
-comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.INTERNAL}, then    * timed wait to stop internal storage policy satisfier daemon threads.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything, just ignore it.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled. It won't do any action, just ignore it.    */
-DECL|method|stopGracefully ()
-specifier|public
-name|void
-name|stopGracefully
-parameter_list|()
-block|{
-switch|switch
-condition|(
-name|mode
-condition|)
-block|{
-case|case
-name|INTERNAL
-case|:
-name|spsService
-operator|.
-name|stopGracefully
-argument_list|()
-expr_stmt|;
-break|break;
-case|case
-name|EXTERNAL
-case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Ignoring, StoragePolicySatisfier feature is running"
-operator|+
-literal|" outside namenode"
-argument_list|)
-expr_stmt|;
-block|}
-break|break;
-case|case
-name|NONE
-case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Ignoring, StoragePolicySatisfier feature is disabled"
-argument_list|)
-expr_stmt|;
-block|}
-break|break;
-default|default:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Invalid mode:{}"
-argument_list|,
-name|mode
-argument_list|)
-expr_stmt|;
-block|}
-break|break;
-block|}
-block|}
 comment|/**    * @return true if the internal storage policy satisfier daemon is running,    *         false otherwise.    */
-DECL|method|isInternalSatisfierRunning ()
+annotation|@
+name|VisibleForTesting
+DECL|method|isSatisfierRunning ()
 specifier|public
 name|boolean
-name|isInternalSatisfierRunning
+name|isSatisfierRunning
 parameter_list|()
 block|{
 return|return
@@ -922,68 +696,6 @@ name|spsService
 operator|.
 name|isRunning
 argument_list|()
-return|;
-block|}
-comment|/**    * @return internal SPS service instance.    */
-DECL|method|getInternalSPSService ()
-specifier|public
-name|SPSService
-name|getInternalSPSService
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|spsService
-return|;
-block|}
-comment|/**    * @return status Storage policy satisfy status of the path. It is supported    *         only for the internal sps daemon service.    * @throws IOException    *           if the Satisfier is not running inside namenode.    */
-DECL|method|checkStoragePolicySatisfyPathStatus ( String path)
-specifier|public
-name|StoragePolicySatisfyPathStatus
-name|checkStoragePolicySatisfyPathStatus
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|mode
-operator|!=
-name|StoragePolicySatisfierMode
-operator|.
-name|INTERNAL
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Satisfier is not running inside namenode, so status "
-operator|+
-literal|"can't be returned."
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Satisfier is not running inside namenode, "
-operator|+
-literal|"so status can't be returned."
-argument_list|)
-throw|;
-block|}
-return|return
-name|spsService
-operator|.
-name|checkStoragePolicySatisfyPathStatus
-argument_list|(
-name|path
-argument_list|)
 return|;
 block|}
 comment|/**    * @return the next SPS path id, on which path users has invoked to satisfy    *         storages.    */
@@ -1057,28 +769,81 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Removes the SPS path id from the list of sps paths.    */
-DECL|method|removePathId (long trackId)
-specifier|public
+comment|/**    * Removes the SPS path id from the list of sps paths.    *    * @throws IOException    */
+DECL|method|clearPathIds ()
+specifier|private
 name|void
-name|removePathId
-parameter_list|(
-name|long
-name|trackId
-parameter_list|)
+name|clearPathIds
+parameter_list|()
 block|{
 synchronized|synchronized
 init|(
 name|pathsToBeTraveresed
 init|)
 block|{
+name|Iterator
+argument_list|<
+name|Long
+argument_list|>
+name|iterator
+init|=
 name|pathsToBeTraveresed
 operator|.
-name|remove
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iterator
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|Long
+name|trackId
+init|=
+name|iterator
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|namesystem
+operator|.
+name|removeXattr
 argument_list|(
 name|trackId
+argument_list|,
+name|HdfsServerConstants
+operator|.
+name|XATTR_SATISFY_STORAGE_POLICY
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to remove sps xatttr!"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+name|iterator
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Clean up all sps path ids.    */
@@ -1124,7 +889,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @return true if sps is configured as an internal service or external    *         service, false otherwise.    */
+comment|/**    * @return true if sps is configured as an external    *         service, false otherwise.    */
 DECL|method|isEnabled ()
 specifier|public
 name|boolean
@@ -1132,12 +897,6 @@ name|isEnabled
 parameter_list|()
 block|{
 return|return
-name|mode
-operator|==
-name|StoragePolicySatisfierMode
-operator|.
-name|INTERNAL
-operator|||
 name|mode
 operator|==
 name|StoragePolicySatisfierMode

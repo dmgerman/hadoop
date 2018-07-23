@@ -988,16 +988,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addDropPreviousSPSWorkAtDNs ()
-specifier|public
-name|void
-name|addDropPreviousSPSWorkAtDNs
-parameter_list|()
-block|{
-comment|// Nothing todo
-block|}
-annotation|@
-name|Override
 DECL|method|removeSPSHint (long inodeId)
 specifier|public
 name|void

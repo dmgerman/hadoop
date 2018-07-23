@@ -302,12 +302,6 @@ name|byte
 name|policyId
 parameter_list|)
 function_decl|;
-comment|/**    * Drop the SPS work in case if any previous work queued up.    */
-DECL|method|addDropPreviousSPSWorkAtDNs ()
-name|void
-name|addDropPreviousSPSWorkAtDNs
-parameter_list|()
-function_decl|;
 comment|/**    * Remove the hint which was added to track SPS call.    *    * @param spsPath    *          - user invoked satisfier path    * @throws IOException    */
 DECL|method|removeSPSHint (long spsPath)
 name|void

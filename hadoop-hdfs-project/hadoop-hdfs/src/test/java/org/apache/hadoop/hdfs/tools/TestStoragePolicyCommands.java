@@ -306,7 +306,7 @@ name|DFS_STORAGE_POLICY_SATISFIER_MODE_KEY
 argument_list|,
 name|StoragePolicySatisfierMode
 operator|.
-name|INTERNAL
+name|EXTERNAL
 operator|.
 name|toString
 argument_list|()

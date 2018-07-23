@@ -4922,7 +4922,7 @@ name|DFS_STORAGE_POLICY_SATISFIER_MODE_KEY
 argument_list|,
 name|StoragePolicySatisfierMode
 operator|.
-name|INTERNAL
+name|EXTERNAL
 operator|.
 name|toString
 argument_list|()
@@ -4981,6 +4981,22 @@ name|cluster
 operator|.
 name|waitActive
 argument_list|()
+expr_stmt|;
+comment|// Simulate External sps by creating #getNameNodeConnector instance.
+name|DFSTestUtil
+operator|.
+name|getNameNodeConnector
+argument_list|(
+name|conf
+argument_list|,
+name|HdfsServerConstants
+operator|.
+name|MOVER_ID_PATH
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|)
 expr_stmt|;
 specifier|final
 name|DistributedFileSystem
@@ -5072,7 +5088,7 @@ name|exitcode
 init|=
 name|ExitStatus
 operator|.
-name|SKIPPED_DUE_TO_SPS
+name|IO_EXCEPTION
 operator|.
 name|getExitCode
 argument_list|()

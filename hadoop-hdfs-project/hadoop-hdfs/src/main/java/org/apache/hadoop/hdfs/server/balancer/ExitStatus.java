@@ -90,13 +90,6 @@ argument_list|(
 operator|-
 literal|7
 argument_list|)
-block|,
-DECL|enumConstant|SKIPPED_DUE_TO_SPS
-name|SKIPPED_DUE_TO_SPS
-argument_list|(
-operator|-
-literal|8
-argument_list|)
 block|;
 DECL|field|code
 specifier|private

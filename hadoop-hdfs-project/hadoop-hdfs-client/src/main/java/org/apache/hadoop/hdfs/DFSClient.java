@@ -1526,24 +1526,6 @@ name|protocol
 operator|.
 name|HdfsConstants
 operator|.
-name|StoragePolicySatisfyPathStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
 name|SafeModeAction
 import|;
 end_import
@@ -14624,21 +14606,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|isInternalSatisfierRunning ()
-specifier|public
-name|boolean
-name|isInternalSatisfierRunning
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|namenode
-operator|.
-name|isInternalSatisfierRunning
-argument_list|()
-return|;
-block|}
 DECL|method|getTracer ()
 name|Tracer
 name|getTracer
@@ -14783,27 +14750,6 @@ name|tracer
 argument_list|,
 name|openFilesTypes
 argument_list|,
-name|path
-argument_list|)
-return|;
-block|}
-comment|/**    * Check the storage policy satisfy status of the path for which    * {@link DFSClient#satisfyStoragePolicy(String)} is called.    *    * @return Storage policy satisfy status.    *<ul>    *<li>PENDING if path is in queue and not processed for satisfying    *         the policy.</li>    *<li>IN_PROGRESS if satisfying the storage policy for path.</li>    *<li>SUCCESS if storage policy satisfied for the path.</li>    *<li>NOT_AVAILABLE if    *         {@link DFSClient#satisfyStoragePolicy(String)} not called for    *         path or SPS work is already finished.</li>    *</ul>    * @throws IOException    */
-DECL|method|checkStoragePolicySatisfyPathStatus ( String path)
-specifier|public
-name|StoragePolicySatisfyPathStatus
-name|checkStoragePolicySatisfyPathStatus
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|namenode
-operator|.
-name|checkStoragePolicySatisfyPathStatus
-argument_list|(
 name|path
 argument_list|)
 return|;

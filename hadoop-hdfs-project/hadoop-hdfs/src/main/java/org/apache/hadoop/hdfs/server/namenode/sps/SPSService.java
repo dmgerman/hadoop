@@ -234,15 +234,6 @@ name|int
 name|processingQueueSize
 parameter_list|()
 function_decl|;
-comment|/**    * Clear inodeId present in the processing queue.    */
-DECL|method|clearQueue (long spsPath)
-name|void
-name|clearQueue
-parameter_list|(
-name|long
-name|spsPath
-parameter_list|)
-function_decl|;
 comment|/**    * @return the configuration.    */
 DECL|method|getConf ()
 name|Configuration
