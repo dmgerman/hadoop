@@ -222,6 +222,10 @@ name|serviceInterval
 argument_list|,
 name|SERVICE_TIMEOUT_IN_MILLISECONDS
 argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
