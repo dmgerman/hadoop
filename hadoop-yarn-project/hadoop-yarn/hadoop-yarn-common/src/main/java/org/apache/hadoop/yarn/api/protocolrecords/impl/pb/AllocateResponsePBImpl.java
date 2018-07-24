@@ -2202,6 +2202,9 @@ argument_list|>
 name|nmTokens
 parameter_list|)
 block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|nmTokens
