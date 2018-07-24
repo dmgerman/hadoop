@@ -1321,7 +1321,7 @@ name|processContainerReports
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|reports

@@ -294,7 +294,7 @@ name|add
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|)
 expr_stmt|;

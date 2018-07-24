@@ -571,7 +571,7 @@ name|datanodeDetails
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|conf

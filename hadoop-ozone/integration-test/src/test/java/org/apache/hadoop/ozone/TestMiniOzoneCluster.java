@@ -718,7 +718,7 @@ name|id1
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|DatanodeDetails
@@ -726,7 +726,7 @@ name|id2
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|DatanodeDetails
@@ -734,7 +734,7 @@ name|id3
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|id1
@@ -1028,7 +1028,7 @@ name|DatanodeStateMachine
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
@@ -1042,7 +1042,7 @@ name|DatanodeStateMachine
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
@@ -1056,7 +1056,7 @@ name|DatanodeStateMachine
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
@@ -1196,7 +1196,7 @@ name|DatanodeStateMachine
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
@@ -1210,7 +1210,7 @@ name|DatanodeStateMachine
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
@@ -1224,7 +1224,7 @@ name|DatanodeStateMachine
 argument_list|(
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
@@ -1342,7 +1342,7 @@ name|id
 init|=
 name|TestUtils
 operator|.
-name|getDatanodeDetails
+name|randomDatanodeDetails
 argument_list|()
 decl_stmt|;
 name|ContainerUtils
