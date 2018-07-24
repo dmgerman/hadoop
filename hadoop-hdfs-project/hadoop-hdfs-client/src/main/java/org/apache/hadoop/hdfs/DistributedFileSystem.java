@@ -15388,6 +15388,27 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Advise that the first block replica be written without regard to the      * client locality.      *      * @see CreateFlag for the details.      */
+DECL|method|ignoreClientLocality ()
+specifier|public
+name|HdfsDataOutputStreamBuilder
+name|ignoreClientLocality
+parameter_list|()
+block|{
+name|getFlags
+argument_list|()
+operator|.
+name|add
+argument_list|(
+name|CreateFlag
+operator|.
+name|IGNORE_CLIENT_LOCALITY
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 annotation|@

@@ -1433,6 +1433,13 @@ argument_list|(
 name|excludedNodes
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|writer
+operator|!=
+literal|null
+condition|)
+block|{
 name|excludedNodeCopy
 operator|.
 name|add
@@ -1440,6 +1447,7 @@ argument_list|(
 name|writer
 argument_list|)
 expr_stmt|;
+block|}
 name|localNode
 operator|=
 name|chooseTarget

@@ -193,6 +193,16 @@ name|short
 operator|)
 literal|0x80
 argument_list|)
+block|,
+comment|/**    * Advise that the first block replica NOT take into account DataNode    * locality. The first block replica should be placed randomly within the    * cluster. Subsequent block replicas should follow DataNode locality rules.    */
+DECL|enumConstant|IGNORE_CLIENT_LOCALITY
+name|IGNORE_CLIENT_LOCALITY
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0x100
+argument_list|)
 block|;
 DECL|field|mode
 specifier|private
