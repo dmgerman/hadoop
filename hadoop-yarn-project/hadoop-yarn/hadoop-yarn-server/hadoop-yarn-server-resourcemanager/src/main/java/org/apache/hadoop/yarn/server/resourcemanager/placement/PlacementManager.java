@@ -324,55 +324,6 @@ block|{
 break|break;
 block|}
 block|}
-comment|// Failed to get where to place application
-if|if
-condition|(
-literal|null
-operator|==
-name|placement
-operator|&&
-literal|null
-operator|==
-name|asc
-operator|.
-name|getQueue
-argument_list|()
-condition|)
-block|{
-name|String
-name|msg
-init|=
-literal|"Failed to place application "
-operator|+
-name|asc
-operator|.
-name|getApplicationId
-argument_list|()
-operator|+
-literal|" to queue and specified "
-operator|+
-literal|"queue is invalid : "
-operator|+
-name|asc
-operator|.
-name|getQueue
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-name|msg
-argument_list|)
-throw|;
-block|}
 return|return
 name|placement
 return|;

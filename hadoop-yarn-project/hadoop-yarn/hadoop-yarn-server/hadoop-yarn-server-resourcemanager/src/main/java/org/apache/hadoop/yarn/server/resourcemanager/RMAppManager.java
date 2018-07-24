@@ -2459,60 +2459,20 @@ block|{
 name|ApplicationPlacementContext
 name|placementContext
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|placementContext
-operator|=
 name|placeApplication
 argument_list|(
 name|rmContext
+operator|.
+name|getQueuePlacementManager
+argument_list|()
 argument_list|,
 name|submissionContext
 argument_list|,
 name|user
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|YarnException
-name|e
-parameter_list|)
-block|{
-name|String
-name|msg
-init|=
-literal|"Failed to place application "
-operator|+
-name|submissionContext
-operator|.
-name|getApplicationId
-argument_list|()
-operator|+
-literal|" to queue and specified "
-operator|+
-literal|"queue is invalid : "
-operator|+
-name|submissionContext
-operator|.
-name|getQueue
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|msg
 argument_list|,
-name|e
+name|isRecovery
 argument_list|)
-expr_stmt|;
-throw|throw
-name|e
-throw|;
-block|}
+decl_stmt|;
 comment|// We only replace the queue when it's a new application
 if|if
 condition|(
@@ -4287,18 +4247,21 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|placeApplication (RMContext rmContext, ApplicationSubmissionContext context, String user)
+DECL|method|placeApplication ( PlacementManager placementManager, ApplicationSubmissionContext context, String user, boolean isRecovery)
 name|ApplicationPlacementContext
 name|placeApplication
 parameter_list|(
-name|RMContext
-name|rmContext
+name|PlacementManager
+name|placementManager
 parameter_list|,
 name|ApplicationSubmissionContext
 name|context
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|boolean
+name|isRecovery
 parameter_list|)
 throws|throws
 name|YarnException
@@ -4308,20 +4271,14 @@ name|placementContext
 init|=
 literal|null
 decl_stmt|;
-name|PlacementManager
-name|placementManager
-init|=
-name|rmContext
-operator|.
-name|getQueuePlacementManager
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|placementManager
 operator|!=
 literal|null
 condition|)
+block|{
+try|try
 block|{
 name|placementContext
 operator|=
@@ -4335,16 +4292,49 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
 block|{
+comment|// Placement could also fail if the user doesn't exist in system
+comment|// skip if the user is not found during recovery.
 if|if
 condition|(
+name|isRecovery
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"PlaceApplication failed,skipping on recovery of rm"
+argument_list|)
+expr_stmt|;
+return|return
+name|placementContext
+return|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
+block|}
+if|if
+condition|(
+name|placementContext
+operator|==
+literal|null
+operator|&&
+operator|(
 name|context
 operator|.
 name|getQueue
 argument_list|()
 operator|==
 literal|null
+operator|)
 operator|||
 name|context
 operator|.
@@ -4355,22 +4345,19 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-specifier|final
 name|String
 name|msg
 init|=
-literal|"Queue Placement Manager is not set. Cannot place "
-operator|+
-literal|"application : "
+literal|"Failed to place application "
 operator|+
 name|context
 operator|.
 name|getApplicationId
 argument_list|()
 operator|+
-literal|" to queue and "
+literal|" to queue and specified "
 operator|+
-literal|"specified queue is invalid "
+literal|"queue is invalid : "
 operator|+
 name|context
 operator|.
@@ -4391,7 +4378,6 @@ argument_list|(
 name|msg
 argument_list|)
 throw|;
-block|}
 block|}
 return|return
 name|placementContext
