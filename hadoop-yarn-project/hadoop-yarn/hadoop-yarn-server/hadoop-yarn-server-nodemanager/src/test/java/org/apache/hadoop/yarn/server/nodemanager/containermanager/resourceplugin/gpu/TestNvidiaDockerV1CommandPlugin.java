@@ -1188,7 +1188,7 @@ name|newCommandLine
 operator|.
 name|containsKey
 argument_list|(
-literal|"ro-mounts"
+literal|"mounts"
 argument_list|)
 argument_list|)
 expr_stmt|;
