@@ -3475,8 +3475,9 @@ name|refreshServiceAcl
 argument_list|(
 name|conf
 argument_list|,
-operator|new
 name|NMPolicyProvider
+operator|.
+name|getInstance
 argument_list|()
 argument_list|)
 expr_stmt|;
