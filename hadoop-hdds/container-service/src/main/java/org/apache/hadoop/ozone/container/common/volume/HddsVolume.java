@@ -268,6 +268,16 @@ name|Properties
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
 begin_comment
 comment|/**  * HddsVolume represents volume in a datanode. {@link VolumeSet} maitains a  * list of HddsVolumes, one for each volume in the Datanode.  * {@link VolumeInfo} in encompassed by this class.  *  * The disk layout per volume is as follows:  * ../hdds/VERSION  * ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID>>/metadata  * ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID>>/<<dataDir>>  *  * Each hdds volume has its own VERSION file. The hdds volume will have one  * scmUuid directory for each SCM it is a part of (currently only one SCM is  * supported).  *  * During DN startup, if the VERSION file exists, we verify that the  * clusterID in the version file matches the clusterID from SCM.  */
 end_comment
@@ -396,6 +406,13 @@ specifier|private
 name|String
 name|clusterID
 decl_stmt|;
+DECL|field|failedVolume
+specifier|private
+name|boolean
+name|failedVolume
+init|=
+literal|false
+decl_stmt|;
 DECL|method|Builder (String rootDirStr)
 specifier|public
 name|Builder
@@ -506,6 +523,28 @@ return|return
 name|this
 return|;
 block|}
+comment|// This is added just to create failed volume objects, which will be used
+comment|// to create failed HddsVolume objects in the case of any exceptions caused
+comment|// during creating HddsVolume object.
+DECL|method|failedVolume (boolean failed)
+specifier|public
+name|Builder
+name|failedVolume
+parameter_list|(
+name|boolean
+name|failed
+parameter_list|)
+block|{
+name|this
+operator|.
+name|failedVolume
+operator|=
+name|failed
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|HddsVolume
@@ -532,6 +571,14 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|b
+operator|.
+name|failedVolume
+condition|)
 block|{
 name|StorageLocation
 name|location
@@ -662,6 +709,46 @@ expr_stmt|;
 name|initialize
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Builder is called with failedVolume set, so create a failed volume
+comment|// HddsVolumeObject.
+name|hddsRootDir
+operator|=
+operator|new
+name|File
+argument_list|(
+name|b
+operator|.
+name|volumeRootStr
+argument_list|)
+expr_stmt|;
+name|volumeIOStats
+operator|=
+literal|null
+expr_stmt|;
+name|volumeInfo
+operator|=
+literal|null
+expr_stmt|;
+name|storageID
+operator|=
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+name|state
+operator|=
+name|VolumeState
+operator|.
+name|FAILED
+expr_stmt|;
+block|}
 block|}
 DECL|method|getVolumeInfo ()
 specifier|public
@@ -1284,11 +1371,24 @@ name|StorageType
 name|getStorageType
 parameter_list|()
 block|{
+if|if
+condition|(
+name|volumeInfo
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 name|volumeInfo
 operator|.
 name|getStorageType
 argument_list|()
+return|;
+block|}
+return|return
+name|StorageType
+operator|.
+name|DEFAULT
 return|;
 block|}
 DECL|method|getStorageID ()
@@ -1359,11 +1459,22 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|volumeInfo
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 name|volumeInfo
 operator|.
 name|getCapacity
 argument_list|()
+return|;
+block|}
+return|return
+literal|0
 return|;
 block|}
 DECL|method|getAvailable ()
@@ -1374,11 +1485,22 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|volumeInfo
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 name|volumeInfo
 operator|.
 name|getAvailable
 argument_list|()
+return|;
+block|}
+return|return
+literal|0
 return|;
 block|}
 DECL|method|setState (VolumeState state)
@@ -1436,11 +1558,19 @@ operator|.
 name|FAILED
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|volumeInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|volumeInfo
 operator|.
 name|shutdownUsageThread
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|shutdown ()
 specifier|public
@@ -1456,11 +1586,19 @@ name|VolumeState
 operator|.
 name|NON_EXISTENT
 expr_stmt|;
+if|if
+condition|(
+name|volumeInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|volumeInfo
 operator|.
 name|shutdownUsageThread
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * VolumeState represents the different states a HddsVolume can be in.    * NORMAL          => Volume can be used for storage    * FAILED          => Volume has failed due and can no longer be used for    *                    storing containers.    * NON_EXISTENT    => Volume Root dir does not exist    * INCONSISTENT    => Volume Root dir is not empty but VERSION file is    *                    missing or Volume Root dir is not a directory    * NOT_FORMATTED   => Volume Root exists but not formatted (no VERSION file)    * NOT_INITIALIZED => VERSION file exists but has not been verified for    *                    correctness.    */
 DECL|enum|VolumeState
@@ -1498,6 +1636,13 @@ name|GetSpaceUsed
 name|scmUsageForTest
 parameter_list|)
 block|{
+if|if
+condition|(
+name|volumeInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|volumeInfo
 operator|.
 name|setScmUsageForTesting
@@ -1505,6 +1650,7 @@ argument_list|(
 name|scmUsageForTest
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
