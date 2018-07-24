@@ -678,15 +678,15 @@ block|}
 block|}
 else|else
 block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"No event handler registered for event "
 operator|+
 name|event
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 block|}
 comment|/**    * This is just for unit testing, don't use it for production code.    *<p>    * It waits for all messages to be processed. If one event handler invokes an    * other one, the later one also should be finished.    *<p>    * Long counter overflow is not handled, therefore it's safe only for unit    * testing.    *<p>    * This method is just eventually consistent. In some cases it could return    * even if there are new messages in some of the handler. But in a simple    * case (one message) it will return only if the message is processed and    * all the dependent messages (messages which are sent by current handlers)    * are processed.    *    * @param timeout Timeout in seconds to wait for the processing.    */

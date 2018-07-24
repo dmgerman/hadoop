@@ -624,7 +624,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Unable to communicate to SCM server at {}. We have not been "
 operator|+
@@ -659,6 +659,8 @@ name|this
 operator|.
 name|conf
 argument_list|)
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}

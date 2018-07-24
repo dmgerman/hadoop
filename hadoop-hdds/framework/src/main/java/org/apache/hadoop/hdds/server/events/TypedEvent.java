@@ -148,6 +148,9 @@ operator|+
 literal|"payloadType="
 operator|+
 name|payloadType
+operator|.
+name|getSimpleName
+argument_list|()
 operator|+
 literal|", name='"
 operator|+

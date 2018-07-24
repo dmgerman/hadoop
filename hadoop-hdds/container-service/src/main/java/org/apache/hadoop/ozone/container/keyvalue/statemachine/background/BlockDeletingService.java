@@ -778,6 +778,16 @@ argument_list|,
 name|containerDeletionPolicy
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|containers
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -794,6 +804,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|ContainerData
