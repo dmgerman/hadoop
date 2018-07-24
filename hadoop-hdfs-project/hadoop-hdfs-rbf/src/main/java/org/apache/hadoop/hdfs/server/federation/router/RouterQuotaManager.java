@@ -621,13 +621,13 @@ name|nsQuota
 operator|!=
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 operator|||
 name|ssQuota
 operator|!=
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 condition|)
 block|{
 return|return

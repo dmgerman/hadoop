@@ -394,7 +394,7 @@ argument_list|()
 operator|==
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 condition|)
 block|{
 name|nsQuota
@@ -435,7 +435,7 @@ argument_list|()
 operator|==
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 condition|)
 block|{
 name|ssQuota

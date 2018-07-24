@@ -788,7 +788,7 @@ name|quota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 operator|.
 name|spaceConsumed
@@ -802,7 +802,7 @@ name|spaceQuota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 operator|.
 name|build

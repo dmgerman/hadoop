@@ -1431,7 +1431,7 @@ name|nsQuota
 init|=
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 decl_stmt|;
 name|long
 name|nsCount
@@ -1445,7 +1445,7 @@ name|ssQuota
 init|=
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 decl_stmt|;
 name|long
 name|ssCount

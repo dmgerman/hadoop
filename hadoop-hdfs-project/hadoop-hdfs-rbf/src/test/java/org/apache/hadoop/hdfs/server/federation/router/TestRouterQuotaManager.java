@@ -378,14 +378,14 @@ name|quota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 operator|.
 name|spaceQuota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 decl_stmt|;
 name|manager
@@ -429,7 +429,7 @@ name|spaceQuota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 name|manager
@@ -467,7 +467,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|,
 name|quotaGet
 operator|.
@@ -500,7 +500,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|,
 name|quotaGet
 operator|.
@@ -516,7 +516,7 @@ name|quota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 name|quota
@@ -525,7 +525,7 @@ name|spaceQuota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 name|manager
@@ -565,7 +565,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|,
 name|quotaGet
 operator|.
@@ -587,7 +587,7 @@ name|spaceQuota
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 name|manager
@@ -626,7 +626,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|,
 name|quotaGet
 operator|.

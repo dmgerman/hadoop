@@ -582,7 +582,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|,
 name|quota
 operator|.
@@ -604,7 +604,7 @@ name|assertEquals
 argument_list|(
 name|HdfsConstants
 operator|.
-name|QUOTA_DONT_SET
+name|QUOTA_RESET
 argument_list|,
 name|quota
 operator|.
