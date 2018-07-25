@@ -269,6 +269,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"AclFeature : "
+operator|+
+name|Integer
+operator|.
+name|toHexString
+argument_list|(
+name|hashCode
+argument_list|()
+argument_list|)
+operator|+
+literal|" Size of entries : "
+operator|+
+name|entries
+operator|.
+name|length
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
