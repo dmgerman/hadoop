@@ -366,7 +366,7 @@ name|usersGroupsRegEx
 init|=
 name|prefixRegEx
 operator|+
-literal|"[^.]*("
+literal|"[\\S]*("
 operator|+
 name|Pattern
 operator|.
@@ -391,7 +391,7 @@ name|hostsRegEx
 init|=
 name|prefixRegEx
 operator|+
-literal|"[^.]*"
+literal|"[\\S]*"
 operator|+
 name|Pattern
 operator|.
