@@ -192,6 +192,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns the last committed block length for the block.    * @param blockID blockId    */
+DECL|method|getCommittedBlockLength (Container container, BlockID blockID)
+name|long
+name|getCommittedBlockLength
+parameter_list|(
+name|Container
+name|container
+parameter_list|,
+name|BlockID
+name|blockID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Shutdown ContainerManager.    */
 DECL|method|shutdown ()
 name|void

@@ -630,6 +630,114 @@ name|keyData
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the length of the committed block.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the key.    * @return length of the block.    * @throws IOException in case, the block key does not exist in db.    */
+annotation|@
+name|Override
+DECL|method|getCommittedBlockLength (Container container, BlockID blockID)
+specifier|public
+name|long
+name|getCommittedBlockLength
+parameter_list|(
+name|Container
+name|container
+parameter_list|,
+name|BlockID
+name|blockID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|KeyValueContainerData
+name|containerData
+init|=
+operator|(
+name|KeyValueContainerData
+operator|)
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+decl_stmt|;
+name|MetadataStore
+name|db
+init|=
+name|KeyUtils
+operator|.
+name|getDB
+argument_list|(
+name|containerData
+argument_list|,
+name|config
+argument_list|)
+decl_stmt|;
+comment|// This is a post condition that acts as a hint to the user.
+comment|// Should never fail.
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|db
+argument_list|,
+literal|"DB cannot be null here"
+argument_list|)
+expr_stmt|;
+name|byte
+index|[]
+name|kData
+init|=
+name|db
+operator|.
+name|get
+argument_list|(
+name|Longs
+operator|.
+name|toByteArray
+argument_list|(
+name|blockID
+operator|.
+name|getLocalID
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|kData
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Unable to find the key."
+argument_list|,
+name|NO_SUCH_KEY
+argument_list|)
+throw|;
+block|}
+name|ContainerProtos
+operator|.
+name|KeyData
+name|keyData
+init|=
+name|ContainerProtos
+operator|.
+name|KeyData
+operator|.
+name|parseFrom
+argument_list|(
+name|kData
+argument_list|)
+decl_stmt|;
+return|return
+name|keyData
+operator|.
+name|getSize
+argument_list|()
+return|;
+block|}
 comment|/**    * Deletes an existing Key.    *    * @param container - Container from which key need to be deleted.    * @param blockID - ID of the block.    * @throws StorageContainerException    */
 DECL|method|deleteKey (Container container, BlockID blockID)
 specifier|public
@@ -780,6 +888,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * List keys in a container.    *    * @param container - Container from which keys need to be listed.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
+annotation|@
+name|Override
 DECL|method|listKey (Container container, long startLocalID, int count)
 specifier|public
 name|List

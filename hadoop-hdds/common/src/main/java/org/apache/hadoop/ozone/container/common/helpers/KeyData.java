@@ -156,6 +156,12 @@ name|ChunkInfo
 argument_list|>
 name|chunks
 decl_stmt|;
+comment|/**    * total size of the key.    */
+DECL|field|size
+specifier|private
+name|long
+name|size
+decl_stmt|;
 comment|/**    * Constructs a KeyData Object.    *    * @param blockID    */
 DECL|method|KeyData (BlockID blockID)
 specifier|public
@@ -179,6 +185,12 @@ operator|new
 name|TreeMap
 argument_list|<>
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|size
+operator|=
+literal|0
 expr_stmt|;
 block|}
 comment|/**    * Returns a keyData object from the protobuf data.    *    * @param data - Protobuf data.    * @return - KeyData    * @throws IOException    */
@@ -267,6 +279,25 @@ name|getChunksList
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|data
+operator|.
+name|hasSize
+argument_list|()
+condition|)
+block|{
+name|keyData
+operator|.
+name|setSize
+argument_list|(
+name|data
+operator|.
+name|getSize
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|keyData
 return|;
@@ -374,6 +405,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|builder
+operator|.
+name|setSize
+argument_list|(
+name|size
+argument_list|)
+expr_stmt|;
 return|return
 name|builder
 operator|.
@@ -623,6 +661,23 @@ operator|=
 name|chunks
 expr_stmt|;
 block|}
+comment|/**    * sets the total size of the block    * @param size size of the block    */
+DECL|method|setSize (long size)
+specifier|public
+name|void
+name|setSize
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|this
+operator|.
+name|size
+operator|=
+name|size
+expr_stmt|;
+block|}
 comment|/**    * Get the total size of chunks allocated for the key.    * @return total size of the key.    */
 DECL|method|getSize ()
 specifier|public
@@ -631,6 +686,18 @@ name|getSize
 parameter_list|()
 block|{
 return|return
+name|size
+return|;
+block|}
+comment|/**    * computes the total size of chunks allocated for the key.    */
+DECL|method|computeSize ()
+specifier|public
+name|void
+name|computeSize
+parameter_list|()
+block|{
+name|setSize
+argument_list|(
 name|chunks
 operator|.
 name|parallelStream
@@ -648,7 +715,8 @@ argument_list|)
 operator|.
 name|sum
 argument_list|()
-return|;
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
