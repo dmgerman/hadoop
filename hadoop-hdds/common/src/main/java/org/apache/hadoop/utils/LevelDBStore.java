@@ -1740,6 +1740,28 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|iterator ()
+specifier|public
+name|MetaStoreIterator
+argument_list|<
+name|KeyValue
+argument_list|>
+name|iterator
+parameter_list|()
+block|{
+return|return
+operator|new
+name|LevelDBStoreIterator
+argument_list|(
+name|db
+operator|.
+name|iterator
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
