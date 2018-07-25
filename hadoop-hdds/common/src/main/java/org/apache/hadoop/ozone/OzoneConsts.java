@@ -513,15 +513,6 @@ name|STORAGE_DIR_CHUNKS
 init|=
 literal|"chunks"
 decl_stmt|;
-DECL|field|CONTAINER_FILE_CHECKSUM_EXTENSION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONTAINER_FILE_CHECKSUM_EXTENSION
-init|=
-literal|".chksm"
-decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning
 specifier|public
@@ -801,6 +792,15 @@ name|String
 name|CONTAINER_DB_TYPE
 init|=
 literal|"containerDBType"
+decl_stmt|;
+DECL|field|CHECKSUM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHECKSUM
+init|=
+literal|"checksum"
 decl_stmt|;
 block|}
 end_class

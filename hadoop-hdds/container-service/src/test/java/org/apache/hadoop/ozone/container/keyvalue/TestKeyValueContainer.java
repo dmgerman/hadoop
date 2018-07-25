@@ -445,24 +445,12 @@ specifier|private
 name|RoundRobinVolumeChoosingPolicy
 name|volumeChoosingPolicy
 decl_stmt|;
-DECL|field|containerId
+DECL|field|containerID
 specifier|private
 name|long
-name|containerId
+name|containerID
 init|=
 literal|1L
-decl_stmt|;
-DECL|field|containerName
-specifier|private
-name|String
-name|containerName
-init|=
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|containerId
-argument_list|)
 decl_stmt|;
 DECL|field|keyValueContainerData
 specifier|private
@@ -658,8 +646,7 @@ argument_list|(
 name|containerMetaDataPath
 argument_list|)
 decl_stmt|;
-comment|//Check whether container file, check sum file and container db file exists
-comment|// or not.
+comment|//Check whether container file and container db file exists or not.
 name|assertTrue
 argument_list|(
 name|KeyValueContainerLocationUtil
@@ -668,7 +655,7 @@ name|getContainerFile
 argument_list|(
 name|containerMetaDataLoc
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|exists
@@ -683,32 +670,11 @@ name|assertTrue
 argument_list|(
 name|KeyValueContainerLocationUtil
 operator|.
-name|getContainerCheckSumFile
-argument_list|(
-name|containerMetaDataLoc
-argument_list|,
-name|containerName
-argument_list|)
-operator|.
-name|exists
-argument_list|()
-argument_list|,
-literal|"Container check sum "
-operator|+
-literal|"File does"
-operator|+
-literal|" not exist"
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|KeyValueContainerLocationUtil
-operator|.
 name|getContainerDBFile
 argument_list|(
 name|containerMetaDataLoc
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|exists
@@ -968,7 +934,7 @@ name|getContainerFile
 argument_list|(
 name|containerMetaDataLoc
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|exists
@@ -985,7 +951,7 @@ name|getContainerDBFile
 argument_list|(
 name|containerMetaDataLoc
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 operator|.
 name|exists
@@ -1070,7 +1036,7 @@ name|getContainerFile
 argument_list|(
 name|containerMetaDataLoc
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 name|keyValueContainerData
@@ -1287,7 +1253,7 @@ name|getContainerFile
 argument_list|(
 name|containerMetaDataLoc
 argument_list|,
-name|containerName
+name|containerID
 argument_list|)
 decl_stmt|;
 name|keyValueContainerData

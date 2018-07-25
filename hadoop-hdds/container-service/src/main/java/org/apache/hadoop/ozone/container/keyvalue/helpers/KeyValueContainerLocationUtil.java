@@ -311,8 +311,8 @@ operator|+
 name|directory
 return|;
 block|}
-comment|/**    * Returns containerFile.    * @param containerMetaDataPath    * @param containerName    * @return .container File name    */
-DECL|method|getContainerFile (File containerMetaDataPath, String containerName)
+comment|/**    * Returns containerFile.    * @param containerMetaDataPath    * @param containerID    * @return .container File name    */
+DECL|method|getContainerFile (File containerMetaDataPath, long containerID)
 specifier|public
 specifier|static
 name|File
@@ -321,8 +321,8 @@ parameter_list|(
 name|File
 name|containerMetaDataPath
 parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|Preconditions
@@ -332,20 +332,13 @@ argument_list|(
 name|containerMetaDataPath
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
 return|return
 operator|new
 name|File
 argument_list|(
 name|containerMetaDataPath
 argument_list|,
-name|containerName
+name|containerID
 operator|+
 name|OzoneConsts
 operator|.
@@ -353,8 +346,8 @@ name|CONTAINER_EXTENSION
 argument_list|)
 return|;
 block|}
-comment|/**    * Return containerDB File.    * @param containerMetaDataPath    * @param containerName    * @return containerDB File name    */
-DECL|method|getContainerDBFile (File containerMetaDataPath, String containerName)
+comment|/**    * Return containerDB File.    * @param containerMetaDataPath    * @param containerID    * @return containerDB File name    */
+DECL|method|getContainerDBFile (File containerMetaDataPath, long containerID)
 specifier|public
 specifier|static
 name|File
@@ -363,8 +356,8 @@ parameter_list|(
 name|File
 name|containerMetaDataPath
 parameter_list|,
-name|String
-name|containerName
+name|long
+name|containerID
 parameter_list|)
 block|{
 name|Preconditions
@@ -374,66 +367,17 @@ argument_list|(
 name|containerMetaDataPath
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
 return|return
 operator|new
 name|File
 argument_list|(
 name|containerMetaDataPath
 argument_list|,
-name|containerName
+name|containerID
 operator|+
 name|OzoneConsts
 operator|.
 name|DN_CONTAINER_DB
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns container checksum file.    * @param containerMetaDataPath    * @param containerName    * @return container checksum file    */
-DECL|method|getContainerCheckSumFile (File containerMetaDataPath, String containerName)
-specifier|public
-specifier|static
-name|File
-name|getContainerCheckSumFile
-parameter_list|(
-name|File
-name|containerMetaDataPath
-parameter_list|,
-name|String
-name|containerName
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerMetaDataPath
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
-return|return
-operator|new
-name|File
-argument_list|(
-name|containerMetaDataPath
-argument_list|,
-name|containerName
-operator|+
-name|OzoneConsts
-operator|.
-name|CONTAINER_FILE_CHECKSUM_EXTENSION
 argument_list|)
 return|;
 block|}

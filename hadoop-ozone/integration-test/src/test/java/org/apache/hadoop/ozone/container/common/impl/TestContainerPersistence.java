@@ -4639,12 +4639,7 @@ name|getMetadataPath
 argument_list|()
 argument_list|)
 argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
 name|testContainerID
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -4795,12 +4790,7 @@ name|getMetadataPath
 argument_list|()
 argument_list|)
 argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
 name|testContainerID
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -5010,9 +5000,9 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Container is an Inconsistent state, missing "
+literal|"Container is an Inconsistent "
 operator|+
-literal|"required files(.container, .chksm)."
+literal|"state, missing .container file."
 argument_list|)
 expr_stmt|;
 name|Container
