@@ -2802,9 +2802,16 @@ specifier|final
 name|int
 name|maxCorruptFileBlocks
 init|=
-name|FSNamesystem
+name|conf
 operator|.
-name|DEFAULT_MAX_CORRUPT_FILEBLOCKS_RETURNED
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_CORRUPT_FILE_BLOCKS_RETURNED_KEY
+argument_list|,
+literal|100
+argument_list|)
 decl_stmt|;
 comment|// create 110 files with one block each
 name|DFSTestUtil
