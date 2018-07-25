@@ -2513,6 +2513,85 @@ name|getToRelease
 argument_list|()
 control|)
 block|{
+comment|// Make sure to-release reserved containers are not outdated
+if|if
+condition|(
+name|releaseContainer
+operator|.
+name|getRmContainer
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|RMContainerState
+operator|.
+name|RESERVED
+operator|&&
+name|releaseContainer
+operator|.
+name|getRmContainer
+argument_list|()
+operator|!=
+name|releaseContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|.
+name|getReservedContainer
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to accept this proposal because "
+operator|+
+literal|"it tries to release an outdated reserved container "
+operator|+
+name|releaseContainer
+operator|.
+name|getRmContainer
+argument_list|()
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" on node "
+operator|+
+name|releaseContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|.
+name|getNodeID
+argument_list|()
+operator|+
+literal|" whose reserved container is "
+operator|+
+name|releaseContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|.
+name|getReservedContainer
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|// Only consider non-reserved container (reserved container will
 comment|// not affect available resource of node) on the same node
 if|if
