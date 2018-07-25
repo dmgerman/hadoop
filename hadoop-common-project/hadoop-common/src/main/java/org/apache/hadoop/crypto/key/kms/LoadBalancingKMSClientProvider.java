@@ -44,6 +44,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|ConnectException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|GeneralSecurityException
@@ -101,6 +111,18 @@ operator|.
 name|atomic
 operator|.
 name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|net
+operator|.
+name|ssl
+operator|.
+name|SSLHandshakeException
 import|;
 end_import
 
@@ -679,11 +701,6 @@ literal|"No providers configured !"
 argument_list|)
 throw|;
 block|}
-name|IOException
-name|ex
-init|=
-literal|null
-decl_stmt|;
 name|int
 name|numFailovers
 init|=
@@ -765,10 +782,42 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
-name|ex
-operator|=
+comment|// SSLHandshakeException can occur here because of lost connection
+comment|// with the KMS server, creating a ConnectException from it,
+comment|// so that the FailoverOnNetworkExceptionRetry policy will retry
+if|if
+condition|(
 name|ioe
+operator|instanceof
+name|SSLHandshakeException
+condition|)
+block|{
+name|Exception
+name|cause
+init|=
+name|ioe
+decl_stmt|;
+name|ioe
+operator|=
+operator|new
+name|ConnectException
+argument_list|(
+literal|"SSLHandshakeException: "
+operator|+
+name|cause
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
 expr_stmt|;
+name|ioe
+operator|.
+name|initCause
+argument_list|(
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
 name|RetryAction
 name|action
 init|=
@@ -877,7 +926,7 @@ name|length
 argument_list|)
 expr_stmt|;
 throw|throw
-name|ex
+name|ioe
 throw|;
 block|}
 if|if
