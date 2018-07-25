@@ -2558,13 +2558,6 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|pendingKeys
-operator|!=
-literal|null
-condition|)
-block|{
 for|for
 control|(
 name|KeyData
@@ -2580,7 +2573,6 @@ argument_list|,
 name|kvContainer
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|commitKey (KeyData keyData, KeyValueContainer kvContainer)
@@ -3334,13 +3326,11 @@ argument_list|)
 expr_stmt|;
 name|openContainerBlockMap
 operator|.
-name|updateOpenKeyMap
+name|removeChunk
 argument_list|(
 name|blockID
 argument_list|,
 name|chunkInfoProto
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -3614,13 +3604,11 @@ comment|// the openContainerBlockMap should be updated only while writing data
 comment|// not during COMMIT_STAGE of handling write chunk request.
 name|openContainerBlockMap
 operator|.
-name|updateOpenKeyMap
+name|addChunk
 argument_list|(
 name|blockID
 argument_list|,
 name|chunkInfoProto
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
