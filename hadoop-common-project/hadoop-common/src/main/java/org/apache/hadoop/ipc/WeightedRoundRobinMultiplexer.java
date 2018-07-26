@@ -395,6 +395,21 @@ name|nextIdx
 index|]
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Moving to next queue from queue index {} to index {}, "
+operator|+
+literal|"number of requests left for current queue: {}."
+argument_list|,
+name|thisIdx
+argument_list|,
+name|nextIdx
+argument_list|,
+name|requestsLeft
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Advances the index, which will change the current index    * if called enough times.    */
 DECL|method|advanceIndex ()

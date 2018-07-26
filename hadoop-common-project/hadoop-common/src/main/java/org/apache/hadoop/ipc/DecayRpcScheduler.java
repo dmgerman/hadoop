@@ -1833,6 +1833,13 @@ name|void
 name|decayCurrentCounts
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Start to decay current counts."
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|long
@@ -1960,6 +1967,27 @@ argument_list|(
 name|nextValue
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Decaying counts for the user: {}, "
+operator|+
+literal|"its decayedCount: {}, rawCount: {}"
+argument_list|,
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|nextValue
+argument_list|,
+name|rawCount
+operator|.
+name|get
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|nextValue
@@ -1967,6 +1995,20 @@ operator|==
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The decayed count for the user {} is zero "
+operator|+
+literal|"and being cleaned."
+argument_list|,
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// We will clean up unused keys here. An interesting optimization
 comment|// might be to have an upper bound on keyspace in callCounts and only
 comment|// clean once we pass it.
@@ -1989,6 +2031,19 @@ name|totalRawCallCount
 operator|.
 name|set
 argument_list|(
+name|totalRawCount
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"After decaying the stored counts, totalDecayedCount: {}, "
+operator|+
+literal|"totalRawCallCount: {}."
+argument_list|,
+name|totalDecayedCount
+argument_list|,
 name|totalRawCount
 argument_list|)
 expr_stmt|;
