@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -116,6 +130,13 @@ block|{
 name|super
 argument_list|(
 name|componentInstanceEventType
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|containerId
 argument_list|)
 expr_stmt|;
 name|this

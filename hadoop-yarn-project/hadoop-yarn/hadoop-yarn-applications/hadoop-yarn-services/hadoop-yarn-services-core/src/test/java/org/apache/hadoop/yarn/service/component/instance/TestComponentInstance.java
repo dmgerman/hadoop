@@ -1845,6 +1845,8 @@ argument_list|(
 name|componentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -1983,6 +1985,8 @@ argument_list|(
 name|componentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2180,6 +2184,8 @@ argument_list|(
 name|componentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2343,6 +2349,8 @@ argument_list|(
 name|componentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2490,6 +2498,8 @@ argument_list|(
 name|componentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2631,6 +2641,8 @@ argument_list|(
 name|componentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2784,6 +2796,8 @@ argument_list|(
 name|commponentInstance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3045,6 +3059,8 @@ argument_list|(
 name|component2Instance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3131,6 +3147,8 @@ argument_list|(
 name|component1Instance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3389,6 +3407,8 @@ argument_list|(
 name|component2Instance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3475,6 +3495,8 @@ argument_list|(
 name|component1Instance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3661,6 +3683,8 @@ argument_list|(
 name|component2Instance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3718,6 +3742,8 @@ argument_list|(
 name|component1Instance
 argument_list|,
 name|componentInstanceEvent
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

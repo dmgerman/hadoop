@@ -1245,6 +1245,14 @@ name|setStatus
 argument_list|(
 name|containerStatus
 argument_list|)
+operator|.
+name|setContainerId
+argument_list|(
+name|instanceContainer
+operator|.
+name|getId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|componentInstance

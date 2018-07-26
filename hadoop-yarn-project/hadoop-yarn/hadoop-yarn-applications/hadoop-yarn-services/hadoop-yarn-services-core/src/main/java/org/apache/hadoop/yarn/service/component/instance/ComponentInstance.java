@@ -896,6 +896,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|FAILED_BEFORE_LAUNCH_DIAG
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FAILED_BEFORE_LAUNCH_DIAG
+init|=
+literal|"failed before launch"
+decl_stmt|;
 specifier|private
 name|StateMachine
 argument_list|<
@@ -1849,7 +1858,7 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|handleComponentInstanceRelaunch ( ComponentInstance compInstance, ComponentInstanceEvent event)
+DECL|method|handleComponentInstanceRelaunch ( ComponentInstance compInstance, ComponentInstanceEvent event, boolean failureBeforeLaunch)
 specifier|static
 name|void
 name|handleComponentInstanceRelaunch
@@ -1859,6 +1868,9 @@ name|compInstance
 parameter_list|,
 name|ComponentInstanceEvent
 name|event
+parameter_list|,
+name|boolean
+name|failureBeforeLaunch
 parameter_list|)
 block|{
 name|Component
@@ -1944,6 +1956,10 @@ operator|.
 name|getContainerId
 argument_list|()
 argument_list|,
+name|failureBeforeLaunch
+condition|?
+literal|null
+else|:
 name|event
 operator|.
 name|getStatus
@@ -1952,6 +1968,10 @@ operator|.
 name|getExitStatus
 argument_list|()
 argument_list|,
+name|failureBeforeLaunch
+condition|?
+name|FAILED_BEFORE_LAUNCH_DIAG
+else|:
 name|event
 operator|.
 name|getStatus
@@ -2123,6 +2143,11 @@ argument_list|()
 operator|+
 literal|": "
 operator|+
+operator|(
+name|failedBeforeLaunching
+condition|?
+name|FAILED_BEFORE_LAUNCH_DIAG
+else|:
 name|event
 operator|.
 name|getStatus
@@ -2130,6 +2155,7 @@ argument_list|()
 operator|.
 name|getDiagnostics
 argument_list|()
+operator|)
 decl_stmt|;
 name|compInstance
 operator|.
@@ -2218,6 +2244,19 @@ operator|.
 name|getScheduler
 argument_list|()
 decl_stmt|;
+name|scheduler
+operator|.
+name|getAmRMClient
+argument_list|()
+operator|.
+name|releaseAssignedContainer
+argument_list|(
+name|event
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Check if it exceeds the failure threshold, but only if health threshold
 comment|// monitor is not enabled
 if|if
@@ -2406,6 +2445,8 @@ argument_list|(
 name|compInstance
 argument_list|,
 name|event
+argument_list|,
+name|failedBeforeLaunching
 argument_list|)
 expr_stmt|;
 if|if

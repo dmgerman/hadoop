@@ -36,6 +36,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -3697,6 +3711,16 @@ name|ComponentEvent
 name|event
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|event
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|component
 operator|.
 name|updateMetrics
@@ -3720,9 +3744,6 @@ operator|new
 name|ComponentInstanceEvent
 argument_list|(
 name|event
-operator|.
-name|getStatus
-argument_list|()
 operator|.
 name|getContainerId
 argument_list|()
@@ -5373,6 +5394,15 @@ name|ContainerStatus
 name|status
 parameter_list|)
 block|{
+comment|//when a container preparation fails while building launch context, then
+comment|//the container status may not exist.
+if|if
+condition|(
+name|status
+operator|!=
+literal|null
+condition|)
+block|{
 switch|switch
 condition|(
 name|status
@@ -5447,6 +5477,7 @@ break|break;
 default|default:
 break|break;
 block|}
+block|}
 comment|// containersFailed include preempted, disks_failed etc.
 name|componentMetrics
 operator|.
@@ -5467,6 +5498,10 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+name|status
+operator|!=
+literal|null
+operator|&&
 name|Apps
 operator|.
 name|shouldCountTowardsNodeBlacklisting

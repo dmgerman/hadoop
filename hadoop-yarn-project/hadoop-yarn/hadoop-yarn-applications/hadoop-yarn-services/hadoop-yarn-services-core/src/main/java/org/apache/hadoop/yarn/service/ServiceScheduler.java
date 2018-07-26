@@ -4578,6 +4578,11 @@ name|setInstance
 argument_list|(
 name|instance
 argument_list|)
+operator|.
+name|setContainerId
+argument_list|(
+name|containerId
+argument_list|)
 decl_stmt|;
 name|dispatcher
 operator|.
