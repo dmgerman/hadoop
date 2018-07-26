@@ -325,20 +325,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// check if parent exists. this is complicated because getParent(a/b/c/) returns a/b/c, but
-comment|// we want a/b
 if|if
 condition|(
 operator|!
 name|createParents
-operator|&&
-operator|!
-name|item
-operator|.
-name|fs
-operator|.
-name|exists
-argument_list|(
+condition|)
+block|{
+comment|// check if parent exists. this is complicated because getParent(a/b/c/) returns a/b/c, but
+comment|// we want a/b
+specifier|final
+name|Path
+name|itemPath
+init|=
 operator|new
 name|Path
 argument_list|(
@@ -349,9 +347,26 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+decl_stmt|;
+specifier|final
+name|Path
+name|itemParentPath
+init|=
+name|itemPath
 operator|.
 name|getParent
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|item
+operator|.
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|itemParentPath
 argument_list|)
 condition|)
 block|{
@@ -359,12 +374,13 @@ throw|throw
 operator|new
 name|PathNotFoundException
 argument_list|(
-name|item
+name|itemParentPath
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 if|if
 condition|(
