@@ -219,7 +219,9 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
-literal|2000l
+literal|"Test"
+argument_list|,
+literal|2000L
 argument_list|)
 expr_stmt|;
 name|leaseManager

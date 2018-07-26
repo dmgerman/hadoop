@@ -210,6 +210,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -434,6 +436,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -581,6 +585,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -856,6 +862,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -1085,6 +1093,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -1269,6 +1279,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -1431,6 +1443,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -1935,6 +1949,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -2088,6 +2104,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;
@@ -2270,6 +2288,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"Test"
+argument_list|,
 literal|5000
 argument_list|)
 decl_stmt|;

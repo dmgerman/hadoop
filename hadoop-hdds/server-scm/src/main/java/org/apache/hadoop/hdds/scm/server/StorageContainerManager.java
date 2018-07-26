@@ -1544,6 +1544,8 @@ operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"CommandWatcher"
+argument_list|,
 name|watcherTimeout
 argument_list|)
 expr_stmt|;

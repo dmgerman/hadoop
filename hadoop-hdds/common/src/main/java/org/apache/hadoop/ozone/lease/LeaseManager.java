@@ -135,6 +135,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|name
+specifier|private
+specifier|final
+name|String
+name|name
+decl_stmt|;
 DECL|field|defaultTimeout
 specifier|private
 specifier|final
@@ -169,15 +175,24 @@ specifier|private
 name|boolean
 name|isRunning
 decl_stmt|;
-comment|/**    * Creates an instance of lease manager.    *    * @param defaultTimeout    *        Default timeout in milliseconds to be used for lease creation.    */
-DECL|method|LeaseManager (long defaultTimeout)
+comment|/**    * Creates an instance of lease manager.    *    * @param name    *        Name for the LeaseManager instance.    * @param defaultTimeout    *        Default timeout in milliseconds to be used for lease creation.    */
+DECL|method|LeaseManager (String name, long defaultTimeout)
 specifier|public
 name|LeaseManager
 parameter_list|(
+name|String
+name|name
+parameter_list|,
 name|long
 name|defaultTimeout
 parameter_list|)
 block|{
+name|this
+operator|.
+name|name
+operator|=
+name|name
+expr_stmt|;
 name|this
 operator|.
 name|defaultTimeout
@@ -196,7 +211,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Starting LeaseManager service"
+literal|"Starting {} LeaseManager service"
+argument_list|,
+name|name
 argument_list|)
 expr_stmt|;
 name|activeLeases
@@ -224,7 +241,9 @@ name|leaseMonitorThread
 operator|.
 name|setName
 argument_list|(
-literal|"LeaseManager#LeaseMonitor"
+name|name
+operator|+
+literal|"-LeaseManager#LeaseMonitor"
 argument_list|)
 expr_stmt|;
 name|leaseMonitorThread
@@ -273,7 +292,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Starting LeaseManager#LeaseMonitor Thread"
+literal|"Starting {}-LeaseManager#LeaseMonitor Thread"
+argument_list|,
+name|name
 argument_list|)
 expr_stmt|;
 name|leaseMonitorThread
@@ -669,7 +690,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"LeaseMonitor: checking for lease expiry"
+literal|"{}-LeaseMonitor: checking for lease expiry"
+argument_list|,
+name|name
 argument_list|)
 expr_stmt|;
 name|long

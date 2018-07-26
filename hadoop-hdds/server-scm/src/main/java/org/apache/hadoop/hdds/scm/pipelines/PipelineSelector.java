@@ -763,19 +763,14 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Starting Pipeline Lease Manager."
-argument_list|)
-expr_stmt|;
 name|pipelineLeaseManager
 operator|=
 operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"PipelineCreation"
+argument_list|,
 name|pipelineCreationLeaseTimeout
 argument_list|)
 expr_stmt|;

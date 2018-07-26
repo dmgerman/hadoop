@@ -986,19 +986,14 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Starting Container Lease Manager."
-argument_list|)
-expr_stmt|;
 name|containerLeaseManager
 operator|=
 operator|new
 name|LeaseManager
 argument_list|<>
 argument_list|(
+literal|"ContainerCreation"
+argument_list|,
 name|containerCreationLeaseTimeout
 argument_list|)
 expr_stmt|;
