@@ -491,6 +491,10 @@ argument_list|,
 name|nodeManager
 argument_list|,
 literal|128
+argument_list|,
+operator|new
+name|EventQueue
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|eventQueue
@@ -812,42 +816,7 @@ name|datanode
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Make sure the information is logged
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|logCapturer
-operator|.
-name|getOutput
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"container with id : "
-operator|+
-name|id
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|" is in ALLOCATED state and need not be closed"
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|//Execute these state transitions so that we can close the container.
-name|mapping
-operator|.
-name|updateContainerState
-argument_list|(
-name|id
-operator|.
-name|getId
-argument_list|()
-argument_list|,
-name|CREATE
-argument_list|)
-expr_stmt|;
 name|mapping
 operator|.
 name|updateContainerState
@@ -1090,42 +1059,7 @@ name|i
 operator|++
 expr_stmt|;
 block|}
-comment|// Make sure the information is logged
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|logCapturer
-operator|.
-name|getOutput
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"container with id : "
-operator|+
-name|id
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|" is in ALLOCATED state and need not be closed"
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|//Execute these state transitions so that we can close the container.
-name|mapping
-operator|.
-name|updateContainerState
-argument_list|(
-name|id
-operator|.
-name|getId
-argument_list|()
-argument_list|,
-name|CREATE
-argument_list|)
-expr_stmt|;
 name|mapping
 operator|.
 name|updateContainerState

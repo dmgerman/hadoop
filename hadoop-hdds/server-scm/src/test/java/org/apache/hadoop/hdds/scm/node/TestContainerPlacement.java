@@ -690,6 +690,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|EventQueue
+name|eventQueue
+init|=
+operator|new
+name|EventQueue
+argument_list|()
+decl_stmt|;
 specifier|final
 name|int
 name|cacheSize
@@ -712,6 +719,8 @@ argument_list|,
 name|scmNodeManager
 argument_list|,
 name|cacheSize
+argument_list|,
+name|eventQueue
 argument_list|)
 return|;
 block|}

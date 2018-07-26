@@ -1410,11 +1410,11 @@ comment|// In case the container is set to closed state, it needs to be removed 
 comment|// the pipeline Map.
 if|if
 condition|(
-name|newState
-operator|==
-name|LifeCycleState
+operator|!
+name|info
 operator|.
-name|CLOSED
+name|isContainerOpen
+argument_list|()
 condition|)
 block|{
 name|openPipelineMap

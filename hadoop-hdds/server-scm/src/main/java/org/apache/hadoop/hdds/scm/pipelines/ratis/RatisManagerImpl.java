@@ -638,20 +638,50 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Close the  pipeline with the given clusterId.    *    * @param pipelineID    */
-annotation|@
-name|Override
-DECL|method|closePipeline (String pipelineID)
+comment|/**    * Close the pipeline.    */
+DECL|method|closePipeline (Pipeline pipeline)
 specifier|public
 name|void
 name|closePipeline
 parameter_list|(
-name|String
-name|pipelineID
+name|Pipeline
+name|pipeline
 parameter_list|)
-throws|throws
-name|IOException
-block|{    }
+block|{
+name|super
+operator|.
+name|closePipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|DatanodeDetails
+name|node
+range|:
+name|pipeline
+operator|.
+name|getMachines
+argument_list|()
+control|)
+block|{
+comment|// A node should always be the in ratis members list.
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|ratisMembers
+operator|.
+name|remove
+argument_list|(
+name|node
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|//TODO: should the raft ring also be destroyed as well?
+block|}
 comment|/**    * list members in the pipeline .    *    * @param pipelineID    * @return the datanode    */
 annotation|@
 name|Override

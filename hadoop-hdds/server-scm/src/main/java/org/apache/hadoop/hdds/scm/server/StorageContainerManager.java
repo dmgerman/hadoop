@@ -1345,6 +1345,8 @@ name|getScmNodeManager
 argument_list|()
 argument_list|,
 name|cacheSize
+argument_list|,
+name|eventQueue
 argument_list|)
 expr_stmt|;
 name|scmBlockManager

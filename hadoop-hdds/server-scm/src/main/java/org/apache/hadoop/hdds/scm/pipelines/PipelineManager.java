@@ -238,7 +238,7 @@ name|Pipeline
 argument_list|>
 name|activePipelines
 decl_stmt|;
-DECL|field|activePipelineMap
+DECL|field|pipelineMap
 specifier|private
 specifier|final
 name|Map
@@ -247,7 +247,7 @@ name|String
 argument_list|,
 name|Pipeline
 argument_list|>
-name|activePipelineMap
+name|pipelineMap
 decl_stmt|;
 DECL|field|pipelineIndex
 specifier|private
@@ -284,7 +284,7 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|activePipelineMap
+name|pipelineMap
 operator|=
 operator|new
 name|WeakHashMap
@@ -394,7 +394,7 @@ decl_stmt|;
 comment|// 1. Check if pipeline already exists
 if|if
 condition|(
-name|activePipelineMap
+name|pipelineMap
 operator|.
 name|containsKey
 argument_list|(
@@ -404,7 +404,7 @@ condition|)
 block|{
 name|pipeline
 operator|=
-name|activePipelineMap
+name|pipelineMap
 operator|.
 name|get
 argument_list|(
@@ -499,33 +499,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|removePipeline (Pipeline pipeline)
-specifier|public
-name|void
-name|removePipeline
-parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|)
-block|{
-name|activePipelines
-operator|.
-name|remove
-argument_list|(
-name|pipeline
-argument_list|)
-expr_stmt|;
-name|activePipelineMap
-operator|.
-name|remove
-argument_list|(
-name|pipeline
-operator|.
-name|getPipelineName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Find a Pipeline that is operational.    *    * @return - Pipeline or null    */
 DECL|method|findOpenPipeline ( ReplicationType type, ReplicationFactor factor)
 specifier|private
@@ -731,7 +704,7 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
-name|activePipelineMap
+name|pipelineMap
 operator|.
 name|put
 argument_list|(
@@ -755,19 +728,53 @@ return|return
 name|pipeline
 return|;
 block|}
-comment|/**    * Close the  pipeline with the given clusterId.    */
-DECL|method|closePipeline (String pipelineID)
+comment|/**    * Remove the pipeline from active allocation    * @param pipeline pipeline to be finalized    */
+DECL|method|finalizePipeline (Pipeline pipeline)
 specifier|public
-specifier|abstract
+specifier|synchronized
+name|void
+name|finalizePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|activePipelines
+operator|.
+name|remove
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    *    * @param pipeline    */
+DECL|method|closePipeline (Pipeline pipeline)
+specifier|public
 name|void
 name|closePipeline
 parameter_list|(
-name|String
-name|pipelineID
+name|Pipeline
+name|pipeline
 parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
+block|{
+name|pipelineMap
+operator|.
+name|remove
+argument_list|(
+name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|node2PipelineMap
+operator|.
+name|removePipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * list members in the pipeline .    * @return the datanode    */
 DECL|method|getMembers (String pipelineID)
 specifier|public

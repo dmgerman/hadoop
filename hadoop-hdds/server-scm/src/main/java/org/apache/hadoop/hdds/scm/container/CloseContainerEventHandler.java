@@ -118,24 +118,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|exceptions
-operator|.
-name|SCMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|server
 operator|.
 name|events
@@ -354,7 +336,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Failed to update the container state. Container with id : {} "
 operator|+
@@ -377,7 +359,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Failed to update the container state. Container with id : {} "
 operator|+
@@ -387,6 +369,8 @@ name|containerID
 operator|.
 name|getId
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 return|return;
@@ -462,12 +446,12 @@ comment|// Finalize event will make sure the state of the container transitions
 comment|// from OPEN to CLOSING in containerStateManager.
 name|containerManager
 operator|.
-name|getStateManager
-argument_list|()
-operator|.
 name|updateContainerState
 argument_list|(
-name|info
+name|containerID
+operator|.
+name|getId
+argument_list|()
 argument_list|,
 name|HddsProtos
 operator|.
@@ -479,7 +463,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|SCMException
+name|IOException
 name|ex
 parameter_list|)
 block|{
@@ -487,9 +471,71 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to update the container state for container : {}"
+literal|"Failed to update the container state to FINALIZE for"
+operator|+
+literal|"container : {}"
 operator|+
 name|containerID
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|info
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|ALLOCATED
+condition|)
+block|{
+try|try
+block|{
+comment|// Create event will make sure the state of the container transitions
+comment|// from OPEN to CREATING in containerStateManager, this will move
+comment|// the container out of active allocation path.
+name|containerManager
+operator|.
+name|updateContainerState
+argument_list|(
+name|containerID
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|HddsProtos
+operator|.
+name|LifeCycleEvent
+operator|.
+name|CREATE
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to update the container state to CREATE for"
+operator|+
+literal|"container:{}"
+operator|+
+name|containerID
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}

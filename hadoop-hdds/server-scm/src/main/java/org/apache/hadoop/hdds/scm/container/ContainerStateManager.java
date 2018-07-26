@@ -1752,6 +1752,28 @@ name|type
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns a set of open ContainerIDs that reside on a pipeline.    *    * @param pipeline Pipeline of the Containers.    * @return Set of containers that match the specific query parameters.    */
+DECL|method|getMatchingContainerIDsByPipeline (String pipeline)
+specifier|public
+name|NavigableSet
+argument_list|<
+name|ContainerID
+argument_list|>
+name|getMatchingContainerIDsByPipeline
+parameter_list|(
+name|String
+name|pipeline
+parameter_list|)
+block|{
+return|return
+name|containers
+operator|.
+name|getOpenContainerIDsByPipeline
+argument_list|(
+name|pipeline
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns the containerInfo with pipeline for the given container id.    * @param selector -- Pipeline selector class.    * @param containerID id of the container    * @return ContainerInfo containerInfo    * @throws IOException    */
 DECL|method|getContainer (PipelineSelector selector, ContainerID containerID)
 specifier|public
