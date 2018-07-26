@@ -439,7 +439,7 @@ name|MBeans
 operator|.
 name|register
 argument_list|(
-literal|"OzoneDataNode"
+literal|"HddsDatanode"
 argument_list|,
 literal|"SCMConnectionManager"
 argument_list|,
