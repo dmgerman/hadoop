@@ -26,6 +26,46 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+operator|.
+name|InvalidResourceType
+operator|.
+name|GREATER_THEN_MAX_ALLOCATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+operator|.
+name|InvalidResourceType
+operator|.
+name|LESS_THAN_ZERO
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -703,6 +743,24 @@ operator|.
 name|exceptions
 operator|.
 name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+operator|.
+name|InvalidResourceType
 import|;
 end_import
 
@@ -4256,7 +4314,16 @@ name|InvalidResourceRequestException
 name|e
 parameter_list|)
 block|{
-comment|// expected
+name|assertEquals
+argument_list|(
+name|LESS_THAN_ZERO
+argument_list|,
+name|e
+operator|.
+name|getInvalidResourceType
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// negative vcores
 try|try
@@ -4326,7 +4393,16 @@ name|InvalidResourceRequestException
 name|e
 parameter_list|)
 block|{
-comment|// expected
+name|assertEquals
+argument_list|(
+name|LESS_THAN_ZERO
+argument_list|,
+name|e
+operator|.
+name|getInvalidResourceType
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// more than max memory
 try|try
@@ -4399,7 +4475,16 @@ name|InvalidResourceRequestException
 name|e
 parameter_list|)
 block|{
-comment|// expected
+name|assertEquals
+argument_list|(
+name|GREATER_THEN_MAX_ALLOCATION
+argument_list|,
+name|e
+operator|.
+name|getInvalidResourceType
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// more than max vcores
 try|try
@@ -4472,7 +4557,16 @@ name|InvalidResourceRequestException
 name|e
 parameter_list|)
 block|{
-comment|// expected
+name|assertEquals
+argument_list|(
+name|GREATER_THEN_MAX_ALLOCATION
+argument_list|,
+name|e
+operator|.
+name|getInvalidResourceType
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -5451,6 +5545,11 @@ argument_list|(
 name|configuredMaxAllocation
 argument_list|)
 operator|.
+name|withInvalidResourceType
+argument_list|(
+name|GREATER_THEN_MAX_ALLOCATION
+argument_list|)
+operator|.
 name|build
 argument_list|()
 argument_list|)
@@ -5648,6 +5747,11 @@ operator|.
 name|withMaxAllocation
 argument_list|(
 name|configuredMaxAllocation
+argument_list|)
+operator|.
+name|withInvalidResourceType
+argument_list|(
+name|GREATER_THEN_MAX_ALLOCATION
 argument_list|)
 operator|.
 name|build
@@ -5926,6 +6030,11 @@ operator|.
 name|withAvailableAllocation
 argument_list|(
 name|availableResource
+argument_list|)
+operator|.
+name|withInvalidResourceType
+argument_list|(
+name|GREATER_THEN_MAX_ALLOCATION
 argument_list|)
 operator|.
 name|withMaxAllocation
@@ -6270,6 +6379,11 @@ specifier|private
 name|String
 name|resourceType
 decl_stmt|;
+DECL|field|invalidResourceType
+specifier|private
+name|InvalidResourceType
+name|invalidResourceType
+decl_stmt|;
 DECL|method|InvalidResourceRequestExceptionMessageGenerator (StringBuilder sb)
 name|InvalidResourceRequestExceptionMessageGenerator
 parameter_list|(
@@ -6373,18 +6487,52 @@ return|return
 name|this
 return|;
 block|}
+name|InvalidResourceRequestExceptionMessageGenerator
+DECL|method|withInvalidResourceType (InvalidResourceType invalidResourceType)
+name|withInvalidResourceType
+parameter_list|(
+name|InvalidResourceType
+name|invalidResourceType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|invalidResourceType
+operator|=
+name|invalidResourceType
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|String
 name|build
 parameter_list|()
 block|{
+if|if
+condition|(
+name|invalidResourceType
+operator|==
+name|LESS_THAN_ZERO
+condition|)
+block|{
 return|return
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"Invalid resource request, requested resource type=["
+literal|"Invalid resource request! "
+operator|+
+literal|"Cannot allocate containers as "
+operator|+
+literal|"requested resource is less than 0! "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Requested resource type=["
 argument_list|)
 operator|.
 name|append
@@ -6399,7 +6547,53 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"< 0 or greater than maximum allowed allocation. "
+literal|", Requested resource="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|requestedResource
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|invalidResourceType
+operator|==
+name|GREATER_THEN_MAX_ALLOCATION
+condition|)
+block|{
+return|return
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"Invalid resource request! "
+operator|+
+literal|"Cannot allocate containers as "
+operator|+
+literal|"requested resource is greater than "
+operator|+
+literal|"maximum allowed allocation. "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Requested resource type=["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|resourceType
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"], "
 argument_list|)
 operator|.
 name|append
@@ -6414,12 +6608,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"maximum allowed allocation="
+literal|", maximum allowed allocation="
 argument_list|)
 operator|.
 name|append
@@ -6429,13 +6618,13 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", please note that maximum allowed allocation is calculated "
+literal|", please note that maximum allowed allocation is "
 operator|+
-literal|"by scheduler based on maximum resource of "
+literal|"calculated by scheduler based on maximum resource "
 operator|+
-literal|"registered NodeManagers, which might be less than "
+literal|"of registered NodeManagers, which might be less "
 operator|+
-literal|"configured maximum allocation="
+literal|"than configured maximum allocation="
 argument_list|)
 operator|.
 name|append
@@ -6446,6 +6635,16 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Wrong type of InvalidResourceType is "
+operator|+
+literal|"detected!"
+argument_list|)
+throw|;
 block|}
 block|}
 block|}
