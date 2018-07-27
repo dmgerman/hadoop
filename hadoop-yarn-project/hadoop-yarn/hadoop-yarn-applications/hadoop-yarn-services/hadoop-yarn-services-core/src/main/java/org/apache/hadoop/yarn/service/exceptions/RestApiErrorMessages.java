@@ -372,6 +372,22 @@ literal|"The component (%s) does not need"
 operator|+
 literal|" an upgrade."
 decl_stmt|;
+DECL|field|ERROR_KERBEROS_PRINCIPAL_NAME_FORMAT
+name|String
+name|ERROR_KERBEROS_PRINCIPAL_NAME_FORMAT
+init|=
+literal|"Kerberos principal (%s) does "
+operator|+
+literal|" not contain a hostname."
+decl_stmt|;
+DECL|field|ERROR_KERBEROS_PRINCIPAL_MISSING
+name|String
+name|ERROR_KERBEROS_PRINCIPAL_MISSING
+init|=
+literal|"Kerberos principal or keytab is"
+operator|+
+literal|" missing."
+decl_stmt|;
 block|}
 end_interface
 
