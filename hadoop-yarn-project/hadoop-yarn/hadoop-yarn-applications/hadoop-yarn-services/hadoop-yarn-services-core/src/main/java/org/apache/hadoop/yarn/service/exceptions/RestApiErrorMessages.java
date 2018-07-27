@@ -130,6 +130,22 @@ name|ERROR_ARTIFACT_ID_INVALID
 operator|+
 name|ERROR_SUFFIX_FOR_COMPONENT
 decl_stmt|;
+DECL|field|ERROR_ARTIFACT_PATH_FOR_COMP_INVALID
+name|String
+name|ERROR_ARTIFACT_PATH_FOR_COMP_INVALID
+init|=
+literal|"For component %s with %s "
+operator|+
+literal|"artifact, path does not exist: %s"
+decl_stmt|;
+DECL|field|ERROR_CONFIGFILE_DEST_FILE_FOR_COMP_NOT_ABSOLUTE
+name|String
+name|ERROR_CONFIGFILE_DEST_FILE_FOR_COMP_NOT_ABSOLUTE
+init|=
+literal|"For component %s "
+operator|+
+literal|"with %s artifact, dest_file must be a relative path: %s"
+decl_stmt|;
 DECL|field|ERROR_RESOURCE_INVALID
 name|String
 name|ERROR_RESOURCE_INVALID
@@ -256,7 +272,7 @@ DECL|field|ERROR_ABSENT_LAUNCH_COMMAND
 name|String
 name|ERROR_ABSENT_LAUNCH_COMMAND
 init|=
-literal|"Launch_command is required when type is not DOCKER"
+literal|"launch_command is required when type is not DOCKER"
 decl_stmt|;
 DECL|field|ERROR_QUICKLINKS_FOR_COMP_INVALID
 name|String

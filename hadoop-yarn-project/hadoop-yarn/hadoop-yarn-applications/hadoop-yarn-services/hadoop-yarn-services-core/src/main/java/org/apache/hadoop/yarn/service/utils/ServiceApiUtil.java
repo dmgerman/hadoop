@@ -1966,6 +1966,11 @@ operator|.
 name|getArtifact
 argument_list|()
 argument_list|,
+name|comp
+operator|.
+name|getName
+argument_list|()
+argument_list|,
 name|fs
 argument_list|)
 expr_stmt|;
@@ -2076,6 +2081,11 @@ name|getConfiguration
 argument_list|()
 operator|.
 name|getFiles
+argument_list|()
+argument_list|,
+name|comp
+operator|.
+name|getName
 argument_list|()
 argument_list|,
 name|fs

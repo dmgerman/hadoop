@@ -175,13 +175,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|validateArtifact (Artifact artifact, FileSystem fileSystem)
+DECL|method|validateArtifact (Artifact artifact, String compName, FileSystem fileSystem)
 specifier|public
 name|void
 name|validateArtifact
 parameter_list|(
 name|Artifact
 name|artifact
+parameter_list|,
+name|String
+name|compName
 parameter_list|,
 name|FileSystem
 name|fileSystem
@@ -198,9 +201,16 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
 name|RestApiErrorMessages
 operator|.
-name|ERROR_ARTIFACT_INVALID
+name|ERROR_ARTIFACT_FOR_COMP_INVALID
+argument_list|,
+name|compName
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -221,22 +231,32 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
 name|RestApiErrorMessages
 operator|.
-name|ERROR_ARTIFACT_ID_INVALID
+name|ERROR_ARTIFACT_ID_FOR_COMP_INVALID
+argument_list|,
+name|compName
+argument_list|)
 argument_list|)
 throw|;
 block|}
 block|}
 annotation|@
 name|Override
-DECL|method|validateConfigFile (ConfigFile configFile, FileSystem fileSystem)
+DECL|method|validateConfigFile (ConfigFile configFile, String compName, FileSystem fileSystem)
 specifier|protected
 name|void
 name|validateConfigFile
 parameter_list|(
 name|ConfigFile
 name|configFile
+parameter_list|,
+name|String
+name|compName
 parameter_list|,
 name|FileSystem
 name|fileSystem

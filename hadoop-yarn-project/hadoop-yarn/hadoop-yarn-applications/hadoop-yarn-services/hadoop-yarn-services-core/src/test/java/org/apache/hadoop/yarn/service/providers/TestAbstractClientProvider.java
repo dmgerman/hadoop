@@ -248,13 +248,16 @@ name|AbstractClientProvider
 block|{
 annotation|@
 name|Override
-DECL|method|validateArtifact (Artifact artifact, FileSystem fileSystem)
+DECL|method|validateArtifact (Artifact artifact, String compName, FileSystem fileSystem)
 specifier|public
 name|void
 name|validateArtifact
 parameter_list|(
 name|Artifact
 name|artifact
+parameter_list|,
+name|String
+name|compName
 parameter_list|,
 name|FileSystem
 name|fileSystem
@@ -264,13 +267,16 @@ name|IOException
 block|{     }
 annotation|@
 name|Override
-DECL|method|validateConfigFile (ConfigFile configFile, FileSystem fileSystem)
+DECL|method|validateConfigFile (ConfigFile configFile, String compName, FileSystem fileSystem)
 specifier|protected
 name|void
 name|validateConfigFile
 parameter_list|(
 name|ConfigFile
 name|configFile
+parameter_list|,
+name|String
+name|compName
 parameter_list|,
 name|FileSystem
 name|fileSystem
@@ -332,6 +338,11 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|String
+name|compName
+init|=
+literal|"sleeper"
+decl_stmt|;
 name|ConfigFile
 name|configFile
 init|=
@@ -364,6 +375,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)
@@ -403,6 +416,8 @@ name|validateConfigFiles
 argument_list|(
 name|configFiles
 argument_list|,
+name|compName
+argument_list|,
 name|mockFs
 argument_list|)
 expr_stmt|;
@@ -437,6 +452,8 @@ name|validateConfigFiles
 argument_list|(
 name|configFiles
 argument_list|,
+name|compName
+argument_list|,
 name|mockFs
 argument_list|)
 expr_stmt|;
@@ -470,6 +487,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)
@@ -540,6 +559,8 @@ name|validateConfigFiles
 argument_list|(
 name|configFiles
 argument_list|,
+name|compName
+argument_list|,
 name|mockFs
 argument_list|)
 expr_stmt|;
@@ -573,6 +594,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)
@@ -611,6 +634,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)
@@ -682,6 +707,8 @@ name|validateConfigFiles
 argument_list|(
 name|configFiles
 argument_list|,
+name|compName
+argument_list|,
 name|mockFs
 argument_list|)
 expr_stmt|;
@@ -715,6 +742,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)
@@ -755,6 +784,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)
@@ -846,6 +877,8 @@ operator|.
 name|validateConfigFiles
 argument_list|(
 name|configFiles
+argument_list|,
+name|compName
 argument_list|,
 name|mockFs
 argument_list|)

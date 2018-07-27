@@ -317,7 +317,7 @@ name|tags
 return|;
 block|}
 comment|/**    * Validate the artifact.    * @param artifact    */
-DECL|method|validateArtifact (Artifact artifact, FileSystem fileSystem)
+DECL|method|validateArtifact (Artifact artifact, String compName, FileSystem fileSystem)
 specifier|public
 specifier|abstract
 name|void
@@ -326,13 +326,16 @@ parameter_list|(
 name|Artifact
 name|artifact
 parameter_list|,
+name|String
+name|compName
+parameter_list|,
 name|FileSystem
 name|fileSystem
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|validateConfigFile (ConfigFile configFile, FileSystem fileSystem)
+DECL|method|validateConfigFile (ConfigFile configFile, String compName, FileSystem fileSystem)
 specifier|protected
 specifier|abstract
 name|void
@@ -341,6 +344,9 @@ parameter_list|(
 name|ConfigFile
 name|configFile
 parameter_list|,
+name|String
+name|compName
+parameter_list|,
 name|FileSystem
 name|fileSystem
 parameter_list|)
@@ -348,7 +354,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Validate the config files.    * @param configFiles config file list    * @param fs file system    */
-DECL|method|validateConfigFiles (List<ConfigFile> configFiles, FileSystem fs)
+DECL|method|validateConfigFiles (List<ConfigFile> configFiles, String compName, FileSystem fs)
 specifier|public
 name|void
 name|validateConfigFiles
@@ -358,6 +364,9 @@ argument_list|<
 name|ConfigFile
 argument_list|>
 name|configFiles
+parameter_list|,
+name|String
+name|compName
 parameter_list|,
 name|FileSystem
 name|fs
@@ -680,7 +689,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Dest_file is empty."
+literal|"dest_file is empty."
 argument_list|)
 throw|;
 block|}
@@ -769,6 +778,8 @@ comment|// provider-specific validation
 name|validateConfigFile
 argument_list|(
 name|file
+argument_list|,
+name|compName
 argument_list|,
 name|fs
 argument_list|)

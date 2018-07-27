@@ -24,6 +24,28 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|Paths
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -48,24 +70,6 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|provider
-operator|.
-name|AbstractClientProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
 name|api
 operator|.
 name|records
@@ -96,23 +100,51 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|exceptions
+operator|.
+name|RestApiErrorMessages
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|nio
+name|apache
 operator|.
-name|file
+name|hadoop
 operator|.
-name|Paths
+name|yarn
+operator|.
+name|service
+operator|.
+name|provider
+operator|.
+name|AbstractClientProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -131,7 +163,7 @@ parameter_list|()
 block|{   }
 annotation|@
 name|Override
-DECL|method|validateArtifact (Artifact artifact, FileSystem fileSystem)
+DECL|method|validateArtifact (Artifact artifact, String compName, FileSystem fileSystem)
 specifier|public
 name|void
 name|validateArtifact
@@ -139,19 +171,27 @@ parameter_list|(
 name|Artifact
 name|artifact
 parameter_list|,
+name|String
+name|compName
+parameter_list|,
 name|FileSystem
 name|fileSystem
 parameter_list|)
 block|{   }
 annotation|@
 name|Override
-DECL|method|validateConfigFile (ConfigFile configFile, FileSystem fileSystem)
-specifier|protected
+annotation|@
+name|VisibleForTesting
+DECL|method|validateConfigFile (ConfigFile configFile, String compName, FileSystem fileSystem)
+specifier|public
 name|void
 name|validateConfigFile
 parameter_list|(
 name|ConfigFile
 name|configFile
+parameter_list|,
+name|String
+name|compName
 parameter_list|,
 name|FileSystem
 name|fileSystem
@@ -180,12 +220,23 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Dest_file must not be absolute path: "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+name|RestApiErrorMessages
+operator|.
+name|ERROR_CONFIGFILE_DEST_FILE_FOR_COMP_NOT_ABSOLUTE
+argument_list|,
+name|compName
+argument_list|,
+literal|"no"
+argument_list|,
 name|configFile
 operator|.
 name|getDestFile
 argument_list|()
+argument_list|)
 argument_list|)
 throw|;
 block|}
