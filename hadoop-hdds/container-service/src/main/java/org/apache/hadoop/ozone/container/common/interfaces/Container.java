@@ -146,6 +146,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -237,6 +247,12 @@ name|ContainerProtos
 operator|.
 name|ContainerType
 name|getContainerType
+parameter_list|()
+function_decl|;
+comment|/**    * Returns containerFile.    */
+DECL|method|getContainerFile ()
+name|File
+name|getContainerFile
 parameter_list|()
 function_decl|;
 comment|/**    * updates the DeleteTransactionId.    * @param deleteTransactionId    */

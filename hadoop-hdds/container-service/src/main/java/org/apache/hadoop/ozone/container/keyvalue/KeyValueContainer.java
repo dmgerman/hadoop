@@ -873,6 +873,16 @@ argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
+name|containerData
+operator|.
+name|setMetadataPath
+argument_list|(
+name|containerMetaDataPath
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|File
 name|chunksPath
 init|=
@@ -887,30 +897,6 @@ argument_list|,
 name|containerID
 argument_list|)
 decl_stmt|;
-name|File
-name|containerFile
-init|=
-name|KeyValueContainerLocationUtil
-operator|.
-name|getContainerFile
-argument_list|(
-name|containerMetaDataPath
-argument_list|,
-name|containerID
-argument_list|)
-decl_stmt|;
-name|File
-name|dbFile
-init|=
-name|KeyValueContainerLocationUtil
-operator|.
-name|getContainerDBFile
-argument_list|(
-name|containerMetaDataPath
-argument_list|,
-name|containerID
-argument_list|)
-decl_stmt|;
 comment|// Check if it is new Container.
 name|ContainerUtils
 operator|.
@@ -920,6 +906,12 @@ name|containerMetaDataPath
 argument_list|)
 expr_stmt|;
 comment|//Create Metadata path chunks path and metadata db
+name|File
+name|dbFile
+init|=
+name|getContainerDBFile
+argument_list|()
+decl_stmt|;
 name|KeyValueContainerUtil
 operator|.
 name|createContainerMetaData
@@ -952,16 +944,6 @@ decl_stmt|;
 comment|//Set containerData for the KeyValueContainer.
 name|containerData
 operator|.
-name|setMetadataPath
-argument_list|(
-name|containerMetaDataPath
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|containerData
-operator|.
 name|setChunksPath
 argument_list|(
 name|chunksPath
@@ -992,6 +974,12 @@ name|containerVolume
 argument_list|)
 expr_stmt|;
 comment|// Create .container file
+name|File
+name|containerFile
+init|=
+name|getContainerFile
+argument_list|()
+decl_stmt|;
 name|writeToContainerFile
 argument_list|(
 name|containerFile
@@ -1991,8 +1979,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Returns containerFile.    * @return .container File name    */
+annotation|@
+name|Override
 DECL|method|getContainerFile ()
-specifier|private
+specifier|public
 name|File
 name|getContainerFile
 parameter_list|()
@@ -2014,6 +2004,33 @@ operator|+
 name|OzoneConsts
 operator|.
 name|CONTAINER_EXTENSION
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns container DB file    * @return    */
+DECL|method|getContainerDBFile ()
+specifier|public
+name|File
+name|getContainerDBFile
+parameter_list|()
+block|{
+return|return
+operator|new
+name|File
+argument_list|(
+name|containerData
+operator|.
+name|getMetadataPath
+argument_list|()
+argument_list|,
+name|containerData
+operator|.
+name|getContainerID
+argument_list|()
+operator|+
+name|OzoneConsts
+operator|.
+name|DN_CONTAINER_DB
 argument_list|)
 return|;
 block|}

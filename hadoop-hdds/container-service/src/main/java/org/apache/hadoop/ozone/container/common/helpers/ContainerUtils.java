@@ -920,45 +920,6 @@ operator|.
 name|DN_CONTAINER_DB
 return|;
 block|}
-comment|/**    * Returns container file location.    *    * @param containerData - Data    * @param location - Root path    * @return Path    */
-DECL|method|getContainerFile (ContainerData containerData, Path location)
-specifier|public
-specifier|static
-name|File
-name|getContainerFile
-parameter_list|(
-name|ContainerData
-name|containerData
-parameter_list|,
-name|Path
-name|location
-parameter_list|)
-block|{
-return|return
-name|location
-operator|.
-name|resolve
-argument_list|(
-name|Long
-operator|.
-name|toString
-argument_list|(
-name|containerData
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-operator|.
-name|concat
-argument_list|(
-name|CONTAINER_EXTENSION
-argument_list|)
-argument_list|)
-operator|.
-name|toFile
-argument_list|()
-return|;
-block|}
 comment|/**    * Persistent a {@link DatanodeDetails} to a local file.    *    * @throws IOException when read/write error occurs    */
 DECL|method|writeDatanodeDetailsTo ( DatanodeDetails datanodeDetails, File path)
 specifier|public
@@ -1315,6 +1276,72 @@ name|NO_SUCH_ALGORITHM
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Get the .container file from the containerBaseDir    * @param containerBaseDir container base directory. The name of this    *                         directory is same as the containerID    * @return the .container file    */
+DECL|method|getContainerFile (File containerBaseDir)
+specifier|public
+specifier|static
+name|File
+name|getContainerFile
+parameter_list|(
+name|File
+name|containerBaseDir
+parameter_list|)
+block|{
+comment|// Container file layout is
+comment|// .../<<containerID>>/metadata/<<containerID>>.container
+name|String
+name|containerFilePath
+init|=
+name|OzoneConsts
+operator|.
+name|CONTAINER_META_PATH
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+name|getContainerID
+argument_list|(
+name|containerBaseDir
+argument_list|)
+operator|+
+name|OzoneConsts
+operator|.
+name|CONTAINER_EXTENSION
+decl_stmt|;
+return|return
+operator|new
+name|File
+argument_list|(
+name|containerBaseDir
+argument_list|,
+name|containerFilePath
+argument_list|)
+return|;
+block|}
+comment|/**    * ContainerID can be decoded from the container base directory name    */
+DECL|method|getContainerID (File containerBaseDir)
+specifier|public
+specifier|static
+name|long
+name|getContainerID
+parameter_list|(
+name|File
+name|containerBaseDir
+parameter_list|)
+block|{
+return|return
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|containerBaseDir
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class
