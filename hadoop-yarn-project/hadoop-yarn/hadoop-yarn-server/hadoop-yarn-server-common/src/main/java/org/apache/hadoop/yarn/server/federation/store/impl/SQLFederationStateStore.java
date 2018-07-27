@@ -3418,27 +3418,21 @@ operator|==
 literal|0
 condition|)
 block|{
-name|String
-name|errMsg
-init|=
-literal|"The application "
-operator|+
-name|appId
-operator|+
-literal|" was not insert into the StateStore"
-decl_stmt|;
-name|FederationStateStoreUtils
-operator|.
-name|logAndThrowStoreException
-argument_list|(
 name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The application {} was not inserted in the StateStore because it"
+operator|+
+literal|" was already present in SubCluster {}"
 argument_list|,
-name|errMsg
+name|appId
+argument_list|,
+name|subClusterHome
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Check the ROWCOUNT value, if it is different from 1 it means the call
-comment|// had a wrong behavior. Maybe the database is not set correctly.
+elseif|else
 if|if
 condition|(
 name|cstmt
@@ -3451,6 +3445,8 @@ operator|!=
 literal|1
 condition|)
 block|{
+comment|// Check the ROWCOUNT value, if it is different from 1 it means the
+comment|// call had a wrong behavior. Maybe the database is not set correctly.
 name|String
 name|errMsg
 init|=
