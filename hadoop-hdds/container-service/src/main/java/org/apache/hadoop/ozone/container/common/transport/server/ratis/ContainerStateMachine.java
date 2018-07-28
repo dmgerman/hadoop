@@ -1065,9 +1065,6 @@ name|containerID
 init|=
 name|requestProto
 operator|.
-name|getCreateContainer
-argument_list|()
-operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
@@ -1383,9 +1380,6 @@ name|long
 name|containerID
 init|=
 name|requestProto
-operator|.
-name|getCreateContainer
-argument_list|()
 operator|.
 name|getContainerID
 argument_list|()

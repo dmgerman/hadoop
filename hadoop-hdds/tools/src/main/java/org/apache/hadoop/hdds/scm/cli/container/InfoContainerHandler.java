@@ -477,16 +477,6 @@ argument_list|)
 expr_stmt|;
 name|logOut
 argument_list|(
-literal|"Container DB Path: %s"
-argument_list|,
-name|containerData
-operator|.
-name|getDbPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|logOut
-argument_list|(
 literal|"Container Path: %s"
 argument_list|,
 name|containerData

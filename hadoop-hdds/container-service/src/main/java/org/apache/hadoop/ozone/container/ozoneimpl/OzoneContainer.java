@@ -1011,9 +1011,6 @@ case|:
 return|return
 name|request
 operator|.
-name|getCloseContainer
-argument_list|()
-operator|.
 name|getContainerID
 argument_list|()
 return|;
