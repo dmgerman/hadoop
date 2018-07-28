@@ -1022,6 +1022,30 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
+name|Result
+operator|.
+name|BLOCK_NOT_COMMITTED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
 name|Stage
 import|;
 end_import
@@ -2844,6 +2868,36 @@ name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Check if it really exists in the openContainerBlockMap
+if|if
+condition|(
+name|openContainerBlockMap
+operator|.
+name|checkIfBlockExists
+argument_list|(
+name|blockID
+argument_list|)
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Block "
+operator|+
+name|blockID
+operator|+
+literal|" is not committed yet."
+decl_stmt|;
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|msg
+argument_list|,
+name|BLOCK_NOT_COMMITTED
+argument_list|)
+throw|;
+block|}
 name|blockLength
 operator|=
 name|keyManager
