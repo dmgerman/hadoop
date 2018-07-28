@@ -36,6 +36,28 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ContainerBlocksDeletionACKProto
+operator|.
+name|DeleteBlockTransactionResult
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|DeletedBlocksTransaction
 import|;
 end_import
@@ -80,6 +102,16 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
 begin_comment
 comment|/**  * The DeletedBlockLog is a persisted log in SCM to keep tracking  * container blocks which are under deletion. It maintains info  * about under-deletion container blocks that notified by OM,  * and the state how it is processed.  */
 end_comment
@@ -92,20 +124,6 @@ name|DeletedBlockLog
 extends|extends
 name|Closeable
 block|{
-comment|/**    *  A limit size list of transactions. Note count is the max number    *  of TXs to return, we might not be able to always return this    *  number. and the processCount of those transactions    *  should be [0, MAX_RETRY).    *    * @param count - number of transactions.    * @return a list of BlockDeletionTransaction.    */
-DECL|method|getTransactions (int count)
-name|List
-argument_list|<
-name|DeletedBlocksTransaction
-argument_list|>
-name|getTransactions
-parameter_list|(
-name|int
-name|count
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Scan entire log once and returns TXs to DatanodeDeletedBlockTransactions.    * Once DatanodeDeletedBlockTransactions is full, the scan behavior will    * stop.    * @param transactions a list of TXs will be set into.    * @throws IOException    */
 DECL|method|getTransactions (DatanodeDeletedBlockTransactions transactions)
 name|void
@@ -142,19 +160,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Commits a transaction means to delete all footprints of a transaction    * from the log. This method doesn't guarantee all transactions can be    * successfully deleted, it tolerate failures and tries best efforts to.    *    * @param txIDs - transaction IDs.    */
-DECL|method|commitTransactions (List<Long> txIDs)
+comment|/**    * Commits a transaction means to delete all footprints of a transaction    * from the log. This method doesn't guarantee all transactions can be    * successfully deleted, it tolerate failures and tries best efforts to.    *  @param transactionResults - delete block transaction results.    * @param dnID - ID of datanode which acknowledges the delete block command.    */
+DECL|method|commitTransactions (List<DeleteBlockTransactionResult> transactionResults, UUID dnID)
 name|void
 name|commitTransactions
 parameter_list|(
 name|List
 argument_list|<
-name|Long
+name|DeleteBlockTransactionResult
 argument_list|>
-name|txIDs
+name|transactionResults
+parameter_list|,
+name|UUID
+name|dnID
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Creates a block deletion transaction and adds that into the log.    *    * @param containerID - container ID.    * @param blocks - blocks that belong to the same container.    *    * @throws IOException    */
 DECL|method|addTransaction (long containerID, List<Long> blocks)

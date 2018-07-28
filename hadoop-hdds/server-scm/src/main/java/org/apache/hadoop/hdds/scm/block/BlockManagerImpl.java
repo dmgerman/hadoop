@@ -761,6 +761,8 @@ operator|new
 name|DeletedBlockLogImpl
 argument_list|(
 name|conf
+argument_list|,
+name|containerManager
 argument_list|)
 expr_stmt|;
 name|long

@@ -257,13 +257,19 @@ operator|=
 name|nodeNum
 expr_stmt|;
 block|}
-DECL|method|addTransaction (DeletedBlocksTransaction tx)
+DECL|method|addTransaction (DeletedBlocksTransaction tx, Set<UUID> dnsWithTransactionCommitted)
 specifier|public
 name|void
 name|addTransaction
 parameter_list|(
 name|DeletedBlocksTransaction
 name|tx
+parameter_list|,
+name|Set
+argument_list|<
+name|UUID
+argument_list|>
+name|dnsWithTransactionCommitted
 parameter_list|)
 throws|throws
 name|IOException
@@ -351,6 +357,44 @@ operator|.
 name|getUuid
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|dnsWithTransactionCommitted
+operator|==
+literal|null
+operator|||
+operator|!
+name|dnsWithTransactionCommitted
+operator|.
+name|contains
+argument_list|(
+name|dnID
+argument_list|)
+condition|)
+block|{
+comment|// Transaction need not be sent to dns which have already committed it
+name|addTransactionToDN
+argument_list|(
+name|dnID
+argument_list|,
+name|tx
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|addTransactionToDN (UUID dnID, DeletedBlocksTransaction tx)
+specifier|private
+name|void
+name|addTransactionToDN
+parameter_list|(
+name|UUID
+name|dnID
+parameter_list|,
+name|DeletedBlocksTransaction
+name|tx
+parameter_list|)
+block|{
 if|if
 condition|(
 name|transactions
@@ -471,7 +515,6 @@ name|getTxID
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|getDatanodeIDs ()
 name|Set
