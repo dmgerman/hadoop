@@ -165,6 +165,20 @@ argument_list|(
 literal|"^[0-9a-zA-Z][0-9a-zA-Z-_\\.]*"
 argument_list|)
 decl_stmt|;
+DECL|field|ATTRIBUTE_VALUE_PATTERN
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|ATTRIBUTE_VALUE_PATTERN
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^[0-9a-zA-Z][0-9a-zA-Z-_.]*"
+argument_list|)
+decl_stmt|;
 DECL|method|checkAndThrowLabelName (String label)
 specifier|public
 specifier|static
@@ -316,7 +330,7 @@ block|}
 name|boolean
 name|match
 init|=
-name|LABEL_OR_VALUE_PATTERN
+name|ATTRIBUTE_VALUE_PATTERN
 operator|.
 name|matcher
 argument_list|(
