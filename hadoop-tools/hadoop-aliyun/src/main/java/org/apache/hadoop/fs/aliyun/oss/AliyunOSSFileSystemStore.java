@@ -2475,6 +2475,19 @@ name|ClientException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception thrown when store retrieves key: "
+operator|+
+name|key
+operator|+
+literal|", exception: "
+operator|+
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
