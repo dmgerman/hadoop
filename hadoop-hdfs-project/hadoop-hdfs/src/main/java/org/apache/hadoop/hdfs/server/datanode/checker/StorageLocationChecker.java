@@ -212,6 +212,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|DataNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|StorageLocation
 import|;
 end_import
@@ -577,7 +595,9 @@ if|if
 condition|(
 name|maxVolumeFailuresTolerated
 operator|<
-literal|0
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
 condition|)
 block|{
 throw|throw
@@ -592,7 +612,11 @@ literal|" - "
 operator|+
 name|maxVolumeFailuresTolerated
 operator|+
-literal|" (should be non-negative)"
+literal|" "
+operator|+
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURES_TOLERATED_MSG
 argument_list|)
 throw|;
 block|}
@@ -1030,6 +1054,64 @@ block|}
 block|}
 if|if
 condition|(
+name|maxVolumeFailuresTolerated
+operator|==
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+condition|)
+block|{
+if|if
+condition|(
+name|dataDirs
+operator|.
+name|size
+argument_list|()
+operator|==
+name|failedLocations
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Too many failed volumes - "
+operator|+
+literal|"current valid volumes: "
+operator|+
+name|goodLocations
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|", volumes configured: "
+operator|+
+name|dataDirs
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|", volumes failed: "
+operator|+
+name|failedLocations
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|", volume failures tolerated: "
+operator|+
+name|maxVolumeFailuresTolerated
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
 name|failedLocations
 operator|.
 name|size
@@ -1070,6 +1152,7 @@ operator|+
 name|maxVolumeFailuresTolerated
 argument_list|)
 throw|;
+block|}
 block|}
 if|if
 condition|(

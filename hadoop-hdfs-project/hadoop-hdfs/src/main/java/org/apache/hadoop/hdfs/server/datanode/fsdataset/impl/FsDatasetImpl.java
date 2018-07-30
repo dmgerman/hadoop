@@ -2106,6 +2106,12 @@ specifier|final
 name|int
 name|volFailuresTolerated
 decl_stmt|;
+DECL|field|volsConfigured
+specifier|private
+specifier|final
+name|int
+name|volsConfigured
+decl_stmt|;
 DECL|field|fsRunning
 specifier|private
 specifier|volatile
@@ -2327,9 +2333,8 @@ argument_list|,
 name|storage
 argument_list|)
 decl_stmt|;
-name|int
 name|volsConfigured
-init|=
+operator|=
 name|datanode
 operator|.
 name|getDnConf
@@ -2337,7 +2342,7 @@ argument_list|()
 operator|.
 name|getVolsConfigured
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|int
 name|volsFailed
 init|=
@@ -2346,6 +2351,85 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|volFailuresTolerated
+operator|<
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+operator|||
+name|volFailuresTolerated
+operator|>=
+name|volsConfigured
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid value configured for "
+operator|+
+literal|"dfs.datanode.failed.volumes.tolerated - "
+operator|+
+name|volFailuresTolerated
+operator|+
+literal|". Value configured is either less than maxVolumeFailureLimit or greater than "
+operator|+
+literal|"to the number of configured volumes ("
+operator|+
+name|volsConfigured
+operator|+
+literal|")."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|volFailuresTolerated
+operator|==
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+condition|)
+block|{
+if|if
+condition|(
+name|volsConfigured
+operator|==
+name|volsFailed
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Too many failed volumes - "
+operator|+
+literal|"current valid volumes: "
+operator|+
+name|storage
+operator|.
+name|getNumStorageDirs
+argument_list|()
+operator|+
+literal|", volumes configured: "
+operator|+
+name|volsConfigured
+operator|+
+literal|", volumes failed: "
+operator|+
+name|volsFailed
+operator|+
+literal|", volume failures tolerated: "
+operator|+
+name|volFailuresTolerated
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
 if|if
 condition|(
 name|volsFailed
@@ -2379,6 +2463,7 @@ operator|+
 name|volFailuresTolerated
 argument_list|)
 throw|;
+block|}
 block|}
 name|storageMap
 operator|=
@@ -3921,12 +4006,38 @@ name|boolean
 name|hasEnoughResource
 parameter_list|()
 block|{
+if|if
+condition|(
+name|volFailuresTolerated
+operator|==
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+condition|)
+block|{
+comment|// If volFailuresTolerated configured maxVolumeFailureLimit then minimum
+comment|// one volume is required.
+return|return
+name|volumes
+operator|.
+name|getVolumes
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|>=
+literal|1
+return|;
+block|}
+else|else
+block|{
 return|return
 name|getNumFailedVolumes
 argument_list|()
 operator|<=
 name|volFailuresTolerated
 return|;
+block|}
 block|}
 comment|/**    * Return total capacity, used and unused    */
 annotation|@

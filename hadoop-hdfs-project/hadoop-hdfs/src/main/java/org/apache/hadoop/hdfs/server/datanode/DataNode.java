@@ -3211,6 +3211,25 @@ name|CURRENT_BLOCK_FORMAT_VERSION
 init|=
 literal|1
 decl_stmt|;
+DECL|field|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|MAX_VOLUME_FAILURES_TOLERATED_MSG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_VOLUME_FAILURES_TOLERATED_MSG
+init|=
+literal|"should be greater than -1"
+decl_stmt|;
 comment|/** A list of property that are reconfigurable at runtime. */
 DECL|field|RECONFIGURABLE_PROPERTIES
 specifier|private
@@ -8149,7 +8168,7 @@ if|if
 condition|(
 name|volFailuresTolerated
 operator|<
-literal|0
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
 operator|||
 name|volFailuresTolerated
 operator|>=
@@ -8166,7 +8185,7 @@ literal|"dfs.datanode.failed.volumes.tolerated - "
 operator|+
 name|volFailuresTolerated
 operator|+
-literal|". Value configured is either less than 0 or>= "
+literal|". Value configured is either greater than -1 or>= "
 operator|+
 literal|"to the number of configured volumes ("
 operator|+

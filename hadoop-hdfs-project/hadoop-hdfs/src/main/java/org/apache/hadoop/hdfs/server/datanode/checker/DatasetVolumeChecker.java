@@ -184,6 +184,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|DataNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|fsdataset
 operator|.
 name|FsDatasetSpi
@@ -838,7 +856,9 @@ if|if
 condition|(
 name|maxVolumeFailuresTolerated
 operator|<
-literal|0
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
 condition|)
 block|{
 throw|throw
@@ -853,7 +873,11 @@ literal|" - "
 operator|+
 name|maxVolumeFailuresTolerated
 operator|+
-literal|" (should be non-negative)"
+literal|" "
+operator|+
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURES_TOLERATED_MSG
 argument_list|)
 throw|;
 block|}
