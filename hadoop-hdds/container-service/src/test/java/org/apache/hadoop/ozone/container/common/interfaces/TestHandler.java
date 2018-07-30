@@ -336,21 +336,6 @@ specifier|private
 name|Handler
 name|handler
 decl_stmt|;
-DECL|field|DATANODE_UUID
-specifier|private
-specifier|final
-specifier|static
-name|String
-name|DATANODE_UUID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -407,6 +392,8 @@ argument_list|,
 name|containerSet
 argument_list|,
 name|volumeSet
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

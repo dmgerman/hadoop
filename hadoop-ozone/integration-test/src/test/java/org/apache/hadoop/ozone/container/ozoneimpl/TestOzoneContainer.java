@@ -473,6 +473,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//Setting scmId, as we start manually ozone container.

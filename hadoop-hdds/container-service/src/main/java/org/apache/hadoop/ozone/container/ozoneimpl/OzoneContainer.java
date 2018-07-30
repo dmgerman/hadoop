@@ -226,6 +226,26 @@ name|container
 operator|.
 name|common
 operator|.
+name|statemachine
+operator|.
+name|StateContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|transport
 operator|.
 name|server
@@ -488,7 +508,7 @@ index|[]
 name|server
 decl_stmt|;
 comment|/**    * Construct OzoneContainer object.    * @param datanodeDetails    * @param conf    * @throws DiskOutOfSpaceException    * @throws IOException    */
-DECL|method|OzoneContainer (DatanodeDetails datanodeDetails, OzoneConfiguration conf)
+DECL|method|OzoneContainer (DatanodeDetails datanodeDetails, OzoneConfiguration conf, StateContext context)
 specifier|public
 name|OzoneContainer
 parameter_list|(
@@ -497,6 +517,9 @@ name|datanodeDetails
 parameter_list|,
 name|OzoneConfiguration
 name|conf
+parameter_list|,
+name|StateContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -567,6 +590,8 @@ argument_list|,
 name|containerSet
 argument_list|,
 name|volumeSet
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|server

@@ -1194,6 +1194,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|rpcEndPoint
@@ -1319,6 +1321,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|rpcEndPoint
@@ -1598,6 +1602,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|VersionEndpointTask
@@ -1712,6 +1718,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|VersionEndpointTask
