@@ -437,7 +437,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** A {@link org.apache.ratis.statemachine.StateMachine} for containers.  *  * The stateMachine is responsible for handling different types of container  * requests. The container requests can be divided into readonly and write  * requests.  *  * Read only requests are classified in  * {@link org.apache.hadoop.hdds.scm.XceiverClientRatis#isReadOnly}  * and these readonly requests are replied from the {@link #query(Message)}.  *  * The write requests can be divided into requests with user data  * (WriteChunkRequest) and other request without user data.  *  * Inorder to optimize the write throughput, the writeChunk request is  * processed in 2 phases. The 2 phases are divided in  * {@link #startTransaction(RaftClientRequest)}, in the first phase the user  * data is written directly into the state machine via  * {@link #writeStateMachineData} and in the second phase the  * transaction is committed via {@link #applyTransaction(TransactionContext)}  *  * For the requests with no stateMachine data, the transaction is directly  * committed through  * {@link #applyTransaction(TransactionContext)}  *  * There are 2 ordering operation which are enforced right now in the code,  * 1) Write chunk operation are executed after the create container operation,  * the write chunk operation will fail otherwise as the container still hasn't  * been created. Hence the create container operation has been split in the  * {@link #startTransaction(RaftClientRequest)}, this will help in synchronizing  * the calls in {@link #writeStateMachineData}  *  * 2) Write chunk commit operation is executed after write chunk state machine  * operation. This will ensure that commit operation is sync'd with the state  * machine operation.  * */
+comment|/** A {@link org.apache.ratis.statemachine.StateMachine} for containers.  *  * The stateMachine is responsible for handling different types of container  * requests. The container requests can be divided into readonly and write  * requests.  *  * Read only requests are classified in  * {@link org.apache.hadoop.hdds.HddsUtils#isReadOnly}  * and these readonly requests are replied from the {@link #query(Message)}.  *  * The write requests can be divided into requests with user data  * (WriteChunkRequest) and other request without user data.  *  * Inorder to optimize the write throughput, the writeChunk request is  * processed in 2 phases. The 2 phases are divided in  * {@link #startTransaction(RaftClientRequest)}, in the first phase the user  * data is written directly into the state machine via  * {@link #writeStateMachineData} and in the second phase the  * transaction is committed via {@link #applyTransaction(TransactionContext)}  *  * For the requests with no stateMachine data, the transaction is directly  * committed through  * {@link #applyTransaction(TransactionContext)}  *  * There are 2 ordering operation which are enforced right now in the code,  * 1) Write chunk operation are executed after the create container operation,  * the write chunk operation will fail otherwise as the container still hasn't  * been created. Hence the create container operation has been split in the  * {@link #startTransaction(RaftClientRequest)}, this will help in synchronizing  * the calls in {@link #writeStateMachineData}  *  * 2) Write chunk commit operation is executed after write chunk state machine  * operation. This will ensure that commit operation is sync'd with the state  * machine operation.  *  * Synchronization between {@link #writeStateMachineData} and  * {@link #applyTransaction} need to be enforced in the StateMachine  * implementation. For example, synchronization between writeChunk and  * createContainer in {@link ContainerStateMachine}.  * */
 end_comment
 
 begin_class
@@ -1095,6 +1095,7 @@ name|EMPTY
 argument_list|)
 return|;
 block|}
+comment|/*    * writeStateMachineData calls are not synchronized with each other    * and also with applyTransaction.    */
 annotation|@
 name|Override
 DECL|method|writeStateMachineData (LogEntryProto entry)
@@ -1246,6 +1247,7 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/*    * ApplyTransaction calls in Ratis are sequential.    */
 annotation|@
 name|Override
 DECL|method|applyTransaction (TransactionContext trx)
