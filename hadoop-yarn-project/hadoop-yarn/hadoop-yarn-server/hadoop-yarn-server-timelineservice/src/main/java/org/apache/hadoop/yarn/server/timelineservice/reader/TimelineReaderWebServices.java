@@ -11317,6 +11317,10 @@ condition|)
 block|{
 if|if
 condition|(
+name|ugi
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|validateAuthUserWithEntityUser
 argument_list|(

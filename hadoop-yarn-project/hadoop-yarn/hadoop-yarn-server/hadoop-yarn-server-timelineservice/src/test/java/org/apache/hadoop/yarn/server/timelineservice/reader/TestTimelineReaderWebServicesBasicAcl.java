@@ -444,6 +444,23 @@ name|user1
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// true because ugi is null
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|TimelineReaderWebServices
+operator|.
+name|checkAccess
+argument_list|(
+name|manager
+argument_list|,
+literal|null
+argument_list|,
+name|user1
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// incoming ugi is admin asking for entity owner user1
 name|Assert
 operator|.
