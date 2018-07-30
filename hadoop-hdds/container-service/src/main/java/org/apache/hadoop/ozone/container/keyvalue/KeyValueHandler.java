@@ -2588,12 +2588,6 @@ argument_list|(
 name|keyData
 argument_list|)
 expr_stmt|;
-comment|//sets the total size of the key before committing
-name|keyData
-operator|.
-name|computeSize
-argument_list|()
-expr_stmt|;
 name|keyManager
 operator|.
 name|putKey
@@ -3869,11 +3863,6 @@ name|setChunks
 argument_list|(
 name|chunks
 argument_list|)
-expr_stmt|;
-name|keyData
-operator|.
-name|computeSize
-argument_list|()
 expr_stmt|;
 name|keyManager
 operator|.

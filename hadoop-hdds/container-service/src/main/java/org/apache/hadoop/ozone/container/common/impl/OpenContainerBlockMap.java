@@ -185,7 +185,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Map: containerId -> (localId -> KeyData).  * The outer container map does not entail locking for a better performance.  * The inner {@link KeyDataMap} is synchronized.  *  * This class will maintain list of open keys per container when closeContainer  * command comes, it should autocommit all open keys of a open container before  * marking the container as closed.  */
+comment|/**  * Map: containerId -> (localId -> {@link KeyData}).  * The outer container map does not entail locking for a better performance.  * The inner {@link KeyDataMap} is synchronized.  *  * This class will maintain list of open keys per container when closeContainer  * command comes, it should autocommit all open keys of a open container before  * marking the container as closed.  */
 end_comment
 
 begin_class
