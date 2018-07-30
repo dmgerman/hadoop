@@ -951,15 +951,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"rollingMonitorIntervall should be more than or equal to "
+literal|"rollingMonitorInterval should be more than or equal to {} "
 operator|+
+literal|"seconds. Using {} seconds instead."
+argument_list|,
 name|MIN_LOG_ROLLING_INTERVAL
-operator|+
-literal|" seconds. Using "
-operator|+
+argument_list|,
 name|MIN_LOG_ROLLING_INTERVAL
-operator|+
-literal|" seconds instead."
 argument_list|)
 expr_stmt|;
 name|this

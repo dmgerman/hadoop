@@ -2742,7 +2742,7 @@ expr_stmt|;
 block|}
 name|meta
 operator|.
-name|setLastModificatedTime
+name|setLastModifiedTime
 argument_list|(
 name|logFile
 operator|.
@@ -3284,7 +3284,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"There is no available log fils for "
+literal|"There is no available log file for "
 operator|+
 literal|"application:"
 operator|+
@@ -3317,7 +3317,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"There is no available log fils for "
+literal|"There is no available log file for "
 operator|+
 literal|"application:"
 operator|+
@@ -3786,7 +3786,7 @@ name|format
 argument_list|(
 name|candidate
 operator|.
-name|getLastModificatedTime
+name|getLastModifiedTime
 argument_list|()
 argument_list|)
 argument_list|,
@@ -4037,7 +4037,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"There is no available log fils for "
+literal|"There is no available log file for "
 operator|+
 literal|"application:"
 operator|+
@@ -4070,7 +4070,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"There is no available log fils for "
+literal|"There is no available log file for "
 operator|+
 literal|"application:"
 operator|+
@@ -4319,7 +4319,7 @@ name|format
 argument_list|(
 name|aMeta
 operator|.
-name|getLastModificatedTime
+name|getLastModifiedTime
 argument_list|()
 argument_list|)
 argument_list|)
@@ -4396,7 +4396,7 @@ name|format
 argument_list|(
 name|log
 operator|.
-name|getLastModificatedTime
+name|getLastModifiedTime
 argument_list|()
 argument_list|)
 argument_list|)
@@ -6110,10 +6110,10 @@ specifier|private
 name|long
 name|fileCompressedSize
 decl_stmt|;
-DECL|field|lastModificatedTime
+DECL|field|lastModifiedTime
 specifier|private
 name|long
-name|lastModificatedTime
+name|lastModifiedTime
 decl_stmt|;
 DECL|field|startIndex
 specifier|private
@@ -6198,30 +6198,30 @@ operator|=
 name|fileCompressedSize
 expr_stmt|;
 block|}
-DECL|method|getLastModificatedTime ()
+DECL|method|getLastModifiedTime ()
 specifier|public
 name|long
-name|getLastModificatedTime
+name|getLastModifiedTime
 parameter_list|()
 block|{
 return|return
-name|lastModificatedTime
+name|lastModifiedTime
 return|;
 block|}
-DECL|method|setLastModificatedTime (long lastModificatedTime)
+DECL|method|setLastModifiedTime (long lastModifiedTime)
 specifier|public
 name|void
-name|setLastModificatedTime
+name|setLastModifiedTime
 parameter_list|(
 name|long
-name|lastModificatedTime
+name|lastModifiedTime
 parameter_list|)
 block|{
 name|this
 operator|.
-name|lastModificatedTime
+name|lastModifiedTime
 operator|=
-name|lastModificatedTime
+name|lastModifiedTime
 expr_stmt|;
 block|}
 DECL|method|getStartIndex ()

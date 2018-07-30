@@ -1460,7 +1460,7 @@ name|conf
 argument_list|,
 name|retentionSecs
 argument_list|,
-name|creatRMClient
+name|createRMClient
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1529,10 +1529,10 @@ comment|// We have already marked ApplicationClientProtocol.getApplicationReport
 comment|// as @Idempotent, it will automatically take care of RM restart/failover.
 annotation|@
 name|VisibleForTesting
-DECL|method|creatRMClient ()
+DECL|method|createRMClient ()
 specifier|protected
 name|ApplicationClientProtocol
-name|creatRMClient
+name|createRMClient
 parameter_list|()
 throws|throws
 name|IOException

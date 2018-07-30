@@ -1842,7 +1842,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"There is no available log fils for "
+literal|"There is no available log file for "
 operator|+
 literal|"application:"
 operator|+

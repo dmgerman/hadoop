@@ -670,7 +670,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The log aggregation is diabled. No need to update "
+literal|"The log aggregation is disabled. No need to update "
 operator|+
 literal|"the log aggregation status"
 argument_list|)
@@ -928,7 +928,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The log aggregation is diabled."
+literal|"The log aggregation is disabled."
 operator|+
 literal|"There is no cached log aggregation status."
 argument_list|)

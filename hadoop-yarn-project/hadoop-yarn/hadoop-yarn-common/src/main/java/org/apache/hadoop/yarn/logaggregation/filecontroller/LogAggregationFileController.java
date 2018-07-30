@@ -725,7 +725,7 @@ operator|=
 name|conf
 expr_stmt|;
 name|int
-name|configuredRentionSize
+name|configuredRetentionSize
 init|=
 name|conf
 operator|.
@@ -742,7 +742,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|configuredRentionSize
+name|configuredRetentionSize
 operator|<=
 literal|0
 condition|)
@@ -762,7 +762,7 @@ name|this
 operator|.
 name|retentionSize
 operator|=
-name|configuredRentionSize
+name|configuredRetentionSize
 expr_stmt|;
 block|}
 name|this

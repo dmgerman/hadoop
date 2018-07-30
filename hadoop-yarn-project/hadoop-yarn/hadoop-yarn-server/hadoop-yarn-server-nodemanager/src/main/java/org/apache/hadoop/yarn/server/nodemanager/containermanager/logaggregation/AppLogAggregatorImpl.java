@@ -3715,7 +3715,7 @@ argument_list|()
 argument_list|,
 name|logValue
 operator|.
-name|getObseleteRetentionLogFiles
+name|getObsoleteRetentionLogFiles
 argument_list|()
 argument_list|)
 return|;

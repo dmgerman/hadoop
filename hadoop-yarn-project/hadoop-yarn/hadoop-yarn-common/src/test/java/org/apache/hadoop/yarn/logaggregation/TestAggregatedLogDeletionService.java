@@ -1255,7 +1255,7 @@ annotation|@
 name|Override
 specifier|protected
 name|ApplicationClientProtocol
-name|creatRMClient
+name|createRMClient
 parameter_list|()
 throws|throws
 name|IOException
@@ -1951,7 +1951,7 @@ annotation|@
 name|Override
 specifier|protected
 name|ApplicationClientProtocol
-name|creatRMClient
+name|createRMClient
 parameter_list|()
 throws|throws
 name|IOException
@@ -2511,7 +2511,7 @@ annotation|@
 name|Override
 specifier|protected
 name|ApplicationClientProtocol
-name|creatRMClient
+name|createRMClient
 parameter_list|()
 throws|throws
 name|IOException

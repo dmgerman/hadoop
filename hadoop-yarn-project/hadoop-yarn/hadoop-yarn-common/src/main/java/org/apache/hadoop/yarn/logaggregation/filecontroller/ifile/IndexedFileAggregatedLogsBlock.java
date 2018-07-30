@@ -1319,14 +1319,14 @@ if|if
 condition|(
 name|candidate
 operator|.
-name|getLastModificatedTime
+name|getLastModifiedTime
 argument_list|()
 operator|<
 name|startTime
 operator|||
 name|candidate
 operator|.
-name|getLastModificatedTime
+name|getLastModifiedTime
 argument_list|()
 operator|>
 name|endTime
@@ -1437,7 +1437,7 @@ name|format
 argument_list|(
 name|candidate
 operator|.
-name|getLastModificatedTime
+name|getLastModifiedTime
 argument_list|()
 argument_list|)
 argument_list|)

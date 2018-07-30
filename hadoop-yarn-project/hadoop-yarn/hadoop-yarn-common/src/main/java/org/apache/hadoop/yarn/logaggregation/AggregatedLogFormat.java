@@ -1217,14 +1217,14 @@ name|LogRetentionContext
 name|logRetentionContext
 decl_stmt|;
 comment|/**      * The set of log files that are older than retention policy that will      * not be uploaded but ready for deletion.      */
-DECL|field|obseleteRetentionLogFiles
+DECL|field|obsoleteRetentionLogFiles
 specifier|private
 specifier|final
 name|Set
 argument_list|<
 name|File
 argument_list|>
-name|obseleteRetentionLogFiles
+name|obsoleteRetentionLogFiles
 init|=
 operator|new
 name|HashSet
@@ -1983,7 +1983,7 @@ name|shouldRetainLog
 argument_list|()
 condition|)
 block|{
-name|obseleteRetentionLogFiles
+name|obsoleteRetentionLogFiles
 operator|.
 name|addAll
 argument_list|(
@@ -2417,13 +2417,13 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|getObseleteRetentionLogFiles ()
+DECL|method|getObsoleteRetentionLogFiles ()
 specifier|public
 name|Set
 argument_list|<
 name|Path
 argument_list|>
-name|getObseleteRetentionLogFiles
+name|getObsoleteRetentionLogFiles
 parameter_list|()
 block|{
 name|Set
@@ -2446,7 +2446,7 @@ name|file
 range|:
 name|this
 operator|.
-name|obseleteRetentionLogFiles
+name|obsoleteRetentionLogFiles
 control|)
 block|{
 name|path
