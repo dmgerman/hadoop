@@ -34,6 +34,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -64,6 +82,16 @@ name|LogHandlerEvent
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_interface
 DECL|interface|LogHandler
 specifier|public
@@ -83,6 +111,15 @@ parameter_list|(
 name|LogHandlerEvent
 name|event
 parameter_list|)
+function_decl|;
+DECL|method|getInvalidTokenApps ()
+specifier|public
+name|Set
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getInvalidTokenApps
+parameter_list|()
 function_decl|;
 block|}
 end_interface

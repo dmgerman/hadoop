@@ -33,13 +33,16 @@ enum|enum
 name|LogHandlerEventType
 block|{
 DECL|enumConstant|APPLICATION_STARTED
-DECL|enumConstant|CONTAINER_FINISHED
-DECL|enumConstant|APPLICATION_FINISHED
 name|APPLICATION_STARTED
 block|,
+DECL|enumConstant|CONTAINER_FINISHED
 name|CONTAINER_FINISHED
 block|,
+DECL|enumConstant|APPLICATION_FINISHED
+DECL|enumConstant|LOG_AGG_TOKEN_UPDATE
 name|APPLICATION_FINISHED
+block|,
+name|LOG_AGG_TOKEN_UPDATE
 block|}
 end_enum
 

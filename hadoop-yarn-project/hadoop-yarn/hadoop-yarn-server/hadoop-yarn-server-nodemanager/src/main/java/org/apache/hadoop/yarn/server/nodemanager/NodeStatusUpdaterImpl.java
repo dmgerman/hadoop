@@ -6059,6 +6059,14 @@ name|systemCredentials
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|getContainerManager
+argument_list|()
+operator|.
+name|handleCredentialUpdate
+argument_list|()
+expr_stmt|;
 block|}
 name|List
 argument_list|<

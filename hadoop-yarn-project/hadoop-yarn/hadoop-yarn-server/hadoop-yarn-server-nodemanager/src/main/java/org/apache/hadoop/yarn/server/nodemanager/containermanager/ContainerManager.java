@@ -212,6 +212,11 @@ name|ContainerScheduler
 name|getContainerScheduler
 parameter_list|()
 function_decl|;
+DECL|method|handleCredentialUpdate ()
+name|void
+name|handleCredentialUpdate
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
