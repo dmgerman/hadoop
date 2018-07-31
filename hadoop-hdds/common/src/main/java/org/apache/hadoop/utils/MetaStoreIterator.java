@@ -32,6 +32,7 @@ end_comment
 
 begin_interface
 DECL|interface|MetaStoreIterator
+specifier|public
 interface|interface
 name|MetaStoreIterator
 parameter_list|<
