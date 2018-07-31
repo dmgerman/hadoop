@@ -1061,6 +1061,11 @@ specifier|protected
 name|String
 name|appTrackingUrl
 decl_stmt|;
+DECL|field|newTrackingUrl
+specifier|protected
+name|String
+name|newTrackingUrl
+decl_stmt|;
 DECL|field|rmClient
 specifier|protected
 name|ApplicationMasterProtocol
@@ -2177,6 +2182,39 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|newTrackingUrl
+operator|!=
+literal|null
+condition|)
+block|{
+name|allocateRequest
+operator|.
+name|setTrackingUrl
+argument_list|(
+name|this
+operator|.
+name|newTrackingUrl
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|appTrackingUrl
+operator|=
+name|this
+operator|.
+name|newTrackingUrl
+expr_stmt|;
+name|this
+operator|.
+name|newTrackingUrl
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|// clear blacklistAdditions and blacklistRemovals before
 comment|// unsynchronized part
 name|blacklistAdditions
@@ -5787,6 +5825,25 @@ literal|"blacklistRemovals in updateBlacklist."
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|updateTrackingUrl (String trackingUrl)
+specifier|public
+specifier|synchronized
+name|void
+name|updateTrackingUrl
+parameter_list|(
+name|String
+name|trackingUrl
+parameter_list|)
+block|{
+name|this
+operator|.
+name|newTrackingUrl
+operator|=
+name|trackingUrl
+expr_stmt|;
 block|}
 DECL|method|updateAMRMToken (Token token)
 specifier|private

@@ -102,6 +102,12 @@ specifier|final
 name|float
 name|progress
 decl_stmt|;
+DECL|field|trackingUrl
+specifier|private
+specifier|final
+name|String
+name|trackingUrl
+decl_stmt|;
 DECL|method|RMAppAttemptStatusupdateEvent (ApplicationAttemptId appAttemptId, float progress)
 specifier|public
 name|RMAppAttemptStatusupdateEvent
@@ -111,6 +117,30 @@ name|appAttemptId
 parameter_list|,
 name|float
 name|progress
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appAttemptId
+argument_list|,
+name|progress
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RMAppAttemptStatusupdateEvent (ApplicationAttemptId appAttemptId, float progress, String trackingUrl)
+specifier|public
+name|RMAppAttemptStatusupdateEvent
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|,
+name|float
+name|progress
+parameter_list|,
+name|String
+name|trackingUrl
 parameter_list|)
 block|{
 name|super
@@ -128,6 +158,12 @@ name|progress
 operator|=
 name|progress
 expr_stmt|;
+name|this
+operator|.
+name|trackingUrl
+operator|=
+name|trackingUrl
+expr_stmt|;
 block|}
 DECL|method|getProgress ()
 specifier|public
@@ -139,6 +175,18 @@ return|return
 name|this
 operator|.
 name|progress
+return|;
+block|}
+DECL|method|getTrackingUrl ()
+specifier|public
+name|String
+name|getTrackingUrl
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|trackingUrl
 return|;
 block|}
 block|}

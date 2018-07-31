@@ -2769,6 +2769,11 @@ name|request
 operator|.
 name|getProgress
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getTrackingUrl
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -2187,6 +2187,24 @@ operator|.
 name|timelineV2Client
 return|;
 block|}
+comment|/**    * Update application's tracking url on next heartbeat.    *    * @param trackingUrl new tracking url for this application    */
+annotation|@
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|updateTrackingUrl (String trackingUrl)
+specifier|public
+name|void
+name|updateTrackingUrl
+parameter_list|(
+name|String
+name|trackingUrl
+parameter_list|)
+block|{
+comment|// Unimplemented.
+block|}
 comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(java.util.function.Supplier, int)}    * and {@link #waitFor(java.util.function.Supplier, int, int)}    * @param check the condition for which it should wait    */
 DECL|method|waitFor (Supplier<Boolean> check)
 specifier|public

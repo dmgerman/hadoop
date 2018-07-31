@@ -1272,6 +1272,25 @@ name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|updateTrackingUrl (String trackingUrl)
+specifier|public
+name|void
+name|updateTrackingUrl
+parameter_list|(
+name|String
+name|trackingUrl
+parameter_list|)
+block|{
+name|client
+operator|.
+name|updateTrackingUrl
+argument_list|(
+name|trackingUrl
+argument_list|)
+expr_stmt|;
+block|}
 DECL|class|HeartbeatThread
 specifier|private
 class|class
