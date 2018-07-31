@@ -610,6 +610,17 @@ name|JOB_PREFIX
 operator|+
 literal|"queue.name"
 decl_stmt|;
+DECL|field|JOB_LABEL_EXPR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_LABEL_EXPR
+init|=
+name|JOB_PREFIX
+operator|+
+literal|"label.expression"
+decl_stmt|;
 DECL|field|JOB_USER
 specifier|public
 specifier|static

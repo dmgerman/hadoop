@@ -546,7 +546,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, long baselineStartTimeMS, Resource amContainerResource, Map<String, String> params)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, long baselineStartTimeMS, Resource amContainerResource, String nodeLabelExpr, Map<String, String> params)
 specifier|public
 name|void
 name|init
@@ -590,6 +590,9 @@ parameter_list|,
 name|Resource
 name|amContainerResource
 parameter_list|,
+name|String
+name|nodeLabelExpr
+parameter_list|,
 name|Map
 argument_list|<
 name|String
@@ -626,6 +629,8 @@ argument_list|,
 name|baselineStartTimeMS
 argument_list|,
 name|amContainerResource
+argument_list|,
+name|nodeLabelExpr
 argument_list|,
 name|params
 argument_list|)

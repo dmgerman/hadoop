@@ -882,6 +882,12 @@ specifier|private
 name|String
 name|user
 decl_stmt|;
+comment|// nodelabel expression
+DECL|field|nodeLabelExpression
+specifier|private
+name|String
+name|nodeLabelExpression
+decl_stmt|;
 comment|// queue name
 DECL|field|queue
 specifier|protected
@@ -996,7 +1002,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource, Map<String, String> params)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource, String nodeLabelExpr, Map<String, String> params)
 specifier|public
 name|void
 name|init
@@ -1039,6 +1045,9 @@ name|baseTimeMS
 parameter_list|,
 name|Resource
 name|amResource
+parameter_list|,
+name|String
+name|nodeLabelExpr
 parameter_list|,
 name|Map
 argument_list|<
@@ -1123,6 +1132,12 @@ operator|.
 name|amContainerResource
 operator|=
 name|amResource
+expr_stmt|;
+name|this
+operator|.
+name|nodeLabelExpression
+operator|=
+name|nodeLabelExpr
 expr_stmt|;
 block|}
 comment|/**    * register with RM    */
@@ -2020,6 +2035,21 @@ argument_list|(
 name|amContainerResource
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|nodeLabelExpression
+operator|!=
+literal|null
+condition|)
+block|{
+name|appSubContext
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|nodeLabelExpression
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|reservationId

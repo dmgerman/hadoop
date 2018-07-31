@@ -76,16 +76,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
 import|;
 end_import
@@ -310,6 +300,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeLabel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -329,6 +337,42 @@ operator|.
 name|records
 operator|.
 name|ResourceInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|util
+operator|.
+name|YarnClientUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|sls
+operator|.
+name|SLSRunner
+operator|.
+name|NodeDetails
 import|;
 end_import
 
@@ -405,6 +449,17 @@ name|DEFAULT_JOB_TYPE
 init|=
 literal|"mapreduce"
 decl_stmt|;
+DECL|field|LABEL_FORMAT_ERR_MSG
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|LABEL_FORMAT_ERR_MSG
+init|=
+literal|"Input format for adding node-labels is not correct, it should be "
+operator|+
+literal|"labelName1[(exclusive=true/false)],labelName2[] .."
+decl_stmt|;
 comment|// hostname includes the network path and the host name. for example
 comment|// "/default-rack/hostFoo" or "/coreSwitchA/TORSwitchB/hostBar".
 comment|// the function returns two Strings, the first element is the network
@@ -453,12 +508,12 @@ block|}
 return|;
 block|}
 comment|/**    * parse the rumen trace file, return each host name    */
-DECL|method|parseNodesFromRumenTrace (String jobTrace)
+DECL|method|parseNodesFromRumenTrace ( String jobTrace)
 specifier|public
 specifier|static
 name|Set
 argument_list|<
-name|String
+name|NodeDetails
 argument_list|>
 name|parseNodesFromRumenTrace
 parameter_list|(
@@ -470,15 +525,13 @@ name|IOException
 block|{
 name|Set
 argument_list|<
-name|String
+name|NodeDetails
 argument_list|>
 name|nodeSet
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|File
@@ -597,6 +650,9 @@ name|nodeSet
 operator|.
 name|add
 argument_list|(
+operator|new
+name|NodeDetails
+argument_list|(
 name|taskAttempt
 operator|.
 name|getHostName
@@ -604,6 +660,7 @@ argument_list|()
 operator|.
 name|getValue
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -658,6 +715,9 @@ name|nodeSet
 operator|.
 name|add
 argument_list|(
+operator|new
+name|NodeDetails
+argument_list|(
 name|taskAttempt
 operator|.
 name|getHostName
@@ -665,6 +725,7 @@ argument_list|()
 operator|.
 name|getValue
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -683,12 +744,12 @@ name|nodeSet
 return|;
 block|}
 comment|/**    * parse the sls trace file, return each host name    */
-DECL|method|parseNodesFromSLSTrace (String jobTrace)
+DECL|method|parseNodesFromSLSTrace ( String jobTrace)
 specifier|public
 specifier|static
 name|Set
 argument_list|<
-name|String
+name|NodeDetails
 argument_list|>
 name|parseNodesFromSLSTrace
 parameter_list|(
@@ -700,7 +761,7 @@ name|IOException
 block|{
 name|Set
 argument_list|<
-name|String
+name|NodeDetails
 argument_list|>
 name|nodeSet
 init|=
@@ -794,7 +855,7 @@ return|return
 name|nodeSet
 return|;
 block|}
-DECL|method|addNodes (Set<String> nodeSet, Map jsonEntry)
+DECL|method|addNodes (Set<NodeDetails> nodeSet, Map jsonEntry)
 specifier|private
 specifier|static
 name|void
@@ -802,7 +863,7 @@ name|addNodes
 parameter_list|(
 name|Set
 argument_list|<
-name|String
+name|NodeDetails
 argument_list|>
 name|nodeSet
 parameter_list|,
@@ -961,22 +1022,24 @@ name|nodeSet
 operator|.
 name|add
 argument_list|(
+operator|new
+name|NodeDetails
+argument_list|(
 name|hostname
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
 block|}
-comment|/**    * parse the input node file, return each host name    */
-DECL|method|parseNodesFromNodeFile (String nodeFile, Resource nmDefaultResource)
+comment|/**    * parse the input node file, return each host name    * sample input: label1(exclusive=true),label2(exclusive=false),label3    */
+DECL|method|parseNodesFromNodeFile ( String nodeFile, Resource nmDefaultResource)
 specifier|public
 specifier|static
-name|Map
+name|Set
 argument_list|<
-name|String
-argument_list|,
-name|Resource
+name|NodeDetails
 argument_list|>
 name|parseNodesFromNodeFile
 parameter_list|(
@@ -989,16 +1052,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Map
+name|Set
 argument_list|<
-name|String
-argument_list|,
-name|Resource
+name|NodeDetails
 argument_list|>
-name|nodeResourceMap
+name|nodeSet
 init|=
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1112,6 +1173,24 @@ name|Map
 operator|)
 name|o
 decl_stmt|;
+name|NodeDetails
+name|nodeDetails
+init|=
+operator|new
+name|NodeDetails
+argument_list|(
+name|rack
+operator|+
+literal|"/"
+operator|+
+name|jsonNode
+operator|.
+name|get
+argument_list|(
+literal|"node"
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|Resource
 name|nodeResource
 init|=
@@ -1184,22 +1263,64 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|nodeResourceMap
+name|nodeDetails
 operator|.
-name|put
+name|setNodeResource
 argument_list|(
-name|rack
-operator|+
-literal|"/"
-operator|+
+name|nodeResource
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
 name|jsonNode
 operator|.
 name|get
 argument_list|(
-literal|"node"
+literal|"labels"
 argument_list|)
-argument_list|,
-name|nodeResource
+operator|!=
+literal|null
+condition|)
+block|{
+name|Set
+argument_list|<
+name|NodeLabel
+argument_list|>
+name|nodeLabels
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
+name|YarnClientUtils
+operator|.
+name|buildNodeLabelsFromStr
+argument_list|(
+name|jsonNode
+operator|.
+name|get
+argument_list|(
+literal|"labels"
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|nodeDetails
+operator|.
+name|setLabels
+argument_list|(
+name|nodeLabels
+argument_list|)
+expr_stmt|;
+block|}
+name|nodeSet
+operator|.
+name|add
+argument_list|(
+name|nodeDetails
 argument_list|)
 expr_stmt|;
 block|}
@@ -1214,7 +1335,7 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|nodeResourceMap
+name|nodeSet
 return|;
 block|}
 DECL|method|generateNodes (int numNodes, int numRacks)
@@ -1222,9 +1343,7 @@ specifier|public
 specifier|static
 name|Set
 argument_list|<
-name|?
-extends|extends
-name|String
+name|NodeDetails
 argument_list|>
 name|generateNodes
 parameter_list|(
@@ -1237,7 +1356,7 @@ parameter_list|)
 block|{
 name|Set
 argument_list|<
-name|String
+name|NodeDetails
 argument_list|>
 name|nodeSet
 init|=
@@ -1289,6 +1408,9 @@ name|nodeSet
 operator|.
 name|add
 argument_list|(
+operator|new
+name|NodeDetails
+argument_list|(
 literal|"/rack"
 operator|+
 name|i
@@ -1298,6 +1420,7 @@ operator|+
 literal|"/node"
 operator|+
 name|i
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
