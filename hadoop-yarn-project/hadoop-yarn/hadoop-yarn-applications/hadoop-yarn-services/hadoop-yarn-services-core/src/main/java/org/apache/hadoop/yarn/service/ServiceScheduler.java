@@ -4354,6 +4354,15 @@ argument_list|>
 name|containers
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Containers recovered after AM registered: {}"
+argument_list|,
+name|containers
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|containers

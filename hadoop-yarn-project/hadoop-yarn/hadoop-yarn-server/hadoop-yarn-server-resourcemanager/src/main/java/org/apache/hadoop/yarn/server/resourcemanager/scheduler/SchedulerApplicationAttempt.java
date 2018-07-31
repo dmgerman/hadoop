@@ -4098,6 +4098,11 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+name|updateNMTokens
+argument_list|(
+name|returnContainerList
+argument_list|)
+expr_stmt|;
 return|return
 name|returnContainerList
 return|;
