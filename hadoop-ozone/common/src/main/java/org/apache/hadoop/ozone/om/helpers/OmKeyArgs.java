@@ -60,6 +60,16 @@ name|ReplicationFactor
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Args for key. Client use this to specify key's attributes on  key creation  * (putKey()).  */
 end_comment
@@ -106,7 +116,15 @@ specifier|final
 name|ReplicationFactor
 name|factor
 decl_stmt|;
-DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor)
+DECL|field|locationInfoList
+specifier|private
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|locationInfoList
+decl_stmt|;
+DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList)
 specifier|private
 name|OmKeyArgs
 parameter_list|(
@@ -127,6 +145,12 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|locationInfoList
 parameter_list|)
 block|{
 name|this
@@ -164,6 +188,12 @@ operator|.
 name|factor
 operator|=
 name|factor
+expr_stmt|;
+name|this
+operator|.
+name|locationInfoList
+operator|=
+name|locationInfoList
 expr_stmt|;
 block|}
 DECL|method|getType ()
@@ -240,6 +270,38 @@ operator|=
 name|size
 expr_stmt|;
 block|}
+DECL|method|setLocationInfoList (List<OmKeyLocationInfo> locationInfoList)
+specifier|public
+name|void
+name|setLocationInfoList
+parameter_list|(
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|locationInfoList
+parameter_list|)
+block|{
+name|this
+operator|.
+name|locationInfoList
+operator|=
+name|locationInfoList
+expr_stmt|;
+block|}
+DECL|method|getLocationInfoList ()
+specifier|public
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|getLocationInfoList
+parameter_list|()
+block|{
+return|return
+name|locationInfoList
+return|;
+block|}
 comment|/**    * Builder class of OmKeyArgs.    */
 DECL|class|Builder
 specifier|public
@@ -276,6 +338,14 @@ DECL|field|factor
 specifier|private
 name|ReplicationFactor
 name|factor
+decl_stmt|;
+DECL|field|locationInfoList
+specifier|private
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|locationInfoList
 decl_stmt|;
 DECL|method|setVolumeName (String volume)
 specifier|public
@@ -391,6 +461,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setLocationInfoList (List<OmKeyLocationInfo> locationInfos)
+specifier|public
+name|Builder
+name|setLocationInfoList
+parameter_list|(
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|locationInfos
+parameter_list|)
+block|{
+name|this
+operator|.
+name|locationInfoList
+operator|=
+name|locationInfos
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|OmKeyArgs
@@ -412,6 +504,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|locationInfoList
 argument_list|)
 return|;
 block|}

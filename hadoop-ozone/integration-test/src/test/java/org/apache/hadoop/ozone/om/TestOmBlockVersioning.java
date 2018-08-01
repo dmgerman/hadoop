@@ -422,6 +422,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -818,6 +828,23 @@ argument_list|(
 name|keyArgs
 argument_list|)
 decl_stmt|;
+comment|// explicitly set the keyLocation list before committing the key.
+name|keyArgs
+operator|.
+name|setLocationInfoList
+argument_list|(
+name|openKey
+operator|.
+name|getKeyInfo
+argument_list|()
+operator|.
+name|getLatestVersionLocations
+argument_list|()
+operator|.
+name|getLocationList
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ozoneManager
 operator|.
 name|commitKey
@@ -886,6 +913,23 @@ argument_list|)
 expr_stmt|;
 comment|//OmKeyLocationInfo locationInfo =
 comment|//    ozoneManager.allocateBlock(keyArgs, openKey.getId());
+comment|// explicitly set the keyLocation list before committing the key.
+name|keyArgs
+operator|.
+name|setLocationInfoList
+argument_list|(
+name|openKey
+operator|.
+name|getKeyInfo
+argument_list|()
+operator|.
+name|getLatestVersionLocations
+argument_list|()
+operator|.
+name|getLocationList
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ozoneManager
 operator|.
 name|commitKey
@@ -951,6 +995,9 @@ name|keyArgs
 argument_list|)
 expr_stmt|;
 comment|// this block will be appended to the latest version of version 2.
+name|OmKeyLocationInfo
+name|locationInfo
+init|=
 name|ozoneManager
 operator|.
 name|allocateBlock
@@ -961,6 +1008,31 @@ name|openKey
 operator|.
 name|getId
 argument_list|()
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|locationInfoList
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|locationInfoList
+operator|.
+name|add
+argument_list|(
+name|locationInfo
+argument_list|)
+expr_stmt|;
+name|keyArgs
+operator|.
+name|setLocationInfoList
+argument_list|(
+name|locationInfoList
 argument_list|)
 expr_stmt|;
 name|ozoneManager

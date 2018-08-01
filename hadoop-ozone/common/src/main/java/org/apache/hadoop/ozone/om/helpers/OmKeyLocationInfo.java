@@ -82,7 +82,6 @@ decl_stmt|;
 comment|// the id of this subkey in all the subkeys.
 DECL|field|length
 specifier|private
-specifier|final
 name|long
 name|length
 decl_stmt|;
@@ -219,6 +218,22 @@ block|{
 return|return
 name|length
 return|;
+block|}
+DECL|method|setLength (long length)
+specifier|public
+name|void
+name|setLength
+parameter_list|(
+name|long
+name|length
+parameter_list|)
+block|{
+name|this
+operator|.
+name|length
+operator|=
+name|length
+expr_stmt|;
 block|}
 DECL|method|getOffset ()
 specifier|public
