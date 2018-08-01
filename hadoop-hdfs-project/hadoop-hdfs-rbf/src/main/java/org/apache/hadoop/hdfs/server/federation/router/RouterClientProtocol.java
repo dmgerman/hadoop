@@ -10584,6 +10584,33 @@ end_function
 begin_function
 annotation|@
 name|Override
+DECL|method|msync ()
+specifier|public
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|rpcServer
+operator|.
+name|checkOperation
+argument_list|(
+name|NameNode
+operator|.
+name|OperationCategory
+operator|.
+name|READ
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
 DECL|method|satisfyStoragePolicy (String path)
 specifier|public
 name|void

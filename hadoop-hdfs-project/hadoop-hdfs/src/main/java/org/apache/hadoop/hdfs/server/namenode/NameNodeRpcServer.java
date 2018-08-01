@@ -8659,6 +8659,19 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|msync ()
+specifier|public
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// TODO : need to be filled up if needed. May be a no-op here.
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|listCorruptFileBlocks (String path, String cookie)
 specifier|public
 name|CorruptFileBlocks

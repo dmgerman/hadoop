@@ -6819,6 +6819,26 @@ begin_function
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|msync ()
+specifier|public
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|clientProto
+operator|.
+name|msync
+argument_list|()
+expr_stmt|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|satisfyStoragePolicy (String path)
 specifier|public
 name|void

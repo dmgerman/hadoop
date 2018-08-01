@@ -220,6 +220,8 @@ argument_list|,
 literal|"getEditsFromTxid"
 argument_list|,
 literal|"getQuotaUsage"
+argument_list|,
+literal|"msync"
 argument_list|)
 argument_list|)
 decl_stmt|;

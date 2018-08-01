@@ -2548,6 +2548,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Called by client to wait until the server has reached the state id of the    * client. The client and server state id are given by client side and server    * side alignment context respectively. This can be a blocking call.    *    * @throws IOException    */
+annotation|@
+name|Idempotent
+annotation|@
+name|ReadOnly
+DECL|method|msync ()
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Satisfy the storage policy for a file/directory.    * @param path Path of an existing file/directory.    * @throws AccessControlException If access is denied.    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink.    * @throws java.io.FileNotFoundException If file/dir<code>src</code> is not    *           found.    * @throws org.apache.hadoop.hdfs.server.namenode.SafeModeException append not    *           allowed in safemode.    */
 annotation|@
 name|AtMostOnce
