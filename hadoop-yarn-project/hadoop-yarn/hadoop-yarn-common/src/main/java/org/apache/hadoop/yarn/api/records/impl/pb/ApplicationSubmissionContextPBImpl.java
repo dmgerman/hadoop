@@ -693,6 +693,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|ApplicationSubmissionContextProto
 name|getProto
 parameter_list|()
@@ -1102,6 +1103,7 @@ annotation|@
 name|Override
 DECL|method|getPriority ()
 specifier|public
+specifier|synchronized
 name|Priority
 name|getPriority
 parameter_list|()
@@ -1165,6 +1167,7 @@ annotation|@
 name|Override
 DECL|method|setPriority (Priority priority)
 specifier|public
+specifier|synchronized
 name|void
 name|setPriority
 parameter_list|(
@@ -1197,6 +1200,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationId ()
 specifier|public
+specifier|synchronized
 name|ApplicationId
 name|getApplicationId
 parameter_list|()
@@ -1255,6 +1259,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationId (ApplicationId applicationId)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationId
 parameter_list|(
@@ -1287,6 +1292,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationName ()
 specifier|public
+specifier|synchronized
 name|String
 name|getApplicationName
 parameter_list|()
@@ -1326,6 +1332,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationName (String applicationName)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationName
 parameter_list|(
@@ -1364,6 +1371,7 @@ annotation|@
 name|Override
 DECL|method|getQueue ()
 specifier|public
+specifier|synchronized
 name|String
 name|getQueue
 parameter_list|()
@@ -1403,6 +1411,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationType ()
 specifier|public
+specifier|synchronized
 name|String
 name|getApplicationType
 parameter_list|()
@@ -1492,6 +1501,7 @@ annotation|@
 name|Override
 DECL|method|getApplicationTags ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|String
@@ -1512,6 +1522,7 @@ annotation|@
 name|Override
 DECL|method|setQueue (String queue)
 specifier|public
+specifier|synchronized
 name|void
 name|setQueue
 parameter_list|(
@@ -1550,6 +1561,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationType (String applicationType)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationType
 parameter_list|(
@@ -1697,6 +1709,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationTags (Set<String> tags)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationTags
 parameter_list|(
@@ -1780,6 +1793,7 @@ annotation|@
 name|Override
 DECL|method|getAMContainerSpec ()
 specifier|public
+specifier|synchronized
 name|ContainerLaunchContext
 name|getAMContainerSpec
 parameter_list|()
@@ -1836,9 +1850,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAMContainerSpec (ContainerLaunchContext amContainer)
 specifier|public
+specifier|synchronized
 name|void
+DECL|method|setAMContainerSpec (ContainerLaunchContext amContainer)
 name|setAMContainerSpec
 parameter_list|(
 name|ContainerLaunchContext
@@ -1872,6 +1887,7 @@ annotation|@
 name|Override
 DECL|method|getUnmanagedAM ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|getUnmanagedAM
 parameter_list|()
@@ -1896,6 +1912,7 @@ annotation|@
 name|Override
 DECL|method|setUnmanagedAM (boolean value)
 specifier|public
+specifier|synchronized
 name|void
 name|setUnmanagedAM
 parameter_list|(
@@ -1918,6 +1935,7 @@ annotation|@
 name|Override
 DECL|method|getCancelTokensWhenComplete ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|getCancelTokensWhenComplete
 parameter_list|()
@@ -1943,6 +1961,7 @@ annotation|@
 name|Override
 DECL|method|setCancelTokensWhenComplete (boolean cancel)
 specifier|public
+specifier|synchronized
 name|void
 name|setCancelTokensWhenComplete
 parameter_list|(
@@ -1965,6 +1984,7 @@ annotation|@
 name|Override
 DECL|method|getMaxAppAttempts ()
 specifier|public
+specifier|synchronized
 name|int
 name|getMaxAppAttempts
 parameter_list|()
@@ -1989,6 +2009,7 @@ annotation|@
 name|Override
 DECL|method|setMaxAppAttempts (int maxAppAttempts)
 specifier|public
+specifier|synchronized
 name|void
 name|setMaxAppAttempts
 parameter_list|(
@@ -2011,6 +2032,7 @@ annotation|@
 name|Override
 DECL|method|getResource ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getResource
 parameter_list|()
@@ -2074,6 +2096,7 @@ annotation|@
 name|Override
 DECL|method|setResource (Resource resource)
 specifier|public
+specifier|synchronized
 name|void
 name|setResource
 parameter_list|(
@@ -2108,6 +2131,7 @@ annotation|@
 name|Override
 DECL|method|getReservationID ()
 specifier|public
+specifier|synchronized
 name|ReservationId
 name|getReservationID
 parameter_list|()
@@ -2163,6 +2187,7 @@ annotation|@
 name|Override
 DECL|method|setReservationID (ReservationId reservationID)
 specifier|public
+specifier|synchronized
 name|void
 name|setReservationID
 parameter_list|(
@@ -2197,6 +2222,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|void
 DECL|method|setKeepContainersAcrossApplicationAttempts (boolean keepContainers)
 name|setKeepContainersAcrossApplicationAttempts
@@ -2220,6 +2246,7 @@ annotation|@
 name|Override
 DECL|method|getKeepContainersAcrossApplicationAttempts ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|getKeepContainersAcrossApplicationAttempts
 parameter_list|()
@@ -2502,6 +2529,7 @@ annotation|@
 name|Override
 DECL|method|getNodeLabelExpression ()
 specifier|public
+specifier|synchronized
 name|String
 name|getNodeLabelExpression
 parameter_list|()
@@ -2539,6 +2567,7 @@ annotation|@
 name|Override
 DECL|method|setNodeLabelExpression (String labelExpression)
 specifier|public
+specifier|synchronized
 name|void
 name|setNodeLabelExpression
 parameter_list|(
@@ -2577,6 +2606,7 @@ annotation|@
 name|Deprecated
 DECL|method|getAMContainerResourceRequest ()
 specifier|public
+specifier|synchronized
 name|ResourceRequest
 name|getAMContainerResourceRequest
 parameter_list|()
@@ -2620,6 +2650,7 @@ annotation|@
 name|Override
 DECL|method|getAMContainerResourceRequests ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2682,8 +2713,9 @@ annotation|@
 name|Override
 annotation|@
 name|Deprecated
-DECL|method|setAMContainerResourceRequest (ResourceRequest request)
+DECL|method|setAMContainerResourceRequest ( ResourceRequest request)
 specifier|public
+specifier|synchronized
 name|void
 name|setAMContainerResourceRequest
 parameter_list|(
@@ -2721,8 +2753,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAMContainerResourceRequests (List<ResourceRequest> requests)
+DECL|method|setAMContainerResourceRequests ( List<ResourceRequest> requests)
 specifier|public
+specifier|synchronized
 name|void
 name|setAMContainerResourceRequests
 parameter_list|(
@@ -2760,6 +2793,7 @@ annotation|@
 name|Override
 DECL|method|getAttemptFailuresValidityInterval ()
 specifier|public
+specifier|synchronized
 name|long
 name|getAttemptFailuresValidityInterval
 parameter_list|()
@@ -2784,6 +2818,7 @@ annotation|@
 name|Override
 DECL|method|setAttemptFailuresValidityInterval ( long attemptFailuresValidityInterval)
 specifier|public
+specifier|synchronized
 name|void
 name|setAttemptFailuresValidityInterval
 parameter_list|(
@@ -2844,6 +2879,7 @@ annotation|@
 name|Override
 DECL|method|getLogAggregationContext ()
 specifier|public
+specifier|synchronized
 name|LogAggregationContext
 name|getLogAggregationContext
 parameter_list|()
@@ -2904,6 +2940,7 @@ annotation|@
 name|Override
 DECL|method|setLogAggregationContext ( LogAggregationContext logAggregationContext)
 specifier|public
+specifier|synchronized
 name|void
 name|setLogAggregationContext
 parameter_list|(
@@ -2972,8 +3009,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationTimeouts ()
 specifier|public
+specifier|synchronized
+DECL|method|getApplicationTimeouts ()
 name|Map
 argument_list|<
 name|ApplicationTimeoutType
@@ -3083,6 +3121,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationTimeouts ( Map<ApplicationTimeoutType, Long> appTimeouts)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationTimeouts
 parameter_list|(
@@ -3521,8 +3560,9 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationSchedulingPropertiesMap ()
 specifier|public
+specifier|synchronized
+DECL|method|getApplicationSchedulingPropertiesMap ()
 name|Map
 argument_list|<
 name|String
@@ -3545,6 +3585,7 @@ annotation|@
 name|Override
 DECL|method|setApplicationSchedulingPropertiesMap ( Map<String, String> schedulingPropertyMap)
 specifier|public
+specifier|synchronized
 name|void
 name|setApplicationSchedulingPropertiesMap
 parameter_list|(
