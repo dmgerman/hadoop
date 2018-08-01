@@ -2757,10 +2757,10 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * This method is intended for unit tests only. It suppresses the    * startup/shutdown message and skips registering Unix signal    * handlers.    *    * @param args command line arguments.    * @param conf HDDS configuration    * @return SCM instance    * @throws IOException    */
+comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * This method is intended for unit tests only. It suppresses the    * startup/shutdown message and skips registering Unix signal    * handlers.    *    * @param args command line arguments.    * @param conf HDDS configuration    * @return SCM instance    * @throws IOException, AuthenticationException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createSCM (String[] args, OzoneConfiguration conf)
+DECL|method|createSCM ( String[] args, OzoneConfiguration conf)
 specifier|public
 specifier|static
 name|StorageContainerManager
@@ -2789,7 +2789,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * @param args command-line arguments.    * @param conf HDDS configuration    * @param printBanner if true, then log a verbose startup message.    * @return SCM instance    * @throws IOException    */
+comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * @param args command-line arguments.    * @param conf HDDS configuration    * @param printBanner if true, then log a verbose startup message.    * @return SCM instance    * @throws IOException, AuthenticationException    */
 DECL|method|createSCM ( String[] args, OzoneConfiguration conf, boolean printBanner)
 specifier|private
 specifier|static

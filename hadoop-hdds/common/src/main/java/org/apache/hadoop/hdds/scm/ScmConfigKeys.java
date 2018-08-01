@@ -1270,23 +1270,23 @@ name|HDDS_SCM_WATCHER_TIMEOUT_DEFAULT
 init|=
 literal|"10m"
 decl_stmt|;
-DECL|field|SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+DECL|field|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
 init|=
-literal|"ozone.scm.web.authentication.kerberos.principal"
+literal|"hdds.scm.web.authentication.kerberos.principal"
 decl_stmt|;
-DECL|field|SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
+DECL|field|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
 init|=
-literal|"ozone.scm.web.authentication.kerberos.keytab"
+literal|"hdds.scm.web.authentication.kerberos.keytab"
 decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
