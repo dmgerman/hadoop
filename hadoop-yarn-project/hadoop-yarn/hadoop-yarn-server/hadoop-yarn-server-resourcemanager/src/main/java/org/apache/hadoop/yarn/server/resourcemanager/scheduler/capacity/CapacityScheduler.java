@@ -3808,6 +3808,13 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|activitiesManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|scheduleAsynchronously
