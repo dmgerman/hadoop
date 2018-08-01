@@ -3179,6 +3179,12 @@ literal|"Binding {} to {}"
 argument_list|,
 name|principal
 argument_list|,
+operator|(
+name|bindToWildCardAddress
+operator|)
+condition|?
+literal|"0.0.0.0"
+else|:
 name|localAddr
 argument_list|)
 expr_stmt|;
@@ -5673,19 +5679,6 @@ argument_list|,
 name|CommonConfigurationKeys
 operator|.
 name|IPC_CLIENT_BIND_WILDCARD_ADDR_DEFAULT
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"{} set to true. Will bind client sockets to wildcard "
-operator|+
-literal|"address."
-argument_list|,
-name|CommonConfigurationKeys
-operator|.
-name|IPC_CLIENT_BIND_WILDCARD_ADDR_KEY
 argument_list|)
 expr_stmt|;
 name|this
