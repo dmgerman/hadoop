@@ -974,7 +974,7 @@ operator|=
 parameter_list|()
 lambda|->
 block|{
-name|shutdown
+name|saveVolumeSetUsed
 argument_list|()
 expr_stmt|;
 block|}
@@ -1633,10 +1633,11 @@ name|containerSize
 argument_list|)
 return|;
 block|}
-DECL|method|shutdown ()
-specifier|public
+comment|/**    * This method, call shutdown on each volume to shutdown volume usage    * thread and write scmUsed on each volume.    */
+DECL|method|saveVolumeSetUsed ()
+specifier|private
 name|void
-name|shutdown
+name|saveVolumeSetUsed
 parameter_list|()
 block|{
 for|for
@@ -1680,6 +1681,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Shutdown's the volumeset, if saveVolumeSetUsed is false, call's    * {@link VolumeSet#saveVolumeSetUsed}.    */
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|saveVolumeSetUsed
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|shutdownHook
