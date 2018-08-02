@@ -785,6 +785,15 @@ name|FILE
 init|=
 literal|"file"
 decl_stmt|;
+DECL|field|REPLICATION_FACTOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REPLICATION_FACTOR
+init|=
+literal|"replicationFactor"
+decl_stmt|;
 comment|// Listing related command line arguments
 DECL|field|LIST_LENGTH
 specifier|public
@@ -1564,6 +1573,26 @@ operator|.
 name|addOption
 argument_list|(
 name|fileArgument
+argument_list|)
+expr_stmt|;
+name|Option
+name|repFactor
+init|=
+operator|new
+name|Option
+argument_list|(
+name|REPLICATION_FACTOR
+argument_list|,
+literal|true
+argument_list|,
+literal|"Replication factor (1 or 3)"
+argument_list|)
+decl_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+name|repFactor
 argument_list|)
 expr_stmt|;
 block|}
