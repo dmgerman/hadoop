@@ -1442,6 +1442,24 @@ name|util
 operator|.
 name|resource
 operator|.
+name|ResourceUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -7142,7 +7160,7 @@ condition|(
 name|continuousSchedulingEnabled
 condition|)
 block|{
-comment|// Contiuous scheduling is deprecated log it on startup
+comment|// Continuous scheduling is deprecated log it on startup
 name|LOG
 operator|.
 name|warn
@@ -7576,6 +7594,35 @@ operator|.
 name|error
 argument_list|(
 literal|"Failed to reload allocations file"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|refreshMaximumAllocation
+argument_list|(
+name|ResourceUtils
+operator|.
+name|fetchMaximumAllocationFromConfig
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to refresh maximum allocation"
 argument_list|,
 name|e
 argument_list|)
