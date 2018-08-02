@@ -156,6 +156,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -263,6 +273,14 @@ parameter_list|(
 name|long
 name|deleteTransactionId
 parameter_list|)
+function_decl|;
+comment|/**    * Returns blockIterator for the container.    * @return BlockIterator    * @throws IOException    */
+DECL|method|blockIterator ()
+name|BlockIterator
+name|blockIterator
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

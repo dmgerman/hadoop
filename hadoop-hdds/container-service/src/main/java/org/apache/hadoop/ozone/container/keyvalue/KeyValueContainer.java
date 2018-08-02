@@ -1824,6 +1824,36 @@ name|deleteTransactionId
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|blockIterator ()
+specifier|public
+name|KeyValueBlockIterator
+name|blockIterator
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|KeyValueBlockIterator
+argument_list|(
+name|containerData
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+operator|new
+name|File
+argument_list|(
+name|containerData
+operator|.
+name|getContainerPath
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Acquire read lock.    */
 DECL|method|readLock ()
 specifier|public
@@ -2007,7 +2037,7 @@ name|CONTAINER_EXTENSION
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns container DB file    * @return    */
+comment|/**    * Returns container DB file.    * @return    */
 DECL|method|getContainerDBFile ()
 specifier|public
 name|File
