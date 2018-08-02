@@ -560,7 +560,7 @@ argument_list|)
 expr_stmt|;
 name|ret
 operator|.
-name|setUnits
+name|setUnitsWithoutValidation
 argument_list|(
 name|units
 argument_list|)

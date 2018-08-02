@@ -176,6 +176,11 @@ name|name
 argument_list|,
 name|units
 argument_list|)
+operator|.
+name|setUnits
+argument_list|(
+name|units
+argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
