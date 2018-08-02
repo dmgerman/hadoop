@@ -2324,7 +2324,7 @@ operator|.
 name|getState
 argument_list|()
 operator|+
-literal|" state, upgrade can not be invoked when service is STABLE."
+literal|" state and upgrade can only be initiated when service is STABLE."
 decl_stmt|;
 name|LOG
 operator|.
