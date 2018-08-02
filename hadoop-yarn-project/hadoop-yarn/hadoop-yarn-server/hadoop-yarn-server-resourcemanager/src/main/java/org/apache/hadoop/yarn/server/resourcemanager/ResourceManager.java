@@ -2193,6 +2193,19 @@ return|return
 name|clusterTimeStamp
 return|;
 block|}
+DECL|method|getRMLoginUser ()
+specifier|public
+name|String
+name|getRMLoginUser
+parameter_list|()
+block|{
+return|return
+name|rmLoginUGI
+operator|.
+name|getShortUserName
+argument_list|()
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setClusterTimeStamp (long timestamp)

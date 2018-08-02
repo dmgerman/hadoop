@@ -526,6 +526,28 @@ name|webapp
 operator|.
 name|dao
 operator|.
+name|ClusterUserInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
 name|DelegationToken
 import|;
 end_import
@@ -797,6 +819,15 @@ DECL|method|getClusterInfo ()
 name|ClusterInfo
 name|getClusterInfo
 parameter_list|()
+function_decl|;
+comment|/**    * This method retrieves the cluster user information, and it is reachable by using    * {@link RMWSConsts#CLUSTER_USER_INFO}.    *    * @return the cluster user information    */
+DECL|method|getClusterUserInfo (HttpServletRequest hsr)
+name|ClusterUserInfo
+name|getClusterUserInfo
+parameter_list|(
+name|HttpServletRequest
+name|hsr
+parameter_list|)
 function_decl|;
 comment|/**    * This method retrieves the cluster metrics information, and it is reachable    * by using {@link RMWSConsts#METRICS}.    *    * @see ApplicationClientProtocol#getClusterMetrics    * @return the cluster metrics information    */
 DECL|method|getClusterMetricsInfo ()

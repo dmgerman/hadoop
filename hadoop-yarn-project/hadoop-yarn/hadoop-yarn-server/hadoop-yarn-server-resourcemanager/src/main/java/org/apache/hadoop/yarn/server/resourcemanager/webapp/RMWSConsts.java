@@ -81,6 +81,16 @@ name|INFO
 init|=
 literal|"/info"
 decl_stmt|;
+comment|/** Path for {@code RMWebServiceProtocol#getClusterUserInfo}. */
+DECL|field|CLUSTER_USER_INFO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CLUSTER_USER_INFO
+init|=
+literal|"/userinfo"
+decl_stmt|;
 comment|/** Path for {@code RMWebServiceProtocol#getClusterMetricsInfo}. */
 DECL|field|METRICS
 specifier|public
