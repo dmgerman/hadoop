@@ -463,9 +463,7 @@ name|dockerClient
 init|=
 operator|new
 name|DockerClient
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|dirsHandler
 operator|.

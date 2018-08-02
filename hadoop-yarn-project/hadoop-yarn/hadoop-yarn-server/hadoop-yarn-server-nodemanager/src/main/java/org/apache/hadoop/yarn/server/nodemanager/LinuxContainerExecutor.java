@@ -4970,11 +4970,6 @@ name|getContainerStatus
 argument_list|(
 name|containerId
 argument_list|,
-name|super
-operator|.
-name|getConf
-argument_list|()
-argument_list|,
 name|privOpExecutor
 argument_list|,
 name|nmContext
@@ -5009,11 +5004,6 @@ argument_list|,
 name|containerId
 argument_list|,
 literal|null
-argument_list|,
-name|super
-operator|.
-name|getConf
-argument_list|()
 argument_list|,
 name|privOpExecutor
 argument_list|,

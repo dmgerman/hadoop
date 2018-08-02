@@ -1567,9 +1567,7 @@ name|dockerClient
 operator|=
 operator|new
 name|DockerClient
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|allowedNetworks
 operator|.
@@ -4695,8 +4693,6 @@ name|getContainerStatus
 argument_list|(
 name|containerIdStr
 argument_list|,
-name|conf
-argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 name|nmContext
@@ -5905,8 +5901,6 @@ name|getContainerStatus
 argument_list|(
 name|containerId
 argument_list|,
-name|conf
-argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 name|nmContext
@@ -5945,8 +5939,6 @@ argument_list|,
 name|containerId
 argument_list|,
 name|env
-argument_list|,
-name|conf
 argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
@@ -6051,8 +6043,6 @@ name|getContainerStatus
 argument_list|(
 name|containerId
 argument_list|,
-name|conf
-argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 name|nmContext
@@ -6094,8 +6084,6 @@ argument_list|,
 name|containerId
 argument_list|,
 name|env
-argument_list|,
-name|conf
 argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
@@ -6326,8 +6314,6 @@ name|getContainerStatus
 argument_list|(
 name|containerId
 argument_list|,
-name|conf
-argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
 name|nmContext
@@ -6361,8 +6347,6 @@ argument_list|,
 name|containerId
 argument_list|,
 name|env
-argument_list|,
-name|conf
 argument_list|,
 name|privilegedOperationExecutor
 argument_list|,

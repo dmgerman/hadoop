@@ -64,20 +64,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -522,8 +508,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Prepare the privileged operation object that will be used to invoke    * the container-executor.    *    * @param dockerCommand Specific command to be run by docker.    * @param containerName    * @param env    * @param conf    * @param nmContext    * @return Returns the PrivilegedOperation object to be used.    * @throws ContainerExecutionException    */
-DECL|method|preparePrivilegedOperation ( DockerCommand dockerCommand, String containerName, Map<String, String> env, Configuration conf, Context nmContext)
+comment|/**    * Prepare the privileged operation object that will be used to invoke    * the container-executor.    *    * @param dockerCommand Specific command to be run by docker.    * @param containerName    * @param env    * @param nmContext    * @return Returns the PrivilegedOperation object to be used.    * @throws ContainerExecutionException    */
+DECL|method|preparePrivilegedOperation ( DockerCommand dockerCommand, String containerName, Map<String, String> env, Context nmContext)
 specifier|public
 name|PrivilegedOperation
 name|preparePrivilegedOperation
@@ -542,9 +528,6 @@ name|String
 argument_list|>
 name|env
 parameter_list|,
-name|Configuration
-name|conf
-parameter_list|,
 name|Context
 name|nmContext
 parameter_list|)
@@ -556,9 +539,7 @@ name|dockerClient
 init|=
 operator|new
 name|DockerClient
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|String
 name|commandFile

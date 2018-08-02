@@ -36,20 +36,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|server
@@ -140,7 +126,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|preparePrivilegedOperation ( DockerCommand dockerCommand, String containerName, Map<String, String> env, Configuration conf, Context nmContext)
+DECL|method|preparePrivilegedOperation ( DockerCommand dockerCommand, String containerName, Map<String, String> env, Context nmContext)
 specifier|public
 name|PrivilegedOperation
 name|preparePrivilegedOperation
@@ -158,9 +144,6 @@ argument_list|,
 name|String
 argument_list|>
 name|env
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|,
 name|Context
 name|nmContext

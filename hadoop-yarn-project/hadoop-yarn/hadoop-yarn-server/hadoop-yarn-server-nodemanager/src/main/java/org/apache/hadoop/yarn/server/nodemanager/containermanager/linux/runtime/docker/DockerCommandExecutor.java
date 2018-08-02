@@ -36,20 +36,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|server
@@ -307,8 +293,8 @@ specifier|private
 name|DockerCommandExecutor
 parameter_list|()
 block|{   }
-comment|/**    * Execute a docker command and return the output.    *    * @param dockerCommand               the docker command to run.    * @param containerId                 the id of the container.    * @param env                         environment for the container.    * @param conf                        the hadoop configuration.    * @param privilegedOperationExecutor the privileged operations executor.    * @param disableFailureLogging       disable logging for known rc failures.    * @return the output of the operation.    * @throws ContainerExecutionException if the operation fails.    */
-DECL|method|executeDockerCommand (DockerCommand dockerCommand, String containerId, Map<String, String> env, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, boolean disableFailureLogging, Context nmContext)
+comment|/**    * Execute a docker command and return the output.    *    * @param dockerCommand               the docker command to run.    * @param containerId                 the id of the container.    * @param env                         environment for the container.    * @param privilegedOperationExecutor the privileged operations executor.    * @param disableFailureLogging       disable logging for known rc failures.    * @return the output of the operation.    * @throws ContainerExecutionException if the operation fails.    */
+DECL|method|executeDockerCommand (DockerCommand dockerCommand, String containerId, Map<String, String> env, PrivilegedOperationExecutor privilegedOperationExecutor, boolean disableFailureLogging, Context nmContext)
 specifier|public
 specifier|static
 name|String
@@ -327,9 +313,6 @@ argument_list|,
 name|String
 argument_list|>
 name|env
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|,
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
@@ -355,8 +338,6 @@ argument_list|,
 name|containerId
 argument_list|,
 name|env
-argument_list|,
-name|conf
 argument_list|,
 name|nmContext
 argument_list|)
@@ -467,8 +448,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the status of the docker container. This runs a docker inspect to    * get the status. If the container no longer exists, docker inspect throws    * an exception and the nonexistent status is returned.    *    * @param containerId                 the id of the container.    * @param conf                        the hadoop configuration.    * @param privilegedOperationExecutor the privileged operations executor.    * @return a {@link DockerContainerStatus} representing the current status.    */
-DECL|method|getContainerStatus (String containerId, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, Context nmContext)
+comment|/**    * Get the status of the docker container. This runs a docker inspect to    * get the status. If the container no longer exists, docker inspect throws    * an exception and the nonexistent status is returned.    *    * @param containerId                 the id of the container.    * @param privilegedOperationExecutor the privileged operations executor.    * @return a {@link DockerContainerStatus} representing the current status.    */
+DECL|method|getContainerStatus (String containerId, PrivilegedOperationExecutor privilegedOperationExecutor, Context nmContext)
 specifier|public
 specifier|static
 name|DockerContainerStatus
@@ -476,9 +457,6 @@ name|getContainerStatus
 parameter_list|(
 name|String
 name|containerId
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|,
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
@@ -498,8 +476,6 @@ init|=
 name|executeStatusCommand
 argument_list|(
 name|containerId
-argument_list|,
-name|conf
 argument_list|,
 name|privilegedOperationExecutor
 argument_list|,
@@ -782,8 +758,8 @@ name|NONEXISTENT
 return|;
 block|}
 block|}
-comment|/**    * Execute the docker inspect command to retrieve the docker container's    * status.    *    * @param containerId                 the id of the container.    * @param conf                        the hadoop configuration.    * @param privilegedOperationExecutor the privileged operations executor.    * @return the current container status.    * @throws ContainerExecutionException if the docker operation fails to run.    */
-DECL|method|executeStatusCommand (String containerId, Configuration conf, PrivilegedOperationExecutor privilegedOperationExecutor, Context nmContext)
+comment|/**    * Execute the docker inspect command to retrieve the docker container's    * status.    *    * @param containerId                 the id of the container.    * @param privilegedOperationExecutor the privileged operations executor.    * @return the current container status.    * @throws ContainerExecutionException if the docker operation fails to run.    */
+DECL|method|executeStatusCommand (String containerId, PrivilegedOperationExecutor privilegedOperationExecutor, Context nmContext)
 specifier|private
 specifier|static
 name|String
@@ -791,9 +767,6 @@ name|executeStatusCommand
 parameter_list|(
 name|String
 name|containerId
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|,
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
@@ -828,8 +801,6 @@ argument_list|,
 name|containerId
 argument_list|,
 literal|null
-argument_list|,
-name|conf
 argument_list|,
 name|privilegedOperationExecutor
 argument_list|,

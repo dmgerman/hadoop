@@ -1151,8 +1151,6 @@ argument_list|()
 argument_list|,
 name|env
 argument_list|,
-name|configuration
-argument_list|,
 name|mockExecutor
 argument_list|,
 literal|false
@@ -1241,8 +1239,6 @@ argument_list|,
 name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
-argument_list|,
-name|configuration
 argument_list|,
 name|mockExecutor
 argument_list|,
@@ -1370,8 +1366,6 @@ argument_list|,
 name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
-argument_list|,
-name|configuration
 argument_list|,
 name|mockExecutor
 argument_list|,
@@ -1524,8 +1518,6 @@ name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
 argument_list|,
-name|configuration
-argument_list|,
 name|mockExecutor
 argument_list|,
 literal|false
@@ -1664,8 +1656,6 @@ argument_list|,
 name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
-argument_list|,
-name|configuration
 argument_list|,
 name|mockExecutor
 argument_list|,
@@ -1814,8 +1804,6 @@ argument_list|,
 name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
-argument_list|,
-name|configuration
 argument_list|,
 name|mockExecutor
 argument_list|,
@@ -2013,8 +2001,6 @@ name|getContainerStatus
 argument_list|(
 name|MOCK_CONTAINER_ID
 argument_list|,
-name|configuration
-argument_list|,
 name|mockExecutor
 argument_list|,
 name|nmContext
@@ -2063,8 +2049,6 @@ argument_list|,
 name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
-argument_list|,
-name|configuration
 argument_list|,
 name|mockExecutor
 argument_list|,
@@ -2247,8 +2231,6 @@ name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
 argument_list|,
-name|configuration
-argument_list|,
 name|mockExecutor
 argument_list|,
 literal|false
@@ -2429,8 +2411,6 @@ argument_list|,
 name|MOCK_CONTAINER_ID
 argument_list|,
 name|env
-argument_list|,
-name|configuration
 argument_list|,
 name|mockExecutor
 argument_list|,
