@@ -123,6 +123,16 @@ name|HDDS_CONTAINER_ACTION_MAX_LIMIT_DEFAULT
 init|=
 literal|20
 decl_stmt|;
+comment|// Configuration to allow volume choosing policy.
+DECL|field|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
+init|=
+literal|"hdds.datanode.volume.choosing.policy"
+decl_stmt|;
 block|}
 end_class
 

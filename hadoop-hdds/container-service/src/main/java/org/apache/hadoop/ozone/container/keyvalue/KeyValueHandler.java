@@ -194,28 +194,6 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|CreateContainerRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|datanode
-operator|.
-name|proto
-operator|.
-name|ContainerProtos
-operator|.
 name|GetSmallFileRequestProto
 import|;
 end_import
@@ -744,6 +722,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ReflectionUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1114,6 +1106,22 @@ name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Handler for KeyValue Container type.  */
 end_comment
@@ -1294,12 +1302,29 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|// TODO: Add supoort for different volumeChoosingPolicies.
 name|volumeChoosingPolicy
 operator|=
-operator|new
+name|ReflectionUtils
+operator|.
+name|newInstance
+argument_list|(
+name|conf
+operator|.
+name|getClass
+argument_list|(
+name|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
+argument_list|,
 name|RoundRobinVolumeChoosingPolicy
-argument_list|()
+operator|.
+name|class
+argument_list|,
+name|VolumeChoosingPolicy
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|conf
+argument_list|)
 expr_stmt|;
 name|maxContainerSizeGB
 operator|=
@@ -1336,6 +1361,18 @@ operator|new
 name|OpenContainerBlockMap
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getVolumeChoosingPolicyForTesting ()
+specifier|public
+name|VolumeChoosingPolicy
+name|getVolumeChoosingPolicyForTesting
+parameter_list|()
+block|{
+return|return
+name|volumeChoosingPolicy
+return|;
 block|}
 comment|/**    * Returns OpenContainerBlockMap instance    * @return OpenContainerBlockMap    */
 DECL|method|getOpenContainerBlockMap ()
