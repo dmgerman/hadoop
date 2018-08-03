@@ -194,6 +194,20 @@ annotation|@
 name|Test
 annotation|@
 name|Ignore
+DECL|method|testBuilderCreateAppendExistingFile ()
+specifier|public
+name|void
+name|testBuilderCreateAppendExistingFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// not supported
+block|}
+annotation|@
+name|Test
+annotation|@
+name|Ignore
 DECL|method|testSetVerifyChecksum ()
 specifier|public
 name|void
