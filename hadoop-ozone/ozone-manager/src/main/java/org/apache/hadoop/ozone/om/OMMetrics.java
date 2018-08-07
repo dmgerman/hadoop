@@ -480,7 +480,7 @@ name|register
 argument_list|(
 name|SOURCE_NAME
 argument_list|,
-literal|"Oozne Manager Metrics"
+literal|"Ozone Manager Metrics"
 argument_list|,
 operator|new
 name|OMMetrics

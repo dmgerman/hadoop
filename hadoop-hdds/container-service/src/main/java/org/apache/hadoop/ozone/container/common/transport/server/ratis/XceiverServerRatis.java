@@ -597,10 +597,10 @@ specifier|final
 name|RaftServer
 name|server
 decl_stmt|;
-DECL|field|writeChunkExecutor
+DECL|field|chunkExecutor
 specifier|private
 name|ThreadPoolExecutor
-name|writeChunkExecutor
+name|chunkExecutor
 decl_stmt|;
 DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, String storageDir, ContainerDispatcher dispatcher, Configuration conf)
 specifier|private
@@ -839,7 +839,7 @@ argument_list|,
 name|serverRequestTimeout
 argument_list|)
 expr_stmt|;
-name|writeChunkExecutor
+name|chunkExecutor
 operator|=
 operator|new
 name|ThreadPoolExecutor
@@ -876,7 +876,7 @@ name|ContainerStateMachine
 argument_list|(
 name|dispatcher
 argument_list|,
-name|writeChunkExecutor
+name|chunkExecutor
 argument_list|)
 decl_stmt|;
 name|this
@@ -1494,7 +1494,7 @@ name|getIPCPort
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|writeChunkExecutor
+name|chunkExecutor
 operator|.
 name|prestartAllCoreThreads
 argument_list|()
@@ -1515,7 +1515,7 @@ parameter_list|()
 block|{
 try|try
 block|{
-name|writeChunkExecutor
+name|chunkExecutor
 operator|.
 name|shutdown
 argument_list|()
