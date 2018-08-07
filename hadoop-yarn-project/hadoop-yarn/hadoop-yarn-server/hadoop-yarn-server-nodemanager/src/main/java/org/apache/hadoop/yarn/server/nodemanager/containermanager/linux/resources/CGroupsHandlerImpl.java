@@ -2307,6 +2307,14 @@ init|=
 literal|false
 decl_stmt|;
 comment|// FileInputStream in = null;
+if|if
+condition|(
+name|cgf
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
 try|try
 init|(
 name|FileInputStream
@@ -2387,6 +2395,28 @@ literal|"Failed to read cgroup tasks file. "
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Parent Cgroups directory {} does not exist. Skipping "
+operator|+
+literal|"deletion"
+argument_list|,
+name|cgf
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|deleted
+operator|=
+literal|true
 expr_stmt|;
 block|}
 return|return
