@@ -56,24 +56,6 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
-operator|.
-name|AllocateResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
 name|records
 operator|.
 name|ResourceRequest
@@ -283,25 +265,6 @@ operator|+
 literal|"rejects all routing requests by construction."
 argument_list|)
 throw|;
-block|}
-annotation|@
-name|Override
-DECL|method|notifyOfResponse (SubClusterId subClusterId, AllocateResponse response)
-specifier|public
-name|void
-name|notifyOfResponse
-parameter_list|(
-name|SubClusterId
-name|subClusterId
-parameter_list|,
-name|AllocateResponse
-name|response
-parameter_list|)
-throws|throws
-name|YarnException
-block|{
-comment|// This might be invoked for applications started with a previous policy,
-comment|// do nothing for this policy.
 block|}
 block|}
 end_class
