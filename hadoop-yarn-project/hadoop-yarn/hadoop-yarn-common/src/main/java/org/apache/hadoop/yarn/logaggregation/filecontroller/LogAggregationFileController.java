@@ -222,7 +222,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 import|;
 end_import
 
@@ -622,7 +622,7 @@ end_comment
 
 begin_class
 annotation|@
-name|Private
+name|Public
 annotation|@
 name|Unstable
 DECL|class|LogAggregationFileController
