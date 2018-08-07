@@ -1174,11 +1174,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|rollEditsRpcExecutor
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 name|tailerThread
 operator|.
 name|setShouldRun
@@ -1219,6 +1214,14 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
+finally|finally
+block|{
+name|rollEditsRpcExecutor
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@
