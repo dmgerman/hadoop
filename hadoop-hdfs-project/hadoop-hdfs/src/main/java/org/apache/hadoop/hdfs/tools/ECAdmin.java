@@ -894,7 +894,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Add a list of erasure coding policies.\n"
+literal|"Add a list of user defined erasure coding policies.\n"
 operator|+
 name|listing
 operator|.
@@ -1447,7 +1447,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Remove an erasure coding policy.\n"
+literal|"Remove an user defined erasure coding policy.\n"
 operator|+
 name|listing
 operator|.
