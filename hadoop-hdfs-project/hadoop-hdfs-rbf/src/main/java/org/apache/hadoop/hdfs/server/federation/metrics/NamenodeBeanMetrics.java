@@ -1623,6 +1623,30 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getHighestPriorityLowRedundancyReplicatedBlocks ()
+specifier|public
+name|long
+name|getHighestPriorityLowRedundancyReplicatedBlocks
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHighestPriorityLowRedundancyECBlocks ()
+specifier|public
+name|long
+name|getHighestPriorityLowRedundancyECBlocks
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getCorruptFiles ()
 specifier|public
 name|String

@@ -21079,6 +21079,36 @@ name|getCorruptReplicationOneBlockSize
 argument_list|()
 return|;
 block|}
+DECL|method|getHighestPriorityReplicatedBlockCount ()
+specifier|public
+name|long
+name|getHighestPriorityReplicatedBlockCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|neededReconstruction
+operator|.
+name|getHighestPriorityReplicatedBlockCount
+argument_list|()
+return|;
+block|}
+DECL|method|getHighestPriorityECBlockCount ()
+specifier|public
+name|long
+name|getHighestPriorityECBlockCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|neededReconstruction
+operator|.
+name|getHighestPriorityECBlockCount
+argument_list|()
+return|;
+block|}
 DECL|method|addBlockCollection (BlockInfo block, BlockCollection bc)
 specifier|public
 name|BlockInfo

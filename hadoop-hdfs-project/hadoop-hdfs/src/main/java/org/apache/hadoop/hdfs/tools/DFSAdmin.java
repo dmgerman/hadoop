@@ -3186,6 +3186,31 @@ name|getMissingReplicationOneBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|replicatedBlockStats
+operator|.
+name|hasHighestPriorityLowRedundancyBlocks
+argument_list|()
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tLow redundancy blocks with highest priority "
+operator|+
+literal|"to recover: "
+operator|+
+name|replicatedBlockStats
+operator|.
+name|getHighestPriorityLowRedundancyBlocks
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|System
 operator|.
 name|out
@@ -3265,6 +3290,31 @@ name|getMissingBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|ecBlockGroupStats
+operator|.
+name|hasHighestPriorityLowRedundancyBlocks
+argument_list|()
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tLow redundancy blocks with highest priority "
+operator|+
+literal|"to recover: "
+operator|+
+name|ecBlockGroupStats
+operator|.
+name|getHighestPriorityLowRedundancyBlocks
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|System
 operator|.
 name|out

@@ -295,7 +295,7 @@ return|return
 name|sblk
 return|;
 block|}
-DECL|method|verifyBlockStats (LowRedundancyBlocks queues, int lowRedundancyReplicaCount, int corruptReplicaCount, int corruptReplicationOneCount, int lowRedundancyStripedCount, int corruptStripedCount)
+DECL|method|verifyBlockStats (LowRedundancyBlocks queues, int lowRedundancyReplicaCount, int corruptReplicaCount, int corruptReplicationOneCount, int lowRedundancyStripedCount, int corruptStripedCount, int highestPriorityReplicatedBlockCount, int highestPriorityECBlockCount)
 specifier|private
 name|void
 name|verifyBlockStats
@@ -317,6 +317,12 @@ name|lowRedundancyStripedCount
 parameter_list|,
 name|int
 name|corruptStripedCount
+parameter_list|,
+name|int
+name|highestPriorityReplicatedBlockCount
+parameter_list|,
+name|int
+name|highestPriorityECBlockCount
 parameter_list|)
 block|{
 name|assertEquals
@@ -410,6 +416,34 @@ argument_list|,
 name|queues
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Highest priority replicated low redundancy "
+operator|+
+literal|"blocks count is incorrect!"
+argument_list|,
+name|highestPriorityReplicatedBlockCount
+argument_list|,
+name|queues
+operator|.
+name|getHighestPriorityReplicatedBlockCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Highest priority erasure coded low redundancy "
+operator|+
+literal|"blocks count is incorrect!"
+argument_list|,
+name|highestPriorityECBlockCount
+argument_list|,
+name|queues
+operator|.
+name|getHighestPriorityECBlockCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -510,6 +544,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Repeated additions fail
@@ -542,6 +580,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|0
 argument_list|)
@@ -584,6 +626,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Now try to add a block that is corrupt
@@ -622,6 +668,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|0
 argument_list|)
@@ -664,6 +714,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Insert a corrupt block with replication factor 1
@@ -691,6 +745,10 @@ argument_list|,
 literal|1
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|0
 argument_list|)
@@ -726,6 +784,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|,
 literal|0
 argument_list|)
@@ -764,6 +826,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|queues
@@ -796,6 +862,49 @@ argument_list|,
 literal|3
 argument_list|,
 literal|2
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// Reduce the expected replicas to 1 for block1
+name|queues
+operator|.
+name|update
+argument_list|(
+name|block1
+argument_list|,
+literal|1
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|verifyBlockStats
+argument_list|(
+name|queues
+argument_list|,
+literal|2
+argument_list|,
+literal|3
+argument_list|,
+literal|2
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -865,6 +974,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Remove with wrong priority
@@ -883,6 +996,10 @@ comment|// Verify the number of corrupt block is decremented
 name|verifyBlockStats
 argument_list|(
 name|queues
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -1128,6 +1245,10 @@ argument_list|,
 name|numUR
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -1166,6 +1287,10 @@ argument_list|,
 name|numUR
 argument_list|,
 name|numCorrupt
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|assertAdded
@@ -1199,6 +1324,10 @@ argument_list|,
 name|numUR
 argument_list|,
 name|numCorrupt
+argument_list|,
+literal|0
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|assertInLevel

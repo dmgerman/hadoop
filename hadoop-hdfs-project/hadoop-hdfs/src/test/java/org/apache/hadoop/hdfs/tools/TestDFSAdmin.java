@@ -4046,6 +4046,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|client
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -4342,6 +4346,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|client
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 comment|// Choose a DataNode to shutdown
@@ -4464,6 +4472,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|client
+argument_list|,
+literal|0L
+argument_list|,
+literal|1L
 argument_list|)
 expr_stmt|;
 comment|// Corrupt the replicated block
@@ -4607,6 +4619,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|client
+argument_list|,
+literal|0L
+argument_list|,
+literal|1L
 argument_list|)
 expr_stmt|;
 name|lbs
@@ -4778,6 +4794,10 @@ argument_list|,
 literal|1
 argument_list|,
 name|client
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 block|}
@@ -5681,7 +5701,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyNodesAndCorruptBlocks ( final int numDn, final int numLiveDn, final int numCorruptBlocks, final int numCorruptECBlockGroups, final DFSClient client)
+DECL|method|verifyNodesAndCorruptBlocks ( final int numDn, final int numLiveDn, final int numCorruptBlocks, final int numCorruptECBlockGroups, final DFSClient client, final Long highestPriorityLowRedundancyReplicatedBlocks, final Long highestPriorityLowRedundancyECBlocks)
 specifier|private
 name|void
 name|verifyNodesAndCorruptBlocks
@@ -5705,6 +5725,14 @@ parameter_list|,
 specifier|final
 name|DFSClient
 name|client
+parameter_list|,
+specifier|final
+name|Long
+name|highestPriorityLowRedundancyReplicatedBlocks
+parameter_list|,
+specifier|final
+name|Long
+name|highestPriorityLowRedundancyECBlocks
 parameter_list|)
 throws|throws
 name|IOException
@@ -5758,6 +5786,36 @@ argument_list|,
 name|numCorruptECBlockGroups
 argument_list|)
 decl_stmt|;
+specifier|final
+name|String
+name|highestPriorityLowRedundancyReplicatedBlocksStr
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"\tLow redundancy blocks with highest priority "
+operator|+
+literal|"to recover: %d"
+argument_list|,
+name|highestPriorityLowRedundancyReplicatedBlocks
+argument_list|)
+decl_stmt|;
+specifier|final
+name|String
+name|highestPriorityLowRedundancyECBlocksStr
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"\tLow redundancy blocks with highest priority "
+operator|+
+literal|"to recover: %d"
+argument_list|,
+name|highestPriorityLowRedundancyReplicatedBlocks
+argument_list|)
+decl_stmt|;
 comment|// verify nodes and corrupt blocks
 name|assertThat
 argument_list|(
@@ -5780,6 +5838,16 @@ argument_list|,
 name|containsString
 argument_list|(
 name|expectedCorruptedECBlockGroupsStr
+argument_list|)
+argument_list|,
+name|containsString
+argument_list|(
+name|highestPriorityLowRedundancyReplicatedBlocksStr
+argument_list|)
+argument_list|,
+name|containsString
+argument_list|(
+name|highestPriorityLowRedundancyECBlocksStr
 argument_list|)
 argument_list|)
 argument_list|)
@@ -5865,6 +5933,22 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|highestPriorityLowRedundancyReplicatedBlocks
+argument_list|,
+name|client
+operator|.
+name|getNamenode
+argument_list|()
+operator|.
+name|getReplicatedBlockStats
+argument_list|()
+operator|.
+name|getHighestPriorityLowRedundancyBlocks
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 name|numCorruptECBlockGroups
 argument_list|,
 name|client
@@ -5876,6 +5960,22 @@ name|getECBlockGroupStats
 argument_list|()
 operator|.
 name|getCorruptBlockGroups
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|highestPriorityLowRedundancyECBlocks
+argument_list|,
+name|client
+operator|.
+name|getNamenode
+argument_list|()
+operator|.
+name|getECBlockGroupStats
+argument_list|()
+operator|.
+name|getHighestPriorityLowRedundancyBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;

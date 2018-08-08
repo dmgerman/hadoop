@@ -21158,6 +21158,9 @@ argument_list|()
 argument_list|,
 name|getPendingDeletionReplicatedBlocks
 argument_list|()
+argument_list|,
+name|getHighestPriorityLowRedundancyReplicatedBlocks
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -21184,6 +21187,9 @@ name|getBytesInFutureECBlockGroups
 argument_list|()
 argument_list|,
 name|getPendingDeletionECBlocks
+argument_list|()
+argument_list|,
+name|getHighestPriorityLowRedundancyECBlocks
 argument_list|()
 argument_list|)
 return|;
@@ -23505,6 +23511,60 @@ return|return
 name|blockManager
 operator|.
 name|getMissingReplicationOneBlocks
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"HighestPriorityLowRedundancyReplicatedBlocks"
+block|,
+literal|"Number of "
+operator|+
+literal|"replicated blocks which have the highest risk of loss."
+block|}
+argument_list|)
+DECL|method|getHighestPriorityLowRedundancyReplicatedBlocks ()
+specifier|public
+name|long
+name|getHighestPriorityLowRedundancyReplicatedBlocks
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getHighestPriorityReplicatedBlockCount
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"HighestPriorityLowRedundancyECBlocks"
+block|,
+literal|"Number of erasure coded "
+operator|+
+literal|"blocks which have the highest risk of loss."
+block|}
+argument_list|)
+DECL|method|getHighestPriorityLowRedundancyECBlocks ()
+specifier|public
+name|long
+name|getHighestPriorityLowRedundancyECBlocks
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getHighestPriorityECBlockCount
 argument_list|()
 return|;
 block|}

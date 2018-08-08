@@ -227,6 +227,20 @@ name|long
 name|getNumberOfMissingBlocksWithReplicationFactorOne
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the total number of replicated low redundancy blocks on the cluster    * with the highest risk of loss.    *    * @return the total number of low redundancy blocks on the cluster    * with the highest risk of loss.    */
+DECL|method|getHighestPriorityLowRedundancyReplicatedBlocks ()
+specifier|public
+name|long
+name|getHighestPriorityLowRedundancyReplicatedBlocks
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the total number of erasure coded low redundancy blocks on the cluster    * with the highest risk of loss    *    * @return the total number of low redundancy blocks on the cluster    * with the highest risk of loss    */
+DECL|method|getHighestPriorityLowRedundancyECBlocks ()
+specifier|public
+name|long
+name|getHighestPriorityLowRedundancyECBlocks
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the total number of snapshottable dirs in the system.    *    * @return the total number of snapshottable dirs in the system    */
 DECL|method|getNumberOfSnapshottableDirs ()
 specifier|public
