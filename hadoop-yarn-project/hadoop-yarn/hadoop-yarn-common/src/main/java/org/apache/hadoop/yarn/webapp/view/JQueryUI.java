@@ -425,7 +425,7 @@ name|link
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/dt-1.9.4/css/jui-dt.css"
+literal|"static/dt-1.10.7/css/jui-dt.css"
 argument_list|)
 argument_list|)
 operator|.
@@ -449,7 +449,7 @@ name|script
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/dt-1.9.4/js/jquery.dataTables.min.js"
+literal|"static/dt-1.10.7/js/jquery.dataTables.min.js"
 argument_list|)
 argument_list|)
 operator|.
