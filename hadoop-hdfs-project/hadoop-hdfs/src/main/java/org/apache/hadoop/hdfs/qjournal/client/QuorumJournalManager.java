@@ -2647,9 +2647,17 @@ operator|&&
 name|inProgressTailingEnabled
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Tailing edits starting from txn ID "
 operator|+
@@ -2658,6 +2666,7 @@ operator|+
 literal|" via RPC mechanism"
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|Collection
