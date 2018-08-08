@@ -40,7 +40,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
 import|;
 end_import
 
@@ -48,15 +48,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
-name|DependencyInjectedTest
+name|Test
 import|;
 end_import
 
@@ -198,7 +192,7 @@ specifier|public
 class|class
 name|TestConfigurationValidators
 extends|extends
-name|DependencyInjectedTest
+name|Assert
 block|{
 DECL|field|FAKE_KEY
 specifier|private

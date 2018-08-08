@@ -143,7 +143,7 @@ literal|null
 condition|)
 block|{
 return|return
-literal|""
+literal|"AzureBlobFileSystemException"
 return|;
 block|}
 if|if

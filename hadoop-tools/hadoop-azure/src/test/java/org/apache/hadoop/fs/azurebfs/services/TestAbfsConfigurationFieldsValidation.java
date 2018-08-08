@@ -418,6 +418,7 @@ name|TestAbfsConfigurationFieldsValidation
 block|{
 DECL|field|abfsConfiguration
 specifier|private
+specifier|final
 name|AbfsConfiguration
 name|abfsConfiguration
 decl_stmt|;
@@ -625,9 +626,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-argument_list|()
-expr_stmt|;
 name|Base64
 name|base64
 init|=
@@ -692,15 +690,10 @@ name|configuration
 init|=
 operator|new
 name|Configuration
-argument_list|()
-decl_stmt|;
-name|configuration
-operator|.
-name|addResource
 argument_list|(
-literal|"azure-bfs-test.xml"
+literal|false
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|configuration
 operator|.
 name|set

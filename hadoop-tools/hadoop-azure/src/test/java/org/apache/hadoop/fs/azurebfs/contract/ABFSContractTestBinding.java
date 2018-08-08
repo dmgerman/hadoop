@@ -70,7 +70,7 @@ name|fs
 operator|.
 name|azurebfs
 operator|.
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 import|;
 end_import
 
@@ -111,16 +111,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Dependency inject for ABFS contract tests.  */
+comment|/**  * Bind ABFS contract tests to the Azure test setup/teardown.  */
 end_comment
 
 begin_class
-DECL|class|DependencyInjectedContractTest
+DECL|class|ABFSContractTestBinding
 specifier|public
 class|class
-name|DependencyInjectedContractTest
+name|ABFSContractTestBinding
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|field|testUri
 specifier|private
@@ -128,9 +128,9 @@ specifier|final
 name|URI
 name|testUri
 decl_stmt|;
-DECL|method|DependencyInjectedContractTest (final boolean secure)
+DECL|method|ABFSContractTestBinding (final boolean secure)
 specifier|public
-name|DependencyInjectedContractTest
+name|ABFSContractTestBinding
 parameter_list|(
 specifier|final
 name|boolean
@@ -147,9 +147,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DependencyInjectedContractTest (final boolean secure, final boolean useExistedFileSystem)
+DECL|method|ABFSContractTestBinding (final boolean secure, final boolean useExistingFileSystem)
 specifier|public
-name|DependencyInjectedContractTest
+name|ABFSContractTestBinding
 parameter_list|(
 specifier|final
 name|boolean
@@ -157,7 +157,7 @@ name|secure
 parameter_list|,
 specifier|final
 name|boolean
-name|useExistedFileSystem
+name|useExistingFileSystem
 parameter_list|)
 throws|throws
 name|Exception
@@ -169,7 +169,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|useExistedFileSystem
+name|useExistingFileSystem
 condition|)
 block|{
 name|Configuration
@@ -211,7 +211,7 @@ name|ABFS_SECURE_SCHEME
 argument_list|)
 expr_stmt|;
 block|}
-name|updateTestUrl
+name|setTestUrl
 argument_list|(
 name|testUrl
 argument_list|)
@@ -259,7 +259,7 @@ argument_list|(
 literal|"\\@"
 argument_list|)
 decl_stmt|;
-name|updateFileSystemName
+name|setFileSystemName
 argument_list|(
 name|splitAuthority
 index|[

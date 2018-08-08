@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Definitions of Annotations for all types of the validators  */
+comment|/**  * Definitions of Annotations for all types of the validators.  */
 end_comment
 
 begin_class
@@ -98,7 +98,7 @@ specifier|public
 class|class
 name|ConfigurationValidationAnnotations
 block|{
-comment|/**    * Describes the requirements when validating the annotated int field    */
+comment|/**    * Describes the requirements when validating the annotated int field.    */
 annotation|@
 name|Target
 argument_list|(
@@ -159,7 +159,7 @@ default|default
 literal|false
 function_decl|;
 block|}
-comment|/**    * Describes the requirements when validating the annotated long field    */
+comment|/**    * Describes the requirements when validating the annotated long field.    */
 annotation|@
 name|Target
 argument_list|(
@@ -220,7 +220,7 @@ default|default
 literal|false
 function_decl|;
 block|}
-comment|/**    * Describes the requirements when validating the annotated String field    */
+comment|/**    * Describes the requirements when validating the annotated String field.    */
 annotation|@
 name|Target
 argument_list|(
@@ -261,7 +261,7 @@ default|default
 literal|false
 function_decl|;
 block|}
-comment|/**    * Describes the requirements when validating the annotated String field    */
+comment|/**    * Describes the requirements when validating the annotated String field.    */
 annotation|@
 name|Target
 argument_list|(
@@ -302,7 +302,7 @@ default|default
 literal|false
 function_decl|;
 block|}
-comment|/**    * Describes the requirements when validating the annotated boolean field    */
+comment|/**    * Describes the requirements when validating the annotated boolean field.    */
 annotation|@
 name|Target
 argument_list|(

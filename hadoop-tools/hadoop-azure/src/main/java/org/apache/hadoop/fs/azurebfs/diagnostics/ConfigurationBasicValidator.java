@@ -128,7 +128,7 @@ operator|=
 name|throwIfInvalid
 expr_stmt|;
 block|}
-comment|/**    * This method handles the base case where the configValue is null, based on the throwIfInvalid it either throws or returns the defaultVal,    * otherwise it returns null indicating that the configValue needs to be validated further    * @param configValue the configuration value set by the user    * @return the defaultVal in case the configValue is null and not required to be set, null in case the configValue not null    * @throws InvalidConfigurationValueException in case the configValue is null and required to be set    */
+comment|/**    * This method handles the base case where the configValue is null, based on the throwIfInvalid it either throws or returns the defaultVal,    * otherwise it returns null indicating that the configValue needs to be validated further.    * @param configValue the configuration value set by the user    * @return the defaultVal in case the configValue is null and not required to be set, null in case the configValue not null    * @throws InvalidConfigurationValueException in case the configValue is null and required to be set    */
 DECL|method|validate (final String configValue)
 specifier|public
 name|T

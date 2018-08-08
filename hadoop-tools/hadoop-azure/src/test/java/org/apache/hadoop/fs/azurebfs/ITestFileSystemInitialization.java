@@ -34,7 +34,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|Test
 import|;
 end_import
 
@@ -42,9 +42,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -104,7 +108,7 @@ specifier|public
 class|class
 name|ITestFileSystemInitialization
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|method|ITestFileSystemInitialization ()
 specifier|public
@@ -126,11 +130,9 @@ throws|throws
 name|Exception
 block|{
 specifier|final
-name|FileSystem
+name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -138,8 +140,6 @@ specifier|final
 name|String
 name|accountName
 init|=
-name|this
-operator|.
 name|getAccountName
 argument_list|()
 decl_stmt|;
@@ -147,13 +147,9 @@ specifier|final
 name|String
 name|filesystem
 init|=
-name|this
-operator|.
 name|getFileSystemName
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fs
@@ -182,10 +178,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
+literal|"working directory"
+argument_list|,
 name|fs
 operator|.
 name|getWorkingDirectory
@@ -207,8 +203,6 @@ specifier|final
 name|String
 name|accountName
 init|=
-name|this
-operator|.
 name|getAccountName
 argument_list|()
 decl_stmt|;
@@ -216,8 +210,6 @@ specifier|final
 name|String
 name|filesystem
 init|=
-name|this
-operator|.
 name|getFileSystemName
 argument_list|()
 decl_stmt|;
@@ -245,10 +237,13 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
+name|Configuration
+name|conf
+init|=
 name|getConfiguration
 argument_list|()
+decl_stmt|;
+name|conf
 operator|.
 name|set
 argument_list|(
@@ -262,17 +257,22 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-specifier|final
-name|FileSystem
+try|try
+init|(
+name|SecureAzureBlobFileSystem
 name|fs
 init|=
-name|this
+operator|(
+name|SecureAzureBlobFileSystem
+operator|)
+name|FileSystem
 operator|.
-name|getFileSystem
-argument_list|()
-decl_stmt|;
-name|Assert
-operator|.
+name|newInstance
+argument_list|(
+name|conf
+argument_list|)
+init|)
+block|{
 name|assertEquals
 argument_list|(
 name|fs
@@ -301,16 +301,17 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
+literal|"working directory"
+argument_list|,
 name|fs
 operator|.
 name|getWorkingDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

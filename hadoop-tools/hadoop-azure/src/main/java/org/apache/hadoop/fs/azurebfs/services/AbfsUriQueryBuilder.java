@@ -22,24 +22,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
-name|constants
-operator|.
-name|AbfsHttpConstants
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -58,8 +40,26 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|constants
+operator|.
+name|AbfsHttpConstants
+import|;
+end_import
+
 begin_comment
-comment|/**  * The UrlQueryBuilder for Rest AbfsClient  */
+comment|/**  * The UrlQueryBuilder for Rest AbfsClient.  */
 end_comment
 
 begin_class

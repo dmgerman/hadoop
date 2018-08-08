@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Integer configuration value Validator  */
+comment|/**  * Integer configuration value Validator.  */
 end_comment
 
 begin_class

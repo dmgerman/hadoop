@@ -64,17 +64,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|hadoop
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|fs
+name|slf4j
 operator|.
-name|azurebfs
-operator|.
-name|constants
-operator|.
-name|AbfsHttpConstants
+name|LoggerFactory
 import|;
 end_import
 
@@ -90,11 +92,9 @@ name|fs
 operator|.
 name|azurebfs
 operator|.
-name|contracts
+name|constants
 operator|.
-name|exceptions
-operator|.
-name|AzureBlobFileSystemException
+name|AbfsHttpConstants
 import|;
 end_import
 
@@ -134,7 +134,7 @@ name|contracts
 operator|.
 name|exceptions
 operator|.
-name|InvalidAbfsRestOperationException
+name|AzureBlobFileSystemException
 import|;
 end_import
 
@@ -142,14 +142,24 @@ begin_import
 import|import
 name|org
 operator|.
-name|slf4j
+name|apache
 operator|.
-name|Logger
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|contracts
+operator|.
+name|exceptions
+operator|.
+name|InvalidAbfsRestOperationException
 import|;
 end_import
 
 begin_comment
-comment|/**  * The AbfsRestOperation for Rest AbfsClient  */
+comment|/**  * The AbfsRestOperation for Rest AbfsClient.  */
 end_comment
 
 begin_class
@@ -197,11 +207,20 @@ specifier|final
 name|boolean
 name|hasRequestBody
 decl_stmt|;
-DECL|field|logger
+DECL|field|LOG
 specifier|private
 specifier|final
 name|Logger
-name|logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|AbfsClient
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 comment|// For uploads, this is the request entity body.  For downloads,
 comment|// this will hold the response entity body.
@@ -307,14 +326,6 @@ argument_list|(
 name|method
 argument_list|)
 operator|)
-expr_stmt|;
-name|this
-operator|.
-name|logger
-operator|=
-name|client
-operator|.
-name|LOG
 expr_stmt|;
 block|}
 comment|/**    * Initializes a new REST operation.    *    * @param client The Blob FS client.    * @param method The HTTP method (PUT, PATCH, POST, GET, HEAD, or DELETE).    * @param url The full URL including query string parameters.    * @param requestHeaders The HTTP request headers.    * @param buffer For uploads, this is the request entity body.  For downloads,    *               this will hold the response entity body.    * @param bufferOffset An offset into the buffer where the data beings.    * @param bufferLength The length of the data in the buffer.    */
@@ -563,7 +574,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|logger
+name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
@@ -576,7 +587,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|logger
+name|LOG
 operator|.
 name|debug
 argument_list|(
@@ -593,7 +604,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|logger
+name|LOG
 operator|.
 name|debug
 argument_list|(
@@ -641,13 +652,13 @@ return|;
 block|}
 if|if
 condition|(
-name|logger
+name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|logger
+name|LOG
 operator|.
 name|debug
 argument_list|(

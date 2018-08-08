@@ -49,7 +49,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Responsible to keep all Http Query params here  */
+comment|/**  * Responsible to keep all Http Query params here.  */
 end_comment
 
 begin_class

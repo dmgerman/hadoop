@@ -176,11 +176,11 @@ specifier|final
 name|boolean
 name|isSecure
 decl_stmt|;
-DECL|field|dependencyInjectedContractTest
+DECL|field|binding
 specifier|private
 specifier|final
-name|DependencyInjectedContractTest
-name|dependencyInjectedContractTest
+name|ABFSContractTestBinding
+name|binding
 decl_stmt|;
 DECL|method|ITestAbfsFileSystemContractRootDirectory (final boolean secure)
 specifier|public
@@ -199,10 +199,10 @@ name|isSecure
 operator|=
 name|secure
 expr_stmt|;
-name|dependencyInjectedContractTest
+name|binding
 operator|=
 operator|new
-name|DependencyInjectedContractTest
+name|ABFSContractTestBinding
 argument_list|(
 name|secure
 argument_list|)
@@ -218,9 +218,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|dependencyInjectedContractTest
+name|binding
 operator|.
-name|initialize
+name|setup
 argument_list|()
 expr_stmt|;
 name|super
@@ -238,9 +238,7 @@ name|createConfiguration
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
-name|dependencyInjectedContractTest
+name|binding
 operator|.
 name|getConfiguration
 argument_list|()
@@ -260,12 +258,10 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ITestAbfsFileSystemContract
+name|AbfsFileSystemContract
 argument_list|(
 name|conf
 argument_list|,
-name|this
-operator|.
 name|isSecure
 argument_list|)
 return|;

@@ -58,20 +58,6 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -127,10 +113,6 @@ comment|/**  * Azure Blob File System implementation of AbstractFileSystem.  * T
 end_comment
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
 annotation|@
 name|InterfaceStability
 operator|.

@@ -68,6 +68,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URLDecoder
 import|;
 end_import
@@ -224,6 +234,36 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|codec
+operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|codec
+operator|.
+name|binary
+operator|.
+name|Base64
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|fs
@@ -251,36 +291,6 @@ operator|.
 name|constants
 operator|.
 name|HttpHeaderConfigurations
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|codec
-operator|.
-name|binary
-operator|.
-name|Base64
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|codec
-operator|.
-name|Charsets
 import|;
 end_import
 
@@ -526,8 +536,6 @@ block|{
 name|byte
 index|[]
 name|utf8Bytes
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -828,7 +836,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Initialie the HmacSha256 associated with the account key.    */
+comment|/**    * Initialize the HmacSha256 associated with the account key.    */
 DECL|method|initializeMac ()
 specifier|private
 name|void
@@ -877,7 +885,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Append a string to a string builder with a newline constant    *    * @param builder the StringBuilder object    * @param element the string to append.    */
+comment|/**    * Append a string to a string builder with a newline constant.    *    * @param builder the StringBuilder object    * @param element the string to append.    */
 DECL|method|appendCanonicalizedElement (final StringBuilder builder, final String element)
 specifier|private
 specifier|static
@@ -909,17 +917,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructs a canonicalized string from the request's headers that will be used to construct the signature string    * for signing a Blob or Queue service request under the Shared Key Full authentication scheme.    *    * @param address       the request URI    * @param accountName   the account name associated with the request    * @param method        the verb to be used for the HTTP request.    * @param contentType   the content type of the HTTP request.    * @param contentLength the length of the content written to the outputstream in bytes, -1 if unknown    * @param date          the date/time specification for the HTTP request    * @param conn          the HttpURLConnection for the operation.    * @return A canonicalized string.    */
-DECL|method|canonicalizeHttpRequest (final java.net.URL address, final String accountName, final String method, final String contentType, final long contentLength, final String date, final HttpURLConnection conn)
+DECL|method|canonicalizeHttpRequest (final URL address, final String accountName, final String method, final String contentType, final long contentLength, final String date, final HttpURLConnection conn)
 specifier|private
 specifier|static
 name|String
 name|canonicalizeHttpRequest
 parameter_list|(
 specifier|final
-name|java
-operator|.
-name|net
-operator|.
 name|URL
 name|address
 parameter_list|,
@@ -1214,17 +1218,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Gets the canonicalized resource string for a Blob or Queue service request under the Shared Key Lite    * authentication scheme.    *    * @param address     the resource URI.    * @param accountName the account name for the request.    * @return the canonicalized resource string.    */
-DECL|method|getCanonicalizedResource (final java.net.URL address, final String accountName)
+DECL|method|getCanonicalizedResource (final URL address, final String accountName)
 specifier|private
 specifier|static
 name|String
 name|getCanonicalizedResource
 parameter_list|(
 specifier|final
-name|java
-operator|.
-name|net
-operator|.
 name|URL
 name|address
 parameter_list|,
@@ -1340,11 +1340,7 @@ name|lowercasedKeyNameValue
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -1557,8 +1553,8 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets all the values for the given header in the one to many map, performs a trimStart() on each return value    *    * @param headers    a one to many map of key / values representing the header values for the connection.    * @param headerName the name of the header to lookup    * @return an ArrayList<String> of all trimmed values corresponding to the requested headerName. This may be empty    * if the header is not found.    */
-DECL|method|getHeaderValues (final Map<String, List<String>> headers, final String headerName)
+comment|/**    * Gets all the values for the given header in the one to many map,    * performs a trimStart() on each return value.    *    * @param headers    a one to many map of key / values representing the header values for the connection.    * @param headerName the name of the header to lookup    * @return an ArrayList<String> of all trimmed values corresponding to the requested headerName. This may be empty    * if the header is not found.    */
+DECL|method|getHeaderValues ( final Map<String, List<String>> headers, final String headerName)
 specifier|private
 specifier|static
 name|ArrayList
@@ -1721,12 +1717,7 @@ name|retVals
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|String
-index|[]
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 if|if

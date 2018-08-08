@@ -76,9 +76,15 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|After
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
 import|;
 end_import
 
@@ -148,11 +154,11 @@ name|ITestAzureBlobFileSystemBasics
 extends|extends
 name|FileSystemContractBaseTest
 block|{
-DECL|field|dependencyInjectedContractTest
+DECL|field|binding
 specifier|private
 specifier|final
-name|DependencyInjectedContractTest
-name|dependencyInjectedContractTest
+name|ABFSContractTestBinding
+name|binding
 decl_stmt|;
 DECL|method|ITestAzureBlobFileSystemBasics ()
 specifier|public
@@ -163,10 +169,10 @@ name|Exception
 block|{
 comment|// If all contract tests are running in parallel, some root level tests in FileSystemContractBaseTest will fail
 comment|// due to the race condition. Hence for this contract test it should be tested in different container
-name|dependencyInjectedContractTest
+name|binding
 operator|=
 operator|new
-name|DependencyInjectedContractTest
+name|ABFSContractTestBinding
 argument_list|(
 literal|false
 argument_list|,
@@ -184,29 +190,25 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|this
+name|binding
 operator|.
-name|dependencyInjectedContractTest
-operator|.
-name|initialize
+name|setup
 argument_list|()
 expr_stmt|;
 name|fs
 operator|=
-name|this
-operator|.
-name|dependencyInjectedContractTest
+name|binding
 operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|After
-DECL|method|testCleanup ()
+name|Override
+DECL|method|tearDown ()
 specifier|public
 name|void
-name|testCleanup
+name|tearDown
 parameter_list|()
 throws|throws
 name|Exception
@@ -214,13 +216,22 @@ block|{
 comment|// This contract test is not using existing container for test,
 comment|// instead it creates its own temp container for test, hence we need to destroy
 comment|// it after the test.
-name|this
+try|try
+block|{
+name|super
 operator|.
-name|dependencyInjectedContractTest
-operator|.
-name|testCleanup
+name|tearDown
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|binding
+operator|.
+name|teardown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -378,10 +389,12 @@ name|folderPath
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fs
+name|ContractTestUtils
 operator|.
-name|create
+name|touch
 argument_list|(
+name|fs
+argument_list|,
 name|filePath
 argument_list|)
 expr_stmt|;

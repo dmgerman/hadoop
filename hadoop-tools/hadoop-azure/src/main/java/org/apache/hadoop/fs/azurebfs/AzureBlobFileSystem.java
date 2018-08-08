@@ -232,59 +232,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|PathIOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
-name|contracts
-operator|.
-name|exceptions
-operator|.
-name|AbfsRestOperationException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|commons
 operator|.
 name|lang
 operator|.
 name|ArrayUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
 import|;
 end_import
 
@@ -438,6 +390,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|PathIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|azurebfs
 operator|.
 name|constants
@@ -478,9 +444,9 @@ name|azurebfs
 operator|.
 name|contracts
 operator|.
-name|services
+name|exceptions
 operator|.
-name|AzureServiceErrorCode
+name|AbfsRestOperationException
 import|;
 end_import
 
@@ -574,6 +540,26 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|azurebfs
+operator|.
+name|contracts
+operator|.
+name|services
+operator|.
+name|AzureServiceErrorCode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -614,13 +600,9 @@ end_comment
 
 begin_class
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
-annotation|@
 name|InterfaceStability
 operator|.
-name|Stable
+name|Evolving
 DECL|class|AzureBlobFileSystem
 specifier|public
 class|class
@@ -718,8 +700,6 @@ argument_list|(
 name|configuration
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -796,8 +776,6 @@ argument_list|,
 name|userGroupInformation
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -834,15 +812,84 @@ name|createFileSystem
 argument_list|()
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|mkdirs
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+specifier|final
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
 argument_list|(
-name|this
+literal|"AzureBlobFileSystem{"
+argument_list|)
+decl_stmt|;
+name|sb
 operator|.
-name|workingDir
+name|append
+argument_list|(
+literal|"uri="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|uri
 argument_list|)
 expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", user='"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|user
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|'\''
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", primaryUserGroup='"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|primaryUserGroup
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|'\''
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|'}'
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 DECL|method|isSecure ()
 specifier|public
@@ -886,8 +933,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -895,9 +940,6 @@ argument_list|(
 literal|"AzureBlobFileSystem.open path: {} bufferSize: {}"
 argument_list|,
 name|path
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|bufferSize
 argument_list|)
@@ -983,8 +1025,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -992,9 +1032,6 @@ argument_list|(
 literal|"AzureBlobFileSystem.create path: {} permission: {} overwrite: {} bufferSize: {}"
 argument_list|,
 name|f
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|permission
 argument_list|,
@@ -1336,8 +1373,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1413,8 +1448,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1586,8 +1619,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1680,8 +1711,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1750,8 +1779,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1759,9 +1786,6 @@ argument_list|(
 literal|"AzureBlobFileSystem.mkdirs path: {} permissions: {}"
 argument_list|,
 name|f
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|permission
 argument_list|)
@@ -1848,8 +1872,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1878,8 +1900,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1887,9 +1907,6 @@ argument_list|(
 literal|"AzureBlobFileSystem.getFileStatus path: {}"
 argument_list|,
 name|f
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
@@ -2043,8 +2060,6 @@ parameter_list|,
 name|long
 name|len
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -2285,8 +2300,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -2479,8 +2492,6 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -2488,9 +2499,6 @@ argument_list|(
 literal|"File not found {}"
 argument_list|,
 name|f
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -2506,8 +2514,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -2749,6 +2755,9 @@ argument_list|<
 name|T
 argument_list|>
 name|FileSystemOperation
+argument_list|<
+name|T
+argument_list|>
 name|execute
 parameter_list|(
 specifier|final
@@ -2783,6 +2792,9 @@ argument_list|<
 name|T
 argument_list|>
 name|FileSystemOperation
+argument_list|<
+name|T
+argument_list|>
 name|execute
 parameter_list|(
 specifier|final
@@ -2816,6 +2828,7 @@ decl_stmt|;
 return|return
 operator|new
 name|FileSystemOperation
+argument_list|<>
 argument_list|(
 name|executionResult
 argument_list|,
@@ -2832,6 +2845,7 @@ block|{
 return|return
 operator|new
 name|FileSystemOperation
+argument_list|<>
 argument_list|(
 name|defaultResultValue
 argument_list|,
@@ -2896,6 +2910,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Given a path and exception, choose which IOException subclass    * to create.    * Will return if and only iff the error code is in the list of allowed    * error codes.    * @param path path of operation triggering exception; may be null    * @param exception the exception caught    * @param allowedErrorCodesList varargs list of error codes.    * @throws IOException if the exception error code is not on the allowed list.    */
 DECL|method|checkException (final Path path, final AzureBlobFileSystemException exception, final AzureServiceErrorCode... allowedErrorCodesList)
 specifier|private
 name|void
@@ -2968,6 +2983,9 @@ name|HTTP_NOT_FOUND
 condition|)
 block|{
 throw|throw
+operator|(
+name|IOException
+operator|)
 operator|new
 name|FileNotFoundException
 argument_list|(
@@ -2975,6 +2993,11 @@ name|ere
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|exception
 argument_list|)
 throw|;
 block|}
@@ -2989,6 +3012,9 @@ name|HTTP_CONFLICT
 condition|)
 block|{
 throw|throw
+operator|(
+name|IOException
+operator|)
 operator|new
 name|FileAlreadyExistsException
 argument_list|(
@@ -2996,6 +3022,11 @@ name|ere
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|exception
 argument_list|)
 throw|;
 block|}

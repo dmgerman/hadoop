@@ -166,23 +166,17 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|fs
 operator|.
-name|junit
+name|contract
 operator|.
-name|Assert
+name|ContractTestUtils
 operator|.
-name|assertTrue
+name|assertIsFile
 import|;
 end_import
 
@@ -196,7 +190,7 @@ specifier|public
 class|class
 name|ITestAzureBlobFileSystemCopy
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|method|ITestAzureBlobFileSystemCopy ()
 specifier|public
@@ -221,8 +215,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -247,7 +239,7 @@ name|localFs
 init|=
 name|FileSystem
 operator|.
-name|get
+name|getLocal
 argument_list|(
 operator|new
 name|Configuration
@@ -306,14 +298,11 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertIsFile
 argument_list|(
 name|fs
-operator|.
-name|exists
-argument_list|(
+argument_list|,
 name|dstPath
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -365,31 +354,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSDataInputStream
-name|inputStream
-init|=
+return|return
+name|readString
+argument_list|(
 name|fs
 operator|.
 name|open
 argument_list|(
 name|testFile
 argument_list|)
-decl_stmt|;
-name|String
-name|ret
-init|=
-name|readString
-argument_list|(
-name|inputStream
 argument_list|)
-decl_stmt|;
-name|inputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-return|return
-name|ret
 return|;
 block|}
 DECL|method|readString (FSDataInputStream inputStream)
@@ -403,6 +377,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|BufferedReader
 name|reader
 init|=
@@ -415,7 +391,8 @@ argument_list|(
 name|inputStream
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 specifier|final
 name|int
 name|bufferSize
@@ -461,11 +438,6 @@ literal|"Exceeded buffer size"
 argument_list|)
 throw|;
 block|}
-name|inputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 return|return
 operator|new
 name|String
@@ -477,6 +449,7 @@ argument_list|,
 name|count
 argument_list|)
 return|;
+block|}
 block|}
 DECL|method|writeString (FileSystem fs, Path path, String value)
 specifier|private
@@ -495,9 +468,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSDataOutputStream
-name|outputStream
-init|=
+name|writeString
+argument_list|(
 name|fs
 operator|.
 name|create
@@ -506,10 +478,6 @@ name|path
 argument_list|,
 literal|true
 argument_list|)
-decl_stmt|;
-name|writeString
-argument_list|(
-name|outputStream
 argument_list|,
 name|value
 argument_list|)
@@ -529,6 +497,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|BufferedWriter
 name|writer
 init|=
@@ -541,7 +511,8 @@ argument_list|(
 name|outputStream
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|writer
 operator|.
 name|write
@@ -549,11 +520,7 @@ argument_list|(
 name|value
 argument_list|)
 expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 block|}
 end_class

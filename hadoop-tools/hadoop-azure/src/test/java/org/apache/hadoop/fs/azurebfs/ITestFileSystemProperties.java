@@ -34,16 +34,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Ignore
 import|;
 end_import
@@ -136,7 +126,7 @@ specifier|public
 class|class
 name|ITestFileSystemProperties
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|field|TEST_DATA
 specifier|private
@@ -164,11 +154,7 @@ DECL|method|ITestFileSystemProperties ()
 specifier|public
 name|ITestFileSystemProperties
 parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-block|}
+block|{   }
 annotation|@
 name|Test
 DECL|method|testReadWriteBytesToFileAndEnsureThreadPoolCleanup ()
@@ -183,14 +169,14 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
 name|testWriteOneByteToFileAndEnsureThreadPoolCleanup
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|FSDataInputStream
 name|inputStream
 init|=
@@ -206,7 +192,8 @@ literal|1024
 operator|*
 literal|1024
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|int
 name|i
 init|=
@@ -223,6 +210,7 @@ name|i
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testWriteOneByteToFileAndEnsureThreadPoolCleanup ()
@@ -237,11 +225,11 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|FSDataOutputStream
 name|stream
 init|=
@@ -251,7 +239,8 @@ name|create
 argument_list|(
 name|TEST_PATH
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|stream
 operator|.
 name|write
@@ -259,11 +248,7 @@ argument_list|(
 name|TEST_DATA
 argument_list|)
 expr_stmt|;
-name|stream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 name|FileStatus
 name|fileStatus
 init|=
@@ -304,8 +289,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -358,8 +341,6 @@ operator|.
 name|getFilesystemProperties
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|properties
@@ -382,8 +363,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -410,9 +389,7 @@ argument_list|,
 literal|"{ value: valueTest }"
 argument_list|)
 expr_stmt|;
-name|fs
-operator|.
-name|create
+name|touch
 argument_list|(
 name|TEST_PATH
 argument_list|)
@@ -447,8 +424,6 @@ argument_list|(
 name|TEST_PATH
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|properties
@@ -478,8 +453,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -532,8 +505,6 @@ operator|.
 name|getFilesystemProperties
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|properties
@@ -563,8 +534,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -591,9 +560,7 @@ argument_list|,
 literal|"{ value: valueTestå© }"
 argument_list|)
 expr_stmt|;
-name|fs
-operator|.
-name|create
+name|touch
 argument_list|(
 name|TEST_PATH
 argument_list|)
@@ -628,8 +595,6 @@ argument_list|(
 name|TEST_PATH
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|properties
@@ -652,8 +617,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -706,8 +669,6 @@ operator|.
 name|getFilesystemProperties
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|properties

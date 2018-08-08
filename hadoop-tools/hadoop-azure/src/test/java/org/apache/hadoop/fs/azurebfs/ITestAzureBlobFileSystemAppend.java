@@ -77,14 +77,18 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|assertEquals
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
 import|;
 end_import
 
@@ -98,7 +102,7 @@ specifier|public
 class|class
 name|ITestAzureBlobFileSystemAppend
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|field|TEST_FILE_PATH
 specifier|private
@@ -156,8 +160,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -198,11 +200,11 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|FSDataOutputStream
 name|stream
 init|=
@@ -212,7 +214,8 @@ name|create
 argument_list|(
 name|TEST_FILE_PATH
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 specifier|final
 name|byte
 index|[]
@@ -255,6 +258,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|Test
 argument_list|(
@@ -276,8 +280,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
@@ -287,10 +289,12 @@ name|filePath
 init|=
 name|TEST_FILE_PATH
 decl_stmt|;
-name|fs
+name|ContractTestUtils
 operator|.
-name|create
+name|touch
 argument_list|(
+name|fs
+argument_list|,
 name|filePath
 argument_list|)
 expr_stmt|;
@@ -332,8 +336,6 @@ specifier|final
 name|AzureBlobFileSystem
 name|fs
 init|=
-name|this
-operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;

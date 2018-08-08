@@ -104,9 +104,11 @@ name|fs
 operator|.
 name|azurebfs
 operator|.
-name|DependencyInjectedTest
+name|constants
 operator|.
-name|TEST_CONTAINER_PREFIX
+name|TestConfigurationKeys
+operator|.
+name|ABFS_TEST_CONTAINER_PREFIX
 import|;
 end_import
 
@@ -161,7 +163,7 @@ name|blobClient
 operator|.
 name|listContainers
 argument_list|(
-name|TEST_CONTAINER_PREFIX
+name|ABFS_TEST_CONTAINER_PREFIX
 argument_list|)
 decl_stmt|;
 for|for
@@ -258,7 +260,7 @@ name|blobClient
 operator|.
 name|listContainers
 argument_list|(
-name|TEST_CONTAINER_PREFIX
+name|ABFS_TEST_CONTAINER_PREFIX
 argument_list|)
 decl_stmt|;
 for|for

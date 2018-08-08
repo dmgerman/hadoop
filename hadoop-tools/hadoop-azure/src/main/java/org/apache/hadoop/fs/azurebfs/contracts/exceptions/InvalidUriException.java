@@ -85,7 +85,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s is invalid."
+literal|"Invalid URI %s"
 argument_list|,
 name|url
 argument_list|)

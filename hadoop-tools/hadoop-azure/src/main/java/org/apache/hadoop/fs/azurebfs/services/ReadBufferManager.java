@@ -113,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The Read Buffer Manager for Rest AbfsClient  */
+comment|/**  * The Read Buffer Manager for Rest AbfsClient.  */
 end_comment
 
 begin_class
@@ -209,9 +209,7 @@ name|freeList
 init|=
 operator|new
 name|Stack
-argument_list|<
-name|Integer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// indices in buffers[] array that are available
@@ -225,9 +223,7 @@ name|readAheadQueue
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|ReadBuffer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// queue of requests that are not picked up by any worker thread yet
@@ -241,9 +237,7 @@ name|inProgressList
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|ReadBuffer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// requests being processed by worker threads
@@ -257,9 +251,7 @@ name|completedReadList
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|ReadBuffer
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// buffers available for reading
@@ -417,7 +409,7 @@ name|ReadBufferManager
 parameter_list|()
 block|{   }
 comment|/*    *    *  AbfsInputStream-facing methods    *    */
-comment|/**    * {@link AbfsInputStream} calls this method to queue read-aheads    *    * @param stream          The {@link AbfsInputStream} for which to do the read-ahead    * @param requestedOffset The offset in the file which shoukd be read    * @param requestedLength The length to read    */
+comment|/**    * {@link AbfsInputStream} calls this method to queue read-aheads.    *    * @param stream          The {@link AbfsInputStream} for which to do the read-ahead    * @param requestedOffset The offset in the file which shoukd be read    * @param requestedLength The length to read    */
 DECL|method|queueReadAhead (final AbfsInputStream stream, final long requestedOffset, final int requestedLength)
 name|void
 name|queueReadAhead
@@ -447,19 +439,15 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"Start Queueing readAhead for "
-operator|+
+literal|"Start Queueing readAhead for {} offset {} length {}"
+argument_list|,
 name|stream
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" offset "
-operator|+
+argument_list|,
 name|requestedOffset
-operator|+
-literal|" length "
-operator|+
+argument_list|,
 name|requestedLength
 argument_list|)
 expr_stmt|;
@@ -489,10 +477,8 @@ if|if
 condition|(
 name|freeList
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|==
-literal|0
 operator|&&
 operator|!
 name|tryEvict
@@ -605,19 +591,15 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"Done q-ing readAhead for file "
-operator|+
+literal|"Done q-ing readAhead for file {} offset {} buffer idx {}"
+argument_list|,
 name|stream
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" offset "
-operator|+
+argument_list|,
 name|requestedOffset
-operator|+
-literal|" buffer idx "
-operator|+
+argument_list|,
 name|buffer
 operator|.
 name|getBufferindex
@@ -662,19 +644,15 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"getBlock for file "
-operator|+
+literal|"getBlock for file {}  position {}  thread {}"
+argument_list|,
 name|stream
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" position "
-operator|+
+argument_list|,
 name|position
-operator|+
-literal|" thread "
-operator|+
+argument_list|,
 name|Thread
 operator|.
 name|currentThread
@@ -735,19 +713,15 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"Done read from Cache for "
-operator|+
+literal|"Done read from Cache for {} position {} length {}"
+argument_list|,
 name|stream
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" position "
-operator|+
+argument_list|,
 name|position
-operator|+
-literal|" length "
-operator|+
+argument_list|,
 name|bytesRead
 argument_list|)
 expr_stmt|;
@@ -756,7 +730,7 @@ return|return
 name|bytesRead
 return|;
 block|}
-comment|// otherwise, just say we got nothing - calling thread can do it's own read
+comment|// otherwise, just say we got nothing - calling thread can do its own read
 return|return
 literal|0
 return|;
@@ -825,22 +799,18 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"got a relevant read buffer for file "
-operator|+
+literal|"got a relevant read buffer for file {} offset {} buffer idx {}"
+argument_list|,
 name|stream
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" offset "
-operator|+
+argument_list|,
 name|readBuf
 operator|.
 name|getOffset
 argument_list|()
-operator|+
-literal|" buffer idx "
-operator|+
+argument_list|,
 name|readBuf
 operator|.
 name|getBufferindex
@@ -891,22 +861,18 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"latch done for file "
-operator|+
+literal|"latch done for file {} buffer idx {} length {}"
+argument_list|,
 name|stream
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" buffer idx "
-operator|+
+argument_list|,
 name|readBuf
 operator|.
 name|getBufferindex
 argument_list|()
-operator|+
-literal|" length "
-operator|+
+argument_list|,
 name|readBuf
 operator|.
 name|getLength
@@ -1133,15 +1099,13 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"Evicting buffer idx "
-operator|+
+literal|"Evicting buffer idx {}; was used for file {} offset {} length {}"
+argument_list|,
 name|buf
 operator|.
 name|getBufferindex
 argument_list|()
-operator|+
-literal|"; was used for file "
-operator|+
+argument_list|,
 name|buf
 operator|.
 name|getStream
@@ -1149,16 +1113,12 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" offset "
-operator|+
+argument_list|,
 name|buf
 operator|.
 name|getOffset
 argument_list|()
-operator|+
-literal|" length "
-operator|+
+argument_list|,
 name|buf
 operator|.
 name|getLength
@@ -1659,8 +1619,8 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"ReadBufferWorker picked file "
-operator|+
+literal|"ReadBufferWorker picked file {} for offset {}"
+argument_list|,
 name|buffer
 operator|.
 name|getStream
@@ -1668,9 +1628,7 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" for offset "
-operator|+
+argument_list|,
 name|buffer
 operator|.
 name|getOffset
@@ -1682,7 +1640,7 @@ return|return
 name|buffer
 return|;
 block|}
-comment|/**    * ReadBufferWorker thread calls this method to post completion    *    * @param buffer            the buffer whose read was completed    * @param result            the {@link ReadBufferStatus} after the read operation in the worker thread    * @param bytesActuallyRead the number of bytes that the worker thread was actually able to read    */
+comment|/**    * ReadBufferWorker thread calls this method to post completion.    *    * @param buffer            the buffer whose read was completed    * @param result            the {@link ReadBufferStatus} after the read operation in the worker thread    * @param bytesActuallyRead the number of bytes that the worker thread was actually able to read    */
 DECL|method|doneReading (final ReadBuffer buffer, final ReadBufferStatus result, final int bytesActuallyRead)
 name|void
 name|doneReading
@@ -1712,8 +1670,8 @@ name|LOGGER
 operator|.
 name|trace
 argument_list|(
-literal|"ReadBufferWorker completed file "
-operator|+
+literal|"ReadBufferWorker completed file {} for offset {} bytes {}"
+argument_list|,
 name|buffer
 operator|.
 name|getStream
@@ -1721,16 +1679,12 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" for offset "
-operator|+
+argument_list|,
 name|buffer
 operator|.
 name|getOffset
 argument_list|()
-operator|+
-literal|" bytes "
-operator|+
+argument_list|,
 name|bytesActuallyRead
 argument_list|)
 expr_stmt|;
@@ -1818,7 +1772,7 @@ argument_list|()
 expr_stmt|;
 comment|// wake up waiting threads (if any)
 block|}
-comment|/**    * Similar to System.currentTimeMillis, except implemented with System.nanoTime().    * System.currentTimeMillis can go backwards when system clock is changed (e.g., with NTP time synchronization),    * making it unsuitable for measuring time intervals. nanotime is strictly monotonically increasing,    * so it is much more suitable to measuring intervals.    *    * @return current time in milliseconds    */
+comment|/**    * Similar to System.currentTimeMillis, except implemented with System.nanoTime().    * System.currentTimeMillis can go backwards when system clock is changed (e.g., with NTP time synchronization),    * making it unsuitable for measuring time intervals. nanotime is strictly monotonically increasing per CPU core.    * Note: it is not monotonic across Sockets, and even within a CPU, its only the    * more recent parts which share a clock across all cores.    *    * @return current time in milliseconds    */
 DECL|method|currentTimeMillis ()
 specifier|private
 name|long

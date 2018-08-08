@@ -48,6 +48,34 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|azurebfs
 operator|.
 name|constants
@@ -66,16 +94,13 @@ specifier|public
 class|class
 name|ITestAzureBlobFileSystemInitAndCreate
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|method|ITestAzureBlobFileSystemInitAndCreate ()
 specifier|public
 name|ITestAzureBlobFileSystemInitAndCreate
 parameter_list|()
 block|{
-name|super
-argument_list|()
-expr_stmt|;
 name|this
 operator|.
 name|getConfiguration
@@ -91,18 +116,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|initialize ()
+DECL|method|setup ()
 specifier|public
 name|void
-name|initialize
+name|setup
 parameter_list|()
 block|{   }
 annotation|@
 name|Override
-DECL|method|testCleanup ()
+DECL|method|teardown ()
 specifier|public
 name|void
-name|testCleanup
+name|teardown
 parameter_list|()
 block|{   }
 annotation|@
@@ -124,14 +149,33 @@ name|Exception
 block|{
 name|super
 operator|.
-name|initialize
+name|setup
 argument_list|()
 expr_stmt|;
+specifier|final
+name|AzureBlobFileSystem
+name|fs
+init|=
 name|this
 operator|.
 name|getFileSystem
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+name|FileStatus
+index|[]
+name|fileStatuses
+init|=
+name|fs
+operator|.
+name|listStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|)
+decl_stmt|;
 block|}
 block|}
 end_class

@@ -1547,13 +1547,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
-literal|"Cannot append to a diretory (="
+literal|"Cannot append to a directory: "
 operator|+
 name|f
-operator|+
-literal|" )"
 argument_list|)
 throw|;
 block|}

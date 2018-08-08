@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Boolean configuration value validator  */
+comment|/**  * Boolean configuration value validator.  */
 end_comment
 
 begin_class

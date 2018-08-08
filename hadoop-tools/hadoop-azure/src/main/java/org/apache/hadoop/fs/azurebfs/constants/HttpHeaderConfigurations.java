@@ -49,7 +49,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Responsible to keep all abfs http headers here  */
+comment|/**  * Responsible to keep all abfs http headers here.  */
 end_comment
 
 begin_class

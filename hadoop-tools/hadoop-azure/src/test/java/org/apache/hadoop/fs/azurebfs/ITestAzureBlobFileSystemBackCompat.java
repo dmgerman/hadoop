@@ -118,30 +118,6 @@ name|Path
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test AzureBlobFileSystem back compatibility with WASB.  */
 end_comment
@@ -152,7 +128,7 @@ specifier|public
 class|class
 name|ITestAzureBlobFileSystemBackCompat
 extends|extends
-name|DependencyInjectedTest
+name|AbstractAbfsIntegrationTest
 block|{
 DECL|method|ITestAzureBlobFileSystemBackCompat ()
 specifier|public
@@ -274,27 +250,27 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|2
+argument_list|,
 name|fileStatuses
 operator|.
 name|length
-argument_list|,
-literal|2
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fileStatuses
-index|[
-literal|0
-index|]
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|,
 literal|"10"
+argument_list|,
+name|fileStatuses
+index|[
+literal|0
+index|]
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -310,6 +286,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|fileStatuses
 index|[
 literal|0
@@ -317,12 +295,12 @@ index|]
 operator|.
 name|getLen
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"123"
+argument_list|,
 name|fileStatuses
 index|[
 literal|1
@@ -333,8 +311,6 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-argument_list|,
-literal|"123"
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -350,6 +326,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|fileStatuses
 index|[
 literal|1
@@ -357,8 +335,6 @@ index|]
 operator|.
 name|getLen
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}

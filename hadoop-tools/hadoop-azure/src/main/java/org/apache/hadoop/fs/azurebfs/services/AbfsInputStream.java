@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The AbfsInputStream for AbfsClient  */
+comment|/**  * The AbfsInputStream for AbfsClient.  */
 end_comment
 
 begin_class
@@ -271,9 +271,6 @@ name|String
 name|eTag
 parameter_list|)
 block|{
-name|super
-argument_list|()
-expr_stmt|;
 name|this
 operator|.
 name|client

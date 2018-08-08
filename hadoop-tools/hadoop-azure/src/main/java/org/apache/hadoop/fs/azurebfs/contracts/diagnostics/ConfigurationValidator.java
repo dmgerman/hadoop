@@ -32,20 +32,6 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -71,14 +57,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ConfigurationValidator to validate the value of a configuration key  * @param<T> the type of the validator and the validated value  */
+comment|/**  * ConfigurationValidator to validate the value of a configuration key  * @param<T> the type of the validator and the validated value.  */
 end_comment
 
 begin_interface
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
 annotation|@
 name|InterfaceStability
 operator|.
@@ -91,7 +73,7 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Validates the configValue    * @return validated value of type T    */
+comment|/**    * Validates the configValue.    * @return validated value of type T    */
 DECL|method|validate (String configValue)
 name|T
 name|validate

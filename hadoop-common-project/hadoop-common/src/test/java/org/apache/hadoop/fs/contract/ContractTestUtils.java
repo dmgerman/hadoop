@@ -805,6 +805,8 @@ name|buffersize
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 name|out
 operator|.
 name|write
@@ -816,11 +818,15 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|out
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|assertFileHasLength
 argument_list|(
 name|fs
@@ -3645,6 +3651,39 @@ operator|+
 name|builder
 argument_list|,
 name|found
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Execute {@link FileSystem#mkdirs(Path)}; expect {@code true} back.    * (Note: does not work for localFS if the directory already exists)    * Does not perform any validation of the created directory.    * @param fs filesystem    * @param dir directory to create    * @throws IOException IO Problem    */
+DECL|method|assertMkdirs (FileSystem fs, Path dir)
+specifier|public
+specifier|static
+name|void
+name|assertMkdirs
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|dir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertTrue
+argument_list|(
+literal|"mkdirs("
+operator|+
+name|dir
+operator|+
+literal|") returned false"
+argument_list|,
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|dir
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

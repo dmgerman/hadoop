@@ -49,7 +49,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Responsible to keep all constant keys used in abfs rest client here  */
+comment|/**  * Responsible to keep all constant keys used in abfs rest client here.  */
 end_comment
 
 begin_class

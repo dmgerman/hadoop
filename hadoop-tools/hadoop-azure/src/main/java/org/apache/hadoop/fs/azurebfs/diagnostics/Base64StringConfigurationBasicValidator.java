@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** * String Base64 configuration value Validator */
+comment|/** * String Base64 configuration value Validator. */
 end_comment
 
 begin_class

@@ -84,7 +84,7 @@ literal|1000
 operator|*
 literal|30
 decl_stmt|;
-comment|/**    *Represents the default minimum amount of time used when calculating the exponential    * delay between retries.    */
+comment|/**    * Represents the default minimum amount of time used when calculating the exponential    * delay between retries.    */
 DECL|field|DEFAULT_MIN_BACKOFF
 specifier|private
 specifier|static
