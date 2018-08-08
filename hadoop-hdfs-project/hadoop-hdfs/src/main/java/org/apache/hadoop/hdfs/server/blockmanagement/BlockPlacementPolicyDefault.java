@@ -358,7 +358,7 @@ block|{
 DECL|enumConstant|NOT_IN_SERVICE
 name|NOT_IN_SERVICE
 argument_list|(
-literal|"the node isn't in service"
+literal|"the node is not in service"
 argument_list|)
 block|,
 DECL|enumConstant|NODE_STALE
@@ -382,7 +382,7 @@ block|,
 DECL|enumConstant|NOT_ENOUGH_STORAGE_SPACE
 name|NOT_ENOUGH_STORAGE_SPACE
 argument_list|(
-literal|"no enough storage space to place the block"
+literal|"not enough storage space to place the block"
 argument_list|)
 block|;
 DECL|field|text
