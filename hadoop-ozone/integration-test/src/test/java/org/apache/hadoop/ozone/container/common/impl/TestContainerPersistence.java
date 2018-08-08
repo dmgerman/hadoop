@@ -4978,56 +4978,6 @@ literal|"owner"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Update a non-existing container
-name|exception
-operator|.
-name|expect
-argument_list|(
-name|StorageContainerException
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|exception
-operator|.
-name|expectMessage
-argument_list|(
-literal|"Container is an Inconsistent "
-operator|+
-literal|"state, missing .container file."
-argument_list|)
-expr_stmt|;
-name|Container
-name|nonExistentContainer
-init|=
-operator|new
-name|KeyValueContainer
-argument_list|(
-operator|new
-name|KeyValueContainerData
-argument_list|(
-name|RandomUtils
-operator|.
-name|nextLong
-argument_list|()
-argument_list|,
-name|ContainerTestHelper
-operator|.
-name|CONTAINER_MAX_SIZE_GB
-argument_list|)
-argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
-name|nonExistentContainer
-operator|.
-name|update
-argument_list|(
-name|newMetadata
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|writeKeyHelper (BlockID blockID)
 specifier|private

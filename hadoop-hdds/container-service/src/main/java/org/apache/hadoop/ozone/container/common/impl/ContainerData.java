@@ -967,7 +967,6 @@ name|void
 name|closeContainer
 parameter_list|()
 block|{
-comment|// TODO: closed or closing here
 name|setState
 argument_list|(
 name|ContainerLifeCycleState

@@ -980,11 +980,9 @@ init|=
 name|getContainerFile
 argument_list|()
 decl_stmt|;
-name|writeToContainerFile
+name|createContainerFile
 argument_list|(
 name|containerFile
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1117,7 +1115,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates .container file and checksum file.    *    * @param containerFile    * @param isCreate true if we are creating a new container file and false if    *                we are updating an existing container file.    * @throws StorageContainerException    */
+comment|/**    * Writes to .container file.    *    * @param containerFile container file name    * @param isCreate True if creating a new file. False is updating an    *                 existing container file.    * @throws StorageContainerException    */
 DECL|method|writeToContainerFile (File containerFile, boolean isCreate)
 specifier|private
 name|void
@@ -1167,13 +1165,14 @@ argument_list|,
 name|tempContainerFile
 argument_list|)
 expr_stmt|;
+comment|// NativeIO.renameTo is an atomic function. But it might fail if the
+comment|// container file already exists. Hence, we handle the two cases
+comment|// separately.
 if|if
 condition|(
 name|isCreate
 condition|)
 block|{
-comment|// When creating a new container, .container file should not exist
-comment|// already.
 name|NativeIO
 operator|.
 name|renameTo
@@ -1186,8 +1185,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|// When updating a container, the .container file should exist. If
-comment|// not, the container is in an inconsistent state.
 name|Files
 operator|.
 name|move
@@ -1219,7 +1216,7 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Error during creation of "
+literal|"Error while creating/ updating "
 operator|+
 literal|".container file. ContainerID: "
 operator|+
@@ -1270,6 +1267,25 @@ block|}
 block|}
 block|}
 block|}
+DECL|method|createContainerFile (File containerFile)
+specifier|private
+name|void
+name|createContainerFile
+parameter_list|(
+name|File
+name|containerFile
+parameter_list|)
+throws|throws
+name|StorageContainerException
+block|{
+name|writeToContainerFile
+argument_list|(
+name|containerFile
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|updateContainerFile (File containerFile)
 specifier|private
 name|void
@@ -1281,39 +1297,6 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 block|{
-name|long
-name|containerId
-init|=
-name|containerData
-operator|.
-name|getContainerID
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|containerFile
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Container is an Inconsistent "
-operator|+
-literal|"state, missing .container file. ContainerID: "
-operator|+
-name|containerId
-argument_list|,
-name|INVALID_CONTAINER_STATE
-argument_list|)
-throw|;
-block|}
-try|try
-block|{
 name|writeToContainerFile
 argument_list|(
 name|containerFile
@@ -1321,30 +1304,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|//TODO : Container update failure is not handled currently. Might
-comment|// lead to loss of .container file. When Update container feature
-comment|// support is added, this failure should also be handled.
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Container update failed. "
-operator|+
-literal|"ContainerID: "
-operator|+
-name|containerId
-argument_list|,
-name|CONTAINER_FILES_CREATE_ERROR
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -1451,46 +1410,6 @@ block|{
 name|writeLock
 argument_list|()
 expr_stmt|;
-name|long
-name|containerId
-init|=
-name|containerData
-operator|.
-name|getContainerID
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|containerData
-operator|.
-name|isValid
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Invalid container data. Container Id: {}"
-argument_list|,
-name|containerId
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Invalid container data. "
-operator|+
-literal|"ContainerID: "
-operator|+
-name|containerId
-argument_list|,
-name|INVALID_CONTAINER_STATE
-argument_list|)
-throw|;
-block|}
 name|containerData
 operator|.
 name|closeContainer
@@ -1515,6 +1434,16 @@ name|StorageContainerException
 name|ex
 parameter_list|)
 block|{
+comment|// Failed to update .container file. Reset the state to CLOSING
+name|containerData
+operator|.
+name|setState
+argument_list|(
+name|ContainerLifeCycleState
+operator|.
+name|CLOSING
+argument_list|)
+expr_stmt|;
 throw|throw
 name|ex
 throw|;
@@ -1785,8 +1714,6 @@ name|StorageContainerException
 name|ex
 parameter_list|)
 block|{
-comment|// TODO:
-comment|// On error, reset the metadata.
 name|containerData
 operator|.
 name|setMetadata
