@@ -2694,6 +2694,13 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|"\tExecution-Type : GUARANTEED"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"\tLOG-URL : logURL"
 argument_list|)
 expr_stmt|;

@@ -5867,6 +5867,23 @@ name|containerReportStr
 operator|.
 name|print
 argument_list|(
+literal|"\tExecution-Type : "
+argument_list|)
+expr_stmt|;
+name|containerReportStr
+operator|.
+name|println
+argument_list|(
+name|containerReport
+operator|.
+name|getExecutionType
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|containerReportStr
+operator|.
+name|print
+argument_list|(
 literal|"\tLOG-URL : "
 argument_list|)
 expr_stmt|;
