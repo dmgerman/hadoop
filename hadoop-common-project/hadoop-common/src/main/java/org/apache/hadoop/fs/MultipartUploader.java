@@ -50,22 +50,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|tuple
-operator|.
-name|Pair
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -82,8 +66,24 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|tuple
+operator|.
+name|Pair
+import|;
+end_import
+
 begin_comment
-comment|/**  * MultipartUploader is an interface for copying files multipart and across  * multiple nodes. Users should:  * 1. Initialize an upload  * 2. Upload parts in any order  * 3. Complete the upload in order to have it materialize in the destination FS.  *  * Implementers should make sure that the complete function should make sure  * that 'complete' will reorder parts if the destination FS doesn't already  * do it for them.  */
+comment|/**  * MultipartUploader is an interface for copying files multipart and across  * multiple nodes. Users should:  *<ol>  *<li>Initialize an upload</li>  *<li>Upload parts in any order</li>  *<li>Complete the upload in order to have it materialize in the destination  *   FS</li>  *</ol>  *  * Implementers should make sure that the complete function should make sure  * that 'complete' will reorder parts if the destination FS doesn't already  * do it for them.  */
 end_comment
 
 begin_class
@@ -109,7 +109,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Initialize a multipart upload.    * @param filePath Target path for upload.    * @return unique identifier associating part uploads.    * @throws IOException    */
+comment|/**    * Initialize a multipart upload.    * @param filePath Target path for upload.    * @return unique identifier associating part uploads.    * @throws IOException IO failure    */
 DECL|method|initialize (Path filePath)
 specifier|public
 specifier|abstract
@@ -122,7 +122,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Put part as part of a multipart upload. It should be possible to have    * parts uploaded in any order (or in parallel).    * @param filePath Target path for upload (same as {@link #initialize(Path)}).    * @param inputStream Data for this part.    * @param partNumber Index of the part relative to others.    * @param uploadId Identifier from {@link #initialize(Path)}.    * @param lengthInBytes Target length to read from the stream.    * @return unique PartHandle identifier for the uploaded part.    * @throws IOException    */
+comment|/**    * Put part as part of a multipart upload. It should be possible to have    * parts uploaded in any order (or in parallel).    * @param filePath Target path for upload (same as {@link #initialize(Path)}).    * @param inputStream Data for this part. Implementations MUST close this    * stream after reading in the data.    * @param partNumber Index of the part relative to others.    * @param uploadId Identifier from {@link #initialize(Path)}.    * @param lengthInBytes Target length to read from the stream.    * @return unique PartHandle identifier for the uploaded part.    * @throws IOException IO failure    */
 DECL|method|putPart (Path filePath, InputStream inputStream, int partNumber, UploadHandle uploadId, long lengthInBytes)
 specifier|public
 specifier|abstract
@@ -147,7 +147,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Complete a multipart upload.    * @param filePath Target path for upload (same as {@link #initialize(Path)}.    * @param handles Identifiers with associated part numbers from    *          {@link #putPart(Path, InputStream, int, UploadHandle, long)}.    *          Depending on the backend, the list order may be significant.    * @param multipartUploadId Identifier from {@link #initialize(Path)}.    * @return unique PathHandle identifier for the uploaded file.    * @throws IOException    */
+comment|/**    * Complete a multipart upload.    * @param filePath Target path for upload (same as {@link #initialize(Path)}.    * @param handles non-empty list of identifiers with associated part numbers    *          from {@link #putPart(Path, InputStream, int, UploadHandle, long)}.    *          Depending on the backend, the list order may be significant.    * @param multipartUploadId Identifier from {@link #initialize(Path)}.    * @return unique PathHandle identifier for the uploaded file.    * @throws IOException IO failure or the handle list is empty.    */
 DECL|method|complete (Path filePath, List<Pair<Integer, PartHandle>> handles, UploadHandle multipartUploadId)
 specifier|public
 specifier|abstract
@@ -174,8 +174,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Aborts a multipart upload.    * @param filePath Target path for upload (same as {@link #initialize(Path)}.    * @param multipartuploadId Identifier from {@link #initialize(Path)}.    * @throws IOException    */
-DECL|method|abort (Path filePath, UploadHandle multipartuploadId)
+comment|/**    * Aborts a multipart upload.    * @param filePath Target path for upload (same as {@link #initialize(Path)}.    * @param multipartUploadId Identifier from {@link #initialize(Path)}.    * @throws IOException IO failure    */
+DECL|method|abort (Path filePath, UploadHandle multipartUploadId)
 specifier|public
 specifier|abstract
 name|void
@@ -185,7 +185,7 @@ name|Path
 name|filePath
 parameter_list|,
 name|UploadHandle
-name|multipartuploadId
+name|multipartUploadId
 parameter_list|)
 throws|throws
 name|IOException

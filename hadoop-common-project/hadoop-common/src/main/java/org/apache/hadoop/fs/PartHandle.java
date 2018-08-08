@@ -18,6 +18,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -44,28 +64,8 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|Serializable
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
 begin_comment
-comment|/**  * Opaque, serializable reference to an part id for multipart uploads.  */
+comment|/**  * Opaque, serializable reference to a part id for multipart uploads.  */
 end_comment
 
 begin_interface

@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Opaque, serializable reference to an entity in the FileSystem. May contain  * metadata sufficient to resolve or verify subsequent accesses indepedent of  * other modifications to the FileSystem.  */
+comment|/**  * Opaque, serializable reference to an entity in the FileSystem. May contain  * metadata sufficient to resolve or verify subsequent accesses independent of  * other modifications to the FileSystem.  */
 end_comment
 
 begin_interface
@@ -77,6 +77,8 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
+annotation|@
+name|FunctionalInterface
 DECL|interface|PathHandle
 specifier|public
 interface|interface
@@ -84,7 +86,7 @@ name|PathHandle
 extends|extends
 name|Serializable
 block|{
-comment|/**    * @return Serialized from in bytes.    */
+comment|/**    * @return Serialized form in bytes.    */
 DECL|method|toByteArray ()
 specifier|default
 name|byte
@@ -122,6 +124,7 @@ return|return
 name|ret
 return|;
 block|}
+comment|/**    * Get the bytes of this path handle.    * @return the bytes to get to the process completing the upload.    */
 DECL|method|bytes ()
 name|ByteBuffer
 name|bytes

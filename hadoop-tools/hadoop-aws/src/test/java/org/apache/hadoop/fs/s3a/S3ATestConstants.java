@@ -159,6 +159,13 @@ name|S3A_SCALE_TEST
 operator|+
 literal|"huge.partitionsize"
 decl_stmt|;
+comment|/**    * Size of partitions to upload: {@value}.    */
+DECL|field|DEFAULT_HUGE_PARTITION_SIZE
+name|String
+name|DEFAULT_HUGE_PARTITION_SIZE
+init|=
+literal|"8M"
+decl_stmt|;
 comment|/**    * The default huge size is small âfull 5GB+ scale tests are something    * to run in long test runs on EC2 VMs. {@value}.    */
 DECL|field|DEFAULT_HUGE_FILESIZE
 name|String

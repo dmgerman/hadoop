@@ -820,6 +820,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|partETags
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No upload parts in multipart upload to "
+operator|+
+name|destKey
+argument_list|)
+throw|;
+block|}
 return|return
 name|invoker
 operator|.

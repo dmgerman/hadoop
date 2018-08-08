@@ -425,15 +425,6 @@ literal|64
 operator|*
 name|_1KB
 decl_stmt|;
-DECL|field|DEFAULT_PARTITION_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_PARTITION_SIZE
-init|=
-literal|"8M"
-decl_stmt|;
 DECL|field|scaleTestDir
 specifier|private
 name|Path
@@ -566,7 +557,7 @@ name|conf
 argument_list|,
 name|KEY_HUGE_PARTITION_SIZE
 argument_list|,
-name|DEFAULT_PARTITION_SIZE
+name|DEFAULT_HUGE_PARTITION_SIZE
 argument_list|)
 expr_stmt|;
 name|assertTrue
