@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -112,6 +126,12 @@ name|isValid
 parameter_list|)
 throws|throws
 name|Exception
+function_decl|;
+comment|/**    * Returns scheduler configuration cached in this provider.    * @return scheduler configuration.    */
+DECL|method|getConfiguration ()
+name|Configuration
+name|getConfiguration
+parameter_list|()
 function_decl|;
 comment|/**    * Closes the configuration provider, releasing any required resources.    * @throws IOException on failure to close    */
 DECL|method|close ()

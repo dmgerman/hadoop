@@ -716,6 +716,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getConfiguration ()
+specifier|public
+name|Configuration
+name|getConfiguration
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|(
+name|schedConf
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getAclMutationPolicy ()
 specifier|public
 name|ConfigurationMutationACLPolicy
