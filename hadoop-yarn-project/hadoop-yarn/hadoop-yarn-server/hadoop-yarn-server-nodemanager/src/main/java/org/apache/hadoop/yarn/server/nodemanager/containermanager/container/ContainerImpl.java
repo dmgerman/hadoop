@@ -2905,7 +2905,7 @@ operator|.
 name|KILL_CONTAINER
 argument_list|,
 operator|new
-name|KillBeforeRunningTransition
+name|KillTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -4162,6 +4162,21 @@ name|ContainerEventType
 operator|.
 name|UPDATE_CONTAINER_TOKEN
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|EXITED_WITH_SUCCESS
+argument_list|,
+name|ContainerState
+operator|.
+name|EXITED_WITH_SUCCESS
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_KILLED_ON_REQUEST
+argument_list|)
 comment|// From EXITED_WITH_FAILURE State
 operator|.
 name|addTransition
@@ -4238,6 +4253,21 @@ argument_list|,
 name|ContainerEventType
 operator|.
 name|UPDATE_CONTAINER_TOKEN
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|EXITED_WITH_FAILURE
+argument_list|,
+name|ContainerState
+operator|.
+name|EXITED_WITH_FAILURE
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_KILLED_ON_REQUEST
 argument_list|)
 comment|// From KILLING State.
 operator|.
@@ -4518,6 +4548,21 @@ name|ContainerEventType
 operator|.
 name|UPDATE_CONTAINER_TOKEN
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|CONTAINER_CLEANEDUP_AFTER_KILL
+argument_list|,
+name|ContainerState
+operator|.
+name|CONTAINER_CLEANEDUP_AFTER_KILL
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_KILLED_ON_REQUEST
+argument_list|)
 comment|// From DONE
 operator|.
 name|addTransition
@@ -4621,6 +4666,21 @@ argument_list|,
 name|ContainerEventType
 operator|.
 name|UPDATE_CONTAINER_TOKEN
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|DONE
+argument_list|,
+name|ContainerState
+operator|.
+name|DONE
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_KILLED_ON_REQUEST
 argument_list|)
 comment|// create the topology tables
 operator|.

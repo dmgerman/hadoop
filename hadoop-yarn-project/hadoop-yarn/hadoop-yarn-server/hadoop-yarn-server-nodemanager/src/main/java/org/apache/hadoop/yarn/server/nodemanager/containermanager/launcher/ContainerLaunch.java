@@ -3763,13 +3763,6 @@ condition|)
 block|{
 comment|// If the process was killed, Send container_cleanedup_after_kill and
 comment|// just break out of this method.
-comment|// If Container was killed before starting... NO need to do this.
-if|if
-condition|(
-operator|!
-name|killedBeforeStart
-condition|)
-block|{
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -3795,7 +3788,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
