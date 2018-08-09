@@ -329,12 +329,12 @@ init|=
 literal|"arn:aws:iam::9878543210123:role/role-s3-restricted"
 decl_stmt|;
 comment|/** Deny GET requests to all buckets. */
-DECL|field|DENY_GET_ALL
+DECL|field|DENY_S3_GET_OBJECT
 specifier|public
 specifier|static
 specifier|final
 name|Statement
-name|DENY_GET_ALL
+name|DENY_S3_GET_OBJECT
 init|=
 name|statement
 argument_list|(
@@ -345,7 +345,23 @@ argument_list|,
 name|S3_GET_OBJECT
 argument_list|)
 decl_stmt|;
-comment|/**    * This is AWS policy removes read access.    */
+DECL|field|ALLOW_S3_GET_BUCKET_LOCATION
+specifier|public
+specifier|static
+specifier|final
+name|Statement
+name|ALLOW_S3_GET_BUCKET_LOCATION
+init|=
+name|statement
+argument_list|(
+literal|true
+argument_list|,
+name|S3_ALL_BUCKETS
+argument_list|,
+name|S3_GET_BUCKET_LOCATION
+argument_list|)
+decl_stmt|;
+comment|/**    * This is AWS policy removes read access from S3, leaves S3Guard access up.    * This will allow clients to use S3Guard list/HEAD operations, even    * the ability to write records, but not actually access the underlying    * data.    * The client does need {@link RolePolicies#S3_GET_BUCKET_LOCATION} to    * get the bucket location.    */
 DECL|field|RESTRICTED_POLICY
 specifier|public
 specifier|static
@@ -355,7 +371,11 @@ name|RESTRICTED_POLICY
 init|=
 name|policy
 argument_list|(
-name|DENY_GET_ALL
+name|DENY_S3_GET_OBJECT
+argument_list|,
+name|STATEMENT_ALL_DDB
+argument_list|,
+name|ALLOW_S3_GET_BUCKET_LOCATION
 argument_list|)
 decl_stmt|;
 comment|/**    * Error message to get from the AWS SDK if you can't assume the role.    */
@@ -601,7 +621,7 @@ name|set
 argument_list|(
 name|ASSUMED_ROLE_SESSION_NAME
 argument_list|,
-literal|"valid"
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -644,29 +664,17 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|AccessDeniedException
-name|ex
-init|=
+return|return
 name|intercept
 argument_list|(
 name|AccessDeniedException
 operator|.
 name|class
 argument_list|,
-name|eval
-argument_list|)
-decl_stmt|;
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
 name|contained
 argument_list|,
-name|ex
+name|eval
 argument_list|)
-expr_stmt|;
-return|return
-name|ex
 return|;
 block|}
 block|}

@@ -44,6 +44,18 @@ name|com
 operator|.
 name|amazonaws
 operator|.
+name|auth
+operator|.
+name|AWSCredentialsProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
 name|services
 operator|.
 name|s3
@@ -98,13 +110,21 @@ specifier|public
 interface|interface
 name|S3ClientFactory
 block|{
-comment|/**    * Creates a new {@link AmazonS3} client.    *    * @param name raw input S3A file system URI    * @return S3 client    * @throws IOException IO problem    */
-DECL|method|createS3Client (URI name)
+comment|/**    * Creates a new {@link AmazonS3} client.    *    * @param name raw input S3A file system URI    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @param credentialSet credentials to use    * @return S3 client    * @throws IOException IO problem    */
+DECL|method|createS3Client (URI name, final String bucket, final AWSCredentialsProvider credentialSet)
 name|AmazonS3
 name|createS3Client
 parameter_list|(
 name|URI
 name|name
+parameter_list|,
+specifier|final
+name|String
+name|bucket
+parameter_list|,
+specifier|final
+name|AWSCredentialsProvider
+name|credentialSet
 parameter_list|)
 throws|throws
 name|IOException

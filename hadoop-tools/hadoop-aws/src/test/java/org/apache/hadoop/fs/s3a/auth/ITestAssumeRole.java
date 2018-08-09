@@ -630,6 +630,22 @@ name|hadoop
 operator|.
 name|test
 operator|.
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
 name|LambdaTestUtils
 operator|.
 name|*
@@ -697,6 +713,36 @@ DECL|field|roleFS
 specifier|private
 name|S3AFileSystem
 name|roleFS
+decl_stmt|;
+comment|/**    * Duration range exception text on SDKs which check client-side.    */
+DECL|field|E_DURATION_RANGE_1
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|E_DURATION_RANGE_1
+init|=
+literal|"Assume Role session duration should be in the range of 15min - 1Hr"
+decl_stmt|;
+comment|/**    * Duration range too high text on SDKs which check on the server.    */
+DECL|field|E_DURATION_RANGE_2
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|E_DURATION_RANGE_2
+init|=
+literal|"Member must have value less than or equal to 43200"
+decl_stmt|;
+comment|/**    * Duration range too low text on SDKs which check on the server.    */
+DECL|field|E_DURATION_RANGE_3
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|E_DURATION_RANGE_3
+init|=
+literal|"Member must have value greater than or equal to 900"
 decl_stmt|;
 annotation|@
 name|Override
@@ -792,7 +838,7 @@ literal|""
 argument_list|)
 return|;
 block|}
-comment|/**    * Expect a filesystem to fail to instantiate.    * @param conf config to use    * @param clazz class of exception to expect    * @param text text in exception    * @param<E> type of exception as inferred from clazz    * @throws Exception if the exception was the wrong class    */
+comment|/**    * Expect a filesystem to fail to instantiate.    * @param conf config to use    * @param clazz class of exception to expect    * @param text text in exception    * @param<E> type of exception as inferred from clazz    * @return the caught exception if it was of the expected type and contents    * @throws Exception if the exception was the wrong class    */
 DECL|method|expectFileSystemCreateFailure ( Configuration conf, Class<E> clazz, String text)
 specifier|private
 parameter_list|<
@@ -800,7 +846,7 @@ name|E
 extends|extends
 name|Throwable
 parameter_list|>
-name|void
+name|E
 name|expectFileSystemCreateFailure
 parameter_list|(
 name|Configuration
@@ -818,6 +864,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+return|return
 name|interceptClosing
 argument_list|(
 name|clazz
@@ -841,7 +888,7 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Test
@@ -1394,6 +1441,193 @@ literal|"Member must satisfy regular expression pattern"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * A duration>1h is forbidden client-side in AWS SDK 1.11.271;    * with the ability to extend durations deployed in March 2018,    * duration checks will need to go server-side, and, presumably,    * later SDKs will remove the client side checks.    * This code exists to see when this happens.    */
+annotation|@
+name|Test
+DECL|method|testAssumeRoleThreeHourSessionDuration ()
+specifier|public
+name|void
+name|testAssumeRoleThreeHourSessionDuration
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|describe
+argument_list|(
+literal|"Try to authenticate with a long session duration"
+argument_list|)
+expr_stmt|;
+name|Configuration
+name|conf
+init|=
+name|createAssumedRoleConfig
+argument_list|()
+decl_stmt|;
+comment|// add a duration of three hours
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|ASSUMED_ROLE_SESSION_DURATION
+argument_list|,
+literal|3
+operator|*
+literal|60
+operator|*
+literal|60
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+operator|new
+name|Path
+argument_list|(
+name|getFileSystem
+argument_list|()
+operator|.
+name|getUri
+argument_list|()
+argument_list|)
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully created token of a duration>3h"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+name|E_DURATION_RANGE_1
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * A duration>1h is forbidden client-side in AWS SDK 1.11.271;    * with the ability to extend durations deployed in March 2018.    * with the later SDKs, the checks go server-side and    * later SDKs will remove the client side checks.    * This test asks for a duration which will still be rejected, and    * looks for either of the error messages raised.    */
+annotation|@
+name|Test
+DECL|method|testAssumeRoleThirtySixHourSessionDuration ()
+specifier|public
+name|void
+name|testAssumeRoleThirtySixHourSessionDuration
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|describe
+argument_list|(
+literal|"Try to authenticate with a long session duration"
+argument_list|)
+expr_stmt|;
+name|Configuration
+name|conf
+init|=
+name|createAssumedRoleConfig
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|ASSUMED_ROLE_SESSION_DURATION
+argument_list|,
+literal|36
+operator|*
+literal|60
+operator|*
+literal|60
+argument_list|)
+expr_stmt|;
+name|IOException
+name|ioe
+init|=
+name|expectFileSystemCreateFailure
+argument_list|(
+name|conf
+argument_list|,
+name|IOException
+operator|.
+name|class
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|assertIsRangeException
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Look for either the client-side or STS-side range exception    * @param e exception    * @throws Exception the exception, if its text doesn't match    */
+DECL|method|assertIsRangeException (final Exception e)
+specifier|private
+name|void
+name|assertIsRangeException
+parameter_list|(
+specifier|final
+name|Exception
+name|e
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|String
+name|message
+init|=
+name|e
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|message
+operator|.
+name|contains
+argument_list|(
+name|E_DURATION_RANGE_1
+argument_list|)
+operator|&&
+operator|!
+name|message
+operator|.
+name|contains
+argument_list|(
+name|E_DURATION_RANGE_2
+argument_list|)
+operator|&&
+operator|!
+name|message
+operator|.
+name|contains
+argument_list|(
+name|E_DURATION_RANGE_3
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 comment|/**    * Create the assumed role configuration.    * @return a config bonded to the ARN of the assumed role    */
 DECL|method|createAssumedRoleConfig ()
 specifier|public
@@ -1518,9 +1752,12 @@ argument_list|,
 literal|"30s"
 argument_list|)
 expr_stmt|;
+name|Exception
+name|ex
+init|=
 name|interceptClosing
 argument_list|(
-name|IllegalArgumentException
+name|Exception
 operator|.
 name|class
 argument_list|,
@@ -1535,6 +1772,11 @@ name|uri
 argument_list|,
 name|conf
 argument_list|)
+argument_list|)
+decl_stmt|;
+name|assertIsRangeException
+argument_list|(
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
@@ -1613,11 +1855,7 @@ name|fs
 operator|.
 name|getFileStatus
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-literal|"/"
-argument_list|)
+name|ROOT
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1644,9 +1882,11 @@ name|Exception
 block|{
 name|describe
 argument_list|(
-literal|"Restrict the policy for this session; verify that reads fail"
+literal|"Restrict the policy for this session; verify that reads fail."
 argument_list|)
 expr_stmt|;
+comment|// there's some special handling of S3Guard here as operations
+comment|// which only go to DDB don't fail the way S3 would reject them.
 name|Configuration
 name|conf
 init|=
@@ -1673,6 +1913,15 @@ name|getUri
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|boolean
+name|guarded
+init|=
+name|getFileSystem
+argument_list|()
+operator|.
+name|hasMetadataStore
+argument_list|()
+decl_stmt|;
 try|try
 init|(
 name|FileSystem
@@ -1686,6 +1935,15 @@ name|conf
 argument_list|)
 init|)
 block|{
+if|if
+condition|(
+operator|!
+name|guarded
+condition|)
+block|{
+comment|// when S3Guard is enabled, the restricted policy still
+comment|// permits S3Guard record lookup, so getFileStatus calls
+comment|// will work iff the record is in the database.
 name|forbidden
 argument_list|(
 literal|"getFileStatus"
@@ -1696,17 +1954,14 @@ name|fs
 operator|.
 name|getFileStatus
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-literal|"/"
-argument_list|)
+name|ROOT
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|forbidden
 argument_list|(
-literal|"getFileStatus"
+literal|""
 argument_list|,
 parameter_list|()
 lambda|->
@@ -1714,17 +1969,13 @@ name|fs
 operator|.
 name|listStatus
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-literal|"/"
-argument_list|)
+name|ROOT
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|forbidden
 argument_list|(
-literal|"getFileStatus"
+literal|""
 argument_list|,
 parameter_list|()
 lambda|->
@@ -1779,6 +2030,12 @@ name|S3_ALL_BUCKETS
 argument_list|,
 name|S3_GET_OBJECT_TORRENT
 argument_list|)
+argument_list|,
+name|ALLOW_S3_GET_BUCKET_LOCATION
+argument_list|,
+name|STATEMENT_S3GUARD_CLIENT
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1810,7 +2067,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * After blocking all write verbs used by S3A, try to write data (fail)    * and read data (succeed).    */
+comment|/**    * After blocking all write verbs used by S3A, try to write data (fail)    * and read data (succeed).    * For S3Guard: full DDB RW access is retained.    * SSE-KMS key access is set to decrypt only.    */
 annotation|@
 name|Test
 DECL|method|testReadOnlyOperations ()
@@ -1849,7 +2106,9 @@ argument_list|)
 argument_list|,
 name|STATEMENT_ALL_S3
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_READ
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2028,7 +2287,7 @@ name|bindRolePolicyStatements
 argument_list|(
 name|conf
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
 argument_list|,
 name|statement
 argument_list|(
@@ -2038,6 +2297,8 @@ name|S3_ALL_BUCKETS
 argument_list|,
 name|S3_ROOT_READ_OPERATIONS
 argument_list|)
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|,
 operator|new
 name|Statement
@@ -2254,7 +2515,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Execute a sequence of rename operations.    * @param conf FS configuration    */
+comment|/**    * Execute a sequence of rename operations with access locked down.    * @param conf FS configuration    */
 DECL|method|executeRestrictedRename (final Configuration conf)
 specifier|public
 name|void
@@ -2326,7 +2587,9 @@ name|bindRolePolicyStatements
 argument_list|(
 name|conf
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|,
 name|statement
 argument_list|(
@@ -2539,6 +2802,72 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Without simulation of STS failures, and with STS overload likely to    * be very rare, there'll be no implicit test coverage of    * {@link AssumedRoleCredentialProvider#operationRetried(String, Exception, int, boolean)}.    * This test simply invokes the callback for both the first and second retry event.    *    * If the handler ever adds more than logging, this test ensures that things    * don't break.    */
+annotation|@
+name|Test
+DECL|method|testAssumedRoleRetryHandler ()
+specifier|public
+name|void
+name|testAssumedRoleRetryHandler
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+try|try
+init|(
+name|AssumedRoleCredentialProvider
+name|provider
+init|=
+operator|new
+name|AssumedRoleCredentialProvider
+argument_list|(
+name|getFileSystem
+argument_list|()
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|createAssumedRoleConfig
+argument_list|()
+argument_list|)
+init|)
+block|{
+name|provider
+operator|.
+name|operationRetried
+argument_list|(
+literal|"retry"
+argument_list|,
+operator|new
+name|IOException
+argument_list|(
+literal|"failure"
+argument_list|)
+argument_list|,
+literal|0
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|provider
+operator|.
+name|operationRetried
+argument_list|(
+literal|"retry"
+argument_list|,
+operator|new
+name|IOException
+argument_list|(
+literal|"failure"
+argument_list|)
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Execute a sequence of rename operations where the source    * data is read only to the client calling rename().    * This will cause the inner delete() operations to fail, whose outcomes    * are explored.    * Multiple files are created (in parallel) for some renames, so exploring    * the outcome on bulk delete calls, including verifying that a    * MultiObjectDeleteException is translated to an AccessDeniedException.    *<ol>    *<li>The exception raised is AccessDeniedException,    *   from single and multi DELETE calls.</li>    *<li>It happens after the COPY. Not ideal, but, well, we can't pretend    *   it's a filesystem forever.</li>    *</ol>    * @param conf FS configuration    */
 DECL|method|executeRenameReadOnlyData (final Configuration conf)
 specifier|public
@@ -2631,7 +2960,7 @@ name|bindRolePolicyStatements
 argument_list|(
 name|conf
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
 argument_list|,
 name|statement
 argument_list|(
@@ -3035,7 +3364,9 @@ name|bindRolePolicyStatements
 argument_list|(
 name|conf
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|,
 name|statement
 argument_list|(
@@ -3710,7 +4041,9 @@ name|bindRolePolicyStatements
 argument_list|(
 name|conf
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|,
 name|statement
 argument_list|(

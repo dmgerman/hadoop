@@ -319,7 +319,9 @@ name|bindRolePolicyStatements
 argument_list|(
 name|conf
 argument_list|,
-name|STATEMENT_ALL_DDB
+name|STATEMENT_S3GUARD_CLIENT
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|,
 name|statement
 argument_list|(

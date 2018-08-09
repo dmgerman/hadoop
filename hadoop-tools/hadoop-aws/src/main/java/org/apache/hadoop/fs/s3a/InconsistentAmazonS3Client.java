@@ -731,6 +731,12 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|/**    * Instantiate.    * This subclasses a deprecated constructor of the parent    * {@code AmazonS3Client} class; we can't use the builder API because,    * that only creates the consistent client.    * @param credentials credentials to auth.    * @param clientConfiguration connection settings    * @param conf hadoop configuration.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|InconsistentAmazonS3Client (AWSCredentialsProvider credentials, ClientConfiguration clientConfiguration, Configuration conf)
 specifier|public
 name|InconsistentAmazonS3Client

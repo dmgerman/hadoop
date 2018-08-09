@@ -770,6 +770,31 @@ name|statements
 argument_list|)
 return|;
 block|}
+comment|/**    * From a set of statements, create a policy.    * @param statements statements    * @return the policy    */
+DECL|method|policy (final List<RoleModel.Statement> statements)
+specifier|public
+specifier|static
+name|Policy
+name|policy
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|RoleModel
+operator|.
+name|Statement
+argument_list|>
+name|statements
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Policy
+argument_list|(
+name|statements
+argument_list|)
+return|;
+block|}
 comment|/**    * Effect options.    */
 DECL|enum|Effects
 specifier|public

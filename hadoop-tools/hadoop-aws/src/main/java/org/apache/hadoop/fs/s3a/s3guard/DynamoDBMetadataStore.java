@@ -64,6 +64,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|AccessDeniedException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -173,6 +185,18 @@ operator|.
 name|amazonaws
 operator|.
 name|AmazonClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|auth
+operator|.
+name|AWSCredentialsProvider
 import|;
 end_import
 
@@ -674,6 +698,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|AWSCredentialProviderList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|Constants
 import|;
 end_import
@@ -798,6 +838,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|auth
+operator|.
+name|RolePolicies
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|retry
@@ -882,7 +940,7 @@ name|s3a
 operator|.
 name|S3AUtils
 operator|.
-name|translateException
+name|*
 import|;
 end_import
 
@@ -1084,6 +1142,11 @@ specifier|private
 name|DynamoDB
 name|dynamoDB
 decl_stmt|;
+DECL|field|credentials
+specifier|private
+name|AWSCredentialProviderList
+name|credentials
+decl_stmt|;
 DECL|field|region
 specifier|private
 name|String
@@ -1173,18 +1236,28 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-comment|/**    * A utility function to create DynamoDB instance.    * @param conf the file system configuration    * @param s3Region region of the associated S3 bucket (if any).    * @return DynamoDB instance.    * @throws IOException I/O error.    */
-DECL|method|createDynamoDB (Configuration conf, String s3Region)
+comment|/**    * A utility function to create DynamoDB instance.    * @param conf the file system configuration    * @param s3Region region of the associated S3 bucket (if any).    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @param credentials credentials.    * @return DynamoDB instance.    * @throws IOException I/O error.    */
+DECL|method|createDynamoDB ( final Configuration conf, final String s3Region, final String bucket, final AWSCredentialsProvider credentials)
 specifier|private
 specifier|static
 name|DynamoDB
 name|createDynamoDB
 parameter_list|(
+specifier|final
 name|Configuration
 name|conf
 parameter_list|,
+specifier|final
 name|String
 name|s3Region
+parameter_list|,
+specifier|final
+name|String
+name|bucket
+parameter_list|,
+specifier|final
+name|AWSCredentialsProvider
+name|credentials
 parameter_list|)
 throws|throws
 name|IOException
@@ -1245,6 +1318,10 @@ operator|.
 name|createDynamoDBClient
 argument_list|(
 name|s3Region
+argument_list|,
+name|bucket
+argument_list|,
+name|credentials
 argument_list|)
 decl_stmt|;
 return|return
@@ -1255,6 +1332,7 @@ name|dynamoDBClient
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}.    * The credentials for authenticating with S3 are requested from the    * FS via {@link S3AFileSystem#shareCredentials(String)}; this will    * increment the reference counter of these credentials.    * @param fs {@code S3AFileSystem} associated with the MetadataStore    * @throws IOException on a failure    */
 annotation|@
 name|Override
 annotation|@
@@ -1362,6 +1440,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+try|try
+block|{
 name|region
 operator|=
 name|owner
@@ -1369,6 +1449,55 @@ operator|.
 name|getBucketLocation
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessDeniedException
+name|e
+parameter_list|)
+block|{
+comment|// access denied here == can't call getBucket. Report meaningfully
+name|URI
+name|uri
+init|=
+name|owner
+operator|.
+name|getUri
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to get bucket location from S3 bucket {}"
+argument_list|,
+name|uri
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|(
+name|IOException
+operator|)
+operator|new
+name|AccessDeniedException
+argument_list|(
+literal|"S3 client role lacks permission "
+operator|+
+name|RolePolicies
+operator|.
+name|S3_GET_BUCKET_LOCATION
+operator|+
+literal|" for "
+operator|+
+name|uri
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|LOG
 operator|.
 name|debug
@@ -1386,6 +1515,15 @@ operator|.
 name|getUsername
 argument_list|()
 expr_stmt|;
+name|credentials
+operator|=
+name|owner
+operator|.
+name|shareCredentials
+argument_list|(
+literal|"s3guard"
+argument_list|)
+expr_stmt|;
 name|dynamoDB
 operator|=
 name|createDynamoDB
@@ -1393,6 +1531,10 @@ argument_list|(
 name|conf
 argument_list|,
 name|region
+argument_list|,
+name|bucket
+argument_list|,
+name|credentials
 argument_list|)
 expr_stmt|;
 comment|// use the bucket as the DynamoDB table name if not specified in config
@@ -1438,7 +1580,7 @@ name|initialized
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Performs one-time initialization of the metadata store via configuration.    *    * This initialization depends on the configuration object to get AWS    * credentials, DynamoDBFactory implementation class, DynamoDB endpoints,    * DynamoDB table names etc. After initialization, this metadata store does    * not explicitly relate to any S3 bucket, which be nonexistent.    *    * This is used to operate the metadata store directly beyond the scope of the    * S3AFileSystem integration, e.g. command line tools.    * Generally, callers should use {@link #initialize(FileSystem)}    * with an initialized {@code S3AFileSystem} instance.    *    * Without a filesystem to act as a reference point, the configuration itself    * must declare the table name and region in the    * {@link Constants#S3GUARD_DDB_TABLE_NAME_KEY} and    * {@link Constants#S3GUARD_DDB_REGION_KEY} respectively.    *    * @see #initialize(FileSystem)    * @throws IOException if there is an error    * @throws IllegalArgumentException if the configuration is incomplete    */
+comment|/**    * Performs one-time initialization of the metadata store via configuration.    *    * This initialization depends on the configuration object to get AWS    * credentials, DynamoDBFactory implementation class, DynamoDB endpoints,    * DynamoDB table names etc. After initialization, this metadata store does    * not explicitly relate to any S3 bucket, which be nonexistent.    *    * This is used to operate the metadata store directly beyond the scope of the    * S3AFileSystem integration, e.g. command line tools.    * Generally, callers should use {@link #initialize(FileSystem)}    * with an initialized {@code S3AFileSystem} instance.    *    * Without a filesystem to act as a reference point, the configuration itself    * must declare the table name and region in the    * {@link Constants#S3GUARD_DDB_TABLE_NAME_KEY} and    * {@link Constants#S3GUARD_DDB_REGION_KEY} respectively.    * It also creates a new credential provider list from the configuration,    * using the base fs.s3a.* options, as there is no bucket to infer per-bucket    * settings from.    *    * @see #initialize(FileSystem)    * @throws IOException if there is an error    * @throws IllegalArgumentException if the configuration is incomplete    */
 annotation|@
 name|Override
 annotation|@
@@ -1509,6 +1651,15 @@ argument_list|,
 literal|"No DynamoDB region configured"
 argument_list|)
 expr_stmt|;
+name|credentials
+operator|=
+name|createAWSCredentialProviderSet
+argument_list|(
+literal|null
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 name|dynamoDB
 operator|=
 name|createDynamoDB
@@ -1516,6 +1667,10 @@ argument_list|(
 name|conf
 argument_list|,
 name|region
+argument_list|,
+literal|null
+argument_list|,
+name|credentials
 argument_list|)
 expr_stmt|;
 name|username
@@ -3661,6 +3816,8 @@ name|storeClosed
 argument_list|()
 expr_stmt|;
 block|}
+try|try
+block|{
 if|if
 condition|(
 name|dynamoDB
@@ -3683,6 +3840,21 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 name|dynamoDB
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|closeAutocloseables
+argument_list|(
+name|LOG
+argument_list|,
+name|credentials
+argument_list|)
+expr_stmt|;
+name|credentials
 operator|=
 literal|null
 expr_stmt|;

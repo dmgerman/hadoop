@@ -78,6 +78,16 @@ name|com
 operator|.
 name|amazonaws
 operator|.
+name|AmazonClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
 name|auth
 operator|.
 name|AWSCredentials
@@ -105,6 +115,20 @@ operator|.
 name|auth
 operator|.
 name|STSAssumeRoleSessionCredentialsProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|securitytoken
+operator|.
+name|AWSSecurityTokenServiceClientBuilder
 import|;
 end_import
 
@@ -227,6 +251,54 @@ operator|.
 name|s3a
 operator|.
 name|AWSCredentialProviderList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Invoker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ARetryPolicy
 import|;
 end_import
 
@@ -406,13 +478,25 @@ specifier|final
 name|String
 name|arn
 decl_stmt|;
-comment|/**    * Instantiate.    * This calls {@link #getCredentials()} to fail fast on the inner    * role credential retrieval.    * @param uri URI of endpoint.    * @param conf configuration    * @throws IOException on IO problems and some parameter checking    * @throws IllegalArgumentException invalid parameters    * @throws AWSSecurityTokenServiceException problems getting credentials    */
-DECL|method|AssumedRoleCredentialProvider (URI uri, Configuration conf)
+DECL|field|credentialsToSTS
+specifier|private
+specifier|final
+name|AWSCredentialProviderList
+name|credentialsToSTS
+decl_stmt|;
+DECL|field|invoker
+specifier|private
+specifier|final
+name|Invoker
+name|invoker
+decl_stmt|;
+comment|/**    * Instantiate.    * This calls {@link #getCredentials()} to fail fast on the inner    * role credential retrieval.    * @param fsUri URI of the filesystem.    * @param conf configuration    * @throws IOException on IO problems and some parameter checking    * @throws IllegalArgumentException invalid parameters    * @throws AWSSecurityTokenServiceException problems getting credentials    */
+DECL|method|AssumedRoleCredentialProvider (URI fsUri, Configuration conf)
 specifier|public
 name|AssumedRoleCredentialProvider
 parameter_list|(
 name|URI
-name|uri
+name|fsUri
 parameter_list|,
 name|Configuration
 name|conf
@@ -468,13 +552,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|AWSCredentialProviderList
-name|credentials
-init|=
+name|credentialsToSTS
+operator|=
 operator|new
 name|AWSCredentialProviderList
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 for|for
 control|(
 name|Class
@@ -507,7 +590,7 @@ name|E_FORBIDDEN_PROVIDER
 argument_list|)
 throw|;
 block|}
-name|credentials
+name|credentialsToSTS
 operator|.
 name|add
 argument_list|(
@@ -517,11 +600,20 @@ name|conf
 argument_list|,
 name|aClass
 argument_list|,
-name|uri
+name|fsUri
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Credentials to obtain role credentials: {}"
+argument_list|,
+name|credentialsToSTS
+argument_list|)
+expr_stmt|;
 comment|// then the STS binding
 name|sessionName
 operator|=
@@ -624,7 +716,7 @@ argument_list|)
 expr_stmt|;
 block|}
 name|String
-name|epr
+name|endpoint
 init|=
 name|conf
 operator|.
@@ -635,55 +727,76 @@ argument_list|,
 literal|""
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|StringUtils
+name|String
+name|region
+init|=
+name|conf
 operator|.
-name|isNotEmpty
+name|get
 argument_list|(
-name|epr
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"STS Endpoint: {}"
+name|ASSUMED_ROLE_STS_ENDPOINT_REGION
 argument_list|,
-name|epr
+name|ASSUMED_ROLE_STS_ENDPOINT_REGION_DEFAULT
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+name|AWSSecurityTokenServiceClientBuilder
+name|stsbuilder
+init|=
+name|STSClientFactory
+operator|.
+name|builder
+argument_list|(
+name|conf
+argument_list|,
+name|fsUri
+operator|.
+name|getHost
+argument_list|()
+argument_list|,
+name|credentialsToSTS
+argument_list|,
+name|endpoint
+argument_list|,
+name|region
+argument_list|)
+decl_stmt|;
+comment|// the STS client is not tracked for a shutdown in close(), because it
+comment|// (currently) throws an UnsupportedOperationException in shutdown().
 name|builder
 operator|.
-name|withServiceEndpoint
+name|withStsClient
 argument_list|(
-name|epr
-argument_list|)
-expr_stmt|;
-block|}
-name|LOG
+name|stsbuilder
 operator|.
-name|debug
-argument_list|(
-literal|"Credentials to obtain role credentials: {}"
-argument_list|,
-name|credentials
+name|build
+argument_list|()
 argument_list|)
 expr_stmt|;
-name|builder
-operator|.
-name|withLongLivedCredentialsProvider
-argument_list|(
-name|credentials
-argument_list|)
-expr_stmt|;
+comment|//now build the provider
 name|stsProvider
 operator|=
 name|builder
 operator|.
 name|build
 argument_list|()
+expr_stmt|;
+comment|// to handle STS throttling by the AWS account, we
+comment|// need to retry
+name|invoker
+operator|=
+operator|new
+name|Invoker
+argument_list|(
+operator|new
+name|S3ARetryPolicy
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|this
+operator|::
+name|operationRetried
+argument_list|)
 expr_stmt|;
 comment|// and force in a fail-fast check just to keep the stack traces less
 comment|// convoluted
@@ -703,11 +816,41 @@ block|{
 try|try
 block|{
 return|return
-name|stsProvider
+name|invoker
 operator|.
+name|retryUntranslated
+argument_list|(
+literal|"getCredentials"
+argument_list|,
+literal|true
+argument_list|,
+name|stsProvider
+operator|::
 name|getCredentials
-argument_list|()
+argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// this is in the signature of retryUntranslated;
+comment|// its hard to see how this could be raised, but for
+comment|// completeness, it is wrapped as an Amazon Client Exception
+comment|// and rethrown.
+throw|throw
+operator|new
+name|AmazonClientException
+argument_list|(
+literal|"getCredentials failed: "
+operator|+
+name|e
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
 catch|catch
 parameter_list|(
@@ -754,10 +897,16 @@ name|void
 name|close
 parameter_list|()
 block|{
-name|stsProvider
+name|S3AUtils
 operator|.
-name|close
-argument_list|()
+name|closeAutocloseables
+argument_list|(
+name|LOG
+argument_list|,
+name|stsProvider
+argument_list|,
+name|credentialsToSTS
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -942,6 +1091,46 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+comment|/**    * Callback from {@link Invoker} when an operation is retried.    * @param text text of the operation    * @param ex exception    * @param retries number of retries    * @param idempotent is the method idempotent    */
+DECL|method|operationRetried ( String text, Exception ex, int retries, boolean idempotent)
+specifier|public
+name|void
+name|operationRetried
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|Exception
+name|ex
+parameter_list|,
+name|int
+name|retries
+parameter_list|,
+name|boolean
+name|idempotent
+parameter_list|)
+block|{
+if|if
+condition|(
+name|retries
+operator|==
+literal|0
+condition|)
+block|{
+comment|// log on the first retry attempt of the credential access.
+comment|// At worst, this means one log entry every intermittent renewal
+comment|// time.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Retried {}"
+argument_list|,
+name|text
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

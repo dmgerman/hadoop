@@ -208,7 +208,7 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|DefaultS3ClientFactory
+name|S3AUtils
 import|;
 end_import
 
@@ -227,24 +227,6 @@ operator|.
 name|Constants
 operator|.
 name|S3GUARD_DDB_REGION_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|S3AUtils
-operator|.
-name|createAWSCredentialProviderSet
 import|;
 end_import
 
@@ -277,13 +259,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Create a DynamoDB client object from configuration.    *    * The DynamoDB client to create does not have to relate to any S3 buckets.    * All information needed to create a DynamoDB client is from the hadoop    * configuration. Specially, if the region is not configured, it will use the    * provided region parameter. If region is neither configured nor provided,    * it will indicate an error.    *    * @param defaultRegion the default region of the AmazonDynamoDB client    * @return a new DynamoDB client    * @throws IOException if any IO error happens    */
-DECL|method|createDynamoDBClient (String defaultRegion)
+comment|/**    * Create a DynamoDB client object from configuration.    *    * The DynamoDB client to create does not have to relate to any S3 buckets.    * All information needed to create a DynamoDB client is from the hadoop    * configuration. Specially, if the region is not configured, it will use the    * provided region parameter. If region is neither configured nor provided,    * it will indicate an error.    *    * @param defaultRegion the default region of the AmazonDynamoDB client    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @param credentials credentials to use for authentication.    * @return a new DynamoDB client    * @throws IOException if any IO error happens    */
+DECL|method|createDynamoDBClient (final String defaultRegion, final String bucket, final AWSCredentialsProvider credentials)
 name|AmazonDynamoDB
 name|createDynamoDBClient
 parameter_list|(
+specifier|final
 name|String
 name|defaultRegion
+parameter_list|,
+specifier|final
+name|String
+name|bucket
+parameter_list|,
+specifier|final
+name|AWSCredentialsProvider
+name|credentials
 parameter_list|)
 throws|throws
 name|IOException
@@ -299,13 +290,21 @@ name|DynamoDBClientFactory
 block|{
 annotation|@
 name|Override
-DECL|method|createDynamoDBClient (String defaultRegion)
+DECL|method|createDynamoDBClient (String defaultRegion, final String bucket, final AWSCredentialsProvider credentials)
 specifier|public
 name|AmazonDynamoDB
 name|createDynamoDBClient
 parameter_list|(
 name|String
 name|defaultRegion
+parameter_list|,
+specifier|final
+name|String
+name|bucket
+parameter_list|,
+specifier|final
+name|AWSCredentialsProvider
+name|credentials
 parameter_list|)
 throws|throws
 name|IOException
@@ -328,25 +327,16 @@ name|getConf
 argument_list|()
 decl_stmt|;
 specifier|final
-name|AWSCredentialsProvider
-name|credentials
-init|=
-name|createAWSCredentialProviderSet
-argument_list|(
-literal|null
-argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
-specifier|final
 name|ClientConfiguration
 name|awsConf
 init|=
-name|DefaultS3ClientFactory
+name|S3AUtils
 operator|.
 name|createAwsConf
 argument_list|(
 name|conf
+argument_list|,
+name|bucket
 argument_list|)
 decl_stmt|;
 specifier|final

@@ -83,7 +83,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * S3 Client factory used for testing with eventual consistency fault injection.  */
+comment|/**  * S3 Client factory used for testing with eventual consistency fault injection.  * This client is for testing<i>only</i>; it is in the production  * {@code hadoop-aws} module to enable integration tests to use this  * just by editing the Hadoop configuration used to bring up the client.  */
 end_comment
 
 begin_class
@@ -102,6 +102,7 @@ name|InconsistentS3ClientFactory
 extends|extends
 name|DefaultS3ClientFactory
 block|{
+comment|/**    * Create the inconsistent client.    * Logs a warning that this is being done.    * @param credentials credentials to use    * @param awsConf  AWS configuration    * @return an inconsistent client.    */
 annotation|@
 name|Override
 DECL|method|newAmazonS3Client (AWSCredentialsProvider credentials, ClientConfiguration awsConf)

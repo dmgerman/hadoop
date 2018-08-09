@@ -174,7 +174,7 @@ name|ASSUMED_ROLE_SESSION_DURATION
 init|=
 literal|"fs.s3a.assumed.role.session.duration"
 decl_stmt|;
-comment|/** Simple Token Service Endpoint. If unset, uses the default endpoint. */
+comment|/** Security Token Service Endpoint. If unset, uses the default endpoint. */
 DECL|field|ASSUMED_ROLE_STS_ENDPOINT
 specifier|public
 specifier|static
@@ -184,6 +184,27 @@ name|ASSUMED_ROLE_STS_ENDPOINT
 init|=
 literal|"fs.s3a.assumed.role.sts.endpoint"
 decl_stmt|;
+comment|/**    * Region for the STS endpoint; only relevant if the endpoint    * is set.    */
+DECL|field|ASSUMED_ROLE_STS_ENDPOINT_REGION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_STS_ENDPOINT_REGION
+init|=
+literal|"fs.s3a.assumed.role.sts.endpoint.region"
+decl_stmt|;
+comment|/**    * Default value for the STS endpoint region; needed for    * v4 signing.    */
+DECL|field|ASSUMED_ROLE_STS_ENDPOINT_REGION_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_STS_ENDPOINT_REGION_DEFAULT
+init|=
+literal|"us-west-1"
+decl_stmt|;
+comment|/**    * Default duration of an assumed role.    */
 DECL|field|ASSUMED_ROLE_SESSION_DURATION_DEFAULT
 specifier|public
 specifier|static

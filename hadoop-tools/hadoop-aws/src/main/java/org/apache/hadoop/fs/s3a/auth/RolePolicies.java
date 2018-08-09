@@ -56,6 +56,124 @@ specifier|private
 name|RolePolicies
 parameter_list|()
 block|{   }
+comment|/** All KMS operations: {@value}.*/
+DECL|field|KMS_ALL_OPERATIONS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_ALL_OPERATIONS
+init|=
+literal|"kms:*"
+decl_stmt|;
+comment|/** KMS encryption. This is<i>Not</i> used by SSE-KMS: {@value}. */
+DECL|field|KMS_ENCRYPT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_ENCRYPT
+init|=
+literal|"kms:Encrypt"
+decl_stmt|;
+comment|/**    * Decrypt data encrypted with SSE-KMS: {@value}.    */
+DECL|field|KMS_DECRYPT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_DECRYPT
+init|=
+literal|"kms:Decrypt"
+decl_stmt|;
+comment|/**    * Arn for all KMS keys: {@value}.    */
+DECL|field|KMS_ALL_KEYS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_ALL_KEYS
+init|=
+literal|"arn:aws:kms:*"
+decl_stmt|;
+comment|/**    * This is used by S3 to generate a per-object encryption key and    * the encrypted value of this, the latter being what it tags    * the object with for later decryption: {@value}.    */
+DECL|field|KMS_GENERATE_DATA_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_GENERATE_DATA_KEY
+init|=
+literal|"kms:GenerateDataKey"
+decl_stmt|;
+comment|/**    * Actions needed to read and write SSE-KMS data.    */
+DECL|field|KMS_KEY_RW
+specifier|private
+specifier|static
+specifier|final
+name|String
+index|[]
+name|KMS_KEY_RW
+init|=
+operator|new
+name|String
+index|[]
+block|{
+name|KMS_DECRYPT
+block|,
+name|KMS_GENERATE_DATA_KEY
+block|}
+decl_stmt|;
+comment|/**    * Actions needed to read SSE-KMS data.    */
+DECL|field|KMS_KEY_READ
+specifier|private
+specifier|static
+specifier|final
+name|String
+index|[]
+name|KMS_KEY_READ
+init|=
+operator|new
+name|String
+index|[]
+block|{
+name|KMS_DECRYPT
+block|}
+decl_stmt|;
+comment|/**    * Statement to allow KMS R/W access access, so full use of    * SSE-KMS.    */
+DECL|field|STATEMENT_ALLOW_SSE_KMS_RW
+specifier|public
+specifier|static
+specifier|final
+name|Statement
+name|STATEMENT_ALLOW_SSE_KMS_RW
+init|=
+name|statement
+argument_list|(
+literal|true
+argument_list|,
+name|KMS_ALL_KEYS
+argument_list|,
+name|KMS_KEY_RW
+argument_list|)
+decl_stmt|;
+comment|/**    * Statement to allow read access to KMS keys, so the ability    * to read SSE-KMS data,, but not decrypt it.    */
+DECL|field|STATEMENT_ALLOW_SSE_KMS_READ
+specifier|public
+specifier|static
+specifier|final
+name|Statement
+name|STATEMENT_ALLOW_SSE_KMS_READ
+init|=
+name|statement
+argument_list|(
+literal|true
+argument_list|,
+name|KMS_ALL_KEYS
+argument_list|,
+name|KMS_KEY_READ
+argument_list|)
+decl_stmt|;
 comment|/**    * All S3 operations: {@value}.    */
 DECL|field|S3_ALL_OPERATIONS
 specifier|public
@@ -234,6 +352,15 @@ name|S3_GET_OBJECT_VERSION
 init|=
 literal|"s3:GetObjectVersion"
 decl_stmt|;
+DECL|field|S3_GET_BUCKET_LOCATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3_GET_BUCKET_LOCATION
+init|=
+literal|"s3:GetBucketLocation"
+decl_stmt|;
 DECL|field|S3_GET_OBJECT_VERSION_ACL
 specifier|public
 specifier|static
@@ -325,7 +452,7 @@ name|S3_RESTORE_OBJECT
 init|=
 literal|"s3:RestoreObject"
 decl_stmt|;
-comment|/**    * Actions needed to read data from S3 through S3A.    */
+comment|/**    * Actions needed to read a file in S3 through S3A, excluding    * S3Guard and SSE-KMS.    */
 DECL|field|S3_PATH_READ_OPERATIONS
 specifier|public
 specifier|static
@@ -341,7 +468,7 @@ block|{
 name|S3_GET_OBJECT
 block|,       }
 decl_stmt|;
-comment|/**    * Actions needed to read data from S3 through S3A.    */
+comment|/**    * Base actions needed to read data from S3 through S3A,    * excluding SSE-KMS data and S3Guard-ed buckets.    */
 DECL|field|S3_ROOT_READ_OPERATIONS
 specifier|public
 specifier|static
@@ -358,10 +485,10 @@ name|S3_LIST_BUCKET
 block|,
 name|S3_LIST_BUCKET_MULTPART_UPLOADS
 block|,
-name|S3_GET_OBJECT
+name|S3_ALL_GET
 block|,       }
 decl_stmt|;
-comment|/**    * Actions needed to write data to an S3A Path.    * This includes the appropriate read operations.    */
+comment|/**    * Actions needed to write data to an S3A Path.    * This includes the appropriate read operations, but    * not SSE-KMS or S3Guard support.    */
 DECL|field|S3_PATH_RW_OPERATIONS
 specifier|public
 specifier|static
@@ -385,7 +512,7 @@ block|,
 name|S3_LIST_MULTIPART_UPLOAD_PARTS
 block|,       }
 decl_stmt|;
-comment|/**    * Actions needed to write data to an S3A Path.    * This is purely the extra operations needed for writing atop    * of the read operation set.    * Deny these and a path is still readable, but not writeable.    */
+comment|/**    * Actions needed to write data to an S3A Path.    * This is purely the extra operations needed for writing atop    * of the read operation set.    * Deny these and a path is still readable, but not writeable.    * Excludes: SSE-KMS and S3Guard permissions.    */
 DECL|field|S3_PATH_WRITE_OPERATIONS
 specifier|public
 specifier|static
@@ -405,7 +532,7 @@ block|,
 name|S3_ABORT_MULTIPART_UPLOAD
 block|}
 decl_stmt|;
-comment|/**    * Actions needed for R/W IO from the root of a bucket.    */
+comment|/**    * Actions needed for R/W IO from the root of a bucket.    * Excludes: SSE-KMS and S3Guard permissions.    */
 DECL|field|S3_ROOT_RW_OPERATIONS
 specifier|public
 specifier|static
@@ -443,6 +570,7 @@ name|DDB_ALL_OPERATIONS
 init|=
 literal|"dynamodb:*"
 decl_stmt|;
+comment|/**    * Operations needed for DDB/S3Guard Admin.    * For now: make this {@link #DDB_ALL_OPERATIONS}.    */
 DECL|field|DDB_ADMIN
 specifier|public
 specifier|static
@@ -450,14 +578,85 @@ specifier|final
 name|String
 name|DDB_ADMIN
 init|=
-literal|"dynamodb:*"
+name|DDB_ALL_OPERATIONS
 decl_stmt|;
-DECL|field|DDB_BATCH_WRITE
+comment|/**    * Permission for DDB describeTable() operation: {@value}.    * This is used during initialization.    */
+DECL|field|DDB_DESCRIBE_TABLE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DDB_BATCH_WRITE
+name|DDB_DESCRIBE_TABLE
+init|=
+literal|"dynamodb:DescribeTable"
+decl_stmt|;
+comment|/**    * Permission to query the DDB table: {@value}.    */
+DECL|field|DDB_QUERY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_QUERY
+init|=
+literal|"dynamodb:Query"
+decl_stmt|;
+comment|/**    * Permission for DDB operation to get a record: {@value}.    */
+DECL|field|DDB_GET_ITEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_GET_ITEM
+init|=
+literal|"dynamodb:GetItem"
+decl_stmt|;
+comment|/**    * Permission for DDB write record operation: {@value}.    */
+DECL|field|DDB_PUT_ITEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_PUT_ITEM
+init|=
+literal|"dynamodb:PutItem"
+decl_stmt|;
+comment|/**    * Permission for DDB update single item operation: {@value}.    */
+DECL|field|DDB_UPDATE_ITEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_UPDATE_ITEM
+init|=
+literal|"dynamodb:UpdateItem"
+decl_stmt|;
+comment|/**    * Permission for DDB delete operation: {@value}.    */
+DECL|field|DDB_DELETE_ITEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_DELETE_ITEM
+init|=
+literal|"dynamodb:DeleteItem"
+decl_stmt|;
+comment|/**    * Permission for DDB operation: {@value}.    */
+DECL|field|DDB_BATCH_GET_ITEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_BATCH_GET_ITEM
+init|=
+literal|"dynamodb:BatchGetItem"
+decl_stmt|;
+comment|/**    * Batch write permission for DDB: {@value}.    */
+DECL|field|DDB_BATCH_WRITE_ITEM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DDB_BATCH_WRITE_ITEM
 init|=
 literal|"dynamodb:BatchWriteItem"
 decl_stmt|;
@@ -469,33 +668,7 @@ specifier|final
 name|String
 name|ALL_DDB_TABLES
 init|=
-literal|"arn:aws:dynamodb:::*"
-decl_stmt|;
-DECL|field|WILDCARD
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|WILDCARD
-init|=
-literal|"*"
-decl_stmt|;
-comment|/**    * Allow all S3 Operations.    */
-DECL|field|STATEMENT_ALL_S3
-specifier|public
-specifier|static
-specifier|final
-name|Statement
-name|STATEMENT_ALL_S3
-init|=
-name|statement
-argument_list|(
-literal|true
-argument_list|,
-name|S3_ALL_BUCKETS
-argument_list|,
-name|S3_ALL_OPERATIONS
-argument_list|)
+literal|"arn:aws:dynamodb:*"
 decl_stmt|;
 comment|/**    * Statement to allow all DDB access.    */
 DECL|field|STATEMENT_ALL_DDB
@@ -514,7 +687,55 @@ argument_list|,
 name|DDB_ALL_OPERATIONS
 argument_list|)
 decl_stmt|;
-comment|/**    * Allow all S3 and S3Guard operations.    */
+comment|/**    * Statement to allow all client operations needed for S3Guard,    * but none of the admin operations.    */
+DECL|field|STATEMENT_S3GUARD_CLIENT
+specifier|public
+specifier|static
+specifier|final
+name|Statement
+name|STATEMENT_S3GUARD_CLIENT
+init|=
+name|statement
+argument_list|(
+literal|true
+argument_list|,
+name|ALL_DDB_TABLES
+argument_list|,
+name|DDB_BATCH_GET_ITEM
+argument_list|,
+name|DDB_BATCH_WRITE_ITEM
+argument_list|,
+name|DDB_DELETE_ITEM
+argument_list|,
+name|DDB_DESCRIBE_TABLE
+argument_list|,
+name|DDB_GET_ITEM
+argument_list|,
+name|DDB_PUT_ITEM
+argument_list|,
+name|DDB_QUERY
+argument_list|,
+name|DDB_UPDATE_ITEM
+argument_list|)
+decl_stmt|;
+comment|/**    * Allow all S3 Operations.    * This does not cover DDB or S3-KMS    */
+DECL|field|STATEMENT_ALL_S3
+specifier|public
+specifier|static
+specifier|final
+name|Statement
+name|STATEMENT_ALL_S3
+init|=
+name|statement
+argument_list|(
+literal|true
+argument_list|,
+name|S3_ALL_BUCKETS
+argument_list|,
+name|S3_ALL_OPERATIONS
+argument_list|)
+decl_stmt|;
+comment|/**    * Policy for all S3 and S3Guard operations, and SSE-KMS.    */
 DECL|field|ALLOW_S3_AND_SGUARD
 specifier|public
 specifier|static
@@ -527,6 +748,8 @@ argument_list|(
 name|STATEMENT_ALL_S3
 argument_list|,
 name|STATEMENT_ALL_DDB
+argument_list|,
+name|STATEMENT_ALLOW_SSE_KMS_RW
 argument_list|)
 decl_stmt|;
 block|}
