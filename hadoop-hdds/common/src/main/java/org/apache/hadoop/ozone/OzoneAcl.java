@@ -27,7 +27,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OzoneACL classes define bucket ACLs used in OZONE.  *  * ACLs in Ozone follow this pattern.  * â¢ user:name:rw  * â¢ group:name:rw  * â¢ world::rw  */
+comment|/**  * OzoneACL classes define bucket ACLs used in OZONE.  *  * ACLs in Ozone follow this pattern.  *<ul>  *<li>user:name:rw  *<li>group:name:rw  *<li>world::rw  *</ul>  */
 end_comment
 
 begin_class
