@@ -10622,8 +10622,22 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|isLogAggregationEnabled ()
+specifier|public
+name|boolean
+name|isLogAggregationEnabled
+parameter_list|()
+block|{
+return|return
+name|logAggregationEnabled
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|isLogAggregationFinished ()
-specifier|private
+specifier|public
 name|boolean
 name|isLogAggregationFinished
 parameter_list|()

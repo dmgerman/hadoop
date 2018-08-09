@@ -682,6 +682,16 @@ name|int
 name|getMaxAppAttempts
 parameter_list|()
 function_decl|;
+DECL|method|isLogAggregationEnabled ()
+name|boolean
+name|isLogAggregationEnabled
+parameter_list|()
+function_decl|;
+DECL|method|isLogAggregationFinished ()
+name|boolean
+name|isLogAggregationFinished
+parameter_list|()
+function_decl|;
 comment|/**    * Returns the application type    * @return the application type.    */
 DECL|method|getApplicationType ()
 name|String

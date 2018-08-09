@@ -998,6 +998,38 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|isLogAggregationEnabled ()
+specifier|public
+name|boolean
+name|isLogAggregationEnabled
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLogAggregationFinished ()
+specifier|public
+name|boolean
+name|isLogAggregationFinished
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|createAndGetApplicationReport ( String clientUserName,boolean allowAccess)
 specifier|public
 name|ApplicationReport

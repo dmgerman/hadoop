@@ -671,6 +671,16 @@ name|applicationTags
 init|=
 literal|null
 decl_stmt|;
+DECL|field|logAggregationEnabled
+specifier|private
+name|boolean
+name|logAggregationEnabled
+decl_stmt|;
+DECL|field|logAggregationFinished
+specifier|private
+name|boolean
+name|logAggregationFinished
+decl_stmt|;
 DECL|method|MockRMApp (int newid, long time, RMAppState newState)
 specifier|public
 name|MockRMApp
@@ -1301,6 +1311,62 @@ block|{
 return|return
 name|maxAppAttempts
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLogAggregationEnabled ()
+specifier|public
+name|boolean
+name|isLogAggregationEnabled
+parameter_list|()
+block|{
+return|return
+name|logAggregationEnabled
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLogAggregationFinished ()
+specifier|public
+name|boolean
+name|isLogAggregationFinished
+parameter_list|()
+block|{
+return|return
+name|logAggregationFinished
+return|;
+block|}
+DECL|method|setLogAggregationEnabled (boolean enabled)
+specifier|public
+name|void
+name|setLogAggregationEnabled
+parameter_list|(
+name|boolean
+name|enabled
+parameter_list|)
+block|{
+name|this
+operator|.
+name|logAggregationEnabled
+operator|=
+name|enabled
+expr_stmt|;
+block|}
+DECL|method|setLogAggregationFinished (boolean finished)
+specifier|public
+name|void
+name|setLogAggregationFinished
+parameter_list|(
+name|boolean
+name|finished
+parameter_list|)
+block|{
+name|this
+operator|.
+name|logAggregationFinished
+operator|=
+name|finished
+expr_stmt|;
 block|}
 DECL|method|setNumMaxRetries (int maxAppAttempts)
 specifier|public
