@@ -460,6 +460,9 @@ operator|+
 literal|"queue="
 operator|+
 name|queue
+operator|.
+name|getQueueName
+argument_list|()
 operator|+
 literal|", updatedEntitlementsByPartition="
 operator|+

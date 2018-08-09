@@ -42,13 +42,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -56,13 +52,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -348,12 +340,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|QueueManagementDynamicEditPolicy
 operator|.
@@ -513,7 +505,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Queue Management Policy monitor:"
+literal|"Queue Management Policy monitor: {}"
 operator|+
 name|this
 operator|.
@@ -891,36 +883,6 @@ literal|0
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Trying to use {0} to compute preemption "
-operator|+
-literal|"candidates"
-argument_list|,
-name|policyClazz
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|startTime
 operator|=
 name|clock
@@ -928,7 +890,6 @@ operator|.
 name|getTime
 argument_list|()
 expr_stmt|;
-block|}
 name|queueManagementChanges
 operator|=
 name|policyClazz
@@ -987,11 +948,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"{0} uses {1} millisecond"
+literal|"{} uses {} millisecond"
 operator|+
 literal|" to run"
 argument_list|,
@@ -1010,7 +967,6 @@ argument_list|()
 operator|-
 name|startTime
 argument_list|)
-argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -1026,23 +982,33 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|" Updated queue management updates for parent queue"
+literal|" Updated queue management changes for parent queue"
 operator|+
-literal|" ["
+literal|" "
 operator|+
+literal|"{}: [{}]"
+argument_list|,
 name|parentQueue
 operator|.
 name|getQueueName
 argument_list|()
-operator|+
-literal|": [\n"
-operator|+
+argument_list|,
+name|queueManagementChanges
+operator|.
+name|size
+argument_list|()
+operator|<
+literal|25
+condition|?
 name|queueManagementChanges
 operator|.
 name|toString
 argument_list|()
-operator|+
-literal|"\n]"
+else|:
+name|queueManagementChanges
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1095,7 +1061,7 @@ argument_list|()
 operator|+
 literal|" "
 operator|+
-literal|"since configuration for  auto creating queue's beyond "
+literal|"since configuration for auto creating queues beyond "
 operator|+
 literal|"parent's "
 operator|+

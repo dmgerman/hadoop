@@ -159,6 +159,28 @@ return|return
 name|leafQueueConfigs
 return|;
 block|}
+DECL|method|toString ()
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"AutoCreatedLeafQueueConfig{"
+operator|+
+literal|"queueCapacities="
+operator|+
+name|queueCapacities
+operator|+
+literal|", leafQueueConfigs="
+operator|+
+name|leafQueueConfigs
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 

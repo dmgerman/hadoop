@@ -46,11 +46,19 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|hadoop
 operator|.
-name|logging
+name|yarn
 operator|.
-name|Log
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|QueueManagementDynamicEditPolicy
 import|;
 end_import
 
@@ -58,13 +66,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|logging
+name|slf4j
 operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -594,12 +608,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|GuaranteedOrZeroCapacityOverTimePolicy
 operator|.
@@ -1759,6 +1773,56 @@ argument_list|,
 name|leafQueueEntitlements
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|deactivatedLeafQueues
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Parent queue = {},  "
+operator|+
+literal|", nodeLabel = {}, deactivated leaf queues = [{}] "
+argument_list|,
+name|managedParentQueue
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|,
+name|nodeLabel
+argument_list|,
+name|deactivatedLeafQueues
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|25
+condition|?
+name|deactivatedLeafQueues
+operator|.
+name|size
+argument_list|()
+else|:
+name|deactivatedLeafQueues
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|float
 name|deactivatedCapacity
 init|=
@@ -1803,7 +1867,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Parent queue : "
+literal|"Parent queue = "
 operator|+
 name|managedParentQueue
 operator|.
@@ -1881,7 +1945,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found "
+literal|"Parent queue = "
+operator|+
+name|managedParentQueue
+operator|.
+name|getQueueName
+argument_list|()
+operator|+
+literal|" : Found "
 operator|+
 name|maxLeafQueuesTobeActivated
 operator|+
@@ -1951,11 +2022,21 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Activated leaf queues : ["
-operator|+
+literal|"Activated leaf queues : [{}]"
+argument_list|,
 name|leafQueuesToBeActivated
-operator|+
-literal|"]"
+operator|.
+name|size
+argument_list|()
+operator|<
+literal|25
+condition|?
+name|leafQueuesToBeActivated
+else|:
+name|leafQueuesToBeActivated
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2338,7 +2419,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removed partition "
+name|managedParentQueue
+operator|.
+name|getQueueName
+argument_list|()
+operator|+
+literal|" : Removed partition "
 operator|+
 name|partition
 operator|+
@@ -2424,11 +2510,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removed queue "
+name|managedParentQueue
+operator|.
+name|getQueueName
+argument_list|()
+operator|+
+literal|" : Removed queue"
 operator|+
 name|queue
 operator|+
-literal|" from leaf queue "
+literal|" from "
+operator|+
+literal|"leaf queue "
 operator|+
 literal|"state from partition "
 operator|+
@@ -2821,38 +2914,6 @@ name|leafQueueTemplateCapacities
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|" Leaf queue has pending applications or is "
-operator|+
-literal|"inactive"
-operator|+
-literal|" : "
-operator|+
-name|leafQueue
-operator|.
-name|getNumApplications
-argument_list|()
-operator|+
-literal|".Skipping deactivation for "
-operator|+
-name|leafQueue
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 block|}
 else|else
 block|{
@@ -3146,9 +3207,9 @@ literal|"Queue is already active."
 operator|+
 literal|" Skipping activation : "
 operator|+
-name|queue
+name|leafQueue
 operator|.
-name|getQueuePath
+name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3196,7 +3257,7 @@ literal|"de-activation : "
 operator|+
 name|leafQueue
 operator|.
-name|getQueuePath
+name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
