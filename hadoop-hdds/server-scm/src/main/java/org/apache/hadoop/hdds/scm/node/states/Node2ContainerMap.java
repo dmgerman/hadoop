@@ -88,6 +88,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -282,7 +292,12 @@ name|putIfAbsent
 argument_list|(
 name|datanodeID
 argument_list|,
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
 name|containerIDs
+argument_list|)
 argument_list|)
 operator|!=
 literal|null
@@ -300,10 +315,10 @@ throw|;
 block|}
 block|}
 comment|/**    * Updates the Container list of an existing DN.    *    * @param datanodeID - UUID of DN.    * @param containers - Set of Containers tht is present on DN.    * @throws SCMException - if we don't know about this datanode, for new DN    *                      use insertNewDatanode.    */
-DECL|method|updateDatanodeMap (UUID datanodeID, Set<ContainerID> containers)
+DECL|method|setContainersForDatanode (UUID datanodeID, Set<ContainerID> containers)
 specifier|public
 name|void
-name|updateDatanodeMap
+name|setContainersForDatanode
 parameter_list|(
 name|UUID
 name|datanodeID
@@ -345,7 +360,12 @@ argument_list|,
 name|v
 argument_list|)
 operator|->
-name|v
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
+name|containers
+argument_list|)
 condition|)
 operator|==
 literal|null

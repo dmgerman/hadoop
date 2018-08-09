@@ -90,13 +90,13 @@ decl_stmt|;
 DECL|field|replicationCount
 specifier|private
 specifier|final
-name|short
+name|int
 name|replicationCount
 decl_stmt|;
 DECL|field|expecReplicationCount
 specifier|private
 specifier|final
-name|short
+name|int
 name|expecReplicationCount
 decl_stmt|;
 DECL|field|timestamp
@@ -105,20 +105,20 @@ specifier|final
 name|long
 name|timestamp
 decl_stmt|;
-DECL|method|ReplicationRequest (long containerId, short replicationCount, long timestamp, short expecReplicationCount)
+DECL|method|ReplicationRequest (long containerId, int replicationCount, long timestamp, int expecReplicationCount)
 specifier|public
 name|ReplicationRequest
 parameter_list|(
 name|long
 name|containerId
 parameter_list|,
-name|short
+name|int
 name|replicationCount
 parameter_list|,
 name|long
 name|timestamp
 parameter_list|,
-name|short
+name|int
 name|expecReplicationCount
 parameter_list|)
 block|{
@@ -145,6 +145,35 @@ operator|.
 name|expecReplicationCount
 operator|=
 name|expecReplicationCount
+expr_stmt|;
+block|}
+DECL|method|ReplicationRequest (long containerId, int replicationCount, int expecReplicationCount)
+specifier|public
+name|ReplicationRequest
+parameter_list|(
+name|long
+name|containerId
+parameter_list|,
+name|int
+name|replicationCount
+parameter_list|,
+name|int
+name|expecReplicationCount
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|containerId
+argument_list|,
+name|replicationCount
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|,
+name|expecReplicationCount
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Compares this object with the specified object for order.  Returns a    * negative integer, zero, or a positive integer as this object is less    * than, equal to, or greater than the specified object.    * @param o the object to be compared.    * @return a negative integer, zero, or a positive integer as this object    * is less than, equal to, or greater than the specified object.    * @throws NullPointerException if the specified object is null    * @throws ClassCastException   if the specified object's type prevents it    *                              from being compared to this object.    */
@@ -339,7 +368,7 @@ return|;
 block|}
 DECL|method|getReplicationCount ()
 specifier|public
-name|short
+name|int
 name|getReplicationCount
 parameter_list|()
 block|{
@@ -359,12 +388,42 @@ return|;
 block|}
 DECL|method|getExpecReplicationCount ()
 specifier|public
-name|short
+name|int
 name|getExpecReplicationCount
 parameter_list|()
 block|{
 return|return
 name|expecReplicationCount
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"ReplicationRequest{"
+operator|+
+literal|"containerId="
+operator|+
+name|containerId
+operator|+
+literal|", replicationCount="
+operator|+
+name|replicationCount
+operator|+
+literal|", expecReplicationCount="
+operator|+
+name|expecReplicationCount
+operator|+
+literal|", timestamp="
+operator|+
+name|timestamp
+operator|+
+literal|'}'
 return|;
 block|}
 block|}

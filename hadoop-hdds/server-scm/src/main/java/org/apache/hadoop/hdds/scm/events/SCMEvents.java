@@ -648,6 +648,26 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Signal for all the components (but especially for the replication    * manager and container report handler) that the replication could be    * started. Should be send only if (almost) all the container state are    * available from the datanodes.    */
+DECL|field|START_REPLICATION
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|Boolean
+argument_list|>
+name|START_REPLICATION
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|Boolean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Private Ctor. Never Constructed.    */
 DECL|method|SCMEvents ()
 specifier|private
