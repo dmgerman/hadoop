@@ -2369,19 +2369,23 @@ operator|.
 name|CLOSED
 condition|)
 block|{
-throw|throw
-operator|new
-name|StorageContainerException
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Container already closed. "
-operator|+
-literal|"ContainerID: "
-operator|+
-name|containerID
+literal|"Container {} is already closed."
 argument_list|,
-name|CLOSED_CONTAINER_RETRY
+name|containerID
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+name|ContainerUtils
+operator|.
+name|getSuccessResponse
+argument_list|(
+name|request
+argument_list|)
+return|;
 block|}
 elseif|else
 if|if
