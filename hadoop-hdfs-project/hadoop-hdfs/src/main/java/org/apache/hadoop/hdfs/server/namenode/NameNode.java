@@ -9063,11 +9063,6 @@ name|ServiceFailedException
 throws|,
 name|AccessControlException
 block|{
-name|namesystem
-operator|.
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 operator|!
