@@ -1113,6 +1113,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|block
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block cannot be null"
+argument_list|)
+throw|;
+block|}
 name|ReadRequestProto
 name|request
 init|=
@@ -1221,6 +1236,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|block
+operator|==
+literal|null
+operator|||
+name|providedStorageLocation
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Provided block and location cannot be null"
+argument_list|)
+throw|;
+block|}
 name|WriteRequestProto
 name|request
 init|=
