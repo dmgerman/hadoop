@@ -130,9 +130,9 @@ specifier|public
 interface|interface
 name|KeyManager
 block|{
-comment|/**    * Puts or overwrites a key.    *    * @param container - Container for which key need to be added.    * @param data     - Key Data.    * @throws IOException    */
+comment|/**    * Puts or overwrites a key.    *    * @param container - Container for which key need to be added.    * @param data     - Key Data.    * @return length of the Key.    * @throws IOException    */
 DECL|method|putKey (Container container, KeyData data)
-name|void
+name|long
 name|putKey
 parameter_list|(
 name|Container

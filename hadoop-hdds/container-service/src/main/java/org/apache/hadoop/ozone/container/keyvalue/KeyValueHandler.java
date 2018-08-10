@@ -2526,6 +2526,9 @@ name|KeyValueContainer
 name|kvContainer
 parameter_list|)
 block|{
+name|long
+name|blockLength
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -2592,6 +2595,8 @@ argument_list|()
 operator|.
 name|length
 decl_stmt|;
+name|blockLength
+operator|=
 name|commitKey
 argument_list|(
 name|keyData
@@ -2660,9 +2665,11 @@ block|}
 return|return
 name|KeyUtils
 operator|.
-name|getKeyResponseSuccess
+name|putKeyResponseSuccess
 argument_list|(
 name|request
+argument_list|,
+name|blockLength
 argument_list|)
 return|;
 block|}
@@ -2722,7 +2729,7 @@ block|}
 block|}
 DECL|method|commitKey (KeyData keyData, KeyValueContainer kvContainer)
 specifier|private
-name|void
+name|long
 name|commitKey
 parameter_list|(
 name|KeyData
@@ -2741,6 +2748,9 @@ argument_list|(
 name|keyData
 argument_list|)
 expr_stmt|;
+name|long
+name|length
+init|=
 name|keyManager
 operator|.
 name|putKey
@@ -2749,7 +2759,7 @@ name|kvContainer
 argument_list|,
 name|keyData
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|//update the open key Map in containerManager
 name|this
 operator|.
@@ -2763,6 +2773,9 @@ name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+name|length
+return|;
 block|}
 comment|/**    * Handle Get Key operation. Calls KeyManager to process the request.    */
 DECL|method|handleGetKey ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
@@ -3769,8 +3782,36 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// the openContainerBlockMap should be updated only while writing data
-comment|// not during COMMIT_STAGE of handling write chunk request.
+block|}
+if|if
+condition|(
+name|request
+operator|.
+name|getWriteChunk
+argument_list|()
+operator|.
+name|getStage
+argument_list|()
+operator|==
+name|Stage
+operator|.
+name|COMMIT_DATA
+operator|||
+name|request
+operator|.
+name|getWriteChunk
+argument_list|()
+operator|.
+name|getStage
+argument_list|()
+operator|==
+name|Stage
+operator|.
+name|COMBINED
+condition|)
+block|{
+comment|// the openContainerBlockMap should be updated only during
+comment|// COMMIT_STAGE of handling write chunk request.
 name|openContainerBlockMap
 operator|.
 name|addChunk

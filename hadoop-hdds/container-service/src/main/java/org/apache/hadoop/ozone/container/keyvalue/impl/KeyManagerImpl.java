@@ -395,10 +395,10 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
-comment|/**    * Puts or overwrites a key.    *    * @param container - Container for which key need to be added.    * @param data     - Key Data.    * @throws IOException    */
+comment|/**    * Puts or overwrites a key.    *    * @param container - Container for which key need to be added.    * @param data     - Key Data.    * @return length of the key.    * @throws IOException    */
 DECL|method|putKey (Container container, KeyData data)
 specifier|public
-name|void
+name|long
 name|putKey
 parameter_list|(
 name|Container
@@ -500,6 +500,12 @@ operator|.
 name|incrKeyCount
 argument_list|()
 expr_stmt|;
+return|return
+name|data
+operator|.
+name|getSize
+argument_list|()
+return|;
 block|}
 comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the key.    * @return Key Data.    * @throws IOException    */
 DECL|method|getKey (Container container, BlockID blockID)
