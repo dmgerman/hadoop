@@ -1844,7 +1844,9 @@ name|rack
 argument_list|,
 name|perNode
 argument_list|,
-literal|null
+name|NodeState
+operator|.
+name|RUNNING
 argument_list|,
 literal|"localhost:0"
 argument_list|,
@@ -1883,7 +1885,9 @@ name|rack
 argument_list|,
 name|perNode
 argument_list|,
-literal|null
+name|NodeState
+operator|.
+name|RUNNING
 argument_list|,
 literal|"localhost:0"
 argument_list|,
@@ -1925,7 +1929,9 @@ name|rack
 argument_list|,
 name|perNode
 argument_list|,
-literal|null
+name|NodeState
+operator|.
+name|RUNNING
 argument_list|,
 literal|"localhost:0"
 argument_list|,
