@@ -684,6 +684,26 @@ decl_stmt|;
 if|if
 condition|(
 name|count
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Trying to remove tags, however the tag "
+operator|+
+name|tag
+operator|+
+literal|" no longer exists on this node/rack."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|count
 operator|>
 literal|1
 condition|)
