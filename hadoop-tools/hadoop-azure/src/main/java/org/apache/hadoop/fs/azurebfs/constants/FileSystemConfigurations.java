@@ -150,11 +150,11 @@ specifier|final
 name|int
 name|DEFAULT_WRITE_BUFFER_SIZE
 init|=
-literal|4
+literal|8
 operator|*
 name|ONE_MB
 decl_stmt|;
-comment|// 4 MB
+comment|// 8 MB
 DECL|field|DEFAULT_READ_BUFFER_SIZE
 specifier|public
 specifier|static
@@ -249,6 +249,15 @@ name|DEFAULT_AZURE_CREATE_REMOTE_FILESYSTEM_DURING_INITIALIZATION
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DEFAULT_AZURE_SKIP_USER_GROUP_METADATA_DURING_INITIALIZATION
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_AZURE_SKIP_USER_GROUP_METADATA_DURING_INITIALIZATION
+init|=
+literal|false
+decl_stmt|;
 DECL|field|DEFAULT_FS_AZURE_ATOMIC_RENAME_DIRECTORIES
 specifier|public
 specifier|static
@@ -267,6 +276,15 @@ name|DEFAULT_READ_AHEAD_QUEUE_DEPTH
 init|=
 operator|-
 literal|1
+decl_stmt|;
+DECL|field|DEFAULT_ENABLE_FLUSH
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ENABLE_FLUSH
+init|=
+literal|true
 decl_stmt|;
 DECL|method|FileSystemConfigurations ()
 specifier|private

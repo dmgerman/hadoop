@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.azurebfs.services
+DECL|package|org.apache.hadoop.fs.azurebfs
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|fs
 operator|.
 name|azurebfs
-operator|.
-name|services
 package|;
 end_package
 
@@ -113,38 +111,6 @@ operator|.
 name|fs
 operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
-name|AbstractAbfsScaleTest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
-name|AzureBlobFileSystem
 import|;
 end_import
 
@@ -390,7 +356,6 @@ argument_list|)
 expr_stmt|;
 try|try
 init|(
-specifier|final
 name|FSDataOutputStream
 name|stream
 init|=
@@ -428,7 +393,6 @@ name|result
 decl_stmt|;
 try|try
 init|(
-specifier|final
 name|FSDataInputStream
 name|inputStream
 init|=

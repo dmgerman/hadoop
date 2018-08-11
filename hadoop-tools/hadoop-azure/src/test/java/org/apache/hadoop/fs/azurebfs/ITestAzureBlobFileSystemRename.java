@@ -138,24 +138,6 @@ name|contract
 operator|.
 name|ContractTestUtils
 operator|.
-name|assertIsDirectory
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-operator|.
 name|assertMkdirs
 import|;
 end_import

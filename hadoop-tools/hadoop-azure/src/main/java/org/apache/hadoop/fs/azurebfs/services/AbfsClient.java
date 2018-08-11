@@ -92,6 +92,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -147,6 +161,22 @@ operator|.
 name|exceptions
 operator|.
 name|InvalidUriException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|AbfsConfiguration
 import|;
 end_import
 
@@ -254,7 +284,7 @@ specifier|final
 name|String
 name|xMsVersion
 init|=
-literal|"2018-03-28"
+literal|"2018-06-17"
 decl_stmt|;
 DECL|field|retryPolicy
 specifier|private
@@ -356,7 +386,9 @@ operator|.
 name|userAgent
 operator|=
 name|initializeUserAgent
-argument_list|()
+argument_list|(
+name|abfsConfiguration
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getFileSystem ()
@@ -747,10 +779,7 @@ literal|null
 condition|?
 literal|""
 else|:
-name|urlEncode
-argument_list|(
 name|relativePath
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|abfsUriQueryBuilder
@@ -2024,7 +2053,7 @@ name|url
 return|;
 block|}
 DECL|method|urlEncode (final String value)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|urlEncode
@@ -2038,8 +2067,6 @@ name|AzureBlobFileSystemException
 block|{
 name|String
 name|encodedString
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -2087,11 +2114,16 @@ return|return
 name|encodedString
 return|;
 block|}
-DECL|method|initializeUserAgent ()
-specifier|private
+annotation|@
+name|VisibleForTesting
+DECL|method|initializeUserAgent (final AbfsConfiguration abfsConfiguration)
 name|String
 name|initializeUserAgent
-parameter_list|()
+parameter_list|(
+specifier|final
+name|AbfsConfiguration
+name|abfsConfiguration
+parameter_list|)
 block|{
 specifier|final
 name|String
@@ -2136,6 +2168,46 @@ name|OS_VERSION
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|String
+name|customUserAgentId
+init|=
+name|abfsConfiguration
+operator|.
+name|getCustomUserAgentPrefix
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|customUserAgentId
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|customUserAgentId
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+name|Locale
+operator|.
+name|ROOT
+argument_list|,
+name|CLIENT_VERSION
+operator|+
+literal|" %s %s"
+argument_list|,
+name|userAgentComment
+argument_list|,
+name|customUserAgentId
+argument_list|)
+return|;
+block|}
 return|return
 name|String
 operator|.
@@ -2147,6 +2219,17 @@ literal|" %s"
 argument_list|,
 name|userAgentComment
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBaseUrl ()
+name|URL
+name|getBaseUrl
+parameter_list|()
+block|{
+return|return
+name|baseUrl
 return|;
 block|}
 block|}

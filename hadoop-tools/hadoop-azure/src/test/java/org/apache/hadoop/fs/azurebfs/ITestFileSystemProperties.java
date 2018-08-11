@@ -34,16 +34,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -101,18 +91,6 @@ operator|.
 name|fs
 operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
 import|;
 end_import
 
@@ -272,11 +250,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-annotation|@
-name|Ignore
-argument_list|(
-literal|"JDK7 doesn't support PATCH, so PUT is used. Fix is applied in latest test tenant"
-argument_list|)
 DECL|method|testBase64FileSystemProperties ()
 specifier|public
 name|void

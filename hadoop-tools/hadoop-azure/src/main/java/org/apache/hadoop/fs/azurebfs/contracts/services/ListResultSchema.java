@@ -34,13 +34,13 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|fasterxml
+name|codehaus
 operator|.
 name|jackson
 operator|.
-name|annotation
+name|annotate
 operator|.
 name|JsonProperty
 import|;

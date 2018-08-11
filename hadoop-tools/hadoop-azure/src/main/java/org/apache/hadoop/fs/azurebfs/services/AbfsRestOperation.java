@@ -451,7 +451,7 @@ name|result
 operator|.
 name|getStatusCode
 argument_list|()
-operator|>
+operator|>=
 name|HttpURLConnection
 operator|.
 name|HTTP_BAD_REQUEST

@@ -232,6 +232,11 @@ specifier|private
 name|boolean
 name|closed
 decl_stmt|;
+DECL|field|supportFlush
+specifier|private
+name|boolean
+name|supportFlush
+decl_stmt|;
 DECL|field|lastError
 specifier|private
 specifier|volatile
@@ -296,7 +301,7 @@ name|Void
 argument_list|>
 name|completionService
 decl_stmt|;
-DECL|method|AbfsOutputStream ( final AbfsClient client, final String path, final long position, final int bufferSize)
+DECL|method|AbfsOutputStream ( final AbfsClient client, final String path, final long position, final int bufferSize, final boolean supportFlush)
 specifier|public
 name|AbfsOutputStream
 parameter_list|(
@@ -315,6 +320,10 @@ parameter_list|,
 specifier|final
 name|int
 name|bufferSize
+parameter_list|,
+specifier|final
+name|boolean
+name|supportFlush
 parameter_list|)
 block|{
 name|this
@@ -340,6 +349,12 @@ operator|.
 name|closed
 operator|=
 literal|false
+expr_stmt|;
+name|this
+operator|.
+name|supportFlush
+operator|=
+name|supportFlush
 expr_stmt|;
 name|this
 operator|.
@@ -662,9 +677,15 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|supportFlush
+condition|)
+block|{
 name|flushInternalAsync
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/** Similar to posix fsync, flush out the data in client's user buffer    * all the way to the disk device (but the disk may have it in its cache).    * @throws IOException if error occurs    */
 annotation|@
@@ -677,9 +698,15 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|supportFlush
+condition|)
+block|{
 name|flushInternal
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/** Flush out the data in client's user buffer. After the return of    * this call, new readers will see the data.    * @throws IOException if any error occurs    */
 annotation|@
@@ -692,9 +719,15 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|supportFlush
+condition|)
+block|{
 name|flushInternal
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Force all data in the output stream to be written to Azure storage.    * Wait to return until this is complete. Close the access to the stream and    * shutdown the upload thread pool.    * If the blob was created, its lease will be released.    * Any error encountered caught in threads and stored will be rethrown here    * after cleanup.    */
 annotation|@
@@ -1061,12 +1094,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|lastTotalAppendOffset
-operator|=
-literal|0
-expr_stmt|;
 block|}
 DECL|method|flushWrittenBytesToServiceInternal (final long offset, final boolean retainUncommitedData)
 specifier|private

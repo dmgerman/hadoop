@@ -313,8 +313,6 @@ operator|)
 condition|?
 name|readAheadQueueDepth
 else|:
-literal|2
-operator|*
 name|Runtime
 operator|.
 name|getRuntime

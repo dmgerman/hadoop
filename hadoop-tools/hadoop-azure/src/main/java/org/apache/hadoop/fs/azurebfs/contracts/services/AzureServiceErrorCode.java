@@ -242,6 +242,18 @@ argument_list|,
 literal|"Egress is over the account limit."
 argument_list|)
 block|,
+DECL|enumConstant|INVALID_QUERY_PARAMETER_VALUE
+name|INVALID_QUERY_PARAMETER_VALUE
+argument_list|(
+literal|"InvalidQueryParameterValue"
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_BAD_REQUEST
+argument_list|,
+literal|null
+argument_list|)
+block|,
 DECL|enumConstant|UNKNOWN
 name|UNKNOWN
 argument_list|(

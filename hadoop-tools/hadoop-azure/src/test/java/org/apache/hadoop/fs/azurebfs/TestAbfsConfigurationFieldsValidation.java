@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.azurebfs.services
+DECL|package|org.apache.hadoop.fs.azurebfs
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|fs
 operator|.
 name|azurebfs
-operator|.
-name|services
 package|;
 end_package
 
@@ -418,7 +416,6 @@ name|TestAbfsConfigurationFieldsValidation
 block|{
 DECL|field|abfsConfiguration
 specifier|private
-specifier|final
 name|AbfsConfiguration
 name|abfsConfiguration
 decl_stmt|;
@@ -626,6 +623,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|super
+argument_list|()
+expr_stmt|;
 name|Base64
 name|base64
 init|=
@@ -690,10 +690,15 @@ name|configuration
 init|=
 operator|new
 name|Configuration
-argument_list|(
-literal|false
-argument_list|)
+argument_list|()
 decl_stmt|;
+name|configuration
+operator|.
+name|addResource
+argument_list|(
+literal|"azure-bfs-test.xml"
+argument_list|)
+expr_stmt|;
 name|configuration
 operator|.
 name|set

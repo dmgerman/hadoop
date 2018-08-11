@@ -591,7 +591,6 @@ argument_list|)
 expr_stmt|;
 try|try
 init|(
-specifier|final
 name|FSDataOutputStream
 name|stream
 init|=

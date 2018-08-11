@@ -92,13 +92,11 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|fasterxml
+name|codehaus
 operator|.
 name|jackson
-operator|.
-name|core
 operator|.
 name|JsonFactory
 import|;
@@ -106,13 +104,11 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|fasterxml
+name|codehaus
 operator|.
 name|jackson
-operator|.
-name|core
 operator|.
 name|JsonParser
 import|;
@@ -120,13 +116,11 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|fasterxml
+name|codehaus
 operator|.
 name|jackson
-operator|.
-name|core
 operator|.
 name|JsonToken
 import|;
@@ -134,13 +128,13 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|fasterxml
+name|codehaus
 operator|.
 name|jackson
 operator|.
-name|databind
+name|map
 operator|.
 name|ObjectMapper
 import|;
@@ -747,8 +741,6 @@ name|this
 operator|.
 name|isTraceEnabled
 operator|=
-name|this
-operator|.
 name|LOG
 operator|.
 name|isTraceEnabled
@@ -1360,8 +1352,6 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|error
@@ -1500,7 +1490,7 @@ name|jp
 init|=
 name|jf
 operator|.
-name|createParser
+name|createJsonParser
 argument_list|(
 name|stream
 argument_list|)
@@ -1615,8 +1605,6 @@ block|{
 comment|// Ignore errors that occur while attempting to parse the storage
 comment|// error, since the response may have been handled by the HTTP driver
 comment|// or for other reasons have an unexpected
-name|this
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -1716,8 +1704,6 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
-name|this
-operator|.
 name|LOG
 operator|.
 name|error
