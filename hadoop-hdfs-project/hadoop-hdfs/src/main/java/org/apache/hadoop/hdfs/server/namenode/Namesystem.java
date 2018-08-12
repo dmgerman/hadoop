@@ -54,22 +54,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -180,15 +164,6 @@ name|boolean
 name|inTransitionToActive
 parameter_list|()
 function_decl|;
-comment|/**    * Check if file is been opened for write purpose.    * @param filePath    * @return true if valid write lease exists, otherwise return false.    */
-DECL|method|isFileOpenedForWrite (String filePath)
-name|boolean
-name|isFileOpenedForWrite
-parameter_list|(
-name|String
-name|filePath
-parameter_list|)
-function_decl|;
 comment|/**    * Remove xAttr from the inode.    * @param id    * @param xattrName    * @throws IOException    */
 DECL|method|removeXattr (long id, String xattrName)
 name|void
@@ -199,23 +174,6 @@ name|id
 parameter_list|,
 name|String
 name|xattrName
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Gets the fileInfo of the given file path.    *    * @param filePath string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    * @param needLocation if blockLocations need to be returned    *    * @return hdfs file status details    * @throws IOException    */
-DECL|method|getFileInfo (String filePath, boolean resolveLink, boolean needLocation)
-name|HdfsFileStatus
-name|getFileInfo
-parameter_list|(
-name|String
-name|filePath
-parameter_list|,
-name|boolean
-name|resolveLink
-parameter_list|,
-name|boolean
-name|needLocation
 parameter_list|)
 throws|throws
 name|IOException

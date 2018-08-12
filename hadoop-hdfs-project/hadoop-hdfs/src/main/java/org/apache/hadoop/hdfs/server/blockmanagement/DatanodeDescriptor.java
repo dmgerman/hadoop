@@ -3526,7 +3526,6 @@ return|;
 block|}
 comment|/** Increment the number of blocks scheduled. */
 DECL|method|incrementBlocksScheduled (StorageType t)
-specifier|public
 name|void
 name|incrementBlocksScheduled
 parameter_list|(

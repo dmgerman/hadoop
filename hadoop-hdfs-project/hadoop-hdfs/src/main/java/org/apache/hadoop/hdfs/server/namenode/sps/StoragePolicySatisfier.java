@@ -834,15 +834,12 @@ block|}
 comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    */
 annotation|@
 name|Override
-DECL|method|start (boolean reconfigStart, StoragePolicySatisfierMode serviceMode)
+DECL|method|start (StoragePolicySatisfierMode serviceMode)
 specifier|public
 specifier|synchronized
 name|void
 name|start
 parameter_list|(
-name|boolean
-name|reconfigStart
-parameter_list|,
 name|StoragePolicySatisfierMode
 name|serviceMode
 parameter_list|)
@@ -867,33 +864,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-if|if
-condition|(
-name|reconfigStart
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Starting {} StoragePolicySatisfier, as admin requested to "
-operator|+
-literal|"start it."
-argument_list|,
-name|StringUtils
-operator|.
-name|toLowerCase
-argument_list|(
-name|serviceMode
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|LOG
 operator|.
 name|info
@@ -911,7 +881,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|isRunning
 operator|=
 literal|true
@@ -1159,13 +1128,13 @@ expr_stmt|;
 block|}
 continue|continue;
 block|}
-try|try
-block|{
 name|ItemInfo
 name|itemInfo
 init|=
 literal|null
 decl_stmt|;
+try|try
+block|{
 name|boolean
 name|retryItem
 init|=
@@ -1598,7 +1567,6 @@ condition|(
 name|retryItem
 condition|)
 block|{
-comment|// itemInfo.increRetryCount();
 name|this
 operator|.
 name|storageMovementNeeded
@@ -1625,6 +1593,17 @@ operator|+
 literal|"will continue next cycle"
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+comment|// Since it could not finish this item in previous iteration due to IOE,
+comment|// just try again.
+name|this
+operator|.
+name|storageMovementNeeded
+operator|.
+name|add
+argument_list|(
+name|itemInfo
 argument_list|)
 expr_stmt|;
 block|}

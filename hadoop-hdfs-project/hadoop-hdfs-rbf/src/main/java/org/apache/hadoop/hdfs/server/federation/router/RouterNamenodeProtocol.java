@@ -1050,6 +1050,17 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|rpcServer
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 comment|// not supported
 return|return
 literal|null

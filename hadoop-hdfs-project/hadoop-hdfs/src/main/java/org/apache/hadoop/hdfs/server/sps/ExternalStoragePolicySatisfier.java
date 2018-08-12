@@ -443,8 +443,6 @@ name|sps
 operator|.
 name|start
 argument_list|(
-literal|true
-argument_list|,
 name|StoragePolicySatisfierMode
 operator|.
 name|EXTERNAL

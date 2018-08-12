@@ -68,34 +68,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|ParentNotDirectoryException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|UnresolvedLinkException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -210,20 +182,6 @@ name|NetworkTopology
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
 begin_comment
 comment|/**  * An interface for the communication between SPS and Namenode module.  */
 end_comment
@@ -253,27 +211,6 @@ DECL|method|isInSafeMode ()
 name|boolean
 name|isInSafeMode
 parameter_list|()
-function_decl|;
-comment|/**    * Returns true if Mover tool is already running, false otherwise.    */
-DECL|method|isMoverRunning ()
-name|boolean
-name|isMoverRunning
-parameter_list|()
-function_decl|;
-comment|/**    * Gets the Inode ID number for the given path.    *    * @param path    *          - file/dir path    * @return Inode id number    */
-DECL|method|getFileID (String path)
-name|long
-name|getFileID
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-throws|,
-name|AccessControlException
-throws|,
-name|ParentNotDirectoryException
 function_decl|;
 comment|/**    * Gets the network topology.    *    * @param datanodeMap    *          target datanodes    *    * @return network topology    */
 DECL|method|getNetworkTopology (DatanodeMap datanodeMap)
@@ -343,21 +280,6 @@ comment|/**    * @return next SPS path info to process.    */
 DECL|method|getNextSPSPath ()
 name|Long
 name|getNextSPSPath
-parameter_list|()
-function_decl|;
-comment|/**    * Removes the SPS path id.    */
-DECL|method|removeSPSPathId (long pathId)
-name|void
-name|removeSPSPathId
-parameter_list|(
-name|long
-name|pathId
-parameter_list|)
-function_decl|;
-comment|/**    * Removes all SPS path ids.    */
-DECL|method|removeAllSPSPathIds ()
-name|void
-name|removeAllSPSPathIds
 parameter_list|()
 function_decl|;
 comment|/**    * Do scan and collects the files under that directory and adds to the given    * BlockStorageMovementNeeded.    *    * @param filePath    *          file path    */

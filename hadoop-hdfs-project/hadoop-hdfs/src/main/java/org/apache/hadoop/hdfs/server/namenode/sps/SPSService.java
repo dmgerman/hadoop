@@ -165,14 +165,11 @@ name|Context
 name|ctxt
 parameter_list|)
 function_decl|;
-comment|/**    * Starts the SPS service. Make sure to initialize the helper services before    * invoking this method.    *    * @param reconfigStart    *          - to indicate whether the SPS startup requested from    *          reconfiguration service    * @param spsMode sps service mode    */
-DECL|method|start (boolean reconfigStart, StoragePolicySatisfierMode spsMode)
+comment|/**    * Starts the SPS service. Make sure to initialize the helper services before    * invoking this method.    *    * @param spsMode sps service mode    */
+DECL|method|start (StoragePolicySatisfierMode spsMode)
 name|void
 name|start
 parameter_list|(
-name|boolean
-name|reconfigStart
-parameter_list|,
 name|StoragePolicySatisfierMode
 name|spsMode
 parameter_list|)
