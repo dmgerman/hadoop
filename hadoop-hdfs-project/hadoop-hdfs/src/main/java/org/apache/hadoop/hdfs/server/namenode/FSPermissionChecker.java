@@ -2246,6 +2246,13 @@ condition|(
 name|aclFeature
 operator|!=
 literal|null
+operator|&&
+name|aclFeature
+operator|.
+name|getEntriesSize
+argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 comment|// It's possible that the inode has a default ACL but no access ACL.
