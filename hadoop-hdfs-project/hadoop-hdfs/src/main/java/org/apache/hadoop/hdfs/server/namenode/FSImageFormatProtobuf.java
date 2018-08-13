@@ -2993,7 +2993,7 @@ expr_stmt|;
 block|}
 DECL|method|saveInodes (FileSummary.Builder summary)
 specifier|private
-name|void
+name|long
 name|saveInodes
 parameter_list|(
 name|FileSummary
@@ -3040,6 +3040,12 @@ argument_list|(
 name|sectionOutputStream
 argument_list|)
 expr_stmt|;
+return|return
+name|saver
+operator|.
+name|getNumImageErrors
+argument_list|()
+return|;
 block|}
 comment|/**      * @return number of non-fatal errors detected while saving the image.      * @throws IOException on fatal error.      */
 DECL|method|saveSnapshots (FileSummary.Builder summary)
@@ -3336,19 +3342,22 @@ argument_list|,
 name|step
 argument_list|)
 expr_stmt|;
+comment|// Count number of non-fatal errors when saving inodes and snapshots.
+name|long
+name|numErrors
+init|=
 name|saveInodes
 argument_list|(
 name|b
 argument_list|)
-expr_stmt|;
-name|long
+decl_stmt|;
 name|numErrors
-init|=
+operator|+=
 name|saveSnapshots
 argument_list|(
 name|b
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|prog
 operator|.
 name|endStep

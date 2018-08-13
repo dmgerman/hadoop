@@ -3411,6 +3411,11 @@ specifier|static
 class|class
 name|Saver
 block|{
+DECL|field|numImageErrors
+specifier|private
+name|long
+name|numImageErrors
+decl_stmt|;
 DECL|method|buildPermissionStatus (INodeAttributes n, final SaverContext.DeduplicationMap<String> stringMap)
 specifier|private
 specifier|static
@@ -4307,6 +4312,12 @@ operator|.
 name|getSourceNamesystem
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|numImageErrors
+operator|=
+literal|0
+expr_stmt|;
 block|}
 DECL|method|serializeINodeDirectorySection (OutputStream out)
 name|void
@@ -4318,16 +4329,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|FSDirectory
+name|dir
+init|=
+name|fsn
+operator|.
+name|getFSDirectory
+argument_list|()
+decl_stmt|;
 name|Iterator
 argument_list|<
 name|INodeWithAdditionalFields
 argument_list|>
 name|iter
 init|=
-name|fsn
-operator|.
-name|getFSDirectory
-argument_list|()
+name|dir
 operator|.
 name|getINodeMap
 argument_list|()
@@ -4440,6 +4456,72 @@ range|:
 name|children
 control|)
 block|{
+comment|// Error if the child inode doesn't exist in inodeMap
+if|if
+condition|(
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|inode
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"FSImageFormatPBINode#serializeINodeDirectorySection: "
+operator|+
+literal|"Dangling child pointer found. Missing INode in "
+operator|+
+literal|"inodeMap: id="
+operator|+
+name|inode
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|"; path="
+operator|+
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|"; parent="
+operator|+
+operator|(
+name|inode
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"null"
+else|:
+name|inode
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getFullPathName
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+operator|++
+name|numImageErrors
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -5297,6 +5379,17 @@ name|getLocalNameBytes
 argument_list|()
 argument_list|)
 argument_list|)
+return|;
+block|}
+comment|/**      * Number of non-fatal errors detected while writing the      * INodeSection and INodeDirectorySection sections.      * @return the number of non-fatal errors detected.      */
+DECL|method|getNumImageErrors ()
+specifier|public
+name|long
+name|getNumImageErrors
+parameter_list|()
+block|{
+return|return
+name|numImageErrors
 return|;
 block|}
 block|}
