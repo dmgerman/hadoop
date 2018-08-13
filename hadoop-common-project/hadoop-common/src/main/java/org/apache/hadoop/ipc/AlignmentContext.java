@@ -129,14 +129,20 @@ name|Builder
 name|header
 parameter_list|)
 function_decl|;
-comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    * @param header The RPC request header.    */
+comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    * @param header The RPC request header.    * @return state id of in the request header.    */
 DECL|method|receiveRequestState (RpcRequestHeaderProto header)
-name|void
+name|long
 name|receiveRequestState
 parameter_list|(
 name|RpcRequestHeaderProto
 name|header
 parameter_list|)
+function_decl|;
+comment|/**    * Returns the last seen state id of the alignment context instance.    * @return the value of the last seen state id.    */
+DECL|method|getLastSeenStateId ()
+name|long
+name|getLastSeenStateId
+parameter_list|()
 function_decl|;
 block|}
 end_interface

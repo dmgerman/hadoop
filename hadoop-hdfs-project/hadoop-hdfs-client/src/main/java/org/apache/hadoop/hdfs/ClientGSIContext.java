@@ -146,7 +146,10 @@ operator|.
 name|MIN_VALUE
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getLastSeenStateId ()
+specifier|public
 name|long
 name|getLastSeenStateId
 parameter_list|()
@@ -227,7 +230,7 @@ annotation|@
 name|Override
 DECL|method|receiveRequestState (RpcRequestHeaderProto header)
 specifier|public
-name|void
+name|long
 name|receiveRequestState
 parameter_list|(
 name|RpcRequestHeaderProto
@@ -235,6 +238,9 @@ name|header
 parameter_list|)
 block|{
 comment|// Do nothing.
+return|return
+literal|0
+return|;
 block|}
 block|}
 end_class

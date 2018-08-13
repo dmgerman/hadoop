@@ -56,6 +56,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|AlignmentContext
@@ -152,13 +166,15 @@ name|Builder
 name|header
 parameter_list|)
 block|{
+comment|// Using getCorrectLastAppliedOrWrittenTxId will acquire the lock on
+comment|// FSEditLog. This is needed so that ANN will return the correct state id
+comment|// it currently has. But this may not be necessary for Observer, may want
+comment|// revisit for optimization. Same goes to receiveRequestState.
 name|header
 operator|.
 name|setStateId
 argument_list|(
-name|namesystem
-operator|.
-name|getLastWrittenTransactionId
+name|getLastSeenStateId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -198,7 +214,7 @@ annotation|@
 name|Override
 DECL|method|receiveRequestState (RpcRequestHeaderProto header)
 specifier|public
-name|void
+name|long
 name|receiveRequestState
 parameter_list|(
 name|RpcRequestHeaderProto
@@ -210,7 +226,10 @@ name|serverStateId
 init|=
 name|namesystem
 operator|.
-name|getLastWrittenTransactionId
+name|getFSImage
+argument_list|()
+operator|.
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 decl_stmt|;
 name|long
@@ -226,6 +245,20 @@ condition|(
 name|clientStateId
 operator|>
 name|serverStateId
+operator|&&
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+operator|.
+name|ACTIVE
+operator|.
+name|equals
+argument_list|(
+name|namesystem
+operator|.
+name|getState
+argument_list|()
+argument_list|)
 condition|)
 block|{
 name|FSNamesystem
@@ -244,6 +277,27 @@ name|serverStateId
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|clientStateId
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLastSeenStateId ()
+specifier|public
+name|long
+name|getLastSeenStateId
+parameter_list|()
+block|{
+return|return
+name|namesystem
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getCorrectLastAppliedOrWrittenTxId
+argument_list|()
+return|;
 block|}
 block|}
 end_class
