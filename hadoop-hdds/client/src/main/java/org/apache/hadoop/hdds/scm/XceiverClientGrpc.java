@@ -1113,22 +1113,16 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a pipeline.    *    * @param pipelineID - Name of the pipeline.    * @param datanodes - Datanodes    */
+comment|/**    * Create a pipeline.    *    * @param pipeline -  pipeline to be created.    */
 annotation|@
 name|Override
-DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
+DECL|method|createPipeline (Pipeline pipeline)
 specifier|public
 name|void
 name|createPipeline
 parameter_list|(
-name|String
-name|pipelineID
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|datanodes
+name|Pipeline
+name|pipeline
 parameter_list|)
 throws|throws
 name|IOException

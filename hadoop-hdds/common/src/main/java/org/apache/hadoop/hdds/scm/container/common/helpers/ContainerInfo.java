@@ -396,10 +396,10 @@ operator|.
 name|LifeCycleState
 name|state
 decl_stmt|;
-DECL|field|pipelineName
+DECL|field|pipelineID
 specifier|private
-name|String
-name|pipelineName
+name|PipelineID
+name|pipelineID
 decl_stmt|;
 DECL|field|replicationFactor
 specifier|private
@@ -463,7 +463,7 @@ name|byte
 index|[]
 name|data
 decl_stmt|;
-DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, String pipelineName, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId, ReplicationFactor replicationFactor, ReplicationType repType)
+DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, PipelineID pipelineID, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId, ReplicationFactor replicationFactor, ReplicationType repType)
 name|ContainerInfo
 parameter_list|(
 name|long
@@ -474,8 +474,8 @@ operator|.
 name|LifeCycleState
 name|state
 parameter_list|,
-name|String
-name|pipelineName
+name|PipelineID
+name|pipelineID
 parameter_list|,
 name|long
 name|allocatedBytes
@@ -510,9 +510,9 @@ name|containerID
 expr_stmt|;
 name|this
 operator|.
-name|pipelineName
+name|pipelineID
 operator|=
-name|pipelineName
+name|pipelineID
 expr_stmt|;
 name|this
 operator|.
@@ -610,12 +610,17 @@ decl_stmt|;
 return|return
 name|builder
 operator|.
-name|setPipelineName
+name|setPipelineID
+argument_list|(
+name|PipelineID
+operator|.
+name|getFromProtobuf
 argument_list|(
 name|info
 operator|.
-name|getPipelineName
+name|getPipelineID
 argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|setAllocatedBytes
@@ -762,14 +767,14 @@ return|return
 name|replicationFactor
 return|;
 block|}
-DECL|method|getPipelineName ()
+DECL|method|getPipelineID ()
 specifier|public
-name|String
-name|getPipelineName
+name|PipelineID
+name|getPipelineID
 parameter_list|()
 block|{
 return|return
-name|pipelineName
+name|pipelineID
 return|;
 block|}
 DECL|method|getAllocatedBytes ()
@@ -987,9 +992,12 @@ name|getDeleteTransactionId
 argument_list|()
 argument_list|)
 operator|.
-name|setPipelineName
+name|setPipelineID
 argument_list|(
-name|getPipelineName
+name|getPipelineID
+argument_list|()
+operator|.
+name|getProtobuf
 argument_list|()
 argument_list|)
 operator|.
@@ -1056,9 +1064,9 @@ literal|"state="
 operator|+
 name|state
 operator|+
-literal|", pipelineName="
+literal|", pipelineID="
 operator|+
-name|pipelineName
+name|pipelineID
 operator|+
 literal|", stateEnterTime="
 operator|+
@@ -1432,10 +1440,10 @@ specifier|private
 name|long
 name|deleteTransactionId
 decl_stmt|;
-DECL|field|pipelineName
+DECL|field|pipelineID
 specifier|private
-name|String
-name|pipelineName
+name|PipelineID
+name|pipelineID
 decl_stmt|;
 DECL|field|replicationFactor
 specifier|private
@@ -1466,20 +1474,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setPipelineName (String pipelineName)
+DECL|method|setPipelineID (PipelineID pipelineID)
 specifier|public
 name|Builder
-name|setPipelineName
+name|setPipelineID
 parameter_list|(
-name|String
-name|pipelineName
+name|PipelineID
+name|pipelineID
 parameter_list|)
 block|{
 name|this
 operator|.
-name|pipelineName
+name|pipelineID
 operator|=
-name|pipelineName
+name|pipelineID
 expr_stmt|;
 return|return
 name|this
@@ -1681,7 +1689,7 @@ name|containerID
 argument_list|,
 name|state
 argument_list|,
-name|pipelineName
+name|pipelineID
 argument_list|,
 name|allocated
 argument_list|,

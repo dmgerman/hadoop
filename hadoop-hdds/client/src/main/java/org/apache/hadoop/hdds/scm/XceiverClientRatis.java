@@ -262,6 +262,20 @@ name|ratis
 operator|.
 name|protocol
 operator|.
+name|RaftGroupId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
 name|RaftPeer
 import|;
 end_import
@@ -570,23 +584,28 @@ name|maxOutStandingChunks
 expr_stmt|;
 block|}
 comment|/**    * {@inheritDoc}    */
-DECL|method|createPipeline (String clusterId, List<DatanodeDetails> datanodes)
+DECL|method|createPipeline (Pipeline pipeline)
 specifier|public
 name|void
 name|createPipeline
 parameter_list|(
-name|String
-name|clusterId
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|datanodes
+name|Pipeline
+name|pipeline
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|RaftGroupId
+name|groupId
+init|=
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+operator|.
+name|getRaftGroupID
+argument_list|()
+decl_stmt|;
 name|RaftGroup
 name|group
 init|=
@@ -594,7 +613,12 @@ name|RatisHelper
 operator|.
 name|newRaftGroup
 argument_list|(
-name|datanodes
+name|groupId
+argument_list|,
+name|pipeline
+operator|.
+name|getMachines
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -603,7 +627,10 @@ name|debug
 argument_list|(
 literal|"initializing pipeline:{} with nodes:{}"
 argument_list|,
-name|clusterId
+name|pipeline
+operator|.
+name|getId
+argument_list|()
 argument_list|,
 name|group
 operator|.
@@ -613,7 +640,10 @@ argument_list|)
 expr_stmt|;
 name|reinitialize
 argument_list|(
-name|datanodes
+name|pipeline
+operator|.
+name|getMachines
+argument_list|()
 argument_list|,
 name|group
 argument_list|)
@@ -859,7 +889,7 @@ argument_list|,
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|RatisHelper

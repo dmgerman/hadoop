@@ -174,6 +174,28 @@ name|scm
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|states
 operator|.
 name|ContainerState
@@ -1143,11 +1165,11 @@ operator|.
 name|ALLOCATED
 argument_list|)
 operator|.
-name|setPipelineName
+name|setPipelineID
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 comment|// This is bytes allocated for blocks inside container, not the
@@ -1789,8 +1811,8 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a set of open ContainerIDs that reside on a pipeline.    *    * @param pipeline Pipeline of the Containers.    * @return Set of containers that match the specific query parameters.    */
-DECL|method|getMatchingContainerIDsByPipeline (String pipeline)
+comment|/**    * Returns a set of open ContainerIDs that reside on a pipeline.    *    * @param pipelineID PipelineID of the Containers.    * @return Set of containers that match the specific query parameters.    */
+DECL|method|getMatchingContainerIDsByPipeline (PipelineID pipelineID)
 specifier|public
 name|NavigableSet
 argument_list|<
@@ -1798,8 +1820,8 @@ name|ContainerID
 argument_list|>
 name|getMatchingContainerIDsByPipeline
 parameter_list|(
-name|String
-name|pipeline
+name|PipelineID
+name|pipelineID
 parameter_list|)
 block|{
 return|return
@@ -1807,7 +1829,7 @@ name|containers
 operator|.
 name|getOpenContainerIDsByPipeline
 argument_list|(
-name|pipeline
+name|pipelineID
 argument_list|)
 return|;
 block|}
@@ -1848,7 +1870,7 @@ name|getPipeline
 argument_list|(
 name|info
 operator|.
-name|getPipelineName
+name|getPipelineID
 argument_list|()
 argument_list|,
 name|info

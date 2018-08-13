@@ -72,6 +72,28 @@ name|scm
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|placement
 operator|.
 name|algorithms
@@ -298,16 +320,6 @@ name|Set
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
 begin_comment
 comment|/**  * Standalone Manager Impl to prove that pluggable interface  * works with current tests.  */
 end_comment
@@ -510,33 +522,25 @@ argument_list|(
 name|newNodesList
 argument_list|)
 expr_stmt|;
+name|PipelineID
+name|pipelineID
+init|=
+name|PipelineID
+operator|.
+name|randomId
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocating a new standalone pipeline of size: {}"
+literal|"Allocating a new standalone pipeline of size: {} id: {}"
 argument_list|,
 name|count
+argument_list|,
+name|pipelineID
 argument_list|)
 expr_stmt|;
-name|String
-name|pipelineName
-init|=
-literal|"SA-"
-operator|+
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|3
-argument_list|)
-decl_stmt|;
 return|return
 name|PipelineSelector
 operator|.
@@ -552,7 +556,7 @@ name|ReplicationFactor
 operator|.
 name|ONE
 argument_list|,
-name|pipelineName
+name|pipelineID
 argument_list|)
 return|;
 block|}
@@ -619,7 +623,7 @@ block|}
 comment|/**    * list members in the pipeline .    *    * @param pipelineID    * @return the datanode    */
 annotation|@
 name|Override
-DECL|method|getMembers (String pipelineID)
+DECL|method|getMembers (PipelineID pipelineID)
 specifier|public
 name|List
 argument_list|<
@@ -627,7 +631,7 @@ name|DatanodeDetails
 argument_list|>
 name|getMembers
 parameter_list|(
-name|String
+name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
@@ -640,12 +644,12 @@ block|}
 comment|/**    * Update the datanode list of the pipeline.    *    * @param pipelineID    * @param newDatanodes    */
 annotation|@
 name|Override
-DECL|method|updatePipeline (String pipelineID, List<DatanodeDetails> newDatanodes)
+DECL|method|updatePipeline (PipelineID pipelineID, List<DatanodeDetails> newDatanodes)
 specifier|public
 name|void
 name|updatePipeline
 parameter_list|(
-name|String
+name|PipelineID
 name|pipelineID
 parameter_list|,
 name|List

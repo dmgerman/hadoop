@@ -738,7 +738,7 @@ name|checkNotNull
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 literal|"Pipeline "
@@ -768,14 +768,6 @@ operator|.
 name|createPipeline
 argument_list|(
 name|pipeline
-operator|.
-name|getPipelineName
-argument_list|()
-argument_list|,
-name|pipeline
-operator|.
-name|getMachines
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//storageContainerLocationClient.notifyObjectStageChange(

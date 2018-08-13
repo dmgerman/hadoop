@@ -889,8 +889,8 @@ name|getContainerReport
 argument_list|()
 return|;
 block|}
-comment|/**    * Submit ContainerRequest.    * @param request    * @param replicationType    * @throws IOException    */
-DECL|method|submitContainerRequest ( ContainerProtos.ContainerCommandRequestProto request, HddsProtos.ReplicationType replicationType)
+comment|/**    * Submit ContainerRequest.    * @param request    * @param replicationType    * @param pipelineID    * @throws IOException    */
+DECL|method|submitContainerRequest ( ContainerProtos.ContainerCommandRequestProto request, HddsProtos.ReplicationType replicationType, HddsProtos.PipelineID pipelineID)
 specifier|public
 name|void
 name|submitContainerRequest
@@ -904,6 +904,11 @@ name|HddsProtos
 operator|.
 name|ReplicationType
 name|replicationType
+parameter_list|,
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
 parameter_list|)
 throws|throws
 name|IOException
@@ -947,6 +952,8 @@ operator|.
 name|submitRequest
 argument_list|(
 name|request
+argument_list|,
+name|pipelineID
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -984,6 +991,8 @@ operator|.
 name|submitRequest
 argument_list|(
 name|request
+argument_list|,
+name|pipelineID
 argument_list|)
 expr_stmt|;
 name|LOG

@@ -327,6 +327,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Returns the last updated time of datanode info.    * @return the last updated time of datanode info.    */
+DECL|method|getLastStatsUpdatedTime ()
+specifier|public
+name|long
+name|getLastStatsUpdatedTime
+parameter_list|()
+block|{
+return|return
+name|lastStatsUpdatedTime
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|hashCode ()

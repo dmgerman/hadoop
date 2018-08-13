@@ -92,6 +92,28 @@ name|CloseContainerCommandProto
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
 begin_comment
 comment|/**  * Asks datanode to close a container.  */
 end_comment
@@ -119,7 +141,12 @@ operator|.
 name|ReplicationType
 name|replicationType
 decl_stmt|;
-DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType)
+DECL|field|pipelineID
+specifier|private
+name|PipelineID
+name|pipelineID
+decl_stmt|;
+DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType, PipelineID pipelineID)
 specifier|public
 name|CloseContainerCommand
 parameter_list|(
@@ -130,6 +157,9 @@ name|HddsProtos
 operator|.
 name|ReplicationType
 name|replicationType
+parameter_list|,
+name|PipelineID
+name|pipelineID
 parameter_list|)
 block|{
 name|super
@@ -147,9 +177,15 @@ name|replicationType
 operator|=
 name|replicationType
 expr_stmt|;
+name|this
+operator|.
+name|pipelineID
+operator|=
+name|pipelineID
+expr_stmt|;
 block|}
 comment|// Should be called only for protobuf conversion
-DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType, long id)
+DECL|method|CloseContainerCommand (long containerID, HddsProtos.ReplicationType replicationType, PipelineID pipelineID, long id)
 specifier|private
 name|CloseContainerCommand
 parameter_list|(
@@ -160,6 +196,9 @@ name|HddsProtos
 operator|.
 name|ReplicationType
 name|replicationType
+parameter_list|,
+name|PipelineID
+name|pipelineID
 parameter_list|,
 name|long
 name|id
@@ -181,6 +220,12 @@ operator|.
 name|replicationType
 operator|=
 name|replicationType
+expr_stmt|;
+name|this
+operator|.
+name|pipelineID
+operator|=
+name|pipelineID
 expr_stmt|;
 block|}
 comment|/**    * Returns the type of this command.    *    * @return Type    */
@@ -248,6 +293,14 @@ argument_list|(
 name|replicationType
 argument_list|)
 operator|.
+name|setPipelineID
+argument_list|(
+name|pipelineID
+operator|.
+name|getProtobuf
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -282,6 +335,16 @@ name|closeContainerProto
 operator|.
 name|getReplicationType
 argument_list|()
+argument_list|,
+name|PipelineID
+operator|.
+name|getFromProtobuf
+argument_list|(
+name|closeContainerProto
+operator|.
+name|getPipelineID
+argument_list|()
+argument_list|)
 argument_list|,
 name|closeContainerProto
 operator|.

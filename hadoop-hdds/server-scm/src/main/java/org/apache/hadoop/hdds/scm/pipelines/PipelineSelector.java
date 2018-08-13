@@ -136,6 +136,28 @@ name|scm
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|placement
 operator|.
 name|algorithms
@@ -1059,7 +1081,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    *    * @param nodes - list of datanodes on which we will allocate the container.    * The first of the list will be the leader node.    * @return pipeline corresponding to nodes    */
-DECL|method|newPipelineFromNodes ( List<DatanodeDetails> nodes, ReplicationType replicationType, ReplicationFactor replicationFactor, String name)
+DECL|method|newPipelineFromNodes ( List<DatanodeDetails> nodes, ReplicationType replicationType, ReplicationFactor replicationFactor, PipelineID id)
 specifier|public
 specifier|static
 name|Pipeline
@@ -1077,8 +1099,8 @@ parameter_list|,
 name|ReplicationFactor
 name|replicationFactor
 parameter_list|,
-name|String
-name|name
+name|PipelineID
+name|id
 parameter_list|)
 block|{
 name|Preconditions
@@ -1130,7 +1152,7 @@ name|replicationType
 argument_list|,
 name|replicationFactor
 argument_list|,
-name|name
+name|id
 argument_list|)
 decl_stmt|;
 for|for
@@ -1484,13 +1506,13 @@ name|pipeline
 return|;
 block|}
 comment|/**    * This function to return pipeline for given pipeline name and replication    * type.    */
-DECL|method|getPipeline (String pipelineName, ReplicationType replicationType)
+DECL|method|getPipeline (PipelineID pipelineID, ReplicationType replicationType)
 specifier|public
 name|Pipeline
 name|getPipeline
 parameter_list|(
-name|String
-name|pipelineName
+name|PipelineID
+name|pipelineID
 parameter_list|,
 name|ReplicationType
 name|replicationType
@@ -1500,7 +1522,7 @@ name|IOException
 block|{
 if|if
 condition|(
-name|pipelineName
+name|pipelineID
 operator|==
 literal|null
 condition|)
@@ -1536,7 +1558,7 @@ literal|" pipelineName:{}"
 argument_list|,
 name|replicationType
 argument_list|,
-name|pipelineName
+name|pipelineID
 argument_list|)
 expr_stmt|;
 return|return
@@ -1544,7 +1566,7 @@ name|manager
 operator|.
 name|getPipeline
 argument_list|(
-name|pipelineName
+name|pipelineID
 argument_list|)
 return|;
 block|}
@@ -1588,7 +1610,7 @@ literal|"Finalizing pipeline. pipelineID: {}"
 argument_list|,
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1655,7 +1677,7 @@ name|getMatchingContainerIDsByPipeline
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1688,7 +1710,7 @@ literal|"Closing pipeline. pipelineID: {}"
 argument_list|,
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1732,7 +1754,7 @@ literal|"Closing pipeline. pipelineID: {}"
 argument_list|,
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1748,7 +1770,7 @@ name|getMatchingContainerIDsByPipeline
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1793,7 +1815,7 @@ name|getMatchingContainerIDsByPipeline
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1819,7 +1841,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * list members in the pipeline .    */
-DECL|method|getDatanodes (ReplicationType replicationType, String pipelineID)
+DECL|method|getDatanodes (ReplicationType replicationType, PipelineID pipelineID)
 specifier|public
 name|List
 argument_list|<
@@ -1830,7 +1852,7 @@ parameter_list|(
 name|ReplicationType
 name|replicationType
 parameter_list|,
-name|String
+name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
@@ -1872,7 +1894,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Update the datanodes in the list of the pipeline.    */
-DECL|method|updateDatanodes (ReplicationType replicationType, String pipelineID, List<DatanodeDetails> newDatanodes)
+DECL|method|updateDatanodes (ReplicationType replicationType, PipelineID pipelineID, List<DatanodeDetails> newDatanodes)
 specifier|public
 name|void
 name|updateDatanodes
@@ -1880,7 +1902,7 @@ parameter_list|(
 name|ReplicationType
 name|replicationType
 parameter_list|,
-name|String
+name|PipelineID
 name|pipelineID
 parameter_list|,
 name|List
@@ -2072,7 +2094,7 @@ literal|"event: %s."
 argument_list|,
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|pipeline

@@ -427,6 +427,11 @@ name|info
 operator|.
 name|getReplicationType
 argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getPipelineID
+argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;

@@ -601,7 +601,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -712,7 +712,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -750,7 +750,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|ratisContainer1
@@ -857,7 +857,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -951,7 +951,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|ratisContainer2

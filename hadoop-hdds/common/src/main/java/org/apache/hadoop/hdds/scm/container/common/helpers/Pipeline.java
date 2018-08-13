@@ -399,15 +399,13 @@ operator|.
 name|ReplicationFactor
 name|factor
 decl_stmt|;
-DECL|field|name
+DECL|field|id
 specifier|private
-name|String
-name|name
+name|PipelineID
+name|id
 decl_stmt|;
-comment|// TODO: change to long based id
-comment|//private long id;
-comment|/**    * Constructs a new pipeline data structure.    *    * @param leaderID       -  Leader datanode id    * @param lifeCycleState  - Pipeline State    * @param replicationType - Replication protocol    * @param replicationFactor - replication count on datanodes    * @param name  - pipelineName    */
-DECL|method|Pipeline (String leaderID, HddsProtos.LifeCycleState lifeCycleState, HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor replicationFactor, String name)
+comment|/**    * Constructs a new pipeline data structure.    *    * @param leaderID       -  Leader datanode id    * @param lifeCycleState  - Pipeline State    * @param replicationType - Replication protocol    * @param replicationFactor - replication count on datanodes    * @param id  - pipeline ID    */
+DECL|method|Pipeline (String leaderID, HddsProtos.LifeCycleState lifeCycleState, HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor replicationFactor, PipelineID id)
 specifier|public
 name|Pipeline
 parameter_list|(
@@ -429,8 +427,8 @@ operator|.
 name|ReplicationFactor
 name|replicationFactor
 parameter_list|,
-name|String
-name|name
+name|PipelineID
+name|id
 parameter_list|)
 block|{
 name|this
@@ -459,9 +457,9 @@ name|replicationFactor
 expr_stmt|;
 name|this
 operator|.
-name|name
+name|id
 operator|=
-name|name
+name|id
 expr_stmt|;
 name|datanodes
 operator|=
@@ -517,10 +515,15 @@ operator|.
 name|getFactor
 argument_list|()
 argument_list|,
+name|PipelineID
+operator|.
+name|getFromProtobuf
+argument_list|(
 name|pipelineProto
 operator|.
-name|getName
+name|getId
 argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 for|for
@@ -785,10 +788,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|this
-operator|.
-name|getLifeCycleState
-argument_list|()
+name|lifeCycleState
 operator|!=
 literal|null
 condition|)
@@ -797,19 +797,13 @@ name|builder
 operator|.
 name|setState
 argument_list|(
-name|this
-operator|.
-name|getLifeCycleState
-argument_list|()
+name|lifeCycleState
 argument_list|)
 expr_stmt|;
 block|}
 if|if
 condition|(
-name|this
-operator|.
-name|getType
-argument_list|()
+name|type
 operator|!=
 literal|null
 condition|)
@@ -818,19 +812,13 @@ name|builder
 operator|.
 name|setType
 argument_list|(
-name|this
-operator|.
-name|getType
-argument_list|()
+name|type
 argument_list|)
 expr_stmt|;
 block|}
 if|if
 condition|(
-name|this
-operator|.
-name|getFactor
-argument_list|()
+name|factor
 operator|!=
 literal|null
 condition|)
@@ -839,9 +827,24 @@ name|builder
 operator|.
 name|setFactor
 argument_list|(
-name|this
+name|factor
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|id
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
 operator|.
-name|getFactor
+name|setId
+argument_list|(
+name|id
+operator|.
+name|getProtobuf
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -883,15 +886,15 @@ operator|=
 name|nextState
 expr_stmt|;
 block|}
-comment|/**    * Gets the pipeline Name.    *    * @return - Name of the pipeline    */
-DECL|method|getPipelineName ()
+comment|/**    * Gets the pipeline id.    *    * @return - Id of the pipeline    */
+DECL|method|getId ()
 specifier|public
-name|String
-name|getPipelineName
+name|PipelineID
+name|getId
 parameter_list|()
 block|{
 return|return
-name|name
+name|id
 return|;
 block|}
 comment|/**    * Returns the type.    *    * @return type - Standalone, Ratis, Chained.    */
@@ -971,13 +974,12 @@ name|b
 operator|.
 name|append
 argument_list|(
-literal|" name:"
+literal|" id:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|getPipelineName
-argument_list|()
+name|id
 argument_list|)
 expr_stmt|;
 if|if

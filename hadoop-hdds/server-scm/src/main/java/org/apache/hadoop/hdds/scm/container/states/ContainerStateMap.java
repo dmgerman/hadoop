@@ -138,6 +138,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|exceptions
 operator|.
 name|SCMException
@@ -448,7 +470,7 @@ specifier|private
 specifier|final
 name|ContainerAttribute
 argument_list|<
-name|String
+name|PipelineID
 argument_list|>
 name|openPipelineMap
 decl_stmt|;
@@ -730,7 +752,7 @@ name|insert
 argument_list|(
 name|info
 operator|.
-name|getPipelineName
+name|getPipelineID
 argument_list|()
 argument_list|,
 name|id
@@ -1423,7 +1445,7 @@ name|remove
 argument_list|(
 name|info
 operator|.
-name|getPipelineName
+name|getPipelineID
 argument_list|()
 argument_list|,
 name|id
@@ -1511,8 +1533,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Returns Open containers in the SCM by the Pipeline    *    * @param pipeline - Pipeline name.    * @return NavigableSet<ContainerID>    */
-DECL|method|getOpenContainerIDsByPipeline (String pipeline)
+comment|/**    * Returns Open containers in the SCM by the Pipeline    *    * @param pipelineID - Pipeline id.    * @return NavigableSet<ContainerID>    */
+DECL|method|getOpenContainerIDsByPipeline ( PipelineID pipelineID)
 specifier|public
 name|NavigableSet
 argument_list|<
@@ -1520,15 +1542,15 @@ name|ContainerID
 argument_list|>
 name|getOpenContainerIDsByPipeline
 parameter_list|(
-name|String
-name|pipeline
+name|PipelineID
+name|pipelineID
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|pipeline
+name|pipelineID
 argument_list|)
 expr_stmt|;
 try|try
@@ -1547,7 +1569,7 @@ name|openPipelineMap
 operator|.
 name|getCollection
 argument_list|(
-name|pipeline
+name|pipelineID
 argument_list|)
 return|;
 block|}

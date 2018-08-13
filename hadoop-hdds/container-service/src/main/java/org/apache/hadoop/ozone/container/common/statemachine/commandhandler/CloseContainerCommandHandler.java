@@ -344,6 +344,16 @@ argument_list|()
 expr_stmt|;
 name|HddsProtos
 operator|.
+name|PipelineID
+name|pipelineID
+init|=
+name|closeContainerProto
+operator|.
+name|getPipelineID
+argument_list|()
+decl_stmt|;
+name|HddsProtos
+operator|.
 name|ReplicationType
 name|replicationType
 init|=
@@ -436,6 +446,8 @@ name|build
 argument_list|()
 argument_list|,
 name|replicationType
+argument_list|,
+name|pipelineID
 argument_list|)
 expr_stmt|;
 name|cmdExecuted

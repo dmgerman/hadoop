@@ -152,6 +152,28 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -234,7 +256,7 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|Pipeline
+name|PipelineID
 argument_list|>
 name|activePipelines
 decl_stmt|;
@@ -243,7 +265,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|String
+name|PipelineID
 argument_list|,
 name|Pipeline
 argument_list|>
@@ -338,7 +360,7 @@ literal|"replicationType:{} replicationFactor:{}"
 argument_list|,
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|replicationType
@@ -374,16 +396,16 @@ name|pipeline
 return|;
 block|}
 block|}
-comment|/**    * This function to get pipeline with given pipeline name.    *    * @param pipelineName    * @return a Pipeline.    */
-DECL|method|getPipeline (String pipelineName)
+comment|/**    * This function to get pipeline with given pipeline name.    *    * @param id    * @return a Pipeline.    */
+DECL|method|getPipeline (PipelineID id)
 specifier|public
 specifier|synchronized
 specifier|final
 name|Pipeline
 name|getPipeline
 parameter_list|(
-name|String
-name|pipelineName
+name|PipelineID
+name|id
 parameter_list|)
 block|{
 name|Pipeline
@@ -398,7 +420,7 @@ name|pipelineMap
 operator|.
 name|containsKey
 argument_list|(
-name|pipelineName
+name|id
 argument_list|)
 condition|)
 block|{
@@ -408,7 +430,7 @@ name|pipelineMap
 operator|.
 name|get
 argument_list|(
-name|pipelineName
+name|id
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -417,7 +439,7 @@ name|debug
 argument_list|(
 literal|"Returning pipeline for pipelineName:{}"
 argument_list|,
-name|pipelineName
+name|id
 argument_list|)
 expr_stmt|;
 return|return
@@ -432,7 +454,7 @@ name|debug
 argument_list|(
 literal|"Unable to find pipeline for pipelineName:{}"
 argument_list|,
-name|pipelineName
+name|id
 argument_list|)
 expr_stmt|;
 block|}
@@ -570,8 +592,8 @@ argument_list|()
 control|)
 block|{
 comment|// Just walk the list in a circular way.
-name|Pipeline
-name|temp
+name|PipelineID
+name|id
 init|=
 name|activePipelines
 operator|.
@@ -584,6 +606,16 @@ condition|?
 name|nextIndex
 else|:
 name|startIndex
+argument_list|)
+decl_stmt|;
+name|Pipeline
+name|temp
+init|=
+name|pipelineMap
+operator|.
+name|get
+argument_list|(
+name|id
 argument_list|)
 decl_stmt|;
 comment|// if we find an operational pipeline just return that.
@@ -689,7 +721,7 @@ literal|"replicationType:{} replicationFactor:{}"
 argument_list|,
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|replicationType
@@ -702,6 +734,9 @@ operator|.
 name|add
 argument_list|(
 name|pipeline
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|pipelineMap
@@ -710,7 +745,7 @@ name|put
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|pipeline
@@ -744,6 +779,9 @@ operator|.
 name|remove
 argument_list|(
 name|pipeline
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -763,7 +801,7 @@ name|remove
 argument_list|(
 name|pipeline
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -776,7 +814,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * list members in the pipeline .    * @return the datanode    */
-DECL|method|getMembers (String pipelineID)
+DECL|method|getMembers (PipelineID pipelineID)
 specifier|public
 specifier|abstract
 name|List
@@ -785,20 +823,20 @@ name|DatanodeDetails
 argument_list|>
 name|getMembers
 parameter_list|(
-name|String
+name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update the datanode list of the pipeline.    */
-DECL|method|updatePipeline (String pipelineID, List<DatanodeDetails> newDatanodes)
+DECL|method|updatePipeline (PipelineID pipelineID, List<DatanodeDetails> newDatanodes)
 specifier|public
 specifier|abstract
 name|void
 name|updatePipeline
 parameter_list|(
-name|String
+name|PipelineID
 name|pipelineID
 parameter_list|,
 name|List

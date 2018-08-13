@@ -547,7 +547,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -667,7 +667,7 @@ name|assertEquals
 argument_list|(
 name|p
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|,
 name|ratisContainer
@@ -675,7 +675,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 argument_list|)
@@ -749,7 +749,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getPipelineName
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;

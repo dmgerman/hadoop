@@ -41,6 +41,8 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+operator|.
+name|ContainerCommandRequestProto
 import|;
 end_import
 
@@ -111,14 +113,17 @@ name|getServerType
 parameter_list|()
 function_decl|;
 comment|/**    * submits a containerRequest to be performed by the replication pipeline.    * @param request ContainerCommandRequest    */
-DECL|method|submitRequest (ContainerProtos.ContainerCommandRequestProto request)
+DECL|method|submitRequest (ContainerCommandRequestProto request, HddsProtos.PipelineID pipelineID)
 name|void
 name|submitRequest
 parameter_list|(
-name|ContainerProtos
-operator|.
 name|ContainerCommandRequestProto
 name|request
+parameter_list|,
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
 parameter_list|)
 throws|throws
 name|IOException

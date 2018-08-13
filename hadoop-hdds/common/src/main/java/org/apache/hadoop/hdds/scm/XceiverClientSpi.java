@@ -388,21 +388,15 @@ name|ExecutionException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Create a pipeline.    *    * @param pipelineID - Name of the pipeline.    * @param datanodes - Datanodes    */
-DECL|method|createPipeline (String pipelineID, List<DatanodeDetails> datanodes)
+comment|/**    * Create a pipeline.    *    * @param pipeline -  pipeline to be created.    */
+DECL|method|createPipeline (Pipeline pipeline)
 specifier|public
 specifier|abstract
 name|void
 name|createPipeline
 parameter_list|(
-name|String
-name|pipelineID
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|datanodes
+name|Pipeline
+name|pipeline
 parameter_list|)
 throws|throws
 name|IOException
