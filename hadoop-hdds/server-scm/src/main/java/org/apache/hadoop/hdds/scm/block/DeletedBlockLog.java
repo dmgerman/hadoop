@@ -124,9 +124,14 @@ name|DeletedBlockLog
 extends|extends
 name|Closeable
 block|{
-comment|/**    * Scan entire log once and returns TXs to DatanodeDeletedBlockTransactions.    * Once DatanodeDeletedBlockTransactions is full, the scan behavior will    * stop.    * @param transactions a list of TXs will be set into.    * @throws IOException    */
+comment|/**    * Scan entire log once and returns TXs to DatanodeDeletedBlockTransactions.    * Once DatanodeDeletedBlockTransactions is full, the scan behavior will    * stop.    * @param transactions a list of TXs will be set into.    * @return Mapping from containerId to latest transactionId for the container.    * @throws IOException    */
 DECL|method|getTransactions (DatanodeDeletedBlockTransactions transactions)
-name|void
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
 name|getTransactions
 parameter_list|(
 name|DatanodeDeletedBlockTransactions
@@ -192,14 +197,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Creates block deletion transactions for a set of containers,    * add into the log and persist them atomically. An object key    * might be stored in multiple containers and multiple blocks,    * this API ensures that these updates are done in atomic manner    * so if any of them fails, the entire operation fails without    * any updates to the log. Note, this doesn't mean to create only    * one transaction, it creates multiple transactions (depends on the    * number of containers) together (on success) or non (on failure).    *    * @param containerBlocksMap a map of containerBlocks.    * @return Mapping from containerId to latest transactionId for the container.    * @throws IOException    */
+comment|/**    * Creates block deletion transactions for a set of containers,    * add into the log and persist them atomically. An object key    * might be stored in multiple containers and multiple blocks,    * this API ensures that these updates are done in atomic manner    * so if any of them fails, the entire operation fails without    * any updates to the log. Note, this doesn't mean to create only    * one transaction, it creates multiple transactions (depends on the    * number of containers) together (on success) or non (on failure).    *    * @param containerBlocksMap a map of containerBlocks.    * @throws IOException    */
 DECL|method|addTransactions (Map<Long, List<Long>> containerBlocksMap)
-name|Map
-argument_list|<
-name|Long
-argument_list|,
-name|Long
-argument_list|>
+name|void
 name|addTransactions
 parameter_list|(
 name|Map

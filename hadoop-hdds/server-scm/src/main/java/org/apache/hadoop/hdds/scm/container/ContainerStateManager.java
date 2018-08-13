@@ -474,6 +474,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|NavigableSet
 import|;
 end_import
@@ -1380,18 +1390,38 @@ name|info
 argument_list|)
 return|;
 block|}
-comment|/**    * Update deleteTransactionId for a container.    *    * @param containerID ContainerID of the container whose delete    *                    transactionId needs to be updated.    * @param transactionId latest transactionId to be updated for the container    */
-DECL|method|updateDeleteTransactionId (Long containerID, long transactionId)
+comment|/**    * Update deleteTransactionId for a container.    *    * @param deleteTransactionMap maps containerId to its new    *                             deleteTransactionID    */
+DECL|method|updateDeleteTransactionId (Map<Long, Long> deleteTransactionMap)
 specifier|public
 name|void
 name|updateDeleteTransactionId
 parameter_list|(
+name|Map
+argument_list|<
 name|Long
-name|containerID
-parameter_list|,
-name|long
-name|transactionId
+argument_list|,
+name|Long
+argument_list|>
+name|deleteTransactionMap
 parameter_list|)
+block|{
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|entry
+range|:
+name|deleteTransactionMap
+operator|.
+name|entrySet
+argument_list|()
+control|)
 block|{
 name|containers
 operator|.
@@ -1404,15 +1434,22 @@ name|ContainerID
 operator|.
 name|valueof
 argument_list|(
-name|containerID
+name|entry
+operator|.
+name|getKey
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
 name|updateDeleteTransactionId
 argument_list|(
-name|transactionId
+name|entry
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Return a container matching the attributes specified.    *    * @param size - Space needed in the Container.    * @param owner - Owner of the container - A specific nameservice.    * @param type - Replication Type {StandAlone, Ratis}    * @param factor - Replication Factor {ONE, THREE}    * @param state - State of the Container-- {Open, Allocated etc.}    * @return ContainerInfo, null if there is no match found.    */
 DECL|method|getMatchingContainer (final long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)

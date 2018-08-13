@@ -934,6 +934,14 @@ argument_list|(
 name|containerData
 argument_list|)
 argument_list|)
+operator|.
+name|setDeleteTransactionId
+argument_list|(
+name|containerData
+operator|.
+name|getDeleteTransactionId
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|crBuilder
 operator|.

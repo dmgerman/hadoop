@@ -140,6 +140,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSUtil
@@ -342,9 +364,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|ConcurrentHashMap
+name|UUID
 import|;
 end_import
 
@@ -354,7 +374,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|UUID
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -409,6 +431,18 @@ operator|.
 name|stream
 operator|.
 name|Collectors
+import|;
+end_import
+
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|min
 import|;
 end_import
 
@@ -1224,23 +1258,21 @@ condition|(
 name|dnsWithCommittedTxn
 operator|==
 literal|null
-operator|||
-name|containerId
-operator|==
-literal|null
 condition|)
 block|{
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Transaction txId={} commit by dnId={} failed."
+literal|"Transaction txId={} commit by dnId={} for containerID={} "
 operator|+
-literal|" Corresponding entry not found."
+literal|"failed. Corresponding entry not found."
 argument_list|,
 name|txID
 argument_list|,
 name|dnID
+argument_list|,
+name|containerId
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1252,11 +1284,8 @@ argument_list|(
 name|dnID
 argument_list|)
 expr_stmt|;
-name|Collection
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|containerDnsDetails
+name|Pipeline
+name|pipeline
 init|=
 name|containerManager
 operator|.
@@ -1267,6 +1296,14 @@ argument_list|)
 operator|.
 name|getPipeline
 argument_list|()
+decl_stmt|;
+name|Collection
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|containerDnsDetails
+init|=
+name|pipeline
 operator|.
 name|getDatanodes
 argument_list|()
@@ -1275,17 +1312,29 @@ name|values
 argument_list|()
 decl_stmt|;
 comment|// The delete entry can be safely removed from the log if all the
-comment|// corresponding nodes commit the txn.
+comment|// corresponding nodes commit the txn. It is required to check that
+comment|// the nodes returned in the pipeline match the replication factor.
 if|if
 condition|(
+name|min
+argument_list|(
+name|containerDnsDetails
+operator|.
+name|size
+argument_list|()
+argument_list|,
 name|dnsWithCommittedTxn
 operator|.
 name|size
 argument_list|()
+argument_list|)
 operator|>=
-name|containerDnsDetails
+name|pipeline
 operator|.
-name|size
+name|getFactor
+argument_list|()
+operator|.
+name|getNumber
 argument_list|()
 condition|)
 block|{
@@ -1302,12 +1351,9 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|dnDetails
-lambda|->
-name|dnDetails
-operator|.
+name|DatanodeDetails
+operator|::
 name|getUuid
-argument_list|()
 argument_list|)
 operator|.
 name|collect
@@ -1673,17 +1719,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@inheritDoc}    *    * @param containerBlocksMap a map of containerBlocks.    * @return Mapping from containerId to latest transactionId for the container.    * @throws IOException    */
+comment|/**    * {@inheritDoc}    *    * @param containerBlocksMap a map of containerBlocks.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|addTransactions ( Map<Long, List<Long>> containerBlocksMap)
 specifier|public
-name|Map
-argument_list|<
-name|Long
-argument_list|,
-name|Long
-argument_list|>
+name|void
 name|addTransactions
 parameter_list|(
 name|Map
@@ -1705,19 +1746,6 @@ name|batch
 init|=
 operator|new
 name|BatchOperation
-argument_list|()
-decl_stmt|;
-name|Map
-argument_list|<
-name|Long
-argument_list|,
-name|Long
-argument_list|>
-name|deleteTransactionsMap
-init|=
-operator|new
-name|HashMap
-argument_list|<>
 argument_list|()
 decl_stmt|;
 name|lock
@@ -1786,18 +1814,6 @@ name|getValue
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|deleteTransactionsMap
-operator|.
-name|put
-argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
-argument_list|,
-name|currentLatestID
-argument_list|)
-expr_stmt|;
 name|batch
 operator|.
 name|put
@@ -1836,9 +1852,6 @@ argument_list|(
 name|batch
 argument_list|)
 expr_stmt|;
-return|return
-name|deleteTransactionsMap
-return|;
 block|}
 finally|finally
 block|{
@@ -1875,9 +1888,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getTransactions (DatanodeDeletedBlockTransactions transactions)
+DECL|method|getTransactions ( DatanodeDeletedBlockTransactions transactions)
 specifier|public
-name|void
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
 name|getTransactions
 parameter_list|(
 name|DatanodeDeletedBlockTransactions
@@ -1893,6 +1911,19 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|deleteTransactionMap
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|deletedStore
 operator|.
 name|iterate
@@ -1967,6 +1998,21 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
+name|deleteTransactionMap
+operator|.
+name|put
+argument_list|(
+name|block
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|block
+operator|.
+name|getTxID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|transactionToDNsCommitMap
 operator|.
 name|putIfAbsent
@@ -1998,6 +2044,9 @@ return|;
 block|}
 argument_list|)
 expr_stmt|;
+return|return
+name|deleteTransactionMap
+return|;
 block|}
 finally|finally
 block|{
