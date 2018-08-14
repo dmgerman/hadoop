@@ -1454,7 +1454,7 @@ name|DELETE
 case|:
 name|writeBatch
 operator|.
-name|remove
+name|delete
 argument_list|(
 name|opt
 operator|.
