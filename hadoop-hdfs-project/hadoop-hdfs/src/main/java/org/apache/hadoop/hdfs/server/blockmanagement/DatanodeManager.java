@@ -6531,6 +6531,8 @@ parameter_list|,
 name|DatanodeDescriptor
 name|nodeinfo
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|BlockInfo
 index|[]
@@ -6583,11 +6585,25 @@ operator|.
 name|getUnderConstructionFeature
 argument_list|()
 decl_stmt|;
-assert|assert
+if|if
+condition|(
 name|uc
-operator|!=
+operator|==
 literal|null
-assert|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Recovery block "
+operator|+
+name|b
+operator|+
+literal|"where it is not under construction."
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|DatanodeStorageInfo
 index|[]
