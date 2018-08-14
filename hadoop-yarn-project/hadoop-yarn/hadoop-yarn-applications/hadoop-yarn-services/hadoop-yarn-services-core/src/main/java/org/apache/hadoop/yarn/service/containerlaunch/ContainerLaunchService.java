@@ -858,6 +858,11 @@ specifier|private
 name|String
 name|launchCommand
 decl_stmt|;
+DECL|field|runPrivilegedContainer
+specifier|private
+name|boolean
+name|runPrivilegedContainer
+decl_stmt|;
 DECL|method|ComponentLaunchContext (String name, String serviceVersion)
 specifier|public
 name|ComponentLaunchContext
@@ -956,6 +961,16 @@ return|return
 name|launchCommand
 return|;
 block|}
+DECL|method|isRunPrivilegedContainer ()
+specifier|public
+name|boolean
+name|isRunPrivilegedContainer
+parameter_list|()
+block|{
+return|return
+name|runPrivilegedContainer
+return|;
+block|}
 DECL|method|setArtifact (Artifact artifact)
 specifier|public
 name|ComponentLaunchContext
@@ -1022,6 +1037,25 @@ operator|.
 name|launchCommand
 operator|=
 name|launchCommand
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setRunPrivilegedContainer ( boolean runPrivilegedContainer)
+specifier|public
+name|ComponentLaunchContext
+name|setRunPrivilegedContainer
+parameter_list|(
+name|boolean
+name|runPrivilegedContainer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|runPrivilegedContainer
+operator|=
+name|runPrivilegedContainer
 expr_stmt|;
 return|return
 name|this

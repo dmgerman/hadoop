@@ -4465,6 +4465,14 @@ operator|.
 name|getLaunchCommand
 argument_list|()
 argument_list|)
+operator|.
+name|setRunPrivilegedContainer
+argument_list|(
+name|compSpec
+operator|.
+name|getRunPrivilegedContainer
+argument_list|()
+argument_list|)
 expr_stmt|;
 return|return
 name|launchContext

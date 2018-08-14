@@ -74,6 +74,24 @@ name|yarn
 operator|.
 name|service
 operator|.
+name|containerlaunch
+operator|.
+name|ContainerLaunchService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
 name|provider
 operator|.
 name|AbstractProviderService
@@ -136,7 +154,7 @@ name|AbstractProviderService
 block|{
 annotation|@
 name|Override
-DECL|method|processArtifact (AbstractLauncher launcher, ComponentInstance compInstance, SliderFileSystem fileSystem, Service service)
+DECL|method|processArtifact (AbstractLauncher launcher, ComponentInstance compInstance, SliderFileSystem fileSystem, Service service, ContainerLaunchService.ComponentLaunchContext compLaunchCtx)
 specifier|public
 name|void
 name|processArtifact
@@ -152,6 +170,11 @@ name|fileSystem
 parameter_list|,
 name|Service
 name|service
+parameter_list|,
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchCtx
 parameter_list|)
 throws|throws
 name|IOException

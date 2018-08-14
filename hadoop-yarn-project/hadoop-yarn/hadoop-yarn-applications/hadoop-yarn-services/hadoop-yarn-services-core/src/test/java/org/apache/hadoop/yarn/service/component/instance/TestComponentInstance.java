@@ -783,9 +783,9 @@ name|ContainerState
 operator|.
 name|READY
 argument_list|,
-name|instance
+name|component
 operator|.
-name|getCompSpec
+name|getComponentSpec
 argument_list|()
 operator|.
 name|getContainer

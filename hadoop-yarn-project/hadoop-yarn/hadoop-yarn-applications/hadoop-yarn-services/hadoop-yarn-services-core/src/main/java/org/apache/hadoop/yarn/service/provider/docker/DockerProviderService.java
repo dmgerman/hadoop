@@ -140,26 +140,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Component
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Service
 import|;
 end_import
@@ -302,7 +282,9 @@ name|AbstractProviderService
 implements|implements
 name|DockerKeys
 block|{
-DECL|method|processArtifact (AbstractLauncher launcher, ComponentInstance compInstance, SliderFileSystem fileSystem, Service service)
+annotation|@
+name|Override
+DECL|method|processArtifact (AbstractLauncher launcher, ComponentInstance compInstance, SliderFileSystem fileSystem, Service service, ContainerLaunchService.ComponentLaunchContext compLaunchCtx)
 specifier|public
 name|void
 name|processArtifact
@@ -318,6 +300,11 @@ name|fileSystem
 parameter_list|,
 name|Service
 name|service
+parameter_list|,
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchCtx
 parameter_list|)
 throws|throws
 name|IOException
@@ -333,10 +320,7 @@ name|launcher
 operator|.
 name|setDockerImage
 argument_list|(
-name|compInstance
-operator|.
-name|getCompSpec
-argument_list|()
+name|compLaunchCtx
 operator|.
 name|getArtifact
 argument_list|()
@@ -349,10 +333,7 @@ name|launcher
 operator|.
 name|setDockerNetwork
 argument_list|(
-name|compInstance
-operator|.
-name|getCompSpec
-argument_list|()
+name|compLaunchCtx
 operator|.
 name|getConfiguration
 argument_list|()
@@ -377,24 +358,23 @@ name|launcher
 operator|.
 name|setRunPrivilegedContainer
 argument_list|(
-name|compInstance
+name|compLaunchCtx
 operator|.
-name|getCompSpec
-argument_list|()
-operator|.
-name|getRunPrivilegedContainer
+name|isRunPrivilegedContainer
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check if system is default to disable docker override or    * user requested a Docker container with ENTRY_POINT support.    *    * @param component - YARN Service component    * @return true if Docker launch command override is disabled    */
-DECL|method|checkUseEntryPoint (Component component)
+comment|/**    * Check if system is default to disable docker override or    * user requested a Docker container with ENTRY_POINT support.    *    * @param compLaunchContext - launch context for the component.    * @return true if Docker launch command override is disabled    */
+DECL|method|checkUseEntryPoint ( ContainerLaunchService.ComponentLaunchContext compLaunchContext)
 specifier|private
 name|boolean
 name|checkUseEntryPoint
 parameter_list|(
-name|Component
-name|component
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchContext
 parameter_list|)
 block|{
 name|boolean
@@ -416,7 +396,7 @@ name|String
 name|overrideDisableValue
 init|=
 operator|(
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()
@@ -429,7 +409,7 @@ operator|!=
 literal|null
 operator|)
 condition|?
-name|component
+name|compLaunchContext
 operator|.
 name|getConfiguration
 argument_list|()
@@ -502,23 +482,12 @@ name|IOException
 throws|,
 name|SliderException
 block|{
-name|Component
-name|component
-init|=
-name|instance
-operator|.
-name|getComponent
-argument_list|()
-operator|.
-name|getComponentSpec
-argument_list|()
-decl_stmt|;
 name|boolean
 name|useEntryPoint
 init|=
 name|checkUseEntryPoint
 argument_list|(
-name|component
+name|compLaunchContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -529,7 +498,7 @@ block|{
 name|String
 name|launchCommand
 init|=
-name|component
+name|compLaunchContext
 operator|.
 name|getLaunchCommand
 argument_list|()

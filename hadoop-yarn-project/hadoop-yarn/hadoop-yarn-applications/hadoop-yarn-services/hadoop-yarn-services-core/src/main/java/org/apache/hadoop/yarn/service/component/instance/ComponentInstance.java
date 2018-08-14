@@ -3168,7 +3168,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|getCompSpec ()
-specifier|public
+specifier|private
 name|org
 operator|.
 name|apache

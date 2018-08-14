@@ -519,7 +519,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|processArtifact (AbstractLauncher launcher, ComponentInstance compInstance, SliderFileSystem fileSystem, Service service)
+DECL|method|processArtifact (AbstractLauncher launcher, ComponentInstance compInstance, SliderFileSystem fileSystem, Service service, ContainerLaunchService.ComponentLaunchContext compLaunchCtx)
 specifier|public
 specifier|abstract
 name|void
@@ -536,6 +536,11 @@ name|fileSystem
 parameter_list|,
 name|Service
 name|service
+parameter_list|,
+name|ContainerLaunchService
+operator|.
+name|ComponentLaunchContext
+name|compLaunchCtx
 parameter_list|)
 throws|throws
 name|IOException
@@ -1038,6 +1043,8 @@ argument_list|,
 name|fileSystem
 argument_list|,
 name|service
+argument_list|,
+name|compLaunchContext
 argument_list|)
 expr_stmt|;
 name|ServiceContext
