@@ -931,6 +931,36 @@ break|break;
 block|}
 if|if
 condition|(
+name|line
+operator|.
+name|startsWith
+argument_list|(
+literal|"Access denied for user"
+argument_list|)
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Failed to open path '"
+operator|+
+name|dir
+operator|+
+literal|"': Permission denied"
+argument_list|)
+expr_stmt|;
+name|errCode
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+return|return
+name|errCode
+return|;
+block|}
+if|if
+condition|(
 operator|(
 name|line
 operator|.
@@ -944,6 +974,15 @@ operator|.
 name|startsWith
 argument_list|(
 literal|"FSCK started by"
+argument_list|)
+operator|)
+operator|||
+operator|(
+name|line
+operator|.
+name|startsWith
+argument_list|(
+literal|"FSCK ended at"
 argument_list|)
 operator|)
 operator|||
