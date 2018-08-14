@@ -226,6 +226,9 @@ name|DUPLICATE_DATANODE
 block|,
 DECL|enumConstant|NO_SUCH_DATANODE
 name|NO_SUCH_DATANODE
+block|,
+DECL|enumConstant|NO_REPLICA_FOUND
+name|NO_REPLICA_FOUND
 block|}
 block|}
 end_class

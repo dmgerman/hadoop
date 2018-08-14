@@ -888,7 +888,7 @@ literal|" in replica map."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_TO_FIND_CONTAINER
+name|NO_REPLICA_FOUND
 argument_list|)
 throw|;
 block|}
