@@ -132,6 +132,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|util
+operator|.
+name|MBeans
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Credentials
@@ -149,6 +165,20 @@ operator|.
 name|security
 operator|.
 name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
 import|;
 end_import
 
@@ -1146,6 +1176,8 @@ name|EventHandler
 argument_list|<
 name|NodeManagerEvent
 argument_list|>
+implements|,
+name|NodeManagerMXBean
 block|{
 comment|/**    * Node manager return status codes.    */
 DECL|enum|NodeManagerStatus
@@ -2952,6 +2984,9 @@ name|e
 argument_list|)
 throw|;
 block|}
+name|registerMXBean
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -4748,6 +4783,40 @@ literal|". Ignoring."
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Register NodeManagerMXBean.    */
+DECL|method|registerMXBean ()
+specifier|private
+name|void
+name|registerMXBean
+parameter_list|()
+block|{
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"NodeManager"
+argument_list|,
+literal|"NodeManager"
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isSecurityEnabled ()
+specifier|public
+name|boolean
+name|isSecurityEnabled
+parameter_list|()
+block|{
+return|return
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+return|;
 block|}
 comment|// For testing
 DECL|method|createNewNodeManager ()

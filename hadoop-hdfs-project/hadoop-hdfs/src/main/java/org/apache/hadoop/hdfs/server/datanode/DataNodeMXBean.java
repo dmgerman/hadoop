@@ -193,6 +193,12 @@ name|String
 name|getSlowDisks
 parameter_list|()
 function_decl|;
+comment|/**    * Gets if security is enabled.    *    * @return true, if security is enabled.    */
+DECL|method|isSecurityEnabled ()
+name|boolean
+name|isSecurityEnabled
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

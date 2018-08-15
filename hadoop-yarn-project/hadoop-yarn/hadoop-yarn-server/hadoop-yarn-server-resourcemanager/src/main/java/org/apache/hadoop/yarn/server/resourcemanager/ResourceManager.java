@@ -236,6 +236,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|util
+operator|.
+name|MBeans
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -1938,6 +1954,8 @@ extends|extends
 name|CompositeService
 implements|implements
 name|Recoverable
+implements|,
+name|ResourceManagerMXBean
 block|{
 comment|/**    * Priority of the ResourceManager shutdown hook.    */
 DECL|field|SHUTDOWN_HOOK_PRIORITY
@@ -2622,6 +2640,9 @@ name|setSystemMetricsPublisher
 argument_list|(
 name|systemMetricsPublisher
 argument_list|)
+expr_stmt|;
+name|registerMXBean
+argument_list|()
 expr_stmt|;
 name|super
 operator|.
@@ -8116,6 +8137,40 @@ name|this
 operator|.
 name|rmContext
 argument_list|)
+return|;
+block|}
+comment|/**    * Register ResourceManagerMXBean.    */
+DECL|method|registerMXBean ()
+specifier|private
+name|void
+name|registerMXBean
+parameter_list|()
+block|{
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"ResourceManager"
+argument_list|,
+literal|"ResourceManager"
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isSecurityEnabled ()
+specifier|public
+name|boolean
+name|isSecurityEnabled
+parameter_list|()
+block|{
+return|return
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
 return|;
 block|}
 block|}

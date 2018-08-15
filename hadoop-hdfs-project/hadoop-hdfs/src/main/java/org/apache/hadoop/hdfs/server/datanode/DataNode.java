@@ -15125,6 +15125,21 @@ literal|""
 return|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|isSecurityEnabled ()
+specifier|public
+name|boolean
+name|isSecurityEnabled
+parameter_list|()
+block|{
+return|return
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+return|;
+block|}
 DECL|method|refreshNamenodes (Configuration conf)
 specifier|public
 name|void
