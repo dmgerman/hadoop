@@ -1172,19 +1172,26 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// The log will appear after the state changed to closed in standalone,
+comment|// wait for the log to ensure the operation has been done.
 name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|isContainerClosed
+name|logCapturer
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
 argument_list|(
-name|cluster
-argument_list|,
+literal|"submitting CloseContainer request over STAND_ALONE server for"
+operator|+
+literal|" container "
+operator|+
 name|containerID
-argument_list|,
-name|datanodeDetails
 argument_list|)
 argument_list|,
 literal|500
@@ -1660,10 +1667,9 @@ name|getContainerData
 argument_list|()
 expr_stmt|;
 return|return
-operator|!
 name|containerData
 operator|.
-name|isOpen
+name|isClosed
 argument_list|()
 return|;
 block|}
