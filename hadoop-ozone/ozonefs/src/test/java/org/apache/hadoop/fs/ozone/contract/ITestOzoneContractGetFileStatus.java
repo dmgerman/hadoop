@@ -171,7 +171,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|info
