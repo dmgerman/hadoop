@@ -729,7 +729,7 @@ name|DEFAULT_IPC_SERVER_FACTORY_CLASS
 init|=
 literal|"org.apache.hadoop.yarn.factories.impl.pb.RpcServerFactoryPBImpl"
 decl_stmt|;
-comment|/** Factory to create serializeable records.*/
+comment|/** Factory to create serializable records.*/
 DECL|field|IPC_RECORD_FACTORY_CLASS
 specifier|public
 specifier|static
@@ -4114,7 +4114,7 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_NM_PORT
 decl_stmt|;
-comment|/** The actual bind address or the NM.*/
+comment|/** The actual bind address for the NM.*/
 DECL|field|NM_BIND_HOST
 specifier|public
 specifier|static
