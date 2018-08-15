@@ -338,7 +338,7 @@ else|else
 block|{
 comment|// at least one FS only returns false here, if that is the case
 comment|// warn but continue
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|warn
@@ -581,7 +581,7 @@ argument_list|,
 name|destFile
 argument_list|)
 decl_stmt|;
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|error

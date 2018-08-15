@@ -372,11 +372,11 @@ name|fileSystem
 return|;
 block|}
 comment|/**    * Get the log of the base class.    * @return a logger    */
-DECL|method|getLog ()
+DECL|method|getLogger ()
 specifier|public
 specifier|static
 name|Logger
-name|getLog
+name|getLogger
 parameter_list|()
 block|{
 return|return
@@ -825,7 +825,7 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|debug
@@ -1064,7 +1064,7 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|error

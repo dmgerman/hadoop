@@ -2572,7 +2572,7 @@ name|fileSizeKb
 operator|/
 literal|1024
 decl_stmt|;
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|info

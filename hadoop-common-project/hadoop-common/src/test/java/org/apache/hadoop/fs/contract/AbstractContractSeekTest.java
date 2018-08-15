@@ -664,7 +664,7 @@ argument_list|(
 name|smallSeekFile
 argument_list|)
 expr_stmt|;
-name|getLog
+name|getLogger
 argument_list|()
 operator|.
 name|debug
