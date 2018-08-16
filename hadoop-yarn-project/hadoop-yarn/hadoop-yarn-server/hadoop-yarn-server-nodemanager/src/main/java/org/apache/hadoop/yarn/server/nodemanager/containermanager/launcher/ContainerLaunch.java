@@ -10063,6 +10063,40 @@ name|FINAL_CONTAINER_TOKENS_FILE
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// delete symlinks because launch script will create symlinks again
+try|try
+block|{
+name|exec
+operator|.
+name|cleanupBeforeRelaunch
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+decl||
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"{} exec failed to cleanup"
+argument_list|,
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|deleteAsUser (Path path)
 specifier|private
