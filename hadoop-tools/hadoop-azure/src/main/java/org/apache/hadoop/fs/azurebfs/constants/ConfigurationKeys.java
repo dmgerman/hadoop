@@ -268,6 +268,15 @@ name|FS_AZURE_USER_AGENT_PREFIX_KEY
 init|=
 literal|"fs.azure.user.agent.prefix"
 decl_stmt|;
+DECL|field|FS_AZURE_SSL_CHANNEL_MODE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_SSL_CHANNEL_MODE_KEY
+init|=
+literal|"fs.azure.ssl.channel.mode"
+decl_stmt|;
 DECL|field|AZURE_KEY_ACCOUNT_KEYPROVIDER_PREFIX
 specifier|public
 specifier|static

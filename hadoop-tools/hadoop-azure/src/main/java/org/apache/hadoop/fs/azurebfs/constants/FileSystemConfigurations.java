@@ -48,6 +48,24 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|utils
+operator|.
+name|SSLSocketFactoryEx
+import|;
+end_import
+
 begin_comment
 comment|/**  * Responsible to keep all the Azure Blob File System related configurations.  */
 end_comment
@@ -285,6 +303,21 @@ name|boolean
 name|DEFAULT_ENABLE_FLUSH
 init|=
 literal|true
+decl_stmt|;
+DECL|field|DEFAULT_FS_AZURE_SSL_CHANNEL_MODE
+specifier|public
+specifier|static
+specifier|final
+name|SSLSocketFactoryEx
+operator|.
+name|SSLChannelMode
+name|DEFAULT_FS_AZURE_SSL_CHANNEL_MODE
+init|=
+name|SSLSocketFactoryEx
+operator|.
+name|SSLChannelMode
+operator|.
+name|Default
 decl_stmt|;
 DECL|method|FileSystemConfigurations ()
 specifier|private
