@@ -959,6 +959,24 @@ name|COMPLETE
 argument_list|)
 return|;
 block|}
+DECL|method|isUnderRecovery ()
+specifier|public
+name|boolean
+name|isUnderRecovery
+parameter_list|()
+block|{
+return|return
+name|getBlockUCState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|BlockUCState
+operator|.
+name|UNDER_RECOVERY
+argument_list|)
+return|;
+block|}
 DECL|method|isCompleteOrCommitted ()
 specifier|public
 specifier|final

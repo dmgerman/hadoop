@@ -5112,6 +5112,26 @@ return|return
 literal|false
 return|;
 comment|// already completed (e.g. by syncBlock)
+if|if
+condition|(
+name|lastBlock
+operator|.
+name|isUnderRecovery
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Commit or complete block "
+operator|+
+name|commitBlock
+operator|+
+literal|", whereas it is under recovery."
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|boolean
 name|committed

@@ -3403,6 +3403,14 @@ name|heartbeatsDisabledForTests
 init|=
 literal|false
 decl_stmt|;
+DECL|field|ibrDisabledForTests
+specifier|private
+specifier|volatile
+name|boolean
+name|ibrDisabledForTests
+init|=
+literal|false
+decl_stmt|;
 DECL|field|cacheReportsDisabledForTests
 specifier|private
 specifier|volatile
@@ -7943,6 +7951,34 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|setIBRDisabledForTest (boolean disabled)
+name|void
+name|setIBRDisabledForTest
+parameter_list|(
+name|boolean
+name|disabled
+parameter_list|)
+block|{
+name|this
+operator|.
+name|ibrDisabledForTests
+operator|=
+name|disabled
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|areIBRDisabledForTests ()
+name|boolean
+name|areIBRDisabledForTests
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|ibrDisabledForTests
+return|;
+block|}
 DECL|method|setCacheReportsDisabledForTest (boolean disabled)
 name|void
 name|setCacheReportsDisabledForTest
