@@ -3090,12 +3090,12 @@ operator|.
 name|getArguments
 argument_list|()
 decl_stmt|;
-comment|//This invocation of container-executor should use 13 arguments in a
+comment|//This invocation of container-executor should use 12 arguments in a
 comment|// specific order
 name|int
 name|expected
 init|=
-literal|13
+literal|12
 decl_stmt|;
 name|int
 name|counter
@@ -3301,21 +3301,6 @@ name|get
 argument_list|(
 name|counter
 operator|++
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|resourcesOptions
-argument_list|,
-name|args
-operator|.
-name|get
-argument_list|(
-operator|++
-name|counter
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -13411,7 +13396,7 @@ decl_stmt|;
 name|int
 name|expectedArgs
 init|=
-literal|13
+literal|12
 decl_stmt|;
 name|int
 name|argsCounter
@@ -13646,20 +13631,6 @@ name|argsCounter
 operator|++
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|resourcesOptions
-argument_list|,
-name|args
-operator|.
-name|get
-argument_list|(
-name|argsCounter
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|List
 argument_list|<
 name|String

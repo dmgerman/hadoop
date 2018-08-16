@@ -5547,16 +5547,6 @@ argument_list|(
 name|LOG_DIRS
 argument_list|)
 decl_stmt|;
-name|String
-name|resourcesOpts
-init|=
-name|ctx
-operator|.
-name|getExecutionAttribute
-argument_list|(
-name|RESOURCES_OPTIONS
-argument_list|)
-decl_stmt|;
 name|PrivilegedOperation
 name|launchOp
 init|=
@@ -5665,8 +5655,6 @@ name|logDirs
 argument_list|)
 argument_list|,
 name|commandFile
-argument_list|,
-name|resourcesOpts
 argument_list|)
 expr_stmt|;
 name|String
