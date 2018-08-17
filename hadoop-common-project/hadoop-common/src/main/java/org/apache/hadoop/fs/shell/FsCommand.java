@@ -373,7 +373,7 @@ name|factory
 operator|.
 name|registerCommands
 argument_list|(
-name|Touch
+name|TouchCommands
 operator|.
 name|class
 argument_list|)
