@@ -2168,7 +2168,11 @@ block|{
 DECL|field|LOG
 specifier|private
 specifier|final
-name|Log
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 name|LOG
 decl_stmt|;
 DECL|field|fireLatch
@@ -2244,11 +2248,15 @@ specifier|volatile
 name|Object
 name|returnValue
 decl_stmt|;
-DECL|method|DelayAnswer (Log log)
+DECL|method|DelayAnswer (org.slf4j.Logger log)
 specifier|public
 name|DelayAnswer
 parameter_list|(
-name|Log
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 name|log
 parameter_list|)
 block|{
@@ -2504,7 +2512,11 @@ decl_stmt|;
 DECL|field|log
 specifier|private
 specifier|final
-name|Log
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 name|log
 decl_stmt|;
 DECL|method|DelegateAnswer (Object delegate)
@@ -2523,11 +2535,15 @@ name|delegate
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DelegateAnswer (Log log, Object delegate)
+DECL|method|DelegateAnswer (org.slf4j.Logger log, Object delegate)
 specifier|public
 name|DelegateAnswer
 parameter_list|(
-name|Log
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 name|log
 parameter_list|,
 name|Object
