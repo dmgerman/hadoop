@@ -664,7 +664,7 @@ return|return
 name|providers
 return|;
 block|}
-DECL|method|doOp (ProviderCallable<T> op, int currPos)
+DECL|method|doOp (ProviderCallable<T> op, int currPos, boolean isIdempotent)
 specifier|private
 parameter_list|<
 name|T
@@ -680,6 +680,9 @@ name|op
 parameter_list|,
 name|int
 name|currPos
+parameter_list|,
+name|boolean
+name|isIdempotent
 parameter_list|)
 throws|throws
 name|IOException
@@ -837,7 +840,7 @@ literal|0
 argument_list|,
 name|numFailovers
 argument_list|,
-literal|false
+name|isIdempotent
 argument_list|)
 expr_stmt|;
 block|}
@@ -1125,6 +1128,8 @@ block|}
 operator|,
 name|nextIdx
 argument_list|()
+operator|,
+literal|false
 block|)
 function|;
 block|}
@@ -1183,6 +1188,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -1243,6 +1250,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -1487,6 +1496,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -1586,6 +1597,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -1685,6 +1698,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -1788,6 +1803,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1881,6 +1898,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -1939,6 +1958,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -1998,6 +2019,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -2062,6 +2085,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -2117,6 +2142,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -2172,6 +2199,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -2240,6 +2269,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -2307,6 +2338,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -2401,6 +2434,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2466,6 +2501,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|invalidateCache
@@ -2538,6 +2575,8 @@ block|}
 argument_list|,
 name|nextIdx
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|invalidateCache
