@@ -4350,7 +4350,7 @@ name|DEFAULT_NM_COLLECTOR_SERVICE_ADDRESS
 init|=
 literal|"0.0.0.0:"
 operator|+
-name|DEFAULT_NM_LOCALIZER_PORT
+name|DEFAULT_NM_COLLECTOR_SERVICE_PORT
 decl_stmt|;
 comment|/** Interval in between cache cleanups.*/
 DECL|field|NM_LOCALIZER_CACHE_CLEANUP_INTERVAL_MS
