@@ -290,7 +290,7 @@ name|HTML_TAIL
 init|=
 literal|"<hr />\n"
 operator|+
-literal|"<a href='http://hadoop.apache.org/core'>Hadoop</a>, "
+literal|"<a href='http://hadoop.apache.org'>Hadoop</a>, "
 operator|+
 name|Calendar
 operator|.
