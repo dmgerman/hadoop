@@ -62,6 +62,28 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|amazonaws
@@ -390,6 +412,14 @@ name|IS_DELETED
 init|=
 literal|"is_deleted"
 decl_stmt|;
+DECL|field|IS_AUTHORITATIVE
+specifier|static
+specifier|final
+name|String
+name|IS_AUTHORITATIVE
+init|=
+literal|"is_authoritative"
+decl_stmt|;
 comment|/** Table version field {@value} in version marker item. */
 annotation|@
 name|VisibleForTesting
@@ -495,10 +525,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Converts a DynamoDB item to a {@link PathMetadata}.    *    * @param item DynamoDB item to convert    * @return {@code item} converted to a {@link PathMetadata}    */
+comment|/**    * Converts a DynamoDB item to a {@link DDBPathMetadata}.    *    * @param item DynamoDB item to convert    * @return {@code item} converted to a {@link DDBPathMetadata}    */
 DECL|method|itemToPathMetadata (Item item, String username)
 specifier|static
-name|PathMetadata
+name|DDBPathMetadata
 name|itemToPathMetadata
 parameter_list|(
 name|Item
@@ -506,6 +536,35 @@ name|item
 parameter_list|,
 name|String
 name|username
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|itemToPathMetadata
+argument_list|(
+name|item
+argument_list|,
+name|username
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Converts a DynamoDB item to a {@link DDBPathMetadata}.    * Can ignore {@code IS_AUTHORITATIVE} flag if {@code ignoreIsAuthFlag} is    * true.    *    * @param item DynamoDB item to convert    * @param ignoreIsAuthFlag if true, ignore the authoritative flag on item    * @return {@code item} converted to a {@link DDBPathMetadata}    */
+DECL|method|itemToPathMetadata (Item item, String username, boolean ignoreIsAuthFlag)
+specifier|static
+name|DDBPathMetadata
+name|itemToPathMetadata
+parameter_list|(
+name|Item
+name|item
+parameter_list|,
+name|String
+name|username
+parameter_list|,
+name|boolean
+name|ignoreIsAuthFlag
 parameter_list|)
 throws|throws
 name|IOException
@@ -633,6 +692,11 @@ argument_list|(
 name|IS_DIR
 argument_list|)
 decl_stmt|;
+name|boolean
+name|isAuthoritativeDir
+init|=
+literal|false
+decl_stmt|;
 specifier|final
 name|FileStatus
 name|fileStatus
@@ -642,6 +706,29 @@ condition|(
 name|isDir
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|ignoreIsAuthFlag
+condition|)
+block|{
+name|isAuthoritativeDir
+operator|=
+name|item
+operator|.
+name|hasAttribute
+argument_list|(
+name|IS_AUTHORITATIVE
+argument_list|)
+operator|&&
+name|item
+operator|.
+name|getBoolean
+argument_list|(
+name|IS_AUTHORITATIVE
+argument_list|)
+expr_stmt|;
+block|}
 name|fileStatus
 operator|=
 name|DynamoDBMetadataStore
@@ -759,7 +846,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|PathMetadata
+name|DDBPathMetadata
 argument_list|(
 name|fileStatus
 argument_list|,
@@ -768,17 +855,41 @@ operator|.
 name|UNKNOWN
 argument_list|,
 name|isDeleted
+argument_list|,
+name|isAuthoritativeDir
 argument_list|)
 return|;
 block|}
-comment|/**    * Converts a {@link PathMetadata} to a DynamoDB item.    *    * @param meta {@link PathMetadata} to convert    * @return {@code meta} converted to DynamoDB item    */
-DECL|method|pathMetadataToItem (PathMetadata meta)
+comment|/**    * Converts a {@link DDBPathMetadata} to a DynamoDB item.    *    * @param meta {@link DDBPathMetadata} to convert    * @return {@code meta} converted to DynamoDB item    */
+DECL|method|pathMetadataToItem (DDBPathMetadata meta)
 specifier|static
 name|Item
 name|pathMetadataToItem
 parameter_list|(
-name|PathMetadata
+name|DDBPathMetadata
 name|meta
+parameter_list|)
+block|{
+return|return
+name|pathMetadataToItem
+argument_list|(
+name|meta
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Converts a {@link DDBPathMetadata} to a DynamoDB item.    *    * Can ignore {@code IS_AUTHORITATIVE} flag if {@code ignoreIsAuthFlag} is    * true.    *    * @param meta {@link DDBPathMetadata} to convert    * @param ignoreIsAuthFlag if true, ignore the authoritative flag on item    * @return {@code meta} converted to DynamoDB item    */
+DECL|method|pathMetadataToItem (DDBPathMetadata meta, boolean ignoreIsAuthFlag)
+specifier|static
+name|Item
+name|pathMetadataToItem
+parameter_list|(
+name|DDBPathMetadata
+name|meta
+parameter_list|,
+name|boolean
+name|ignoreIsAuthFlag
 parameter_list|)
 block|{
 name|Preconditions
@@ -833,6 +944,25 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|ignoreIsAuthFlag
+condition|)
+block|{
+name|item
+operator|.
+name|withBoolean
+argument_list|(
+name|IS_AUTHORITATIVE
+argument_list|,
+name|meta
+operator|.
+name|isAuthoritativeDir
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1035,8 +1165,8 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Converts a collection {@link PathMetadata} to a collection DynamoDB items.    *    * @see #pathMetadataToItem(PathMetadata)    */
-DECL|method|pathMetadataToItem (Collection<PathMetadata> metas)
+comment|/**    * Converts a collection {@link DDBPathMetadata} to a collection DynamoDB    * items.    *    * @see #pathMetadataToItem(DDBPathMetadata)    */
+DECL|method|pathMetadataToItem (Collection<DDBPathMetadata> metas)
 specifier|static
 name|Item
 index|[]
@@ -1044,7 +1174,7 @@ name|pathMetadataToItem
 parameter_list|(
 name|Collection
 argument_list|<
-name|PathMetadata
+name|DDBPathMetadata
 argument_list|>
 name|metas
 parameter_list|)
@@ -1081,7 +1211,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|PathMetadata
+name|DDBPathMetadata
 name|meta
 range|:
 name|metas
@@ -1350,6 +1480,47 @@ specifier|private
 name|PathMetadataDynamoDBTranslation
 parameter_list|()
 block|{   }
+DECL|method|pathMetaToDDBPathMeta ( Collection<PathMetadata> pathMetadatas)
+specifier|static
+name|List
+argument_list|<
+name|DDBPathMetadata
+argument_list|>
+name|pathMetaToDDBPathMeta
+parameter_list|(
+name|Collection
+argument_list|<
+name|PathMetadata
+argument_list|>
+name|pathMetadatas
+parameter_list|)
+block|{
+return|return
+name|pathMetadatas
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|p
+lambda|->
+operator|new
+name|DDBPathMetadata
+argument_list|(
+name|p
+argument_list|)
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

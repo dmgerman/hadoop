@@ -1024,6 +1024,22 @@ operator|||
 name|updated
 expr_stmt|;
 block|}
+comment|// If dirMeta is not authoritative, but isAuthoritative is true the
+comment|// directory metadata should be updated. Treat it as a change.
+name|changed
+operator|=
+name|changed
+operator|||
+operator|(
+operator|!
+name|dirMeta
+operator|.
+name|isAuthoritative
+argument_list|()
+operator|&&
+name|isAuthoritative
+operator|)
+expr_stmt|;
 if|if
 condition|(
 name|changed
