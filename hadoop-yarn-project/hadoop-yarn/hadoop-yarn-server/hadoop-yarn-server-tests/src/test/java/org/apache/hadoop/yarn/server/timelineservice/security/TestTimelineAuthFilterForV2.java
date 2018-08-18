@@ -1598,7 +1598,7 @@ argument_list|)
 decl_stmt|;
 name|auxService
 operator|.
-name|addApplication
+name|addApplicationIfAbsent
 argument_list|(
 name|appId
 argument_list|,

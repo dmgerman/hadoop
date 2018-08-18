@@ -756,7 +756,7 @@ argument_list|)
 expr_stmt|;
 name|auxService
 operator|.
-name|addApplication
+name|addApplicationIfAbsent
 argument_list|(
 name|ApplicationId
 operator|.

@@ -624,7 +624,7 @@ comment|//      return null;
 comment|//    }
 comment|//
 comment|//    @Override
-comment|//    public void addApplication(ApplicationId applicationId,
+comment|//    public void addApplicationIfAbsent(ApplicationId applicationId,
 comment|//        ApplicationMaster master, String user, String queue, Priority priority
 comment|//        , ApplicationStore appStore)
 comment|//        throws IOException {

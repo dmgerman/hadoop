@@ -75,7 +75,7 @@ comment|//    public List<QueueUserACLInfo> getQueueUserAclInfo() {
 comment|//      return null;
 comment|//    }
 comment|//    @Override
-comment|//    public void addApplication(ApplicationId applicationId,
+comment|//    public void addApplicationIfAbsent(ApplicationId applicationId,
 comment|//        ApplicationMaster master, String user, String queue, Priority priority,
 comment|//        ApplicationStore store)
 comment|//        throws IOException {

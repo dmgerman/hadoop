@@ -697,10 +697,10 @@ block|}
 comment|// these methods can be used as the basis for future service methods if the
 comment|// per-node collector runs separate from the node manager
 comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the service already    * exists, no new service is created.    *    * @param appId Application Id to be added.    * @param user Application Master container user.    * @return whether it was added successfully    */
-DECL|method|addApplication (ApplicationId appId, String user)
+DECL|method|addApplicationIfAbsent (ApplicationId appId, String user)
 specifier|public
 name|boolean
-name|addApplication
+name|addApplicationIfAbsent
 parameter_list|(
 name|ApplicationId
 name|appId
@@ -846,7 +846,8 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|addApplication
+block|}
+name|addApplicationIfAbsent
 argument_list|(
 name|appId
 argument_list|,
@@ -856,7 +857,6 @@ name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Removes the app level collector for the specified application id. The    * collector is also stopped as a result. If the collector does not exist, no    * change is made.    */
@@ -939,6 +939,11 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|boolean
+name|shouldRemoveApplication
+init|=
+literal|false
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|appIdToContainerId
@@ -995,10 +1000,9 @@ literal|0
 condition|)
 block|{
 comment|// remove only if it is last master container
-name|removeApplication
-argument_list|(
-name|appId
-argument_list|)
+name|shouldRemoveApplication
+operator|=
+literal|true
 expr_stmt|;
 name|appIdToContainerId
 operator|.
@@ -1008,6 +1012,17 @@ name|appId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|shouldRemoveApplication
+condition|)
+block|{
+name|removeApplication
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
