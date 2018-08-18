@@ -295,6 +295,96 @@ name|AZURE_KEY_ACCOUNT_SHELLKEYPROVIDER_SCRIPT
 init|=
 literal|"fs.azure.shellkeyprovider.script"
 decl_stmt|;
+comment|/** Prefix for auth type properties: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_AUTH_TYPE_PROPERTY_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_AUTH_TYPE_PROPERTY_NAME
+init|=
+literal|"fs.azure.account.auth.type."
+decl_stmt|;
+comment|/** Prefix for oauth token provider type: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_TOKEN_PROVIDER_TYPE_PROPERTY_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_TOKEN_PROVIDER_TYPE_PROPERTY_NAME
+init|=
+literal|"fs.azure.account.oauth.provider.type."
+decl_stmt|;
+comment|/** Prefix for oauth AAD client id: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_CLIENT_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_CLIENT_ID
+init|=
+literal|"fs.azure.account.oauth2.client.id."
+decl_stmt|;
+comment|/** Prefix for oauth AAD client secret: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_CLIENT_SECRET
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_CLIENT_SECRET
+init|=
+literal|"fs.azure.account.oauth2.client.secret."
+decl_stmt|;
+comment|/** Prefix for oauth AAD client endpoint: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_CLIENT_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_CLIENT_ENDPOINT
+init|=
+literal|"fs.azure.account.oauth2.client.endpoint."
+decl_stmt|;
+comment|/** Prefix for oauth msi tenant id: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_MSI_TENANT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_MSI_TENANT
+init|=
+literal|"fs.azure.account.oauth2.msi.tenant."
+decl_stmt|;
+comment|/** Prefix for oauth user name: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_USER_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_USER_NAME
+init|=
+literal|"fs.azure.account.oauth2.user.name."
+decl_stmt|;
+comment|/** Prefix for oauth user password: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_USER_PASSWORD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_USER_PASSWORD
+init|=
+literal|"fs.azure.account.oauth2.user.password."
+decl_stmt|;
+comment|/** Prefix for oauth refresh token: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN
+init|=
+literal|"fs.azure.account.oauth2.refresh.token."
+decl_stmt|;
 DECL|method|ConfigurationKeys ()
 specifier|private
 name|ConfigurationKeys

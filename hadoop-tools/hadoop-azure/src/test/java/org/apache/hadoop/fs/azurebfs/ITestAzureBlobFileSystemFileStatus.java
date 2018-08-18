@@ -136,15 +136,6 @@ argument_list|(
 literal|"testDir"
 argument_list|)
 decl_stmt|;
-DECL|method|ITestAzureBlobFileSystemFileStatus ()
-specifier|public
-name|ITestAzureBlobFileSystemFileStatus
-parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-block|}
 annotation|@
 name|Test
 DECL|method|testEnsureStatusWorksForRoot ()

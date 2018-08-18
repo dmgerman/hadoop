@@ -110,6 +110,24 @@ name|TestConfigurationKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|services
+operator|.
+name|AuthType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Bind ABFS contract tests to the Azure test setup/teardown.  */
 end_comment
@@ -128,33 +146,23 @@ specifier|final
 name|URI
 name|testUri
 decl_stmt|;
-DECL|method|ABFSContractTestBinding (final boolean secure)
+DECL|method|ABFSContractTestBinding ()
 specifier|public
 name|ABFSContractTestBinding
-parameter_list|(
-specifier|final
-name|boolean
-name|secure
-parameter_list|)
+parameter_list|()
 throws|throws
 name|Exception
 block|{
 name|this
 argument_list|(
-name|secure
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ABFSContractTestBinding (final boolean secure, final boolean useExistingFileSystem)
+DECL|method|ABFSContractTestBinding ( final boolean useExistingFileSystem)
 specifier|public
 name|ABFSContractTestBinding
 parameter_list|(
-specifier|final
-name|boolean
-name|secure
-parameter_list|,
 specifier|final
 name|boolean
 name|useExistingFileSystem
@@ -162,11 +170,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|super
-argument_list|(
-name|secure
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|useExistingFileSystem
@@ -192,7 +195,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|secure
+name|getAuthType
+argument_list|()
+operator|!=
+name|AuthType
+operator|.
+name|SharedKey
 condition|)
 block|{
 name|testUrl
@@ -296,6 +304,27 @@ name|super
 operator|.
 name|getConfiguration
 argument_list|()
+return|;
+block|}
+DECL|method|isSecureMode ()
+specifier|public
+name|boolean
+name|isSecureMode
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|getAuthType
+argument_list|()
+operator|==
+name|AuthType
+operator|.
+name|SharedKey
+condition|?
+literal|false
+else|:
+literal|true
 return|;
 block|}
 block|}

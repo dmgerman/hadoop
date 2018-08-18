@@ -79,9 +79,7 @@ name|binding
 operator|=
 operator|new
 name|ABFSContractTestBinding
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

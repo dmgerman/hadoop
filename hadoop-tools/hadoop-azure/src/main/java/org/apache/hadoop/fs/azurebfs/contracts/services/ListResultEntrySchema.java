@@ -129,6 +129,45 @@ specifier|private
 name|Long
 name|contentLength
 decl_stmt|;
+comment|/**    * The owner property.    */
+annotation|@
+name|JsonProperty
+argument_list|(
+name|value
+operator|=
+literal|"owner"
+argument_list|)
+DECL|field|owner
+specifier|private
+name|String
+name|owner
+decl_stmt|;
+comment|/**    * The group property.    */
+annotation|@
+name|JsonProperty
+argument_list|(
+name|value
+operator|=
+literal|"group"
+argument_list|)
+DECL|field|group
+specifier|private
+name|String
+name|group
+decl_stmt|;
+comment|/**    * The permissions property.    */
+annotation|@
+name|JsonProperty
+argument_list|(
+name|value
+operator|=
+literal|"permissions"
+argument_list|)
+DECL|field|permissions
+specifier|private
+name|String
+name|permissions
+decl_stmt|;
 comment|/**    * Get the name value.    *    * @return the name value    */
 DECL|method|name ()
 specifier|public
@@ -137,8 +176,6 @@ name|name
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|name
 return|;
 block|}
@@ -170,8 +207,6 @@ name|isDirectory
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|isDirectory
 return|;
 block|}
@@ -204,8 +239,6 @@ name|lastModified
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|lastModified
 return|;
 block|}
@@ -237,8 +270,6 @@ name|eTag
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|eTag
 return|;
 block|}
@@ -271,8 +302,6 @@ name|contentLength
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|contentLength
 return|;
 block|}
@@ -292,6 +321,102 @@ operator|.
 name|contentLength
 operator|=
 name|contentLength
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**    *    Get the owner value.    *    * @return the owner value    */
+DECL|method|owner ()
+specifier|public
+name|String
+name|owner
+parameter_list|()
+block|{
+return|return
+name|owner
+return|;
+block|}
+comment|/**    * Set the owner value.    *    * @param owner the owner value to set    * @return the ListEntrySchema object itself.    */
+DECL|method|withOwner (final String owner)
+specifier|public
+name|ListResultEntrySchema
+name|withOwner
+parameter_list|(
+specifier|final
+name|String
+name|owner
+parameter_list|)
+block|{
+name|this
+operator|.
+name|owner
+operator|=
+name|owner
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**    * Get the group value.    *    * @return the group value    */
+DECL|method|group ()
+specifier|public
+name|String
+name|group
+parameter_list|()
+block|{
+return|return
+name|group
+return|;
+block|}
+comment|/**    * Set the group value.    *    * @param group the group value to set    * @return the ListEntrySchema object itself.    */
+DECL|method|withGroup (final String group)
+specifier|public
+name|ListResultEntrySchema
+name|withGroup
+parameter_list|(
+specifier|final
+name|String
+name|group
+parameter_list|)
+block|{
+name|this
+operator|.
+name|group
+operator|=
+name|group
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**    * Get the permissions value.    *    * @return the permissions value    */
+DECL|method|permissions ()
+specifier|public
+name|String
+name|permissions
+parameter_list|()
+block|{
+return|return
+name|permissions
+return|;
+block|}
+comment|/**    * Set the permissions value.    *    * @param permissions the permissions value to set    * @return the ListEntrySchema object itself.    */
+DECL|method|withPermissions (final String permissions)
+specifier|public
+name|ListResultEntrySchema
+name|withPermissions
+parameter_list|(
+specifier|final
+name|String
+name|permissions
+parameter_list|)
+block|{
+name|this
+operator|.
+name|permissions
+operator|=
+name|permissions
 expr_stmt|;
 return|return
 name|this

@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * The Http Request / Response Headers for Rest AbfsClient  */
+comment|/**  * The Http Request / Response Headers for Rest AbfsClient.  */
 end_comment
 
 begin_class

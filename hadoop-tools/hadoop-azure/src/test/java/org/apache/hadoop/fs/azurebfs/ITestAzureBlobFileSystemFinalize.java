@@ -78,6 +78,24 @@ name|FileSystem
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|services
+operator|.
+name|AuthType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test finalize() method when "fs.abfs.impl.disable.cache" is enabled.  */
 end_comment
@@ -90,13 +108,21 @@ name|ITestAzureBlobFileSystemFinalize
 extends|extends
 name|AbstractAbfsScaleTest
 block|{
-DECL|field|DISABLE_CACHE_KEY
+DECL|field|DISABLE_ABFS_CACHE_KEY
 specifier|static
 specifier|final
 name|String
-name|DISABLE_CACHE_KEY
+name|DISABLE_ABFS_CACHE_KEY
 init|=
 literal|"fs.abfs.impl.disable.cache"
+decl_stmt|;
+DECL|field|DISABLE_ABFSSS_CACHE_KEY
+specifier|static
+specifier|final
+name|String
+name|DISABLE_ABFSSS_CACHE_KEY
+init|=
+literal|"fs.abfss.impl.disable.cache"
 decl_stmt|;
 DECL|method|ITestAzureBlobFileSystemFinalize ()
 specifier|public
@@ -134,7 +160,16 @@ name|setBoolean
 argument_list|(
 name|this
 operator|.
-name|DISABLE_CACHE_KEY
+name|getAuthType
+argument_list|()
+operator|==
+name|AuthType
+operator|.
+name|SharedKey
+condition|?
+name|DISABLE_ABFS_CACHE_KEY
+else|:
+name|DISABLE_ABFSSS_CACHE_KEY
 argument_list|,
 literal|true
 argument_list|)

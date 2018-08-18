@@ -209,6 +209,24 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|oauth2
+operator|.
+name|AccessTokenProvider
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -289,7 +307,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * AbfsClient  */
+comment|/**  * AbfsClient.  */
 end_comment
 
 begin_class
@@ -358,7 +376,13 @@ specifier|final
 name|String
 name|userAgent
 decl_stmt|;
-DECL|method|AbfsClient (final URL baseUrl, final SharedKeyCredentials sharedKeyCredentials, final AbfsConfiguration abfsConfiguration, final ExponentialRetryPolicy exponentialRetryPolicy)
+DECL|field|tokenProvider
+specifier|private
+specifier|final
+name|AccessTokenProvider
+name|tokenProvider
+decl_stmt|;
+DECL|method|AbfsClient (final URL baseUrl, final SharedKeyCredentials sharedKeyCredentials, final AbfsConfiguration abfsConfiguration, final ExponentialRetryPolicy exponentialRetryPolicy, final AccessTokenProvider tokenProvider)
 specifier|public
 name|AbfsClient
 parameter_list|(
@@ -377,6 +401,10 @@ parameter_list|,
 specifier|final
 name|ExponentialRetryPolicy
 name|exponentialRetryPolicy
+parameter_list|,
+specifier|final
+name|AccessTokenProvider
+name|tokenProvider
 parameter_list|)
 block|{
 name|this
@@ -493,6 +521,12 @@ name|abfsConfiguration
 argument_list|,
 name|sslProviderName
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|tokenProvider
+operator|=
+name|tokenProvider
 expr_stmt|;
 block|}
 DECL|method|getFileSystem ()
@@ -2217,6 +2251,41 @@ block|}
 return|return
 name|encodedString
 return|;
+block|}
+DECL|method|getAccessToken ()
+specifier|public
+specifier|synchronized
+name|String
+name|getAccessToken
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|tokenProvider
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|"Bearer "
+operator|+
+name|tokenProvider
+operator|.
+name|getToken
+argument_list|()
+operator|.
+name|getAccessToken
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting

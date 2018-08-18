@@ -158,6 +158,24 @@ name|InvalidAbfsRestOperationException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|constants
+operator|.
+name|HttpHeaderConfigurations
+import|;
+end_import
+
 begin_comment
 comment|/**  * The AbfsRestOperation for Rest AbfsClient.  */
 end_comment
@@ -209,6 +227,7 @@ name|hasRequestBody
 decl_stmt|;
 DECL|field|LOG
 specifier|private
+specifier|static
 specifier|final
 name|Logger
 name|LOG
@@ -517,6 +536,17 @@ name|requestHeaders
 argument_list|)
 expr_stmt|;
 comment|// sign the HTTP request
+if|if
+condition|(
+name|client
+operator|.
+name|getAccessToken
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// sign the HTTP request
 name|client
 operator|.
 name|getSharedKeyCredentials
@@ -536,6 +566,27 @@ else|:
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|httpOperation
+operator|.
+name|getConnection
+argument_list|()
+operator|.
+name|setRequestProperty
+argument_list|(
+name|HttpHeaderConfigurations
+operator|.
+name|AUTHORIZATION
+argument_list|,
+name|client
+operator|.
+name|getAccessToken
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|hasRequestBody
@@ -650,14 +701,6 @@ return|return
 literal|false
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -670,7 +713,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|client
