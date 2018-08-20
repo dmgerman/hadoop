@@ -10420,6 +10420,29 @@ literal|"org.apache.hadoop.yarn.server.federation.resolver."
 operator|+
 literal|"DefaultSubClusterResolverImpl"
 decl_stmt|;
+comment|// AMRMProxy split-merge timeout for active sub-clusters. We will not route
+comment|// new asks to expired sub-clusters.
+DECL|field|FEDERATION_AMRMPROXY_SUBCLUSTER_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FEDERATION_AMRMPROXY_SUBCLUSTER_TIMEOUT
+init|=
+name|FEDERATION_PREFIX
+operator|+
+literal|"amrmproxy.subcluster.timeout.ms"
+decl_stmt|;
+DECL|field|DEFAULT_FEDERATION_AMRMPROXY_SUBCLUSTER_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_FEDERATION_AMRMPROXY_SUBCLUSTER_TIMEOUT
+init|=
+literal|60000
+decl_stmt|;
+comment|// one minute
 DECL|field|DEFAULT_FEDERATION_POLICY_KEY
 specifier|public
 specifier|static

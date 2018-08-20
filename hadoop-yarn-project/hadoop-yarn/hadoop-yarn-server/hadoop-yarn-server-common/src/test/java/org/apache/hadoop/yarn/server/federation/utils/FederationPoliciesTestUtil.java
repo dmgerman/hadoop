@@ -778,7 +778,7 @@ return|return
 name|req
 return|;
 block|}
-DECL|method|initializePolicyContext ( FederationPolicyInitializationContext fpc, ConfigurableFederationPolicy policy, WeightedPolicyInfo policyInfo, Map<SubClusterId, SubClusterInfo> activeSubclusters)
+DECL|method|initializePolicyContext ( FederationPolicyInitializationContext fpc, ConfigurableFederationPolicy policy, WeightedPolicyInfo policyInfo, Map<SubClusterId, SubClusterInfo> activeSubclusters, Configuration conf)
 specifier|public
 specifier|static
 name|void
@@ -800,6 +800,9 @@ argument_list|,
 name|SubClusterInfo
 argument_list|>
 name|activeSubclusters
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|YarnException
@@ -913,9 +916,7 @@ name|reinitialize
 argument_list|(
 name|fss
 argument_list|,
-operator|new
-name|Configuration
-argument_list|()
+name|conf
 argument_list|)
 expr_stmt|;
 name|fpc
@@ -1025,6 +1026,10 @@ argument_list|,
 name|policyInfo
 argument_list|,
 name|activeSubclusters
+argument_list|,
+operator|new
+name|Configuration
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

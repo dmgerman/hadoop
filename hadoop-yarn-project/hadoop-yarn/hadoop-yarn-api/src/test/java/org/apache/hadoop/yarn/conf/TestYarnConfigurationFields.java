@@ -337,6 +337,15 @@ operator|.
 name|DEFAULT_FEDERATION_POLICY_MANAGER_PARAMS
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_AMRMPROXY_SUBCLUSTER_TIMEOUT
+argument_list|)
+expr_stmt|;
 comment|// Federation StateStore ZK implementation configs to be ignored
 name|configurationPropsToSkipCompare
 operator|.

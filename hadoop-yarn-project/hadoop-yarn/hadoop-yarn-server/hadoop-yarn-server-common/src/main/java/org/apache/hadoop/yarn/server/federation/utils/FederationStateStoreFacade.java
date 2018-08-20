@@ -1943,6 +1943,19 @@ operator|.
 name|subclusterResolver
 return|;
 block|}
+comment|/**    * Get the configuration.    *    * @return configuration object    */
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|conf
+return|;
+block|}
 comment|/**    * Helper method to create instances of Object using the class name defined in    * the configuration object. The instances creates {@link RetryProxy} using    * the specific {@link RetryPolicy}.    *    * @param conf the yarn configuration    * @param configuredClassName the configuration provider key    * @param defaultValue the default implementation for fallback    * @param type the class for which a retry proxy is required    * @param retryPolicy the policy for retrying method call failures    * @return a retry proxy for the specified interface    */
 DECL|method|createRetryInstance (Configuration conf, String configuredClassName, String defaultValue, Class<T> type, RetryPolicy retryPolicy)
 specifier|public
