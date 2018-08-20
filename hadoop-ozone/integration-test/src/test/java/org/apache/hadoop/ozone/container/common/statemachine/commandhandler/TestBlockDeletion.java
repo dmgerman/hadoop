@@ -630,7 +630,7 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
-name|HDDS_HEARTBEAT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 import|;
 end_import
 
@@ -807,7 +807,7 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|HDDS_HEARTBEAT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 argument_list|,
 literal|200
 argument_list|,
@@ -828,6 +828,11 @@ operator|.
 name|setNumDatanodes
 argument_list|(
 literal|1
+argument_list|)
+operator|.
+name|setHbInterval
+argument_list|(
+literal|200
 argument_list|)
 operator|.
 name|build

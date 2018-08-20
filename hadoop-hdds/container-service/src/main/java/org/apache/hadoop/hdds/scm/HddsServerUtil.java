@@ -741,7 +741,7 @@ name|MILLISECONDS
 argument_list|)
 return|;
 block|}
-comment|/**    * Heartbeat Interval - Defines the heartbeat frequency from a datanode to    * SCM.    *    * @param conf - Ozone Config    * @return - HB interval in seconds.    */
+comment|/**    * Heartbeat Interval - Defines the heartbeat frequency from a datanode to    * SCM.    *    * @param conf - Ozone Config    * @return - HB interval in milli seconds.    */
 DECL|method|getScmHeartbeatInterval (Configuration conf)
 specifier|public
 specifier|static
@@ -763,7 +763,7 @@ name|HDDS_HEARTBEAT_INTERVAL_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.
-name|SECONDS
+name|MILLISECONDS
 argument_list|)
 return|;
 block|}
@@ -809,8 +809,6 @@ name|getScmHeartbeatInterval
 argument_list|(
 name|conf
 argument_list|)
-operator|*
-literal|1000
 decl_stmt|;
 comment|// Make sure that StaleNodeInterval is configured way above the frequency
 comment|// at which we run the heartbeat thread.

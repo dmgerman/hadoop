@@ -672,7 +672,7 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
-name|HDDS_HEARTBEAT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 import|;
 end_import
 
@@ -1222,13 +1222,13 @@ name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|HDDS_HEARTBEAT_INTERVAL
+name|HDDS_CONTAINER_REPORT_INTERVAL
 argument_list|,
-literal|5
+literal|100
 argument_list|,
 name|TimeUnit
 operator|.
-name|SECONDS
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1293,6 +1293,11 @@ operator|.
 name|newBuilder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|setHbInterval
+argument_list|(
+literal|100
 argument_list|)
 operator|.
 name|build
@@ -1360,6 +1365,14 @@ argument_list|,
 literal|4096
 argument_list|)
 decl_stmt|;
+comment|// Wait for container report
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|OmKeyInfo
@@ -1630,6 +1643,19 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
+name|setTimeDuration
+argument_list|(
+name|HDDS_CONTAINER_REPORT_INTERVAL
+argument_list|,
+literal|1
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setInt
 argument_list|(
 name|ScmConfigKeys
@@ -1647,7 +1673,7 @@ name|OzoneConfigKeys
 operator|.
 name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 argument_list|,
-literal|1000
+literal|100
 argument_list|,
 name|TimeUnit
 operator|.
@@ -1677,7 +1703,7 @@ argument_list|)
 operator|.
 name|setHbInterval
 argument_list|(
-literal|5000
+literal|1000
 argument_list|)
 operator|.
 name|setHbProcessorInterval
@@ -1776,6 +1802,14 @@ argument_list|,
 literal|4096
 argument_list|)
 decl_stmt|;
+comment|// Wait for container report
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|OmKeyInfo

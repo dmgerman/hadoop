@@ -814,6 +814,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -1029,6 +1039,22 @@ operator|.
 name|stream
 operator|.
 name|Collectors
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_REPORT_INTERVAL
 import|;
 end_import
 
@@ -1255,6 +1281,19 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
+name|setTimeDuration
+argument_list|(
+name|HDDS_CONTAINER_REPORT_INTERVAL
+argument_list|,
+literal|1
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setBoolean
 argument_list|(
 name|ScmConfigKeys
@@ -1304,6 +1343,11 @@ operator|.
 name|setNumDatanodes
 argument_list|(
 literal|1
+argument_list|)
+operator|.
+name|setHbInterval
+argument_list|(
+literal|1000
 argument_list|)
 operator|.
 name|build
@@ -4294,6 +4338,11 @@ return|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Until delete background service is fixed."
+argument_list|)
 DECL|method|testDeleteKey ()
 specifier|public
 name|void

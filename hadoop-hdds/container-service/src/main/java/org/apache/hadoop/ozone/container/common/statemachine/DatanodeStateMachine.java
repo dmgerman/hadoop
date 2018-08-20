@@ -610,16 +610,9 @@ argument_list|)
 expr_stmt|;
 name|heartbeatFrequency
 operator|=
-name|TimeUnit
-operator|.
-name|SECONDS
-operator|.
-name|toMillis
-argument_list|(
 name|getScmHeartbeatInterval
 argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|container

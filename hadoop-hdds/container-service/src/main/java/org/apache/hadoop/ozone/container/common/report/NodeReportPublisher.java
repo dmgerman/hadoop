@@ -193,7 +193,7 @@ operator|.
 name|checkState
 argument_list|(
 name|heartbeatFrequency
-operator|<
+operator|<=
 name|nodeReportInterval
 argument_list|,
 name|HDDS_NODE_REPORT_INTERVAL

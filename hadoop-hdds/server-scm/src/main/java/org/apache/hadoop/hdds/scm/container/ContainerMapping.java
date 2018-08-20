@@ -1399,7 +1399,7 @@ operator|.
 name|next
 argument_list|()
 operator|.
-name|getHostName
+name|getUuidString
 argument_list|()
 argument_list|,
 name|contInfo

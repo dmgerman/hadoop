@@ -136,6 +136,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|atomic
 operator|.
 name|AtomicLong
@@ -626,9 +638,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to communicate to SCM server at {}. We have not been "
-operator|+
-literal|"able to communicate to this SCM server for past {} seconds."
+literal|"Unable to communicate to SCM server at {} for past {} seconds."
 argument_list|,
 name|this
 operator|.
@@ -648,6 +658,12 @@ operator|.
 name|getPort
 argument_list|()
 argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toSeconds
+argument_list|(
 name|this
 operator|.
 name|getMissedCount
@@ -658,6 +674,7 @@ argument_list|(
 name|this
 operator|.
 name|conf
+argument_list|)
 argument_list|)
 argument_list|,
 name|ex

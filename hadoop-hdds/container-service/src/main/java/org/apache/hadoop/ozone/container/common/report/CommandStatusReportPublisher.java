@@ -247,7 +247,7 @@ operator|.
 name|checkState
 argument_list|(
 name|heartbeatFrequency
-operator|<
+operator|<=
 name|cmdStatusReportInterval
 argument_list|,
 name|HDDS_COMMAND_STATUS_REPORT_INTERVAL
