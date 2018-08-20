@@ -389,13 +389,13 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|loadContainersState ()
+DECL|method|getContainerStateIterator ()
 specifier|public
-name|List
+name|RecoveryIterator
 argument_list|<
 name|RecoveredContainerState
 argument_list|>
-name|loadContainersState
+name|getContainerStateIterator
 parameter_list|()
 throws|throws
 name|IOException
