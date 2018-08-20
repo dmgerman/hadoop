@@ -668,12 +668,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** Router identifier. */
-DECL|field|routerId
+comment|/** Router using this RPC client. */
+DECL|field|router
 specifier|private
 specifier|final
-name|String
-name|routerId
+name|Router
+name|router
 decl_stmt|;
 comment|/** Interface to identify the active NN for a nameservice or blockpool ID. */
 DECL|field|namenodeResolver
@@ -725,16 +725,16 @@ argument_list|(
 literal|"\\tat (.*)\\.(.*)\\((.*):(\\d*)\\)"
 argument_list|)
 decl_stmt|;
-comment|/**    * Create a router RPC client to manage remote procedure calls to NNs.    *    * @param conf Hdfs Configuation.    * @param resolver A NN resolver to determine the currently active NN in HA.    * @param monitor Optional performance monitor.    */
-DECL|method|RouterRpcClient (Configuration conf, String identifier, ActiveNamenodeResolver resolver, RouterRpcMonitor monitor)
+comment|/**    * Create a router RPC client to manage remote procedure calls to NNs.    *    * @param conf Hdfs Configuation.    * @param router A router using this RPC client.    * @param resolver A NN resolver to determine the currently active NN in HA.    * @param monitor Optional performance monitor.    */
+DECL|method|RouterRpcClient (Configuration conf, Router router, ActiveNamenodeResolver resolver, RouterRpcMonitor monitor)
 specifier|public
 name|RouterRpcClient
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|String
-name|identifier
+name|Router
+name|router
 parameter_list|,
 name|ActiveNamenodeResolver
 name|resolver
@@ -745,9 +745,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|routerId
+name|router
 operator|=
-name|identifier
+name|router
 expr_stmt|;
 name|this
 operator|.
@@ -1449,9 +1449,10 @@ argument_list|)
 operator|+
 literal|" from "
 operator|+
-name|this
+name|router
 operator|.
-name|routerId
+name|getRouterId
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -4683,7 +4684,10 @@ name|StandbyException
 argument_list|(
 literal|"Router "
 operator|+
-name|routerId
+name|router
+operator|.
+name|getRouterId
+argument_list|()
 operator|+
 literal|" is overloaded: "
 operator|+
@@ -4781,9 +4785,10 @@ name|nsId
 operator|+
 literal|" from "
 operator|+
-name|this
+name|router
 operator|.
-name|routerId
+name|getRouterId
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -4846,9 +4851,10 @@ name|bpId
 operator|+
 literal|" from "
 operator|+
-name|this
+name|router
 operator|.
-name|routerId
+name|getRouterId
+argument_list|()
 argument_list|)
 throw|;
 block|}

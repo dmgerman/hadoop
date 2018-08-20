@@ -2076,7 +2076,7 @@ specifier|final
 name|RouterClientProtocol
 name|clientProto
 decl_stmt|;
-comment|/**    * Construct a router RPC server.    *    * @param configuration HDFS Configuration.    * @param nnResolver The NN resolver instance to determine active NNs in HA.    * @param fileResolver File resolver to resolve file paths to subclusters.    * @throws IOException If the RPC server could not be created.    */
+comment|/**    * Construct a router RPC server.    *    * @param configuration HDFS Configuration.    * @param router A router using this RPC server.    * @param nnResolver The NN resolver instance to determine active NNs in HA.    * @param fileResolver File resolver to resolve file paths to subclusters.    * @throws IOException If the RPC server could not be created.    */
 DECL|method|RouterRpcServer (Configuration configuration, Router router, ActiveNamenodeResolver nnResolver, FileSubclusterResolver fileResolver)
 specifier|public
 name|RouterRpcServer
@@ -2517,9 +2517,6 @@ argument_list|,
 name|this
 operator|.
 name|router
-operator|.
-name|getRouterId
-argument_list|()
 argument_list|,
 name|this
 operator|.
