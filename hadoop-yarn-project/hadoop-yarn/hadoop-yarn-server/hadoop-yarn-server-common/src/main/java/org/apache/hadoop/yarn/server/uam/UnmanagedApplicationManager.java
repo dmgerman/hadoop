@@ -1288,6 +1288,10 @@ name|userUgi
 argument_list|,
 name|amrmToken
 argument_list|)
+argument_list|,
+name|this
+operator|.
+name|applicationId
 argument_list|)
 expr_stmt|;
 block|}

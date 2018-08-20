@@ -278,6 +278,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -451,6 +469,22 @@ operator|.
 name|exceptions
 operator|.
 name|ApplicationMasterNotRegisteredException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidApplicationMasterRequestException
 import|;
 end_import
 
@@ -762,6 +796,19 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|appId
+specifier|private
+name|ApplicationId
+name|appId
+decl_stmt|;
+comment|// Normally -1, otherwise will override responseId with this value in the next
+comment|// heartbeat
+DECL|field|resetResponseId
+specifier|private
+specifier|volatile
+name|int
+name|resetResponseId
+decl_stmt|;
 DECL|method|AMRMClientRelayer ()
 specifier|public
 name|AMRMClientRelayer
@@ -777,13 +824,23 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|resetResponseId
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 block|}
-DECL|method|AMRMClientRelayer (ApplicationMasterProtocol rmClient)
+DECL|method|AMRMClientRelayer (ApplicationMasterProtocol rmClient, ApplicationId appId)
 specifier|public
 name|AMRMClientRelayer
 parameter_list|(
 name|ApplicationMasterProtocol
 name|rmClient
+parameter_list|,
+name|ApplicationId
+name|appId
 parameter_list|)
 block|{
 name|this
@@ -794,6 +851,12 @@ operator|.
 name|rmClient
 operator|=
 name|rmClient
+expr_stmt|;
+name|this
+operator|.
+name|appId
+operator|=
+name|appId
 expr_stmt|;
 block|}
 annotation|@
@@ -1007,7 +1070,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Out of sync with ResourceManager, hence resyncing."
+literal|"Out of sync with RM for "
+operator|+
+name|this
+operator|.
+name|appId
+operator|+
+literal|", hence resyncing."
 argument_list|)
 expr_stmt|;
 comment|// re register with RM
@@ -1026,32 +1095,16 @@ argument_list|)
 return|;
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|allocate (AllocateRequest allocateRequest)
-specifier|public
-name|AllocateResponse
-name|allocate
+DECL|method|addNewAllocateRequest (AllocateRequest allocateRequest)
+specifier|private
+name|void
+name|addNewAllocateRequest
 parameter_list|(
 name|AllocateRequest
 name|allocateRequest
 parameter_list|)
 throws|throws
 name|YarnException
-throws|,
-name|IOException
-block|{
-name|AllocateResponse
-name|allocateResponse
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
 block|{
 comment|// update the data structures first
 name|addNewAsks
@@ -1284,6 +1337,39 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|allocate (AllocateRequest allocateRequest)
+specifier|public
+name|AllocateResponse
+name|allocate
+parameter_list|(
+name|AllocateRequest
+name|allocateRequest
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+name|AllocateResponse
+name|allocateResponse
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|addNewAllocateRequest
+argument_list|(
+name|allocateRequest
+argument_list|)
+expr_stmt|;
 name|ArrayList
 argument_list|<
 name|ResourceRequest
@@ -1419,6 +1505,50 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|resetResponseId
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Override allocate responseId from "
+operator|+
+name|allocateRequest
+operator|.
+name|getResponseId
+argument_list|()
+operator|+
+literal|" to "
+operator|+
+name|this
+operator|.
+name|resetResponseId
+operator|+
+literal|" for "
+operator|+
+name|this
+operator|.
+name|appId
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setResponseId
+argument_list|(
+name|this
+operator|.
+name|resetResponseId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// Do the actual allocate call
 try|try
@@ -1434,6 +1564,14 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 expr_stmt|;
+comment|// Heartbeat succeeded, wipe out responseId overriding
+name|this
+operator|.
+name|resetResponseId
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1445,7 +1583,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"ApplicationMaster is out of sync with ResourceManager,"
+literal|"ApplicationMaster is out of sync with RM for "
+operator|+
+name|this
+operator|.
+name|appId
 operator|+
 literal|" hence resyncing."
 argument_list|)
@@ -1569,6 +1711,92 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+comment|// If RM is complaining about responseId out of sync, force reset next
+comment|// time
+if|if
+condition|(
+name|t
+operator|instanceof
+name|InvalidApplicationMasterRequestException
+condition|)
+block|{
+name|int
+name|responseId
+init|=
+name|AMRMClientUtils
+operator|.
+name|parseExpectedResponseIdFromException
+argument_list|(
+name|t
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|responseId
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|this
+operator|.
+name|resetResponseId
+operator|=
+name|responseId
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ResponseId out of sync with RM, expect "
+operator|+
+name|responseId
+operator|+
+literal|" but "
+operator|+
+name|allocateRequest
+operator|.
+name|getResponseId
+argument_list|()
+operator|+
+literal|" used by "
+operator|+
+name|this
+operator|.
+name|appId
+operator|+
+literal|". Will override in the next allocate."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to parse expected responseId out of exception for "
+operator|+
+name|this
+operator|.
+name|appId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+throw|throw
+name|t
+throw|;
 block|}
 synchronized|synchronized
 init|(

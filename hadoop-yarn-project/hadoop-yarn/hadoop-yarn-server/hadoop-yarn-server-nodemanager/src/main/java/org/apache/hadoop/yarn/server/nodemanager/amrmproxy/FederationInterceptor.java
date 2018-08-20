@@ -1588,6 +1588,15 @@ name|this
 operator|.
 name|appOwner
 argument_list|)
+argument_list|,
+name|getApplicationContext
+argument_list|()
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
