@@ -1849,6 +1849,26 @@ name|HADOOP_TAGS_CUSTOM
 init|=
 literal|"hadoop.tags.custom"
 decl_stmt|;
+comment|/** Configuration option for the shutdown hook manager shutdown time:    *  {@value}. */
+DECL|field|SERVICE_SHUTDOWN_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SERVICE_SHUTDOWN_TIMEOUT
+init|=
+literal|"hadoop.service.shutdown.timeout"
+decl_stmt|;
+comment|/** Default shutdown hook timeout: {@value} seconds. */
+DECL|field|SERVICE_SHUTDOWN_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|SERVICE_SHUTDOWN_TIMEOUT_DEFAULT
+init|=
+literal|30
+decl_stmt|;
 block|}
 end_class
 

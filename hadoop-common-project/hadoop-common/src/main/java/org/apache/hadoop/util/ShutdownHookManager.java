@@ -24,6 +24,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -65,6 +79,62 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -190,13 +260,54 @@ name|AtomicBoolean
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|SERVICE_SHUTDOWN_TIMEOUT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|SERVICE_SHUTDOWN_TIMEOUT_DEFAULT
+import|;
+end_import
+
 begin_comment
-comment|/**  * The<code>ShutdownHookManager</code> enables running shutdownHook  * in a deterministic order, higher priority first.  *<p/>  * The JVM runs ShutdownHooks in a non-deterministic order or in parallel.  * This class registers a single JVM shutdownHook and run all the  * shutdownHooks registered to it (to this class) in order based on their  * priority.  */
+comment|/**  * The<code>ShutdownHookManager</code> enables running shutdownHook  * in a deterministic order, higher priority first.  *<p/>  * The JVM runs ShutdownHooks in a non-deterministic order or in parallel.  * This class registers a single JVM shutdownHook and run all the  * shutdownHooks registered to it (to this class) in order based on their  * priority.  *  * Unless a hook was registered with a shutdown explicitly set through  * {@link #addShutdownHook(Runnable, int, long, TimeUnit)},  * the shutdown time allocated to it is set by the configuration option  * {@link CommonConfigurationKeysPublic#SERVICE_SHUTDOWN_TIMEOUT} in  * {@code core-site.xml}, with a default value of  * {@link CommonConfigurationKeysPublic#SERVICE_SHUTDOWN_TIMEOUT_DEFAULT}  * seconds.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|ShutdownHookManager
 specifier|public
+specifier|final
 class|class
 name|ShutdownHookManager
 block|{
@@ -227,17 +338,19 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|TIMEOUT_DEFAULT
-specifier|private
+comment|/** Minimum shutdown timeout: {@value} second(s). */
+DECL|field|TIMEOUT_MINIMUM
+specifier|public
 specifier|static
 specifier|final
 name|long
-name|TIMEOUT_DEFAULT
+name|TIMEOUT_MINIMUM
 init|=
-literal|10
+literal|1
 decl_stmt|;
+comment|/** The default time unit used: seconds. */
 DECL|field|TIME_UNIT_DEFAULT
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|TimeUnit
@@ -267,6 +380,11 @@ argument_list|(
 literal|true
 argument_list|)
 operator|.
+name|setNameFormat
+argument_list|(
+literal|"shutdown-hook-%01d"
+argument_list|)
+operator|.
 name|build
 argument_list|()
 argument_list|)
@@ -293,15 +411,121 @@ name|void
 name|run
 parameter_list|()
 block|{
+if|if
+condition|(
 name|MGR
 operator|.
 name|shutdownInProgress
 operator|.
-name|set
+name|getAndSet
 argument_list|(
 literal|true
 argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutdown process invoked a second time: ignoring"
+argument_list|)
 expr_stmt|;
+return|return;
+block|}
+name|long
+name|started
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+name|int
+name|timeoutCount
+init|=
+name|executeShutdown
+argument_list|()
+decl_stmt|;
+name|long
+name|ended
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Completed shutdown in %.3f seconds; Timeouts: %d"
+argument_list|,
+operator|(
+name|ended
+operator|-
+name|started
+operator|)
+operator|/
+literal|1000.0
+argument_list|,
+name|timeoutCount
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// each of the hooks have executed; now shut down the
+comment|// executor itself.
+name|shutdownExecutor
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalStateException
+name|ex
+parameter_list|)
+block|{
+comment|// JVM is being shut down. Ignore
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to add the ShutdownHook"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Execute the shutdown.    * This is exposed purely for testing: do not invoke it.    * @return the number of shutdown hooks which timed out.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|executeShutdown ()
+specifier|static
+name|int
+name|executeShutdown
+parameter_list|()
+block|{
+name|int
+name|timeouts
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|HookEntry
@@ -353,6 +577,9 @@ name|TimeoutException
 name|ex
 parameter_list|)
 block|{
+name|timeouts
+operator|++
+expr_stmt|;
 name|future
 operator|.
 name|cancel
@@ -423,6 +650,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|return
+name|timeouts
+return|;
+block|}
+comment|/**    * Shutdown the executor thread itself.    * @param conf the configuration containing the shutdown timeout setting.    */
+DECL|method|shutdownExecutor (final Configuration conf)
+specifier|private
+specifier|static
+name|void
+name|shutdownExecutor
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 try|try
 block|{
 name|EXECUTOR
@@ -430,6 +673,14 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|long
+name|shutdownTimeout
+init|=
+name|getShutdownTimeout
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -437,17 +688,22 @@ name|EXECUTOR
 operator|.
 name|awaitTermination
 argument_list|(
-name|TIMEOUT_DEFAULT
+name|shutdownTimeout
 argument_list|,
 name|TIME_UNIT_DEFAULT
 argument_list|)
 condition|)
 block|{
+comment|// timeout waiting for the
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"ShutdownHookManger shutdown forcefully."
+literal|"ShutdownHookManger shutdown forcefully after"
+operator|+
+literal|" {} seconds."
+argument_list|,
+name|shutdownTimeout
 argument_list|)
 expr_stmt|;
 name|EXECUTOR
@@ -460,7 +716,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ShutdownHookManger complete shutdown."
+literal|"ShutdownHookManger completed shutdown."
 argument_list|)
 expr_stmt|;
 block|}
@@ -470,6 +726,7 @@ name|InterruptedException
 name|ex
 parameter_list|)
 block|{
+comment|// interrupted.
 name|LOG
 operator|.
 name|error
@@ -496,29 +753,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalStateException
-name|ex
-parameter_list|)
-block|{
-comment|// JVM is being shut down. Ignore
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to add the ShutdownHook"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Return<code>ShutdownHookManager</code> singleton.    *    * @return<code>ShutdownHookManager</code> singleton.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
 DECL|method|get ()
 specifier|public
 specifier|static
@@ -530,7 +769,59 @@ return|return
 name|MGR
 return|;
 block|}
+comment|/**    * Get the shutdown timeout in seconds, from the supplied    * configuration.    * @param conf configuration to use.    * @return a timeout, always greater than or equal to {@link #TIMEOUT_MINIMUM}    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getShutdownTimeout (Configuration conf)
+specifier|static
+name|long
+name|getShutdownTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|long
+name|duration
+init|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|SERVICE_SHUTDOWN_TIMEOUT
+argument_list|,
+name|SERVICE_SHUTDOWN_TIMEOUT_DEFAULT
+argument_list|,
+name|TIME_UNIT_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|duration
+operator|<
+name|TIMEOUT_MINIMUM
+condition|)
+block|{
+name|duration
+operator|=
+name|TIMEOUT_MINIMUM
+expr_stmt|;
+block|}
+return|return
+name|duration
+return|;
+block|}
 comment|/**    * Private structure to store ShutdownHook, its priority and timeout    * settings.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|class|HookEntry
 specifier|static
 class|class
@@ -576,7 +867,12 @@ name|hook
 argument_list|,
 name|priority
 argument_list|,
-name|TIMEOUT_DEFAULT
+name|getShutdownTimeout
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
 argument_list|,
 name|TIME_UNIT_DEFAULT
 argument_list|)
@@ -765,6 +1061,12 @@ name|ShutdownHookManager
 parameter_list|()
 block|{   }
 comment|/**    * Returns the list of shutdownHooks in order of execution,    * Highest priority first.    *    * @return the list of shutdownHooks in order of execution.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|getShutdownHooksInOrder ()
 name|List
 argument_list|<
@@ -790,9 +1092,7 @@ name|list
 operator|=
 operator|new
 name|ArrayList
-argument_list|<
-name|HookEntry
-argument_list|>
+argument_list|<>
 argument_list|(
 name|MGR
 operator|.
@@ -845,6 +1145,14 @@ name|list
 return|;
 block|}
 comment|/**    * Adds a shutdownHook with a priority, the higher the priority    * the earlier will run. ShutdownHooks with same priority run    * in a non-deterministic order.    *    * @param shutdownHook shutdownHook<code>Runnable</code>    * @param priority priority of the shutdownHook.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|method|addShutdownHook (Runnable shutdownHook, int priority)
 specifier|public
 name|void
@@ -905,6 +1213,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *    * Adds a shutdownHook with a priority and timeout the higher the priority    * the earlier will run. ShutdownHooks with same priority run    * in a non-deterministic order. The shutdown hook will be terminated if it    * has not been finished in the specified period of time.    *    * @param shutdownHook shutdownHook<code>Runnable</code>    * @param priority priority of the shutdownHook    * @param timeout timeout of the shutdownHook    * @param unit unit of the timeout<code>TimeUnit</code>    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|method|addShutdownHook (Runnable shutdownHook, int priority, long timeout, TimeUnit unit)
 specifier|public
 name|void
@@ -975,6 +1291,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Removes a shutdownHook.    *    * @param shutdownHook shutdownHook to remove.    * @return TRUE if the shutdownHook was registered and removed,    * FALSE otherwise.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|method|removeShutdownHook (Runnable shutdownHook)
 specifier|public
 name|boolean
@@ -1018,6 +1342,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Indicates if a shutdownHook is registered or not.    *    * @param shutdownHook shutdownHook to check if registered.    * @return TRUE/FALSE depending if the shutdownHook is is registered.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|method|hasShutdownHook (Runnable shutdownHook)
 specifier|public
 name|boolean
@@ -1043,6 +1375,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Indicates if shutdown is in progress or not.    *     * @return TRUE if the shutdown is in progress, otherwise FALSE.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|method|isShutdownInProgress ()
 specifier|public
 name|boolean
@@ -1057,6 +1397,14 @@ argument_list|()
 return|;
 block|}
 comment|/**    * clear all registered shutdownHooks.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|method|clearShutdownHooks ()
 specifier|public
 name|void
