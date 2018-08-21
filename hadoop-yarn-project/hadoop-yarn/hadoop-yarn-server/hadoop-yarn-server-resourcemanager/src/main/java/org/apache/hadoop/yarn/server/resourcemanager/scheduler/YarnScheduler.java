@@ -1045,6 +1045,18 @@ name|ApplicationAttemptId
 name|attemptId
 parameter_list|)
 function_decl|;
+comment|/**    * Get pending scheduling request for specified application attempt.    *    * @param attemptId the id of the application attempt    *    * @return pending scheduling requests    */
+DECL|method|getPendingSchedulingRequestsForAttempt ( ApplicationAttemptId attemptId)
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|getPendingSchedulingRequestsForAttempt
+parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|)
+function_decl|;
 comment|/**    * Get cluster max priority.    *     * @return maximum priority of cluster    */
 DECL|method|getMaxClusterLevelAppPriority ()
 name|Priority

@@ -2022,6 +2022,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|getSchedulingRequest ()
+specifier|public
+name|SchedulingRequest
+name|getSchedulingRequest
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

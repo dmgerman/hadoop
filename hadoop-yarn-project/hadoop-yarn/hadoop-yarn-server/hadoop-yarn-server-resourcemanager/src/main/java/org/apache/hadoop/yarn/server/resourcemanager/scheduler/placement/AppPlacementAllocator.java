@@ -484,6 +484,14 @@ operator|=
 name|schedulerRequestKey
 expr_stmt|;
 block|}
+comment|/**    * Get pending SchedulingRequest.    * @return SchedulingRequest    */
+DECL|method|getSchedulingRequest ()
+specifier|public
+specifier|abstract
+name|SchedulingRequest
+name|getSchedulingRequest
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

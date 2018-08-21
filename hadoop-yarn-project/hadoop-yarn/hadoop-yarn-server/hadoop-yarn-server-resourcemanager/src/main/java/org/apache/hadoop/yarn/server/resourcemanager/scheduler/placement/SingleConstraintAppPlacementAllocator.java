@@ -2326,8 +2326,9 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|VisibleForTesting
+name|Override
 DECL|method|getSchedulingRequest ()
+specifier|public
 name|SchedulingRequest
 name|getSchedulingRequest
 parameter_list|()
