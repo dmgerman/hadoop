@@ -797,7 +797,7 @@ name|ContainerUpdateContext
 name|updateContext
 decl_stmt|;
 DECL|field|applicationSchedulingEnvs
-specifier|public
+specifier|private
 specifier|final
 name|Map
 argument_list|<
@@ -3533,6 +3533,22 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Get scheduling envs configured for this application.    *    * @return a map of applicationSchedulingEnvs    */
+DECL|method|getApplicationSchedulingEnvs ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationSchedulingEnvs
+parameter_list|()
+block|{
+return|return
+name|applicationSchedulingEnvs
+return|;
 block|}
 block|}
 end_class

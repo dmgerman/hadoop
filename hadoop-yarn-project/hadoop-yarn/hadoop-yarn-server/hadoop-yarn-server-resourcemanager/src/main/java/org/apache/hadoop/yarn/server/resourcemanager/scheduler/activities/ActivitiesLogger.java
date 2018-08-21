@@ -84,24 +84,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerId
 import|;
 end_import
@@ -199,6 +181,30 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -310,6 +316,10 @@ literal|"app"
 decl_stmt|;
 if|if
 condition|(
+name|node
+operator|==
+literal|null
+operator|||
 name|activitiesManager
 operator|==
 literal|null
@@ -406,6 +416,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|node
+operator|==
+literal|null
+operator|||
 name|activitiesManager
 operator|==
 literal|null
@@ -437,9 +451,6 @@ operator|.
 name|addSchedulingActivityForNode
 argument_list|(
 name|node
-operator|.
-name|getNodeID
-argument_list|()
 argument_list|,
 name|application
 operator|.
@@ -475,9 +486,6 @@ operator|.
 name|addSchedulingActivityForNode
 argument_list|(
 name|node
-operator|.
-name|getNodeID
-argument_list|()
 argument_list|,
 name|application
 operator|.
@@ -583,6 +591,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|node
+operator|==
+literal|null
+operator|||
 name|activitiesManager
 operator|==
 literal|null
@@ -614,9 +626,6 @@ operator|.
 name|addSchedulingActivityForNode
 argument_list|(
 name|node
-operator|.
-name|getNodeID
-argument_list|()
 argument_list|,
 name|application
 operator|.
@@ -664,9 +673,6 @@ operator|.
 name|addSchedulingActivityForNode
 argument_list|(
 name|node
-operator|.
-name|getNodeID
-argument_list|()
 argument_list|,
 name|application
 operator|.
@@ -757,7 +763,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*      * Invoked when scheduler starts to look at this application within one node      * update.      */
-DECL|method|startAppAllocationRecording ( ActivitiesManager activitiesManager, NodeId nodeId, long currentTime, SchedulerApplicationAttempt application)
+DECL|method|startAppAllocationRecording ( ActivitiesManager activitiesManager, FiCaSchedulerNode node, long currentTime, SchedulerApplicationAttempt application)
 specifier|public
 specifier|static
 name|void
@@ -766,8 +772,8 @@ parameter_list|(
 name|ActivitiesManager
 name|activitiesManager
 parameter_list|,
-name|NodeId
-name|nodeId
+name|FiCaSchedulerNode
+name|node
 parameter_list|,
 name|long
 name|currentTime
@@ -778,6 +784,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|node
+operator|==
+literal|null
+operator|||
 name|activitiesManager
 operator|==
 literal|null
@@ -789,7 +799,10 @@ name|activitiesManager
 operator|.
 name|startAppAllocationRecording
 argument_list|(
-name|nodeId
+name|node
+operator|.
+name|getNodeID
+argument_list|()
 argument_list|,
 name|currentTime
 argument_list|,
@@ -924,6 +937,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|node
+operator|==
+literal|null
+operator|||
 name|activitiesManager
 operator|==
 literal|null
@@ -1023,6 +1040,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|node
+operator|==
+literal|null
+operator|||
 name|activitiesManager
 operator|==
 literal|null
@@ -1159,9 +1180,6 @@ operator|.
 name|addSchedulingActivityForNode
 argument_list|(
 name|node
-operator|.
-name|getNodeID
-argument_list|()
 argument_list|,
 name|parentName
 argument_list|,

@@ -190,6 +190,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
+name|SchedulerNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|webapp
 operator|.
 name|dao
@@ -1194,12 +1214,12 @@ expr_stmt|;
 block|}
 block|}
 comment|// Add queue, application or container activity into specific node allocation.
-DECL|method|addSchedulingActivityForNode (NodeId nodeID, String parentName, String childName, String priority, ActivityState state, String diagnostic, String type)
+DECL|method|addSchedulingActivityForNode (SchedulerNode node, String parentName, String childName, String priority, ActivityState state, String diagnostic, String type)
 name|void
 name|addSchedulingActivityForNode
 parameter_list|(
-name|NodeId
-name|nodeID
+name|SchedulerNode
+name|node
 parameter_list|,
 name|String
 name|parentName
@@ -1224,7 +1244,10 @@ if|if
 condition|(
 name|shouldRecordThisNode
 argument_list|(
-name|nodeID
+name|node
+operator|.
+name|getNodeID
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1233,7 +1256,10 @@ name|nodeAllocation
 init|=
 name|getCurrentNodeAllocation
 argument_list|(
-name|nodeID
+name|node
+operator|.
+name|getNodeID
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|nodeAllocation

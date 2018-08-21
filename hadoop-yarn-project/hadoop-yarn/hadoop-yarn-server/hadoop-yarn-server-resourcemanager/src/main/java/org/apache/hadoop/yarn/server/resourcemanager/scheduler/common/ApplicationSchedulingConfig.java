@@ -125,6 +125,19 @@ name|LocalityAppPlacementAllocator
 operator|.
 name|class
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|field|ENV_MULTI_NODE_SORTING_POLICY_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENV_MULTI_NODE_SORTING_POLICY_CLASS
+init|=
+literal|"MULTI_NODE_SORTING_POLICY_CLASS"
+decl_stmt|;
 block|}
 end_class
 

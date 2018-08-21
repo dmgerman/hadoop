@@ -3266,7 +3266,7 @@ name|ActivityDiagnosticConstant
 operator|.
 name|NOT_ABLE_TO_ACCESS_PARTITION
 operator|+
-name|node
+name|candidates
 operator|.
 name|getPartition
 argument_list|()

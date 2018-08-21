@@ -1153,6 +1153,12 @@ name|Resource
 name|factor
 parameter_list|)
 function_decl|;
+comment|/**    * Get Multi Node scheduling policy name.    * @return policy name    */
+DECL|method|getMultiNodeSortingPolicyName ()
+name|String
+name|getMultiNodeSortingPolicyName
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
