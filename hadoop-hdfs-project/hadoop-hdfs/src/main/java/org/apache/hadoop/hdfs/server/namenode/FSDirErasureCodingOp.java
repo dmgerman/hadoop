@@ -1204,7 +1204,7 @@ block|}
 comment|/**    * Enable an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be enabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
 DECL|method|enableErasureCodingPolicy (final FSNamesystem fsn, String ecPolicyName, final boolean logRetryCache)
 specifier|static
-name|void
+name|boolean
 name|enableErasureCodingPolicy
 parameter_list|(
 specifier|final
@@ -1228,6 +1228,9 @@ argument_list|(
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+name|boolean
+name|success
+init|=
 name|fsn
 operator|.
 name|getErasureCodingPolicyManager
@@ -1237,7 +1240,12 @@ name|enablePolicy
 argument_list|(
 name|ecPolicyName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
 name|fsn
 operator|.
 name|getEditLog
@@ -1251,10 +1259,14 @@ name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|success
+return|;
+block|}
 comment|/**    * Disable an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be disabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
 DECL|method|disableErasureCodingPolicy (final FSNamesystem fsn, String ecPolicyName, final boolean logRetryCache)
 specifier|static
-name|void
+name|boolean
 name|disableErasureCodingPolicy
 parameter_list|(
 specifier|final
@@ -1278,6 +1290,9 @@ argument_list|(
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+name|boolean
+name|success
+init|=
 name|fsn
 operator|.
 name|getErasureCodingPolicyManager
@@ -1287,7 +1302,12 @@ name|disablePolicy
 argument_list|(
 name|ecPolicyName
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
 name|fsn
 operator|.
 name|getEditLog
@@ -1300,6 +1320,10 @@ argument_list|,
 name|logRetryCache
 argument_list|)
 expr_stmt|;
+block|}
+return|return
+name|success
+return|;
 block|}
 DECL|method|removeErasureCodingPolicyXAttr ( final FSNamesystem fsn, final INodesInPath srcIIP)
 specifier|private

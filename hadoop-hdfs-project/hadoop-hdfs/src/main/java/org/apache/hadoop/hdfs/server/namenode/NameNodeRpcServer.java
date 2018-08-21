@@ -13947,6 +13947,8 @@ literal|false
 decl_stmt|;
 try|try
 block|{
+name|success
+operator|=
 name|namesystem
 operator|.
 name|enableErasureCodingPolicy
@@ -13957,10 +13959,6 @@ name|cacheEntry
 operator|!=
 literal|null
 argument_list|)
-expr_stmt|;
-name|success
-operator|=
-literal|true
 expr_stmt|;
 block|}
 finally|finally
@@ -14030,6 +14028,8 @@ literal|false
 decl_stmt|;
 try|try
 block|{
+name|success
+operator|=
 name|namesystem
 operator|.
 name|disableErasureCodingPolicy
@@ -14040,10 +14040,6 @@ name|cacheEntry
 operator|!=
 literal|null
 argument_list|)
-expr_stmt|;
-name|success
-operator|=
-literal|true
 expr_stmt|;
 block|}
 finally|finally

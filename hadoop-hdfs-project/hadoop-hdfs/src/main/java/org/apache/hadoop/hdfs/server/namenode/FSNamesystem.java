@@ -36037,9 +36037,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Enable an erasure coding policy.    * @param ecPolicyName the name of the policy to be enabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+comment|/**    * Enable an erasure coding policy.    * @param ecPolicyName the name of the policy to be enabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return    * @throws IOException    */
 DECL|method|enableErasureCodingPolicy (String ecPolicyName, final boolean logRetryCache)
-name|void
+name|boolean
 name|enableErasureCodingPolicy
 parameter_list|(
 name|String
@@ -36070,15 +36070,6 @@ name|success
 init|=
 literal|false
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Enable the erasure coding policy "
-operator|+
-name|ecPolicyName
-argument_list|)
-expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -36098,6 +36089,8 @@ operator|+
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+name|success
+operator|=
 name|FSDirErasureCodingOp
 operator|.
 name|enableErasureCodingPolicy
@@ -36109,9 +36102,25 @@ argument_list|,
 name|logRetryCache
 argument_list|)
 expr_stmt|;
-name|success
-operator|=
-literal|true
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|ace
+parameter_list|)
+block|{
+name|logAuditEvent
+argument_list|(
+literal|false
+argument_list|,
+name|operationName
+argument_list|,
+name|ecPolicyName
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -36132,7 +36141,6 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
-block|}
 name|logAuditEvent
 argument_list|(
 name|success
@@ -36148,9 +36156,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|return
+name|success
+return|;
+block|}
 comment|/**    * Disable an erasure coding policy.    * @param ecPolicyName the name of the policy to be disabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
 DECL|method|disableErasureCodingPolicy (String ecPolicyName, final boolean logRetryCache)
-name|void
+name|boolean
 name|disableErasureCodingPolicy
 parameter_list|(
 name|String
@@ -36209,6 +36221,8 @@ operator|+
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+name|success
+operator|=
 name|FSDirErasureCodingOp
 operator|.
 name|disableErasureCodingPolicy
@@ -36220,9 +36234,25 @@ argument_list|,
 name|logRetryCache
 argument_list|)
 expr_stmt|;
-name|success
-operator|=
-literal|true
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|ace
+parameter_list|)
+block|{
+name|logAuditEvent
+argument_list|(
+literal|false
+argument_list|,
+name|operationName
+argument_list|,
+name|ecPolicyName
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -36243,7 +36273,6 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
-block|}
 name|logAuditEvent
 argument_list|(
 name|success
@@ -36258,6 +36287,10 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+return|return
+name|success
+return|;
 block|}
 comment|/**    * Unset an erasure coding policy from the given path.    * @param srcArg  The path of the target directory.    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
 DECL|method|unsetErasureCodingPolicy (final String srcArg, final boolean logRetryCache)

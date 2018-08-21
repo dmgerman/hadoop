@@ -1592,7 +1592,7 @@ name|assertEquals
 argument_list|(
 literal|"Retry cache size is wrong"
 argument_list|,
-literal|39
+literal|38
 argument_list|,
 name|cacheSet
 operator|.

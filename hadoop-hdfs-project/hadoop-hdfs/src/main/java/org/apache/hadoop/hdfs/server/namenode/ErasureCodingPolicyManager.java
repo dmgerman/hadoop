@@ -1507,7 +1507,7 @@ comment|/**    * Disable an erasure coding policy by policyName.    */
 DECL|method|disablePolicy (String name)
 specifier|public
 specifier|synchronized
-name|void
+name|boolean
 name|disablePolicy
 parameter_list|(
 name|String
@@ -1576,7 +1576,6 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
-block|}
 name|info
 operator|.
 name|setState
@@ -1595,12 +1594,19 @@ operator|+
 name|name
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Enable an erasure coding policy by policyName.    */
 DECL|method|enablePolicy (String name)
 specifier|public
 specifier|synchronized
-name|void
+name|boolean
 name|enablePolicy
 parameter_list|(
 name|String
@@ -1636,6 +1642,20 @@ operator|+
 literal|" does not exist"
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|enabledPoliciesByName
+operator|.
+name|containsKey
+argument_list|(
+name|name
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
 block|}
 specifier|final
 name|ErasureCodingPolicy
@@ -1689,6 +1709,9 @@ operator|+
 name|name
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 comment|/**    * Load an erasure coding policy into erasure coding manager.    */
 DECL|method|loadPolicy (ErasureCodingPolicyInfo info)
