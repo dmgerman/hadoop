@@ -761,6 +761,8 @@ range|:
 name|strs
 control|)
 block|{
+try|try
+block|{
 name|fieldList
 operator|.
 name|add
@@ -779,6 +781,23 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|s
+operator|+
+literal|" is not a valid field."
+argument_list|)
+throw|;
+block|}
 block|}
 return|return
 name|fieldList
