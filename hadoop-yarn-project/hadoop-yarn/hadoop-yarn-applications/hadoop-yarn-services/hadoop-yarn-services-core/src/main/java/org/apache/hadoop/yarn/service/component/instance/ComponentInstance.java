@@ -2575,6 +2575,27 @@ name|ComponentInstanceEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|compInstance
+operator|.
+name|containerSpec
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|ContainerState
+operator|.
+name|NEEDS_UPGRADE
+argument_list|)
+condition|)
+block|{
+comment|//nothing to upgrade. this may happen with express upgrade.
+return|return;
+block|}
 name|compInstance
 operator|.
 name|containerSpec

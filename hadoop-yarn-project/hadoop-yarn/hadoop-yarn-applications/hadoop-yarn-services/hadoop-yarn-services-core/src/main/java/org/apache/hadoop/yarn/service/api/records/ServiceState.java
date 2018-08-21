@@ -124,7 +124,10 @@ block|,
 name|UPGRADING
 block|,
 DECL|enumConstant|UPGRADING_AUTO_FINALIZE
+DECL|enumConstant|EXPRESS_UPGRADING
 name|UPGRADING_AUTO_FINALIZE
+block|,
+name|EXPRESS_UPGRADING
 block|; }
 end_enum
 

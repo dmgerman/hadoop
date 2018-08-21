@@ -148,6 +148,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -740,6 +750,28 @@ argument_list|<
 name|String
 argument_list|>
 name|containerStates
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
+comment|/**    * Express upgrade a long running service.    *    * @param appName  the name of the application    * @param fileName specification of application upgrade to save.    * @return exit code    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionUpgradeExpress (String appName, File fileName)
+specifier|public
+specifier|abstract
+name|int
+name|actionUpgradeExpress
+parameter_list|(
+name|String
+name|appName
+parameter_list|,
+name|File
+name|fileName
 parameter_list|)
 throws|throws
 name|IOException

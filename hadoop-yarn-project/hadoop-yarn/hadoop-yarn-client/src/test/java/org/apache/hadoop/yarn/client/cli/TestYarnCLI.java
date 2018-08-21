@@ -17347,6 +17347,34 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -express<arg>                           Works with -upgrade option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          perform express upgrade.  It"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          requires the upgraded"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application specification file."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -finalize                                Works with -upgrade option to"
 argument_list|)
 expr_stmt|;

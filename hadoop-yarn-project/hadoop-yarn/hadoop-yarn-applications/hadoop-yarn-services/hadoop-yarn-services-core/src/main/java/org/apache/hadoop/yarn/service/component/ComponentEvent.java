@@ -196,6 +196,11 @@ specifier|private
 name|String
 name|upgradeVersion
 decl_stmt|;
+DECL|field|expressUpgrade
+specifier|private
+name|boolean
+name|expressUpgrade
+decl_stmt|;
 DECL|method|getContainerId ()
 specifier|public
 name|ContainerId
@@ -476,6 +481,35 @@ operator|.
 name|upgradeVersion
 operator|=
 name|upgradeVersion
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|isExpressUpgrade ()
+specifier|public
+name|boolean
+name|isExpressUpgrade
+parameter_list|()
+block|{
+return|return
+name|expressUpgrade
+return|;
+block|}
+DECL|method|setExpressUpgrade (boolean expressUpgrade)
+specifier|public
+name|ComponentEvent
+name|setExpressUpgrade
+parameter_list|(
+name|boolean
+name|expressUpgrade
+parameter_list|)
+block|{
+name|this
+operator|.
+name|expressUpgrade
+operator|=
+name|expressUpgrade
 expr_stmt|;
 return|return
 name|this

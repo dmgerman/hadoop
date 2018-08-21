@@ -1925,11 +1925,8 @@ argument_list|)
 expr_stmt|;
 name|dispatcher
 operator|=
-operator|new
-name|AsyncDispatcher
-argument_list|(
-literal|"Component  dispatcher"
-argument_list|)
+name|createAsyncDispatcher
+argument_list|()
 expr_stmt|;
 name|dispatcher
 operator|.
@@ -2118,6 +2115,18 @@ name|getConfig
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|serviceManager
+operator|=
+name|createServiceManager
+argument_list|()
+expr_stmt|;
+name|context
+operator|.
+name|setServiceManager
+argument_list|(
+name|serviceManager
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createYarnRegistryOperations ( ServiceContext context, RegistryOperations registryClient)
 specifier|protected
@@ -2154,6 +2163,34 @@ argument_list|,
 name|context
 operator|.
 name|attemptId
+argument_list|)
+return|;
+block|}
+DECL|method|createServiceManager ()
+specifier|protected
+name|ServiceManager
+name|createServiceManager
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ServiceManager
+argument_list|(
+name|context
+argument_list|)
+return|;
+block|}
+DECL|method|createAsyncDispatcher ()
+specifier|protected
+name|AsyncDispatcher
+name|createAsyncDispatcher
+parameter_list|()
+block|{
+return|return
+operator|new
+name|AsyncDispatcher
+argument_list|(
+literal|"Component  dispatcher"
 argument_list|)
 return|;
 block|}
@@ -2537,21 +2574,6 @@ argument_list|(
 name|ServiceState
 operator|.
 name|STARTED
-argument_list|)
-expr_stmt|;
-name|serviceManager
-operator|=
-operator|new
-name|ServiceManager
-argument_list|(
-name|context
-argument_list|)
-expr_stmt|;
-name|context
-operator|.
-name|setServiceManager
-argument_list|(
-name|serviceManager
 argument_list|)
 expr_stmt|;
 comment|// recover components based on containers sent from RM

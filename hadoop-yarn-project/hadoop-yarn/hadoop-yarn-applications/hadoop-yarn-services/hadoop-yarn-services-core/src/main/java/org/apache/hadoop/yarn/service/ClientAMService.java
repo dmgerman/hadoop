@@ -1212,6 +1212,11 @@ name|request
 operator|.
 name|getAutoFinalize
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getExpressUpgrade
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
