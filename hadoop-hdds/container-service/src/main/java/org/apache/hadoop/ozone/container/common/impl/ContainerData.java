@@ -226,20 +226,6 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicInteger
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
 name|AtomicLong
 import|;
 end_import
@@ -253,18 +239,6 @@ operator|.
 name|snakeyaml
 operator|.
 name|Yaml
-import|;
-end_import
-
-begin_import
-import|import static
-name|java
-operator|.
-name|lang
-operator|.
-name|Math
-operator|.
-name|max
 import|;
 end_import
 
@@ -480,11 +454,6 @@ specifier|private
 name|HddsVolume
 name|volume
 decl_stmt|;
-DECL|field|deleteTransactionId
-specifier|private
-name|long
-name|deleteTransactionId
-decl_stmt|;
 DECL|field|checksum
 specifier|private
 name|String
@@ -557,13 +526,6 @@ argument_list|,
 name|CHECKSUM
 argument_list|)
 argument_list|)
-decl_stmt|;
-comment|/**    * Number of pending deletion blocks in container.    */
-DECL|field|numPendingDeletionBlocks
-specifier|private
-specifier|final
-name|AtomicInteger
-name|numPendingDeletionBlocks
 decl_stmt|;
 comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size    */
 DECL|method|ContainerData (ContainerType type, long containerId, int size)
@@ -723,22 +685,6 @@ operator|.
 name|maxSizeGB
 operator|=
 name|size
-expr_stmt|;
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|=
-operator|new
-name|AtomicInteger
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|deleteTransactionId
-operator|=
-literal|0
 expr_stmt|;
 name|setChecksumTo0ByteArray
 argument_list|()
@@ -1274,65 +1220,6 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Increase the count of pending deletion blocks.    *    * @param numBlocks increment number    */
-DECL|method|incrPendingDeletionBlocks (int numBlocks)
-specifier|public
-name|void
-name|incrPendingDeletionBlocks
-parameter_list|(
-name|int
-name|numBlocks
-parameter_list|)
-block|{
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|.
-name|addAndGet
-argument_list|(
-name|numBlocks
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Decrease the count of pending deletion blocks.    *    * @param numBlocks decrement number    */
-DECL|method|decrPendingDeletionBlocks (int numBlocks)
-specifier|public
-name|void
-name|decrPendingDeletionBlocks
-parameter_list|(
-name|int
-name|numBlocks
-parameter_list|)
-block|{
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|.
-name|addAndGet
-argument_list|(
-operator|-
-literal|1
-operator|*
-name|numBlocks
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Get the number of pending deletion blocks.    */
-DECL|method|getNumPendingDeletionBlocks ()
-specifier|public
-name|int
-name|getNumPendingDeletionBlocks
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|numPendingDeletionBlocks
-operator|.
-name|get
-argument_list|()
-return|;
-block|}
 DECL|method|setChecksumTo0ByteArray ()
 specifier|public
 name|void
@@ -1424,37 +1311,6 @@ name|ContainerData
 name|getProtoBufMessage
 parameter_list|()
 function_decl|;
-comment|/**    * Sets deleteTransactionId to latest delete transactionId for the container.    *    * @param transactionId latest transactionId of the container.    */
-DECL|method|updateDeleteTransactionId (long transactionId)
-specifier|public
-name|void
-name|updateDeleteTransactionId
-parameter_list|(
-name|long
-name|transactionId
-parameter_list|)
-block|{
-name|deleteTransactionId
-operator|=
-name|max
-argument_list|(
-name|transactionId
-argument_list|,
-name|deleteTransactionId
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Return the latest deleteTransactionId of the container.    */
-DECL|method|getDeleteTransactionId ()
-specifier|public
-name|long
-name|getDeleteTransactionId
-parameter_list|()
-block|{
-return|return
-name|deleteTransactionId
-return|;
-block|}
 block|}
 end_class
 

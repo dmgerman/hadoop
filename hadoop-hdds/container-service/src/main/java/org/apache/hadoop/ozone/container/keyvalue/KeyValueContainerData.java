@@ -183,6 +183,32 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|max
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -292,6 +318,18 @@ name|dbFile
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * Number of pending deletion blocks in KeyValueContainer.    */
+DECL|field|numPendingDeletionBlocks
+specifier|private
+specifier|final
+name|AtomicInteger
+name|numPendingDeletionBlocks
+decl_stmt|;
+DECL|field|deleteTransactionId
+specifier|private
+name|long
+name|deleteTransactionId
+decl_stmt|;
 static|static
 block|{
 comment|// Initialize YAML fields
@@ -356,6 +394,22 @@ argument_list|,
 name|size
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+literal|0
+expr_stmt|;
 block|}
 comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size of the container    */
 DECL|method|KeyValueContainerData (long id, int layOutVersion, int size)
@@ -386,6 +440,22 @@ name|layOutVersion
 argument_list|,
 name|size
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|deleteTransactionId
+operator|=
+literal|0
 expr_stmt|;
 block|}
 comment|/**    * Sets Container dbFile. This should be called only during creation of    * KeyValue container.    * @param containerDbFile    */
@@ -526,6 +596,96 @@ name|containerDBType
 operator|=
 name|containerDBType
 expr_stmt|;
+block|}
+comment|/**    * Increase the count of pending deletion blocks.    *    * @param numBlocks increment number    */
+DECL|method|incrPendingDeletionBlocks (int numBlocks)
+specifier|public
+name|void
+name|incrPendingDeletionBlocks
+parameter_list|(
+name|int
+name|numBlocks
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|.
+name|addAndGet
+argument_list|(
+name|numBlocks
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Decrease the count of pending deletion blocks.    *    * @param numBlocks decrement number    */
+DECL|method|decrPendingDeletionBlocks (int numBlocks)
+specifier|public
+name|void
+name|decrPendingDeletionBlocks
+parameter_list|(
+name|int
+name|numBlocks
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|.
+name|addAndGet
+argument_list|(
+operator|-
+literal|1
+operator|*
+name|numBlocks
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the number of pending deletion blocks.    */
+DECL|method|getNumPendingDeletionBlocks ()
+specifier|public
+name|int
+name|getNumPendingDeletionBlocks
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Sets deleteTransactionId to latest delete transactionId for the container.    *    * @param transactionId latest transactionId of the container.    */
+DECL|method|updateDeleteTransactionId (long transactionId)
+specifier|public
+name|void
+name|updateDeleteTransactionId
+parameter_list|(
+name|long
+name|transactionId
+parameter_list|)
+block|{
+name|deleteTransactionId
+operator|=
+name|max
+argument_list|(
+name|transactionId
+argument_list|,
+name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Return the latest deleteTransactionId of the container.    */
+DECL|method|getDeleteTransactionId ()
+specifier|public
+name|long
+name|getDeleteTransactionId
+parameter_list|()
+block|{
+return|return
+name|deleteTransactionId
+return|;
 block|}
 comment|/**    * Returns a ProtoBuf Message from ContainerData.    *    * @return Protocol Buffer Message    */
 DECL|method|getProtoBufMessage ()

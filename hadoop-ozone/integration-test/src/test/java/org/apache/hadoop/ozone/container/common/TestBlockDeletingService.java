@@ -1509,9 +1509,16 @@ operator|.
 name|getContainerMap
 argument_list|()
 decl_stmt|;
+comment|// NOTE: this test assumes that all the container is KetValueContainer and
+comment|// have DeleteTransactionId in KetValueContainerData. If other
+comment|// types is going to be added, this test should be checked.
 name|long
 name|transactionId
 init|=
+operator|(
+operator|(
+name|KeyValueContainerData
+operator|)
 name|containerMap
 operator|.
 name|get
@@ -1529,6 +1536,7 @@ argument_list|)
 operator|.
 name|getContainerData
 argument_list|()
+operator|)
 operator|.
 name|getDeleteTransactionId
 argument_list|()

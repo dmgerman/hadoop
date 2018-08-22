@@ -1141,7 +1141,9 @@ name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Delete transactionIds for the containers should be 0
+comment|// Delete transactionIds for the containers should be 0.
+comment|// NOTE: this test assumes that all the container is KetValueContainer. If
+comment|// other container types is going to be added, this test should be checked.
 name|matchContainerTransactionIds
 argument_list|()
 expr_stmt|;
@@ -1535,6 +1537,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+operator|(
+operator|(
+name|KeyValueContainerData
+operator|)
 name|dnContainerSet
 operator|.
 name|getContainer
@@ -1544,6 +1550,7 @@ argument_list|)
 operator|.
 name|getContainerData
 argument_list|()
+operator|)
 operator|.
 name|getDeleteTransactionId
 argument_list|()

@@ -74,6 +74,24 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -281,6 +299,16 @@ name|blockIterator
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Returns containerReport for the container.    */
+DECL|method|getContainerReport ()
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerInfo
+name|getContainerReport
+parameter_list|()
+throws|throws
+name|StorageContainerException
 function_decl|;
 block|}
 end_interface
