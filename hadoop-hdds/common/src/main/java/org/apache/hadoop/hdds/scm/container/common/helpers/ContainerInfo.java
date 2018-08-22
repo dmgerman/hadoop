@@ -941,6 +941,15 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|containerID
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
 return|return
 name|builder
 operator|.
