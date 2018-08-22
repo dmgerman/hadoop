@@ -1040,6 +1040,26 @@ name|FEDERATION_MOUNT_TABLE_MAX_CACHE_SIZE_DEFAULT
 init|=
 literal|10000
 decl_stmt|;
+DECL|field|FEDERATION_MOUNT_TABLE_CACHE_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FEDERATION_MOUNT_TABLE_CACHE_ENABLE
+init|=
+name|FEDERATION_ROUTER_PREFIX
+operator|+
+literal|"mount-table.cache.enable"
+decl_stmt|;
+DECL|field|FEDERATION_MOUNT_TABLE_CACHE_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|FEDERATION_MOUNT_TABLE_CACHE_ENABLE_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// HDFS Router-based federation admin
 DECL|field|DFS_ROUTER_ADMIN_HANDLER_COUNT_KEY
 specifier|public
