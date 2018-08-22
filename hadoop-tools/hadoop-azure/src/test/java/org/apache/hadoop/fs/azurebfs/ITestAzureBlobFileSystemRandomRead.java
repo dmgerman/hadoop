@@ -2793,6 +2793,26 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+specifier|final
+name|AzureBlobFileSystem
+name|abFs
+init|=
+name|this
+operator|.
+name|getFileSystem
+argument_list|()
+decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|abFs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|FileSystem
 name|fs
 init|=

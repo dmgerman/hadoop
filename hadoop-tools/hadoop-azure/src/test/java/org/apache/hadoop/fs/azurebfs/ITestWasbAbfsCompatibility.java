@@ -360,6 +360,17 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|NativeAzureFileSystem
 name|wasb
 init|=
@@ -569,6 +580,17 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|abfs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|NativeAzureFileSystem
 name|wasb
 init|=
@@ -778,6 +800,17 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|abfs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|NativeAzureFileSystem
 name|wasb
 init|=
@@ -945,6 +978,17 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|abfs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|NativeAzureFileSystem
 name|wasb
 init|=

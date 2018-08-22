@@ -1309,6 +1309,17 @@ argument_list|(
 name|abfsUrl
 argument_list|)
 decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|byte
 index|[]
 name|buffer
@@ -1458,6 +1469,17 @@ argument_list|(
 name|abfsUrl
 argument_list|)
 decl_stmt|;
+comment|// test only valid for non-namespace enabled account
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|byte
 index|[]
 name|buffer
