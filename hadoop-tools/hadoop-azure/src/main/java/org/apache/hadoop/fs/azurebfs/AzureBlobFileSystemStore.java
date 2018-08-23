@@ -44,16 +44,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|InputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|OutputStream
 import|;
 end_import
@@ -355,34 +345,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
 import|;
 end_import
 
@@ -1834,15 +1796,7 @@ else|:
 literal|null
 argument_list|)
 expr_stmt|;
-specifier|final
-name|OutputStream
-name|outputStream
-decl_stmt|;
-name|outputStream
-operator|=
-operator|new
-name|FSDataOutputStream
-argument_list|(
+return|return
 operator|new
 name|AbfsOutputStream
 argument_list|(
@@ -1869,12 +1823,6 @@ operator|.
 name|isFlushEnabled
 argument_list|()
 argument_list|)
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-name|outputStream
 return|;
 block|}
 DECL|method|createDirectory (final Path path, final FsPermission permission, final FsPermission umask)
@@ -1962,7 +1910,7 @@ expr_stmt|;
 block|}
 DECL|method|openFileForRead (final Path path, final FileSystem.Statistics statistics)
 specifier|public
-name|InputStream
+name|AbfsInputStream
 name|openFileForRead
 parameter_list|(
 specifier|final
@@ -2098,9 +2046,6 @@ block|}
 comment|// Add statistics for InputStream
 return|return
 operator|new
-name|FSDataInputStream
-argument_list|(
-operator|new
 name|AbfsInputStream
 argument_list|(
 name|client
@@ -2129,7 +2074,6 @@ name|getReadAheadQueueDepth
 argument_list|()
 argument_list|,
 name|eTag
-argument_list|)
 argument_list|)
 return|;
 block|}
@@ -2262,15 +2206,7 @@ literal|0
 else|:
 name|contentLength
 decl_stmt|;
-specifier|final
-name|OutputStream
-name|outputStream
-decl_stmt|;
-name|outputStream
-operator|=
-operator|new
-name|FSDataOutputStream
-argument_list|(
+return|return
 operator|new
 name|AbfsOutputStream
 argument_list|(
@@ -2297,12 +2233,6 @@ operator|.
 name|isFlushEnabled
 argument_list|()
 argument_list|)
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-name|outputStream
 return|;
 block|}
 DECL|method|rename (final Path source, final Path destination)
