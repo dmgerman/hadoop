@@ -416,6 +416,26 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|volume
+operator|.
+name|HddsVolume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
 name|keyvalue
 operator|.
 name|helpers
@@ -1420,7 +1440,7 @@ return|return
 name|volumeChoosingPolicy
 return|;
 block|}
-comment|/**    * Returns OpenContainerBlockMap instance    * @return OpenContainerBlockMap    */
+comment|/**    * Returns OpenContainerBlockMap instance.    *    * @return OpenContainerBlockMap    */
 DECL|method|getOpenContainerBlockMap ()
 specifier|public
 name|OpenContainerBlockMap
@@ -1869,6 +1889,74 @@ name|request
 argument_list|)
 return|;
 block|}
+DECL|method|populateContainerPathFields (KeyValueContainer container, long maxSize)
+specifier|public
+name|void
+name|populateContainerPathFields
+parameter_list|(
+name|KeyValueContainer
+name|container
+parameter_list|,
+name|long
+name|maxSize
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|volumeSet
+operator|.
+name|acquireLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|HddsVolume
+name|containerVolume
+init|=
+name|volumeChoosingPolicy
+operator|.
+name|chooseVolume
+argument_list|(
+name|volumeSet
+operator|.
+name|getVolumesList
+argument_list|()
+argument_list|,
+name|maxSize
+argument_list|)
+decl_stmt|;
+name|String
+name|hddsVolumeDir
+init|=
+name|containerVolume
+operator|.
+name|getHddsRootDir
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|container
+operator|.
+name|populatePathFields
+argument_list|(
+name|scmID
+argument_list|,
+name|containerVolume
+argument_list|,
+name|hddsVolumeDir
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|volumeSet
+operator|.
+name|releaseLock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Handles Read Container Request. Returns the ContainerData as response.    */
 DECL|method|handleReadContainer ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
@@ -2084,7 +2172,7 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Handles Delete Container Request.    * Open containers cannot be deleted.    * Holds writeLock on ContainerSet till the container is removed from    * containerMap. On disk deletion of container files will happen    * asynchornously without the lock.    */
+comment|/**    * Handles Delete Container Request.    * Open containers cannot be deleted.    * Holds writeLock on ContainerSet till the container is removed from    * containerMap. On disk deletion of container files will happen    * asynchronously without the lock.    */
 DECL|method|handleDeleteContainer ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
 name|handleDeleteContainer
