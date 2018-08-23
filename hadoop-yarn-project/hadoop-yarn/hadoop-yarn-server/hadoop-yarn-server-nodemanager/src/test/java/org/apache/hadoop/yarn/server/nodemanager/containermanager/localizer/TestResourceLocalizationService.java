@@ -13066,7 +13066,7 @@ name|getLocalizerAction
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Cleanup application.
+comment|// Cleanup container.
 name|spyService
 operator|.
 name|handle
@@ -13080,6 +13080,40 @@ name|rsrcs
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+comment|/*Directly send heartbeat to introduce race as container           is being cleaned up.*/
+name|locRunnerForContainer
+operator|.
+name|processHeartbeat
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|rsrcSuccess
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Exception should not have been thrown on processing heartbeat"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Cleanup application.
 name|spyService
 operator|.
 name|handle

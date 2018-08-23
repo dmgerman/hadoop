@@ -2525,6 +2525,30 @@ argument_list|(
 name|req
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|rsrc
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Resource "
+operator|+
+name|req
+operator|+
+literal|" has been removed"
+operator|+
+literal|" and will no longer be localized"
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 name|rsrc
 operator|.
 name|setLocalPath
