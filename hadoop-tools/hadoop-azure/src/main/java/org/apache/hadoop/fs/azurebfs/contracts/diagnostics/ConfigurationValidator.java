@@ -73,7 +73,7 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Validates the configValue.    * @return validated value of type T    */
+comment|/**    * Validates a configuration value.    * @param configValue the configuration value to be validated.    * @return validated value of type T    * @throws InvalidConfigurationValueException if the configuration value is invalid.    */
 DECL|method|validate (String configValue)
 name|T
 name|validate

@@ -1067,7 +1067,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Gets and processes the HTTP response.    *    * @throws IOException if an error occurs.    */
+comment|/**    * Gets and processes the HTTP response.    *    * @param buffer a buffer to hold the response entity body    * @param offset an offset in the buffer where the data will being.    * @param length the number of bytes to be written to the buffer.    *    * @throws IOException if an error occurs.    */
 DECL|method|processResponse (final byte[] buffer, final int offset, final int length)
 specifier|public
 name|void

@@ -165,6 +165,7 @@ end_comment
 begin_class
 DECL|class|SSLSocketFactoryEx
 specifier|public
+specifier|final
 class|class
 name|SSLSocketFactoryEx
 extends|extends
@@ -230,11 +231,11 @@ specifier|private
 name|SSLChannelMode
 name|channelMode
 decl_stmt|;
-comment|/**    * Initialize a singleton SSL socket factory.    *    * @param preferredMode applicable only if the instance is not initialized.    * @throws IOException    */
+comment|/**    * Initialize a singleton SSL socket factory.    *    * @param preferredMode applicable only if the instance is not initialized.    * @throws IOException if an error occurs.    */
 DECL|method|initializeDefaultFactory ( SSLChannelMode preferredMode)
 specifier|public
-specifier|synchronized
 specifier|static
+specifier|synchronized
 name|void
 name|initializeDefaultFactory
 parameter_list|(
