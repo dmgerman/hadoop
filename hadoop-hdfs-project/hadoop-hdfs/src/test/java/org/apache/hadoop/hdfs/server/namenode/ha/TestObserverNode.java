@@ -178,6 +178,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -191,6 +205,16 @@ operator|.
 name|junit
 operator|.
 name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
 import|;
 end_import
 
@@ -254,7 +278,9 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|TimeUnit
+name|atomic
+operator|.
+name|AtomicInteger
 import|;
 end_import
 
@@ -266,9 +292,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|atomic
-operator|.
-name|AtomicBoolean
+name|TimeUnit
 import|;
 end_import
 
@@ -329,18 +353,6 @@ operator|.
 name|Assert
 operator|.
 name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
 import|;
 end_import
 
@@ -1082,6 +1094,15 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
+comment|// The first request goes to the active because it has not refreshed yet;
+comment|// the second will properly go to the observer
+name|dfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|testPath
+argument_list|)
+expr_stmt|;
 name|dfs
 operator|.
 name|getFileStatus
@@ -1211,6 +1232,15 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
+name|dfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|testPath
+argument_list|)
+expr_stmt|;
+comment|// The first request goes to the active because it has not refreshed yet;
+comment|// the second will properly go to the observer
 name|dfs
 operator|.
 name|getFileStatus
@@ -1497,6 +1527,14 @@ name|rc
 argument_list|)
 expr_stmt|;
 block|}
+comment|// TODO this does not currently work because fetching the service state from
+comment|// e.g. the StandbyNameNode also waits for the transaction ID to catch up.
+comment|// This is disabled pending HDFS-13872 and HDFS-13749.
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Disabled until HDFS-13872 and HDFS-13749 are committed"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|testMsyncSimple ()
@@ -1556,13 +1594,14 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|AtomicBoolean
-name|readSucceed
+comment|// 0 == not completed, 1 == succeeded, -1 == failed
+name|AtomicInteger
+name|readStatus
 init|=
 operator|new
-name|AtomicBoolean
+name|AtomicInteger
 argument_list|(
-literal|false
+literal|0
 argument_list|)
 decl_stmt|;
 name|dfs
@@ -1601,11 +1640,11 @@ argument_list|(
 name|testPath
 argument_list|)
 expr_stmt|;
-name|readSucceed
+name|readStatus
 operator|.
 name|set
 argument_list|(
-literal|true
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -1620,6 +1659,14 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+name|readStatus
+operator|.
+name|set
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 argument_list|)
@@ -1630,9 +1677,11 @@ name|start
 argument_list|()
 expr_stmt|;
 comment|// the reader is still blocking, not succeeded yet.
-name|assertFalse
+name|assertEquals
 argument_list|(
-name|readSucceed
+literal|0
+argument_list|,
+name|readStatus
 operator|.
 name|get
 argument_list|()
@@ -1644,17 +1693,30 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// wait a while for all the change to be done
-name|Thread
+name|GenericTestUtils
 operator|.
-name|sleep
+name|waitFor
 argument_list|(
+parameter_list|()
+lambda|->
+name|readStatus
+operator|.
+name|get
+argument_list|()
+operator|!=
+literal|0
+argument_list|,
 literal|100
+argument_list|,
+literal|10000
 argument_list|)
 expr_stmt|;
 comment|// the reader should have succeed.
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|readSucceed
+literal|1
+argument_list|,
+name|readStatus
 operator|.
 name|get
 argument_list|()

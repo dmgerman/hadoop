@@ -152,6 +152,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSUtilClient
@@ -504,6 +520,12 @@ specifier|private
 name|InetSocketAddress
 name|address
 decl_stmt|;
+comment|/**      * The currently known state of the NameNode represented by this ProxyInfo.      * This may be out of date if the NameNode has changed state since the last      * time the state was checked.      */
+DECL|field|cachedState
+specifier|private
+name|HAServiceState
+name|cachedState
+decl_stmt|;
 DECL|method|NNProxyInfo (InetSocketAddress address)
 specifier|public
 name|NNProxyInfo
@@ -537,6 +559,30 @@ parameter_list|()
 block|{
 return|return
 name|address
+return|;
+block|}
+DECL|method|setCachedState (HAServiceState state)
+specifier|public
+name|void
+name|setCachedState
+parameter_list|(
+name|HAServiceState
+name|state
+parameter_list|)
+block|{
+name|cachedState
+operator|=
+name|state
+expr_stmt|;
+block|}
+DECL|method|getCachedState ()
+specifier|public
+name|HAServiceState
+name|getCachedState
+parameter_list|()
+block|{
+return|return
+name|cachedState
 return|;
 block|}
 block|}
