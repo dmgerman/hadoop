@@ -561,8 +561,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|getAlignmentContext ()
 specifier|public
 specifier|synchronized

@@ -637,22 +637,6 @@ name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-comment|// AbstractNNFailoverProxyProvider
-DECL|method|getAlignmentContext ()
-specifier|public
-specifier|synchronized
-name|ClientGSIContext
-name|getAlignmentContext
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|alignmentContext
-return|;
-block|}
 block|}
 DECL|class|SpyConfiguredContextProxyProvider
 specifier|static
