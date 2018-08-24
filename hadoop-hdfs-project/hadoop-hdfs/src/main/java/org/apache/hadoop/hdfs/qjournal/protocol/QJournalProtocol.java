@@ -355,7 +355,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Format the underlying storage for the given namespace.    */
-DECL|method|format (String journalId, String nameServiceId, NamespaceInfo nsInfo)
+DECL|method|format (String journalId, String nameServiceId, NamespaceInfo nsInfo, boolean force)
 name|void
 name|format
 parameter_list|(
@@ -367,6 +367,9 @@ name|nameServiceId
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException

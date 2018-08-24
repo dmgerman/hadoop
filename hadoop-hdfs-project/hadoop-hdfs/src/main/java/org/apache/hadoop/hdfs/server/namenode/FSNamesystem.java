@@ -7728,6 +7728,7 @@ operator|.
 name|FORMAT
 condition|)
 block|{
+comment|// reuse current id
 name|fsImage
 operator|.
 name|format
@@ -7741,9 +7742,10 @@ argument_list|()
 operator|.
 name|determineClusterId
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
-comment|// reuse current id
 name|startOpt
 operator|=
 name|StartupOption

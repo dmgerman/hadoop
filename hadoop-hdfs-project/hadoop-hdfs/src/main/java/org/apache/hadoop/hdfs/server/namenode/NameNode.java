@@ -5898,6 +5898,8 @@ argument_list|(
 name|fsn
 argument_list|,
 name|clusterId
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 block|}
@@ -6344,6 +6346,8 @@ operator|.
 name|formatNonFileJournals
 argument_list|(
 name|nsInfo
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 comment|// Need to make sure the edit log segments are in good shape to initialize

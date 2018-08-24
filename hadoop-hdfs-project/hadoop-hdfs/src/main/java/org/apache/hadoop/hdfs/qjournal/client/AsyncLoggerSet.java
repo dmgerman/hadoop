@@ -1472,7 +1472,7 @@ name|calls
 argument_list|)
 return|;
 block|}
-DECL|method|format (NamespaceInfo nsInfo)
+DECL|method|format (NamespaceInfo nsInfo, boolean force)
 name|QuorumCall
 argument_list|<
 name|AsyncLogger
@@ -1483,6 +1483,9 @@ name|format
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 block|{
 name|Map
@@ -1520,6 +1523,8 @@ operator|.
 name|format
 argument_list|(
 name|nsInfo
+argument_list|,
+name|force
 argument_list|)
 decl_stmt|;
 name|calls

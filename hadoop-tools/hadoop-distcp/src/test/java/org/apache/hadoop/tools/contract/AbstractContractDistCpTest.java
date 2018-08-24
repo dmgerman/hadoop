@@ -1194,6 +1194,8 @@ name|getDisplayName
 argument_list|()
 argument_list|,
 name|value
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 if|if

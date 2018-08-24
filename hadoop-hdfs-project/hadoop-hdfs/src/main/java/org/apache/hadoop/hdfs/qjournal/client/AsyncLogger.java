@@ -346,8 +346,8 @@ name|long
 name|minTxIdToKeep
 parameter_list|)
 function_decl|;
-comment|/**    * Format the log directory.    * @param nsInfo the namespace info to format with    */
-DECL|method|format (NamespaceInfo nsInfo)
+comment|/**    * Format the log directory.    * @param nsInfo the namespace info to format with    * @param force the force option to format    */
+DECL|method|format (NamespaceInfo nsInfo, boolean force)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -357,6 +357,9 @@ name|format
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 function_decl|;
 comment|/**    * @return whether or not the remote node has any valid data.    */

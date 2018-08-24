@@ -421,6 +421,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// check again after format

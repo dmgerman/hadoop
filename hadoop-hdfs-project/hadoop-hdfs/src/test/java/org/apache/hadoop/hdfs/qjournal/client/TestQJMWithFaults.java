@@ -770,6 +770,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|doWorkload
@@ -1002,6 +1004,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|List
@@ -1332,6 +1336,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|qjmForInitialFormat

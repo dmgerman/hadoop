@@ -52,6 +52,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyBoolean
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|eq
 import|;
 end_import
@@ -617,6 +629,9 @@ expr|<
 name|NamespaceInfo
 operator|>
 name|any
+argument_list|()
+argument_list|,
+name|anyBoolean
 argument_list|()
 argument_list|)
 expr_stmt|;

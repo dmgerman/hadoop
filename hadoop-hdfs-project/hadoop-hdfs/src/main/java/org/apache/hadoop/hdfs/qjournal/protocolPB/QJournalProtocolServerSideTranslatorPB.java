@@ -1380,6 +1380,11 @@ operator|.
 name|getNsInfo
 argument_list|()
 argument_list|)
+argument_list|,
+name|request
+operator|.
+name|getForce
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

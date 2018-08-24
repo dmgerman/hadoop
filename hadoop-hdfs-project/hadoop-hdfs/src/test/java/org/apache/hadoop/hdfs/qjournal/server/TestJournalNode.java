@@ -1213,6 +1213,8 @@ operator|.
 name|format
 argument_list|(
 name|fakeNameSpaceInfo
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1233,6 +1235,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

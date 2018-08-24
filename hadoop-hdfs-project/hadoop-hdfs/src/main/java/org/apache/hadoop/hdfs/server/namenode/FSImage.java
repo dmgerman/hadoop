@@ -1088,7 +1088,7 @@ name|editLog
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|format (FSNamesystem fsn, String clusterId)
+DECL|method|format (FSNamesystem fsn, String clusterId, boolean force)
 name|void
 name|format
 parameter_list|(
@@ -1097,6 +1097,9 @@ name|fsn
 parameter_list|,
 name|String
 name|clusterId
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -1163,6 +1166,8 @@ operator|.
 name|formatNonFileJournals
 argument_list|(
 name|ns
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 name|saveFSImageInAllDirs

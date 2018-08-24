@@ -588,6 +588,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1406,6 +1408,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO_2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2448,6 +2452,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|fail
@@ -2471,6 +2477,43 @@ operator|+
 literal|"directory is not empty."
 argument_list|,
 name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testFormatNonEmptyStorageDirectoriesWhenforceOptionIsTrue ()
+specifier|public
+name|void
+name|testFormatNonEmptyStorageDirectoriesWhenforceOptionIsTrue
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+comment|// Format again here and to format the non-empty directories in
+comment|// journal node.
+name|journal
+operator|.
+name|format
+argument_list|(
+name|FAKE_NSINFO
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Format should be success with force option."
 argument_list|)
 expr_stmt|;
 block|}

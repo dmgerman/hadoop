@@ -1976,6 +1976,8 @@ operator|.
 name|format
 argument_list|(
 name|nsInfo
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Roll some more edits

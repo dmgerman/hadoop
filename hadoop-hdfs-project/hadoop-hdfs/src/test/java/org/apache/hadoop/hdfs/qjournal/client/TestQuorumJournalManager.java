@@ -826,6 +826,8 @@ argument_list|(
 name|QJMTestUtil
 operator|.
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|qjm
@@ -1034,6 +1036,8 @@ operator|.
 name|format
 argument_list|(
 name|FAKE_NSINFO
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue

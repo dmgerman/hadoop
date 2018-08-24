@@ -929,12 +929,15 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|format (NamespaceInfo nsInfo)
+DECL|method|format (NamespaceInfo nsInfo, boolean force)
 name|void
 name|format
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -954,7 +957,8 @@ name|FORMAT
 argument_list|,
 name|this
 argument_list|,
-literal|true
+operator|!
+name|force
 argument_list|)
 expr_stmt|;
 block|}

@@ -1129,7 +1129,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|format (String journalId, String nameServiceId, NamespaceInfo nsInfo)
+DECL|method|format (String journalId, String nameServiceId, NamespaceInfo nsInfo, boolean force)
 specifier|public
 name|void
 name|format
@@ -1142,6 +1142,9 @@ name|nameServiceId
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -1158,6 +1161,8 @@ operator|.
 name|format
 argument_list|(
 name|nsInfo
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 block|}

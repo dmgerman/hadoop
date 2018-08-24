@@ -2322,7 +2322,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|format (final NamespaceInfo nsInfo)
+DECL|method|format (final NamespaceInfo nsInfo, final boolean force)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -2333,6 +2333,10 @@ parameter_list|(
 specifier|final
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+specifier|final
+name|boolean
+name|force
 parameter_list|)
 block|{
 return|return
@@ -2366,6 +2370,8 @@ argument_list|,
 name|nameServiceId
 argument_list|,
 name|nsInfo
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 return|return

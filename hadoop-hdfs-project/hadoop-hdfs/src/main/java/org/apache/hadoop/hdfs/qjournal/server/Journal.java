@@ -1331,12 +1331,15 @@ literal|null
 return|;
 block|}
 comment|/**    * Format the local storage with the given namespace.    */
-DECL|method|format (NamespaceInfo nsInfo)
+DECL|method|format (NamespaceInfo nsInfo, boolean force)
 name|void
 name|format
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -1368,6 +1371,10 @@ operator|+
 literal|" with namespace info: "
 operator|+
 name|nsInfo
+operator|+
+literal|" and force: "
+operator|+
+name|force
 argument_list|)
 expr_stmt|;
 name|storage
@@ -1375,6 +1382,8 @@ operator|.
 name|format
 argument_list|(
 name|nsInfo
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 name|refreshCachedData

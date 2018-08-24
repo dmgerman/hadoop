@@ -193,13 +193,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|format (NamespaceInfo nsInfo)
+DECL|method|format (NamespaceInfo nsInfo, boolean force)
 specifier|public
 name|void
 name|format
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 block|{
 comment|// format() should only get called at startup, before any BNs

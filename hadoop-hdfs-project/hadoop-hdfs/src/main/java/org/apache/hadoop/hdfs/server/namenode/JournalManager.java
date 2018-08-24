@@ -167,12 +167,15 @@ extends|,
 name|LogsPurgeable
 block|{
 comment|/**    * Format the underlying storage, removing any previously    * stored data.    */
-DECL|method|format (NamespaceInfo ns)
+DECL|method|format (NamespaceInfo ns, boolean force)
 name|void
 name|format
 parameter_list|(
 name|NamespaceInfo
 name|ns
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException

@@ -2708,13 +2708,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Format all configured journals which are not file-based.    *     * File-based journals are skipped, since they are formatted by the    * Storage format code.    */
-DECL|method|formatNonFileJournals (NamespaceInfo nsInfo)
+DECL|method|formatNonFileJournals (NamespaceInfo nsInfo, boolean force)
 specifier|synchronized
 name|void
 name|formatNonFileJournals
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -2760,6 +2763,8 @@ operator|.
 name|format
 argument_list|(
 name|nsInfo
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 block|}

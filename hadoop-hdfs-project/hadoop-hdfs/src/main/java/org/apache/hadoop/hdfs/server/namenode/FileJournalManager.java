@@ -664,13 +664,16 @@ name|IOException
 block|{}
 annotation|@
 name|Override
-DECL|method|format (NamespaceInfo ns)
+DECL|method|format (NamespaceInfo ns, boolean force)
 specifier|public
 name|void
 name|format
 parameter_list|(
 name|NamespaceInfo
 name|ns
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
