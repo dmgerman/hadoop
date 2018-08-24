@@ -233,6 +233,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|HddsServerUtil
+operator|.
+name|getScmHeartbeatInterval
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -493,6 +511,18 @@ name|DatanodeStateMachine
 operator|.
 name|DatanodeStates
 name|state
+decl_stmt|;
+comment|/**    * Starting with a 2 sec heartbeat frequency which will be updated to the    * real HB frequency after scm registration. With this method the    * initial registration could be significant faster.    */
+DECL|field|heartbeatFrequency
+specifier|private
+name|AtomicLong
+name|heartbeatFrequency
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|2000
+argument_list|)
 decl_stmt|;
 comment|/**    * Constructs a StateContext.    *    * @param conf   - Configration    * @param state  - State    * @param parent Parent State Machine    */
 DECL|method|StateContext (Configuration conf, DatanodeStateMachine.DatanodeStates state, DatanodeStateMachine parent)
@@ -1413,6 +1443,37 @@ return|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+DECL|method|configureHeartbeatFrequency ()
+specifier|public
+name|void
+name|configureHeartbeatFrequency
+parameter_list|()
+block|{
+name|heartbeatFrequency
+operator|.
+name|set
+argument_list|(
+name|getScmHeartbeatInterval
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Return current heartbeat frequency in ms.    */
+DECL|method|getHeartbeatFrequency ()
+specifier|public
+name|long
+name|getHeartbeatFrequency
+parameter_list|()
+block|{
+return|return
+name|heartbeatFrequency
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 block|}

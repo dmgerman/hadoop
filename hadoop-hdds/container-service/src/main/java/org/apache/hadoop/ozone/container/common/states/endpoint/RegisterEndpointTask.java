@@ -188,6 +188,26 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|statemachine
+operator|.
+name|StateContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
 name|ozoneimpl
 operator|.
 name|OzoneContainer
@@ -324,10 +344,15 @@ specifier|final
 name|OzoneContainer
 name|datanodeContainerManager
 decl_stmt|;
+DECL|field|stateContext
+specifier|private
+name|StateContext
+name|stateContext
+decl_stmt|;
 comment|/**    * Creates a register endpoint task.    *    * @param rpcEndPoint - endpoint    * @param conf - conf    * @param ozoneContainer - container    */
 annotation|@
 name|VisibleForTesting
-DECL|method|RegisterEndpointTask (EndpointStateMachine rpcEndPoint, Configuration conf, OzoneContainer ozoneContainer)
+DECL|method|RegisterEndpointTask (EndpointStateMachine rpcEndPoint, Configuration conf, OzoneContainer ozoneContainer, StateContext context)
 specifier|public
 name|RegisterEndpointTask
 parameter_list|(
@@ -339,6 +364,9 @@ name|conf
 parameter_list|,
 name|OzoneContainer
 name|ozoneContainer
+parameter_list|,
+name|StateContext
+name|context
 parameter_list|)
 block|{
 name|this
@@ -358,6 +386,12 @@ operator|.
 name|datanodeContainerManager
 operator|=
 name|ozoneContainer
+expr_stmt|;
+name|this
+operator|.
+name|stateContext
+operator|=
+name|context
 expr_stmt|;
 block|}
 comment|/**    * Get the DatanodeDetails.    *    * @return DatanodeDetailsProto    */
@@ -577,6 +611,13 @@ operator|.
 name|zeroMissedCount
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|stateContext
+operator|.
+name|configureHeartbeatFrequency
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -647,6 +688,11 @@ DECL|field|container
 specifier|private
 name|OzoneContainer
 name|container
+decl_stmt|;
+DECL|field|context
+specifier|private
+name|StateContext
+name|context
 decl_stmt|;
 comment|/**      * Constructs the builder class.      */
 DECL|method|Builder ()
@@ -734,6 +780,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setContext (StateContext stateContext)
+specifier|public
+name|Builder
+name|setContext
+parameter_list|(
+name|StateContext
+name|stateContext
+parameter_list|)
+block|{
+name|this
+operator|.
+name|context
+operator|=
+name|stateContext
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|RegisterEndpointTask
@@ -782,9 +847,9 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"A valid configration is needed to"
+literal|"A valid configuration is needed to construct RegisterEndpoint "
 operator|+
-literal|" construct RegisterEndpoint task"
+literal|"task"
 argument_list|)
 throw|;
 block|}
@@ -832,7 +897,31 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Container is not specified to "
 operator|+
-literal|"constrict RegisterEndpoint task"
+literal|"construct RegisterEndpoint task"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|context
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"StateContext is not specified"
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Container is not specified to "
+operator|+
+literal|"construct RegisterEndpoint task"
 argument_list|)
 throw|;
 block|}
@@ -853,6 +942,10 @@ argument_list|,
 name|this
 operator|.
 name|container
+argument_list|,
+name|this
+operator|.
+name|context
 argument_list|)
 decl_stmt|;
 name|task

@@ -410,24 +410,6 @@ name|AtomicLong
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|HddsServerUtil
-operator|.
-name|getScmHeartbeatInterval
-import|;
-end_import
-
 begin_comment
 comment|/**  * State Machine Class.  */
 end_comment
@@ -474,12 +456,6 @@ specifier|private
 specifier|final
 name|SCMConnectionManager
 name|connectionManager
-decl_stmt|;
-DECL|field|heartbeatFrequency
-specifier|private
-specifier|final
-name|long
-name|heartbeatFrequency
 decl_stmt|;
 DECL|field|context
 specifier|private
@@ -606,13 +582,6 @@ name|getInitState
 argument_list|()
 argument_list|,
 name|this
-argument_list|)
-expr_stmt|;
-name|heartbeatFrequency
-operator|=
-name|getScmHeartbeatInterval
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 name|container
@@ -827,6 +796,14 @@ name|getExecutionCount
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|long
+name|heartbeatFrequency
+init|=
+name|context
+operator|.
+name|getHeartbeatFrequency
+argument_list|()
+decl_stmt|;
 name|nextHB
 operator|.
 name|set

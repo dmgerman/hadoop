@@ -593,6 +593,11 @@ argument_list|(
 name|endpoint
 argument_list|)
 operator|.
+name|setContext
+argument_list|(
+name|context
+argument_list|)
+operator|.
 name|setDatanodeDetails
 argument_list|(
 name|context

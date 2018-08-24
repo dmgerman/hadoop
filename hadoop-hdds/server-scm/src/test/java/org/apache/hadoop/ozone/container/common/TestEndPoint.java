@@ -2113,6 +2113,13 @@ argument_list|,
 name|conf
 argument_list|,
 name|ozoneContainer
+argument_list|,
+name|mock
+argument_list|(
+name|StateContext
+operator|.
+name|class
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
