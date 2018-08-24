@@ -326,7 +326,7 @@ name|getStateManager
 parameter_list|()
 function_decl|;
 comment|/**    * Process container report from Datanode.    *    * @param reports Container report    */
-DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports)
+DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports, boolean isRegisterCall)
 name|void
 name|processContainerReports
 parameter_list|(
@@ -335,6 +335,9 @@ name|datanodeDetails
 parameter_list|,
 name|ContainerReportsProto
 name|reports
+parameter_list|,
+name|boolean
+name|isRegisterCall
 parameter_list|)
 throws|throws
 name|IOException

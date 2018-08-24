@@ -2443,7 +2443,7 @@ block|}
 comment|/**    * Process container report from Datanode.    *<p>    * Processing follows a very simple logic for time being.    *<p>    * 1. Datanodes report the current State -- denoted by the datanodeState    *<p>    * 2. We are the older SCM state from the Database -- denoted by    * the knownState.    *<p>    * 3. We copy the usage etc. from currentState to newState and log that    * newState to the DB. This allows us SCM to bootup again and read the    * state of the world from the DB, and then reconcile the state from    * container reports, when they arrive.    *    * @param reports Container report    */
 annotation|@
 name|Override
-DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports)
+DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports, boolean isRegisterCall)
 specifier|public
 name|void
 name|processContainerReports
@@ -2453,6 +2453,9 @@ name|datanodeDetails
 parameter_list|,
 name|ContainerReportsProto
 name|reports
+parameter_list|,
+name|boolean
+name|isRegisterCall
 parameter_list|)
 throws|throws
 name|IOException
@@ -2484,11 +2487,61 @@ control|(
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|ContainerInfo
-name|datanodeState
+name|contInfo
 range|:
 name|containerInfos
 control|)
 block|{
+comment|// Update replica info during registration process.
+if|if
+condition|(
+name|isRegisterCall
+condition|)
+block|{
+try|try
+block|{
+name|getStateManager
+argument_list|()
+operator|.
+name|addContainerReplica
+argument_list|(
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
+name|contInfo
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+argument_list|,
+name|datanodeDetails
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+comment|// Continue to next one after logging the error.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error while adding replica for containerId {}."
+argument_list|,
+name|contInfo
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|byte
 index|[]
 name|dbKey
@@ -2497,7 +2550,7 @@ name|Longs
 operator|.
 name|toByteArray
 argument_list|(
-name|datanodeState
+name|contInfo
 operator|.
 name|getContainerID
 argument_list|()
@@ -2551,7 +2604,7 @@ name|newState
 init|=
 name|reconcileState
 argument_list|(
-name|datanodeState
+name|contInfo
 argument_list|,
 name|knownState
 argument_list|,
@@ -2565,7 +2618,7 @@ operator|.
 name|getDeleteTransactionId
 argument_list|()
 operator|>
-name|datanodeState
+name|contInfo
 operator|.
 name|getDeleteTransactionId
 argument_list|()
@@ -2575,7 +2628,7 @@ name|pendingDeleteStatusList
 operator|.
 name|addPendingDeleteStatus
 argument_list|(
-name|datanodeState
+name|contInfo
 operator|.
 name|getDeleteTransactionId
 argument_list|()
@@ -2698,7 +2751,7 @@ literal|"container database."
 argument_list|,
 name|datanodeDetails
 argument_list|,
-name|datanodeState
+name|contInfo
 operator|.
 name|getContainerID
 argument_list|()

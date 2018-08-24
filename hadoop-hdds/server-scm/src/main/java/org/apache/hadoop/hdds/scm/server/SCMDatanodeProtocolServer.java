@@ -1183,6 +1183,8 @@ argument_list|(
 name|datanodeDetails
 argument_list|,
 name|containerReportsProto
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
