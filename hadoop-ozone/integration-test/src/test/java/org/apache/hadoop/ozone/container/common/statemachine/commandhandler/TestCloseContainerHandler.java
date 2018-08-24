@@ -314,7 +314,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_SIZE_GB
+name|OZONE_SCM_CONTAINER_SIZE
 import|;
 end_import
 
@@ -412,9 +412,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OZONE_SCM_CONTAINER_SIZE_GB
+name|OZONE_SCM_CONTAINER_SIZE
 argument_list|,
-literal|"1"
+literal|"1GB"
 argument_list|)
 expr_stmt|;
 name|MiniOzoneCluster

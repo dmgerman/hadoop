@@ -560,7 +560,7 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size    */
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size in GB    */
 DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, int size)
 specifier|protected
 name|ContainerData

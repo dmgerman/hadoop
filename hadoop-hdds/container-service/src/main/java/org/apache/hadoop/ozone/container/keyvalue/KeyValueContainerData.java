@@ -66,6 +66,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|StorageSize
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|protocol
@@ -369,7 +383,7 @@ name|CONTAINER_DB_TYPE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param size - maximum size of the container    */
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param size - maximum size in GB of the container    */
 DECL|method|KeyValueContainerData (long id, int size)
 specifier|public
 name|KeyValueContainerData
@@ -411,7 +425,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size of the container    */
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size in GB of the container    */
 DECL|method|KeyValueContainerData (long id, int layOutVersion, int size)
 specifier|public
 name|KeyValueContainerData
@@ -887,6 +901,18 @@ throws|throws
 name|IOException
 block|{
 comment|// TODO: Add containerMaxSize to ContainerProtos.ContainerData
+name|StorageSize
+name|storageSize
+init|=
+name|StorageSize
+operator|.
+name|parse
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+argument_list|)
+decl_stmt|;
 name|KeyValueContainerData
 name|data
 init|=
@@ -898,9 +924,21 @@ operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-name|ScmConfigKeys
+operator|(
+name|int
+operator|)
+name|storageSize
 operator|.
-name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+name|getUnit
+argument_list|()
+operator|.
+name|toBytes
+argument_list|(
+name|storageSize
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 for|for

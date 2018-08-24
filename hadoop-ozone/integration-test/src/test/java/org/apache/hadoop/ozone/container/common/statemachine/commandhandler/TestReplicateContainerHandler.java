@@ -96,24 +96,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|ContainerID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|MiniOzoneCluster
@@ -184,7 +166,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_SIZE_GB
+name|OZONE_SCM_CONTAINER_SIZE
 import|;
 end_import
 
@@ -251,9 +233,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OZONE_SCM_CONTAINER_SIZE_GB
+name|OZONE_SCM_CONTAINER_SIZE
 argument_list|,
-literal|"1"
+literal|"1GB"
 argument_list|)
 expr_stmt|;
 name|MiniOzoneCluster
