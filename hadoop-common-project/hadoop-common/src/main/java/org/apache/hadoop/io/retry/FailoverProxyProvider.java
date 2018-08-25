@@ -62,9 +62,7 @@ extends|extends
 name|Closeable
 block|{
 DECL|class|ProxyInfo
-specifier|public
 specifier|static
-specifier|final
 class|class
 name|ProxyInfo
 parameter_list|<
@@ -73,14 +71,12 @@ parameter_list|>
 block|{
 DECL|field|proxy
 specifier|public
-specifier|final
 name|T
 name|proxy
 decl_stmt|;
 comment|/*      * The information (e.g., the IP address) of the current proxy object. It      * provides information for debugging purposes.      */
 DECL|field|proxyInfo
 specifier|public
-specifier|final
 name|String
 name|proxyInfo
 decl_stmt|;
@@ -108,6 +104,28 @@ operator|=
 name|proxyInfo
 expr_stmt|;
 block|}
+DECL|method|proxyName ()
+specifier|private
+name|String
+name|proxyName
+parameter_list|()
+block|{
+return|return
+name|proxy
+operator|!=
+literal|null
+condition|?
+name|proxy
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+else|:
+literal|"UnknownProxy"
+return|;
+block|}
 DECL|method|getString (String methodName)
 specifier|public
 name|String
@@ -118,12 +136,7 @@ name|methodName
 parameter_list|)
 block|{
 return|return
-name|proxy
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
+name|proxyName
 argument_list|()
 operator|+
 literal|"."
@@ -144,12 +157,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|proxy
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
+name|proxyName
 argument_list|()
 operator|+
 literal|" over "
