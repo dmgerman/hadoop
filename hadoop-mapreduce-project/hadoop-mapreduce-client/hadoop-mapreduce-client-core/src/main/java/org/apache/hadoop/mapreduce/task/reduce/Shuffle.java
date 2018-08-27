@@ -454,7 +454,16 @@ operator|=
 name|ShuffleClientMetrics
 operator|.
 name|create
+argument_list|(
+name|context
+operator|.
+name|getReduceId
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|jobConf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
