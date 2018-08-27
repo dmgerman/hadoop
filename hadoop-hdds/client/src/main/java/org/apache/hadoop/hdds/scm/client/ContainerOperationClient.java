@@ -1017,6 +1017,47 @@ name|nodePool
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+try|try
+block|{
+name|xceiverClientManager
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Can't close "
+operator|+
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Deletes an existing container.    *    * @param containerId - ID of the container.    * @param pipeline    - Pipeline that represents the container.    * @param force       - true to forcibly delete the container.    * @throws IOException    */
 annotation|@
 name|Override

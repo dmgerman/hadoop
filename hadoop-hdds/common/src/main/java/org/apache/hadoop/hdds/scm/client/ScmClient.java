@@ -146,6 +146,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -173,6 +183,8 @@ DECL|interface|ScmClient
 specifier|public
 interface|interface
 name|ScmClient
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Creates a Container on SCM and returns the pipeline.    * @return ContainerInfo    * @throws IOException    */
 DECL|method|createContainer (String owner)
