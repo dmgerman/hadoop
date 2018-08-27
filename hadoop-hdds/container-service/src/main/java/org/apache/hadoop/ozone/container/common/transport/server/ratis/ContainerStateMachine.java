@@ -635,6 +635,13 @@ name|StateMachineHelper
 argument_list|>
 name|stateMachineMap
 decl_stmt|;
+comment|/**    * CSM metrics.    */
+DECL|field|metrics
+specifier|private
+specifier|final
+name|CSMMetrics
+name|metrics
+decl_stmt|;
 DECL|method|ContainerStateMachine (ContainerDispatcher dispatcher, ThreadPoolExecutor chunkExecutor)
 specifier|public
 name|ContainerStateMachine
@@ -676,6 +683,13 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|metrics
+operator|=
+name|CSMMetrics
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -687,6 +701,16 @@ parameter_list|()
 block|{
 return|return
 name|storage
+return|;
+block|}
+DECL|method|getMetrics ()
+specifier|public
+name|CSMMetrics
+name|getMetrics
+parameter_list|()
+block|{
+return|return
+name|metrics
 return|;
 block|}
 annotation|@
@@ -1084,6 +1108,11 @@ parameter_list|)
 block|{
 try|try
 block|{
+name|metrics
+operator|.
+name|incNumWriteStateMachineOps
+argument_list|()
+expr_stmt|;
 specifier|final
 name|ContainerCommandRequestProto
 name|requestProto
@@ -1180,6 +1209,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|metrics
+operator|.
+name|incNumWriteStateMachineFails
+argument_list|()
+expr_stmt|;
 return|return
 name|completeExceptionally
 argument_list|(
@@ -1204,6 +1238,11 @@ parameter_list|)
 block|{
 try|try
 block|{
+name|metrics
+operator|.
+name|incNumReadStateMachineOps
+argument_list|()
+expr_stmt|;
 specifier|final
 name|ContainerCommandRequestProto
 name|requestProto
@@ -1234,6 +1273,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|metrics
+operator|.
+name|incNumReadStateMachineFails
+argument_list|()
+expr_stmt|;
 return|return
 name|completeExceptionally
 argument_list|(
@@ -1665,6 +1709,11 @@ parameter_list|)
 block|{
 try|try
 block|{
+name|metrics
+operator|.
+name|incNumApplyTransactionsOps
+argument_list|()
+expr_stmt|;
 name|ContainerCommandRequestProto
 name|requestProto
 init|=
@@ -1754,6 +1803,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|metrics
+operator|.
+name|incNumApplyTransactionsFails
+argument_list|()
+expr_stmt|;
 return|return
 name|completeExceptionally
 argument_list|(
