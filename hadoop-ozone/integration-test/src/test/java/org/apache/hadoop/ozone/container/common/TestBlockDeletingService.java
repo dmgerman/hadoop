@@ -896,7 +896,7 @@ name|containerID
 argument_list|,
 name|ContainerTestHelper
 operator|.
-name|CONTAINER_MAX_SIZE_GB
+name|CONTAINER_MAX_SIZE
 argument_list|)
 decl_stmt|;
 name|Container

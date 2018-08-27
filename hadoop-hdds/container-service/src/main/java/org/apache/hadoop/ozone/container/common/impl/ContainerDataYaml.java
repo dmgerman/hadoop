@@ -1104,16 +1104,8 @@ name|get
 argument_list|(
 name|OzoneConsts
 operator|.
-name|MAX_SIZE_GB
+name|MAX_SIZE
 argument_list|)
-decl_stmt|;
-name|int
-name|maxSize
-init|=
-operator|(
-name|int
-operator|)
-name|size
 decl_stmt|;
 comment|//When a new field is added, it needs to be added here.
 name|KeyValueContainerData
@@ -1136,7 +1128,7 @@ argument_list|)
 argument_list|,
 name|lv
 argument_list|,
-name|maxSize
+name|size
 argument_list|)
 decl_stmt|;
 name|kvData

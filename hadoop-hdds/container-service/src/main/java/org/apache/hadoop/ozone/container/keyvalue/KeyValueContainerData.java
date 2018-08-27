@@ -383,15 +383,15 @@ name|CONTAINER_DB_TYPE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param size - maximum size in GB of the container    */
-DECL|method|KeyValueContainerData (long id, int size)
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param size - maximum size of the container in bytes    */
+DECL|method|KeyValueContainerData (long id, long size)
 specifier|public
 name|KeyValueContainerData
 parameter_list|(
 name|long
 name|id
 parameter_list|,
-name|int
+name|long
 name|size
 parameter_list|)
 block|{
@@ -425,8 +425,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size in GB of the container    */
-DECL|method|KeyValueContainerData (long id, int layOutVersion, int size)
+comment|/**    * Constructs KeyValueContainerData object.    * @param id - ContainerId    * @param layOutVersion    * @param size - maximum size of the container in bytes    */
+DECL|method|KeyValueContainerData (long id, int layOutVersion, long size)
 specifier|public
 name|KeyValueContainerData
 parameter_list|(
@@ -436,7 +436,7 @@ parameter_list|,
 name|int
 name|layOutVersion
 parameter_list|,
-name|int
+name|long
 name|size
 parameter_list|)
 block|{
@@ -925,7 +925,7 @@ name|getContainerID
 argument_list|()
 argument_list|,
 operator|(
-name|int
+name|long
 operator|)
 name|storageSize
 operator|.

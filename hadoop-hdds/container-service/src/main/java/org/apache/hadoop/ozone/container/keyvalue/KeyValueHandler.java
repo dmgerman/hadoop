@@ -904,30 +904,6 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
-name|CLOSED_CONTAINER_RETRY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|datanode
-operator|.
-name|proto
-operator|.
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
 name|CONTAINER_INTERNAL_ERROR
 import|;
 end_import
@@ -1256,14 +1232,15 @@ name|blockDeletingService
 decl_stmt|;
 DECL|field|volumeChoosingPolicy
 specifier|private
+specifier|final
 name|VolumeChoosingPolicy
 name|volumeChoosingPolicy
 decl_stmt|;
-DECL|field|maxContainerSizeGB
+DECL|field|maxContainerSize
 specifier|private
 specifier|final
-name|int
-name|maxContainerSizeGB
+name|long
+name|maxContainerSize
 decl_stmt|;
 DECL|field|handlerLock
 specifier|private
@@ -1406,10 +1383,10 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|maxContainerSizeGB
+name|maxContainerSize
 operator|=
 operator|(
-name|int
+name|long
 operator|)
 name|config
 operator|.
@@ -1425,7 +1402,7 @@ name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
 argument_list|,
 name|StorageUnit
 operator|.
-name|GB
+name|BYTES
 argument_list|)
 expr_stmt|;
 comment|// this handler lock is used for synchronizing createContainer Requests,
@@ -1697,10 +1674,11 @@ argument_list|,
 name|kvContainer
 argument_list|)
 return|;
-block|}
+default|default:
 return|return
 literal|null
 return|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -1799,7 +1777,7 @@ name|KeyValueContainerData
 argument_list|(
 name|containerID
 argument_list|,
-name|maxContainerSizeGB
+name|maxContainerSize
 argument_list|)
 decl_stmt|;
 comment|// TODO: Add support to add metadataList to ContainerData. Add metadata

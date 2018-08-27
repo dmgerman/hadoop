@@ -580,7 +580,17 @@ name|KeyValueContainerData
 argument_list|(
 literal|1L
 argument_list|,
+operator|(
+name|long
+operator|)
+name|StorageUnit
+operator|.
+name|GB
+operator|.
+name|toBytes
+argument_list|(
 literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|Container

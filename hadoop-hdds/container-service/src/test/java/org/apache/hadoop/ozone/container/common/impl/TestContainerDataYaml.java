@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|StorageUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileSystemTestHelper
@@ -223,10 +237,20 @@ DECL|field|MAXSIZE
 specifier|private
 specifier|static
 specifier|final
-name|int
+name|long
 name|MAXSIZE
 init|=
+operator|(
+name|long
+operator|)
+name|StorageUnit
+operator|.
+name|GB
+operator|.
+name|toBytes
+argument_list|(
 literal|5
+argument_list|)
 decl_stmt|;
 comment|/**    * Creates a .container file. cleanup() should be called at the end of the    * test when container file is created.    */
 DECL|method|createContainerFile (long containerID)
@@ -487,7 +511,7 @@ name|MAXSIZE
 argument_list|,
 name|kvData
 operator|.
-name|getMaxSizeGB
+name|getMaxSize
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -683,7 +707,7 @@ name|MAXSIZE
 argument_list|,
 name|kvData
 operator|.
-name|getMaxSizeGB
+name|getMaxSize
 argument_list|()
 argument_list|)
 expr_stmt|;

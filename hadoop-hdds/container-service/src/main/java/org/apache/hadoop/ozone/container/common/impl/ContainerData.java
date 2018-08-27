@@ -318,7 +318,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|MAX_SIZE_GB
+name|MAX_SIZE
 import|;
 end_import
 
@@ -406,11 +406,11 @@ specifier|private
 name|ContainerLifeCycleState
 name|state
 decl_stmt|;
-DECL|field|maxSizeGB
+DECL|field|maxSize
 specifier|private
 specifier|final
-name|int
-name|maxSizeGB
+name|long
+name|maxSize
 decl_stmt|;
 comment|/** parameters for read/write statistics on the container. **/
 DECL|field|readBytes
@@ -521,14 +521,14 @@ name|STATE
 argument_list|,
 name|METADATA
 argument_list|,
-name|MAX_SIZE_GB
+name|MAX_SIZE
 argument_list|,
 name|CHECKSUM
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size    */
-DECL|method|ContainerData (ContainerType type, long containerId, int size)
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size in bytes    */
+DECL|method|ContainerData (ContainerType type, long containerId, long size)
 specifier|protected
 name|ContainerData
 parameter_list|(
@@ -538,7 +538,7 @@ parameter_list|,
 name|long
 name|containerId
 parameter_list|,
-name|int
+name|long
 name|size
 parameter_list|)
 block|{
@@ -560,8 +560,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size in GB    */
-DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, int size)
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size in bytes    */
+DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, long size)
 specifier|protected
 name|ContainerData
 parameter_list|(
@@ -574,7 +574,7 @@ parameter_list|,
 name|int
 name|layOutVersion
 parameter_list|,
-name|int
+name|long
 name|size
 parameter_list|)
 block|{
@@ -682,7 +682,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|maxSizeGB
+name|maxSize
 operator|=
 name|size
 expr_stmt|;
@@ -750,15 +750,15 @@ operator|=
 name|state
 expr_stmt|;
 block|}
-comment|/**    * Return's maximum size of the container in GB.    * @return maxSizeGB    */
-DECL|method|getMaxSizeGB ()
+comment|/**    * Return's maximum size of the container in bytes.    * @return maxSize in bytes    */
+DECL|method|getMaxSize ()
 specifier|public
-name|int
-name|getMaxSizeGB
+name|long
+name|getMaxSize
 parameter_list|()
 block|{
 return|return
-name|maxSizeGB
+name|maxSize
 return|;
 block|}
 comment|/**    * Returns the layOutVersion of the actual container data format.    * @return layOutVersion    */

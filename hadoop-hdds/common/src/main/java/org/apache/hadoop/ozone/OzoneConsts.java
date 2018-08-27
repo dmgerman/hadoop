@@ -757,14 +757,14 @@ name|METADATA
 init|=
 literal|"metadata"
 decl_stmt|;
-DECL|field|MAX_SIZE_GB
+DECL|field|MAX_SIZE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|MAX_SIZE_GB
+name|MAX_SIZE
 init|=
-literal|"maxSizeGB"
+literal|"maxSize"
 decl_stmt|;
 DECL|field|METADATA_PATH
 specifier|public
