@@ -663,6 +663,17 @@ argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|container
+operator|.
+name|isContainerOpen
+argument_list|()
+condition|)
+block|{
+return|return;
 block|}
 if|if
 condition|(
