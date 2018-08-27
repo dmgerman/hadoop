@@ -5142,13 +5142,6 @@ specifier|final
 name|int
 name|maxCorruptFileBlocksReturn
 decl_stmt|;
-DECL|field|BLOCK_DELETION_INCREMENT
-specifier|static
-name|int
-name|BLOCK_DELETION_INCREMENT
-init|=
-literal|1000
-decl_stmt|;
 DECL|field|isPermissionEnabled
 specifier|private
 specifier|final
@@ -5178,6 +5171,12 @@ specifier|private
 specifier|final
 name|int
 name|snapshotDiffReportLimit
+decl_stmt|;
+DECL|field|blockDeletionIncrement
+specifier|private
+specifier|final
+name|int
+name|blockDeletionIncrement
 decl_stmt|;
 comment|/** Interval between each check of lease to release. */
 DECL|field|leaseRecheckIntervalMs
@@ -7035,6 +7034,38 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_LIST_OPENFILES_NUM_RESPONSES
+operator|+
+literal|" must be a positive integer."
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blockDeletionIncrement
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|blockDeletionIncrement
+operator|>
+literal|0
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY
 operator|+
 literal|" must be a positive integer."
 argument_list|)
@@ -16786,7 +16817,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|BLOCK_DELETION_INCREMENT
+name|blockDeletionIncrement
 operator|&&
 name|iter
 operator|.

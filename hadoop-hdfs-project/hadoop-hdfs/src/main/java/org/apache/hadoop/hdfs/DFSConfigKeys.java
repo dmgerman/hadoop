@@ -2502,6 +2502,25 @@ name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_DEFAULT
 init|=
 literal|0L
 decl_stmt|;
+comment|/** Block deletion increment. */
+DECL|field|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY
+init|=
+literal|"dfs.namenode.block.deletion.increment"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_DEFAULT
+init|=
+literal|1000
+decl_stmt|;
 DECL|field|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
 specifier|public
 specifier|static

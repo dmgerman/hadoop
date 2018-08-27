@@ -291,6 +291,17 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|CONF
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BLOCK_DELETION_INCREMENT_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 block|}
 comment|/** create a file with a length of<code>filelen</code> */
 DECL|method|createFile (final String fileName, final long filelen)
@@ -744,12 +755,6 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
-name|FSNamesystem
-operator|.
-name|BLOCK_DELETION_INCREMENT
-operator|=
-literal|1
-expr_stmt|;
 name|mc
 operator|.
 name|getFileSystem
