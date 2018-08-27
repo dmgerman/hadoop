@@ -166,17 +166,16 @@ specifier|final
 name|String
 name|sourceTag
 decl_stmt|;
-DECL|field|numContainers
-specifier|public
-specifier|final
-name|int
-name|numContainers
-decl_stmt|;
 DECL|field|constraint
 specifier|public
 specifier|final
 name|PlacementConstraint
 name|constraint
+decl_stmt|;
+DECL|field|numContainers
+specifier|private
+name|int
+name|numContainers
 decl_stmt|;
 DECL|method|PlacementSpec (String sourceTag, int numContainers, PlacementConstraint constraint)
 specifier|public
@@ -209,6 +208,34 @@ operator|.
 name|constraint
 operator|=
 name|constraint
+expr_stmt|;
+block|}
+comment|/**    * Get the number of container for this spec.    * @return container count    */
+DECL|method|getNumContainers ()
+specifier|public
+name|int
+name|getNumContainers
+parameter_list|()
+block|{
+return|return
+name|numContainers
+return|;
+block|}
+comment|/**    * Set number of containers for this spec.    * @param numContainers number of containers.    */
+DECL|method|setNumContainers (int numContainers)
+specifier|public
+name|void
+name|setNumContainers
+parameter_list|(
+name|int
+name|numContainers
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numContainers
+operator|=
+name|numContainers
 expr_stmt|;
 block|}
 comment|// Placement specification should be of the form:
