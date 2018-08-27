@@ -6119,15 +6119,15 @@ name|getFileId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|cleanup
+name|cleanupWithLogger
 argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|cleanup ()
+DECL|method|cleanupWithLogger ()
 specifier|synchronized
 name|void
-name|cleanup
+name|cleanupWithLogger
 parameter_list|()
 block|{
 if|if
