@@ -452,6 +452,16 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+DECL|method|getBuffer ()
+specifier|public
+name|ByteBuffer
+name|getBuffer
+parameter_list|()
+block|{
+return|return
+name|buffer
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|write (int b)
@@ -518,6 +528,7 @@ annotation|@
 name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
+specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -764,8 +775,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-try|try
-block|{
 if|if
 condition|(
 name|buffer
@@ -780,6 +789,8 @@ name|writeChunkToContainer
 argument_list|()
 expr_stmt|;
 block|}
+try|try
+block|{
 name|putKey
 argument_list|(
 name|xceiverClient
@@ -816,6 +827,19 @@ throw|;
 block|}
 finally|finally
 block|{
+name|cleanup
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|cleanup ()
+specifier|public
+specifier|synchronized
+name|void
+name|cleanup
+parameter_list|()
+block|{
 name|xceiverClientManager
 operator|.
 name|releaseClient
@@ -835,8 +859,6 @@ name|buffer
 operator|=
 literal|null
 expr_stmt|;
-block|}
-block|}
 block|}
 comment|/**    * Checks if the stream is open.  If not, throws an exception.    *    * @throws IOException if stream is closed    */
 DECL|method|checkOpen ()

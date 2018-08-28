@@ -505,77 +505,37 @@ operator|.
 name|getLocationList
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+name|List
+argument_list|<
+name|OmKeyLocationInfo
+argument_list|>
+name|latestVersionList
+init|=
 name|keyLocationInfoGroup
-argument_list|)
-expr_stmt|;
-name|Preconditions
 operator|.
-name|checkState
-argument_list|(
-name|locationInfoList
-operator|.
-name|size
+name|getBlocksLatestVersionOnly
 argument_list|()
-operator|<=
+decl_stmt|;
+comment|// Updates the latest locationList in the latest version only with
+comment|// given locationInfoList here.
+comment|// TODO : The original allocated list and the updated list here may vary
+comment|// as the containers on the Datanode on which the blocks were pre allocated
+comment|// might get closed. The diff of blocks between these two lists here
+comment|// need to be garbage collected in case the ozone client dies.
 name|currentList
 operator|.
-name|size
-argument_list|()
+name|removeAll
+argument_list|(
+name|latestVersionList
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|OmKeyLocationInfo
-name|current
-range|:
 name|currentList
-control|)
-block|{
-comment|// For Versioning, while committing the key for the newer version,
-comment|// we just need to update the lengths for new blocks. Need to iterate over
-comment|// and find the new blocks added in the latest version.
-for|for
-control|(
-name|OmKeyLocationInfo
-name|info
-range|:
+operator|.
+name|addAll
+argument_list|(
 name|locationInfoList
-control|)
-block|{
-if|if
-condition|(
-name|info
-operator|.
-name|getBlockID
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|current
-operator|.
-name|getBlockID
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|current
-operator|.
-name|setLength
-argument_list|(
-name|info
-operator|.
-name|getLength
-argument_list|()
 argument_list|)
 expr_stmt|;
-break|break;
-block|}
-block|}
-block|}
 block|}
 comment|/**    * Append a set of blocks to the latest version. Note that these blocks are    * part of the latest version, not a new version.    *    * @param newLocationList the list of new blocks to be added.    * @throws IOException    */
 DECL|method|appendNewBlocks ( List<OmKeyLocationInfo> newLocationList)
