@@ -1713,6 +1713,23 @@ name|cmd
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|argv
+operator|.
+name|length
+operator|>
+literal|2
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Too many arguments, Max=1 argument allowed only"
+argument_list|)
+throw|;
+block|}
 name|manageSafeMode
 argument_list|(
 name|argv
@@ -4184,6 +4201,18 @@ operator|+
 name|result
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid argument: "
+operator|+
+name|cmd
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Request the Router entering safemode state.    * @return Return true if entering safemode successfully.    * @throws IOException    */
