@@ -16,6 +16,22 @@ name|hdds
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|DBProfile
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class contains constants for configuration keys and default values  * used in hdds.  */
 end_comment
@@ -132,6 +148,27 @@ name|String
 name|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
 init|=
 literal|"hdds.datanode.volume.choosing.policy"
+decl_stmt|;
+comment|// DB Profiles used by ROCKDB instances.
+DECL|field|HDDS_DB_PROFILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_DB_PROFILE
+init|=
+literal|"hdds.db.profile"
+decl_stmt|;
+DECL|field|HDDS_DEFAULT_DB_PROFILE
+specifier|public
+specifier|static
+specifier|final
+name|DBProfile
+name|HDDS_DEFAULT_DB_PROFILE
+init|=
+name|DBProfile
+operator|.
+name|SSD
 decl_stmt|;
 block|}
 end_class
