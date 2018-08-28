@@ -87,6 +87,8 @@ DECL|enumConstant|FLEXING
 DECL|enumConstant|STABLE
 DECL|enumConstant|NEEDS_UPGRADE
 DECL|enumConstant|UPGRADING
+DECL|enumConstant|SUCCEEDED
+DECL|enumConstant|FAILED
 name|FLEXING
 block|,
 name|STABLE
@@ -94,6 +96,10 @@ block|,
 name|NEEDS_UPGRADE
 block|,
 name|UPGRADING
+block|,
+name|SUCCEEDED
+block|,
+name|FAILED
 block|; }
 end_enum
 

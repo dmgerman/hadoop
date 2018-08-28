@@ -73,6 +73,7 @@ DECL|enumConstant|READY
 DECL|enumConstant|STOPPED
 DECL|enumConstant|NEEDS_UPGRADE
 DECL|enumConstant|UPGRADING
+DECL|enumConstant|SUCCEEDED
 name|RUNNING_BUT_UNREADY
 block|,
 name|READY
@@ -82,6 +83,11 @@ block|,
 name|NEEDS_UPGRADE
 block|,
 name|UPGRADING
+block|,
+name|SUCCEEDED
+block|,
+DECL|enumConstant|FAILED
+name|FAILED
 block|; }
 end_enum
 

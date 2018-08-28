@@ -1570,6 +1570,29 @@ operator|+
 name|instanceId
 argument_list|)
 expr_stmt|;
+name|Container
+name|container
+init|=
+name|mock
+argument_list|(
+name|Container
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|componentInstance
+operator|.
+name|getContainerSpec
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
 name|ServiceUtils
 operator|.
 name|ProcessTerminationHandler
@@ -1708,6 +1731,12 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+name|containerDiag
+init|=
+literal|"Container succeeded"
+decl_stmt|;
 name|ComponentInstanceEvent
 name|componentInstanceEvent
 init|=
@@ -1769,7 +1798,7 @@ name|ContainerState
 operator|.
 name|COMPLETE
 argument_list|,
-literal|"hello"
+name|containerDiag
 argument_list|,
 literal|0
 argument_list|)
@@ -1847,6 +1876,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -1987,6 +2018,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2186,6 +2219,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2351,6 +2386,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2500,6 +2537,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2643,6 +2682,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -2798,6 +2839,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3061,6 +3104,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 block|}
@@ -3149,6 +3194,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 block|}
@@ -3409,6 +3456,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 block|}
@@ -3497,6 +3546,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 block|}
@@ -3685,6 +3736,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 block|}
@@ -3744,6 +3797,8 @@ argument_list|,
 name|componentInstanceEvent
 argument_list|,
 literal|false
+argument_list|,
+name|containerDiag
 argument_list|)
 expr_stmt|;
 block|}
