@@ -1751,6 +1751,11 @@ operator|.
 name|listIterator
 argument_list|()
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|handler
+init|)
+block|{
 while|while
 condition|(
 name|iter
@@ -1887,7 +1892,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to update re-encrypted progress to xattr for zone {}"
+literal|"Failed to update re-encrypted progress to xattr"
+operator|+
+literal|" for zone {}"
 argument_list|,
 name|zonePath
 argument_list|,
@@ -1910,6 +1917,7 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(

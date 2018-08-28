@@ -3295,7 +3295,6 @@ name|zst
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 name|Future
 name|future
 init|=
@@ -3321,6 +3320,7 @@ argument_list|(
 name|future
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
