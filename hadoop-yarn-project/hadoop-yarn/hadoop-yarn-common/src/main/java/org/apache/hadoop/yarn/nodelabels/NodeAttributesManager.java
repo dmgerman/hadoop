@@ -118,6 +118,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -319,6 +337,17 @@ parameter_list|)
 function_decl|;
 comment|// futuristic
 comment|// public set<NodeId> getNodesMatchingExpression(String nodeLabelExp);
+comment|/**    * Refresh node attributes on a given node during RM recovery.    * @param nodeId Node Id    */
+DECL|method|refreshNodeAttributesToScheduler (NodeId nodeId)
+specifier|public
+specifier|abstract
+name|void
+name|refreshNodeAttributesToScheduler
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

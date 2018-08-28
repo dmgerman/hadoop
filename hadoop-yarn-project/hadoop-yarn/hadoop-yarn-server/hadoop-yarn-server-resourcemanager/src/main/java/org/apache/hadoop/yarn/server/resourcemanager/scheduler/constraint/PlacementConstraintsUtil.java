@@ -664,11 +664,11 @@ name|desiredMaxCardinality
 operator|)
 return|;
 block|}
-DECL|method|canSatisfyNodeConstraintExpresssion ( SingleConstraint sc, TargetExpression targetExpression, SchedulerNode schedulerNode)
+DECL|method|canSatisfyNodeConstraintExpression ( SingleConstraint sc, TargetExpression targetExpression, SchedulerNode schedulerNode)
 specifier|private
 specifier|static
 name|boolean
-name|canSatisfyNodeConstraintExpresssion
+name|canSatisfyNodeConstraintExpression
 parameter_list|(
 name|SingleConstraint
 name|sc
@@ -809,6 +809,41 @@ return|return
 literal|true
 return|;
 block|}
+return|return
+name|getNodeConstraintEvaluatedResult
+argument_list|(
+name|schedulerNode
+argument_list|,
+name|opCode
+argument_list|,
+name|requestAttribute
+argument_list|)
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+DECL|method|getNodeConstraintEvaluatedResult ( SchedulerNode schedulerNode, NodeAttributeOpCode opCode, NodeAttribute requestAttribute)
+specifier|private
+specifier|static
+name|boolean
+name|getNodeConstraintEvaluatedResult
+parameter_list|(
+name|SchedulerNode
+name|schedulerNode
+parameter_list|,
+name|NodeAttributeOpCode
+name|opCode
+parameter_list|,
+name|NodeAttribute
+name|requestAttribute
+parameter_list|)
+block|{
+comment|// In case, attributes in a node is empty or incoming attributes doesn't
+comment|// exist on given node, accept such nodes for scheduling if opCode is
+comment|// equals to NE. (for eg. java != 1.8 could be scheduled on a node
+comment|// where java is not configured.)
 if|if
 condition|(
 name|schedulerNode
@@ -828,6 +863,15 @@ name|contains
 argument_list|(
 name|requestAttribute
 argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|opCode
+operator|==
+name|NodeAttributeOpCode
+operator|.
+name|NE
 condition|)
 block|{
 if|if
@@ -852,6 +896,39 @@ name|schedulerNode
 operator|.
 name|getNodeID
 argument_list|()
+operator|+
+literal|", however opcode is NE. Hence accept this node."
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Incoming requestAttribute:"
+operator|+
+name|requestAttribute
+operator|+
+literal|"is not present in "
+operator|+
+name|schedulerNode
+operator|.
+name|getNodeID
+argument_list|()
+operator|+
+literal|", skip such node."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1018,7 +1095,6 @@ block|}
 return|return
 literal|false
 return|;
-block|}
 block|}
 return|return
 literal|true
@@ -1209,7 +1285,7 @@ comment|// This is a node attribute expression, check it.
 if|if
 condition|(
 operator|!
-name|canSatisfyNodeConstraintExpresssion
+name|canSatisfyNodeConstraintExpression
 argument_list|(
 name|singleConstraint
 argument_list|,
