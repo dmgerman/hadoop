@@ -557,15 +557,6 @@ name|OZONE_HANDLER_DISTRIBUTED
 init|=
 literal|"distributed"
 decl_stmt|;
-DECL|field|OZONE_HANDLER_LOCAL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_HANDLER_LOCAL
-init|=
-literal|"local"
-decl_stmt|;
 DECL|field|DELETING_KEY_PREFIX
 specifier|public
 specifier|static

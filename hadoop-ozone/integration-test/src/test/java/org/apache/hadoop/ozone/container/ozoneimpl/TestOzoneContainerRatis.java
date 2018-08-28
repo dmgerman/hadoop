@@ -337,17 +337,6 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|ContainerTestHelper
-operator|.
-name|setOzoneLocalStorageRoot
-argument_list|(
-name|TestOzoneContainerRatis
-operator|.
-name|class
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
 return|return
 name|conf
 return|;

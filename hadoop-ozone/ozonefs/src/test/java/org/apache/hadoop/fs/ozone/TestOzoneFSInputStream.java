@@ -405,7 +405,7 @@ name|data
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "distributed"    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -606,33 +606,6 @@ literal|0
 argument_list|)
 operator|.
 name|getDatanodeDetails
-argument_list|()
-decl_stmt|;
-name|int
-name|port
-init|=
-name|datanodeDetails
-operator|.
-name|getPort
-argument_list|(
-name|DatanodeDetails
-operator|.
-name|Port
-operator|.
-name|Name
-operator|.
-name|REST
-argument_list|)
-operator|.
-name|getValue
-argument_list|()
-decl_stmt|;
-name|String
-name|host
-init|=
-name|datanodeDetails
-operator|.
-name|getHostName
 argument_list|()
 decl_stmt|;
 comment|// Set the fs.defaultFS and start the filesystem

@@ -44,7 +44,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfigKeys
+name|MiniOzoneCluster
 import|;
 end_import
 
@@ -84,34 +84,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|MiniOzoneCluster
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|log4j
 operator|.
 name|Level
@@ -136,7 +108,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|Rule
 import|;
 end_import
 
@@ -156,17 +128,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Rule
+name|AfterClass
 import|;
 end_import
 
@@ -186,9 +148,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|rules
 operator|.
 name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -203,17 +185,37 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test ozone volume in the local storage handler scenario.  */
+comment|/**  * Test ozone volume in the distributed storage handler scenario.  */
 end_comment
 
 begin_class
-DECL|class|TestLocalOzoneVolumes
+DECL|class|TestOzoneVolumes
 specifier|public
 class|class
-name|TestLocalOzoneVolumes
+name|TestOzoneVolumes
 extends|extends
 name|TestOzoneHelper
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TestOzoneVolumes
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Set the timeout for every test.    */
 annotation|@
 name|Rule
@@ -244,7 +246,7 @@ name|port
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "local" , which uses a local directory to    * emulate Ozone backend.    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -263,47 +265,6 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|String
-name|path
-init|=
-name|GenericTestUtils
-operator|.
-name|getTempPath
-argument_list|(
-name|TestLocalOzoneVolumes
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|path
-operator|+=
-name|conf
-operator|.
-name|getTrimmed
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|path
-argument_list|)
-expr_stmt|;
 name|Logger
 operator|.
 name|getLogger
@@ -407,6 +368,24 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Create Volumes with Quota.    *    * @throws IOException    */
 annotation|@
@@ -424,6 +403,24 @@ operator|.
 name|testCreateVolumesWithQuota
 argument_list|(
 name|port
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -445,6 +442,24 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * To create a volume a user name must be specified using OZONE_USER header.    * This test verifies that we get an error in case we call without a OZONE    * user name.    *    * @throws IOException    */
 annotation|@
@@ -462,6 +477,24 @@ operator|.
 name|testCreateVolumesWithInvalidUser
 argument_list|(
 name|port
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -483,9 +516,28 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Create a bunch of volumes in a loop.    *    * @throws IOException    */
-comment|//@Test
+annotation|@
+name|Test
 DECL|method|testCreateVolumesInLoop ()
 specifier|public
 name|void
@@ -501,10 +553,26 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Get volumes owned by the user.    *    * @throws IOException    */
-annotation|@
-name|Test
 DECL|method|testGetVolumesByUser ()
 specifier|public
 name|void
@@ -513,8 +581,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|super
-operator|.
 name|testGetVolumesByUser
 argument_list|(
 name|port
@@ -522,8 +588,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Admins can read volumes belonging to other users.    *    * @throws IOException    */
-annotation|@
-name|Test
 DECL|method|testGetVolumesOfAnotherUser ()
 specifier|public
 name|void
@@ -541,10 +605,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * if you try to read volumes belonging to another user,    * then server always ignores it.    *    * @throws IOException    */
-annotation|@
-name|Test
-annotation|@
-name|Ignore
 DECL|method|testGetVolumesOfAnotherUserShouldFail ()
 specifier|public
 name|void
@@ -556,24 +616,6 @@ block|{
 name|super
 operator|.
 name|testGetVolumesOfAnotherUserShouldFail
-argument_list|(
-name|port
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testListKeyOnEmptyBucket ()
-specifier|public
-name|void
-name|testListKeyOnEmptyBucket
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|super
-operator|.
-name|testListKeyOnEmptyBucket
 argument_list|(
 name|port
 argument_list|)

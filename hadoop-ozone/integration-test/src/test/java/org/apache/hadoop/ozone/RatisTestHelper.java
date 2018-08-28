@@ -282,7 +282,7 @@ specifier|final
 name|MiniOzoneCluster
 name|cluster
 decl_stmt|;
-comment|/**      * Create a {@link MiniOzoneCluster} for testing by setting      *   OZONE_ENABLED = true,      *   RATIS_ENABLED = true, and      *   OZONE_HANDLER_TYPE_KEY = "distributed".      */
+comment|/**      * Create a {@link MiniOzoneCluster} for testing by setting.      *   OZONE_ENABLED = true      *   RATIS_ENABLED = true      */
 DECL|method|RatisTestSuite (final Class<?> clazz)
 specifier|public
 name|RatisTestSuite
@@ -433,15 +433,6 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|ContainerTestHelper
-operator|.
-name|setOzoneLocalStorageRoot
-argument_list|(
-name|clazz
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
 name|initRatisConf
 argument_list|(
 name|rpc

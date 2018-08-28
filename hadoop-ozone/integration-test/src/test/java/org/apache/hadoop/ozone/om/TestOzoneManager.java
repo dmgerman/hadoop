@@ -1038,7 +1038,7 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "distributed"    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -1085,19 +1085,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_HANDLER_TYPE_KEY
-argument_list|,
-name|OzoneConsts
-operator|.
-name|OZONE_HANDLER_DISTRIBUTED
-argument_list|)
 expr_stmt|;
 name|conf
 operator|.

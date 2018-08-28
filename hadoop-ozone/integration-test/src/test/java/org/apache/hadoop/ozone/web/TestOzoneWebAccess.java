@@ -56,20 +56,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdds
 operator|.
 name|conf
@@ -386,7 +372,7 @@ specifier|static
 name|int
 name|port
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "local" , which uses a local directory to    * emulate Ozone backend.    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    *    * Ozone is made active by setting OZONE_ENABLED = true    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -405,32 +391,6 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|String
-name|path
-init|=
-name|GenericTestUtils
-operator|.
-name|getTempPath
-argument_list|(
-name|TestOzoneWebAccess
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|path
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|=
 name|MiniOzoneCluster

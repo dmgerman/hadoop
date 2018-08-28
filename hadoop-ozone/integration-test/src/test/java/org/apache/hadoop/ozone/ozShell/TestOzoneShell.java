@@ -382,20 +382,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdds
 operator|.
 name|conf
@@ -1089,39 +1075,6 @@ operator|.
 name|mkdirs
 argument_list|()
 expr_stmt|;
-name|path
-operator|+=
-name|conf
-operator|.
-name|getTrimmed
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|path
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setQuietMode
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 name|shell
 operator|=
 operator|new
@@ -1164,6 +1117,13 @@ name|THREE
 operator|.
 name|getValue
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setQuietMode
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 name|client
@@ -1516,14 +1476,18 @@ name|testCreateVolume
 argument_list|(
 literal|"/////"
 argument_list|,
-literal|"Volume name is required to create a volume"
+literal|"Volume name is required "
+operator|+
+literal|"to create a volume"
 argument_list|)
 expr_stmt|;
 name|testCreateVolume
 argument_list|(
 literal|"/////vol/123"
 argument_list|,
-literal|"Illegal argument: Bucket or Volume name has an unsupported character : /"
+literal|"Illegal argument: Bucket or Volume name has "
+operator|+
+literal|"an unsupported character : /"
 argument_list|)
 expr_stmt|;
 block|}

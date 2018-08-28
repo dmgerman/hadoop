@@ -118,34 +118,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|om
 operator|.
 name|helpers
@@ -524,7 +496,7 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "distributed"    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -541,19 +513,6 @@ operator|=
 operator|new
 name|OzoneConfiguration
 argument_list|()
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_HANDLER_TYPE_KEY
-argument_list|,
-name|OzoneConsts
-operator|.
-name|OZONE_HANDLER_DISTRIBUTED
-argument_list|)
 expr_stmt|;
 name|cluster
 operator|=
