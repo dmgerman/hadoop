@@ -1464,39 +1464,39 @@ specifier|private
 name|ReplicationType
 name|replicationType
 decl_stmt|;
-DECL|method|setReplicationType ( ReplicationType replicationType)
+DECL|method|setReplicationType ( ReplicationType repType)
 specifier|public
 name|Builder
 name|setReplicationType
 parameter_list|(
 name|ReplicationType
-name|replicationType
+name|repType
 parameter_list|)
 block|{
 name|this
 operator|.
 name|replicationType
 operator|=
-name|replicationType
+name|repType
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setPipelineID (PipelineID pipelineID)
+DECL|method|setPipelineID (PipelineID pipelineId)
 specifier|public
 name|Builder
 name|setPipelineID
 parameter_list|(
 name|PipelineID
-name|pipelineID
+name|pipelineId
 parameter_list|)
 block|{
 name|this
 operator|.
 name|pipelineID
 operator|=
-name|pipelineID
+name|pipelineId
 expr_stmt|;
 return|return
 name|this
@@ -1665,20 +1665,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setDeleteTransactionId (long deleteTransactionId)
+DECL|method|setDeleteTransactionId (long deleteTransactionID)
 specifier|public
 name|Builder
 name|setDeleteTransactionId
 parameter_list|(
 name|long
-name|deleteTransactionId
+name|deleteTransactionID
 parameter_list|)
 block|{
 name|this
 operator|.
 name|deleteTransactionId
 operator|=
-name|deleteTransactionId
+name|deleteTransactionID
 expr_stmt|;
 return|return
 name|this

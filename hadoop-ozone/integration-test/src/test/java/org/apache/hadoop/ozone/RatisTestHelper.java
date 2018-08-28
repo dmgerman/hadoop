@@ -108,22 +108,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|container
-operator|.
-name|ContainerTestHelper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|client
 operator|.
 name|rest
@@ -283,17 +267,10 @@ name|MiniOzoneCluster
 name|cluster
 decl_stmt|;
 comment|/**      * Create a {@link MiniOzoneCluster} for testing by setting.      *   OZONE_ENABLED = true      *   RATIS_ENABLED = true      */
-DECL|method|RatisTestSuite (final Class<?> clazz)
+DECL|method|RatisTestSuite ()
 specifier|public
 name|RatisTestSuite
-parameter_list|(
-specifier|final
-name|Class
-argument_list|<
-name|?
-argument_list|>
-name|clazz
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 throws|,
@@ -305,8 +282,6 @@ name|conf
 operator|=
 name|newOzoneConfiguration
 argument_list|(
-name|clazz
-argument_list|,
 name|RPC
 argument_list|)
 expr_stmt|;
@@ -410,17 +385,11 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|newOzoneConfiguration ( Class<?> clazz, RpcType rpc)
+DECL|method|newOzoneConfiguration (RpcType rpc)
 specifier|static
 name|OzoneConfiguration
 name|newOzoneConfiguration
 parameter_list|(
-name|Class
-argument_list|<
-name|?
-argument_list|>
-name|clazz
-parameter_list|,
 name|RpcType
 name|rpc
 parameter_list|)

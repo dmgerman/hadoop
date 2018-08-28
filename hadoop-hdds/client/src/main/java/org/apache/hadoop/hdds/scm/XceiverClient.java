@@ -354,16 +354,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|CompletableFuture
@@ -998,22 +988,21 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a pipeline.    *    * @param pipeline -  pipeline to be created.    */
+comment|/**    * Create a pipeline.    *    * @param ignored -  pipeline to be created.    */
 annotation|@
 name|Override
-DECL|method|createPipeline (Pipeline pipeline)
+DECL|method|createPipeline (Pipeline ignored)
 specifier|public
 name|void
 name|createPipeline
 parameter_list|(
 name|Pipeline
-name|pipeline
+name|ignored
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 comment|// For stand alone pipeline, there is no notion called setup pipeline.
-return|return;
 block|}
 comment|/**    * Returns pipeline Type.    *    * @return - Stand Alone as the type.    */
 annotation|@

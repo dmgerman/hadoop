@@ -299,6 +299,7 @@ block|{
 DECL|field|LOG
 specifier|private
 specifier|static
+specifier|final
 name|Logger
 name|LOG
 init|=
@@ -344,7 +345,6 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-empty_stmt|;
 annotation|@
 name|Before
 DECL|method|resetEventCollector ()

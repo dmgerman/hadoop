@@ -160,7 +160,7 @@ return|return
 name|pipeline
 return|;
 block|}
-DECL|method|fromProtobuf (HddsProtos.ContainerWithPipeline allocatedContainer)
+DECL|method|fromProtobuf ( HddsProtos.ContainerWithPipeline allocatedContainer)
 specifier|public
 specifier|static
 name|ContainerWithPipeline

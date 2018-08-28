@@ -194,7 +194,7 @@ specifier|public
 class|class
 name|OpenContainerBlockMap
 block|{
-comment|/**    * Map: localId -> KeyData.    *    * In order to support {@link #getAll()}, the update operations are synchronized.    */
+comment|/**    * Map: localId -> KeyData.    *    * In order to support {@link #getAll()}, the update operations are    * synchronized.    */
 DECL|class|KeyDataMap
 specifier|static
 class|class
@@ -256,7 +256,7 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|computeIfAbsent (long localId, Function<Long, KeyData> f)
+DECL|method|computeIfAbsent ( long localId, Function<Long, KeyData> f)
 specifier|synchronized
 name|KeyData
 name|computeIfAbsent
@@ -479,7 +479,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * returns the list of open to the openContainerBlockMap    * @param containerId container id    * @return List of open Keys(blocks)    */
+comment|/**    * Returns the list of open to the openContainerBlockMap.    * @param containerId container id    * @return List of open Keys(blocks)    */
 DECL|method|getOpenKeys (long containerId)
 specifier|public
 name|List
@@ -570,7 +570,7 @@ name|blocks
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns true if the block exists in the map, false otherwise    *    * @param blockID    * @return True, if it exists, false otherwise    */
+comment|/**    * Returns true if the block exists in the map, false otherwise.    *    * @param blockID    * @return True, if it exists, false otherwise    */
 DECL|method|checkIfBlockExists (BlockID blockID)
 specifier|public
 name|boolean
@@ -595,11 +595,9 @@ argument_list|)
 decl_stmt|;
 return|return
 name|keyDataMap
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|false
-else|:
+operator|&&
 name|keyDataMap
 operator|.
 name|get

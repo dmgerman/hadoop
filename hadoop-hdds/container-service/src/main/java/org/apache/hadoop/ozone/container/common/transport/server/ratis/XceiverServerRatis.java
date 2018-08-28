@@ -652,12 +652,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|callIdCounter
+DECL|field|CALL_ID_COUNTER
 specifier|private
 specifier|static
 specifier|final
 name|AtomicLong
-name|callIdCounter
+name|CALL_ID_COUNTER
 init|=
 operator|new
 name|AtomicLong
@@ -671,7 +671,7 @@ name|nextCallId
 parameter_list|()
 block|{
 return|return
-name|callIdCounter
+name|CALL_ID_COUNTER
 operator|.
 name|getAndIncrement
 argument_list|()

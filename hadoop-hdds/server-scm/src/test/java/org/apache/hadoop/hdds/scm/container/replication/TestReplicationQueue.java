@@ -560,8 +560,8 @@ argument_list|,
 name|msg5
 argument_list|)
 expr_stmt|;
-comment|// Message 2 should be ordered before message 5 as both have same replication
-comment|// number but message 2 has earlier timestamp.
+comment|// Message 2 should be ordered before message 5 as both have same
+comment|// replication number but message 2 has earlier timestamp.
 name|temp
 operator|=
 name|replicationQueue

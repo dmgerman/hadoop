@@ -848,22 +848,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConsts
-operator|.
-name|CONTAINER_ROOT_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|container
 operator|.
 name|ContainerTestHelper

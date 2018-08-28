@@ -434,6 +434,7 @@ block|}
 DECL|field|HDDS_VERSION_INFO
 specifier|private
 specifier|static
+specifier|final
 name|HddsVersionInfo
 name|HDDS_VERSION_INFO
 init|=

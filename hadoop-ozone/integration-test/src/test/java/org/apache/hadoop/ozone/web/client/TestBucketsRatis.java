@@ -379,11 +379,7 @@ operator|new
 name|RatisTestHelper
 operator|.
 name|RatisTestSuite
-argument_list|(
-name|TestBucketsRatis
-operator|.
-name|class
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|conf
 operator|=

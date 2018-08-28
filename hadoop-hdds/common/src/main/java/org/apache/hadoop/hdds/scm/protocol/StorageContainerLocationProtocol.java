@@ -171,7 +171,7 @@ interface|interface
 name|StorageContainerLocationProtocol
 block|{
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
-DECL|method|allocateContainer (HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)
+DECL|method|allocateContainer ( HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)
 name|ContainerWithPipeline
 name|allocateContainer
 parameter_list|(

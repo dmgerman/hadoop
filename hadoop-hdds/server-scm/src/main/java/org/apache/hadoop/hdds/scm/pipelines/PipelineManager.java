@@ -508,7 +508,7 @@ name|ReplicationFactor
 name|replicationFactor
 parameter_list|)
 function_decl|;
-comment|/**    * Initialize the pipeline    * TODO: move the initialization to Ozone Client later    */
+comment|/**    * Initialize the pipeline.    * TODO: move the initialization to Ozone Client later    */
 DECL|method|initializePipeline (Pipeline pipeline)
 specifier|public
 specifier|abstract
@@ -763,7 +763,7 @@ return|return
 name|pipeline
 return|;
 block|}
-comment|/**    * Remove the pipeline from active allocation    * @param pipeline pipeline to be finalized    */
+comment|/**    * Remove the pipeline from active allocation.    * @param pipeline pipeline to be finalized    */
 DECL|method|finalizePipeline (Pipeline pipeline)
 specifier|public
 specifier|synchronized
@@ -813,7 +813,7 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * list members in the pipeline .    * @return the datanode    */
+comment|/**    * list members in the pipeline.    * @return the datanode    */
 DECL|method|getMembers (PipelineID pipelineID)
 specifier|public
 specifier|abstract

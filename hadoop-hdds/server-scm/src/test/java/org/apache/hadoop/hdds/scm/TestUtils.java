@@ -983,7 +983,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Generates random container reports    *    * @return ContainerReportsProto    */
+comment|/**    * Generates random container reports.    *    * @return ContainerReportsProto    */
 DECL|method|getRandomContainerReports ()
 specifier|public
 specifier|static

@@ -372,77 +372,77 @@ name|CommandStatusBuilder
 argument_list|()
 return|;
 block|}
-DECL|method|setType (Type type)
+DECL|method|setType (Type commandType)
 specifier|public
 name|CommandStatusBuilder
 name|setType
 parameter_list|(
 name|Type
-name|type
+name|commandType
 parameter_list|)
 block|{
 name|this
 operator|.
 name|type
 operator|=
-name|type
+name|commandType
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setCmdId (Long cmdId)
+DECL|method|setCmdId (Long commandId)
 specifier|public
 name|CommandStatusBuilder
 name|setCmdId
 parameter_list|(
 name|Long
-name|cmdId
+name|commandId
 parameter_list|)
 block|{
 name|this
 operator|.
 name|cmdId
 operator|=
-name|cmdId
+name|commandId
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setStatus (Status status)
+DECL|method|setStatus (Status commandStatus)
 specifier|public
 name|CommandStatusBuilder
 name|setStatus
 parameter_list|(
 name|Status
-name|status
+name|commandStatus
 parameter_list|)
 block|{
 name|this
 operator|.
 name|status
 operator|=
-name|status
+name|commandStatus
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setMsg (String msg)
+DECL|method|setMsg (String message)
 specifier|public
 name|CommandStatusBuilder
 name|setMsg
 parameter_list|(
 name|String
-name|msg
+name|message
 parameter_list|)
 block|{
 name|this
 operator|.
 name|msg
 operator|=
-name|msg
+name|message
 expr_stmt|;
 return|return
 name|this

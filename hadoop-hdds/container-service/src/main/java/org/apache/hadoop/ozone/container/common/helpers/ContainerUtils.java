@@ -350,18 +350,6 @@ name|nio
 operator|.
 name|file
 operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|file
-operator|.
 name|Paths
 import|;
 end_import
@@ -461,22 +449,6 @@ operator|.
 name|ContainerData
 operator|.
 name|CHARSET_ENCODING
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|CONTAINER_EXTENSION
 import|;
 end_import
 
@@ -1277,7 +1249,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the .container file from the containerBaseDir    * @param containerBaseDir container base directory. The name of this    *                         directory is same as the containerID    * @return the .container file    */
+comment|/**    * Get the .container file from the containerBaseDir.    * @param containerBaseDir container base directory. The name of this    *                         directory is same as the containerID    * @return the .container file    */
 DECL|method|getContainerFile (File containerBaseDir)
 specifier|public
 specifier|static
@@ -1320,7 +1292,7 @@ name|containerFilePath
 argument_list|)
 return|;
 block|}
-comment|/**    * ContainerID can be decoded from the container base directory name    */
+comment|/**    * ContainerID can be decoded from the container base directory name.    */
 DECL|method|getContainerID (File containerBaseDir)
 specifier|public
 specifier|static

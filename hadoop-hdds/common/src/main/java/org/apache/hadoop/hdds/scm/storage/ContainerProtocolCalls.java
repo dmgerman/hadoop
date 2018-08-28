@@ -1826,7 +1826,7 @@ name|getReadContainer
 argument_list|()
 return|;
 block|}
-comment|/**    * Reads the data given the blockID    *    * @param client    * @param blockID - ID of the block    * @param traceID - trace ID    * @return GetSmallFileResponseProto    * @throws IOException    */
+comment|/**    * Reads the data given the blockID.    *    * @param client    * @param blockID - ID of the block    * @param traceID - trace ID    * @return GetSmallFileResponseProto    * @throws IOException    */
 DECL|method|readSmallFile (XceiverClientSpi client, BlockID blockID, String traceID)
 specifier|public
 specifier|static

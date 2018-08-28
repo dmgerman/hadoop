@@ -96,27 +96,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
+name|Collections
 import|;
 end_import
 
@@ -136,7 +116,27 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -175,7 +175,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This data structure maintains the list of pipelines which the given datanode  * is a part of.  * This information will be added whenever a new pipeline allocation happens.  *  * TODO: this information needs to be regenerated from pipeline reports on  * SCM restart  */
+comment|/**  * This data structure maintains the list of pipelines which the given datanode is a part of. This  * information will be added whenever a new pipeline allocation happens.  *  *<p>TODO: this information needs to be regenerated from pipeline reports on SCM restart  */
 end_comment
 
 begin_class
@@ -198,7 +198,7 @@ argument_list|>
 argument_list|>
 name|dn2PipelineMap
 decl_stmt|;
-comment|/**    * Constructs a Node2PipelineMap Object.    */
+comment|/** Constructs a Node2PipelineMap Object. */
 DECL|method|Node2PipelineMap ()
 specifier|public
 name|Node2PipelineMap
@@ -212,7 +212,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Returns true if this a datanode that is already tracked by    * Node2PipelineMap.    *    * @param datanodeID - UUID of the Datanode.    * @return True if this is tracked, false if this map does not know about it.    */
+comment|/**    * Returns true if this a datanode that is already tracked by Node2PipelineMap.    *    * @param datanodeID - UUID of the Datanode.    * @return True if this is tracked, false if this map does not know about it.    */
 DECL|method|isKnownDatanode (UUID datanodeID)
 specifier|private
 name|boolean
@@ -295,7 +295,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Removes datanode Entry from the map.    * @param datanodeID - Datanode ID.    */
+comment|/**    * Removes datanode Entry from the map.    *    * @param datanodeID - Datanode ID.    */
 DECL|method|removeDatanode (UUID datanodeID)
 specifier|public
 specifier|synchronized
@@ -371,7 +371,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Adds a pipeline entry to a given dataNode in the map.    * @param pipeline Pipeline to be added    */
+comment|/**    * Adds a pipeline entry to a given dataNode in the map.    *    * @param pipeline Pipeline to be added    */
 DECL|method|addPipeline (Pipeline pipeline)
 specifier|public
 specifier|synchronized

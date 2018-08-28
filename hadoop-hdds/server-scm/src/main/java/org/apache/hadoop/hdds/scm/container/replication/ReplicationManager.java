@@ -899,7 +899,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**    * Event for the ReplicationCommandWatcher to repeate the embedded request    * in case fof timeout.    */
+comment|/**    * Event for the ReplicationCommandWatcher to repeate the embedded request.    * in case fof timeout.    */
 DECL|class|ReplicationRequestToRepeat
 specifier|public
 specifier|static

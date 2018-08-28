@@ -555,7 +555,7 @@ name|iterator
 argument_list|()
 return|;
 block|}
-comment|/**    * Return a copy of the containerMap    * @return containerMap    */
+comment|/**    * Return a copy of the containerMap.    * @return containerMap    */
 DECL|method|getContainerMap ()
 specifier|public
 name|Map

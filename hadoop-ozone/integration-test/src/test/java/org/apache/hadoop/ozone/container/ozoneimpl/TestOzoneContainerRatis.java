@@ -329,16 +329,10 @@ name|OzoneConfiguration
 name|newOzoneConfiguration
 parameter_list|()
 block|{
-specifier|final
-name|OzoneConfiguration
-name|conf
-init|=
+return|return
 operator|new
 name|OzoneConfiguration
 argument_list|()
-decl_stmt|;
-return|return
-name|conf
 return|;
 block|}
 DECL|method|runTestOzoneContainerViaDataNodeRatis ( RpcType rpc, int numNodes)

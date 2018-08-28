@@ -2859,8 +2859,8 @@ name|getReplicationFactor
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO: If current state doesn't have this DN in list of DataNodes with replica
-comment|// then add it in list of replicas.
+comment|// TODO: If current state doesn't have this DN in list of DataNodes with
+comment|// replica then add it in list of replicas.
 comment|// If used size is greater than allocated size, we will be updating
 comment|// allocated size with used size. This update is done as a fallback
 comment|// mechanism in case SCM crashes without properly updating allocated

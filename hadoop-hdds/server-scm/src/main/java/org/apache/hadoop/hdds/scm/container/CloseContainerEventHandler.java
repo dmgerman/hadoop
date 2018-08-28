@@ -338,9 +338,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to update the container state. Container with id : {} "
+literal|"Failed to update the container state. Container with id : {}"
 operator|+
-literal|"does not exist"
+literal|" does not exist"
 argument_list|,
 name|containerID
 operator|.

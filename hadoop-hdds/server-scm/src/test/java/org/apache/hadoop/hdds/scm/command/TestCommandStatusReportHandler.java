@@ -331,6 +331,7 @@ block|{
 DECL|field|LOG
 specifier|private
 specifier|static
+specifier|final
 name|Logger
 name|LOG
 init|=
@@ -371,7 +372,6 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-empty_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -582,7 +582,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getStatusReport (List<CommandStatus> reports)
+DECL|method|getStatusReport ( List<CommandStatus> reports)
 specifier|private
 name|CommandStatusReportFromDatanode
 name|getStatusReport

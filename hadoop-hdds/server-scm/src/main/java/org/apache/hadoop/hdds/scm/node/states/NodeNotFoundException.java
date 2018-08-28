@@ -22,16 +22,6 @@ name|states
 package|;
 end_package
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * This exception represents that the node that is being accessed does not  * exist in NodeStateMap.  */
 end_comment

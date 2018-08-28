@@ -1097,7 +1097,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * allocates a new container based on the type, replication etc.    *    * @param selector -- Pipeline selector class.    * @param type -- Replication type.    * @param replicationFactor - Replication replicationFactor.    * @return ContainerWithPipeline    * @throws IOException  on Failure.    */
-DECL|method|allocateContainer (PipelineSelector selector, HddsProtos .ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
+DECL|method|allocateContainer (PipelineSelector selector, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
 specifier|public
 name|ContainerWithPipeline
 name|allocateContainer

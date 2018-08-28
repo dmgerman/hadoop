@@ -108,20 +108,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setBlockID (BlockID blockID)
+DECL|method|setBlockID (BlockID blockId)
 specifier|public
 name|Builder
 name|setBlockID
 parameter_list|(
 name|BlockID
-name|blockID
+name|blockId
 parameter_list|)
 block|{
 name|this
 operator|.
 name|blockID
 operator|=
-name|blockID
+name|blockId
 expr_stmt|;
 return|return
 name|this

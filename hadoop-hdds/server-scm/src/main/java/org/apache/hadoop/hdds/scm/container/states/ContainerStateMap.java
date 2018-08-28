@@ -1533,7 +1533,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Returns Open containers in the SCM by the Pipeline    *    * @param pipelineID - Pipeline id.    * @return NavigableSet<ContainerID>    */
+comment|/**    * Returns Open containers in the SCM by the Pipeline.    *    * @param pipelineID - Pipeline id.    * @return NavigableSet<ContainerID>    */
 DECL|method|getOpenContainerIDsByPipeline ( PipelineID pipelineID)
 specifier|public
 name|NavigableSet

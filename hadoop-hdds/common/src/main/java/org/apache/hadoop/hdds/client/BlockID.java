@@ -83,7 +83,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockID of ozone (containerID  localID)  */
+comment|/**  * BlockID of ozone (containerID  localID).  */
 end_comment
 
 begin_class
@@ -267,7 +267,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getFromProtobuf (ContainerProtos.DatanodeBlockID blockID)
+DECL|method|getFromProtobuf ( ContainerProtos.DatanodeBlockID blockID)
 specifier|public
 specifier|static
 name|BlockID

@@ -905,8 +905,6 @@ control|)
 block|{
 name|ContainerWithPipeline
 name|containerWithPipeline
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{

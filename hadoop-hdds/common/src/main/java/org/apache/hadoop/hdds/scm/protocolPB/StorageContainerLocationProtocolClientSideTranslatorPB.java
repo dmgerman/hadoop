@@ -608,7 +608,7 @@ block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container. Ozone/SCM only    * supports replication factor of either 1 or 3.    * @param type - Replication Type    * @param factor - Replication Count    * @return    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
+DECL|method|allocateContainer ( HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
 specifier|public
 name|ContainerWithPipeline
 name|allocateContainer

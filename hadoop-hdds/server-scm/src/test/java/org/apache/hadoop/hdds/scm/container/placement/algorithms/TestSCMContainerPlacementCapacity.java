@@ -369,7 +369,7 @@ argument_list|(
 operator|new
 name|SCMNodeMetric
 argument_list|(
-literal|100l
+literal|100L
 argument_list|,
 literal|0L
 argument_list|,
@@ -397,7 +397,7 @@ argument_list|(
 operator|new
 name|SCMNodeMetric
 argument_list|(
-literal|100l
+literal|100L
 argument_list|,
 literal|90L
 argument_list|,
@@ -425,7 +425,7 @@ argument_list|(
 operator|new
 name|SCMNodeMetric
 argument_list|(
-literal|100l
+literal|100L
 argument_list|,
 literal|80L
 argument_list|,
@@ -453,7 +453,7 @@ argument_list|(
 operator|new
 name|SCMNodeMetric
 argument_list|(
-literal|100l
+literal|100L
 argument_list|,
 literal|70L
 argument_list|,

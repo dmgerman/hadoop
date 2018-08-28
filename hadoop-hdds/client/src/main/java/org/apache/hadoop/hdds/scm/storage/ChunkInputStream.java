@@ -285,7 +285,7 @@ name|int
 name|bufferIndex
 decl_stmt|;
 comment|/**    * Creates a new ChunkInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
-DECL|method|ChunkInputStream (BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
+DECL|method|ChunkInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
 specifier|public
 name|ChunkInputStream
 parameter_list|(
