@@ -888,16 +888,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|file
@@ -1005,6 +995,24 @@ operator|.
 name|HddsConfigKeys
 operator|.
 name|HDDS_CONTAINER_REPORT_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_STALENODE_INTERVAL
 import|;
 end_import
 
@@ -1174,6 +1182,19 @@ argument_list|(
 name|HDDS_CONTAINER_REPORT_INTERVAL
 argument_list|,
 literal|1
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setTimeDuration
+argument_list|(
+name|OZONE_SCM_STALENODE_INTERVAL
+argument_list|,
+literal|30
 argument_list|,
 name|TimeUnit
 operator|.
@@ -2194,9 +2215,7 @@ name|int
 name|datanodeIdx
 parameter_list|)
 throws|throws
-name|OzoneException
-throws|,
-name|URISyntaxException
+name|Exception
 block|{
 name|cluster
 operator|.
@@ -2303,21 +2322,6 @@ name|cluster
 argument_list|,
 literal|0
 argument_list|)
-expr_stmt|;
-comment|// TODO: Try removing sleep and adding a join for the MiniOzoneCluster start
-comment|// The ozoneContainer is not started and its metrics are not initialized
-comment|// which leads to NullPointerException in Dispatcher.
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-name|ozoneCluster
-operator|.
-name|waitForClusterToBeReady
-argument_list|()
 expr_stmt|;
 comment|// verify getKey after the datanode restart
 name|String

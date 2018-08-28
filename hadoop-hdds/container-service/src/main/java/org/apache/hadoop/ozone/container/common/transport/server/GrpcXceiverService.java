@@ -285,17 +285,9 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|error
 argument_list|(
 literal|"{} got exception when processing"
 operator|+
@@ -306,7 +298,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 name|responseObserver
 operator|.
 name|onError
@@ -329,7 +320,7 @@ block|{
 comment|// for now we just log a msg
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"{}: ContainerCommand send on error. Exception: {}"
 argument_list|,
@@ -358,7 +349,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}: ContainerCommand send completed"
 argument_list|)

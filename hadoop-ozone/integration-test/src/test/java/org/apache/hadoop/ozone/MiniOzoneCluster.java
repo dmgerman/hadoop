@@ -313,6 +313,10 @@ parameter_list|(
 name|int
 name|i
 parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|TimeoutException
 function_decl|;
 comment|/**    * Shutdown a particular HddsDatanode.    *    * @param i index of HddsDatanode in the MiniOzoneCluster    */
 DECL|method|shutdownHddsDatanode (int i)
