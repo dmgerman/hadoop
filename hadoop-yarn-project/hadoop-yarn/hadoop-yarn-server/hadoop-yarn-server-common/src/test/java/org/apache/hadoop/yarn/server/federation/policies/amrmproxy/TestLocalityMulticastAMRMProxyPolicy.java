@@ -631,7 +631,7 @@ block|{
 name|setPolicy
 argument_list|(
 operator|new
-name|LocalityMulticastAMRMProxyPolicy
+name|TestableLocalityMulticastAMRMProxyPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -668,7 +668,7 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// simulate 20 subclusters with a 5% chance of being inactive
+comment|// Six sub-clusters with one inactive and one disabled
 for|for
 control|(
 name|int
@@ -1324,6 +1324,9 @@ expr_stmt|;
 name|initializePolicy
 argument_list|()
 expr_stmt|;
+name|addHomeSubClusterAsActive
+argument_list|()
+expr_stmt|;
 name|int
 name|numRR
 init|=
@@ -1909,22 +1912,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
-DECL|method|testSplitAllocateRequest ()
-specifier|public
+comment|/**    * modify default initialization to include a "homesubcluster" which we will    * use as the default for when nodes or racks are unknown.    */
+DECL|method|addHomeSubClusterAsActive ()
+specifier|private
 name|void
-name|testSplitAllocateRequest
+name|addHomeSubClusterAsActive
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-comment|// Test a complex List<ResourceRequest> is split correctly
-name|initializePolicy
-argument_list|()
-expr_stmt|;
-comment|// modify default initialization to include a "homesubcluster"
-comment|// which we will use as the default for when nodes or racks are unknown
 name|SubClusterInfo
 name|sci
 init|=
@@ -2013,6 +2007,24 @@ name|sc
 argument_list|,
 literal|0.1f
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testSplitAllocateRequest ()
+specifier|public
+name|void
+name|testSplitAllocateRequest
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Test a complex List<ResourceRequest> is split correctly
+name|initializePolicy
+argument_list|()
+expr_stmt|;
+name|addHomeSubClusterAsActive
+argument_list|()
 expr_stmt|;
 name|FederationPoliciesTestUtil
 operator|.
@@ -2876,7 +2888,11 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Target subclusters should be in the active set"
+literal|"Target subcluster "
+operator|+
+name|targetId
+operator|+
+literal|" should be in the active set"
 argument_list|,
 name|getActiveSubclusters
 argument_list|()
@@ -4756,6 +4772,92 @@ argument_list|,
 literal|100
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * A testable version of LocalityMulticastAMRMProxyPolicy that    * deterministically falls back to home sub-cluster for unresolved requests.    */
+DECL|class|TestableLocalityMulticastAMRMProxyPolicy
+specifier|private
+class|class
+name|TestableLocalityMulticastAMRMProxyPolicy
+extends|extends
+name|LocalityMulticastAMRMProxyPolicy
+block|{
+annotation|@
+name|Override
+DECL|method|getSubClusterForUnResolvedRequest ( AllocationBookkeeper bookkeeper, long allocationId)
+specifier|protected
+name|SubClusterId
+name|getSubClusterForUnResolvedRequest
+parameter_list|(
+name|AllocationBookkeeper
+name|bookkeeper
+parameter_list|,
+name|long
+name|allocationId
+parameter_list|)
+block|{
+name|SubClusterId
+name|originalResult
+init|=
+name|super
+operator|.
+name|getSubClusterForUnResolvedRequest
+argument_list|(
+name|bookkeeper
+argument_list|,
+name|allocationId
+argument_list|)
+decl_stmt|;
+name|Map
+argument_list|<
+name|SubClusterId
+argument_list|,
+name|SubClusterInfo
+argument_list|>
+name|activeClusters
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|activeClusters
+operator|=
+name|getActiveSubclusters
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+comment|// The randomly selected sub-cluster should at least be active
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|activeClusters
+operator|.
+name|containsKey
+argument_list|(
+name|originalResult
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Alwasy use home sub-cluster so that unit test is deterministic
+return|return
+name|getHomeSubCluster
+argument_list|()
+return|;
+block|}
 block|}
 block|}
 end_class
