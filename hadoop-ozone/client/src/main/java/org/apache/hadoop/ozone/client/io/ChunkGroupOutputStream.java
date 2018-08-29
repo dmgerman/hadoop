@@ -681,7 +681,6 @@ annotation|@
 name|VisibleForTesting
 DECL|method|addStream (OutputStream outputStream, long length)
 specifier|public
-specifier|synchronized
 name|void
 name|addStream
 parameter_list|(
@@ -1233,7 +1232,6 @@ annotation|@
 name|Override
 DECL|method|write (int b)
 specifier|public
-specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -1278,7 +1276,6 @@ annotation|@
 name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -1923,7 +1920,6 @@ annotation|@
 name|Override
 DECL|method|flush ()
 specifier|public
-specifier|synchronized
 name|void
 name|flush
 parameter_list|()
@@ -2067,7 +2063,6 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
-specifier|synchronized
 name|void
 name|close
 parameter_list|()
@@ -2623,7 +2618,6 @@ return|;
 block|}
 DECL|method|checkStream ()
 specifier|private
-specifier|synchronized
 name|void
 name|checkStream
 parameter_list|()

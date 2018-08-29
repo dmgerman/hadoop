@@ -466,7 +466,6 @@ annotation|@
 name|Override
 DECL|method|write (int b)
 specifier|public
-specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -528,7 +527,6 @@ annotation|@
 name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
-specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -704,7 +702,6 @@ annotation|@
 name|Override
 DECL|method|flush ()
 specifier|public
-specifier|synchronized
 name|void
 name|flush
 parameter_list|()
@@ -753,7 +750,6 @@ annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
-specifier|synchronized
 name|void
 name|close
 parameter_list|()
@@ -835,7 +831,6 @@ block|}
 block|}
 DECL|method|cleanup ()
 specifier|public
-specifier|synchronized
 name|void
 name|cleanup
 parameter_list|()
@@ -863,7 +858,6 @@ block|}
 comment|/**    * Checks if the stream is open.  If not, throws an exception.    *    * @throws IOException if stream is closed    */
 DECL|method|checkOpen ()
 specifier|private
-specifier|synchronized
 name|void
 name|checkOpen
 parameter_list|()
@@ -889,7 +883,6 @@ block|}
 comment|/**    * Attempts to flush buffered writes by writing a new chunk to the container.    * If successful, then clears the buffer to prepare to receive writes for a    * new chunk.    *    * @param rollbackPosition position to restore in buffer if write fails    * @param rollbackLimit limit to restore in buffer if write fails    * @throws IOException if there is an I/O error while performing the call    */
 DECL|method|flushBufferToChunk (int rollbackPosition, int rollbackLimit)
 specifier|private
-specifier|synchronized
 name|void
 name|flushBufferToChunk
 parameter_list|(
@@ -952,7 +945,6 @@ block|}
 comment|/**    * Writes buffered data as a new chunk to the container and saves chunk    * information to be used later in putKey call.    *    * @throws IOException if there is an I/O error while performing the call    */
 DECL|method|writeChunkToContainer ()
 specifier|private
-specifier|synchronized
 name|void
 name|writeChunkToContainer
 parameter_list|()
