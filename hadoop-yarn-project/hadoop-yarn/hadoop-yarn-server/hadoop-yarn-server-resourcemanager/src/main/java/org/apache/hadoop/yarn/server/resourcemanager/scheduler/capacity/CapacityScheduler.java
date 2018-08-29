@@ -3375,7 +3375,7 @@ argument_list|()
 operator|+
 literal|". Use"
 operator|+
-literal|" DomainantResourceCalculator instead to make effective use of"
+literal|" DominantResourceCalculator instead to make effective use of"
 operator|+
 literal|" these resource-types"
 argument_list|)
