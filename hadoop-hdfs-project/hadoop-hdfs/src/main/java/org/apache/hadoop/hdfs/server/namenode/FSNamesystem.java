@@ -20815,6 +20815,11 @@ condition|(
 name|blockInfo
 operator|==
 literal|null
+operator|||
+name|blockInfo
+operator|.
+name|isDeleted
+argument_list|()
 condition|)
 block|{
 name|LOG

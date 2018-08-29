@@ -1906,6 +1906,14 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|namenode
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 comment|//get blockInfo
@@ -1939,6 +1947,11 @@ condition|(
 name|blockInfo
 operator|==
 literal|null
+operator|||
+name|blockInfo
+operator|.
+name|isDeleted
+argument_list|()
 condition|)
 block|{
 name|out
@@ -2391,6 +2404,19 @@ argument_list|(
 literal|"Error in looking up block"
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|namenode
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|readUnlock
+argument_list|(
+literal|"fsck"
 argument_list|)
 expr_stmt|;
 block|}

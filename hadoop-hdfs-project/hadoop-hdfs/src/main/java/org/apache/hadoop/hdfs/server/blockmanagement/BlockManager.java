@@ -19833,6 +19833,17 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|block
+operator|.
+name|isDeleted
+argument_list|()
+condition|)
+block|{
+comment|//Orphan block, will be handled eventually, skip
+continue|continue;
+block|}
 name|int
 name|expectedReplication
 init|=

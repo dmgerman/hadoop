@@ -228,6 +228,7 @@ decl_stmt|;
 comment|/**    * Block collection ID.    */
 DECL|field|bcId
 specifier|private
+specifier|volatile
 name|long
 name|bcId
 decl_stmt|;
