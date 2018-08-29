@@ -385,6 +385,24 @@ name|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN
 init|=
 literal|"fs.azure.account.oauth2.refresh.token."
 decl_stmt|;
+DECL|field|FS_AZURE_ENABLE_DELEGATION_TOKEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ENABLE_DELEGATION_TOKEN
+init|=
+literal|"fs.azure.enable.delegation.token"
+decl_stmt|;
+DECL|field|FS_AZURE_DELEGATION_TOKEN_PROVIDER_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_DELEGATION_TOKEN_PROVIDER_TYPE
+init|=
+literal|"fs.azure.delegation.token.provider.type"
+decl_stmt|;
 DECL|method|ConfigurationKeys ()
 specifier|private
 name|ConfigurationKeys

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.azurebfs.oauth2
+DECL|package|org.apache.hadoop.fs.azurebfs.extensions
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|fs
 operator|.
 name|azurebfs
 operator|.
-name|oauth2
+name|extensions
 package|;
 end_package
 
@@ -101,13 +101,14 @@ interface|interface
 name|CustomTokenProviderAdaptee
 block|{
 comment|/**    * Initialize with supported configuration. This method is invoked when the    * (URI, Configuration)} method is invoked.    *    * @param configuration Configuration object    * @param accountName Account Name    * @throws IOException if instance can not be configured.    */
-DECL|method|initialize (Configuration configuration, String accountName)
+DECL|method|initialize (Configuration configuration, final String accountName)
 name|void
 name|initialize
 parameter_list|(
 name|Configuration
 name|configuration
 parameter_list|,
+specifier|final
 name|String
 name|accountName
 parameter_list|)

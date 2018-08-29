@@ -64,6 +64,24 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|extensions
+operator|.
+name|CustomTokenProviderAdaptee
+import|;
+end_import
+
 begin_comment
 comment|/**  * Provides tokens based on custom implementation, following the Adapter Design  * Pattern.  */
 end_comment

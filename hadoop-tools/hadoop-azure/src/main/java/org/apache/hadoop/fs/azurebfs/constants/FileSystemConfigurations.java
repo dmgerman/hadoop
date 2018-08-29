@@ -319,6 +319,15 @@ name|SSLChannelMode
 operator|.
 name|Default
 decl_stmt|;
+DECL|field|DEFAULT_ENABLE_DELEGATION_TOKEN
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ENABLE_DELEGATION_TOKEN
+init|=
+literal|false
+decl_stmt|;
 DECL|method|FileSystemConfigurations ()
 specifier|private
 name|FileSystemConfigurations
