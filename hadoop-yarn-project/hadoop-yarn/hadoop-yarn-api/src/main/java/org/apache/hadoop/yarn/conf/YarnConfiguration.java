@@ -6705,6 +6705,18 @@ name|DOCKER_CONTAINER_RUNTIME_PREFIX
 operator|+
 literal|"default-rw-mounts"
 decl_stmt|;
+comment|/** The default list of tmpfs mounts to be mounted into all    *  Docker containers that use DockerContainerRuntime. */
+DECL|field|NM_DOCKER_DEFAULT_TMPFS_MOUNTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_DEFAULT_TMPFS_MOUNTS
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"default-tmpfs-mounts"
+decl_stmt|;
 comment|/** The mode in which the Java Container Sandbox should run detailed by    *  the JavaSandboxLinuxContainerRuntime. */
 DECL|field|YARN_CONTAINER_SANDBOX
 specifier|public

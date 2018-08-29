@@ -470,6 +470,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|addTmpfsMount (String mount)
+specifier|public
+name|DockerRunCommand
+name|addTmpfsMount
+parameter_list|(
+name|String
+name|mount
+parameter_list|)
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"tmpfs"
+argument_list|,
+name|mount
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setVolumeDriver (String volumeDriver)
 specifier|public
 name|DockerRunCommand
