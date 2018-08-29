@@ -565,6 +565,26 @@ literal|5
 argument_list|)
 decl_stmt|;
 comment|// HDFS Router NN client
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_ROUTER_NAMENODE_CONNECTION_CREATOR_QUEUE_SIZE
+name|DFS_ROUTER_NAMENODE_CONNECTION_CREATOR_QUEUE_SIZE
+init|=
+name|FEDERATION_ROUTER_PREFIX
+operator|+
+literal|"connection.creator.queue-size"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DFS_ROUTER_NAMENODE_CONNECTION_CREATOR_QUEUE_SIZE_DEFAULT
+name|DFS_ROUTER_NAMENODE_CONNECTION_CREATOR_QUEUE_SIZE_DEFAULT
+init|=
+literal|100
+decl_stmt|;
 DECL|field|DFS_ROUTER_NAMENODE_CONNECTION_POOL_SIZE
 specifier|public
 specifier|static

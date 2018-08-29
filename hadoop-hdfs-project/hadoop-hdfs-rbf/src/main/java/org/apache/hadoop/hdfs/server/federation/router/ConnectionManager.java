@@ -302,16 +302,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** Number of parallel new connections to create. */
-DECL|field|MAX_NEW_CONNECTIONS
-specifier|protected
-specifier|static
-specifier|final
-name|int
-name|MAX_NEW_CONNECTIONS
-init|=
-literal|100
-decl_stmt|;
 comment|/** Minimum amount of active connections: 50%. */
 DECL|field|MIN_ACTIVE_RATIO
 specifier|protected
@@ -413,13 +403,13 @@ argument_list|<
 name|ConnectionPool
 argument_list|>
 name|creatorQueue
-init|=
-operator|new
-name|ArrayBlockingQueue
-argument_list|<>
-argument_list|(
-name|MAX_NEW_CONNECTIONS
-argument_list|)
+decl_stmt|;
+comment|/** Max size of queue for creating new connections. */
+DECL|field|creatorQueueMaxSize
+specifier|private
+specifier|final
+name|int
+name|creatorQueueMaxSize
 decl_stmt|;
 comment|/** Create new connections asynchronously. */
 DECL|field|creator
@@ -497,11 +487,45 @@ expr_stmt|;
 comment|// Create connections in a thread asynchronously
 name|this
 operator|.
+name|creatorQueueMaxSize
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_NAMENODE_CONNECTION_CREATOR_QUEUE_SIZE
+argument_list|,
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_NAMENODE_CONNECTION_CREATOR_QUEUE_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|creatorQueue
+operator|=
+operator|new
+name|ArrayBlockingQueue
+argument_list|<>
+argument_list|(
+name|this
+operator|.
+name|creatorQueueMaxSize
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|creator
 operator|=
 operator|new
 name|ConnectionCreator
 argument_list|(
+name|this
+operator|.
 name|creatorQueue
 argument_list|)
 expr_stmt|;
@@ -940,7 +964,9 @@ name|error
 argument_list|(
 literal|"Cannot add more than {} connections at the same time"
 argument_list|,
-name|MAX_NEW_CONNECTIONS
+name|this
+operator|.
+name|creatorQueueMaxSize
 argument_list|)
 expr_stmt|;
 block|}
