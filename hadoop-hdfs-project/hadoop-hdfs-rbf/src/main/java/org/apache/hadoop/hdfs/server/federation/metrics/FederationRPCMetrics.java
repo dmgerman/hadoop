@@ -457,23 +457,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert nanoseconds to milliseconds.    * @param ns Time in nanoseconds.    * @return Time in milliseconds.    */
-DECL|method|toMs (double ns)
-specifier|private
-specifier|static
-name|double
-name|toMs
-parameter_list|(
-name|double
-name|ns
-parameter_list|)
-block|{
-return|return
-name|ns
-operator|/
-literal|1000000
-return|;
-block|}
 comment|/**    * Reset the metrics system.    */
 DECL|method|reset ()
 specifier|public
@@ -904,8 +887,6 @@ name|getProxyAvg
 parameter_list|()
 block|{
 return|return
-name|toMs
-argument_list|(
 name|proxy
 operator|.
 name|lastStat
@@ -913,7 +894,6 @@ argument_list|()
 operator|.
 name|mean
 argument_list|()
-argument_list|)
 return|;
 block|}
 annotation|@
@@ -963,8 +943,6 @@ name|getProcessingAvg
 parameter_list|()
 block|{
 return|return
-name|toMs
-argument_list|(
 name|processing
 operator|.
 name|lastStat
@@ -972,7 +950,6 @@ argument_list|()
 operator|.
 name|mean
 argument_list|()
-argument_list|)
 return|;
 block|}
 annotation|@

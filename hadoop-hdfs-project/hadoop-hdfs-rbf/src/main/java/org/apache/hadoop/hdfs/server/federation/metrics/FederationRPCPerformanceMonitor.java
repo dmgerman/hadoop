@@ -214,6 +214,22 @@ name|ThreadFactoryBuilder
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|monotonicNow
+import|;
+end_import
+
 begin_comment
 comment|/**  * Customizable RPC performance monitor. Receives events from the RPC server  * and aggregates them via JMX.  */
 end_comment
@@ -555,9 +571,7 @@ name|START_TIME
 operator|.
 name|set
 argument_list|(
-name|this
-operator|.
-name|getNow
+name|monotonicNow
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -574,9 +588,7 @@ name|PROXY_TIME
 operator|.
 name|set
 argument_list|(
-name|this
-operator|.
-name|getNow
+name|monotonicNow
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -776,20 +788,6 @@ name|incrRouterFailureLocked
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get current time.    * @return Current time in nanoseconds.    */
-DECL|method|getNow ()
-specifier|private
-name|long
-name|getNow
-parameter_list|()
-block|{
-return|return
-name|System
-operator|.
-name|nanoTime
-argument_list|()
-return|;
-block|}
 comment|/**    * Get time between we receiving the operation and sending it to the Namenode.    * @return Processing time in nanoseconds.    */
 DECL|method|getProcessingTime ()
 specifier|private
@@ -870,7 +868,7 @@ literal|0
 condition|)
 block|{
 return|return
-name|getNow
+name|monotonicNow
 argument_list|()
 operator|-
 name|PROXY_TIME
