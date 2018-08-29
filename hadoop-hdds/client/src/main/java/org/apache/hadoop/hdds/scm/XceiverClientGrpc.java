@@ -608,9 +608,7 @@ name|port
 argument_list|)
 operator|.
 name|usePlaintext
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 operator|.
 name|maxInboundMessageSize
 argument_list|(

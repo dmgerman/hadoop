@@ -471,7 +471,7 @@ name|port
 argument_list|)
 operator|)
 operator|.
-name|maxMessageSize
+name|maxInboundMessageSize
 argument_list|(
 name|OzoneConfigKeys
 operator|.
