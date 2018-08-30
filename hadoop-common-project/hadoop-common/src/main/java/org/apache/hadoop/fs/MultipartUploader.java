@@ -48,6 +48,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -190,6 +204,33 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Utility method to validate uploadIDs    * @param uploadId    * @throws IllegalArgumentException    */
+DECL|method|checkUploadId (byte[] uploadId)
+specifier|protected
+name|void
+name|checkUploadId
+parameter_list|(
+name|byte
+index|[]
+name|uploadId
+parameter_list|)
+throws|throws
+name|IllegalArgumentException
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|uploadId
+operator|.
+name|length
+operator|>
+literal|0
+argument_list|,
+literal|"Empty UploadId is not valid"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

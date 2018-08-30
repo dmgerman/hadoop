@@ -313,6 +313,11 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
+name|checkUploadId
+argument_list|(
+name|uploadIdByteArray
+argument_list|)
+expr_stmt|;
 name|Path
 name|collectorPath
 init|=
@@ -559,6 +564,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkUploadId
+argument_list|(
+name|multipartUploadId
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|handles
@@ -783,17 +796,9 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
+name|checkUploadId
 argument_list|(
 name|uploadIdByteArray
-operator|.
-name|length
-operator|!=
-literal|0
-argument_list|,
-literal|"UploadId is empty"
 argument_list|)
 expr_stmt|;
 name|Path
