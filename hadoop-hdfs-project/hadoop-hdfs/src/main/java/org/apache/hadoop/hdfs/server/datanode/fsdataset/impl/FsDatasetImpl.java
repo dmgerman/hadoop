@@ -7523,6 +7523,20 @@ name|de
 parameter_list|)
 block|{
 comment|// Ignore the exception since we just fall back to persistent storage.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Insufficient space for placing the block on a transient "
+operator|+
+literal|"volume, fall back to persistent storage: "
+operator|+
+name|de
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
