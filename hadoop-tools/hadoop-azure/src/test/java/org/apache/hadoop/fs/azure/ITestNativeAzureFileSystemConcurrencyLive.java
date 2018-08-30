@@ -176,7 +176,7 @@ specifier|final
 name|int
 name|TEST_EXECUTION_TIMEOUT
 init|=
-literal|5000
+literal|30000
 decl_stmt|;
 annotation|@
 name|Override
