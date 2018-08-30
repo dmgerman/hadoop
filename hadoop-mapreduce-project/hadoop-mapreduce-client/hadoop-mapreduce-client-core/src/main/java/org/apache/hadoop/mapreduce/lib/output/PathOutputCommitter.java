@@ -222,9 +222,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating committer with output path {} and task context"
+literal|"Instantiating committer {} with output path {} and task context"
 operator|+
 literal|" {}"
+argument_list|,
+name|this
 argument_list|,
 name|outputPath
 argument_list|,
@@ -263,9 +265,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating committer with output path {} and job context"
+literal|"Instantiating committer {} with output path {} and job context"
 operator|+
 literal|" {}"
+argument_list|,
+name|this
 argument_list|,
 name|outputPath
 argument_list|,
@@ -317,6 +321,13 @@ return|return
 literal|"PathOutputCommitter{context="
 operator|+
 name|context
+operator|+
+literal|"; "
+operator|+
+name|super
+operator|.
+name|toString
+argument_list|()
 operator|+
 literal|'}'
 return|;

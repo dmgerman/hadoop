@@ -216,20 +216,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -1709,15 +1695,17 @@ else|:
 name|TEST_FILE_COUNT
 return|;
 block|}
-comment|/**    * Override point to let implementations tune the MR Job conf.    * @param c configuration    */
-DECL|method|applyCustomConfigOptions (Configuration c)
+comment|/**    * Override point to let implementations tune the MR Job conf.    * @param jobConf configuration    */
+DECL|method|applyCustomConfigOptions (JobConf jobConf)
 specifier|protected
 name|void
 name|applyCustomConfigOptions
 parameter_list|(
-name|Configuration
-name|c
+name|JobConf
+name|jobConf
 parameter_list|)
+throws|throws
+name|IOException
 block|{    }
 comment|/**    * Override point for any committer specific validation operations;    * called after the base assertions have all passed.    * @param destPath destination of work    * @param successData loaded success data    * @throws Exception failure    */
 DECL|method|customPostExecutionValidation (Path destPath, SuccessData successData)

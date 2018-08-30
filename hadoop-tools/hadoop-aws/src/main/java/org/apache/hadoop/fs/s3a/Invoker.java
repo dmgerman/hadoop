@@ -329,7 +329,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Execute an operation and ignore all raised IOExceptions; log at INFO.    * @param log log to log at info.    * @param action action to include in log    * @param path optional path to include in log    * @param operation operation to execute    * @param<T> type of operation    */
+comment|/**    * Execute an operation and ignore all raised IOExceptions; log at INFO;    * full stack only at DEBUG.    * @param log log to use.    * @param action action to include in log    * @param path optional path to include in log    * @param operation operation to execute    * @param<T> type of operation    */
 DECL|method|ignoreIOExceptions ( Logger log, String action, String path, Operation<T> operation)
 specifier|public
 specifier|static
@@ -373,30 +373,49 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"{}: {}"
-argument_list|,
+name|String
+name|description
+init|=
 name|toDescription
 argument_list|(
 name|action
 argument_list|,
 name|path
 argument_list|)
-argument_list|,
+decl_stmt|;
+name|String
+name|error
+init|=
 name|e
 operator|.
 name|toString
 argument_list|()
+decl_stmt|;
+name|log
+operator|.
+name|info
+argument_list|(
+literal|"{}: {}"
+argument_list|,
+name|description
+argument_list|,
+name|error
+argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|debug
+argument_list|(
+literal|"{}"
+argument_list|,
+name|description
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Execute an operation and ignore all raised IOExceptions; log at INFO.    * @param log log to log at info.    * @param action action to include in log    * @param path optional path to include in log    * @param operation operation to execute    */
+comment|/**    * Execute an operation and ignore all raised IOExceptions; log at INFO;    * full stack only at DEBUG.    * @param log log to use.    * @param action action to include in log    * @param path optional path to include in log    * @param operation operation to execute    */
 DECL|method|ignoreIOExceptions ( Logger log, String action, String path, VoidOperation operation)
 specifier|public
 specifier|static

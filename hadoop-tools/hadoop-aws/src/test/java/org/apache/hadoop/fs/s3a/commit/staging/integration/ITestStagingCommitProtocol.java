@@ -645,6 +645,47 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * The staging committers always have the local FS for their work.    * @param committer committer instance    * @param context task attempt context    * @throws IOException IO failure    */
+annotation|@
+name|Override
+DECL|method|validateTaskAttemptWorkingDirectory (final AbstractS3ACommitter committer, final TaskAttemptContext context)
+specifier|protected
+name|void
+name|validateTaskAttemptWorkingDirectory
+parameter_list|(
+specifier|final
+name|AbstractS3ACommitter
+name|committer
+parameter_list|,
+specifier|final
+name|TaskAttemptContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Path
+name|wd
+init|=
+name|context
+operator|.
+name|getWorkingDirectory
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"file"
+argument_list|,
+name|wd
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * The class provides a overridden implementation of commitJobInternal which    * causes the commit failed for the first time then succeed.    */
 DECL|class|CommitterWithFailedThenSucceed
 specifier|private

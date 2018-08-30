@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a.commit.magic
+DECL|package|org.apache.hadoop.fs.s3a.commit.staging.integration
 package|package
 name|org
 operator|.
@@ -18,9 +18,21 @@ name|s3a
 operator|.
 name|commit
 operator|.
-name|magic
+name|staging
+operator|.
+name|integration
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
 
 begin_import
 import|import
@@ -33,6 +45,22 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AFileSystem
 import|;
 end_import
 
@@ -68,9 +96,23 @@ name|s3a
 operator|.
 name|commit
 operator|.
-name|files
+name|staging
 operator|.
-name|SuccessData
+name|StagingCommitter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|FileAlreadyExistsException
 import|;
 end_import
 
@@ -89,50 +131,49 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapreduce
 operator|.
-name|s3a
+name|lib
 operator|.
-name|commit
+name|output
 operator|.
-name|CommitConstants
+name|FileOutputFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|*
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
 import|;
 end_import
 
 begin_comment
-comment|/**  * Full integration test for the Magic Committer.  *  * There's no need to disable the committer setting for the filesystem here,  * because the committers are being instantiated in their own processes;  * the settings in {@link AbstractITCommitMRJob#applyCustomConfigOptions(JobConf)} are  * passed down to these processes.  */
+comment|/**  * This is a test to verify that the committer will fail if the destination  * directory exists, and that this happens in job setup.  */
 end_comment
 
 begin_class
-DECL|class|ITMagicCommitMRJob
+DECL|class|ITStagingCommitMRJobBadDest
 specifier|public
 class|class
-name|ITMagicCommitMRJob
+name|ITStagingCommitMRJobBadDest
 extends|extends
 name|AbstractITCommitMRJob
 block|{
-comment|/**    * Need consistency here.    * @return false    */
-annotation|@
-name|Override
-DECL|method|useInconsistentClient ()
-specifier|public
-name|boolean
-name|useInconsistentClient
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|committerName ()
@@ -142,12 +183,12 @@ name|committerName
 parameter_list|()
 block|{
 return|return
-name|MagicS3GuardCommitter
+name|StagingCommitter
 operator|.
 name|NAME
 return|;
 block|}
-comment|/**    * Turn on the magic commit support for the FS, else nothing will work.    * @param conf configuration    */
+comment|/**    * create the destination directory and expect a failure.    * @param conf configuration    */
 annotation|@
 name|Override
 DECL|method|applyCustomConfigOptions (JobConf conf)
@@ -158,45 +199,68 @@ parameter_list|(
 name|JobConf
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+comment|// This is the destination in the S3 FS
+name|String
+name|outdir
+init|=
 name|conf
 operator|.
-name|setBoolean
+name|get
 argument_list|(
-name|MAGIC_COMMITTER_ENABLED
-argument_list|,
-literal|true
+name|FileOutputFormat
+operator|.
+name|OUTDIR
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Check that the magic dir was cleaned up.    * {@inheritDoc}    */
-annotation|@
-name|Override
-DECL|method|customPostExecutionValidation (Path destPath, SuccessData successData)
-specifier|protected
-name|void
-name|customPostExecutionValidation
-parameter_list|(
+decl_stmt|;
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|Path
-name|destPath
-parameter_list|,
-name|SuccessData
-name|successData
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|assertPathDoesNotExist
-argument_list|(
-literal|"No cleanup"
-argument_list|,
+name|outputPath
+init|=
 operator|new
 name|Path
 argument_list|(
-name|destPath
-argument_list|,
-name|MAGIC
+name|outdir
 argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|outputPath
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|testMRJob ()
+specifier|public
+name|void
+name|testMRJob
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|LambdaTestUtils
+operator|.
+name|intercept
+argument_list|(
+name|FileAlreadyExistsException
+operator|.
+name|class
+argument_list|,
+literal|"Output directory"
+argument_list|,
+name|super
+operator|::
+name|testMRJob
 argument_list|)
 expr_stmt|;
 block|}

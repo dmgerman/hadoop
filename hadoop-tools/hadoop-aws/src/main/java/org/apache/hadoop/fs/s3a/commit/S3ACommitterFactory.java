@@ -263,11 +263,16 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
+if|if
+condition|(
 name|factory
 operator|!=
 literal|null
-condition|?
+condition|)
+block|{
+name|PathOutputCommitter
+name|committer
+init|=
 name|factory
 operator|.
 name|createTaskCommitter
@@ -278,7 +283,53 @@ name|outputPath
 argument_list|,
 name|context
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using committer {} to output data to {}"
+argument_list|,
+operator|(
+name|committer
+operator|instanceof
+name|AbstractS3ACommitter
+condition|?
+operator|(
+operator|(
+name|AbstractS3ACommitter
+operator|)
+name|committer
+operator|)
+operator|.
+name|getName
+argument_list|()
 else|:
+name|committer
+operator|.
+name|toString
+argument_list|()
+operator|)
+argument_list|,
+name|outputPath
+argument_list|)
+expr_stmt|;
+return|return
+name|committer
+return|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Using standard FileOutputCommitter to commit work."
+operator|+
+literal|" This is slow and potentially unsafe."
+argument_list|)
+expr_stmt|;
+return|return
 name|createFileOutputCommitter
 argument_list|(
 name|outputPath
@@ -286,6 +337,7 @@ argument_list|,
 name|context
 argument_list|)
 return|;
+block|}
 block|}
 comment|/**    * Choose a committer from the FS and task configurations. Task Configuration    * takes priority, allowing execution engines to dynamically change    * committer on a query-by-query basis.    * @param fileSystem FS    * @param outputPath destination path    * @param taskConf configuration from the task    * @return An S3A committer if chosen, or "null" for the classic value    * @throws PathCommitException on a failure to identify the committer    */
 DECL|method|chooseCommitterFactory ( S3AFileSystem fileSystem, Path outputPath, Configuration taskConf)
@@ -337,6 +389,15 @@ operator|.
 name|getTrimmed
 argument_list|(
 name|FS_S3A_COMMITTER_NAME
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Committer option is {}"
 argument_list|,
 name|name
 argument_list|)

@@ -24,6 +24,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -231,16 +251,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -257,6 +267,18 @@ operator|.
 name|CommitConstants
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|hamcrest
+operator|.
+name|CoreMatchers
+operator|.
+name|containsString
 import|;
 end_import
 
@@ -568,6 +590,74 @@ argument_list|(
 literal|"pending file"
 argument_list|,
 name|pendingFile
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The magic committer paths are always on S3, and always have    * "__magic" in the path.    * @param committer committer instance    * @param context task attempt context    * @throws IOException IO failure    */
+annotation|@
+name|Override
+DECL|method|validateTaskAttemptWorkingDirectory ( final AbstractS3ACommitter committer, final TaskAttemptContext context)
+specifier|protected
+name|void
+name|validateTaskAttemptWorkingDirectory
+parameter_list|(
+specifier|final
+name|AbstractS3ACommitter
+name|committer
+parameter_list|,
+specifier|final
+name|TaskAttemptContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|URI
+name|wd
+init|=
+name|committer
+operator|.
+name|getWorkPath
+argument_list|()
+operator|.
+name|toUri
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Wrong schema for working dir "
+operator|+
+name|wd
+operator|+
+literal|" with committer "
+operator|+
+name|committer
+argument_list|,
+literal|"s3a"
+argument_list|,
+name|wd
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertThat
+argument_list|(
+name|wd
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|containsString
+argument_list|(
+literal|'/'
+operator|+
+name|CommitConstants
+operator|.
+name|MAGIC
+operator|+
+literal|'/'
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

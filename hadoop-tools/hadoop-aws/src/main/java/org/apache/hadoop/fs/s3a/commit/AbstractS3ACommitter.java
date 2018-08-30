@@ -1058,7 +1058,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|", name"
+literal|", name="
 argument_list|)
 operator|.
 name|append
@@ -1824,14 +1824,37 @@ argument_list|<
 name|MultipartUpload
 argument_list|>
 name|pending
-init|=
+decl_stmt|;
+try|try
+block|{
+name|pending
+operator|=
 name|ops
 operator|.
 name|listPendingUploadsUnderPath
 argument_list|(
 name|dest
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// raised if the listPendingUploads call failed.
+name|maybeIgnore
+argument_list|(
+name|suppressExceptions
+argument_list|,
+literal|"aborting pending uploads"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Tasks
 operator|.
 name|foreach
@@ -2219,7 +2242,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Execute an operation; maybe suppress any raised IOException.    * @param suppress should raised IOEs be suppressed?    * @param action action (for logging when the IOE is suppressed.    * @param ex  exception    * @throws IOException if suppress == false    */
+comment|/**    * Log or rethrow a caught IOException.    * @param suppress should raised IOEs be suppressed?    * @param action action (for logging when the IOE is suppressed.    * @param ex  exception    * @throws IOException if suppress == false    */
 DECL|method|maybeIgnore ( boolean suppress, String action, IOException ex)
 specifier|protected
 name|void
@@ -2244,7 +2267,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|action
 argument_list|,

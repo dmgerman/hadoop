@@ -218,6 +218,34 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|PathExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|RemoteIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|s3a
 operator|.
 name|S3AFileSystem
@@ -1814,6 +1842,24 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// this can mean the job was aborted early on, so don't confuse people
+comment|// with long stack traces that aren't the underlying problem.
+name|maybeIgnore
+argument_list|(
+name|suppressExceptions
+argument_list|,
+literal|"Pending upload directory not found"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -2130,7 +2176,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Delete the working paths of a job. Does not attempt to clean up    * the work of the wrapped committer.    *<ol>    *<li>The job attempt path</li>    *<li>$dest/__temporary</li>    *<li>the local working directory for staged files</li>    *</ol>    * @param context job context    * @throws IOException IO failure    */
+comment|/**    * Delete the working paths of a job.    *<ol>    *<li>The job attempt path</li>    *<li>{@code $dest/__temporary}</li>    *<li>the local working directory for staged files</li>    *</ol>    * Does not attempt to clean up the work of the wrapped committer.    * @param context job context    * @throws IOException IO failure    */
 DECL|method|deleteDestinationPaths (JobContext context)
 specifier|protected
 name|void
@@ -3180,6 +3226,173 @@ expr_stmt|;
 block|}
 return|return
 name|conflictResolution
+return|;
+block|}
+comment|/**    * Generate a {@link PathExistsException} because the destination exists.    * Lists some of the child entries first, to help diagnose the problem.    * @param path path which exists    * @param description description (usually task/job ID)    * @return an exception to throw    */
+DECL|method|failDestinationExists (final Path path, final String description)
+specifier|protected
+name|PathExistsException
+name|failDestinationExists
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|description
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"{}: Failing commit by job {} to write"
+operator|+
+literal|" to existing output path {}."
+argument_list|,
+name|description
+argument_list|,
+name|getJobContext
+argument_list|()
+operator|.
+name|getJobID
+argument_list|()
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+comment|// List the first 10 descendants, to give some details
+comment|// on what is wrong but not overload things if there are many files.
+try|try
+block|{
+name|int
+name|limit
+init|=
+literal|10
+decl_stmt|;
+name|RemoteIterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|lf
+init|=
+name|getDestFS
+argument_list|()
+operator|.
+name|listFiles
+argument_list|(
+name|path
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Partial Directory listing"
+argument_list|)
+expr_stmt|;
+while|while
+condition|(
+name|limit
+operator|>
+literal|0
+operator|&&
+name|lf
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|limit
+operator|--
+expr_stmt|;
+name|LocatedFileStatus
+name|status
+init|=
+name|lf
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"{}: {}"
+argument_list|,
+name|status
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|status
+operator|.
+name|isDirectory
+argument_list|()
+condition|?
+literal|" dir"
+else|:
+operator|(
+literal|"file size "
+operator|+
+name|status
+operator|.
+name|getLen
+argument_list|()
+operator|+
+literal|" bytes"
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Discarding exception raised when listing {}: "
+operator|+
+name|e
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"stack trace "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|PathExistsException
+argument_list|(
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|description
+operator|+
+literal|": "
+operator|+
+name|InternalCommitterConstants
+operator|.
+name|E_DEST_EXISTS
+argument_list|)
 return|;
 block|}
 comment|/**    * Get the conflict mode option string.    * @param context context with the config    * @param fsConf filesystem config    * @return the trimmed configuration option, upper case.    */
