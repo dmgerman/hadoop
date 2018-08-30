@@ -942,6 +942,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|KMSConfiguration
+operator|.
+name|initLogging
+argument_list|()
+expr_stmt|;
 name|StringUtils
 operator|.
 name|startupShutdownMessage
