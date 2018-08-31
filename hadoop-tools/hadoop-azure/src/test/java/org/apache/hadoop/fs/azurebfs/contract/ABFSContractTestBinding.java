@@ -128,6 +128,16 @@ name|AuthType
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+import|;
+end_import
+
 begin_comment
 comment|/**  * Bind ABFS contract tests to the Azure test setup/teardown.  */
 end_comment
@@ -193,6 +203,21 @@ operator|.
 name|FS_AZURE_CONTRACT_TEST_URI
 argument_list|)
 decl_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"Contract tests are skipped because of missing config property :"
+operator|+
+name|TestConfigurationKeys
+operator|.
+name|FS_AZURE_CONTRACT_TEST_URI
+argument_list|,
+name|testUrl
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|getAuthType

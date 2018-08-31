@@ -131,16 +131,6 @@ name|AZURE_MAX_IO_RETRIES
 init|=
 literal|"fs.azure.io.retry.max.retries"
 decl_stmt|;
-comment|// Remove this and use common azure storage emulator property for public release.
-DECL|field|FS_AZURE_EMULATOR_ENABLED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_AZURE_EMULATOR_ENABLED
-init|=
-literal|"fs.azure.abfs.emulator.enabled"
-decl_stmt|;
 comment|// Read and write buffer sizes defined by the user
 DECL|field|AZURE_WRITE_BUFFER_SIZE
 specifier|public
@@ -294,6 +284,16 @@ name|String
 name|AZURE_KEY_ACCOUNT_SHELLKEYPROVIDER_SCRIPT
 init|=
 literal|"fs.azure.shellkeyprovider.script"
+decl_stmt|;
+comment|/** End point of ABFS account: {@value}. */
+DECL|field|AZURE_ABFS_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AZURE_ABFS_ENDPOINT
+init|=
+literal|"fs.azure.abfs.endpoint"
 decl_stmt|;
 comment|/** Prefix for auth type properties: {@value}. */
 DECL|field|FS_AZURE_ACCOUNT_AUTH_TYPE_PROPERTY_NAME

@@ -1235,26 +1235,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|isEmulator ()
-specifier|public
-name|boolean
-name|isEmulator
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|getConfiguration
-argument_list|()
-operator|.
-name|getBoolean
-argument_list|(
-name|FS_AZURE_EMULATOR_ENABLED
-argument_list|,
-literal|false
-argument_list|)
-return|;
-block|}
 DECL|method|isSecureMode ()
 specifier|public
 name|boolean

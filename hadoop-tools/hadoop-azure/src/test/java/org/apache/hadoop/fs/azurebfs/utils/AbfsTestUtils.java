@@ -80,9 +80,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|slf4j
 operator|.
-name|Test
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -152,26 +162,47 @@ name|constants
 operator|.
 name|TestConfigurationKeys
 operator|.
-name|ABFS_TEST_CONTAINER_PREFIX
+name|TEST_CONTAINER_PREFIX
 import|;
 end_import
 
 begin_comment
-comment|/**  * If unit tests were interrupted and crushed accidentally, the test containers won't be deleted.  * In that case, dev can use this tool to list and delete all test containers.  * By default, all test container used in E2E tests sharing same prefix: "abfs-testcontainer-"  */
+comment|/*   * Some Utils for ABFS tests.   * */
 end_comment
 
 begin_class
-DECL|class|CleanUpAbfsTestContainer
+DECL|class|AbfsTestUtils
 specifier|public
+specifier|final
 class|class
-name|CleanUpAbfsTestContainer
+name|AbfsTestUtils
 extends|extends
 name|AbstractAbfsIntegrationTest
 block|{
-DECL|method|CleanUpAbfsTestContainer ()
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|AbfsTestUtils
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|/**    * If unit tests were interrupted and crushed accidentally, the test containers won't be deleted.    * In that case, dev can use this tool to list and delete all test containers.    * By default, all test container used in E2E tests sharing same prefix: "abfs-testcontainer-"    */
+DECL|method|checkContainers ()
 specifier|public
-name|CleanUpAbfsTestContainer
+name|void
+name|checkContainers
 parameter_list|()
+throws|throws
+name|Throwable
 block|{
 name|Assume
 operator|.
@@ -187,17 +218,6 @@ operator|.
 name|SharedKey
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testEnumContainers ()
-specifier|public
-name|void
-name|testEnumContainers
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
 name|int
 name|count
 init|=
@@ -229,7 +249,7 @@ name|blobClient
 operator|.
 name|listContainers
 argument_list|(
-name|ABFS_TEST_CONTAINER_PREFIX
+name|TEST_CONTAINER_PREFIX
 argument_list|)
 decl_stmt|;
 for|for
@@ -243,17 +263,11 @@ block|{
 name|count
 operator|++
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Container %s URI %s"
+literal|"Container {}, URI {}"
 argument_list|,
 name|container
 operator|.
@@ -265,36 +279,40 @@ operator|.
 name|getUri
 argument_list|()
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Found %d test containers"
+literal|"Found {} test containers"
 argument_list|,
 name|count
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-DECL|method|testDeleteContainers ()
+DECL|method|deleteContainers ()
 specifier|public
 name|void
-name|testDeleteContainers
+name|deleteContainers
 parameter_list|()
 throws|throws
 name|Throwable
 block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|this
+operator|.
+name|getAuthType
+argument_list|()
+operator|==
+name|AuthType
+operator|.
+name|SharedKey
+argument_list|)
+expr_stmt|;
 name|int
 name|count
 init|=
@@ -326,7 +344,7 @@ name|blobClient
 operator|.
 name|listContainers
 argument_list|(
-name|ABFS_TEST_CONTAINER_PREFIX
+name|TEST_CONTAINER_PREFIX
 argument_list|)
 decl_stmt|;
 for|for
@@ -337,17 +355,11 @@ range|:
 name|containers
 control|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Container %s URI %s"
+literal|"Container {} URI {}"
 argument_list|,
 name|container
 operator|.
@@ -358,7 +370,6 @@ name|container
 operator|.
 name|getUri
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -374,20 +385,13 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Deleted %s test containers"
+literal|"Deleted {} test containers"
 argument_list|,
 name|count
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

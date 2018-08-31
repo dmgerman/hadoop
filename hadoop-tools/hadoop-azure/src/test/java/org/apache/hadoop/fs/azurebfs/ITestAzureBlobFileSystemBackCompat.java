@@ -402,7 +402,7 @@ name|connectionString
 decl_stmt|;
 if|if
 condition|(
-name|isEmulator
+name|isIPAddress
 argument_list|()
 condition|)
 block|{

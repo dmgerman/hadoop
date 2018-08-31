@@ -106,25 +106,25 @@ name|matches
 argument_list|()
 return|;
 block|}
-comment|/**    * Extracts the raw account name from account name.    * @param accountName to extract the raw account name.    * @return extracted raw account name.    */
-DECL|method|extractRawAccountFromAccountName (final String accountName)
+comment|/**    * Extracts the account name from the host name.    * @param hostName the fully-qualified domain name of the storage service    *                 endpoint (e.g. {account}.dfs.core.windows.net.    * @return the storage service account name.    */
+DECL|method|extractAccountNameFromHostName (final String hostName)
 specifier|public
 specifier|static
 name|String
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 parameter_list|(
 specifier|final
 name|String
-name|accountName
+name|hostName
 parameter_list|)
 block|{
 if|if
 condition|(
-name|accountName
+name|hostName
 operator|==
 literal|null
 operator|||
-name|accountName
+name|hostName
 operator|.
 name|isEmpty
 argument_list|()
@@ -139,7 +139,7 @@ condition|(
 operator|!
 name|containsAbfsUrl
 argument_list|(
-name|accountName
+name|hostName
 argument_list|)
 condition|)
 block|{
@@ -151,7 +151,7 @@ name|String
 index|[]
 name|splitByDot
 init|=
-name|accountName
+name|hostName
 operator|.
 name|split
 argument_list|(

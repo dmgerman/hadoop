@@ -164,7 +164,7 @@ literal|"abfs"
 argument_list|,
 name|UriUtils
 operator|.
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 argument_list|(
 literal|"abfs.dfs.core.windows.net"
 argument_list|)
@@ -178,7 +178,7 @@ literal|"abfs"
 argument_list|,
 name|UriUtils
 operator|.
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 argument_list|(
 literal|"abfs.dfs.preprod.core.windows.net"
 argument_list|)
@@ -192,7 +192,7 @@ literal|null
 argument_list|,
 name|UriUtils
 operator|.
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 argument_list|(
 literal|"abfs.dfs.cores.windows.net"
 argument_list|)
@@ -206,7 +206,7 @@ literal|null
 argument_list|,
 name|UriUtils
 operator|.
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 argument_list|(
 literal|""
 argument_list|)
@@ -220,7 +220,7 @@ literal|null
 argument_list|,
 name|UriUtils
 operator|.
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 argument_list|(
 literal|null
 argument_list|)
@@ -234,7 +234,7 @@ literal|null
 argument_list|,
 name|UriUtils
 operator|.
-name|extractRawAccountFromAccountName
+name|extractAccountNameFromHostName
 argument_list|(
 literal|"abfs.dfs.cores.windows.net"
 argument_list|)

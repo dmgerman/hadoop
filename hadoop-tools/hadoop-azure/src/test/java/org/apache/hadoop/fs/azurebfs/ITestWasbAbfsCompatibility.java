@@ -324,7 +324,7 @@ name|assumeFalse
 argument_list|(
 literal|"Emulator is not supported"
 argument_list|,
-name|isEmulator
+name|isIPAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
