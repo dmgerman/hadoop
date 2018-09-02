@@ -267,7 +267,7 @@ name|labels
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setLabels (Collection<String> labels)
+DECL|method|setLabels (Collection<String> nodeLabels)
 specifier|public
 name|RemoveClusterLabelOp
 name|setLabels
@@ -276,14 +276,14 @@ name|Collection
 argument_list|<
 name|String
 argument_list|>
-name|labels
+name|nodeLabels
 parameter_list|)
 block|{
 name|this
 operator|.
 name|labels
 operator|=
-name|labels
+name|nodeLabels
 expr_stmt|;
 return|return
 name|this

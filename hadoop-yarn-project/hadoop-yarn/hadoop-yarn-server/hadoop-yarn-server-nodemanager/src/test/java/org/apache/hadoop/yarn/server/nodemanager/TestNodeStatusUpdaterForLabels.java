@@ -1109,6 +1109,7 @@ literal|null
 return|;
 block|}
 block|}
+comment|/**    * A dummy NodeLabelsProvider class for tests.    */
 DECL|class|DummyNodeLabelsProvider
 specifier|public
 specifier|static

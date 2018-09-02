@@ -2788,12 +2788,12 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|field|applicationContainerIdMap
 specifier|private
 name|HashMap
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
+DECL|field|applicationContainerIdMap
 name|List
 argument_list|<
 name|ContainerId
@@ -2803,14 +2803,7 @@ name|applicationContainerIdMap
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ApplicationAttemptId
-argument_list|,
-name|List
-argument_list|<
-name|ContainerId
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|containerIndex
@@ -5649,7 +5642,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|mapAttributesToNodes (NodesToAttributesMappingRequest request)
+DECL|method|mapAttributesToNodes ( NodesToAttributesMappingRequest request)
 specifier|public
 name|NodesToAttributesMappingResponse
 name|mapAttributesToNodes

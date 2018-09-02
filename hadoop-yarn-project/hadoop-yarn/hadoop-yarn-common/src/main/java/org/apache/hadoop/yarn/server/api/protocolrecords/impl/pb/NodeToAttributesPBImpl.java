@@ -160,6 +160,10 @@ name|NodeToAttributes
 import|;
 end_import
 
+begin_comment
+comment|/**  * Proto class for Node to attributes mapping.  */
+end_comment
+
 begin_class
 DECL|class|NodeToAttributesPBImpl
 specifier|public

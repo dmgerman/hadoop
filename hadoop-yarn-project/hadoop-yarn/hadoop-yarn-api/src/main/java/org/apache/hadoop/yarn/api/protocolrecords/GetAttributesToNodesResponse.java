@@ -218,18 +218,18 @@ argument_list|>
 name|map
 parameter_list|)
 function_decl|;
-comment|/**    * Get mapping of NodeAttributeKey to its associated mapping of list of    * NodeToAttributeValuenode to attribute value.    *    * @return Map<NodeAttributeKey, List<NodeToAttributeValue>> node attributes    *         to list of NodeToAttributeValuenode.    */
+comment|/**    * Get mapping of NodeAttributeKey to its associated mapping of list of    * NodeToAttributeValue associated with attribute.    *    * @return Map<NodeAttributeKey, List<NodeToAttributeValue>> node attributes    *         to list of NodeToAttributeValuenode.    */
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|getAttributesToNodes ()
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
 name|NodeAttributeKey
 argument_list|,
+DECL|method|getAttributesToNodes ()
 name|List
 argument_list|<
 name|NodeToAttributeValue

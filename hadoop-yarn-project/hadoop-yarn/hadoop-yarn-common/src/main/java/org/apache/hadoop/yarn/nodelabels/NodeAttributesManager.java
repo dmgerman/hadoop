@@ -257,13 +257,13 @@ name|prefix
 parameter_list|)
 function_decl|;
 comment|/**    * Return a map of Nodes to attribute value for the given NodeAttributeKeys.    * If the attributeKeys set is null or empty, then mapping for all attributes    * are returned.    *    * @return a Map of attributeKeys to a map of hostnames to its attribute    *         values.    */
-DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
 name|NodeAttributeKey
 argument_list|,
+DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 name|Map
 argument_list|<
 name|String

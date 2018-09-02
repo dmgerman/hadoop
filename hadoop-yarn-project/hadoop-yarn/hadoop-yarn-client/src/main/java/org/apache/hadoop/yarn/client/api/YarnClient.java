@@ -1918,13 +1918,13 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
 name|NodeAttributeKey
 argument_list|,
+DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 name|List
 argument_list|<
 name|NodeToAttributeValue

@@ -188,24 +188,6 @@ name|nodelabels
 operator|.
 name|store
 operator|.
-name|FSStoreOpHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|nodelabels
-operator|.
-name|store
-operator|.
 name|op
 operator|.
 name|AddClusterLabelOp
@@ -321,6 +303,10 @@ operator|.
 name|Set
 import|;
 end_import
+
+begin_comment
+comment|/**  * FileSystemNodeLabelsStore for storing node labels.  */
+end_comment
 
 begin_class
 DECL|class|FileSystemNodeLabelsStore

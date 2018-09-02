@@ -964,7 +964,6 @@ name|Private
 annotation|@
 name|Idempotent
 DECL|method|mapAttributesToNodes ( NodesToAttributesMappingRequest request)
-specifier|public
 name|NodesToAttributesMappingResponse
 name|mapAttributesToNodes
 parameter_list|(

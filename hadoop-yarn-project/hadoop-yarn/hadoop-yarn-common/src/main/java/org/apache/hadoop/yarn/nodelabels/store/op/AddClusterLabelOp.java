@@ -267,7 +267,7 @@ name|labels
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setLabels (List<NodeLabel> labels)
+DECL|method|setLabels (List<NodeLabel> nodeLabels)
 specifier|public
 name|AddClusterLabelOp
 name|setLabels
@@ -276,14 +276,14 @@ name|List
 argument_list|<
 name|NodeLabel
 argument_list|>
-name|labels
+name|nodeLabels
 parameter_list|)
 block|{
 name|this
 operator|.
 name|labels
 operator|=
-name|labels
+name|nodeLabels
 expr_stmt|;
 return|return
 name|this

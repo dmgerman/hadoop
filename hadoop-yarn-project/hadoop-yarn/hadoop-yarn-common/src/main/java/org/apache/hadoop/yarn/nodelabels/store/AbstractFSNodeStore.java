@@ -837,13 +837,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadManagerFromEditLog (Path editLogPath)
+DECL|method|loadManagerFromEditLog (Path editPath)
 specifier|protected
 name|void
 name|loadManagerFromEditLog
 parameter_list|(
 name|Path
-name|editLogPath
+name|editPath
 parameter_list|)
 throws|throws
 name|IOException
@@ -855,7 +855,7 @@ name|fs
 operator|.
 name|exists
 argument_list|(
-name|editLogPath
+name|editPath
 argument_list|)
 condition|)
 block|{
@@ -870,7 +870,7 @@ name|fs
 operator|.
 name|open
 argument_list|(
-name|editLogPath
+name|editPath
 argument_list|)
 init|)
 block|{

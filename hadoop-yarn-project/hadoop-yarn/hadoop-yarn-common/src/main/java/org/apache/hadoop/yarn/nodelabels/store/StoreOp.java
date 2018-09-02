@@ -47,7 +47,7 @@ parameter_list|,
 name|M
 parameter_list|>
 block|{
-comment|/**    * Write operation to persistent storage    *    * @param write write to be done to    * @param mgr manager used by store    * @throws IOException    */
+comment|/**    * Write operation to persistent storage.    *    * @param write write to be done to    * @param mgr manager used by store    * @throws IOException    */
 DECL|method|write (W write, M mgr)
 name|void
 name|write
@@ -61,7 +61,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Read and populate StoreOp    *    * @param read read to be done from    * @param mgr  manager used by store    * @throws IOException    */
+comment|/**    * Read and populate StoreOp.    *    * @param read read to be done from    * @param mgr  manager used by store    * @throws IOException    */
 DECL|method|recover (R read, M mgr)
 name|void
 name|recover

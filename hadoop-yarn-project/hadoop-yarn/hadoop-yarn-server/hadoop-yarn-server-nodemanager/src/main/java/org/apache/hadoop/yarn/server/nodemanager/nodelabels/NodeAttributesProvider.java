@@ -40,16 +40,6 @@ name|NodeAttribute
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
 begin_comment
 comment|/**  * Abstract class which will be responsible for fetching the node attributes.  *  */
 end_comment

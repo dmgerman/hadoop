@@ -178,12 +178,12 @@ operator|=
 name|operation
 expr_stmt|;
 block|}
-DECL|method|getNodeAttributeMappingList ()
 specifier|public
 name|Map
 argument_list|<
 name|String
 argument_list|,
+DECL|method|getNodeAttributeMappingList ()
 name|Map
 argument_list|<
 name|NodeAttribute

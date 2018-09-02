@@ -311,6 +311,7 @@ argument_list|>
 argument_list|>
 name|mirrorOp
 decl_stmt|;
+comment|/**    * Store Type enum to hold label and attribute.    */
 DECL|enum|StoreType
 specifier|public
 enum|enum

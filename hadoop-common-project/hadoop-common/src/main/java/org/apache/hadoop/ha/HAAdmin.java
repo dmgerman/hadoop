@@ -2896,6 +2896,7 @@ return|return
 literal|0
 return|;
 block|}
+comment|/**    * UsageInfo class holds args and help details.    */
 DECL|class|UsageInfo
 specifier|public
 specifier|static

@@ -218,6 +218,10 @@ name|Set
 import|;
 end_import
 
+begin_comment
+comment|/**  * NodeLabel Mirror Op class.  */
+end_comment
+
 begin_class
 DECL|class|NodeLabelMirrorOp
 specifier|public

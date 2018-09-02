@@ -64,6 +64,10 @@ name|NodesToAttributesMappingResponse
 import|;
 end_import
 
+begin_comment
+comment|/**  * Proto class for node to attributes mapping response.  */
+end_comment
+
 begin_class
 DECL|class|NodesToAttributesMappingResponsePBImpl
 specifier|public

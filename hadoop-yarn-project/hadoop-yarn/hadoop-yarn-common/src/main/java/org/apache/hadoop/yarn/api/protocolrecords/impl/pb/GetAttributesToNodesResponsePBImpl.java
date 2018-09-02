@@ -1020,12 +1020,12 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|getAttributesToNodes ()
 specifier|public
 name|Map
 argument_list|<
 name|NodeAttributeKey
 argument_list|,
+DECL|method|getAttributesToNodes ()
 name|List
 argument_list|<
 name|NodeToAttributeValue

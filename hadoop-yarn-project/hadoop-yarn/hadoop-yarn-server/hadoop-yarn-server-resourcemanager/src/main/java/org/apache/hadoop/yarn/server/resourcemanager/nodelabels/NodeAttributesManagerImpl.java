@@ -2252,12 +2252,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 specifier|public
 name|Map
 argument_list|<
 name|NodeAttributeKey
 argument_list|,
+DECL|method|getAttributesToNodes ( Set<NodeAttributeKey> attributes)
 name|Map
 argument_list|<
 name|String

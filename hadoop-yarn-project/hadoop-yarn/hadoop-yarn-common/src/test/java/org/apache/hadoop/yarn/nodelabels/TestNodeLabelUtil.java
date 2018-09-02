@@ -40,6 +40,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test class to verify node label util ops.  */
+end_comment
+
 begin_class
 DECL|class|TestNodeLabelUtil
 specifier|public

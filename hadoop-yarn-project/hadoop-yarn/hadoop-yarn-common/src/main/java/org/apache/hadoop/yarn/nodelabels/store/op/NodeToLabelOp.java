@@ -291,7 +291,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setNodeToLabels ( Map<NodeId, Set<String>> nodeToLabels)
+DECL|method|setNodeToLabels ( Map<NodeId, Set<String>> nodeToLabelsList)
 specifier|public
 name|NodeToLabelOp
 name|setNodeToLabels
@@ -305,14 +305,14 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|>
-name|nodeToLabels
+name|nodeToLabelsList
 parameter_list|)
 block|{
 name|this
 operator|.
 name|nodeToLabels
 operator|=
-name|nodeToLabels
+name|nodeToLabelsList
 expr_stmt|;
 return|return
 name|this

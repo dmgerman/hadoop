@@ -102,6 +102,10 @@ name|RemoveFromClusterNodeLabelsRequest
 import|;
 end_import
 
+begin_comment
+comment|/**  * Proto class to handlde RemoveFromClusterNodeLabels request.  */
+end_comment
+
 begin_class
 DECL|class|RemoveFromClusterNodeLabelsRequestPBImpl
 specifier|public

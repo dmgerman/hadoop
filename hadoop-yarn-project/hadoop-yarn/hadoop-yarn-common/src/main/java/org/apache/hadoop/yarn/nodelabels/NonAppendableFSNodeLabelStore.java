@@ -227,7 +227,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Store implementation for Non Appendable File Store  */
+comment|/**  * Store implementation for Non Appendable File Store.  */
 end_comment
 
 begin_class

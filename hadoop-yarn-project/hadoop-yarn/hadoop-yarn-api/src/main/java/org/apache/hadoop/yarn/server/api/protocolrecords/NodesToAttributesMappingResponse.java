@@ -38,6 +38,10 @@ name|Records
 import|;
 end_import
 
+begin_comment
+comment|/**  * NodesToAttributesMappingResponse holds response object for attribute  * mapping.  */
+end_comment
+
 begin_class
 DECL|class|NodesToAttributesMappingResponse
 specifier|public
