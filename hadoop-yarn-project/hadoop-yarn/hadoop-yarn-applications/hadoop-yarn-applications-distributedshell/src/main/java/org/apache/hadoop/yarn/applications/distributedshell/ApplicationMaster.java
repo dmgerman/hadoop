@@ -5310,7 +5310,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application completed. Signalling finish to RM"
+literal|"Application completed. Signalling finished to RM"
 argument_list|)
 expr_stmt|;
 name|FinalApplicationStatus

@@ -4061,6 +4061,13 @@ name|File
 operator|.
 name|separator
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|outputDirPathForEntity
+argument_list|)
+expr_stmt|;
 name|File
 name|outputDirForEntity
 init|=
