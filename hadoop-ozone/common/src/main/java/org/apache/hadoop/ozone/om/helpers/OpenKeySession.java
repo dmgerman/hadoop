@@ -33,7 +33,7 @@ block|{
 DECL|field|id
 specifier|private
 specifier|final
-name|int
+name|long
 name|id
 decl_stmt|;
 DECL|field|keyInfo
@@ -50,11 +50,11 @@ specifier|private
 name|long
 name|openVersion
 decl_stmt|;
-DECL|method|OpenKeySession (int id, OmKeyInfo info, long version)
+DECL|method|OpenKeySession (long id, OmKeyInfo info, long version)
 specifier|public
 name|OpenKeySession
 parameter_list|(
-name|int
+name|long
 name|id
 parameter_list|,
 name|OmKeyInfo
@@ -107,7 +107,7 @@ return|;
 block|}
 DECL|method|getId ()
 specifier|public
-name|int
+name|long
 name|getId
 parameter_list|()
 block|{

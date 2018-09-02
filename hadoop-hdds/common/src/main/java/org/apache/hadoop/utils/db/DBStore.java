@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|rocksdb
+operator|.
+name|WriteBatch
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -138,11 +148,48 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Moves a key from the Source Table to the destination Table and updates the    * destination with the new key name and value.    * This is similar to deleting an entry in one table and adding an entry in    * another table, here it is done atomically.    *    * @param sourceKey - Key to move.    * @param destKey - Destination key name.    * @param value - new value to write to the destination table.    * @param source - Source Table.    * @param dest - Destination Table.    * @throws IOException on Failure    */
+DECL|method|move (byte[] sourceKey, byte[] destKey, byte[] value, Table source, Table dest)
+name|void
+name|move
+parameter_list|(
+name|byte
+index|[]
+name|sourceKey
+parameter_list|,
+name|byte
+index|[]
+name|destKey
+parameter_list|,
+name|byte
+index|[]
+name|value
+parameter_list|,
+name|Table
+name|source
+parameter_list|,
+name|Table
+name|dest
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Returns an estimated count of keys in this DB.    *    * @return long, estimate of keys in the DB.    */
 DECL|method|getEstimatedKeyCount ()
 name|long
 name|getEstimatedKeyCount
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Writes a transaction into the DB using the default write Options.    * @param batch - Batch to write.    */
+DECL|method|write (WriteBatch batch)
+name|void
+name|write
+parameter_list|(
+name|WriteBatch
+name|batch
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

@@ -151,28 +151,28 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * After calling commit, the key will be made visible. There can be multiple    * open key writes in parallel (identified by client id). The most recently    * committed one will be the one visible.    *    * @param args the key to commit.    * @param clientID the client that is committing.    * @throws IOException    */
-DECL|method|commitKey (OmKeyArgs args, int clientID)
+DECL|method|commitKey (OmKeyArgs args, long clientID)
 name|void
 name|commitKey
 parameter_list|(
 name|OmKeyArgs
 name|args
 parameter_list|,
-name|int
+name|long
 name|clientID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * A client calls this on an open key, to request to allocate a new block,    * and appended to the tail of current block list of the open client.    *    * @param args the key to append    * @param clientID the client requesting block.    * @return the reference to the new block.    * @throws IOException    */
-DECL|method|allocateBlock (OmKeyArgs args, int clientID)
+DECL|method|allocateBlock (OmKeyArgs args, long clientID)
 name|OmKeyLocationInfo
 name|allocateBlock
 parameter_list|(
 name|OmKeyArgs
 name|args
 parameter_list|,
-name|int
+name|long
 name|clientID
 parameter_list|)
 throws|throws

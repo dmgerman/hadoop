@@ -589,7 +589,7 @@ decl_stmt|;
 DECL|field|openID
 specifier|private
 specifier|final
-name|int
+name|long
 name|openID
 decl_stmt|;
 DECL|field|xceiverClientManager
@@ -724,7 +724,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|getOpenID ()
 specifier|public
-name|int
+name|long
 name|getOpenID
 parameter_list|()
 block|{

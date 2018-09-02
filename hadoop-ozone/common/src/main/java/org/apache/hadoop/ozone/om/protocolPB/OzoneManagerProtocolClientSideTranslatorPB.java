@@ -2885,7 +2885,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateBlock (OmKeyArgs args, int clientID)
+DECL|method|allocateBlock (OmKeyArgs args, long clientID)
 specifier|public
 name|OmKeyLocationInfo
 name|allocateBlock
@@ -2893,7 +2893,7 @@ parameter_list|(
 name|OmKeyArgs
 name|args
 parameter_list|,
-name|int
+name|long
 name|clientID
 parameter_list|)
 throws|throws
@@ -3041,7 +3041,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|commitKey (OmKeyArgs args, int clientID)
+DECL|method|commitKey (OmKeyArgs args, long clientID)
 specifier|public
 name|void
 name|commitKey
@@ -3049,7 +3049,7 @@ parameter_list|(
 name|OmKeyArgs
 name|args
 parameter_list|,
-name|int
+name|long
 name|clientID
 parameter_list|)
 throws|throws

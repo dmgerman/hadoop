@@ -1244,6 +1244,10 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Listing all volumes in the cluster feature has to be fixed after HDDS-357.
+comment|// TODO: fix this
+annotation|@
+name|Ignore
 annotation|@
 name|Test
 DECL|method|testListVolume ()
@@ -1729,6 +1733,10 @@ name|pagecount
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Listing all volumes in the cluster feature has to be fixed after HDDS-357.
+comment|// TODO: fix this
+annotation|@
+name|Ignore
 annotation|@
 name|Test
 DECL|method|testListVolumes ()

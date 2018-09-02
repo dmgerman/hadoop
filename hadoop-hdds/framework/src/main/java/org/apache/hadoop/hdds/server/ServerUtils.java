@@ -448,6 +448,31 @@ return|return
 name|dirPath
 return|;
 block|}
+DECL|method|setOzoneMetaDirPath (OzoneConfiguration conf, String path)
+specifier|public
+specifier|static
+name|void
+name|setOzoneMetaDirPath
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|,
+name|String
+name|path
+parameter_list|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_METADATA_DIRS
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

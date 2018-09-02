@@ -56,6 +56,38 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneAcl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|om
 operator|.
 name|helpers
@@ -92,24 +124,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|om
-operator|.
-name|exceptions
-operator|.
-name|OMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|protocol
 operator|.
 name|proto
@@ -117,20 +131,6 @@ operator|.
 name|OzoneManagerProtocolProtos
 operator|.
 name|BucketInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneAcl
 import|;
 end_import
 
@@ -235,7 +235,7 @@ specifier|final
 name|OMMetadataManager
 name|metadataManager
 decl_stmt|;
-comment|/**    * Constructs BucketManager.    * @param metadataManager    */
+comment|/**    * Constructs BucketManager.    *    * @param metadataManager    */
 DECL|method|BucketManagerImpl (OMMetadataManager metadataManager)
 specifier|public
 name|BucketManagerImpl
@@ -252,7 +252,7 @@ name|metadataManager
 expr_stmt|;
 block|}
 comment|/**    * MetadataDB is maintained in MetadataManager and shared between    * BucketManager and VolumeManager. (and also by KeyManager)    *    * BucketManager uses MetadataDB to store bucket level information.    *    * Keys used in BucketManager for storing data into MetadataDB    * for BucketInfo:    * {volume/bucket} -> bucketInfo    *    * Work flow of create bucket:    *    * -> Check if the Volume exists in metadataDB, if not throw    * VolumeNotFoundException.    * -> Else check if the Bucket exists in metadataDB, if so throw    * BucketExistException    * -> Else update MetadataDB with VolumeInfo.    */
-comment|/**    * Creates a bucket.    * @param bucketInfo - OmBucketInfo.    */
+comment|/**    * Creates a bucket.    *    * @param bucketInfo - OmBucketInfo.    */
 annotation|@
 name|Override
 DECL|method|createBucket (OmBucketInfo bucketInfo)
@@ -328,6 +328,9 @@ if|if
 condition|(
 name|metadataManager
 operator|.
+name|getVolumeTable
+argument_list|()
+operator|.
 name|get
 argument_list|(
 name|volumeKey
@@ -363,6 +366,9 @@ comment|//Check if bucket already exists
 if|if
 condition|(
 name|metadataManager
+operator|.
+name|getBucketTable
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -455,6 +461,9 @@ name|build
 argument_list|()
 decl_stmt|;
 name|metadataManager
+operator|.
+name|getBucketTable
+argument_list|()
 operator|.
 name|put
 argument_list|(
@@ -589,6 +598,9 @@ name|value
 init|=
 name|metadataManager
 operator|.
+name|getBucketTable
+argument_list|()
+operator|.
 name|get
 argument_list|(
 name|bucketKey
@@ -686,7 +698,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sets bucket property from args.    * @param args - BucketArgs.    * @throws IOException    */
+comment|/**    * Sets bucket property from args.    *    * @param args - BucketArgs.    * @throws IOException - On Failure.    */
 annotation|@
 name|Override
 DECL|method|setBucketProperty (OmBucketArgs args)
@@ -751,6 +763,9 @@ if|if
 condition|(
 name|metadataManager
 operator|.
+name|getVolumeTable
+argument_list|()
+operator|.
 name|get
 argument_list|(
 name|metadataManager
@@ -792,6 +807,9 @@ index|[]
 name|value
 init|=
 name|metadataManager
+operator|.
+name|getBucketTable
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1046,6 +1064,9 @@ argument_list|)
 expr_stmt|;
 name|metadataManager
 operator|.
+name|getBucketTable
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|bucketKey
@@ -1203,7 +1224,7 @@ return|return
 name|existingAcls
 return|;
 block|}
-comment|/**    * Deletes an existing empty bucket from volume.    * @param volumeName - Name of the volume.    * @param bucketName - Name of the bucket.    * @throws IOException    */
+comment|/**    * Deletes an existing empty bucket from volume.    *    * @param volumeName - Name of the volume.    * @param bucketName - Name of the bucket.    * @throws IOException - on Failure.    */
 DECL|method|deleteBucket (String volumeName, String bucketName)
 specifier|public
 name|void
@@ -1242,23 +1263,13 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|byte
-index|[]
-name|bucketKey
-init|=
-name|metadataManager
-operator|.
-name|getBucketKey
-argument_list|(
-name|volumeName
-argument_list|,
-name|bucketName
-argument_list|)
-decl_stmt|;
 comment|//Check if volume exists
 if|if
 condition|(
 name|metadataManager
+operator|.
+name|getVolumeTable
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1296,10 +1307,26 @@ name|FAILED_VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
-comment|//Check if bucket exist
+comment|//Check if bucket exists
+name|byte
+index|[]
+name|bucketKey
+init|=
+name|metadataManager
+operator|.
+name|getBucketKey
+argument_list|(
+name|volumeName
+argument_list|,
+name|bucketName
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|metadataManager
+operator|.
+name|getBucketTable
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1370,6 +1397,9 @@ argument_list|)
 throw|;
 block|}
 name|metadataManager
+operator|.
+name|getBucketTable
+argument_list|()
 operator|.
 name|delete
 argument_list|(

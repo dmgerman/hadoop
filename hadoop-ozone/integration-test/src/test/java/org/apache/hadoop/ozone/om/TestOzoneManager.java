@@ -650,7 +650,9 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|MetadataKeyFilters
+name|db
+operator|.
+name|Table
 import|;
 end_import
 
@@ -664,7 +666,9 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|db
+operator|.
+name|TableIterator
 import|;
 end_import
 
@@ -830,16 +834,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Random
 import|;
 end_import
@@ -911,22 +905,6 @@ operator|.
 name|OzoneConfigKeys
 operator|.
 name|OZONE_OPEN_KEY_EXPIRE_THRESHOLD_SECONDS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|DELETING_KEY_PREFIX
 import|;
 end_import
 
@@ -4677,9 +4655,9 @@ name|getNumKeyDeletes
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Make sure the deleted key has been renamed.
-name|MetadataStore
-name|store
+comment|// Make sure the deleted key has been moved to the deleted table.
+name|OMMetadataManager
+name|manager
 init|=
 name|cluster
 operator|.
@@ -4688,57 +4666,49 @@ argument_list|()
 operator|.
 name|getMetadataManager
 argument_list|()
-operator|.
-name|getStore
-argument_list|()
 decl_stmt|;
-name|List
+try|try
+init|(
+name|TableIterator
 argument_list|<
-name|Map
+name|Table
 operator|.
-name|Entry
-argument_list|<
-name|byte
-index|[]
-argument_list|,
-name|byte
-index|[]
+name|KeyValue
 argument_list|>
-argument_list|>
-name|list
+name|iter
 init|=
-name|store
+name|manager
 operator|.
-name|getRangeKVs
-argument_list|(
-literal|null
-argument_list|,
-literal|10
-argument_list|,
-operator|new
-name|MetadataKeyFilters
-operator|.
-name|KeyPrefixFilter
+name|getDeletedTable
 argument_list|()
 operator|.
-name|addFilter
-argument_list|(
-name|DELETING_KEY_PREFIX
-argument_list|)
-argument_list|)
+name|iterator
+argument_list|()
+init|)
+block|{
+name|iter
+operator|.
+name|seekToFirst
+argument_list|()
+expr_stmt|;
+name|Table
+operator|.
+name|KeyValue
+name|kv
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertNotNull
 argument_list|(
-literal|1
-argument_list|,
-name|list
-operator|.
-name|size
-argument_list|()
+name|kv
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Delete the key again to test deleting non-existing key.
 try|try
 block|{
@@ -7158,7 +7128,8 @@ name|createVolumeArgs
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Test list all volumes
+comment|// Test list all volumes - Removed Support for this operation for time
+comment|// being. TODO: we will need to bring this back if needed.
 name|UserArgs
 name|userArgs0
 init|=
@@ -7181,51 +7152,10 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|listVolumeArgs
-operator|=
-operator|new
-name|ListArgs
-argument_list|(
-name|userArgs0
-argument_list|,
-literal|"Vol-testListVolumes"
-argument_list|,
-literal|100
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|listVolumeArgs
-operator|.
-name|setRootScan
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|volumes
-operator|=
-name|storageHandler
-operator|.
-name|listVolumes
-argument_list|(
-name|listVolumeArgs
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|20
-argument_list|,
-name|volumes
-operator|.
-name|getVolumes
-argument_list|()
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
+comment|//listVolumeArgs = new ListArgs(userArgs0,"Vol-testListVolumes", 100, null);
+comment|// listVolumeArgs.setRootScan(true);
+comment|// volumes = storageHandler.listVolumes(listVolumeArgs);
+comment|// Assert.assertEquals(20, volumes.getVolumes().size());
 comment|// Test list all volumes belongs to an user
 name|listVolumeArgs
 operator|=

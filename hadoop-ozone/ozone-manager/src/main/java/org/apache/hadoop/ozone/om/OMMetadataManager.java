@@ -42,11 +42,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|om
+name|common
 operator|.
-name|helpers
-operator|.
-name|OmBucketInfo
+name|BlockGroup
 import|;
 end_import
 
@@ -60,9 +58,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|common
+name|om
 operator|.
-name|BlockGroup
+name|helpers
+operator|.
+name|OmBucketInfo
 import|;
 end_import
 
@@ -112,7 +112,9 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|BatchOperation
+name|db
+operator|.
+name|DBStore
 import|;
 end_import
 
@@ -126,7 +128,9 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|db
+operator|.
+name|Table
 import|;
 end_import
 
@@ -186,81 +190,29 @@ name|void
 name|stop
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
-comment|/**    * Get metadata store.    * @return metadata store.    */
+comment|/**    * Get metadata store.    *    * @return metadata store.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getStore ()
-name|MetadataStore
+name|DBStore
 name|getStore
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the read lock used on Metadata DB.    * @return readLock    */
+comment|/**    * Returns the read lock used on Metadata DB.    *    * @return readLock    */
 DECL|method|readLock ()
 name|Lock
 name|readLock
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the write lock used on Metadata DB.    * @return writeLock    */
+comment|/**    * Returns the write lock used on Metadata DB.    *    * @return writeLock    */
 DECL|method|writeLock ()
 name|Lock
 name|writeLock
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the value associated with this key.    * @param key - key    * @return value    */
-DECL|method|get (byte[] key)
-name|byte
-index|[]
-name|get
-parameter_list|(
-name|byte
-index|[]
-name|key
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Puts a Key into Metadata DB.    * @param key   - key    * @param value - value    */
-DECL|method|put (byte[] key, byte[] value)
-name|void
-name|put
-parameter_list|(
-name|byte
-index|[]
-name|key
-parameter_list|,
-name|byte
-index|[]
-name|value
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Deletes a Key from Metadata DB.    * @param key   - key    */
-DECL|method|delete (byte[] key)
-name|void
-name|delete
-parameter_list|(
-name|byte
-index|[]
-name|key
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Atomic write a batch of operations.    * @param batch    * @throws IOException    */
-DECL|method|writeBatch (BatchOperation batch)
-name|void
-name|writeBatch
-parameter_list|(
-name|BatchOperation
-name|batch
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Given a volume return the corresponding DB key.    * @param volume - Volume name    */
+comment|/**    * Given a volume return the corresponding DB key.    *    * @param volume - Volume name    */
 DECL|method|getVolumeKey (String volume)
 name|byte
 index|[]
@@ -270,7 +222,7 @@ name|String
 name|volume
 parameter_list|)
 function_decl|;
-comment|/**    * Given a user return the corresponding DB key.    * @param user - User name    */
+comment|/**    * Given a user return the corresponding DB key.    *    * @param user - User name    */
 DECL|method|getUserKey (String user)
 name|byte
 index|[]
@@ -280,7 +232,7 @@ name|String
 name|user
 parameter_list|)
 function_decl|;
-comment|/**    * Given a volume and bucket, return the corresponding DB key.    * @param volume - User name    * @param bucket - Bucket name    */
+comment|/**    * Given a volume and bucket, return the corresponding DB key.    *    * @param volume - User name    * @param bucket - Bucket name    */
 DECL|method|getBucketKey (String volume, String bucket)
 name|byte
 index|[]
@@ -293,11 +245,11 @@ name|String
 name|bucket
 parameter_list|)
 function_decl|;
-comment|/**    * Given a volume, bucket and a key, return the corresponding DB key.    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @return bytes of DB key.    */
-DECL|method|getDBKeyBytes (String volume, String bucket, String key)
+comment|/**    * Given a volume, bucket and a key, return the corresponding DB key.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @return bytes of DB key.    */
+DECL|method|getOzoneKeyBytes (String volume, String bucket, String key)
 name|byte
 index|[]
-name|getDBKeyBytes
+name|getOzoneKeyBytes
 parameter_list|(
 name|String
 name|volume
@@ -309,46 +261,26 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the DB key name of a deleted key in OM metadata store.    * The name for a deleted key has prefix #deleting# followed by    * the actual key name.    * @param keyName - key name    * @return bytes of DB key.    */
-DECL|method|getDeletedKeyName (byte[] keyName)
+comment|/**    * Returns the DB key name of a open key in OM metadata store. Should be    * #open# prefix followed by actual key name.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param id - the id for this open    * @return bytes of DB key.    */
+DECL|method|getOpenKeyBytes (String volume, String bucket, String key, long id)
 name|byte
 index|[]
-name|getDeletedKeyName
-parameter_list|(
-name|byte
-index|[]
-name|keyName
-parameter_list|)
-function_decl|;
-comment|/**    * Returns the DB key name of a open key in OM metadata store.    * Should be #open# prefix followed by actual key name.    * @param keyName - key name    * @param id - the id for this open    * @return bytes of DB key.    */
-DECL|method|getOpenKeyNameBytes (String keyName, int id)
-name|byte
-index|[]
-name|getOpenKeyNameBytes
+name|getOpenKeyBytes
 parameter_list|(
 name|String
-name|keyName
+name|volume
 parameter_list|,
-name|int
+name|String
+name|bucket
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|long
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the full name of a key given volume name, bucket name and key name.    * Generally done by padding certain delimiters.    *    * @param volumeName - volume name    * @param bucketName - bucket name    * @param keyName - key name    * @return the full key name.    */
-DECL|method|getKeyWithDBPrefix (String volumeName, String bucketName, String keyName)
-name|String
-name|getKeyWithDBPrefix
-parameter_list|(
-name|String
-name|volumeName
-parameter_list|,
-name|String
-name|bucketName
-parameter_list|,
-name|String
-name|keyName
-parameter_list|)
-function_decl|;
-comment|/**    * Given a volume, check if it is empty,    * i.e there are no buckets inside it.    * @param volume - Volume name    */
+comment|/**    * Given a volume, check if it is empty, i.e there are no buckets inside it.    *    * @param volume - Volume name    */
 DECL|method|isVolumeEmpty (String volume)
 name|boolean
 name|isVolumeEmpty
@@ -359,7 +291,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Given a volume/bucket, check if it is empty,    * i.e there are no keys inside it.    * @param volume - Volume name    * @param  bucket - Bucket name    * @return true if the bucket is empty    */
+comment|/**    * Given a volume/bucket, check if it is empty, i.e there are no keys inside    * it.    *    * @param volume - Volume name    * @param bucket - Bucket name    * @return true if the bucket is empty    */
 DECL|method|isBucketEmpty (String volume, String bucket)
 name|boolean
 name|isBucketEmpty
@@ -373,7 +305,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of buckets represented by {@link OmBucketInfo}    * in the given volume.    *    * @param volumeName    *   the name of the volume. This argument is required,    *   this method returns buckets in this given volume.    * @param startBucket    *   the start bucket name. Only the buckets whose name is    *   after this value will be included in the result.    *   This key is excluded from the result.    * @param bucketPrefix    *   bucket name prefix. Only the buckets whose name has    *   this prefix will be included in the result.    * @param maxNumOfBuckets    *   the maximum number of buckets to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of buckets.    * @throws IOException    */
+comment|/**    * Returns a list of buckets represented by {@link OmBucketInfo} in the given    * volume.    *    * @param volumeName the name of the volume. This argument is required, this    * method returns buckets in this given volume.    * @param startBucket the start bucket name. Only the buckets whose name is    * after this value will be included in the result. This key is excluded from    * the result.    * @param bucketPrefix bucket name prefix. Only the buckets whose name has    * this prefix will be included in the result.    * @param maxNumOfBuckets the maximum number of buckets to return. It ensures    * the size of the result will not exceed this limit.    * @return a list of buckets.    * @throws IOException    */
 DECL|method|listBuckets (String volumeName, String startBucket, String bucketPrefix, int maxNumOfBuckets)
 name|List
 argument_list|<
@@ -396,7 +328,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of keys represented by {@link OmKeyInfo}    * in the given bucket.    *    * @param volumeName    *   the name of the volume.    * @param bucketName    *   the name of the bucket.    * @param startKey    *   the start key name, only the keys whose name is    *   after this value will be included in the result.    *   This key is excluded from the result.    * @param keyPrefix    *   key name prefix, only the keys whose name has    *   this prefix will be included in the result.    * @param maxKeys    *   the maximum number of keys to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of keys.    * @throws IOException    */
+comment|/**    * Returns a list of keys represented by {@link OmKeyInfo} in the given    * bucket.    *    * @param volumeName the name of the volume.    * @param bucketName the name of the bucket.    * @param startKey the start key name, only the keys whose name is after this    * value will be included in the result. This key is excluded from the    * result.    * @param keyPrefix key name prefix, only the keys whose name has this prefix    * will be included in the result.    * @param maxKeys the maximum number of keys to return. It ensures the size of    * the result will not exceed this limit.    * @return a list of keys.    * @throws IOException    */
 DECL|method|listKeys (String volumeName, String bucketName, String startKey, String keyPrefix, int maxKeys)
 name|List
 argument_list|<
@@ -422,7 +354,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of volumes owned by a given user; if user is null,    * returns all volumes.    *    * @param userName    *   volume owner    * @param prefix    *   the volume prefix used to filter the listing result.    * @param startKey    *   the start volume name determines where to start listing from,    *   this key is excluded from the result.    * @param maxKeys    *   the maximum number of volumes to return.    * @return a list of {@link OmVolumeArgs}    * @throws IOException    */
+comment|/**    * Returns a list of volumes owned by a given user; if user is null, returns    * all volumes.    *    * @param userName volume owner    * @param prefix the volume prefix used to filter the listing result.    * @param startKey the start volume name determines where to start listing    * from, this key is excluded from the result.    * @param maxKeys the maximum number of volumes to return.    * @return a list of {@link OmVolumeArgs}    * @throws IOException    */
 DECL|method|listVolumes (String userName, String prefix, String startKey, int maxKeys)
 name|List
 argument_list|<
@@ -445,7 +377,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of pending deletion key info that ups to the given count.    * Each entry is a {@link BlockGroup}, which contains the info about the    * key name and all its associated block IDs. A pending deletion key is    * stored with #deleting# prefix in OM DB.    *    * @param count max number of keys to return.    * @return a list of {@link BlockGroup} represent keys and blocks.    * @throws IOException    */
+comment|/**    * Returns a list of pending deletion key info that ups to the given count.    * Each entry is a {@link BlockGroup}, which contains the info about the key    * name and all its associated block IDs. A pending deletion key is stored    * with #deleting# prefix in OM DB.    *    * @param count max number of keys to return.    * @return a list of {@link BlockGroup} represent keys and blocks.    * @throws IOException    */
 DECL|method|getPendingDeletionKeys (int count)
 name|List
 argument_list|<
@@ -469,6 +401,42 @@ name|getExpiredOpenKeys
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Returns the user Table.    *    * @return UserTable.    */
+DECL|method|getUserTable ()
+name|Table
+name|getUserTable
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the Volume Table.    *    * @return VolumeTable.    */
+DECL|method|getVolumeTable ()
+name|Table
+name|getVolumeTable
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the BucketTable.    *    * @return BucketTable.    */
+DECL|method|getBucketTable ()
+name|Table
+name|getBucketTable
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the KeyTable.    *    * @return KeyTable.    */
+DECL|method|getKeyTable ()
+name|Table
+name|getKeyTable
+parameter_list|()
+function_decl|;
+comment|/**    * Get Deleted Table.    *    * @return Deleted Table.    */
+DECL|method|getDeletedTable ()
+name|Table
+name|getDeletedTable
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the OpenKeyTable.    *    * @return Table.    */
+DECL|method|getOpenKeyTable ()
+name|Table
+name|getOpenKeyTable
+parameter_list|()
 function_decl|;
 block|}
 end_interface

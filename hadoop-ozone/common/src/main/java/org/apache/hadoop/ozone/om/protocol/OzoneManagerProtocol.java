@@ -380,28 +380,28 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Commit a key. This will make the change from the client visible. The client    * is identified by the clientID.    *    * @param args the key to commit    * @param clientID the client identification    * @throws IOException    */
-DECL|method|commitKey (OmKeyArgs args, int clientID)
+DECL|method|commitKey (OmKeyArgs args, long clientID)
 name|void
 name|commitKey
 parameter_list|(
 name|OmKeyArgs
 name|args
 parameter_list|,
-name|int
+name|long
 name|clientID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Allocate a new block, it is assumed that the client is having an open key    * session going on. This block will be appended to this open key session.    *    * @param args the key to append    * @param clientID the client identification    * @return an allocated block    * @throws IOException    */
-DECL|method|allocateBlock (OmKeyArgs args, int clientID)
+DECL|method|allocateBlock (OmKeyArgs args, long clientID)
 name|OmKeyLocationInfo
 name|allocateBlock
 parameter_list|(
 name|OmKeyArgs
 name|args
 parameter_list|,
-name|int
+name|long
 name|clientID
 parameter_list|)
 throws|throws
@@ -418,7 +418,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Rename an existing key within a bucket    * @param args the args of the key.    * @param toKeyName New name to be used for the Key    */
+comment|/**    * Rename an existing key within a bucket.    * @param args the args of the key.    * @param toKeyName New name to be used for the Key    * @throws IOException    */
 DECL|method|renameKey (OmKeyArgs args, String toKeyName)
 name|void
 name|renameKey

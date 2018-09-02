@@ -584,7 +584,8 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|toIOException (String msg, RocksDBException e)
-specifier|private
+specifier|public
+specifier|static
 name|IOException
 name|toIOException
 parameter_list|(

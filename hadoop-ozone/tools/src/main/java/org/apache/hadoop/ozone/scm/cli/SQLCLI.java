@@ -572,39 +572,23 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
+name|OM_KEY_PREFIX
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
 name|OM_USER_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|OM_BUCKET_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|OM_VOLUME_PREFIX
 import|;
 end_import
 
@@ -2071,6 +2055,9 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// TODO: This has to be fixed.
+comment|// we don't have prefix anymore. now each key is written into different
+comment|// table. The logic has to be changed.
 DECL|method|getKeyType (String key)
 specifier|private
 name|KeyType
@@ -2103,7 +2090,7 @@ name|key
 operator|.
 name|startsWith
 argument_list|(
-name|OM_VOLUME_PREFIX
+name|OM_KEY_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -2112,14 +2099,14 @@ name|key
 operator|.
 name|replaceFirst
 argument_list|(
-name|OM_VOLUME_PREFIX
+name|OM_KEY_PREFIX
 argument_list|,
 literal|""
 argument_list|)
 operator|.
 name|contains
 argument_list|(
-name|OM_BUCKET_PREFIX
+name|OM_KEY_PREFIX
 argument_list|)
 condition|?
 name|KeyType
