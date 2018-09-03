@@ -186,6 +186,13 @@ specifier|public
 class|class
 name|AbfsRestOperation
 block|{
+comment|// The type of the REST operation (Append, ReadFile, etc)
+DECL|field|operationType
+specifier|private
+specifier|final
+name|AbfsRestOperationType
+name|operationType
+decl_stmt|;
 comment|// Blob FS client, which has the credentials, retry policy, and logs.
 DECL|field|client
 specifier|private
@@ -275,9 +282,13 @@ name|result
 return|;
 block|}
 comment|/**    * Initializes a new REST operation.    *    * @param client The Blob FS client.    * @param method The HTTP method (PUT, PATCH, POST, GET, HEAD, or DELETE).    * @param url The full URL including query string parameters.    * @param requestHeaders The HTTP request headers.    */
-DECL|method|AbfsRestOperation (final AbfsClient client, final String method, final URL url, final List<AbfsHttpHeader> requestHeaders)
+DECL|method|AbfsRestOperation (final AbfsRestOperationType operationType, final AbfsClient client, final String method, final URL url, final List<AbfsHttpHeader> requestHeaders)
 name|AbfsRestOperation
 parameter_list|(
+specifier|final
+name|AbfsRestOperationType
+name|operationType
+parameter_list|,
 specifier|final
 name|AbfsClient
 name|client
@@ -298,6 +309,12 @@ argument_list|>
 name|requestHeaders
 parameter_list|)
 block|{
+name|this
+operator|.
+name|operationType
+operator|=
+name|operationType
+expr_stmt|;
 name|this
 operator|.
 name|client
@@ -347,10 +364,13 @@ argument_list|)
 operator|)
 expr_stmt|;
 block|}
-comment|/**    * Initializes a new REST operation.    *    * @param client The Blob FS client.    * @param method The HTTP method (PUT, PATCH, POST, GET, HEAD, or DELETE).    * @param url The full URL including query string parameters.    * @param requestHeaders The HTTP request headers.    * @param buffer For uploads, this is the request entity body.  For downloads,    *               this will hold the response entity body.    * @param bufferOffset An offset into the buffer where the data beings.    * @param bufferLength The length of the data in the buffer.    */
-DECL|method|AbfsRestOperation (AbfsClient client, String method, URL url, List<AbfsHttpHeader> requestHeaders, byte[] buffer, int bufferOffset, int bufferLength)
+comment|/**    * Initializes a new REST operation.    *    * @param operationType The type of the REST operation (Append, ReadFile, etc).    * @param client The Blob FS client.    * @param method The HTTP method (PUT, PATCH, POST, GET, HEAD, or DELETE).    * @param url The full URL including query string parameters.    * @param requestHeaders The HTTP request headers.    * @param buffer For uploads, this is the request entity body.  For downloads,    *               this will hold the response entity body.    * @param bufferOffset An offset into the buffer where the data beings.    * @param bufferLength The length of the data in the buffer.    */
+DECL|method|AbfsRestOperation (AbfsRestOperationType operationType, AbfsClient client, String method, URL url, List<AbfsHttpHeader> requestHeaders, byte[] buffer, int bufferOffset, int bufferLength)
 name|AbfsRestOperation
 parameter_list|(
+name|AbfsRestOperationType
+name|operationType
+parameter_list|,
 name|AbfsClient
 name|client
 parameter_list|,
@@ -379,6 +399,8 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+name|operationType
+argument_list|,
 name|client
 argument_list|,
 name|method
@@ -593,6 +615,13 @@ name|hasRequestBody
 condition|)
 block|{
 comment|// HttpUrlConnection requires
+name|AbfsClientThrottlingIntercept
+operator|.
+name|sendingRequest
+argument_list|(
+name|operationType
+argument_list|)
+expr_stmt|;
 name|httpOperation
 operator|.
 name|sendRequest
@@ -700,6 +729,18 @@ block|}
 return|return
 literal|false
 return|;
+block|}
+finally|finally
+block|{
+name|AbfsClientThrottlingIntercept
+operator|.
+name|updateMetrics
+argument_list|(
+name|operationType
+argument_list|,
+name|httpOperation
+argument_list|)
+expr_stmt|;
 block|}
 name|LOG
 operator|.

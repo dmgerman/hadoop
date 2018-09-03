@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.azure
+DECL|package|org.apache.hadoop.fs.azurebfs.services
 package|package
 name|org
 operator|.
@@ -14,85 +14,11 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|azure
+name|azurebfs
+operator|.
+name|services
 package|;
 end_package
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
 
 begin_import
 import|import
@@ -156,18 +82,72 @@ name|AtomicReference
 import|;
 end_import
 
-begin_comment
-comment|/**  * Throttles storage operations to minimize errors and maximum throughput. This  * improves throughput by as much as 35% when the service throttles requests due  * to exceeding account level ingress or egress limits.  */
-end_comment
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|class|ClientThrottlingAnalyzer
+DECL|class|AbfsClientThrottlingAnalyzer
 class|class
-name|ClientThrottlingAnalyzer
+name|AbfsClientThrottlingAnalyzer
 block|{
 DECL|field|LOG
 specifier|private
@@ -180,7 +160,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ClientThrottlingAnalyzer
+name|AbfsClientThrottlingAnalyzer
 operator|.
 name|class
 argument_list|)
@@ -308,22 +288,22 @@ DECL|field|blobMetrics
 specifier|private
 name|AtomicReference
 argument_list|<
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 argument_list|>
 name|blobMetrics
 init|=
 literal|null
 decl_stmt|;
-DECL|method|ClientThrottlingAnalyzer ()
+DECL|method|AbfsClientThrottlingAnalyzer ()
 specifier|private
-name|ClientThrottlingAnalyzer
+name|AbfsClientThrottlingAnalyzer
 parameter_list|()
 block|{
 comment|// hide default constructor
 block|}
-comment|/**    * Creates an instance of the<code>ClientThrottlingAnalyzer</code> class with    * the specified name.    *    * @param name a name used to identify this instance.    *    * @throws IllegalArgumentException if name is null or empty.    */
-DECL|method|ClientThrottlingAnalyzer (String name)
-name|ClientThrottlingAnalyzer
+comment|/**    * Creates an instance of the<code>AbfsClientThrottlingAnalyzer</code> class with    * the specified name.    *    * @param name a name used to identify this instance.    * @throws IllegalArgumentException if name is null or empty.    */
+DECL|method|AbfsClientThrottlingAnalyzer (String name)
+name|AbfsClientThrottlingAnalyzer
 parameter_list|(
 name|String
 name|name
@@ -339,9 +319,9 @@ name|DEFAULT_ANALYSIS_PERIOD_MS
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates an instance of the<code>ClientThrottlingAnalyzer</code> class with    * the specified name and period.    *    * @param name A name used to identify this instance.    *    * @param period The frequency, in milliseconds, at which metrics are    *              analyzed.    *    * @throws IllegalArgumentException    *           If name is null or empty.    *           If period is less than 1000 or greater than 30000 milliseconds.    */
-DECL|method|ClientThrottlingAnalyzer (String name, int period)
-name|ClientThrottlingAnalyzer
+comment|/**    * Creates an instance of the<code>AbfsClientThrottlingAnalyzer</code> class with    * the specified name and period.    *    * @param name   A name used to identify this instance.    * @param period The frequency, in milliseconds, at which metrics are    *               analyzed.    * @throws IllegalArgumentException If name is null or empty.    *                                  If period is less than 1000 or greater than 30000 milliseconds.    */
+DECL|method|AbfsClientThrottlingAnalyzer (String name, int period)
+name|AbfsClientThrottlingAnalyzer
 parameter_list|(
 name|String
 name|name
@@ -400,11 +380,11 @@ operator|=
 operator|new
 name|AtomicReference
 argument_list|<
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 argument_list|>
 argument_list|(
 operator|new
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 argument_list|(
 name|System
 operator|.
@@ -424,7 +404,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"wasb-timer-client-throttling-analyzer-%s"
+literal|"abfs-timer-client-throttling-analyzer-%s"
 argument_list|,
 name|name
 argument_list|)
@@ -448,7 +428,7 @@ name|analysisPeriodMs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Updates metrics with results from the current storage operation.    *    * @param count The count of bytes transferred.    *    * @param isFailedOperation True if the operation failed; otherwise false.    */
+comment|/**    * Updates metrics with results from the current storage operation.    *    * @param count             The count of bytes transferred.    * @param isFailedOperation True if the operation failed; otherwise false.    */
 DECL|method|addBytesTransferred (long count, boolean isFailedOperation)
 specifier|public
 name|void
@@ -461,7 +441,7 @@ name|boolean
 name|isFailedOperation
 parameter_list|)
 block|{
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 name|metrics
 init|=
 name|blobMetrics
@@ -568,12 +548,12 @@ return|return
 name|sleepDuration
 return|;
 block|}
-DECL|method|analyzeMetricsAndUpdateSleepDuration (BlobOperationMetrics metrics, int sleepDuration)
+DECL|method|analyzeMetricsAndUpdateSleepDuration (AbfsOperationMetrics metrics, int sleepDuration)
 specifier|private
 name|int
 name|analyzeMetricsAndUpdateSleepDuration
 parameter_list|(
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 name|metrics
 parameter_list|,
 name|int
@@ -637,6 +617,7 @@ operator|)
 condition|?
 literal|0
 else|:
+operator|(
 name|percentageConversionFactor
 operator|*
 name|bytesFailed
@@ -645,6 +626,7 @@ operator|(
 name|bytesFailed
 operator|+
 name|bytesSuccessful
+operator|)
 operator|)
 decl_stmt|;
 name|long
@@ -947,7 +929,7 @@ operator|>=
 name|analysisPeriodMs
 condition|)
 block|{
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 name|oldMetrics
 init|=
 name|blobMetrics
@@ -955,7 +937,7 @@ operator|.
 name|getAndSet
 argument_list|(
 operator|new
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 argument_list|(
 name|now
 argument_list|)
@@ -996,11 +978,11 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Stores blob operation metrics during each analysis period.    */
-DECL|class|BlobOperationMetrics
+comment|/**    * Stores Abfs operation metrics during each analysis period.    */
+DECL|class|AbfsOperationMetrics
 specifier|static
 class|class
-name|BlobOperationMetrics
+name|AbfsOperationMetrics
 block|{
 DECL|field|bytesFailed
 specifier|private
@@ -1032,8 +1014,8 @@ specifier|private
 name|long
 name|startTime
 decl_stmt|;
-DECL|method|BlobOperationMetrics (long startTime)
-name|BlobOperationMetrics
+DECL|method|AbfsOperationMetrics (long startTime)
+name|AbfsOperationMetrics
 parameter_list|(
 name|long
 name|startTime

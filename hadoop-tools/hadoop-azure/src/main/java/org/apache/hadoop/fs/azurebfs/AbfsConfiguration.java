@@ -999,6 +999,22 @@ name|boolean
 name|enableFlush
 decl_stmt|;
 annotation|@
+name|BooleanConfigurationValidatorAnnotation
+argument_list|(
+name|ConfigurationKey
+operator|=
+name|FS_AZURE_ENABLE_AUTOTHROTTLING
+argument_list|,
+name|DefaultValue
+operator|=
+name|DEFAULT_ENABLE_AUTOTHROTTLING
+argument_list|)
+DECL|field|enableAutoThrottling
+specifier|private
+name|boolean
+name|enableAutoThrottling
+decl_stmt|;
+annotation|@
 name|StringConfigurationValidatorAnnotation
 argument_list|(
 name|ConfigurationKey
@@ -1596,6 +1612,18 @@ return|return
 name|this
 operator|.
 name|enableFlush
+return|;
+block|}
+DECL|method|isAutoThrottlingEnabled ()
+specifier|public
+name|boolean
+name|isAutoThrottlingEnabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|enableAutoThrottling
 return|;
 block|}
 DECL|method|getCustomUserAgentPrefix ()

@@ -304,6 +304,15 @@ name|DEFAULT_ENABLE_FLUSH
 init|=
 literal|true
 decl_stmt|;
+DECL|field|DEFAULT_ENABLE_AUTOTHROTTLING
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ENABLE_AUTOTHROTTLING
+init|=
+literal|true
+decl_stmt|;
 DECL|field|DEFAULT_FS_AZURE_SSL_CHANNEL_MODE
 specifier|public
 specifier|static

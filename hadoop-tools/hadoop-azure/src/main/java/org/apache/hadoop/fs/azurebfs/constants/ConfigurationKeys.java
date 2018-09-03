@@ -213,14 +213,14 @@ name|AZURE_SKIP_USER_GROUP_METADATA_DURING_INITIALIZATION
 init|=
 literal|"fs.azure.skipUserGroupMetadataDuringInitialization"
 decl_stmt|;
-DECL|field|FS_AZURE_AUTOTHROTTLING_ENABLE
+DECL|field|FS_AZURE_ENABLE_AUTOTHROTTLING
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|FS_AZURE_AUTOTHROTTLING_ENABLE
+name|FS_AZURE_ENABLE_AUTOTHROTTLING
 init|=
-literal|"fs.azure.autothrottling.enable"
+literal|"fs.azure.enable.autothrottling"
 decl_stmt|;
 DECL|field|FS_AZURE_ATOMIC_RENAME_KEY
 specifier|public
