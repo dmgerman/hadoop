@@ -754,10 +754,10 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns information about the key.    * @param key Name of the key.    * @return OzoneKey Information about the key.    * @throws IOException    */
+comment|/**    * Returns information about the key.    * @param key Name of the key.    * @return OzoneKeyDetails Information about the key.    * @throws IOException    */
 DECL|method|getKey (String key)
 specifier|public
-name|OzoneKey
+name|OzoneKeyDetails
 name|getKey
 parameter_list|(
 name|String

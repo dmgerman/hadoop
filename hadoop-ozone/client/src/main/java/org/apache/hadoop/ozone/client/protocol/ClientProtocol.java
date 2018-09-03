@@ -60,39 +60,7 @@ name|ozone
 operator|.
 name|client
 operator|.
-name|BucketArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|OzoneBucket
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|OzoneKey
+name|*
 import|;
 end_import
 
@@ -109,22 +77,6 @@ operator|.
 name|client
 operator|.
 name|OzoneQuota
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|OzoneVolume
 import|;
 end_import
 
@@ -157,22 +109,6 @@ operator|.
 name|client
 operator|.
 name|ReplicationType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|VolumeArgs
 import|;
 end_import
 
@@ -652,7 +588,7 @@ name|IOException
 function_decl|;
 comment|/**    * Get OzoneKey.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Key name    * @return {@link OzoneKey}    * @throws IOException    */
 DECL|method|getKeyDetails (String volumeName, String bucketName, String keyName)
-name|OzoneKey
+name|OzoneKeyDetails
 name|getKeyDetails
 parameter_list|(
 name|String

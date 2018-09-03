@@ -195,6 +195,15 @@ name|OZONE_INFO_QUERY_KEY
 init|=
 literal|"key"
 decl_stmt|;
+DECL|field|OZONE_INFO_QUERY_KEY_DETAIL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_INFO_QUERY_KEY_DETAIL
+init|=
+literal|"key-detail"
+decl_stmt|;
 DECL|field|OZONE_REQUEST_ID
 specifier|public
 specifier|static

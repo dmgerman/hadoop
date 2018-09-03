@@ -608,6 +608,19 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
+comment|/**    * Get detail information of the specified Key.    *    * @param args Key Args    *    * @return KeyInfo    *    * @throws IOException    * @throws OzoneException    */
+DECL|method|getKeyInfoDetails (KeyArgs args)
+name|KeyInfo
+name|getKeyInfoDetails
+parameter_list|(
+name|KeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
 comment|/**    * Closes all the opened resources.    */
 DECL|method|close ()
 name|void
