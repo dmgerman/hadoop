@@ -118,6 +118,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|RetryPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|Client
@@ -305,6 +321,22 @@ operator|.
 name|client
 operator|.
 name|VolumeArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|OzoneClientUtils
 import|;
 end_import
 
@@ -930,6 +962,12 @@ operator|.
 name|OzoneACLRights
 name|groupRights
 decl_stmt|;
+DECL|field|retryPolicy
+specifier|private
+specifier|final
+name|RetryPolicy
+name|retryPolicy
+decl_stmt|;
 comment|/**     * Creates RpcClient instance with the given configuration.     * @param conf     * @throws IOException     */
 DECL|method|RpcClient (Configuration conf)
 specifier|public
@@ -1161,6 +1199,15 @@ name|xceiverClientManager
 operator|=
 operator|new
 name|XceiverClientManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|retryPolicy
+operator|=
+name|OzoneClientUtils
+operator|.
+name|createRetryPolicy
 argument_list|(
 name|conf
 argument_list|)
@@ -3128,6 +3175,11 @@ operator|.
 name|getValue
 argument_list|()
 argument_list|)
+argument_list|)
+operator|.
+name|setRetryPolicy
+argument_list|(
+name|retryPolicy
 argument_list|)
 operator|.
 name|build
