@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -963,8 +977,10 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|internalUpdateAttributesOnNodes ( Map<String, Map<NodeAttribute, AttributeValue>> nodeAttributeMapping, AttributeMappingOperationType op, Map<NodeAttributeKey, RMNodeAttribute> newAttributesToBeAdded, String attributePrefix)
-specifier|private
+specifier|protected
 name|void
 name|internalUpdateAttributesOnNodes
 parameter_list|(
@@ -1226,7 +1242,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|entrySet
+name|keySet
 argument_list|()
 argument_list|,
 literal|","
@@ -3852,6 +3868,16 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|validMapping
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|internalUpdateAttributesOnNodes
 argument_list|(
 name|validMapping
@@ -3863,6 +3889,7 @@ argument_list|,
 name|attributePrefix
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|stopDispatcher ()
 specifier|protected

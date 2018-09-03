@@ -8696,11 +8696,23 @@ comment|// 1.3. Test with Single Node invalid
 comment|// 1.4. Need to test with port (should fail)
 comment|// 1.5. Test with unknown node when failOnUnknownNodes is false
 comment|// also test : 3. Ensure Appropriate manager Method call is done
+name|Configuration
+name|newConf
+init|=
+name|NodeAttributeTestUtils
+operator|.
+name|getRandomDirConf
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
 name|rm
 operator|=
 operator|new
 name|MockRM
-argument_list|()
+argument_list|(
+name|newConf
+argument_list|)
 expr_stmt|;
 name|NodeAttributesManager
 name|spiedAttributesManager
