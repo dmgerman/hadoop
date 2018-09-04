@@ -1489,6 +1489,12 @@ operator|new
 name|DeadNodeHandler
 argument_list|(
 name|node2ContainerMap
+argument_list|,
+name|getScmContainerManager
+argument_list|()
+operator|.
+name|getStateManager
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ContainerActionsHandler
