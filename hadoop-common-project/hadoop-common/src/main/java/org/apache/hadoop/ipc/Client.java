@@ -745,6 +745,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -2137,6 +2151,19 @@ name|sendRpcRequestLock
 init|=
 operator|new
 name|Object
+argument_list|()
+decl_stmt|;
+DECL|field|connectingThread
+specifier|private
+name|AtomicReference
+argument_list|<
+name|Thread
+argument_list|>
+name|connectingThread
+init|=
+operator|new
+name|AtomicReference
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|Connection (ConnectionId remoteId, int serviceClass)
@@ -3599,6 +3626,16 @@ block|}
 block|}
 try|try
 block|{
+name|connectingThread
+operator|.
+name|set
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -3986,6 +4023,16 @@ expr_stmt|;
 block|}
 name|close
 argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|connectingThread
+operator|.
+name|set
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -5388,6 +5435,34 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|interruptConnectingThread ()
+specifier|private
+name|void
+name|interruptConnectingThread
+parameter_list|()
+block|{
+name|Thread
+name|connThread
+init|=
+name|connectingThread
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|connThread
+operator|!=
+literal|null
+condition|)
+block|{
+name|connThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/** Close the connection. */
 DECL|method|close ()
 specifier|private
@@ -5812,6 +5887,11 @@ block|{
 name|conn
 operator|.
 name|interrupt
+argument_list|()
+expr_stmt|;
+name|conn
+operator|.
+name|interruptConnectingThread
 argument_list|()
 expr_stmt|;
 block|}
