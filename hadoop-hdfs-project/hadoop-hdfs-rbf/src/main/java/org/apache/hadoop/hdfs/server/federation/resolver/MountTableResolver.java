@@ -100,6 +100,50 @@ name|router
 operator|.
 name|RBFConfigKeys
 operator|.
+name|DFS_ROUTER_DEFAULT_NAMESERVICE_ENABLE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_DEFAULT_NAMESERVICE_ENABLE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|RBFConfigKeys
+operator|.
 name|FEDERATION_MOUNT_TABLE_MAX_CACHE_SIZE
 import|;
 end_import
@@ -805,6 +849,14 @@ name|defaultNameService
 init|=
 literal|""
 decl_stmt|;
+comment|/** If use default nameservice to read and write files. */
+DECL|field|defaultNSEnable
+specifier|private
+name|boolean
+name|defaultNSEnable
+init|=
+literal|true
+decl_stmt|;
 comment|/** Synchronization for both the tree and the cache. */
 DECL|field|readWriteLock
 specifier|private
@@ -1086,6 +1138,19 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|defaultNSEnable
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_ROUTER_DEFAULT_NAMESERVICE_ENABLE
+argument_list|,
+name|DFS_ROUTER_DEFAULT_NAMESERVICE_ENABLE_DEFAULT
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|defaultNameService
@@ -1162,6 +1227,12 @@ literal|""
 argument_list|)
 condition|)
 block|{
+name|this
+operator|.
+name|defaultNSEnable
+operator|=
+literal|false
+expr_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -1172,15 +1243,28 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|String
+name|enable
+init|=
+name|this
+operator|.
+name|defaultNSEnable
+condition|?
+literal|"enabled"
+else|:
+literal|"disabled"
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Default name service: {}"
+literal|"Default name service: {}, {} to read or write"
 argument_list|,
 name|this
 operator|.
 name|defaultNameService
+argument_list|,
+name|enable
 argument_list|)
 expr_stmt|;
 block|}
@@ -2120,6 +2204,8 @@ specifier|final
 name|String
 name|path
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|PathLocation
 name|ret
@@ -2154,6 +2240,26 @@ block|}
 else|else
 block|{
 comment|// Not found, use default location
+if|if
+condition|(
+operator|!
+name|defaultNSEnable
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot find locations for "
+operator|+
+name|path
+operator|+
+literal|", "
+operator|+
+literal|"because the default nameservice is disabled to read or write"
+argument_list|)
+throw|;
+block|}
 name|RemoteLocation
 name|remoteLocation
 init|=
@@ -3033,6 +3139,66 @@ argument_list|(
 literal|"localCache is null"
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDefaultNameService ()
+specifier|public
+name|String
+name|getDefaultNameService
+parameter_list|()
+block|{
+return|return
+name|defaultNameService
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setDefaultNameService (String defaultNameService)
+specifier|public
+name|void
+name|setDefaultNameService
+parameter_list|(
+name|String
+name|defaultNameService
+parameter_list|)
+block|{
+name|this
+operator|.
+name|defaultNameService
+operator|=
+name|defaultNameService
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isDefaultNSEnable ()
+specifier|public
+name|boolean
+name|isDefaultNSEnable
+parameter_list|()
+block|{
+return|return
+name|defaultNSEnable
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setDefaultNSEnable (boolean defaultNSRWEnable)
+specifier|public
+name|void
+name|setDefaultNSEnable
+parameter_list|(
+name|boolean
+name|defaultNSRWEnable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|defaultNSEnable
+operator|=
+name|defaultNSRWEnable
+expr_stmt|;
 block|}
 block|}
 end_class

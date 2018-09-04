@@ -7414,6 +7414,12 @@ operator|+
 name|this
 operator|.
 name|subclusterResolver
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
 argument_list|)
 throw|;
 block|}
