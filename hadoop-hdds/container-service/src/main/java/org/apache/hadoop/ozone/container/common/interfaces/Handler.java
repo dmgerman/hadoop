@@ -24,6 +24,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -180,6 +200,24 @@ name|KeyValueHandler
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|keyvalue
+operator|.
+name|TarContainerPacker
+import|;
+end_import
+
 begin_comment
 comment|/**  * Dispatcher sends ContainerCommandRequests to Handler. Each Container Type  * should have an implementation for Handler.  */
 end_comment
@@ -327,6 +365,28 @@ parameter_list|,
 name|Container
 name|container
 parameter_list|)
+function_decl|;
+comment|/**    * Import container data from a raw input stream.    */
+DECL|method|importContainer ( long containerID, long maxSize, FileInputStream rawContainerStream, TarContainerPacker packer)
+specifier|public
+specifier|abstract
+name|Container
+name|importContainer
+parameter_list|(
+name|long
+name|containerID
+parameter_list|,
+name|long
+name|maxSize
+parameter_list|,
+name|FileInputStream
+name|rawContainerStream
+parameter_list|,
+name|TarContainerPacker
+name|packer
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|setScmID (String scmId)
 specifier|public

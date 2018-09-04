@@ -2823,7 +2823,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|createContainerForTesting (XceiverClientSpi client, long containerID)
-specifier|private
+specifier|public
 specifier|static
 name|void
 name|createContainerForTesting
@@ -2893,7 +2893,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-specifier|private
+specifier|public
 specifier|static
 name|ContainerProtos
 operator|.

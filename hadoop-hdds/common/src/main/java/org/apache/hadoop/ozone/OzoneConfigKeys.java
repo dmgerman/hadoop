@@ -951,6 +951,15 @@ name|HDDS_LOCK_SUPPRESS_WARNING_INTERVAL_MS_DEAFULT
 init|=
 literal|10000L
 decl_stmt|;
+DECL|field|OZONE_CONTAINER_COPY_WORKDIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CONTAINER_COPY_WORKDIR
+init|=
+literal|"hdds.datanode.replication.work.dir"
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private
