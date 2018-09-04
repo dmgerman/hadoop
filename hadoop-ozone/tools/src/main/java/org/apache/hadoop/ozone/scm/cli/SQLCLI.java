@@ -592,22 +592,6 @@ name|OM_USER_PREFIX
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|OPEN_CONTAINERS_DB
-import|;
-end_import
-
 begin_comment
 comment|/**  * This is the CLI that can be use to convert an ozone metadata DB into  * a sqlite DB file.  *  * NOTE: user should use this CLI in an offline fashion. Namely, this should not  * be used to convert a DB that is currently being used by Ozone. Instead,  * this should be used to debug and diagnosis closed DB instances.  *  */
 end_comment
@@ -1422,35 +1406,6 @@ literal|"Converting container DB"
 argument_list|)
 expr_stmt|;
 name|convertContainerDB
-argument_list|(
-name|dbPath
-argument_list|,
-name|outPath
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|dbName
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|OPEN_CONTAINERS_DB
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Converting open container DB"
-argument_list|)
-expr_stmt|;
-name|convertOpenContainerDB
 argument_list|(
 name|dbPath
 argument_list|,

@@ -468,15 +468,6 @@ literal|"-dn-"
 operator|+
 name|CONTAINER_DB_SUFFIX
 decl_stmt|;
-DECL|field|OPEN_CONTAINERS_DB
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OPEN_CONTAINERS_DB
-init|=
-literal|"openContainers.db"
-decl_stmt|;
 DECL|field|DELETED_BLOCK_DB
 specifier|public
 specifier|static
