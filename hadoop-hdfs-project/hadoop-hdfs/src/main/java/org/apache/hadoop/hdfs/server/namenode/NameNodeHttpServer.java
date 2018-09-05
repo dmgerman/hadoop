@@ -1650,6 +1650,23 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|httpServer
+operator|.
+name|addInternalServlet
+argument_list|(
+name|IsNameNodeActiveServlet
+operator|.
+name|SERVLET_NAME
+argument_list|,
+name|IsNameNodeActiveServlet
+operator|.
+name|PATH_SPEC
+argument_list|,
+name|IsNameNodeActiveServlet
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getFsImageFromContext (ServletContext context)
 specifier|static

@@ -138,6 +138,16 @@ name|AbstractService
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|ServletContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * Web interface for the {@link Router}. It exposes the Web UI and the WebHDFS  * methods from {@link RouterWebHdfsMethods}.  */
 end_comment
@@ -514,6 +524,23 @@ name|conf
 parameter_list|)
 block|{
 comment|// TODO Add servlets for FSCK, etc
+name|httpServer
+operator|.
+name|addInternalServlet
+argument_list|(
+name|IsRouterActiveServlet
+operator|.
+name|SERVLET_NAME
+argument_list|,
+name|IsRouterActiveServlet
+operator|.
+name|PATH_SPEC
+argument_list|,
+name|IsRouterActiveServlet
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getHttpAddress ()
 specifier|public
@@ -537,6 +564,28 @@ return|return
 name|this
 operator|.
 name|httpsAddress
+return|;
+block|}
+DECL|method|getRouterFromContext (ServletContext context)
+specifier|public
+specifier|static
+name|Router
+name|getRouterFromContext
+parameter_list|(
+name|ServletContext
+name|context
+parameter_list|)
+block|{
+return|return
+operator|(
+name|Router
+operator|)
+name|context
+operator|.
+name|getAttribute
+argument_list|(
+name|NAMENODE_ATTRIBUTE_KEY
+argument_list|)
 return|;
 block|}
 block|}
