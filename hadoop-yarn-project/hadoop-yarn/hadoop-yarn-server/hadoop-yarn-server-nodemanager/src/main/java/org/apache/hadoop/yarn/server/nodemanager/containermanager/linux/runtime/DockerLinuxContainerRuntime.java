@@ -1874,6 +1874,29 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|isRuntimeRequested (Map<String, String> env)
+specifier|public
+name|boolean
+name|isRuntimeRequested
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|)
+block|{
+return|return
+name|isDockerContainerRequested
+argument_list|(
+name|env
+argument_list|)
+return|;
+block|}
 DECL|method|getDockerCapabilitiesFromConf ()
 specifier|private
 name|Set

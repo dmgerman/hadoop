@@ -130,6 +130,16 @@ name|ContainerRuntime
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Linux-specific container runtime implementations must implement this  * interface.  */
 end_comment
@@ -163,6 +173,20 @@ name|nmContext
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
+function_decl|;
+comment|/**    * Return whether the given environment variables indicate that the operation    * is requesting this runtime.    *    * @param env the environment variable settings for the operation    * @return whether this runtime is requested    */
+DECL|method|isRuntimeRequested (Map<String, String> env)
+name|boolean
+name|isRuntimeRequested
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|)
 function_decl|;
 block|}
 end_interface

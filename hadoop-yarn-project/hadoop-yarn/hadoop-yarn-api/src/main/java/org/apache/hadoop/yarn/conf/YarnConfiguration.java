@@ -6367,7 +6367,7 @@ name|NM_PREFIX
 operator|+
 literal|"runtime.linux."
 decl_stmt|;
-comment|/**    * Comma separated list of runtimes that are allowed when using    * LinuxContainerExecutor. The allowed values are:    *<ul>    *<li>default</li>    *<li>docker</li>    *<li>javasandbox</li>    *</ul>    */
+comment|/**    * Comma separated list of runtimes that are allowed when using    * LinuxContainerExecutor. The standard values are:    *<ul>    *<li>default</li>    *<li>docker</li>    *<li>javasandbox</li>    *</ul>    */
 DECL|field|LINUX_CONTAINER_RUNTIME_ALLOWED_RUNTIMES
 specifier|public
 specifier|static
@@ -6378,6 +6378,17 @@ init|=
 name|LINUX_CONTAINER_RUNTIME_PREFIX
 operator|+
 literal|"allowed-runtimes"
+decl_stmt|;
+DECL|field|LINUX_CONTAINER_RUNTIME_CLASS_FMT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LINUX_CONTAINER_RUNTIME_CLASS_FMT
+init|=
+name|LINUX_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"%s.class"
 decl_stmt|;
 comment|/** The default list of allowed runtimes when using LinuxContainerExecutor. */
 DECL|field|DEFAULT_LINUX_CONTAINER_RUNTIME_ALLOWED_RUNTIMES
