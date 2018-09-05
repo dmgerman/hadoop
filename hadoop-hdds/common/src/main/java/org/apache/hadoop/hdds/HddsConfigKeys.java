@@ -170,6 +170,26 @@ name|DBProfile
 operator|.
 name|SSD
 decl_stmt|;
+comment|// Once a container usage crosses this threshold, it is eligible for
+comment|// closing.
+DECL|field|HDDS_CONTAINER_CLOSE_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_CONTAINER_CLOSE_THRESHOLD
+init|=
+literal|"hdds.container.close.threshold"
+decl_stmt|;
+DECL|field|HDDS_CONTAINER_CLOSE_THRESHOLD_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|HDDS_CONTAINER_CLOSE_THRESHOLD_DEFAULT
+init|=
+literal|0.9f
+decl_stmt|;
 block|}
 end_class
 
