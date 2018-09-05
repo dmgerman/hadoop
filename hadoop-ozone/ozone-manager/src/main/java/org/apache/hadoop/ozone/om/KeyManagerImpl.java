@@ -338,6 +338,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|BackgroundService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|rocksdb
 operator|.
 name|RocksDBException
@@ -415,6 +429,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -443,6 +469,70 @@ operator|.
 name|OzoneConfigKeys
 operator|.
 name|DFS_CONTAINER_RATIS_ENABLED_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
 import|;
 end_import
 
@@ -575,6 +665,12 @@ specifier|final
 name|String
 name|omId
 decl_stmt|;
+DECL|field|keyDeletingService
+specifier|private
+specifier|final
+name|BackgroundService
+name|keyDeletingService
+decl_stmt|;
 DECL|method|KeyManagerImpl (ScmBlockLocationProtocol scmBlockClient, OMMetadataManager metadataManager, OzoneConfiguration conf, String omId)
 specifier|public
 name|KeyManagerImpl
@@ -647,6 +743,54 @@ argument_list|,
 name|OZONE_KEY_PREALLOCATION_MAXSIZE_DEFAULT
 argument_list|)
 expr_stmt|;
+name|long
+name|blockDeleteInterval
+init|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
+argument_list|,
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+decl_stmt|;
+name|long
+name|serviceTimeout
+init|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT
+argument_list|,
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+decl_stmt|;
+name|keyDeletingService
+operator|=
+operator|new
+name|KeyDeletingService
+argument_list|(
+name|scmBlockClient
+argument_list|,
+name|this
+argument_list|,
+name|blockDeleteInterval
+argument_list|,
+name|serviceTimeout
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|omId
@@ -661,7 +805,13 @@ specifier|public
 name|void
 name|start
 parameter_list|()
-block|{   }
+block|{
+name|keyDeletingService
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -671,7 +821,13 @@ name|stop
 parameter_list|()
 throws|throws
 name|IOException
-block|{   }
+block|{
+name|keyDeletingService
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|validateBucket (String volumeName, String bucketName)
 specifier|private
 name|void
@@ -2795,25 +2951,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|//TODO: Fix this in later patches.
 return|return
-literal|null
+name|metadataManager
+operator|.
+name|getPendingDeletionKeys
+argument_list|(
+name|count
+argument_list|)
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|deletePendingDeletionKey (String objectKeyName)
-specifier|public
-name|void
-name|deletePendingDeletionKey
-parameter_list|(
-name|String
-name|objectKeyName
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|// TODO : Fix in later patches.
 block|}
 annotation|@
 name|Override
@@ -2878,6 +3023,30 @@ name|objectKeyName
 argument_list|)
 expr_stmt|;
 comment|// TODO: Fix this in later patches.
+block|}
+annotation|@
+name|Override
+DECL|method|getMetadataManager ()
+specifier|public
+name|OMMetadataManager
+name|getMetadataManager
+parameter_list|()
+block|{
+return|return
+name|metadataManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDeletingService ()
+specifier|public
+name|BackgroundService
+name|getDeletingService
+parameter_list|()
+block|{
+return|return
+name|keyDeletingService
+return|;
 block|}
 block|}
 end_class

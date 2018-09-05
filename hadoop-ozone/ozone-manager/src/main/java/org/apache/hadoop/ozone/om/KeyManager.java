@@ -108,6 +108,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|BackgroundService
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -265,17 +279,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes a pending deletion key by its name. This is often called when    * key can be safely deleted from this layer. Once called, all footprints    * of the key will be purged from OM DB.    *    * @param objectKeyName object key name with #deleting# prefix.    * @throws IOException if specified key doesn't exist or other I/O errors.    */
-DECL|method|deletePendingDeletionKey (String objectKeyName)
-name|void
-name|deletePendingDeletionKey
-parameter_list|(
-name|String
-name|objectKeyName
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Returns a list of all still open key info. Which contains the info about    * the key name and all its associated block IDs. A pending open key has    * prefix #open# in OM DB.    *    * @return a list of {@link BlockGroup} representing keys and blocks.    * @throws IOException    */
 DECL|method|getExpiredOpenKeys ()
 name|List
@@ -297,6 +300,18 @@ name|objectKeyName
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Returns the metadataManager.    * @return OMMetadataManager.    */
+DECL|method|getMetadataManager ()
+name|OMMetadataManager
+name|getMetadataManager
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the instance of Deleting Service.    * @return Background service.    */
+DECL|method|getDeletingService ()
+name|BackgroundService
+name|getDeletingService
+parameter_list|()
 function_decl|;
 block|}
 end_interface
