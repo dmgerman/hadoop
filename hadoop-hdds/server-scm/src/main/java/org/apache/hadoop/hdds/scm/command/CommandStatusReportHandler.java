@@ -453,6 +453,7 @@ extends|extends
 name|CommandStatusEvent
 block|{
 DECL|method|ReplicationStatus (CommandStatus cmdStatus)
+specifier|public
 name|ReplicationStatus
 parameter_list|(
 name|CommandStatus
@@ -476,6 +477,7 @@ extends|extends
 name|CommandStatusEvent
 block|{
 DECL|method|CloseContainerStatus (CommandStatus cmdStatus)
+specifier|public
 name|CloseContainerStatus
 parameter_list|(
 name|CommandStatus
@@ -499,6 +501,7 @@ extends|extends
 name|CommandStatusEvent
 block|{
 DECL|method|DeleteBlockCommandStatus (CommandStatus cmdStatus)
+specifier|public
 name|DeleteBlockCommandStatus
 parameter_list|(
 name|CommandStatus

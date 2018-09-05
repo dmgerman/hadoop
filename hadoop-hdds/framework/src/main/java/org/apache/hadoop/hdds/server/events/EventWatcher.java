@@ -568,19 +568,11 @@ name|publisher
 parameter_list|)
 lambda|->
 block|{
-name|long
-name|id
-init|=
-name|completionPayload
-operator|.
-name|getId
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|handleCompletion
 argument_list|(
-name|id
+name|completionPayload
 argument_list|,
 name|publisher
 argument_list|)
@@ -600,7 +592,10 @@ name|warn
 argument_list|(
 literal|"Completion event without active lease. Id={}"
 argument_list|,
-name|id
+name|completionPayload
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -743,14 +738,14 @@ block|{
 comment|//No problem at all. But timer is not reset.
 block|}
 block|}
-DECL|method|handleCompletion (long id, EventPublisher publisher)
-specifier|private
+DECL|method|handleCompletion (COMPLETION_PAYLOAD completionPayload, EventPublisher publisher)
+specifier|protected
 specifier|synchronized
 name|void
 name|handleCompletion
 parameter_list|(
-name|long
-name|id
+name|COMPLETION_PAYLOAD
+name|completionPayload
 parameter_list|,
 name|EventPublisher
 name|publisher
@@ -763,6 +758,14 @@ operator|.
 name|incrementCompletedEvents
 argument_list|()
 expr_stmt|;
+name|long
+name|id
+init|=
+name|completionPayload
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
 name|leaseManager
 operator|.
 name|release
@@ -1027,6 +1030,25 @@ parameter_list|()
 block|{
 return|return
 name|metrics
+return|;
+block|}
+comment|/**    * Returns a tracked event to which the specified id is    * mapped, or {@code null} if there is no mapping for the id.    */
+DECL|method|getTrackedEventbyId (long id)
+specifier|public
+name|TIMEOUT_PAYLOAD
+name|getTrackedEventbyId
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+return|return
+name|trackedEventsByID
+operator|.
+name|get
+argument_list|(
+name|id
+argument_list|)
 return|;
 block|}
 block|}
