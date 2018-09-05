@@ -1264,6 +1264,25 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|// idle timeout in milliseconds
+DECL|field|HTTP_IDLE_TIMEOUT_MS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTP_IDLE_TIMEOUT_MS_KEY
+init|=
+literal|"hadoop.http.idle_timeout.ms"
+decl_stmt|;
+DECL|field|HTTP_IDLE_TIMEOUT_MS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HTTP_IDLE_TIMEOUT_MS_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
 DECL|field|HTTP_TEMP_DIR_KEY
 specifier|public
 specifier|static
@@ -2474,6 +2493,18 @@ argument_list|,
 name|HTTP_MAX_RESPONSE_HEADER_SIZE_DEFAULT
 argument_list|)
 decl_stmt|;
+name|int
+name|idleTimeout
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|HTTP_IDLE_TIMEOUT_MS_KEY
+argument_list|,
+name|HTTP_IDLE_TIMEOUT_MS_DEFAULT
+argument_list|)
+decl_stmt|;
 name|HttpConfiguration
 name|httpConfig
 init|=
@@ -2628,6 +2659,13 @@ argument_list|(
 name|backlogSize
 argument_list|)
 expr_stmt|;
+name|connector
+operator|.
+name|setIdleTimeout
+argument_list|(
+name|idleTimeout
+argument_list|)
+expr_stmt|;
 name|server
 operator|.
 name|addListener
@@ -2700,11 +2738,25 @@ argument_list|(
 name|connFactory
 argument_list|)
 expr_stmt|;
-name|configureChannelConnector
-argument_list|(
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// result of setting the SO_REUSEADDR flag is different on Windows
+comment|// http://msdn.microsoft.com/en-us/library/ms740621(v=vs.85).aspx
+comment|// without this 2 NN's can start on the same machine and listen on
+comment|// the same port with indeterminate routing of incoming requests to them
 name|conn
+operator|.
+name|setReuseAddress
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|conn
 return|;
@@ -3761,43 +3813,6 @@ literal|"/*"
 block|}
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|configureChannelConnector (ServerConnector c)
-specifier|private
-specifier|static
-name|void
-name|configureChannelConnector
-parameter_list|(
-name|ServerConnector
-name|c
-parameter_list|)
-block|{
-name|c
-operator|.
-name|setIdleTimeout
-argument_list|(
-literal|10000
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-comment|// result of setting the SO_REUSEADDR flag is different on Windows
-comment|// http://msdn.microsoft.com/en-us/library/ms740621(v=vs.85).aspx
-comment|// without this 2 NN's can start on the same machine and listen on
-comment|// the same port with indeterminate routing of incoming requests to them
-name|c
-operator|.
-name|setReuseAddress
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/** Get an array of FilterConfiguration specified in the conf */
 DECL|method|getFilterInitializers (Configuration conf)
