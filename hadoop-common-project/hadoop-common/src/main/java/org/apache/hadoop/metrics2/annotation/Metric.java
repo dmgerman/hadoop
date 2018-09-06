@@ -168,6 +168,14 @@ name|Type
 operator|.
 name|DEFAULT
 function_decl|;
+comment|/**    * @return optional roll over interval in secs for MutableQuantiles    */
+DECL|method|interval ()
+name|int
+name|interval
+parameter_list|()
+default|default
+literal|10
+function_decl|;
 block|}
 end_annotation_defn
 
