@@ -837,6 +837,13 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|bytes
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 operator|new
 name|String
@@ -850,6 +857,10 @@ argument_list|(
 literal|"UTF-8"
 argument_list|)
 argument_list|)
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @param stat Output statistics of the ZNode.    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
@@ -879,6 +890,13 @@ argument_list|,
 name|stat
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|bytes
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 operator|new
 name|String
@@ -892,6 +910,10 @@ argument_list|(
 literal|"UTF-8"
 argument_list|)
 argument_list|)
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 comment|/**    * Set data into a ZNode.    * @param path Path of the ZNode.    * @param data Data to set.    * @param version Version of the data to store.    * @throws Exception If it cannot contact Zookeeper.    */
