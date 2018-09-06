@@ -685,6 +685,14 @@ name|batch
 operator|.
 name|delete
 argument_list|(
+name|metadataManager
+operator|.
+name|getUserTable
+argument_list|()
+operator|.
+name|getHandle
+argument_list|()
+argument_list|,
 name|dbUserKey
 argument_list|)
 expr_stmt|;
