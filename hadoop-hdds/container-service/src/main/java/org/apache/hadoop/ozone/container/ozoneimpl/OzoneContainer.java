@@ -608,6 +608,8 @@ operator|.
 name|config
 argument_list|,
 name|hddsDispatcher
+argument_list|,
+name|context
 argument_list|)
 block|}
 expr_stmt|;

@@ -1101,21 +1101,24 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a pipeline.    *    * @param ignored -  pipeline to be created.    */
+comment|/**    * Create a pipeline.    */
 annotation|@
 name|Override
-DECL|method|createPipeline (Pipeline ignored)
+DECL|method|createPipeline ()
 specifier|public
 name|void
 name|createPipeline
-parameter_list|(
-name|Pipeline
-name|ignored
-parameter_list|)
-throws|throws
-name|IOException
+parameter_list|()
 block|{
 comment|// For stand alone pipeline, there is no notion called setup pipeline.
+block|}
+DECL|method|destroyPipeline ()
+specifier|public
+name|void
+name|destroyPipeline
+parameter_list|()
+block|{
+comment|// For stand alone pipeline, there is no notion called destroy pipeline.
 block|}
 comment|/**    * Returns pipeline Type.    *    * @return - Stand Alone as the type.    */
 annotation|@

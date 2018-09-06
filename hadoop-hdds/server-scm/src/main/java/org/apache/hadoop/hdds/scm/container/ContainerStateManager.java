@@ -1848,8 +1848,6 @@ parameter_list|,
 name|ContainerID
 name|containerID
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|ContainerInfo
 name|info
@@ -1874,11 +1872,6 @@ argument_list|(
 name|info
 operator|.
 name|getPipelineID
-argument_list|()
-argument_list|,
-name|info
-operator|.
-name|getReplicationType
 argument_list|()
 argument_list|)
 decl_stmt|;

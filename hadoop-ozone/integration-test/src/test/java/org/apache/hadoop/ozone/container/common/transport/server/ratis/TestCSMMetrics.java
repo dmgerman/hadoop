@@ -1119,6 +1119,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|dispatcher
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

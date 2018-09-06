@@ -362,16 +362,23 @@ name|ExecutionException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Create a pipeline.    *    * @param pipeline -  pipeline to be created.    */
-DECL|method|createPipeline (Pipeline pipeline)
+comment|/**    * Create a pipeline.    */
+DECL|method|createPipeline ()
 specifier|public
 specifier|abstract
 name|void
 name|createPipeline
-parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|)
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Destroy a pipeline.    * @throws IOException    */
+DECL|method|destroyPipeline ()
+specifier|public
+specifier|abstract
+name|void
+name|destroyPipeline
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

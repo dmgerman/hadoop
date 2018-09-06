@@ -584,14 +584,11 @@ name|maxOutStandingChunks
 expr_stmt|;
 block|}
 comment|/**    * {@inheritDoc}    */
-DECL|method|createPipeline (Pipeline pipeline)
+DECL|method|createPipeline ()
 specifier|public
 name|void
 name|createPipeline
-parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -645,7 +642,80 @@ operator|.
 name|getMachines
 argument_list|()
 argument_list|,
+name|RatisHelper
+operator|.
+name|emptyRaftGroup
+argument_list|()
+argument_list|,
 name|group
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * {@inheritDoc}    */
+DECL|method|destroyPipeline ()
+specifier|public
+name|void
+name|destroyPipeline
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|RaftGroupId
+name|groupId
+init|=
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+operator|.
+name|getRaftGroupID
+argument_list|()
+decl_stmt|;
+name|RaftGroup
+name|currentGroup
+init|=
+name|RatisHelper
+operator|.
+name|newRaftGroup
+argument_list|(
+name|groupId
+argument_list|,
+name|pipeline
+operator|.
+name|getMachines
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"destroying pipeline:{} with nodes:{}"
+argument_list|,
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|currentGroup
+operator|.
+name|getPeers
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|reinitialize
+argument_list|(
+name|pipeline
+operator|.
+name|getMachines
+argument_list|()
+argument_list|,
+name|currentGroup
+argument_list|,
+name|RatisHelper
+operator|.
+name|emptyRaftGroup
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -668,7 +738,7 @@ operator|.
 name|RATIS
 return|;
 block|}
-DECL|method|reinitialize (List<DatanodeDetails> datanodes, RaftGroup group)
+DECL|method|reinitialize (List<DatanodeDetails> datanodes, RaftGroup oldGroup, RaftGroup newGroup)
 specifier|private
 name|void
 name|reinitialize
@@ -680,7 +750,10 @@ argument_list|>
 name|datanodes
 parameter_list|,
 name|RaftGroup
-name|group
+name|oldGroup
+parameter_list|,
+name|RaftGroup
+name|newGroup
 parameter_list|)
 throws|throws
 name|IOException
@@ -714,7 +787,9 @@ name|reinitialize
 argument_list|(
 name|d
 argument_list|,
-name|group
+name|oldGroup
+argument_list|,
+name|newGroup
 argument_list|)
 expr_stmt|;
 block|}
@@ -766,8 +841,8 @@ name|exception
 throw|;
 block|}
 block|}
-comment|/**    * Adds a new peers to the Ratis Ring.    *    * @param datanode - new datanode    * @param group    - Raft group    * @throws IOException - on Failure.    */
-DECL|method|reinitialize (DatanodeDetails datanode, RaftGroup group)
+comment|/**    * Adds a new peers to the Ratis Ring.    *    * @param datanode - new datanode    * @param oldGroup    - previous Raft group    * @param newGroup    - new Raft group    * @throws IOException - on Failure.    */
+DECL|method|reinitialize (DatanodeDetails datanode, RaftGroup oldGroup, RaftGroup newGroup)
 specifier|private
 name|void
 name|reinitialize
@@ -776,7 +851,10 @@ name|DatanodeDetails
 name|datanode
 parameter_list|,
 name|RaftGroup
-name|group
+name|oldGroup
+parameter_list|,
+name|RaftGroup
+name|newGroup
 parameter_list|)
 throws|throws
 name|IOException
@@ -797,6 +875,13 @@ init|(
 name|RaftClient
 name|client
 init|=
+name|oldGroup
+operator|==
+name|RatisHelper
+operator|.
+name|emptyRaftGroup
+argument_list|()
+condition|?
 name|RatisHelper
 operator|.
 name|newRaftClient
@@ -805,13 +890,24 @@ name|rpcType
 argument_list|,
 name|p
 argument_list|)
+else|:
+name|RatisHelper
+operator|.
+name|newRaftClient
+argument_list|(
+name|rpcType
+argument_list|,
+name|p
+argument_list|,
+name|oldGroup
+argument_list|)
 init|)
 block|{
 name|client
 operator|.
 name|reinitialize
 argument_list|(
-name|group
+name|newGroup
 argument_list|,
 name|p
 operator|.

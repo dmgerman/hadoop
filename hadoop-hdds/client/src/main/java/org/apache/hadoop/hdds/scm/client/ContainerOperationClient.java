@@ -766,9 +766,7 @@ comment|//    ObjectStageChangeRequestProto.Stage.begin);
 name|client
 operator|.
 name|createPipeline
-argument_list|(
-name|pipeline
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|//storageContainerLocationClient.notifyObjectStageChange(
 comment|//    ObjectStageChangeRequestProto.Type.pipeline,

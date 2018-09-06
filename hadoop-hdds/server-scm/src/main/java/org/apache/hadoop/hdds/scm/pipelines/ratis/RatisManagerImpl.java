@@ -350,6 +350,16 @@ name|Set
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implementation of {@link PipelineManager}.  *  * TODO : Introduce a state machine.  */
 end_comment
@@ -400,7 +410,7 @@ argument_list|>
 name|ratisMembers
 decl_stmt|;
 comment|/**    * Constructs a Ratis Pipeline Manager.    *    * @param nodeManager    */
-DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf, Node2PipelineMap map)
+DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf, Node2PipelineMap map, Map<PipelineID, Pipeline> pipelineMap)
 specifier|public
 name|RatisManagerImpl
 parameter_list|(
@@ -418,11 +428,21 @@ name|conf
 parameter_list|,
 name|Node2PipelineMap
 name|map
+parameter_list|,
+name|Map
+argument_list|<
+name|PipelineID
+argument_list|,
+name|Pipeline
+argument_list|>
+name|pipelineMap
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|map
+argument_list|,
+name|pipelineMap
 argument_list|)
 expr_stmt|;
 name|this
@@ -615,9 +635,7 @@ block|{
 name|client
 operator|.
 name|createPipeline
-argument_list|(
-name|pipeline
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -630,6 +648,8 @@ parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 operator|.
@@ -663,7 +683,27 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|//TODO: should the raft ring also be destroyed as well?
+try|try
+init|(
+name|XceiverClientRatis
+name|client
+init|=
+name|XceiverClientRatis
+operator|.
+name|newXceiverClientRatis
+argument_list|(
+name|pipeline
+argument_list|,
+name|conf
+argument_list|)
+init|)
+block|{
+name|client
+operator|.
+name|destroyPipeline
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * list members in the pipeline .    *    * @param pipelineID    * @return the datanode    */
 annotation|@

@@ -56,6 +56,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|server
@@ -318,6 +334,21 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 function_decl|;
+comment|/**    * Restart a particular HddsDatanode.    *    * @param dn HddsDatanode in the MiniOzoneCluster    */
+DECL|method|restartHddsDatanode (DatanodeDetails dn)
+name|void
+name|restartHddsDatanode
+parameter_list|(
+name|DatanodeDetails
+name|dn
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|TimeoutException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Shutdown a particular HddsDatanode.    *    * @param i index of HddsDatanode in the MiniOzoneCluster    */
 DECL|method|shutdownHddsDatanode (int i)
 name|void
@@ -326,6 +357,17 @@ parameter_list|(
 name|int
 name|i
 parameter_list|)
+function_decl|;
+comment|/**    * Shutdown a particular HddsDatanode.    *    * @param dn HddsDatanode in the MiniOzoneCluster    */
+DECL|method|shutdownHddsDatanode (DatanodeDetails dn)
+name|void
+name|shutdownHddsDatanode
+parameter_list|(
+name|DatanodeDetails
+name|dn
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Shutdown the MiniOzoneCluster.    */
 DECL|method|shutdown ()

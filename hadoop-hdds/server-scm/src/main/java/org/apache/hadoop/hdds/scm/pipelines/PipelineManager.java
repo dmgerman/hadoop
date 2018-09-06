@@ -42,16 +42,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|WeakHashMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -283,12 +273,20 @@ specifier|final
 name|Node2PipelineMap
 name|node2PipelineMap
 decl_stmt|;
-DECL|method|PipelineManager (Node2PipelineMap map)
+DECL|method|PipelineManager (Node2PipelineMap map, Map<PipelineID, Pipeline> pipelineMap)
 specifier|public
 name|PipelineManager
 parameter_list|(
 name|Node2PipelineMap
 name|map
+parameter_list|,
+name|Map
+argument_list|<
+name|PipelineID
+argument_list|,
+name|Pipeline
+argument_list|>
+name|pipelineMap
 parameter_list|)
 block|{
 name|activePipelines
@@ -306,13 +304,14 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|pipelineMap
 operator|=
-operator|new
-name|WeakHashMap
-argument_list|<>
-argument_list|()
+name|pipelineMap
 expr_stmt|;
+name|this
+operator|.
 name|node2PipelineMap
 operator|=
 name|map
@@ -794,6 +793,8 @@ parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|pipelineMap
 operator|.

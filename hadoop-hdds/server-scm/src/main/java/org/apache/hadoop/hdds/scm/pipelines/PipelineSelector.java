@@ -592,6 +592,28 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|UUID
 import|;
 end_import
@@ -722,6 +744,17 @@ specifier|final
 name|Node2PipelineMap
 name|node2PipelineMap
 decl_stmt|;
+DECL|field|pipelineMap
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|PipelineID
+argument_list|,
+name|Pipeline
+argument_list|>
+name|pipelineMap
+decl_stmt|;
 DECL|field|pipelineLeaseManager
 specifier|private
 specifier|final
@@ -823,6 +856,13 @@ operator|new
 name|Node2PipelineMap
 argument_list|()
 expr_stmt|;
+name|pipelineMap
+operator|=
+operator|new
+name|ConcurrentHashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|standaloneManager
@@ -839,6 +879,8 @@ argument_list|,
 name|containerSize
 argument_list|,
 name|node2PipelineMap
+argument_list|,
+name|pipelineMap
 argument_list|)
 expr_stmt|;
 name|this
@@ -859,6 +901,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|node2PipelineMap
+argument_list|,
+name|pipelineMap
 argument_list|)
 expr_stmt|;
 comment|// Initialize the container state machine.
@@ -1508,66 +1552,20 @@ return|return
 name|pipeline
 return|;
 block|}
-comment|/**    * This function to return pipeline for given pipeline name and replication    * type.    */
-DECL|method|getPipeline (PipelineID pipelineID, ReplicationType replicationType)
+comment|/**    * This function to return pipeline for given pipeline id.    */
+DECL|method|getPipeline (PipelineID pipelineID)
 specifier|public
 name|Pipeline
 name|getPipeline
 parameter_list|(
 name|PipelineID
 name|pipelineID
-parameter_list|,
-name|ReplicationType
-name|replicationType
 parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|pipelineID
-operator|==
-literal|null
-condition|)
 block|{
 return|return
-literal|null
-return|;
-block|}
-name|PipelineManager
-name|manager
-init|=
-name|getPipelineManager
-argument_list|(
-name|replicationType
-argument_list|)
-decl_stmt|;
-name|Preconditions
+name|pipelineMap
 operator|.
-name|checkNotNull
-argument_list|(
-name|manager
-argument_list|,
-literal|"Found invalid pipeline manager"
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Getting replication pipeline forReplicationType {} :"
-operator|+
-literal|" pipelineName:{}"
-argument_list|,
-name|replicationType
-argument_list|,
-name|pipelineID
-argument_list|)
-expr_stmt|;
-return|return
-name|manager
-operator|.
-name|getPipeline
+name|get
 argument_list|(
 name|pipelineID
 argument_list|)
@@ -1605,11 +1603,32 @@ argument_list|,
 literal|"Found invalid pipeline manager"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|pipeline
+operator|.
+name|getLifeCycleState
+argument_list|()
+operator|==
+name|LifeCycleState
+operator|.
+name|CLOSING
+operator|||
+name|pipeline
+operator|.
+name|getLifeCycleState
+argument_list|()
+operator|==
+name|LifeCycleState
+operator|.
+name|CLOSED
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Finalizing pipeline. pipelineID: {}"
+literal|"pipeline:{} already in closing state, skipping"
 argument_list|,
 name|pipeline
 operator|.
@@ -1617,12 +1636,27 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// already in closing/closed state
+return|return;
+block|}
 comment|// Remove the pipeline from active allocation
 name|manager
 operator|.
 name|finalizePipeline
 argument_list|(
 name|pipeline
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Finalizing pipeline. pipelineID: {}"
+argument_list|,
+name|pipeline
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|updatePipelineState
@@ -1728,6 +1762,8 @@ parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|PipelineManager
 name|manager
@@ -1985,57 +2021,26 @@ return|return
 name|node2PipelineMap
 return|;
 block|}
-DECL|method|removePipeline (UUID dnId)
+DECL|method|getPipelineId (UUID dnId)
 specifier|public
-name|void
-name|removePipeline
+name|Set
+argument_list|<
+name|PipelineID
+argument_list|>
+name|getPipelineId
 parameter_list|(
 name|UUID
 name|dnId
 parameter_list|)
 block|{
-name|Set
-argument_list|<
-name|Pipeline
-argument_list|>
-name|pipelineSet
-init|=
+return|return
 name|node2PipelineMap
 operator|.
 name|getPipelines
 argument_list|(
 name|dnId
 argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|Pipeline
-name|pipeline
-range|:
-name|pipelineSet
-control|)
-block|{
-name|getPipelineManager
-argument_list|(
-name|pipeline
-operator|.
-name|getType
-argument_list|()
-argument_list|)
-operator|.
-name|closePipeline
-argument_list|(
-name|pipeline
-argument_list|)
-expr_stmt|;
-block|}
-name|node2PipelineMap
-operator|.
-name|removeDatanode
-argument_list|(
-name|dnId
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Update the Pipeline State to the next state.    *    * @param pipeline - Pipeline    * @param event - LifeCycle Event    * @throws SCMException  on Failure.    */
 DECL|method|updatePipelineState (Pipeline pipeline, HddsProtos.LifeCycleEvent event)

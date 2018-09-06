@@ -139,6 +139,24 @@ name|HDDS_CONTAINER_ACTION_MAX_LIMIT_DEFAULT
 init|=
 literal|20
 decl_stmt|;
+DECL|field|HDDS_PIPELINE_ACTION_MAX_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_PIPELINE_ACTION_MAX_LIMIT
+init|=
+literal|"hdds.pipeline.action.max.limit"
+decl_stmt|;
+DECL|field|HDDS_PIPELINE_ACTION_MAX_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HDDS_PIPELINE_ACTION_MAX_LIMIT_DEFAULT
+init|=
+literal|20
+decl_stmt|;
 comment|// Configuration to allow volume choosing policy.
 DECL|field|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
 specifier|public

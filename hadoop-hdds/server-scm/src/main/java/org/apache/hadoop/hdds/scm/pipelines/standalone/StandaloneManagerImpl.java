@@ -320,6 +320,16 @@ name|Set
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Standalone Manager Impl to prove that pluggable interface  * works with current tests.  */
 end_comment
@@ -376,7 +386,7 @@ argument_list|>
 name|standAloneMembers
 decl_stmt|;
 comment|/**    * Constructor for Standalone Node Manager Impl.    * @param nodeManager - Node Manager.    * @param placementPolicy - Placement Policy    * @param containerSize - Container Size.    */
-DECL|method|StandaloneManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long containerSize, Node2PipelineMap map)
+DECL|method|StandaloneManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long containerSize, Node2PipelineMap map, Map<PipelineID, Pipeline> pipelineMap)
 specifier|public
 name|StandaloneManagerImpl
 parameter_list|(
@@ -391,11 +401,21 @@ name|containerSize
 parameter_list|,
 name|Node2PipelineMap
 name|map
+parameter_list|,
+name|Map
+argument_list|<
+name|PipelineID
+argument_list|,
+name|Pipeline
+argument_list|>
+name|pipelineMap
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|map
+argument_list|,
+name|pipelineMap
 argument_list|)
 expr_stmt|;
 name|this
@@ -586,6 +606,8 @@ parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 operator|.
