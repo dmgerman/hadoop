@@ -469,6 +469,50 @@ return|return
 name|info
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"{blockID={containerID="
+operator|+
+name|blockID
+operator|.
+name|getContainerID
+argument_list|()
+operator|+
+literal|", localID="
+operator|+
+name|blockID
+operator|.
+name|getLocalID
+argument_list|()
+operator|+
+literal|"}"
+operator|+
+literal|", shouldCreateContainer="
+operator|+
+name|shouldCreateContainer
+operator|+
+literal|", length="
+operator|+
+name|length
+operator|+
+literal|", offset="
+operator|+
+name|offset
+operator|+
+literal|", createVersion="
+operator|+
+name|createVersion
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 
