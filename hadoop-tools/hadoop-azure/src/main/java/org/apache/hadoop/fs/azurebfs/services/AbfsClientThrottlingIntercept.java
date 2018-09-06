@@ -129,17 +129,6 @@ argument_list|(
 literal|"write"
 argument_list|)
 expr_stmt|;
-name|isAutoThrottlingEnabled
-operator|=
-literal|true
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Client-side throttling is enabled for the ABFS file system."
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|initializeSingleton (boolean isAutoThrottlingEnabled)
 specifier|public
@@ -172,6 +161,17 @@ operator|=
 operator|new
 name|AbfsClientThrottlingIntercept
 argument_list|()
+expr_stmt|;
+name|isAutoThrottlingEnabled
+operator|=
+literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Client-side throttling is enabled for the ABFS file system."
+argument_list|)
 expr_stmt|;
 block|}
 block|}
