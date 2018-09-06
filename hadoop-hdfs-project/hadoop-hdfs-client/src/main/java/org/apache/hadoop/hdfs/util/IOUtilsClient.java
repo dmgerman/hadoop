@@ -73,11 +73,11 @@ class|class
 name|IOUtilsClient
 block|{
 comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link IOException} or    * null pointers. Must only be used for cleanup in exception handlers.    *    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    */
-DECL|method|cleanup (Logger log, java.io.Closeable... closeables)
+DECL|method|cleanupWithLogger (Logger log, java.io.Closeable... closeables)
 specifier|public
 specifier|static
 name|void
-name|cleanup
+name|cleanupWithLogger
 parameter_list|(
 name|Logger
 name|log

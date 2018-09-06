@@ -3668,9 +3668,9 @@ condition|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
-literal|null
+name|LOG
 argument_list|,
 name|peer
 argument_list|)

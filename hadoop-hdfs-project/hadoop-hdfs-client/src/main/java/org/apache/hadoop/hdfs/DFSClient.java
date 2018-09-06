@@ -9413,9 +9413,9 @@ finally|finally
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
-literal|null
+name|LOG
 argument_list|,
 name|pair
 operator|.
@@ -13960,7 +13960,7 @@ condition|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,

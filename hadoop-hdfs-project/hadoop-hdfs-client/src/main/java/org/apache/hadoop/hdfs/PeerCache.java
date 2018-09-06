@@ -858,7 +858,7 @@ block|{
 comment|// Cache disabled.
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -1029,7 +1029,7 @@ break|break;
 block|}
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -1115,7 +1115,7 @@ argument_list|()
 decl_stmt|;
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -1232,7 +1232,7 @@ control|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,

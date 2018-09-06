@@ -180,7 +180,9 @@ name|commons
 operator|.
 name|logging
 operator|.
-name|LogFactory
+name|impl
+operator|.
+name|Log4JLogger
 import|;
 end_import
 
@@ -188,15 +190,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|logging
+name|slf4j
 operator|.
-name|impl
-operator|.
-name|Log4JLogger
+name|LoggerFactory
 import|;
 end_import
 
@@ -443,12 +449,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|TestDataNodeMetricsLogger
 operator|.

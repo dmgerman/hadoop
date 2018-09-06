@@ -711,7 +711,7 @@ condition|)
 block|{
 name|toEvict
 operator|.
-name|cleanupWithLogger
+name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
@@ -922,7 +922,7 @@ control|)
 block|{
 name|ofc
 operator|.
-name|cleanupWithLogger
+name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
@@ -1083,7 +1083,7 @@ control|)
 block|{
 name|ofc
 operator|.
-name|cleanupWithLogger
+name|cleanup
 argument_list|()
 expr_stmt|;
 block|}

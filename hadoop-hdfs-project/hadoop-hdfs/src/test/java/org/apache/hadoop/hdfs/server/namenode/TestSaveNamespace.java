@@ -584,9 +584,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|log4j
+name|event
 operator|.
 name|Level
 import|;
@@ -668,7 +668,7 @@ name|LOG
 argument_list|,
 name|Level
 operator|.
-name|ALL
+name|TRACE
 argument_list|)
 expr_stmt|;
 block|}

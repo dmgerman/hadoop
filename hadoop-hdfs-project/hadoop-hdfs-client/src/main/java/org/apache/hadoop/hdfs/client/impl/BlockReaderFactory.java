@@ -2512,7 +2512,7 @@ argument_list|)
 expr_stmt|;
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -2545,7 +2545,7 @@ argument_list|)
 expr_stmt|;
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -2895,7 +2895,7 @@ condition|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|DFSClient
 operator|.
@@ -3250,7 +3250,7 @@ parameter_list|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -3358,7 +3358,7 @@ condition|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -3532,7 +3532,7 @@ condition|)
 block|{
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,

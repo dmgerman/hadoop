@@ -4524,6 +4524,18 @@ name|apache
 operator|.
 name|log4j
 operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
 name|Appender
 import|;
 end_import
@@ -4537,18 +4549,6 @@ operator|.
 name|log4j
 operator|.
 name|AsyncAppender
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|log4j
-operator|.
-name|Logger
 import|;
 end_import
 

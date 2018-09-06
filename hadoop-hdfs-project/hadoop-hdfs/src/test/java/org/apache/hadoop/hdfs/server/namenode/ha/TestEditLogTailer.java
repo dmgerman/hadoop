@@ -420,9 +420,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|log4j
+name|event
 operator|.
 name|Level
 import|;
@@ -523,12 +523,6 @@ name|FSEditLog
 operator|.
 name|LOG
 argument_list|,
-name|org
-operator|.
-name|slf4j
-operator|.
-name|event
-operator|.
 name|Level
 operator|.
 name|DEBUG

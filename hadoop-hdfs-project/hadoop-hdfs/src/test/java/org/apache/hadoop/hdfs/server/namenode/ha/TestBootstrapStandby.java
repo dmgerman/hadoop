@@ -132,13 +132,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -146,13 +142,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -428,12 +420,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|TestBootstrapStandby
 operator|.
@@ -1114,9 +1106,9 @@ name|LogCapturer
 operator|.
 name|captureLogs
 argument_list|(
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|BootstrapStandby
 operator|.
@@ -1147,16 +1139,17 @@ name|stopCapturing
 argument_list|()
 expr_stmt|;
 block|}
-name|GenericTestUtils
-operator|.
-name|assertMatches
+name|assertTrue
 argument_list|(
 name|logs
 operator|.
 name|getOutput
 argument_list|()
-argument_list|,
-literal|"FATAL.*Unable to read transaction ids 1-3 from the configured shared"
+operator|.
+name|contains
+argument_list|(
+literal|"Unable to read transaction ids 1-3 from the configured shared"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

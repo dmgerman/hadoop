@@ -358,9 +358,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|log4j
+name|event
 operator|.
 name|Level
 import|;
@@ -425,7 +425,7 @@ name|LOG
 parameter_list|,
 name|Level
 operator|.
-name|ALL
+name|TRACE
 parameter_list|)
 constructor_decl|;
 block|}

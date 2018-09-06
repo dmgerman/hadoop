@@ -3865,7 +3865,7 @@ expr_stmt|;
 comment|// Close and join cacheCleaner thread.
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -4100,7 +4100,7 @@ expr_stmt|;
 block|}
 name|IOUtilsClient
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
