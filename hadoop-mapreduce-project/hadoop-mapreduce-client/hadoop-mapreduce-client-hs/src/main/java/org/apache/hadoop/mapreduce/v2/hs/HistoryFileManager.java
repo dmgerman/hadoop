@@ -5538,6 +5538,8 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|intermediateDoneDirFc
 operator|.
 name|rename
@@ -5553,6 +5555,59 @@ operator|.
 name|NONE
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|doneDirFc
+operator|.
+name|util
+argument_list|()
+operator|.
+name|exists
+argument_list|(
+name|target
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Source file "
+operator|+
+name|src
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" not found, but target "
+operator|+
+literal|"file "
+operator|+
+name|target
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" already exists. Move already "
+operator|+
+literal|"happened."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 block|}
 DECL|method|getJobSummary (FileContext fc, Path path)
 specifier|private
