@@ -2863,35 +2863,6 @@ operator|.
 name|getLatestVersionLocations
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|latest
-operator|==
-literal|null
-condition|)
-block|{
-comment|// This means that we have a key without any blocks.
-comment|// BUG-BUG: if this happens the key will never be deleted.
-comment|// TODO: Right thing to do is to remove this key right here.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Found a key without blocks: {}, skipping for now."
-argument_list|,
-name|DFSUtil
-operator|.
-name|bytes2String
-argument_list|(
-name|kv
-operator|.
-name|getKey
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 name|List
 argument_list|<
 name|BlockID
