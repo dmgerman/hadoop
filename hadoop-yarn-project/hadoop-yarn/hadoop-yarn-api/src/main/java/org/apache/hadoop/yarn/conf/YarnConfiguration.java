@@ -10837,6 +10837,26 @@ name|ROUTER_PREFIX
 operator|+
 literal|"webapp."
 decl_stmt|;
+DECL|field|ROUTER_USER_CLIENT_THREADS_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ROUTER_USER_CLIENT_THREADS_SIZE
+init|=
+name|ROUTER_PREFIX
+operator|+
+literal|"interceptor.user.threadpool-size"
+decl_stmt|;
+DECL|field|DEFAULT_ROUTER_USER_CLIENT_THREADS_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_ROUTER_USER_CLIENT_THREADS_SIZE
+init|=
+literal|5
+decl_stmt|;
 comment|/** The address of the Router web application. */
 DECL|field|ROUTER_WEBAPP_ADDRESS
 specifier|public
