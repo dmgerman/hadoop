@@ -3236,9 +3236,6 @@ return|return
 operator|new
 name|OzoneInputStream
 argument_list|(
-operator|(
-name|ChunkGroupInputStream
-operator|)
 name|lengthInputStream
 operator|.
 name|getWrappedStream
