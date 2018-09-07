@@ -58,6 +58,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|cli
+operator|.
+name|HddsVersionProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
@@ -197,6 +213,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Callable
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -228,16 +256,54 @@ name|OZONE_URI_SCHEME
 import|;
 end_import
 
+begin_import
+import|import
+name|picocli
+operator|.
+name|CommandLine
+operator|.
+name|Command
+import|;
+end_import
+
+begin_import
+import|import
+name|picocli
+operator|.
+name|CommandLine
+operator|.
+name|ParentCommand
+import|;
+end_import
+
 begin_comment
 comment|/**  * Common interface for command handling.  */
 end_comment
 
 begin_class
+annotation|@
+name|Command
+argument_list|(
+name|mixinStandardHelpOptions
+operator|=
+literal|true
+argument_list|,
+name|versionProvider
+operator|=
+name|HddsVersionProvider
+operator|.
+name|class
+argument_list|)
 DECL|class|Handler
 specifier|public
 specifier|abstract
 class|class
 name|Handler
+implements|implements
+name|Callable
+argument_list|<
+name|Void
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|protected
@@ -260,10 +326,16 @@ specifier|protected
 name|OzoneClient
 name|client
 decl_stmt|;
+annotation|@
+name|ParentCommand
+DECL|field|parent
+specifier|private
+name|Shell
+name|parent
+decl_stmt|;
 comment|/**    * Executes the Client command.    *    * @param cmd - CommandLine    * @throws IOException    * @throws OzoneException    * @throws URISyntaxException    */
 DECL|method|execute (CommandLine cmd)
 specifier|protected
-specifier|abstract
 name|void
 name|execute
 parameter_list|(
@@ -276,7 +348,29 @@ throws|,
 name|OzoneException
 throws|,
 name|URISyntaxException
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|call ()
+specifier|public
+name|Void
+name|call
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 comment|/**    * verifies user provided URI.    *    * @param uri - UriString    * @return URI    * @throws URISyntaxException    * @throws OzoneException    */
 DECL|method|verifyURI (String uri)
 specifier|protected
@@ -766,6 +860,19 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|isVerbose ()
+specifier|public
+name|boolean
+name|isVerbose
+parameter_list|()
+block|{
+return|return
+name|parent
+operator|.
+name|isVerbose
+argument_list|()
+return|;
 block|}
 block|}
 end_class
