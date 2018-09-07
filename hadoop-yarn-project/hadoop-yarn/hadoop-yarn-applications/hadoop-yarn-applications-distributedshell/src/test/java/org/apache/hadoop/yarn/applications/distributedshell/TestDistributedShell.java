@@ -4802,6 +4802,36 @@ name|localIPCheck
 operator|)
 return|;
 block|}
+DECL|method|getSleepCommand (int sec)
+specifier|private
+name|String
+name|getSleepCommand
+parameter_list|(
+name|int
+name|sec
+parameter_list|)
+block|{
+comment|// Windows doesn't have a sleep command, ping -n does the trick
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"ping -n "
+operator|+
+operator|(
+name|sec
+operator|+
+literal|1
+operator|)
+operator|+
+literal|" 127.0.0.1>nul"
+else|:
+literal|"sleep "
+operator|+
+name|sec
+return|;
+block|}
 annotation|@
 name|Test
 DECL|method|testDSRestartWithPreviousRunningContainers ()
@@ -4827,7 +4857,10 @@ literal|"1"
 block|,
 literal|"--shell_command"
 block|,
-literal|"sleep 8"
+name|getSleepCommand
+argument_list|(
+literal|8
+argument_list|)
 block|,
 literal|"--master_memory"
 block|,
@@ -4936,7 +4969,10 @@ literal|"1"
 block|,
 literal|"--shell_command"
 block|,
-literal|"sleep 8"
+name|getSleepCommand
+argument_list|(
+literal|8
+argument_list|)
 block|,
 literal|"--master_memory"
 block|,
@@ -5063,7 +5099,10 @@ literal|"1"
 block|,
 literal|"--shell_command"
 block|,
-literal|"sleep 8"
+name|getSleepCommand
+argument_list|(
+literal|8
+argument_list|)
 block|,
 literal|"--master_memory"
 block|,

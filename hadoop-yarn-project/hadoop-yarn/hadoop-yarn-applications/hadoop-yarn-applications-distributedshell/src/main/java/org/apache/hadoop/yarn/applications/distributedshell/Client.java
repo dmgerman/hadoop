@@ -5041,10 +5041,14 @@ argument_list|(
 literal|"Setting up app master command"
 argument_list|)
 expr_stmt|;
+comment|// Need extra quote here because JAVA_HOME might contain space on Windows,
+comment|// e.g. C:/Program Files/Java...
 name|vargs
 operator|.
 name|add
 argument_list|(
+literal|"\""
+operator|+
 name|Environment
 operator|.
 name|JAVA_HOME
@@ -5052,7 +5056,7 @@ operator|.
 name|$$
 argument_list|()
 operator|+
-literal|"/bin/java"
+literal|"/bin/java\""
 argument_list|)
 expr_stmt|;
 comment|// Set Xmx based on am memory size
