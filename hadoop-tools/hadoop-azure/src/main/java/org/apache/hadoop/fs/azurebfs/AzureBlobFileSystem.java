@@ -2810,6 +2810,26 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+name|super
+operator|.
+name|setOwner
+argument_list|(
+name|path
+argument_list|,
+name|owner
+argument_list|,
+name|group
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
 operator|(
 name|owner
 operator|==
@@ -2903,6 +2923,24 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+name|super
+operator|.
+name|setPermission
+argument_list|(
+name|path
+argument_list|,
+name|permission
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
 name|permission
 operator|==
 literal|null
@@ -2980,6 +3018,23 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"modifyAclEntries is only supported by storage accounts "
+operator|+
+literal|"with the hierarchical namespace enabled."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|aclSpec
@@ -3063,6 +3118,23 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"removeAclEntries is only supported by storage accounts "
+operator|+
+literal|"with the hierarchical namespace enabled."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|aclSpec
 operator|==
 literal|null
@@ -3135,6 +3207,23 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"removeDefaultAcl is only supported by storage accounts"
+operator|+
+literal|" with the hierarchical namespace enabled."
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 name|abfsStore
@@ -3187,6 +3276,23 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"removeAcl is only supported by storage accounts"
+operator|+
+literal|" with the hierarchical namespace enabled."
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 name|abfsStore
@@ -3246,6 +3352,23 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"setAcl is only supported by storage accounts"
+operator|+
+literal|" with the hierarchical namespace enabled."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|aclSpec
@@ -3325,6 +3448,23 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|getIsNamespaceEnabeld
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"getAclStatus is only supported by storage accounts"
+operator|+
+literal|" with the hierarchical namespace enabled."
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 return|return
