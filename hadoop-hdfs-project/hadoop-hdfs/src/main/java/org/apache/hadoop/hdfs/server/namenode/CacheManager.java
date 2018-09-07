@@ -149,6 +149,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CACHING_ENABLED_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1270,6 +1302,13 @@ operator|new
 name|SerializerCompat
 argument_list|()
 decl_stmt|;
+comment|/**    * Whether caching is enabled.    *    * If caching is disabled, we will not process cache reports or store    * information about what is cached where.  We also do not start the    * CacheReplicationMonitor thread.  This will save resources, but provide    * less functionality.    *    * Even when caching is disabled, we still store path-based cache    * information.  This information is stored in the edit log and fsimage.  We    * don't want to lose it just because a configuration setting was turned off.    * However, we will not act on this information if caching is disabled.    */
+DECL|field|enabled
+specifier|private
+specifier|final
+name|boolean
+name|enabled
+decl_stmt|;
 comment|/**    * The CacheReplicationMonitor.    */
 DECL|field|monitor
 specifier|private
@@ -1380,6 +1419,19 @@ literal|1
 expr_stmt|;
 name|this
 operator|.
+name|enabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_NAMENODE_CACHING_ENABLED_KEY
+argument_list|,
+name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|maxListCachePoolsResponses
 operator|=
 name|conf
@@ -1454,6 +1506,8 @@ name|this
 operator|.
 name|cachedBlocks
 operator|=
+name|enabled
+condition|?
 operator|new
 name|LightWeightGSet
 argument_list|<
@@ -1471,7 +1525,24 @@ argument_list|,
 literal|"cachedBlocks"
 argument_list|)
 argument_list|)
+else|:
+operator|new
+name|LightWeightGSet
+argument_list|<>
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isEnabled ()
+specifier|public
+name|boolean
+name|isEnabled
+parameter_list|()
+block|{
+return|return
+name|enabled
+return|;
 block|}
 comment|/**    * Resets all tracked directives and pools. Called during 2NN checkpointing to    * reset FSNamesystem state. See {@link FSNamesystem#clear()}.    */
 DECL|method|clear ()
@@ -1505,6 +1576,24 @@ name|void
 name|startMonitorThread
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|isEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not starting CacheReplicationMonitor as name-node caching"
+operator|+
+literal|" is disabled."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|crmLock
 operator|.
 name|lock
@@ -1561,6 +1650,15 @@ name|void
 name|stopMonitorThread
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|isEnabled
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|crmLock
 operator|.
 name|lock
@@ -5081,6 +5179,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|enabled
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Ignoring cache report from {} because {} = false. "
+operator|+
+literal|"number of blocks: {}"
+argument_list|,
+name|datanodeID
+argument_list|,
+name|DFS_NAMENODE_CACHING_ENABLED_KEY
+argument_list|,
+name|blockIds
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|namesystem
 operator|.
 name|writeLock

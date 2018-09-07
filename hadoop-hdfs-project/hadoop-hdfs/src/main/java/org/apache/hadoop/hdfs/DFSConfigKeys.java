@@ -2483,6 +2483,24 @@ name|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS_DEFAULT
 init|=
 literal|30000L
 decl_stmt|;
+DECL|field|DFS_NAMENODE_CACHING_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_CACHING_ENABLED_KEY
+init|=
+literal|"dfs.namenode.caching.enabled"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/** Pending period of block deletion since NameNode startup */
 DECL|field|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
 specifier|public
