@@ -397,10 +397,10 @@ comment|/**  * Tests for ContainerStateManager.  */
 end_comment
 
 begin_class
-DECL|class|TestContainerStateManager
+DECL|class|TestContainerStateManagerIntegration
 specifier|public
 class|class
-name|TestContainerStateManager
+name|TestContainerStateManagerIntegration
 block|{
 DECL|field|conf
 specifier|private
