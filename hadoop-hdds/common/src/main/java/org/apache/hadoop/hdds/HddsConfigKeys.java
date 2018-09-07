@@ -208,6 +208,26 @@ name|HDDS_CONTAINER_CLOSE_THRESHOLD_DEFAULT
 init|=
 literal|0.9f
 decl_stmt|;
+comment|// % of containers which should have at least one reported replica
+comment|// before SCM comes out of chill mode.
+DECL|field|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
+init|=
+literal|"hdds.scm.chillmode.threshold.pct"
+decl_stmt|;
+DECL|field|HDDS_SCM_CHILLMODE_THRESHOLD_PCT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|double
+name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT_DEFAULT
+init|=
+literal|0.99
+decl_stmt|;
 block|}
 end_class
 

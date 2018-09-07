@@ -369,10 +369,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Shutdown the MiniOzoneCluster.    */
+comment|/**    * Shutdown the MiniOzoneCluster and delete the storage dirs.    */
 DECL|method|shutdown ()
 name|void
 name|shutdown
+parameter_list|()
+function_decl|;
+comment|/**    * Stop the MiniOzoneCluster without any cleanup.    */
+DECL|method|stop ()
+name|void
+name|stop
+parameter_list|()
+function_decl|;
+comment|/**    * Start Scm.    */
+DECL|method|startScm ()
+name|void
+name|startScm
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Start DataNodes.    */
+DECL|method|startHddsDatanodes ()
+name|void
+name|startHddsDatanodes
 parameter_list|()
 function_decl|;
 comment|/**    * Builder class for MiniOzoneCluster.    */
@@ -524,6 +544,13 @@ name|numOfDatanodes
 init|=
 literal|1
 decl_stmt|;
+DECL|field|startDataNodes
+specifier|protected
+name|boolean
+name|startDataNodes
+init|=
+literal|true
+decl_stmt|;
 DECL|method|Builder (OzoneConfiguration conf)
 specifier|protected
 name|Builder
@@ -584,6 +611,25 @@ block|{
 name|clusterId
 operator|=
 name|id
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setStartDataNodes (boolean startDataNodes)
+specifier|public
+name|Builder
+name|setStartDataNodes
+parameter_list|(
+name|boolean
+name|startDataNodes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|startDataNodes
+operator|=
+name|startDataNodes
 expr_stmt|;
 return|return
 name|this
