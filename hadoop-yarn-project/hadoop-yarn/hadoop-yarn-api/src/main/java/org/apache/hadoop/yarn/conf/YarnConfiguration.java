@@ -6670,7 +6670,9 @@ name|DEFAULT_NM_DOCKER_ALLOW_DELAYED_REMOVAL
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * A configurable value to pass to the Docker Stop command. This value    * defines the number of seconds between the docker stop command sending    * a SIGTERM and a SIGKILL.    */
+comment|/**    * A configurable value to pass to the Docker Stop command. This value    * defines the number of seconds between the docker stop command sending    * a SIGTERM and a SIGKILL.    *    * @deprecated use {@link YarnConfiguration#NM_SLEEP_DELAY_BEFORE_SIGKILL_MS}    */
+annotation|@
+name|Deprecated
 DECL|field|NM_DOCKER_STOP_GRACE_PERIOD
 specifier|public
 specifier|static
@@ -6683,6 +6685,8 @@ operator|+
 literal|"stop.grace-period"
 decl_stmt|;
 comment|/**    * The default value for the grace period between the SIGTERM and the    * SIGKILL in the Docker Stop command.    */
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_NM_DOCKER_STOP_GRACE_PERIOD
 specifier|public
 specifier|static
