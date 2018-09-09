@@ -1806,6 +1806,35 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"STATE* Safe mode is ON.\n"
+operator|+
+literal|"It was turned on manually. "
+operator|+
+literal|"Use \"hdfs dfsrouteradmin -safemode leave\" to turn"
+operator|+
+literal|" safe mode off."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to enter safemode."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|EnterSafeModeResponse
@@ -1876,6 +1905,31 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"STATE* Safe mode is OFF.\n"
+operator|+
+literal|"It was turned off manually."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to leave safemode."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|LeaveSafeModeResponse
@@ -1927,6 +1981,13 @@ name|safeModeService
 operator|.
 name|isInSafeMode
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Safemode status retrieved successfully."
+argument_list|)
 expr_stmt|;
 block|}
 return|return
@@ -2074,6 +2135,33 @@ argument_list|(
 name|nsId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Nameservice {} disabled successfully."
+argument_list|,
+name|nsId
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to disable Nameservice {}"
+argument_list|,
+name|nsId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -2245,6 +2333,33 @@ argument_list|(
 name|nsId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Nameservice {} enabled successfully."
+argument_list|,
+name|nsId
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to enable Nameservice {}"
+argument_list|,
+name|nsId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
