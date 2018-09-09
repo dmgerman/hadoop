@@ -396,6 +396,8 @@ operator|.
 name|LifeCycleState
 name|state
 decl_stmt|;
+annotation|@
+name|JsonIgnore
 DECL|field|pipelineID
 specifier|private
 name|PipelineID
