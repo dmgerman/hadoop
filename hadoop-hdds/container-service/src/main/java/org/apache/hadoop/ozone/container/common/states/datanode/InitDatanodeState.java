@@ -551,6 +551,45 @@ range|:
 name|addresses
 control|)
 block|{
+if|if
+condition|(
+name|addr
+operator|.
+name|isUnresolved
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"One SCM address ({}) can't (yet?) be resolved. Postpone "
+operator|+
+literal|"initialization."
+argument_list|,
+name|addr
+argument_list|)
+expr_stmt|;
+comment|//skip any further initialization. DatanodeStateMachine will try it
+comment|// again after the hb frequency
+return|return
+name|this
+operator|.
+name|context
+operator|.
+name|getState
+argument_list|()
+return|;
+block|}
+block|}
+for|for
+control|(
+name|InetSocketAddress
+name|addr
+range|:
+name|addresses
+control|)
+block|{
 name|connectionManager
 operator|.
 name|addSCMServer
