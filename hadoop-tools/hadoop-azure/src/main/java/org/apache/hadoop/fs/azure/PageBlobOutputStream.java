@@ -164,6 +164,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Locale
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|CountDownLatch
@@ -203,6 +213,20 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StreamCapabilities
 import|;
 end_import
 
@@ -383,6 +407,8 @@ extends|extends
 name|OutputStream
 implements|implements
 name|Syncable
+implements|,
+name|StreamCapabilities
 block|{
 comment|/**    * The maximum number of raw bytes Azure Storage allows us to upload in a    * single request (4 MB).    */
 DECL|field|MAX_RAW_BYTES_PER_REQUEST
@@ -780,6 +806,49 @@ block|{
 throw|throw
 name|lastError
 throw|;
+block|}
+block|}
+comment|/**    * Query the stream for a specific capability.    *    * @param capability string to query the stream support for.    * @return true for hsync and hflush.    */
+annotation|@
+name|Override
+DECL|method|hasCapability (String capability)
+specifier|public
+name|boolean
+name|hasCapability
+parameter_list|(
+name|String
+name|capability
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|capability
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
+condition|)
+block|{
+case|case
+name|StreamCapabilities
+operator|.
+name|HSYNC
+case|:
+case|case
+name|StreamCapabilities
+operator|.
+name|HFLUSH
+case|:
+return|return
+literal|true
+return|;
+default|default:
+return|return
+literal|false
+return|;
 block|}
 block|}
 comment|/**    * Closes this output stream and releases any system resources associated with    * this stream. If any data remains in the buffer it is committed to the    * service.    */
