@@ -234,13 +234,13 @@ name|String
 name|queuesConfig
 init|=
 comment|// guaranteed,max,used,pending,reserved
-literal|"root(=[100 100 79 120 0]);"
+literal|"root(=[100 100 79 110 0]);"
 operator|+
 comment|// root
 literal|"-a(=[11 100 11 50 0]);"
 operator|+
 comment|// a
-literal|"-b(=[40 100 38 60 0]);"
+literal|"-b(=[40 100 38 50 0]);"
 operator|+
 comment|// b
 literal|"-c(=[20 100 10 10 0]);"
@@ -435,13 +435,13 @@ name|String
 name|queuesConfig
 init|=
 comment|// guaranteed,max,used,pending,reserved
-literal|"root(=[100 100 80 120 0]);"
+literal|"root(=[100 100 80 110 0]);"
 operator|+
 comment|// root
 literal|"-a(=[11 100 11 50 0]);"
 operator|+
 comment|// a
-literal|"-b(=[40 100 38 60 0]);"
+literal|"-b(=[40 100 38 50 0]);"
 operator|+
 comment|// b
 literal|"-c(=[20 100 10 10 0]);"
@@ -2877,6 +2877,209 @@ argument_list|(
 name|getAppAttemptId
 argument_list|(
 literal|6
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIntraQueuePreemptionAfterQueueDropped ()
+specifier|public
+name|void
+name|testIntraQueuePreemptionAfterQueueDropped
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|/**      * Test intra queue preemption after under-served queue dropped,      * At first, Queue structure is:      *      *<pre>      *       root      *     /  | | \      *    a  b  c  d      *</pre>      *      * After dropped under-served queue "c", Queue structure is:      *      *<pre>      *       root      *     /  |  \      *    a   b  d      *</pre>      *      * Verify no exception is thrown and preemption results is correct      */
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
+argument_list|)
+expr_stmt|;
+name|String
+name|labelsConfig
+init|=
+literal|"=100,true;"
+decl_stmt|;
+name|String
+name|nodesConfig
+init|=
+comment|// n1 has no label
+literal|"n1= res=100"
+decl_stmt|;
+name|String
+name|queuesConfig
+init|=
+comment|// guaranteed,max,used,pending,reserved
+literal|"root(=[100 100 79 110 0]);"
+operator|+
+comment|// root
+literal|"-a(=[11 100 11 50 0]);"
+operator|+
+comment|// a
+literal|"-b(=[40 100 38 50 0]);"
+operator|+
+comment|// b
+literal|"-c(=[20 100 10 10 0]);"
+operator|+
+comment|// c
+literal|"-d(=[29 100 20 0 0])"
+decl_stmt|;
+comment|// d
+name|String
+name|appsConfig
+init|=
+comment|// queueName\t(priority,resource,host,expression,#repeat,reserved,
+comment|// pending)
+literal|"a\t"
+comment|// app1 in a
+operator|+
+literal|"(1,1,n1,,6,false,25);"
+operator|+
+comment|// app1 a
+literal|"a\t"
+comment|// app2 in a
+operator|+
+literal|"(1,1,n1,,5,false,25);"
+operator|+
+comment|// app2 a
+literal|"b\t"
+comment|// app3 in b
+operator|+
+literal|"(4,1,n1,,34,false,20);"
+operator|+
+comment|// app3 b
+literal|"b\t"
+comment|// app4 in b
+operator|+
+literal|"(4,1,n1,,2,false,10);"
+operator|+
+comment|// app4 b
+literal|"b\t"
+comment|// app4 in b
+operator|+
+literal|"(5,1,n1,,1,false,10);"
+operator|+
+comment|// app5 b
+literal|"b\t"
+comment|// app4 in b
+operator|+
+literal|"(6,1,n1,,1,false,10);"
+operator|+
+comment|// app6 in b
+literal|"c\t"
+comment|// app1 in a
+operator|+
+literal|"(1,1,n1,,10,false,10);"
+operator|+
+literal|"d\t"
+comment|// app7 in c
+operator|+
+literal|"(1,1,n1,,20,false,0)"
+decl_stmt|;
+name|buildEnv
+argument_list|(
+name|labelsConfig
+argument_list|,
+name|nodesConfig
+argument_list|,
+name|queuesConfig
+argument_list|,
+name|appsConfig
+argument_list|)
+expr_stmt|;
+name|policy
+operator|.
+name|editSchedule
+argument_list|()
+expr_stmt|;
+name|queuesConfig
+operator|=
+comment|// guaranteed,max,used,pending,reserved
+literal|"root(=[100 100 69 100 0]);"
+operator|+
+comment|// root
+literal|"-a(=[11 100 11 50 0]);"
+operator|+
+comment|// a
+literal|"-b(=[40 100 38 50 0]);"
+operator|+
+comment|// b
+literal|"-d(=[49 100 20 0 0])"
+expr_stmt|;
+comment|// d
+name|updateQueueConfig
+argument_list|(
+name|queuesConfig
+argument_list|)
+expr_stmt|;
+comment|// will throw YarnRuntimeException(This shouldn't happen, cannot find
+comment|// TempQueuePerPartition for queueName=c) without patch in YARN-8709
+name|policy
+operator|.
+name|editSchedule
+argument_list|()
+expr_stmt|;
+comment|// For queue B, app3 and app4 were of lower priority. Hence take 8
+comment|// containers from them by hitting the intraQueuePreemptionDemand of 20%.
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|4
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|7
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|3
 argument_list|)
 argument_list|)
 argument_list|)

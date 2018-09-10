@@ -1874,6 +1874,37 @@ name|mClock
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|updateQueueConfig (String queuesConfig)
+specifier|public
+name|void
+name|updateQueueConfig
+parameter_list|(
+name|String
+name|queuesConfig
+parameter_list|)
+block|{
+name|ParentQueue
+name|root
+init|=
+name|mockQueueHierarchy
+argument_list|(
+name|queuesConfig
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|cs
+operator|.
+name|getRootQueue
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|root
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|mockContainers (String containersConfig, FiCaSchedulerApp app, ApplicationAttemptId attemptId, String queueName, List<RMContainer> reservedContainers, List<RMContainer> liveContainers)
 specifier|private
 name|void
