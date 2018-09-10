@@ -104,6 +104,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|NoECPolicySetException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|erasurecode
@@ -578,6 +594,8 @@ name|dirPath
 argument_list|)
 expr_stmt|;
 comment|// Test unset a directory which has no EC policy
+try|try
+block|{
 name|fs
 operator|.
 name|unsetErasureCodingPolicy
@@ -585,6 +603,16 @@ argument_list|(
 name|dirPath
 argument_list|)
 expr_stmt|;
+name|fail
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoECPolicySetException
+name|e
+parameter_list|)
+block|{     }
 comment|// Set EC policy on directory
 name|fs
 operator|.
@@ -720,7 +748,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*   * Test nested directory with different EC policy.   */
+comment|/*    * Test nested directory with different EC policy.    */
 annotation|@
 name|Test
 DECL|method|testNestedEcPolicy ()
@@ -1139,6 +1167,8 @@ literal|"rep_file"
 argument_list|)
 decl_stmt|;
 comment|// Test unset root path which has no EC policy
+try|try
+block|{
 name|fs
 operator|.
 name|unsetErasureCodingPolicy
@@ -1146,6 +1176,16 @@ argument_list|(
 name|rootPath
 argument_list|)
 expr_stmt|;
+name|fail
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoECPolicySetException
+name|e
+parameter_list|)
+block|{     }
 comment|// Set EC policy on root path
 name|fs
 operator|.
@@ -1353,6 +1393,8 @@ operator|.
 name|RS_3_2_POLICY_ID
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|fs
 operator|.
 name|unsetErasureCodingPolicy
@@ -1360,6 +1402,16 @@ argument_list|(
 name|rootPath
 argument_list|)
 expr_stmt|;
+name|fail
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoECPolicySetException
+name|e
+parameter_list|)
+block|{     }
 name|fs
 operator|.
 name|setErasureCodingPolicy
