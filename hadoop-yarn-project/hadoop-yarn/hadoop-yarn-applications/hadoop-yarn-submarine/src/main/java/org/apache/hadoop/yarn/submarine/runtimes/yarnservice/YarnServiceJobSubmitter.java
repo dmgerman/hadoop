@@ -953,6 +953,17 @@ operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
+name|fw
+operator|.
+name|append
+argument_list|(
+literal|"export HADOOP_COMMON_HOME="
+operator|+
+name|hdfsHome
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -1145,28 +1156,42 @@ name|fw
 operator|.
 name|append
 argument_list|(
-literal|"echo $CLASSPATH\n"
+literal|"echo \"CLASSPATH:$CLASSPATH\"\n"
 argument_list|)
 expr_stmt|;
 name|fw
 operator|.
 name|append
 argument_list|(
-literal|"echo $JAVA_HOME\n"
+literal|"echo \"HADOOP_CONF_DIR:$HADOOP_CONF_DIR\"\n"
 argument_list|)
 expr_stmt|;
 name|fw
 operator|.
 name|append
 argument_list|(
-literal|"echo $LD_LIBRARY_PATH\n"
+literal|"echo \"HADOOP_TOKEN_FILE_LOCATION:$HADOOP_TOKEN_FILE_LOCATION\"\n"
 argument_list|)
 expr_stmt|;
 name|fw
 operator|.
 name|append
 argument_list|(
-literal|"echo $HADOOP_HDFS_HOME\n"
+literal|"echo \"JAVA_HOME:$JAVA_HOME\"\n"
+argument_list|)
+expr_stmt|;
+name|fw
+operator|.
+name|append
+argument_list|(
+literal|"echo \"LD_LIBRARY_PATH:$LD_LIBRARY_PATH\"\n"
+argument_list|)
+expr_stmt|;
+name|fw
+operator|.
+name|append
+argument_list|(
+literal|"echo \"HADOOP_HDFS_HOME:$HADOOP_HDFS_HOME\"\n"
 argument_list|)
 expr_stmt|;
 block|}
