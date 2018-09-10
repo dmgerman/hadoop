@@ -370,7 +370,7 @@ name|ofInstant
 argument_list|(
 name|Instant
 operator|.
-name|ofEpochSecond
+name|ofEpochMilli
 argument_list|(
 name|millis
 argument_list|)
@@ -434,7 +434,7 @@ operator|.
 name|toInstant
 argument_list|()
 operator|.
-name|getEpochSecond
+name|toEpochMilli
 argument_list|()
 return|;
 block|}
