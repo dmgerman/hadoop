@@ -98,6 +98,18 @@ name|nio
 operator|.
 name|file
 operator|.
+name|Files
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
 name|InvalidPathException
 import|;
 end_import
@@ -356,7 +368,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check if the path is valid.    *    * @param path    * @return true, if path is valid, else return false    */
+comment|/**    * Check if the path is valid directory.    *    * @param path    * @return true, if path is valid directory, else return false    */
 DECL|method|isValidPath (String path)
 specifier|public
 specifier|static
@@ -369,13 +381,19 @@ parameter_list|)
 block|{
 try|try
 block|{
+return|return
+name|Files
+operator|.
+name|isDirectory
+argument_list|(
 name|Paths
 operator|.
 name|get
 argument_list|(
 name|path
 argument_list|)
-expr_stmt|;
+argument_list|)
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -389,9 +407,6 @@ return|return
 literal|false
 return|;
 block|}
-return|return
-literal|true
-return|;
 block|}
 comment|/**    * Check if user has permission to write in the specified path.    *    * @param path    * @return true, if the user has permission to write, else returns false    */
 DECL|method|canWrite (String path)
@@ -448,7 +463,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Invalid path or insufficient permission"
+literal|"Invalid directory path."
 argument_list|)
 expr_stmt|;
 return|return
@@ -470,7 +485,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Invalid path or insufficient permission"
+literal|"Insufficient permission."
 argument_list|)
 expr_stmt|;
 return|return
