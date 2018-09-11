@@ -104,6 +104,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Assert
 import|;
 end_import
@@ -577,12 +587,20 @@ specifier|public
 class|class
 name|TestTaskAttemptContainerRequest
 block|{
-comment|//WARNING: This test must be the only test in this file.  This is because
-comment|// there is an optimization where the credentials passed in are cached
-comment|// statically so they do not need to be recomputed when creating a new
-comment|// ContainerLaunchContext. if other tests run first this code will cache
-comment|// their credentials and this test will fail trying to look for the
-comment|// credentials it inserted in.
+annotation|@
+name|After
+DECL|method|cleanup ()
+specifier|public
+name|void
+name|cleanup
+parameter_list|()
+block|{
+name|UserGroupInformation
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testAttemptContainerRequest ()
