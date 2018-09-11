@@ -3246,6 +3246,11 @@ argument_list|(
 literal|"StorageContainerManager"
 argument_list|)
 expr_stmt|;
+name|commandWatcherLeaseManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|getClientProtocolServer
 argument_list|()
 operator|.
