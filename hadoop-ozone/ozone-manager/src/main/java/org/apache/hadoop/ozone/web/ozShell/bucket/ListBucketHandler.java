@@ -276,7 +276,11 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-listBucket"
+literal|"list"
+argument_list|,
+name|aliases
+operator|=
+literal|"ls"
 argument_list|,
 name|description
 operator|=
@@ -315,8 +319,6 @@ operator|=
 block|{
 literal|"--length"
 block|,
-literal|"-length"
-block|,
 literal|"-l"
 block|}
 argument_list|,
@@ -347,8 +349,6 @@ operator|=
 block|{
 literal|"--start"
 block|,
-literal|"-start"
-block|,
 literal|"-s"
 block|}
 argument_list|,
@@ -368,8 +368,6 @@ name|names
 operator|=
 block|{
 literal|"--prefix"
-block|,
-literal|"-prefix"
 block|,
 literal|"-p"
 block|}

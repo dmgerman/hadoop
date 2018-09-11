@@ -234,7 +234,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-infoKey"
+literal|"info"
 argument_list|,
 name|description
 operator|=

@@ -204,7 +204,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-infoBucket"
+literal|"info"
 argument_list|,
 name|description
 operator|=

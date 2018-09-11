@@ -260,7 +260,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-updateBucket"
+literal|"update"
 argument_list|,
 name|description
 operator|=
@@ -298,8 +298,6 @@ name|names
 operator|=
 block|{
 literal|"--addAcl"
-block|,
-literal|"-addAcl"
 block|}
 argument_list|,
 name|description
@@ -320,8 +318,6 @@ name|names
 operator|=
 block|{
 literal|"--removeAcl"
-block|,
-literal|"-removeAcl"
 block|}
 argument_list|,
 name|description

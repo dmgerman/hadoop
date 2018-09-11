@@ -190,7 +190,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-updateVolume"
+literal|"update"
 argument_list|,
 name|description
 operator|=
@@ -228,8 +228,6 @@ name|names
 operator|=
 block|{
 literal|"--user"
-block|,
-literal|"-user"
 block|}
 argument_list|,
 name|description
@@ -248,8 +246,6 @@ name|names
 operator|=
 block|{
 literal|"--quota"
-block|,
-literal|"-quota"
 block|}
 argument_list|,
 name|description

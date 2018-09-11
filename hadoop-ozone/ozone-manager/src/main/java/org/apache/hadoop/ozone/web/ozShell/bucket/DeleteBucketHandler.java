@@ -154,7 +154,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-deleteBucket"
+literal|"delete"
 argument_list|,
 name|description
 operator|=

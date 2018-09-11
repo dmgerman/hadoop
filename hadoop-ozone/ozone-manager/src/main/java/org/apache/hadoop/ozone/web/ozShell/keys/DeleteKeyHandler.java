@@ -170,7 +170,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-deleteKey"
+literal|"delete"
 argument_list|,
 name|description
 operator|=

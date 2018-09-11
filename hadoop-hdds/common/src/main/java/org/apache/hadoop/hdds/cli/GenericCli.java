@@ -126,16 +126,6 @@ name|picocli
 operator|.
 name|CommandLine
 operator|.
-name|ParameterException
-import|;
-end_import
-
-begin_import
-import|import
-name|picocli
-operator|.
-name|CommandLine
-operator|.
 name|RunLast
 import|;
 end_import
@@ -154,6 +144,8 @@ name|Callable
 argument_list|<
 name|Void
 argument_list|>
+implements|,
+name|GenericParentCommand
 block|{
 annotation|@
 name|Option
@@ -345,12 +337,8 @@ name|Exception
 block|{
 throw|throw
 operator|new
-name|ParameterException
-argument_list|(
-name|cmd
-argument_list|,
-literal|"Please choose a subcommand"
-argument_list|)
+name|MissingSubcommandException
+argument_list|()
 throw|;
 block|}
 DECL|method|createOzoneConfiguration ()
@@ -415,16 +403,6 @@ return|return
 name|ozoneConf
 return|;
 block|}
-DECL|method|isVerbose ()
-specifier|public
-name|boolean
-name|isVerbose
-parameter_list|()
-block|{
-return|return
-name|verbose
-return|;
-block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getCmd ()
@@ -437,6 +415,18 @@ parameter_list|()
 block|{
 return|return
 name|cmd
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isVerbose ()
+specifier|public
+name|boolean
+name|isVerbose
+parameter_list|()
+block|{
+return|return
+name|verbose
 return|;
 block|}
 block|}

@@ -114,7 +114,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-deleteVolume"
+literal|"delete"
 argument_list|,
 name|description
 operator|=

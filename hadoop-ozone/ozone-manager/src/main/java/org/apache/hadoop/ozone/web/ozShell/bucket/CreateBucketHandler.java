@@ -204,7 +204,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"-createBucket"
+literal|"create"
 argument_list|,
 name|description
 operator|=
