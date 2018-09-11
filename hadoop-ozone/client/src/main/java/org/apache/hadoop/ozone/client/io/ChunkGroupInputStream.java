@@ -459,6 +459,8 @@ parameter_list|(
 name|int
 name|index
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 return|return
 name|streamEntries
@@ -1104,11 +1106,6 @@ specifier|final
 name|long
 name|length
 decl_stmt|;
-DECL|field|currentPosition
-specifier|private
-name|long
-name|currentPosition
-decl_stmt|;
 DECL|method|ChunkInputStreamEntry (ChunkInputStream chunkInputStream, long length)
 specifier|public
 name|ChunkInputStreamEntry
@@ -1132,23 +1129,20 @@ name|length
 operator|=
 name|length
 expr_stmt|;
-name|this
-operator|.
-name|currentPosition
-operator|=
-literal|0
-expr_stmt|;
 block|}
 DECL|method|getRemaining ()
 specifier|synchronized
 name|long
 name|getRemaining
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
 name|length
 operator|-
-name|currentPosition
+name|getPos
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -1186,10 +1180,6 @@ argument_list|,
 name|len
 argument_list|)
 decl_stmt|;
-name|currentPosition
-operator|+=
-name|readLen
-expr_stmt|;
 return|return
 name|readLen
 return|;
@@ -1213,10 +1203,6 @@ operator|.
 name|read
 argument_list|()
 decl_stmt|;
-name|currentPosition
-operator|+=
-literal|1
-expr_stmt|;
 return|return
 name|data
 return|;
