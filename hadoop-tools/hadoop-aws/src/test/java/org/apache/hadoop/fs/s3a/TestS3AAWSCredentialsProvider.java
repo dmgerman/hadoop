@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -227,20 +237,6 @@ operator|.
 name|retry
 operator|.
 name|RetryPolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
 import|;
 end_import
 
@@ -670,7 +666,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|BasicAWSCredentialsProvider
+name|SimpleAWSCredentialsProvider
 operator|.
 name|class
 argument_list|,
@@ -1091,42 +1087,9 @@ name|refresh
 parameter_list|()
 block|{     }
 block|}
-comment|/**    * Declare what exception to raise, and the text which must be found    * in it.    * @param exceptionClass class of exception    * @param text text in exception    */
-DECL|method|expectException (Class<? extends Throwable> exceptionClass, String text)
-specifier|private
-name|void
-name|expectException
-parameter_list|(
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|Throwable
-argument_list|>
-name|exceptionClass
-parameter_list|,
-name|String
-name|text
-parameter_list|)
-block|{
-name|exception
-operator|.
-name|expect
-argument_list|(
-name|exceptionClass
-argument_list|)
-expr_stmt|;
-name|exception
-operator|.
-name|expectMessage
-argument_list|(
-name|text
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|expectProviderInstantiationFailure (String option, String expectedErrorText)
 specifier|private
-name|void
+name|IOException
 name|expectProviderInstantiationFailure
 parameter_list|(
 name|String
@@ -1170,6 +1133,7 @@ name|DEFAULT_CSVTEST_FILE
 argument_list|)
 argument_list|)
 decl_stmt|;
+return|return
 name|intercept
 argument_list|(
 name|IOException
@@ -1192,7 +1156,7 @@ argument_list|,
 name|conf
 argument_list|)
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Asserts expected provider classes in list.    * @param expectedClasses expected provider classes    * @param list providers to check    */
 DECL|method|assertCredentialProviders ( List<Class<? extends AWSCredentialsProvider>> expectedClasses, AWSCredentialProviderList list)
@@ -1791,6 +1755,97 @@ name|getCredentials
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Verify that IOEs are passed up without being wrapped.    */
+annotation|@
+name|Test
+DECL|method|testIOEInConstructorPropagation ()
+specifier|public
+name|void
+name|testIOEInConstructorPropagation
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|IOException
+name|expected
+init|=
+name|expectProviderInstantiationFailure
+argument_list|(
+name|IOERaisingProvider
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+literal|"expected"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|expected
+operator|instanceof
+name|InterruptedIOException
+operator|)
+condition|)
+block|{
+throw|throw
+name|expected
+throw|;
+block|}
+block|}
+DECL|class|IOERaisingProvider
+specifier|private
+specifier|static
+class|class
+name|IOERaisingProvider
+implements|implements
+name|AWSCredentialsProvider
+block|{
+DECL|method|IOERaisingProvider (URI uri, Configuration conf)
+specifier|public
+name|IOERaisingProvider
+parameter_list|(
+name|URI
+name|uri
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"expected"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCredentials ()
+specifier|public
+name|AWSCredentials
+name|getCredentials
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|refresh ()
+specifier|public
+name|void
+name|refresh
+parameter_list|()
+block|{      }
 block|}
 block|}
 end_class

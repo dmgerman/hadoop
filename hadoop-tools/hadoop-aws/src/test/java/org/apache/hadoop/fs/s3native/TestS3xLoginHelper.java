@@ -20,15 +20,21 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|net
 operator|.
-name|hadoop
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|fs
+name|net
 operator|.
-name|Path
+name|URISyntaxException
 import|;
 end_import
 
@@ -53,22 +59,18 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|net
+name|apache
 operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|hadoop
 operator|.
-name|net
+name|test
 operator|.
-name|URISyntaxException
+name|LambdaTestUtils
+operator|.
+name|intercept
 import|;
 end_import
 
@@ -141,15 +143,6 @@ name|USER
 init|=
 literal|"user"
 decl_stmt|;
-DECL|field|PASS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|PASS
-init|=
-literal|"pass"
-decl_stmt|;
 DECL|field|PASLASHSLASH
 specifier|public
 specifier|static
@@ -195,22 +188,6 @@ init|=
 name|uri
 argument_list|(
 literal|"s3a://user:pass@bucket"
-argument_list|)
-decl_stmt|;
-DECL|field|PATH_WITH_LOGIN
-specifier|public
-specifier|static
-specifier|final
-name|Path
-name|PATH_WITH_LOGIN
-init|=
-operator|new
-name|Path
-argument_list|(
-name|uri
-argument_list|(
-literal|"s3a://user:pass@bucket/dest"
-argument_list|)
 argument_list|)
 decl_stmt|;
 DECL|field|WITH_SLASH_IN_PASS
@@ -362,7 +339,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Assert that a built up FS URI matches the endpoint.    * @param uri URI to build the FS UIR from    */
+comment|/**    * Assert that a built up FS URI matches the endpoint.    * @param uri URI to build the FS URI from    */
 DECL|method|assertMatchesEndpoint (URI uri)
 specifier|private
 name|void
@@ -380,6 +357,39 @@ name|uri
 argument_list|,
 name|ENDPOINT
 argument_list|,
+name|S3xLoginHelper
+operator|.
+name|buildFSURI
+argument_list|(
+name|uri
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assert that the supplied FS URI is invalid as it contains    * username:password secrets.    * @param uri URI to build the FS URI from    */
+DECL|method|assertInvalid (URI uri)
+specifier|private
+name|void
+name|assertInvalid
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|intercept
+argument_list|(
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|,
+name|S3xLoginHelper
+operator|.
+name|LOGIN_WARNING
+argument_list|,
+parameter_list|()
+lambda|->
 name|S3xLoginHelper
 operator|.
 name|buildFSURI
@@ -528,103 +538,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testLoginWithUserAndPass ()
-specifier|public
-name|void
-name|testLoginWithUserAndPass
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|S3xLoginHelper
-operator|.
-name|Login
-name|login
-init|=
-name|assertMatchesLogin
-argument_list|(
-name|USER
-argument_list|,
-name|PASS
-argument_list|,
-name|WITH_USER_AND_PASS
-argument_list|)
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Login of "
-operator|+
-name|login
-argument_list|,
-name|login
-operator|.
-name|hasLogin
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testLoginWithSlashInPass ()
-specifier|public
-name|void
-name|testLoginWithSlashInPass
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|assertMatchesLogin
-argument_list|(
-name|USER
-argument_list|,
-literal|"pa//"
-argument_list|,
-name|WITH_SLASH_IN_PASS
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testLoginWithPlusInPass ()
-specifier|public
-name|void
-name|testLoginWithPlusInPass
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|assertMatchesLogin
-argument_list|(
-name|USER
-argument_list|,
-literal|"pa+"
-argument_list|,
-name|WITH_PLUS_IN_PASS
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testLoginWithPlusRawInPass ()
-specifier|public
-name|void
-name|testLoginWithPlusRawInPass
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|assertMatchesLogin
-argument_list|(
-name|USER
-argument_list|,
-literal|"pa+"
-argument_list|,
-name|WITH_PLUS_RAW_IN_PASS
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testLoginWithUser ()
 specifier|public
 name|void
@@ -733,7 +646,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|assertMatchesEndpoint
+name|assertInvalid
 argument_list|(
 name|WITH_USER_AND_PASS
 argument_list|)
@@ -749,7 +662,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|assertMatchesEndpoint
+name|assertInvalid
 argument_list|(
 name|WITH_SLASH_IN_PASS
 argument_list|)
@@ -765,7 +678,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|assertMatchesEndpoint
+name|assertInvalid
 argument_list|(
 name|WITH_PLUS_IN_PASS
 argument_list|)
@@ -781,7 +694,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|assertMatchesEndpoint
+name|assertInvalid
 argument_list|(
 name|WITH_PLUS_RAW_IN_PASS
 argument_list|)
@@ -797,7 +710,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|assertMatchesEndpoint
+name|assertInvalid
 argument_list|(
 name|USER_NO_PASS
 argument_list|)
@@ -813,7 +726,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|assertMatchesEndpoint
+name|assertInvalid
 argument_list|(
 name|WITH_USER_AND_COLON
 argument_list|)
@@ -867,16 +780,6 @@ name|NO_USER_NO_PASS_TWO_COLON
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-DECL|method|testPathURIFixup ()
-specifier|public
-name|void
-name|testPathURIFixup
-parameter_list|()
-throws|throws
-name|Throwable
-block|{    }
 comment|/**    * Stringifier. Kept in the code to avoid accidental logging in production    * code.    * @return login details for assertions.    */
 DECL|method|toString (S3xLoginHelper.Login login)
 specifier|public

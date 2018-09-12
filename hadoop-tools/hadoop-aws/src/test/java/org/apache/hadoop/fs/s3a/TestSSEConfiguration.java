@@ -375,70 +375,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testKMSGoodOldOptionName ()
-specifier|public
-name|void
-name|testKMSGoodOldOptionName
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|Configuration
-name|conf
-init|=
-name|emptyConf
-argument_list|()
-decl_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|SERVER_SIDE_ENCRYPTION_ALGORITHM
-argument_list|,
-name|SSE_KMS
-operator|.
-name|getMethod
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY
-argument_list|,
-literal|"kmskeyID"
-argument_list|)
-expr_stmt|;
-comment|// verify key round trip
-name|assertEquals
-argument_list|(
-literal|"kmskeyID"
-argument_list|,
-name|getServerSideEncryptionKey
-argument_list|(
-name|BUCKET
-argument_list|,
-name|conf
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// and that KMS lookup finds it
-name|assertEquals
-argument_list|(
-name|SSE_KMS
-argument_list|,
-name|getEncryptionAlgorithm
-argument_list|(
-name|BUCKET
-argument_list|,
-name|conf
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testAESKeySet ()
 specifier|public
 name|void
@@ -594,69 +530,6 @@ argument_list|,
 literal|"keyInConfObject"
 argument_list|)
 expr_stmt|;
-name|String
-name|sseKey
-init|=
-name|getServerSideEncryptionKey
-argument_list|(
-name|BUCKET
-argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
-name|assertNotNull
-argument_list|(
-literal|"Proxy password should not retrun null."
-argument_list|,
-name|sseKey
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Proxy password override did NOT work."
-argument_list|,
-name|key
-argument_list|,
-name|sseKey
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Very that the old key is picked up via the properties.    * @throws Exception failure    */
-annotation|@
-name|Test
-DECL|method|testOldKeyFromCredentialProvider ()
-specifier|public
-name|void
-name|testOldKeyFromCredentialProvider
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// set up conf to have a cred provider
-specifier|final
-name|Configuration
-name|conf
-init|=
-name|confWithProvider
-argument_list|()
-decl_stmt|;
-name|String
-name|key
-init|=
-literal|"provisioned"
-decl_stmt|;
-name|setProviderOption
-argument_list|(
-name|conf
-argument_list|,
-name|OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY
-argument_list|,
-name|key
-argument_list|)
-expr_stmt|;
-comment|// let's set the password in config and ensure that it uses the credential
-comment|// provider provisioned value instead.
-comment|//conf.set(OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY, "oldKeyInConf");
 name|String
 name|sseKey
 init|=
@@ -1282,6 +1155,8 @@ argument_list|,
 name|SECRET_KEY
 argument_list|,
 name|overrideVal
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;

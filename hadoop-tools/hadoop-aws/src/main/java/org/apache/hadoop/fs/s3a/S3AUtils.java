@@ -2523,34 +2523,16 @@ operator|==
 literal|0
 condition|)
 block|{
-name|S3xLoginHelper
-operator|.
-name|Login
-name|creds
-init|=
-name|getAWSAccessKeys
-argument_list|(
-name|binding
-argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
 name|credentials
 operator|.
 name|add
 argument_list|(
 operator|new
-name|BasicAWSCredentialsProvider
+name|SimpleAWSCredentialsProvider
 argument_list|(
-name|creds
-operator|.
-name|getUser
-argument_list|()
+name|binding
 argument_list|,
-name|creds
-operator|.
-name|getPassword
-argument_list|()
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3088,7 +3070,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Return the access key and secret for S3 API use.    * Credentials may exist in configuration, within credential providers    * or indicated in the UserInfo of the name URI param.    * @param name the URI for which we need the access keys; may be null    * @param conf the Configuration object to interrogate for keys.    * @return AWSAccessKeys    * @throws IOException problems retrieving passwords from KMS.    */
+comment|/**    * Return the access key and secret for S3 API use.    * or indicated in the UserInfo of the name URI param.    * @param name the URI for which we need the access keys; may be null    * @param conf the Configuration object to interrogate for keys.    * @return AWSAccessKeys    * @throws IOException problems retrieving passwords from KMS.    */
 DECL|method|getAWSAccessKeys (URI name, Configuration conf)
 specifier|public
 specifier|static
@@ -3108,16 +3090,11 @@ name|IOException
 block|{
 name|S3xLoginHelper
 operator|.
-name|Login
-name|login
-init|=
-name|S3xLoginHelper
-operator|.
-name|extractLoginDetailsWithWarnings
+name|rejectSecretsInURIs
 argument_list|(
 name|name
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|Configuration
 name|c
 init|=
@@ -3146,10 +3123,8 @@ argument_list|()
 else|:
 literal|""
 decl_stmt|;
-comment|// build the secrets. as getPassword() uses the last arg as
-comment|// the return value if non-null, the ordering of
-comment|// login -> bucket -> base is critical
-comment|// get the bucket values
+comment|// get the secrets from the configuration
+comment|// get the access key
 name|String
 name|accessKey
 init|=
@@ -3160,14 +3135,9 @@ argument_list|,
 name|c
 argument_list|,
 name|ACCESS_KEY
-argument_list|,
-name|login
-operator|.
-name|getUser
-argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// finally the base
+comment|// and the secret
 name|String
 name|secretKey
 init|=
@@ -3178,14 +3148,8 @@ argument_list|,
 name|c
 argument_list|,
 name|SECRET_KEY
-argument_list|,
-name|login
-operator|.
-name|getPassword
-argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// and override with any per bucket values
 return|return
 operator|new
 name|S3xLoginHelper
@@ -3199,6 +3163,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get a password from a configuration, including JCEKS files, handling both    * the absolute key and bucket override.    * @param bucket bucket or "" if none known    * @param conf configuration    * @param baseKey base key to look up, e.g "fs.s3a.secret.key"    * @param overrideVal override value: if non empty this is used instead of    * querying the configuration.    * @return a password or "".    * @throws IOException on any IO problem    * @throws IllegalArgumentException bad arguments    */
+annotation|@
+name|Deprecated
 DECL|method|lookupPassword ( String bucket, Configuration conf, String baseKey, String overrideVal)
 specifier|public
 specifier|static
@@ -3230,6 +3196,40 @@ argument_list|,
 name|baseKey
 argument_list|,
 name|overrideVal
+argument_list|,
+literal|""
+argument_list|)
+return|;
+block|}
+comment|/**    * Get a password from a configuration, including JCEKS files, handling both    * the absolute key and bucket override.    * @param bucket bucket or "" if none known    * @param conf configuration    * @param baseKey base key to look up, e.g "fs.s3a.secret.key"    * @return a password or "".    * @throws IOException on any IO problem    * @throws IllegalArgumentException bad arguments    */
+DECL|method|lookupPassword ( String bucket, Configuration conf, String baseKey)
+specifier|public
+specifier|static
+name|String
+name|lookupPassword
+parameter_list|(
+name|String
+name|bucket
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|baseKey
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|lookupPassword
+argument_list|(
+name|bucket
+argument_list|,
+name|conf
+argument_list|,
+name|baseKey
+argument_list|,
+literal|null
 argument_list|,
 literal|""
 argument_list|)
@@ -5450,17 +5450,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|SERVER_SIDE_ENCRYPTION_KEY
-argument_list|,
-name|getPassword
-argument_list|(
-name|conf
-argument_list|,
-name|OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|)
 argument_list|)
 return|;
 block|}
@@ -5515,8 +5504,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|SERVER_SIDE_ENCRYPTION_ALGORITHM
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;

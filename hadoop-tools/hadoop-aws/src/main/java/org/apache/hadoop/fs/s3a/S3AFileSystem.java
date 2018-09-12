@@ -1785,27 +1785,30 @@ name|void
 name|addDeprecatedKeys
 parameter_list|()
 block|{
-name|Configuration
-operator|.
-name|addDeprecations
-argument_list|(
-operator|new
+comment|// this is retained as a placeholder for when new deprecated keys
+comment|// need to be added.
 name|Configuration
 operator|.
 name|DeprecationDelta
 index|[]
+name|deltas
+init|=
+block|{     }
+decl_stmt|;
+if|if
+condition|(
+name|deltas
+operator|.
+name|length
+operator|>
+literal|0
+condition|)
 block|{
-comment|// never shipped in an ASF release, but did get into the wild.
-operator|new
 name|Configuration
 operator|.
-name|DeprecationDelta
+name|addDeprecations
 argument_list|(
-name|OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY
-argument_list|,
-name|SERVER_SIDE_ENCRYPTION_KEY
-argument_list|)
-block|}
+name|deltas
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -1813,6 +1816,7 @@ operator|.
 name|reloadExistingConfigurations
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 static|static
 block|{

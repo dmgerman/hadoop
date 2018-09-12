@@ -828,15 +828,6 @@ name|SERVER_SIDE_ENCRYPTION_KEY
 init|=
 literal|"fs.s3a.server-side-encryption.key"
 decl_stmt|;
-comment|/**    * The original key name. Never used in ASF releases,    * but did get into downstream products.    */
-DECL|field|OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY
-specifier|static
-specifier|final
-name|String
-name|OLD_S3A_SERVER_SIDE_ENCRYPTION_KEY
-init|=
-literal|"fs.s3a.server-side-encryption-key"
-decl_stmt|;
 comment|//override signature algorithm used for signing requests
 DECL|field|SIGNING_ALGORITHM
 specifier|public

@@ -20,6 +20,84 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Objects
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -29,6 +107,34 @@ operator|.
 name|lang3
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -75,76 +181,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|UnsupportedEncodingException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URLDecoder
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Objects
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -161,32 +197,24 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class to aid logging in to S3 endpoints.  * It is in S3N so that it can be used across all S3 filesystems.  */
+comment|/**  * Class to aid logging in to S3 endpoints.  * It is in S3N so that it can be used across all S3 filesystems.  *  * The core function of this class was the extraction and decoding of user:secret  * information from filesystems URIs. As this is no longer supported,  * its role has been reduced to checking for secrets in the URI and rejecting  * them where found.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|S3xLoginHelper
 specifier|public
 specifier|final
 class|class
 name|S3xLoginHelper
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Logger
-name|LOG
-init|=
-name|LoggerFactory
-operator|.
-name|getLogger
-argument_list|(
-name|S3xLoginHelper
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 DECL|method|S3xLoginHelper ()
 specifier|private
 name|S3xLoginHelper
@@ -201,38 +229,9 @@ name|LOGIN_WARNING
 init|=
 literal|"The Filesystem URI contains login details."
 operator|+
-literal|" This is insecure and may be unsupported in future."
+literal|" This authentication mechanism is no longer supported."
 decl_stmt|;
-DECL|field|PLUS_WARNING
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|PLUS_WARNING
-init|=
-literal|"Secret key contains a special character that should be URL encoded! "
-operator|+
-literal|"Attempting to resolve..."
-decl_stmt|;
-DECL|field|PLUS_UNENCODED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|PLUS_UNENCODED
-init|=
-literal|"+"
-decl_stmt|;
-DECL|field|PLUS_ENCODED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|PLUS_ENCODED
-init|=
-literal|"%2B"
-decl_stmt|;
-comment|/**    * Build the filesystem URI. This can include stripping down of part    * of the URI.    * @param uri filesystem uri    * @return the URI to use as the basis for FS operation and qualifying paths.    * @throws IllegalArgumentException if the URI is in some way invalid.    */
+comment|/**    * Build the filesystem URI.    * @param uri filesystem uri    * @return the URI to use as the basis for FS operation and qualifying paths.    * @throws IllegalArgumentException if the URI is in some way invalid.    */
 DECL|method|buildFSURI (URI uri)
 specifier|public
 specifier|static
@@ -243,6 +242,12 @@ name|URI
 name|uri
 parameter_list|)
 block|{
+comment|// look for login secrets and fail if they are present.
+name|rejectSecretsInURIs
+argument_list|(
+name|uri
+argument_list|)
+expr_stmt|;
 name|Objects
 operator|.
 name|requireNonNull
@@ -291,8 +296,6 @@ name|getHost
 argument_list|()
 argument_list|,
 literal|"null uri host."
-operator|+
-literal|" This can be caused by unencoded / in the password string"
 argument_list|)
 expr_stmt|;
 block|}
@@ -368,12 +371,12 @@ else|:
 literal|"(null URI)"
 return|;
 block|}
-comment|/**    * Extract the login details from a URI, logging a warning if    * the URI contains these.    * @param name URI of the filesystem, can be null    * @return a login tuple, possibly empty.    */
-DECL|method|extractLoginDetailsWithWarnings (URI name)
+comment|/**    * Extract the login details from a URI, raising an exception if    * the URI contains them.    * @param name URI of the filesystem, can be null    * @throws IllegalArgumentException if there is a secret in the URI.    */
+DECL|method|rejectSecretsInURIs (URI name)
 specifier|public
 specifier|static
-name|Login
-name|extractLoginDetailsWithWarnings
+name|void
+name|rejectSecretsInURIs
 parameter_list|(
 name|URI
 name|name
@@ -387,29 +390,24 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
 name|login
 operator|.
 name|hasLogin
 argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
+argument_list|,
 name|LOGIN_WARNING
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|login
-return|;
-block|}
 comment|/**    * Extract the login details from a URI.    * @param name URI of the filesystem, may be null    * @return a login tuple, possibly empty.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|extractLoginDetails (URI name)
-specifier|public
 specifier|static
 name|Login
 name|extractLoginDetails
@@ -431,8 +429,6 @@ operator|.
 name|EMPTY
 return|;
 block|}
-try|try
-block|{
 name|String
 name|authority
 init|=
@@ -531,56 +527,20 @@ operator|+
 literal|1
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|encodedPassword
-operator|.
-name|contains
-argument_list|(
-name|PLUS_UNENCODED
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|PLUS_WARNING
-argument_list|)
-expr_stmt|;
-name|encodedPassword
-operator|=
-name|encodedPassword
-operator|.
-name|replaceAll
-argument_list|(
-literal|"\\"
-operator|+
-name|PLUS_UNENCODED
-argument_list|,
-name|PLUS_ENCODED
-argument_list|)
-expr_stmt|;
-block|}
-name|String
-name|password
-init|=
-name|URLDecoder
-operator|.
-name|decode
-argument_list|(
-name|encodedPassword
-argument_list|,
-literal|"UTF-8"
-argument_list|)
-decl_stmt|;
 return|return
 operator|new
 name|Login
 argument_list|(
 name|user
 argument_list|,
-name|password
+name|encodedPassword
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|""
+else|:
+literal|"password removed"
 argument_list|)
 return|;
 block|}
@@ -601,6 +561,8 @@ return|;
 block|}
 else|else
 block|{
+comment|// loginSplit< 0: there is no ":".
+comment|// return a login with a null password
 return|return
 operator|new
 name|Login
@@ -610,22 +572,6 @@ argument_list|,
 literal|""
 argument_list|)
 return|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|UnsupportedEncodingException
-name|e
-parameter_list|)
-block|{
-comment|// this should never happen; translate it if it does.
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-name|e
-argument_list|)
-throw|;
 block|}
 block|}
 comment|/**    * Canonicalize the given URI.    *    * This strips out login information.    *    * @param uri the URI to canonicalize    * @param defaultPort default port to use in canonicalized URI if the input    *     URI has no port and this value is greater than 0    * @return a new, canonicalized URI.    */
@@ -670,7 +616,10 @@ operator|.
 name|getScheme
 argument_list|()
 argument_list|,
-literal|null
+name|uri
+operator|.
+name|getUserInfo
+argument_list|()
 argument_list|,
 name|uri
 operator|.
@@ -998,7 +947,7 @@ operator|=
 name|password
 expr_stmt|;
 block|}
-comment|/**      * Predicate to verify login details are defined.      * @return true if the username is defined (not null, not empty).      */
+comment|/**      * Predicate to verify login details are defined.      * @return true if the instance contains login information.      */
 DECL|method|hasLogin ()
 specifier|public
 name|boolean
@@ -1006,6 +955,13 @@ name|hasLogin
 parameter_list|()
 block|{
 return|return
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|password
+argument_list|)
+operator|||
 name|StringUtils
 operator|.
 name|isNotEmpty
