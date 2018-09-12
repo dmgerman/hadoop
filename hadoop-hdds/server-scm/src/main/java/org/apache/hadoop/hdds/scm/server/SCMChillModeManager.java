@@ -331,7 +331,7 @@ name|CONT_EXIT_RULE
 init|=
 literal|"ContainerChillModeRule"
 decl_stmt|;
-DECL|method|SCMChillModeManager (Configuration conf, List<ContainerInfo> allContainers)
+DECL|method|SCMChillModeManager (Configuration conf, List<ContainerInfo> allContainers, EventPublisher eventQueue)
 name|SCMChillModeManager
 parameter_list|(
 name|Configuration
@@ -342,6 +342,9 @@ argument_list|<
 name|ContainerInfo
 argument_list|>
 name|allContainers
+parameter_list|,
+name|EventPublisher
+name|eventQueue
 parameter_list|)
 block|{
 name|this
@@ -365,6 +368,29 @@ name|allContainers
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_SCM_CHILLMODE_ENABLED
+argument_list|,
+name|HddsConfigKeys
+operator|.
+name|HDDS_SCM_CHILLMODE_ENABLED_DEFAULT
+argument_list|)
+condition|)
+block|{
+name|exitChillMode
+argument_list|(
+name|eventQueue
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|validateChillModeExitRules (EventPublisher eventQueue)
 specifier|private

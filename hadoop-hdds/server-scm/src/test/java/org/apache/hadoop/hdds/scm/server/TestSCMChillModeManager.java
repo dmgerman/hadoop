@@ -21,18 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -63,6 +51,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
 import|;
 end_import
 
@@ -212,6 +214,30 @@ name|Timeout
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
 begin_comment
 comment|/** Test class for SCMChillModeManager.  */
 end_comment
@@ -321,6 +347,8 @@ argument_list|(
 name|config
 argument_list|,
 literal|null
+argument_list|,
+name|queue
 argument_list|)
 expr_stmt|;
 block|}
@@ -362,6 +390,8 @@ argument_list|(
 name|config
 argument_list|,
 name|containers
+argument_list|,
+name|queue
 argument_list|)
 expr_stmt|;
 name|queue
@@ -462,6 +492,8 @@ argument_list|(
 name|config
 argument_list|,
 name|containers
+argument_list|,
+name|queue
 argument_list|)
 expr_stmt|;
 name|queue
@@ -584,6 +616,55 @@ argument_list|,
 literal|1000
 operator|*
 literal|5
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testDisableChillMode ()
+specifier|public
+name|void
+name|testDisableChillMode
+parameter_list|()
+block|{
+name|OzoneConfiguration
+name|conf
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_SCM_CHILLMODE_ENABLED
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|scmChillModeManager
+operator|=
+operator|new
+name|SCMChillModeManager
+argument_list|(
+name|conf
+argument_list|,
+name|containers
+argument_list|,
+name|queue
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|scmChillModeManager
+operator|.
+name|getInChillMode
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

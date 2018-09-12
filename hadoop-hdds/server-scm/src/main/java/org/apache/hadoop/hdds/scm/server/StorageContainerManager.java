@@ -1606,6 +1606,8 @@ argument_list|()
 operator|.
 name|getAllContainers
 argument_list|()
+argument_list|,
+name|eventQueue
 argument_list|)
 expr_stmt|;
 name|PipelineActionEventHandler
