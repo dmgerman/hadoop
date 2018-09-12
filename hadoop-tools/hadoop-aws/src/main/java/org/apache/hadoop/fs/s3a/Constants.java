@@ -1107,6 +1107,20 @@ name|S3GUARD_DDB_TABLE_NAME_KEY
 init|=
 literal|"fs.s3a.s3guard.ddb.table"
 decl_stmt|;
+comment|/**    * A prefix for adding tags to the DDB Table upon creation.    *    * For example:    * fs.s3a.s3guard.ddb.table.tag.mytag    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|S3GUARD_DDB_TABLE_TAG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_DDB_TABLE_TAG
+init|=
+literal|"fs.s3a.s3guard.ddb.table.tag."
+decl_stmt|;
 comment|/**    * Test table name to use during DynamoDB integration test.    *    * The table will be modified, and deleted in the end of the tests.    * If this value is not set, the integration tests that would be destructive    * won't run.    */
 annotation|@
 name|InterfaceStability
