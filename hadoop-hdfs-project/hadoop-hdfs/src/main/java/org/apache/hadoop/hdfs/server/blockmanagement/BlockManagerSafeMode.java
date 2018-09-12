@@ -1877,7 +1877,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Increment number of safe blocks if current block has reached minimal    * replication.    * If safe mode is not currently on, this is a no-op.    * @param storageNum  current number of replicas or number of internal blocks    *                    of a striped block group    * @param storedBlock current storedBlock which is either a    *                    BlockInfoContiguous or a BlockInfoStriped    */
+comment|/**    * Increment number of safe blocks if the current block is contiguous    * and it has reached minimal replication or    * if the current block is striped and the number of its actual data blocks    * reaches the number of data units specified by the erasure coding policy.    * If safe mode is not currently on, this is a no-op.    * @param storageNum  current number of replicas or number of internal blocks    *                    of a striped block group    * @param storedBlock current storedBlock which is either a    *                    BlockInfoContiguous or a BlockInfoStriped    */
 DECL|method|incrementSafeBlockCount (int storageNum, BlockInfo storedBlock)
 specifier|synchronized
 name|void
@@ -1909,7 +1909,7 @@ return|return;
 block|}
 specifier|final
 name|int
-name|safe
+name|safeNumberOfNodes
 init|=
 name|storedBlock
 operator|.
@@ -1932,7 +1932,7 @@ if|if
 condition|(
 name|storageNum
 operator|==
-name|safe
+name|safeNumberOfNodes
 condition|)
 block|{
 name|this
@@ -2003,7 +2003,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Decrement number of safe blocks if current block has fallen below minimal    * replication.    * If safe mode is not currently on, this is a no-op.    */
+comment|/**    * Decrement number of safe blocks if the current block is contiguous    * and it has just fallen below minimal replication or    * if the current block is striped and its actual data blocks has just fallen    * below the number of data units specified by erasure coding policy.    * If safe mode is not currently on, this is a no-op.    */
 DECL|method|decrementSafeBlockCount (BlockInfo b)
 specifier|synchronized
 name|void
@@ -2030,6 +2030,27 @@ condition|)
 block|{
 return|return;
 block|}
+specifier|final
+name|int
+name|safeNumberOfNodes
+init|=
+name|b
+operator|.
+name|isStriped
+argument_list|()
+condition|?
+operator|(
+operator|(
+name|BlockInfoStriped
+operator|)
+name|b
+operator|)
+operator|.
+name|getRealDataBlockNum
+argument_list|()
+else|:
+name|safeReplication
+decl_stmt|;
 name|BlockInfo
 name|storedBlock
 init|=
@@ -2057,7 +2078,7 @@ operator|.
 name|liveReplicas
 argument_list|()
 operator|==
-name|safeReplication
+name|safeNumberOfNodes
 operator|-
 literal|1
 condition|)
