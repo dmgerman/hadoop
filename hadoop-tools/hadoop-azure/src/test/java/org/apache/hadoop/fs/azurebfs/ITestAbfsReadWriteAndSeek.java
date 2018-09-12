@@ -265,6 +265,8 @@ specifier|final
 name|int
 name|size
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.
@@ -311,12 +313,13 @@ specifier|final
 name|AbfsConfiguration
 name|abfsConfiguration
 init|=
-operator|new
-name|AbfsConfiguration
-argument_list|(
-name|getConfiguration
+name|fs
+operator|.
+name|getAbfsStore
 argument_list|()
-argument_list|)
+operator|.
+name|getAbfsConfiguration
+argument_list|()
 decl_stmt|;
 name|abfsConfiguration
 operator|.

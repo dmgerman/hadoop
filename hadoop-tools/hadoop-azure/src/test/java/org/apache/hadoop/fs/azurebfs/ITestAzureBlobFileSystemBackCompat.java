@@ -162,6 +162,8 @@ DECL|method|ITestAzureBlobFileSystemBackCompat ()
 specifier|public
 name|ITestAzureBlobFileSystemBackCompat
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

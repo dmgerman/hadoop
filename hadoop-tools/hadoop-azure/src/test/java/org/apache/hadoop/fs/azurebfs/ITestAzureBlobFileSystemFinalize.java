@@ -147,14 +147,14 @@ name|Exception
 block|{
 comment|// Disable the cache for filesystem to make sure there is no reference.
 name|Configuration
-name|configuration
+name|rawConfig
 init|=
 name|this
 operator|.
-name|getConfiguration
+name|getRawConfiguration
 argument_list|()
 decl_stmt|;
-name|configuration
+name|rawConfig
 operator|.
 name|setBoolean
 argument_list|(
@@ -184,7 +184,7 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|configuration
+name|rawConfig
 argument_list|)
 decl_stmt|;
 name|WeakReference

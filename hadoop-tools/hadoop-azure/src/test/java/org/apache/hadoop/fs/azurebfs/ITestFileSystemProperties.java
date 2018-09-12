@@ -132,6 +132,8 @@ DECL|method|ITestFileSystemProperties ()
 specifier|public
 name|ITestFileSystemProperties
 parameter_list|()
+throws|throws
+name|Exception
 block|{   }
 annotation|@
 name|Test

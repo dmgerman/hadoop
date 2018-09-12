@@ -46,6 +46,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|azure
@@ -104,6 +118,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|AbstractAbfsScaleTest ()
+specifier|public
+name|AbstractAbfsScaleTest
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getTestTimeoutMillis ()
@@ -143,10 +168,15 @@ name|getOperationCount
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Configuration
+name|rawConfiguration
+init|=
+name|getRawConfiguration
+argument_list|()
+decl_stmt|;
 name|assumeScaleTestsEnabled
 argument_list|(
-name|getConfiguration
-argument_list|()
+name|rawConfiguration
 argument_list|)
 expr_stmt|;
 block|}

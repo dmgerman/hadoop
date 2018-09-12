@@ -116,6 +116,17 @@ name|LIST_MAX_RESULTS
 init|=
 literal|5000
 decl_stmt|;
+DECL|method|ITestAbfsClient ()
+specifier|public
+name|ITestAbfsClient
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testContinuationTokenHavingEqualSign ()

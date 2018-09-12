@@ -139,6 +139,14 @@ specifier|final
 class|class
 name|TestAbfsClient
 block|{
+DECL|field|accountName
+specifier|private
+specifier|final
+name|String
+name|accountName
+init|=
+literal|"bogusAccountName"
+decl_stmt|;
 DECL|method|validateUserAgent (String expectedPattern, URL baseUrl, AbfsConfiguration config, boolean includeSSLProvider)
 specifier|private
 name|void
@@ -272,6 +280,8 @@ operator|new
 name|AbfsConfiguration
 argument_list|(
 name|configuration
+argument_list|,
+name|accountName
 argument_list|)
 decl_stmt|;
 name|validateUserAgent
@@ -331,6 +341,8 @@ operator|new
 name|AbfsConfiguration
 argument_list|(
 name|configuration
+argument_list|,
+name|accountName
 argument_list|)
 decl_stmt|;
 name|validateUserAgent
@@ -408,6 +420,8 @@ operator|new
 name|AbfsConfiguration
 argument_list|(
 name|configuration
+argument_list|,
+name|accountName
 argument_list|)
 decl_stmt|;
 name|validateUserAgent

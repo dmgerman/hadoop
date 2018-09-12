@@ -134,6 +134,8 @@ DECL|method|ITestAzureBlobFileSystemAppend ()
 specifier|public
 name|ITestAzureBlobFileSystemAppend
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

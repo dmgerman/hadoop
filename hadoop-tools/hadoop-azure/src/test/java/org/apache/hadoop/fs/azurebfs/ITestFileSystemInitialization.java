@@ -132,6 +132,8 @@ DECL|method|ITestFileSystemInitialization ()
 specifier|public
 name|ITestFileSystemInitialization
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()
@@ -274,12 +276,12 @@ literal|null
 argument_list|)
 decl_stmt|;
 name|Configuration
-name|conf
+name|rawConfig
 init|=
-name|getConfiguration
+name|getRawConfiguration
 argument_list|()
 decl_stmt|;
-name|conf
+name|rawConfig
 operator|.
 name|set
 argument_list|(
@@ -305,7 +307,7 @@ name|FileSystem
 operator|.
 name|newInstance
 argument_list|(
-name|conf
+name|rawConfig
 argument_list|)
 init|)
 block|{

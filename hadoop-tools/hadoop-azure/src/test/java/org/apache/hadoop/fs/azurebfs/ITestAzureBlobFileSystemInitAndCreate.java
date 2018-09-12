@@ -100,6 +100,8 @@ DECL|method|ITestAzureBlobFileSystemInitAndCreate ()
 specifier|public
 name|ITestAzureBlobFileSystemInitAndCreate
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.

@@ -49,14 +49,14 @@ name|FS_AZURE_ABFS_ACCOUNT_NAME
 init|=
 literal|"fs.azure.abfs.account.name"
 decl_stmt|;
-DECL|field|FS_AZURE_ACCOUNT_KEY_PREFIX
+DECL|field|FS_AZURE_ACCOUNT_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|FS_AZURE_ACCOUNT_KEY_PREFIX
+name|FS_AZURE_ACCOUNT_KEY
 init|=
-literal|"fs.azure.account.key."
+literal|"fs.azure.account.key"
 decl_stmt|;
 DECL|field|FS_AZURE_CONTRACT_TEST_URI
 specifier|public

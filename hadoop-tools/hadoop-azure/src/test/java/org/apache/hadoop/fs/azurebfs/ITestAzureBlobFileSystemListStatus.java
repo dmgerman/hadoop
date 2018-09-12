@@ -219,6 +219,8 @@ DECL|method|ITestAzureBlobFileSystemListStatus ()
 specifier|public
 name|ITestAzureBlobFileSystemListStatus
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

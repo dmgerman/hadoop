@@ -239,6 +239,8 @@ DECL|method|ITestAzureBlobFileSystemE2EScale ()
 specifier|public
 name|ITestAzureBlobFileSystemE2EScale
 parameter_list|()
+throws|throws
+name|Exception
 block|{   }
 annotation|@
 name|Test

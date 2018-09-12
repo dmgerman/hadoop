@@ -322,6 +322,8 @@ DECL|method|ITestAzureBlobFileSystemRenameUnicode ()
 specifier|public
 name|ITestAzureBlobFileSystemRenameUnicode
 parameter_list|()
+throws|throws
+name|Exception
 block|{   }
 comment|/**    * Known issue: ListStatus operation to folders/files whose name contains '?' will fail.    * This is because Auto rest client didn't encode '?' in the uri query parameters    */
 annotation|@

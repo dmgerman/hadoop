@@ -175,6 +175,8 @@ DECL|method|ITestAzureBlobFileSystemCreate ()
 specifier|public
 name|ITestAzureBlobFileSystemCreate
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

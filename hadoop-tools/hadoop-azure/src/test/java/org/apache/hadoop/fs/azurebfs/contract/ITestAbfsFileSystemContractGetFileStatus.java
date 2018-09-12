@@ -147,7 +147,7 @@ name|this
 operator|.
 name|binding
 operator|.
-name|getConfiguration
+name|getRawConfiguration
 argument_list|()
 return|;
 block|}

@@ -216,6 +216,8 @@ DECL|method|ITestAzureBlobFileSystemDelete ()
 specifier|public
 name|ITestAzureBlobFileSystemDelete
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

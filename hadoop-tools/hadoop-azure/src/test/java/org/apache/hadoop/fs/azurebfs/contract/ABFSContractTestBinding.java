@@ -38,9 +38,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configuration
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -54,7 +54,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|CommonConfigurationKeysPublic
+name|azurebfs
+operator|.
+name|AbfsConfiguration
 import|;
 end_import
 
@@ -185,7 +187,7 @@ condition|(
 name|useExistingFileSystem
 condition|)
 block|{
-name|Configuration
+name|AbfsConfiguration
 name|configuration
 init|=
 name|getConfiguration
@@ -317,19 +319,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|getConfiguration ()
-specifier|public
-name|Configuration
-name|getConfiguration
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|getConfiguration
-argument_list|()
-return|;
 block|}
 DECL|method|isSecureMode ()
 specifier|public

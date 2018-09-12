@@ -196,6 +196,8 @@ DECL|method|ITestAzureBlobFileSystemCopy ()
 specifier|public
 name|ITestAzureBlobFileSystemCopy
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

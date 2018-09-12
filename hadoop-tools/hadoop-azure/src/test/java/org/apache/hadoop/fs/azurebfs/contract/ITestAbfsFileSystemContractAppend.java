@@ -173,7 +173,7 @@ block|{
 return|return
 name|binding
 operator|.
-name|getConfiguration
+name|getRawConfiguration
 argument_list|()
 return|;
 block|}

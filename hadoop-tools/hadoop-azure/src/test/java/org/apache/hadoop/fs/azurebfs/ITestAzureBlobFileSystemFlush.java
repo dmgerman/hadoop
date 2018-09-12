@@ -388,6 +388,8 @@ DECL|method|ITestAzureBlobFileSystemFlush ()
 specifier|public
 name|ITestAzureBlobFileSystemFlush
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

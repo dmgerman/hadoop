@@ -222,7 +222,13 @@ DECL|method|ITestAzureBlobFileSystemRename ()
 specifier|public
 name|ITestAzureBlobFileSystemRename
 parameter_list|()
-block|{   }
+throws|throws
+name|Exception
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testEnsureFileIsRenamed ()

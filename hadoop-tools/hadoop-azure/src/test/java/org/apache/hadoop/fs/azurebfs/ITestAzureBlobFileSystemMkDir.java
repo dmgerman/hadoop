@@ -76,6 +76,8 @@ DECL|method|ITestAzureBlobFileSystemMkDir ()
 specifier|public
 name|ITestAzureBlobFileSystemMkDir
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 argument_list|()

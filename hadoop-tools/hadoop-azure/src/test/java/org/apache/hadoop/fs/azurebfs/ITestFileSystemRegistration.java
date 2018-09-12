@@ -319,6 +319,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Configuration
+name|rawConfig
+init|=
+name|getRawConfiguration
+argument_list|()
+decl_stmt|;
 name|AzureBlobFileSystem
 name|fs
 init|=
@@ -329,8 +335,7 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|getConfiguration
-argument_list|()
+name|rawConfig
 argument_list|)
 decl_stmt|;
 name|assertNotNull
@@ -362,8 +367,7 @@ name|FileContext
 operator|.
 name|getFileContext
 argument_list|(
-name|getConfiguration
-argument_list|()
+name|rawConfig
 argument_list|)
 operator|.
 name|getDefaultFileSystem
@@ -389,8 +393,7 @@ name|FileContext
 operator|.
 name|getFileContext
 argument_list|(
-name|getConfiguration
-argument_list|()
+name|rawConfig
 argument_list|)
 operator|.
 name|getDefaultFileSystem
@@ -453,8 +456,13 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|getConfiguration
+name|Configuration
+name|rawConfig
+init|=
+name|getRawConfiguration
 argument_list|()
+decl_stmt|;
+name|rawConfig
 operator|.
 name|set
 argument_list|(
@@ -478,8 +486,7 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|getConfiguration
-argument_list|()
+name|rawConfig
 argument_list|)
 decl_stmt|;
 name|assertNotNull
@@ -499,8 +506,7 @@ name|FileContext
 operator|.
 name|getFileContext
 argument_list|(
-name|getConfiguration
-argument_list|()
+name|rawConfig
 argument_list|)
 operator|.
 name|getDefaultFileSystem
