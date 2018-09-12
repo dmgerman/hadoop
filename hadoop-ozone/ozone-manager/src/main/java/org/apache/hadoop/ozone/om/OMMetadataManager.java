@@ -154,20 +154,6 @@ name|List
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|Lock
-import|;
-end_import
-
 begin_comment
 comment|/**  * OM metadata manager interface.  */
 end_comment
@@ -200,16 +186,10 @@ name|DBStore
 name|getStore
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the read lock used on Metadata DB.    *    * @return readLock    */
-DECL|method|readLock ()
-name|Lock
-name|readLock
-parameter_list|()
-function_decl|;
-comment|/**    * Returns the write lock used on Metadata DB.    *    * @return writeLock    */
-DECL|method|writeLock ()
-name|Lock
-name|writeLock
+comment|/**    * Returns the OzoneManagerLock used on Metadata DB.    *    * @return OzoneManagerLock    */
+DECL|method|getLock ()
+name|OzoneManagerLock
+name|getLock
 parameter_list|()
 function_decl|;
 comment|/**    * Given a volume return the corresponding DB key.    *    * @param volume - Volume name    */

@@ -540,48 +540,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|Lock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|ReadWriteLock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|ReentrantReadWriteLock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|stream
 operator|.
 name|Collectors
@@ -759,12 +717,10 @@ specifier|final
 name|DBStore
 name|store
 decl_stmt|;
-comment|// TODO: Make this lock move into Table instead of *ONE* lock for the whole
-comment|// DB.
 DECL|field|lock
 specifier|private
 specifier|final
-name|ReadWriteLock
+name|OzoneManagerLock
 name|lock
 decl_stmt|;
 DECL|field|openKeyExpireThresholdMS
@@ -832,8 +788,10 @@ operator|.
 name|lock
 operator|=
 operator|new
-name|ReentrantReadWriteLock
-argument_list|()
+name|OzoneManagerLock
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1455,36 +1413,17 @@ name|openKey
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the read lock used on Metadata DB.    *    * @return readLock    */
+comment|/**    * Returns the OzoneManagerLock used on Metadata DB.    *    * @return OzoneManagerLock    */
 annotation|@
 name|Override
-DECL|method|readLock ()
+DECL|method|getLock ()
 specifier|public
-name|Lock
-name|readLock
+name|OzoneManagerLock
+name|getLock
 parameter_list|()
 block|{
 return|return
 name|lock
-operator|.
-name|readLock
-argument_list|()
-return|;
-block|}
-comment|/**    * Returns the write lock used on Metadata DB.    *    * @return writeLock    */
-annotation|@
-name|Override
-DECL|method|writeLock ()
-specifier|public
-name|Lock
-name|writeLock
-parameter_list|()
-block|{
-return|return
-name|lock
-operator|.
-name|writeLock
-argument_list|()
 return|;
 block|}
 comment|/**    * Returns true if the firstArray startsWith the bytes of secondArray.    *    * @param firstArray - Byte array    * @param secondArray - Byte array    * @return true if the first array bytes match the bytes in the second array.    */

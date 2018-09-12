@@ -228,6 +228,24 @@ name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT_DEFAULT
 init|=
 literal|0.99
 decl_stmt|;
+DECL|field|HDDS_LOCK_MAX_CONCURRENCY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_LOCK_MAX_CONCURRENCY
+init|=
+literal|"hdds.lock.max.concurrency"
+decl_stmt|;
+DECL|field|HDDS_LOCK_MAX_CONCURRENCY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HDDS_LOCK_MAX_CONCURRENCY_DEFAULT
+init|=
+literal|100
+decl_stmt|;
 block|}
 end_class
 
