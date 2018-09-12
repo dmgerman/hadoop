@@ -567,7 +567,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
+DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts, String rmId)
 specifier|public
 name|UnmanagedApplicationManager
 name|createUAM
@@ -589,6 +589,9 @@ name|appNameSuffix
 parameter_list|,
 name|boolean
 name|keepContainersAcrossApplicationAttempts
+parameter_list|,
+name|String
+name|rmId
 parameter_list|)
 block|{
 return|return
@@ -654,6 +657,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 block|}

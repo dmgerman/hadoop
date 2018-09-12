@@ -907,8 +907,8 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a new UAM and register the application, without specifying uamId and    * appId. We will ask for an appId from RM and use it as the uamId.    *    * @param registerRequest RegisterApplicationMasterRequest    * @param conf configuration for this UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery.    * @see ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)    * @return uamId for the UAM    * @throws YarnException if registerApplicationMaster fails    * @throws IOException if registerApplicationMaster fails    */
-DECL|method|createAndRegisterNewUAM ( RegisterApplicationMasterRequest registerRequest, Configuration conf, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
+comment|/**    * Create a new UAM and register the application, without specifying uamId and    * appId. We will ask for an appId from RM and use it as the uamId.    *    * @param registerRequest RegisterApplicationMasterRequest    * @param conf configuration for this UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery.    * @param rmName name of the YarnRM    * @see ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)    * @return uamId for the UAM    * @throws YarnException if registerApplicationMaster fails    * @throws IOException if registerApplicationMaster fails    */
+DECL|method|createAndRegisterNewUAM ( RegisterApplicationMasterRequest registerRequest, Configuration conf, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts, String rmName)
 specifier|public
 name|String
 name|createAndRegisterNewUAM
@@ -930,6 +930,9 @@ name|appNameSuffix
 parameter_list|,
 name|boolean
 name|keepContainersAcrossApplicationAttempts
+parameter_list|,
+name|String
+name|rmName
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1045,6 +1048,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
+argument_list|,
+name|rmName
 argument_list|)
 expr_stmt|;
 comment|// Register the UAM application
@@ -1066,8 +1071,8 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Launch a new UAM, using the provided uamId and appId.    *    * @param uamId uam Id    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery.    * @see ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)    * @return UAM token    * @throws YarnException if fails    * @throws IOException if fails    */
-DECL|method|launchUAM (String uamId, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
+comment|/**    * Launch a new UAM, using the provided uamId and appId.    *    * @param uamId uam Id    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery.    * @param rmName name of the YarnRM    * @see ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)    * @return UAM token    * @throws YarnException if fails    * @throws IOException if fails    */
+DECL|method|launchUAM (String uamId, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts, String rmName)
 specifier|public
 name|Token
 argument_list|<
@@ -1095,6 +1100,9 @@ name|appNameSuffix
 parameter_list|,
 name|boolean
 name|keepContainersAcrossApplicationAttempts
+parameter_list|,
+name|String
+name|rmName
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1141,6 +1149,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
+argument_list|,
+name|rmName
 argument_list|)
 decl_stmt|;
 comment|// Put the UAM into map first before initializing it to avoid additional UAM
@@ -1224,8 +1234,8 @@ return|return
 name|amrmToken
 return|;
 block|}
-comment|/**    * Re-attach to an existing UAM, using the provided uamIdentifier.    *    * @param uamId uam Id    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param uamToken UAM token    * @throws YarnException if fails    * @throws IOException if fails    */
-DECL|method|reAttachUAM (String uamId, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, Token<AMRMTokenIdentifier> uamToken)
+comment|/**    * Re-attach to an existing UAM, using the provided uamIdentifier.    *    * @param uamId uam Id    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param uamToken UAM token    * @param rmName name of the YarnRM    * @throws YarnException if fails    * @throws IOException if fails    */
+DECL|method|reAttachUAM (String uamId, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, Token<AMRMTokenIdentifier> uamToken, String rmName)
 specifier|public
 name|void
 name|reAttachUAM
@@ -1253,6 +1263,9 @@ argument_list|<
 name|AMRMTokenIdentifier
 argument_list|>
 name|uamToken
+parameter_list|,
+name|String
+name|rmName
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1299,6 +1312,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 literal|true
+argument_list|,
+name|rmName
 argument_list|)
 decl_stmt|;
 comment|// Put the UAM into map first before initializing it to avoid additional UAM
@@ -1371,10 +1386,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates the UAM instance. Pull out to make unit test easy.    *    * @param conf Configuration    * @param appId application id    * @param queueName queue of the application    * @param submitter submitter name of the application    * @param appNameSuffix application name suffix    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    * @return the UAM instance    */
+comment|/**    * Creates the UAM instance. Pull out to make unit test easy.    *    * @param conf Configuration    * @param appId application id    * @param queueName queue of the application    * @param submitter submitter name of the application    * @param appNameSuffix application name suffix    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    * @param rmName name of the YarnRM    * @return the UAM instance    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
+DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts, String rmName)
 specifier|protected
 name|UnmanagedApplicationManager
 name|createUAM
@@ -1396,6 +1411,9 @@ name|appNameSuffix
 parameter_list|,
 name|boolean
 name|keepContainersAcrossApplicationAttempts
+parameter_list|,
+name|String
+name|rmName
 parameter_list|)
 block|{
 return|return
@@ -1413,6 +1431,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
+argument_list|,
+name|rmName
 argument_list|)
 return|;
 block|}

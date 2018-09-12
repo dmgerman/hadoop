@@ -954,8 +954,8 @@ specifier|private
 name|boolean
 name|connectionInitiated
 decl_stmt|;
-comment|/**    * Constructor.    *    * @param conf configuration    * @param appId application Id to use for this UAM    * @param queueName the queue of the UAM    * @param submitter user name of the app    * @param appNameSuffix the app name suffix to use    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery. See {@link ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)}    */
-DECL|method|UnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
+comment|/**    * Constructor.    *    * @param conf configuration    * @param appId application Id to use for this UAM    * @param queueName the queue of the UAM    * @param submitter user name of the app    * @param appNameSuffix the app name suffix to use    * @param rmName name of the YarnRM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery. See {@link ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)}    */
+DECL|method|UnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts, String rmName)
 specifier|public
 name|UnmanagedApplicationManager
 parameter_list|(
@@ -976,6 +976,9 @@ name|appNameSuffix
 parameter_list|,
 name|boolean
 name|keepContainersAcrossApplicationAttempts
+parameter_list|,
+name|String
+name|rmName
 parameter_list|)
 block|{
 name|Preconditions
@@ -1037,6 +1040,12 @@ name|appNameSuffix
 expr_stmt|;
 name|this
 operator|.
+name|userUgi
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
 name|heartbeatHandler
 operator|=
 operator|new
@@ -1055,7 +1064,17 @@ name|this
 operator|.
 name|rmProxyRelayer
 operator|=
+operator|new
+name|AMRMClientRelayer
+argument_list|(
 literal|null
+argument_list|,
+name|this
+operator|.
+name|applicationId
+argument_list|,
+name|rmName
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1216,9 +1235,8 @@ expr_stmt|;
 name|this
 operator|.
 name|rmProxyRelayer
-operator|=
-operator|new
-name|AMRMClientRelayer
+operator|.
+name|setRMClient
 argument_list|(
 name|createRMProxy
 argument_list|(
@@ -1236,10 +1254,6 @@ name|userUgi
 argument_list|,
 name|amrmToken
 argument_list|)
-argument_list|,
-name|this
-operator|.
-name|applicationId
 argument_list|)
 expr_stmt|;
 name|this
@@ -1412,7 +1426,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|rmProxyRelayer
+name|userUgi
 operator|==
 literal|null
 condition|)
@@ -1584,7 +1598,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|rmProxyRelayer
+name|userUgi
 operator|==
 literal|null
 condition|)

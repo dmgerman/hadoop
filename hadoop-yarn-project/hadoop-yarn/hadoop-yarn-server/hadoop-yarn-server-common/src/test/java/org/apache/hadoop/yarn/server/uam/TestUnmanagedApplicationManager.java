@@ -1823,6 +1823,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 block|}
