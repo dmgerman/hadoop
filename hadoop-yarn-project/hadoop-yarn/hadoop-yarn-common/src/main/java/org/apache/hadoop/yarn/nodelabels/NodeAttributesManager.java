@@ -280,7 +280,7 @@ argument_list|>
 name|attributes
 parameter_list|)
 function_decl|;
-comment|/**    * NodeAttribute to AttributeValue Map.    *    * @return Map<NodeAttribute, AttributeValue> mapping of Attribute to Value.    */
+comment|/**    * NodeAttribute to AttributeValue Map.    *    * @return Map of NodeAttribute to AttributeValue.    */
 DECL|method|getAttributesForNode ( String hostName)
 specifier|public
 specifier|abstract
@@ -296,7 +296,7 @@ name|String
 name|hostName
 parameter_list|)
 function_decl|;
-comment|/**    * Get All node to Attributes list based on filter.    *    * @return List<NodeToAttributes> nodeToAttributes matching filter.If empty    * or null is passed as argument will return all.    */
+comment|/**    * Get All node to Attributes list based on filter.    *    * @return List of NodeToAttributes matching filter. If empty    * or null is passed as argument will return all.    */
 DECL|method|getNodeToAttributes ( Set<String> prefix)
 specifier|public
 specifier|abstract
@@ -313,7 +313,7 @@ argument_list|>
 name|prefix
 parameter_list|)
 function_decl|;
-comment|/**    * Get all node to Attributes mapping.    *    * @return Map<String, Set<NodeAttribute>> nodesToAttributes matching    * filter.If empty or null is passed as argument will return all.    */
+comment|/**    * Get all node to Attributes mapping.    *    * @return Map of String to Set of nodesToAttributes matching    * filter. If empty or null is passed as argument will return all.    */
 DECL|method|getNodesToAttributes ( Set<String> hostNames)
 specifier|public
 specifier|abstract

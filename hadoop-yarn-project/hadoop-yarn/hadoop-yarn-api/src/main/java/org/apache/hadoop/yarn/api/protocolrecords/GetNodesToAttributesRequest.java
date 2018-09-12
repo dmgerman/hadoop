@@ -167,7 +167,7 @@ argument_list|>
 name|hostnames
 parameter_list|)
 function_decl|;
-comment|/**    * Get hostnames for which mapping is required.    *    * @return Set<String> of hostnames.    */
+comment|/**    * Get hostnames for which mapping is required.    *    * @return Set of hostnames.    */
 annotation|@
 name|InterfaceAudience
 operator|.

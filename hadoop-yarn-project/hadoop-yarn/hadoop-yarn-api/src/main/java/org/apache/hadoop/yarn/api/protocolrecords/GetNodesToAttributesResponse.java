@@ -200,7 +200,7 @@ argument_list|>
 name|map
 parameter_list|)
 function_decl|;
-comment|/**    * Get hostnames to NodeAttributes mapping.    *    * @return Map<String, Set<NodeAttribute>> host to attributes.    */
+comment|/**    * Get hostnames to NodeAttributes mapping.    *    * @return Map of host to attributes.    */
 annotation|@
 name|Public
 annotation|@

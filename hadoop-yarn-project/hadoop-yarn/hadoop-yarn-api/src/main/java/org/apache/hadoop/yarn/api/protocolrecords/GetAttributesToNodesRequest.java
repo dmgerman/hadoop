@@ -197,7 +197,7 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Set node attributeKeys for which the mapping of hostname to attribute value    * is required.    *    * @param attributes Set<NodeAttributeKey> provided.    */
+comment|/**    * Set node attributeKeys for which the mapping of hostname to attribute value    * is required.    *    * @param attributes Set of NodeAttributeKey provided.    */
 annotation|@
 name|Public
 annotation|@
@@ -215,7 +215,7 @@ argument_list|>
 name|attributes
 parameter_list|)
 function_decl|;
-comment|/**    * Get node attributeKeys for which mapping of hostname to attribute value is    * required.    *    * @return Set<NodeAttributeKey>    */
+comment|/**    * Get node attributeKeys for which mapping of hostname to attribute value is    * required.    *    * @return Set of NodeAttributeKey    */
 annotation|@
 name|Public
 annotation|@

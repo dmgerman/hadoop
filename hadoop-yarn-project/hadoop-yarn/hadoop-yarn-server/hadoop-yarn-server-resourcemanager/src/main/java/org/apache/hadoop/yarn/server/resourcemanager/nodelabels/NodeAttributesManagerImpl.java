@@ -1665,7 +1665,7 @@ name|newAttributeMappings
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param nodeAttributeMapping    * @param newAttributesToBeAdded    * @param isRemoveOperation : to indicate whether its a remove operation.    * @return Map<String, Map<NodeAttribute, AttributeValue>>, node -> Map(    *         NodeAttribute -> AttributeValue)    * @throws IOException : on invalid mapping in the current request or against    *           already existing NodeAttributes.    */
+comment|/**    * @param nodeAttributeMapping    * @param newAttributesToBeAdded    * @param isRemoveOperation : to indicate whether its a remove operation.    * @return Map of String to Map of NodeAttribute to AttributeValue    * @throws IOException : on invalid mapping in the current request or against    *           already existing NodeAttributes.    */
 DECL|method|validate ( Map<String, Set<NodeAttribute>> nodeAttributeMapping, Map<NodeAttributeKey, RMNodeAttribute> newAttributesToBeAdded, boolean isRemoveOperation)
 specifier|protected
 name|Map

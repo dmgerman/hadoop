@@ -218,7 +218,7 @@ argument_list|>
 name|map
 parameter_list|)
 function_decl|;
-comment|/**    * Get mapping of NodeAttributeKey to its associated mapping of list of    * NodeToAttributeValue associated with attribute.    *    * @return Map<NodeAttributeKey, List<NodeToAttributeValue>> node attributes    *         to list of NodeToAttributeValuenode.    */
+comment|/**    * Get mapping of NodeAttributeKey to its associated mapping of list of    * NodeToAttributeValue associated with attribute.    *    * @return Map of node attributes to list of NodeToAttributeValue.    */
 annotation|@
 name|Public
 annotation|@
