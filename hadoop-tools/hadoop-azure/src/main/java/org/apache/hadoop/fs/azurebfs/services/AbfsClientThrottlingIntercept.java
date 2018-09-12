@@ -130,7 +130,7 @@ literal|"write"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initializeSingleton (boolean isAutoThrottlingEnabled)
+DECL|method|initializeSingleton (boolean enableAutoThrottling)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -138,13 +138,13 @@ name|void
 name|initializeSingleton
 parameter_list|(
 name|boolean
-name|isAutoThrottlingEnabled
+name|enableAutoThrottling
 parameter_list|)
 block|{
 if|if
 condition|(
 operator|!
-name|isAutoThrottlingEnabled
+name|enableAutoThrottling
 condition|)
 block|{
 return|return;
