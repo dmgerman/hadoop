@@ -1345,13 +1345,13 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|readStateMachineData (SMLogEntryProto smLogEntryProto, ContainerCommandRequestProto requestProto)
+DECL|method|readStateMachineData (LogEntryProto entry, ContainerCommandRequestProto requestProto)
 specifier|private
 name|LogEntryProto
 name|readStateMachineData
 parameter_list|(
-name|SMLogEntryProto
-name|smLogEntryProto
+name|LogEntryProto
+name|entry
 parameter_list|,
 name|ContainerCommandRequestProto
 name|requestProto
@@ -1511,7 +1511,7 @@ decl_stmt|;
 return|return
 name|recreateLogEntryProto
 argument_list|(
-name|smLogEntryProto
+name|entry
 argument_list|,
 name|newStateMachineProto
 operator|.
@@ -1523,13 +1523,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|recreateLogEntryProto (SMLogEntryProto smLogEntryProto, ByteString stateMachineData)
+DECL|method|recreateLogEntryProto (LogEntryProto entry, ByteString stateMachineData)
 specifier|private
 name|LogEntryProto
 name|recreateLogEntryProto
 parameter_list|(
-name|SMLogEntryProto
-name|smLogEntryProto
+name|LogEntryProto
+name|entry
 parameter_list|,
 name|ByteString
 name|stateMachineData
@@ -1544,7 +1544,10 @@ name|SMLogEntryProto
 operator|.
 name|newBuilder
 argument_list|(
-name|smLogEntryProto
+name|entry
+operator|.
+name|getSmLogEntry
+argument_list|()
 argument_list|)
 operator|.
 name|setStateMachineData
@@ -1559,7 +1562,9 @@ return|return
 name|LogEntryProto
 operator|.
 name|newBuilder
-argument_list|()
+argument_list|(
+name|entry
+argument_list|)
 operator|.
 name|setSmLogEntry
 argument_list|(
@@ -1757,7 +1762,7 @@ parameter_list|()
 lambda|->
 name|readStateMachineData
 argument_list|(
-name|smLogEntryProto
+name|entry
 argument_list|,
 name|requestProto
 argument_list|)
@@ -1784,7 +1789,7 @@ name|log
 init|=
 name|recreateLogEntryProto
 argument_list|(
-name|smLogEntryProto
+name|entry
 argument_list|,
 name|requestProto
 operator|.
