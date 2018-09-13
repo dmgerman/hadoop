@@ -2389,6 +2389,32 @@ argument_list|(
 name|action
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"pipeline Action "
+operator|+
+name|action
+operator|.
+name|getAction
+argument_list|()
+operator|+
+literal|"  on pipeline "
+operator|+
+name|pipelineID
+operator|+
+literal|".Reason : "
+operator|+
+name|action
+operator|.
+name|getClosePipeline
+argument_list|()
+operator|.
+name|getDetailedReason
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|handleNodeSlowness ( RaftGroup group, RoleInfoProto roleInfoProto)
 name|void

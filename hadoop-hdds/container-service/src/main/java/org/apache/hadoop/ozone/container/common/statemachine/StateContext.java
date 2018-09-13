@@ -1057,7 +1057,9 @@ argument_list|()
 operator|.
 name|getPipelineID
 argument_list|()
-operator|==
+operator|.
+name|equals
+argument_list|(
 name|pipelineAction
 operator|.
 name|getClosePipeline
@@ -1065,6 +1067,7 @@ argument_list|()
 operator|.
 name|getPipelineID
 argument_list|()
+argument_list|)
 condition|)
 block|{
 return|return;

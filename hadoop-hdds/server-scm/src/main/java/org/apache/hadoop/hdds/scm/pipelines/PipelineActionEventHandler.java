@@ -247,6 +247,25 @@ name|getPipelineID
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Closing pipeline "
+operator|+
+name|pipelineID
+operator|+
+literal|" for reason:"
+operator|+
+name|action
+operator|.
+name|getClosePipeline
+argument_list|()
+operator|.
+name|getDetailedReason
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|publisher
 operator|.
 name|fireEvent
