@@ -98,7 +98,7 @@ specifier|public
 interface|interface
 name|AlignmentContext
 block|{
-comment|/**    * This is the intended server method call to implement to pass state info    * during RPC response header construction.    * @param header The RPC response header builder.    */
+comment|/**    * This is the intended server method call to implement to pass state info    * during RPC response header construction.    *    * @param header The RPC response header builder.    */
 DECL|method|updateResponseState (RpcResponseHeaderProto.Builder header)
 name|void
 name|updateResponseState
@@ -109,7 +109,7 @@ name|Builder
 name|header
 parameter_list|)
 function_decl|;
-comment|/**    * This is the intended client method call to implement to recieve state info    * during RPC response processing.    * @param header The RPC response header.    */
+comment|/**    * This is the intended client method call to implement to recieve state info    * during RPC response processing.    *    * @param header The RPC response header.    */
 DECL|method|receiveResponseState (RpcResponseHeaderProto header)
 name|void
 name|receiveResponseState
@@ -118,7 +118,7 @@ name|RpcResponseHeaderProto
 name|header
 parameter_list|)
 function_decl|;
-comment|/**    * This is the intended client method call to pull last seen state info    * into RPC request processing.    * @param header The RPC request header builder.    */
+comment|/**    * This is the intended client method call to pull last seen state info    * into RPC request processing.    *    * @param header The RPC request header builder.    */
 DECL|method|updateRequestState (RpcRequestHeaderProto.Builder header)
 name|void
 name|updateRequestState
@@ -129,7 +129,7 @@ name|Builder
 name|header
 parameter_list|)
 function_decl|;
-comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    * @param header The RPC request header.    * @return state id of in the request header.    */
+comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    *    * @param header The RPC request header.    * @return state id of in the request header.    */
 DECL|method|receiveRequestState (RpcRequestHeaderProto header)
 name|long
 name|receiveRequestState
@@ -138,11 +138,23 @@ name|RpcRequestHeaderProto
 name|header
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the last seen state id of the alignment context instance.    * @return the value of the last seen state id.    */
+comment|/**    * Returns the last seen state id of the alignment context instance.    *    * @return the value of the last seen state id.    */
 DECL|method|getLastSeenStateId ()
 name|long
 name|getLastSeenStateId
 parameter_list|()
+function_decl|;
+comment|/**    * Return true if this method call does need to be synced, false    * otherwise. sync meaning server state needs to have caught up with    * client state.    *    * @param protocolName the name of the protocol    * @param method the method call to check    * @return true if this method is async, false otherwise.    */
+DECL|method|isCoordinatedCall (String protocolName, String method)
+name|boolean
+name|isCoordinatedCall
+parameter_list|(
+name|String
+name|protocolName
+parameter_list|,
+name|String
+name|method
+parameter_list|)
 function_decl|;
 block|}
 end_interface

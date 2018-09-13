@@ -144,6 +144,15 @@ parameter_list|()
 default|default
 literal|false
 function_decl|;
+comment|/**    * @return if true, when processing the rpc call of the target method, the    * server side will wait if server state id is behind client (msync). If    * false, the method will be processed regardless of server side state.    */
+DECL|method|isCoordinated ()
+DECL|field|false
+name|boolean
+name|isCoordinated
+parameter_list|()
+default|default
+literal|false
+function_decl|;
 block|}
 end_annotation_defn
 

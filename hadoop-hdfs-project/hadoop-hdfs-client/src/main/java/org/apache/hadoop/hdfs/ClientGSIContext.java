@@ -161,6 +161,28 @@ name|get
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isCoordinatedCall (String protocolName, String method)
+specifier|public
+name|boolean
+name|isCoordinatedCall
+parameter_list|(
+name|String
+name|protocolName
+parameter_list|,
+name|String
+name|method
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Client should not be checking uncoordinated call"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Client side implementation only receives state alignment info.    * It does not provide state alignment info therefore this does nothing.    */
 annotation|@
 name|Override

@@ -691,6 +691,10 @@ argument_list|(
 name|atimeAffected
 operator|=
 literal|true
+argument_list|,
+name|isCoordinated
+operator|=
+literal|true
 argument_list|)
 DECL|method|getBlockLocations (String src, long offset, long length)
 name|LocatedBlocks
@@ -713,6 +717,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getServerDefaults ()
 name|FsServerDefaults
 name|getServerDefaults
@@ -804,6 +813,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getStoragePolicies ()
 name|BlockStoragePolicy
 index|[]
@@ -846,6 +860,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getStoragePolicy (String path)
 name|BlockStoragePolicy
 name|getStoragePolicy
@@ -1147,6 +1166,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getListing (String src, byte[] startAfter, boolean needLocation)
 name|DirectoryListing
 name|getListing
@@ -1169,6 +1193,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getSnapshottableDirListing ()
 name|SnapshottableDirectoryStatus
 index|[]
@@ -1357,6 +1386,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getPreferredBlockSize (String filename)
 name|long
 name|getPreferredBlockSize
@@ -1472,6 +1506,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listCorruptFileBlocks (String path, String cookie)
 name|CorruptFileBlocks
 name|listCorruptFileBlocks
@@ -1516,6 +1555,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getFileInfo (String src)
 name|HdfsFileStatus
 name|getFileInfo
@@ -1531,6 +1575,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|isFileClosed (String src)
 name|boolean
 name|isFileClosed
@@ -1546,6 +1595,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getFileLinkInfo (String src)
 name|HdfsFileStatus
 name|getFileLinkInfo
@@ -1561,6 +1615,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getLocatedFileInfo (String src, boolean needBlockToken)
 name|HdfsLocatedFileStatus
 name|getLocatedFileInfo
@@ -1579,6 +1638,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getContentSummary (String path)
 name|ContentSummary
 name|getContentSummary
@@ -1679,6 +1743,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getLinkTarget (String path)
 name|String
 name|getLinkTarget
@@ -1785,6 +1854,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getDataEncryptionKey ()
 name|DataEncryptionKey
 name|getDataEncryptionKey
@@ -1874,6 +1948,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getSnapshotDiffReport (String snapshotRoot, String fromSnapshot, String toSnapshot)
 name|SnapshotDiffReport
 name|getSnapshotDiffReport
@@ -1895,6 +1974,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getSnapshotDiffReportListing (String snapshotRoot, String fromSnapshot, String toSnapshot, byte[] startPath, int index)
 name|SnapshotDiffReportListing
 name|getSnapshotDiffReportListing
@@ -1974,6 +2058,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listCacheDirectives ( long prevId, CacheDirectiveInfo filter)
 name|BatchedEntries
 argument_list|<
@@ -2034,6 +2123,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listCachePools (String prevPool)
 name|BatchedEntries
 argument_list|<
@@ -2135,6 +2229,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getAclStatus (String src)
 name|AclStatus
 name|getAclStatus
@@ -2166,6 +2265,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getEZForPath (String src)
 name|EncryptionZone
 name|getEZForPath
@@ -2181,6 +2285,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listEncryptionZones ( long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2215,6 +2324,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listReencryptionStatus (long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2255,6 +2369,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
 name|List
 argument_list|<
@@ -2279,6 +2398,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listXAttrs (String src)
 name|List
 argument_list|<
@@ -2313,6 +2437,7 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+comment|// TODO : after HDFS-13749 is done, change to coordinated call
 DECL|method|checkAccess (String path, FsAction mode)
 name|void
 name|checkAccess
@@ -2331,6 +2456,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getCurrentEditLogTxid ()
 name|long
 name|getCurrentEditLogTxid
@@ -2343,6 +2473,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getEditsFromTxid (long txid)
 name|EventBatchList
 name|getEditsFromTxid
@@ -2428,6 +2563,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getErasureCodingPolicies ()
 name|ErasureCodingPolicyInfo
 index|[]
@@ -2441,6 +2581,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getErasureCodingCodecs ()
 name|Map
 argument_list|<
@@ -2458,6 +2603,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getErasureCodingPolicy (String src)
 name|ErasureCodingPolicy
 name|getErasureCodingPolicy
@@ -2508,6 +2658,11 @@ annotation|@
 name|Deprecated
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listOpenFiles (long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2526,6 +2681,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes, String path)
 name|BatchedEntries
 argument_list|<
@@ -2553,6 +2713,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|msync ()
 name|void
 name|msync
