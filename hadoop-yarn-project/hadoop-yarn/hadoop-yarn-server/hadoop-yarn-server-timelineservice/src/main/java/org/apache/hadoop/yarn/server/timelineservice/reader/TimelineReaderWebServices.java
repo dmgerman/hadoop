@@ -11317,10 +11317,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|ugi
-operator|!=
-literal|null
-operator|&&
 operator|!
 name|validateAuthUserWithEntityUser
 argument_list|(
@@ -11335,6 +11331,12 @@ block|{
 name|String
 name|userName
 init|=
+name|ugi
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|ugi
 operator|.
 name|getShortUserName

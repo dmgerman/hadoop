@@ -444,11 +444,10 @@ name|user1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// true because ugi is null
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
+comment|// false because ugi is null in non-secure cluster. User must pass
+comment|// ?user.name as query params in REST end points.
+try|try
+block|{
 name|TimelineReaderWebServices
 operator|.
 name|checkAccess
@@ -459,8 +458,23 @@ literal|null
 argument_list|,
 name|user1
 argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"user1Ugi is not allowed to view user1"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ForbiddenException
+name|e
+parameter_list|)
+block|{
+comment|// expected
+block|}
 comment|// incoming ugi is admin asking for entity owner user1
 name|Assert
 operator|.
