@@ -60,6 +60,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertNotNull
 import|;
 end_import
@@ -3794,6 +3806,16 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
+name|assertFalse
+argument_list|(
+literal|"task attempt should not contain any attributes, it can lead to incorrect JSON marshaling"
+argument_list|,
+name|element
+operator|.
+name|hasAttributes
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|attid

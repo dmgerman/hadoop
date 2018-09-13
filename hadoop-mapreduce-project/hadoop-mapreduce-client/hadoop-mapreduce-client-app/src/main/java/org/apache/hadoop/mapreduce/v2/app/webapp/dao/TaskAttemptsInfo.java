@@ -44,21 +44,7 @@ name|bind
 operator|.
 name|annotation
 operator|.
-name|XmlAccessType
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlAccessorType
+name|XmlElementRef
 import|;
 end_import
 
@@ -83,13 +69,6 @@ argument_list|(
 name|name
 operator|=
 literal|"taskAttempts"
-argument_list|)
-annotation|@
-name|XmlAccessorType
-argument_list|(
-name|XmlAccessType
-operator|.
-name|FIELD
 argument_list|)
 DECL|class|TaskAttemptsInfo
 specifier|public
@@ -134,6 +113,11 @@ name|taskattemptInfo
 argument_list|)
 expr_stmt|;
 block|}
+comment|// XmlElementRef annotation should be used to identify the exact type of a list element
+comment|// otherwise metadata will be added to XML attributes,
+comment|// it can lead to incorrect JSON marshaling
+annotation|@
+name|XmlElementRef
 DECL|method|getTaskAttempts ()
 specifier|public
 name|ArrayList
