@@ -2360,16 +2360,16 @@ argument_list|,
 literal|"Node Status Updater"
 argument_list|)
 expr_stmt|;
-name|statusUpdater
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|this
 operator|.
 name|isStopped
 operator|=
 literal|false
+expr_stmt|;
+name|statusUpdater
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
