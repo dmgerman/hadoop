@@ -82,21 +82,6 @@ name|description
 operator|=
 literal|"The current state of an service."
 argument_list|)
-annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"class io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2016-06-02T08:15:05.615-07:00"
-argument_list|)
 DECL|enum|ServiceState
 specifier|public
 enum|enum

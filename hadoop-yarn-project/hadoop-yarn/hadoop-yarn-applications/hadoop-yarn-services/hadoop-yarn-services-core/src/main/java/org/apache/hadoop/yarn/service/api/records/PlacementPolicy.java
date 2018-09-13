@@ -150,21 +150,6 @@ literal|"Advanced placement policy of the components of a "
 operator|+
 literal|"service."
 argument_list|)
-annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"class io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2018-02-16T10:20:12.927-07:00"
-argument_list|)
 DECL|class|PlacementPolicy
 specifier|public
 class|class

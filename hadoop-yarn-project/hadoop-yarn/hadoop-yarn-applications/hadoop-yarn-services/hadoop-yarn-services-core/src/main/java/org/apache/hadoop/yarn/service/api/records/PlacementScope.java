@@ -116,21 +116,6 @@ literal|"The scope of placement for the containers of a "
 operator|+
 literal|"component."
 argument_list|)
-annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"class io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2018-02-16T10:20:12.927-07:00"
-argument_list|)
 DECL|enum|PlacementScope
 specifier|public
 enum|enum

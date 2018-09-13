@@ -157,23 +157,6 @@ operator|=
 literal|"The kerberos principal of the service."
 argument_list|)
 annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"io.swagger.codegen.languages"
-operator|+
-literal|".JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2017-11-20T11:29:11.785-08:00"
-argument_list|)
-annotation|@
 name|JsonInclude
 argument_list|(
 name|JsonInclude

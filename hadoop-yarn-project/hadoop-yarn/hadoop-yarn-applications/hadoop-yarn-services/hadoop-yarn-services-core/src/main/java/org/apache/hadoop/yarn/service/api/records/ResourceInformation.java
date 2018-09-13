@@ -96,21 +96,6 @@ name|description
 operator|=
 literal|"ResourceInformation determines unit/value of resource types in addition to memory and vcores. It will be part of Resource object"
 argument_list|)
-annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2017-11-22T15:15:49.495-08:00"
-argument_list|)
 DECL|class|ResourceInformation
 specifier|public
 class|class

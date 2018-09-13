@@ -271,21 +271,6 @@ operator|=
 literal|"One or more components of the service. If the service is HBase say, then the component can be a simple role like master or regionserver. If the service is a complex business webapp then a component can be other services say Kafka or Storm. Thereby it opens up the support for complex and nested services."
 argument_list|)
 annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"class io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2016-06-02T08:15:05.615-07:00"
-argument_list|)
-annotation|@
 name|XmlRootElement
 annotation|@
 name|XmlAccessorType

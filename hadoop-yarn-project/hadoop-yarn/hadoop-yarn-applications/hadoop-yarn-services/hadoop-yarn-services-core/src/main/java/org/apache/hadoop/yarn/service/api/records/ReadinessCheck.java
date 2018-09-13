@@ -261,21 +261,6 @@ operator|=
 literal|"A custom command or a pluggable helper container to determine the readiness of a container of a component. Readiness for every service is different. Hence the need for a simple interface, with scope to support advanced usecases."
 argument_list|)
 annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"class io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2016-06-02T08:15:05.615-07:00"
-argument_list|)
-annotation|@
 name|XmlRootElement
 annotation|@
 name|XmlAccessorType
