@@ -664,11 +664,11 @@ specifier|static
 name|DynamoDBMetadataStore
 name|ddbmsStatic
 decl_stmt|;
-DECL|field|TEST_DYNAMODB_TABLE_NAME
+DECL|field|testDynamoDBTableName
 specifier|private
 specifier|static
 name|String
-name|TEST_DYNAMODB_TABLE_NAME
+name|testDynamoDBTableName
 decl_stmt|;
 comment|/**    * Create a path under the test path provided by    * the FS contract.    * @param filepath path string in    * @return a path qualified by the test filesystem    */
 DECL|method|path (String filepath)
@@ -732,7 +732,7 @@ literal|"Test DynamoDB table name should be set to run "
 operator|+
 literal|"integration tests."
 argument_list|,
-name|TEST_DYNAMODB_TABLE_NAME
+name|testDynamoDBTableName
 operator|!=
 literal|null
 argument_list|)
@@ -743,7 +743,7 @@ name|set
 argument_list|(
 name|S3GUARD_DDB_TABLE_NAME_KEY
 argument_list|,
-name|TEST_DYNAMODB_TABLE_NAME
+name|testDynamoDBTableName
 argument_list|)
 expr_stmt|;
 name|s3AContract
@@ -864,7 +864,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|TEST_DYNAMODB_TABLE_NAME
+name|testDynamoDBTableName
 operator|=
 name|conf
 operator|.
@@ -881,7 +881,7 @@ literal|"Test DynamoDB table name should be set to run "
 operator|+
 literal|"integration tests."
 argument_list|,
-name|TEST_DYNAMODB_TABLE_NAME
+name|testDynamoDBTableName
 operator|!=
 literal|null
 argument_list|)
@@ -892,7 +892,7 @@ name|set
 argument_list|(
 name|S3GUARD_DDB_TABLE_NAME_KEY
 argument_list|,
-name|TEST_DYNAMODB_TABLE_NAME
+name|testDynamoDBTableName
 argument_list|)
 expr_stmt|;
 name|LOG

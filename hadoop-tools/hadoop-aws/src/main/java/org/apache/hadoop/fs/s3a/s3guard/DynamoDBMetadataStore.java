@@ -218,6 +218,20 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
 name|AtomicReference
 import|;
 end_import
@@ -241,6 +255,16 @@ operator|.
 name|amazonaws
 operator|.
 name|AmazonClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|AmazonServiceException
 import|;
 end_import
 
@@ -802,6 +826,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|AWSServiceThrottledException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|Constants
 import|;
 end_import
@@ -867,22 +907,6 @@ operator|.
 name|s3a
 operator|.
 name|S3AInstrumentation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|S3ARetryPolicy
 import|;
 end_import
 
@@ -1148,16 +1172,6 @@ name|E_INCOMPATIBLE_VERSION
 init|=
 literal|"Database table is from an incompatible S3Guard version."
 decl_stmt|;
-comment|/** Initial delay for retries when batched operations get throttled by    * DynamoDB. Value is {@value} msec. */
-DECL|field|MIN_RETRY_SLEEP_MSEC
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|MIN_RETRY_SLEEP_MSEC
-init|=
-literal|100
-decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|DESCRIPTION
@@ -1207,6 +1221,26 @@ name|String
 name|TABLE
 init|=
 literal|"table"
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|HINT_DDB_IOPS_TOO_LOW
+specifier|static
+specifier|final
+name|String
+name|HINT_DDB_IOPS_TOO_LOW
+init|=
+literal|" This may be because the write threshold of DynamoDB is set too low."
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|THROTTLING
+specifier|static
+specifier|final
+name|String
+name|THROTTLING
+init|=
+literal|"Throttling"
 decl_stmt|;
 DECL|field|deleteTrackingValueMap
 specifier|private
@@ -1265,10 +1299,11 @@ specifier|private
 name|String
 name|username
 decl_stmt|;
-DECL|field|dataAccessRetryPolicy
+comment|/**    * This policy is mostly for batched writes, not for processing    * exceptions in invoke() calls.    * It also has a role purpose in {@link #getVersionMarkerItem()};    * look at that method for the details.    */
+DECL|field|batchWriteRetryPolicy
 specifier|private
 name|RetryPolicy
-name|dataAccessRetryPolicy
+name|batchWriteRetryPolicy
 decl_stmt|;
 DECL|field|instrumentation
 specifier|private
@@ -1301,11 +1336,53 @@ operator|.
 name|NO_OP
 argument_list|)
 decl_stmt|;
-comment|/** Data access can have its own policies. */
-DECL|field|dataAccess
+comment|/** Invoker for read operations. */
+DECL|field|readOp
 specifier|private
 name|Invoker
-name|dataAccess
+name|readOp
+decl_stmt|;
+comment|/** Invoker for write operations. */
+DECL|field|writeOp
+specifier|private
+name|Invoker
+name|writeOp
+decl_stmt|;
+DECL|field|readThrottleEvents
+specifier|private
+specifier|final
+name|AtomicLong
+name|readThrottleEvents
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|writeThrottleEvents
+specifier|private
+specifier|final
+name|AtomicLong
+name|writeThrottleEvents
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|batchWriteCapacityExceededEvents
+specifier|private
+specifier|final
+name|AtomicLong
+name|batchWriteCapacityExceededEvents
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 comment|/**    * Total limit on the number of throttle events after which    * we stop warning in the log. Keeps the noise down.    */
 DECL|field|THROTTLE_EVENT_LOG_LIMIT
@@ -1468,22 +1545,13 @@ argument_list|,
 literal|"DynamoDBMetadataStore only supports S3A filesystem."
 argument_list|)
 expr_stmt|;
-name|owner
-operator|=
+name|bindToOwnerFilesystem
+argument_list|(
 operator|(
 name|S3AFileSystem
 operator|)
 name|fs
-expr_stmt|;
-name|instrumentation
-operator|=
-name|owner
-operator|.
-name|getInstrumentation
-argument_list|()
-operator|.
-name|getS3GuardInstrumentation
-argument_list|()
+argument_list|)
 expr_stmt|;
 specifier|final
 name|String
@@ -1494,13 +1562,6 @@ operator|.
 name|getBucket
 argument_list|()
 decl_stmt|;
-name|conf
-operator|=
-name|owner
-operator|.
-name|getConf
-argument_list|()
-expr_stmt|;
 name|String
 name|confRegion
 init|=
@@ -1606,13 +1667,6 @@ name|region
 argument_list|)
 expr_stmt|;
 block|}
-name|username
-operator|=
-name|owner
-operator|.
-name|getUsername
-argument_list|()
-expr_stmt|;
 name|credentials
 operator|=
 name|owner
@@ -1659,7 +1713,7 @@ operator|new
 name|Invoker
 argument_list|(
 operator|new
-name|S3ARetryPolicy
+name|S3GuardDataAccessRetryPolicy
 argument_list|(
 name|conf
 argument_list|)
@@ -1675,6 +1729,47 @@ expr_stmt|;
 name|instrumentation
 operator|.
 name|initialized
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Declare that this table is owned by the specific S3A FS instance.    * This will bind some fields to the values provided by the owner,    * including wiring up the instrumentation.    * @param fs owner filesystem    */
+annotation|@
+name|VisibleForTesting
+DECL|method|bindToOwnerFilesystem (final S3AFileSystem fs)
+name|void
+name|bindToOwnerFilesystem
+parameter_list|(
+specifier|final
+name|S3AFileSystem
+name|fs
+parameter_list|)
+block|{
+name|owner
+operator|=
+name|fs
+expr_stmt|;
+name|conf
+operator|=
+name|owner
+operator|.
+name|getConf
+argument_list|()
+expr_stmt|;
+name|instrumentation
+operator|=
+name|owner
+operator|.
+name|getInstrumentation
+argument_list|()
+operator|.
+name|getS3GuardInstrumentation
+argument_list|()
+expr_stmt|;
+name|username
+operator|=
+name|owner
+operator|.
+name|getUsername
 argument_list|()
 expr_stmt|;
 block|}
@@ -1790,7 +1885,7 @@ name|initTable
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Set retry policy. This is driven by the value of    * {@link Constants#S3GUARD_DDB_MAX_RETRIES} with an exponential backoff    * between each attempt of {@link #MIN_RETRY_SLEEP_MSEC} milliseconds.    * @param config configuration for data access    */
+comment|/**    * Set retry policy. This is driven by the value of    * {@link Constants#S3GUARD_DDB_MAX_RETRIES} with an exponential backoff    * between each attempt of {@link Constants#S3GUARD_DDB_THROTTLE_RETRY_INTERVAL}    * milliseconds.    * @param config configuration for data access    */
 DECL|method|initDataAccessRetries (Configuration config)
 specifier|private
 name|void
@@ -1800,9 +1895,12 @@ name|Configuration
 name|config
 parameter_list|)
 block|{
-name|int
-name|maxRetries
-init|=
+name|batchWriteRetryPolicy
+operator|=
+name|RetryPolicies
+operator|.
+name|exponentialBackoffRetry
+argument_list|(
 name|config
 operator|.
 name|getInt
@@ -1811,32 +1909,57 @@ name|S3GUARD_DDB_MAX_RETRIES
 argument_list|,
 name|S3GUARD_DDB_MAX_RETRIES_DEFAULT
 argument_list|)
-decl_stmt|;
-name|dataAccessRetryPolicy
-operator|=
-name|RetryPolicies
-operator|.
-name|exponentialBackoffRetry
-argument_list|(
-name|maxRetries
 argument_list|,
-name|MIN_RETRY_SLEEP_MSEC
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL
+argument_list|,
+name|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
 argument_list|,
 name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
-name|dataAccess
+specifier|final
+name|RetryPolicy
+name|throttledRetryRetryPolicy
+init|=
+operator|new
+name|S3GuardDataAccessRetryPolicy
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
+name|readOp
 operator|=
 operator|new
 name|Invoker
 argument_list|(
-name|dataAccessRetryPolicy
+name|throttledRetryRetryPolicy
 argument_list|,
 name|this
 operator|::
-name|retryEvent
+name|readRetryEvent
+argument_list|)
+expr_stmt|;
+name|writeOp
+operator|=
+operator|new
+name|Invoker
+argument_list|(
+name|throttledRetryRetryPolicy
+argument_list|,
+name|this
+operator|::
+name|writeRetryEvent
 argument_list|)
 expr_stmt|;
 block|}
@@ -1979,7 +2102,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|invoker
+name|writeOp
 operator|.
 name|retry
 argument_list|(
@@ -2013,7 +2136,7 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|invoker
+name|writeOp
 operator|.
 name|retry
 argument_list|(
@@ -2140,19 +2263,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Get a consistent view of an item.    * @param path path to look up in the database    * @param path entry    * @return the result    * @throws IOException failure    */
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
-DECL|method|getConsistentItem (PrimaryKey key)
+name|RetryTranslated
+DECL|method|getConsistentItem (final Path path)
 specifier|private
 name|Item
 name|getConsistentItem
 parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|PrimaryKey
 name|key
-parameter_list|)
-block|{
+init|=
+name|pathToKey
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
 specifier|final
 name|GetItemSpec
 name|spec
@@ -2173,11 +2308,27 @@ argument_list|)
 decl_stmt|;
 comment|// strictly consistent read
 return|return
+name|readOp
+operator|.
+name|retry
+argument_list|(
+literal|"get"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|table
 operator|.
 name|getItem
 argument_list|(
 name|spec
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -2186,7 +2337,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
+name|RetryTranslated
 DECL|method|get (Path path)
 specifier|public
 name|DDBPathMetadata
@@ -2212,7 +2363,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
+name|RetryTranslated
 DECL|method|get (Path path, boolean wantEmptyDirectoryFlag)
 specifier|public
 name|DDBPathMetadata
@@ -2246,33 +2397,19 @@ name|path
 argument_list|)
 expr_stmt|;
 return|return
-name|Invoker
-operator|.
-name|once
-argument_list|(
-literal|"get"
-argument_list|,
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-parameter_list|()
-lambda|->
 name|innerGet
 argument_list|(
 name|path
 argument_list|,
 name|wantEmptyDirectoryFlag
 argument_list|)
-argument_list|)
 return|;
 block|}
-comment|/**    * Inner get operation, as invoked in the retry logic.    * @param path the path to get    * @param wantEmptyDirectoryFlag Set to true to give a hint to the    *   MetadataStore that it should try to compute the empty directory flag.    * @return metadata for {@code path}, {@code null} if not found    * @throws IOException IO problem    * @throws AmazonClientException dynamo DB level problem    */
+comment|/**    * Inner get operation, as invoked in the retry logic.    * @param path the path to get    * @param wantEmptyDirectoryFlag Set to true to give a hint to the    *   MetadataStore that it should try to compute the empty directory flag.    * @return metadata for {@code path}, {@code null} if not found    * @throws IOException IO problem    */
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|innerGet (Path path, boolean wantEmptyDirectoryFlag)
 specifier|private
 name|DDBPathMetadata
@@ -2322,10 +2459,7 @@ name|item
 init|=
 name|getConsistentItem
 argument_list|(
-name|pathToKey
-argument_list|(
 name|path
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|meta
@@ -2413,30 +2547,37 @@ argument_list|(
 name|deleteTrackingValueMap
 argument_list|)
 decl_stmt|;
-specifier|final
-name|ItemCollection
-argument_list|<
-name|QueryOutcome
-argument_list|>
-name|items
+name|boolean
+name|hasChildren
 init|=
+name|readOp
+operator|.
+name|retry
+argument_list|(
+literal|"get/hasChildren"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|table
 operator|.
 name|query
 argument_list|(
 name|spec
 argument_list|)
-decl_stmt|;
-name|boolean
-name|hasChildren
-init|=
-name|items
 operator|.
 name|iterator
 argument_list|()
 operator|.
 name|hasNext
 argument_list|()
+argument_list|)
 decl_stmt|;
 comment|// When this class has support for authoritative
 comment|// (fully-cached) directory listings, we may also be able to answer
@@ -2507,7 +2648,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
+name|RetryTranslated
 DECL|method|listChildren (final Path path)
 specifier|public
 name|DirListingMetadata
@@ -2540,9 +2681,9 @@ argument_list|)
 expr_stmt|;
 comment|// find the children in the table
 return|return
-name|Invoker
+name|readOp
 operator|.
-name|once
+name|retry
 argument_list|(
 literal|"listChildren"
 argument_list|,
@@ -2550,6 +2691,8 @@ name|path
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|true
 argument_list|,
 parameter_list|()
 lambda|->
@@ -2866,7 +3009,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
+name|RetryTranslated
 DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate)
 specifier|public
 name|void
@@ -3016,16 +3159,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|Invoker
-operator|.
-name|once
-argument_list|(
-literal|"move"
-argument_list|,
-name|tableName
-argument_list|,
-parameter_list|()
-lambda|->
 name|processBatchWriteRequest
 argument_list|(
 literal|null
@@ -3035,20 +3168,19 @@ argument_list|(
 name|newItems
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Helper method to issue a batch write request to DynamoDB.    *    * The retry logic here is limited to repeating the write operations    * until all items have been written; there is no other attempt    * at recovery/retry. Throttling is handled internally.    * @param keysToDelete primary keys to be deleted; can be null    * @param itemsToPut new items to be put; can be null    */
+comment|/**    * Helper method to issue a batch write request to DynamoDB.    *    * As well as retrying on the operation invocation, incomplete    * batches are retried until all have been deleted.    * @param keysToDelete primary keys to be deleted; can be null    * @param itemsToPut new items to be put; can be null    * @return the number of iterations needed to complete the call.    */
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 argument_list|(
 literal|"Outstanding batch items are updated with backoff"
 argument_list|)
 DECL|method|processBatchWriteRequest (PrimaryKey[] keysToDelete, Item[] itemsToPut)
 specifier|private
-name|void
+name|int
 name|processBatchWriteRequest
 parameter_list|(
 name|PrimaryKey
@@ -3096,6 +3228,11 @@ operator|)
 decl_stmt|;
 name|int
 name|count
+init|=
+literal|0
+decl_stmt|;
+name|int
+name|batches
 init|=
 literal|0
 decl_stmt|;
@@ -3237,14 +3374,32 @@ operator|+=
 name|numToPut
 expr_stmt|;
 block|}
+comment|// if there's a retry and another process updates things then it's not
+comment|// quite idempotent, but this was the case anyway
+name|batches
+operator|++
+expr_stmt|;
 name|BatchWriteItemOutcome
 name|res
 init|=
+name|writeOp
+operator|.
+name|retry
+argument_list|(
+literal|"batch write"
+argument_list|,
+literal|""
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|dynamoDB
 operator|.
 name|batchWriteItem
 argument_list|(
 name|writeItems
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Check for unprocessed keys in case of exceeding provisioned throughput
@@ -3278,19 +3433,55 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|retryBackoff
+name|batchWriteCapacityExceededEvents
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|batches
+operator|++
+expr_stmt|;
+name|retryBackoffOnBatchWrite
 argument_list|(
 name|retryCount
 operator|++
 argument_list|)
 expr_stmt|;
+comment|// use a different reference to keep the compiler quiet
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|WriteRequest
+argument_list|>
+argument_list|>
+name|upx
+init|=
+name|unprocessed
+decl_stmt|;
 name|res
 operator|=
+name|writeOp
+operator|.
+name|retry
+argument_list|(
+literal|"batch write"
+argument_list|,
+literal|""
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|dynamoDB
 operator|.
 name|batchWriteItemUnprocessed
 argument_list|(
-name|unprocessed
+name|upx
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|unprocessed
@@ -3302,12 +3493,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+return|return
+name|batches
+return|;
 block|}
-comment|/**    * Put the current thread to sleep to implement exponential backoff    * depending on retryCount.  If max retries are exceeded, throws an    * exception instead.    * @param retryCount number of retries so far    * @throws IOException when max retryCount is exceeded.    */
-DECL|method|retryBackoff (int retryCount)
+comment|/**    * Put the current thread to sleep to implement exponential backoff    * depending on retryCount.  If max retries are exceeded, throws an    * exception instead.    *    * @param retryCount number of retries so far    * @throws IOException when max retryCount is exceeded.    */
+DECL|method|retryBackoffOnBatchWrite (int retryCount)
 specifier|private
 name|void
-name|retryBackoff
+name|retryBackoffOnBatchWrite
 parameter_list|(
 name|int
 name|retryCount
@@ -3323,7 +3517,7 @@ operator|.
 name|RetryAction
 name|action
 init|=
-name|dataAccessRetryPolicy
+name|batchWriteRetryPolicy
 operator|.
 name|shouldRetry
 argument_list|(
@@ -3351,20 +3545,85 @@ operator|.
 name|FAIL
 condition|)
 block|{
+comment|// Create an AWSServiceThrottledException, with a fake inner cause
+comment|// which we fill in to look like a real exception so
+comment|// error messages look sensible
+name|AmazonServiceException
+name|cause
+init|=
+operator|new
+name|AmazonServiceException
+argument_list|(
+literal|"Throttling"
+argument_list|)
+decl_stmt|;
+name|cause
+operator|.
+name|setServiceName
+argument_list|(
+literal|"S3Guard"
+argument_list|)
+expr_stmt|;
+name|cause
+operator|.
+name|setStatusCode
+argument_list|(
+name|AWSServiceThrottledException
+operator|.
+name|STATUS_CODE
+argument_list|)
+expr_stmt|;
+name|cause
+operator|.
+name|setErrorCode
+argument_list|(
+name|THROTTLING
+argument_list|)
+expr_stmt|;
+comment|// used in real AWS errors
+name|cause
+operator|.
+name|setErrorType
+argument_list|(
+name|AmazonServiceException
+operator|.
+name|ErrorType
+operator|.
+name|Service
+argument_list|)
+expr_stmt|;
+name|cause
+operator|.
+name|setErrorMessage
+argument_list|(
+name|THROTTLING
+argument_list|)
+expr_stmt|;
+name|cause
+operator|.
+name|setRequestId
+argument_list|(
+literal|"n/a"
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|AWSServiceThrottledException
 argument_list|(
 name|String
 operator|.
 name|format
 argument_list|(
-literal|"Max retries exceeded (%d) for DynamoDB. This may be"
+literal|"Max retries during batch write exceeded"
 operator|+
-literal|" because write threshold of DynamoDB is set too low."
+literal|" (%d) for DynamoDB."
+operator|+
+name|HINT_DDB_IOPS_TOO_LOW
 argument_list|,
 name|retryCount
 argument_list|)
+argument_list|,
+name|cause
 argument_list|)
 throw|;
 block|}
@@ -3437,7 +3696,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected exception"
+literal|"Unexpected exception "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)
@@ -3449,7 +3710,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|put (PathMetadata meta)
 specifier|public
 name|void
@@ -3511,7 +3772,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|put (Collection<PathMetadata> metas)
 specifier|public
 name|void
@@ -3590,11 +3851,12 @@ expr_stmt|;
 block|}
 comment|/**    * Helper method to get full path of ancestors that are nonexistent in table.    */
 annotation|@
+name|VisibleForTesting
+annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|fullPathsToPut (DDBPathMetadata meta)
-specifier|private
 name|Collection
 argument_list|<
 name|DDBPathMetadata
@@ -3683,10 +3945,7 @@ name|item
 init|=
 name|getConsistentItem
 argument_list|(
-name|pathToKey
-argument_list|(
 name|path
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -3841,10 +4100,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
-argument_list|(
-literal|"retry(listFullPaths); once(batchWrite)"
-argument_list|)
+name|RetryTranslated
 DECL|method|put (DirListingMetadata meta)
 specifier|public
 name|void
@@ -3912,25 +4168,9 @@ name|DDBPathMetadata
 argument_list|>
 name|metasToPut
 init|=
-name|invoker
-operator|.
-name|retry
-argument_list|(
-literal|"paths to put"
-argument_list|,
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-literal|true
-argument_list|,
-parameter_list|()
-lambda|->
 name|fullPathsToPut
 argument_list|(
 name|ddbPathMeta
-argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// next add all children of the directory
@@ -3947,19 +4187,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Invoker
-operator|.
-name|once
-argument_list|(
-literal|"put"
-argument_list|,
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-parameter_list|()
-lambda|->
 name|processBatchWriteRequest
 argument_list|(
 literal|null
@@ -3967,7 +4194,6 @@ argument_list|,
 name|pathMetadataToItem
 argument_list|(
 name|metasToPut
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4043,7 +4269,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
+name|RetryTranslated
 DECL|method|destroy ()
 specifier|public
 name|void
@@ -4090,10 +4316,23 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"delete"
+argument_list|,
+literal|null
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|table
 operator|.
 name|delete
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|table
 operator|.
@@ -4103,7 +4342,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|ResourceNotFoundException
+name|FileNotFoundException
 name|rnfe
 parameter_list|)
 block|{
@@ -4111,7 +4350,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"ResourceNotFoundException while deleting DynamoDB table {} in "
+literal|"FileNotFoundException while deleting DynamoDB table {} in "
 operator|+
 literal|"region {}.  This may indicate that the table does not exist, "
 operator|+
@@ -4164,28 +4403,11 @@ literal|" has not been deleted"
 argument_list|)
 throw|;
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"destroy"
-argument_list|,
-name|tableName
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|expiredFiles (long modTime, String keyPrefix)
 specifier|private
 name|ItemCollection
@@ -4200,6 +4422,8 @@ parameter_list|,
 name|String
 name|keyPrefix
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|String
 name|filterExpression
@@ -4233,6 +4457,18 @@ name|keyPrefix
 argument_list|)
 decl_stmt|;
 return|return
+name|readOp
+operator|.
+name|retry
+argument_list|(
+literal|"scan"
+argument_list|,
+name|keyPrefix
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|table
 operator|.
 name|scan
@@ -4245,6 +4481,7 @@ literal|null
 argument_list|,
 name|map
 argument_list|)
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -4252,10 +4489,7 @@ name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
-argument_list|(
-literal|"once(batchWrite)"
-argument_list|)
+name|RetryTranslated
 DECL|method|prune (long modTime)
 specifier|public
 name|void
@@ -4275,15 +4509,13 @@ literal|"/"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Prune files, in batches. There's a sleep between each batch.    * @param modTime Oldest modification time to allow    * @param keyPrefix The prefix for the keys that should be removed    * @throws IOException Any IO/DDB failure.    * @throws InterruptedIOException if the prune was interrupted    */
 annotation|@
 name|Override
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
-argument_list|(
-literal|"once(batchWrite)"
-argument_list|)
+name|RetryTranslated
 DECL|method|prune (long modTime, String keyPrefix)
 specifier|public
 name|void
@@ -4318,16 +4550,20 @@ argument_list|(
 name|S3GUARD_DDB_BATCH_WRITE_REQUEST_LIMIT
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|delay
 init|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|S3GUARD_DDB_BACKGROUND_SLEEP_MSEC_KEY
 argument_list|,
 name|S3GUARD_DDB_BACKGROUND_SLEEP_MSEC_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 decl_stmt|;
 name|Set
@@ -4456,14 +4692,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|// final batch of deletes
 if|if
 condition|(
+operator|!
 name|deletionBatch
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|>
-literal|0
 condition|)
 block|{
 name|Thread
@@ -5193,13 +5429,14 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the version mark item in the existing DynamoDB table.    *    * As the version marker item may be created by another concurrent thread or    * process, we sleep and retry a limited times before we fail to get it.    * This does not include handling any failure other than "item not found",    * so this method is tagged as "OnceRaw"    */
+comment|/**    * Get the version mark item in the existing DynamoDB table.    *    * As the version marker item may be created by another concurrent thread or    * process, we sleep and retry a limited number times if the lookup returns    * with a null value.    * DDB throttling is always retried.    */
+annotation|@
+name|VisibleForTesting
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|getVersionMarkerItem ()
-specifier|private
 name|Item
 name|getVersionMarkerItem
 parameter_list|()
@@ -5220,12 +5457,11 @@ name|retryCount
 init|=
 literal|0
 decl_stmt|;
+comment|// look for a version marker, with usual throttling/failure retries.
 name|Item
 name|versionMarker
 init|=
-name|table
-operator|.
-name|getItem
+name|queryVersionMarker
 argument_list|(
 name|versionMarkerKey
 argument_list|)
@@ -5237,6 +5473,19 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// The marker was null.
+comment|// Two possibilities
+comment|// 1. This isn't a S3Guard table.
+comment|// 2. This is a S3Guard table in construction; another thread/process
+comment|//    is about to write/actively writing the version marker.
+comment|// So that state #2 is handled, batchWriteRetryPolicy is used to manage
+comment|// retries.
+comment|// This will mean that if the cause is actually #1, failure will not
+comment|// be immediate. As this will ultimately result in a failure to
+comment|// init S3Guard and the S3A FS, this isn't going to be a performance
+comment|// bottleneck -simply a slightly slower failure report than would otherwise
+comment|// be seen.
+comment|// "if your settings are broken, performance is not your main issue"
 try|try
 block|{
 name|RetryPolicy
@@ -5244,7 +5493,7 @@ operator|.
 name|RetryAction
 name|action
 init|=
-name|dataAccessRetryPolicy
+name|batchWriteRetryPolicy
 operator|.
 name|shouldRetry
 argument_list|(
@@ -5308,7 +5557,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"initTable: Unexpected exception"
+literal|"initTable: Unexpected exception "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)
@@ -5319,9 +5570,7 @@ operator|++
 expr_stmt|;
 name|versionMarker
 operator|=
-name|table
-operator|.
-name|getItem
+name|queryVersionMarker
 argument_list|(
 name|versionMarkerKey
 argument_list|)
@@ -5329,6 +5578,45 @@ expr_stmt|;
 block|}
 return|return
 name|versionMarker
+return|;
+block|}
+comment|/**    * Issue the query to get the version marker, with throttling for overloaded    * DDB tables.    * @param versionMarkerKey key to look up    * @return the marker    * @throws IOException failure    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+DECL|method|queryVersionMarker (final PrimaryKey versionMarkerKey)
+specifier|private
+name|Item
+name|queryVersionMarker
+parameter_list|(
+specifier|final
+name|PrimaryKey
+name|versionMarkerKey
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|readOp
+operator|.
+name|retry
+argument_list|(
+literal|"getVersionMarkerItem"
+argument_list|,
+name|VERSION_MARKER
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
+name|table
+operator|.
+name|getItem
+argument_list|(
+name|versionMarkerKey
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Verify that a table version is compatible with this S3Guard client.    * @param tableName name of the table (for error messages)    * @param versionMarker the version marker retrieved from the table    * @throws IOException on any incompatibility    */
@@ -5621,6 +5909,7 @@ name|Retries
 operator|.
 name|OnceRaw
 DECL|method|putItem (Item item)
+specifier|private
 name|PutItemOutcome
 name|putItem
 parameter_list|(
@@ -5786,6 +6075,18 @@ parameter_list|()
 block|{
 return|return
 name|region
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTableName ()
+specifier|public
+name|String
+name|getTableName
+parameter_list|()
+block|{
+return|return
+name|tableName
 return|;
 block|}
 annotation|@
@@ -6172,7 +6473,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|dataAccessRetryPolicy
+name|batchWriteRetryPolicy
 operator|!=
 literal|null
 condition|)
@@ -6183,7 +6484,7 @@ name|put
 argument_list|(
 literal|"retryPolicy"
 argument_list|,
-name|dataAccessRetryPolicy
+name|batchWriteRetryPolicy
 operator|.
 name|toString
 argument_list|()
@@ -6432,6 +6733,76 @@ name|defVal
 return|;
 block|}
 block|}
+comment|/**    * Callback on a read operation retried.    * @param text text of the operation    * @param ex exception    * @param attempts number of attempts    * @param idempotent is the method idempotent (this is assumed to be true)    */
+DECL|method|readRetryEvent ( String text, IOException ex, int attempts, boolean idempotent)
+name|void
+name|readRetryEvent
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|IOException
+name|ex
+parameter_list|,
+name|int
+name|attempts
+parameter_list|,
+name|boolean
+name|idempotent
+parameter_list|)
+block|{
+name|readThrottleEvents
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|retryEvent
+argument_list|(
+name|text
+argument_list|,
+name|ex
+argument_list|,
+name|attempts
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Callback  on a write operation retried.    * @param text text of the operation    * @param ex exception    * @param attempts number of attempts    * @param idempotent is the method idempotent (this is assumed to be true)    */
+DECL|method|writeRetryEvent ( String text, IOException ex, int attempts, boolean idempotent)
+name|void
+name|writeRetryEvent
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|IOException
+name|ex
+parameter_list|,
+name|int
+name|attempts
+parameter_list|,
+name|boolean
+name|idempotent
+parameter_list|)
+block|{
+name|writeThrottleEvents
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|retryEvent
+argument_list|(
+name|text
+argument_list|,
+name|ex
+argument_list|,
+name|attempts
+argument_list|,
+name|idempotent
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Callback from {@link Invoker} when an operation is retried.    * @param text text of the operation    * @param ex exception    * @param attempts number of attempts    * @param idempotent is the method idempotent    */
 DECL|method|retryEvent ( String text, IOException ex, int attempts, boolean idempotent)
 name|void
@@ -6610,6 +6981,65 @@ name|idempotent
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Get the count of read throttle events.    * @return the current count of read throttle events.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getReadThrottleEventCount ()
+specifier|public
+name|long
+name|getReadThrottleEventCount
+parameter_list|()
+block|{
+return|return
+name|readThrottleEvents
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the count of write throttle events.    * @return the current count of write throttle events.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getWriteThrottleEventCount ()
+specifier|public
+name|long
+name|getWriteThrottleEventCount
+parameter_list|()
+block|{
+return|return
+name|writeThrottleEvents
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBatchWriteCapacityExceededCount ()
+specifier|public
+name|long
+name|getBatchWriteCapacityExceededCount
+parameter_list|()
+block|{
+return|return
+name|batchWriteCapacityExceededEvents
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getInvoker ()
+specifier|public
+name|Invoker
+name|getInvoker
+parameter_list|()
+block|{
+return|return
+name|invoker
+return|;
 block|}
 block|}
 end_class

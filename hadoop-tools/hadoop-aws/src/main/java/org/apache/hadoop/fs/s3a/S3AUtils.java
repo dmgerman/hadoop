@@ -120,6 +120,18 @@ name|com
 operator|.
 name|amazonaws
 operator|.
+name|retry
+operator|.
+name|RetryUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
 name|services
 operator|.
 name|dynamodbv2
@@ -1641,7 +1653,7 @@ return|return
 name|ioe
 return|;
 block|}
-comment|/**    * Is the exception an instance of a throttling exception. That    * is an AmazonServiceException with a 503 response, any    * exception from DynamoDB for limits exceeded, or an    * {@link AWSServiceThrottledException}.    * @param ex exception to examine    * @return true if it is considered a throttling exception    */
+comment|/**    * Is the exception an instance of a throttling exception. That    * is an AmazonServiceException with a 503 response, any    * exception from DynamoDB for limits exceeded, an    * {@link AWSServiceThrottledException},    * or anything which the AWS SDK's RetryUtils considers to be    * a throttling exception.    * @param ex exception to examine    * @return true if it is considered a throttling exception    */
 DECL|method|isThrottleException (Exception ex)
 specifier|public
 specifier|static
@@ -1681,6 +1693,22 @@ operator|)
 operator|.
 name|getStatusCode
 argument_list|()
+operator|)
+operator|||
+operator|(
+name|ex
+operator|instanceof
+name|SdkBaseException
+operator|&&
+name|RetryUtils
+operator|.
+name|isThrottlingException
+argument_list|(
+operator|(
+name|SdkBaseException
+operator|)
+name|ex
+argument_list|)
 operator|)
 return|;
 block|}

@@ -5139,7 +5139,7 @@ name|operation
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Increment a statistic by 1.    * @param statistic The operation to increment    */
+comment|/**    * Increment a statistic by 1.    * This increments both the instrumentation and storage statistics.    * @param statistic The operation to increment    */
 DECL|method|incrementStatistic (Statistic statistic)
 specifier|protected
 name|void
@@ -5157,7 +5157,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Increment a statistic by a specific value.    * @param statistic The operation to increment    * @param count the count to increment    */
+comment|/**    * Increment a statistic by a specific value.    * This increments both the instrumentation and storage statistics.    * @param statistic The operation to increment    * @param count the count to increment    */
 DECL|method|incrementStatistic (Statistic statistic, long count)
 specifier|protected
 name|void
@@ -5257,22 +5257,9 @@ name|STORE_IO_THROTTLED
 else|:
 name|IGNORED_ERRORS
 decl_stmt|;
-name|instrumentation
-operator|.
-name|incrementCounter
+name|incrementStatistic
 argument_list|(
 name|stat
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
-name|storageStatistics
-operator|.
-name|incrementCounter
-argument_list|(
-name|stat
-argument_list|,
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -5301,7 +5288,7 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Callback from {@link Invoker} when an operation against a metastore    * is retried.    * @param ex exception    * @param retries number of retries    * @param idempotent is the method idempotent    */
+comment|/**    * Callback from {@link Invoker} when an operation against a metastore    * is retried.    * Always increments the {@link Statistic#S3GUARD_METADATASTORE_RETRY}    * statistic/counter;    * if it is a throttling exception will update the associated    * throttled metrics/statistics.    *    * @param ex exception    * @param retries number of retries    * @param idempotent is the method idempotent    */
 DECL|method|metastoreOperationRetried (Exception ex, int retries, boolean idempotent)
 specifier|public
 name|void
@@ -5322,6 +5309,34 @@ argument_list|(
 name|ex
 argument_list|)
 expr_stmt|;
+name|incrementStatistic
+argument_list|(
+name|S3GUARD_METADATASTORE_RETRY
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|isThrottleException
+argument_list|(
+name|ex
+argument_list|)
+condition|)
+block|{
+name|incrementStatistic
+argument_list|(
+name|S3GUARD_METADATASTORE_THROTTLED
+argument_list|)
+expr_stmt|;
+name|instrumentation
+operator|.
+name|addValueToQuantiles
+argument_list|(
+name|S3GUARD_METADATASTORE_THROTTLE_RATE
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get the storage statistics of this filesystem.    * @return the storage statistics    */
 annotation|@

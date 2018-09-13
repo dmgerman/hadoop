@@ -213,6 +213,20 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+DECL|method|getGlobalTimeout ()
+specifier|protected
+name|int
+name|getGlobalTimeout
+parameter_list|()
+block|{
+return|return
+name|S3ATestConstants
+operator|.
+name|S3A_TEST_TIMEOUT
+return|;
+block|}
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public

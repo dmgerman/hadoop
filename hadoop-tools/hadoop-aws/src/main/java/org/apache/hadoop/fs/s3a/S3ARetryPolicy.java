@@ -450,33 +450,9 @@ comment|// repeatable, even for non-idempotent calls, as the service
 comment|// rejected the call entirely
 name|throttlePolicy
 operator|=
-name|exponentialBackoffRetry
+name|createThrottleRetryPolicy
 argument_list|(
 name|conf
-operator|.
-name|getInt
-argument_list|(
-name|RETRY_THROTTLE_LIMIT
-argument_list|,
-name|RETRY_THROTTLE_LIMIT_DEFAULT
-argument_list|)
-argument_list|,
-name|conf
-operator|.
-name|getTimeDuration
-argument_list|(
-name|RETRY_THROTTLE_INTERVAL
-argument_list|,
-name|RETRY_THROTTLE_INTERVAL_DEFAULT
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
-argument_list|)
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 comment|// client connectivity: fixed retries without care for idempotency
@@ -509,6 +485,48 @@ argument_list|,
 name|policyMap
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Create the throttling policy.    * This will be called from the S3ARetryPolicy constructor, so    * subclasses must assume they are not initialized.    * @param conf configuration to use.    * @return the retry policy for throttling events.    */
+DECL|method|createThrottleRetryPolicy (final Configuration conf)
+specifier|protected
+name|RetryPolicy
+name|createThrottleRetryPolicy
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|exponentialBackoffRetry
+argument_list|(
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|RETRY_THROTTLE_LIMIT
+argument_list|,
+name|RETRY_THROTTLE_LIMIT_DEFAULT
+argument_list|)
+argument_list|,
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|RETRY_THROTTLE_INTERVAL
+argument_list|,
+name|RETRY_THROTTLE_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+return|;
 block|}
 comment|/**    * Subclasses can override this like a constructor to change behavior: call    * superclass method, then modify it as needed, and return it.    * @return Map from exception type to RetryPolicy    */
 DECL|method|createExceptionMap ()
@@ -812,6 +830,17 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|exception
+operator|!=
+literal|null
+argument_list|,
+literal|"Null exception"
+argument_list|)
+expr_stmt|;
 name|Exception
 name|ex
 init|=

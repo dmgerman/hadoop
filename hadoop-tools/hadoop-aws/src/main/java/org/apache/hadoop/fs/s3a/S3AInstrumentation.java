@@ -3794,20 +3794,7 @@ name|void
 name|throttled
 parameter_list|()
 block|{
-name|incrementCounter
-argument_list|(
-name|S3GUARD_METADATASTORE_THROTTLED
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
-name|addValueToQuantiles
-argument_list|(
-name|S3GUARD_METADATASTORE_THROTTLE_RATE
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
+comment|// counters are incremented by owner.
 block|}
 comment|/**      * S3Guard is retrying after a (retryable) failure.      */
 DECL|method|retrying ()
@@ -3816,13 +3803,7 @@ name|void
 name|retrying
 parameter_list|()
 block|{
-name|incrementCounter
-argument_list|(
-name|S3GUARD_METADATASTORE_RETRY
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
+comment|// counters are incremented by owner.
 block|}
 block|}
 comment|/**    * Instrumentation exported to S3Guard Committers.    */

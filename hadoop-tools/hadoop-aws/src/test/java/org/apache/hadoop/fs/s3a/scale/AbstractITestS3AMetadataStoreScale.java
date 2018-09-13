@@ -92,7 +92,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|FixMethodOrder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|runners
+operator|.
+name|MethodSorters
 import|;
 end_import
 
@@ -179,6 +201,13 @@ comment|/**  * Test the performance of a MetadataStore.  Useful for load testing
 end_comment
 
 begin_class
+annotation|@
+name|FixMethodOrder
+argument_list|(
+name|MethodSorters
+operator|.
+name|NAME_ASCENDING
+argument_list|)
 DECL|class|AbstractITestS3AMetadataStoreScale
 specifier|public
 specifier|abstract
@@ -269,10 +298,10 @@ name|IOException
 function_decl|;
 annotation|@
 name|Test
-DECL|method|testPut ()
+DECL|method|test_010_Put ()
 specifier|public
 name|void
-name|testPut
+name|test_010_Put
 parameter_list|()
 throws|throws
 name|Throwable
@@ -365,10 +394,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testMoves ()
+DECL|method|test_020_Moves ()
 specifier|public
 name|void
-name|testMoves
+name|test_020_Moves
 parameter_list|()
 throws|throws
 name|Throwable
@@ -629,7 +658,7 @@ block|}
 block|}
 comment|/**    * Create a copy of given list of PathMetadatas with the paths moved from    * src to dest.    */
 DECL|method|moveMetas (List<PathMetadata> metas, Path src, Path dest)
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|PathMetadata
@@ -723,7 +752,7 @@ name|moved
 return|;
 block|}
 DECL|method|movePath (Path p, Path src, Path dest)
-specifier|private
+specifier|protected
 name|Path
 name|movePath
 parameter_list|(
@@ -784,7 +813,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|copyStatus (S3AFileStatus status)
-specifier|private
+specifier|protected
 name|S3AFileStatus
 name|copyStatus
 parameter_list|(
@@ -930,7 +959,7 @@ name|count
 return|;
 block|}
 DECL|method|clearMetadataStore (MetadataStore ms, long count)
-specifier|private
+specifier|protected
 name|void
 name|clearMetadataStore
 parameter_list|(
@@ -1040,7 +1069,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|makeFileStatus (Path path)
-specifier|private
+specifier|protected
 specifier|static
 name|S3AFileStatus
 name|makeFileStatus
@@ -1068,7 +1097,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|makeDirStatus (Path p)
-specifier|private
+specifier|protected
 specifier|static
 name|S3AFileStatus
 name|makeDirStatus
@@ -1092,7 +1121,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|metasToPaths (List<PathMetadata> metas)
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|Path
@@ -1150,7 +1179,7 @@ return|;
 block|}
 comment|/**    * Recursively create a directory tree.    * @param parent Parent dir of the paths to create.    * @param depth How many more levels deep past parent to create.    * @param width Number of files (and directories, if depth> 0) per directory.    * @param paths List to add generated paths to.    */
 DECL|method|createDirTree (Path parent, int depth, int width, Collection<PathMetadata> paths)
-specifier|private
+specifier|protected
 specifier|static
 name|void
 name|createDirTree

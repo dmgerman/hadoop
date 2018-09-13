@@ -1216,7 +1216,7 @@ name|S3GUARD_DDB_MAX_RETRIES
 init|=
 literal|"fs.s3a.s3guard.ddb.max.retries"
 decl_stmt|;
-comment|/**    * Max retries on batched DynamoDB operations before giving up and    * throwing an IOException.  Default is {@value}. See core-default.xml for    * more detail.    */
+comment|/**    * Max retries on batched/throttled DynamoDB operations before giving up and    * throwing an IOException.  Default is {@value}. See core-default.xml for    * more detail.    */
 DECL|field|S3GUARD_DDB_MAX_RETRIES_DEFAULT
 specifier|public
 specifier|static
@@ -1224,7 +1224,29 @@ specifier|final
 name|int
 name|S3GUARD_DDB_MAX_RETRIES_DEFAULT
 init|=
-literal|9
+name|DEFAULT_MAX_ERROR_RETRIES
+decl_stmt|;
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL
+init|=
+literal|"fs.s3a.s3guard.ddb.throttle.retry.interval"
+decl_stmt|;
+DECL|field|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL_DEFAULT
+init|=
+literal|"100ms"
 decl_stmt|;
 comment|/**    * Period of time (in milliseconds) to sleep between batches of writes.    * Currently only applies to prune operations, as they are naturally a    * lower priority than other operations.    */
 annotation|@
