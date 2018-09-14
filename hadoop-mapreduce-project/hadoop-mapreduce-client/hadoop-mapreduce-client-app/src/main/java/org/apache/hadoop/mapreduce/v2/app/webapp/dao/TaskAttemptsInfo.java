@@ -36,6 +36,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|xml
@@ -75,19 +85,17 @@ specifier|public
 class|class
 name|TaskAttemptsInfo
 block|{
-DECL|field|taskAttempt
+DECL|field|taskAttempts
 specifier|protected
-name|ArrayList
+name|List
 argument_list|<
 name|TaskAttemptInfo
 argument_list|>
-name|taskAttempt
+name|taskAttempts
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|TaskAttemptInfo
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|TaskAttemptsInfo ()
@@ -105,7 +113,7 @@ name|TaskAttemptInfo
 name|taskattemptInfo
 parameter_list|)
 block|{
-name|taskAttempt
+name|taskAttempts
 operator|.
 name|add
 argument_list|(
@@ -120,7 +128,7 @@ annotation|@
 name|XmlElementRef
 DECL|method|getTaskAttempts ()
 specifier|public
-name|ArrayList
+name|List
 argument_list|<
 name|TaskAttemptInfo
 argument_list|>
@@ -128,7 +136,7 @@ name|getTaskAttempts
 parameter_list|()
 block|{
 return|return
-name|taskAttempt
+name|taskAttempts
 return|;
 block|}
 block|}

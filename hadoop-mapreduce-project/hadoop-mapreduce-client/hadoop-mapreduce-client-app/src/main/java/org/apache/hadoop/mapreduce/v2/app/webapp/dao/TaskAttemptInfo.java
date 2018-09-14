@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|javax
 operator|.
 name|xml
@@ -232,22 +222,6 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
 name|Times
 import|;
 end_import
@@ -264,6 +238,10 @@ annotation|@
 name|XmlSeeAlso
 argument_list|(
 block|{
+name|MapTaskAttemptInfo
+operator|.
+name|class
+block|,
 name|ReduceTaskAttemptInfo
 operator|.
 name|class
@@ -278,6 +256,7 @@ name|FIELD
 argument_list|)
 DECL|class|TaskAttemptInfo
 specifier|public
+specifier|abstract
 class|class
 name|TaskAttemptInfo
 block|{
@@ -353,29 +332,6 @@ specifier|public
 name|TaskAttemptInfo
 parameter_list|()
 block|{   }
-DECL|method|TaskAttemptInfo (TaskAttempt ta, Boolean isRunning)
-specifier|public
-name|TaskAttemptInfo
-parameter_list|(
-name|TaskAttempt
-name|ta
-parameter_list|,
-name|Boolean
-name|isRunning
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|ta
-argument_list|,
-name|TaskType
-operator|.
-name|MAP
-argument_list|,
-name|isRunning
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|TaskAttemptInfo (TaskAttempt ta, TaskType type, Boolean isRunning)
 specifier|public
 name|TaskAttemptInfo
@@ -702,6 +658,16 @@ return|return
 name|this
 operator|.
 name|diagnostics
+return|;
+block|}
+DECL|method|getType ()
+specifier|public
+name|String
+name|getType
+parameter_list|()
+block|{
+return|return
+name|type
 return|;
 block|}
 block|}

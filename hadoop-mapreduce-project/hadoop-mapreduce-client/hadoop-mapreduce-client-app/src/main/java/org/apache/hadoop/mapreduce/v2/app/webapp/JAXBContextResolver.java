@@ -430,7 +430,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|ReduceTaskAttemptInfo
+name|MapTaskAttemptInfo
 import|;
 end_import
 
@@ -452,7 +452,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|TaskAttemptInfo
+name|ReduceTaskAttemptInfo
 import|;
 end_import
 
@@ -669,11 +669,11 @@ name|JobsInfo
 operator|.
 name|class
 block|,
-name|ReduceTaskAttemptInfo
+name|MapTaskAttemptInfo
 operator|.
 name|class
 block|,
-name|TaskAttemptInfo
+name|ReduceTaskAttemptInfo
 operator|.
 name|class
 block|,
