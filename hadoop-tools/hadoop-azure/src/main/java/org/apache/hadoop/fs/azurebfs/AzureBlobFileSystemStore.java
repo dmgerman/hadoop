@@ -268,18 +268,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|DatatypeConverter
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -859,6 +847,24 @@ operator|.
 name|services
 operator|.
 name|SharedKeyCredentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|utils
+operator|.
+name|Base64
 import|;
 end_import
 
@@ -5805,9 +5811,9 @@ block|}
 name|String
 name|encodedPropertyValue
 init|=
-name|DatatypeConverter
+name|Base64
 operator|.
-name|printBase64Binary
+name|encode
 argument_list|(
 name|encoder
 operator|.
@@ -6028,9 +6034,9 @@ name|byte
 index|[]
 name|decodedValue
 init|=
-name|DatatypeConverter
+name|Base64
 operator|.
-name|parseBase64Binary
+name|decode
 argument_list|(
 name|nameValue
 index|[

@@ -94,11 +94,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|hadoop
 operator|.
-name|codec
+name|fs
 operator|.
-name|binary
+name|azurebfs
+operator|.
+name|utils
 operator|.
 name|Base64
 import|;
@@ -196,7 +198,7 @@ condition|(
 operator|!
 name|Base64
 operator|.
-name|isBase64
+name|validateIsBase64String
 argument_list|(
 name|configValue
 argument_list|)
