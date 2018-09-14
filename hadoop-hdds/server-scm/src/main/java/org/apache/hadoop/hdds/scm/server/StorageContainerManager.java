@@ -2271,7 +2271,7 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createSCM (String[] argv, OzoneConfiguration conf)
+DECL|method|createSCM (String[] args, OzoneConfiguration conf)
 specifier|public
 specifier|static
 name|StorageContainerManager
@@ -2279,7 +2279,7 @@ name|createSCM
 parameter_list|(
 name|String
 index|[]
-name|argv
+name|args
 parameter_list|,
 name|OzoneConfiguration
 name|conf
@@ -2287,6 +2287,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+index|[]
+name|argv
+init|=
+operator|(
+name|args
+operator|==
+literal|null
+operator|)
+condition|?
+operator|new
+name|String
+index|[
+literal|0
+index|]
+else|:
+name|args
+decl_stmt|;
 if|if
 condition|(
 operator|!
