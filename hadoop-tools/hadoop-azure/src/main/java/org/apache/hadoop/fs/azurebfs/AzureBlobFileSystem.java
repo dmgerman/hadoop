@@ -2226,6 +2226,64 @@ literal|null
 return|;
 block|}
 block|}
+comment|/**    * Qualify a path to one which uses this FileSystem and, if relative,    * made absolute.    * @param path to qualify.    * @return this path if it contains a scheme and authority and is absolute, or    * a new path that includes a path and authority and is fully qualified    * @see Path#makeQualified(URI, Path)    * @throws IllegalArgumentException if the path has a schema/URI different    * from this FileSystem.    */
+annotation|@
+name|Override
+DECL|method|makeQualified (Path path)
+specifier|public
+name|Path
+name|makeQualified
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+comment|// To support format: abfs://{dfs.nameservices}/file/path,
+comment|// path need to be first converted to URI, then get the raw path string,
+comment|// during which {dfs.nameservices} will be omitted.
+if|if
+condition|(
+name|path
+operator|!=
+literal|null
+condition|)
+block|{
+name|String
+name|uriPath
+init|=
+name|path
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+name|path
+operator|=
+name|uriPath
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+name|path
+else|:
+operator|new
+name|Path
+argument_list|(
+name|uriPath
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|super
+operator|.
+name|makeQualified
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getWorkingDirectory ()
