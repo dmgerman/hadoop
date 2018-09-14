@@ -250,20 +250,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|AutoCloseableLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -327,6 +313,34 @@ operator|.
 name|util
 operator|.
 name|TreeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReadWriteLock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
 import|;
 end_import
 
@@ -523,11 +537,11 @@ decl_stmt|;
 comment|// Container State Map lock should be held before calling into
 comment|// Update ContainerAttributes. The consistency of ContainerAttributes is
 comment|// protected by this lock.
-DECL|field|autoLock
+DECL|field|lock
 specifier|private
 specifier|final
-name|AutoCloseableLock
-name|autoLock
+name|ReadWriteLock
+name|lock
 decl_stmt|;
 comment|/**    * Create a ContainerStateMap.    */
 DECL|method|ContainerStateMap ()
@@ -577,10 +591,10 @@ name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|autoLock
+name|lock
 operator|=
 operator|new
-name|AutoCloseableLock
+name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
 name|contReplicaMap
@@ -633,16 +647,15 @@ argument_list|,
 literal|"ExpectedReplicaCount should be greater than 0"
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|writeLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 name|ContainerID
 name|id
@@ -769,6 +782,17 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the latest state of Container from SCM's Container State Map.    *    * @param info - ContainerInfo    * @return ContainerInfo    */
 DECL|method|getContainerInfo (ContainerInfo info)
@@ -800,6 +824,16 @@ name|long
 name|containerID
 parameter_list|)
 block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|ContainerID
 name|id
 init|=
@@ -817,6 +851,18 @@ argument_list|(
 name|id
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the latest list of DataNodes where replica for given containerId    * exist. Throws an SCMException if no entry is found for given containerId.    *    * @param containerID    * @return Set<DatanodeDetails>    */
 DECL|method|getContainerReplicas (ContainerID containerID)
@@ -840,16 +886,15 @@ argument_list|(
 name|containerID
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -875,6 +920,17 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 throw|throw
 operator|new
@@ -913,17 +969,15 @@ argument_list|(
 name|containerID
 argument_list|)
 expr_stmt|;
-comment|// Take lock to avoid race condition around insertion.
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|writeLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 for|for
 control|(
@@ -1013,6 +1067,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Remove a container Replica for given DataNode.    *    * @param containerID    * @param dn    * @return True of dataNode is removed successfully else false.    */
 DECL|method|removeContainerReplica (ContainerID containerID, DatanodeDetails dn)
@@ -1043,17 +1108,15 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
-comment|// Take lock to avoid race condition.
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|writeLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -1079,6 +1142,17 @@ name|dn
 argument_list|)
 return|;
 block|}
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 throw|throw
 operator|new
@@ -1121,16 +1195,15 @@ argument_list|>
 name|getContainerMap
 parameter_list|()
 block|{
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|Collections
@@ -1140,6 +1213,17 @@ argument_list|(
 name|containerMap
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Just update the container State.    * @param info ContainerInfo.    */
@@ -1166,16 +1250,15 @@ name|currentInfo
 init|=
 literal|null
 decl_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|writeLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 name|currentInfo
 operator|=
@@ -1222,6 +1305,17 @@ argument_list|()
 argument_list|,
 name|info
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -1274,16 +1368,17 @@ name|currentInfo
 init|=
 literal|null
 decl_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|writeLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+try|try
 block|{
 name|currentInfo
 operator|=
@@ -1313,12 +1408,12 @@ throw|;
 block|}
 comment|// We are updating two places before this update is done, these can
 comment|// fail independently, since the code needs to handle it.
-comment|// We update the attribute map, if that fails it will throw an exception,
-comment|// so no issues, if we are successful, we keep track of the fact that we
-comment|// have updated the lifecycle state in the map, and update the container
-comment|// state. If this second update fails, we will attempt to roll back the
-comment|// earlier change we did. If the rollback fails, we can be in an
-comment|// inconsistent state,
+comment|// We update the attribute map, if that fails it will throw an
+comment|// exception, so no issues, if we are successful, we keep track of the
+comment|// fact that we have updated the lifecycle state in the map, and update
+comment|// the container state. If this second update fails, we will attempt to
+comment|// roll back the earlier change we did. If the rollback fails, we can
+comment|// be in an inconsistent state,
 name|info
 operator|.
 name|setState
@@ -1428,8 +1523,8 @@ name|FAILED_TO_CHANGE_CONTAINER_STATE
 argument_list|)
 throw|;
 block|}
-comment|// In case the container is set to closed state, it needs to be removed from
-comment|// the pipeline Map.
+comment|// In case the container is set to closed state, it needs to be removed
+comment|// from the pipeline Map.
 if|if
 condition|(
 operator|!
@@ -1453,6 +1548,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Returns A list of containers owned by a name service.    *    * @param ownerName - Name of the NameService.    * @return - NavigableSet of ContainerIDs.    */
 DECL|method|getContainerIDsByOwner (String ownerName)
 name|NavigableSet
@@ -1472,16 +1579,15 @@ argument_list|(
 name|ownerName
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|ownerMap
@@ -1491,6 +1597,17 @@ argument_list|(
 name|ownerName
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns Containers in the System by the Type.    *    * @param type - Replication type -- StandAlone, Ratis etc.    * @return NavigableSet    */
@@ -1512,16 +1629,15 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|typeMap
@@ -1531,6 +1647,17 @@ argument_list|(
 name|type
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns Open containers in the SCM by the Pipeline.    *    * @param pipelineID - Pipeline id.    * @return NavigableSet<ContainerID>    */
@@ -1553,16 +1680,15 @@ argument_list|(
 name|pipelineID
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|openPipelineMap
@@ -1572,6 +1698,17 @@ argument_list|(
 name|pipelineID
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns Containers by replication factor.    *    * @param factor - Replication Factor.    * @return NavigableSet.    */
@@ -1593,16 +1730,15 @@ argument_list|(
 name|factor
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|factorMap
@@ -1613,9 +1749,21 @@ name|factor
 argument_list|)
 return|;
 block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns Containers by State.    *    * @param state - State - Open, Closed etc.    * @return List of containers by state.    */
-DECL|method|getContainerIDsByState (LifeCycleState state)
+DECL|method|getContainerIDsByState ( LifeCycleState state)
+specifier|public
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -1633,16 +1781,15 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 return|return
 name|lifeCycleStateMap
@@ -1652,6 +1799,17 @@ argument_list|(
 name|state
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Gets the containers that matches the  following filters.    *    * @param state - LifeCycleState    * @param owner - Owner    * @param factor - Replication Factor    * @param type - Replication Type    * @return ContainerInfo or Null if not container satisfies the criteria.    */
@@ -1712,16 +1870,15 @@ argument_list|,
 literal|"Type cannot be null"
 argument_list|)
 expr_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
 name|lock
-init|=
-name|autoLock
 operator|.
-name|acquire
+name|readLock
 argument_list|()
-init|)
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 comment|// If we cannot meet any one condition we return EMPTY_SET immediately.
 comment|// Since when we intersect these sets, the result will be empty if any
@@ -1899,6 +2056,17 @@ block|}
 return|return
 name|currentSet
 return|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Calculates the intersection between sets and returns a new set.    *    * @param smaller - First Set    * @param bigger - Second Set    * @return resultSet which is the intersection of these two sets.    */

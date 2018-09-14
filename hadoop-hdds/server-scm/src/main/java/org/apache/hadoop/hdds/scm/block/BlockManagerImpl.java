@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -442,7 +432,7 @@ name|concurrent
 operator|.
 name|locks
 operator|.
-name|Lock
+name|ReadWriteLock
 import|;
 end_import
 
@@ -456,7 +446,7 @@ name|concurrent
 operator|.
 name|locks
 operator|.
-name|ReentrantLock
+name|ReentrantReadWriteLock
 import|;
 end_import
 
@@ -616,7 +606,7 @@ decl_stmt|;
 DECL|field|lock
 specifier|private
 specifier|final
-name|Lock
+name|ReadWriteLock
 name|lock
 decl_stmt|;
 DECL|field|containerSize
@@ -741,7 +731,7 @@ operator|.
 name|lock
 operator|=
 operator|new
-name|ReentrantLock
+name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
 name|mxBean
@@ -863,6 +853,7 @@ block|}
 comment|/**    * Pre allocate specified count of containers for block creation.    *    * @param count - Number of containers to allocate.    * @param type - Type of containers    * @param factor - how many copies needed for this container.    * @throws IOException    */
 DECL|method|preAllocateContainers (int count, ReplicationType type, ReplicationFactor factor, String owner)
 specifier|private
+specifier|synchronized
 name|void
 name|preAllocateContainers
 parameter_list|(
@@ -880,13 +871,6 @@ name|owner
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
 block|{
 for|for
 control|(
@@ -936,7 +920,6 @@ argument_list|(
 literal|"Unable to allocate container."
 argument_list|)
 expr_stmt|;
-continue|continue;
 block|}
 block|}
 catch|catch
@@ -954,17 +937,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-continue|continue;
 block|}
-block|}
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Allocates a block in a container and returns that info.    *    * @param size - Block Size    * @param type Replication Type    * @param factor - Replication Factor    * @return Allocated block    * @throws IOException on failure.    */
@@ -1062,18 +1035,65 @@ name|CHILL_MODE_EXCEPTION
 argument_list|)
 throw|;
 block|}
+comment|/*       Here is the high level logic.        1. First we check if there are containers in ALLOCATED state, that is          SCM has allocated them in the SCM namespace but the corresponding          container has not been created in the Datanode yet. If we have any in          that state, we will return that to the client, which allows client to          finish creating those containers. This is a sort of greedy algorithm,          our primary purpose is to get as many containers as possible.        2. If there are no allocated containers -- Then we find a Open container          that matches that pattern.        3. If both of them fail, the we will pre-allocate a bunch of containers          in SCM and try again.        TODO : Support random picking of two containers from the list. So we can              use different kind of policies.     */
+name|ContainerWithPipeline
+name|containerWithPipeline
+decl_stmt|;
 name|lock
+operator|.
+name|readLock
+argument_list|()
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|/*                Here is the high level logic.                 1. First we check if there are containers in ALLOCATED state,                that is                 SCM has allocated them in the SCM namespace but the                 corresponding                 container has not been created in the Datanode yet. If we                 have any                 in that state, we will return that to the client, which allows                 client to finish creating those containers. This is a sort of                  greedy                  algorithm, our primary purpose is to get as many containers as                  possible.                  2. If there are no allocated containers -- Then we find a Open                 container that matches that pattern.                  3. If both of them fail, the we will pre-allocate a bunch of                 conatainers in SCM and try again.                 TODO : Support random picking of two containers from the list.                 So we                can use different kind of policies.       */
-name|ContainerWithPipeline
-name|containerWithPipeline
-decl_stmt|;
-comment|// Look for ALLOCATED container that matches all other parameters.
+comment|// This is to optimize performance, if the below condition is evaluated
+comment|// to false, then we can be sure that there are no containers in
+comment|// ALLOCATED state.
+comment|// This can result in false positive, but it will never be false negative.
+comment|// How can this result in false positive? We check if there are any
+comment|// containers in ALLOCATED state, this check doesn't care about the
+comment|// USER of the containers. So there might be cases where a different
+comment|// USER has few containers in ALLOCATED state, which will result in
+comment|// false positive.
+if|if
+condition|(
+operator|!
+name|containerManager
+operator|.
+name|getStateManager
+argument_list|()
+operator|.
+name|getContainerStateMap
+argument_list|()
+operator|.
+name|getContainerIDsByState
+argument_list|(
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|ALLOCATED
+argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// Since the above check can result in false positive, we have to do
+comment|// the actual check and find out if there are containers in ALLOCATED
+comment|// state matching our criteria.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// Using containers from ALLOCATED state should be done within
+comment|// synchronized block (or) write lock. Since we already hold a
+comment|// read lock, we will end up in deadlock situation if we take
+comment|// write lock here.
 name|containerWithPipeline
 operator|=
 name|containerManager
@@ -1133,6 +1153,8 @@ operator|.
 name|ALLOCATED
 argument_list|)
 return|;
+block|}
+block|}
 block|}
 comment|// Since we found no allocated containers that match our criteria, let us
 comment|// look for OPEN containers that match the criteria.
@@ -1181,18 +1203,38 @@ comment|// We found neither ALLOCATED or OPEN Containers. This generally means
 comment|// that most of our containers are full or we have not allocated
 comment|// containers of the type and replication factor. So let us go and
 comment|// allocate some.
-name|preAllocateContainers
+comment|// Even though we have already checked the containers in ALLOCATED
+comment|// state, we have to check again as we only hold a read lock.
+comment|// Some other thread might have pre-allocated container in meantime.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+operator|!
+name|containerManager
+operator|.
+name|getStateManager
+argument_list|()
+operator|.
+name|getContainerStateMap
+argument_list|()
+operator|.
+name|getContainerIDsByState
 argument_list|(
-name|containerProvisionBatchSize
-argument_list|,
-name|type
-argument_list|,
-name|factor
-argument_list|,
-name|owner
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|ALLOCATED
 argument_list|)
-expr_stmt|;
-comment|// Since we just allocated a set of containers this should work
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|containerWithPipeline
 operator|=
 name|containerManager
@@ -1214,6 +1256,47 @@ operator|.
 name|ALLOCATED
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|containerWithPipeline
+operator|==
+literal|null
+condition|)
+block|{
+name|preAllocateContainers
+argument_list|(
+name|containerProvisionBatchSize
+argument_list|,
+name|type
+argument_list|,
+name|factor
+argument_list|,
+name|owner
+argument_list|)
+expr_stmt|;
+name|containerWithPipeline
+operator|=
+name|containerManager
+operator|.
+name|getMatchingContainerWithPipeline
+argument_list|(
+name|size
+argument_list|,
+name|owner
+argument_list|,
+name|type
+argument_list|,
+name|factor
+argument_list|,
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|ALLOCATED
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|containerWithPipeline
@@ -1253,6 +1336,7 @@ name|ALLOCATED
 argument_list|)
 return|;
 block|}
+block|}
 comment|// we have tried all strategies we know and but somehow we are not able
 comment|// to get a container for this block. Log that info and return a null.
 name|LOG
@@ -1278,80 +1362,12 @@ finally|finally
 block|{
 name|lock
 operator|.
+name|readLock
+argument_list|()
+operator|.
 name|unlock
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-DECL|method|getChannelName (ReplicationType type)
-specifier|private
-name|String
-name|getChannelName
-parameter_list|(
-name|ReplicationType
-name|type
-parameter_list|)
-block|{
-switch|switch
-condition|(
-name|type
-condition|)
-block|{
-case|case
-name|RATIS
-case|:
-return|return
-literal|"RA"
-operator|+
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|3
-argument_list|)
-return|;
-case|case
-name|STAND_ALONE
-case|:
-return|return
-literal|"SA"
-operator|+
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|3
-argument_list|)
-return|;
-default|default:
-return|return
-literal|"RA"
-operator|+
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|3
-argument_list|)
-return|;
 block|}
 block|}
 comment|/**    * newBlock - returns a new block assigned to a container.    *    * @param containerWithPipeline - Container Info.    * @param state - Current state of the container.    * @return AllocatedBlock    */
@@ -1527,11 +1543,6 @@ name|CHILL_MODE_EXCEPTION
 argument_list|)
 throw|;
 block|}
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1566,8 +1577,6 @@ argument_list|()
 decl_stmt|;
 comment|// TODO: track the block size info so that we can reclaim the container
 comment|// TODO: used space when the block is deleted.
-try|try
-block|{
 for|for
 control|(
 name|BlockID
@@ -1686,15 +1695,6 @@ block|}
 comment|// TODO: Container report handling of the deleted blocks:
 comment|// Remove tombstone and update open container usage.
 comment|// We will revisit this when the closed container replication is done.
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
