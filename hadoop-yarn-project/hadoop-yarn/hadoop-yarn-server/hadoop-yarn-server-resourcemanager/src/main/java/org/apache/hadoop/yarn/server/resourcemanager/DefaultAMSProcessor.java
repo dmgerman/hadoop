@@ -1904,7 +1904,12 @@ name|getScheduler
 argument_list|()
 operator|.
 name|getMaximumResourceCapability
+argument_list|(
+name|app
+operator|.
+name|getQueue
 argument_list|()
+argument_list|)
 decl_stmt|;
 comment|// sanity check
 try|try

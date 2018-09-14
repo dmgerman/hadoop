@@ -3391,6 +3391,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Normalize all requests
+name|String
+name|queue
+init|=
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|ResourceRequest
@@ -3408,12 +3416,11 @@ argument_list|,
 name|scheduler
 operator|.
 name|getMaximumResourceCapability
-argument_list|()
+argument_list|(
+name|queue
+argument_list|)
 argument_list|,
-name|submissionContext
-operator|.
-name|getQueue
-argument_list|()
+name|queue
 argument_list|,
 name|scheduler
 argument_list|,
