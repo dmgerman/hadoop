@@ -30,16 +30,40 @@ name|MissingSubcommandException
 extends|extends
 name|RuntimeException
 block|{
-DECL|method|MissingSubcommandException ()
+DECL|field|usage
+specifier|private
+name|String
+name|usage
+decl_stmt|;
+DECL|method|MissingSubcommandException (String usage)
 specifier|public
 name|MissingSubcommandException
-parameter_list|()
+parameter_list|(
+name|String
+name|usage
+parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"Please select a subcommand"
+literal|"Incomplete command"
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|usage
+operator|=
+name|usage
+expr_stmt|;
+block|}
+DECL|method|getUsage ()
+specifier|public
+name|String
+name|getUsage
+parameter_list|()
+block|{
+return|return
+name|usage
+return|;
 block|}
 block|}
 end_class
