@@ -206,7 +206,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|XceiverClient
+name|XceiverClientGrpc
 import|;
 end_import
 
@@ -699,11 +699,11 @@ expr_stmt|;
 comment|// Verify client is able to connect to the container
 try|try
 init|(
-name|XceiverClient
+name|XceiverClientGrpc
 name|client
 init|=
 operator|new
-name|XceiverClient
+name|XceiverClientGrpc
 argument_list|(
 name|pipeline
 argument_list|,
