@@ -275,7 +275,7 @@ name|randomKeyGenerator
 operator|.
 name|setKeySize
 argument_list|(
-literal|104857600
+literal|20971520
 argument_list|)
 expr_stmt|;
 name|randomKeyGenerator
@@ -389,7 +389,7 @@ name|randomKeyGenerator
 operator|.
 name|setKeySize
 argument_list|(
-literal|104857600
+literal|20971520
 argument_list|)
 expr_stmt|;
 name|randomKeyGenerator
