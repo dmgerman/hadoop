@@ -478,6 +478,30 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|launcher
+operator|.
+name|ContainerLaunch
+operator|.
+name|ShellScriptBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|runtime
 operator|.
 name|ContainerExecutionException
@@ -816,7 +840,7 @@ operator|)
 literal|0700
 argument_list|)
 decl_stmt|;
-comment|/**    * The relative path to which debug information will be written.    *    * @see ContainerLaunch.ShellScriptBuilder#listDebugInformation    */
+comment|/**    * The relative path to which debug information will be written.    *    * @see ShellScriptBuilder#listDebugInformation    */
 DECL|field|DIRECTORY_CONTENTS
 specifier|public
 specifier|static

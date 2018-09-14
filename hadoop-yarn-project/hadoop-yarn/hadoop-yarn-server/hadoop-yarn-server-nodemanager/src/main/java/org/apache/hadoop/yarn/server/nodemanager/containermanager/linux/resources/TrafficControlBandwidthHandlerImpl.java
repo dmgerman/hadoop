@@ -1063,7 +1063,7 @@ return|return
 name|containerIdStats
 return|;
 block|}
-comment|/**    * Cleanup operations once container is completed - deletes cgroup and    * removes traffic shaping rule(s).    * @param containerId of the container that was completed.    * @return    * @throws ResourceHandlerException    */
+comment|/**    * Cleanup operations once container is completed - deletes cgroup and    * removes traffic shaping rule(s).    * @param containerId of the container that was completed.    * @return null    * @throws ResourceHandlerException    */
 annotation|@
 name|Override
 DECL|method|postComplete (ContainerId containerId)
