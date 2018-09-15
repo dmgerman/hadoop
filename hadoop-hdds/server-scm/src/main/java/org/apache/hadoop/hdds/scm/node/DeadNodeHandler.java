@@ -311,6 +311,29 @@ name|getUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|containers
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"There's no containers in dead datanode {}, no replica will be"
+operator|+
+literal|" removed from the in-memory state."
+argument_list|,
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|LOG
 operator|.
 name|info
