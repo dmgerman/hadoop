@@ -26,6 +26,20 @@ name|openjdk
 operator|.
 name|jmh
 operator|.
+name|profile
+operator|.
+name|StackProfiler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|openjdk
+operator|.
+name|jmh
+operator|.
 name|runner
 operator|.
 name|Runner
@@ -123,36 +137,9 @@ operator|.
 name|getSimpleName
 argument_list|()
 argument_list|)
-operator|.
-name|include
-argument_list|(
-name|BenchMarkMetadataStoreReads
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
-operator|.
-name|include
-argument_list|(
-name|BenchMarkMetadataStoreWrites
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
-operator|.
-name|include
-argument_list|(
-name|BenchMarkDatanodeDispatcher
-operator|.
-name|class
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
+comment|//        .include(BenchMarkMetadataStoreReads.class.getSimpleName())
+comment|//        .include(BenchMarkMetadataStoreWrites.class.getSimpleName())
+comment|//        .include(BenchMarkDatanodeDispatcher.class.getSimpleName())
 comment|// Commenting this test out, till we support either a command line or a config
 comment|// file based ability to run tests.
 comment|//        .include(BenchMarkRocksDbStore.class.getSimpleName())
@@ -169,7 +156,7 @@ argument_list|)
 operator|.
 name|addProfiler
 argument_list|(
-name|GenesisMemoryProfiler
+name|StackProfiler
 operator|.
 name|class
 argument_list|)

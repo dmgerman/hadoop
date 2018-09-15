@@ -1055,13 +1055,12 @@ name|newCount
 init|=
 literal|100
 decl_stmt|;
-comment|// This is not a mistake, the treeset seems to be reverse sorted.
 name|ContainerID
 name|last
 init|=
 name|values
 operator|.
-name|first
+name|last
 argument_list|()
 decl_stmt|;
 name|TreeSet
@@ -1263,7 +1262,7 @@ name|first
 init|=
 name|values
 operator|.
-name|last
+name|first
 argument_list|()
 decl_stmt|;
 name|TreeSet
@@ -1520,7 +1519,7 @@ name|first
 init|=
 name|values
 operator|.
-name|last
+name|first
 argument_list|()
 decl_stmt|;
 name|TreeSet

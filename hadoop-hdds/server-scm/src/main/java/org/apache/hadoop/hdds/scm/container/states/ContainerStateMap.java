@@ -345,6 +345,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -534,6 +546,20 @@ argument_list|<>
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|resultCache
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|ContainerQueryKey
+argument_list|,
+name|NavigableSet
+argument_list|<
+name|ContainerID
+argument_list|>
+argument_list|>
+name|resultCache
+decl_stmt|;
 comment|// Container State Map lock should be held before calling into
 comment|// Update ContainerAttributes. The consistency of ContainerAttributes is
 comment|// protected by this lock.
@@ -608,6 +634,13 @@ comment|//        new InstrumentedLock(getClass().getName(), LOG,
 comment|//            new ReentrantLock(),
 comment|//            1000,
 comment|//            300));
+name|resultCache
+operator|=
+operator|new
+name|ConcurrentHashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Adds a ContainerInfo Entry in the ContainerStateMap.    *    * @param info - container info    * @throws SCMException - throws if create failed.    */
 DECL|method|addContainer (ContainerInfo info)
@@ -772,6 +805,13 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Flush the cache of this container type, will be added later when
+comment|// get container queries are executed.
+name|flushCache
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|trace
@@ -824,6 +864,28 @@ name|long
 name|containerID
 parameter_list|)
 block|{
+return|return
+name|getContainerInfo
+argument_list|(
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
+name|containerID
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the latest state of Container from SCM's Container State Map.    *    * @param containerID - ContainerID    * @return container info, if found.    */
+DECL|method|getContainerInfo (ContainerID containerID)
+specifier|public
+name|ContainerInfo
+name|getContainerInfo
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|)
+block|{
 name|lock
 operator|.
 name|readLock
@@ -834,21 +896,12 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|ContainerID
-name|id
-init|=
-operator|new
-name|ContainerID
-argument_list|(
-name|containerID
-argument_list|)
-decl_stmt|;
 return|return
 name|containerMap
 operator|.
 name|get
 argument_list|(
-name|id
+name|containerID
 argument_list|)
 return|;
 block|}
@@ -1294,6 +1347,13 @@ name|FAILED_TO_FIND_CONTAINER
 argument_list|)
 throw|;
 block|}
+name|flushCache
+argument_list|(
+name|info
+argument_list|,
+name|currentInfo
+argument_list|)
+expr_stmt|;
 name|containerMap
 operator|.
 name|put
@@ -1380,6 +1440,30 @@ try|try
 block|{
 try|try
 block|{
+comment|// Just flush both old and new data sets from the result cache.
+name|ContainerInfo
+name|newInfo
+init|=
+operator|new
+name|ContainerInfo
+argument_list|(
+name|info
+argument_list|)
+decl_stmt|;
+name|newInfo
+operator|.
+name|setState
+argument_list|(
+name|newState
+argument_list|)
+expr_stmt|;
+name|flushCache
+argument_list|(
+name|newInfo
+argument_list|,
+name|info
+argument_list|)
+expr_stmt|;
 name|currentInfo
 operator|=
 name|containerMap
@@ -1880,6 +1964,40 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|ContainerQueryKey
+name|queryKey
+init|=
+operator|new
+name|ContainerQueryKey
+argument_list|(
+name|state
+argument_list|,
+name|owner
+argument_list|,
+name|factor
+argument_list|,
+name|type
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|resultCache
+operator|.
+name|containsKey
+argument_list|(
+name|queryKey
+argument_list|)
+condition|)
+block|{
+return|return
+name|resultCache
+operator|.
+name|get
+argument_list|(
+name|queryKey
+argument_list|)
+return|;
+block|}
 comment|// If we cannot meet any one condition we return EMPTY_SET immediately.
 comment|// Since when we intersect these sets, the result will be empty if any
 comment|// one is empty.
@@ -2053,6 +2171,15 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+name|resultCache
+operator|.
+name|put
+argument_list|(
+name|queryKey
+argument_list|,
+name|currentSet
+argument_list|)
+expr_stmt|;
 return|return
 name|currentSet
 return|;
@@ -2271,6 +2398,60 @@ block|}
 return|return
 name|sets
 return|;
+block|}
+DECL|method|flushCache (ContainerInfo... containerInfos)
+specifier|private
+name|void
+name|flushCache
+parameter_list|(
+name|ContainerInfo
+modifier|...
+name|containerInfos
+parameter_list|)
+block|{
+for|for
+control|(
+name|ContainerInfo
+name|containerInfo
+range|:
+name|containerInfos
+control|)
+block|{
+name|ContainerQueryKey
+name|key
+init|=
+operator|new
+name|ContainerQueryKey
+argument_list|(
+name|containerInfo
+operator|.
+name|getState
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getOwner
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getReplicationFactor
+argument_list|()
+argument_list|,
+name|containerInfo
+operator|.
+name|getReplicationType
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|resultCache
+operator|.
+name|remove
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

@@ -1733,9 +1733,6 @@ operator|.
 name|getContainerInfo
 argument_list|(
 name|id
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -1921,9 +1918,6 @@ operator|.
 name|getContainerInfo
 argument_list|(
 name|containerID
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 return|;
 block|}
