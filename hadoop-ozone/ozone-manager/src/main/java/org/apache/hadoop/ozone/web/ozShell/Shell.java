@@ -152,11 +152,11 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"ozone oz"
+literal|"ozone sh"
 argument_list|,
 name|description
 operator|=
-literal|"Client for the Ozone object store"
+literal|"Shell for Ozone object store"
 argument_list|,
 name|subcommands
 operator|=

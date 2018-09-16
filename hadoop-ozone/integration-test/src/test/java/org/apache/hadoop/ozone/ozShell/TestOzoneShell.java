@@ -2129,7 +2129,7 @@ name|String
 index|[]
 block|{}
 decl_stmt|;
-comment|//executing 'ozone oz'
+comment|//executing 'ozone sh'
 name|executeWithError
 argument_list|(
 name|shell
@@ -2138,7 +2138,7 @@ name|args
 argument_list|,
 name|expectedError
 argument_list|,
-literal|"Usage: ozone oz [-hV] [--verbose] [-D=<String=String>]..."
+literal|"Usage: ozone sh [-hV] [--verbose] [-D=<String=String>]..."
 operator|+
 literal|" [COMMAND]"
 argument_list|)
@@ -2152,7 +2152,7 @@ block|{
 literal|"volume"
 block|}
 expr_stmt|;
-comment|//executing 'ozone oz volume'
+comment|//executing 'ozone sh volume'
 name|executeWithError
 argument_list|(
 name|shell
@@ -2161,7 +2161,7 @@ name|args
 argument_list|,
 name|expectedError
 argument_list|,
-literal|"Usage: ozone oz volume [-hV] [COMMAND]"
+literal|"Usage: ozone sh volume [-hV] [COMMAND]"
 argument_list|)
 expr_stmt|;
 name|args
@@ -2173,7 +2173,7 @@ block|{
 literal|"bucket"
 block|}
 expr_stmt|;
-comment|//executing 'ozone oz bucket'
+comment|//executing 'ozone sh bucket'
 name|executeWithError
 argument_list|(
 name|shell
@@ -2182,7 +2182,7 @@ name|args
 argument_list|,
 name|expectedError
 argument_list|,
-literal|"Usage: ozone oz bucket [-hV] [COMMAND]"
+literal|"Usage: ozone sh bucket [-hV] [COMMAND]"
 argument_list|)
 expr_stmt|;
 name|args
@@ -2194,7 +2194,7 @@ block|{
 literal|"key"
 block|}
 expr_stmt|;
-comment|//executing 'ozone oz key'
+comment|//executing 'ozone sh key'
 name|executeWithError
 argument_list|(
 name|shell
@@ -2203,7 +2203,7 @@ name|args
 argument_list|,
 name|expectedError
 argument_list|,
-literal|"Usage: ozone oz key [-hV] [COMMAND]"
+literal|"Usage: ozone sh key [-hV] [COMMAND]"
 argument_list|)
 expr_stmt|;
 block|}
