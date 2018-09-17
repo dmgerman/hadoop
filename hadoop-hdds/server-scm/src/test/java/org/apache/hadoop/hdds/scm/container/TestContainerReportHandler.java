@@ -600,6 +600,18 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|PipelineSelector
+name|selector
+init|=
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|PipelineSelector
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|when
 argument_list|(
 name|mapping
@@ -666,6 +678,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|mapping
+argument_list|,
+name|selector
 argument_list|)
 decl_stmt|;
 name|when

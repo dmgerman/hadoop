@@ -164,24 +164,6 @@ name|scm
 operator|.
 name|pipelines
 operator|.
-name|Node2PipelineMap
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|pipelines
-operator|.
 name|PipelineManager
 import|;
 end_import
@@ -350,16 +332,6 @@ name|Set
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * Implementation of {@link PipelineManager}.  *  * TODO : Introduce a state machine.  */
 end_comment
@@ -410,7 +382,7 @@ argument_list|>
 name|ratisMembers
 decl_stmt|;
 comment|/**    * Constructs a Ratis Pipeline Manager.    *    * @param nodeManager    */
-DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf, Node2PipelineMap map, Map<PipelineID, Pipeline> pipelineMap)
+DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf)
 specifier|public
 name|RatisManagerImpl
 parameter_list|(
@@ -425,25 +397,10 @@ name|size
 parameter_list|,
 name|Configuration
 name|conf
-parameter_list|,
-name|Node2PipelineMap
-name|map
-parameter_list|,
-name|Map
-argument_list|<
-name|PipelineID
-argument_list|,
-name|Pipeline
-argument_list|>
-name|pipelineMap
 parameter_list|)
 block|{
 name|super
-argument_list|(
-name|map
-argument_list|,
-name|pipelineMap
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -672,13 +629,6 @@ name|destroyPipeline
 argument_list|()
 expr_stmt|;
 block|}
-name|super
-operator|.
-name|closePipeline
-argument_list|(
-name|pipeline
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|DatanodeDetails

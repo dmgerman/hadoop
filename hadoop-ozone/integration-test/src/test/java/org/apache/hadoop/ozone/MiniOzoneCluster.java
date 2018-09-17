@@ -305,12 +305,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Restarts StorageContainerManager instance.    *    * @throws IOException    */
+comment|/**    * Restarts StorageContainerManager instance.    *    * @throws IOException    * @throws TimeoutException    * @throws InterruptedException    */
 DECL|method|restartStorageContainerManager ()
 name|void
 name|restartStorageContainerManager
 parameter_list|()
 throws|throws
+name|InterruptedException
+throws|,
+name|TimeoutException
+throws|,
 name|IOException
 function_decl|;
 comment|/**    * Restarts OzoneManager instance.    *    * @throws IOException    */

@@ -188,28 +188,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|PipelineID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
 name|replication
 operator|.
 name|ReplicationRequest
@@ -666,7 +644,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|ContainerStateManager (Configuration configuration, Mapping containerMapping)
+DECL|method|ContainerStateManager (Configuration configuration, Mapping containerMapping, PipelineSelector pipelineSelector)
 specifier|public
 name|ContainerStateManager
 parameter_list|(
@@ -675,6 +653,9 @@ name|configuration
 parameter_list|,
 name|Mapping
 name|containerMapping
+parameter_list|,
+name|PipelineSelector
+name|pipelineSelector
 parameter_list|)
 block|{
 comment|// Initialize the container state machine.
@@ -784,16 +765,21 @@ expr_stmt|;
 name|loadExistingContainers
 argument_list|(
 name|containerMapping
+argument_list|,
+name|pipelineSelector
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadExistingContainers (Mapping containerMapping)
+DECL|method|loadExistingContainers (Mapping containerMapping, PipelineSelector pipelineSelector)
 specifier|private
 name|void
 name|loadExistingContainers
 parameter_list|(
 name|Mapping
 name|containerMapping
+parameter_list|,
+name|PipelineSelector
+name|pipelineSelector
 parameter_list|)
 block|{
 name|List
@@ -894,6 +880,21 @@ operator|.
 name|addContainer
 argument_list|(
 name|container
+argument_list|)
+expr_stmt|;
+name|pipelineSelector
+operator|.
+name|addContainerToPipeline
+argument_list|(
+name|container
+operator|.
+name|getPipelineID
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1170,6 +1171,14 @@ argument_list|,
 name|replicationFactor
 argument_list|)
 expr_stmt|;
+name|long
+name|containerID
+init|=
+name|containerCount
+operator|.
+name|incrementAndGet
+argument_list|()
+decl_stmt|;
 name|ContainerInfo
 name|containerInfo
 init|=
@@ -1228,10 +1237,7 @@ argument_list|)
 operator|.
 name|setContainerID
 argument_list|(
-name|containerCount
-operator|.
-name|incrementAndGet
-argument_list|()
+name|containerID
 argument_list|)
 operator|.
 name|setDeleteTransactionId
@@ -1255,6 +1261,18 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|selector
+operator|.
+name|addContainerToPipeline
+argument_list|(
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -1828,28 +1846,6 @@ argument_list|,
 name|factor
 argument_list|,
 name|type
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns a set of open ContainerIDs that reside on a pipeline.    *    * @param pipelineID PipelineID of the Containers.    * @return Set of containers that match the specific query parameters.    */
-DECL|method|getMatchingContainerIDsByPipeline (PipelineID pipelineID)
-specifier|public
-name|NavigableSet
-argument_list|<
-name|ContainerID
-argument_list|>
-name|getMatchingContainerIDsByPipeline
-parameter_list|(
-name|PipelineID
-name|pipelineID
-parameter_list|)
-block|{
-return|return
-name|containers
-operator|.
-name|getOpenContainerIDsByPipeline
-argument_list|(
-name|pipelineID
 argument_list|)
 return|;
 block|}

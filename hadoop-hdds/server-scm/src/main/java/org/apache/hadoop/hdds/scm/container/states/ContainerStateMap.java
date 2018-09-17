@@ -138,28 +138,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|PipelineID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|exceptions
 operator|.
 name|SCMException
@@ -423,7 +401,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Container State Map acts like a unified map for various attributes that are  * used to select containers when we need allocated blocks.  *<p>  * This class provides the ability to query 5 classes of attributes. They are  *<p>  * 1. LifeCycleStates - LifeCycle States of container describe in which state  * a container is. For example, a container needs to be in Open State for a  * client to able to write to it.  *<p>  * 2. Owners - Each instance of Name service, for example, Namenode of HDFS or  * Ozone Manager (OM) of Ozone or CBlockServer --  is an owner. It is  * possible to have many OMs for a Ozone cluster and only one SCM. But SCM  * keeps the data from each OM in separate bucket, never mixing them. To  * write data, often we have to find all open containers for a specific owner.  *<p>  * 3. ReplicationType - The clients are allowed to specify what kind of  * replication pipeline they want to use. Each Container exists on top of a  * pipeline, so we need to get ReplicationType that is specified by the user.  *<p>  * 4. ReplicationFactor - The replication factor represents how many copies  * of data should be made, right now we support 2 different types, ONE  * Replica and THREE Replica. User can specify how many copies should be made  * for a ozone key.  *<p>  * 5.Pipeline - The pipeline constitute the set of Datanodes on which the  * open container resides physically.  *<p>  * The most common access pattern of this class is to select a container based  * on all these parameters, for example, when allocating a block we will  * select a container that belongs to user1, with Ratis replication which can  * make 3 copies of data. The fact that we will look for open containers by  * default and if we cannot find them we will add new containers.  */
+comment|/**  * Container State Map acts like a unified map for various attributes that are  * used to select containers when we need allocated blocks.  *<p>  * This class provides the ability to query 5 classes of attributes. They are  *<p>  * 1. LifeCycleStates - LifeCycle States of container describe in which state  * a container is. For example, a container needs to be in Open State for a  * client to able to write to it.  *<p>  * 2. Owners - Each instance of Name service, for example, Namenode of HDFS or  * Ozone Manager (OM) of Ozone or CBlockServer --  is an owner. It is  * possible to have many OMs for a Ozone cluster and only one SCM. But SCM  * keeps the data from each OM in separate bucket, never mixing them. To  * write data, often we have to find all open containers for a specific owner.  *<p>  * 3. ReplicationType - The clients are allowed to specify what kind of  * replication pipeline they want to use. Each Container exists on top of a  * pipeline, so we need to get ReplicationType that is specified by the user.  *<p>  * 4. ReplicationFactor - The replication factor represents how many copies  * of data should be made, right now we support 2 different types, ONE  * Replica and THREE Replica. User can specify how many copies should be made  * for a ozone key.  *<p>  * The most common access pattern of this class is to select a container based  * on all these parameters, for example, when allocating a block we will  * select a container that belongs to user1, with Ratis replication which can  * make 3 copies of data. The fact that we will look for open containers by  * default and if we cannot find them we will add new containers.  */
 end_comment
 
 begin_class
@@ -483,22 +461,6 @@ argument_list|<
 name|ReplicationType
 argument_list|>
 name|typeMap
-decl_stmt|;
-comment|// This map constitutes the pipeline to open container mappings.
-comment|// This map will be queried for the list of open containers on a particular
-comment|// pipeline and issue a close on corresponding containers in case of
-comment|// following events:
-comment|//1. Dead datanode.
-comment|//2. Datanode out of space.
-comment|//3. Volume loss or volume out of space.
-DECL|field|openPipelineMap
-specifier|private
-specifier|final
-name|ContainerAttribute
-argument_list|<
-name|PipelineID
-argument_list|>
-name|openPipelineMap
 decl_stmt|;
 DECL|field|containerMap
 specifier|private
@@ -597,13 +559,6 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 name|typeMap
-operator|=
-operator|new
-name|ContainerAttribute
-argument_list|<>
-argument_list|()
-expr_stmt|;
-name|openPipelineMap
 operator|=
 operator|new
 name|ContainerAttribute
@@ -784,27 +739,6 @@ argument_list|,
 name|id
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|info
-operator|.
-name|isContainerOpen
-argument_list|()
-condition|)
-block|{
-name|openPipelineMap
-operator|.
-name|insert
-argument_list|(
-name|info
-operator|.
-name|getPipelineID
-argument_list|()
-argument_list|,
-name|id
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Flush the cache of this container type, will be added later when
 comment|// get container queries are executed.
 name|flushCache
@@ -1607,30 +1541,6 @@ name|FAILED_TO_CHANGE_CONTAINER_STATE
 argument_list|)
 throw|;
 block|}
-comment|// In case the container is set to closed state, it needs to be removed
-comment|// from the pipeline Map.
-if|if
-condition|(
-operator|!
-name|info
-operator|.
-name|isContainerOpen
-argument_list|()
-condition|)
-block|{
-name|openPipelineMap
-operator|.
-name|remove
-argument_list|(
-name|info
-operator|.
-name|getPipelineID
-argument_list|()
-argument_list|,
-name|id
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -1729,57 +1639,6 @@ operator|.
 name|getCollection
 argument_list|(
 name|type
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Returns Open containers in the SCM by the Pipeline.    *    * @param pipelineID - Pipeline id.    * @return NavigableSet<ContainerID>    */
-DECL|method|getOpenContainerIDsByPipeline ( PipelineID pipelineID)
-specifier|public
-name|NavigableSet
-argument_list|<
-name|ContainerID
-argument_list|>
-name|getOpenContainerIDsByPipeline
-parameter_list|(
-name|PipelineID
-name|pipelineID
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|pipelineID
-argument_list|)
-expr_stmt|;
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|openPipelineMap
-operator|.
-name|getCollection
-argument_list|(
-name|pipelineID
 argument_list|)
 return|;
 block|}

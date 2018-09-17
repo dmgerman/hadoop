@@ -244,7 +244,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -264,7 +264,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -295,16 +295,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|NavigableSet
 import|;
 end_import
 
@@ -412,10 +402,9 @@ name|pipelineSelector
 decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *    * @throws IOException    */
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|init ()
 specifier|public
-specifier|static
 name|void
 name|init
 parameter_list|()
@@ -500,10 +489,9 @@ expr_stmt|;
 block|}
 comment|/**    * Shutdown MiniDFSCluster.    */
 annotation|@
-name|AfterClass
+name|After
 DECL|method|shutdown ()
 specifier|public
-specifier|static
 name|void
 name|shutdown
 parameter_list|()
@@ -532,13 +520,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|NavigableSet
+name|Set
 argument_list|<
 name|ContainerID
 argument_list|>
 name|set
 init|=
-name|stateMap
+name|pipelineSelector
 operator|.
 name|getOpenContainerIDsByPipeline
 argument_list|(
@@ -574,19 +562,25 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|set
+operator|.
+name|forEach
+argument_list|(
+name|containerID
+lambda|->
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|cId
+name|containerID
 argument_list|,
-name|set
+name|ContainerID
 operator|.
-name|first
-argument_list|()
-operator|.
-name|getId
-argument_list|()
+name|valueof
+argument_list|(
+name|cId
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|List
@@ -627,10 +621,7 @@ operator|.
 name|getPipelineSelector
 argument_list|()
 operator|.
-name|getNode2PipelineMap
-argument_list|()
-operator|.
-name|getPipelines
+name|getPipelineId
 argument_list|(
 name|dns
 operator|.
@@ -731,13 +722,13 @@ operator|.
 name|CLOSE
 argument_list|)
 expr_stmt|;
-name|NavigableSet
+name|Set
 argument_list|<
 name|ContainerID
 argument_list|>
 name|set2
 init|=
-name|stateMap
+name|pipelineSelector
 operator|.
 name|getOpenContainerIDsByPipeline
 argument_list|(
