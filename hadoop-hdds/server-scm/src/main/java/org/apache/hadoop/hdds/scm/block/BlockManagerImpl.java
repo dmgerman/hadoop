@@ -497,34 +497,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|ReadWriteLock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|locks
-operator|.
-name|ReentrantReadWriteLock
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -682,12 +654,6 @@ specifier|final
 name|Mapping
 name|containerManager
 decl_stmt|;
-DECL|field|lock
-specifier|private
-specifier|final
-name|ReadWriteLock
-name|lock
-decl_stmt|;
 DECL|field|containerSize
 specifier|private
 specifier|final
@@ -808,14 +774,6 @@ name|rand
 operator|=
 operator|new
 name|Random
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|lock
-operator|=
-operator|new
-name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
 name|mxBean
@@ -1112,16 +1070,6 @@ comment|/*       Here is the high level logic.        1. First we check if there
 name|ContainerWithPipeline
 name|containerWithPipeline
 decl_stmt|;
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 comment|// This is to optimize performance, if the below condition is evaluated
 comment|// to false, then we can be sure that there are no containers in
 comment|// ALLOCATED state.
@@ -1416,9 +1364,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to allocate a block for the size: {}, type: {}, "
-operator|+
-literal|"factor: {}"
+literal|"Unable to allocate a block for the size: {}, type: {}, factor: {}"
 argument_list|,
 name|size
 argument_list|,
@@ -1430,18 +1376,6 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * newBlock - returns a new block assigned to a container.    *    * @param containerWithPipeline - Container Info.    * @param state - Current state of the container.    * @return AllocatedBlock    */
 DECL|method|newBlock (ContainerWithPipeline containerWithPipeline, HddsProtos.LifeCycleState state)
@@ -1496,14 +1430,12 @@ literal|null
 return|;
 block|}
 comment|// TODO : Revisit this local ID allocation when HA is added.
-comment|// TODO: this does not work well if multiple allocation kicks in a tight
-comment|// loop.
 name|long
 name|localID
 init|=
-name|Time
+name|UniqueId
 operator|.
-name|getUtcTime
+name|next
 argument_list|()
 decl_stmt|;
 name|long
@@ -1947,6 +1879,86 @@ block|{
 return|return
 name|LOG
 return|;
+block|}
+comment|/**    * This class uses system current time milliseconds to generate unique id.    */
+DECL|class|UniqueId
+specifier|public
+specifier|static
+specifier|final
+class|class
+name|UniqueId
+block|{
+comment|/*      * When we represent time in milliseconds using 'long' data type,      * the LSB bits are used. Currently we are only using 44 bits (LSB),      * 20 bits (MSB) are not used.      * We will exhaust this 44 bits only when we are in year 2525,      * until then we can safely use this 20 bits (MSB) for offset to generate      * unique id within millisecond.      *      * Year        : Mon Dec 31 18:49:04 IST 2525      * TimeInMillis: 17545641544247      * Binary Representation:      *   MSB (20 bits): 0000 0000 0000 0000 0000      *   LSB (44 bits): 1111 1111 0101 0010 1001 1011 1011 0100 1010 0011 0111      *      * We have 20 bits to run counter, we should exclude the first bit (MSB)      * as we don't want to deal with negative values.      * To be on safer side we will use 'short' data type which is of length      * 16 bits and will give us 65,536 values for offset.      *      */
+DECL|field|offset
+specifier|private
+specifier|static
+specifier|volatile
+name|short
+name|offset
+init|=
+literal|0
+decl_stmt|;
+comment|/**      * Private constructor so that no one can instantiate this class.      */
+DECL|method|UniqueId ()
+specifier|private
+name|UniqueId
+parameter_list|()
+block|{}
+comment|/**      * Calculate and returns next unique id based on System#currentTimeMillis.      *      * @return unique long value      */
+DECL|method|next ()
+specifier|public
+specifier|static
+specifier|synchronized
+name|long
+name|next
+parameter_list|()
+block|{
+name|long
+name|utcTime
+init|=
+name|Time
+operator|.
+name|getUtcTime
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|utcTime
+operator|&
+literal|0xFFFF000000000000L
+operator|)
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+name|utcTime
+operator|<<
+name|Short
+operator|.
+name|SIZE
+operator||
+operator|(
+name|offset
+operator|++
+operator|&
+literal|0x0000FFFF
+operator|)
+return|;
+block|}
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Got invalid UTC time,"
+operator|+
+literal|" cannot generate unique Id. UTC Time: "
+operator|+
+name|utcTime
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class
