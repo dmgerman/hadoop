@@ -879,6 +879,25 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|CHILL_MODE_STATUS
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|Boolean
+argument_list|>
+name|CHILL_MODE_STATUS
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|Boolean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Private Ctor. Never Constructed.    */
 DECL|method|SCMEvents ()
 specifier|private

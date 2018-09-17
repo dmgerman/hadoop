@@ -40,6 +40,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -142,6 +152,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
+name|ScmOps
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -225,6 +255,24 @@ operator|.
 name|events
 operator|.
 name|EventPublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|server
+operator|.
+name|events
+operator|.
+name|EventQueue
 import|;
 end_import
 
@@ -331,7 +379,13 @@ name|CONT_EXIT_RULE
 init|=
 literal|"ContainerChillModeRule"
 decl_stmt|;
-DECL|method|SCMChillModeManager (Configuration conf, List<ContainerInfo> allContainers, EventPublisher eventQueue)
+DECL|field|eventPublisher
+specifier|private
+specifier|final
+name|EventQueue
+name|eventPublisher
+decl_stmt|;
+DECL|method|SCMChillModeManager (Configuration conf, List<ContainerInfo> allContainers, EventQueue eventQueue)
 name|SCMChillModeManager
 parameter_list|(
 name|Configuration
@@ -343,7 +397,7 @@ name|ContainerInfo
 argument_list|>
 name|allContainers
 parameter_list|,
-name|EventPublisher
+name|EventQueue
 name|eventQueue
 parameter_list|)
 block|{
@@ -352,6 +406,12 @@ operator|.
 name|config
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|eventPublisher
+operator|=
+name|eventQueue
 expr_stmt|;
 name|exitRules
 operator|.
@@ -391,6 +451,33 @@ name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
+name|emitChillModeStatus
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Emit Chill mode status.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|emitChillModeStatus ()
+specifier|public
+name|void
+name|emitChillModeStatus
+parameter_list|()
+block|{
+name|eventPublisher
+operator|.
+name|fireEvent
+argument_list|(
+name|SCMEvents
+operator|.
+name|CHILL_MODE_STATUS
+argument_list|,
+name|inChillMode
+operator|.
+name|get
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|validateChillModeExitRules (EventPublisher eventQueue)
 specifier|private
@@ -430,8 +517,11 @@ name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Exit chill mode. It does following actions:    * 1. Set chill mode status to fale.    * 2. Emits START_REPLICATION for ReplicationManager.    * 3. Cleanup resources.    * 4. Emit chill mode status.    * @param eventQueue    */
+annotation|@
+name|VisibleForTesting
 DECL|method|exitChillMode (EventPublisher eventQueue)
-specifier|private
+specifier|public
 name|void
 name|exitChillMode
 parameter_list|(
@@ -449,18 +539,6 @@ expr_stmt|;
 name|setInChillMode
 argument_list|(
 literal|false
-argument_list|)
-expr_stmt|;
-comment|// Emit event to ReplicationManager to start replication.
-name|eventQueue
-operator|.
-name|fireEvent
-argument_list|(
-name|SCMEvents
-operator|.
-name|START_REPLICATION
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 comment|// TODO: Remove handler registration as there is no need to listen to
@@ -482,6 +560,9 @@ name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
+name|emitChillModeStatus
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -535,6 +616,7 @@ name|get
 argument_list|()
 return|;
 block|}
+comment|/**    * Set chill mode status.    */
 DECL|method|setInChillMode (boolean inChillMode)
 specifier|public
 name|void
@@ -889,6 +971,60 @@ operator|.
 name|getCurrentContainerThreshold
 argument_list|()
 return|;
+block|}
+comment|/**    * Operations restricted in SCM chill mode.    */
+DECL|class|ChillModeRestrictedOps
+specifier|public
+specifier|static
+class|class
+name|ChillModeRestrictedOps
+block|{
+DECL|field|restrictedOps
+specifier|private
+specifier|static
+name|EnumSet
+name|restrictedOps
+init|=
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|ScmOps
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+static|static
+block|{
+name|restrictedOps
+operator|.
+name|add
+argument_list|(
+name|ScmOps
+operator|.
+name|allocateBlock
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|isRestrictedInChillMode (ScmOps opName)
+specifier|public
+specifier|static
+name|boolean
+name|isRestrictedInChillMode
+parameter_list|(
+name|ScmOps
+name|opName
+parameter_list|)
+block|{
+return|return
+name|restrictedOps
+operator|.
+name|contains
+argument_list|(
+name|opName
+argument_list|)
+return|;
+block|}
 block|}
 block|}
 end_class
