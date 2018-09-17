@@ -1194,7 +1194,7 @@ name|format
 argument_list|(
 literal|"Trying to access ResourceInformation for given index=%d. "
 operator|+
-literal|"Acceptable index range is [0,%d), please check double check "
+literal|"Acceptable index range is [0,%d), please double check "
 operator|+
 literal|"configured resources in resource-types.xml"
 argument_list|,
