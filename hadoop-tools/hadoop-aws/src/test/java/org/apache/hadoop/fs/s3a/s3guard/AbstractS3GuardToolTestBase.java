@@ -1656,6 +1656,15 @@ init|=
 name|getConfiguration
 argument_list|()
 decl_stmt|;
+name|String
+name|bucket
+init|=
+name|getFileSystem
+argument_list|()
+operator|.
+name|getBucket
+argument_list|()
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -1699,7 +1708,9 @@ literal|"-read"
 block|,
 literal|"0"
 block|,
-literal|"s3a://bucket"
+literal|"s3a://"
+operator|+
+name|bucket
 block|}
 decl_stmt|;
 name|intercept
@@ -1754,7 +1765,9 @@ literal|"-write"
 block|,
 literal|"0"
 block|,
-literal|"s3a://bucket"
+literal|"s3a://"
+operator|+
+name|bucket
 block|}
 decl_stmt|;
 name|intercept
