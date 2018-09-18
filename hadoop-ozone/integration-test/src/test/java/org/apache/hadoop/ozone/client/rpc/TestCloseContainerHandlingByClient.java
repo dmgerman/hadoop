@@ -554,16 +554,6 @@ name|UUID
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
-import|;
-end_import
-
 begin_comment
 comment|/**  * Tests Close Container Exception handling by Ozone Client.  */
 end_comment
@@ -652,17 +642,9 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 expr_stmt|;
-comment|// generate a no between 1 to 10
 name|maxRetries
 operator|=
-operator|new
-name|Random
-argument_list|()
-operator|.
-name|nextInt
-argument_list|(
-literal|10
-argument_list|)
+literal|100
 expr_stmt|;
 name|conf
 operator|.
@@ -673,6 +655,17 @@ operator|.
 name|OZONE_CLIENT_MAX_RETRIES
 argument_list|,
 name|maxRetries
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_RETRY_INTERVAL
+argument_list|,
+literal|"200ms"
 argument_list|)
 expr_stmt|;
 name|chunkSize
