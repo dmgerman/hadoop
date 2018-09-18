@@ -2226,6 +2226,11 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Ignore
+argument_list|(
+literal|"Causes a JVm exit"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testPutAndGetKeyWithDnRestart ()
 specifier|public
