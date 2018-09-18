@@ -84,7 +84,7 @@ literal|"Configuration property "
 operator|+
 name|property
 operator|+
-literal|"not found."
+literal|" not found."
 argument_list|)
 expr_stmt|;
 block|}
