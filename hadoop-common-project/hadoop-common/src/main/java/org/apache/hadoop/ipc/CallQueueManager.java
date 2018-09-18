@@ -503,17 +503,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Using callQueue: "
+literal|"Using callQueue: {}, queueCapacity: {}, "
 operator|+
+literal|"scheduler: {}, ipcBackoff: {}."
+argument_list|,
 name|backingClass
-operator|+
-literal|" queueCapacity: "
-operator|+
+argument_list|,
 name|maxQueueSize
-operator|+
-literal|" scheduler: "
-operator|+
+argument_list|,
 name|schedulerClass
+argument_list|,
+name|clientBackOffEnabled
 argument_list|)
 expr_stmt|;
 block|}
