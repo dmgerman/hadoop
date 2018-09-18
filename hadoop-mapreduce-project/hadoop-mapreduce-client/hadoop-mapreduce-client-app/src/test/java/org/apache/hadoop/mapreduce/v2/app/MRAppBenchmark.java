@@ -266,6 +266,26 @@ name|app
 operator|.
 name|rm
 operator|.
+name|RMHeartbeatHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|rm
+operator|.
 name|preemption
 operator|.
 name|AMPreemptionPolicy
@@ -319,6 +339,20 @@ operator|.
 name|test
 operator|.
 name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -940,6 +974,8 @@ extends|extends
 name|AbstractService
 implements|implements
 name|ContainerAllocator
+implements|,
+name|RMHeartbeatHandler
 block|{
 DECL|field|containerCount
 specifier|private
@@ -1246,6 +1282,32 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getLastHeartbeatTime ()
+specifier|public
+name|long
+name|getLastHeartbeatTime
+parameter_list|()
+block|{
+return|return
+name|Time
+operator|.
+name|now
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|runOnNextHeartbeat (Runnable callback)
+specifier|public
+name|void
+name|runOnNextHeartbeat
+parameter_list|(
+name|Runnable
+name|callback
+parameter_list|)
+block|{       }
 block|}
 block|}
 annotation|@
@@ -1650,6 +1712,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|benchmark2 ()
 specifier|public
 name|void
