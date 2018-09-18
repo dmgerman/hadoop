@@ -3650,6 +3650,47 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testCreateStartupShutdownMessage ()
+specifier|public
+name|void
+name|testCreateStartupShutdownMessage
+parameter_list|()
+block|{
+comment|//pass null args and method must still return a string beginning with
+comment|// "STARTUP_MSG"
+name|String
+name|msg
+init|=
+name|StringUtils
+operator|.
+name|createStartupShutdownMessage
+argument_list|(
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+literal|"test.host"
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|msg
+operator|.
+name|startsWith
+argument_list|(
+literal|"STARTUP_MSG:"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Benchmark for StringUtils split
 DECL|method|main (String []args)
 specifier|public

@@ -3097,12 +3097,23 @@ name|hostname
 block|,
 literal|"  args = "
 operator|+
+operator|(
+name|args
+operator|!=
+literal|null
+condition|?
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|args
 argument_list|)
+else|:
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+operator|)
 block|,
 literal|"  version = "
 operator|+
