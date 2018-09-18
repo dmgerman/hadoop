@@ -1574,7 +1574,7 @@ specifier|final
 name|String
 name|SNAPSHOT_BIT_JSON
 init|=
-literal|"seBit"
+literal|"snapshotEnabled"
 decl_stmt|;
 DECL|field|DIRECTORY_LISTING_JSON
 specifier|public
