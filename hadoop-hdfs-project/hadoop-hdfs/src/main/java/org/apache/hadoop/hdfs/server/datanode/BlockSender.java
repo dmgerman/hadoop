@@ -3017,9 +3017,9 @@ condition|)
 block|{
 if|if
 condition|(
-name|checksumOffset
-operator|<
 name|checksumLen
+operator|>
+literal|0
 condition|)
 block|{
 comment|// Just fill the array with zeros.
@@ -3031,6 +3031,8 @@ name|buf
 argument_list|,
 name|checksumOffset
 argument_list|,
+name|checksumOffset
+operator|+
 name|checksumLen
 argument_list|,
 operator|(
