@@ -6669,6 +6669,11 @@ operator|new
 name|DockerRmCommand
 argument_list|(
 name|containerId
+argument_list|,
+name|ResourceHandlerModule
+operator|.
+name|getCgroupsRelativeRoot
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|DockerCommandExecutor
