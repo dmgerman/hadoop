@@ -128,7 +128,7 @@ specifier|final
 name|int
 name|TEST_TIMEOUT
 init|=
-literal|10
+literal|15
 operator|*
 literal|60
 operator|*
