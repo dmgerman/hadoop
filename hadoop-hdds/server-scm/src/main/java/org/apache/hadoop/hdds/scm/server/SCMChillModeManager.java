@@ -1005,6 +1005,15 @@ operator|.
 name|allocateBlock
 argument_list|)
 expr_stmt|;
+name|restrictedOps
+operator|.
+name|add
+argument_list|(
+name|ScmOps
+operator|.
+name|allocateContainer
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|isRestrictedInChillMode (ScmOps opName)
 specifier|public

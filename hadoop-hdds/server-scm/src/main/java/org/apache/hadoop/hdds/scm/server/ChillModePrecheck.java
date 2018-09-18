@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -115,8 +129,14 @@ argument_list|>
 block|{
 DECL|field|inChillMode
 specifier|private
-name|boolean
+name|AtomicBoolean
 name|inChillMode
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|true
+argument_list|)
 decl_stmt|;
 DECL|field|PRECHECK_TYPE
 specifier|public
@@ -141,6 +161,9 @@ block|{
 if|if
 condition|(
 name|inChillMode
+operator|.
+name|get
+argument_list|()
 operator|&&
 name|ChillModeRestrictedOps
 operator|.
@@ -166,6 +189,9 @@ throw|;
 block|}
 return|return
 name|inChillMode
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -188,6 +214,9 @@ parameter_list|()
 block|{
 return|return
 name|inChillMode
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 DECL|method|setInChillMode (boolean inChillMode)
@@ -202,8 +231,11 @@ block|{
 name|this
 operator|.
 name|inChillMode
-operator|=
+operator|.
+name|set
+argument_list|(
 name|inChillMode
+argument_list|)
 expr_stmt|;
 block|}
 block|}
