@@ -621,8 +621,6 @@ specifier|private
 name|void
 name|persistContainerDatanodeDetails
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|String
 name|dataNodeIDPath
@@ -705,6 +703,8 @@ name|exists
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
 name|ContainerUtils
 operator|.
 name|writeDatanodeDetailsTo
@@ -714,6 +714,44 @@ argument_list|,
 name|idPath
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+comment|// As writing DatanodeDetails in to datanodeid file failed, which is
+comment|// a critical thing, so shutting down the state machine.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Writing to {} failed {}"
+argument_list|,
+name|dataNodeIDPath
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|context
+operator|.
+name|setState
+argument_list|(
+name|DatanodeStateMachine
+operator|.
+name|DatanodeStates
+operator|.
+name|SHUTDOWN
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|LOG
 operator|.
 name|info
