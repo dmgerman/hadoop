@@ -757,19 +757,19 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|response
-operator|.
-name|complete
-argument_list|(
-name|outputPath
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"Container is downloaded to {}"
 argument_list|,
+name|outputPath
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|complete
+argument_list|(
 name|outputPath
 argument_list|)
 expr_stmt|;
