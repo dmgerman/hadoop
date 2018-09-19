@@ -1214,6 +1214,11 @@ argument_list|)
 operator|)
 argument_list|)
 expr_stmt|;
+name|logCapturer
+operator|.
+name|stopCapturing
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -1523,6 +1528,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Make sure it was really closed via Ratis not STAND_ALONE server
 name|Assert
 operator|.
 name|assertFalse
@@ -1542,7 +1548,6 @@ name|containerID
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Make sure it was really closed via StandAlone not Ratis server
 name|Assert
 operator|.
 name|assertTrue
@@ -1561,6 +1566,11 @@ name|containerID
 argument_list|)
 operator|)
 argument_list|)
+expr_stmt|;
+name|logCapturer
+operator|.
+name|stopCapturing
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|isContainerClosed (MiniOzoneCluster cluster, long containerID, DatanodeDetails datanode)

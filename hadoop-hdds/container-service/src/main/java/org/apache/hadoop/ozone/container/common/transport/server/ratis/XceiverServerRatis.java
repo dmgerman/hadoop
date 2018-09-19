@@ -756,18 +756,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|CompletableFuture
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|ThreadPoolExecutor
 import|;
 end_import
@@ -1960,10 +1948,12 @@ parameter_list|(
 name|RaftClientReply
 name|reply
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// NotLeader exception is thrown only when the raft server to which the
 comment|// request is submitted is not the leader. The request will be rejected
-comment|// and will eventually be executed once the request comnes via the leader
+comment|// and will eventually be executed once the request comes via the leader
 comment|// node.
 name|NotLeaderException
 name|notLeaderException
@@ -1980,19 +1970,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|reply
-operator|.
-name|getNotLeaderException
-argument_list|()
-operator|.
-name|getLocalizedMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
+throw|throw
+name|notLeaderException
+throw|;
 block|}
 name|StateMachineException
 name|stateMachineException
@@ -2009,25 +1989,14 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// In case the request could not be completed, StateMachine Exception
-comment|// will be thrown. For now, Just log the message.
-comment|// If the container could not be closed, SCM will come to know
-comment|// via containerReports. CloseContainer should be re tried via SCM.
-name|LOG
-operator|.
-name|error
-argument_list|(
+throw|throw
 name|stateMachineException
-operator|.
-name|getLocalizedMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
+throw|;
 block|}
 block|}
 annotation|@
 name|Override
-DECL|method|submitRequest ( ContainerCommandRequestProto request, HddsProtos.PipelineID pipelineID)
+DECL|method|submitRequest (ContainerCommandRequestProto request, HddsProtos.PipelineID pipelineID)
 specifier|public
 name|void
 name|submitRequest
@@ -2043,8 +2012,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// ReplicationLevel.MAJORITY ensures the transactions corresponding to
-comment|// the request here are applied on all the raft servers.
+name|RaftClientReply
+name|reply
+decl_stmt|;
 name|RaftClientRequest
 name|raftClientRequest
 init|=
@@ -2062,26 +2032,43 @@ name|replicationLevel
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|CompletableFuture
-argument_list|<
-name|RaftClientReply
-argument_list|>
+try|try
+block|{
 name|reply
-init|=
+operator|=
 name|server
 operator|.
 name|submitClientRequestAsync
 argument_list|(
 name|raftClientRequest
 argument_list|)
-decl_stmt|;
-name|reply
 operator|.
-name|thenAccept
+name|get
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-name|this
-operator|::
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 name|processReply
+argument_list|(
+name|reply
 argument_list|)
 expr_stmt|;
 block|}

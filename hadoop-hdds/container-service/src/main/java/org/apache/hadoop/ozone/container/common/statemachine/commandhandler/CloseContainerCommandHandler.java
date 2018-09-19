@@ -196,6 +196,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
+name|NotLeaderException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -450,16 +464,46 @@ argument_list|,
 name|pipelineID
 argument_list|)
 expr_stmt|;
-name|cmdExecuted
-operator|=
-literal|true
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
 name|Exception
 name|e
 parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|instanceof
+name|NotLeaderException
+condition|)
+block|{
+comment|// If the particular datanode is not the Ratis leader, the close
+comment|// container command will not be executed by the follower but will be
+comment|// executed by Ratis stateMachine transactions via leader to follower.
+comment|// There can also be case where the datanode is in candidate state.
+comment|// In these situations, NotLeaderException is thrown. Remove the status
+comment|// from cmdStatus Map here so that it will be retried only by SCM if the
+comment|// leader could not not close the container after a certain time.
+name|context
+operator|.
+name|removeCommandStatus
+argument_list|(
+name|containerID
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 name|LOG
 operator|.
@@ -472,6 +516,11 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+name|cmdExecuted
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
