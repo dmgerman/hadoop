@@ -608,11 +608,51 @@ name|CliConstants
 operator|.
 name|TENSORBOARD
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|"Should we run TensorBoard"
 operator|+
-literal|" for this job? By default it's true"
+literal|" for this job? By default it's disabled"
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
+name|TENSORBOARD_RESOURCES
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify resources of Tensorboard, by default it is "
+operator|+
+name|CliConstants
+operator|.
+name|TENSORBOARD_DEFAULT_RESOURCES
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
+name|TENSORBOARD_DOCKER_IMAGE
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify Tensorboard docker image. when this is not "
+operator|+
+literal|"specified, Tensorboard "
+operator|+
+literal|"uses --"
+operator|+
+name|CliConstants
+operator|.
+name|DOCKER_IMAGE
+operator|+
+literal|" as default."
 argument_list|)
 expr_stmt|;
 name|options
@@ -919,10 +959,135 @@ throw|throw
 name|e
 throw|;
 block|}
+comment|// Set default job dir / saved model dir, etc.
+name|setDefaultDirs
+argument_list|()
+expr_stmt|;
 comment|// replace patterns
 name|replacePatternsInParameters
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|setDefaultDirs ()
+specifier|private
+name|void
+name|setDefaultDirs
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Create directories if needed
+name|String
+name|jobDir
+init|=
+name|parameters
+operator|.
+name|getCheckpointPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|jobDir
+condition|)
+block|{
+if|if
+condition|(
+name|parameters
+operator|.
+name|getNumWorkers
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|jobDir
+operator|=
+name|clientContext
+operator|.
+name|getRemoteDirectoryManager
+argument_list|()
+operator|.
+name|getJobCheckpointDir
+argument_list|(
+name|parameters
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+literal|true
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// when #workers == 0, it means we only launch TB. In that case,
+comment|// point job dir to root dir so all job's metrics will be shown.
+name|jobDir
+operator|=
+name|clientContext
+operator|.
+name|getRemoteDirectoryManager
+argument_list|()
+operator|.
+name|getUserRootFolder
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+name|parameters
+operator|.
+name|setCheckpointPath
+argument_list|(
+name|jobDir
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|parameters
+operator|.
+name|getNumWorkers
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// Only do this when #worker> 0
+name|String
+name|savedModelDir
+init|=
+name|parameters
+operator|.
+name|getSavedModelPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|savedModelDir
+condition|)
+block|{
+name|savedModelDir
+operator|=
+name|jobDir
+expr_stmt|;
+name|parameters
+operator|.
+name|setSavedModelPath
+argument_list|(
+name|savedModelDir
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|storeJobInformation (String jobName, ApplicationId applicationId, String[] args)
 specifier|private
@@ -1202,6 +1367,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getRunJobParameters ()
+specifier|public
 name|RunJobParameters
 name|getRunJobParameters
 parameter_list|()

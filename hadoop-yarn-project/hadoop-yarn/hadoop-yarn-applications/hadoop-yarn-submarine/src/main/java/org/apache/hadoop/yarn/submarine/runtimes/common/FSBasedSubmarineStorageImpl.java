@@ -174,10 +174,6 @@ name|FSBasedSubmarineStorageImpl
 extends|extends
 name|SubmarineStorage
 block|{
-DECL|field|clientContext
-name|ClientContext
-name|clientContext
-decl_stmt|;
 DECL|field|rdm
 name|RemoteDirectoryManager
 name|rdm
@@ -190,12 +186,6 @@ name|ClientContext
 name|clientContext
 parameter_list|)
 block|{
-name|this
-operator|.
-name|clientContext
-operator|=
-name|clientContext
-expr_stmt|;
 name|rdm
 operator|=
 name|clientContext
@@ -533,8 +523,6 @@ argument_list|,
 name|String
 argument_list|>
 name|newMap
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{

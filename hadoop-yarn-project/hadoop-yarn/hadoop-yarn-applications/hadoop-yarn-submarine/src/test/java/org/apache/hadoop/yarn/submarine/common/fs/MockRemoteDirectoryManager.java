@@ -243,7 +243,11 @@ throws|throws
 name|IOException
 block|{
 return|return
-literal|null
+operator|new
+name|Path
+argument_list|(
+literal|"s3://generated_checkpoint_dir"
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -384,6 +388,24 @@ argument_list|(
 operator|new
 name|Configuration
 argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUserRootFolder ()
+specifier|public
+name|Path
+name|getUserRootFolder
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+literal|"s3://generated_root_dir"
 argument_list|)
 return|;
 block|}
