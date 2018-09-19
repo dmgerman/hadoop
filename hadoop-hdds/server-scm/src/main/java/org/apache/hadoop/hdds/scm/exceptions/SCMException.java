@@ -229,6 +229,9 @@ name|NO_SUCH_DATANODE
 block|,
 DECL|enumConstant|NO_REPLICA_FOUND
 name|NO_REPLICA_FOUND
+block|,
+DECL|enumConstant|FAILED_TO_FIND_ACTIVE_PIPELINE
+name|FAILED_TO_FIND_ACTIVE_PIPELINE
 block|}
 block|}
 end_class
