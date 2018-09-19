@@ -2519,6 +2519,14 @@ name|getWriteBytes
 argument_list|()
 argument_list|)
 operator|.
+name|setKeyCount
+argument_list|(
+name|containerData
+operator|.
+name|getKeyCount
+argument_list|()
+argument_list|)
+operator|.
 name|setUsed
 argument_list|(
 name|containerData
