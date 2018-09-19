@@ -42,34 +42,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Strings
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -154,6 +126,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|PipelineReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|ClosePipelineInfo
 import|;
 end_import
@@ -175,6 +167,22 @@ operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|PipelineAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|HddsServerUtil
 import|;
 end_import
 
@@ -694,6 +702,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Objects
 import|;
 end_import
@@ -871,7 +899,7 @@ specifier|private
 name|long
 name|nodeFailureTimeoutMs
 decl_stmt|;
-DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, String storageDir, ContainerDispatcher dispatcher, Configuration conf, StateContext context)
+DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, Configuration conf, StateContext context)
 specifier|private
 name|XceiverServerRatis
 parameter_list|(
@@ -880,9 +908,6 @@ name|dd
 parameter_list|,
 name|int
 name|port
-parameter_list|,
-name|String
-name|storageDir
 parameter_list|,
 name|ContainerDispatcher
 name|dispatcher
@@ -917,8 +942,6 @@ init|=
 name|newRaftProperties
 argument_list|(
 name|conf
-argument_list|,
-name|storageDir
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1022,14 +1045,6 @@ name|dd
 argument_list|)
 argument_list|)
 operator|.
-name|setGroup
-argument_list|(
-name|RatisHelper
-operator|.
-name|emptyRaftGroup
-argument_list|()
-argument_list|)
-operator|.
 name|setProperties
 argument_list|(
 name|serverProperties
@@ -1044,16 +1059,13 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|newRaftProperties (Configuration conf, String storageDir)
+DECL|method|newRaftProperties (Configuration conf)
 specifier|private
 name|RaftProperties
 name|newRaftProperties
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|String
-name|storageDir
 parameter_list|)
 block|{
 specifier|final
@@ -1569,6 +1581,16 @@ name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 comment|// Set the ratis storage directory
+name|String
+name|storageDir
+init|=
+name|HddsServerUtil
+operator|.
+name|getOzoneDatanodeRatisDirectory
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|RaftServerConfigKeys
 operator|.
 name|setStorageDir
@@ -1668,16 +1690,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|String
-name|ratisDir
-init|=
-name|File
-operator|.
-name|separator
-operator|+
-literal|"ratis"
-decl_stmt|;
 name|int
 name|localPort
 init|=
@@ -1694,71 +1706,6 @@ operator|.
 name|DFS_CONTAINER_RATIS_IPC_PORT_DEFAULT
 argument_list|)
 decl_stmt|;
-name|String
-name|storageDir
-init|=
-name|ozoneConf
-operator|.
-name|get
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|DFS_CONTAINER_RATIS_DATANODE_STORAGE_DIR
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
-name|storageDir
-argument_list|)
-condition|)
-block|{
-name|storageDir
-operator|=
-name|ozoneConf
-operator|.
-name|get
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_METADATA_DIRS
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|storageDir
-argument_list|,
-literal|"ozone.metadata.dirs "
-operator|+
-literal|"cannot be null, Please check your configs."
-argument_list|)
-expr_stmt|;
-name|storageDir
-operator|=
-name|storageDir
-operator|.
-name|concat
-argument_list|(
-name|ratisDir
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Storage directory for Ratis is not configured. Mapping Ratis "
-operator|+
-literal|"storage under {}. It is a good idea to map this to an SSD disk."
-argument_list|,
-name|storageDir
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Get an available port on current node and
 comment|// use that as the container port
 if|if
@@ -1826,26 +1773,6 @@ argument_list|,
 name|localPort
 argument_list|)
 expr_stmt|;
-comment|// If we have random local ports configured this means that it
-comment|// probably running under MiniOzoneCluster. Ratis locks the storage
-comment|// directories, so we need to pass different local directory for each
-comment|// local instance. So we map ratis directories under datanode ID.
-name|storageDir
-operator|=
-name|storageDir
-operator|.
-name|concat
-argument_list|(
-name|File
-operator|.
-name|separator
-operator|+
-name|datanodeDetails
-operator|.
-name|getUuidString
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1895,8 +1822,6 @@ argument_list|(
 name|datanodeDetails
 argument_list|,
 name|localPort
-argument_list|,
-name|storageDir
 argument_list|,
 name|dispatcher
 argument_list|,
@@ -2118,7 +2043,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// ReplicationLevel.ALL ensures the transactions corresponding to
+comment|// ReplicationLevel.MAJORITY ensures the transactions corresponding to
 comment|// the request here are applied on all the raft servers.
 name|RaftClientRequest
 name|raftClientRequest
@@ -2518,7 +2443,92 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleNodeSlowness ( RaftGroup group, RoleInfoProto roleInfoProto)
+annotation|@
+name|Override
+DECL|method|getPipelineReport ()
+specifier|public
+name|List
+argument_list|<
+name|PipelineReport
+argument_list|>
+name|getPipelineReport
+parameter_list|()
+block|{
+try|try
+block|{
+name|Iterable
+argument_list|<
+name|RaftGroupId
+argument_list|>
+name|gids
+init|=
+name|server
+operator|.
+name|getGroupIds
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|PipelineReport
+argument_list|>
+name|reports
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|RaftGroupId
+name|groupId
+range|:
+name|gids
+control|)
+block|{
+name|reports
+operator|.
+name|add
+argument_list|(
+name|PipelineReport
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setPipelineID
+argument_list|(
+name|PipelineID
+operator|.
+name|valueOf
+argument_list|(
+name|groupId
+argument_list|)
+operator|.
+name|getProtobuf
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|reports
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+DECL|method|handleNodeSlowness (RaftGroup group, RoleInfoProto roleInfoProto)
 name|void
 name|handleNodeSlowness
 parameter_list|(
@@ -2540,7 +2550,7 @@ name|roleInfoProto
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleNoLeader ( RaftGroup group, RoleInfoProto roleInfoProto)
+DECL|method|handleNoLeader (RaftGroup group, RoleInfoProto roleInfoProto)
 name|void
 name|handleNoLeader
 parameter_list|(

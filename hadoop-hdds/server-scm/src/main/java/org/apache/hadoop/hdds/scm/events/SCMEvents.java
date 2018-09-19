@@ -190,6 +190,26 @@ name|server
 operator|.
 name|SCMDatanodeHeartbeatDispatcher
 operator|.
+name|PipelineReportFromDatanode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|server
+operator|.
+name|SCMDatanodeHeartbeatDispatcher
+operator|.
 name|PipelineActionsFromDatanode
 import|;
 end_import
@@ -465,7 +485,7 @@ argument_list|,
 literal|"Node_Registration_Container_Report"
 argument_list|)
 decl_stmt|;
-comment|/**    * ContainerReports are send out by Datanodes. This report is received by    * SCMDatanodeHeartbeatDispatcher and Container_Report Event    * isTestSCMDatanodeHeartbeatDispatcher generated.    */
+comment|/**    * ContainerReports are send out by Datanodes. This report is received by    * SCMDatanodeHeartbeatDispatcher and Container_Report Event is generated.    */
 DECL|field|CONTAINER_REPORT
 specifier|public
 specifier|static
@@ -507,6 +527,28 @@ operator|.
 name|class
 argument_list|,
 literal|"Container_Actions"
+argument_list|)
+decl_stmt|;
+comment|/**    * PipelineReports are send out by Datanodes. This report is received by    * SCMDatanodeHeartbeatDispatcher and Pipeline_Report Event is generated.    */
+DECL|field|PIPELINE_REPORT
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|PipelineReportFromDatanode
+argument_list|>
+name|PIPELINE_REPORT
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|PipelineReportFromDatanode
+operator|.
+name|class
+argument_list|,
+literal|"Pipeline_Report"
 argument_list|)
 decl_stmt|;
 comment|/**    * PipelineActions are sent by Datanode. This event is received by    * SCMDatanodeHeartbeatDispatcher and PIPELINE_ACTIONS event is generated.    */

@@ -533,6 +533,9 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 name|ReportResult
+argument_list|<
+name|ContainerID
+argument_list|>
 name|reportResult
 init|=
 name|node2ContainerMap
@@ -567,7 +570,7 @@ name|containerID
 range|:
 name|reportResult
 operator|.
-name|getMissingContainers
+name|getMissingEntries
 argument_list|()
 control|)
 block|{
@@ -595,7 +598,7 @@ name|containerID
 range|:
 name|reportResult
 operator|.
-name|getNewContainers
+name|getNewEntries
 argument_list|()
 control|)
 block|{

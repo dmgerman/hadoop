@@ -458,14 +458,6 @@ operator|.
 name|HEALTHY
 argument_list|)
 decl_stmt|;
-name|int
-name|count
-init|=
-name|getReplicationCount
-argument_list|(
-name|factor
-argument_list|)
-decl_stmt|;
 comment|//TODO: Add Raft State to the Nodes, so we can query and skip nodes from
 comment|// data from datanode instead of maintaining a set.
 for|for
@@ -508,7 +500,10 @@ operator|.
 name|size
 argument_list|()
 operator|==
-name|count
+name|factor
+operator|.
+name|getNumber
+argument_list|()
 condition|)
 block|{
 comment|// once a datanode has been added to a pipeline, exclude it from
@@ -534,7 +529,10 @@ name|info
 argument_list|(
 literal|"Allocating a new ratis pipeline of size: {} id: {}"
 argument_list|,
-name|count
+name|factor
+operator|.
+name|getNumber
+argument_list|()
 argument_list|,
 name|pipelineID
 argument_list|)
@@ -596,6 +594,70 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|processPipelineReport (Pipeline pipeline, DatanodeDetails dn)
+specifier|public
+name|void
+name|processPipelineReport
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
+name|DatanodeDetails
+name|dn
+parameter_list|)
+block|{
+name|super
+operator|.
+name|processPipelineReport
+argument_list|(
+name|pipeline
+argument_list|,
+name|dn
+argument_list|)
+expr_stmt|;
+name|ratisMembers
+operator|.
+name|add
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|finalizePipeline (Pipeline pipeline)
+specifier|public
+specifier|synchronized
+name|boolean
+name|finalizePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|activePipelines
+operator|.
+name|get
+argument_list|(
+name|pipeline
+operator|.
+name|getFactor
+argument_list|()
+operator|.
+name|ordinal
+argument_list|()
+argument_list|)
+operator|.
+name|removePipeline
+argument_list|(
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 comment|/**    * Close the pipeline.    */
 DECL|method|closePipeline (Pipeline pipeline)
 specifier|public
@@ -655,47 +717,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * list members in the pipeline .    *    * @param pipelineID    * @return the datanode    */
-annotation|@
-name|Override
-DECL|method|getMembers (PipelineID pipelineID)
-specifier|public
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|getMembers
-parameter_list|(
-name|PipelineID
-name|pipelineID
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
-comment|/**    * Update the datanode list of the pipeline.    *    * @param pipelineID    * @param newDatanodes    */
-annotation|@
-name|Override
-DECL|method|updatePipeline (PipelineID pipelineID, List<DatanodeDetails> newDatanodes)
-specifier|public
-name|void
-name|updatePipeline
-parameter_list|(
-name|PipelineID
-name|pipelineID
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|newDatanodes
-parameter_list|)
-throws|throws
-name|IOException
-block|{    }
 block|}
 end_class
 

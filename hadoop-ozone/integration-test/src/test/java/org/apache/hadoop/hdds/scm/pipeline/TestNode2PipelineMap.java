@@ -621,7 +621,7 @@ operator|.
 name|getPipelineSelector
 argument_list|()
 operator|.
-name|getPipelineId
+name|getPipelineByDnID
 argument_list|(
 name|dns
 operator|.

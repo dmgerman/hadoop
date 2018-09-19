@@ -1248,6 +1248,11 @@ argument_list|(
 literal|1000
 argument_list|)
 operator|.
+name|setHbProcessorInterval
+argument_list|(
+literal|1000
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -2225,11 +2230,6 @@ name|datanodeIdx
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Ignore
-argument_list|(
-literal|"Causes a JVm exit"
-argument_list|)
 annotation|@
 name|Test
 DECL|method|testPutAndGetKeyWithDnRestart ()

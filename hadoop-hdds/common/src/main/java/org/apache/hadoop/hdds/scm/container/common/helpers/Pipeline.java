@@ -244,7 +244,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|TreeMap
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -464,7 +466,7 @@ expr_stmt|;
 name|datanodes
 operator|=
 operator|new
-name|TreeMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -699,15 +701,17 @@ name|leaderID
 argument_list|)
 return|;
 block|}
+comment|/**    * Adds a datanode to pipeline    * @param datanodeDetails datanode to be added.    * @return true if the dn was not earlier present, false otherwise    */
 DECL|method|addMember (DatanodeDetails datanodeDetails)
 specifier|public
-name|void
+name|boolean
 name|addMember
 parameter_list|(
 name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 block|{
+return|return
 name|datanodes
 operator|.
 name|put
@@ -722,6 +726,22 @@ argument_list|()
 argument_list|,
 name|datanodeDetails
 argument_list|)
+operator|==
+literal|null
+return|;
+block|}
+DECL|method|resetPipeline ()
+specifier|public
+name|void
+name|resetPipeline
+parameter_list|()
+block|{
+comment|// reset datanodes in pipeline and learn about them through
+comment|// pipeline reports on SCM restart
+name|datanodes
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getDatanodes ()

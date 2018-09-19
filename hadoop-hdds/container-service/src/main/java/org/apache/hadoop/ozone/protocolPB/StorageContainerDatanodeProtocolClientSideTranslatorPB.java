@@ -78,6 +78,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|PipelineReportsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|ContainerReportsProto
 import|;
 end_import
@@ -536,7 +556,7 @@ block|}
 comment|/**    * Register Datanode.    *    * @param datanodeDetailsProto - Datanode Details    * @param nodeReport - Node Report.    * @param containerReportsRequestProto - Container Reports.    * @return SCM Command.    */
 annotation|@
 name|Override
-DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, NodeReportProto nodeReport, ContainerReportsProto containerReportsRequestProto)
+DECL|method|register ( DatanodeDetailsProto datanodeDetailsProto, NodeReportProto nodeReport, ContainerReportsProto containerReportsRequestProto, PipelineReportsProto pipelineReportsProto)
 specifier|public
 name|SCMRegisteredResponseProto
 name|register
@@ -549,6 +569,9 @@ name|nodeReport
 parameter_list|,
 name|ContainerReportsProto
 name|containerReportsRequestProto
+parameter_list|,
+name|PipelineReportsProto
+name|pipelineReportsProto
 parameter_list|)
 throws|throws
 name|IOException
@@ -575,6 +598,13 @@ operator|.
 name|setContainerReport
 argument_list|(
 name|containerReportsRequestProto
+argument_list|)
+expr_stmt|;
+name|req
+operator|.
+name|setPipelineReports
+argument_list|(
+name|pipelineReportsProto
 argument_list|)
 expr_stmt|;
 name|req

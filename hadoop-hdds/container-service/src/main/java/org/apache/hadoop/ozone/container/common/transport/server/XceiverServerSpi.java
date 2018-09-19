@@ -66,11 +66,41 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|PipelineReport
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -127,6 +157,15 @@ name|pipelineID
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Get pipeline report for the XceiverServer instance.    * @return list of report for each pipeline.    */
+DECL|method|getPipelineReport ()
+name|List
+argument_list|<
+name|PipelineReport
+argument_list|>
+name|getPipelineReport
+parameter_list|()
 function_decl|;
 block|}
 end_interface

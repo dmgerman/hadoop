@@ -1487,6 +1487,11 @@ name|createNodeReport
 argument_list|(
 name|report
 argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getRandomPipelineReports
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|List
@@ -5107,6 +5112,11 @@ name|createNodeReport
 argument_list|(
 name|report
 argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getRandomPipelineReports
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|eq

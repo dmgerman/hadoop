@@ -749,7 +749,7 @@ name|assertEquals
 argument_list|(
 name|pipelineSelector
 operator|.
-name|getPipelineId
+name|getPipelineByDnID
 argument_list|(
 name|dn
 operator|.

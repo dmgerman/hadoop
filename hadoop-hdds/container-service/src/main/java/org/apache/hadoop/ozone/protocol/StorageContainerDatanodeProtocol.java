@@ -68,6 +68,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|PipelineReportsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMHeartbeatRequestProto
 import|;
 end_import
@@ -279,7 +299,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Register Datanode.    * @param datanodeDetails - Datanode Details.    * @param nodeReport - Node Report.    * @param containerReportsRequestProto - Container Reports.    * @return SCM Command.    */
-DECL|method|register (DatanodeDetailsProto datanodeDetails, NodeReportProto nodeReport, ContainerReportsProto containerReportsRequestProto)
+DECL|method|register ( DatanodeDetailsProto datanodeDetails, NodeReportProto nodeReport, ContainerReportsProto containerReportsRequestProto, PipelineReportsProto pipelineReports)
 name|SCMRegisteredResponseProto
 name|register
 parameter_list|(
@@ -291,6 +311,9 @@ name|nodeReport
 parameter_list|,
 name|ContainerReportsProto
 name|containerReportsRequestProto
+parameter_list|,
+name|PipelineReportsProto
+name|pipelineReports
 parameter_list|)
 throws|throws
 name|IOException

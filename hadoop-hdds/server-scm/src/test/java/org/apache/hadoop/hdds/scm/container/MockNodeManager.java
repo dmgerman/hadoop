@@ -30,6 +30,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|PipelineReportsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|TestUtils
@@ -1472,7 +1492,7 @@ block|}
 comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeDetails DatanodeDetails    * @param nodeReport NodeReportProto    * @return SCMHeartbeatResponseProto    */
 annotation|@
 name|Override
-DECL|method|register (DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
+DECL|method|register (DatanodeDetails datanodeDetails, NodeReportProto nodeReport, PipelineReportsProto pipelineReportsProto)
 specifier|public
 name|RegisteredCommand
 name|register
@@ -1482,6 +1502,9 @@ name|datanodeDetails
 parameter_list|,
 name|NodeReportProto
 name|nodeReport
+parameter_list|,
+name|PipelineReportsProto
+name|pipelineReportsProto
 parameter_list|)
 block|{
 return|return

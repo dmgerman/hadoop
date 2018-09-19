@@ -190,13 +190,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
+name|pipelines
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|PipelineID
+name|PipelineSelector
 import|;
 end_import
 
@@ -237,16 +233,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
 import|;
 end_import
 
@@ -413,26 +399,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Handle a pipeline close event.    * @param pipelineID pipeline id    */
-DECL|method|handlePipelineClose (PipelineID pipelineID)
-name|void
-name|handlePipelineClose
-parameter_list|(
-name|PipelineID
-name|pipelineID
-parameter_list|)
-function_decl|;
-comment|/**    * Get set of pipeline for a specific datanode.    * @param datanodeDetails datanode for which pipelines needs to be fetched.    */
-DECL|method|getPipelineOnDatanode (DatanodeDetails datanodeDetails)
-name|Set
-argument_list|<
-name|PipelineID
-argument_list|>
-name|getPipelineOnDatanode
-parameter_list|(
-name|DatanodeDetails
-name|datanodeDetails
-parameter_list|)
+DECL|method|getPipelineSelector ()
+name|PipelineSelector
+name|getPipelineSelector
+parameter_list|()
 function_decl|;
 block|}
 end_interface

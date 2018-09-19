@@ -665,7 +665,7 @@ operator|.
 name|getStatus
 argument_list|()
 argument_list|,
-name|Node2ContainerMap
+name|ReportResult
 operator|.
 name|ReportStatus
 operator|.
@@ -972,7 +972,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|Node2ContainerMap
+name|ReportResult
 operator|.
 name|ReportStatus
 operator|.
@@ -990,7 +990,7 @@ name|assertEquals
 argument_list|(
 name|result
 operator|.
-name|getNewContainers
+name|getNewEntries
 argument_list|()
 operator|.
 name|size
@@ -1149,11 +1149,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|Node2ContainerMap
+name|ReportResult
 operator|.
 name|ReportStatus
 operator|.
-name|NEW_CONTAINERS_FOUND
+name|NEW_ENTRIES_FOUND
 argument_list|,
 name|result
 operator|.
@@ -1172,7 +1172,7 @@ argument_list|()
 argument_list|,
 name|result
 operator|.
-name|getNewContainers
+name|getNewEntries
 argument_list|()
 operator|.
 name|size
@@ -1188,7 +1188,7 @@ literal|"All objects are not removed."
 argument_list|,
 name|result
 operator|.
-name|getNewContainers
+name|getNewEntries
 argument_list|()
 operator|.
 name|removeAll
@@ -1368,11 +1368,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|Node2ContainerMap
+name|ReportResult
 operator|.
 name|ReportStatus
 operator|.
-name|MISSING_CONTAINERS
+name|MISSING_ENTRIES
 argument_list|,
 name|result
 operator|.
@@ -1391,7 +1391,7 @@ argument_list|()
 argument_list|,
 name|result
 operator|.
-name|getMissingContainers
+name|getMissingEntries
 argument_list|()
 operator|.
 name|size
@@ -1407,7 +1407,7 @@ literal|"All missing containers not found."
 argument_list|,
 name|result
 operator|.
-name|getMissingContainers
+name|getMissingEntries
 argument_list|()
 operator|.
 name|removeAll
@@ -1630,11 +1630,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|Node2ContainerMap
+name|ReportResult
 operator|.
 name|ReportStatus
 operator|.
-name|MISSING_AND_NEW_CONTAINERS_FOUND
+name|MISSING_AND_NEW_ENTRIES_FOUND
 argument_list|,
 name|result
 operator|.
@@ -1653,7 +1653,7 @@ argument_list|()
 argument_list|,
 name|result
 operator|.
-name|getMissingContainers
+name|getMissingEntries
 argument_list|()
 operator|.
 name|size
@@ -1669,7 +1669,7 @@ literal|"All missing containers not found."
 argument_list|,
 name|result
 operator|.
-name|getMissingContainers
+name|getMissingEntries
 argument_list|()
 operator|.
 name|removeAll
@@ -1689,7 +1689,7 @@ argument_list|()
 argument_list|,
 name|result
 operator|.
-name|getNewContainers
+name|getNewEntries
 argument_list|()
 operator|.
 name|size
@@ -1705,7 +1705,7 @@ literal|"All inserted containers are not found."
 argument_list|,
 name|result
 operator|.
-name|getNewContainers
+name|getNewEntries
 argument_list|()
 operator|.
 name|removeAll

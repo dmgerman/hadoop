@@ -140,16 +140,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|rules
 operator|.
 name|Timeout
@@ -494,11 +484,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Ignore
-argument_list|(
-literal|"disabling for now, datanodes restart with ratis is buggy"
-argument_list|)
 annotation|@
 name|Test
 DECL|method|testPutAndGetKeyWithDnRestart ()

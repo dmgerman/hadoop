@@ -776,6 +776,8 @@ operator|.
 name|getGroupId
 argument_list|()
 argument_list|,
+literal|true
+argument_list|,
 name|peer
 operator|.
 name|getId

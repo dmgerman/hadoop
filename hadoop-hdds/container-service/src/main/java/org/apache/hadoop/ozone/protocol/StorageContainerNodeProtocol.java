@@ -64,6 +64,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|PipelineReportsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|NodeReportProto
 import|;
 end_import
@@ -157,8 +177,8 @@ name|SCMVersionRequestProto
 name|versionRequest
 parameter_list|)
 function_decl|;
-comment|/**    * Register the node if the node finds that it is not registered with any SCM.    * @param datanodeDetails DatanodeDetails    * @param nodeReport NodeReportProto    * @return  SCMHeartbeatResponseProto    */
-DECL|method|register (DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
+comment|/**    * Register the node if the node finds that it is not registered with any SCM.    * @param datanodeDetails DatanodeDetails    * @param nodeReport NodeReportProto    * @param pipelineReport PipelineReportsProto    * @return  SCMHeartbeatResponseProto    */
+DECL|method|register (DatanodeDetails datanodeDetails, NodeReportProto nodeReport, PipelineReportsProto pipelineReport)
 name|RegisteredCommand
 name|register
 parameter_list|(
@@ -167,6 +187,9 @@ name|datanodeDetails
 parameter_list|,
 name|NodeReportProto
 name|nodeReport
+parameter_list|,
+name|PipelineReportsProto
+name|pipelineReport
 parameter_list|)
 function_decl|;
 comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeDetails - Datanode ID.    * @return SCMheartbeat response list    */
