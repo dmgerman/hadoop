@@ -2076,6 +2076,17 @@ name|List
 argument_list|<
 name|String
 argument_list|>
+name|localDirsForRead
+init|=
+name|dirsHandler
+operator|.
+name|getLocalDirsForRead
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
 name|logDirs
 init|=
 name|dirsHandler
@@ -2091,7 +2102,7 @@ name|filecacheDirs
 init|=
 name|getNMFilecacheDirs
 argument_list|(
-name|localDirs
+name|localDirsForRead
 argument_list|)
 decl_stmt|;
 name|List
@@ -2135,7 +2146,7 @@ name|userFilecacheDirs
 init|=
 name|getUserFilecacheDirs
 argument_list|(
-name|localDirs
+name|localDirsForRead
 argument_list|)
 decl_stmt|;
 name|List
