@@ -6087,6 +6087,9 @@ name|containerId
 argument_list|,
 name|inspectCommand
 argument_list|)
+operator|.
+name|trim
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
