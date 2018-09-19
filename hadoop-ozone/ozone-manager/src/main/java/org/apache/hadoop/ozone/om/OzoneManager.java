@@ -1991,6 +1991,8 @@ name|getRemainingArgs
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -2056,8 +2058,10 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs OM instance based on command line arguments.    *    * @param argv Command line arguments    * @param conf OzoneConfiguration    * @return OM instance    * @throws IOException in case OM instance creation fails.    */
-DECL|method|createOm (String[] argv, OzoneConfiguration conf)
+comment|/**    * Constructs OM instance based on command line arguments.    *    * This method is intended for unit tests only. It suppresses the    * startup/shutdown message and skips registering Unix signal    * handlers.    *    * @param argv Command line arguments    * @param conf OzoneConfiguration    * @return OM instance    * @throws IOException in case OM instance creation fails.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|createOm ( String[] argv, OzoneConfiguration conf)
 specifier|public
 specifier|static
 name|OzoneManager
@@ -2069,6 +2073,37 @@ name|argv
 parameter_list|,
 name|OzoneConfiguration
 name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createOm
+argument_list|(
+name|argv
+argument_list|,
+name|conf
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Constructs OM instance based on command line arguments.    *    * @param argv Command line arguments    * @param conf OzoneConfiguration    * @param printBanner if true then log a verbose startup message.    * @return OM instance    * @throws IOException in case OM instance creation fails.    */
+DECL|method|createOm (String[] argv, OzoneConfiguration conf, boolean printBanner)
+specifier|private
+specifier|static
+name|OzoneManager
+name|createOm
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|,
+name|OzoneConfiguration
+name|conf
+parameter_list|,
+name|boolean
+name|printBanner
 parameter_list|)
 throws|throws
 name|IOException
@@ -2142,6 +2177,11 @@ block|{
 case|case
 name|CREATEOBJECTSTORE
 case|:
+if|if
+condition|(
+name|printBanner
+condition|)
+block|{
 name|StringUtils
 operator|.
 name|startupShutdownMessage
@@ -2155,6 +2195,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+block|}
 name|terminate
 argument_list|(
 name|omInit
@@ -2204,6 +2245,11 @@ index|[]
 block|{}
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|printBanner
+condition|)
+block|{
 name|StringUtils
 operator|.
 name|startupShutdownMessage
@@ -2217,6 +2263,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|OzoneManager

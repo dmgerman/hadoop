@@ -2313,6 +2313,8 @@ name|getRemainingArgs
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -2378,7 +2380,10 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createSCM (String[] args, OzoneConfiguration conf)
+comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * This method is intended for unit tests only. It suppresses the    * startup/shutdown message and skips registering Unix signal    * handlers.    *    * @param args command line arguments.    * @param conf HDDS configuration    * @return SCM instance    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
+DECL|method|createSCM ( String[] args, OzoneConfiguration conf)
 specifier|public
 specifier|static
 name|StorageContainerManager
@@ -2390,6 +2395,37 @@ name|args
 parameter_list|,
 name|OzoneConfiguration
 name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createSCM
+argument_list|(
+name|args
+argument_list|,
+name|conf
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * @param args command-line arguments.    * @param conf HDDS configuration    * @param printBanner if true, then log a verbose startup message.    * @return SCM instance    * @throws IOException    */
+DECL|method|createSCM ( String[] args, OzoneConfiguration conf, boolean printBanner)
+specifier|private
+specifier|static
+name|StorageContainerManager
+name|createSCM
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|,
+name|OzoneConfiguration
+name|conf
+parameter_list|,
+name|boolean
+name|printBanner
 parameter_list|)
 throws|throws
 name|IOException
@@ -2485,6 +2521,11 @@ block|{
 case|case
 name|INIT
 case|:
+if|if
+condition|(
+name|printBanner
+condition|)
+block|{
 name|StringUtils
 operator|.
 name|startupShutdownMessage
@@ -2498,6 +2539,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+block|}
 name|terminate
 argument_list|(
 name|scmInit
@@ -2516,6 +2558,11 @@ return|;
 case|case
 name|GENCLUSTERID
 case|:
+if|if
+condition|(
+name|printBanner
+condition|)
+block|{
 name|StringUtils
 operator|.
 name|startupShutdownMessage
@@ -2529,6 +2576,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+block|}
 name|System
 operator|.
 name|out
@@ -2577,6 +2625,11 @@ return|return
 literal|null
 return|;
 default|default:
+if|if
+condition|(
+name|printBanner
+condition|)
+block|{
 name|StringUtils
 operator|.
 name|startupShutdownMessage
@@ -2590,6 +2643,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|StorageContainerManager
