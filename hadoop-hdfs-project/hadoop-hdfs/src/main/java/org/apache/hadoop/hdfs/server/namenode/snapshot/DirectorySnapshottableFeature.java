@@ -1452,6 +1452,10 @@ comment|// if the start point is equal to the end point, return null
 if|if
 condition|(
 name|from
+operator|!=
+literal|null
+operator|&&
+name|from
 operator|.
 name|equals
 argument_list|(

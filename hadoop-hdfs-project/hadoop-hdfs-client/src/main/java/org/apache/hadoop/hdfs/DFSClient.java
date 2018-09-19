@@ -10325,6 +10325,28 @@ literal|"getSnapshotDiffReport"
 argument_list|)
 init|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|fromSnapshot
+operator|!=
+literal|null
+argument_list|,
+literal|"null fromSnapshot"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|toSnapshot
+operator|!=
+literal|null
+argument_list|,
+literal|"null toSnapshot"
+argument_list|)
+expr_stmt|;
 return|return
 name|namenode
 operator|.
