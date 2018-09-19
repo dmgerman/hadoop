@@ -1708,12 +1708,10 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// let the initialization be complete
-name|Thread
+name|cluster
 operator|.
-name|sleep
-argument_list|(
-literal|10000
-argument_list|)
+name|waitActive
+argument_list|()
 expr_stmt|;
 name|DataNode
 name|dn
@@ -1872,12 +1870,10 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// let the initialization be complete
-name|Thread
+name|cluster
 operator|.
-name|sleep
-argument_list|(
-literal|10000
-argument_list|)
+name|waitActive
+argument_list|()
 expr_stmt|;
 name|DataNode
 name|dn
