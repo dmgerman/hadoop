@@ -639,15 +639,13 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
-literal|"Path "
+literal|"Assuming 'file' scheme for path "
 operator|+
 name|s
 operator|+
-literal|" should be specified as a URI "
-operator|+
-literal|"in configuration files. Please update hdfs configuration."
+literal|" in configuration."
 argument_list|)
 expr_stmt|;
 name|u
