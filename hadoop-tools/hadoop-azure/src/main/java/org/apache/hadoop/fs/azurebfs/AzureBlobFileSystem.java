@@ -3072,9 +3072,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"modifyAclEntries is only supported by storage accounts "
+literal|"modifyAclEntries is only supported by storage accounts with the "
 operator|+
-literal|"with the hierarchical namespace enabled."
+literal|"hierarchical namespace enabled."
 argument_list|)
 throw|;
 block|}
@@ -3170,9 +3170,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"removeAclEntries is only supported by storage accounts "
+literal|"removeAclEntries is only supported by storage accounts with the "
 operator|+
-literal|"with the hierarchical namespace enabled."
+literal|"hierarchical namespace enabled."
 argument_list|)
 throw|;
 block|}
@@ -3261,9 +3261,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"removeDefaultAcl is only supported by storage accounts"
+literal|"removeDefaultAcl is only supported by storage accounts with the "
 operator|+
-literal|" with the hierarchical namespace enabled."
+literal|"hierarchical namespace enabled."
 argument_list|)
 throw|;
 block|}
@@ -3330,9 +3330,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"removeAcl is only supported by storage accounts"
+literal|"removeAcl is only supported by storage accounts with the "
 operator|+
-literal|" with the hierarchical namespace enabled."
+literal|"hierarchical namespace enabled."
 argument_list|)
 throw|;
 block|}
@@ -3406,9 +3406,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"setAcl is only supported by storage accounts"
+literal|"setAcl is only supported by storage accounts with the hierarchical "
 operator|+
-literal|" with the hierarchical namespace enabled."
+literal|"namespace enabled."
 argument_list|)
 throw|;
 block|}
@@ -3502,9 +3502,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"getAclStatus is only supported by storage accounts"
+literal|"getAclStatus is only supported by storage account with the "
 operator|+
-literal|" with the hierarchical namespace enabled."
+literal|"hierarchical namespace enabled."
 argument_list|)
 throw|;
 block|}

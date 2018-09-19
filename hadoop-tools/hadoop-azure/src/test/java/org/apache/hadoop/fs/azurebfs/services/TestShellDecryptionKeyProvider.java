@@ -32,6 +32,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -361,6 +373,13 @@ argument_list|,
 literal|"@echo %1 "
 operator|+
 name|expectedResult
+argument_list|,
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ShellDecryptionKeyProvider

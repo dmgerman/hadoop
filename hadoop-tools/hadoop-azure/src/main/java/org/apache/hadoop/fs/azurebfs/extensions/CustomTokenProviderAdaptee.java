@@ -101,14 +101,13 @@ interface|interface
 name|CustomTokenProviderAdaptee
 block|{
 comment|/**    * Initialize with supported configuration. This method is invoked when the    * (URI, Configuration)} method is invoked.    *    * @param configuration Configuration object    * @param accountName Account Name    * @throws IOException if instance can not be configured.    */
-DECL|method|initialize (Configuration configuration, final String accountName)
+DECL|method|initialize (Configuration configuration, String accountName)
 name|void
 name|initialize
 parameter_list|(
 name|Configuration
 name|configuration
 parameter_list|,
-specifier|final
 name|String
 name|accountName
 parameter_list|)

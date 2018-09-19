@@ -1464,7 +1464,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Returns the account-specific Class if it exists, then looks for an    * account-agnostic value, and finally tries the default value.    * @param name Account-agnostic configuration key    * @param defaultValue Class returned if none is configured    * @param xface Interface shared by all possible values    * @return Highest-precedence Class object that was found    * @throws IOException    */
+comment|/**    * Returns the account-specific Class if it exists, then looks for an    * account-agnostic value, and finally tries the default value.    * @param name Account-agnostic configuration key    * @param defaultValue Class returned if none is configured    * @param xface Interface shared by all possible values    * @return Highest-precedence Class object that was found    */
 DECL|method|getClass (String name, Class<? extends U> defaultValue, Class<U> xface)
 specifier|public
 parameter_list|<
@@ -1521,7 +1521,7 @@ name|xface
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the account-specific password in string form if it exists, then    * looks for an account-agnostic value.    * @param name Account-agnostic configuration key    * @param defaultValue Value returned if none is configured    * @return value in String form if one exists, else null    * @throws IOException    */
+comment|/**    * Returns the account-specific password in string form if it exists, then    * looks for an account-agnostic value.    * @param name Account-agnostic configuration key    * @param defaultValue Value returned if none is configured    * @return value in String form if one exists, else null    */
 DECL|method|getEnum (String name, T defaultValue)
 specifier|public
 parameter_list|<

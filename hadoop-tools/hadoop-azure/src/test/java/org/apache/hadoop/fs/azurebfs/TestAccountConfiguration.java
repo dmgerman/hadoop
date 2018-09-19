@@ -982,6 +982,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Dummy type used for testing handling of enums in configuration.    */
 DECL|enum|GetEnumType
 specifier|public
 enum|enum
@@ -1208,10 +1209,12 @@ name|TRUE
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Dummy type used for testing handling of classes in configuration.    */
 DECL|interface|GetClassInterface
 interface|interface
 name|GetClassInterface
 block|{   }
+comment|/**    * Dummy type used for testing handling of classes in configuration.    */
 DECL|class|GetClassImpl0
 specifier|private
 class|class
@@ -1219,6 +1222,7 @@ name|GetClassImpl0
 implements|implements
 name|GetClassInterface
 block|{   }
+comment|/**    * Dummy type used for testing handling of classes in configuration.    */
 DECL|class|GetClassImpl1
 specifier|private
 class|class

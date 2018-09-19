@@ -167,7 +167,7 @@ import|;
 end_import
 
 begin_comment
-comment|/*   * Some Utils for ABFS tests.   * */
+comment|/**  * Some Utils for ABFS tests.  */
 end_comment
 
 begin_class

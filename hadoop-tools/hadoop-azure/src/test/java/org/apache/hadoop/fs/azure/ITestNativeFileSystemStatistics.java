@@ -172,7 +172,7 @@ name|MethodSorters
 operator|.
 name|NAME_ASCENDING
 argument_list|)
-comment|/**  * Because FileSystem.Statistics is per FileSystem, so statistics can not be ran in  * parallel, hence in this test file, force them to run in sequential.  * */
+comment|/**  * Because FileSystem.Statistics is per FileSystem, so statistics can not be ran in  * parallel, hence in this test file, force them to run in sequential.  */
 DECL|class|ITestNativeFileSystemStatistics
 specifier|public
 class|class
