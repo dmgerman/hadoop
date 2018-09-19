@@ -105,6 +105,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+return|return
+name|binding
+operator|.
+name|getRawConfiguration
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|createContract (Configuration conf)
 specifier|protected
 name|AbfsFileSystemContract
