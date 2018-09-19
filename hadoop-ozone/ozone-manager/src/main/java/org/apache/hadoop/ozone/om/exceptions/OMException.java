@@ -223,6 +223,9 @@ name|OM_NOT_INITIALIZED
 block|,
 DECL|enumConstant|SCM_VERSION_MISMATCH_ERROR
 name|SCM_VERSION_MISMATCH_ERROR
+block|,
+DECL|enumConstant|SCM_IN_CHILL_MODE
+name|SCM_IN_CHILL_MODE
 block|}
 block|}
 end_class

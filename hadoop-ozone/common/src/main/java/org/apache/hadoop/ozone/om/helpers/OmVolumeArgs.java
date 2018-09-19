@@ -579,6 +579,7 @@ name|aclMap
 decl_stmt|;
 comment|/**      * Constructs a builder.      */
 DECL|method|Builder ()
+specifier|public
 name|Builder
 parameter_list|()
 block|{

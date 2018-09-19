@@ -583,6 +583,7 @@ name|long
 name|creationTime
 decl_stmt|;
 DECL|method|Builder ()
+specifier|public
 name|Builder
 parameter_list|()
 block|{
