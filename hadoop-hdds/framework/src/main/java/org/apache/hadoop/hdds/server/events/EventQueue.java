@@ -271,6 +271,13 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|isRunning
+specifier|private
+name|boolean
+name|isRunning
+init|=
+literal|true
+decl_stmt|;
 DECL|method|addHandler ( EVENT_TYPE event, EventHandler<PAYLOAD> handler)
 specifier|public
 parameter_list|<
@@ -515,6 +522,23 @@ argument_list|>
 name|handler
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isRunning
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Not adding handler for {}, EventQueue is not running"
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|validateEvent
 argument_list|(
 name|event
@@ -590,6 +614,23 @@ name|PAYLOAD
 name|payload
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isRunning
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Processing of {} is skipped, EventQueue is not running"
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Map
 argument_list|<
 name|EventExecutor
@@ -745,6 +786,21 @@ condition|(
 literal|true
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|isRunning
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Processing of event skipped. EventQueue is not running"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|long
 name|processed
 init|=
@@ -870,6 +926,10 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|isRunning
+operator|=
+literal|false
+expr_stmt|;
 name|Set
 argument_list|<
 name|EventExecutor
