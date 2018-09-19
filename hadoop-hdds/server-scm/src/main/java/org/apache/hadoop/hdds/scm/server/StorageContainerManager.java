@@ -3826,6 +3826,38 @@ block|}
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;
+comment|// Event queue must be stopped before the DB store is closed at the end.
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping SCM Event Queue."
+argument_list|)
+expr_stmt|;
+name|eventQueue
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"SCM Event Queue stop failed"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 name|IOUtils
 operator|.
 name|cleanupWithLogger
