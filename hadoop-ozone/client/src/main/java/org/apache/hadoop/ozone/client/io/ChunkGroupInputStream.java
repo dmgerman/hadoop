@@ -1473,12 +1473,12 @@ argument_list|()
 decl_stmt|;
 name|ContainerProtos
 operator|.
-name|GetKeyResponseProto
+name|GetBlockResponseProto
 name|response
 init|=
 name|ContainerProtocolCalls
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|xceiverClient
 argument_list|,
@@ -1497,7 +1497,7 @@ name|chunks
 init|=
 name|response
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getChunksList

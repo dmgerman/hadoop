@@ -697,10 +697,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testInvalidKeyRead ()
+DECL|method|testInvalidBlockRead ()
 specifier|public
 name|void
-name|testInvalidKeyRead
+name|testInvalidBlockRead
 parameter_list|()
 throws|throws
 name|Exception
@@ -788,7 +788,7 @@ name|thrown
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Unable to find the key"
+literal|"Unable to find the block"
 argument_list|)
 expr_stmt|;
 name|BlockID

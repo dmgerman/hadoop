@@ -153,10 +153,10 @@ comment|/**  * Tests to test block deleting service.  */
 end_comment
 
 begin_class
-DECL|class|TestKeyData
+DECL|class|TestBlockData
 specifier|public
 class|class
-name|TestKeyData
+name|TestBlockData
 block|{
 DECL|field|LOG
 specifier|static
@@ -168,7 +168,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestKeyData
+name|TestBlockData
 operator|.
 name|class
 argument_list|)
@@ -239,11 +239,11 @@ name|testAddAndRemove
 parameter_list|()
 block|{
 specifier|final
-name|KeyData
+name|BlockData
 name|computed
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 literal|null
 argument_list|)
@@ -334,7 +334,7 @@ name|chunkCount
 init|=
 literal|0
 decl_stmt|;
-DECL|method|addChunk (List<ContainerProtos.ChunkInfo> expected, long offset)
+DECL|method|addChunk ( List<ContainerProtos.ChunkInfo> expected, long offset)
 specifier|static
 name|ContainerProtos
 operator|.
@@ -396,7 +396,7 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|assertAddChunk (List<ContainerProtos.ChunkInfo> expected, KeyData computed, long offset)
+DECL|method|assertAddChunk (List<ContainerProtos.ChunkInfo> expected, BlockData computed, long offset)
 specifier|static
 name|long
 name|assertAddChunk
@@ -409,7 +409,7 @@ name|ChunkInfo
 argument_list|>
 name|expected
 parameter_list|,
-name|KeyData
+name|BlockData
 name|computed
 parameter_list|,
 name|long
@@ -462,7 +462,7 @@ name|getLen
 argument_list|()
 return|;
 block|}
-DECL|method|removeChunk (List<ContainerProtos.ChunkInfo> expected, KeyData computed)
+DECL|method|removeChunk (List<ContainerProtos.ChunkInfo> expected, BlockData computed)
 specifier|static
 name|void
 name|removeChunk
@@ -475,7 +475,7 @@ name|ChunkInfo
 argument_list|>
 name|expected
 parameter_list|,
-name|KeyData
+name|BlockData
 name|computed
 parameter_list|)
 block|{
@@ -536,7 +536,7 @@ name|computed
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertChunks (List<ContainerProtos.ChunkInfo> expected, KeyData computed)
+DECL|method|assertChunks (List<ContainerProtos.ChunkInfo> expected, BlockData computed)
 specifier|static
 name|void
 name|assertChunks
@@ -549,7 +549,7 @@ name|ChunkInfo
 argument_list|>
 name|expected
 parameter_list|,
-name|KeyData
+name|BlockData
 name|computed
 parameter_list|)
 block|{
@@ -667,7 +667,7 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|TestKeyData
+name|TestBlockData
 operator|::
 name|toString
 argument_list|)
@@ -702,11 +702,11 @@ name|testSetChunks
 parameter_list|()
 block|{
 specifier|final
-name|KeyData
+name|BlockData
 name|computed
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 literal|null
 argument_list|)

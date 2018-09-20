@@ -76,7 +76,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -121,33 +121,33 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * KeyManager is for performing key related operations on the container.  */
+comment|/**  * BlockManager is for performing key related operations on the container.  */
 end_comment
 
 begin_interface
-DECL|interface|KeyManager
+DECL|interface|BlockManager
 specifier|public
 interface|interface
-name|KeyManager
+name|BlockManager
 block|{
-comment|/**    * Puts or overwrites a key.    *    * @param container - Container for which key need to be added.    * @param data     - Key Data.    * @return length of the Key.    * @throws IOException    */
-DECL|method|putKey (Container container, KeyData data)
+comment|/**    * Puts or overwrites a block.    *    * @param container - Container for which block need to be added.    * @param data     - Block Data.    * @return length of the Block.    * @throws IOException    */
+DECL|method|putBlock (Container container, BlockData data)
 name|long
-name|putKey
+name|putBlock
 parameter_list|(
 name|Container
 name|container
 parameter_list|,
-name|KeyData
+name|BlockData
 name|data
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the Key.    * @return Key Data.    * @throws IOException    */
-DECL|method|getKey (Container container, BlockID blockID)
-name|KeyData
-name|getKey
+comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be get.    * @param blockID - BlockID of the Block.    * @return Block Data.    * @throws IOException    */
+DECL|method|getBlock (Container container, BlockID blockID)
+name|BlockData
+name|getBlock
 parameter_list|(
 name|Container
 name|container
@@ -158,10 +158,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes an existing Key.    *    * @param container - Container from which key need to be deleted.    * @param blockID - ID of the block.    * @throws StorageContainerException    */
-DECL|method|deleteKey (Container container, BlockID blockID)
+comment|/**    * Deletes an existing block.    *    * @param container - Container from which block need to be deleted.    * @param blockID - ID of the block.    * @throws StorageContainerException    */
+DECL|method|deleteBlock (Container container, BlockID blockID)
 name|void
-name|deleteKey
+name|deleteBlock
 parameter_list|(
 name|Container
 name|container
@@ -172,13 +172,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List keys in a container.    *    * @param container - Container from which keys need to be listed.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
-DECL|method|listKey (Container container, long startLocalID, int count)
+comment|/**    * List blocks in a container.    *    * @param container - Container from which blocks need to be listed.    * @param startLocalID  - Block to start from, 0 to begin.    * @param count    - Number of blocks to return.    * @return List of Blocks that match the criteria.    */
+DECL|method|listBlock (Container container, long startLocalID, int count)
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
-name|listKey
+name|listBlock
 parameter_list|(
 name|Container
 name|container

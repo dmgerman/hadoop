@@ -709,7 +709,7 @@ name|putKeyRequest
 init|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,
@@ -1001,10 +1001,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|tesGetCommittedBlockLengthForInvalidBlock ()
+DECL|method|testGetCommittedBlockLengthForInvalidBlock ()
 specifier|public
 name|void
-name|tesGetCommittedBlockLengthForInvalidBlock
+name|testGetCommittedBlockLengthForInvalidBlock
 parameter_list|()
 throws|throws
 name|Exception
@@ -1140,7 +1140,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Unable to find the key"
+literal|"Unable to find the block"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1372,7 +1372,7 @@ name|Exception
 block|{
 name|ContainerProtos
 operator|.
-name|PutKeyResponseProto
+name|PutBlockResponseProto
 name|response
 decl_stmt|;
 name|String
@@ -1517,7 +1517,7 @@ name|putKeyRequest
 init|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,
@@ -1536,7 +1536,7 @@ argument_list|(
 name|putKeyRequest
 argument_list|)
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 expr_stmt|;
 comment|// make sure the block ids in the request and response are same.

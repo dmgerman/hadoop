@@ -168,7 +168,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -587,6 +587,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|containerSet
+specifier|private
 name|ContainerSet
 name|containerSet
 decl_stmt|;
@@ -1054,7 +1055,7 @@ comment|// Scan container's db and get list of under deletion blocks
 name|MetadataStore
 name|meta
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -1234,12 +1235,12 @@ try|try
 block|{
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 name|data
 init|=
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 operator|.
 name|parseFrom
 argument_list|(

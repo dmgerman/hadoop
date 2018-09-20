@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.keyvalue.impl
+DECL|package|org.apache.hadoop.ozone.container.keyvalue.interfaces
 package|package
 name|org
 operator|.
@@ -18,12 +18,12 @@ name|container
 operator|.
 name|keyvalue
 operator|.
-name|impl
+name|interfaces
 package|;
 end_package
 
 begin_comment
-comment|/**  * Chunk manager and block manager implementations for keyvalue container type.  */
+comment|/**  * Chunk manager and block manager interfaces for keyvalue container type.  */
 end_comment
 
 end_unit

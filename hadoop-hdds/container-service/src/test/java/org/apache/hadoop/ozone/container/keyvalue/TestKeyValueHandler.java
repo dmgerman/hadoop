@@ -967,9 +967,9 @@ name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test Put Key Request handling
+comment|// Test Put Block Request handling
 name|ContainerCommandRequestProto
-name|putKeyRequest
+name|putBlockRequest
 init|=
 name|getDummyCommandRequestProto
 argument_list|(
@@ -977,14 +977,14 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|PutKey
+name|PutBlock
 argument_list|)
 decl_stmt|;
 name|dispatcher
 operator|.
 name|dispatch
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -999,7 +999,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|handlePutKey
+name|handlePutBlock
 argument_list|(
 name|any
 argument_list|(
@@ -1012,9 +1012,9 @@ name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test Get Key Request handling
+comment|// Test Get Block Request handling
 name|ContainerCommandRequestProto
-name|getKeyRequest
+name|getBlockRequest
 init|=
 name|getDummyCommandRequestProto
 argument_list|(
@@ -1022,14 +1022,14 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|GetKey
+name|GetBlock
 argument_list|)
 decl_stmt|;
 name|dispatcher
 operator|.
 name|dispatch
 argument_list|(
-name|getKeyRequest
+name|getBlockRequest
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1044,7 +1044,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|handleGetKey
+name|handleGetBlock
 argument_list|(
 name|any
 argument_list|(
@@ -1057,9 +1057,9 @@ name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test Delete Key Request handling
+comment|// Test Delete Block Request handling
 name|ContainerCommandRequestProto
-name|deleteKeyRequest
+name|deleteBlockRequest
 init|=
 name|getDummyCommandRequestProto
 argument_list|(
@@ -1067,14 +1067,14 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|DeleteKey
+name|DeleteBlock
 argument_list|)
 decl_stmt|;
 name|dispatcher
 operator|.
 name|dispatch
 argument_list|(
-name|deleteKeyRequest
+name|deleteBlockRequest
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1089,7 +1089,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|handleDeleteKey
+name|handleDeleteBlock
 argument_list|(
 name|any
 argument_list|(
@@ -1102,9 +1102,9 @@ name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test List Key Request handling
+comment|// Test List Block Request handling
 name|ContainerCommandRequestProto
-name|listKeyRequest
+name|listBlockRequest
 init|=
 name|getDummyCommandRequestProto
 argument_list|(
@@ -1112,14 +1112,14 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|ListKey
+name|ListBlock
 argument_list|)
 decl_stmt|;
 name|dispatcher
 operator|.
 name|dispatch
 argument_list|(
-name|listKeyRequest
+name|listBlockRequest
 argument_list|)
 expr_stmt|;
 name|Mockito

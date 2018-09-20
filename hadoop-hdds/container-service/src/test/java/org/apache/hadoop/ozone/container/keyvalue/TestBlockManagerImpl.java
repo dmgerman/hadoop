@@ -124,7 +124,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ChunkInfo
+name|BlockData
 import|;
 end_import
 
@@ -144,7 +144,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|ChunkInfo
 import|;
 end_import
 
@@ -224,7 +224,7 @@ name|keyvalue
 operator|.
 name|impl
 operator|.
-name|KeyManagerImpl
+name|BlockManagerImpl
 import|;
 end_import
 
@@ -387,10 +387,10 @@ comment|/**  * This class is used to test key related operations on the containe
 end_comment
 
 begin_class
-DECL|class|TestKeyManagerImpl
+DECL|class|TestBlockManagerImpl
 specifier|public
 class|class
-name|TestKeyManagerImpl
+name|TestBlockManagerImpl
 block|{
 DECL|field|config
 specifier|private
@@ -430,15 +430,15 @@ specifier|private
 name|KeyValueContainer
 name|keyValueContainer
 decl_stmt|;
-DECL|field|keyData
+DECL|field|blockData
 specifier|private
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 decl_stmt|;
-DECL|field|keyManager
+DECL|field|blockManager
 specifier|private
-name|KeyManagerImpl
-name|keyManager
+name|BlockManagerImpl
+name|blockManager
 decl_stmt|;
 DECL|field|blockID
 specifier|private
@@ -588,7 +588,7 @@ argument_list|,
 name|scmId
 argument_list|)
 expr_stmt|;
-comment|// Creating KeyData
+comment|// Creating BlockData
 name|blockID
 operator|=
 operator|new
@@ -599,15 +599,15 @@ argument_list|,
 literal|1L
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -616,7 +616,7 @@ argument_list|,
 literal|"ozone"
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -673,7 +673,7 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -681,10 +681,10 @@ name|chunkList
 argument_list|)
 expr_stmt|;
 comment|// Create KeyValueContainerManager
-name|keyManager
+name|blockManager
 operator|=
 operator|new
-name|KeyManagerImpl
+name|BlockManagerImpl
 argument_list|(
 name|config
 argument_list|)
@@ -692,10 +692,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testPutAndGetKey ()
+DECL|method|testPutAndGetBlock ()
 specifier|public
 name|void
-name|testPutAndGetKey
+name|testPutAndGetBlock
 parameter_list|()
 throws|throws
 name|Exception
@@ -713,14 +713,14 @@ name|getKeyCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//Put Key
-name|keyManager
+comment|//Put Block
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -736,17 +736,17 @@ name|getKeyCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//Get Key
-name|KeyData
-name|fromGetKeyData
+comment|//Get Block
+name|BlockData
+name|fromGetBlockData
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -754,12 +754,12 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-name|fromGetKeyData
+name|fromGetBlockData
 operator|.
 name|getContainerID
 argument_list|()
@@ -767,12 +767,12 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getLocalID
 argument_list|()
 argument_list|,
-name|fromGetKeyData
+name|fromGetBlockData
 operator|.
 name|getLocalID
 argument_list|()
@@ -780,7 +780,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getChunks
 argument_list|()
@@ -788,7 +788,7 @@ operator|.
 name|size
 argument_list|()
 argument_list|,
-name|fromGetKeyData
+name|fromGetBlockData
 operator|.
 name|getChunks
 argument_list|()
@@ -799,7 +799,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getMetadata
 argument_list|()
@@ -807,7 +807,7 @@ operator|.
 name|size
 argument_list|()
 argument_list|,
-name|fromGetKeyData
+name|fromGetBlockData
 operator|.
 name|getMetadata
 argument_list|()
@@ -819,10 +819,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testDeleteKey ()
+DECL|method|testDeleteBlock ()
 specifier|public
 name|void
-name|testDeleteKey
+name|testDeleteBlock
 parameter_list|()
 throws|throws
 name|Exception
@@ -842,14 +842,14 @@ name|getKeyCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//Put Key
-name|keyManager
+comment|//Put Block
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -865,10 +865,10 @@ name|getKeyCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//Delete Key
-name|keyManager
+comment|//Delete Block
+name|blockManager
 operator|.
-name|deleteKey
+name|deleteBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
@@ -890,9 +890,9 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
@@ -901,7 +901,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"testDeleteKey"
+literal|"testDeleteBlock"
 argument_list|)
 expr_stmt|;
 block|}
@@ -915,7 +915,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Unable to find the key"
+literal|"Unable to find the block"
 argument_list|,
 name|ex
 argument_list|)
@@ -930,41 +930,41 @@ parameter_list|)
 block|{
 name|fail
 argument_list|(
-literal|"testDeleteKey failed"
+literal|"testDeleteBlock failed"
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testListKey ()
+DECL|method|testListBlock ()
 specifier|public
 name|void
-name|testListKey
+name|testListBlock
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 try|try
 block|{
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
-name|listKeyData
+name|listBlockData
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|listKey
+name|listBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
@@ -975,12 +975,12 @@ argument_list|)
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-name|listKeyData
+name|listBlockData
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|listKeyData
+name|listBlockData
 operator|.
 name|size
 argument_list|()
@@ -1013,15 +1013,15 @@ argument_list|,
 name|i
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -1030,7 +1030,7 @@ argument_list|,
 literal|"ozone"
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -1087,28 +1087,28 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
 name|chunkList
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 block|}
-name|listKeyData
+name|listBlockData
 operator|=
-name|keyManager
+name|blockManager
 operator|.
-name|listKey
+name|listBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
@@ -1119,12 +1119,12 @@ argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|listKeyData
+name|listBlockData
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|listKeyData
+name|listBlockData
 operator|.
 name|size
 argument_list|()
@@ -1141,55 +1141,97 @@ parameter_list|)
 block|{
 name|fail
 argument_list|(
-literal|"testListKey failed"
+literal|"testListBlock failed"
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testGetNoSuchKey ()
+DECL|method|testGetNoSuchBlock ()
 specifier|public
 name|void
-name|testGetNoSuchKey
+name|testGetNoSuchBlock
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 try|try
 block|{
-name|keyData
-operator|=
-operator|new
-name|KeyData
+name|assertEquals
 argument_list|(
-operator|new
-name|BlockID
-argument_list|(
-literal|1L
+literal|0
 argument_list|,
-literal|2L
-argument_list|)
+name|keyValueContainer
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|getKeyCount
+argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyManager
+comment|//Put Block
+name|blockManager
 operator|.
-name|getKey
+name|putBlock
 argument_list|(
 name|keyValueContainer
 argument_list|,
-operator|new
-name|BlockID
-argument_list|(
-literal|1L
-argument_list|,
-literal|2L
+name|blockData
 argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|keyValueContainer
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|getKeyCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|//Delete Block
+name|blockManager
+operator|.
+name|deleteBlock
+argument_list|(
+name|keyValueContainer
+argument_list|,
+name|blockID
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|keyValueContainer
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|getKeyCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+comment|//Since the block has been deleted, we should not be able to find it
+name|blockManager
+operator|.
+name|getBlock
+argument_list|(
+name|keyValueContainer
+argument_list|,
+name|blockID
 argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"testGetNoSuchKey failed"
+literal|"testGetNoSuchBlock failed"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1203,7 +1245,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Unable to find the key."
+literal|"Unable to find the block"
 argument_list|,
 name|ex
 argument_list|)
@@ -1214,12 +1256,25 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 argument_list|,
 name|ex
 operator|.
 name|getResult
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"testGetNoSuchBlock failed"
 argument_list|)
 expr_stmt|;
 block|}

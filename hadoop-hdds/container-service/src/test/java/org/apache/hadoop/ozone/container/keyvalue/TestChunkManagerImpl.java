@@ -629,7 +629,7 @@ operator|.
 name|getBytes
 argument_list|()
 expr_stmt|;
-comment|// Creating KeyData
+comment|// Creating BlockData
 name|blockID
 operator|=
 operator|new

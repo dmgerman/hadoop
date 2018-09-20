@@ -400,7 +400,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -1354,23 +1354,23 @@ argument_list|)
 expr_stmt|;
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|Builder
 name|putRequest
 init|=
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -1398,7 +1398,7 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -1407,9 +1407,9 @@ argument_list|)
 expr_stmt|;
 name|putRequest
 operator|.
-name|setKeyData
+name|setBlockData
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -1439,7 +1439,7 @@ argument_list|)
 expr_stmt|;
 name|smallFileRequest
 operator|.
-name|setKey
+name|setBlock
 argument_list|(
 name|putRequest
 argument_list|)
@@ -1515,7 +1515,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getReadSmallFileRequest ( Pipeline pipeline, ContainerProtos.PutKeyRequestProto putKey)
+DECL|method|getReadSmallFileRequest ( Pipeline pipeline, ContainerProtos.PutBlockRequestProto putKey)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
@@ -1526,7 +1526,7 @@ name|pipeline
 parameter_list|,
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 name|putKey
 parameter_list|)
 throws|throws
@@ -1549,7 +1549,7 @@ decl_stmt|;
 name|ContainerCommandRequestProto
 name|getKey
 init|=
-name|getKeyRequest
+name|getBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,
@@ -1558,11 +1558,11 @@ argument_list|)
 decl_stmt|;
 name|smallFileRequest
 operator|.
-name|setKey
+name|setBlock
 argument_list|(
 name|getKey
 operator|.
-name|getGetKey
+name|getGetBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1593,7 +1593,7 @@ name|setContainerID
 argument_list|(
 name|getKey
 operator|.
-name|getGetKey
+name|getGetBlock
 argument_list|()
 operator|.
 name|getBlockID
@@ -2291,12 +2291,12 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the PutKeyRequest for test purpose.    * @param pipeline - pipeline.    * @param writeRequest - Write Chunk Request.    * @return - Request    */
-DECL|method|getPutKeyRequest ( Pipeline pipeline, ContainerProtos.WriteChunkRequestProto writeRequest)
+comment|/**    * Returns the PutBlockRequest for test purpose.    * @param pipeline - pipeline.    * @param writeRequest - Write Chunk Request.    * @return - Request    */
+DECL|method|getPutBlockRequest ( Pipeline pipeline, ContainerProtos.WriteChunkRequestProto writeRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
-name|getPutKeyRequest
+name|getPutBlockRequest
 parameter_list|(
 name|Pipeline
 name|pipeline
@@ -2311,7 +2311,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"putKey: {} to pipeline={}"
+literal|"putBlock: {} to pipeline={}"
 argument_list|,
 name|writeRequest
 operator|.
@@ -2321,23 +2321,23 @@ argument_list|)
 expr_stmt|;
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|Builder
 name|putRequest
 init|=
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|BlockID
 operator|.
@@ -2373,7 +2373,7 @@ name|getChunkData
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -2382,9 +2382,9 @@ argument_list|)
 expr_stmt|;
 name|putRequest
 operator|.
-name|setKeyData
+name|setBlockData
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -2408,14 +2408,14 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|PutKey
+name|PutBlock
 argument_list|)
 expr_stmt|;
 name|request
 operator|.
 name|setContainerID
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getContainerID
 argument_list|()
@@ -2423,7 +2423,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setPutKey
+name|setPutBlock
 argument_list|(
 name|putRequest
 argument_list|)
@@ -2461,20 +2461,20 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets a GetKeyRequest for test purpose.    * @param  pipeline - pipeline    * @param putKeyRequest - putKeyRequest.    * @return - Request    * immediately.    */
-DECL|method|getKeyRequest ( Pipeline pipeline, ContainerProtos.PutKeyRequestProto putKeyRequest)
+comment|/**    * Gets a GetBlockRequest for test purpose.    * @param  pipeline - pipeline    * @param putBlockRequest - putBlockRequest.    * @return - Request    * immediately.    */
+DECL|method|getBlockRequest ( Pipeline pipeline, ContainerProtos.PutBlockRequestProto putBlockRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
-name|getKeyRequest
+name|getBlockRequest
 parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
-name|putKeyRequest
+name|PutBlockRequestProto
+name|putBlockRequest
 parameter_list|)
 block|{
 name|ContainerProtos
@@ -2482,9 +2482,9 @@ operator|.
 name|DatanodeBlockID
 name|blockID
 init|=
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getBlockID
@@ -2501,14 +2501,14 @@ argument_list|)
 expr_stmt|;
 name|ContainerProtos
 operator|.
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 operator|.
 name|Builder
 name|getRequest
 init|=
 name|ContainerProtos
 operator|.
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -2538,7 +2538,7 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|GetKey
+name|GetBlock
 argument_list|)
 expr_stmt|;
 name|request
@@ -2553,7 +2553,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setGetKey
+name|setGetBlock
 argument_list|(
 name|getRequest
 argument_list|)
@@ -2592,11 +2592,11 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Verify the response against the request.    *    * @param request - Request    * @param response - Response    */
-DECL|method|verifyGetKey (ContainerCommandRequestProto request, ContainerCommandResponseProto response, int expectedChunksCount)
+DECL|method|verifyGetBlock (ContainerCommandRequestProto request, ContainerCommandResponseProto response, int expectedChunksCount)
 specifier|public
 specifier|static
 name|void
-name|verifyGetKey
+name|verifyGetBlock
 parameter_list|(
 name|ContainerCommandRequestProto
 name|request
@@ -2647,10 +2647,10 @@ name|expectedChunksCount
 argument_list|,
 name|response
 operator|.
-name|getGetKey
+name|getGetBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getChunksCount
@@ -2658,20 +2658,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param pipeline - pipeline.    * @param putKeyRequest - putKeyRequest.    * @return - Request    */
-DECL|method|getDeleteKeyRequest ( Pipeline pipeline, ContainerProtos.PutKeyRequestProto putKeyRequest)
+comment|/**    * @param pipeline - pipeline.    * @param putBlockRequest - putBlockRequest.    * @return - Request    */
+DECL|method|getDeleteBlockRequest ( Pipeline pipeline, ContainerProtos.PutBlockRequestProto putBlockRequest)
 specifier|public
 specifier|static
 name|ContainerCommandRequestProto
-name|getDeleteKeyRequest
+name|getDeleteBlockRequest
 parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
-name|putKeyRequest
+name|PutBlockRequestProto
+name|putBlockRequest
 parameter_list|)
 block|{
 name|ContainerProtos
@@ -2679,9 +2679,9 @@ operator|.
 name|DatanodeBlockID
 name|blockID
 init|=
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getBlockID
@@ -2691,21 +2691,21 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"deleteKey: name={}"
+literal|"deleteBlock: name={}"
 argument_list|,
 name|blockID
 argument_list|)
 expr_stmt|;
 name|ContainerProtos
 operator|.
-name|DeleteKeyRequestProto
+name|DeleteBlockRequestProto
 operator|.
 name|Builder
 name|delRequest
 init|=
 name|ContainerProtos
 operator|.
-name|DeleteKeyRequestProto
+name|DeleteBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -2735,7 +2735,7 @@ name|ContainerProtos
 operator|.
 name|Type
 operator|.
-name|DeleteKey
+name|DeleteBlock
 argument_list|)
 expr_stmt|;
 name|request
@@ -2750,7 +2750,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setDeleteKey
+name|setDeleteBlock
 argument_list|(
 name|delRequest
 argument_list|)

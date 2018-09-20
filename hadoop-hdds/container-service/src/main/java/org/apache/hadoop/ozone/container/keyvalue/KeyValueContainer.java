@@ -452,7 +452,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -1646,7 +1646,7 @@ block|{
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(

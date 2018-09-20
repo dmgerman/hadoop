@@ -128,7 +128,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -226,7 +226,7 @@ name|storage
 operator|.
 name|ContainerProtocolCalls
 operator|.
-name|putKey
+name|putBlock
 import|;
 end_import
 
@@ -280,13 +280,13 @@ specifier|final
 name|String
 name|traceID
 decl_stmt|;
-DECL|field|containerKeyData
+DECL|field|containerBlockData
 specifier|private
 specifier|final
-name|KeyData
+name|BlockData
 operator|.
 name|Builder
-name|containerKeyData
+name|containerBlockData
 decl_stmt|;
 DECL|field|xceiverClientManager
 specifier|private
@@ -390,9 +390,9 @@ argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|containerKeyData
+name|containerBlockData
 operator|=
-name|KeyData
+name|BlockData
 operator|.
 name|newBuilder
 argument_list|()
@@ -787,11 +787,11 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|putKey
+name|putBlock
 argument_list|(
 name|xceiverClient
 argument_list|,
-name|containerKeyData
+name|containerBlockData
 operator|.
 name|build
 argument_list|()
@@ -1046,7 +1046,7 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|containerKeyData
+name|containerBlockData
 operator|.
 name|addChunks
 argument_list|(

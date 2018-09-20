@@ -104,7 +104,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -185,7 +185,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Map: containerId -> (localId -> {@link KeyData}).  * The outer container map does not entail locking for a better performance.  * The inner {@link KeyDataMap} is synchronized.  *  * This class will maintain list of open keys per container when closeContainer  * command comes, it should autocommit all open keys of a open container before  * marking the container as closed.  */
+comment|/**  * Map: containerId {@literal ->} (localId {@literal ->} {@link BlockData}).  * The outer container map does not entail locking for a better performance.  * The inner {@link BlockDataMap} is synchronized.  *  * This class will maintain list of open keys per container when closeContainer  * command comes, it should autocommit all open keys of a open container before  * marking the container as closed.  */
 end_comment
 
 begin_class
@@ -194,11 +194,11 @@ specifier|public
 class|class
 name|OpenContainerBlockMap
 block|{
-comment|/**    * Map: localId -> KeyData.    *    * In order to support {@link #getAll()}, the update operations are    * synchronized.    */
-DECL|class|KeyDataMap
+comment|/**    * Map: localId {@literal ->} BlockData.    *    * In order to support {@link #getAll()}, the update operations are    * synchronized.    */
+DECL|class|BlockDataMap
 specifier|static
 class|class
-name|KeyDataMap
+name|BlockDataMap
 block|{
 DECL|field|blocks
 specifier|private
@@ -207,7 +207,7 @@ name|ConcurrentMap
 argument_list|<
 name|Long
 argument_list|,
-name|KeyData
+name|BlockData
 argument_list|>
 name|blocks
 init|=
@@ -217,7 +217,7 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|get (long localId)
-name|KeyData
+name|BlockData
 name|get
 parameter_list|(
 name|long
@@ -256,9 +256,9 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|computeIfAbsent ( long localId, Function<Long, KeyData> f)
+DECL|method|computeIfAbsent ( long localId, Function<Long, BlockData> f)
 specifier|synchronized
-name|KeyData
+name|BlockData
 name|computeIfAbsent
 parameter_list|(
 name|long
@@ -268,7 +268,7 @@ name|Function
 argument_list|<
 name|Long
 argument_list|,
-name|KeyData
+name|BlockData
 argument_list|>
 name|f
 parameter_list|)
@@ -288,7 +288,7 @@ DECL|method|getAll ()
 specifier|synchronized
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
 name|getAll
 parameter_list|()
@@ -314,7 +314,7 @@ name|ConcurrentMap
 argument_list|<
 name|Long
 argument_list|,
-name|KeyDataMap
+name|BlockDataMap
 argument_list|>
 name|containers
 init|=
@@ -383,7 +383,7 @@ argument_list|,
 name|id
 lambda|->
 operator|new
-name|KeyDataMap
+name|BlockDataMap
 argument_list|()
 argument_list|)
 operator|.
@@ -397,7 +397,7 @@ argument_list|,
 name|id
 lambda|->
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -479,14 +479,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the list of open to the openContainerBlockMap.    * @param containerId container id    * @return List of open Keys(blocks)    */
-DECL|method|getOpenKeys (long containerId)
+comment|/**    * Returns the list of open blocks to the openContainerBlockMap.    * @param containerId container id    * @return List of open blocks    */
+DECL|method|getOpenBlocks (long containerId)
 specifier|public
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
-name|getOpenKeys
+name|getOpenBlocks
 parameter_list|(
 name|long
 name|containerId
@@ -507,7 +507,7 @@ argument_list|)
 operator|.
 name|map
 argument_list|(
-name|KeyDataMap
+name|BlockDataMap
 operator|::
 name|getAll
 argument_list|)
@@ -520,11 +520,11 @@ name|emptyList
 argument_list|)
 return|;
 block|}
-comment|/**    * removes the block from the block map.    * @param blockID    */
-DECL|method|removeFromKeyMap (BlockID blockID)
+comment|/**    * removes the block from the block map.    * @param blockID - block ID    */
+DECL|method|removeFromBlockMap (BlockID blockID)
 specifier|public
 name|void
-name|removeFromKeyMap
+name|removeFromBlockMap
 parameter_list|(
 name|BlockID
 name|blockID
@@ -570,7 +570,7 @@ name|blocks
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns true if the block exists in the map, false otherwise.    *    * @param blockID    * @return True, if it exists, false otherwise    */
+comment|/**    * Returns true if the block exists in the map, false otherwise.    *    * @param blockID  - Block ID.    * @return True, if it exists, false otherwise    */
 DECL|method|checkIfBlockExists (BlockID blockID)
 specifier|public
 name|boolean
@@ -580,7 +580,7 @@ name|BlockID
 name|blockID
 parameter_list|)
 block|{
-name|KeyDataMap
+name|BlockDataMap
 name|keyDataMap
 init|=
 name|containers
@@ -613,9 +613,9 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getKeyDataMap (long containerId)
-name|KeyDataMap
-name|getKeyDataMap
+DECL|method|getBlockDataMap (long containerId)
+name|BlockDataMap
+name|getBlockDataMap
 parameter_list|(
 name|long
 name|containerId

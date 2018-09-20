@@ -1367,10 +1367,10 @@ case|case
 name|ReadChunk
 case|:
 case|case
-name|ListKey
+name|ListBlock
 case|:
 case|case
-name|GetKey
+name|GetBlock
 case|:
 case|case
 name|GetSmallFile
@@ -1409,10 +1409,10 @@ case|case
 name|DeleteContainer
 case|:
 case|case
-name|DeleteKey
+name|DeleteBlock
 case|:
 case|case
-name|PutKey
+name|PutBlock
 case|:
 case|case
 name|PutSmallFile

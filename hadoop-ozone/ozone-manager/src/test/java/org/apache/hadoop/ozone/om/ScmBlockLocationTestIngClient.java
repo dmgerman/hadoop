@@ -566,7 +566,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns Fake blocks to the KeyManager so we get blocks in the Database.    * @param size - size of the block.    * @param type Replication Type    * @param factor - Replication factor    * @param owner - String owner.    * @return    * @throws IOException    */
+comment|/**    * Returns Fake blocks to the BlockManager so we get blocks in the Database.    * @param size - size of the block.    * @param type Replication Type    * @param factor - Replication factor    * @param owner - String owner.    * @return    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)

@@ -80,7 +80,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerUtils
+name|BlockData
 import|;
 end_import
 
@@ -100,7 +100,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|ContainerUtils
 import|;
 end_import
 
@@ -180,7 +180,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -344,7 +344,7 @@ name|KeyValueBlockIterator
 implements|implements
 name|BlockIterator
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
 block|{
 DECL|field|LOG
@@ -389,7 +389,7 @@ name|blockFilter
 decl_stmt|;
 DECL|field|nextBlock
 specifier|private
-name|KeyData
+name|BlockData
 name|nextBlock
 decl_stmt|;
 DECL|field|containerId
@@ -503,7 +503,7 @@ expr_stmt|;
 name|MetadataStore
 name|metadataStore
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -531,7 +531,7 @@ annotation|@
 name|Override
 DECL|method|nextBlock ()
 specifier|public
-name|KeyData
+name|BlockData
 name|nextBlock
 parameter_list|()
 throws|throws
@@ -546,7 +546,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|KeyData
+name|BlockData
 name|currentBlock
 init|=
 name|nextBlock
@@ -638,9 +638,9 @@ condition|)
 block|{
 name|nextBlock
 operator|=
-name|KeyUtils
+name|BlockUtils
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|(
 name|block
 operator|.

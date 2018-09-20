@@ -160,7 +160,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ChunkInfo
+name|BlockData
 import|;
 end_import
 
@@ -180,7 +180,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|ChunkInfo
 import|;
 end_import
 
@@ -280,7 +280,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -840,8 +840,8 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 decl_stmt|;
 name|int
 name|blockCounter
@@ -856,7 +856,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|keyData
+name|blockData
 operator|=
 name|blockIterator
 operator|.
@@ -868,7 +868,7 @@ argument_list|(
 name|blockCounter
 operator|++
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -908,7 +908,7 @@ decl_stmt|;
 name|MetadataStore
 name|metadataStore
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -935,7 +935,7 @@ name|i
 operator|++
 control|)
 block|{
-comment|// Creating KeyData
+comment|// Creating BlockData
 name|BlockID
 name|blockID
 init|=
@@ -947,16 +947,16 @@ argument_list|,
 name|i
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -965,7 +965,7 @@ argument_list|,
 literal|"ozone"
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -1022,7 +1022,7 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -1043,7 +1043,7 @@ name|getLocalID
 argument_list|()
 argument_list|)
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -1216,7 +1216,7 @@ comment|//write one few keys to check the key count after import
 name|MetadataStore
 name|metadataStore
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(

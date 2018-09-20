@@ -705,7 +705,7 @@ name|request
 decl_stmt|,
 name|writeChunkRequest
 decl_stmt|,
-name|putKeyRequest
+name|putBlockRequest
 decl_stmt|,
 name|updateRequest1
 decl_stmt|,
@@ -818,12 +818,12 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Put Key
-name|putKeyRequest
+comment|// Put Block
+name|putBlockRequest
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,
@@ -839,7 +839,7 @@ name|client
 operator|.
 name|sendCommand
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -869,7 +869,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 operator|.
 name|getTraceID
 argument_list|()
@@ -883,18 +883,18 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Key
+comment|// Get Block
 name|request
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getKeyRequest
+name|getBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -910,12 +910,12 @@ expr_stmt|;
 name|int
 name|chunksCount
 init|=
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getChunksCount
@@ -923,7 +923,7 @@ argument_list|()
 decl_stmt|;
 name|ContainerTestHelper
 operator|.
-name|verifyGetKey
+name|verifyGetBlock
 argument_list|(
 name|request
 argument_list|,
@@ -932,18 +932,18 @@ argument_list|,
 name|chunksCount
 argument_list|)
 expr_stmt|;
-comment|// Delete Key
+comment|// Delete Block
 name|request
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getDeleteKeyRequest
+name|getDeleteBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1400,7 +1400,7 @@ operator|.
 name|getPutSmallFile
 argument_list|()
 operator|.
-name|getKey
+name|getBlock
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1491,7 +1491,7 @@ operator|.
 name|ContainerCommandRequestProto
 name|writeChunkRequest
 decl_stmt|,
-name|putKeyRequest
+name|putBlockRequest
 decl_stmt|,
 name|request
 decl_stmt|;
@@ -1563,11 +1563,11 @@ argument_list|,
 literal|1024
 argument_list|)
 expr_stmt|;
-name|putKeyRequest
+name|putBlockRequest
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|client
 operator|.
@@ -1580,14 +1580,14 @@ name|getWriteChunk
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Put key before closing.
+comment|// Put block before closing.
 name|response
 operator|=
 name|client
 operator|.
 name|sendCommand
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1617,7 +1617,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 operator|.
 name|getTraceID
 argument_list|()
@@ -1816,14 +1816,14 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Put key will fail on a closed container.
+comment|// Put block will fail on a closed container.
 name|response
 operator|=
 name|client
 operator|.
 name|sendCommand
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1853,7 +1853,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 operator|.
 name|getTraceID
 argument_list|()
@@ -1867,21 +1867,21 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get key must work on the closed container.
+comment|// Get block must work on the closed container.
 name|request
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getKeyRequest
+name|getBlockRequest
 argument_list|(
 name|client
 operator|.
 name|getPipeline
 argument_list|()
 argument_list|,
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1897,12 +1897,12 @@ expr_stmt|;
 name|int
 name|chunksCount
 init|=
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getChunksCount
@@ -1910,7 +1910,7 @@ argument_list|()
 decl_stmt|;
 name|ContainerTestHelper
 operator|.
-name|verifyGetKey
+name|verifyGetBlock
 argument_list|(
 name|request
 argument_list|,
@@ -1919,21 +1919,21 @@ argument_list|,
 name|chunksCount
 argument_list|)
 expr_stmt|;
-comment|// Delete Key must fail on a closed container.
+comment|// Delete block must fail on a closed container.
 name|request
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getDeleteKeyRequest
+name|getDeleteBlockRequest
 argument_list|(
 name|client
 operator|.
 name|getPipeline
 argument_list|()
 argument_list|,
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2050,7 +2050,7 @@ name|request
 decl_stmt|,
 name|writeChunkRequest
 decl_stmt|,
-name|putKeyRequest
+name|putBlockRequest
 decl_stmt|;
 try|try
 block|{
@@ -2120,11 +2120,11 @@ argument_list|,
 literal|1024
 argument_list|)
 expr_stmt|;
-name|putKeyRequest
+name|putBlockRequest
 operator|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|client
 operator|.
@@ -2144,7 +2144,7 @@ name|client
 operator|.
 name|sendCommand
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2174,7 +2174,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 operator|.
 name|getTraceID
 argument_list|()
@@ -2924,7 +2924,6 @@ argument_list|(
 name|containerID
 argument_list|)
 decl_stmt|;
-empty_stmt|;
 name|ContainerProtos
 operator|.
 name|ContainerCommandRequestProto

@@ -172,7 +172,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ChunkInfo
+name|BlockData
 import|;
 end_import
 
@@ -192,7 +192,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|ChunkInfo
 import|;
 end_import
 
@@ -252,7 +252,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -782,8 +782,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|keyValueBlockIterator
 operator|.
@@ -792,7 +792,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getLocalID
 argument_list|()
@@ -827,8 +827,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|keyValueBlockIterator
 operator|.
@@ -837,7 +837,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getLocalID
 argument_list|()
@@ -1339,8 +1339,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|keyValueBlockIterator
 operator|.
@@ -1349,7 +1349,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getLocalID
 argument_list|()
@@ -1495,7 +1495,7 @@ expr_stmt|;
 name|MetadataStore
 name|metadataStore
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -1566,16 +1566,16 @@ argument_list|,
 name|i
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -1596,7 +1596,7 @@ name|getLocalID
 argument_list|()
 argument_list|)
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -1632,16 +1632,16 @@ argument_list|,
 name|i
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -1666,7 +1666,7 @@ name|getLocalID
 argument_list|()
 argument_list|)
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getProtoBufMessage
 argument_list|()

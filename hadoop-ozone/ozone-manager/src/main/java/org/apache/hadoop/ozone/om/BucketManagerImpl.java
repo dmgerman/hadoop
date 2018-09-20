@@ -251,7 +251,7 @@ operator|=
 name|metadataManager
 expr_stmt|;
 block|}
-comment|/**    * MetadataDB is maintained in MetadataManager and shared between    * BucketManager and VolumeManager. (and also by KeyManager)    *    * BucketManager uses MetadataDB to store bucket level information.    *    * Keys used in BucketManager for storing data into MetadataDB    * for BucketInfo:    * {volume/bucket} -> bucketInfo    *    * Work flow of create bucket:    *    * -> Check if the Volume exists in metadataDB, if not throw    * VolumeNotFoundException.    * -> Else check if the Bucket exists in metadataDB, if so throw    * BucketExistException    * -> Else update MetadataDB with VolumeInfo.    */
+comment|/**    * MetadataDB is maintained in MetadataManager and shared between    * BucketManager and VolumeManager. (and also by BlockManager)    *    * BucketManager uses MetadataDB to store bucket level information.    *    * Keys used in BucketManager for storing data into MetadataDB    * for BucketInfo:    * {volume/bucket} -> bucketInfo    *    * Work flow of create bucket:    *    * -> Check if the Volume exists in metadataDB, if not throw    * VolumeNotFoundException.    * -> Else check if the Bucket exists in metadataDB, if so throw    * BucketExistException    * -> Else update MetadataDB with VolumeInfo.    */
 comment|/**    * Creates a bucket.    *    * @param bucketInfo - OmBucketInfo.    */
 annotation|@
 name|Override

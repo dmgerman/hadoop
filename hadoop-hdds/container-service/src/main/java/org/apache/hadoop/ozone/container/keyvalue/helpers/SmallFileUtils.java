@@ -309,7 +309,7 @@ operator|.
 name|getGetSmallFile
 argument_list|()
 operator|.
-name|getKey
+name|getBlock
 argument_list|()
 operator|.
 name|getBlockID

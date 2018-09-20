@@ -278,7 +278,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -1187,7 +1187,7 @@ decl_stmt|;
 name|MetadataStore
 name|containerDB
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(

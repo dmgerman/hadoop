@@ -252,7 +252,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -3346,8 +3346,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|keyValueBlockIterator
 operator|.
@@ -3356,7 +3356,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -3375,7 +3375,7 @@ name|ChunkInfo
 argument_list|>
 name|chunks
 init|=
-name|keyData
+name|blockData
 operator|.
 name|getChunks
 argument_list|()

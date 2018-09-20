@@ -607,7 +607,7 @@ name|putKeyProto
 init|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|pipeline
 argument_list|,

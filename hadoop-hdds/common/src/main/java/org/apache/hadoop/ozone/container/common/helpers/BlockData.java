@@ -137,10 +137,10 @@ comment|/**  * Helper class to convert Protobuf to Java classes.  */
 end_comment
 
 begin_class
-DECL|class|KeyData
+DECL|class|BlockData
 specifier|public
 class|class
-name|KeyData
+name|BlockData
 block|{
 DECL|field|blockID
 specifier|private
@@ -159,7 +159,7 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
-comment|/**    * Represent a list of chunks.    * In order to reduce memory usage, chunkList is declared as an    * {@link Object}.    * When #elements == 0, chunkList is null.    * When #elements == 1, chunkList refers to the only element.    * When #elements> 1, chunkList refers to the list.    *    * Please note : when we are working with keys, we don't care what they point    * to. So we We don't read chunkinfo nor validate them. It is responsibility    * of higher layer like ozone. We just read and write data from network.    */
+comment|/**    * Represent a list of chunks.    * In order to reduce memory usage, chunkList is declared as an    * {@link Object}.    * When #elements == 0, chunkList is null.    * When #elements == 1, chunkList refers to the only element.    * When #elements> 1, chunkList refers to the list.    *    * Please note : when we are working with blocks, we don't care what they    * point to. So we We don't read chunkinfo nor validate them. It is    * responsibility of higher layer like ozone. We just read and write data    * from network.    */
 DECL|field|chunkList
 specifier|private
 name|Object
@@ -171,10 +171,10 @@ specifier|private
 name|long
 name|size
 decl_stmt|;
-comment|/**    * Constructs a KeyData Object.    *    * @param blockID    */
-DECL|method|KeyData (BlockID blockID)
+comment|/**    * Constructs a BlockData Object.    *    * @param blockID    */
+DECL|method|BlockData (BlockID blockID)
 specifier|public
-name|KeyData
+name|BlockData
 parameter_list|(
 name|BlockID
 name|blockID
@@ -202,26 +202,26 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Returns a keyData object from the protobuf data.    *    * @param data - Protobuf data.    * @return - KeyData    * @throws IOException    */
-DECL|method|getFromProtoBuf (ContainerProtos.KeyData data)
+comment|/**    * Returns a blockData object from the protobuf data.    *    * @param data - Protobuf data.    * @return - BlockData    * @throws IOException    */
+DECL|method|getFromProtoBuf (ContainerProtos.BlockData data)
 specifier|public
 specifier|static
-name|KeyData
+name|BlockData
 name|getFromProtoBuf
 parameter_list|(
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 name|data
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|BlockID
 operator|.
@@ -252,7 +252,7 @@ name|x
 operator|++
 control|)
 block|{
-name|keyData
+name|blockData
 operator|.
 name|addMetadata
 argument_list|(
@@ -278,7 +278,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -305,7 +305,7 @@ operator|.
 name|getSize
 argument_list|()
 operator|==
-name|keyData
+name|blockData
 operator|.
 name|getSize
 argument_list|()
@@ -313,28 +313,28 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|keyData
+name|blockData
 return|;
 block|}
-comment|/**    * Returns a Protobuf message from KeyData.    * @return Proto Buf Message.    */
+comment|/**    * Returns a Protobuf message from BlockData.    * @return Proto Buf Message.    */
 DECL|method|getProtoBufMessage ()
 specifier|public
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 name|getProtoBufMessage
 parameter_list|()
 block|{
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 operator|.
 name|Builder
 name|builder
 init|=
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 operator|.
 name|newBuilder
 argument_list|()

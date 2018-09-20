@@ -248,7 +248,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 import|;
 end_import
 
@@ -270,7 +270,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|GetKeyResponseProto
+name|GetBlockResponseProto
 import|;
 end_import
 
@@ -336,7 +336,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -358,7 +358,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 import|;
 end_import
 
@@ -581,12 +581,12 @@ specifier|private
 name|ContainerProtocolCalls
 parameter_list|()
 block|{   }
-comment|/**    * Calls the container protocol to get a container key.    *    * @param xceiverClient client to perform call    * @param datanodeBlockID blockID to identify container    * @param traceID container protocol call args    * @return container protocol get key response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|getKey (XceiverClientSpi xceiverClient, DatanodeBlockID datanodeBlockID, String traceID)
+comment|/**    * Calls the container protocol to get a container block.    *    * @param xceiverClient client to perform call    * @param datanodeBlockID blockID to identify container    * @param traceID container protocol call args    * @return container protocol get block response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|getBlock (XceiverClientSpi xceiverClient, DatanodeBlockID datanodeBlockID, String traceID)
 specifier|public
 specifier|static
-name|GetKeyResponseProto
-name|getKey
+name|GetBlockResponseProto
+name|getBlock
 parameter_list|(
 name|XceiverClientSpi
 name|xceiverClient
@@ -600,12 +600,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 operator|.
 name|Builder
-name|readKeyRequest
+name|readBlockRequest
 init|=
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -641,7 +641,7 @@ name|setCmdType
 argument_list|(
 name|Type
 operator|.
-name|GetKey
+name|GetBlock
 argument_list|)
 operator|.
 name|setContainerID
@@ -662,9 +662,9 @@ argument_list|(
 name|id
 argument_list|)
 operator|.
-name|setGetKey
+name|setGetBlock
 argument_list|(
-name|readKeyRequest
+name|readBlockRequest
 argument_list|)
 operator|.
 name|build
@@ -688,7 +688,7 @@ expr_stmt|;
 return|return
 name|response
 operator|.
-name|getGetKey
+name|getGetBlock
 argument_list|()
 return|;
 block|}
@@ -812,18 +812,18 @@ name|getGetCommittedBlockLength
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to put a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|putKey (XceiverClientSpi xceiverClient, KeyData containerKeyData, String traceID)
+comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|putBlock (XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
 specifier|public
 specifier|static
 name|void
-name|putKey
+name|putBlock
 parameter_list|(
 name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
-name|KeyData
-name|containerKeyData
+name|BlockData
+name|containerBlockData
 parameter_list|,
 name|String
 name|traceID
@@ -831,19 +831,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|Builder
-name|createKeyRequest
+name|createBlockRequest
 init|=
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setKeyData
+name|setBlockData
 argument_list|(
-name|containerKeyData
+name|containerBlockData
 argument_list|)
 decl_stmt|;
 name|String
@@ -872,12 +872,12 @@ name|setCmdType
 argument_list|(
 name|Type
 operator|.
-name|PutKey
+name|PutBlock
 argument_list|)
 operator|.
 name|setContainerID
 argument_list|(
-name|containerKeyData
+name|containerBlockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -896,9 +896,9 @@ argument_list|(
 name|id
 argument_list|)
 operator|.
-name|setPutKey
+name|setPutBlock
 argument_list|(
-name|createKeyRequest
+name|createBlockRequest
 argument_list|)
 operator|.
 name|build
@@ -1166,7 +1166,7 @@ name|response
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, key name and data to write sends all that data to the container using    * a single RPC. This API is designed to be used for files which are smaller    * than 1 MB.    *    * @param client - client that communicates with the container.    * @param blockID - ID of the block    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @throws IOException    */
+comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, block name and data to write sends all that data to the container    * using a single RPC. This API is designed to be used for files which are    * smaller than 1 MB.    *    * @param client - client that communicates with the container.    * @param blockID - ID of the block    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @throws IOException    */
 DECL|method|writeSmallFile (XceiverClientSpi client, BlockID blockID, byte[] data, String traceID)
 specifier|public
 specifier|static
@@ -1189,10 +1189,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|KeyData
-name|containerKeyData
+name|BlockData
+name|containerBlockData
 init|=
-name|KeyData
+name|BlockData
 operator|.
 name|newBuilder
 argument_list|()
@@ -1208,19 +1208,19 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|Builder
-name|createKeyRequest
+name|createBlockRequest
 init|=
-name|PutKeyRequestProto
+name|PutBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setKeyData
+name|setBlockData
 argument_list|(
-name|containerKeyData
+name|containerBlockData
 argument_list|)
 decl_stmt|;
 name|KeyValue
@@ -1295,9 +1295,9 @@ argument_list|(
 name|chunk
 argument_list|)
 operator|.
-name|setKey
+name|setBlock
 argument_list|(
-name|createKeyRequest
+name|createBlockRequest
 argument_list|)
 operator|.
 name|setData
@@ -1867,12 +1867,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 operator|.
 name|Builder
-name|getKey
+name|getBlock
 init|=
-name|GetKeyRequestProto
+name|GetBlockRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -1895,9 +1895,9 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setKey
+name|setBlock
 argument_list|(
-name|getKey
+name|getBlock
 argument_list|)
 operator|.
 name|build

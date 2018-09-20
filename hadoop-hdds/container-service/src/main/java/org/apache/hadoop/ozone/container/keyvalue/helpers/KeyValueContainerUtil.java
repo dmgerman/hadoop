@@ -200,7 +200,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -545,7 +545,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Close the DB connection and remove the DB handler from cache
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|removeDB
 argument_list|(
@@ -742,7 +742,7 @@ expr_stmt|;
 name|MetadataStore
 name|metadata
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -799,16 +799,16 @@ argument_list|(
 name|e
 lambda|->
 block|{
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 decl_stmt|;
 try|try
 block|{
-name|keyData
+name|blockData
 operator|=
-name|KeyUtils
+name|BlockUtils
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|(
 name|e
 operator|.
@@ -817,7 +817,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|keyData
+name|blockData
 operator|.
 name|getSize
 argument_list|()

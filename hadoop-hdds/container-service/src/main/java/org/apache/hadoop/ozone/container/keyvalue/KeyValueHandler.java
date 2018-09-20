@@ -400,6 +400,26 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|BlockData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ChunkInfo
 import|;
 end_import
@@ -441,26 +461,6 @@ operator|.
 name|helpers
 operator|.
 name|ContainerUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|KeyData
 import|;
 end_import
 
@@ -660,7 +660,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -740,7 +740,7 @@ name|keyvalue
 operator|.
 name|impl
 operator|.
-name|KeyManagerImpl
+name|BlockManagerImpl
 import|;
 end_import
 
@@ -780,7 +780,7 @@ name|keyvalue
 operator|.
 name|interfaces
 operator|.
-name|KeyManager
+name|BlockManager
 import|;
 end_import
 
@@ -1222,11 +1222,11 @@ specifier|final
 name|ContainerType
 name|containerType
 decl_stmt|;
-DECL|field|keyManager
+DECL|field|blockManager
 specifier|private
 specifier|final
-name|KeyManager
-name|keyManager
+name|BlockManager
+name|blockManager
 decl_stmt|;
 DECL|field|chunkManager
 specifier|private
@@ -1298,10 +1298,10 @@ name|ContainerType
 operator|.
 name|KeyValueContainer
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|=
 operator|new
-name|KeyManagerImpl
+name|BlockManagerImpl
 argument_list|(
 name|config
 argument_list|)
@@ -1559,10 +1559,10 @@ name|kvContainer
 argument_list|)
 return|;
 case|case
-name|PutKey
+name|PutBlock
 case|:
 return|return
-name|handlePutKey
+name|handlePutBlock
 argument_list|(
 name|request
 argument_list|,
@@ -1570,10 +1570,10 @@ name|kvContainer
 argument_list|)
 return|;
 case|case
-name|GetKey
+name|GetBlock
 case|:
 return|return
-name|handleGetKey
+name|handleGetBlock
 argument_list|(
 name|request
 argument_list|,
@@ -1581,10 +1581,10 @@ name|kvContainer
 argument_list|)
 return|;
 case|case
-name|DeleteKey
+name|DeleteBlock
 case|:
 return|return
-name|handleDeleteKey
+name|handleDeleteBlock
 argument_list|(
 name|request
 argument_list|,
@@ -1592,7 +1592,7 @@ name|kvContainer
 argument_list|)
 return|;
 case|case
-name|ListKey
+name|ListBlock
 case|:
 return|return
 name|handleUnsupportedOp
@@ -1706,16 +1706,16 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getKeyManager ()
+DECL|method|getBlockManager ()
 specifier|public
-name|KeyManager
-name|getKeyManager
+name|BlockManager
+name|getBlockManager
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|keyManager
+name|blockManager
 return|;
 block|}
 comment|/**    * Handles Create Container Request. If successful, adds the container to    * ContainerSet.    */
@@ -2538,7 +2538,7 @@ operator|.
 name|CLOSING
 argument_list|)
 expr_stmt|;
-name|commitPendingKeys
+name|commitPendingBlocks
 argument_list|(
 name|kvContainer
 argument_list|)
@@ -2615,10 +2615,10 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Handle Put Key operation. Calls KeyManager to process the request.    */
-DECL|method|handlePutKey ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
+comment|/**    * Handle Put Block operation. Calls BlockManager to process the request.    */
+DECL|method|handlePutBlock ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
-name|handlePutKey
+name|handlePutBlock
 parameter_list|(
 name|ContainerCommandRequestProto
 name|request
@@ -2635,7 +2635,7 @@ condition|(
 operator|!
 name|request
 operator|.
-name|hasPutKey
+name|hasPutBlock
 argument_list|()
 condition|)
 block|{
@@ -2667,26 +2667,26 @@ argument_list|(
 name|kvContainer
 argument_list|)
 expr_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
-name|KeyData
+name|BlockData
 operator|.
 name|getFromProtoBuf
 argument_list|(
 name|request
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 argument_list|)
 decl_stmt|;
 name|long
 name|numBytes
 init|=
-name|keyData
+name|blockData
 operator|.
 name|getProtoBufMessage
 argument_list|()
@@ -2700,7 +2700,7 @@ name|blockLength
 operator|=
 name|commitKey
 argument_list|(
-name|keyData
+name|blockData
 argument_list|,
 name|kvContainer
 argument_list|)
@@ -2711,7 +2711,7 @@ name|incContainerBytesStats
 argument_list|(
 name|Type
 operator|.
-name|PutKey
+name|PutBlock
 argument_list|,
 name|numBytes
 argument_list|)
@@ -2764,9 +2764,9 @@ argument_list|)
 return|;
 block|}
 return|return
-name|KeyUtils
+name|BlockUtils
 operator|.
-name|putKeyResponseSuccess
+name|putBlockResponseSuccess
 argument_list|(
 name|request
 argument_list|,
@@ -2774,10 +2774,10 @@ name|blockLength
 argument_list|)
 return|;
 block|}
-DECL|method|commitPendingKeys (KeyValueContainer kvContainer)
+DECL|method|commitPendingBlocks (KeyValueContainer kvContainer)
 specifier|private
 name|void
-name|commitPendingKeys
+name|commitPendingBlocks
 parameter_list|(
 name|KeyValueContainer
 name|kvContainer
@@ -2798,43 +2798,43 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
-name|pendingKeys
+name|pendingBlocks
 init|=
 name|this
 operator|.
 name|openContainerBlockMap
 operator|.
-name|getOpenKeys
+name|getOpenBlocks
 argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 range|:
-name|pendingKeys
+name|pendingBlocks
 control|)
 block|{
 name|commitKey
 argument_list|(
-name|keyData
+name|blockData
 argument_list|,
 name|kvContainer
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|commitKey (KeyData keyData, KeyValueContainer kvContainer)
+DECL|method|commitKey (BlockData blockData, KeyValueContainer kvContainer)
 specifier|private
 name|long
 name|commitKey
 parameter_list|(
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 parameter_list|,
 name|KeyValueContainer
 name|kvContainer
@@ -2846,19 +2846,19 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 name|long
 name|length
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|kvContainer
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 decl_stmt|;
 comment|//update the open key Map in containerManager
@@ -2866,9 +2866,9 @@ name|this
 operator|.
 name|openContainerBlockMap
 operator|.
-name|removeFromKeyMap
+name|removeFromBlockMap
 argument_list|(
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -2878,10 +2878,10 @@ return|return
 name|length
 return|;
 block|}
-comment|/**    * Handle Get Key operation. Calls KeyManager to process the request.    */
-DECL|method|handleGetKey ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
+comment|/**    * Handle Get Block operation. Calls BlockManager to process the request.    */
+DECL|method|handleGetBlock ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
-name|handleGetKey
+name|handleGetBlock
 parameter_list|(
 name|ContainerCommandRequestProto
 name|request
@@ -2895,7 +2895,7 @@ condition|(
 operator|!
 name|request
 operator|.
-name|hasGetKey
+name|hasGetBlock
 argument_list|()
 condition|)
 block|{
@@ -2920,7 +2920,7 @@ name|request
 argument_list|)
 return|;
 block|}
-name|KeyData
+name|BlockData
 name|responseData
 decl_stmt|;
 try|try
@@ -2934,7 +2934,7 @@ name|getFromProtobuf
 argument_list|(
 name|request
 operator|.
-name|getGetKey
+name|getGetBlock
 argument_list|()
 operator|.
 name|getBlockID
@@ -2943,9 +2943,9 @@ argument_list|)
 decl_stmt|;
 name|responseData
 operator|=
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|kvContainer
 argument_list|,
@@ -2971,7 +2971,7 @@ name|incContainerBytesStats
 argument_list|(
 name|Type
 operator|.
-name|GetKey
+name|GetBlock
 argument_list|,
 name|numBytes
 argument_list|)
@@ -3024,9 +3024,9 @@ argument_list|)
 return|;
 block|}
 return|return
-name|KeyUtils
+name|BlockUtils
 operator|.
-name|getKeyDataResponse
+name|getBlockDataResponse
 argument_list|(
 name|request
 argument_list|,
@@ -3034,7 +3034,7 @@ name|responseData
 argument_list|)
 return|;
 block|}
-comment|/**    * Handles GetCommittedBlockLength operation.    * Calls KeyManager to process the request.    */
+comment|/**    * Handles GetCommittedBlockLength operation.    * Calls BlockManager to process the request.    */
 DECL|method|handleGetCommittedBlockLength ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
 name|handleGetCommittedBlockLength
@@ -3129,7 +3129,7 @@ throw|;
 block|}
 name|blockLength
 operator|=
-name|keyManager
+name|blockManager
 operator|.
 name|getCommittedBlockLength
 argument_list|(
@@ -3186,7 +3186,7 @@ argument_list|)
 return|;
 block|}
 return|return
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getBlockLengthResponse
 argument_list|(
@@ -3196,10 +3196,10 @@ name|blockLength
 argument_list|)
 return|;
 block|}
-comment|/**    * Handle Delete Key operation. Calls KeyManager to process the request.    */
-DECL|method|handleDeleteKey ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
+comment|/**    * Handle Delete Block operation. Calls BlockManager to process the request.    */
+DECL|method|handleDeleteBlock ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
-name|handleDeleteKey
+name|handleDeleteBlock
 parameter_list|(
 name|ContainerCommandRequestProto
 name|request
@@ -3213,7 +3213,7 @@ condition|(
 operator|!
 name|request
 operator|.
-name|hasDeleteKey
+name|hasDeleteBlock
 argument_list|()
 condition|)
 block|{
@@ -3254,16 +3254,16 @@ name|getFromProtobuf
 argument_list|(
 name|request
 operator|.
-name|getDeleteKey
+name|getDeleteBlock
 argument_list|()
 operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|deleteKey
+name|deleteBlock
 argument_list|(
 name|kvContainer
 argument_list|,
@@ -3318,9 +3318,9 @@ argument_list|)
 return|;
 block|}
 return|return
-name|KeyUtils
+name|BlockUtils
 operator|.
-name|getKeyResponseSuccess
+name|getBlockResponseSuccess
 argument_list|(
 name|request
 argument_list|)
@@ -3979,7 +3979,7 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Handle Put Small File operation. Writes the chunk and associated key    * using a single RPC. Calls KeyManager and ChunkManager to process the    * request.    */
+comment|/**    * Handle Put Small File operation. Writes the chunk and associated key    * using a single RPC. Calls BlockManager and ChunkManager to process the    * request.    */
 DECL|method|handlePutSmallFile ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
 name|handlePutSmallFile
@@ -4045,29 +4045,29 @@ name|getFromProtobuf
 argument_list|(
 name|putSmallFileReq
 operator|.
-name|getKey
+name|getBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
-name|KeyData
+name|BlockData
 operator|.
 name|getFromProtoBuf
 argument_list|(
 name|putSmallFileReq
 operator|.
-name|getKey
+name|getBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4075,7 +4075,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 name|ChunkInfo
@@ -4152,20 +4152,20 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
 name|chunks
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|kvContainer
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -4237,7 +4237,7 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Handle Get Small File operation. Gets a data stream using a key. This    * helps in reducing the RPC overhead for small files. Calls KeyManager and    * ChunkManager to process the request.    */
+comment|/**    * Handle Get Small File operation. Gets a data stream using a key. This    * helps in reducing the RPC overhead for small files. Calls BlockManager and    * ChunkManager to process the request.    */
 DECL|method|handleGetSmallFile ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
 name|handleGetSmallFile
@@ -4298,19 +4298,19 @@ name|getFromProtobuf
 argument_list|(
 name|getSmallFileReq
 operator|.
-name|getKey
+name|getBlock
 argument_list|()
 operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|responseData
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|kvContainer
 argument_list|,

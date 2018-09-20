@@ -458,7 +458,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -1921,7 +1921,7 @@ name|Exception
 block|{
 specifier|final
 name|ClientProtocol
-name|client
+name|helperClient
 init|=
 name|helper
 operator|.
@@ -1954,7 +1954,7 @@ name|OzoneKey
 argument_list|>
 name|keyList
 init|=
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -2008,7 +2008,7 @@ decl_stmt|;
 name|OzoneOutputStream
 name|ozoneOutputStream
 init|=
-name|client
+name|helperClient
 operator|.
 name|createKey
 argument_list|(
@@ -2044,7 +2044,7 @@ argument_list|()
 expr_stmt|;
 name|keyList
 operator|=
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -2088,7 +2088,7 @@ try|try
 block|{
 name|ozoneOutputStream
 operator|=
-name|client
+name|helperClient
 operator|.
 name|createKey
 argument_list|(
@@ -2149,7 +2149,7 @@ try|try
 block|{
 name|ozoneOutputStream
 operator|=
-name|client
+name|helperClient
 operator|.
 name|createKey
 argument_list|(
@@ -2528,7 +2528,7 @@ name|Exception
 block|{
 specifier|final
 name|ClientProtocol
-name|client
+name|helperClient
 init|=
 name|helper
 operator|.
@@ -2781,7 +2781,7 @@ expr_stmt|;
 comment|// test new get key with invalid volume/bucket name
 try|try
 block|{
-name|client
+name|helperClient
 operator|.
 name|getKey
 argument_list|(
@@ -2829,7 +2829,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|client
+name|helperClient
 operator|.
 name|getKey
 argument_list|(
@@ -3070,7 +3070,7 @@ throws|throws
 name|Exception
 block|{
 name|ClientProtocol
-name|client
+name|helperClient
 init|=
 name|helper
 operator|.
@@ -3195,7 +3195,7 @@ name|OzoneKey
 argument_list|>
 name|keyList2
 init|=
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -3342,7 +3342,7 @@ block|}
 comment|// test maxLength parameter of list keys
 name|keyList2
 operator|=
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -3403,7 +3403,7 @@ argument_list|)
 expr_stmt|;
 name|keyList2
 operator|=
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -3476,7 +3476,7 @@ argument_list|)
 expr_stmt|;
 name|keyList2
 operator|=
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -3560,7 +3560,7 @@ expr_stmt|;
 comment|// test new list keys with invalid volume/bucket name
 try|try
 block|{
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -3610,7 +3610,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|client
+name|helperClient
 operator|.
 name|listKeys
 argument_list|(
@@ -4517,15 +4517,15 @@ name|getContainerID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|blockInfo
 init|=
 name|keyValueHandler
 operator|.
-name|getKeyManager
+name|getBlockManager
 argument_list|()
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|container
 argument_list|,

@@ -238,6 +238,26 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|BlockData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ChunkInfo
 import|;
 end_import
@@ -259,26 +279,6 @@ operator|.
 name|helpers
 operator|.
 name|ContainerUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|KeyData
 import|;
 end_import
 
@@ -414,7 +414,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -454,7 +454,7 @@ name|keyvalue
 operator|.
 name|impl
 operator|.
-name|KeyManagerImpl
+name|BlockManagerImpl
 import|;
 end_import
 
@@ -494,7 +494,7 @@ name|keyvalue
 operator|.
 name|interfaces
 operator|.
-name|KeyManager
+name|BlockManager
 import|;
 end_import
 
@@ -1013,11 +1013,11 @@ specifier|static
 name|VolumeChoosingPolicy
 name|volumeChoosingPolicy
 decl_stmt|;
-DECL|field|keyManager
+DECL|field|blockManager
 specifier|private
 specifier|static
-name|KeyManager
-name|keyManager
+name|BlockManager
+name|blockManager
 decl_stmt|;
 DECL|field|chunkManager
 specifier|private
@@ -1156,10 +1156,10 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|=
 operator|new
-name|KeyManagerImpl
+name|BlockManagerImpl
 argument_list|(
 name|conf
 argument_list|)
@@ -1295,16 +1295,16 @@ name|getTestContainerID
 argument_list|()
 return|;
 block|}
-DECL|method|addContainer (ContainerSet containerSet, long containerID)
+DECL|method|addContainer (ContainerSet cSet, long cID)
 specifier|private
 name|Container
 name|addContainer
 parameter_list|(
 name|ContainerSet
-name|containerSet
+name|cSet
 parameter_list|,
 name|long
-name|containerID
+name|cID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1315,7 +1315,7 @@ init|=
 operator|new
 name|KeyValueContainerData
 argument_list|(
-name|containerID
+name|cID
 argument_list|,
 name|ContainerTestHelper
 operator|.
@@ -1362,7 +1362,7 @@ argument_list|,
 name|SCM_ID
 argument_list|)
 expr_stmt|;
-name|containerSet
+name|cSet
 operator|.
 name|addContainer
 argument_list|(
@@ -1520,7 +1520,7 @@ try|try
 block|{
 name|store
 operator|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -1723,7 +1723,7 @@ name|testContainerID1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Adding key to a deleted container should fail.
+comment|// Adding block to a deleted container should fail.
 name|exception
 operator|.
 name|expect
@@ -1750,11 +1750,11 @@ argument_list|(
 name|testContainerID1
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|someKey1
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID1
 argument_list|)
@@ -1773,9 +1773,9 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container1
 argument_list|,
@@ -1793,11 +1793,11 @@ argument_list|(
 name|testContainerID2
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|someKey2
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID2
 argument_list|)
@@ -1816,9 +1816,9 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container2
 argument_list|,
@@ -2364,7 +2364,7 @@ name|blockID
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Writes many chunks of the same key into different chunk files and verifies    * that we have that data in many files.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Writes many chunks of the same block into different chunk files and    * verifies that we have that data in many files.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
 annotation|@
 name|Test
 DECL|method|testWritReadManyChunks ()
@@ -3547,13 +3547,13 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests a put key and read key.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Tests a put block and read block.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
 annotation|@
 name|Test
-DECL|method|testPutKey ()
+DECL|method|testPutBlock ()
 specifier|public
 name|void
-name|testPutKey
+name|testPutBlock
 parameter_list|()
 throws|throws
 name|IOException
@@ -3594,11 +3594,11 @@ argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -3626,32 +3626,32 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
 name|chunkList
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
-name|KeyData
-name|readKeyData
+name|BlockData
+name|readBlockData
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -3664,7 +3664,7 @@ name|ChunkInfo
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|readKeyData
+name|readBlockData
 operator|.
 name|getChunks
 argument_list|()
@@ -3691,13 +3691,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests a put key and read key.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Tests a put block and read block.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
 annotation|@
 name|Test
-DECL|method|testPutKeyWithLotsOfChunks ()
+DECL|method|testPutBlockWithLotsOfChunks ()
 specifier|public
 name|void
-name|testPutKeyWithLotsOfChunks
+name|testPutBlockWithLotsOfChunks
 parameter_list|()
 throws|throws
 name|IOException
@@ -3936,11 +3936,11 @@ argument_list|,
 name|writeCount
 argument_list|)
 expr_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -3977,32 +3977,32 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
 name|chunkProtoList
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
-name|KeyData
-name|readKeyData
+name|BlockData
+name|readBlockData
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
@@ -4030,14 +4030,14 @@ name|ChunkInfo
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|readKeyData
+name|readBlockData
 operator|.
 name|getChunks
 argument_list|()
 operator|.
 name|get
 argument_list|(
-name|readKeyData
+name|readBlockData
 operator|.
 name|getChunks
 argument_list|()
@@ -4065,13 +4065,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Deletes a key and tries to read it back.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Deletes a block and tries to read it back.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
 annotation|@
 name|Test
-DECL|method|testDeleteKey ()
+DECL|method|testDeleteBlock ()
 specifier|public
 name|void
-name|testDeleteKey
+name|testDeleteBlock
 parameter_list|()
 throws|throws
 name|IOException
@@ -4112,11 +4112,11 @@ argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -4144,25 +4144,25 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
 name|chunkList
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|deleteKey
+name|deleteBlock
 argument_list|(
 name|container
 argument_list|,
@@ -4182,29 +4182,29 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Unable to find the key."
+literal|"Unable to find the block."
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tries to Deletes a key twice.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Tries to Deletes a block twice.    *    * @throws IOException    * @throws NoSuchAlgorithmException    */
 annotation|@
 name|Test
-DECL|method|testDeleteKeyTwice ()
+DECL|method|testDeleteBlockTwice ()
 specifier|public
 name|void
-name|testDeleteKeyTwice
+name|testDeleteBlockTwice
 parameter_list|()
 throws|throws
 name|IOException
@@ -4245,11 +4245,11 @@ argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -4277,25 +4277,25 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
 name|chunkList
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container
 argument_list|,
-name|keyData
+name|blockData
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|deleteKey
+name|deleteBlock
 argument_list|(
 name|container
 argument_list|,
@@ -4315,12 +4315,12 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Unable to find the key."
+literal|"Unable to find the block."
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|deleteKey
+name|deleteBlock
 argument_list|(
 name|container
 argument_list|,
@@ -4627,9 +4627,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Updating a closed container without force option "
+literal|"Updating a closed container without "
 operator|+
-literal|"is not allowed. ContainerID: "
+literal|"force option is not allowed. ContainerID: "
 operator|+
 name|testContainerID
 argument_list|,
@@ -4719,10 +4719,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeKeyHelper (BlockID blockID)
+DECL|method|writeBlockHelper (BlockID blockID)
 specifier|private
-name|KeyData
-name|writeKeyHelper
+name|BlockData
+name|writeBlockHelper
 parameter_list|(
 name|BlockID
 name|blockID
@@ -4740,11 +4740,11 @@ argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|blockID
 argument_list|)
@@ -4772,7 +4772,7 @@ name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|keyData
+name|blockData
 operator|.
 name|setChunks
 argument_list|(
@@ -4780,15 +4780,15 @@ name|chunkList
 argument_list|)
 expr_stmt|;
 return|return
-name|keyData
+name|blockData
 return|;
 block|}
 annotation|@
 name|Test
-DECL|method|testListKey ()
+DECL|method|testListBlock ()
 specifier|public
 name|void
-name|testListKey
+name|testListBlock
 parameter_list|()
 throws|throws
 name|Exception
@@ -4813,7 +4813,7 @@ name|List
 argument_list|<
 name|BlockID
 argument_list|>
-name|expectedKeys
+name|expectedBlocks
 init|=
 operator|new
 name|ArrayList
@@ -4846,24 +4846,24 @@ argument_list|,
 name|i
 argument_list|)
 decl_stmt|;
-name|expectedKeys
+name|expectedBlocks
 operator|.
 name|add
 argument_list|(
 name|blockID
 argument_list|)
 expr_stmt|;
-name|KeyData
+name|BlockData
 name|kd
 init|=
-name|writeKeyHelper
+name|writeBlockHelper
 argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|putKey
+name|putBlock
 argument_list|(
 name|container
 argument_list|,
@@ -4871,16 +4871,16 @@ name|kd
 argument_list|)
 expr_stmt|;
 block|}
-comment|// List all keys
+comment|// List all blocks
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
 name|result
 init|=
-name|keyManager
+name|blockManager
 operator|.
-name|listKey
+name|listBlock
 argument_list|(
 name|container
 argument_list|,
@@ -4924,7 +4924,7 @@ name|i
 operator|++
 control|)
 block|{
-name|KeyData
+name|BlockData
 name|data
 init|=
 name|result
@@ -4950,7 +4950,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|expectedKeys
+name|expectedBlocks
 operator|.
 name|get
 argument_list|(
@@ -4970,11 +4970,11 @@ name|index
 operator|++
 expr_stmt|;
 block|}
-comment|// List key with startKey filter
+comment|// List block with startBlock filter
 name|long
 name|k6
 init|=
-name|expectedKeys
+name|expectedBlocks
 operator|.
 name|get
 argument_list|(
@@ -4986,9 +4986,9 @@ argument_list|()
 decl_stmt|;
 name|result
 operator|=
-name|keyManager
+name|blockManager
 operator|.
-name|listKey
+name|listBlock
 argument_list|(
 name|container
 argument_list|,
@@ -5028,7 +5028,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|expectedKeys
+name|expectedBlocks
 operator|.
 name|get
 argument_list|(
@@ -5069,9 +5069,9 @@ argument_list|(
 literal|"Count must be a positive number."
 argument_list|)
 expr_stmt|;
-name|keyManager
+name|blockManager
 operator|.
-name|listKey
+name|listBlock
 argument_list|(
 name|container
 argument_list|,

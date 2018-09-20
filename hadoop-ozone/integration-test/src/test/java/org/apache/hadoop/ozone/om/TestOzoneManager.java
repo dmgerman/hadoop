@@ -8355,8 +8355,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|//    BackgroundService openKeyCleanUpService = ((KeyManagerImpl)cluster
-comment|//        .getOzoneManager().getKeyManager()).getOpenKeyCleanupService();
+comment|//    BackgroundService openKeyCleanUpService = ((BlockManagerImpl)cluster
+comment|//        .getOzoneManager().getBlockManager()).getOpenKeyCleanupService();
 name|String
 name|userName
 init|=

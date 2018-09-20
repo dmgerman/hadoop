@@ -200,7 +200,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -1269,7 +1269,7 @@ name|getContainerData
 argument_list|()
 decl_stmt|;
 return|return
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(

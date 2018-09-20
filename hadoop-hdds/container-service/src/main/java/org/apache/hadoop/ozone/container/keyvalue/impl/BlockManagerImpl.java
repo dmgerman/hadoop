@@ -134,6 +134,26 @@ name|ozone
 operator|.
 name|container
 operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|BlockData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
 name|keyvalue
 operator|.
 name|KeyValueContainerData
@@ -156,27 +176,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|KeyData
+name|BlockUtils
 import|;
 end_import
 
@@ -216,7 +216,7 @@ name|keyvalue
 operator|.
 name|interfaces
 operator|.
-name|KeyManager
+name|BlockManager
 import|;
 end_import
 
@@ -334,21 +334,21 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 import|;
 end_import
 
 begin_comment
-comment|/**  * This class is for performing key related operations on the KeyValue  * Container.  */
+comment|/**  * This class is for performing block related operations on the KeyValue  * Container.  */
 end_comment
 
 begin_class
-DECL|class|KeyManagerImpl
+DECL|class|BlockManagerImpl
 specifier|public
 class|class
-name|KeyManagerImpl
+name|BlockManagerImpl
 implements|implements
-name|KeyManager
+name|BlockManager
 block|{
 DECL|field|LOG
 specifier|static
@@ -360,7 +360,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|KeyManagerImpl
+name|BlockManagerImpl
 operator|.
 name|class
 argument_list|)
@@ -370,10 +370,10 @@ specifier|private
 name|Configuration
 name|config
 decl_stmt|;
-comment|/**    * Constructs a key Manager.    *    * @param conf - Ozone configuration    */
-DECL|method|KeyManagerImpl (Configuration conf)
+comment|/**    * Constructs a Block Manager.    *    * @param conf - Ozone configuration    */
+DECL|method|BlockManagerImpl (Configuration conf)
 specifier|public
-name|KeyManagerImpl
+name|BlockManagerImpl
 parameter_list|(
 name|Configuration
 name|conf
@@ -395,16 +395,16 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
-comment|/**    * Puts or overwrites a key.    *    * @param container - Container for which key need to be added.    * @param data     - Key Data.    * @return length of the key.    * @throws IOException    */
-DECL|method|putKey (Container container, KeyData data)
+comment|/**    * Puts or overwrites a block.    *    * @param container - Container for which block need to be added.    * @param data     - BlockData.    * @return length of the block.    * @throws IOException    */
+DECL|method|putBlock (Container container, BlockData data)
 specifier|public
 name|long
-name|putKey
+name|putBlock
 parameter_list|(
 name|Container
 name|container
 parameter_list|,
-name|KeyData
+name|BlockData
 name|data
 parameter_list|)
 throws|throws
@@ -416,7 +416,7 @@ name|checkNotNull
 argument_list|(
 name|data
 argument_list|,
-literal|"KeyData cannot be null for put "
+literal|"BlockData cannot be null for put "
 operator|+
 literal|"operation."
 argument_list|)
@@ -442,7 +442,7 @@ comment|// against a single DB. We rely on DB level locking to avoid conflicts.
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -507,11 +507,11 @@ name|getSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets an existing key.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the key.    * @return Key Data.    * @throws IOException    */
-DECL|method|getKey (Container container, BlockID blockID)
+comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @return Key Data.    * @throws IOException    */
+DECL|method|getBlock (Container container, BlockID blockID)
 specifier|public
-name|KeyData
-name|getKey
+name|BlockData
+name|getBlock
 parameter_list|(
 name|Container
 name|container
@@ -528,7 +528,7 @@ name|checkNotNull
 argument_list|(
 name|blockID
 argument_list|,
-literal|"BlockID cannot be null in GetKet request"
+literal|"BlockID cannot be null in GetBlock request"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -557,7 +557,7 @@ decl_stmt|;
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -607,20 +607,20 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Unable to find the key."
+literal|"Unable to find the block."
 argument_list|,
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 argument_list|)
 throw|;
 block|}
 name|ContainerProtos
 operator|.
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 operator|.
 name|parseFrom
 argument_list|(
@@ -628,15 +628,15 @@ name|kData
 argument_list|)
 decl_stmt|;
 return|return
-name|KeyData
+name|BlockData
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|keyData
+name|blockData
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the length of the committed block.    *    * @param container - Container from which key need to be get.    * @param blockID - BlockID of the key.    * @return length of the block.    * @throws IOException in case, the block key does not exist in db.    */
+comment|/**    * Returns the length of the committed block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @return length of the block.    * @throws IOException in case, the block key does not exist in db.    */
 annotation|@
 name|Override
 DECL|method|getCommittedBlockLength (Container container, BlockID blockID)
@@ -667,7 +667,7 @@ decl_stmt|;
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -717,20 +717,20 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Unable to find the key."
+literal|"Unable to find the block."
 argument_list|,
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 argument_list|)
 throw|;
 block|}
 name|ContainerProtos
 operator|.
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 operator|.
 name|parseFrom
 argument_list|(
@@ -738,17 +738,17 @@ name|kData
 argument_list|)
 decl_stmt|;
 return|return
-name|keyData
+name|blockData
 operator|.
 name|getSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Deletes an existing Key.    *    * @param container - Container from which key need to be deleted.    * @param blockID - ID of the block.    * @throws StorageContainerException    */
-DECL|method|deleteKey (Container container, BlockID blockID)
+comment|/**    * Deletes an existing block.    *    * @param container - Container from which block need to be deleted.    * @param blockID - ID of the block.    * @throws StorageContainerException    */
+DECL|method|deleteBlock (Container container, BlockID blockID)
 specifier|public
 name|void
-name|deleteKey
+name|deleteBlock
 parameter_list|(
 name|Container
 name|container
@@ -810,7 +810,7 @@ decl_stmt|;
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -832,7 +832,7 @@ argument_list|)
 expr_stmt|;
 comment|// Note : There is a race condition here, since get and delete
 comment|// are not atomic. Leaving it here since the impact is refusing
-comment|// to delete a key which might have just gotten inserted after
+comment|// to delete a Block which might have just gotten inserted after
 comment|// the get check.
 name|byte
 index|[]
@@ -870,9 +870,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Unable to find the key."
+literal|"Unable to find the block."
 argument_list|,
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 argument_list|)
 throw|;
 block|}
@@ -883,7 +883,7 @@ argument_list|(
 name|kKey
 argument_list|)
 expr_stmt|;
-comment|// Decrement keycount here
+comment|// Decrement blockcount here
 name|container
 operator|.
 name|getContainerData
@@ -893,16 +893,16 @@ name|decrKeyCount
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * List keys in a container.    *    * @param container - Container from which keys need to be listed.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
+comment|/**    * List blocks in a container.    *    * @param container - Container from which blocks need to be listed.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of blocks to return.    * @return List of Blocks that match the criteria.    */
 annotation|@
 name|Override
-DECL|method|listKey (Container container, long startLocalID, int count)
+DECL|method|listBlock (Container container, long startLocalID, int count)
 specifier|public
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
-name|listKey
+name|listBlock
 parameter_list|(
 name|Container
 name|container
@@ -956,7 +956,7 @@ argument_list|()
 expr_stmt|;
 name|List
 argument_list|<
-name|KeyData
+name|BlockData
 argument_list|>
 name|result
 init|=
@@ -976,7 +976,7 @@ decl_stmt|;
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -1046,12 +1046,12 @@ range|:
 name|range
 control|)
 block|{
-name|KeyData
+name|BlockData
 name|value
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|(
 name|entry
 operator|.
@@ -1059,11 +1059,11 @@ name|getValue
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|data
 init|=
 operator|new
-name|KeyData
+name|BlockData
 argument_list|(
 name|value
 operator|.
@@ -1090,7 +1090,7 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|shutdownCache
 argument_list|(

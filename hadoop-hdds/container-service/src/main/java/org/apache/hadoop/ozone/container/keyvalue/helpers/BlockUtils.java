@@ -132,7 +132,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|GetKeyResponseProto
+name|GetBlockResponseProto
 import|;
 end_import
 
@@ -176,7 +176,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|PutKeyResponseProto
+name|PutBlockResponseProto
 import|;
 end_import
 
@@ -218,7 +218,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerUtils
+name|BlockData
 import|;
 end_import
 
@@ -238,7 +238,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|ContainerUtils
 import|;
 end_import
 
@@ -324,7 +324,7 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 import|;
 end_import
 
@@ -353,20 +353,20 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utils functions to help key functions.  */
+comment|/**  * Utils functions to help block functions.  */
 end_comment
 
 begin_class
-DECL|class|KeyUtils
+DECL|class|BlockUtils
 specifier|public
 specifier|final
 class|class
-name|KeyUtils
+name|BlockUtils
 block|{
 comment|/** Never constructed. **/
-DECL|method|KeyUtils ()
+DECL|method|BlockUtils ()
 specifier|private
-name|KeyUtils
+name|BlockUtils
 parameter_list|()
 block|{    }
 comment|/**    * Get a DB handler for a given container.    * If the handler doesn't exist in cache yet, first create one and    * add into cache. This function is called with containerManager    * ReadLock held.    *    * @param containerData containerData.    * @param conf configuration.    * @return MetadataStore handle.    * @throws StorageContainerException    */
@@ -559,12 +559,12 @@ name|shutdownCache
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Parses the {@link KeyData} from a bytes array.    *    * @param bytes key data in bytes.    * @return key data.    * @throws IOException if the bytes array is malformed or invalid.    */
-DECL|method|getKeyData (byte[] bytes)
+comment|/**    * Parses the {@link BlockData} from a bytes array.    *    * @param bytes Block data in bytes.    * @return Block data.    * @throws IOException if the bytes array is malformed or invalid.    */
+DECL|method|getBlockData (byte[] bytes)
 specifier|public
 specifier|static
-name|KeyData
-name|getKeyData
+name|BlockData
+name|getBlockData
 parameter_list|(
 name|byte
 index|[]
@@ -577,26 +577,26 @@ try|try
 block|{
 name|ContainerProtos
 operator|.
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
 name|ContainerProtos
 operator|.
-name|KeyData
+name|BlockData
 operator|.
 name|parseFrom
 argument_list|(
 name|bytes
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|data
 init|=
-name|KeyData
+name|BlockData
 operator|.
 name|getFromProtoBuf
 argument_list|(
-name|keyData
+name|blockData
 argument_list|)
 decl_stmt|;
 return|return
@@ -613,21 +613,21 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Failed to parse key data from the"
+literal|"Failed to parse block data from "
 operator|+
-literal|" bytes array."
+literal|"the bytes array."
 argument_list|,
-name|NO_SUCH_KEY
+name|NO_SUCH_BLOCK
 argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns putKey response success.    * @param msg - Request.    * @return Response.    */
-DECL|method|putKeyResponseSuccess ( ContainerCommandRequestProto msg, long blockLength)
+comment|/**    * Returns putBlock response success.    * @param msg - Request.    * @return Response.    */
+DECL|method|putBlockResponseSuccess ( ContainerCommandRequestProto msg, long blockLength)
 specifier|public
 specifier|static
 name|ContainerCommandResponseProto
-name|putKeyResponseSuccess
+name|putBlockResponseSuccess
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
@@ -647,22 +647,22 @@ name|blockLength
 argument_list|,
 name|msg
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|PutKeyResponseProto
+name|PutBlockResponseProto
 operator|.
 name|Builder
 name|putKeyResponse
 init|=
-name|PutKeyResponseProto
+name|PutBlockResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -690,7 +690,7 @@ argument_list|)
 decl_stmt|;
 name|builder
 operator|.
-name|setPutKey
+name|setPutBlock
 argument_list|(
 name|putKeyResponse
 argument_list|)
@@ -702,12 +702,12 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns successful keyResponse.    * @param msg - Request.    * @return Response.    */
-DECL|method|getKeyResponseSuccess ( ContainerCommandRequestProto msg)
+comment|/**    * Returns successful blockResponse.    * @param msg - Request.    * @return Response.    */
+DECL|method|getBlockResponseSuccess ( ContainerCommandRequestProto msg)
 specifier|public
 specifier|static
 name|ContainerCommandResponseProto
-name|getKeyResponseSuccess
+name|getBlockResponseSuccess
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
@@ -722,34 +722,34 @@ name|msg
 argument_list|)
 return|;
 block|}
-DECL|method|getKeyDataResponse ( ContainerCommandRequestProto msg, KeyData data)
+DECL|method|getBlockDataResponse ( ContainerCommandRequestProto msg, BlockData data)
 specifier|public
 specifier|static
 name|ContainerCommandResponseProto
-name|getKeyDataResponse
+name|getBlockDataResponse
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|,
-name|KeyData
+name|BlockData
 name|data
 parameter_list|)
 block|{
-name|GetKeyResponseProto
+name|GetBlockResponseProto
 operator|.
 name|Builder
-name|getKey
+name|getBlock
 init|=
 name|ContainerProtos
 operator|.
-name|GetKeyResponseProto
+name|GetBlockResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|getKey
+name|getBlock
 operator|.
-name|setKeyData
+name|setBlockData
 argument_list|(
 name|data
 operator|.
@@ -773,9 +773,9 @@ argument_list|)
 decl_stmt|;
 name|builder
 operator|.
-name|setGetKey
+name|setGetBlock
 argument_list|(
-name|getKey
+name|getBlock
 argument_list|)
 expr_stmt|;
 return|return
@@ -850,7 +850,7 @@ specifier|static
 name|GetCommittedBlockLengthResponseProto
 operator|.
 name|Builder
-DECL|method|getCommittedBlockLengthResponseBuilder ( long blockLength, ContainerProtos.DatanodeBlockID blockID)
+DECL|method|getCommittedBlockLengthResponseBuilder (long blockLength, ContainerProtos.DatanodeBlockID blockID)
 name|getCommittedBlockLengthResponseBuilder
 parameter_list|(
 name|long

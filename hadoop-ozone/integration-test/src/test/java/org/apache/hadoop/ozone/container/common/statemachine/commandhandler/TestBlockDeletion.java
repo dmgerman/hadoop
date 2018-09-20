@@ -406,7 +406,7 @@ name|keyvalue
 operator|.
 name|helpers
 operator|.
-name|KeyUtils
+name|BlockUtils
 import|;
 end_import
 
@@ -687,6 +687,10 @@ operator|.
 name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 import|;
 end_import
+
+begin_comment
+comment|/**  * Tests for Block deletion.  */
+end_comment
 
 begin_class
 DECL|class|TestBlockDeletion
@@ -1613,7 +1617,7 @@ block|{
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
@@ -1704,7 +1708,7 @@ block|{
 name|MetadataStore
 name|db
 init|=
-name|KeyUtils
+name|BlockUtils
 operator|.
 name|getDB
 argument_list|(

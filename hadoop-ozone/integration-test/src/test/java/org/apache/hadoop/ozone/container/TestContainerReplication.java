@@ -302,7 +302,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|KeyData
+name|BlockData
 import|;
 end_import
 
@@ -662,13 +662,13 @@ operator|.
 name|getBlockID
 argument_list|()
 decl_stmt|;
-comment|// Put Key to the test container
+comment|// Put Block to the test container
 name|ContainerCommandRequestProto
-name|putKeyRequest
+name|putBlockRequest
 init|=
 name|ContainerTestHelper
 operator|.
-name|getPutKeyRequest
+name|getPutBlockRequest
 argument_list|(
 name|sourcePipelines
 argument_list|,
@@ -680,15 +680,15 @@ argument_list|)
 decl_stmt|;
 name|ContainerProtos
 operator|.
-name|KeyData
-name|keyData
+name|BlockData
+name|blockData
 init|=
-name|putKeyRequest
+name|putBlockRequest
 operator|.
-name|getPutKey
+name|getPutBlock
 argument_list|()
 operator|.
-name|getKeyData
+name|getBlockData
 argument_list|()
 decl_stmt|;
 name|ContainerCommandResponseProto
@@ -698,7 +698,7 @@ name|client
 operator|.
 name|sendCommand
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -728,7 +728,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|putKeyRequest
+name|putBlockRequest
 operator|.
 name|getTraceID
 argument_list|()
@@ -872,15 +872,15 @@ operator|.
 name|KeyValueContainer
 argument_list|)
 decl_stmt|;
-name|KeyData
+name|BlockData
 name|key
 init|=
 name|handler
 operator|.
-name|getKeyManager
+name|getBlockManager
 argument_list|()
 operator|.
-name|getKey
+name|getBlock
 argument_list|(
 name|container
 argument_list|,
