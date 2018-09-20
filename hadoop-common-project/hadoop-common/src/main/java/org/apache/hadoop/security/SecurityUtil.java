@@ -450,13 +450,15 @@ end_import
 
 begin_import
 import|import
-name|sun
+name|com
 operator|.
-name|net
+name|google
 operator|.
-name|util
+name|common
 operator|.
-name|IPAddressUtil
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -468,9 +470,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
+name|net
 operator|.
-name|VisibleForTesting
+name|InetAddresses
 import|;
 end_import
 
@@ -2265,61 +2267,25 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|IPAddressUtil
+name|InetAddresses
 operator|.
-name|isIPv4LiteralAddress
+name|isInetAddress
 argument_list|(
 name|host
 argument_list|)
 condition|)
 block|{
-comment|// use ipv4 address as-is
-name|byte
-index|[]
-name|ip
-init|=
-name|IPAddressUtil
-operator|.
-name|textToNumericFormatV4
-argument_list|(
-name|host
-argument_list|)
-decl_stmt|;
+comment|// valid ip address. use it as-is
 name|addr
 operator|=
-name|InetAddress
+name|InetAddresses
 operator|.
-name|getByAddress
+name|forString
 argument_list|(
 name|host
-argument_list|,
-name|ip
 argument_list|)
 expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|IPAddressUtil
-operator|.
-name|isIPv6LiteralAddress
-argument_list|(
-name|host
-argument_list|)
-condition|)
-block|{
-comment|// use ipv6 address as-is
-name|byte
-index|[]
-name|ip
-init|=
-name|IPAddressUtil
-operator|.
-name|textToNumericFormatV6
-argument_list|(
-name|host
-argument_list|)
-decl_stmt|;
+comment|// set hostname
 name|addr
 operator|=
 name|InetAddress
@@ -2328,7 +2294,10 @@ name|getByAddress
 argument_list|(
 name|host
 argument_list|,
-name|ip
+name|addr
+operator|.
+name|getAddress
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
