@@ -381,7 +381,6 @@ name|conf
 decl_stmt|;
 DECL|field|jmxBean
 specifier|private
-specifier|final
 name|ObjectName
 name|jmxBean
 decl_stmt|;
@@ -791,6 +790,13 @@ name|endpointStateMachine
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|jmxBean
+operator|!=
+literal|null
+condition|)
+block|{
 name|MBeans
 operator|.
 name|unregister
@@ -798,6 +804,11 @@ argument_list|(
 name|jmxBean
 argument_list|)
 expr_stmt|;
+name|jmxBean
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
