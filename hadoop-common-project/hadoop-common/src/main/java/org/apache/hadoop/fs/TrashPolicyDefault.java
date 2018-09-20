@@ -556,6 +556,33 @@ operator|*
 name|MSECS_PER_MINUTE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|deletionInterval
+operator|<
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Invalid value {} for deletion interval,"
+operator|+
+literal|" deletion interaval can not be negative."
+operator|+
+literal|"Changing to default value 0"
+argument_list|,
+name|deletionInterval
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|deletionInterval
+operator|=
+literal|0
+expr_stmt|;
+block|}
 block|}
 DECL|method|makeTrashRelativePath (Path basePath, Path rmFilePath)
 specifier|private
@@ -590,7 +617,7 @@ parameter_list|()
 block|{
 return|return
 name|deletionInterval
-operator|!=
+operator|>
 literal|0
 return|;
 block|}
