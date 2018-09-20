@@ -90,11 +90,14 @@ begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Public
+name|LimitedPrivate
+argument_list|(
+literal|"authorization-subsystems"
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 DECL|interface|CustomTokenProviderAdaptee
 specifier|public
 interface|interface
