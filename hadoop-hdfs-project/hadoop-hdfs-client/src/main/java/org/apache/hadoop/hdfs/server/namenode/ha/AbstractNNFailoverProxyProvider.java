@@ -118,6 +118,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -141,6 +155,20 @@ operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
 import|;
 end_import
 
@@ -185,6 +213,20 @@ operator|.
 name|hdfs
 operator|.
 name|HAUtilClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|NameNodeProxiesClient
 import|;
 end_import
 
@@ -526,12 +568,21 @@ specifier|private
 name|HAServiceState
 name|cachedState
 decl_stmt|;
-DECL|method|NNProxyInfo (InetSocketAddress address)
+comment|/** Proxy for getting HA service status from the given NameNode. */
+DECL|field|serviceProxy
+specifier|private
+name|HAServiceProtocol
+name|serviceProxy
+decl_stmt|;
+DECL|method|NNProxyInfo (InetSocketAddress address, Configuration conf)
 specifier|public
 name|NNProxyInfo
 parameter_list|(
 name|InetSocketAddress
 name|address
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
@@ -550,6 +601,47 @@ name|address
 operator|=
 name|address
 expr_stmt|;
+try|try
+block|{
+name|serviceProxy
+operator|=
+name|NameNodeProxiesClient
+operator|.
+name|createNonHAProxyWithHAServiceProtocol
+argument_list|(
+name|address
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to create HAServiceProtocol proxy to NameNode"
+operator|+
+literal|" at {}"
+argument_list|,
+name|address
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|ioe
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|getAddress ()
 specifier|public
@@ -561,19 +653,49 @@ return|return
 name|address
 return|;
 block|}
-DECL|method|setCachedState (HAServiceState state)
+DECL|method|refreshCachedState ()
 specifier|public
 name|void
-name|setCachedState
-parameter_list|(
-name|HAServiceState
-name|state
-parameter_list|)
+name|refreshCachedState
+parameter_list|()
+block|{
+try|try
 block|{
 name|cachedState
 operator|=
-name|state
+name|serviceProxy
+operator|.
+name|getServiceStatus
+argument_list|()
+operator|.
+name|getState
+argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to connect to {}. Setting cached state to Standby"
+argument_list|,
+name|address
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|cachedState
+operator|=
+name|HAServiceState
+operator|.
+name|STANDBY
+expr_stmt|;
+block|}
 block|}
 DECL|method|getCachedState ()
 specifier|public
@@ -584,6 +706,24 @@ block|{
 return|return
 name|cachedState
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setServiceProxyForTesting (HAServiceProtocol proxy)
+specifier|public
+name|void
+name|setServiceProxyForTesting
+parameter_list|(
+name|HAServiceProtocol
+name|proxy
+parameter_list|)
+block|{
+name|this
+operator|.
+name|serviceProxy
+operator|=
+name|proxy
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -674,7 +814,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"{} Failed to create RPC proxy to NameNode"
+literal|"{} Failed to create RPC proxy to NameNode at {}"
 argument_list|,
 name|this
 operator|.
@@ -683,6 +823,10 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
+argument_list|,
+name|pi
+operator|.
+name|address
 argument_list|,
 name|ioe
 argument_list|)
@@ -837,6 +981,8 @@ name|T
 argument_list|>
 argument_list|(
 name|address
+argument_list|,
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
