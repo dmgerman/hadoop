@@ -1205,16 +1205,51 @@ comment|// back "/a/b" again.  If we just went by returned pathname, we'd
 comment|// incorrectly conclude that /a/b was a file and should not match
 comment|// /a/*/*.  So we use getFileStatus of the path we just listed to
 comment|// disambiguate.
-if|if
-condition|(
-operator|!
-name|getFileStatus
-argument_list|(
+name|Path
+name|path
+init|=
 name|candidate
 operator|.
 name|getPath
 argument_list|()
+decl_stmt|;
+name|FileStatus
+name|status
+init|=
+name|getFileStatus
+argument_list|(
+name|path
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|status
+operator|==
+literal|null
+condition|)
+block|{
+comment|// null means the file was not found
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"File/directory {} not found:"
+operator|+
+literal|" it may have been deleted."
+operator|+
+literal|" If this is an object store, this can be a sign of"
+operator|+
+literal|" eventual consistency problems."
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+operator|!
+name|status
 operator|.
 name|isDirectory
 argument_list|()
