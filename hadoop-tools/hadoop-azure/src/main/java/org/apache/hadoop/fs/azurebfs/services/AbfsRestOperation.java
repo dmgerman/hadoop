@@ -609,12 +609,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|hasRequestBody
-condition|)
-block|{
-comment|// HttpUrlConnection requires
 name|AbfsClientThrottlingIntercept
 operator|.
 name|sendingRequest
@@ -622,6 +616,12 @@ argument_list|(
 name|operationType
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|hasRequestBody
+condition|)
+block|{
+comment|// HttpUrlConnection requires
 name|httpOperation
 operator|.
 name|sendRequest
