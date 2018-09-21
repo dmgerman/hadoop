@@ -768,6 +768,33 @@ name|options
 operator|.
 name|addOption
 argument_list|(
+name|CliConstants
+operator|.
+name|QUICKLINK
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify quicklink so YARN"
+operator|+
+literal|"web UI shows link to given role instance and port. When "
+operator|+
+literal|"--tensorboard is speciied, quicklink to tensorboard instance will "
+operator|+
+literal|"be added automatically. The format of quick link is: "
+operator|+
+literal|"Quick_link_label=http(or https)://role-name:port. For example, "
+operator|+
+literal|"if want to link to first worker's 7070 port, and text of quicklink "
+operator|+
+literal|"is Notebook_UI, user need to specify --quicklink "
+operator|+
+literal|"Notebook_UI=https://master-0:7070"
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
 literal|"h"
 argument_list|,
 literal|"help"

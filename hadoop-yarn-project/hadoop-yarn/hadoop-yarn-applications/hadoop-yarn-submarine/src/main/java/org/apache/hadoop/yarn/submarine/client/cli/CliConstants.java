@@ -293,6 +293,15 @@ name|WORKER_DOCKER_IMAGE
 init|=
 literal|"worker_docker_image"
 decl_stmt|;
+DECL|field|QUICKLINK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUICKLINK
+init|=
+literal|"quicklink"
+decl_stmt|;
 DECL|field|TENSORBOARD_DOCKER_IMAGE
 specifier|public
 specifier|static
