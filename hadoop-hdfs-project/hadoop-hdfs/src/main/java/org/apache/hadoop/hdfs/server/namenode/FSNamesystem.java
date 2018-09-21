@@ -1233,6 +1233,42 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+operator|.
+name|ACTIVE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+operator|.
+name|OBSERVER
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -5303,7 +5339,6 @@ name|dir
 decl_stmt|;
 DECL|field|blockManager
 specifier|private
-specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
@@ -11468,6 +11503,7 @@ name|haContext
 operator|!=
 literal|null
 operator|&&
+operator|(
 name|haContext
 operator|.
 name|getState
@@ -11476,9 +11512,18 @@ operator|.
 name|getServiceState
 argument_list|()
 operator|==
-name|HAServiceState
-operator|.
 name|ACTIVE
+operator|||
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getServiceState
+argument_list|()
+operator|==
+name|OBSERVER
+operator|)
 condition|)
 block|{
 throw|throw
@@ -30156,6 +30201,24 @@ block|{
 return|return
 name|blockManager
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockManagerForTesting (BlockManager bm)
+specifier|public
+name|void
+name|setBlockManagerForTesting
+parameter_list|(
+name|BlockManager
+name|bm
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockManager
+operator|=
+name|bm
+expr_stmt|;
 block|}
 comment|/** @return the FSDirectory. */
 annotation|@
