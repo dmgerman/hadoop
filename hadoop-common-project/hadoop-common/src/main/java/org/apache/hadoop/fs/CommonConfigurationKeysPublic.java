@@ -1806,7 +1806,11 @@ literal|"fs.azure\\.account.key.*"
 argument_list|,
 literal|"credential$"
 argument_list|,
-literal|"oauth.*token$"
+literal|"oauth.*secret"
+argument_list|,
+literal|"oauth.*password"
+argument_list|,
+literal|"oauth.*token"
 argument_list|,
 name|HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS
 argument_list|)

@@ -428,6 +428,8 @@ literal|"wasb-timer-client-throttling-analyzer-%s"
 argument_list|,
 name|name
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|this

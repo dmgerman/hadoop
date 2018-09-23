@@ -174,6 +174,22 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
+operator|.
+name|intercept
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test getFileStatus and related listing operations.  */
 end_comment
@@ -1299,14 +1315,14 @@ argument_list|(
 literal|"test the LocatedStatus call on a path which is not present"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|RemoteIterator
-argument_list|<
-name|LocatedFileStatus
-argument_list|>
-name|iterator
-init|=
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
 name|getFileSystem
 argument_list|()
 operator|.
@@ -1317,23 +1333,8 @@ argument_list|(
 literal|"missing"
 argument_list|)
 argument_list|)
-decl_stmt|;
-name|fail
-argument_list|(
-literal|"Expected an exception, got an iterator: "
-operator|+
-name|iterator
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|expected
-parameter_list|)
-block|{
-comment|// expected
-block|}
 block|}
 annotation|@
 name|Test
@@ -1350,8 +1351,14 @@ argument_list|(
 literal|"test the listStatus(path) call on a path which is not present"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
 name|getFileSystem
 argument_list|()
 operator|.
@@ -1362,21 +1369,8 @@ argument_list|(
 literal|"missing"
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expected an exception"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|expected
-parameter_list|)
-block|{
-comment|// expected
-block|}
 block|}
 annotation|@
 name|Test
@@ -1393,8 +1387,14 @@ argument_list|(
 literal|"test the listStatus(path, filter) call on a missing path"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
 name|getFileSystem
 argument_list|()
 operator|.
@@ -1407,21 +1407,8 @@ argument_list|)
 argument_list|,
 name|ALL_PATHS
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expected an exception"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|expected
-parameter_list|)
-block|{
-comment|// expected
-block|}
 block|}
 annotation|@
 name|Test

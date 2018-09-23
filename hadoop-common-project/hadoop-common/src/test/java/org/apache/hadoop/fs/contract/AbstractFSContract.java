@@ -399,7 +399,7 @@ operator|=
 name|enabled
 expr_stmt|;
 block|}
-comment|/**    * Query for a feature being supported. This may include a probe for the feature    *    * @param feature feature to query    * @param defval default value    * @return true if the feature is supported    * @throws IOException IO problems    */
+comment|/**    * Query for a feature being supported. This may include a probe for the feature    *    * @param feature feature to query    * @param defval default value    * @return true if the feature is supported    */
 DECL|method|isSupported (String feature, boolean defval)
 specifier|public
 name|boolean
@@ -427,7 +427,7 @@ name|defval
 argument_list|)
 return|;
 block|}
-comment|/**    * Query for a feature's limit. This may include a probe for the feature    *    * @param feature feature to query    * @param defval default value    * @return true if the feature is supported    * @throws IOException IO problems    */
+comment|/**    * Query for a feature's limit. This may include a probe for the feature    *    * @param feature feature to query    * @param defval default value    * @return true if the feature is supported    */
 DECL|method|getLimit (String feature, int defval)
 specifier|public
 name|int

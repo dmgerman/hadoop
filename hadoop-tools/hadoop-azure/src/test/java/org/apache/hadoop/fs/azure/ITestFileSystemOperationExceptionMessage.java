@@ -126,6 +126,26 @@ name|NO_ACCESS_TO_CONTAINER_MSG
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|integration
+operator|.
+name|AzureTestUtils
+operator|.
+name|verifyWasbAccountNameInConfig
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test for error messages coming from SDK.  */
 end_comment
@@ -180,11 +200,9 @@ expr_stmt|;
 name|String
 name|testStorageAccount
 init|=
-name|conf
-operator|.
-name|get
+name|verifyWasbAccountNameInConfig
 argument_list|(
-literal|"fs.azure.test.account.name"
+name|conf
 argument_list|)
 decl_stmt|;
 name|conf

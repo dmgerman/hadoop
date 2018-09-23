@@ -235,6 +235,12 @@ name|ACCOUNT_KEY_PROPERTY_NAME
 init|=
 literal|"fs.azure.account.key."
 decl_stmt|;
+DECL|field|ACCOUNT_NAME_PROPERTY_NAME
+name|String
+name|ACCOUNT_NAME_PROPERTY_NAME
+init|=
+literal|"fs.azure.account.name"
+decl_stmt|;
 DECL|field|SAS_PROPERTY_NAME
 name|String
 name|SAS_PROPERTY_NAME
@@ -246,12 +252,6 @@ name|String
 name|TEST_CONFIGURATION_FILE_NAME
 init|=
 literal|"azure-test.xml"
-decl_stmt|;
-DECL|field|TEST_ACCOUNT_NAME_PROPERTY_NAME
-name|String
-name|TEST_ACCOUNT_NAME_PROPERTY_NAME
-init|=
-literal|"fs.azure.test.account.name"
 decl_stmt|;
 DECL|field|MOCK_ACCOUNT_NAME
 name|String
