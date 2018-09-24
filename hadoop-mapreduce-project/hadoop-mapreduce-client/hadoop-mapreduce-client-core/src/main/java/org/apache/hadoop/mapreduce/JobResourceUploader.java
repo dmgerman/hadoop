@@ -4253,16 +4253,6 @@ argument_list|(
 name|pathURI
 argument_list|)
 decl_stmt|;
-name|FileSystem
-name|localFs
-init|=
-name|FileSystem
-operator|.
-name|getLocal
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|pathURI
@@ -4273,6 +4263,16 @@ operator|==
 literal|null
 condition|)
 block|{
+name|FileSystem
+name|localFs
+init|=
+name|FileSystem
+operator|.
+name|getLocal
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 comment|// default to the local file system
 comment|// check if the file exists or not first
 name|localFs
