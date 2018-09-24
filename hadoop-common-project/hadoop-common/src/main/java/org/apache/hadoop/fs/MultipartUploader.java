@@ -96,11 +96,47 @@ name|Pair
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * MultipartUploader is an interface for copying files multipart and across  * multiple nodes. Users should:  *<ol>  *<li>Initialize an upload</li>  *<li>Upload parts in any order</li>  *<li>Complete the upload in order to have it materialize in the destination  *   FS</li>  *</ol>  *  * Implementers should make sure that the complete function should make sure  * that 'complete' will reorder parts if the destination FS doesn't already  * do it for them.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|MultipartUploader
 specifier|public
 specifier|abstract
