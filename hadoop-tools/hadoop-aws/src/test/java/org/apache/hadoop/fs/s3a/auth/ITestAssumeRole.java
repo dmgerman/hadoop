@@ -714,35 +714,15 @@ specifier|private
 name|S3AFileSystem
 name|roleFS
 decl_stmt|;
-comment|/**    * Duration range exception text on SDKs which check client-side.    */
-DECL|field|E_DURATION_RANGE_1
+comment|/**    * Error code from STS server.    */
+DECL|field|VALIDATION_ERROR
 specifier|protected
 specifier|static
 specifier|final
 name|String
-name|E_DURATION_RANGE_1
+name|VALIDATION_ERROR
 init|=
-literal|"Assume Role session duration should be in the range of 15min - 1Hr"
-decl_stmt|;
-comment|/**    * Duration range too high text on SDKs which check on the server.    */
-DECL|field|E_DURATION_RANGE_2
-specifier|protected
-specifier|static
-specifier|final
-name|String
-name|E_DURATION_RANGE_2
-init|=
-literal|"Member must have value less than or equal to 43200"
-decl_stmt|;
-comment|/**    * Duration range too low text on SDKs which check on the server.    */
-DECL|field|E_DURATION_RANGE_3
-specifier|protected
-specifier|static
-specifier|final
-name|String
-name|E_DURATION_RANGE_3
-init|=
-literal|"Member must have value greater than or equal to 900"
+literal|"ValidationError"
 decl_stmt|;
 annotation|@
 name|Override
@@ -1043,7 +1023,7 @@ name|AWSSecurityTokenServiceException
 operator|.
 name|class
 argument_list|,
-name|E_BAD_ROLE
+literal|""
 argument_list|,
 parameter_list|()
 lambda|->
@@ -1095,7 +1075,7 @@ name|AccessDeniedException
 operator|.
 name|class
 argument_list|,
-name|E_BAD_ROLE
+literal|""
 argument_list|)
 expr_stmt|;
 block|}
@@ -1513,14 +1493,14 @@ parameter_list|)
 block|{
 name|assertExceptionContains
 argument_list|(
-name|E_DURATION_RANGE_1
+name|VALIDATION_ERROR
 argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * A duration>1h is forbidden client-side in AWS SDK 1.11.271;    * with the ability to extend durations deployed in March 2018.    * with the later SDKs, the checks go server-side and    * later SDKs will remove the client side checks.    * This test asks for a duration which will still be rejected, and    * looks for either of the error messages raised.    */
+comment|/**    * A duration>1h is forbidden client-side in AWS SDK 1.11.271;    * with the ability to extend durations deployed in March 2018.    * with the later SDKs, the checks go server-side and    * later SDKs will remove the client side checks.    * This test doesn't look into the details of the exception    * to avoid being too brittle.    */
 annotation|@
 name|Test
 DECL|method|testAssumeRoleThirtySixHourSessionDuration ()
@@ -1569,64 +1549,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|assertIsRangeException
-argument_list|(
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Look for either the client-side or STS-side range exception    * @param e exception    * @throws Exception the exception, if its text doesn't match    */
-DECL|method|assertIsRangeException (final Exception e)
-specifier|private
-name|void
-name|assertIsRangeException
-parameter_list|(
-specifier|final
-name|Exception
-name|e
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|String
-name|message
-init|=
-name|e
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|message
-operator|.
-name|contains
-argument_list|(
-name|E_DURATION_RANGE_1
-argument_list|)
-operator|&&
-operator|!
-name|message
-operator|.
-name|contains
-argument_list|(
-name|E_DURATION_RANGE_2
-argument_list|)
-operator|&&
-operator|!
-name|message
-operator|.
-name|contains
-argument_list|(
-name|E_DURATION_RANGE_3
-argument_list|)
-condition|)
-block|{
-throw|throw
-name|e
-throw|;
-block|}
 block|}
 comment|/**    * Create the assumed role configuration.    * @return a config bonded to the ARN of the assumed role    */
 DECL|method|createAssumedRoleConfig ()
@@ -1752,12 +1674,9 @@ argument_list|,
 literal|"30s"
 argument_list|)
 expr_stmt|;
-name|Exception
-name|ex
-init|=
 name|interceptClosing
 argument_list|(
-name|Exception
+name|AWSSecurityTokenServiceException
 operator|.
 name|class
 argument_list|,
@@ -1772,11 +1691,6 @@ name|uri
 argument_list|,
 name|conf
 argument_list|)
-argument_list|)
-decl_stmt|;
-name|assertIsRangeException
-argument_list|(
-name|ex
 argument_list|)
 expr_stmt|;
 block|}

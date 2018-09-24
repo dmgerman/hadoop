@@ -378,16 +378,6 @@ argument_list|,
 name|ALLOW_S3_GET_BUCKET_LOCATION
 argument_list|)
 decl_stmt|;
-comment|/**    * Error message to get from the AWS SDK if you can't assume the role.    */
-DECL|field|E_BAD_ROLE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|E_BAD_ROLE
-init|=
-literal|"Not authorized to perform sts:AssumeRole"
-decl_stmt|;
 DECL|method|RoleTestUtils ()
 specifier|private
 name|RoleTestUtils
