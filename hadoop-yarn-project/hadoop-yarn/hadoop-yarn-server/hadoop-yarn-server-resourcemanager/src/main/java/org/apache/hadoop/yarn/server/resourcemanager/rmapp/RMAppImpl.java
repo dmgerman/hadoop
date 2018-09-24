@@ -8707,9 +8707,11 @@ name|app
 operator|.
 name|logAggregationStartTime
 operator|=
-name|System
+name|app
 operator|.
-name|currentTimeMillis
+name|systemClock
+operator|.
+name|getTime
 argument_list|()
 expr_stmt|;
 for|for
@@ -9971,9 +9973,9 @@ argument_list|(
 name|this
 argument_list|)
 operator|&&
-name|System
+name|systemClock
 operator|.
-name|currentTimeMillis
+name|getTime
 argument_list|()
 operator|>
 name|this
@@ -11434,9 +11436,9 @@ name|this
 argument_list|,
 name|appViewACLs
 argument_list|,
-name|System
+name|systemClock
 operator|.
-name|currentTimeMillis
+name|getTime
 argument_list|()
 argument_list|)
 expr_stmt|;
