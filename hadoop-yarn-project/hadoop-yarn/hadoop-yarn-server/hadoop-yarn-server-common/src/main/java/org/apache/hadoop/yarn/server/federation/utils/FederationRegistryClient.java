@@ -444,6 +444,7 @@ block|}
 comment|/**    * Get the list of known applications in the registry.    *    * @return the list of known applications    */
 DECL|method|getAllApplications ()
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|String
@@ -526,6 +527,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|cleanAllApplications ()
 specifier|public
+specifier|synchronized
 name|void
 name|cleanAllApplications
 parameter_list|()
@@ -575,6 +577,7 @@ block|}
 comment|/**    * Write/update the UAM token for an application and a sub-cluster.    *    * @param subClusterId sub-cluster id of the token    * @param token the UAM of the application    * @return whether the amrmToken is added or updated to a new value    */
 DECL|method|writeAMRMTokenForUAM (ApplicationId appId, String subClusterId, Token<AMRMTokenIdentifier> token)
 specifier|public
+specifier|synchronized
 name|boolean
 name|writeAMRMTokenForUAM
 parameter_list|(
@@ -750,6 +753,7 @@ return|;
 block|}
 comment|/**    * Load the information of one application from registry.    *    * @param appId application id    * @return the sub-cluster to UAM token mapping    */
 specifier|public
+specifier|synchronized
 name|Map
 argument_list|<
 name|String
@@ -1005,6 +1009,7 @@ block|}
 comment|/**    * Remove an application from registry.    *    * @param appId application id    */
 DECL|method|removeAppFromRegistry (ApplicationId appId)
 specifier|public
+specifier|synchronized
 name|void
 name|removeAppFromRegistry
 parameter_list|(

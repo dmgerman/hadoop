@@ -1029,16 +1029,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|PRE_REGISTER_RESPONSE_ID
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|PRE_REGISTER_RESPONSE_ID
-init|=
-operator|-
-literal|1
-decl_stmt|;
 DECL|field|amLivelinessMonitor
 specifier|private
 specifier|final
@@ -2410,28 +2400,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|getNextResponseId (int responseId)
-specifier|private
-name|int
-name|getNextResponseId
-parameter_list|(
-name|int
-name|responseId
-parameter_list|)
-block|{
-comment|// Loop between 0 to Integer.MAX_VALUE
-return|return
-operator|(
-name|responseId
-operator|+
-literal|1
-operator|)
-operator|&
-name|Integer
-operator|.
-name|MAX_VALUE
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|allocate (AllocateRequest request)
@@ -2558,6 +2526,8 @@ block|}
 comment|// Normally request.getResponseId() == lastResponse.getResponseId()
 if|if
 condition|(
+name|AMRMClientUtils
+operator|.
 name|getNextResponseId
 argument_list|(
 name|request
@@ -2827,6 +2797,8 @@ name|response
 operator|.
 name|setResponseId
 argument_list|(
+name|AMRMClientUtils
+operator|.
 name|getNextResponseId
 argument_list|(
 name|lastResponse
@@ -2875,6 +2847,8 @@ name|response
 operator|.
 name|setResponseId
 argument_list|(
+name|AMRMClientUtils
+operator|.
 name|PRE_REGISTER_RESPONSE_ID
 argument_list|)
 expr_stmt|;

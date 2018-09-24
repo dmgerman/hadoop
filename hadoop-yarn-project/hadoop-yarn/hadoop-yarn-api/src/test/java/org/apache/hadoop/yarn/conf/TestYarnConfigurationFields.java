@@ -343,6 +343,15 @@ name|add
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|FEDERATION_AMRMPROXY_HB_MAX_WAIT_MS
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
 name|FEDERATION_AMRMPROXY_SUBCLUSTER_TIMEOUT
 argument_list|)
 expr_stmt|;

@@ -28,6 +28,26 @@ name|java
 operator|.
 name|io
 operator|.
+name|ByteArrayInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -698,6 +718,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|AMRMClientUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -778,6 +814,40 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|factories
+operator|.
+name|RecordFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|factory
+operator|.
+name|providers
+operator|.
+name|RecordFactoryProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|YarnServiceProtos
@@ -817,6 +887,22 @@ operator|.
 name|security
 operator|.
 name|AMRMTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|AMHeartbeatRequestHandler
 import|;
 end_import
 
@@ -1030,24 +1116,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|utils
-operator|.
-name|YarnServerSecurityUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|AsyncCallback
@@ -1067,6 +1135,22 @@ operator|.
 name|util
 operator|.
 name|ConverterUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|MonotonicClock
 import|;
 end_import
 
@@ -1216,6 +1300,36 @@ name|STRING_TO_BYTE_FORMAT
 init|=
 literal|"UTF-8"
 decl_stmt|;
+DECL|field|RECORD_FACTORY
+specifier|private
+specifier|static
+specifier|final
+name|RecordFactory
+name|RECORD_FACTORY
+init|=
+name|RecordFactoryProvider
+operator|.
+name|getRecordFactory
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
+comment|/**    * From AM's perspective, FederationInterceptor behaves exactly the same as    * YarnRM (ApplicationMasterService). This is to remember the last heart beat    * response, used to handle duplicate heart beat and responseId from AM.    */
+DECL|field|lastAllocateResponse
+specifier|private
+name|AllocateResponse
+name|lastAllocateResponse
+decl_stmt|;
+DECL|field|lastAllocateResponseLock
+specifier|private
+specifier|final
+name|Object
+name|lastAllocateResponseLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|field|attemptId
 specifier|private
 name|ApplicationAttemptId
@@ -1232,11 +1346,10 @@ specifier|private
 name|SubClusterId
 name|homeSubClusterId
 decl_stmt|;
-DECL|field|lastHomeResponseId
+DECL|field|homeHeartbeartHandler
 specifier|private
-specifier|volatile
-name|int
-name|lastHomeResponseId
+name|AMHeartbeatRequestHandler
+name|homeHeartbeartHandler
 decl_stmt|;
 comment|/**    * UAM pool for secondary sub-clusters (ones other than home sub-cluster),    * using subClusterId as uamId. One UAM is created per sub-cluster RM except    * the home RM.    *    * Creation and register of UAM in secondary sub-clusters happen on-demand,    * when AMRMProxy policy routes resource request to these sub-clusters for the    * first time. AM heart beats to them are also handled asynchronously for    * performance reasons.    */
 DECL|field|uamPool
@@ -1255,7 +1368,7 @@ name|AMRMClientRelayer
 argument_list|>
 name|secondaryRelayers
 decl_stmt|;
-comment|/**    * Stores the AllocateResponses that are received asynchronously from all the    * sub-cluster resource managers except the home RM.    */
+comment|/**    * Stores the AllocateResponses that are received asynchronously from all the    * sub-cluster resource managers, including home RM.    */
 DECL|field|asyncResponseSink
 specifier|private
 name|Map
@@ -1321,16 +1434,25 @@ specifier|private
 name|FederationAMRMProxyPolicy
 name|policyInterpreter
 decl_stmt|;
-comment|/**    * The proxy ugi used to talk to home RM, loaded with the up-to-date AMRMToken    * issued by home RM.    */
-DECL|field|appOwner
-specifier|private
-name|UserGroupInformation
-name|appOwner
-decl_stmt|;
 DECL|field|registryClient
 specifier|private
 name|FederationRegistryClient
 name|registryClient
+decl_stmt|;
+comment|// the maximum wait time for the first async heart beat response
+DECL|field|heartbeatMaxWaitTimeMs
+specifier|private
+name|long
+name|heartbeatMaxWaitTimeMs
+decl_stmt|;
+DECL|field|clock
+specifier|private
+name|MonotonicClock
+name|clock
+init|=
+operator|new
+name|MonotonicClock
+argument_list|()
 decl_stmt|;
 comment|/**    * Creates an instance of the FederationInterceptor class.    */
 DECL|method|FederationInterceptor ()
@@ -1399,14 +1521,6 @@ literal|null
 expr_stmt|;
 name|this
 operator|.
-name|lastHomeResponseId
-operator|=
-name|Integer
-operator|.
-name|MAX_VALUE
-expr_stmt|;
-name|this
-operator|.
 name|justRecovered
 operator|=
 literal|false
@@ -1468,10 +1582,13 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|// The proxy ugi used to talk to home RM as well as Yarn Registry, loaded
+comment|// with the up-to-date AMRMToken issued by home RM.
+name|UserGroupInformation
+name|appOwner
+decl_stmt|;
 try|try
 block|{
-name|this
-operator|.
 name|appOwner
 operator|=
 name|UserGroupInformation
@@ -1528,8 +1645,6 @@ operator|.
 name|getRegistryClient
 argument_list|()
 argument_list|,
-name|this
-operator|.
 name|appOwner
 argument_list|)
 expr_stmt|;
@@ -1544,8 +1659,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|this
-operator|.
 name|appOwner
 operator|.
 name|addCredentials
@@ -1608,8 +1721,6 @@ name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,
-name|this
-operator|.
 name|appOwner
 argument_list|)
 argument_list|,
@@ -1621,6 +1732,78 @@ name|homeSubClusterId
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|=
+name|createHomeHeartbeartHandler
+argument_list|(
+name|conf
+argument_list|,
+name|appId
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|setAMRMClientRelayer
+argument_list|(
+name|this
+operator|.
+name|homeRMRelayer
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|setUGI
+argument_list|(
+name|appOwner
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+comment|// set lastResponseId to -1 before application master registers
+name|this
+operator|.
+name|lastAllocateResponse
+operator|=
+name|RECORD_FACTORY
+operator|.
+name|newRecordInstance
+argument_list|(
+name|AllocateResponse
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|lastAllocateResponse
+operator|.
+name|setResponseId
+argument_list|(
+name|AMRMClientUtils
+operator|.
+name|PRE_REGISTER_RESPONSE_ID
 argument_list|)
 expr_stmt|;
 name|this
@@ -1666,6 +1849,23 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|heartbeatMaxWaitTimeMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_AMRMPROXY_HB_MAX_WAIT_MS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_FEDERATION_AMRMPROXY_HB_MAX_WAIT_MS
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1701,6 +1901,12 @@ name|this
 operator|.
 name|attemptId
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|justRecovered
+operator|=
+literal|true
 expr_stmt|;
 if|if
 condition|(
@@ -1817,14 +2023,6 @@ name|this
 operator|.
 name|attemptId
 argument_list|)
-expr_stmt|;
-comment|// Trigger re-register and full pending re-send only if we have a
-comment|// saved register response. This should always be true though.
-name|this
-operator|.
-name|justRecovered
-operator|=
-literal|true
 expr_stmt|;
 block|}
 comment|// Recover UAM amrmTokens from registry or NMSS
@@ -2196,6 +2394,22 @@ expr_stmt|;
 name|containers
 operator|++
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"  From subcluster "
+operator|+
+name|subClusterId
+operator|+
+literal|" running container "
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 name|LOG
 operator|.
@@ -2340,7 +2554,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{} running containers including AM recovered from home RM "
+literal|"{} running containers including AM recovered from home RM {}"
 argument_list|,
 name|response
 operator|.
@@ -2438,7 +2652,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Sends the application master's registration request to the home RM.    *    * Between AM and AMRMProxy, FederationInterceptor modifies the RM behavior,    * so that when AM registers more than once, it returns the same register    * success response instead of throwing    * {@link InvalidApplicationMasterRequestException}. Furthermore, we present    * to AM as if we are the RM that never fails over. When actual RM fails over,    * we always re-register automatically.    *    * We did this because FederationInterceptor can receive concurrent register    * requests from AM because of timeout between AM and AMRMProxy, which is    * shorter than the timeout + failOver between FederationInterceptor    * (AMRMProxy) and RM.    *    * For the same reason, this method needs to be synchronized.    */
+comment|/**    * Sends the application master's registration request to the home RM.    *    * Between AM and AMRMProxy, FederationInterceptor modifies the RM behavior,    * so that when AM registers more than once, it returns the same register    * success response instead of throwing    * {@link InvalidApplicationMasterRequestException}. Furthermore, we present    * to AM as if we are the RM that never fails over (except when AMRMProxy    * restarts). When actual RM fails over, we always re-register automatically.    *    * We did this because FederationInterceptor can receive concurrent register    * requests from AM because of timeout between AM and AMRMProxy, which is    * shorter than the timeout + failOver between FederationInterceptor    * (AMRMProxy) and RM.    *    * For the same reason, this method needs to be synchronized.    */
 annotation|@
 name|Override
 specifier|public
@@ -2455,6 +2669,30 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+comment|// Reset the heartbeat responseId to zero upon register
+synchronized|synchronized
+init|(
+name|this
+operator|.
+name|lastAllocateResponseLock
+init|)
+block|{
+name|this
+operator|.
+name|lastAllocateResponse
+operator|.
+name|setResponseId
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|justRecovered
+operator|=
+literal|false
+expr_stmt|;
 comment|// If AM is calling with a different request, complain
 if|if
 condition|(
@@ -2816,6 +3054,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|IOException
 block|{
 name|Preconditions
 operator|.
@@ -2835,26 +3075,8 @@ condition|(
 name|this
 operator|.
 name|justRecovered
-operator|&&
-name|this
-operator|.
-name|lastHomeResponseId
-operator|==
-name|Integer
-operator|.
-name|MAX_VALUE
 condition|)
 block|{
-comment|// Save the responseId home RM is expecting
-name|this
-operator|.
-name|lastHomeResponseId
-operator|=
-name|request
-operator|.
-name|getResponseId
-argument_list|()
-expr_stmt|;
 throw|throw
 operator|new
 name|ApplicationMasterNotRegisteredException
@@ -2869,61 +3091,110 @@ literal|". AM should re-register and full re-send pending requests."
 argument_list|)
 throw|;
 block|}
-comment|// Override responseId in the request in two cases:
-comment|//
-comment|// 1. After we just recovered after an NM restart and AM's responseId is
-comment|// reset due to the exception we generate. We need to override the
-comment|// responseId to the one homeRM expects.
-comment|//
-comment|// 2. After homeRM fail-over, the allocate response with reseted responseId
-comment|// might not be returned successfully back to AM because of RPC connection
-comment|// timeout between AM and AMRMProxy. In this case, we remember and reset the
-comment|// responseId for AM.
-if|if
-condition|(
+comment|// Check responseId and handle duplicate heartbeat exactly same as RM
+synchronized|synchronized
+init|(
 name|this
 operator|.
-name|justRecovered
-operator|||
-name|request
-operator|.
-name|getResponseId
-argument_list|()
-operator|>
-name|this
-operator|.
-name|lastHomeResponseId
-condition|)
+name|lastAllocateResponseLock
+init|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
-literal|"Setting allocate responseId for {} from {} to {}"
-argument_list|,
+literal|"Heartbeat from "
+operator|+
 name|this
 operator|.
 name|attemptId
+operator|+
+literal|" with responseId "
+operator|+
+name|request
+operator|.
+name|getResponseId
+argument_list|()
+operator|+
+literal|" when we are expecting "
+operator|+
+name|this
+operator|.
+name|lastAllocateResponse
+operator|.
+name|getResponseId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Normally request.getResponseId() == lastResponse.getResponseId()
+if|if
+condition|(
+name|AMRMClientUtils
+operator|.
+name|getNextResponseId
+argument_list|(
+name|request
+operator|.
+name|getResponseId
+argument_list|()
+argument_list|)
+operator|==
+name|this
+operator|.
+name|lastAllocateResponse
+operator|.
+name|getResponseId
+argument_list|()
+condition|)
+block|{
+comment|// heartbeat one step old, simply return lastReponse
+return|return
+name|this
+operator|.
+name|lastAllocateResponse
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|request
+operator|.
+name|getResponseId
+argument_list|()
+operator|!=
+name|this
+operator|.
+name|lastAllocateResponse
+operator|.
+name|getResponseId
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidApplicationMasterRequestException
+argument_list|(
+name|AMRMClientUtils
+operator|.
+name|assembleInvalidResponseIdExceptionMessage
+argument_list|(
+name|attemptId
+argument_list|,
+name|this
+operator|.
+name|lastAllocateResponse
+operator|.
+name|getResponseId
+argument_list|()
 argument_list|,
 name|request
 operator|.
 name|getResponseId
 argument_list|()
-argument_list|,
-name|this
-operator|.
-name|lastHomeResponseId
 argument_list|)
-expr_stmt|;
-name|request
-operator|.
-name|setResponseId
-argument_list|(
-name|this
-operator|.
-name|lastHomeResponseId
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 block|}
 try|try
 block|{
@@ -2942,158 +3213,105 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
-comment|// Send the requests to the secondary sub-cluster resource managers.
-comment|// These secondary requests are send asynchronously and the responses will
-comment|// be collected and merged with the home response. In addition, it also
-comment|// return the newly registered Unmanaged AMs.
+comment|/**        * Send the requests to the all sub-cluster resource managers. All        * requests are synchronously triggered but sent asynchronously. Later the        * responses will be collected and merged. In addition, it also returns        * the newly registered UAMs.        */
 name|Registrations
 name|newRegistrations
 init|=
-name|sendRequestsToSecondaryResourceManagers
+name|sendRequestsToResourceManagers
 argument_list|(
 name|requests
 argument_list|)
 decl_stmt|;
-comment|// Send the request to the home RM and get the response
-name|AllocateRequest
-name|homeRequest
+comment|// Wait for the first async response to arrive
+name|long
+name|startTime
 init|=
-name|requests
-operator|.
-name|get
-argument_list|(
 name|this
 operator|.
-name|homeSubClusterId
-argument_list|)
-decl_stmt|;
-name|LOG
+name|clock
 operator|.
-name|info
-argument_list|(
-literal|"{} heartbeating to home RM with responseId {}"
-argument_list|,
-name|this
-operator|.
-name|attemptId
-argument_list|,
-name|homeRequest
-operator|.
-name|getResponseId
+name|getTime
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|AllocateResponse
-name|homeResponse
-init|=
-name|this
-operator|.
-name|homeRMRelayer
-operator|.
-name|allocate
-argument_list|(
-name|homeRequest
-argument_list|)
 decl_stmt|;
-comment|// Reset the flag after the first successful homeRM allocate response,
-comment|// otherwise keep overriding the responseId of new allocate request
-if|if
-condition|(
+synchronized|synchronized
+init|(
 name|this
 operator|.
-name|justRecovered
-condition|)
+name|asyncResponseSink
+init|)
 block|{
-name|this
-operator|.
-name|justRecovered
-operator|=
-literal|false
-expr_stmt|;
-block|}
-comment|// Notify policy of home response
 try|try
 block|{
 name|this
 operator|.
-name|policyInterpreter
+name|asyncResponseSink
 operator|.
-name|notifyOfResponse
+name|wait
 argument_list|(
 name|this
 operator|.
-name|homeSubClusterId
-argument_list|,
-name|homeResponse
+name|heartbeatMaxWaitTimeMs
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|InterruptedException
 name|e
 parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"notifyOfResponse for policy failed for home sub-cluster "
-operator|+
+block|{         }
+block|}
+name|long
+name|firstResponseTime
+init|=
 name|this
 operator|.
-name|homeSubClusterId
-argument_list|,
+name|clock
+operator|.
+name|getTime
+argument_list|()
+operator|-
+name|startTime
+decl_stmt|;
+comment|// An extra brief wait for other async heart beats, so that most of their
+comment|// responses can make it back to AM in the same heart beat round trip.
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|firstResponseTime
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
 name|e
-argument_list|)
-expr_stmt|;
-block|}
-comment|// If the resource manager sent us a new token, add to the current user
-if|if
-condition|(
-name|homeResponse
+parameter_list|)
+block|{       }
+comment|// Prepare the response to AM
+name|AllocateResponse
+name|response
+init|=
+name|RECORD_FACTORY
 operator|.
-name|getAMRMToken
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|newRecordInstance
 argument_list|(
-literal|"Received new AMRMToken"
+name|AllocateResponse
+operator|.
+name|class
 argument_list|)
-expr_stmt|;
-name|YarnServerSecurityUtils
-operator|.
-name|updateAMRMToken
-argument_list|(
-name|homeResponse
-operator|.
-name|getAMRMToken
-argument_list|()
-argument_list|,
-name|this
-operator|.
-name|appOwner
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Merge the responses from home and secondary sub-cluster RMs
-name|homeResponse
-operator|=
+decl_stmt|;
+comment|// Merge all responses from response sink
 name|mergeAllocateResponses
 argument_list|(
-name|homeResponse
+name|response
 argument_list|)
 expr_stmt|;
 comment|// Merge the containers and NMTokens from the new registrations into
-comment|// the homeResponse.
+comment|// the response
 if|if
 condition|(
 operator|!
@@ -3106,11 +3324,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|homeResponse
-operator|=
 name|mergeRegistrationResponses
 argument_list|(
-name|homeResponse
+name|response
 argument_list|,
 name|newRegistrations
 operator|.
@@ -3119,75 +3335,45 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"{} heartbeat response from home RM with responseId {}"
-argument_list|,
+comment|// update the responseId and return the final response to AM
+synchronized|synchronized
+init|(
 name|this
 operator|.
-name|attemptId
-argument_list|,
-name|homeResponse
+name|lastAllocateResponseLock
+init|)
+block|{
+name|response
+operator|.
+name|setResponseId
+argument_list|(
+name|AMRMClientUtils
+operator|.
+name|getNextResponseId
+argument_list|(
+name|this
+operator|.
+name|lastAllocateResponse
 operator|.
 name|getResponseId
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
-comment|// Update lastHomeResponseId in three cases:
-comment|// 1. The normal responseId increments
-comment|// 2. homeResponse.getResponseId() == 1. This happens when homeRM fails
-comment|// over, AMRMClientRelayer auto re-register and full re-send for homeRM.
-comment|// 3. lastHomeResponseId == MAX_INT. This is the initial case or
-comment|// responseId about to overflow and wrap around
-if|if
-condition|(
-name|homeResponse
-operator|.
-name|getResponseId
-argument_list|()
-operator|==
 name|this
 operator|.
-name|lastHomeResponseId
-operator|+
-literal|1
-operator|||
-name|homeResponse
-operator|.
-name|getResponseId
-argument_list|()
-operator|==
-literal|1
-operator|||
-name|this
-operator|.
-name|lastHomeResponseId
-operator|==
-name|Integer
-operator|.
-name|MAX_VALUE
-condition|)
-block|{
-name|this
-operator|.
-name|lastHomeResponseId
+name|lastAllocateResponse
 operator|=
-name|homeResponse
-operator|.
-name|getResponseId
-argument_list|()
+name|response
 expr_stmt|;
 block|}
-comment|// return the final response to the application master.
 return|return
-name|homeResponse
+name|response
 return|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Throwable
 name|ex
 parameter_list|)
 block|{
@@ -3195,7 +3381,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception encountered while processing heart beat"
+literal|"Exception encountered while processing heart beat for "
+operator|+
+name|this
+operator|.
+name|attemptId
 argument_list|,
 name|ex
 argument_list|)
@@ -3460,6 +3650,14 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
+comment|// Stop the home heartbeat thread
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|subClusterIds
@@ -3714,6 +3912,16 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+comment|// Stop the home heartbeat thread
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|homeRMRelayer
 operator|.
 name|shutdown
@@ -3724,6 +3932,8 @@ control|(
 name|AMRMClientRelayer
 name|relayer
 range|:
+name|this
+operator|.
 name|secondaryRelayers
 operator|.
 name|values
@@ -3785,16 +3995,30 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getLastHomeResponseId ()
+DECL|method|getAttemptId ()
 specifier|protected
-name|int
-name|getLastHomeResponseId
+name|ApplicationAttemptId
+name|getAttemptId
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|lastHomeResponseId
+name|attemptId
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getHomeHeartbeartHandler ()
+specifier|protected
+name|AMHeartbeatRequestHandler
+name|getHomeHeartbeartHandler
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|homeHeartbeartHandler
 return|;
 block|}
 comment|/**    * Create the UAM pool manager for secondary sub-clsuters. For unit test to    * override.    *    * @param threadPool the thread pool to use    * @return the UAM pool manager instance    */
@@ -3814,6 +4038,30 @@ operator|new
 name|UnmanagedAMPoolManager
 argument_list|(
 name|threadPool
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createHomeHeartbeartHandler ( Configuration conf, ApplicationId appId)
+specifier|protected
+name|AMHeartbeatRequestHandler
+name|createHomeHeartbeartHandler
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+return|return
+operator|new
+name|AMHeartbeatRequestHandler
+argument_list|(
+name|conf
+argument_list|,
+name|appId
 argument_list|)
 return|;
 block|}
@@ -4100,6 +4348,8 @@ operator|new
 name|ExecutorCompletionService
 argument_list|<>
 argument_list|(
+name|this
+operator|.
 name|threadpool
 argument_list|)
 decl_stmt|;
@@ -4965,11 +5215,11 @@ return|return
 name|requestMap
 return|;
 block|}
-comment|/**    * This methods sends the specified AllocateRequests to the appropriate    * sub-cluster resource managers.    *    * @param requests contains the heart beat requests to send to the resource    *          manager keyed by the resource manager address    * @return the registration responses from the newly added sub-cluster    *         resource managers    * @throws YarnException    * @throws IOException    */
-DECL|method|sendRequestsToSecondaryResourceManagers ( Map<SubClusterId, AllocateRequest> requests)
+comment|/**    * This methods sends the specified AllocateRequests to the appropriate    * sub-cluster resource managers asynchronously.    *    * @param requests contains the heart beat requests to send to the resource    *          manager keyed by the sub-cluster id    * @return the registration responses from the newly added sub-cluster    *         resource managers    * @throws YarnException    * @throws IOException    */
+DECL|method|sendRequestsToResourceManagers ( Map<SubClusterId, AllocateRequest> requests)
 specifier|private
 name|Registrations
-name|sendRequestsToSecondaryResourceManagers
+name|sendRequestsToResourceManagers
 parameter_list|(
 name|Map
 argument_list|<
@@ -4998,11 +5248,9 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Now that all the registrations are done, send the allocation request
-comment|// to the sub-cluster RMs using the Unmanaged application masters
-comment|// asynchronously and don't wait for the response. The responses will
-comment|// arrive asynchronously and will be added to the response sink. These
-comment|// responses will be sent to the application master in some future heart
-comment|// beat response.
+comment|// to the sub-cluster RMs asynchronously and don't wait for the response.
+comment|// The responses will arrive asynchronously and will be added to the
+comment|// response sink, then merged and sent to the application master.
 for|for
 control|(
 name|Entry
@@ -5019,7 +5267,6 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-specifier|final
 name|SubClusterId
 name|subClusterId
 init|=
@@ -5040,10 +5287,32 @@ name|homeSubClusterId
 argument_list|)
 condition|)
 block|{
-comment|// Skip the request for the home sub-cluster resource manager.
-comment|// It will be handled separately in the allocate() method
-continue|continue;
+comment|// Request for the home sub-cluster resource manager
+name|this
+operator|.
+name|homeHeartbeartHandler
+operator|.
+name|allocateAsync
+argument_list|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|,
+operator|new
+name|HeartbeatCallBack
+argument_list|(
+name|this
+operator|.
+name|homeSubClusterId
+argument_list|,
+literal|false
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
+else|else
+block|{
 if|if
 condition|(
 operator|!
@@ -5095,9 +5364,12 @@ operator|new
 name|HeartbeatCallBack
 argument_list|(
 name|subClusterId
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|registrations
@@ -5236,6 +5508,8 @@ operator|new
 name|ExecutorCompletionService
 argument_list|<>
 argument_list|(
+name|this
+operator|.
 name|threadpool
 argument_list|)
 decl_stmt|;
@@ -5640,37 +5914,16 @@ name|failedRegistrations
 argument_list|)
 return|;
 block|}
-comment|/**    * Merges the responses from other sub-clusters that we received    * asynchronously with the specified home cluster response and keeps track of    * the containers received from each sub-cluster resource managers.    */
-DECL|method|mergeAllocateResponses ( AllocateResponse homeResponse)
+comment|/**    * Merge the responses from all sub-clusters that we received asynchronously    * and keeps track of the containers received from each sub-cluster resource    * managers.    */
+DECL|method|mergeAllocateResponses (AllocateResponse mergedResponse)
 specifier|private
-name|AllocateResponse
+name|void
 name|mergeAllocateResponses
 parameter_list|(
 name|AllocateResponse
-name|homeResponse
+name|mergedResponse
 parameter_list|)
 block|{
-comment|// Timing issue, we need to remove the completed and then save the new ones.
-name|removeFinishedContainersFromCache
-argument_list|(
-name|homeResponse
-operator|.
-name|getCompletedContainersStatuses
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|cacheAllocatedContainers
-argument_list|(
-name|homeResponse
-operator|.
-name|getAllocatedContainers
-argument_list|()
-argument_list|,
-name|this
-operator|.
-name|homeSubClusterId
-argument_list|)
-expr_stmt|;
 synchronized|synchronized
 init|(
 name|this
@@ -5691,6 +5944,8 @@ argument_list|>
 argument_list|>
 name|entry
 range|:
+name|this
+operator|.
 name|asyncResponseSink
 operator|.
 name|entrySet
@@ -5754,7 +6009,7 @@ argument_list|)
 expr_stmt|;
 name|mergeAllocateResponse
 argument_list|(
-name|homeResponse
+name|mergedResponse
 argument_list|,
 name|response
 argument_list|,
@@ -5770,9 +6025,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-name|homeResponse
-return|;
 block|}
 comment|/**    * Removes the finished containers from the local cache.    */
 DECL|method|removeFinishedContainersFromCache ( List<ContainerStatus> finishedContainers)
@@ -5830,10 +6082,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Helper method for merging the responses from the secondary sub cluster RMs    * with the home response to return to the AM.    */
-DECL|method|mergeRegistrationResponses ( AllocateResponse homeResponse, Map<SubClusterId, RegisterApplicationMasterResponse> registrations)
+comment|/**    * Helper method for merging the registration responses from the secondary sub    * cluster RMs into the allocate response to return to the AM.    */
+DECL|method|mergeRegistrationResponses (AllocateResponse homeResponse, Map<SubClusterId, RegisterApplicationMasterResponse> registrations)
 specifier|private
-name|AllocateResponse
+name|void
 name|mergeRegistrationResponses
 parameter_list|(
 name|AllocateResponse
@@ -6014,9 +6266,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-return|return
-name|homeResponse
-return|;
 block|}
 DECL|method|mergeAllocateResponse (AllocateResponse homeResponse, AllocateResponse otherResponse, SubClusterId otherRMAddress)
 specifier|private
@@ -6033,6 +6282,56 @@ name|SubClusterId
 name|otherRMAddress
 parameter_list|)
 block|{
+if|if
+condition|(
+name|otherResponse
+operator|.
+name|getAMRMToken
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Propagate only the new amrmToken from home sub-cluster back to
+comment|// AMRMProxyService
+if|if
+condition|(
+name|otherRMAddress
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|homeSubClusterId
+argument_list|)
+condition|)
+block|{
+name|homeResponse
+operator|.
+name|setAMRMToken
+argument_list|(
+name|otherResponse
+operator|.
+name|getAMRMToken
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"amrmToken from UAM "
+operator|+
+name|otherRMAddress
+operator|+
+literal|" should be null here"
+argument_list|)
+throw|;
+block|}
+block|}
 if|if
 condition|(
 operator|!
@@ -6631,6 +6930,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|this
+operator|.
 name|containerIdToSubClusterIdMap
 operator|.
 name|containsKey
@@ -6645,6 +6946,8 @@ block|{
 name|SubClusterId
 name|existingSubClusterId
 init|=
+name|this
+operator|.
 name|containerIdToSubClusterIdMap
 operator|.
 name|get
@@ -6724,6 +7027,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|this
+operator|.
 name|containerIdToSubClusterIdMap
 operator|.
 name|put
@@ -6837,19 +7142,13 @@ block|{
 name|AllocateRequest
 name|request
 init|=
+name|RECORD_FACTORY
+operator|.
+name|newRecordInstance
+argument_list|(
 name|AllocateRequest
 operator|.
-name|newInstance
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|class
 argument_list|)
 decl_stmt|;
 name|request
@@ -7041,6 +7340,20 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getUnmanagedAMPool ()
+specifier|protected
+name|UnmanagedAMPoolManager
+name|getUnmanagedAMPool
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|uamPool
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getAsyncResponseSink ()
 specifier|public
 name|Map
@@ -7077,11 +7390,19 @@ specifier|private
 name|SubClusterId
 name|subClusterId
 decl_stmt|;
-DECL|method|HeartbeatCallBack (SubClusterId subClusterId)
+DECL|field|isUAM
+specifier|private
+name|boolean
+name|isUAM
+decl_stmt|;
+DECL|method|HeartbeatCallBack (SubClusterId subClusterId, boolean isUAM)
 name|HeartbeatCallBack
 parameter_list|(
 name|SubClusterId
 name|subClusterId
+parameter_list|,
+name|boolean
+name|isUAM
 parameter_list|)
 block|{
 name|this
@@ -7089,6 +7410,12 @@ operator|.
 name|subClusterId
 operator|=
 name|subClusterId
+expr_stmt|;
+name|this
+operator|.
+name|isUAM
+operator|=
+name|isUAM
 expr_stmt|;
 block|}
 annotation|@
@@ -7161,10 +7488,20 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
+comment|// Notify main thread about the response arrival
+name|asyncResponseSink
+operator|.
+name|notifyAll
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Save the new AMRMToken for the UAM if present
 if|if
 condition|(
+name|this
+operator|.
+name|isUAM
+operator|&&
 name|response
 operator|.
 name|getAMRMToken
@@ -7194,6 +7531,14 @@ operator|)
 literal|null
 argument_list|)
 decl_stmt|;
+comment|// Do not further propagate the new amrmToken for UAM
+name|response
+operator|.
+name|setAMRMToken
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 comment|// Update the token in registry or NMSS
 if|if
 condition|(
@@ -7202,6 +7547,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|registryClient
 operator|.
 name|writeAMRMTokenForUAM
@@ -7218,7 +7565,66 @@ argument_list|()
 argument_list|,
 name|newToken
 argument_list|)
+condition|)
+block|{
+try|try
+block|{
+name|AMRMTokenIdentifier
+name|identifier
+init|=
+operator|new
+name|AMRMTokenIdentifier
+argument_list|()
+decl_stmt|;
+name|identifier
+operator|.
+name|readFields
+argument_list|(
+operator|new
+name|DataInputStream
+argument_list|(
+operator|new
+name|ByteArrayInputStream
+argument_list|(
+name|newToken
+operator|.
+name|getIdentifier
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Received new UAM amrmToken with keyId {} and "
+operator|+
+literal|"service {} from {} for {}, written to Registry"
+argument_list|,
+name|identifier
+operator|.
+name|getKeyId
+argument_list|()
+argument_list|,
+name|newToken
+operator|.
+name|getService
+argument_list|()
+argument_list|,
+name|subClusterId
+argument_list|,
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{             }
+block|}
 block|}
 elseif|else
 if|if
@@ -7279,7 +7685,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Notify policy of secondary sub-cluster responses
+comment|// Notify policy of allocate response
 try|try
 block|{
 name|policyInterpreter
@@ -7302,7 +7708,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"notifyOfResponse for policy failed for home sub-cluster "
+literal|"notifyOfResponse for policy failed for sub-cluster "
 operator|+
 name|subClusterId
 argument_list|,

@@ -369,6 +369,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|PRE_REGISTER_RESPONSE_ID
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|PRE_REGISTER_RESPONSE_ID
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|APP_ALREADY_REGISTERED_MESSAGE
 specifier|public
 specifier|static
@@ -725,6 +735,29 @@ operator|-
 literal|1
 return|;
 block|}
+block|}
+DECL|method|getNextResponseId (int responseId)
+specifier|public
+specifier|static
+name|int
+name|getNextResponseId
+parameter_list|(
+name|int
+name|responseId
+parameter_list|)
+block|{
+comment|// Loop between 0 to Integer.MAX_VALUE
+return|return
+operator|(
+name|responseId
+operator|+
+literal|1
+operator|)
+operator|&
+name|Integer
+operator|.
+name|MAX_VALUE
+return|;
 block|}
 DECL|method|addToOutstandingSchedulingRequests ( Collection<SchedulingRequest> requests, Map<Set<String>, List<SchedulingRequest>> outstandingSchedRequests)
 specifier|public
