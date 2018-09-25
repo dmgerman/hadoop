@@ -2205,6 +2205,16 @@ name|getApplicationType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setUnmanagedAM
+argument_list|(
+name|srcCtx
+operator|.
+name|getUnmanagedAM
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ContainerLaunchContextPBImpl
 name|amContainerSpec
 init|=
