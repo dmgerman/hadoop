@@ -424,6 +424,15 @@ name|FS_AZURE_DELEGATION_TOKEN_PROVIDER_TYPE
 init|=
 literal|"fs.azure.delegation.token.provider.type"
 decl_stmt|;
+DECL|field|ABFS_EXTERNAL_AUTHORIZATION_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ABFS_EXTERNAL_AUTHORIZATION_CLASS
+init|=
+literal|"abfs.external.authorization.class"
+decl_stmt|;
 DECL|method|ConfigurationKeys ()
 specifier|private
 name|ConfigurationKeys

@@ -1372,18 +1372,8 @@ name|getRawConfiguration
 argument_list|()
 return|;
 block|}
-DECL|method|isIPAddress ()
-specifier|protected
-name|boolean
-name|isIPAddress
-parameter_list|()
-block|{
-return|return
-name|isIPAddress
-return|;
-block|}
 DECL|method|getAuthType ()
-specifier|protected
+specifier|public
 name|AuthType
 name|getAuthType
 parameter_list|()
@@ -1392,6 +1382,16 @@ return|return
 name|this
 operator|.
 name|authType
+return|;
+block|}
+DECL|method|isIPAddress ()
+specifier|protected
+name|boolean
+name|isIPAddress
+parameter_list|()
+block|{
+return|return
+name|isIPAddress
 return|;
 block|}
 comment|/**    * Write a buffer to a file.    * @param path path    * @param buffer buffer    * @throws IOException failure    */
