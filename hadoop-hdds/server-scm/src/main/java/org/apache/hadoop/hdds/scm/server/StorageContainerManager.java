@@ -4208,6 +4208,24 @@ return|return
 name|eventQueue
 return|;
 block|}
+comment|/**    * Force SCM out of chill mode.    */
+DECL|method|exitChillMode ()
+specifier|public
+name|boolean
+name|exitChillMode
+parameter_list|()
+block|{
+name|scmChillModeManager
+operator|.
+name|exitChillMode
+argument_list|(
+name|eventQueue
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getCurrentContainerThreshold ()

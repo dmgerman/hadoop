@@ -898,13 +898,21 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|inChillMode
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"SCM in chill mode. {} % containers have at least one reported "
+literal|"SCM in chill mode. {} % containers have at least one"
 operator|+
-literal|"replica."
+literal|" reported replica."
 argument_list|,
 operator|(
 name|containerWithMinReplicas
@@ -918,6 +926,7 @@ operator|*
 literal|100
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

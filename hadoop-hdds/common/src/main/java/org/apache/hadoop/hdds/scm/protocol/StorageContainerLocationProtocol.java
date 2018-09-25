@@ -324,6 +324,22 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
+DECL|method|inChillMode ()
+name|boolean
+name|inChillMode
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Force SCM out of Chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+DECL|method|forceExitChillMode ()
+name|boolean
+name|forceExitChillMode
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

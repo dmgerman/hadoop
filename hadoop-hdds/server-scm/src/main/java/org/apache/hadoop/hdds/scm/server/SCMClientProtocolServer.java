@@ -1686,6 +1686,42 @@ name|build
 argument_list|()
 return|;
 block|}
+comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|inChillMode ()
+specifier|public
+name|boolean
+name|inChillMode
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|scm
+operator|.
+name|isInChillMode
+argument_list|()
+return|;
+block|}
+comment|/**    * Force SCM out of Chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|forceExitChillMode ()
+specifier|public
+name|boolean
+name|forceExitChillMode
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|scm
+operator|.
+name|exitChillMode
+argument_list|()
+return|;
+block|}
 comment|/**    * Queries a list of Node that match a set of statuses.    *    *<p>For example, if the nodeStatuses is HEALTHY and RAFT_MEMBER, then    * this call will return all    * healthy nodes which members in Raft pipeline.    *    *<p>Right now we don't support operations, so we assume it is an AND    * operation between the    * operators.    *    * @param state - NodeStates.    * @return List of Datanodes.    */
 DECL|method|queryNode (HddsProtos.NodeState state)
 specifier|public
