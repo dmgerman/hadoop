@@ -1806,6 +1806,7 @@ operator|.
 name|toMillis
 argument_list|()
 decl_stmt|;
+comment|// SFTPFileSystem doesn't have milliseconds. Excluding it.
 name|accessTime1
 operator|=
 operator|(
@@ -1892,6 +1893,17 @@ operator|.
 name|lastModified
 argument_list|()
 decl_stmt|;
+comment|// SFTPFileSystem doesn't have milliseconds. Excluding it.
+name|modifyTime1
+operator|=
+operator|(
+name|modifyTime1
+operator|/
+literal|1000
+operator|)
+operator|*
+literal|1000
+expr_stmt|;
 name|long
 name|modifyTime2
 init|=
