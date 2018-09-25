@@ -492,6 +492,8 @@ argument_list|)
 decl_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|bucketIterator

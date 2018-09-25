@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -47,6 +57,22 @@ operator|.
 name|cli
 operator|.
 name|HddsVersionProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -133,6 +159,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|httpServer
+specifier|private
+name|S3GatewayHttpServer
+name|httpServer
+decl_stmt|;
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -166,6 +197,29 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|OzoneConfiguration
+name|ozoneConfiguration
+init|=
+name|createOzoneConfiguration
+argument_list|()
+decl_stmt|;
+name|OzoneConfigurationHolder
+operator|.
+name|setConfiguration
+argument_list|(
+name|ozoneConfiguration
+argument_list|)
+expr_stmt|;
+name|httpServer
+operator|=
+operator|new
+name|S3GatewayHttpServer
+argument_list|(
+name|ozoneConfiguration
+argument_list|,
+literal|"s3gateway"
+argument_list|)
+expr_stmt|;
 name|start
 argument_list|()
 expr_stmt|;
@@ -178,6 +232,8 @@ specifier|public
 name|void
 name|start
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|LOG
 operator|.
@@ -186,19 +242,31 @@ argument_list|(
 literal|"Starting Ozone S3 gateway"
 argument_list|)
 expr_stmt|;
+name|httpServer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|stop ()
 specifier|public
 name|void
 name|stop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stoping Ozone S3 gateway"
+literal|"Stopping Ozone S3 gateway"
 argument_list|)
+expr_stmt|;
+name|httpServer
+operator|.
+name|stop
+argument_list|()
 expr_stmt|;
 block|}
 block|}

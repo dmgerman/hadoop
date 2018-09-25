@@ -524,6 +524,8 @@ argument_list|)
 decl_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|keyIterator

@@ -456,6 +456,8 @@ throw|;
 block|}
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|volumeIterator

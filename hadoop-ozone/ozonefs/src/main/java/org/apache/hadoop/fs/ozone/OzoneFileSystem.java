@@ -3267,6 +3267,8 @@ DECL|field|keyIterator
 specifier|private
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|keyIterator

@@ -416,15 +416,10 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|,
-name|configurationOverrides
-operator|.
-name|get
-argument_list|(
 name|entry
 operator|.
 name|getValue
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

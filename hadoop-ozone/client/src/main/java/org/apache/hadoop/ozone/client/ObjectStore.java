@@ -26,6 +26,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Strings
@@ -189,6 +203,18 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|ObjectStore ()
+specifier|protected
+name|ObjectStore
+parameter_list|()
+block|{
+name|proxy
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|/**    * Creates the volume with default values.    * @param volumeName Name of the volume to be created.    * @throws IOException    */
 DECL|method|createVolume (String volumeName)
 specifier|public
@@ -265,6 +291,8 @@ DECL|method|listVolumes (String volumePrefix)
 specifier|public
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|listVolumes
@@ -289,6 +317,8 @@ DECL|method|listVolumes (String volumePrefix, String prevVolume)
 specifier|public
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|listVolumes
@@ -319,6 +349,8 @@ DECL|method|listVolumesByUser (String user, String volumePrefix, String prevVolu
 specifier|public
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|listVolumesByUser

@@ -70,6 +70,20 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * OzoneClient connects to Ozone Cluster and  * perform basic operations.  */
 end_comment
@@ -126,6 +140,29 @@ name|this
 operator|.
 name|proxy
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|OzoneClient (ObjectStore objectStore)
+specifier|protected
+name|OzoneClient
+parameter_list|(
+name|ObjectStore
+name|objectStore
+parameter_list|)
+block|{
+name|this
+operator|.
+name|objectStore
+operator|=
+name|objectStore
+expr_stmt|;
+name|this
+operator|.
+name|proxy
+operator|=
+literal|null
 expr_stmt|;
 block|}
 comment|/**    * Returns the object store associated with the Ozone Cluster.    * @return ObjectStore    */

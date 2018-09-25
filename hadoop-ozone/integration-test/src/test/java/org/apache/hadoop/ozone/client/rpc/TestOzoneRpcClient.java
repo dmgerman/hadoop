@@ -5025,6 +5025,8 @@ expr_stmt|;
 block|}
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|volIterator
@@ -5069,6 +5071,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|volAIterator
@@ -5130,6 +5134,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|volBIterator
@@ -5191,6 +5197,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneVolume
 argument_list|>
 name|iter
@@ -5423,6 +5431,8 @@ expr_stmt|;
 block|}
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|volABucketIter
@@ -5467,6 +5477,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|volBBucketIter
@@ -5511,6 +5523,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|volABucketAIter
@@ -5555,6 +5569,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|volBBucketBIter
@@ -5599,6 +5615,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|volABucketBIter
@@ -5660,6 +5678,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|volBBucketAIter
@@ -5763,6 +5783,8 @@ argument_list|)
 decl_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|buckets
@@ -6385,6 +6407,8 @@ expr_stmt|;
 block|}
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|volABucketAIter
@@ -6429,6 +6453,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|volABucketBIter
@@ -6473,6 +6499,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|volBBucketAIter
@@ -6517,6 +6545,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|volBBucketBIter
@@ -6561,6 +6591,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|volABucketAKeyAIter
@@ -6605,6 +6637,8 @@ argument_list|)
 expr_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|volABucketAKeyBIter
@@ -6737,6 +6771,8 @@ argument_list|)
 decl_stmt|;
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneKey
 argument_list|>
 name|keys

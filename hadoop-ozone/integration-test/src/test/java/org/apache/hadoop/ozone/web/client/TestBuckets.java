@@ -1901,6 +1901,8 @@ expr_stmt|;
 block|}
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|bucketIterator
@@ -2005,7 +2007,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getSize (Iterator<OzoneBucket> bucketIterator)
+DECL|method|getSize (Iterator<? extends OzoneBucket> bucketIterator)
 specifier|private
 specifier|static
 name|int
@@ -2013,6 +2015,8 @@ name|getSize
 parameter_list|(
 name|Iterator
 argument_list|<
+name|?
+extends|extends
 name|OzoneBucket
 argument_list|>
 name|bucketIterator
