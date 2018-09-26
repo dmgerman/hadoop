@@ -2215,6 +2215,16 @@ name|getUnmanagedAM
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|srcCtx
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ContainerLaunchContextPBImpl
 name|amContainerSpec
 init|=

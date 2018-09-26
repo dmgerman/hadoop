@@ -482,6 +482,16 @@ name|getApplicationType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setNodeLabelExpression
+argument_list|(
+name|oldAppSubCtxt
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|appSubCtxtCopy
