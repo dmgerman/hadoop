@@ -87,7 +87,10 @@ block|,
 name|SUCCEEDED
 block|,
 DECL|enumConstant|FAILED
+DECL|enumConstant|FAILED_UPGRADE
 name|FAILED
+block|,
+name|FAILED_UPGRADE
 block|; }
 end_enum
 

@@ -36,6 +36,9 @@ name|UPGRADE
 block|,
 DECL|enumConstant|CHECK_STABLE
 name|CHECK_STABLE
+block|,
+DECL|enumConstant|CANCEL_UPGRADE
+name|CANCEL_UPGRADE
 block|}
 end_enum
 

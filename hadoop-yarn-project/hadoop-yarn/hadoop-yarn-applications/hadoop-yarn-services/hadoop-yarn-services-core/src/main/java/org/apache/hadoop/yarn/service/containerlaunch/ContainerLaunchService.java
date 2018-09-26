@@ -90,24 +90,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|ServiceContext
@@ -707,11 +689,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"reInitializing container {}"
+literal|"reInitializing container {} with version {}"
 argument_list|,
 name|container
 operator|.
 name|getId
+argument_list|()
+argument_list|,
+name|componentLaunchContext
+operator|.
+name|getServiceVersion
 argument_list|()
 argument_list|)
 expr_stmt|;

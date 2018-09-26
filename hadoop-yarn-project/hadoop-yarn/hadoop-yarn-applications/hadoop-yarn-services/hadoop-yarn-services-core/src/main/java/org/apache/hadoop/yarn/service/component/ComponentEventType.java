@@ -41,6 +41,9 @@ block|,
 DECL|enumConstant|CONTAINER_COMPLETED
 name|CONTAINER_COMPLETED
 block|,
+DECL|enumConstant|CANCEL_UPGRADE
+name|CANCEL_UPGRADE
+block|,
 DECL|enumConstant|UPGRADE
 name|UPGRADE
 block|,

@@ -60,7 +60,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Queue
+name|List
 import|;
 end_import
 
@@ -100,13 +100,14 @@ specifier|private
 name|boolean
 name|expressUpgrade
 decl_stmt|;
-DECL|field|compsToUpgradeInOrder
+comment|// For express upgrade they should be in order.
+DECL|field|compsToUpgrade
 specifier|private
-name|Queue
+name|List
 argument_list|<
 name|Component
 argument_list|>
-name|compsToUpgradeInOrder
+name|compsToUpgrade
 decl_stmt|;
 DECL|method|ServiceEvent (ServiceEventType serviceEventType)
 specifier|public
@@ -225,36 +226,36 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|getCompsToUpgradeInOrder ()
+DECL|method|getCompsToUpgrade ()
 specifier|public
-name|Queue
+name|List
 argument_list|<
 name|Component
 argument_list|>
-name|getCompsToUpgradeInOrder
+name|getCompsToUpgrade
 parameter_list|()
 block|{
 return|return
-name|compsToUpgradeInOrder
+name|compsToUpgrade
 return|;
 block|}
-DECL|method|setCompsToUpgradeInOrder ( Queue<Component> compsToUpgradeInOrder)
+DECL|method|setCompsToUpgrade (List<Component> compsToUpgrade)
 specifier|public
 name|ServiceEvent
-name|setCompsToUpgradeInOrder
+name|setCompsToUpgrade
 parameter_list|(
-name|Queue
+name|List
 argument_list|<
 name|Component
 argument_list|>
-name|compsToUpgradeInOrder
+name|compsToUpgrade
 parameter_list|)
 block|{
 name|this
 operator|.
-name|compsToUpgradeInOrder
+name|compsToUpgrade
 operator|=
-name|compsToUpgradeInOrder
+name|compsToUpgrade
 expr_stmt|;
 return|return
 name|this

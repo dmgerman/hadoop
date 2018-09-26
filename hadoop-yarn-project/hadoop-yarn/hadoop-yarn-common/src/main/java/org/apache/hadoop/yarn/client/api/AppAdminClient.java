@@ -778,6 +778,25 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    * Cancels the upgrade of the service.    *    * @param appName the name of the application    * @return exit code    * @throws IOException    * @throws YarnException    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionCancelUpgrade (String appName)
+specifier|public
+specifier|abstract
+name|int
+name|actionCancelUpgrade
+parameter_list|(
+name|String
+name|appName
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
 block|}
 end_class
 

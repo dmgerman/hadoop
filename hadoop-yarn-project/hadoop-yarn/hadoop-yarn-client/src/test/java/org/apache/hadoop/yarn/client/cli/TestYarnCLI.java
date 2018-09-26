@@ -17253,6 +17253,20 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -cancel                                  Works with -upgrade option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          cancel current upgrade."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -changeQueue<Queue Name>                Moves application to a new"
 argument_list|)
 expr_stmt|;

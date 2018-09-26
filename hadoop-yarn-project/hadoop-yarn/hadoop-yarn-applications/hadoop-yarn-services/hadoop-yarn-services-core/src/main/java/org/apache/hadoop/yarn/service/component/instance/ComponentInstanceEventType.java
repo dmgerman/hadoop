@@ -42,6 +42,9 @@ name|BECOME_NOT_READY
 block|,
 DECL|enumConstant|UPGRADE
 name|UPGRADE
+block|,
+DECL|enumConstant|CANCEL_UPGRADE
+name|CANCEL_UPGRADE
 block|}
 end_enum
 

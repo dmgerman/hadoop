@@ -703,8 +703,26 @@ parameter_list|(
 name|int
 name|exitCode
 parameter_list|)
-block|{           }
+block|{               }
 block|}
+return|;
+block|}
+annotation|@
+name|Override
+specifier|protected
+name|ServiceManager
+name|createServiceManager
+parameter_list|()
+block|{
+return|return
+name|ServiceTestUtils
+operator|.
+name|createServiceManager
+argument_list|(
+name|MockRunningServiceContext
+operator|.
+name|this
+argument_list|)
 return|;
 block|}
 block|}
@@ -719,13 +737,6 @@ name|fsWatcher
 operator|.
 name|getConf
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|ServiceTestUtils
-operator|.
-name|createServiceManager
-argument_list|(
-name|this
 argument_list|)
 expr_stmt|;
 name|doNothing

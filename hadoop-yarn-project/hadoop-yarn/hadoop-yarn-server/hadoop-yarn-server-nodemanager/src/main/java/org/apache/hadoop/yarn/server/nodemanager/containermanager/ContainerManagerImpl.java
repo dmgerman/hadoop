@@ -11138,6 +11138,15 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{} requested reinit"
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
 name|Container
 name|container
 init|=
