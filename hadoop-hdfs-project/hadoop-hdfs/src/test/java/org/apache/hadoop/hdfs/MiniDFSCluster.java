@@ -3223,6 +3223,16 @@ operator|=
 name|args
 expr_stmt|;
 block|}
+DECL|method|getDatanode ()
+specifier|public
+name|DataNode
+name|getDatanode
+parameter_list|()
+block|{
+return|return
+name|datanode
+return|;
+block|}
 block|}
 DECL|field|conf
 specifier|private

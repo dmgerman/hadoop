@@ -14923,6 +14923,15 @@ case|:
 case|case
 name|RWR
 case|:
+specifier|final
+name|long
+name|reportedGS
+init|=
+name|reported
+operator|.
+name|getGenerationStamp
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -14932,6 +14941,56 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
+comment|//When DN report lesser GS than the storedBlock then mark it is corrupt,
+comment|//As already valid replica will be present.
+if|if
+condition|(
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|>
+name|reported
+operator|.
+name|getGenerationStamp
+argument_list|()
+condition|)
+block|{
+return|return
+operator|new
+name|BlockToMarkCorrupt
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|reported
+argument_list|)
+argument_list|,
+name|storedBlock
+argument_list|,
+name|reportedGS
+argument_list|,
+literal|"reported "
+operator|+
+name|reportedState
+operator|+
+literal|" replica with genstamp "
+operator|+
+name|reportedGS
+operator|+
+literal|" does not match Stored block's genstamp in block map "
+operator|+
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|,
+name|Reason
+operator|.
+name|GENSTAMP_MISMATCH
+argument_list|)
+return|;
+block|}
 return|return
 literal|null
 return|;
@@ -14951,15 +15010,6 @@ name|getGenerationStamp
 argument_list|()
 condition|)
 block|{
-specifier|final
-name|long
-name|reportedGS
-init|=
-name|reported
-operator|.
-name|getGenerationStamp
-argument_list|()
-decl_stmt|;
 return|return
 operator|new
 name|BlockToMarkCorrupt
@@ -15224,6 +15274,8 @@ operator|.
 name|reportedState
 argument_list|)
 expr_stmt|;
+comment|// Add replica if appropriate. If the replica was previously corrupt
+comment|// but now okay, it might need to be updated.
 if|if
 condition|(
 name|ucBlock
@@ -15244,6 +15296,18 @@ argument_list|)
 operator|<
 literal|0
 operator|)
+operator|||
+name|corruptReplicas
+operator|.
+name|isReplicaCorrupt
+argument_list|(
+name|block
+argument_list|,
+name|storageInfo
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|)
 condition|)
 block|{
 name|addStoredBlock
