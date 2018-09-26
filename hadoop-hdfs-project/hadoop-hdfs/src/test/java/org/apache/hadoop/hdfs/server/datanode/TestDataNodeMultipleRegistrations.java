@@ -2150,7 +2150,7 @@ block|}
 argument_list|,
 literal|500
 argument_list|,
-literal|10000
+literal|20000
 argument_list|)
 expr_stmt|;
 block|}
