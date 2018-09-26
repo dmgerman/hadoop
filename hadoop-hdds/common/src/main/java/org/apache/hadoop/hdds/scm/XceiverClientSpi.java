@@ -332,7 +332,6 @@ function_decl|;
 comment|/**    * Sends a given command to server and gets the reply back.    * @param request Request    * @return Response to the command    * @throws IOException    */
 DECL|method|sendCommand ( ContainerCommandRequestProto request)
 specifier|public
-specifier|abstract
 name|ContainerCommandResponseProto
 name|sendCommand
 parameter_list|(
@@ -341,7 +340,40 @@ name|request
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
+block|{
+try|try
+block|{
+return|return
+name|sendCommandAsync
+argument_list|(
+name|request
+argument_list|)
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ExecutionException
+decl||
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to command "
+operator|+
+name|request
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    * @throws IOException    */
 specifier|public
 specifier|abstract
