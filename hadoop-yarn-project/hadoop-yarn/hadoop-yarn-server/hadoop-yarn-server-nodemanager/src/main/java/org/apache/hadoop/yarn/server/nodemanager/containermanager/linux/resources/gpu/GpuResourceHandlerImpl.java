@@ -446,6 +446,11 @@ name|CONTAINER_ID_CLI_OPTION
 init|=
 literal|"--container_id"
 decl_stmt|;
+DECL|field|nmContext
+specifier|private
+name|Context
+name|nmContext
+decl_stmt|;
 DECL|field|gpuAllocator
 specifier|private
 name|GpuResourceAllocator
@@ -475,6 +480,12 @@ name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
 parameter_list|)
 block|{
+name|this
+operator|.
+name|nmContext
+operator|=
+name|nmContext
+expr_stmt|;
 name|this
 operator|.
 name|cGroupsHandler
@@ -684,6 +695,11 @@ name|DockerLinuxContainerRuntime
 operator|.
 name|isDockerContainerRequested
 argument_list|(
+name|nmContext
+operator|.
+name|getConf
+argument_list|()
+argument_list|,
 name|container
 operator|.
 name|getLaunchContext

@@ -6403,6 +6403,18 @@ block|{
 literal|"default"
 block|}
 decl_stmt|;
+comment|/** Default runtime to be used. */
+DECL|field|LINUX_CONTAINER_RUNTIME_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LINUX_CONTAINER_RUNTIME_TYPE
+init|=
+name|LINUX_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"type"
+decl_stmt|;
 DECL|field|DOCKER_CONTAINER_RUNTIME_PREFIX
 specifier|public
 specifier|static
@@ -6413,6 +6425,18 @@ init|=
 name|LINUX_CONTAINER_RUNTIME_PREFIX
 operator|+
 literal|"docker."
+decl_stmt|;
+comment|/** Default docker image to be used. */
+DECL|field|NM_DOCKER_IMAGE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_IMAGE_NAME
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"image-name"
 decl_stmt|;
 comment|/** Capabilities allowed (and added by default) for docker containers. **/
 DECL|field|NM_DOCKER_CONTAINER_CAPABILITIES

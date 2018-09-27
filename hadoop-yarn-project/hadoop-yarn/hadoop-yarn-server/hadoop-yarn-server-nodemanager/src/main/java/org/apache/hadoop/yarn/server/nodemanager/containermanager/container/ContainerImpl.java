@@ -8194,6 +8194,10 @@ name|isDockerContainerRequested
 argument_list|(
 name|container
 operator|.
+name|daemonConf
+argument_list|,
+name|container
+operator|.
 name|getLaunchContext
 argument_list|()
 operator|.
@@ -8343,6 +8347,10 @@ name|DockerLinuxContainerRuntime
 operator|.
 name|isDockerContainerRequested
 argument_list|(
+name|container
+operator|.
+name|daemonConf
+argument_list|,
 name|container
 operator|.
 name|getLaunchContext
@@ -9504,6 +9512,10 @@ name|DockerLinuxContainerRuntime
 operator|.
 name|isDockerContainerRequested
 argument_list|(
+name|container
+operator|.
+name|daemonConf
+argument_list|,
 name|container
 operator|.
 name|getLaunchContext

@@ -5034,6 +5034,8 @@ name|DockerLinuxContainerRuntime
 operator|.
 name|isDockerContainerRequested
 argument_list|(
+name|conf
+argument_list|,
 name|container
 operator|.
 name|getLaunchContext
