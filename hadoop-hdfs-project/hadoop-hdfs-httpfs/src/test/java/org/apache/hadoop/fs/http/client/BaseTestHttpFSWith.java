@@ -326,22 +326,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsConstants
 import|;
 end_import
@@ -7489,14 +7473,12 @@ name|getHttpFSFileSystem
 argument_list|()
 decl_stmt|;
 comment|// test getAllStoragePolicies
-name|BlockStoragePolicy
-index|[]
-name|dfsPolicies
-init|=
-operator|(
-name|BlockStoragePolicy
-index|[]
-operator|)
+name|Assert
+operator|.
+name|assertArrayEquals
+argument_list|(
+literal|"Policy array returned from the DFS and HttpFS should be equals"
+argument_list|,
 name|fs
 operator|.
 name|getAllStoragePolicies
@@ -7504,15 +7486,7 @@ argument_list|()
 operator|.
 name|toArray
 argument_list|()
-decl_stmt|;
-name|BlockStoragePolicy
-index|[]
-name|httpPolicies
-init|=
-operator|(
-name|BlockStoragePolicy
-index|[]
-operator|)
+argument_list|,
 name|httpfs
 operator|.
 name|getAllStoragePolicies
@@ -7520,16 +7494,6 @@ argument_list|()
 operator|.
 name|toArray
 argument_list|()
-decl_stmt|;
-name|Assert
-operator|.
-name|assertArrayEquals
-argument_list|(
-literal|"Policy array returned from the DFS and HttpFS should be equals"
-argument_list|,
-name|dfsPolicies
-argument_list|,
-name|httpPolicies
 argument_list|)
 expr_stmt|;
 comment|// test get/set/unset policies
