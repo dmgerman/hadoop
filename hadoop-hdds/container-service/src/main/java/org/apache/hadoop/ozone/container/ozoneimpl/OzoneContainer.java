@@ -1025,43 +1025,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|containerSet
-operator|.
-name|getContainer
-argument_list|(
-name|request
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-operator|.
-name|getContainerData
-argument_list|()
-operator|.
-name|isClosed
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Container {} is already closed"
-argument_list|,
-name|request
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// It might happen that the where the first attempt of closing the
-comment|// container failed with NOT_LEADER_EXCEPTION. In such cases, SCM will
-comment|// retry to check the container got really closed via Ratis.
-comment|// In such cases of the retry attempt, if the container is already closed
-comment|// via Ratis, we should just return.
-block|}
 name|LOG
 operator|.
 name|info
