@@ -490,6 +490,49 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * Helper function to create a message about how many log statements were    * suppressed in the provided log action. If no statements were suppressed,    * this returns an empty string. The message has the format (without quotes):    *    *<p/>' (suppressed logging<i>{suppression_count}</i> times)'    *    * @param action The log action to produce a message about.    * @return A message about suppression within this action.    */
+DECL|method|getLogSupressionMessage (LogAction action)
+specifier|public
+specifier|static
+name|String
+name|getLogSupressionMessage
+parameter_list|(
+name|LogAction
+name|action
+parameter_list|)
+block|{
+if|if
+condition|(
+name|action
+operator|.
+name|getCount
+argument_list|()
+operator|>
+literal|1
+condition|)
+block|{
+return|return
+literal|" (suppressed logging "
+operator|+
+operator|(
+name|action
+operator|.
+name|getCount
+argument_list|()
+operator|-
+literal|1
+operator|)
+operator|+
+literal|" times)"
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|""
+return|;
+block|}
+block|}
 comment|/**    * A standard log action which keeps track of all of the values which have    * been logged. This is also used for internal bookkeeping via its private    * fields and methods; it will maintain whether or not it is ready to be    * logged ({@link #shouldLog()}) as well as whether or not it has been    * returned for logging yet ({@link #hasLogged()}).    */
 DECL|class|LoggingAction
 specifier|private
