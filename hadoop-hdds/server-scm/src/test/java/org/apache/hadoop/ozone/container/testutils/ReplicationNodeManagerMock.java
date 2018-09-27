@@ -818,6 +818,20 @@ parameter_list|)
 block|{
 comment|// do nothing.
 block|}
+comment|/**    * Empty implementation for processDeadNode.    * @param dnUuid    */
+annotation|@
+name|Override
+DECL|method|processDeadNode (UUID dnUuid)
+specifier|public
+name|void
+name|processDeadNode
+parameter_list|(
+name|UUID
+name|dnUuid
+parameter_list|)
+block|{
+comment|// do nothing.
+block|}
 block|}
 end_class
 

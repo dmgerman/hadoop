@@ -389,6 +389,15 @@ name|NodeReportProto
 name|nodeReport
 parameter_list|)
 function_decl|;
+comment|/**    * Process a dead node event in this Node Manager.    *    * @param dnUuid datanode uuid.    */
+DECL|method|processDeadNode (UUID dnUuid)
+name|void
+name|processDeadNode
+parameter_list|(
+name|UUID
+name|dnUuid
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

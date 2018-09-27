@@ -1608,6 +1608,8 @@ argument_list|()
 operator|.
 name|getStateManager
 argument_list|()
+argument_list|,
+name|scmNodeManager
 argument_list|)
 decl_stmt|;
 name|ContainerActionsHandler

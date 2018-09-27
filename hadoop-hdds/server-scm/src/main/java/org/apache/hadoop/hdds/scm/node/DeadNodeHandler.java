@@ -241,6 +241,12 @@ specifier|final
 name|ContainerStateManager
 name|containerStateManager
 decl_stmt|;
+DECL|field|nodeManager
+specifier|private
+specifier|final
+name|NodeManager
+name|nodeManager
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -257,7 +263,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|DeadNodeHandler ( Node2ContainerMap node2ContainerMap, ContainerStateManager containerStateManager)
+DECL|method|DeadNodeHandler ( Node2ContainerMap node2ContainerMap, ContainerStateManager containerStateManager, NodeManager nodeManager)
 specifier|public
 name|DeadNodeHandler
 parameter_list|(
@@ -266,6 +272,9 @@ name|node2ContainerMap
 parameter_list|,
 name|ContainerStateManager
 name|containerStateManager
+parameter_list|,
+name|NodeManager
+name|nodeManager
 parameter_list|)
 block|{
 name|this
@@ -279,6 +288,12 @@ operator|.
 name|containerStateManager
 operator|=
 name|containerStateManager
+expr_stmt|;
+name|this
+operator|.
+name|nodeManager
+operator|=
+name|nodeManager
 expr_stmt|;
 block|}
 annotation|@
@@ -295,6 +310,16 @@ name|EventPublisher
 name|publisher
 parameter_list|)
 block|{
+name|nodeManager
+operator|.
+name|processDeadNode
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|ContainerID
