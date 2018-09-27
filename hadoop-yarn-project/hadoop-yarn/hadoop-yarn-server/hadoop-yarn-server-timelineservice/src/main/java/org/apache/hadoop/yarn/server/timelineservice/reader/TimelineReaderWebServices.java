@@ -458,6 +458,26 @@ name|server
 operator|.
 name|timelineservice
 operator|.
+name|metrics
+operator|.
+name|TimelineReaderMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
 name|storage
 operator|.
 name|TimelineReader
@@ -648,6 +668,18 @@ name|String
 name|DATE_PATTERN
 init|=
 literal|"yyyyMMdd"
+decl_stmt|;
+DECL|field|METRICS
+specifier|private
+specifier|static
+specifier|final
+name|TimelineReaderMetrics
+name|METRICS
+init|=
+name|TimelineReaderMetrics
+operator|.
+name|getInstance
+argument_list|()
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -1555,6 +1587,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -1677,6 +1714,10 @@ argument_list|,
 name|entityType
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1696,14 +1737,43 @@ literal|"createdTime start/end or limit or flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -1719,25 +1789,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -2281,6 +2332,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -2386,6 +2442,10 @@ argument_list|,
 name|entityType
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2405,14 +2465,43 @@ literal|"createdTime start/end or limit or flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -2428,25 +2517,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -2606,6 +2676,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -2686,6 +2761,10 @@ argument_list|,
 name|callerUGI
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2705,14 +2784,43 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entity
@@ -2733,7 +2841,10 @@ operator|+
 literal|" (Took "
 operator|+
 operator|(
-name|endTime
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 operator|-
 name|startTime
 operator|)
@@ -2753,25 +2864,6 @@ literal|"is not found"
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entity
 return|;
@@ -3165,6 +3257,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -3235,6 +3332,10 @@ argument_list|,
 name|callerUGI
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3254,14 +3355,43 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entity
@@ -3282,7 +3412,10 @@ operator|+
 literal|" (Took "
 operator|+
 operator|(
-name|endTime
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 operator|-
 name|startTime
 operator|)
@@ -3306,25 +3439,6 @@ literal|" } is not found"
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entity
 return|;
@@ -3444,6 +3558,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -3542,6 +3661,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3561,14 +3684,43 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entity
@@ -3587,7 +3739,10 @@ operator|+
 literal|" but flowrun not found (Took "
 operator|+
 operator|(
-name|endTime
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 operator|-
 name|startTime
 operator|)
@@ -3607,25 +3762,6 @@ literal|"is not found"
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entity
 return|;
@@ -3859,6 +3995,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -3945,6 +4086,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3964,14 +4109,43 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entity
@@ -3990,7 +4164,10 @@ operator|+
 literal|" but flowrun not found (Took "
 operator|+
 operator|(
-name|endTime
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 operator|-
 name|startTime
 operator|)
@@ -4024,25 +4201,6 @@ literal|" } is not found"
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entity
 return|;
@@ -4205,6 +4363,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -4331,6 +4494,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4350,14 +4517,43 @@ literal|"createdTime start/end or limit or fromId"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -4373,25 +4569,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -4701,6 +4878,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -4815,6 +4997,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4834,14 +5020,43 @@ literal|"createdTime start/end or limit or fromId"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -4857,25 +5072,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -5095,6 +5291,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -5208,6 +5409,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -5227,14 +5432,43 @@ literal|"limit"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -5268,25 +5502,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -5446,6 +5661,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -5538,6 +5758,10 @@ argument_list|,
 name|callerUGI
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -5557,14 +5781,43 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entity
@@ -5585,7 +5838,10 @@ operator|+
 literal|" (Took "
 operator|+
 operator|(
-name|endTime
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 operator|-
 name|startTime
 operator|)
@@ -5605,25 +5861,6 @@ literal|" not found"
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entity
 return|;
@@ -5963,6 +6200,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -6038,6 +6280,10 @@ argument_list|,
 name|callerUGI
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -6057,14 +6303,43 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entity
@@ -6085,7 +6360,10 @@ operator|+
 literal|" (Took "
 operator|+
 operator|(
-name|endTime
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 operator|-
 name|startTime
 operator|)
@@ -6105,25 +6383,6 @@ literal|" not found"
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entity
 return|;
@@ -6366,6 +6625,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -6492,6 +6756,10 @@ name|metricsTimeEnd
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -6511,14 +6779,43 @@ literal|"createdTime start/end or limit or flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -6534,25 +6831,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -9547,6 +9825,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -9596,6 +9879,10 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -9615,14 +9902,27 @@ literal|"flowrunid"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntityTypesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -9633,15 +9933,12 @@ name|url
 operator|+
 literal|" (Took "
 operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
+name|latency
 operator|+
 literal|" ms.)"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|results
 return|;
@@ -10129,6 +10426,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -10234,6 +10536,10 @@ argument_list|,
 name|callerUGI
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -10253,14 +10559,43 @@ literal|"createdTime start/end or limit"
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -10276,25 +10611,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
@@ -10638,6 +10954,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
 name|init
 argument_list|(
 name|res
@@ -10727,6 +11048,10 @@ argument_list|,
 name|callerUGI
 argument_list|)
 expr_stmt|;
+name|succeeded
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -10746,14 +11071,43 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|long
-name|endTime
+name|latency
 init|=
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+operator|-
+name|startTime
 decl_stmt|;
+name|METRICS
+operator|.
+name|addGetEntitiesLatency
+argument_list|(
+name|latency
+argument_list|,
+name|succeeded
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processed URL "
+operator|+
+name|url
+operator|+
+literal|" (Took "
+operator|+
+name|latency
+operator|+
+literal|" ms.)"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|entities
@@ -10769,25 +11123,6 @@ name|emptySet
 argument_list|()
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processed URL "
-operator|+
-name|url
-operator|+
-literal|" (Took "
-operator|+
-operator|(
-name|endTime
-operator|-
-name|startTime
-operator|)
-operator|+
-literal|" ms.)"
-argument_list|)
-expr_stmt|;
 return|return
 name|entities
 return|;
