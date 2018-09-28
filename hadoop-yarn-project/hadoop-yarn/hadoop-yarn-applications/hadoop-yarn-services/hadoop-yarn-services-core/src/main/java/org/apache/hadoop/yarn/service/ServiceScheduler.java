@@ -2758,6 +2758,15 @@ operator|.
 name|STARTED
 argument_list|)
 expr_stmt|;
+name|ServiceApiUtil
+operator|.
+name|checkServiceDependencySatisified
+argument_list|(
+name|context
+operator|.
+name|service
+argument_list|)
+expr_stmt|;
 comment|// recover components based on containers sent from RM
 name|recoverComponents
 argument_list|(

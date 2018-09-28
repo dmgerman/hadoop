@@ -2905,6 +2905,23 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"version mismatch"
+argument_list|,
+name|service
+operator|.
+name|getVersion
+argument_list|()
+argument_list|,
+name|active
+operator|.
+name|getVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
 literal|"component not stable"
 argument_list|,
 name|ComponentState
