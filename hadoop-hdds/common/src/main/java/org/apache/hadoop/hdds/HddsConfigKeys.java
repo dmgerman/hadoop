@@ -463,6 +463,44 @@ name|HDDS_PUBLIC_KEY_FILE_NAME_DEFAULT
 init|=
 literal|"public.pem"
 decl_stmt|;
+comment|/**    * Maximum duration of certificates issued by SCM including Self-Signed Roots.    * The formats accepted are based on the ISO-8601 duration format PnDTnHnMn.nS    * Default value is 5 years and written as P1865D.    */
+DECL|field|HDDS_X509_MAX_DURATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_X509_MAX_DURATION
+init|=
+literal|"hdds.x509.max.duration"
+decl_stmt|;
+comment|// Limit Certificate duration to a max value of 5 years.
+DECL|field|HDDS_X509_MAX_DURATION_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_X509_MAX_DURATION_DEFAULT
+init|=
+literal|"P1865D"
+decl_stmt|;
+DECL|field|HDDS_X509_SIGNATURE_ALGO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_X509_SIGNATURE_ALGO
+init|=
+literal|"hdds.x509.signature.algorithm"
+decl_stmt|;
+DECL|field|HDDS_X509_SIGNATURE_ALGO_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_X509_SIGNATURE_ALGO_DEFAULT
+init|=
+literal|"SHA256withRSA"
+decl_stmt|;
 block|}
 end_class
 

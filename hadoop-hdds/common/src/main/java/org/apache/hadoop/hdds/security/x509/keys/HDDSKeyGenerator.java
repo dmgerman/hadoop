@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  *  with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.security.x509
+DECL|package|org.apache.hadoop.hdds.security.x509.keys
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|security
 operator|.
 name|x509
+operator|.
+name|keys
 package|;
 end_package
 
@@ -31,6 +33,24 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|SecurityConfig
 import|;
 end_import
 
@@ -157,7 +177,7 @@ return|return
 name|securityConfig
 return|;
 block|}
-comment|/**    * Use Config to generate key.    *    * @return KeyPair    * @throws NoSuchProviderException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Use Config to generate key.    *    * @return KeyPair    * @throws NoSuchProviderException - On Error, due to missing Java    * dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    * dependencies.    */
 DECL|method|generateKey ()
 specifier|public
 name|KeyPair
@@ -178,7 +198,7 @@ argument_list|()
 argument_list|,
 name|securityConfig
 operator|.
-name|getAlgo
+name|getKeyAlgo
 argument_list|()
 argument_list|,
 name|securityConfig
@@ -188,7 +208,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Specify the size -- all other parameters are used from config.    *    * @param size - int, valid key sizes.    * @return KeyPair    * @throws NoSuchProviderException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Specify the size -- all other parameters are used from config.    *    * @param size - int, valid key sizes.    * @return KeyPair    * @throws NoSuchProviderException - On Error, due to missing Java    * dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    * dependencies.    */
 DECL|method|generateKey (int size)
 specifier|public
 name|KeyPair
@@ -209,7 +229,7 @@ name|size
 argument_list|,
 name|securityConfig
 operator|.
-name|getAlgo
+name|getKeyAlgo
 argument_list|()
 argument_list|,
 name|securityConfig
@@ -219,7 +239,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Custom Key Generation, all values are user provided.    *    * @param size - Key Size    * @param algorithm - Algorithm to use    * @param provider - Security provider.    * @return KeyPair.    * @throws NoSuchProviderException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Custom Key Generation, all values are user provided.    *    * @param size - Key Size    * @param algorithm - Algorithm to use    * @param provider - Security provider.    * @return KeyPair.    * @throws NoSuchProviderException - On Error, due to missing Java    * dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    * dependencies.    */
 DECL|method|generateKey (int size, String algorithm, String provider)
 specifier|public
 name|KeyPair

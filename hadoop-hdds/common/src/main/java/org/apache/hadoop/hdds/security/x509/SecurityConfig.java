@@ -127,18 +127,12 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|java
 operator|.
-name|apache
+name|time
 operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|HddsConfigKeys
-operator|.
-name|HDDS_DEFAULT_KEY_LEN
+name|Duration
 import|;
 end_import
 
@@ -155,6 +149,22 @@ operator|.
 name|HddsConfigKeys
 operator|.
 name|HDDS_DEFAULT_KEY_ALGORITHM
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_DEFAULT_KEY_LEN
 import|;
 end_import
 
@@ -342,6 +352,70 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_MAX_DURATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_MAX_DURATION_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_SIGNATURE_ALGO
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_SIGNATURE_ALGO_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
@@ -351,7 +425,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class that deals with all Security related configs in HDDDS.  * It is easier to have all Java code related to config in a single place.  */
+comment|/**  * A class that deals with all Security related configs in HDDS.  *  * This class allows security configs to be read and used consistently across  * all of security related code base.  */
 end_comment
 
 begin_class
@@ -395,11 +469,11 @@ specifier|final
 name|int
 name|size
 decl_stmt|;
-DECL|field|algo
+DECL|field|keyAlgo
 specifier|private
 specifier|final
 name|String
-name|algo
+name|keyAlgo
 decl_stmt|;
 DECL|field|providerString
 specifier|private
@@ -419,19 +493,31 @@ specifier|final
 name|String
 name|keyDir
 decl_stmt|;
-DECL|field|privateKeyName
+DECL|field|privateKeyFileName
 specifier|private
 specifier|final
 name|String
-name|privateKeyName
+name|privateKeyFileName
 decl_stmt|;
-DECL|field|publicKeyName
+DECL|field|publicKeyFileName
 specifier|private
 specifier|final
 name|String
-name|publicKeyName
+name|publicKeyFileName
 decl_stmt|;
-comment|/**    * Constructs a HDDSKeyGenerator.    *    * @param configuration - HDDS Configuration    */
+DECL|field|certDuration
+specifier|private
+specifier|final
+name|Duration
+name|certDuration
+decl_stmt|;
+DECL|field|x509SignatureAlgo
+specifier|private
+specifier|final
+name|String
+name|x509SignatureAlgo
+decl_stmt|;
+comment|/**    * Constructs a SecurityConfig.    *    * @param configuration - HDDS Configuration    */
 DECL|method|SecurityConfig (Configuration configuration)
 specifier|public
 name|SecurityConfig
@@ -472,7 +558,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|algo
+name|keyAlgo
 operator|=
 name|this
 operator|.
@@ -553,7 +639,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|privateKeyName
+name|privateKeyFileName
 operator|=
 name|this
 operator|.
@@ -568,7 +654,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|publicKeyName
+name|publicKeyFileName
 operator|=
 name|this
 operator|.
@@ -579,6 +665,46 @@ argument_list|(
 name|HDDS_PUBLIC_KEY_FILE_NAME
 argument_list|,
 name|HDDS_PUBLIC_KEY_FILE_NAME_DEFAULT
+argument_list|)
+expr_stmt|;
+name|String
+name|durationString
+init|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|get
+argument_list|(
+name|HDDS_X509_MAX_DURATION
+argument_list|,
+name|HDDS_X509_MAX_DURATION_DEFAULT
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|certDuration
+operator|=
+name|Duration
+operator|.
+name|parse
+argument_list|(
+name|durationString
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|x509SignatureAlgo
+operator|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|get
+argument_list|(
+name|HDDS_X509_SIGNATURE_ALGO
+argument_list|,
+name|HDDS_X509_SIGNATURE_ALGO_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// First Startup -- if the provider is null, check for the provider.
@@ -633,40 +759,29 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Returns the Provider name.    * @return String Provider name.    */
-DECL|method|getProviderString ()
+comment|/**    * Returns the public key file name, This is used for storing the public    * keys on disk.    *    * @return String, File name used for public keys.    */
+DECL|method|getPublicKeyFileName ()
 specifier|public
 name|String
-name|getProviderString
+name|getPublicKeyFileName
 parameter_list|()
 block|{
 return|return
-name|providerString
+name|publicKeyFileName
 return|;
 block|}
-comment|/**    * Returns the public key file name.    * @return String, File name used for public keys.    */
-DECL|method|getPublicKeyName ()
+comment|/**    * Returns the private key file name.This is used for storing the private    * keys on disk.    *    * @return String, File name used for private keys.    */
+DECL|method|getPrivateKeyFileName ()
 specifier|public
 name|String
-name|getPublicKeyName
+name|getPrivateKeyFileName
 parameter_list|()
 block|{
 return|return
-name|publicKeyName
+name|privateKeyFileName
 return|;
 block|}
-comment|/**    * Returns the private key file name.    * @return String, File name used for private keys.    */
-DECL|method|getPrivateKeyName ()
-specifier|public
-name|String
-name|getPrivateKeyName
-parameter_list|()
-block|{
-return|return
-name|privateKeyName
-return|;
-block|}
-comment|/**    * Returns the File path to where keys are stored.    * @return  String Key location.    */
+comment|/**    * Returns the File path to where keys are stored.    *    * @return String Key location.    */
 DECL|method|getKeyLocation ()
 specifier|public
 name|Path
@@ -684,7 +799,7 @@ name|keyDir
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the Key Size.    *    * @return key size.    */
+comment|/**    * Gets the Key Size, The default key size is 2048, since the default    * algorithm used is RSA. User can change this by setting the "hdds.key    * .len" in configuration.    *    * @return key size.    */
 DECL|method|getSize ()
 specifier|public
 name|int
@@ -695,7 +810,7 @@ return|return
 name|size
 return|;
 block|}
-comment|/**    * Gets provider.    *    * @return String Provider name.    */
+comment|/**    * Returns the Provider name. SCM defaults to using Bouncy Castle and will    * return "BC".    *    * @return String Provider name.    */
 DECL|method|getProvider ()
 specifier|public
 name|String
@@ -706,18 +821,29 @@ return|return
 name|providerString
 return|;
 block|}
-comment|/**    * Returns the Key generation Algorithm used.    *    * @return String Algo.    */
-DECL|method|getAlgo ()
+comment|/**    * Returns the Key generation Algorithm used.  User can change this by    * setting the "hdds.key.algo" in configuration.    *    * @return String Algo.    */
+DECL|method|getKeyAlgo ()
 specifier|public
 name|String
-name|getAlgo
+name|getKeyAlgo
 parameter_list|()
 block|{
 return|return
-name|algo
+name|keyAlgo
 return|;
 block|}
-comment|/**    * Returns the Configuration used for initializing this SecurityConfig.    * @return  Configuration    */
+comment|/**    * Returns the X.509 Signature Algorithm used. This can be changed by setting    * "hdds.x509.signature.algorithm" to the new name. The default algorithm    * is SHA256withRSA.    *    * @return String    */
+DECL|method|getSignatureAlgo ()
+specifier|public
+name|String
+name|getSignatureAlgo
+parameter_list|()
+block|{
+return|return
+name|x509SignatureAlgo
+return|;
+block|}
+comment|/**    * Returns the Configuration used for initializing this SecurityConfig.    *    * @return Configuration    */
 DECL|method|getConfiguration ()
 specifier|public
 name|Configuration
@@ -726,6 +852,19 @@ parameter_list|()
 block|{
 return|return
 name|configuration
+return|;
+block|}
+comment|/**    * Returns the maximum length a certificate can be valid in SCM. The    * default value is 5 years. This can be changed by setting    * "hdds.x509.max.duration" in configuration. The formats accepted are    * based on the ISO-8601 duration format PnDTnHnMn.nS    *    * Default value is 5 years and written as P1865D.    *    * @return Duration.    */
+DECL|method|getMaxCertificateDuration ()
+specifier|public
+name|Duration
+name|getMaxCertificateDuration
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|certDuration
 return|;
 block|}
 comment|/**    * Adds a security provider dynamically if it is not loaded already.    *    * @param providerName - name of the provider.    */

@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  *  with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.security.x509
+DECL|package|org.apache.hadoop.hdds.security.x509.keys
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|security
 operator|.
 name|x509
+operator|.
+name|keys
 package|;
 end_package
 
@@ -99,6 +101,24 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|SecurityConfig
 import|;
 end_import
 
@@ -560,7 +580,7 @@ operator|=
 name|isPosixFileSystem
 expr_stmt|;
 block|}
-comment|/**    * Writes a given key using the default config options.    *    * @param keyPair - Key Pair to write to file.    * @throws IOException    */
+comment|/**    * Writes a given key using the default config options.    *    * @param keyPair - Key Pair to write to file.    * @throws IOException - On I/O failure.    */
 DECL|method|writeKey (KeyPair keyPair)
 specifier|public
 name|void
@@ -580,19 +600,19 @@ name|keyPair
 argument_list|,
 name|securityConfig
 operator|.
-name|getPrivateKeyName
+name|getPrivateKeyFileName
 argument_list|()
 argument_list|,
 name|securityConfig
 operator|.
-name|getPublicKeyName
+name|getPublicKeyFileName
 argument_list|()
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Writes a given key using default config options.    *    * @param keyPair - Key pair to write    * @param overwrite - Overwrites the keys if they already exist.    * @throws IOException    */
+comment|/**    * Writes a given key using default config options.    *    * @param keyPair - Key pair to write    * @param overwrite - Overwrites the keys if they already exist.    * @throws IOException - On I/O failure.    */
 DECL|method|writeKey (KeyPair keyPair, boolean overwrite)
 specifier|public
 name|void
@@ -615,19 +635,19 @@ name|keyPair
 argument_list|,
 name|securityConfig
 operator|.
-name|getPrivateKeyName
+name|getPrivateKeyFileName
 argument_list|()
 argument_list|,
 name|securityConfig
 operator|.
-name|getPublicKeyName
+name|getPublicKeyFileName
 argument_list|()
 argument_list|,
 name|overwrite
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Writes a given key using default config options.    *    * @param basePath - The location to write to, override the config values.    * @param keyPair - Key pair to write    * @param overwrite - Overwrites the keys if they already exist.    * @throws IOException    */
+comment|/**    * Writes a given key using default config options.    *    * @param basePath - The location to write to, override the config values.    * @param keyPair - Key pair to write    * @param overwrite - Overwrites the keys if they already exist.    * @throws IOException - On I/O failure.    */
 DECL|method|writeKey (Path basePath, KeyPair keyPair, boolean overwrite)
 specifier|public
 name|void
@@ -653,19 +673,19 @@ name|keyPair
 argument_list|,
 name|securityConfig
 operator|.
-name|getPrivateKeyName
+name|getPrivateKeyFileName
 argument_list|()
 argument_list|,
 name|securityConfig
 operator|.
-name|getPublicKeyName
+name|getPublicKeyFileName
 argument_list|()
 argument_list|,
 name|overwrite
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Helper function that actually writes data to the files.    *    * @param basePath - base path to write key    * @param keyPair - Key pair to write to file.    * @param privateKeyFileName - private key file name.    * @param publicKeyFileName - public key file name.    * @param force - forces overwriting the keys.    * @throws IOException    */
+comment|/**    * Helper function that actually writes data to the files.    *    * @param basePath - base path to write key    * @param keyPair - Key pair to write to file.    * @param privateKeyFileName - private key file name.    * @param publicKeyFileName - public key file name.    * @param force - forces overwriting the keys.    * @throws IOException - On I/O failure.    */
 DECL|method|writeKey (Path basePath, KeyPair keyPair, String privateKeyFileName, String publicKeyFileName, boolean force)
 specifier|private
 specifier|synchronized
@@ -841,7 +861,7 @@ name|permissionSet
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks if private and public key file already exists. Throws IOException    * if file exists and force flag is set to false, else will delete the    * existing file.    *    * @param privateKeyFile - Private key file.    * @param force - forces overwriting the keys.    * @param publicKeyFile - public key file.    * @throws IOException    */
+comment|/**    * Checks if private and public key file already exists. Throws IOException    * if file exists and force flag is set to false, else will delete the    * existing file.    *    * @param privateKeyFile - Private key file.    * @param force - forces overwriting the keys.    * @param publicKeyFile - public key file.    * @throws IOException - On I/O failure.    */
 DECL|method|checkKeyFile (File privateKeyFile, boolean force, File publicKeyFile)
 specifier|private
 name|void
@@ -948,7 +968,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Checks if base path exists and sets file permissions.    *    * @param basePath - base path to write key    * @throws IOException    */
+comment|/**    * Checks if base path exists and sets file permissions.    *    * @param basePath - base path to write key    * @throws IOException - On I/O failure.    */
 DECL|method|checkPreconditions (Path basePath)
 specifier|private
 name|void
