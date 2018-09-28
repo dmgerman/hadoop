@@ -7987,6 +7987,7 @@ case|:
 name|testDisallowSnapshotException
 argument_list|()
 expr_stmt|;
+break|break;
 case|case
 name|FILE_STATUS_ATTR
 case|:
