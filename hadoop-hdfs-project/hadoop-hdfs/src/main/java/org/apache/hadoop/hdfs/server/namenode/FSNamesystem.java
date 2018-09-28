@@ -24026,6 +24026,33 @@ name|getTotalECBlockGroups
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the enabled erasure coding policies separated with comma.    */
+annotation|@
+name|Override
+comment|// ECBlockGroupsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"EnabledEcPolicies"
+block|,
+literal|"Enabled erasure coding policies"
+block|}
+argument_list|)
+DECL|method|getEnabledEcPolicies ()
+specifier|public
+name|String
+name|getEnabledEcPolicies
+parameter_list|()
+block|{
+return|return
+name|getErasureCodingPolicyManager
+argument_list|()
+operator|.
+name|getEnabledPoliciesMetric
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getBlockDeletionStartTime ()

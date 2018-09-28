@@ -86,6 +86,12 @@ name|long
 name|getTotalECBlockGroups
 parameter_list|()
 function_decl|;
+comment|/**    * @return the enabled erasure coding policies separated with comma.    */
+DECL|method|getEnabledEcPolicies ()
+name|String
+name|getEnabledEcPolicies
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

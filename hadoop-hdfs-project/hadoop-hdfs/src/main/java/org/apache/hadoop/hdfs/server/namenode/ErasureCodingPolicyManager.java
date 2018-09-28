@@ -218,6 +218,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1869,6 +1883,26 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getEnabledPoliciesMetric ()
+specifier|public
+name|String
+name|getEnabledPoliciesMetric
+parameter_list|()
+block|{
+return|return
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|", "
+argument_list|,
+name|enabledPoliciesByName
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class
