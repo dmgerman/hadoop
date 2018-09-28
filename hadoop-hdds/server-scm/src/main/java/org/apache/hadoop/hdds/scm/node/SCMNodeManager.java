@@ -542,16 +542,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashMap
 import|;
 end_import
@@ -583,18 +573,6 @@ operator|.
 name|util
 operator|.
 name|UUID
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentHashMap
 import|;
 end_import
 
@@ -648,19 +626,6 @@ specifier|private
 specifier|final
 name|NodeStateManager
 name|nodeStateManager
-decl_stmt|;
-comment|// Individual live node stats
-comment|// TODO: NodeStat should be moved to NodeStatemanager (NodeStateMap)
-DECL|field|nodeStats
-specifier|private
-specifier|final
-name|ConcurrentHashMap
-argument_list|<
-name|UUID
-argument_list|,
-name|SCMNodeStat
-argument_list|>
-name|nodeStats
 decl_stmt|;
 comment|// Should we maintain aggregated stats? If this is not frequently used, we
 comment|// can always calculate it from nodeStats whenever required.
@@ -751,15 +716,6 @@ name|conf
 argument_list|,
 name|eventPublisher
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|nodeStats
-operator|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<>
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1259,20 +1215,24 @@ parameter_list|)
 block|{
 name|SCMNodeStat
 name|stat
-init|=
-name|nodeStats
+decl_stmt|;
+try|try
+block|{
+name|stat
+operator|=
+name|nodeStateManager
 operator|.
-name|get
+name|getNodeStat
 argument_list|(
 name|dnId
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|stat
-operator|==
-literal|null
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NodeNotFoundException
+name|e
+parameter_list|)
 block|{
 name|LOG
 operator|.
@@ -1380,15 +1340,6 @@ argument_list|,
 name|totalRemaining
 argument_list|)
 expr_stmt|;
-name|nodeStats
-operator|.
-name|put
-argument_list|(
-name|dnId
-argument_list|,
-name|stat
-argument_list|)
-expr_stmt|;
 name|scmStat
 operator|.
 name|add
@@ -1397,6 +1348,15 @@ name|stat
 argument_list|)
 expr_stmt|;
 block|}
+name|nodeStateManager
+operator|.
+name|setNodeStat
+argument_list|(
+name|dnId
+argument_list|,
+name|stat
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Closes this stream and releases any system resources associated with it. If    * the stream is already closed then invoking this method has no effect.    *    * @throws IOException if an I/O error occurs    */
 annotation|@
@@ -1551,9 +1511,9 @@ argument_list|(
 name|datanodeDetails
 argument_list|)
 expr_stmt|;
-name|nodeStats
+name|nodeStateManager
 operator|.
-name|put
+name|setNodeStat
 argument_list|(
 name|dnId
 argument_list|,
@@ -1821,15 +1781,13 @@ name|getNodeStats
 parameter_list|()
 block|{
 return|return
-name|Collections
+name|nodeStateManager
 operator|.
-name|unmodifiableMap
-argument_list|(
-name|nodeStats
-argument_list|)
+name|getNodeStatsMap
+argument_list|()
 return|;
 block|}
-comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails - datanode ID.    * @return node stat if it is live/stale, null if it is decommissioned or    * doesn't exist.    */
 annotation|@
 name|Override
 DECL|method|getNodeStat (DatanodeDetails datanodeDetails)
@@ -1841,13 +1799,15 @@ name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 block|{
+try|try
+block|{
 return|return
 operator|new
 name|SCMNodeMetric
 argument_list|(
-name|nodeStats
+name|nodeStateManager
 operator|.
-name|get
+name|getNodeStat
 argument_list|(
 name|datanodeDetails
 operator|.
@@ -1856,6 +1816,29 @@ argument_list|()
 argument_list|)
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|NodeNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"SCM getNodeStat from a decommissioned or removed datanode {}"
+argument_list|,
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1977,7 +1960,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove the node stats and update the storage stats    * in this SCM Node Manager.    *    * @param dnUuid datanode uuid.    */
+comment|/**    * Update the node stats and cluster storage stats in this SCM Node Manager.    *    * @param dnUuid datanode uuid.    */
 annotation|@
 name|Override
 DECL|method|processDeadNode (UUID dnUuid)
@@ -1989,16 +1972,25 @@ name|UUID
 name|dnUuid
 parameter_list|)
 block|{
+try|try
+block|{
 name|SCMNodeStat
 name|stat
 init|=
-name|nodeStats
+name|nodeStateManager
 operator|.
-name|get
+name|getNodeStat
 argument_list|(
 name|dnUuid
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|stat
+operator|!=
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -2008,13 +2000,6 @@ argument_list|,
 name|dnUuid
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|stat
-operator|!=
-literal|null
-condition|)
-block|{
 name|scmStat
 operator|.
 name|subtract
@@ -2031,6 +2016,25 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|NodeNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can't update stats based on message of dead Datanode {}, it"
+operator|+
+literal|" doesn't exist or decommissioned already."
+argument_list|,
+name|dnUuid
 argument_list|)
 expr_stmt|;
 block|}

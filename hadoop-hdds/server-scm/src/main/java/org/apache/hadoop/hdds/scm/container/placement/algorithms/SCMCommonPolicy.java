@@ -574,6 +574,15 @@ operator|!=
 literal|null
 operator|)
 operator|&&
+operator|(
+name|nodeMetric
+operator|.
+name|get
+argument_list|()
+operator|!=
+literal|null
+operator|)
+operator|&&
 name|nodeMetric
 operator|.
 name|get

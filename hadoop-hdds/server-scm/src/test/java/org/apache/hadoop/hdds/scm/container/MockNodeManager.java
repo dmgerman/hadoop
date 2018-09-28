@@ -1242,7 +1242,7 @@ return|return
 name|nodeMetricMap
 return|;
 block|}
-comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails - datanode details.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails - datanode details.    * @return node stat if it is live/stale, null if it is decommissioned or    * doesn't exist.    */
 annotation|@
 name|Override
 DECL|method|getNodeStat (DatanodeDetails datanodeDetails)
@@ -1254,10 +1254,9 @@ name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 block|{
-return|return
-operator|new
-name|SCMNodeMetric
-argument_list|(
+name|SCMNodeStat
+name|stat
+init|=
 name|nodeMetricMap
 operator|.
 name|get
@@ -1267,6 +1266,23 @@ operator|.
 name|getUuid
 argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|stat
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|new
+name|SCMNodeMetric
+argument_list|(
+name|stat
 argument_list|)
 return|;
 block|}

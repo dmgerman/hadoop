@@ -145,6 +145,17 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
+name|this
+operator|.
+name|stat
+argument_list|,
+literal|"Argument cannot be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
 name|o
 argument_list|,
 literal|"Argument cannot be null"

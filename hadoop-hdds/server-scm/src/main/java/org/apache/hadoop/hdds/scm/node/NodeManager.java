@@ -347,7 +347,7 @@ argument_list|>
 name|getNodeStats
 parameter_list|()
 function_decl|;
-comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails DatanodeDetails.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeDetails DatanodeDetails.    * @return node stat if it is live/stale, null if it is decommissioned or    * doesn't exist.    */
 DECL|method|getNodeStat (DatanodeDetails datanodeDetails)
 name|SCMNodeMetric
 name|getNodeStat
