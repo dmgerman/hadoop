@@ -3843,6 +3843,12 @@ name|results
 operator|.
 name|isEmpty
 argument_list|()
+operator|&&
+operator|!
+name|clusterIds
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|SubClusterId
