@@ -411,21 +411,50 @@ name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|int
+name|pathNameCount
+init|=
 name|path
 operator|.
 name|getNameCount
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|pathNameCount
+operator|!=
+literal|2
+condition|)
+block|{
+name|String
+name|errorMessage
+decl_stmt|;
+if|if
+condition|(
+name|pathNameCount
 operator|<
 literal|2
 condition|)
 block|{
+name|errorMessage
+operator|=
+literal|"volume/bucket is required in listKey"
+expr_stmt|;
+block|}
+else|else
+block|{
+name|errorMessage
+operator|=
+literal|"Invalid bucket name. Delimiters (/) not allowed in "
+operator|+
+literal|"bucket name"
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|OzoneClientException
 argument_list|(
-literal|"volume/bucket is required in listKey"
+name|errorMessage
 argument_list|)
 throw|;
 block|}

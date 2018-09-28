@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Strings
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -157,6 +171,20 @@ operator|.
 name|stream
 operator|.
 name|Collectors
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|RandomStringUtils
 import|;
 end_import
 
@@ -624,50 +652,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Strings
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|RandomStringUtils
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|OZONE_REPLICATION
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
@@ -693,54 +677,6 @@ operator|.
 name|junit
 operator|.
 name|Assert
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertNotNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
 import|;
 end_import
 
@@ -895,6 +831,70 @@ operator|.
 name|CommandLine
 operator|.
 name|RunLast
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_REPLICATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -1538,9 +1538,7 @@ name|testCreateVolume
 argument_list|(
 literal|"/////vol/123"
 argument_list|,
-literal|"Bucket or Volume name has "
-operator|+
-literal|"an unsupported character : /"
+literal|"Invalid volume name. Delimiters (/) not allowed in volume name"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2070,6 +2068,37 @@ name|OzoneConsts
 operator|.
 name|OZONE_TIME_ZONE
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// test infoVolume with invalid volume name
+name|args
+operator|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"volume"
+block|,
+literal|"info"
+block|,
+name|url
+operator|+
+literal|"/"
+operator|+
+name|volumeName
+operator|+
+literal|"/invalid-name"
+block|}
+expr_stmt|;
+name|executeWithError
+argument_list|(
+name|shell
+argument_list|,
+name|args
+argument_list|,
+literal|"Invalid volume name. "
+operator|+
+literal|"Delimiters (/) not allowed in volume name"
 argument_list|)
 expr_stmt|;
 comment|// get info for non-exist volume
@@ -3676,6 +3705,42 @@ argument_list|,
 literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
 argument_list|)
 expr_stmt|;
+comment|// test createBucket with invalid bucket name
+name|args
+operator|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"bucket"
+block|,
+literal|"create"
+block|,
+name|url
+operator|+
+literal|"/"
+operator|+
+name|vol
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|bucketName
+operator|+
+literal|"/invalid-name"
+block|}
+expr_stmt|;
+name|executeWithError
+argument_list|(
+name|shell
+argument_list|,
+name|args
+argument_list|,
+literal|"Invalid bucket name. Delimiters (/) not allowed in bucket name"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -3976,6 +4041,42 @@ name|OzoneConsts
 operator|.
 name|OZONE_TIME_ZONE
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// test infoBucket with invalid bucket name
+name|args
+operator|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"bucket"
+block|,
+literal|"info"
+block|,
+name|url
+operator|+
+literal|"/"
+operator|+
+name|vol
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|bucketName
+operator|+
+literal|"/invalid-name"
+block|}
+expr_stmt|;
+name|executeWithError
+argument_list|(
+name|shell
+argument_list|,
+name|args
+argument_list|,
+literal|"Invalid bucket name. Delimiters (/) not allowed in bucket name"
 argument_list|)
 expr_stmt|;
 comment|// test get info from a non-exist bucket
@@ -4448,11 +4549,45 @@ name|bucket
 argument_list|)
 expr_stmt|;
 block|}
-comment|// test -length option
+comment|// test listBucket with invalid volume name
 name|String
 index|[]
 name|args
 init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"bucket"
+block|,
+literal|"list"
+block|,
+name|url
+operator|+
+literal|"/"
+operator|+
+name|vol
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"/invalid-name"
+block|}
+decl_stmt|;
+name|executeWithError
+argument_list|(
+name|shell
+argument_list|,
+name|args
+argument_list|,
+literal|"Invalid volume name. "
+operator|+
+literal|"Delimiters (/) not allowed in volume name"
+argument_list|)
+expr_stmt|;
+comment|// test -length option
+name|args
+operator|=
 operator|new
 name|String
 index|[]
@@ -4474,7 +4609,7 @@ literal|"--length"
 block|,
 literal|"100"
 block|}
-decl_stmt|;
+expr_stmt|;
 name|execute
 argument_list|(
 name|shell
@@ -6233,11 +6368,46 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|// test -length option
+comment|// test listKey with invalid bucket name
 name|String
 index|[]
 name|args
 init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"key"
+block|,
+literal|"list"
+block|,
+name|url
+operator|+
+literal|"/"
+operator|+
+name|volumeName
+operator|+
+literal|"/"
+operator|+
+name|bucketName
+operator|+
+literal|"/invalid-name"
+block|}
+decl_stmt|;
+name|executeWithError
+argument_list|(
+name|shell
+argument_list|,
+name|args
+argument_list|,
+literal|"Invalid bucket name. "
+operator|+
+literal|"Delimiters (/) not allowed in bucket name"
+argument_list|)
+expr_stmt|;
+comment|// test -length option
+name|args
+operator|=
 operator|new
 name|String
 index|[]
@@ -6260,7 +6430,7 @@ literal|"--length"
 block|,
 literal|"100"
 block|}
-decl_stmt|;
+expr_stmt|;
 name|execute
 argument_list|(
 name|shell
