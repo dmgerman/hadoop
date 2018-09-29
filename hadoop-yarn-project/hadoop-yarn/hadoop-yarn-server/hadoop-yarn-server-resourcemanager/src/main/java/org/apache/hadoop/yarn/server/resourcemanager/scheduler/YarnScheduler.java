@@ -1072,13 +1072,16 @@ name|NodeId
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * Normalize a resource request.    *    * @param requestedResource the resource to be normalized    * @return the normalized resource    */
-DECL|method|getNormalizedResource (Resource requestedResource)
+comment|/**    * Normalize a resource request using scheduler level maximum resource or    * queue based maximum resource.    *    * @param requestedResource the resource to be normalized    * @param maxResourceCapability Maximum container allocation value, if null or    *          empty scheduler level maximum container allocation value will be    *          used    * @return the normalized resource    */
+DECL|method|getNormalizedResource (Resource requestedResource, Resource maxResourceCapability)
 name|Resource
 name|getNormalizedResource
 parameter_list|(
 name|Resource
 name|requestedResource
+parameter_list|,
+name|Resource
+name|maxResourceCapability
 parameter_list|)
 function_decl|;
 comment|/**    * Verify whether a submitted application lifetime is valid as per configured    * Queue lifetime.    * @param queueName Name of the Queue    * @param lifetime configured application lifetime    * @return valid lifetime as per queue    */

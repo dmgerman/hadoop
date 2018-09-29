@@ -2350,6 +2350,47 @@ operator|=
 name|weight
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getMaximumContainerAllocation ()
+specifier|public
+name|Resource
+name|getMaximumContainerAllocation
+parameter_list|()
+block|{
+if|if
+condition|(
+name|maxContainerAllocation
+operator|.
+name|equals
+argument_list|(
+name|Resources
+operator|.
+name|unbounded
+argument_list|()
+argument_list|)
+operator|&&
+name|getParent
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getParent
+argument_list|()
+operator|.
+name|getMaximumContainerAllocation
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+name|maxContainerAllocation
+return|;
+block|}
+block|}
 comment|/**    * Helper method to compute the amount of minshare starvation.    *    * @return the extent of minshare starvation    */
 DECL|method|minShareStarvation ()
 specifier|private

@@ -504,6 +504,18 @@ specifier|final
 name|SchedulingPolicy
 name|defaultSchedulingPolicy
 decl_stmt|;
+comment|//Map for maximum container resource allocation per queues by queue name
+DECL|field|queueMaxContainerAllocationMap
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|queueMaxContainerAllocationMap
+decl_stmt|;
 comment|// Policy for mapping apps to queues
 annotation|@
 name|VisibleForTesting
@@ -761,6 +773,15 @@ operator|.
 name|getNonPreemptableQueues
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|queueMaxContainerAllocationMap
+operator|=
+name|queueProperties
+operator|.
+name|getMaxContainerAllocation
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|AllocationConfiguration (Configuration conf)
 specifier|public
@@ -947,6 +968,13 @@ name|nonPreemptableQueues
 operator|=
 operator|new
 name|HashSet
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|queueMaxContainerAllocationMap
+operator|=
+operator|new
+name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -1322,6 +1350,39 @@ expr_stmt|;
 block|}
 return|return
 name|maxQueueResource
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getQueueMaxContainerAllocation (String queue)
+name|Resource
+name|getQueueMaxContainerAllocation
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+block|{
+name|Resource
+name|resource
+init|=
+name|queueMaxContainerAllocationMap
+operator|.
+name|get
+argument_list|(
+name|queue
+argument_list|)
+decl_stmt|;
+return|return
+name|resource
+operator|==
+literal|null
+condition|?
+name|Resources
+operator|.
+name|unbounded
+argument_list|()
+else|:
+name|resource
 return|;
 block|}
 comment|/**    * Get the maximum resource allocation for children of the given queue.    *    * @param queue the target queue's name    * @return the max allocation on this queue or null if not set    */
@@ -1712,6 +1773,16 @@ operator|.
 name|setMaxChildQueueResource
 argument_list|(
 name|getMaxChildResources
+argument_list|(
+name|name
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|queue
+operator|.
+name|setMaxContainerAllocation
+argument_list|(
+name|getQueueMaxContainerAllocation
 argument_list|(
 name|name
 argument_list|)

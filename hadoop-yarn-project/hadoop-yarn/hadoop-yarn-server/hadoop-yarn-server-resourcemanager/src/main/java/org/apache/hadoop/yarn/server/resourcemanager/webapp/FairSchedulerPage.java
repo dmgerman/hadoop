@@ -627,6 +627,19 @@ argument_list|)
 operator|.
 name|__
 argument_list|(
+literal|"Max Container Allocation:"
+argument_list|,
+name|qinfo
+operator|.
+name|getMaxContainerAllocation
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|(
 literal|"Reserved Resources:"
 argument_list|,
 name|qinfo
@@ -829,6 +842,19 @@ argument_list|,
 name|qinfo
 operator|.
 name|getMaxResources
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|(
+literal|"Max Container Allocation:"
+argument_list|,
+name|qinfo
+operator|.
+name|getMaxContainerAllocation
 argument_list|()
 operator|.
 name|toString

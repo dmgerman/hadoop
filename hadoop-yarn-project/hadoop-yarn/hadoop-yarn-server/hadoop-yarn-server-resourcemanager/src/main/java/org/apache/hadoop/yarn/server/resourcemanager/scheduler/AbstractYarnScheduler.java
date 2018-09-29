@@ -5860,13 +5860,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getNormalizedResource (Resource requestedResource)
+DECL|method|getNormalizedResource (Resource requestedResource, Resource maxResourceCapability)
 specifier|public
 name|Resource
 name|getNormalizedResource
 parameter_list|(
 name|Resource
 name|requestedResource
+parameter_list|,
+name|Resource
+name|maxResourceCapability
 parameter_list|)
 block|{
 return|return
@@ -5882,8 +5885,7 @@ argument_list|,
 name|getMinimumResourceCapability
 argument_list|()
 argument_list|,
-name|getMaximumResourceCapability
-argument_list|()
+name|maxResourceCapability
 argument_list|,
 name|getMinimumResourceCapability
 argument_list|()
@@ -5903,6 +5905,38 @@ argument_list|>
 name|asks
 parameter_list|)
 block|{
+name|normalizeResourceRequests
+argument_list|(
+name|asks
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Normalize a list of resource requests    * using queue maximum resource allocations.    * @param asks resource requests    */
+DECL|method|normalizeResourceRequests (List<ResourceRequest> asks, String queueName)
+specifier|protected
+name|void
+name|normalizeResourceRequests
+parameter_list|(
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|asks
+parameter_list|,
+name|String
+name|queueName
+parameter_list|)
+block|{
+name|Resource
+name|maxAllocation
+init|=
+name|getMaximumResourceCapability
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|ResourceRequest
@@ -5921,6 +5955,8 @@ name|ask
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+name|maxAllocation
 argument_list|)
 argument_list|)
 expr_stmt|;

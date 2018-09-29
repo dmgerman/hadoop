@@ -345,6 +345,11 @@ specifier|private
 name|ResourceInfo
 name|reservedResources
 decl_stmt|;
+DECL|field|maxContainerAllocation
+specifier|private
+name|ResourceInfo
+name|maxContainerAllocation
+decl_stmt|;
 DECL|field|allocatedContainers
 specifier|private
 name|long
@@ -569,6 +574,19 @@ name|scheduler
 operator|.
 name|getClusterResource
 argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|maxContainerAllocation
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|scheduler
+operator|.
+name|getMaximumResourceCapability
+argument_list|(
+name|queueName
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -872,6 +890,16 @@ parameter_list|()
 block|{
 return|return
 name|maxResources
+return|;
+block|}
+DECL|method|getMaxContainerAllocation ()
+specifier|public
+name|ResourceInfo
+name|getMaxContainerAllocation
+parameter_list|()
+block|{
+return|return
+name|maxContainerAllocation
 return|;
 block|}
 DECL|method|getReservedResources ()

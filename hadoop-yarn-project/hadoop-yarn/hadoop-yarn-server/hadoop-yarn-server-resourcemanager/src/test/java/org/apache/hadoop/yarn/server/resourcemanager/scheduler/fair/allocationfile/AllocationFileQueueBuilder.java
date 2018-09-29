@@ -324,6 +324,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|maxContainerAllocation ( String maxContainerAllocation)
+specifier|public
+name|AllocationFileQueueBuilder
+name|maxContainerAllocation
+parameter_list|(
+name|String
+name|maxContainerAllocation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queuePropertiesBuilder
+operator|.
+name|maxContainerAllocation
+argument_list|(
+name|maxContainerAllocation
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|subQueue (String queueName)
 specifier|public
 name|AllocationFileQueueBuilder

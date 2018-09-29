@@ -669,6 +669,11 @@ name|isDynamic
 init|=
 literal|true
 decl_stmt|;
+DECL|field|maxContainerAllocation
+specifier|protected
+name|Resource
+name|maxContainerAllocation
+decl_stmt|;
 DECL|method|FSQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSQueue
@@ -962,6 +967,29 @@ operator|=
 name|maxShare
 expr_stmt|;
 block|}
+DECL|method|setMaxContainerAllocation (Resource maxContainerAllocation)
+specifier|public
+name|void
+name|setMaxContainerAllocation
+parameter_list|(
+name|Resource
+name|maxContainerAllocation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxContainerAllocation
+operator|=
+name|maxContainerAllocation
+expr_stmt|;
+block|}
+DECL|method|getMaximumContainerAllocation ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getMaximumContainerAllocation
+parameter_list|()
+function_decl|;
 annotation|@
 name|Override
 DECL|method|getMaxShare ()

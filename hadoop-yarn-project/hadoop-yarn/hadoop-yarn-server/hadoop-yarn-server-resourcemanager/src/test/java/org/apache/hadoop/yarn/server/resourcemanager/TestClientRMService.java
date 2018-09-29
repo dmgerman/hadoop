@@ -3893,12 +3893,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
 name|mock
 argument_list|(
-name|YarnScheduler
+name|ResourceScheduler
 operator|.
 name|class
 argument_list|)
@@ -3915,7 +3915,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -3972,7 +3972,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -4446,10 +4446,10 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
-name|mockYarnScheduler
+name|mockResourceScheduler
 argument_list|()
 decl_stmt|;
 name|RMContext
@@ -4464,7 +4464,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -4527,7 +4527,7 @@ name|attemptId
 argument_list|,
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -4960,10 +4960,10 @@ name|IOException
 throws|,
 name|YarnException
 block|{
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
-name|mockYarnScheduler
+name|mockResourceScheduler
 argument_list|()
 decl_stmt|;
 name|RMContext
@@ -4978,7 +4978,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -4995,7 +4995,7 @@ name|getRMApps
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|)
 decl_stmt|;
 name|when
@@ -5034,7 +5034,7 @@ name|RMAppManager
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -5151,7 +5151,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|appManager
 argument_list|,
@@ -6975,12 +6975,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
 name|mock
 argument_list|(
-name|YarnScheduler
+name|ResourceScheduler
 operator|.
 name|class
 argument_list|)
@@ -6997,7 +6997,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -7111,7 +7111,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -7438,7 +7438,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -7520,10 +7520,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
-name|mockYarnScheduler
+name|mockResourceScheduler
 argument_list|()
 decl_stmt|;
 name|RMContext
@@ -7538,7 +7538,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -7574,7 +7574,7 @@ name|RMAppManager
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -7745,7 +7745,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|appManager
 argument_list|,
@@ -8198,10 +8198,10 @@ name|Exception
 block|{
 comment|/**      * 1. Submit 3 applications alternately in two queues      * 2. Test each of the filters      */
 comment|// Basic setup
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
-name|mockYarnScheduler
+name|mockResourceScheduler
 argument_list|()
 decl_stmt|;
 name|RMContext
@@ -8216,7 +8216,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -8270,7 +8270,7 @@ name|RMAppManager
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -8389,7 +8389,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|appManager
 argument_list|,
@@ -9310,10 +9310,10 @@ name|BrokenBarrierException
 throws|,
 name|YarnException
 block|{
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
-name|mockYarnScheduler
+name|mockResourceScheduler
 argument_list|()
 decl_stmt|;
 name|RMContext
@@ -9328,7 +9328,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -9364,7 +9364,7 @@ name|RMAppManager
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -9588,7 +9588,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|appManager
 argument_list|,
@@ -9891,13 +9891,13 @@ return|return
 name|submitRequest
 return|;
 block|}
-DECL|method|mockRMContext (YarnScheduler yarnScheduler, RMContext rmContext)
+DECL|method|mockRMContext (ResourceScheduler scheduler, RMContext rmContext)
 specifier|private
 name|void
 name|mockRMContext
 parameter_list|(
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -10056,7 +10056,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getQueueInfo
 argument_list|(
@@ -10080,7 +10080,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getQueueInfo
 argument_list|(
@@ -10179,7 +10179,7 @@ name|getRMApps
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|)
 decl_stmt|;
 name|when
@@ -10197,7 +10197,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getAppsInQueue
 argument_list|(
@@ -10216,16 +10216,6 @@ name|apps
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ResourceScheduler
-name|rs
-init|=
-name|mock
-argument_list|(
-name|ResourceScheduler
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 name|when
 argument_list|(
 name|rmContext
@@ -10236,7 +10226,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|rs
+name|scheduler
 argument_list|)
 expr_stmt|;
 block|}
@@ -11107,28 +11097,28 @@ return|return
 name|app
 return|;
 block|}
-DECL|method|mockYarnScheduler ()
+DECL|method|mockResourceScheduler ()
 specifier|private
 specifier|static
-name|YarnScheduler
-name|mockYarnScheduler
+name|ResourceScheduler
+name|mockResourceScheduler
 parameter_list|()
 throws|throws
 name|YarnException
 block|{
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
 name|mock
 argument_list|(
-name|YarnScheduler
+name|ResourceScheduler
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getMinimumResourceCapability
 argument_list|()
@@ -11148,7 +11138,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getMaximumResourceCapability
 argument_list|()
@@ -11168,16 +11158,12 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getMaximumResourceCapability
 argument_list|(
-name|any
-argument_list|(
-name|String
-operator|.
-name|class
-argument_list|)
+name|anyString
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
@@ -11195,7 +11181,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getAppsInQueue
 argument_list|(
@@ -11223,7 +11209,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getAppsInQueue
 argument_list|(
@@ -11254,7 +11240,7 @@ argument_list|)
 decl_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getAppResourceUsageReport
 argument_list|(
@@ -11279,7 +11265,7 @@ argument_list|)
 decl_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|getResourceCalculator
 argument_list|()
@@ -11292,7 +11278,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|yarnScheduler
+name|scheduler
 operator|.
 name|checkAndGetApplicationPriority
 argument_list|(
@@ -11333,7 +11319,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|yarnScheduler
+name|scheduler
 return|;
 block|}
 DECL|method|setupResourceManager ()
@@ -17467,10 +17453,10 @@ name|YarnException
 block|{
 comment|/*      * Submit 3 applications alternately in two queues      */
 comment|// Basic setup
-name|YarnScheduler
-name|yarnScheduler
+name|ResourceScheduler
+name|scheduler
 init|=
-name|mockYarnScheduler
+name|mockResourceScheduler
 argument_list|()
 decl_stmt|;
 name|RMContext
@@ -17485,7 +17471,7 @@ argument_list|)
 decl_stmt|;
 name|mockRMContext
 argument_list|(
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|rmContext
 argument_list|)
@@ -17539,7 +17525,7 @@ name|RMAppManager
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 literal|null
 argument_list|,
@@ -17706,7 +17692,7 @@ name|ClientRMService
 argument_list|(
 name|rmContext
 argument_list|,
-name|yarnScheduler
+name|scheduler
 argument_list|,
 name|appManager
 argument_list|,

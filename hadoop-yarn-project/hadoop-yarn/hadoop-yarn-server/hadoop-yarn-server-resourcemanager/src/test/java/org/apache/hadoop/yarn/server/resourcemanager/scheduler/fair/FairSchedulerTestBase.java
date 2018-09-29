@@ -820,6 +820,15 @@ name|SLEEP_RETRIES
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB_VALUE
+specifier|protected
+specifier|static
+specifier|final
+name|int
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB_VALUE
+init|=
+literal|10240
+decl_stmt|;
 DECL|field|NULL_UPDATE_REQUESTS
 specifier|final
 specifier|static
@@ -905,7 +914,7 @@ name|YarnConfiguration
 operator|.
 name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
 argument_list|,
-literal|10240
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB_VALUE
 argument_list|)
 expr_stmt|;
 name|conf

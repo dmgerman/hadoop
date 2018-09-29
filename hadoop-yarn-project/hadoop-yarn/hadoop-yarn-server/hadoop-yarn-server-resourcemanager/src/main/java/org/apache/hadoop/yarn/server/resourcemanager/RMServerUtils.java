@@ -1038,7 +1038,7 @@ init|=
 literal|"INVALID_CONTAINER_ID"
 decl_stmt|;
 DECL|field|RESOURCE_OUTSIDE_ALLOWED_RANGE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -1740,7 +1740,7 @@ name|msg
 return|;
 block|}
 comment|/**    * Utility method to validate a list resource requests, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
-DECL|method|normalizeAndValidateRequests (List<ResourceRequest> ask, Resource maximumResource, String queueName, YarnScheduler scheduler, RMContext rmContext)
+DECL|method|normalizeAndValidateRequests (List<ResourceRequest> ask, Resource maximumAllocation, String queueName, YarnScheduler scheduler, RMContext rmContext)
 specifier|public
 specifier|static
 name|void
@@ -1753,7 +1753,7 @@ argument_list|>
 name|ask
 parameter_list|,
 name|Resource
-name|maximumResource
+name|maximumAllocation
 parameter_list|,
 name|String
 name|queueName
@@ -1808,11 +1808,11 @@ control|)
 block|{
 name|SchedulerUtils
 operator|.
-name|normalizeAndvalidateRequest
+name|normalizeAndValidateRequest
 argument_list|(
 name|resReq
 argument_list|,
-name|maximumResource
+name|maximumAllocation
 argument_list|,
 name|queueName
 argument_list|,
@@ -2218,6 +2218,8 @@ name|request
 operator|.
 name|getCapability
 argument_list|()
+argument_list|,
+name|maximumAllocation
 argument_list|)
 argument_list|)
 expr_stmt|;

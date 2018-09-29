@@ -1026,7 +1026,7 @@ name|diagnostics
 argument_list|)
 return|;
 block|}
-comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *     * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost     *         container    */
+comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *    * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost     *         container    */
 DECL|method|createAbnormalContainerStatus ( ContainerId containerId, int exitStatus, String diagnostics)
 specifier|private
 specifier|static
@@ -1318,7 +1318,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumResource, String queueName, YarnScheduler scheduler, boolean isRecovery, RMContext rmContext)
+DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumAllocation, String queueName, YarnScheduler scheduler, boolean isRecovery, RMContext rmContext, QueueInfo queueInfo)
 specifier|public
 specifier|static
 name|void
@@ -1328,52 +1328,7 @@ name|ResourceRequest
 name|resReq
 parameter_list|,
 name|Resource
-name|maximumResource
-parameter_list|,
-name|String
-name|queueName
-parameter_list|,
-name|YarnScheduler
-name|scheduler
-parameter_list|,
-name|boolean
-name|isRecovery
-parameter_list|,
-name|RMContext
-name|rmContext
-parameter_list|)
-throws|throws
-name|InvalidResourceRequestException
-block|{
-name|normalizeAndValidateRequest
-argument_list|(
-name|resReq
-argument_list|,
-name|maximumResource
-argument_list|,
-name|queueName
-argument_list|,
-name|scheduler
-argument_list|,
-name|isRecovery
-argument_list|,
-name|rmContext
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumResource, String queueName, YarnScheduler scheduler, boolean isRecovery, RMContext rmContext, QueueInfo queueInfo)
-specifier|private
-specifier|static
-name|void
-name|normalizeAndValidateRequest
-parameter_list|(
-name|ResourceRequest
-name|resReq
-parameter_list|,
-name|Resource
-name|maximumResource
+name|maximumAllocation
 parameter_list|,
 name|String
 name|queueName
@@ -1528,7 +1483,7 @@ name|validateResourceRequest
 argument_list|(
 name|resReq
 argument_list|,
-name|maximumResource
+name|maximumAllocation
 argument_list|,
 name|queueInfo
 argument_list|,
@@ -1537,57 +1492,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|normalizeAndvalidateRequest (ResourceRequest resReq, Resource maximumResource, String queueName, YarnScheduler scheduler, RMContext rmContext)
+DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumAllocation, String queueName, YarnScheduler scheduler, RMContext rmContext, QueueInfo queueInfo)
 specifier|public
 specifier|static
 name|void
-name|normalizeAndvalidateRequest
+name|normalizeAndValidateRequest
 parameter_list|(
 name|ResourceRequest
 name|resReq
 parameter_list|,
 name|Resource
-name|maximumResource
-parameter_list|,
-name|String
-name|queueName
-parameter_list|,
-name|YarnScheduler
-name|scheduler
-parameter_list|,
-name|RMContext
-name|rmContext
-parameter_list|)
-throws|throws
-name|InvalidResourceRequestException
-block|{
-name|normalizeAndvalidateRequest
-argument_list|(
-name|resReq
-argument_list|,
-name|maximumResource
-argument_list|,
-name|queueName
-argument_list|,
-name|scheduler
-argument_list|,
-name|rmContext
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|normalizeAndvalidateRequest (ResourceRequest resReq, Resource maximumResource, String queueName, YarnScheduler scheduler, RMContext rmContext, QueueInfo queueInfo)
-specifier|public
-specifier|static
-name|void
-name|normalizeAndvalidateRequest
-parameter_list|(
-name|ResourceRequest
-name|resReq
-parameter_list|,
-name|Resource
-name|maximumResource
+name|maximumAllocation
 parameter_list|,
 name|String
 name|queueName
@@ -1608,7 +1523,7 @@ name|normalizeAndValidateRequest
 argument_list|(
 name|resReq
 argument_list|,
-name|maximumResource
+name|maximumAllocation
 argument_list|,
 name|queueName
 argument_list|,
@@ -1622,8 +1537,8 @@ name|queueInfo
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    *     * @throws InvalidResourceRequestException when there is invalid request    */
-DECL|method|validateResourceRequest (ResourceRequest resReq, Resource maximumResource, QueueInfo queueInfo, RMContext rmContext)
+comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    *    * @throws InvalidResourceRequestException when there is invalid request    */
+DECL|method|validateResourceRequest (ResourceRequest resReq, Resource maximumAllocation, QueueInfo queueInfo, RMContext rmContext)
 specifier|private
 specifier|static
 name|void
@@ -1633,7 +1548,7 @@ name|ResourceRequest
 name|resReq
 parameter_list|,
 name|Resource
-name|maximumResource
+name|maximumAllocation
 parameter_list|,
 name|QueueInfo
 name|queueInfo
@@ -1657,7 +1572,7 @@ name|checkResourceRequestAgainstAvailableResource
 argument_list|(
 name|requestedResource
 argument_list|,
-name|maximumResource
+name|maximumAllocation
 argument_list|)
 expr_stmt|;
 name|String

@@ -114,6 +114,12 @@ specifier|final
 name|Double
 name|fairSharePreemptionThreshold
 decl_stmt|;
+DECL|field|maxContainerAllocation
+specifier|private
+specifier|final
+name|String
+name|maxContainerAllocation
+decl_stmt|;
 DECL|method|AllocationFileQueueProperties (Builder builder)
 name|AllocationFileQueueProperties
 parameter_list|(
@@ -224,6 +230,14 @@ operator|=
 name|builder
 operator|.
 name|fairSharePreemptionThreshold
+expr_stmt|;
+name|this
+operator|.
+name|maxContainerAllocation
+operator|=
+name|builder
+operator|.
+name|maxContainerAllocation
 expr_stmt|;
 block|}
 DECL|method|getQueueName ()
@@ -356,6 +370,16 @@ return|return
 name|fairSharePreemptionThreshold
 return|;
 block|}
+DECL|method|getMaxContainerAllocation ()
+specifier|public
+name|String
+name|getMaxContainerAllocation
+parameter_list|()
+block|{
+return|return
+name|maxContainerAllocation
+return|;
+block|}
 comment|/**    * Builder class for {@link AllocationFileQueueProperties}.    */
 DECL|class|Builder
 specifier|public
@@ -430,6 +454,11 @@ DECL|field|fairSharePreemptionThreshold
 specifier|private
 name|Double
 name|fairSharePreemptionThreshold
+decl_stmt|;
+DECL|field|maxContainerAllocation
+specifier|private
+name|String
+name|maxContainerAllocation
 decl_stmt|;
 DECL|method|Builder ()
 name|Builder
@@ -595,6 +624,25 @@ operator|.
 name|maxAMShare
 operator|=
 name|maxAMShare
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|maxContainerAllocation (String maxContainerAllocation)
+specifier|public
+name|Builder
+name|maxContainerAllocation
+parameter_list|(
+name|String
+name|maxContainerAllocation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxContainerAllocation
+operator|=
+name|maxContainerAllocation
 expr_stmt|;
 return|return
 name|this
