@@ -237,7 +237,7 @@ block|{
 return|return
 name|OMConfigKeys
 operator|.
-name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE
+name|OZONE_OM_HTTP_KERBEROS_KEYTAB_FILE
 return|;
 block|}
 DECL|method|getSpnegoPrincipal ()
@@ -251,7 +251,7 @@ block|{
 return|return
 name|OMConfigKeys
 operator|.
-name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|OZONE_OM_HTTP_KERBEROS_PRINCIPAL_KEY
 return|;
 block|}
 DECL|method|getEnabledKey ()

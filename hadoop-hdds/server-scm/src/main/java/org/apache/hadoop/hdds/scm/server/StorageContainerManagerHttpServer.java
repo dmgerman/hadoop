@@ -215,7 +215,7 @@ block|{
 return|return
 name|ScmConfigKeys
 operator|.
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
 return|;
 block|}
 DECL|method|getSpnegoPrincipal ()
@@ -229,7 +229,7 @@ block|{
 return|return
 name|ScmConfigKeys
 operator|.
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_HTTP_KERBEROS_PRINCIPAL_KEY
 return|;
 block|}
 DECL|method|getEnabledKey ()

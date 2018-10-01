@@ -1224,15 +1224,6 @@ name|ScmConfigKeys
 operator|.
 name|DFS_RATIS_SERVER_FAILURE_DURATION_DEFAULT
 decl_stmt|;
-DECL|field|OZONE_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
-init|=
-literal|"ozone.web.authentication.kerberos.principal"
-decl_stmt|;
 DECL|field|HDDS_DATANODE_PLUGINS_KEY
 specifier|public
 specifier|static

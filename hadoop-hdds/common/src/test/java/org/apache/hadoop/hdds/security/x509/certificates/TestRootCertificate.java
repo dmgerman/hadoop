@@ -330,9 +330,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
 import|;

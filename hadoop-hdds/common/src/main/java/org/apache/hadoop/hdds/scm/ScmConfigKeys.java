@@ -1274,19 +1274,19 @@ specifier|public
 specifier|static
 specifier|final
 name|String
-DECL|field|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+DECL|field|HDDS_SCM_HTTP_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_HTTP_KERBEROS_PRINCIPAL_KEY
 init|=
-literal|"hdds.scm.web.authentication.kerberos.principal"
+literal|"hdds.scm.http.kerberos.principal"
 decl_stmt|;
 specifier|public
 specifier|static
 specifier|final
 name|String
-DECL|field|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
+DECL|field|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
 init|=
-literal|"hdds.scm.web.authentication.kerberos.keytab"
+literal|"hdds.scm.http.kerberos.keytab"
 decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()

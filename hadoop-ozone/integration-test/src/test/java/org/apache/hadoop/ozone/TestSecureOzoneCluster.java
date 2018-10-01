@@ -797,7 +797,7 @@ name|get
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_HTTP_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -807,7 +807,7 @@ name|get
 argument_list|(
 name|OMConfigKeys
 operator|.
-name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|OZONE_OM_HTTP_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 expr_stmt|;
 name|createPrincipal
@@ -1001,7 +1001,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|HDDS_SCM_HTTP_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"HTTP_SCM/"
 operator|+
@@ -1035,7 +1035,7 @@ name|set
 argument_list|(
 name|OMConfigKeys
 operator|.
-name|OZONE_OM_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|OZONE_OM_HTTP_KERBEROS_PRINCIPAL_KEY
 argument_list|,
 literal|"HTTP_OM/"
 operator|+
@@ -1096,7 +1096,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|HDDS_SCM_WEB_AUTHENTICATION_KERBEROS_KEYTAB_FILE_KEY
+name|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
 argument_list|,
 name|spnegoKeytab
 operator|.
