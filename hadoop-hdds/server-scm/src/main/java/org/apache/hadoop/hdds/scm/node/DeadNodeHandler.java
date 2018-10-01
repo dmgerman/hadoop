@@ -381,6 +381,8 @@ control|)
 block|{
 try|try
 block|{
+try|try
+block|{
 name|containerStateManager
 operator|.
 name|removeContainerReplica
@@ -390,6 +392,31 @@ argument_list|,
 name|datanodeDetails
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SCMException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"DataNode {} doesn't have replica for container {}."
+argument_list|,
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -454,6 +481,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Returns logger.    * */
+DECL|method|getLogger ()
+specifier|public
+specifier|static
+name|Logger
+name|getLogger
+parameter_list|()
+block|{
+return|return
+name|LOG
+return|;
 block|}
 block|}
 end_class
