@@ -155,6 +155,15 @@ name|OZONE_S3G_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
 init|=
 literal|"ozone.s3g.authentication.kerberos.principal"
 decl_stmt|;
+DECL|field|OZONE_S3G_DOMAIN_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_S3G_DOMAIN_NAME
+init|=
+literal|"ozone.s3g.domain.name"
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|S3GatewayConfigKeys ()
 specifier|private

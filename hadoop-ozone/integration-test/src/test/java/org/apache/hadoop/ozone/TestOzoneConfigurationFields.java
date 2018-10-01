@@ -76,6 +76,22 @@ name|ScmConfigKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|s3
+operator|.
+name|S3GatewayConfigKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests if configuration constants documented in ozone-defaults.xml.  */
 end_comment
@@ -123,6 +139,10 @@ operator|.
 name|class
 block|,
 name|HddsConfigKeys
+operator|.
+name|class
+block|,
+name|S3GatewayConfigKeys
 operator|.
 name|class
 block|}
