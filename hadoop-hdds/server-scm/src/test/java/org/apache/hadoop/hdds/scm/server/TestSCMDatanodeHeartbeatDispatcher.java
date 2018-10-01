@@ -706,7 +706,7 @@ argument_list|(
 name|containerReport
 argument_list|)
 operator|.
-name|setCommandStatusReport
+name|addCommandStatusReports
 argument_list|(
 name|commandStatusReport
 argument_list|)

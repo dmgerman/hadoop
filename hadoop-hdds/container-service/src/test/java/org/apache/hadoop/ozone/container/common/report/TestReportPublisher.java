@@ -848,10 +848,8 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertNull
 argument_list|(
-literal|0
-argument_list|,
 operator|(
 operator|(
 name|CommandStatusReportPublisher
@@ -860,9 +858,6 @@ name|publisher
 operator|)
 operator|.
 name|getReport
-argument_list|()
-operator|.
-name|getCmdStatusCount
 argument_list|()
 argument_list|)
 expr_stmt|;

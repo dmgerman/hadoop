@@ -89,8 +89,6 @@ operator|.
 name|command
 operator|.
 name|CommandStatusReportHandler
-operator|.
-name|DeleteBlockCommandStatus
 import|;
 end_import
 
@@ -639,6 +637,27 @@ argument_list|,
 literal|"Datanode_Command"
 argument_list|)
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|CommandForDatanode
+argument_list|>
+DECL|field|RETRIABLE_DATANODE_COMMAND
+name|RETRIABLE_DATANODE_COMMAND
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|CommandForDatanode
+operator|.
+name|class
+argument_list|,
+literal|"Retriable_Datanode_Command"
+argument_list|)
+decl_stmt|;
 comment|/**    * A Close Container Event can be triggered under many condition. Some of them    * are: 1. A Container is full, then we stop writing further information to    * that container. DN's let SCM know that current state and sends a    * informational message that allows SCM to close the container.    *<p>    * 2. If a pipeline is open; for example Ratis; if a single node fails, we    * will proactively close these containers.    *<p>    * Once a command is dispatched to DN, we will also listen to updates from the    * datanode which lets us know that this command completed or timed out.    */
 DECL|field|CLOSE_CONTAINER
 specifier|public
@@ -768,7 +787,7 @@ name|ReplicationStatus
 operator|.
 name|class
 argument_list|,
-literal|"ReplicateCommandStatus"
+literal|"Replicate_Command_Status"
 argument_list|)
 decl_stmt|;
 comment|/**    * This event will be triggered by CommandStatusReportHandler whenever a    * status for CloseContainer SCMCommand is received.    */
@@ -790,16 +809,18 @@ name|CloseContainerStatus
 operator|.
 name|class
 argument_list|,
-literal|"CloseContainerCommandStatus"
+literal|"Close_Container_Command_Status"
 argument_list|)
 decl_stmt|;
 comment|/**    * This event will be triggered by CommandStatusReportHandler whenever a    * status for DeleteBlock SCMCommand is received.    */
 specifier|public
 specifier|static
 specifier|final
-name|Event
+name|TypedEvent
 argument_list|<
-name|DeleteBlockCommandStatus
+name|CommandStatusReportHandler
+operator|.
+name|DeleteBlockStatus
 argument_list|>
 DECL|field|DELETE_BLOCK_STATUS
 name|DELETE_BLOCK_STATUS
@@ -808,11 +829,13 @@ operator|new
 name|TypedEvent
 argument_list|<>
 argument_list|(
-name|DeleteBlockCommandStatus
+name|CommandStatusReportHandler
+operator|.
+name|DeleteBlockStatus
 operator|.
 name|class
 argument_list|,
-literal|"DeleteBlockCommandStatus"
+literal|"Delete_Block_Status"
 argument_list|)
 decl_stmt|;
 comment|/**    * This event will be triggered while processing container reports from DN    * when deleteTransactionID of container in report mismatches with the    * deleteTransactionID on SCM.    */
@@ -834,7 +857,7 @@ name|PendingDeleteStatusList
 operator|.
 name|class
 argument_list|,
-literal|"PendingDeleteStatus"
+literal|"Pending_Delete_Status"
 argument_list|)
 decl_stmt|;
 comment|/**    * This is the command for ReplicationManager to handle under/over    * replication. Sent by the ContainerReportHandler after processing the    * heartbeat.    */

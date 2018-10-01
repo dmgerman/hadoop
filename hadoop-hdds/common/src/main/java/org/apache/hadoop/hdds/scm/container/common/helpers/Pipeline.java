@@ -759,6 +759,19 @@ return|return
 name|datanodes
 return|;
 block|}
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+block|{
+return|return
+name|datanodes
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns the leader host.    *    * @return First Machine.    */
 DECL|method|getLeaderHost ()
 specifier|public

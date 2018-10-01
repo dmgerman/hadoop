@@ -336,26 +336,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
-operator|.
-name|SCMException
-operator|.
-name|ResultCodes
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|node
 operator|.
 name|NodeManager
@@ -1219,7 +1199,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the ContainerInfo from the container ID.    *    * @param containerID - ID of container.    * @return - ContainerWithPipeline such as creation state and the pipeline.    * @throws IOException    */
+comment|/**    * Returns the ContainerInfo and pipeline from the containerID. If container    * has no available replicas in datanodes it returns pipeline with no    * datanodes and empty leaderID . Pipeline#isEmpty can be used to check for    * an empty pipeline.    *    * @param containerID - ID of container.    * @return - ContainerWithPipeline such as creation state and the pipeline.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|getContainerWithPipeline (long containerID)
@@ -1310,6 +1290,11 @@ expr_stmt|;
 name|Pipeline
 name|pipeline
 decl_stmt|;
+name|String
+name|leaderId
+init|=
+literal|""
+decl_stmt|;
 if|if
 condition|(
 name|contInfo
@@ -1353,33 +1338,15 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+operator|!
 name|dnWithReplicas
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|==
-literal|0
 condition|)
 block|{
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"Can't create a pipeline for container with "
-operator|+
-literal|"no replica."
-argument_list|,
-name|ResultCodes
-operator|.
-name|NO_REPLICA_FOUND
-argument_list|)
-throw|;
-block|}
-name|pipeline
+name|leaderId
 operator|=
-operator|new
-name|Pipeline
-argument_list|(
 name|dnWithReplicas
 operator|.
 name|iterator
@@ -1390,6 +1357,14 @@ argument_list|()
 operator|.
 name|getUuidString
 argument_list|()
+expr_stmt|;
+block|}
+name|pipeline
+operator|=
+operator|new
+name|Pipeline
+argument_list|(
+name|leaderId
 argument_list|,
 name|contInfo
 operator|.

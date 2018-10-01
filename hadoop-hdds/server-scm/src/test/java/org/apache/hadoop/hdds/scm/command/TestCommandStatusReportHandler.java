@@ -440,7 +440,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"DeleteBlockCommandStatus"
+literal|"Delete_Block_Status"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -453,7 +453,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"CloseContainerCommandStatus"
+literal|"Close_Container_Command_Status"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -466,7 +466,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"ReplicateCommandStatus"
+literal|"Replicate_Command_Status"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -502,7 +502,7 @@ name|contains
 argument_list|(
 literal|"firing event of type "
 operator|+
-literal|"DeleteBlockCommandStatus"
+literal|"Delete_Block_Status"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -517,7 +517,7 @@ name|contains
 argument_list|(
 literal|"firing event of type "
 operator|+
-literal|"CloseContainerCommandStatus"
+literal|"Close_Container_Command_Status"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -532,7 +532,7 @@ name|contains
 argument_list|(
 literal|"firing event of type "
 operator|+
-literal|"ReplicateCommandStatus"
+literal|"Replicate_Command_Status"
 argument_list|)
 argument_list|)
 expr_stmt|;

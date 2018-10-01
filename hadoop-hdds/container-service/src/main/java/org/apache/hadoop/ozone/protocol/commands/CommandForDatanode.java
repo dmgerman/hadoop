@@ -42,6 +42,24 @@ name|GeneratedMessage
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|server
+operator|.
+name|events
+operator|.
+name|IdentifiableEventPayload
+import|;
+end_import
+
 begin_comment
 comment|/**  * Command for the datanode with the destination address.  */
 end_comment
@@ -56,6 +74,8 @@ name|T
 extends|extends
 name|GeneratedMessage
 parameter_list|>
+implements|implements
+name|IdentifiableEventPayload
 block|{
 DECL|field|datanodeId
 specifier|private
@@ -120,6 +140,19 @@ parameter_list|()
 block|{
 return|return
 name|command
+return|;
+block|}
+DECL|method|getId ()
+specifier|public
+name|long
+name|getId
+parameter_list|()
+block|{
+return|return
+name|command
+operator|.
+name|getId
+argument_list|()
 return|;
 block|}
 block|}

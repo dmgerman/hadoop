@@ -335,6 +335,20 @@ break|break;
 case|case
 name|deleteBlocksCommand
 case|:
+if|if
+condition|(
+name|cmdStatus
+operator|.
+name|getStatus
+argument_list|()
+operator|==
+name|CommandStatus
+operator|.
+name|Status
+operator|.
+name|EXECUTED
+condition|)
+block|{
 name|publisher
 operator|.
 name|fireEvent
@@ -344,12 +358,13 @@ operator|.
 name|DELETE_BLOCK_STATUS
 argument_list|,
 operator|new
-name|DeleteBlockCommandStatus
+name|DeleteBlockStatus
 argument_list|(
 name|cmdStatus
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 default|default:
 name|LOGGER
@@ -492,17 +507,17 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Wrapper event for DeleteBlock Command.    */
-DECL|class|DeleteBlockCommandStatus
+DECL|class|DeleteBlockStatus
 specifier|public
 specifier|static
 class|class
-name|DeleteBlockCommandStatus
+name|DeleteBlockStatus
 extends|extends
 name|CommandStatusEvent
 block|{
-DECL|method|DeleteBlockCommandStatus (CommandStatus cmdStatus)
+DECL|method|DeleteBlockStatus (CommandStatus cmdStatus)
 specifier|public
-name|DeleteBlockCommandStatus
+name|DeleteBlockStatus
 parameter_list|(
 name|CommandStatus
 name|cmdStatus

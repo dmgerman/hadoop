@@ -323,6 +323,14 @@ argument_list|()
 operator|.
 name|isContainerOpen
 argument_list|()
+operator|||
+name|containerWithPipeline
+operator|.
+name|getPipeline
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return
@@ -358,31 +366,11 @@ return|return
 literal|false
 return|;
 block|}
-if|if
-condition|(
-name|pipeline
-operator|==
-literal|null
-condition|)
-block|{
-name|SCMBlockDeletingService
-operator|.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Container {} not found, continue to process next"
-argument_list|,
-name|tx
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
+name|boolean
+name|success
+init|=
 literal|false
-return|;
-block|}
+decl_stmt|;
 for|for
 control|(
 name|DatanodeDetails
@@ -418,6 +406,8 @@ argument_list|)
 condition|)
 block|{
 comment|// Transaction need not be sent to dns which have already committed it
+name|success
+operator|=
 name|addTransactionToDN
 argument_list|(
 name|dnID
@@ -428,12 +418,12 @@ expr_stmt|;
 block|}
 block|}
 return|return
-literal|true
+name|success
 return|;
 block|}
 DECL|method|addTransactionToDN (UUID dnID, DeletedBlocksTransaction tx)
 specifier|private
-name|void
+name|boolean
 name|addTransactionToDN
 parameter_list|(
 name|UUID
@@ -529,6 +519,9 @@ expr_stmt|;
 name|currentTXNum
 operator|++
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 block|}
 block|}
@@ -546,6 +539,9 @@ argument_list|,
 name|tx
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 name|SCMBlockDeletingService
 operator|.
@@ -563,6 +559,9 @@ name|getTxID
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 DECL|method|getDatanodeIDs ()
 name|Set

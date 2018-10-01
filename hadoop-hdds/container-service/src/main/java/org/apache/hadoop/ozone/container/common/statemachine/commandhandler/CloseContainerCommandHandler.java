@@ -569,7 +569,16 @@ name|context
 argument_list|,
 name|command
 argument_list|,
+parameter_list|(
+name|cmdStatus
+parameter_list|)
+lambda|->
+name|cmdStatus
+operator|.
+name|setStatus
+argument_list|(
 name|cmdExecuted
+argument_list|)
 argument_list|,
 name|LOG
 argument_list|)

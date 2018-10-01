@@ -888,7 +888,7 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|DATANODE_COMMAND
+name|RETRIABLE_DATANODE_COMMAND
 argument_list|,
 operator|new
 name|CommandForDatanode

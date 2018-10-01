@@ -367,8 +367,17 @@ expr_stmt|;
 return|return
 name|builder
 operator|.
+name|getCmdStatusCount
+argument_list|()
+operator|>
+literal|0
+condition|?
+name|builder
+operator|.
 name|build
 argument_list|()
+else|:
+literal|null
 return|;
 block|}
 block|}

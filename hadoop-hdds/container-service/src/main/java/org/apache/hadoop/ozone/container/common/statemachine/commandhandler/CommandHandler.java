@@ -116,6 +116,24 @@ name|protocol
 operator|.
 name|commands
 operator|.
+name|CommandStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|commands
+operator|.
 name|SCMCommand
 import|;
 end_import
@@ -127,6 +145,18 @@ operator|.
 name|slf4j
 operator|.
 name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|function
+operator|.
+name|Consumer
 import|;
 end_import
 
@@ -179,7 +209,7 @@ name|getAverageRunTime
 parameter_list|()
 function_decl|;
 comment|/**    * Default implementation for updating command status.    */
-DECL|method|updateCommandStatus (StateContext context, SCMCommand command, boolean cmdExecuted, Logger log)
+DECL|method|updateCommandStatus (StateContext context, SCMCommand command, Consumer<CommandStatus> cmdStatusUpdater, Logger log)
 specifier|default
 name|void
 name|updateCommandStatus
@@ -190,8 +220,11 @@ parameter_list|,
 name|SCMCommand
 name|command
 parameter_list|,
-name|boolean
-name|cmdExecuted
+name|Consumer
+argument_list|<
+name|CommandStatus
+argument_list|>
+name|cmdStatusUpdater
 parameter_list|,
 name|Logger
 name|log
@@ -209,7 +242,7 @@ operator|.
 name|getId
 argument_list|()
 argument_list|,
-name|cmdExecuted
+name|cmdStatusUpdater
 argument_list|)
 condition|)
 block|{
