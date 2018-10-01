@@ -304,11 +304,61 @@ name|path
 operator|=
 name|path
 expr_stmt|;
+name|verifyStatus
+argument_list|(
+name|response
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|response
 operator|=
 name|response
+expr_stmt|;
+block|}
+DECL|method|verifyStatus (BufferedClientResponse response)
+specifier|private
+name|void
+name|verifyStatus
+parameter_list|(
+name|BufferedClientResponse
+name|response
+parameter_list|)
+block|{
+name|String
+name|responseStr
+init|=
+name|response
+operator|.
+name|getEntity
+argument_list|(
+name|String
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"HTTP status should be 200, "
+operator|+
+literal|"status info: "
+operator|+
+name|response
+operator|.
+name|getStatusInfo
+argument_list|()
+operator|+
+literal|" response as string: "
+operator|+
+name|responseStr
+argument_list|,
+literal|200
+argument_list|,
+name|response
+operator|.
+name|getStatus
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|verify (Consumer<Document> verifier)

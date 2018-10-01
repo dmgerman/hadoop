@@ -88,6 +88,20 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|core
+operator|.
+name|Response
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -194,6 +208,34 @@ return|return
 name|response
 operator|.
 name|getType
+argument_list|()
+return|;
+block|}
+DECL|method|getStatus ()
+specifier|public
+name|int
+name|getStatus
+parameter_list|()
+block|{
+return|return
+name|response
+operator|.
+name|getStatus
+argument_list|()
+return|;
+block|}
+DECL|method|getStatusInfo ()
+specifier|public
+name|Response
+operator|.
+name|StatusType
+name|getStatusInfo
+parameter_list|()
+block|{
+return|return
+name|response
+operator|.
+name|getStatusInfo
 argument_list|()
 return|;
 block|}
