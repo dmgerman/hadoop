@@ -1395,6 +1395,13 @@ specifier|volatile
 name|boolean
 name|justRecovered
 decl_stmt|;
+comment|/** if true, allocate will be no-op, skipping actual processing. */
+DECL|field|finishAMCalled
+specifier|private
+specifier|volatile
+name|boolean
+name|finishAMCalled
+decl_stmt|;
 comment|/**    * Used to keep track of the container Id and the sub cluster RM that created    * the container, so that we know which sub-cluster to forward later requests    * about existing containers to.    */
 DECL|field|containerIdToSubClusterIdMap
 specifier|private
@@ -1522,6 +1529,12 @@ expr_stmt|;
 name|this
 operator|.
 name|justRecovered
+operator|=
+literal|false
+expr_stmt|;
+name|this
+operator|.
+name|finishAMCalled
 operator|=
 literal|false
 expr_stmt|;
@@ -3091,6 +3104,37 @@ literal|". AM should re-register and full re-send pending requests."
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|this
+operator|.
+name|finishAMCalled
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"FinishApplicationMaster already called by {}, skip heartbeat "
+operator|+
+literal|"processing and return dummy response"
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+return|return
+name|RECORD_FACTORY
+operator|.
+name|newRecordInstance
+argument_list|(
+name|AllocateResponse
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
 comment|// Check responseId and handle duplicate heartbeat exactly same as RM
 synchronized|synchronized
 init|(
@@ -3415,6 +3459,12 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|this
+operator|.
+name|finishAMCalled
+operator|=
+literal|true
+expr_stmt|;
 comment|// TODO: consider adding batchFinishApplicationMaster in UAMPoolManager
 name|boolean
 name|failedToUnRegister

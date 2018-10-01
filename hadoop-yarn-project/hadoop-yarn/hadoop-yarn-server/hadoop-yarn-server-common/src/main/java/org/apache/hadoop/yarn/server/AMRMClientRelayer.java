@@ -1414,6 +1414,65 @@ name|request
 argument_list|)
 return|;
 block|}
+comment|/**    * After an RM failover, there might be more than one    * allocate/finishApplicationMaster call thread (due to RPC timeout and retry)    * doing the auto re-register concurrently. As a result, we need to swallow    * the already register exception thrown by the new RM.    */
+DECL|method|reRegisterApplicationMaster ( RegisterApplicationMasterRequest request)
+specifier|private
+name|void
+name|reRegisterApplicationMaster
+parameter_list|(
+name|RegisterApplicationMasterRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+try|try
+block|{
+name|registerApplicationMaster
+argument_list|(
+name|request
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidApplicationMasterRequestException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|AMRMClientUtils
+operator|.
+name|APP_ALREADY_REGISTERED_MESSAGE
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Concurrent thread successfully re-registered, moving on."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|finishApplicationMaster ( FinishApplicationMasterRequest request)
@@ -1466,7 +1525,7 @@ literal|", hence resyncing."
 argument_list|)
 expr_stmt|;
 comment|// re register with RM
-name|registerApplicationMaster
+name|reRegisterApplicationMaster
 argument_list|(
 name|this
 operator|.
@@ -2214,7 +2273,7 @@ expr_stmt|;
 block|}
 block|}
 comment|// re-register with RM, then retry allocate recursively
-name|registerApplicationMaster
+name|reRegisterApplicationMaster
 argument_list|(
 name|this
 operator|.
