@@ -238,6 +238,18 @@ name|intercept
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test Perform Authorization Check operation  */
 end_comment
@@ -1137,6 +1149,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1176,6 +1198,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1227,6 +1259,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1278,6 +1320,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1341,6 +1393,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1402,6 +1464,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1475,6 +1547,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1509,7 +1591,6 @@ name|ALL
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|//fs.modifyAclEntries(TEST_WRITE_ONLY_FILE_PATH_0, aclSpec);
 name|fs
 operator|.
 name|removeAclEntries
@@ -1537,6 +1618,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1610,6 +1701,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1645,6 +1746,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1692,6 +1803,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1727,6 +1848,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1774,6 +1905,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1835,6 +1976,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1908,6 +2059,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
@@ -1967,6 +2128,16 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"This test case only runs when namespace is enabled"
+argument_list|,
+name|fs
+operator|.
+name|getIsNamespaceEnabeld
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|create
