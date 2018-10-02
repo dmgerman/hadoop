@@ -260,6 +260,24 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|s3
+operator|.
+name|exception
+operator|.
+name|OS3Exception
+import|;
+end_import
+
 begin_comment
 comment|/**  * List Object Rest endpoint.  */
 end_comment
@@ -358,6 +376,8 @@ name|HttpHeaders
 name|hh
 parameter_list|)
 throws|throws
+name|OS3Exception
+throws|,
 name|IOException
 block|{
 if|if
