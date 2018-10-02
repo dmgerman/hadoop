@@ -3051,7 +3051,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3178,7 +3178,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3289,7 +3289,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3401,7 +3401,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3506,7 +3506,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3589,7 +3589,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3679,7 +3679,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -3789,7 +3789,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -4697,9 +4697,9 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getIsNamespaceEnabeld ()
+DECL|method|getIsNamespaceEnabled ()
 name|boolean
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 parameter_list|()
 throws|throws
 name|AzureBlobFileSystemException

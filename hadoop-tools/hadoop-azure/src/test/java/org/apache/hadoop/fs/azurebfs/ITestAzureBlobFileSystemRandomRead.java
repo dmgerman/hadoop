@@ -2809,7 +2809,7 @@ name|assumeFalse
 argument_list|(
 name|abFs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -391,7 +391,7 @@ name|assumeTrue
 argument_list|(
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -538,7 +538,7 @@ name|assumeTrue
 argument_list|(
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;

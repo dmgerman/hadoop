@@ -1155,7 +1155,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1204,7 +1204,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1265,7 +1265,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1326,7 +1326,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1399,7 +1399,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1470,7 +1470,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1553,7 +1553,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1624,7 +1624,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1707,7 +1707,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1752,7 +1752,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1809,7 +1809,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1854,7 +1854,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1911,7 +1911,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1982,7 +1982,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2065,7 +2065,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2134,7 +2134,7 @@ literal|"This test case only runs when namespace is enabled"
 argument_list|,
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;

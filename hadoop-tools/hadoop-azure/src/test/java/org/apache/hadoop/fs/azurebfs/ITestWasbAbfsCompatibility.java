@@ -367,7 +367,7 @@ name|assumeFalse
 argument_list|(
 name|fs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -587,7 +587,7 @@ name|assumeFalse
 argument_list|(
 name|abfs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -807,7 +807,7 @@ name|assumeFalse
 argument_list|(
 name|abfs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -985,7 +985,7 @@ name|assumeFalse
 argument_list|(
 name|abfs
 operator|.
-name|getIsNamespaceEnabeld
+name|getIsNamespaceEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
