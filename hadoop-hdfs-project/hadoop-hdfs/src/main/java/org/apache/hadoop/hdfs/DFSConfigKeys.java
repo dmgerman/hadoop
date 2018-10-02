@@ -2320,6 +2320,15 @@ name|DFS_DATANODE_FAILED_VOLUMES_TOLERATED_DEFAULT
 init|=
 literal|0
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_DATANODE_VOLUMES_REPLICA_ADD_THREADPOOL_SIZE_KEY
+name|DFS_DATANODE_VOLUMES_REPLICA_ADD_THREADPOOL_SIZE_KEY
+init|=
+literal|"dfs.datanode.volumes.replica-add.threadpool.size"
+decl_stmt|;
 DECL|field|DFS_DATANODE_SYNCONCLOSE_KEY
 specifier|public
 specifier|static

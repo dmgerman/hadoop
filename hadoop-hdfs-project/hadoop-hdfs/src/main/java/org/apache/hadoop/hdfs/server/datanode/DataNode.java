@@ -9276,6 +9276,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getBpOsCount ()
+specifier|public
 name|int
 name|getBpOsCount
 parameter_list|()

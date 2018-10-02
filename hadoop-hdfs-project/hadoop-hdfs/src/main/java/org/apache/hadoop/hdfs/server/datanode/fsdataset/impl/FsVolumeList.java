@@ -1281,7 +1281,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Total time to add all replicas to map: "
+literal|"Total time to add all replicas to map for block pool "
+operator|+
+name|bpid
+operator|+
+literal|": "
 operator|+
 name|totalTimeTaken
 operator|+

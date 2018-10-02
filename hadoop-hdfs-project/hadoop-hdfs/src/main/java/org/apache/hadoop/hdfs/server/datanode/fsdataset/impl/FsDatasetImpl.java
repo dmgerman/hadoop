@@ -16630,6 +16630,37 @@ operator|=
 name|newTimer
 expr_stmt|;
 block|}
+comment|/**    * Return the number of BP service count.    */
+DECL|method|getBPServiceCount ()
+specifier|public
+name|int
+name|getBPServiceCount
+parameter_list|()
+block|{
+return|return
+name|datanode
+operator|.
+name|getBpOsCount
+argument_list|()
+return|;
+block|}
+comment|/**    * Return the number of volume.    */
+DECL|method|getVolumeCount ()
+specifier|public
+name|int
+name|getVolumeCount
+parameter_list|()
+block|{
+return|return
+name|volumes
+operator|.
+name|getVolumes
+argument_list|()
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 DECL|method|stopAllDataxceiverThreads (FsVolumeImpl volume)
 name|void
 name|stopAllDataxceiverThreads
