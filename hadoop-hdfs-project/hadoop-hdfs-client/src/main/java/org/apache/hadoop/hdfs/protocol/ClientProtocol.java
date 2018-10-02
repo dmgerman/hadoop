@@ -1318,7 +1318,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Enter, leave or get safe mode.    *<p>    * Safe mode is a name node state when it    *<ol><li>does not accept changes to name space (read-only), and</li>    *<li>does not replicate or delete blocks.</li></ol>    *    *<p>    * Safe mode is entered automatically at name node startup.    * Safe mode can also be entered manually using    * {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_ENTER,false)}.    *<p>    * At startup the name node accepts data node reports collecting    * information about block locations.    * In order to leave safe mode it needs to collect a configurable    * percentage called threshold of blocks, which satisfy the minimal    * replication condition.    * The minimal replication condition is that each block must have at least    *<tt>dfs.namenode.replication.min</tt> replicas.    * When the threshold is reached the name node extends safe mode    * for a configurable amount of time    * to let the remaining data nodes to check in before it    * will start replicating missing blocks.    * Then the name node leaves safe mode.    *<p>    * If safe mode is turned on manually using    * {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_ENTER,false)}    * then the name node stays in safe mode until it is manually turned off    * using {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_LEAVE,false)}.    * Current state of the name node can be verified using    * {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_GET,false)}    *<h4>Configuration parameters:</h4>    *<tt>dfs.safemode.threshold.pct</tt> is the threshold parameter.<br>    *<tt>dfs.safemode.extension</tt> is the safe mode extension parameter.<br>    *<tt>dfs.namenode.replication.min</tt> is the minimal replication parameter.    *    *<h4>Special cases:</h4>    * The name node does not enter safe mode at startup if the threshold is    * set to 0 or if the name space is empty.<br>    * If the threshold is set to 1 then all blocks need to have at least    * minimal replication.<br>    * If the threshold value is greater than 1 then the name node will not be    * able to turn off safe mode automatically.<br>    * Safe mode can always be turned off manually.    *    * @param action<ul><li>0 leave safe mode;</li>    *<li>1 enter safe mode;</li>    *<li>2 get safe mode state.</li></ul>    * @param isChecked If true then action will be done only in ActiveNN.    *    * @return<ul><li>0 if the safe mode is OFF or</li>    *<li>1 if the safe mode is ON.</li></ul>    *    * @throws IOException    */
+comment|/**    * Enter, leave or get safe mode.    *<p>    * Safe mode is a name node state when it    *<ol><li>does not accept changes to name space (read-only), and</li>    *<li>does not replicate or delete blocks.</li></ol>    *    *<p>    * Safe mode is entered automatically at name node startup.    * Safe mode can also be entered manually using    * {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_ENTER,false)}.    *<p>    * At startup the name node accepts data node reports collecting    * information about block locations.    * In order to leave safe mode it needs to collect a configurable    * percentage called threshold of blocks, which satisfy the minimal    * replication condition.    * The minimal replication condition is that each block must have at least    * {@code dfs.namenode.replication.min} replicas.    * When the threshold is reached the name node extends safe mode    * for a configurable amount of time    * to let the remaining data nodes to check in before it    * will start replicating missing blocks.    * Then the name node leaves safe mode.    *<p>    * If safe mode is turned on manually using    * {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_ENTER,false)}    * then the name node stays in safe mode until it is manually turned off    * using {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_LEAVE,false)}.    * Current state of the name node can be verified using    * {@link #setSafeMode(HdfsConstants.SafeModeAction,boolean)    * setSafeMode(SafeModeAction.SAFEMODE_GET,false)}    *    *<p><b>Configuration parameters:</b></p>    * {@code dfs.safemode.threshold.pct} is the threshold parameter.<br>    * {@code dfs.safemode.extension} is the safe mode extension parameter.<br>    * {@code dfs.namenode.replication.min} is the minimal replication parameter.    *    *<p><b>Special cases:</b></p>    * The name node does not enter safe mode at startup if the threshold is    * set to 0 or if the name space is empty.<br>    * If the threshold is set to 1 then all blocks need to have at least    * minimal replication.<br>    * If the threshold value is greater than 1 then the name node will not be    * able to turn off safe mode automatically.<br>    * Safe mode can always be turned off manually.    *    * @param action<ul><li>0 leave safe mode;</li>    *<li>1 enter safe mode;</li>    *<li>2 get safe mode state.</li></ul>    * @param isChecked If true then action will be done only in ActiveNN.    *    * @return<ul><li>0 if the safe mode is OFF or</li>    *<li>1 if the safe mode is ON.</li></ul>    *    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|setSafeMode (HdfsConstants.SafeModeAction action, boolean isChecked)
@@ -1669,7 +1669,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a valid Delegation Token.    *    * @param renewer the designated renewer for the token    * @return Token<DelegationTokenIdentifier>    * @throws IOException    */
+comment|/**    * Get a valid Delegation Token.    *    * @param renewer the designated renewer for the token    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getDelegationToken (Text renewer)
@@ -2099,7 +2099,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Used to implement cursor-based batched listing of {@EncryptionZone}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    */
+comment|/**    * Used to implement cursor-based batched listing of {@link EncryptionZone}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    */
 annotation|@
 name|Idempotent
 DECL|method|listEncryptionZones ( long prevId)
@@ -2131,7 +2131,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Used to implement cursor-based batched listing of    * {@ZoneReencryptionStatus}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    * @throws IOException    */
+comment|/**    * Used to implement cursor-based batched listing of    * {@link ZoneReencryptionStatus}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|listReencryptionStatus (long prevId)
@@ -2147,7 +2147,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
+comment|/**    * Set xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to set    * @param flag set flag    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|setXAttr (String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag)
@@ -2169,7 +2169,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get xattrs of a file or directory. Values in xAttrs parameter are ignored.    * If xAttrs is null or empty, this is the same as getting all xattrs of the    * file or directory.  Only those xattrs for which the logged-in user has    * permissions to view are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
+comment|/**    * Get xattrs of a file or directory. Values in xAttrs parameter are ignored.    * If xAttrs is null or empty, this is the same as getting all xattrs of the    * file or directory.  Only those xattrs for which the logged-in user has    * permissions to view are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return<code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
@@ -2191,7 +2191,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @return List<XAttr><code>XAttr</code> list    * @throws IOException    */
+comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @return<code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|listXAttrs (String src)
@@ -2207,7 +2207,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
+comment|/**    * Remove xattr of a file or directory.Value in xAttr parameter is ignored.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttr<code>XAttr</code> to remove    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|removeXAttr (String src, XAttr xAttr)

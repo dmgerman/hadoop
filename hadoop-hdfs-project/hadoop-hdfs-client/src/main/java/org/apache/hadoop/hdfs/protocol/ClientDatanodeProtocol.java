@@ -342,7 +342,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the status of the previously issued reconfig task.    * @see {@link org.apache.hadoop.conf.ReconfigurationTaskStatus}.    */
+comment|/**    * Get the status of the previously issued reconfig task.    * @see org.apache.hadoop.conf.ReconfigurationTaskStatus    */
 DECL|method|getReconfigurationStatus ()
 name|ReconfigurationTaskStatus
 name|getReconfigurationStatus

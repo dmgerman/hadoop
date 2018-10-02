@@ -243,7 +243,7 @@ name|EMPTY_BYTE_ARRAY
 init|=
 block|{}
 decl_stmt|;
-comment|/**    * @return the least power of two greater than or equal to n, i.e. return    *         the least integer x with x>= n and x a power of two.    *    * @throws HadoopIllegalArgumentException    *           if n<= 0.    */
+comment|/**    * @return the least power of two greater than or equal to n, i.e. return    *         the least integer x with x&gt;= n and x a power of two.    *    * @throws HadoopIllegalArgumentException    *           if n&lt;= 0.    */
 DECL|method|leastPowerOfTwo (final int n)
 specifier|public
 specifier|static

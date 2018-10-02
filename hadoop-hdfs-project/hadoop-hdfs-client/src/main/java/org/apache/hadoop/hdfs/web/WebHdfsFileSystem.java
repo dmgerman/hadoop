@@ -1713,7 +1713,7 @@ specifier|private
 name|DFSOpsCountStatistics
 name|storageStatistics
 decl_stmt|;
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>webhdfs</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *    * @return<code>webhdfs</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()

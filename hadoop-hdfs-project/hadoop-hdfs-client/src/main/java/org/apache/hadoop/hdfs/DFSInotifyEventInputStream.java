@@ -560,7 +560,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Return a estimate of how many transaction IDs behind the NameNode's    * current state this stream is. Clients should periodically call this method    * and check if its result is steadily increasing, which indicates that they    * are falling behind (i.e. transaction are being generated faster than the    * client is reading them). If a client falls too far behind events may be    * deleted before the client can read them.    *<p/>    * A return value of -1 indicates that an estimate could not be produced, and    * should be ignored. The value returned by this method is really only useful    * when compared to previous or subsequent returned values.    */
+comment|/**    * Return a estimate of how many transaction IDs behind the NameNode's    * current state this stream is. Clients should periodically call this method    * and check if its result is steadily increasing, which indicates that they    * are falling behind (i.e. transaction are being generated faster than the    * client is reading them). If a client falls too far behind events may be    * deleted before the client can read them.    *<p>    * A return value of -1 indicates that an estimate could not be produced, and    * should be ignored. The value returned by this method is really only useful    * when compared to previous or subsequent returned values.    */
 DECL|method|getTxidsBehindEstimate ()
 specifier|public
 name|long

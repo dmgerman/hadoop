@@ -585,7 +585,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Create proxy objects with {@link ClientProtocol} to communicate with a remote  * NN. Generally use {@link NameNodeProxiesClient#createProxyWithClientProtocol(  * Configuration, URI, AtomicBoolean)}, which will create either an HA- or  * non-HA-enabled client proxy as appropriate.  *  * For creating proxy objects with other protocols, please see  * {@link NameNodeProxies#createProxy(Configuration, URI, Class)}.  */
+comment|/**  * Create proxy objects with {@link ClientProtocol} to communicate with a remote  * NN. Generally use {@link NameNodeProxiesClient#createProxyWithClientProtocol(  * Configuration, URI, AtomicBoolean)}, which will create either an HA- or  * non-HA-enabled client proxy as appropriate.  *  * For creating proxy objects with other protocols, please see  * NameNodeProxies#createProxy(Configuration, URI, Class).  */
 end_comment
 
 begin_class
@@ -706,7 +706,7 @@ name|address
 return|;
 block|}
 block|}
-comment|/**    * Creates the namenode proxy with the ClientProtocol. This will handle    * creation of either HA- or non-HA-enabled proxy objects, depending upon    * if the provided URI is a configured logical URI.    *    * @param conf the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param fallbackToSimpleAuth set to true or false during calls to indicate    *        if a secure client falls back to simple auth    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException if there is an error creating the proxy    * @see {@link NameNodeProxies#createProxy(Configuration, URI, Class)}.    */
+comment|/**    * Creates the namenode proxy with the ClientProtocol. This will handle    * creation of either HA- or non-HA-enabled proxy objects, depending upon    * if the provided URI is a configured logical URI.    *    * @param conf the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param fallbackToSimpleAuth set to true or false during calls to indicate    *        if a secure client falls back to simple auth    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException if there is an error creating the proxy    */
 DECL|method|createProxyWithClientProtocol ( Configuration conf, URI nameNodeUri, AtomicBoolean fallbackToSimpleAuth)
 specifier|public
 specifier|static

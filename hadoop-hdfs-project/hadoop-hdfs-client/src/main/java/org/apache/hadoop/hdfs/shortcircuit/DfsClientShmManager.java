@@ -403,7 +403,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manages short-circuit memory segments for an HDFS client.  *  * Clients are responsible for requesting and releasing shared memory segments  * used for communicating with the DataNode. The client will try to allocate new  * slots in the set of existing segments, falling back to getting a new segment  * from the DataNode via {@link DataTransferProtocol#requestShortCircuitFds}.  *  * The counterpart to this class on the DataNode is  * {@link ShortCircuitRegistry}. See {@link ShortCircuitRegistry} for more  * information on the communication protocol.  */
+comment|/**  * Manages short-circuit memory segments for an HDFS client.  *  * Clients are responsible for requesting and releasing shared memory segments  * used for communicating with the DataNode. The client will try to allocate new  * slots in the set of existing segments, falling back to getting a new segment  * from the DataNode via {@link DataTransferProtocol#requestShortCircuitFds}.  *  * The counterpart to this class on the DataNode is ShortCircuitRegistry.  * See ShortCircuitRegistry for more information on the communication protocol.  */
 end_comment
 
 begin_class

@@ -1539,7 +1539,7 @@ specifier|public
 name|DistributedFileSystem
 parameter_list|()
 block|{   }
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>hdfs</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *    * @return<code>hdfs</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()
@@ -9536,7 +9536,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/** @see HdfsAdmin#allowSnapshot(Path) */
+comment|/** @see org.apache.hadoop.hdfs.client.HdfsAdmin#allowSnapshot(Path) */
 DECL|method|allowSnapshot (final Path path)
 specifier|public
 name|void
@@ -9679,7 +9679,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** @see HdfsAdmin#disallowSnapshot(Path) */
+comment|/** @see org.apache.hadoop.hdfs.client.HdfsAdmin#disallowSnapshot(Path) */
 DECL|method|disallowSnapshot (final Path path)
 specifier|public
 name|void
@@ -11155,7 +11155,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * @see {@link #addCacheDirective(CacheDirectiveInfo, EnumSet)}    */
+comment|/**    * @see #addCacheDirective(CacheDirectiveInfo, EnumSet)    */
 DECL|method|addCacheDirective (CacheDirectiveInfo info)
 specifier|public
 name|long
@@ -11263,7 +11263,7 @@ name|flags
 argument_list|)
 return|;
 block|}
-comment|/**    * @see {@link #modifyCacheDirective(CacheDirectiveInfo, EnumSet)}    */
+comment|/**    * @see #modifyCacheDirective(CacheDirectiveInfo, EnumSet)    */
 DECL|method|modifyCacheDirective (CacheDirectiveInfo info)
 specifier|public
 name|void
@@ -15761,7 +15761,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a RemoteIterator which can be used to list all open files    * currently managed by the NameNode. For large numbers of open files,    * iterator will fetch the list in batches of configured size.    *<p/>    * Since the list is fetched in batches, it does not represent a    * consistent snapshot of the all open files.    *<p/>    * This method can only be called by HDFS superusers.    */
+comment|/**    * Returns a RemoteIterator which can be used to list all open files    * currently managed by the NameNode. For large numbers of open files,    * iterator will fetch the list in batches of configured size.    *<p>    * Since the list is fetched in batches, it does not represent a    * consistent snapshot of the all open files.    *<p>    * This method can only be called by HDFS superusers.    */
 annotation|@
 name|Deprecated
 DECL|method|listOpenFiles ()

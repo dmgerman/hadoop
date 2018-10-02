@@ -6128,7 +6128,7 @@ return|return
 name|namenode
 return|;
 block|}
-comment|/**    * Call {@link #create(String, boolean, short, long, Progressable)} with    * default<code>replication</code> and<code>blockSize<code> and null<code>    * progress</code>.    */
+comment|/**    * Call {@link #create(String, boolean, short, long, Progressable)} with    * default<code>replication</code> and<code>blockSize</code> and null    *<code>progress</code>.    */
 DECL|method|create (String src, boolean overwrite)
 specifier|public
 name|OutputStream
@@ -6164,7 +6164,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Call {@link #create(String, boolean, short, long, Progressable)} with    * default<code>replication</code> and<code>blockSize<code>.    */
+comment|/**    * Call {@link #create(String, boolean, short, long, Progressable)} with    * default<code>replication</code> and<code>blockSize</code>.    */
 DECL|method|create (String src, boolean overwrite, Progressable progress)
 specifier|public
 name|OutputStream

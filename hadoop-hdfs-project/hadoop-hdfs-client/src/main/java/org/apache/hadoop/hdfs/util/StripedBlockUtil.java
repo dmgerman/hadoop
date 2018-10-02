@@ -331,7 +331,11 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * When accessing a file in striped layout, operations on logical byte ranges  * in the file need to be mapped to physical byte ranges on block files stored  * on DataNodes. This utility class facilities this mapping by defining and  * exposing a number of striping-related concepts. The most basic ones are  * illustrated in the following diagram. Unless otherwise specified, all  * range-related calculations are inclusive (the end offset of the previous  * range should be 1 byte lower than the start offset of the next one).  *  *  |<----  Block Group ----> |<- Block Group: logical unit composing  *  |                          |        striped HDFS files.  *  blk_0      blk_1       blk_2<- Internal Blocks: each internal block  *    |          |           |          represents a physically stored local  *    v          v           v          block file  * +------+   +------+   +------+  * |cell_0|   |cell_1|   |cell_2|<- {@link StripingCell} represents the  * +------+   +------+   +------+       logical order that a Block Group should  * |cell_3|   |cell_4|   |cell_5|       be accessed: cell_0, cell_1, ...  * +------+   +------+   +------+  * |cell_6|   |cell_7|   |cell_8|  * +------+   +------+   +------+  * |cell_9|  * +------+<- A cell contains cellSize bytes of data  */
+comment|/**  * When accessing a file in striped layout, operations on logical byte ranges  * in the file need to be mapped to physical byte ranges on block files stored  * on DataNodes. This utility class facilities this mapping by defining and  * exposing a number of striping-related concepts. The most basic ones are  * illustrated in the following diagram. Unless otherwise specified, all  * range-related calculations are inclusive (the end offset of the previous  * range should be 1 byte lower than the start offset of the next one).  */
+end_comment
+
+begin_comment
+comment|/*  *  |<----  Block Group ----> |<- Block Group: logical unit composing  *  |                          |        striped HDFS files.  *  blk_0      blk_1       blk_2<- Internal Blocks: each internal block  *    |          |           |          represents a physically stored local  *    v          v           v          block file  * +------+   +------+   +------+  * |cell_0|   |cell_1|   |cell_2|<- {@link StripingCell} represents the  * +------+   +------+   +------+       logical order that a Block Group should  * |cell_3|   |cell_4|   |cell_5|       be accessed: cell_0, cell_1, ...  * +------+   +------+   +------+  * |cell_6|   |cell_7|   |cell_8|  * +------+   +------+   +------+  * |cell_9|  * +------+<- A cell contains cellSize bytes of data  */
 end_comment
 
 begin_class
@@ -2391,6 +2395,7 @@ index|]
 argument_list|)
 return|;
 block|}
+comment|/**    * Cell indexing convention defined in {@link StripingCell}.    */
 DECL|method|calcualteChunkPositionsInBuf (int cellSize, AlignedStripe[] stripes, StripingCell[] cells, ByteBuffer buf)
 specifier|private
 specifier|static
@@ -2412,7 +2417,7 @@ name|ByteBuffer
 name|buf
 parameter_list|)
 block|{
-comment|/**      *     |<--------------- AlignedStripe --------------->|      *      *     |<- length_0 ->|<--  length_1  -->|<- length_2 ->|      * +------------------+------------------+----------------+      * |    cell_0_0_0    |    cell_3_1_0    |   cell_6_2_0   |<- blk_0      * +------------------+------------------+----------------+      *   _/                \_______________________      *  |                                          |      *  v offset_0                                 v offset_1      * +----------------------------------------------------------+      * |  cell_0_0_0 |  cell_1_0_1 and cell_2_0_2  |cell_3_1_0 ...|<- buf      * |  (partial)  |    (from blk_1 and blk_2)   |              |      * +----------------------------------------------------------+      *      * Cell indexing convention defined in {@link StripingCell}      */
+comment|/*      *     |<--------------- AlignedStripe --------------->|      *      *     |<- length_0 ->|<--  length_1  -->|<- length_2 ->|      * +------------------+------------------+----------------+      * |    cell_0_0_0    |    cell_3_1_0    |   cell_6_2_0   |<- blk_0      * +------------------+------------------+----------------+      *   _/                \_______________________      *  |                                          |      *  v offset_0                                 v offset_1      * +----------------------------------------------------------+      * |  cell_0_0_0 |  cell_1_0_1 and cell_2_0_2  |cell_3_1_0 ...|<- buf      * |  (partial)  |    (from blk_1 and blk_2)   |              |      * +----------------------------------------------------------+      */
 name|int
 name|done
 init|=
@@ -2698,7 +2703,8 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Cell is the unit of encoding used in {@link DFSStripedOutputStream}. This    * size impacts how a logical offset in the file or block group translates    * to physical byte offset in a stored internal block. The StripingCell util    * class facilitates this calculation. Each StripingCell is inclusive with    * its start and end offsets -- e.g., the end logical offset of cell_0_0_0    * should be 1 byte lower than the start logical offset of cell_1_0_1.    *    *  |<------- Striped Block Group -------> |    *    blk_0          blk_1          blk_2    *      |              |              |    *      v              v              v    * +----------+   +----------+   +----------+    * |cell_0_0_0|   |cell_1_0_1|   |cell_2_0_2|    * +----------+   +----------+   +----------+    * |cell_3_1_0|   |cell_4_1_1|   |cell_5_1_2|<- {@link #idxInBlkGroup} = 5    * +----------+   +----------+   +----------+    {@link #idxInInternalBlk} = 1    *                                               {@link #idxInStripe} = 2    * A StripingCell is a special instance of {@link StripingChunk} whose offset    * and size align with the cell used when writing data.    * TODO: consider parity cells    */
+comment|/**    * Cell is the unit of encoding used in {@link DFSStripedOutputStream}. This    * size impacts how a logical offset in the file or block group translates    * to physical byte offset in a stored internal block. The StripingCell util    * class facilitates this calculation. Each StripingCell is inclusive with    * its start and end offsets -- e.g., the end logical offset of cell_0_0_0    * should be 1 byte lower than the start logical offset of cell_1_0_1.    *    * A StripingCell is a special instance of {@link StripingChunk} whose offset    * and size align with the cell used when writing data.    * TODO: consider parity cells    */
+comment|/*  |<------- Striped Block Group -------> |    *    blk_0          blk_1          blk_2    *      |              |              |    *      v              v              v    * +----------+   +----------+   +----------+    * |cell_0_0_0|   |cell_1_0_1|   |cell_2_0_2|    * +----------+   +----------+   +----------+    * |cell_3_1_0|   |cell_4_1_1|   |cell_5_1_2|<- {@link #idxInBlkGroup} = 5    * +----------+   +----------+   +----------+    {@link #idxInInternalBlk} = 1    *                                               {@link #idxInStripe} = 2    */
 annotation|@
 name|VisibleForTesting
 DECL|class|StripingCell
@@ -2855,7 +2861,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Given a requested byte range on a striped block group, an AlignedStripe    * represents an inclusive {@link VerticalRange} that is aligned with both    * the byte range and boundaries of all internal blocks. As illustrated in    * the diagram, any given byte range on a block group leads to 1~5    * AlignedStripe's.    *    * |<-------- Striped Block Group -------->|    * blk_0   blk_1   blk_2      blk_3   blk_4    *                 +----+  |  +----+  +----+    *                 |full|  |  |    |  |    |<- AlignedStripe0:    *         +----+  |~~~~|  |  |~~~~|  |~~~~|      1st cell is partial    *         |part|  |    |  |  |    |  |    |<- AlignedStripe1: byte range    * +----+  +----+  +----+  |  |~~~~|  |~~~~|      doesn't start at 1st block    * |full|  |full|  |full|  |  |    |  |    |    * |cell|  |cell|  |cell|  |  |    |  |    |<- AlignedStripe2 (full stripe)    * |    |  |    |  |    |  |  |    |  |    |    * +----+  +----+  +----+  |  |~~~~|  |~~~~|    * |full|  |part|          |  |    |  |    |<- AlignedStripe3: byte range    * |~~~~|  +----+          |  |~~~~|  |~~~~|      doesn't end at last block    * |    |                  |  |    |  |    |<- AlignedStripe4:    * +----+                  |  +----+  +----+      last cell is partial    *                         |    *<---- data blocks ----> |<--- parity --->    *    * An AlignedStripe is the basic unit of reading from a striped block group,    * because within the AlignedStripe, all internal blocks can be processed in    * a uniform manner.    *    * The coverage of an AlignedStripe on an internal block is represented as a    * {@link StripingChunk}.    *    * To simplify the logic of reading a logical byte range from a block group,    * a StripingChunk is either completely in the requested byte range or    * completely outside the requested byte range.    */
+comment|/**    * Given a requested byte range on a striped block group, an AlignedStripe    * represents an inclusive {@link VerticalRange} that is aligned with both    * the byte range and boundaries of all internal blocks. As illustrated in    * the diagram, any given byte range on a block group leads to 1~5    * AlignedStripe's.    *    * An AlignedStripe is the basic unit of reading from a striped block group,    * because within the AlignedStripe, all internal blocks can be processed in    * a uniform manner.    *    * The coverage of an AlignedStripe on an internal block is represented as a    * {@link StripingChunk}.    *    * To simplify the logic of reading a logical byte range from a block group,    * a StripingChunk is either completely in the requested byte range or    * completely outside the requested byte range.    */
+comment|/*    * |<-------- Striped Block Group -------->|    * blk_0   blk_1   blk_2      blk_3   blk_4    *                 +----+  |  +----+  +----+    *                 |full|  |  |    |  |    |<- AlignedStripe0:    *         +----+  |~~~~|  |  |~~~~|  |~~~~|      1st cell is partial    *         |part|  |    |  |  |    |  |    |<- AlignedStripe1: byte range    * +----+  +----+  +----+  |  |~~~~|  |~~~~|      doesn't start at 1st block    * |full|  |full|  |full|  |  |    |  |    |    * |cell|  |cell|  |cell|  |  |    |  |    |<- AlignedStripe2 (full stripe)    * |    |  |    |  |    |  |  |    |  |    |    * +----+  +----+  +----+  |  |~~~~|  |~~~~|    * |full|  |part|          |  |    |  |    |<- AlignedStripe3: byte range    * |~~~~|  +----+          |  |~~~~|  |~~~~|      doesn't end at last block    * |    |                  |  |    |  |    |<- AlignedStripe4:    * +----+                  |  +----+  +----+      last cell is partial    *                         |    *<---- data blocks ----> |<--- parity -->    */
 DECL|class|AlignedStripe
 specifier|public
 specifier|static
@@ -3020,7 +3027,8 @@ literal|")"
 return|;
 block|}
 block|}
-comment|/**    * A simple utility class representing an arbitrary vertical inclusive range    * starting at {@link #offsetInBlock} and lasting for {@link #spanInBlock}    * bytes in an internal block. Note that VerticalRange doesn't necessarily    * align with {@link StripingCell}.    *    * |<- Striped Block Group ->|    *  blk_0    *    |    *    v    * +-----+    * |~~~~~|<-- {@link #offsetInBlock}    * |     |  ^    * |     |  |    * |     |  | {@link #spanInBlock}    * |     |  v    * |~~~~~| ---    * |     |    * +-----+    */
+comment|/**    * A simple utility class representing an arbitrary vertical inclusive range    * starting at {@link #offsetInBlock} and lasting for {@link #spanInBlock}    * bytes in an internal block. Note that VerticalRange doesn't necessarily    * align with {@link StripingCell}.    */
+comment|/*    * |<- Striped Block Group ->|    *  blk_0    *    |    *    v    * +-----+    * |~~~~~|<-- {@link #offsetInBlock}    * |     |  ^    * |     |  |    * |     |  | {@link #spanInBlock}    * |     |  v    * |~~~~~| ---    * |     |    * +-----+    */
 DECL|class|VerticalRange
 specifier|public
 specifier|static
@@ -3130,7 +3138,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Indicates the coverage of an {@link AlignedStripe} on an internal block,    * and the state of the chunk in the context of the read request.    *    * |<---------------- Striped Block Group --------------->|    *   blk_0        blk_1        blk_2          blk_3   blk_4    *                           +---------+  |  +----+  +----+    *     null         null     |REQUESTED|  |  |null|  |null|<- AlignedStripe0    *              +---------+  |---------|  |  |----|  |----|    *     null     |REQUESTED|  |REQUESTED|  |  |null|  |null|<- AlignedStripe1    * +---------+  +---------+  +---------+  |  +----+  +----+    * |REQUESTED|  |REQUESTED|    ALLZERO    |  |null|  |null|<- AlignedStripe2    * +---------+  +---------+               |  +----+  +----+    *<----------- data blocks ------------> |<--- parity --->    */
+comment|/**    * Indicates the coverage of an {@link AlignedStripe} on an internal block,    * and the state of the chunk in the context of the read request.    */
+comment|/* |<---------------- Striped Block Group --------------->|    *   blk_0        blk_1        blk_2          blk_3   blk_4    *                           +---------+  |  +----+  +----+    *     null         null     |REQUESTED|  |  |null|  |null|<- AlignedStripe0    *              +---------+  |---------|  |  |----|  |----|    *     null     |REQUESTED|  |REQUESTED|  |  |null|  |null|<- AlignedStripe1    * +---------+  +---------+  +---------+  |  +----+  +----+    * |REQUESTED|  |REQUESTED|    ALLZERO    |  |null|  |null|<- AlignedStripe2    * +---------+  +---------+               |  +----+  +----+    *<----------- data blocks ------------> |<--- parity -->    */
 DECL|class|StripingChunk
 specifier|public
 specifier|static
@@ -3187,7 +3196,7 @@ name|ALLZERO
 init|=
 literal|0X0f
 decl_stmt|;
-comment|/**      * If a chunk is completely in requested range, the state transition is:      * REQUESTED (when AlignedStripe created) -> PENDING -> {FETCHED | MISSING}      * If a chunk is completely outside requested range (including parity      * chunks), state transition is:      * null (AlignedStripe created) -> REQUESTED (upon failure) -> PENDING ...      */
+comment|/**      * If a chunk is completely in requested range, the state transition is:      * REQUESTED (when AlignedStripe created) -&gt; PENDING -&gt;      * {FETCHED | MISSING}      * If a chunk is completely outside requested range (including parity      * chunks), state transition is:      * null (AlignedStripe created) -&gt;REQUESTED (upon failure) -&gt;      * PENDING ...      */
 DECL|field|state
 specifier|public
 name|int

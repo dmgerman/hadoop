@@ -1743,7 +1743,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert a List<LocatedBlock> to BlockLocation[]    * @param blocks A List<LocatedBlock> to be converted    * @return converted array of BlockLocation    */
+comment|/**    * Convert a List to BlockLocation[]    * @param blocks A List to be converted    * @return converted array of BlockLocation    */
 DECL|method|locatedBlocks2Locations ( List<LocatedBlock> blocks)
 specifier|public
 specifier|static
