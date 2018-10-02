@@ -666,7 +666,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Updates the Container list of an existing DN.    *    * @param datanodeID - UUID of DN.    * @param report - set of Storage Reports for the Datanode.    * @throws SCMException - if we don't know about this datanode, for new DN    *                      use insertNewDatanode.    */
+comment|/**    * Updates the Container list of an existing DN.    *    * @param datanodeID - UUID of DN.    * @param report - set of Storage Reports for the Datanode.    * @throws SCMException - if we don't know about this datanode, for new DN    *                        use addDatanodeInContainerMap.    */
 DECL|method|updateDatanodeMap (UUID datanodeID, Set<StorageLocationReport> report)
 specifier|public
 name|void

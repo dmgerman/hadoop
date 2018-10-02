@@ -130,6 +130,68 @@ name|scm
 operator|.
 name|container
 operator|.
+name|ContainerID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|placement
 operator|.
 name|metrics
@@ -168,11 +230,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|node
+name|exceptions
 operator|.
-name|states
-operator|.
-name|NodeAlreadyExistsException
+name|SCMException
 import|;
 end_import
 
@@ -192,7 +252,7 @@ name|node
 operator|.
 name|states
 operator|.
-name|NodeNotFoundException
+name|*
 import|;
 end_import
 
@@ -212,7 +272,7 @@ name|node
 operator|.
 name|states
 operator|.
-name|NodeStateMap
+name|Node2PipelineMap
 import|;
 end_import
 
@@ -518,6 +578,20 @@ specifier|final
 name|NodeStateMap
 name|nodeStateMap
 decl_stmt|;
+comment|/**    * Maintains the mapping from node to pipelines a node is part of.    */
+DECL|field|node2PipelineMap
+specifier|private
+specifier|final
+name|Node2PipelineMap
+name|node2PipelineMap
+decl_stmt|;
+comment|/**    * Maintains the map from node to ContainerIDs for the containers    * available on the node.    */
+DECL|field|node2ContainerMap
+specifier|private
+specifier|final
+name|Node2ContainerMap
+name|node2ContainerMap
+decl_stmt|;
 comment|/**    * Used for publishing node state change events.    */
 DECL|field|eventPublisher
 specifier|private
@@ -586,6 +660,22 @@ name|nodeStateMap
 operator|=
 operator|new
 name|NodeStateMap
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|node2PipelineMap
+operator|=
+operator|new
+name|Node2PipelineMap
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|node2ContainerMap
+operator|=
+operator|new
+name|Node2ContainerMap
 argument_list|()
 expr_stmt|;
 name|this
@@ -954,6 +1044,24 @@ name|datanodeDetails
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Adds a pipeline in the node2PipelineMap.    * @param pipeline - Pipeline to be added    */
+DECL|method|addPipeline (Pipeline pipeline)
+specifier|public
+name|void
+name|addPipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|node2PipelineMap
+operator|.
+name|addPipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get information about the node.    *    * @param datanodeDetails DatanodeDetails    *    * @return DatanodeInfo    *    * @throws NodeNotFoundException if the node is not present    */
 DECL|method|getNode (DatanodeDetails datanodeDetails)
 specifier|public
@@ -1234,6 +1342,28 @@ return|return
 name|nodes
 return|;
 block|}
+comment|/**    * Gets set of pipelineID a datanode belongs to.    * @param dnId - Datanode ID    * @return Set of PipelineID    */
+DECL|method|getPipelineByDnID (UUID dnId)
+specifier|public
+name|Set
+argument_list|<
+name|PipelineID
+argument_list|>
+name|getPipelineByDnID
+parameter_list|(
+name|UUID
+name|dnId
+parameter_list|)
+block|{
+return|return
+name|node2PipelineMap
+operator|.
+name|getPipelines
+argument_list|(
+name|dnId
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns the count of healthy nodes.    *    * @return healthy node count    */
 DECL|method|getHealthyNodeCount ()
 specifier|public
@@ -1421,6 +1551,132 @@ argument_list|(
 name|uuid
 argument_list|)
 return|;
+block|}
+comment|/**    * Removes a pipeline from the node2PipelineMap.    * @param pipeline - Pipeline to be removed    */
+DECL|method|removePipeline (Pipeline pipeline)
+specifier|public
+name|void
+name|removePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|node2PipelineMap
+operator|.
+name|removePipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
+DECL|method|setContainersForDatanode (UUID uuid, Set<ContainerID> containerIds)
+specifier|public
+name|void
+name|setContainersForDatanode
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|,
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIds
+parameter_list|)
+throws|throws
+name|SCMException
+block|{
+name|node2ContainerMap
+operator|.
+name|setContainersForDatanode
+argument_list|(
+name|uuid
+argument_list|,
+name|containerIds
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Process containerReport received from datanode.    * @param uuid - DataonodeID    * @param containerIds - Set of containerIDs    * @return The result after processing containerReport    */
+DECL|method|processContainerReport (UUID uuid, Set<ContainerID> containerIds)
+specifier|public
+name|ReportResult
+argument_list|<
+name|ContainerID
+argument_list|>
+name|processContainerReport
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|,
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIds
+parameter_list|)
+block|{
+return|return
+name|node2ContainerMap
+operator|.
+name|processReport
+argument_list|(
+name|uuid
+argument_list|,
+name|containerIds
+argument_list|)
+return|;
+block|}
+comment|/**    * Return set of containerIDs available on a datanode.    * @param uuid - DatanodeID    * @return - set of containerIDs    */
+DECL|method|getContainers (UUID uuid)
+specifier|public
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|getContainers
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|)
+block|{
+return|return
+name|node2ContainerMap
+operator|.
+name|getContainers
+argument_list|(
+name|uuid
+argument_list|)
+return|;
+block|}
+comment|/**    * Insert a new datanode with set of containerIDs for containers available    * on it.    * @param uuid - DatanodeID    * @param containerIDs - Set of ContainerIDs    * @throws SCMException - if datanode already exists    */
+DECL|method|addDatanodeInContainerMap (UUID uuid, Set<ContainerID> containerIDs)
+specifier|public
+name|void
+name|addDatanodeInContainerMap
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|,
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIDs
+parameter_list|)
+throws|throws
+name|SCMException
+block|{
+name|node2ContainerMap
+operator|.
+name|insertNewDatanode
+argument_list|(
+name|uuid
+argument_list|,
+name|containerIDs
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Move Stale or Dead node to healthy if we got a heartbeat from them.    * Move healthy nodes to stale nodes if it is needed.    * Move Stales node to dead if needed.    *    * @see Thread#run()    */
 annotation|@

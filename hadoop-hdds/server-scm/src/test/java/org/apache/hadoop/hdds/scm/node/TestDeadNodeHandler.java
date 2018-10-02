@@ -358,26 +358,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|node
-operator|.
-name|states
-operator|.
-name|Node2ContainerMap
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|pipelines
 operator|.
 name|PipelineSelector
@@ -544,11 +524,6 @@ specifier|private
 name|SCMNodeManager
 name|nodeManager
 decl_stmt|;
-DECL|field|node2ContainerMap
-specifier|private
-name|Node2ContainerMap
-name|node2ContainerMap
-decl_stmt|;
 DECL|field|containerStateManager
 specifier|private
 name|ContainerStateManager
@@ -591,12 +566,6 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|node2ContainerMap
-operator|=
-operator|new
-name|Node2ContainerMap
-argument_list|()
-expr_stmt|;
 name|containerStateManager
 operator|=
 operator|new
@@ -648,11 +617,9 @@ operator|=
 operator|new
 name|DeadNodeHandler
 argument_list|(
-name|node2ContainerMap
+name|nodeManager
 argument_list|,
 name|containerStateManager
-argument_list|,
-name|nodeManager
 argument_list|)
 expr_stmt|;
 name|eventQueue
@@ -745,8 +712,6 @@ argument_list|)
 decl_stmt|;
 name|registerReplicas
 argument_list|(
-name|node2ContainerMap
-argument_list|,
 name|datanode1
 argument_list|,
 name|container1
@@ -756,8 +721,6 @@ argument_list|)
 expr_stmt|;
 name|registerReplicas
 argument_list|(
-name|node2ContainerMap
-argument_list|,
 name|datanode2
 argument_list|,
 name|container1
@@ -803,7 +766,6 @@ argument_list|,
 name|container1
 argument_list|)
 expr_stmt|;
-comment|//WHEN datanode1 is dead
 name|deadNodeHandler
 operator|.
 name|onMessage
@@ -811,20 +773,6 @@ argument_list|(
 name|datanode1
 argument_list|,
 name|publisher
-argument_list|)
-expr_stmt|;
-comment|//THEN
-comment|//node2ContainerMap has not been changed
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|2
-argument_list|,
-name|node2ContainerMap
-operator|.
-name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Set
@@ -1211,8 +1159,6 @@ argument_list|)
 decl_stmt|;
 name|registerReplicas
 argument_list|(
-name|node2ContainerMap
-argument_list|,
 name|datanode1
 argument_list|,
 name|container1
@@ -1580,8 +1526,6 @@ argument_list|)
 decl_stmt|;
 name|registerReplicas
 argument_list|(
-name|node2ContainerMap
-argument_list|,
 name|dn1
 argument_list|,
 name|container1
@@ -1660,14 +1604,11 @@ name|datanodes
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|registerReplicas (Node2ContainerMap node2ConMap, DatanodeDetails datanode, ContainerInfo... containers)
+DECL|method|registerReplicas (DatanodeDetails datanode, ContainerInfo... containers)
 specifier|private
 name|void
 name|registerReplicas
 parameter_list|(
-name|Node2ContainerMap
-name|node2ConMap
-parameter_list|,
 name|DatanodeDetails
 name|datanode
 parameter_list|,
@@ -1678,9 +1619,9 @@ parameter_list|)
 throws|throws
 name|SCMException
 block|{
-name|node2ConMap
+name|nodeManager
 operator|.
-name|insertNewDatanode
+name|addDatanodeInContainerMap
 argument_list|(
 name|datanode
 operator|.

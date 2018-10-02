@@ -211,7 +211,7 @@ name|containerIDs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Updates the Container list of an existing DN.    *    * @param datanodeID - UUID of DN.    * @param containers - Set of Containers tht is present on DN.    * @throws SCMException - if we don't know about this datanode, for new DN    *                      use insertNewDatanode.    */
+comment|/**    * Updates the Container list of an existing DN.    *    * @param datanodeID - UUID of DN.    * @param containers - Set of Containers tht is present on DN.    * @throws SCMException - if we don't know about this datanode, for new DN    *                        use addDatanodeInContainerMap.    */
 DECL|method|setContainersForDatanode (UUID datanodeID, Set<ContainerID> containers)
 specifier|public
 name|void

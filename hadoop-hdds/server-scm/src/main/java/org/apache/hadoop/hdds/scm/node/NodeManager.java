@@ -54,6 +54,68 @@ name|scm
 operator|.
 name|container
 operator|.
+name|ContainerID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|placement
 operator|.
 name|metrics
@@ -81,6 +143,24 @@ operator|.
 name|metrics
 operator|.
 name|SCMNodeStat
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|exceptions
+operator|.
+name|SCMException
 import|;
 end_import
 
@@ -137,6 +217,26 @@ operator|.
 name|HddsProtos
 operator|.
 name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|node
+operator|.
+name|states
+operator|.
+name|ReportResult
 import|;
 end_import
 
@@ -237,6 +337,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -364,6 +474,100 @@ parameter_list|(
 name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
+function_decl|;
+comment|/**    * Get set of pipelines a datanode is part of.    * @param dnId - datanodeID    * @return Set of PipelineID    */
+DECL|method|getPipelineByDnID (UUID dnId)
+name|Set
+argument_list|<
+name|PipelineID
+argument_list|>
+name|getPipelineByDnID
+parameter_list|(
+name|UUID
+name|dnId
+parameter_list|)
+function_decl|;
+comment|/**    * Add pipeline information in the NodeManager.    * @param pipeline - Pipeline to be added    */
+DECL|method|addPipeline (Pipeline pipeline)
+name|void
+name|addPipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+function_decl|;
+comment|/**    * Remove a pipeline information from the NodeManager.    * @param pipeline - Pipeline to be removed    */
+DECL|method|removePipeline (Pipeline pipeline)
+name|void
+name|removePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+function_decl|;
+comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
+DECL|method|setContainersForDatanode (UUID uuid, Set<ContainerID> containerIds)
+name|void
+name|setContainersForDatanode
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|,
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIds
+parameter_list|)
+throws|throws
+name|SCMException
+function_decl|;
+comment|/**    * Process containerReport received from datanode.    * @param uuid - DataonodeID    * @param containerIds - Set of containerIDs    * @return The result after processing containerReport    */
+DECL|method|processContainerReport (UUID uuid, Set<ContainerID> containerIds)
+name|ReportResult
+argument_list|<
+name|ContainerID
+argument_list|>
+name|processContainerReport
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|,
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIds
+parameter_list|)
+function_decl|;
+comment|/**    * Return set of containerIDs available on a datanode.    * @param uuid - DatanodeID    * @return - set of containerIDs    */
+DECL|method|getContainers (UUID uuid)
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|getContainers
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|)
+function_decl|;
+comment|/**    * Insert a new datanode with set of containerIDs for containers available    * on it.    * @param uuid - DatanodeID    * @param containerIDs - Set of ContainerIDs    * @throws SCMException - if datanode already exists    */
+DECL|method|addDatanodeInContainerMap (UUID uuid, Set<ContainerID> containerIDs)
+name|void
+name|addDatanodeInContainerMap
+parameter_list|(
+name|UUID
+name|uuid
+parameter_list|,
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIDs
+parameter_list|)
+throws|throws
+name|SCMException
 function_decl|;
 comment|/**    * Add a {@link SCMCommand} to the command queue, which are    * handled by HB thread asynchronously.    * @param dnId datanode uuid    * @param command    */
 DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)

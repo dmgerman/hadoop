@@ -218,9 +218,7 @@ name|scm
 operator|.
 name|node
 operator|.
-name|states
-operator|.
-name|Node2ContainerMap
+name|NodeManager
 import|;
 end_import
 
@@ -365,11 +363,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|node2ContainerMap
+DECL|field|nodeManager
 specifier|private
 specifier|final
-name|Node2ContainerMap
-name|node2ContainerMap
+name|NodeManager
+name|nodeManager
 decl_stmt|;
 DECL|field|containerMapping
 specifier|private
@@ -387,15 +385,15 @@ specifier|private
 name|ReplicationActivityStatus
 name|replicationStatus
 decl_stmt|;
-DECL|method|ContainerReportHandler (Mapping containerMapping, Node2ContainerMap node2ContainerMap, ReplicationActivityStatus replicationActivityStatus)
+DECL|method|ContainerReportHandler (Mapping containerMapping, NodeManager nodeManager, ReplicationActivityStatus replicationActivityStatus)
 specifier|public
 name|ContainerReportHandler
 parameter_list|(
 name|Mapping
 name|containerMapping
 parameter_list|,
-name|Node2ContainerMap
-name|node2ContainerMap
+name|NodeManager
+name|nodeManager
 parameter_list|,
 name|ReplicationActivityStatus
 name|replicationActivityStatus
@@ -412,7 +410,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|node2ContainerMap
+name|nodeManager
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -433,15 +431,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|containerMapping
+name|nodeManager
 operator|=
-name|containerMapping
+name|nodeManager
 expr_stmt|;
 name|this
 operator|.
-name|node2ContainerMap
+name|containerMapping
 operator|=
-name|node2ContainerMap
+name|containerMapping
 expr_stmt|;
 name|this
 operator|.
@@ -538,9 +536,9 @@ name|ContainerID
 argument_list|>
 name|reportResult
 init|=
-name|node2ContainerMap
+name|nodeManager
 operator|.
-name|processReport
+name|processContainerReport
 argument_list|(
 name|datanodeOrigin
 operator|.
@@ -551,7 +549,7 @@ name|containerIds
 argument_list|)
 decl_stmt|;
 comment|//we have the report, so we can update the states for the next iteration.
-name|node2ContainerMap
+name|nodeManager
 operator|.
 name|setContainersForDatanode
 argument_list|(

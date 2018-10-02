@@ -747,7 +747,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|pipelineSelector
+name|scm
+operator|.
+name|getScmNodeManager
+argument_list|()
 operator|.
 name|getPipelineByDnID
 argument_list|(

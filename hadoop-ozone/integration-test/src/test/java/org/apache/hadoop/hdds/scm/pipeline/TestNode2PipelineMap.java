@@ -616,9 +616,9 @@ name|PipelineID
 argument_list|>
 name|pipelines
 init|=
-name|mapping
+name|scm
 operator|.
-name|getPipelineSelector
+name|getScmNodeManager
 argument_list|()
 operator|.
 name|getPipelineByDnID
