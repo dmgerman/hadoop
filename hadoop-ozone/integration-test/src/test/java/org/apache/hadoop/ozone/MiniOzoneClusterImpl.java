@@ -887,12 +887,10 @@ lambda|->
 block|{
 if|if
 condition|(
+operator|!
 name|scm
 operator|.
-name|getScmNodeManager
-argument_list|()
-operator|.
-name|isOutOfChillMode
+name|isInChillMode
 argument_list|()
 condition|)
 block|{
@@ -914,7 +912,9 @@ block|}
 argument_list|,
 literal|100
 argument_list|,
-literal|45000
+literal|1000
+operator|*
+literal|45
 argument_list|)
 expr_stmt|;
 block|}

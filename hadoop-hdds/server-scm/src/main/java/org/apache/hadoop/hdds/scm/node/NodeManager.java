@@ -422,24 +422,6 @@ argument_list|>
 name|getAllNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Chill mode is the period when node manager waits for a minimum    * configured number of datanodes to report in. This is called chill mode    * to indicate the period before node manager gets into action.    *    * Forcefully exits the chill mode, even if we have not met the minimum    * criteria of the nodes reporting in.    */
-DECL|method|forceExitChillMode ()
-name|void
-name|forceExitChillMode
-parameter_list|()
-function_decl|;
-comment|/**    * Puts the node manager into manual chill mode.    */
-DECL|method|enterChillMode ()
-name|void
-name|enterChillMode
-parameter_list|()
-function_decl|;
-comment|/**    * Brings node manager out of manual chill mode.    */
-DECL|method|exitChillMode ()
-name|void
-name|exitChillMode
-parameter_list|()
-function_decl|;
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
 DECL|method|getStats ()
 name|SCMNodeStat

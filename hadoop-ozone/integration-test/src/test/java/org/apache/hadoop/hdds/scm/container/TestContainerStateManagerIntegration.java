@@ -500,6 +500,11 @@ operator|.
 name|waitForClusterToBeReady
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|.
+name|waitTobeOutOfChillMode
+argument_list|()
+expr_stmt|;
 name|xceiverClientManager
 operator|=
 operator|new

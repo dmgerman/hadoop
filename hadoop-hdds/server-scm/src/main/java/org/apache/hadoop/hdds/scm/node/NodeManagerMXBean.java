@@ -58,24 +58,6 @@ specifier|public
 interface|interface
 name|NodeManagerMXBean
 block|{
-comment|/**    * Get the minimum number of nodes to get out of chill mode.    *    * @return int    */
-DECL|method|getMinimumChillModeNodes ()
-name|int
-name|getMinimumChillModeNodes
-parameter_list|()
-function_decl|;
-comment|/**    * Returns a chill mode status string.    * @return String    */
-DECL|method|getChillModeStatus ()
-name|String
-name|getChillModeStatus
-parameter_list|()
-function_decl|;
-comment|/**    * Returns true if node manager is out of chill mode, else false.    * @return true if out of chill mode, else false    */
-DECL|method|isOutOfChillMode ()
-name|boolean
-name|isOutOfChillMode
-parameter_list|()
-function_decl|;
 comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */
 DECL|method|getNodeCount ()
 name|Map

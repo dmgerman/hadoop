@@ -686,20 +686,6 @@ name|UUID
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicBoolean
-import|;
-end_import
-
 begin_comment
 comment|/**  * Maintains information about the Datanodes on SCM side.  *<p>  * Heartbeats under SCM is very simple compared to HDFS heartbeatManager.  *<p>  * The getNode(byState) functions make copy of node maps and then creates a list  * based on that. It should be assumed that these get functions always report  * *stale* information. For example, getting the deadNodeCount followed by  * getNodes(DEAD) could very well produce totally different count. Also  * getNodeCount(HEALTHY) + getNodeCount(DEAD) + getNodeCode(STALE), is not  * guaranteed to add up to the total nodes that we know off. Please treat all  * get functions in this file as a snap-shot of information that is inconsistent  * as soon as you read it.  */
 end_comment
@@ -745,13 +731,6 @@ specifier|private
 name|SCMNodeStat
 name|scmStat
 decl_stmt|;
-comment|// Should we create ChillModeManager and extract all the chill mode logic
-comment|// to a new class?
-DECL|field|chillModeNodeCount
-specifier|private
-name|int
-name|chillModeNodeCount
-decl_stmt|;
 DECL|field|clusterID
 specifier|private
 specifier|final
@@ -763,18 +742,6 @@ specifier|private
 specifier|final
 name|VersionInfo
 name|version
-decl_stmt|;
-comment|/**    * During start up of SCM, it will enter into chill mode and will be there    * until number of Datanodes registered reaches {@code chillModeNodeCount}.    * This flag is for tracking startup chill mode.    */
-DECL|field|inStartupChillMode
-specifier|private
-name|AtomicBoolean
-name|inStartupChillMode
-decl_stmt|;
-comment|/**    * Administrator can put SCM into chill mode manually.    * This flag is for tracking manual chill mode.    */
-DECL|field|inManualChillMode
-specifier|private
-name|AtomicBoolean
-name|inManualChillMode
 decl_stmt|;
 DECL|field|commandQueue
 specifier|private
@@ -857,33 +824,6 @@ operator|=
 operator|new
 name|CommandQueue
 argument_list|()
-expr_stmt|;
-comment|// TODO: Support this value as a Percentage of known machines.
-name|this
-operator|.
-name|chillModeNodeCount
-operator|=
-literal|1
-expr_stmt|;
-name|this
-operator|.
-name|inStartupChillMode
-operator|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|inManualChillMode
-operator|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|false
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1019,240 +959,6 @@ name|nodeStateManager
 operator|.
 name|getAllNodes
 argument_list|()
-return|;
-block|}
-comment|/**    * Get the minimum number of nodes to get out of Chill mode.    *    * @return int    */
-annotation|@
-name|Override
-DECL|method|getMinimumChillModeNodes ()
-specifier|public
-name|int
-name|getMinimumChillModeNodes
-parameter_list|()
-block|{
-return|return
-name|chillModeNodeCount
-return|;
-block|}
-comment|/**    * Sets the Minimum chill mode nodes count, used only in testing.    *    * @param count - Number of nodes.    */
-annotation|@
-name|VisibleForTesting
-DECL|method|setMinimumChillModeNodes (int count)
-specifier|public
-name|void
-name|setMinimumChillModeNodes
-parameter_list|(
-name|int
-name|count
-parameter_list|)
-block|{
-name|chillModeNodeCount
-operator|=
-name|count
-expr_stmt|;
-block|}
-comment|/**    * Returns chill mode Status string.    * @return String    */
-annotation|@
-name|Override
-DECL|method|getChillModeStatus ()
-specifier|public
-name|String
-name|getChillModeStatus
-parameter_list|()
-block|{
-if|if
-condition|(
-name|inStartupChillMode
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-return|return
-literal|"Still in chill mode, waiting on nodes to report in."
-operator|+
-name|String
-operator|.
-name|format
-argument_list|(
-literal|" %d nodes reported, minimal %d nodes required."
-argument_list|,
-name|nodeStateManager
-operator|.
-name|getTotalNodeCount
-argument_list|()
-argument_list|,
-name|getMinimumChillModeNodes
-argument_list|()
-argument_list|)
-return|;
-block|}
-if|if
-condition|(
-name|inManualChillMode
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-return|return
-literal|"Out of startup chill mode, but in manual chill mode."
-operator|+
-name|String
-operator|.
-name|format
-argument_list|(
-literal|" %d nodes have reported in."
-argument_list|,
-name|nodeStateManager
-operator|.
-name|getTotalNodeCount
-argument_list|()
-argument_list|)
-return|;
-block|}
-return|return
-literal|"Out of chill mode."
-operator|+
-name|String
-operator|.
-name|format
-argument_list|(
-literal|" %d nodes have reported in."
-argument_list|,
-name|nodeStateManager
-operator|.
-name|getTotalNodeCount
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * Forcefully exits the chill mode even if we have not met the minimum    * criteria of exiting the chill mode. This will exit from both startup    * and manual chill mode.    */
-annotation|@
-name|Override
-DECL|method|forceExitChillMode ()
-specifier|public
-name|void
-name|forceExitChillMode
-parameter_list|()
-block|{
-if|if
-condition|(
-name|inStartupChillMode
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Leaving startup chill mode."
-argument_list|)
-expr_stmt|;
-name|inStartupChillMode
-operator|.
-name|set
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|inManualChillMode
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Leaving manual chill mode."
-argument_list|)
-expr_stmt|;
-name|inManualChillMode
-operator|.
-name|set
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Puts the node manager into manual chill mode.    */
-annotation|@
-name|Override
-DECL|method|enterChillMode ()
-specifier|public
-name|void
-name|enterChillMode
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Entering manual chill mode."
-argument_list|)
-expr_stmt|;
-name|inManualChillMode
-operator|.
-name|set
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Brings node manager out of manual chill mode.    */
-annotation|@
-name|Override
-DECL|method|exitChillMode ()
-specifier|public
-name|void
-name|exitChillMode
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Leaving manual chill mode."
-argument_list|)
-expr_stmt|;
-name|inManualChillMode
-operator|.
-name|set
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Returns true if node manager is out of chill mode, else false.    * @return true if out of chill mode, else false    */
-annotation|@
-name|Override
-DECL|method|isOutOfChillMode ()
-specifier|public
-name|boolean
-name|isOutOfChillMode
-parameter_list|()
-block|{
-return|return
-operator|!
-operator|(
-name|inStartupChillMode
-operator|.
-name|get
-argument_list|()
-operator|||
-name|inManualChillMode
-operator|.
-name|get
-argument_list|()
-operator|)
 return|;
 block|}
 comment|/**    * Returns the Number of Datanodes by State they are in.    *    * @return int -- count    */
@@ -1632,37 +1338,6 @@ name|SCMNodeStat
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|inStartupChillMode
-operator|.
-name|get
-argument_list|()
-operator|&&
-name|nodeStateManager
-operator|.
-name|getTotalNodeCount
-argument_list|()
-operator|>=
-name|getMinimumChillModeNodes
-argument_list|()
-condition|)
-block|{
-name|inStartupChillMode
-operator|.
-name|getAndSet
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Leaving startup chill mode."
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Updating Node Report, as registration is successful
 name|updateNodeStat
 argument_list|(

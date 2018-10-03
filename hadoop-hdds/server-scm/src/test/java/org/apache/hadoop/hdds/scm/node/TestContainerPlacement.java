@@ -478,30 +478,6 @@ name|assertEquals
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test for different container placement policy.  */
 end_comment
@@ -643,16 +619,6 @@ argument_list|,
 name|eventQueue
 argument_list|)
 decl_stmt|;
-name|assertFalse
-argument_list|(
-literal|"Node manager should be in chill mode"
-argument_list|,
-name|nodeManager
-operator|.
-name|isOutOfChillMode
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|nodeManager
 return|;
@@ -938,14 +904,6 @@ name|getRemaining
 argument_list|()
 operator|.
 name|get
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|nodeManager
-operator|.
-name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;

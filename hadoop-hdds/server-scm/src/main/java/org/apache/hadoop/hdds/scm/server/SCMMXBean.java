@@ -99,6 +99,18 @@ argument_list|>
 name|getContainerReport
 parameter_list|()
 function_decl|;
+comment|/**    * Returns chill mode status.    * @return boolean    */
+DECL|method|isInChillMode ()
+name|boolean
+name|isInChillMode
+parameter_list|()
+function_decl|;
+comment|/**    * Returns live chill mode container threshold.    * @return String    */
+DECL|method|getChillModeCurrentContainerThreshold ()
+name|double
+name|getChillModeCurrentContainerThreshold
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

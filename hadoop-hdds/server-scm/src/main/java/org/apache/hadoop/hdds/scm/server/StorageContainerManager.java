@@ -4244,6 +4244,23 @@ return|return
 name|id2StatMap
 return|;
 block|}
+comment|/**    * Returns live chill mode container threshold.    *    * @return String    */
+annotation|@
+name|Override
+DECL|method|getChillModeCurrentContainerThreshold ()
+specifier|public
+name|double
+name|getChillModeCurrentContainerThreshold
+parameter_list|()
+block|{
+return|return
+name|getCurrentContainerThreshold
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns chill mode status.    * @return boolean    */
+annotation|@
+name|Override
 DECL|method|isInChillMode ()
 specifier|public
 name|boolean
