@@ -28,6 +28,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -431,13 +443,6 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-name|Random
-name|random
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|Configuration
@@ -447,6 +452,7 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+comment|// datanode scans directories
 name|conf
 operator|.
 name|setInt
@@ -458,7 +464,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// datanode scans directories
+comment|// datanode sends block reports
 name|conf
 operator|.
 name|setInt
@@ -472,7 +478,6 @@ operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
-comment|// datanode sends block reports
 comment|// Set short retry timeouts so this test runs faster
 name|conf
 operator|.
@@ -580,7 +585,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -591,12 +596,12 @@ argument_list|()
 operator|+
 literal|" corrupt files. Expecting None."
 argument_list|,
+literal|0
+argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
 comment|// Now deliberately corrupt one block
@@ -729,7 +734,11 @@ index|[
 name|length
 index|]
 decl_stmt|;
-name|random
+operator|new
+name|Random
+argument_list|(
+literal|13L
+argument_list|)
 operator|.
 name|nextBytes
 argument_list|(
@@ -916,13 +925,6 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-name|Random
-name|random
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|Configuration
@@ -1104,7 +1106,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -1115,12 +1117,12 @@ argument_list|()
 operator|+
 literal|" corrupt files. Expecting None."
 argument_list|,
+literal|0
+argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
 comment|// Now deliberately corrupt one block
@@ -1248,7 +1250,11 @@ index|[
 name|length
 index|]
 decl_stmt|;
-name|random
+operator|new
+name|Random
+argument_list|(
+literal|13L
+argument_list|)
 operator|.
 name|nextBytes
 argument_list|(
@@ -2032,11 +2038,11 @@ operator|+
 name|numCorrupt
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|3
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 comment|// test the paging here
@@ -2117,11 +2123,11 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|2
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -2171,11 +2177,11 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|0
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 comment|// Do a listing on a dir which doesn't have any corrupt blocks and
@@ -2210,11 +2216,11 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|0
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 name|util
@@ -2464,11 +2470,11 @@ argument_list|(
 name|corruptFileBlocks
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|0
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 comment|// delete the blocks
@@ -2690,11 +2696,11 @@ operator|+
 name|numCorrupt
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|3
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 name|util
@@ -2906,7 +2912,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -2917,12 +2923,12 @@ argument_list|()
 operator|+
 literal|" corrupt files. Expecting none."
 argument_list|,
+literal|0
+argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
 comment|// Now deliberately blocks from all files
@@ -3470,11 +3476,11 @@ argument_list|(
 name|corruptFileBlocks
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|0
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 comment|// delete the blocks
@@ -3693,13 +3699,13 @@ operator|+
 name|numCorrupt
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Failed to get corrupt files!"
 argument_list|,
-name|numCorrupt
-operator|==
 literal|3
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 name|util

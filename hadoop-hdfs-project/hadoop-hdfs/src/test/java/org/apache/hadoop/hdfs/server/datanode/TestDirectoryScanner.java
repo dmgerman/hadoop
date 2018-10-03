@@ -202,6 +202,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -316,26 +326,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|hadoop
@@ -412,7 +402,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|DFSClient
 import|;
 end_import
 
@@ -426,7 +416,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -496,60 +486,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|checker
-operator|.
-name|VolumeCheckResult
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|DataNodeVolumeMetrics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|AutoCloseableLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|Block
@@ -605,6 +541,46 @@ operator|.
 name|DirectoryScanner
 operator|.
 name|ReportCompiler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|checker
+operator|.
+name|VolumeCheckResult
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|DataNodeVolumeMetrics
 import|;
 end_import
 
@@ -794,6 +770,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|AutoCloseableLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -828,8 +818,28 @@ name|Mockito
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
-comment|/**  * Tests {@link DirectoryScanner} handling of differences  * between blocks on the disk and block in memory.  */
+comment|/**  * Tests {@link DirectoryScanner} handling of differences between blocks on the  * disk and block in memory.  */
 end_comment
 
 begin_class
@@ -1003,7 +1013,7 @@ name|initCacheManipulator
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** create a file with a length of<code>fileLen</code> */
+comment|/** create a file with a length of<code>fileLen</code>. */
 DECL|method|createFile (String fileNamePrefix, long fileLen, boolean isLazyPersist)
 specifier|private
 name|List
@@ -1093,7 +1103,7 @@ name|getLocatedBlocks
 argument_list|()
 return|;
 block|}
-comment|/** Truncate a block file */
+comment|/** Truncate a block file. */
 DECL|method|truncateBlockFile ()
 specifier|private
 name|long
@@ -1420,7 +1430,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Duplicate the given block on all volumes.    * @param blockId    * @throws IOException    */
+comment|/**    * Duplicate the given block on all volumes.    *    * @param blockId    * @throws IOException    */
 DECL|method|duplicateBlock (long blockId)
 specifier|private
 name|void
@@ -1687,7 +1697,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/** Get a random blockId that is not used already */
+comment|/** Get a random blockId that is not used already. */
 DECL|method|getFreeBlockId ()
 specifier|private
 name|long
@@ -1779,7 +1789,7 @@ operator|.
 name|METADATA_EXTENSION
 return|;
 block|}
-comment|/** Create a block file in a random volume*/
+comment|/** Create a block file in a random volume. */
 DECL|method|createBlockFile ()
 specifier|private
 name|long
@@ -1887,7 +1897,7 @@ return|return
 name|id
 return|;
 block|}
-comment|/** Create a metafile in a random volume*/
+comment|/** Create a metafile in a random volume */
 DECL|method|createMetaFile ()
 specifier|private
 name|long
@@ -1995,7 +2005,7 @@ return|return
 name|id
 return|;
 block|}
-comment|/** Create block file and corresponding metafile in a rondom volume */
+comment|/** Create block file and corresponding metafile in a rondom volume. */
 DECL|method|createBlockMetaFile ()
 specifier|private
 name|long
@@ -2331,6 +2341,15 @@ name|AssertionError
 name|ex
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Assertion Error"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -2340,7 +2359,7 @@ literal|true
 return|;
 block|}
 argument_list|,
-literal|50
+literal|100
 argument_list|,
 literal|2000
 argument_list|)
@@ -2373,19 +2392,7 @@ name|long
 name|duplicateBlocks
 parameter_list|)
 block|{
-name|assertTrue
-argument_list|(
-name|scanner
-operator|.
-name|diffs
-operator|.
-name|containsKey
-argument_list|(
-name|bpid
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|LinkedList
+name|Collection
 argument_list|<
 name|FsVolumeSpi
 operator|.
@@ -2397,21 +2404,19 @@ name|scanner
 operator|.
 name|diffs
 operator|.
-name|get
+name|getScanInfo
 argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|scanner
+name|diffsize
+argument_list|,
+name|diff
 operator|.
-name|stats
-operator|.
-name|containsKey
-argument_list|(
-name|bpid
-argument_list|)
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DirectoryScanner
@@ -2428,14 +2433,9 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertNotNull
 argument_list|(
-name|diffsize
-argument_list|,
-name|diff
-operator|.
-name|size
-argument_list|()
+name|stats
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2549,19 +2549,6 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 name|bpid
 operator|=
 name|cluster
@@ -2604,8 +2591,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|CONF
@@ -2833,19 +2818,6 @@ operator|.
 name|getBlockPoolId
 argument_list|()
 expr_stmt|;
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 name|fds
 operator|=
 name|DataNodeTestUtils
@@ -2878,8 +2850,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|CONF
@@ -2907,7 +2877,7 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Create a file file on RAM_DISK
+comment|// Create a file on RAM_DISK
 name|List
 argument_list|<
 name|LocatedBlock
@@ -3159,26 +3129,11 @@ argument_list|,
 name|parallelism
 argument_list|)
 expr_stmt|;
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 name|scanner
 operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|CONF
@@ -3884,7 +3839,8 @@ literal|0L
 argument_list|)
 expr_stmt|;
 comment|// Test15: validate clean shutdown of DirectoryScanner
-comment|////assertTrue(scanner.getRunStatus()); //assumes "real" FSDataset, not sim
+comment|//// assertTrue(scanner.getRunStatus()); //assumes "real" FSDataset, not
+comment|// sim
 name|scanner
 operator|.
 name|shutdown
@@ -3925,7 +3881,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test that the timeslice throttle limits the report compiler thread's    * execution time correctly.  We test by scanning a large block pool and    * comparing the time spent waiting to the time spent running.    *    * The block pool has to be large, or the ratio will be off.  The throttle    * allows the report compiler thread to finish its current cycle when    * blocking it, so the ratio will always be a little lower than expected.    * The smaller the block pool, the further off the ratio will be.    *    * @throws Exception thrown on unexpected failure    */
+comment|/**    * Test that the timeslice throttle limits the report compiler thread's    * execution time correctly. We test by scanning a large block pool and    * comparing the time spent waiting to the time spent running.    *    * The block pool has to be large, or the ratio will be off. The throttle    * allows the report compiler thread to finish its current cycle when blocking    * it, so the ratio will always be a little lower than expected. The smaller    * the block pool, the further off the ratio will be.    *    * @throws Exception thrown on unexpected failure    */
 annotation|@
 name|Test
 argument_list|(
@@ -4030,19 +3986,6 @@ argument_list|,
 literal|100
 argument_list|)
 expr_stmt|;
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 specifier|final
 name|int
 name|maxBlocksPerFile
@@ -4138,8 +4081,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -4233,8 +4174,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -4339,8 +4278,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -4392,8 +4329,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|CONF
@@ -4462,7 +4397,7 @@ operator|>
 literal|0L
 argument_list|)
 expr_stmt|;
-comment|// Test with a 1ms limit.  This also tests whether the scanner can be
+comment|// Test with a 1ms limit. This also tests whether the scanner can be
 comment|// shutdown cleanly in mid stride.
 name|conf
 operator|.
@@ -4515,8 +4450,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -4691,7 +4624,7 @@ literal|"Throttle is too permissive"
 argument_list|,
 name|ratio
 operator|>
-literal|10
+literal|8
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -4725,8 +4658,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -4812,8 +4743,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -4921,8 +4850,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|conf
@@ -5484,6 +5411,11 @@ argument_list|()
 throw|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|getDataset ()
 specifier|public
@@ -5547,7 +5479,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|loadLastPartialChunkChecksum ( File blockFile, File metaFile)
+DECL|method|loadLastPartialChunkChecksum (File blockFile, File metaFile)
 specifier|public
 name|byte
 index|[]
@@ -6086,19 +6018,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 comment|// Add files with 2 blocks
 name|createFile
 argument_list|(
@@ -6249,8 +6168,6 @@ operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|spyFds
 argument_list|,
 name|CONF
@@ -6305,7 +6222,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|//Create Federated cluster with two nameservices and one DN
+comment|// Create Federated cluster with two nameservices and one DN
 try|try
 init|(
 name|MiniDFSCluster
@@ -6357,19 +6274,6 @@ argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
-name|DataNode
-name|dataNode
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 name|fds
 operator|=
 name|DataNodeTestUtils
@@ -6387,7 +6291,7 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//Create one block in first nameservice
+comment|// Create one block in first nameservice
 name|FileSystem
 name|fs
 init|=
@@ -6410,7 +6314,7 @@ argument_list|,
 name|bp1Files
 argument_list|)
 expr_stmt|;
-comment|//Create two blocks in second nameservice
+comment|// Create two blocks in second nameservice
 name|FileSystem
 name|fs2
 init|=
@@ -6433,14 +6337,12 @@ argument_list|,
 name|bp2Files
 argument_list|)
 expr_stmt|;
-comment|//Call the Directory scanner
+comment|// Call the Directory scanner
 name|scanner
 operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dataNode
-argument_list|,
 name|fds
 argument_list|,
 name|CONF
@@ -6458,7 +6360,7 @@ operator|.
 name|reconcile
 argument_list|()
 expr_stmt|;
-comment|//Check blocks in corresponding BP
+comment|// Check blocks in corresponding BP
 name|GenericTestUtils
 operator|.
 name|waitFor
