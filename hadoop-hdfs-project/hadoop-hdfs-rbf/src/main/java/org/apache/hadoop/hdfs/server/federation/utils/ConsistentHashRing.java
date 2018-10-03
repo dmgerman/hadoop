@@ -445,7 +445,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return location (owner) of specified item. Owner is the next    * entry on the hash ring (with a hash value> hash value of item).    * @param item Item to look for.    * @return The location of the item.    */
+comment|/**    * Return location (owner) of specified item. Owner is the next    * entry on the hash ring (with a hash value&gt; hash value of item).    * @param item Item to look for.    * @return The location of the item.    */
 DECL|method|getLocation (String item)
 specifier|public
 name|String

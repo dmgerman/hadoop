@@ -1801,7 +1801,7 @@ block|}
 comment|/////////////////////////////////////////////////////////
 comment|// Router State Management
 comment|/////////////////////////////////////////////////////////
-comment|/**    * Update the router state and heartbeat to the state store.    *    * @param state The new router state.    */
+comment|/**    * Update the router state and heartbeat to the state store.    *    * @param newState The new router state.    */
 DECL|method|updateRouterState (RouterServiceState newState)
 specifier|public
 name|void
@@ -2109,7 +2109,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * If the quota system is enabled in Router.    */
+comment|/**    * Check if the quota system is enabled in Router.    * @return True if the quota system is enabled in Router.    */
 DECL|method|isQuotaEnabled ()
 specifier|public
 name|boolean

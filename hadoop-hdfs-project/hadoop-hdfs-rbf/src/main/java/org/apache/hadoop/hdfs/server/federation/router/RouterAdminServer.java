@@ -2416,7 +2416,7 @@ name|nsIds
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a new permission checker used for making mount table access    * control. This method will be invoked during each RPC call in router    * admin server.    *    * @return Router permission checker    * @throws AccessControlException    */
+comment|/**    * Get a new permission checker used for making mount table access    * control. This method will be invoked during each RPC call in router    * admin server.    *    * @return Router permission checker.    * @throws AccessControlException If the user is not authorized.    */
 DECL|method|getPermissionChecker ()
 specifier|public
 specifier|static

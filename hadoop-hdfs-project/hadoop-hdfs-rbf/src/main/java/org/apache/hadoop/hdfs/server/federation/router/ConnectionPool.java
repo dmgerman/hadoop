@@ -808,7 +808,7 @@ operator|.
 name|connectionPoolId
 return|;
 block|}
-comment|/**    * Get the clientIndex used to calculate index for lookup.    */
+comment|/**    * Get the clientIndex used to calculate index for lookup.    * @return Client index.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getClientIndex ()
@@ -1402,7 +1402,7 @@ name|info
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new proxy wrapper for a client NN connection.    * @return Proxy for the target ClientProtocol that contains the user's    *         security context.    * @throws IOException    */
+comment|/**    * Create a new proxy wrapper for a client NN connection.    * @return Proxy for the target ClientProtocol that contains the user's    *         security context.    * @throws IOException If it cannot get a new connection.    */
 DECL|method|newConnection ()
 specifier|public
 name|ConnectionContext

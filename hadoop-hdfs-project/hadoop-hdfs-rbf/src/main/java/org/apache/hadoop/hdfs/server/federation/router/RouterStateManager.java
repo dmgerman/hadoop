@@ -174,7 +174,7 @@ specifier|public
 interface|interface
 name|RouterStateManager
 block|{
-comment|/**    * Enter safe mode and change Router state to RouterServiceState#SAFEMODE.    */
+comment|/**    * Enter safe mode and change Router state to RouterServiceState#SAFEMODE.    * @param request Request to enter safe mode.    * @return Response to enter safe mode.    * @throws IOException If it cannot perform the operation.    */
 DECL|method|enterSafeMode (EnterSafeModeRequest request)
 name|EnterSafeModeResponse
 name|enterSafeMode
@@ -185,7 +185,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Leave safe mode and change Router state to RouterServiceState#RUNNING.    */
+comment|/**    * Leave safe mode and change Router state to RouterServiceState#RUNNING.    * @param request Request to leave safe mode.    * @return Response to leave safe mode.    * @throws IOException If it cannot perform the operation.    */
 DECL|method|leaveSafeMode (LeaveSafeModeRequest request)
 name|LeaveSafeModeResponse
 name|leaveSafeMode
@@ -196,7 +196,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Verify if current Router state is safe mode.    */
+comment|/**    * Verify if current Router state is safe mode.    * @param request Request to get the safe mode state.    * @return Response to get the safe mode state.    * @throws IOException If it cannot perform the operation.    */
 DECL|method|getSafeMode (GetSafeModeRequest request)
 name|GetSafeModeResponse
 name|getSafeMode

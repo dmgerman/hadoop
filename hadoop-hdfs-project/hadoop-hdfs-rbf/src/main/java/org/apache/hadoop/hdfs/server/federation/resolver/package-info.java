@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_comment
-comment|/**  * The resolver package contains indepedent data resolvers used in HDFS  * federation. The data resolvers collect data from the cluster, including from  * the state store. The resolvers expose APIs used by HDFS federation to collect  * aggregated, cached data for use in Real-time request processing. The  * resolvers are perf-sensitive and are used in the flow of the  * {@link RouterRpcServer} request path.  *<p>  * The principal resolvers are:  *<ul>  *<li>{@link ActiveNamenodeResolver} Real-time interface for locating the most  * recently active NN for a nameservice.  *<li>{@link FileSubclusterResolver} Real-time interface for determining the NN  * and local file path for a given file/folder based on the global namespace  * path.  *</ul>  */
+comment|/**  * The resolver package contains indepedent data resolvers used in HDFS  * federation. The data resolvers collect data from the cluster, including from  * the state store. The resolvers expose APIs used by HDFS federation to collect  * aggregated, cached data for use in Real-time request processing. The  * resolvers are perf-sensitive and are used in the flow of the {@link  * org.apache.hadoop.hdfs.server.federation.router.RouterRpcServer  * RouterRpcServer} request path.  *<p>  * The principal resolvers are:  *<ul>  *<li>{@link ActiveNamenodeResolver} Real-time interface for locating the most  * recently active NN for a nameservice.  *<li>{@link FileSubclusterResolver} Real-time interface for determining the NN  * and local file path for a given file/folder based on the global namespace  * path.  *</ul>  */
 end_comment
 
 begin_annotation

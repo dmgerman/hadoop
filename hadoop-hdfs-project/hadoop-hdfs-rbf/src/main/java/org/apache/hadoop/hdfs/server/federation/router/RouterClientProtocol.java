@@ -1394,7 +1394,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * The the delegation token from each name service.    *    * @param renewer    * @return Name service -> Token.    * @throws IOException    */
+comment|/**    * The the delegation token from each name service.    *    * @param renewer The token renewer.    * @return Name service to Token.    * @throws IOException If it cannot get the delegation token.    */
 specifier|public
 name|Map
 argument_list|<

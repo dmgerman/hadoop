@@ -519,7 +519,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A service to initialize a  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver} and maintain the connection to the data store. There are  * multiple state store driver connections supported:  *<ul>  *<li>File  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.impl.  * StateStoreFileImpl StateStoreFileImpl}  *<li>ZooKeeper  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.impl.  * StateStoreZooKeeperImpl StateStoreZooKeeperImpl}  *</ul>  *<p>  * The service also supports the dynamic registration of record stores like:  *<ul>  *<li>{@link MembershipStore}: state of the Namenodes in the  * federation.  *<li>{@link MountTableStore}: Mount table between to subclusters.  * See {@link org.apache.hadoop.fs.viewfs.ViewFs ViewFs}.  *<li>{@link RebalancerStore}: Log of the rebalancing operations.  *<li>{@link RouterStore}: Router state in the federation.  *<li>{@link DisabledNameserviceStore}: Disabled name services.  *<li>{@link TokenStore}: Tokens in the federation.  *</ul>  */
+comment|/**  * A service to initialize a  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver} and maintain the connection to the data store. There are  * multiple state store driver connections supported:  *<ul>  *<li>File {@link  * org.apache.hadoop.hdfs.server.federation.store.driver.impl.StateStoreFileImpl  * StateStoreFileImpl}  *<li>ZooKeeper {@link  * org.apache.hadoop.hdfs.server.federation.store.driver.impl.StateStoreZooKeeperImpl  * StateStoreZooKeeperImpl}  *</ul>  *<p>  * The service also supports the dynamic registration of record stores like:  *<ul>  *<li>{@link MembershipStore}: state of the Namenodes in the  * federation.  *<li>{@link MountTableStore}: Mount table between to subclusters.  * See {@link org.apache.hadoop.fs.viewfs.ViewFs ViewFs}.  *<li>{@link RouterStore}: Router state in the federation.  *<li>{@link DisabledNameserviceStore}: Disabled name services.  *</ul>  */
 end_comment
 
 begin_class
@@ -683,7 +683,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Initialize the State Store and the connection to the backend.    *    * @param config Configuration for the State Store.    * @throws IOException    */
+comment|/**    * Initialize the State Store and the connection to the back-end.    *    * @param config Configuration for the State Store.    * @throws IOException Cannot create driver for the State Store.    */
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration config)
@@ -1021,7 +1021,7 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Add a record store to the State Store. It includes adding the store, the    * supported record and the cache management.    *    * @param clazz Class of the record store to track.    * @return New record store.    * @throws ReflectiveOperationException    */
+comment|/**    * Add a record store to the State Store. It includes adding the store, the    * supported record and the cache management.    *    * @param<T> Type of the records stored.    * @param clazz Class of the record store to track.    * @return New record store.    * @throws ReflectiveOperationException    */
 DECL|method|addRecordStore ( final Class<T> clazz)
 specifier|private
 parameter_list|<

@@ -450,7 +450,7 @@ name|routerService
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the mapping from nodes to subcluster. It gets this mapping from the    * subclusters through expensive calls (e.g., RPC) and uses caching to avoid    * too many calls. The cache might be updated asynchronously to reduce    * latency.    *    * @return Node IP -> Subcluster.    */
+comment|/**    * Get the mapping from nodes to subcluster. It gets this mapping from the    * subclusters through expensive calls (e.g., RPC) and uses caching to avoid    * too many calls. The cache might be updated asynchronously to reduce    * latency.    *    * @return Node IP to Subcluster.    */
 annotation|@
 name|Override
 DECL|method|getSubclusterInfo ( MembershipStore membershipStore)

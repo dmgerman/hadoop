@@ -99,7 +99,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a list of mount points for a path. Results are from the mount table    * cache.    *    * @return List of mount points present at this path or zero-length list if    *         none are found.    * @throws IOException Throws exception if the data is not available.    */
+comment|/**    * Get a list of mount points for a path. Results are from the mount table    * cache.    *    * @param path Path to get the mount points under.    * @return List of mount points present at this path or zero-length list if    *         none are found.    * @throws IOException Throws exception if the data is not available.    */
 DECL|method|getMountPoints (String path)
 name|List
 argument_list|<

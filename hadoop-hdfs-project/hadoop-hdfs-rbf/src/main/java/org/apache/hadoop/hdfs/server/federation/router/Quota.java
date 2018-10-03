@@ -282,7 +282,7 @@ name|getRPCClient
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Set quota for the federation path.    * @param path Federation path.    * @param namespaceQuota Name space quota.    * @param storagespaceQuota Storage space quota.    * @param type StorageType that the space quota is intended to be set on.    * @throws IOException    */
+comment|/**    * Set quota for the federation path.    * @param path Federation path.    * @param namespaceQuota Name space quota.    * @param storagespaceQuota Storage space quota.    * @param type StorageType that the space quota is intended to be set on.    * @throws IOException If the quota system is disabled.    */
 DECL|method|setQuota (String path, long namespaceQuota, long storagespaceQuota, StorageType type)
 specifier|public
 name|void
@@ -437,7 +437,7 @@ block|}
 end_class
 
 begin_comment
-comment|/**    * Get quota usage for the federation path.    * @param path Federation path.    * @return Aggregated quota.    * @throws IOException    */
+comment|/**    * Get quota usage for the federation path.    * @param path Federation path.    * @return Aggregated quota.    * @throws IOException If the quota system is disabled.    */
 end_comment
 
 begin_function

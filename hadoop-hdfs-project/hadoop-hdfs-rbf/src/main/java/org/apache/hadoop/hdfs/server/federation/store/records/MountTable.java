@@ -305,7 +305,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Data schema for  * {@link org.apache.hadoop.hdfs.server.federation.store.  * MountTableStore FederationMountTableStore} data stored in the  * {@link org.apache.hadoop.hdfs.server.federation.store.  * StateStoreService FederationStateStoreService}. Supports string  * serialization.  */
+comment|/**  * Data schema for {@link  * org.apache.hadoop.hdfs.server.federation.store.MountTableStore  * FederationMountTableStore} data stored in the {@link  * org.apache.hadoop.hdfs.server.federation.store.StateStoreService  * FederationStateStoreService}. Supports string serialization.  */
 end_comment
 
 begin_class
@@ -533,7 +533,7 @@ return|return
 name|record
 return|;
 block|}
-comment|/**    * Constructor for a mount table entry with a single destinations.    *    * @param src Source path in the mount entry.    * @param destinations Nameservice destination of the mount point.    * @param dateCreated Created date.    * @param dateModified Modified date.    * @throws IOException    */
+comment|/**    * Constructor for a mount table entry with a single destinations.    *    * @param src Source path in the mount entry.    * @param destinations Name service destination of the mount point.    * @param dateCreated Created date.    * @param dateModified Modified date.    * @return New mount table instance.    * @throws IOException If it cannot be created.    */
 DECL|method|newInstance (final String src, final Map<String, String> destinations, long dateCreated, long dateModified)
 specifier|public
 specifier|static
@@ -590,7 +590,7 @@ return|return
 name|record
 return|;
 block|}
-comment|/**    * Constructor for a mount table entry with multiple destinations.    *    * @param src Source path in the mount entry.    * @param destinations Nameservice destinations of the mount point.    * @throws IOException    */
+comment|/**    * Constructor for a mount table entry with multiple destinations.    *    * @param src Source path in the mount entry.    * @param destinations Name service destinations of the mount point.    * @throws IOException If it cannot be created.    */
 DECL|method|newInstance (final String src, final Map<String, String> destinations)
 specifier|public
 specifier|static
@@ -855,7 +855,7 @@ argument_list|>
 name|getDestinations
 parameter_list|()
 function_decl|;
-comment|/**    * Set the destination paths.    *    * @param paths Destination paths.    */
+comment|/**    * Set the destination paths.    *    * @param dests Destination paths.    */
 DECL|method|setDestinations (List<RemoteLocation> dests)
 specifier|public
 specifier|abstract
@@ -869,7 +869,7 @@ argument_list|>
 name|dests
 parameter_list|)
 function_decl|;
-comment|/**    * Add a new destination to this mount table entry.    */
+comment|/**    * Add a new destination to this mount table entry.    *    * @param nsId Name service identifier.    * @param path Path in the remote name service.    * @return If the destination was added.    */
 DECL|method|addDestination (String nsId, String path)
 specifier|public
 specifier|abstract

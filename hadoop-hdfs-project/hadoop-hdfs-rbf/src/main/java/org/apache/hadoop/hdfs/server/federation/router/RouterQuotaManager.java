@@ -225,7 +225,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get all the mount quota paths.    */
+comment|/**    * Get all the mount quota paths.    * @return All the mount quota paths.    */
 DECL|method|getAll ()
 specifier|public
 name|Set
@@ -358,7 +358,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Get children paths (can including itself) under specified federation path.    * @param parentPath    * @return Set<String> Children path set.    */
+comment|/**    * Get children paths (can including itself) under specified federation path.    * @param parentPath Federated path.    * @return Set of children paths.    */
 DECL|method|getPaths (String parentPath)
 specifier|public
 name|Set
@@ -581,7 +581,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check if the quota was set.    * @param quota RouterQuotaUsage set in mount table.    */
+comment|/**    * Check if the quota was set.    * @param quota RouterQuotaUsage set in mount table.    * @return True if the quota is set.    */
 DECL|method|isQuotaSet (RouterQuotaUsage quota)
 specifier|public
 name|boolean

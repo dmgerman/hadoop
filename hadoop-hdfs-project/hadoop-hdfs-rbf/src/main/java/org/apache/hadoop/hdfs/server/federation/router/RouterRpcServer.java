@@ -2747,7 +2747,7 @@ return|return
 name|subclusterResolver
 return|;
 block|}
-comment|/**    * Get the active namenode resolver    */
+comment|/**    * Get the active namenode resolver    *    * @return Active namenode resolver.    */
 DECL|method|getNamenodeResolver ()
 specifier|public
 name|ActiveNamenodeResolver
@@ -4684,7 +4684,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get the list of datanodes per subcluster.    *    * @param type Type of the datanodes to get.    * @return nsId -> datanode list.    * @throws IOException    */
+comment|/**    * Get the list of datanodes per subcluster.    *    * @param type Type of the datanodes to get.    * @return nsId to datanode list.    * @throws IOException If the method cannot be invoked remotely.    */
 end_comment
 
 begin_function
@@ -7732,7 +7732,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Merge the outputs from multiple namespaces.    * @param map Namespace -> Output array.    * @param clazz Class of the values.    * @return Array with the outputs.    */
+comment|/**    * Merge the outputs from multiple namespaces.    *    * @param<T> The type of the objects to merge.    * @param map Namespace to Output array.    * @param clazz Class of the values.    * @return Array with the outputs.    */
 end_comment
 
 begin_function
@@ -7815,7 +7815,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Convert a set of values into an array.    * @param set Input set.    * @param clazz Class of the values.    * @return Array with the values in set.    */
+comment|/**    * Convert a set of values into an array.    * @param<T> The type of the return objects.    * @param set Input set.    * @param clazz Class of the values.    * @return Array with the values in set.    */
 end_comment
 
 begin_function
@@ -7883,7 +7883,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get quota module implement.    */
+comment|/**    * Get quota module implementation.    * @return Quota module implementation    */
 end_comment
 
 begin_function

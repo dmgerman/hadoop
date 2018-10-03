@@ -525,7 +525,7 @@ operator|.
 name|webAddress
 return|;
 block|}
-comment|/**    * Get the HA service state.    *    * @return The HA service state.    */
+comment|/**    * Set the HA service state.    *    * @param state The HA service state to set.    */
 DECL|method|setHAServiceState (HAServiceState state)
 specifier|public
 name|void
@@ -735,7 +735,7 @@ operator|.
 name|deadDecomDatanodes
 return|;
 block|}
-comment|/**    * Set the filesystem information.    *    * @param available Available capacity.    * @param total Total capacity.    * @param numFiles Number of files.    * @param numBlocks Total number of blocks.    * @param numBlocksMissing Number of missing blocks.    * @param numBlocksPendingReplication Number of blocks pending replication.    * @param numBlocksUnderReplicated Number of blocks under replication.    * @param numBlocksPendingDeletion Number of blocks pending deletion.    */
+comment|/**    * Set the filesystem information.    *    * @param available Available capacity.    * @param total Total capacity.    * @param numFiles Number of files.    * @param numBlocks Total number of blocks.    * @param numBlocksMissing Number of missing blocks.    * @param numBlocksPendingReplication Number of blocks pending replication.    * @param numBlocksUnderReplicated Number of blocks under replication.    * @param numBlocksPendingDeletion Number of blocks pending deletion.    * @param providedSpace Space in provided storage.    */
 DECL|method|setNamesystemInfo (long available, long total, long numFiles, long numBlocks, long numBlocksMissing, long numBlocksPendingReplication, long numBlocksUnderReplicated, long numBlocksPendingDeletion, long providedSpace)
 specifier|public
 name|void

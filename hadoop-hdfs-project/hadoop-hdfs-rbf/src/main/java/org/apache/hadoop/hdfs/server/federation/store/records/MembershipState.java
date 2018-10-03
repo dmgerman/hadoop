@@ -94,16 +94,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Comparator
@@ -300,7 +290,7 @@ name|super
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a new membership instance.    * @return Membership instance.    * @throws IOException    */
+comment|/**    * Create a new membership instance.    * @return Membership instance.    */
 DECL|method|newInstance ()
 specifier|public
 specifier|static
@@ -329,7 +319,7 @@ return|return
 name|record
 return|;
 block|}
-comment|/**    * Create a new membership instance.    *    * @param router Identifier of the router.    * @param nameservice Identifier of the nameservice.    * @param namenode Identifier of the namenode.    * @param clusterId Identifier of the cluster.    * @param blockPoolId Identifier of the blockpool.    * @param rpcAddress RPC address.    * @param serviceAddress Service RPC address.    * @param lifelineAddress Lifeline RPC address.    * @param webAddress HTTP address.    * @param state State of the federation.    * @param safemode If the safe mode is enabled.    * @return Membership instance.    * @throws IOException If we cannot create the instance.    */
+comment|/**    * Create a new membership instance.    *    * @param router Identifier of the router.    * @param nameservice Identifier of the nameservice.    * @param namenode Identifier of the namenode.    * @param clusterId Identifier of the cluster.    * @param blockPoolId Identifier of the blockpool.    * @param rpcAddress RPC address.    * @param serviceAddress Service RPC address.    * @param lifelineAddress Lifeline RPC address.    * @param webAddress HTTP address.    * @param state State of the federation.    * @param safemode If the safe mode is enabled.    * @return Membership instance.    */
 DECL|method|newInstance (String router, String nameservice, String namenode, String clusterId, String blockPoolId, String rpcAddress, String serviceAddress, String lifelineAddress, String webAddress, FederationNamenodeServiceState state, boolean safemode)
 specifier|public
 specifier|static

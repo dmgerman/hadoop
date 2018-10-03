@@ -237,7 +237,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Management API for  * {@link org.apache.hadoop.hdfs.server.federation.store.records.RouterState  *  RouterState} records in the state store. Accesses the data store via the  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.  * StateStoreDriver StateStoreDriver} interface. No data is cached.  */
+comment|/**  * Management API for {@link  * org.apache.hadoop.hdfs.server.federation.store.records.RouterState  * RouterState} records in the state store. Accesses the data store via the  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver} interface. No data is cached.  */
 end_comment
 
 begin_class

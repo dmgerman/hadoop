@@ -1526,7 +1526,7 @@ specifier|final
 name|RouterAdminServer
 name|server
 decl_stmt|;
-comment|/**    * Constructor.    * @param server The NN server.    * @throws IOException    */
+comment|/**    * Constructor.    * @param server The NN server.    * @throws IOException if it cannot create the translator.    */
 DECL|method|RouterAdminProtocolServerSideTranslatorPB (RouterAdminServer server)
 specifier|public
 name|RouterAdminProtocolServerSideTranslatorPB

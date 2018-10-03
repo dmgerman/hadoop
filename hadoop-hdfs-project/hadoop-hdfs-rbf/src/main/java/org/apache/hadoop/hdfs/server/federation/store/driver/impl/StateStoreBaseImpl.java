@@ -187,7 +187,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Base implementation of a State Store driver. It contains default  * implementations for the optional functions. These implementations use an  * uncached read/write all algorithm for all changes. In most cases it is  * recommended to override the optional functions.  *<p>  * Drivers may optionally override additional routines for performance  * optimization, such as custom get/put/remove queries, depending on the  * capabilities of the data store.  *<p>  */
+comment|/**  * Base implementation of a State Store driver. It contains default  * implementations for the optional functions. These implementations use an  * uncached read/write all algorithm for all changes. In most cases it is  * recommended to override the optional functions.  *<p>  * Drivers may optionally override additional routines for performance  * optimization, such as custom get/put/remove queries, depending on the  * capabilities of the data store.  */
 end_comment
 
 begin_class

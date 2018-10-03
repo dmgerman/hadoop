@@ -2194,7 +2194,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Build the path location to insert into the cache atomically. It must hold    * the read lock.    * @param path Path to check/insert.    * @return New remote location.    */
+comment|/**    * Build the path location to insert into the cache atomically. It must hold    * the read lock.    * @param path Path to check/insert.    * @return New remote location.    * @throws IOException If it cannot find the location.    */
 DECL|method|lookupLocation (final String path)
 specifier|public
 name|PathLocation
@@ -3105,7 +3105,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Get the size of the cache.    * @return Size of the cache.    */
+comment|/**    * Get the size of the cache.    * @return Size of the cache.    * @throws IOException If the cache is not initialized.    */
 DECL|method|getCacheSize ()
 specifier|protected
 name|long

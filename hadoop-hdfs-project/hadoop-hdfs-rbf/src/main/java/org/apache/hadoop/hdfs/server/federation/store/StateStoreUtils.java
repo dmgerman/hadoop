@@ -140,7 +140,7 @@ parameter_list|()
 block|{
 comment|// Utility class
 block|}
-comment|/**    * Get the base class for a record class. If we get an implementation of a    * record we will return the real parent record class.    *    * @param clazz Class of the data record to check.    * @return Base class for the record.    */
+comment|/**    * Get the base class for a record class. If we get an implementation of a    * record we will return the real parent record class.    *    * @param<T> Type of the class of the data record to check.    * @param clazz Class of the data record to check.    * @return Base class for the record.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -243,7 +243,7 @@ return|return
 name|actualClazz
 return|;
 block|}
-comment|/**    * Get the base class for a record. If we get an implementation of a record we    * will return the real parent record class.    *    * @param record Record to check its main class.    * @return Base class for the record.    */
+comment|/**    * Get the base class for a record. If we get an implementation of a record we    * will return the real parent record class.    *    * @param<T> Type of the class of the data record.    * @param record Record to check its main class.    * @return Base class for the record.    */
 specifier|public
 specifier|static
 parameter_list|<
@@ -275,7 +275,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the base class name for a record. If we get an implementation of a    * record we will return the real parent record class.    *    * @param clazz Class of the data record to check.    * @return Name of the base class for the record.    */
+comment|/**    * Get the base class name for a record. If we get an implementation of a    * record we will return the real parent record class.    *    * @param<T> Type of the class of the data record.    * @param clazz Class of the data record to check.    * @return Name of the base class for the record.    */
 DECL|method|getRecordName ( final Class<T> clazz)
 specifier|public
 specifier|static
@@ -305,7 +305,7 @@ name|getSimpleName
 argument_list|()
 return|;
 block|}
-comment|/**    * Filters a list of records to find all records matching the query.    *    * @param query Map of field names and objects to use to filter results.    * @param records List of data records to filter.    * @return List of all records matching the query (or empty list if none    *         match), null if the data set could not be filtered.    */
+comment|/**    * Filters a list of records to find all records matching the query.    *    * @param<T> Type of the class of the data record.    * @param query Map of field names and objects to use to filter results.    * @param records List of data records to filter.    * @return List of all records matching the query (or empty list if none    *         match), null if the data set could not be filtered.    */
 DECL|method|filterMultiple ( final Query<T> query, final Iterable<T> records)
 specifier|public
 specifier|static

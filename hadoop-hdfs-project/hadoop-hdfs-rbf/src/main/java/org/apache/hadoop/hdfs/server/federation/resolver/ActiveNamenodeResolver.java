@@ -91,7 +91,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Locates the most active NN for a given nameservice ID or blockpool ID. This  * interface is used by the {@link org.apache.hadoop.hdfs.server.federation.  * router.RouterRpcServer RouterRpcServer} to:  *<ul>  *<li>Determine the target NN for a given subcluster.  *<li>List of all namespaces discovered/active in the federation.  *<li>Update the currently active NN empirically.  *</ul>  * The interface is also used by the {@link org.apache.hadoop.hdfs.server.  * federation.router.NamenodeHeartbeatService NamenodeHeartbeatService} to  * register a discovered NN.  */
+comment|/**  * Locates the most active NN for a given nameservice ID or blockpool ID. This  * interface is used by the {@link  * org.apache.hadoop.hdfs.server.federation.router.RouterRpcServer  * RouterRpcServer} to:  *<ul>  *<li>Determine the target NN for a given subcluster.  *<li>List of all namespaces discovered/active in the federation.  *<li>Update the currently active NN empirically.  *</ul>  * The interface is also used by the {@link  * org.apache.hadoop.hdfs.server.federation.router.NamenodeHeartbeatService  * NamenodeHeartbeatService} to register a discovered NN.  */
 end_comment
 
 begin_interface

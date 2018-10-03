@@ -682,7 +682,7 @@ operator|>
 name|MIN_UPDATE_MS
 return|;
 block|}
-comment|/**    * Updates the state store with any record overrides we detected, such as an    * expired state.    *    * @param query RecordQueryResult containing the data to be inspected.    * @throws IOException    */
+comment|/**    * Updates the state store with any record overrides we detected, such as an    * expired state.    *    * @param query RecordQueryResult containing the data to be inspected.    * @throws IOException If the values cannot be updated.    */
 DECL|method|overrideExpiredRecords (QueryResult<R> query)
 specifier|public
 name|void
@@ -822,7 +822,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Updates the state store with any record overrides we detected, such as an    * expired state.    *    * @param record Record record to be updated.    * @throws IOException    */
+comment|/**    * Updates the state store with any record overrides we detected, such as an    * expired state.    *    * @param record Record record to be updated.    * @throws IOException If the values cannot be updated.    */
 DECL|method|overrideExpiredRecord (R record)
 specifier|public
 name|void

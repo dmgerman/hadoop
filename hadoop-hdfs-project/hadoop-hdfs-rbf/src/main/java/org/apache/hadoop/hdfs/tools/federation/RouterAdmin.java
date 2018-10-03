@@ -2496,7 +2496,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Add a mount table entry or update if it exists.    *    * @param parameters Parameters for the mount point.    * @param i Index in the parameters.    */
+comment|/**    * Add a mount table entry or update if it exists.    *    * @param parameters Parameters for the mount point.    * @param i Index in the parameters.    * @return If it was successful.    * @throws IOException If it cannot add the mount point.    */
 DECL|method|addMount (String[] parameters, int i)
 specifier|public
 name|boolean
@@ -3270,7 +3270,7 @@ name|updated
 return|;
 block|}
 block|}
-comment|/**    * Update a mount table entry.    *    * @param parameters Parameters for the mount point.    * @param i Index in the parameters.    */
+comment|/**    * Update a mount table entry.    *    * @param parameters Parameters for the mount point.    * @param i Index in the parameters.    * @return If it updated the mount point successfully.    * @throws IOException If there is an error.    */
 DECL|method|updateMount (String[] parameters, int i)
 specifier|public
 name|boolean
@@ -3781,7 +3781,7 @@ return|return
 name|updated
 return|;
 block|}
-comment|/**    * Remove mount point.    *    * @param path Path to remove.    * @throws IOException If it cannot be removed.    */
+comment|/**    * Remove mount point.    *    * @param path Path to remove.    * @return If the mount point was removed successfully.    * @throws IOException If it cannot be removed.    */
 DECL|method|removeMount (String path)
 specifier|public
 name|boolean

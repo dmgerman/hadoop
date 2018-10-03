@@ -46,7 +46,7 @@ specifier|final
 name|T
 name|partial
 decl_stmt|;
-comment|/**    * Create a query to search for a partial record.    *    * @param partial It defines the attributes to search.    */
+comment|/**    * Create a query to search for a partial record.    *    * @param part It defines the attributes to search.    */
 DECL|method|Query (final T part)
 specifier|public
 name|Query

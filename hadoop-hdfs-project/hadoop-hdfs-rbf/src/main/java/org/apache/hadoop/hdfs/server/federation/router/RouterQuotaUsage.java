@@ -285,7 +285,7 @@ name|this
 return|;
 block|}
 block|}
-comment|/**    * Verify if namespace quota is violated once quota is set. Relevant    * method {@link DirectoryWithQuotaFeature#verifyNamespaceQuota}.    * @throws NSQuotaExceededException    */
+comment|/**    * Verify if namespace quota is violated once quota is set. Relevant    * method {@link DirectoryWithQuotaFeature#verifyNamespaceQuota}.    * @throws NSQuotaExceededException If the quota is exceeded.    */
 DECL|method|verifyNamespaceQuota ()
 specifier|public
 name|void
@@ -321,7 +321,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Verify if storage space quota is violated once quota is set. Relevant    * method {@link DirectoryWithQuotaFeature#verifyStoragespaceQuota}.    * @throws DSQuotaExceededException    */
+comment|/**    * Verify if storage space quota is violated once quota is set. Relevant    * method {@link DirectoryWithQuotaFeature#verifyStoragespaceQuota}.    * @throws DSQuotaExceededException If the quota is exceeded.    */
 DECL|method|verifyStoragespaceQuota ()
 specifier|public
 name|void

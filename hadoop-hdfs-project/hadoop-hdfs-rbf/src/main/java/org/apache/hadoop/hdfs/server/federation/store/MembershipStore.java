@@ -281,7 +281,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Management API for NameNode registrations stored in  * {@link org.apache.hadoop.hdfs.server.federation.store.records.MembershipState  * MembershipState} records. The {@link org.apache.hadoop.hdfs.server.  * federation.router.RouterHeartbeatService RouterHeartbeatService} periodically  * polls each NN to update the NameNode metadata(addresses, operational) and HA  * state(active, standby). Each NameNode may be polled by multiple  * {@link org.apache.hadoop.hdfs.server.federation.router.Router Router}  * instances.  *<p>  * Once fetched from the  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver}, NameNode registrations are cached until the next query.  * The fetched registration data is aggregated using a quorum to determine the  * best/most accurate state for each NameNode. The cache is periodically updated  * by the @{link StateStoreCacheUpdateService}.  */
+comment|/**  * Management API for NameNode registrations stored in {@link  * org.apache.hadoop.hdfs.server.federation.store.records.MembershipState  * MembershipState} records. The {@link  * org.apache.hadoop.hdfs.server.federation.router.RouterHeartbeatService  * RouterHeartbeatService} periodically polls each NN to update the NameNode  * metadata(addresses, operational) and HA state(active, standby). Each  * NameNode may be polled by multiple  * {@link org.apache.hadoop.hdfs.server.federation.router.Router Router}  * instances.  *<p>  * Once fetched from the  * {@link org.apache.hadoop.hdfs.server.federation.store.driver.StateStoreDriver  * StateStoreDriver}, NameNode registrations are cached until the next query.  * The fetched registration data is aggregated using a quorum to determine the  * best/most accurate state for each NameNode. The cache is periodically updated  * by the @{link StateStoreCacheUpdateService}.  */
 end_comment
 
 begin_class
@@ -350,7 +350,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the expired registrations from the registration cache.    *    * @return Expired registrations or zero-length list if none are found.    * @throws StateStoreUnavailableException Throws exception if the data store    *           is not initialized.    * @throws IOException if the data store could not be queried or the query is    *           invalid.    */
+comment|/**    * Get the expired registrations from the registration cache.    *    * @param request Request to get the expired registrations.    * @return Expired registrations or zero-length list if none are found.    * @throws StateStoreUnavailableException Throws exception if the data store    *           is not initialized.    * @throws IOException if the data store could not be queried or the query is    *           invalid.    */
 specifier|public
 specifier|abstract
 name|GetNamenodeRegistrationsResponse
@@ -363,7 +363,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Retrieves a list of registered nameservices and their associated info.    *    * @param request    * @return Collection of information for each registered nameservice.    * @throws IOException if the data store could not be queried or the query is    *           invalid.    */
+comment|/**    * Retrieves a list of registered nameservices and their associated info.    *    * @param request Request to get the name spaces.    * @return Collection of information for each registered nameservice.    * @throws IOException if the data store could not be queried or the query is    *           invalid.    */
 DECL|method|getNamespaceInfo ( GetNamespaceInfoRequest request)
 specifier|public
 specifier|abstract

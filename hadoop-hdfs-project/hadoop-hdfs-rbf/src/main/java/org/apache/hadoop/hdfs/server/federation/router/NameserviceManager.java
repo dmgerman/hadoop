@@ -174,7 +174,7 @@ specifier|public
 interface|interface
 name|NameserviceManager
 block|{
-comment|/**    * Disable a name service.    */
+comment|/**    * Disable a name service.    * @param request Request to disable a name service.    * @return Response to disable a name service.    * @throws IOException If it cannot perform the operation.    */
 DECL|method|disableNameservice ( DisableNameserviceRequest request)
 name|DisableNameserviceResponse
 name|disableNameservice
@@ -185,7 +185,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Enable a name service.    */
+comment|/**    * Enable a name service.    * @param request Request to enable a name service.    * @return Response to disable a name service.    * @throws IOException If it cannot perform the operation.    */
 DECL|method|enableNameservice (EnableNameserviceRequest request)
 name|EnableNameserviceResponse
 name|enableNameservice
@@ -196,7 +196,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the list of disabled name service.    */
+comment|/**    * Get the list of disabled name service.    * @param request Request to get the disabled name services.    * @return Response to get the disabled name services.    * @throws IOException If it cannot perform the operation.    */
 DECL|method|getDisabledNameservices ( GetDisabledNameservicesRequest request)
 name|GetDisabledNameservicesResponse
 name|getDisabledNameservices
