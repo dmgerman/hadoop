@@ -950,7 +950,7 @@ name|uri
 argument_list|,
 name|this
 operator|.
-name|isSecure
+name|isSecureScheme
 argument_list|()
 argument_list|,
 name|configuration
@@ -1197,10 +1197,10 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|isSecure ()
+DECL|method|isSecureScheme ()
 specifier|public
 name|boolean
-name|isSecure
+name|isSecureScheme
 parameter_list|()
 block|{
 return|return

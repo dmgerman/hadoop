@@ -218,7 +218,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"isSecure="
+literal|"isSecureScheme="
 argument_list|)
 operator|.
 name|append

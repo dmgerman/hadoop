@@ -68,10 +68,10 @@ name|AzureBlobFileSystem
 block|{
 annotation|@
 name|Override
-DECL|method|isSecure ()
+DECL|method|isSecureScheme ()
 specifier|public
 name|boolean
-name|isSecure
+name|isSecureScheme
 parameter_list|()
 block|{
 return|return

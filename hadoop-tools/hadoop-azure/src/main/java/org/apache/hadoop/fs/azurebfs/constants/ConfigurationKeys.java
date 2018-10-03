@@ -222,6 +222,15 @@ name|FS_AZURE_ENABLE_AUTOTHROTTLING
 init|=
 literal|"fs.azure.enable.autothrottling"
 decl_stmt|;
+DECL|field|FS_AZURE_ALWAYS_USE_HTTPS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ALWAYS_USE_HTTPS
+init|=
+literal|"fs.azure.always.use.https"
+decl_stmt|;
 DECL|field|FS_AZURE_ATOMIC_RENAME_KEY
 specifier|public
 specifier|static

@@ -360,7 +360,7 @@ operator|&&
 operator|!
 name|fs
 operator|.
-name|isSecure
+name|isSecureScheme
 argument_list|()
 condition|)
 block|{

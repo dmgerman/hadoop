@@ -1130,6 +1130,22 @@ specifier|private
 name|String
 name|abfsExternalAuthorizationClass
 decl_stmt|;
+annotation|@
+name|BooleanConfigurationValidatorAnnotation
+argument_list|(
+name|ConfigurationKey
+operator|=
+name|FS_AZURE_ALWAYS_USE_HTTPS
+argument_list|,
+name|DefaultValue
+operator|=
+name|DEFAULT_ENABLE_HTTPS
+argument_list|)
+DECL|field|alwaysUseHttps
+specifier|private
+name|boolean
+name|alwaysUseHttps
+decl_stmt|;
 DECL|field|storageAccountKeys
 specifier|private
 name|Map
@@ -2132,6 +2148,18 @@ argument_list|(
 name|getRawConfiguration
 argument_list|()
 argument_list|)
+return|;
+block|}
+DECL|method|isHttpsAlwaysUsed ()
+specifier|public
+name|boolean
+name|isHttpsAlwaysUsed
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|alwaysUseHttps
 return|;
 block|}
 DECL|method|getTokenProvider ()
