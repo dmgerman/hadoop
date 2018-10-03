@@ -239,6 +239,11 @@ specifier|private
 name|OzoneClient
 name|client
 decl_stmt|;
+DECL|field|requestId
+specifier|private
+name|String
+name|requestId
+decl_stmt|;
 DECL|method|getBucket (String volumeName, String bucketName)
 specifier|protected
 name|OzoneBucket
@@ -450,6 +455,35 @@ name|client
 operator|=
 name|ozoneClient
 expr_stmt|;
+block|}
+comment|/**    * Set the requestId.    * @param id    */
+DECL|method|setRequestId (String id)
+specifier|protected
+name|void
+name|setRequestId
+parameter_list|(
+name|String
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|requestId
+operator|=
+name|id
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRequestId ()
+specifier|public
+name|String
+name|getRequestId
+parameter_list|()
+block|{
+return|return
+name|requestId
+return|;
 block|}
 block|}
 end_class
