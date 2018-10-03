@@ -644,15 +644,15 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|ContainerStateManager (Configuration configuration, Mapping containerMapping, PipelineSelector pipelineSelector)
+DECL|method|ContainerStateManager (Configuration configuration, ContainerManager containerManager, PipelineSelector pipelineSelector)
 specifier|public
 name|ContainerStateManager
 parameter_list|(
 name|Configuration
 name|configuration
 parameter_list|,
-name|Mapping
-name|containerMapping
+name|ContainerManager
+name|containerManager
 parameter_list|,
 name|PipelineSelector
 name|pipelineSelector
@@ -764,19 +764,19 @@ argument_list|()
 expr_stmt|;
 name|loadExistingContainers
 argument_list|(
-name|containerMapping
+name|containerManager
 argument_list|,
 name|pipelineSelector
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadExistingContainers (Mapping containerMapping, PipelineSelector pipelineSelector)
+DECL|method|loadExistingContainers (ContainerManager containerManager, PipelineSelector pipelineSelector)
 specifier|private
 name|void
 name|loadExistingContainers
 parameter_list|(
-name|Mapping
-name|containerMapping
+name|ContainerManager
+name|containerManager
 parameter_list|,
 name|PipelineSelector
 name|pipelineSelector
@@ -792,7 +792,7 @@ try|try
 block|{
 name|containerList
 operator|=
-name|containerMapping
+name|containerManager
 operator|.
 name|listContainer
 argument_list|(

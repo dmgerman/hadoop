@@ -100,7 +100,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|ContainerManager
 import|;
 end_import
 
@@ -346,11 +346,11 @@ specifier|static
 name|ContainerWithPipeline
 name|ratisContainer2
 decl_stmt|;
-DECL|field|mapping
+DECL|field|containerManager
 specifier|private
 specifier|static
-name|ContainerMapping
-name|mapping
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|timeForFailure
 specifier|private
@@ -446,19 +446,16 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|=
-operator|(
-name|ContainerMapping
-operator|)
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 expr_stmt|;
 name|ratisContainer1
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -471,7 +468,7 @@ argument_list|)
 expr_stmt|;
 name|ratisContainer2
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -645,7 +642,7 @@ name|Assert
 operator|.
 name|assertNull
 argument_list|(
-name|mapping
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -670,7 +667,7 @@ expr_stmt|;
 name|ContainerWithPipeline
 name|ratisContainer3
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(

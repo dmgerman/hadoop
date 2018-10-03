@@ -369,11 +369,11 @@ specifier|final
 name|NodeManager
 name|nodeManager
 decl_stmt|;
-DECL|field|containerMapping
+DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
-name|containerMapping
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|containerStateManager
 specifier|private
@@ -385,12 +385,12 @@ specifier|private
 name|ReplicationActivityStatus
 name|replicationStatus
 decl_stmt|;
-DECL|method|ContainerReportHandler (Mapping containerMapping, NodeManager nodeManager, ReplicationActivityStatus replicationActivityStatus)
+DECL|method|ContainerReportHandler (ContainerManager containerManager, NodeManager nodeManager, ReplicationActivityStatus replicationActivityStatus)
 specifier|public
 name|ContainerReportHandler
 parameter_list|(
-name|Mapping
-name|containerMapping
+name|ContainerManager
+name|containerManager
 parameter_list|,
 name|NodeManager
 name|nodeManager
@@ -403,7 +403,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|containerMapping
+name|containerManager
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -424,7 +424,7 @@ name|this
 operator|.
 name|containerStateManager
 operator|=
-name|containerMapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -437,9 +437,9 @@ name|nodeManager
 expr_stmt|;
 name|this
 operator|.
-name|containerMapping
+name|containerManager
 operator|=
-name|containerMapping
+name|containerManager
 expr_stmt|;
 name|this
 operator|.
@@ -481,7 +481,7 @@ decl_stmt|;
 try|try
 block|{
 comment|//update state in container db and trigger close container events
-name|containerMapping
+name|containerManager
 operator|.
 name|processContainerReports
 argument_list|(

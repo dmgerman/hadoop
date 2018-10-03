@@ -1218,7 +1218,7 @@ condition|)
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|processContainerReports

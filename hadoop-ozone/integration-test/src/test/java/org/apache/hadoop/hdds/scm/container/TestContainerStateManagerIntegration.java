@@ -440,10 +440,10 @@ specifier|private
 name|StorageContainerManager
 name|scm
 decl_stmt|;
-DECL|field|scmContainerMapping
+DECL|field|containerManager
 specifier|private
-name|ContainerMapping
-name|scmContainerMapping
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|containerStateManager
 specifier|private
@@ -520,26 +520,23 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|=
-operator|(
-name|ContainerMapping
-operator|)
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 expr_stmt|;
 name|containerStateManager
 operator|=
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
 expr_stmt|;
 name|selector
 operator|=
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -888,7 +885,7 @@ condition|)
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState
@@ -920,7 +917,7 @@ name|ContainerStateManager
 argument_list|(
 name|conf
 argument_list|,
-name|scmContainerMapping
+name|containerManager
 argument_list|,
 name|selector
 argument_list|)
@@ -1034,7 +1031,7 @@ argument_list|,
 name|containerOwner
 argument_list|)
 decl_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1053,7 +1050,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1194,7 +1191,7 @@ name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1213,7 +1210,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1408,7 +1405,7 @@ argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1464,7 +1461,7 @@ argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1520,7 +1517,7 @@ argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1576,7 +1573,7 @@ argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1632,7 +1629,7 @@ argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1688,7 +1685,7 @@ argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1769,7 +1766,7 @@ argument_list|,
 name|containerOwner
 argument_list|)
 decl_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1788,7 +1785,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1869,7 +1866,7 @@ argument_list|,
 name|containerOwner
 argument_list|)
 decl_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1888,7 +1885,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1907,7 +1904,7 @@ operator|.
 name|CREATED
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1926,7 +1923,7 @@ operator|.
 name|FINALIZE
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2016,7 +2013,7 @@ argument_list|,
 name|containerOwner
 argument_list|)
 decl_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2035,7 +2032,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|scmContainerMapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2149,13 +2146,13 @@ name|getContainerID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerMapping
+name|SCMContainerManager
 name|containerMapping
 init|=
 operator|(
-name|ContainerMapping
+name|SCMContainerManager
 operator|)
-name|scmContainerMapping
+name|containerManager
 decl_stmt|;
 comment|// manually trigger a flush, this will persist the allocated bytes value
 comment|// to disk

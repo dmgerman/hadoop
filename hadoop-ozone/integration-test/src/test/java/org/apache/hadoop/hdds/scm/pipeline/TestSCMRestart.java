@@ -66,7 +66,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|ContainerManager
 import|;
 end_import
 
@@ -274,17 +274,17 @@ specifier|static
 name|Pipeline
 name|ratisPipeline2
 decl_stmt|;
-DECL|field|mapping
+DECL|field|containerManager
 specifier|private
 specifier|static
-name|ContainerMapping
-name|mapping
+name|ContainerManager
+name|containerManager
 decl_stmt|;
-DECL|field|newMapping
+DECL|field|newContainerManager
 specifier|private
 specifier|static
-name|ContainerMapping
-name|newMapping
+name|ContainerManager
+name|newContainerManager
 decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *    * @throws IOException    */
 annotation|@
@@ -344,19 +344,16 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|=
-operator|(
-name|ContainerMapping
-operator|)
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 expr_stmt|;
 name|ratisPipeline1
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -372,7 +369,7 @@ argument_list|()
 expr_stmt|;
 name|ratisPipeline2
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -394,20 +391,15 @@ operator|.
 name|restartStorageContainerManager
 argument_list|()
 expr_stmt|;
-name|newMapping
+name|newContainerManager
 operator|=
-call|(
-name|ContainerMapping
-call|)
-argument_list|(
 name|cluster
 operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Shutdown MiniDFSCluster.    */
@@ -448,7 +440,7 @@ comment|// After restart make sure that the pipeline are still present
 name|Pipeline
 name|ratisPipeline1AfterRestart
 init|=
-name|newMapping
+name|newContainerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -464,7 +456,7 @@ decl_stmt|;
 name|Pipeline
 name|ratisPipeline2AfterRestart
 init|=
-name|newMapping
+name|newContainerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -582,7 +574,7 @@ comment|// as was before restart
 name|Pipeline
 name|newRatisPipeline
 init|=
-name|newMapping
+name|newContainerManager
 operator|.
 name|allocateContainer
 argument_list|(

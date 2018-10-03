@@ -76,7 +76,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|Mapping
+name|ContainerManager
 import|;
 end_import
 
@@ -446,11 +446,11 @@ specifier|final
 name|DeletedBlockLog
 name|deletedBlockLog
 decl_stmt|;
-DECL|field|mappingService
+DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
-name|mappingService
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|nodeManager
 specifier|private
@@ -480,15 +480,15 @@ specifier|private
 name|int
 name|blockDeleteLimitSize
 decl_stmt|;
-DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, EventPublisher eventPublisher, long interval, long serviceTimeout, Configuration conf)
+DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, ContainerManager containerManager, NodeManager nodeManager, EventPublisher eventPublisher, long interval, long serviceTimeout, Configuration conf)
 specifier|public
 name|SCMBlockDeletingService
 parameter_list|(
 name|DeletedBlockLog
 name|deletedBlockLog
 parameter_list|,
-name|Mapping
-name|mapper
+name|ContainerManager
+name|containerManager
 parameter_list|,
 name|NodeManager
 name|nodeManager
@@ -529,9 +529,9 @@ name|deletedBlockLog
 expr_stmt|;
 name|this
 operator|.
-name|mappingService
+name|containerManager
 operator|=
-name|mapper
+name|containerManager
 expr_stmt|;
 name|this
 operator|.
@@ -766,7 +766,7 @@ operator|=
 operator|new
 name|DatanodeDeletedBlockTransactions
 argument_list|(
-name|mappingService
+name|containerManager
 argument_list|,
 name|blockDeleteLimitSize
 argument_list|,
@@ -936,7 +936,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|mappingService
+name|containerManager
 operator|.
 name|updateDeleteTransactionId
 argument_list|(

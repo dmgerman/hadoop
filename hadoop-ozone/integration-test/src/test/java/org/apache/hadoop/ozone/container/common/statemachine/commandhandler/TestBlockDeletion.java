@@ -782,24 +782,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_STALENODE_INTERVAL_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
@@ -1704,7 +1686,7 @@ argument_list|()
 expr_stmt|;
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|processContainerReports

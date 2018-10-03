@@ -183,7 +183,7 @@ try|try
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState
@@ -202,7 +202,7 @@ argument_list|)
 expr_stmt|;
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState
@@ -225,7 +225,7 @@ name|assertFalse
 argument_list|(
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getContainerWithPipeline

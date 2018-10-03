@@ -168,7 +168,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|Mapping
+name|ContainerManager
 import|;
 end_import
 
@@ -691,7 +691,7 @@ decl_stmt|;
 DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
+name|ContainerManager
 name|containerManager
 decl_stmt|;
 DECL|field|lock
@@ -720,14 +720,14 @@ argument_list|>
 argument_list|>
 name|transactionToDNsCommitMap
 decl_stmt|;
-DECL|method|DeletedBlockLogImpl (Configuration conf, Mapping containerManager)
+DECL|method|DeletedBlockLogImpl (Configuration conf, ContainerManager containerManager)
 specifier|public
 name|DeletedBlockLogImpl
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|Mapping
+name|ContainerManager
 name|containerManager
 parameter_list|)
 throws|throws

@@ -4243,7 +4243,7 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getContainerWithPipeline

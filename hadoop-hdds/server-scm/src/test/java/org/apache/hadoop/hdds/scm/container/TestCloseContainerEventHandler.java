@@ -379,7 +379,7 @@ decl_stmt|;
 DECL|field|mapping
 specifier|private
 specifier|static
-name|ContainerMapping
+name|SCMContainerManager
 name|mapping
 decl_stmt|;
 DECL|field|size
@@ -477,7 +477,7 @@ expr_stmt|;
 name|mapping
 operator|=
 operator|new
-name|ContainerMapping
+name|SCMContainerManager
 argument_list|(
 name|configuration
 argument_list|,

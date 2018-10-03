@@ -237,14 +237,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Mapping class contains the mapping from a name to a pipeline mapping. This is  * used by SCM when allocating new locations and when looking up a key.  */
+comment|/**  * ContainerManager class contains the mapping from a name to a pipeline  * mapping. This is used by SCM when allocating new locations and when  * looking up a key.  */
 end_comment
 
 begin_interface
-DECL|interface|Mapping
+DECL|interface|ContainerManager
 specifier|public
 interface|interface
-name|Mapping
+name|ContainerManager
 extends|extends
 name|Closeable
 block|{

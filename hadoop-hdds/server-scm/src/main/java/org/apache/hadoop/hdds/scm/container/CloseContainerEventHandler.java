@@ -298,14 +298,14 @@ decl_stmt|;
 DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
+name|ContainerManager
 name|containerManager
 decl_stmt|;
-DECL|method|CloseContainerEventHandler (Mapping containerManager)
+DECL|method|CloseContainerEventHandler (ContainerManager containerManager)
 specifier|public
 name|CloseContainerEventHandler
 parameter_list|(
-name|Mapping
+name|ContainerManager
 name|containerManager
 parameter_list|)
 block|{

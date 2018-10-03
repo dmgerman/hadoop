@@ -545,20 +545,20 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests for Container Mapping.  */
+comment|/**  * Tests for Container ContainerManager.  */
 end_comment
 
 begin_class
-DECL|class|TestContainerMapping
+DECL|class|TestSCMContainerManager
 specifier|public
 class|class
-name|TestContainerMapping
+name|TestSCMContainerManager
 block|{
-DECL|field|mapping
+DECL|field|containerManager
 specifier|private
 specifier|static
-name|ContainerMapping
-name|mapping
+name|SCMContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|nodeManager
 specifier|private
@@ -638,7 +638,7 @@ name|GenericTestUtils
 operator|.
 name|getTestDir
 argument_list|(
-name|TestContainerMapping
+name|TestSCMContainerManager
 operator|.
 name|class
 operator|.
@@ -712,10 +712,10 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|=
 operator|new
-name|ContainerMapping
+name|SCMContainerManager
 argument_list|(
 name|conf
 argument_list|,
@@ -756,12 +756,12 @@ name|IOException
 block|{
 if|if
 condition|(
-name|mapping
+name|containerManager
 operator|!=
 literal|null
 condition|)
 block|{
-name|mapping
+name|containerManager
 operator|.
 name|close
 argument_list|()
@@ -804,7 +804,7 @@ block|{
 name|ContainerWithPipeline
 name|containerInfo
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -869,7 +869,7 @@ block|{
 name|ContainerWithPipeline
 name|containerInfo
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -946,7 +946,7 @@ block|{
 name|ContainerWithPipeline
 name|containerInfo
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1021,7 +1021,7 @@ block|{
 name|ContainerWithPipeline
 name|containerWithPipeline
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1111,7 +1111,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1125,7 +1125,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1139,7 +1139,7 @@ operator|.
 name|CREATED
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1153,7 +1153,7 @@ operator|.
 name|FINALIZE
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1186,7 +1186,7 @@ literal|"containerId:"
 argument_list|,
 parameter_list|()
 lambda|->
-name|mapping
+name|containerManager
 operator|.
 name|getContainerWithPipeline
 argument_list|(
@@ -1197,7 +1197,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -1219,7 +1219,7 @@ argument_list|)
 expr_stmt|;
 name|contInfo
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -1251,7 +1251,7 @@ operator|.
 name|getPipeline
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -1264,7 +1264,7 @@ expr_stmt|;
 name|ContainerWithPipeline
 name|containerWithPipeline2
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|getContainerWithPipeline
 argument_list|(
@@ -1353,7 +1353,7 @@ argument_list|(
 literal|"Specified key does not exist."
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -1386,7 +1386,7 @@ expr_stmt|;
 name|ContainerWithPipeline
 name|containerInfo
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1403,7 +1403,7 @@ argument_list|,
 name|containerOwner
 argument_list|)
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1437,7 +1437,7 @@ name|ContainerID
 argument_list|>
 name|deleteContainers
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -1497,7 +1497,7 @@ argument_list|(
 literal|"Lease Exception"
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -1650,7 +1650,7 @@ argument_list|(
 name|reports
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|processContainerReports
 argument_list|(
@@ -1667,7 +1667,7 @@ expr_stmt|;
 name|ContainerInfo
 name|updatedContainer
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -1725,7 +1725,7 @@ literal|"exist for containerId:"
 argument_list|,
 parameter_list|()
 lambda|->
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -1745,7 +1745,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|mapping
+name|containerManager
 operator|.
 name|processContainerReports
 argument_list|(
@@ -1776,7 +1776,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -1986,7 +1986,7 @@ argument_list|(
 name|reports
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|processContainerReports
 argument_list|(
@@ -2006,7 +2006,7 @@ name|ContainerInfo
 argument_list|>
 name|list
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|listContainer
 argument_list|(
@@ -2154,7 +2154,7 @@ init|=
 name|createContainer
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2176,7 +2176,7 @@ name|ContainerID
 argument_list|>
 name|pendingCloseContainers
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -2217,7 +2217,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2239,7 +2239,7 @@ name|ContainerID
 argument_list|>
 name|closeContainers
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -2281,7 +2281,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a container with the given name in ContainerMapping.    * @throws IOException    */
+comment|/**    * Creates a container with the given name in SCMContainerManager.    * @throws IOException    */
 DECL|method|createContainer ()
 specifier|private
 name|ContainerInfo
@@ -2300,7 +2300,7 @@ expr_stmt|;
 name|ContainerWithPipeline
 name|containerWithPipeline
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -2325,7 +2325,7 @@ operator|.
 name|getContainerInfo
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2341,7 +2341,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -2383,7 +2383,7 @@ name|ContainerInfo
 argument_list|>
 name|containers
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -2403,7 +2403,7 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|flushContainerInfo
 argument_list|()

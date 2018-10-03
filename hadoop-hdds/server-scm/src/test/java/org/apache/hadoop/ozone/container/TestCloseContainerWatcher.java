@@ -164,7 +164,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|SCMContainerManager
 import|;
 end_import
 
@@ -491,17 +491,17 @@ name|Long
 argument_list|>
 name|leaseManager
 decl_stmt|;
-DECL|field|containerMapping
+DECL|field|containerManager
 specifier|private
 specifier|static
-name|ContainerMapping
-name|containerMapping
+name|SCMContainerManager
+name|containerManager
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|ContainerMapping
+name|SCMContainerManager
 operator|.
 name|class
 argument_list|)
@@ -1591,7 +1591,7 @@ name|CLOSE_CONTAINER_STATUS
 argument_list|,
 name|leaseManager
 argument_list|,
-name|containerMapping
+name|containerManager
 argument_list|)
 expr_stmt|;
 name|queue
@@ -1810,7 +1810,7 @@ argument_list|)
 decl_stmt|;
 name|when
 argument_list|(
-name|containerMapping
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -1825,7 +1825,7 @@ argument_list|)
 expr_stmt|;
 name|when
 argument_list|(
-name|containerMapping
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(

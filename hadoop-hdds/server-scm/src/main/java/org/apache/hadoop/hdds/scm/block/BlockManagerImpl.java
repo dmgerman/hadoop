@@ -114,7 +114,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|Mapping
+name|ContainerManager
 import|;
 end_import
 
@@ -627,7 +627,7 @@ decl_stmt|;
 DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
+name|ContainerManager
 name|containerManager
 decl_stmt|;
 DECL|field|containerSize
@@ -671,7 +671,7 @@ name|ChillModePrecheck
 name|chillModePrecheck
 decl_stmt|;
 comment|/**    * Constructor.    *    * @param conf - configuration.    * @param nodeManager - node manager.    * @param containerManager - container manager.    * @param eventPublisher - event publisher.    * @throws IOException    */
-DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final Mapping containerManager, EventPublisher eventPublisher)
+DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final ContainerManager containerManager, EventPublisher eventPublisher)
 specifier|public
 name|BlockManagerImpl
 parameter_list|(
@@ -684,7 +684,7 @@ name|NodeManager
 name|nodeManager
 parameter_list|,
 specifier|final
-name|Mapping
+name|ContainerManager
 name|containerManager
 parameter_list|,
 name|EventPublisher

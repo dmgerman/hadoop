@@ -340,7 +340,25 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|ContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|SCMContainerManager
 import|;
 end_import
 
@@ -359,24 +377,6 @@ operator|.
 name|container
 operator|.
 name|ContainerReportHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|Mapping
 import|;
 end_import
 
@@ -1328,11 +1328,11 @@ specifier|final
 name|NodeManager
 name|scmNodeManager
 decl_stmt|;
-DECL|field|scmContainerManager
+DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
-name|scmContainerManager
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|scmBlockManager
 specifier|private
@@ -1508,10 +1508,10 @@ argument_list|,
 name|eventQueue
 argument_list|)
 expr_stmt|;
-name|scmContainerManager
+name|containerManager
 operator|=
 operator|new
-name|ContainerMapping
+name|SCMContainerManager
 argument_list|(
 name|conf
 argument_list|,
@@ -1533,7 +1533,7 @@ argument_list|,
 name|getScmNodeManager
 argument_list|()
 argument_list|,
-name|scmContainerManager
+name|containerManager
 argument_list|,
 name|eventQueue
 argument_list|)
@@ -1550,7 +1550,7 @@ init|=
 operator|new
 name|CloseContainerEventHandler
 argument_list|(
-name|scmContainerManager
+name|containerManager
 argument_list|)
 decl_stmt|;
 name|NodeReportHandler
@@ -1568,7 +1568,7 @@ init|=
 operator|new
 name|PipelineReportHandler
 argument_list|(
-name|scmContainerManager
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -1596,7 +1596,7 @@ init|=
 operator|new
 name|StaleNodeHandler
 argument_list|(
-name|scmContainerManager
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -1610,7 +1610,7 @@ name|DeadNodeHandler
 argument_list|(
 name|scmNodeManager
 argument_list|,
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getStateManager
@@ -1642,7 +1642,7 @@ init|=
 operator|new
 name|ContainerReportHandler
 argument_list|(
-name|scmContainerManager
+name|containerManager
 argument_list|,
 name|scmNodeManager
 argument_list|,
@@ -1656,7 +1656,7 @@ name|SCMChillModeManager
 argument_list|(
 name|conf
 argument_list|,
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getStateManager
@@ -1681,7 +1681,7 @@ init|=
 operator|new
 name|PipelineCloseHandler
 argument_list|(
-name|scmContainerManager
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -1760,7 +1760,7 @@ name|ReplicationManager
 argument_list|(
 name|containerPlacementPolicy
 argument_list|,
-name|scmContainerManager
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -1787,7 +1787,7 @@ name|CLOSE_CONTAINER_STATUS
 argument_list|,
 name|commandWatcherLeaseManager
 argument_list|,
-name|scmContainerManager
+name|containerManager
 argument_list|)
 decl_stmt|;
 name|closeContainerWatcher
@@ -3380,7 +3380,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|scmContainerManager
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -3924,7 +3924,7 @@ name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
-name|scmContainerManager
+name|containerManager
 argument_list|)
 expr_stmt|;
 block|}
@@ -4001,14 +4001,14 @@ block|}
 comment|/**    * Returns SCM container manager.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getScmContainerManager ()
+DECL|method|getContainerManager ()
 specifier|public
-name|Mapping
-name|getScmContainerManager
+name|ContainerManager
+name|getContainerManager
 parameter_list|()
 block|{
 return|return
-name|scmContainerManager
+name|containerManager
 return|;
 block|}
 comment|/**    * Returns node manager.    *    * @return - Node Manager    */

@@ -48,7 +48,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|Mapping
+name|ContainerManager
 import|;
 end_import
 
@@ -221,10 +221,10 @@ specifier|private
 name|int
 name|currentTXNum
 decl_stmt|;
-DECL|field|mappingService
+DECL|field|containerManager
 specifier|private
-name|Mapping
-name|mappingService
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 comment|// A list of TXs mapped to a certain datanode ID.
 specifier|private
@@ -238,11 +238,11 @@ argument_list|>
 DECL|field|transactions
 name|transactions
 decl_stmt|;
-DECL|method|DatanodeDeletedBlockTransactions (Mapping mappingService, int maximumAllowedTXNum, int nodeNum)
+DECL|method|DatanodeDeletedBlockTransactions (ContainerManager containerManager, int maximumAllowedTXNum, int nodeNum)
 name|DatanodeDeletedBlockTransactions
 parameter_list|(
-name|Mapping
-name|mappingService
+name|ContainerManager
+name|containerManager
 parameter_list|,
 name|int
 name|maximumAllowedTXNum
@@ -262,9 +262,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|mappingService
+name|containerManager
 operator|=
-name|mappingService
+name|containerManager
 expr_stmt|;
 name|this
 operator|.
@@ -304,7 +304,7 @@ block|{
 name|ContainerWithPipeline
 name|containerWithPipeline
 init|=
-name|mappingService
+name|containerManager
 operator|.
 name|getContainerWithPipeline
 argument_list|(

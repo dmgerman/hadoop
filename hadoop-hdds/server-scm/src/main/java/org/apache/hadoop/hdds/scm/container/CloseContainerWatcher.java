@@ -252,10 +252,10 @@ decl_stmt|;
 DECL|field|containerManager
 specifier|private
 specifier|final
-name|Mapping
+name|ContainerManager
 name|containerManager
 decl_stmt|;
-DECL|method|CloseContainerWatcher (Event<CloseContainerRetryableReq> startEvent, Event<CloseContainerStatus> completionEvent, LeaseManager<Long> leaseManager, Mapping containerManager)
+DECL|method|CloseContainerWatcher (Event<CloseContainerRetryableReq> startEvent, Event<CloseContainerStatus> completionEvent, LeaseManager<Long> leaseManager, ContainerManager containerManager)
 specifier|public
 name|CloseContainerWatcher
 parameter_list|(
@@ -277,7 +277,7 @@ name|Long
 argument_list|>
 name|leaseManager
 parameter_list|,
-name|Mapping
+name|ContainerManager
 name|containerManager
 parameter_list|)
 block|{

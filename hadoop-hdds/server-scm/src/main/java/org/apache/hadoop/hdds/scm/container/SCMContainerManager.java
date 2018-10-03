@@ -803,16 +803,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Mapping class contains the mapping from a name to a pipeline mapping. This  * is used by SCM when  * allocating new locations and when looking up a key.  */
+comment|/**  * ContainerManager class contains the mapping from a name to a pipeline  * mapping. This is used by SCM when allocating new locations and when  * looking up a key.  */
 end_comment
 
 begin_class
-DECL|class|ContainerMapping
+DECL|class|SCMContainerManager
 specifier|public
 class|class
-name|ContainerMapping
+name|SCMContainerManager
 implements|implements
-name|Mapping
+name|ContainerManager
 block|{
 DECL|field|LOG
 specifier|private
@@ -825,7 +825,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ContainerMapping
+name|SCMContainerManager
 operator|.
 name|class
 argument_list|)
@@ -906,9 +906,9 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|ContainerMapping ( final Configuration conf, final NodeManager nodeManager, final int cacheSizeMB, EventPublisher eventPublisher)
+DECL|method|SCMContainerManager ( final Configuration conf, final NodeManager nodeManager, final int cacheSizeMB, EventPublisher eventPublisher)
 specifier|public
-name|ContainerMapping
+name|SCMContainerManager
 parameter_list|(
 specifier|final
 name|Configuration
@@ -2947,7 +2947,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing ContainerMapping, we need to update    * this in the container store.    *    * @throws IOException on failure.    */
+comment|/**    * Since allocatedBytes of a container is only in memory, stored in    * containerStateManager, when closing SCMContainerManager, we need to update    * this in the container store.    *    * @throws IOException on failure.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|flushContainerInfo ()

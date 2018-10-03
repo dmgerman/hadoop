@@ -214,7 +214,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|SCMContainerManager
 import|;
 end_import
 
@@ -915,7 +915,7 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getStateManager
@@ -1572,7 +1572,7 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getStateManager
@@ -1635,18 +1635,18 @@ literal|3
 argument_list|)
 expr_stmt|;
 comment|// Close remaining containers
-name|ContainerMapping
+name|SCMContainerManager
 name|mapping
 init|=
 operator|(
-name|ContainerMapping
+name|SCMContainerManager
 operator|)
 name|miniCluster
 operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 decl_stmt|;
 name|containers
@@ -2151,7 +2151,7 @@ name|containers
 init|=
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getStateManager

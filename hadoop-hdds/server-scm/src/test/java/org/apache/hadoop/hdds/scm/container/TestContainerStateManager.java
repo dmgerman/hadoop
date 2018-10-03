@@ -210,14 +210,14 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|Mapping
+name|ContainerManager
 name|mapping
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|Mapping
+name|ContainerManager
 operator|.
 name|class
 argument_list|)

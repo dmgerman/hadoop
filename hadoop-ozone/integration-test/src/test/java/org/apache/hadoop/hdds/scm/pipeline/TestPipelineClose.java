@@ -102,7 +102,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|ContainerManager
 import|;
 end_import
 
@@ -378,11 +378,11 @@ specifier|static
 name|ContainerStateMap
 name|stateMap
 decl_stmt|;
-DECL|field|mapping
+DECL|field|containerManager
 specifier|private
 specifier|static
-name|ContainerMapping
-name|mapping
+name|ContainerManager
+name|containerManager
 decl_stmt|;
 DECL|field|pipelineSelector
 specifier|private
@@ -437,19 +437,16 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|=
-operator|(
-name|ContainerMapping
-operator|)
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 expr_stmt|;
 name|stateMap
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|getStateManager
 argument_list|()
@@ -459,7 +456,7 @@ argument_list|()
 expr_stmt|;
 name|ratisContainer1
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -472,7 +469,7 @@ argument_list|)
 expr_stmt|;
 name|ratisContainer2
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -485,7 +482,7 @@ argument_list|)
 expr_stmt|;
 name|pipelineSelector
 operator|=
-name|mapping
+name|containerManager
 operator|.
 name|getPipelineSelector
 argument_list|()
@@ -593,7 +590,7 @@ argument_list|)
 expr_stmt|;
 comment|// Now close the container and it should not show up while fetching
 comment|// containers by pipeline
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -606,7 +603,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -619,7 +616,7 @@ operator|.
 name|CREATED
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -632,7 +629,7 @@ operator|.
 name|FINALIZE
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -824,7 +821,7 @@ operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
@@ -837,7 +834,7 @@ operator|.
 name|CREATE
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(

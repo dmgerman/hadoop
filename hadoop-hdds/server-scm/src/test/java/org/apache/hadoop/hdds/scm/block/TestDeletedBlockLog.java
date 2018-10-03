@@ -62,7 +62,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|SCMContainerManager
 import|;
 end_import
 
@@ -80,7 +80,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|Mapping
+name|ContainerManager
 import|;
 end_import
 
@@ -620,7 +620,7 @@ name|testDir
 decl_stmt|;
 DECL|field|containerManager
 specifier|private
-name|Mapping
+name|ContainerManager
 name|containerManager
 decl_stmt|;
 DECL|field|dnList
@@ -688,7 +688,7 @@ name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|ContainerMapping
+name|SCMContainerManager
 operator|.
 name|class
 argument_list|)

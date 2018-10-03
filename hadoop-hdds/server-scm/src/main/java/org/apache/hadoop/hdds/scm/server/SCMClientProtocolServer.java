@@ -1029,7 +1029,7 @@ expr_stmt|;
 return|return
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|allocateContainer
@@ -1072,7 +1072,7 @@ expr_stmt|;
 return|return
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getContainer
@@ -1107,7 +1107,7 @@ name|contInfo
 init|=
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getContainer
@@ -1171,7 +1171,7 @@ expr_stmt|;
 return|return
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getContainerWithPipeline
@@ -1196,7 +1196,7 @@ return|return
 name|getScm
 argument_list|()
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|getStateManager
@@ -1257,7 +1257,7 @@ block|{
 return|return
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|listContainer
@@ -1297,7 +1297,7 @@ argument_list|)
 expr_stmt|;
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|deleteContainer
@@ -1498,7 +1498,7 @@ condition|)
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState
@@ -1517,7 +1517,7 @@ else|else
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState
@@ -1563,7 +1563,7 @@ condition|)
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState
@@ -1582,7 +1582,7 @@ else|else
 block|{
 name|scm
 operator|.
-name|getScmContainerManager
+name|getContainerManager
 argument_list|()
 operator|.
 name|updateContainerState

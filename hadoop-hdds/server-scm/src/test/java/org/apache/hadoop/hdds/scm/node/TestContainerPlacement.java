@@ -124,7 +124,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerMapping
+name|SCMContainerManager
 import|;
 end_import
 
@@ -624,7 +624,7 @@ name|nodeManager
 return|;
 block|}
 DECL|method|createContainerManager (Configuration config, NodeManager scmNodeManager)
-name|ContainerMapping
+name|SCMContainerManager
 name|createContainerManager
 parameter_list|(
 name|Configuration
@@ -658,7 +658,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|ContainerMapping
+name|SCMContainerManager
 argument_list|(
 name|config
 argument_list|,
@@ -779,7 +779,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|ContainerMapping
+name|SCMContainerManager
 name|containerManager
 init|=
 name|createContainerManager

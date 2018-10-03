@@ -202,7 +202,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerStateManager
+name|ContainerManager
 import|;
 end_import
 
@@ -220,7 +220,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|Mapping
+name|ContainerStateManager
 import|;
 end_import
 
@@ -577,7 +577,7 @@ name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|Mapping
+name|ContainerManager
 operator|.
 name|class
 argument_list|)
