@@ -215,6 +215,8 @@ DECL|class|DirListingMetadata
 specifier|public
 class|class
 name|DirListingMetadata
+extends|extends
+name|ExpirableMetadata
 block|{
 comment|/**    * Convenience parameter for passing into constructor.    */
 DECL|field|EMPTY_DIR
@@ -260,7 +262,7 @@ name|boolean
 name|isAuthoritative
 decl_stmt|;
 comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(FileStatus)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    */
-DECL|method|DirListingMetadata (Path path, Collection<PathMetadata> listing, boolean isAuthoritative)
+DECL|method|DirListingMetadata (Path path, Collection<PathMetadata> listing, boolean isAuthoritative, long lastUpdated)
 specifier|public
 name|DirListingMetadata
 parameter_list|(
@@ -275,6 +277,9 @@ name|listing
 parameter_list|,
 name|boolean
 name|isAuthoritative
+parameter_list|,
+name|long
+name|lastUpdated
 parameter_list|)
 block|{
 name|checkPathAbsolute
@@ -336,6 +341,42 @@ name|isAuthoritative
 operator|=
 name|isAuthoritative
 expr_stmt|;
+name|this
+operator|.
+name|setLastUpdated
+argument_list|(
+name|lastUpdated
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DirListingMetadata (Path path, Collection<PathMetadata> listing, boolean isAuthoritative)
+specifier|public
+name|DirListingMetadata
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|Collection
+argument_list|<
+name|PathMetadata
+argument_list|>
+name|listing
+parameter_list|,
+name|boolean
+name|isAuthoritative
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|path
+argument_list|,
+name|listing
+argument_list|,
+name|isAuthoritative
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param d the existing {@link DirListingMetadata} object.    */
 DECL|method|DirListingMetadata (DirListingMetadata d)
@@ -357,6 +398,16 @@ operator|=
 name|d
 operator|.
 name|isAuthoritative
+expr_stmt|;
+name|this
+operator|.
+name|setLastUpdated
+argument_list|(
+name|d
+operator|.
+name|getLastUpdated
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|listMap
 operator|=
@@ -516,6 +567,11 @@ argument_list|,
 name|filteredList
 argument_list|,
 name|isAuthoritative
+argument_list|,
+name|this
+operator|.
+name|getLastUpdated
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -771,6 +827,13 @@ operator|+
 literal|", isAuthoritative="
 operator|+
 name|isAuthoritative
+operator|+
+literal|", lastUpdated="
+operator|+
+name|this
+operator|.
+name|getLastUpdated
+argument_list|()
 operator|+
 literal|'}'
 return|;

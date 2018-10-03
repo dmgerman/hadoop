@@ -46,6 +46,18 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * All the constants used with the {@link S3AFileSystem}.  *  * Some of the strings are marked as {@code Unstable}. This means  * that they may be unsupported in future; at which point they will be marked  * as deprecated and simply ignored.  */
 end_comment
@@ -922,6 +934,32 @@ name|boolean
 name|DEFAULT_METADATASTORE_AUTHORITATIVE
 init|=
 literal|false
+decl_stmt|;
+comment|/**    * How long a directory listing in the MS is considered as authoritative.    */
+DECL|field|METADATASTORE_AUTHORITATIVE_DIR_TTL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|METADATASTORE_AUTHORITATIVE_DIR_TTL
+init|=
+literal|"fs.s3a.metadatastore.authoritative.dir.ttl"
+decl_stmt|;
+DECL|field|DEFAULT_METADATASTORE_AUTHORITATIVE_DIR_TTL
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_METADATASTORE_AUTHORITATIVE_DIR_TTL
+init|=
+name|TimeUnit
+operator|.
+name|MINUTES
+operator|.
+name|toMillis
+argument_list|(
+literal|60
+argument_list|)
 decl_stmt|;
 comment|/** read ahead buffer size to prevent connection re-establishments. */
 DECL|field|READAHEAD_RANGE

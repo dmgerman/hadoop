@@ -123,6 +123,8 @@ DECL|class|PathMetadata
 specifier|public
 class|class
 name|PathMetadata
+extends|extends
+name|ExpirableMetadata
 block|{
 DECL|field|fileStatus
 specifier|private

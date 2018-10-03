@@ -2836,6 +2836,11 @@ argument_list|,
 name|metas
 argument_list|,
 name|isAuthoritative
+argument_list|,
+name|dirPathMeta
+operator|.
+name|getLastUpdated
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -3987,6 +3992,11 @@ name|meta
 operator|.
 name|isAuthoritativeDir
 argument_list|()
+argument_list|,
+name|meta
+operator|.
+name|getLastUpdated
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4157,6 +4167,11 @@ argument_list|,
 name|meta
 operator|.
 name|isAuthoritative
+argument_list|()
+argument_list|,
+name|meta
+operator|.
+name|getLastUpdated
 argument_list|()
 argument_list|)
 decl_stmt|;

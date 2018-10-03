@@ -88,6 +88,24 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|DEFAULT_METADATASTORE_AUTHORITATIVE_DIR_TTL
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests for the {@link S3Guard} utility class.  */
 end_comment
@@ -194,6 +212,19 @@ literal|false
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|S3Guard
+operator|.
+name|ITtlTimeProvider
+name|timeProvider
+init|=
+operator|new
+name|S3Guard
+operator|.
+name|TtlTimeProvider
+argument_list|(
+name|DEFAULT_METADATASTORE_AUTHORITATIVE_DIR_TTL
+argument_list|)
+decl_stmt|;
 name|FileStatus
 index|[]
 name|result
@@ -211,6 +242,8 @@ argument_list|,
 name|dirMeta
 argument_list|,
 literal|false
+argument_list|,
+name|timeProvider
 argument_list|)
 decl_stmt|;
 name|assertEquals

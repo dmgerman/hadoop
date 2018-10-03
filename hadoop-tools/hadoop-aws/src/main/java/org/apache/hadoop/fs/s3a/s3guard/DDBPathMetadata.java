@@ -67,42 +67,6 @@ specifier|private
 name|boolean
 name|isAuthoritativeDir
 decl_stmt|;
-DECL|method|DDBPathMetadata (PathMetadata pmd, boolean isAuthoritativeDir)
-specifier|public
-name|DDBPathMetadata
-parameter_list|(
-name|PathMetadata
-name|pmd
-parameter_list|,
-name|boolean
-name|isAuthoritativeDir
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|pmd
-operator|.
-name|getFileStatus
-argument_list|()
-argument_list|,
-name|pmd
-operator|.
-name|isEmptyDirectory
-argument_list|()
-argument_list|,
-name|pmd
-operator|.
-name|isDeleted
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|isAuthoritativeDir
-operator|=
-name|isAuthoritativeDir
-expr_stmt|;
-block|}
 DECL|method|DDBPathMetadata (PathMetadata pmd)
 specifier|public
 name|DDBPathMetadata
@@ -134,6 +98,16 @@ operator|.
 name|isAuthoritativeDir
 operator|=
 literal|false
+expr_stmt|;
+name|this
+operator|.
+name|setLastUpdated
+argument_list|(
+name|pmd
+operator|.
+name|getLastUpdated
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|DDBPathMetadata (FileStatus fileStatus)
@@ -186,7 +160,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|DDBPathMetadata (FileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted, boolean isAuthoritativeDir)
+DECL|method|DDBPathMetadata (FileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted, boolean isAuthoritativeDir, long lastUpdated)
 specifier|public
 name|DDBPathMetadata
 parameter_list|(
@@ -201,6 +175,9 @@ name|isDeleted
 parameter_list|,
 name|boolean
 name|isAuthoritativeDir
+parameter_list|,
+name|long
+name|lastUpdated
 parameter_list|)
 block|{
 name|super
@@ -217,6 +194,13 @@ operator|.
 name|isAuthoritativeDir
 operator|=
 name|isAuthoritativeDir
+expr_stmt|;
+name|this
+operator|.
+name|setLastUpdated
+argument_list|(
+name|lastUpdated
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isAuthoritativeDir ()
@@ -276,6 +260,38 @@ name|super
 operator|.
 name|hashCode
 argument_list|()
+return|;
+block|}
+DECL|method|toString ()
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"DDBPathMetadata{"
+operator|+
+literal|"isAuthoritativeDir="
+operator|+
+name|isAuthoritativeDir
+operator|+
+literal|", lastUpdated="
+operator|+
+name|this
+operator|.
+name|getLastUpdated
+argument_list|()
+operator|+
+literal|", PathMetadata="
+operator|+
+name|super
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|'}'
 return|;
 block|}
 block|}
