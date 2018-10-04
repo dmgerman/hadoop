@@ -334,6 +334,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|PreemptionMessage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -1736,6 +1754,20 @@ argument_list|<
 name|RejectedSchedulingRequest
 argument_list|>
 name|rejectedSchedulingRequests
+parameter_list|)
+block|{     }
+comment|/**      * Called when the RM responds to a heartbeat with preemption message      * @param preemptionMessage      */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|onPreemptionMessageReceived ( PreemptionMessage preemptionMessage)
+specifier|public
+name|void
+name|onPreemptionMessageReceived
+parameter_list|(
+name|PreemptionMessage
+name|preemptionMessage
 parameter_list|)
 block|{     }
 block|}
