@@ -997,7 +997,7 @@ name|YarnConfiguration
 operator|.
 name|NM_ADDRESS
 argument_list|,
-literal|"1234"
+literal|"0.0.0.0:1234"
 argument_list|)
 expr_stmt|;
 name|ContainerManagementProtocol
