@@ -714,8 +714,13 @@ name|Map
 import|;
 end_import
 
+begin_comment
+comment|/**  * Utility methods used in WebHDFS/HttpFS JSON conversion.  */
+end_comment
+
 begin_class
 DECL|class|JsonUtilClient
+specifier|public
 class|class
 name|JsonUtilClient
 block|{
