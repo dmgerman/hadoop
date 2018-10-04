@@ -218,6 +218,17 @@ argument_list|<
 name|Object
 argument_list|>
 block|{
+DECL|field|MAPPER
+specifier|private
+specifier|static
+specifier|final
+name|ObjectMapper
+name|MAPPER
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|isReadable (Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
@@ -301,15 +312,8 @@ name|IOException
 throws|,
 name|WebApplicationException
 block|{
-name|ObjectMapper
-name|mapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 return|return
-name|mapper
+name|MAPPER
 operator|.
 name|readValue
 argument_list|(
