@@ -2104,6 +2104,27 @@ name|DEFAULT_RM_RESOURCE_TRACKER_CLIENT_THREAD_COUNT
 init|=
 literal|50
 decl_stmt|;
+comment|/** Check IP and hostname resolution during nodemanager registration.*/
+DECL|field|RM_NM_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_NM_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"resource-tracker.nm.ip-hostname-check"
+decl_stmt|;
+DECL|field|DEFAULT_RM_NM_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_NM_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+init|=
+literal|false
+decl_stmt|;
 comment|/** The class to use as the resource scheduler.*/
 DECL|field|RM_SCHEDULER
 specifier|public
