@@ -8677,7 +8677,6 @@ name|RMAppState
 name|finalState
 decl_stmt|;
 DECL|method|FinalTransition (RMAppState finalState)
-specifier|public
 name|FinalTransition
 parameter_list|(
 name|RMAppState
@@ -8691,6 +8690,8 @@ operator|=
 name|finalState
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
 specifier|public
 name|void
@@ -8703,17 +8704,37 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
+name|completeAndCleanupApp
+argument_list|(
+name|app
+argument_list|)
+expr_stmt|;
+name|handleAppFinished
+argument_list|(
+name|app
+argument_list|)
+expr_stmt|;
 name|app
 operator|.
-name|logAggregationStartTime
-operator|=
-name|app
-operator|.
-name|systemClock
-operator|.
-name|getTime
+name|clearUnusedFields
 argument_list|()
 expr_stmt|;
+name|appAdminClientCleanUp
+argument_list|(
+name|app
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|completeAndCleanupApp (RMAppImpl app)
+specifier|private
+name|void
+name|completeAndCleanupApp
+parameter_list|(
+name|RMAppImpl
+name|app
+parameter_list|)
+block|{
+comment|//cleanup app in RM Nodes
 for|for
 control|(
 name|NodeId
@@ -8741,35 +8762,6 @@ operator|.
 name|applicationId
 argument_list|)
 argument_list|)
-expr_stmt|;
-block|}
-name|app
-operator|.
-name|finishTime
-operator|=
-name|app
-operator|.
-name|storedFinishTime
-expr_stmt|;
-if|if
-condition|(
-name|app
-operator|.
-name|finishTime
-operator|==
-literal|0
-condition|)
-block|{
-name|app
-operator|.
-name|finishTime
-operator|=
-name|app
-operator|.
-name|systemClock
-operator|.
-name|getTime
-argument_list|()
 expr_stmt|;
 block|}
 comment|// Recovered apps that are completed were not added to scheduler, so no
@@ -8801,6 +8793,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Send app completed event to AppManager
 name|app
 operator|.
 name|handler
@@ -8820,6 +8813,58 @@ name|APP_COMPLETED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|handleAppFinished (RMAppImpl app)
+specifier|private
+name|void
+name|handleAppFinished
+parameter_list|(
+name|RMAppImpl
+name|app
+parameter_list|)
+block|{
+name|app
+operator|.
+name|logAggregationStartTime
+operator|=
+name|app
+operator|.
+name|systemClock
+operator|.
+name|getTime
+argument_list|()
+expr_stmt|;
+comment|// record finish time
+name|app
+operator|.
+name|finishTime
+operator|=
+name|app
+operator|.
+name|storedFinishTime
+expr_stmt|;
+if|if
+condition|(
+name|app
+operator|.
+name|finishTime
+operator|==
+literal|0
+condition|)
+block|{
+name|app
+operator|.
+name|finishTime
+operator|=
+name|app
+operator|.
+name|systemClock
+operator|.
+name|getTime
+argument_list|()
+expr_stmt|;
+block|}
+comment|//record finish in history and metrics
 name|app
 operator|.
 name|rmContext
@@ -8852,19 +8897,7 @@ operator|.
 name|finishTime
 argument_list|)
 expr_stmt|;
-comment|// set the memory free
-name|app
-operator|.
-name|clearUnusedFields
-argument_list|()
-expr_stmt|;
-name|appAdminClientCleanUp
-argument_list|(
-name|app
-argument_list|)
-expr_stmt|;
 block|}
-empty_stmt|;
 block|}
 DECL|method|getNumFailedAppAttempts ()
 specifier|public
@@ -10237,8 +10270,8 @@ operator|.
 name|RUNNING
 condition|)
 block|{
-comment|// If the log aggregation status got from latest nm heartbeat
-comment|// is Running, and current log aggregation status is TimeOut,
+comment|// If the log aggregation status got from latest NM heartbeat
+comment|// is RUNNING, and current log aggregation status is TIME_OUT,
 comment|// based on whether there are any failure messages for this NM,
 comment|// we will reset the log aggregation status as RUNNING or
 comment|// RUNNING_WITH_FAILURE
@@ -11718,6 +11751,18 @@ name|state
 parameter_list|)
 block|{
 comment|/* TODO fail the application on the failed transition */
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getLogAggregationStartTime ()
+specifier|public
+name|long
+name|getLogAggregationStartTime
+parameter_list|()
+block|{
+return|return
+name|logAggregationStartTime
+return|;
 block|}
 block|}
 end_class
