@@ -244,6 +244,24 @@ name|HDDS_SCM_CHILLMODE_ENABLED_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|HDDS_SCM_CHILLMODE_MIN_DATANODE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SCM_CHILLMODE_MIN_DATANODE
+init|=
+literal|"hdds.scm.chillmode.min.datanode"
+decl_stmt|;
+DECL|field|HDDS_SCM_CHILLMODE_MIN_DATANODE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HDDS_SCM_CHILLMODE_MIN_DATANODE_DEFAULT
+init|=
+literal|1
+decl_stmt|;
 comment|// % of containers which should have at least one reported replica
 comment|// before SCM comes out of chill mode.
 DECL|field|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
