@@ -877,7 +877,9 @@ block|{
 name|String
 name|msg
 init|=
-literal|"cannot acquire user lock while holding volume/bucket lock(s)."
+literal|"cannot acquire user lock while holding "
+operator|+
+literal|"volume, bucket or S3 bucket lock(s)."
 decl_stmt|;
 name|Assert
 operator|.

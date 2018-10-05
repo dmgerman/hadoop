@@ -656,7 +656,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |-------------------------------------------------------------------|    * |  Column Family     |        VALUE                                 |    * |-------------------------------------------------------------------|    * | userTable          |     user->VolumeList                         |    * |-------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                      |    * |-------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo              |    * |-------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo   |    * |-------------------------------------------------------------------|    */
+comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |-------------------------------------------------------------------|    * |  Column Family     |        VALUE                                 |    * |-------------------------------------------------------------------|    * | userTable          |     user->VolumeList                         |    * |-------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                      |    * |-------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo              |    * |-------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo   |    * |-------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName       |    * |-------------------------------------------------------------------|    */
 DECL|field|USER_TABLE
 specifier|private
 specifier|static
@@ -711,6 +711,15 @@ name|OPEN_KEY_TABLE
 init|=
 literal|"openKeyTable"
 decl_stmt|;
+DECL|field|S3_TABLE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|S3_TABLE
+init|=
+literal|"s3Table"
+decl_stmt|;
 DECL|field|store
 specifier|private
 specifier|final
@@ -764,6 +773,12 @@ specifier|private
 specifier|final
 name|Table
 name|openKeyTable
+decl_stmt|;
+DECL|field|s3Table
+specifier|private
+specifier|final
+name|Table
+name|s3Table
 decl_stmt|;
 DECL|method|OmMetadataManagerImpl (OzoneConfiguration conf)
 specifier|public
@@ -865,6 +880,11 @@ operator|.
 name|addTable
 argument_list|(
 name|OPEN_KEY_TABLE
+argument_list|)
+operator|.
+name|addTable
+argument_list|(
+name|S3_TABLE
 argument_list|)
 operator|.
 name|build
@@ -978,6 +998,24 @@ argument_list|,
 name|OPEN_KEY_TABLE
 argument_list|)
 expr_stmt|;
+name|s3Table
+operator|=
+name|this
+operator|.
+name|store
+operator|.
+name|getTable
+argument_list|(
+name|S3_TABLE
+argument_list|)
+expr_stmt|;
+name|checkTableStatus
+argument_list|(
+name|s3Table
+argument_list|,
+name|S3_TABLE
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1049,6 +1087,18 @@ parameter_list|()
 block|{
 return|return
 name|openKeyTable
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getS3Table ()
+specifier|public
+name|Table
+name|getS3Table
+parameter_list|()
+block|{
+return|return
+name|s3Table
 return|;
 block|}
 DECL|method|checkTableStatus (Table table, String name)

@@ -114,12 +114,28 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
+name|OM_S3_PREFIX
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
 name|OM_USER_PREFIX
 import|;
 end_import
 
 begin_comment
-comment|/**  * Provides different locks to handle concurrency in OzoneMaster.  * We also maintain lock hierarchy, based on the weight.  *  *<table>  *<tr>  *<td><b> WEIGHT</b></td><td><b> LOCK</b></td>  *</tr>  *<tr>  *<td> 0</td><td> User Lock</td>  *</tr>  *<tr>  *<td> 1</td><td> Volume Lock</td>  *</tr>  *<tr>  *<td> 2</td><td> Bucket Lock</td>  *</tr>  *</table>  *  * One cannot obtain a lower weight lock while holding a lock with higher  * weight. The other way around is possible.<br>  *<br>  *<p>  * For example:  *<br>  * -> acquireVolumeLock (will work)<br>  *   +-> acquireBucketLock (will work)<br>  *     +--> acquireUserLock (will throw Exception)<br>  *</p>  *<br>  *  * To acquire a user lock you should not hold any Volume/Bucket lock. Similarly  * to acquire a Volume lock you should not hold any Bucket lock.  *  */
+comment|/**  * Provides different locks to handle concurrency in OzoneMaster.  * We also maintain lock hierarchy, based on the weight.  *  *<table>  *<tr>  *<td><b> WEIGHT</b></td><td><b> LOCK</b></td>  *</tr>  *<tr>  *<td> 0</td><td> User Lock</td>  *</tr>  *<tr>  *<td> 1</td><td> Volume Lock</td>  *</tr>  *<tr>  *<td> 2</td><td> Bucket Lock</td>  *</tr>  *</table>  *  * One cannot obtain a lower weight lock while holding a lock with higher  * weight. The other way around is possible.<br>  *<br>  *<p>  * For example:  *<br>  * -> acquireVolumeLock (will work)<br>  *   +-> acquireBucketLock (will work)<br>  *     +--> acquireUserLock (will throw Exception)<br>  *</p>  *<br>  * To acquire a user lock you should not hold any Volume/Bucket lock. Similarly  * to acquire a Volume lock you should not hold any Bucket lock.  */
 end_comment
 
 begin_class
@@ -146,6 +162,15 @@ name|String
 name|BUCKET_LOCK
 init|=
 literal|"bucketLock"
+decl_stmt|;
+DECL|field|S3_BUCKET_LOCK
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|S3_BUCKET_LOCK
+init|=
+literal|"s3BucketLock"
 decl_stmt|;
 DECL|field|manager
 specifier|private
@@ -196,6 +221,14 @@ name|AtomicInteger
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+name|S3_BUCKET_LOCK
+argument_list|,
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -236,6 +269,9 @@ argument_list|()
 operator|||
 name|hasAnyBucketLock
 argument_list|()
+operator|||
+name|hasAnyS3Lock
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -254,7 +290,7 @@ argument_list|()
 operator|+
 literal|"' cannot acquire user lock"
 operator|+
-literal|" while holding volume/bucket lock(s)."
+literal|" while holding volume, bucket or S3 bucket lock(s)."
 argument_list|)
 throw|;
 block|}
@@ -299,6 +335,9 @@ name|volume
 parameter_list|)
 block|{
 comment|// Calling thread should not hold any bucket lock.
+comment|// You can take an Volume while holding S3 bucket lock, since
+comment|// semantically an S3 bucket maps to the ozone volume. So we check here
+comment|// only if ozone bucket lock is taken.
 if|if
 condition|(
 name|hasAnyBucketLock
@@ -373,6 +412,102 @@ operator|.
 name|get
 argument_list|(
 name|VOLUME_LOCK
+argument_list|)
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Acquires S3 Bucket lock on the given resource.    *    *<p>If the lock is not available then the current thread becomes    * disabled for thread scheduling purposes and lies dormant until the lock has    * been acquired.    *    * @param s3BucketName S3Bucket Name on which the lock has to be acquired    */
+DECL|method|acquireS3Lock (String s3BucketName)
+specifier|public
+name|void
+name|acquireS3Lock
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+block|{
+comment|// Calling thread should not hold any bucket lock.
+comment|// You can take an Volume while holding S3 bucket lock, since
+comment|// semantically an S3 bucket maps to the ozone volume. So we check here
+comment|// only if ozone bucket lock is taken.
+if|if
+condition|(
+name|hasAnyBucketLock
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Thread '"
+operator|+
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"' cannot acquire S3 bucket lock while holding Ozone bucket "
+operator|+
+literal|"lock(s)."
+argument_list|)
+throw|;
+block|}
+name|manager
+operator|.
+name|lock
+argument_list|(
+name|OM_S3_PREFIX
+operator|+
+name|s3BucketName
+argument_list|)
+expr_stmt|;
+name|myLocks
+operator|.
+name|get
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|S3_BUCKET_LOCK
+argument_list|)
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Releases the volume lock on given resource.    */
+DECL|method|releaseS3Lock (String s3BucketName)
+specifier|public
+name|void
+name|releaseS3Lock
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+block|{
+name|manager
+operator|.
+name|unlock
+argument_list|(
+name|OM_S3_PREFIX
+operator|+
+name|s3BucketName
+argument_list|)
+expr_stmt|;
+name|myLocks
+operator|.
+name|get
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|S3_BUCKET_LOCK
 argument_list|)
 operator|.
 name|decrementAndGet
@@ -499,6 +634,29 @@ operator|.
 name|get
 argument_list|(
 name|BUCKET_LOCK
+argument_list|)
+operator|.
+name|get
+argument_list|()
+operator|!=
+literal|0
+return|;
+block|}
+DECL|method|hasAnyS3Lock ()
+specifier|private
+name|boolean
+name|hasAnyS3Lock
+parameter_list|()
+block|{
+return|return
+name|myLocks
+operator|.
+name|get
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|S3_BUCKET_LOCK
 argument_list|)
 operator|.
 name|get

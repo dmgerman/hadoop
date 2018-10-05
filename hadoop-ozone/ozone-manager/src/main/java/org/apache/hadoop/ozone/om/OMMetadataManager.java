@@ -418,6 +418,12 @@ name|Table
 name|getOpenKeyTable
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the S3Bucket to Ozone Volume/bucket mapping table.    *    * @return Table.    */
+DECL|method|getS3Table ()
+name|Table
+name|getS3Table
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

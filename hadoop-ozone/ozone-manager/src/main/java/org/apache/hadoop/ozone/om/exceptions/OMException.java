@@ -215,9 +215,6 @@ block|,
 DECL|enumConstant|FAILED_METADATA_ERROR
 name|FAILED_METADATA_ERROR
 block|,
-DECL|enumConstant|FAILED_INTERNAL_ERROR
-name|FAILED_INTERNAL_ERROR
-block|,
 DECL|enumConstant|OM_NOT_INITIALIZED
 name|OM_NOT_INITIALIZED
 block|,
@@ -226,6 +223,12 @@ name|SCM_VERSION_MISMATCH_ERROR
 block|,
 DECL|enumConstant|SCM_IN_CHILL_MODE
 name|SCM_IN_CHILL_MODE
+block|,
+DECL|enumConstant|S3_BUCKET_ALREADY_EXISTS
+name|S3_BUCKET_ALREADY_EXISTS
+block|,
+DECL|enumConstant|S3_BUCKET_NOT_FOUND
+name|S3_BUCKET_NOT_FOUND
 block|}
 block|}
 end_class

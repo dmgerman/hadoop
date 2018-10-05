@@ -595,6 +595,15 @@ name|OM_USER_PREFIX
 init|=
 literal|"$"
 decl_stmt|;
+DECL|field|OM_S3_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_S3_PREFIX
+init|=
+literal|"S3:"
+decl_stmt|;
 comment|/**    * Max OM Quota size of 1024 PB.    */
 DECL|field|MAX_QUOTA_IN_BYTES
 specifier|public
