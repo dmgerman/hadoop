@@ -667,8 +667,9 @@ literal|null
 argument_list|)
 return|;
 block|}
+comment|/**    * This exception class contains the http error code,    * requestId and error message, it is thrown when AzureADAuthenticator    * failed to get the Azure Active Directory token.    */
 DECL|class|HttpException
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|HttpException
@@ -685,6 +686,7 @@ specifier|private
 name|String
 name|requestId
 decl_stmt|;
+comment|/**      * Gets Http error status code.      * @return  http error code.      */
 DECL|method|getHttpErrorCode ()
 specifier|public
 name|int
@@ -697,6 +699,7 @@ operator|.
 name|httpErrorCode
 return|;
 block|}
+comment|/**      * Gets http request id .      * @return  http request id.      */
 DECL|method|getRequestId ()
 specifier|public
 name|String
@@ -792,14 +795,6 @@ name|httperror
 init|=
 literal|0
 decl_stmt|;
-name|String
-name|requestId
-decl_stmt|;
-name|String
-name|httpExceptionMessage
-init|=
-literal|null
-decl_stmt|;
 name|IOException
 name|ex
 init|=
@@ -820,10 +815,6 @@ block|{
 name|httperror
 operator|=
 literal|0
-expr_stmt|;
-name|requestId
-operator|=
-literal|""
 expr_stmt|;
 name|ex
 operator|=
@@ -857,18 +848,9 @@ name|e
 operator|.
 name|httpErrorCode
 expr_stmt|;
-name|requestId
+name|ex
 operator|=
 name|e
-operator|.
-name|requestId
-expr_stmt|;
-name|httpExceptionMessage
-operator|=
-name|e
-operator|.
-name|getMessage
-argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -923,32 +905,9 @@ operator|!
 name|succeeded
 condition|)
 block|{
-if|if
-condition|(
-name|ex
-operator|!=
-literal|null
-condition|)
-block|{
 throw|throw
 name|ex
 throw|;
-block|}
-if|if
-condition|(
-name|httperror
-operator|!=
-literal|0
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|httpExceptionMessage
-argument_list|)
-throw|;
-block|}
 block|}
 return|return
 name|token
@@ -1254,7 +1213,7 @@ name|consumeInputStream
 argument_list|(
 name|conn
 operator|.
-name|getInputStream
+name|getErrorStream
 argument_list|()
 argument_list|,
 literal|1024
@@ -1321,7 +1280,7 @@ operator|.
 name|getResponseMessage
 argument_list|()
 operator|+
-literal|" Content-Type: "
+literal|"\nContent-Type: "
 operator|+
 name|responseContentType
 operator|+
@@ -1340,7 +1299,7 @@ literal|" Proxies: "
 operator|+
 name|proxies
 operator|+
-literal|" First 1K of Body: "
+literal|"\nFirst 1K of Body: "
 operator|+
 name|responseBody
 decl_stmt|;

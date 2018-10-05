@@ -176,6 +176,26 @@ name|HttpHeaderConfigurations
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|oauth2
+operator|.
+name|AzureADAuthenticator
+operator|.
+name|HttpException
+import|;
+end_import
+
 begin_comment
 comment|/**  * The AbfsRestOperation for Rest AbfsClient.  */
 end_comment
@@ -722,6 +742,27 @@ throw|throw
 operator|new
 name|InvalidAbfsRestOperationException
 argument_list|(
+name|ex
+argument_list|)
+throw|;
+block|}
+comment|// once HttpException is thrown by AzureADAuthenticator,
+comment|// it indicates the policy in AzureADAuthenticator determined
+comment|// retry is not needed
+if|if
+condition|(
+name|ex
+operator|instanceof
+name|HttpException
+condition|)
+block|{
+throw|throw
+operator|new
+name|AbfsRestOperationException
+argument_list|(
+operator|(
+name|HttpException
+operator|)
 name|ex
 argument_list|)
 throw|;
