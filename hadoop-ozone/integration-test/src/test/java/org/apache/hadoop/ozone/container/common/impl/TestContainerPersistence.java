@@ -830,22 +830,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_DATA_DIR_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|container
@@ -1179,7 +1163,9 @@ name|conf
 operator|.
 name|getStrings
 argument_list|(
-name|DFS_DATANODE_DATA_DIR_KEY
+name|ScmConfigKeys
+operator|.
+name|HDDS_DATANODE_DIR_KEY
 argument_list|)
 control|)
 block|{
