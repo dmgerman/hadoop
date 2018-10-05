@@ -222,16 +222,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -5500,18 +5490,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compileReport (String bpid, LinkedList<ScanInfo> report, ReportCompiler reportCompiler)
+DECL|method|compileReport (String bpid, Collection<ScanInfo> report, ReportCompiler reportCompiler)
 specifier|public
-name|LinkedList
-argument_list|<
-name|ScanInfo
-argument_list|>
+name|void
 name|compileReport
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|LinkedList
+name|Collection
 argument_list|<
 name|ScanInfo
 argument_list|>
@@ -5524,11 +5511,7 @@ throws|throws
 name|InterruptedException
 throws|,
 name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+block|{     }
 annotation|@
 name|Override
 DECL|method|getFileIoProvider ()

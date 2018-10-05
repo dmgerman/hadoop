@@ -108,7 +108,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Collections
 import|;
 end_import
 
@@ -118,7 +118,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|HashMap
 import|;
 end_import
 
@@ -139,6 +139,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Objects
 import|;
 end_import
 
@@ -819,7 +829,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a simulated FSDataset.  *   * Blocks that are created are recorded but their data (plus their CRCs) are  *  discarded.  * Fixed data is returned when blocks are read; a null CRC meta file is  * created for such data.  *   * This FSDataset does not remember any block information across its  * restarts; it does however offer an operation to inject blocks  *  (See the TestInectionForSImulatedStorage()  * for a usage example of injection.  *   * Note the synchronization is coarse grained - it is at each method.   */
+comment|/**  * This class implements a simulated FSDataset.  *  * Blocks that are created are recorded but their data (plus their CRCs) are  *  discarded.  * Fixed data is returned when blocks are read; a null CRC meta file is  * created for such data.  *  * This FSDataset does not remember any block information across its  * restarts; it does however offer an operation to inject blocks  *  (See the TestInectionForSImulatedStorage()  * for a usage example of injection.  *  * Note the synchronization is coarse grained - it is at each method.  */
 end_comment
 
 begin_class
@@ -1314,14 +1324,14 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|<
-literal|0
+literal|0L
 condition|)
 block|{
 name|theBlock
 operator|.
 name|setNumBytes
 argument_list|(
-literal|0
+literal|0L
 argument_list|)
 expr_stmt|;
 block|}
@@ -1638,7 +1648,7 @@ if|if
 condition|(
 name|extraLen
 operator|>
-literal|0
+literal|0L
 condition|)
 block|{
 if|if
@@ -2138,12 +2148,12 @@ specifier|static
 class|class
 name|SimulatedBPStorage
 block|{
+comment|// in bytes
 DECL|field|used
 specifier|private
 name|long
 name|used
 decl_stmt|;
-comment|// in bytes
 DECL|field|blockMap
 specifier|private
 specifier|final
@@ -2215,7 +2225,7 @@ parameter_list|()
 block|{
 name|used
 operator|=
-literal|0
+literal|0L
 expr_stmt|;
 block|}
 block|}
@@ -2292,7 +2302,7 @@ block|{
 name|long
 name|used
 init|=
-literal|0
+literal|0L
 decl_stmt|;
 for|for
 control|(
@@ -3035,18 +3045,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compileReport (String bpid, LinkedList<ScanInfo> report, ReportCompiler reportCompiler)
+DECL|method|compileReport (String bpid, Collection<ScanInfo> report, ReportCompiler reportCompiler)
 specifier|public
-name|LinkedList
-argument_list|<
-name|ScanInfo
-argument_list|>
+name|void
 name|compileReport
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|LinkedList
+name|Collection
 argument_list|<
 name|ScanInfo
 argument_list|>
@@ -3059,11 +3066,7 @@ throws|throws
 name|InterruptedException
 throws|,
 name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
+block|{     }
 annotation|@
 name|Override
 DECL|method|getFileIoProvider ()
@@ -3849,11 +3852,9 @@ name|bpid
 parameter_list|)
 block|{
 return|return
-operator|new
-name|LinkedList
-argument_list|<
-name|Long
-argument_list|>
+name|Collections
+operator|.
+name|emptyList
 argument_list|()
 return|;
 block|}
@@ -3869,7 +3870,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+literal|0L
 decl_stmt|;
 for|for
 control|(
@@ -3903,7 +3904,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+literal|0L
 decl_stmt|;
 for|for
 control|(
@@ -3942,7 +3943,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+literal|0L
 decl_stmt|;
 for|for
 control|(
@@ -3978,7 +3979,7 @@ block|{
 name|long
 name|total
 init|=
-literal|0
+literal|0L
 decl_stmt|;
 for|for
 control|(
@@ -4058,7 +4059,7 @@ name|getLastVolumeFailureDate
 parameter_list|()
 block|{
 return|return
-literal|0
+literal|0L
 return|;
 block|}
 annotation|@
@@ -4071,7 +4072,7 @@ name|getEstimatedCapacityLostTotal
 parameter_list|()
 block|{
 return|return
-literal|0
+literal|0L
 return|;
 block|}
 annotation|@
@@ -4107,7 +4108,7 @@ name|getCacheUsed
 parameter_list|()
 block|{
 return|return
-literal|0l
+literal|0L
 return|;
 block|}
 annotation|@
@@ -4120,7 +4121,7 @@ name|getCacheCapacity
 parameter_list|()
 block|{
 return|return
-literal|0l
+literal|0L
 return|;
 block|}
 annotation|@
@@ -4133,7 +4134,7 @@ name|getNumBlocksCached
 parameter_list|()
 block|{
 return|return
-literal|0l
+literal|0L
 return|;
 block|}
 annotation|@
@@ -4145,7 +4146,7 @@ name|getNumBlocksFailedToCache
 parameter_list|()
 block|{
 return|return
-literal|0l
+literal|0L
 return|;
 block|}
 annotation|@
@@ -4157,7 +4158,7 @@ name|getNumBlocksFailedToUncache
 parameter_list|()
 block|{
 return|return
-literal|0l
+literal|0L
 return|;
 block|}
 comment|/**    * Get metrics from the metrics source    *    * @param collector to contain the resulting metrics snapshot    * @param all if true, return all metrics even if unchanged.    */
@@ -4360,16 +4361,12 @@ block|{
 comment|// Ignore
 block|}
 return|return
-name|r
-operator|==
-literal|null
-condition|?
-literal|"null"
-else|:
-name|r
+name|Objects
 operator|.
 name|toString
-argument_list|()
+argument_list|(
+name|r
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -4741,7 +4738,7 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * Check if a block is valid.    *    * @param b           The block to check.    * @param minLength   The minimum length that the block must have.  May be 0.    * @param state       If this is null, it is ignored.  If it is non-null, we    *                        will check that the replica has this state.    *    * @throws ReplicaNotFoundException          If the replica is not found    *    * @throws UnexpectedReplicaStateException   If the replica is not in the     *                                             expected state.    */
+comment|/**    * Check if a block is valid.    *    * @param b The block to check.    * @param minLength The minimum length that the block must have. May be 0.    * @param state If this is null, it is ignored. If it is non-null, we will    *          check that the replica has this state.    *    * @throws ReplicaNotFoundException If the replica is not found    *    * @throws UnexpectedReplicaStateException If the replica is not in the    *           expected state.    */
 annotation|@
 name|Override
 comment|// {@link FsDatasetSpi}
@@ -5760,7 +5757,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**     * Simulated input and output streams    *    */
+comment|/**    * Simulated input and output streams.    */
 DECL|class|SimulatedInputStream
 specifier|static
 specifier|private
@@ -5798,7 +5795,7 @@ name|theBlock
 init|=
 literal|null
 decl_stmt|;
-comment|/**      * An input stream of size l with repeated bytes      * @param l size of the stream      * @param iRepeatedData byte that is repeated in the stream      */
+comment|/**      * An input stream of size l with repeated bytes.      * @param l size of the stream      * @param iRepeatedData byte that is repeated in the stream      */
 DECL|method|SimulatedInputStream (long l, Block b)
 name|SimulatedInputStream
 parameter_list|(
@@ -6038,7 +6035,7 @@ name|bytesRead
 return|;
 block|}
 block|}
-comment|/**    * This class implements an output stream that merely throws its data away, but records its    * length.    *    */
+comment|/**    * This class implements an output stream that merely throws its data away, but records its    * length.    */
 DECL|class|SimulatedOutputStream
 specifier|static
 specifier|private
@@ -6058,7 +6055,7 @@ DECL|method|SimulatedOutputStream ()
 name|SimulatedOutputStream
 parameter_list|()
 block|{     }
-comment|/**      *       * @return the length of the data created so far.      */
+comment|/**      *      * @return the length of the data created so far.      */
 DECL|method|getLength ()
 name|long
 name|getLength
