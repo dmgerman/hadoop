@@ -1914,7 +1914,7 @@ name|IOException
 block|{
 name|volumeSet
 operator|.
-name|acquireLock
+name|readLock
 argument_list|()
 expr_stmt|;
 try|try
@@ -1961,7 +1961,7 @@ finally|finally
 block|{
 name|volumeSet
 operator|.
-name|releaseLock
+name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}

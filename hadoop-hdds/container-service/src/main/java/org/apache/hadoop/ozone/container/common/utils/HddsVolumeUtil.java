@@ -719,7 +719,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * Check Volume is consistent state or not.    * @param hddsVolume    * @param scmId    * @param clusterId    * @param logger    * @return true - if volume is in consistent state, otherwise false.    */
+comment|/**    * Check Volume is in consistent state or not.    * @param hddsVolume    * @param scmId    * @param clusterId    * @param logger    * @return true - if volume is in consistent state, otherwise false.    */
 DECL|method|checkVolume (HddsVolume hddsVolume, String scmId, String clusterId, Logger logger)
 specifier|public
 specifier|static

@@ -895,10 +895,10 @@ name|containerMetaDataPath
 init|=
 literal|null
 decl_stmt|;
-comment|//acquiring volumeset lock and container lock
+comment|//acquiring volumeset read lock
 name|volumeSet
 operator|.
-name|acquireLock
+name|readLock
 argument_list|()
 expr_stmt|;
 name|long
@@ -1195,7 +1195,7 @@ finally|finally
 block|{
 name|volumeSet
 operator|.
-name|releaseLock
+name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
