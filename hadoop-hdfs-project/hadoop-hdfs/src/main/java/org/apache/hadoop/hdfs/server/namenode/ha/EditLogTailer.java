@@ -1298,6 +1298,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|doTailEdits ()
+specifier|public
 name|void
 name|doTailEdits
 parameter_list|()
