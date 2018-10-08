@@ -40,6 +40,18 @@ name|net
 operator|.
 name|HttpURLConnection
 operator|.
+name|HTTP_CONFLICT
+import|;
+end_import
+
+begin_import
+import|import static
+name|java
+operator|.
+name|net
+operator|.
+name|HttpURLConnection
+operator|.
 name|HTTP_NOT_FOUND
 import|;
 end_import
@@ -94,6 +106,23 @@ argument_list|,
 literal|"The specified bucket does not exist"
 argument_list|,
 name|HTTP_NOT_FOUND
+argument_list|)
+decl_stmt|;
+DECL|field|BUCKET_NOT_EMPTY
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|BUCKET_NOT_EMPTY
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"BucketNotEmpty"
+argument_list|,
+literal|"The bucket you tried to delete is not empty."
+argument_list|,
+name|HTTP_CONFLICT
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param requestID    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
