@@ -226,6 +226,44 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|IOStreamPair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|executor
+operator|.
+name|ContainerExecContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1084,6 +1122,19 @@ name|ctx
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Perform interactive docker command into running container.    *    * @param ctx Encapsulates information necessary for exec containers.    * @return return input/output stream if the operation succeeded.    * @throws ContainerExecutionException if container exec fails.    */
+DECL|method|execContainer (ContainerExecContext ctx)
+specifier|public
+specifier|abstract
+name|IOStreamPair
+name|execContainer
+parameter_list|(
+name|ContainerExecContext
+name|ctx
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
 function_decl|;
 comment|/**    * Delete specified directories as a given user.    *    * @param ctx Encapsulates information necessary for deletion.    * @throws IOException if delete fails    * @throws InterruptedException if interrupted while waiting for the deletion    * operation to complete    */
 DECL|method|deleteAsUser (DeletionAsUserContext ctx)
