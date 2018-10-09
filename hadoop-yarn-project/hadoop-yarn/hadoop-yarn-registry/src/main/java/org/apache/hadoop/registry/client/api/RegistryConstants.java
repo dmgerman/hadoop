@@ -92,22 +92,6 @@ operator|+
 literal|"dns."
 decl_stmt|;
 comment|/**    * flag to indicate whether or not the registry should    * be enabled in the RM: {@value}.    */
-DECL|field|KEY_REGISTRY_ENABLED
-name|String
-name|KEY_REGISTRY_ENABLED
-init|=
-name|REGISTRY_PREFIX
-operator|+
-literal|"rm.enabled"
-decl_stmt|;
-comment|/**    * Defaut value for enabling the registry in the RM: {@value}.    */
-DECL|field|DEFAULT_REGISTRY_ENABLED
-name|boolean
-name|DEFAULT_REGISTRY_ENABLED
-init|=
-literal|false
-decl_stmt|;
-comment|/**    * flag to indicate whether or not the registry should    * be enabled in the RM: {@value}.    */
 DECL|field|KEY_DNS_ENABLED
 name|String
 name|KEY_DNS_ENABLED
