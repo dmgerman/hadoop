@@ -183,7 +183,7 @@ name|STATE_STRING
 block|,
 name|VERSION
 block|}
-comment|/**    * This enum contains some of the values commonly used by history log events.     * since values in history can only be strings - Values.name() is used in     * most places in history file.     */
+comment|/**    * This enum contains some of the values commonly used by history log events.     * since values in history can only be strings - Values.name() is used in     * most places in history file.    *    * Note: "SUCCEEDED" is actually not a pre-0.21 value, but it might appear    * in jhist logs when the event is an unsuccessful job completion, yet, the    * overall job status is "SUCCEEDED".    */
 DECL|enum|Values
 specifier|public
 specifier|static
@@ -191,6 +191,7 @@ enum|enum
 name|Values
 block|{
 DECL|enumConstant|SUCCESS
+DECL|enumConstant|SUCCEEDED
 DECL|enumConstant|FAILED
 DECL|enumConstant|KILLED
 DECL|enumConstant|MAP
@@ -198,8 +199,9 @@ DECL|enumConstant|REDUCE
 DECL|enumConstant|CLEANUP
 DECL|enumConstant|RUNNING
 DECL|enumConstant|PREP
-DECL|enumConstant|SETUP
 name|SUCCESS
+block|,
+name|SUCCEEDED
 block|,
 name|FAILED
 block|,
@@ -215,6 +217,7 @@ name|RUNNING
 block|,
 name|PREP
 block|,
+DECL|enumConstant|SETUP
 name|SETUP
 block|}
 comment|/**    * Regex for Pre21 V1(old) jobhistory filename    *   i.e jt-identifier_job-id_user-name_job-name    */
