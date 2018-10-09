@@ -1155,6 +1155,18 @@ operator|=
 name|registerRequest
 expr_stmt|;
 block|}
+DECL|method|getRMIdentifier ()
+specifier|public
+name|String
+name|getRMIdentifier
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmId
+return|;
+block|}
 DECL|method|setRMClient (ApplicationMasterProtocol client)
 specifier|public
 name|void

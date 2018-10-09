@@ -2867,25 +2867,46 @@ init|=
 literal|false
 decl_stmt|;
 comment|// For unit test synchronization
-DECL|field|syncObj
+DECL|field|registerSyncObj
 specifier|private
 specifier|static
 name|Object
-name|syncObj
+name|registerSyncObj
 init|=
 operator|new
 name|Object
 argument_list|()
 decl_stmt|;
-DECL|method|getSyncObj ()
+DECL|field|allocateSyncObj
+specifier|private
+specifier|static
+name|Object
+name|allocateSyncObj
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
+DECL|method|getRegisterSyncObj ()
 specifier|public
 specifier|static
 name|Object
-name|getSyncObj
+name|getRegisterSyncObj
 parameter_list|()
 block|{
 return|return
-name|syncObj
+name|registerSyncObj
+return|;
+block|}
+DECL|method|getAllocateSyncObj ()
+specifier|public
+specifier|static
+name|Object
+name|getAllocateSyncObj
+parameter_list|()
+block|{
+return|return
+name|allocateSyncObj
 return|;
 block|}
 DECL|method|MockResourceManagerFacade (Configuration conf, int startContainerIndex)
@@ -3261,10 +3282,10 @@ expr_stmt|;
 comment|// Make sure we wait for certain test cases last in the method
 synchronized|synchronized
 init|(
-name|syncObj
+name|registerSyncObj
 init|)
 block|{
-name|syncObj
+name|registerSyncObj
 operator|.
 name|notifyAll
 argument_list|()
@@ -3290,7 +3311,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|syncObj
+name|registerSyncObj
 operator|.
 name|wait
 argument_list|()
@@ -3578,7 +3599,7 @@ block|}
 comment|// Wait for signal for certain test cases
 synchronized|synchronized
 init|(
-name|syncObj
+name|allocateSyncObj
 init|)
 block|{
 if|if
@@ -3599,7 +3620,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|syncObj
+name|allocateSyncObj
 operator|.
 name|wait
 argument_list|()
@@ -3961,12 +3982,7 @@ name|id
 operator|+
 literal|" being released is not valid for application: "
 operator|+
-name|conf
-operator|.
-name|get
-argument_list|(
-literal|"AMRMTOKEN"
-argument_list|)
+name|attemptId
 argument_list|,
 name|found
 argument_list|)
@@ -4014,12 +4030,7 @@ argument_list|()
 operator|+
 literal|" for application attempt: "
 operator|+
-name|conf
-operator|.
-name|get
-argument_list|(
-literal|"AMRMTOKEN"
-argument_list|)
+name|attemptId
 argument_list|)
 expr_stmt|;
 comment|// Always issue a new AMRMToken as if RM rolled master key
@@ -4111,7 +4122,7 @@ parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|syncObj
+name|allocateSyncObj
 init|)
 block|{
 name|shouldWaitForSyncNextAllocate

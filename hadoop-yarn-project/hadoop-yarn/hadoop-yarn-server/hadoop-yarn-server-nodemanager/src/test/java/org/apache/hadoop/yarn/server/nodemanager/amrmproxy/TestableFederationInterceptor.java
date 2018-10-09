@@ -236,6 +236,22 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|AMRMClientRelayer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|MockResourceManagerFacade
 import|;
 end_import
@@ -406,7 +422,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createHomeHeartbeartHandler ( Configuration conf, ApplicationId appId)
+DECL|method|createHomeHeartbeartHandler ( Configuration conf, ApplicationId appId, AMRMClientRelayer rmProxyRelayer)
 specifier|protected
 name|AMHeartbeatRequestHandler
 name|createHomeHeartbeartHandler
@@ -416,6 +432,9 @@ name|conf
 parameter_list|,
 name|ApplicationId
 name|appId
+parameter_list|,
+name|AMRMClientRelayer
+name|rmProxyRelayer
 parameter_list|)
 block|{
 return|return
@@ -425,6 +444,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|appId
+argument_list|,
+name|rmProxyRelayer
 argument_list|)
 return|;
 block|}
@@ -946,6 +967,8 @@ argument_list|,
 name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
+argument_list|,
+name|rmId
 argument_list|)
 return|;
 block|}
@@ -958,7 +981,7 @@ name|TestableUnmanagedApplicationManager
 extends|extends
 name|UnmanagedApplicationManager
 block|{
-DECL|method|TestableUnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
+DECL|method|TestableUnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts, String rmName)
 specifier|public
 name|TestableUnmanagedApplicationManager
 parameter_list|(
@@ -979,6 +1002,9 @@ name|appNameSuffix
 parameter_list|,
 name|boolean
 name|keepContainersAcrossApplicationAttempts
+parameter_list|,
+name|String
+name|rmName
 parameter_list|)
 block|{
 name|super
@@ -995,20 +1021,38 @@ name|appNameSuffix
 argument_list|,
 name|keepContainersAcrossApplicationAttempts
 argument_list|,
-literal|"TEST"
+name|rmName
 argument_list|)
 expr_stmt|;
-name|setHandlerThread
-argument_list|(
+block|}
+annotation|@
+name|Override
+DECL|method|createAMHeartbeatRequestHandler ( Configuration conf, ApplicationId appId, AMRMClientRelayer rmProxyRelayer)
+specifier|protected
+name|AMHeartbeatRequestHandler
+name|createAMHeartbeatRequestHandler
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ApplicationId
+name|appId
+parameter_list|,
+name|AMRMClientRelayer
+name|rmProxyRelayer
+parameter_list|)
+block|{
+return|return
 operator|new
 name|TestableAMRequestHandlerThread
 argument_list|(
 name|conf
 argument_list|,
 name|appId
+argument_list|,
+name|rmProxyRelayer
 argument_list|)
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**      * We override this method here to return a mock RM instances. The base      * class returns the proxy to the real RM which will not work in case of      * stand alone test cases.      */
 annotation|@
@@ -1067,7 +1111,7 @@ name|TestableAMRequestHandlerThread
 extends|extends
 name|AMHeartbeatRequestHandler
 block|{
-DECL|method|TestableAMRequestHandlerThread (Configuration conf, ApplicationId applicationId)
+DECL|method|TestableAMRequestHandlerThread (Configuration conf, ApplicationId applicationId, AMRMClientRelayer rmProxyRelayer)
 specifier|public
 name|TestableAMRequestHandlerThread
 parameter_list|(
@@ -1076,6 +1120,9 @@ name|conf
 parameter_list|,
 name|ApplicationId
 name|applicationId
+parameter_list|,
+name|AMRMClientRelayer
+name|rmProxyRelayer
 parameter_list|)
 block|{
 name|super
@@ -1083,6 +1130,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|applicationId
+argument_list|,
+name|rmProxyRelayer
 argument_list|)
 expr_stmt|;
 block|}

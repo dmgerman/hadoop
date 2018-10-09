@@ -297,7 +297,7 @@ specifier|private
 name|int
 name|lastResponseId
 decl_stmt|;
-DECL|method|AMHeartbeatRequestHandler (Configuration conf, ApplicationId applicationId)
+DECL|method|AMHeartbeatRequestHandler (Configuration conf, ApplicationId applicationId, AMRMClientRelayer rmProxyRelayer)
 specifier|public
 name|AMHeartbeatRequestHandler
 parameter_list|(
@@ -306,6 +306,9 @@ name|conf
 parameter_list|,
 name|ApplicationId
 name|applicationId
+parameter_list|,
+name|AMRMClientRelayer
+name|rmProxyRelayer
 parameter_list|)
 block|{
 name|super
@@ -354,6 +357,12 @@ operator|new
 name|LinkedBlockingQueue
 argument_list|<>
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|rmProxyRelayer
+operator|=
+name|rmProxyRelayer
 expr_stmt|;
 name|resetLastResponseId
 argument_list|()
@@ -708,23 +717,6 @@ operator|.
 name|lastResponseId
 operator|=
 literal|0
-expr_stmt|;
-block|}
-comment|/**    * Set the AMRMClientRelayer for RM connection.    */
-DECL|method|setAMRMClientRelayer (AMRMClientRelayer relayer)
-specifier|public
-name|void
-name|setAMRMClientRelayer
-parameter_list|(
-name|AMRMClientRelayer
-name|relayer
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rmProxyRelayer
-operator|=
-name|relayer
 expr_stmt|;
 block|}
 comment|/**    * Set the UGI for RM connection.    */

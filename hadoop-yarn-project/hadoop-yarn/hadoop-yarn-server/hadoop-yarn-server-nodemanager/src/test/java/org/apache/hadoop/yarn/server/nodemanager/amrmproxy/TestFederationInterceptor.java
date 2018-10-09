@@ -1566,14 +1566,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Make sure this request is picked up by all async heartbeat handlers
-name|interceptor
-operator|.
-name|drainAllAsyncQueue
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 comment|// Send max 10 heart beats to receive all the containers. If not, we will
 comment|// fail the test
 name|int
@@ -1646,6 +1638,14 @@ name|allocateResponse
 operator|.
 name|getResponseId
 argument_list|()
+expr_stmt|;
+comment|// Make sure this request is picked up by all async heartbeat handlers
+name|interceptor
+operator|.
+name|drainAllAsyncQueue
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|containers
 operator|.
@@ -1894,14 +1894,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Make sure this request is picked up by all async heartbeat handlers
-name|interceptor
-operator|.
-name|drainAllAsyncQueue
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 comment|// Send max 10 heart beats to receive all the containers. If not, we will
 comment|// fail the test
 name|int
@@ -1975,6 +1967,14 @@ name|allocateResponse
 operator|.
 name|getResponseId
 argument_list|()
+expr_stmt|;
+comment|// Make sure this request is picked up by all async heartbeat handlers
+name|interceptor
+operator|.
+name|drainAllAsyncQueue
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|newlyFinished
 operator|=
@@ -2757,7 +2757,7 @@ name|syncObj
 init|=
 name|MockResourceManagerFacade
 operator|.
-name|getSyncObj
+name|getRegisterSyncObj
 argument_list|()
 decl_stmt|;
 comment|// Two register threads
