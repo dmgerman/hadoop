@@ -360,6 +360,27 @@ operator|+
 literal|"cannot be null or empty."
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|bucketName
+operator|.
+name|length
+argument_list|()
+operator|>=
+literal|3
+operator|&&
+name|bucketName
+operator|.
+name|length
+argument_list|()
+operator|<
+literal|64
+argument_list|,
+literal|"Length of the S3 Bucket is not correct."
+argument_list|)
+expr_stmt|;
 comment|// TODO: Decide if we want to enforce S3 Bucket Creation Rules in this
 comment|// code path?
 comment|// https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html
@@ -434,6 +455,15 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Bucket already exists. {}"
+argument_list|,
+name|bucketName
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|OMException
@@ -726,6 +756,41 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|Strings
+operator|.
+name|isNotBlank
+argument_list|(
+name|s3BucketName
+argument_list|)
+argument_list|,
+literal|"Bucket name cannot be null or empty."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|s3BucketName
+operator|.
+name|length
+argument_list|()
+operator|>=
+literal|3
+operator|&&
+name|s3BucketName
+operator|.
+name|length
+argument_list|()
+operator|<
+literal|64
+argument_list|,
+literal|"Length of the S3 Bucket is not correct."
+argument_list|)
+expr_stmt|;
 name|omMetadataManager
 operator|.
 name|getLock

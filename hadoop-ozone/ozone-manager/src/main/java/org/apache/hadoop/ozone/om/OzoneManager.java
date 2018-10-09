@@ -1335,6 +1335,12 @@ specifier|private
 name|ObjectName
 name|omInfoBeanName
 decl_stmt|;
+DECL|field|s3BucketManager
+specifier|private
+specifier|final
+name|S3BucketManager
+name|s3BucketManager
+decl_stmt|;
 DECL|method|OzoneManager (OzoneConfiguration conf)
 specifier|private
 name|OzoneManager
@@ -1558,6 +1564,20 @@ operator|new
 name|BucketManagerImpl
 argument_list|(
 name|metadataManager
+argument_list|)
+expr_stmt|;
+name|s3BucketManager
+operator|=
+operator|new
+name|S3BucketManagerImpl
+argument_list|(
+name|configuration
+argument_list|,
+name|metadataManager
+argument_list|,
+name|volumeManager
+argument_list|,
+name|bucketManager
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -5984,6 +6004,56 @@ comment|// handle exception in this method, we need to incorporate
 comment|// metrics.incNumGetServiceListFails()
 return|return
 name|services
+return|;
+block|}
+annotation|@
+name|Override
+comment|/**    * {@inheritDoc}    */
+DECL|method|createS3Bucket (String userName, String s3BucketName)
+specifier|public
+name|void
+name|createS3Bucket
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|s3BucketManager
+operator|.
+name|createS3Bucket
+argument_list|(
+name|userName
+argument_list|,
+name|s3BucketName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|/**    * {@inheritDoc}    */
+DECL|method|getOzoneBucketMapping (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneBucketMapping
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|s3BucketManager
+operator|.
+name|getOzoneBucketMapping
+argument_list|(
+name|s3BucketName
+argument_list|)
 return|;
 block|}
 comment|/**    * Startup options.    */

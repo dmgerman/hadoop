@@ -5089,6 +5089,101 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|createS3Bucket (String userName, String s3BucketName)
+specifier|public
+name|void
+name|createS3Bucket
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOzoneBucketMapping (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneBucketMapping
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOzoneVolumeName (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneVolumeName
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOzoneBucketName (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneBucketName
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
 comment|/**    * Adds Ozone headers to http request.    *    * @param httpRequest Http Request    */
 DECL|method|addOzoneHeaders (HttpUriRequest httpRequest)
 specifier|private
