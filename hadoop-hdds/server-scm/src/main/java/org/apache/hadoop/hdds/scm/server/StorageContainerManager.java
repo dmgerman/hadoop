@@ -2896,9 +2896,7 @@ decl_stmt|;
 name|StartupOption
 name|startOpt
 init|=
-name|StartupOption
-operator|.
-name|HELP
+literal|null
 decl_stmt|;
 if|if
 condition|(
