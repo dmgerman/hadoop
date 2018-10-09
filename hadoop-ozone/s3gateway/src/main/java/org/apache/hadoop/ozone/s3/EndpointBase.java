@@ -100,20 +100,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -170,19 +156,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|ozone
+name|annotations
 operator|.
-name|web
-operator|.
-name|utils
-operator|.
-name|OzoneUtils
+name|VisibleForTesting
 import|;
 end_import
 
@@ -238,11 +220,6 @@ DECL|field|client
 specifier|private
 name|OzoneClient
 name|client
-decl_stmt|;
-DECL|field|requestId
-specifier|private
-name|String
-name|requestId
 decl_stmt|;
 DECL|method|getBucket (String volumeName, String bucketName)
 specifier|protected
@@ -339,11 +316,6 @@ argument_list|(
 name|S3ErrorTable
 operator|.
 name|NO_SUCH_BUCKET
-argument_list|,
-name|OzoneUtils
-operator|.
-name|getRequestID
-argument_list|()
 argument_list|,
 name|Resource
 operator|.
@@ -455,35 +427,6 @@ name|client
 operator|=
 name|ozoneClient
 expr_stmt|;
-block|}
-comment|/**    * Set the requestId.    * @param id    */
-DECL|method|setRequestId (String id)
-specifier|protected
-name|void
-name|setRequestId
-parameter_list|(
-name|String
-name|id
-parameter_list|)
-block|{
-name|this
-operator|.
-name|requestId
-operator|=
-name|id
-expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getRequestId ()
-specifier|public
-name|String
-name|getRequestId
-parameter_list|()
-block|{
-return|return
-name|requestId
-return|;
 block|}
 block|}
 end_class

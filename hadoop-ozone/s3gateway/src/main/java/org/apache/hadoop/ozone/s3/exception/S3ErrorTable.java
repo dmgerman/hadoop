@@ -125,8 +125,8 @@ argument_list|,
 name|HTTP_CONFLICT
 argument_list|)
 decl_stmt|;
-comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param requestID    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
-DECL|method|newError (OS3Exception e, String requestID, Resource resource)
+comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
+DECL|method|newError (OS3Exception e, Resource resource)
 specifier|public
 specifier|static
 name|OS3Exception
@@ -134,9 +134,6 @@ name|newError
 parameter_list|(
 name|OS3Exception
 name|e
-parameter_list|,
-name|String
-name|requestID
 parameter_list|,
 name|Resource
 name|resource
@@ -164,13 +161,6 @@ name|getHttpCode
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|err
-operator|.
-name|setRequestId
-argument_list|(
-name|requestID
-argument_list|)
-expr_stmt|;
 name|err
 operator|.
 name|setResource

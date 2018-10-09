@@ -44,6 +44,16 @@ begin_import
 import|import
 name|javax
 operator|.
+name|inject
+operator|.
+name|Inject
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -82,6 +92,22 @@ name|Provider
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|s3
+operator|.
+name|RequestIdentifier
+import|;
+end_import
+
 begin_comment
 comment|/**  *  Class the represents various errors returned by the  *  Ozone S3 service.  */
 end_comment
@@ -116,6 +142,13 @@ name|class
 argument_list|)
 decl_stmt|;
 annotation|@
+name|Inject
+DECL|field|requestIdentifier
+specifier|private
+name|RequestIdentifier
+name|requestIdentifier
+decl_stmt|;
+annotation|@
 name|Override
 DECL|method|toResponse (OS3Exception exception)
 specifier|public
@@ -135,6 +168,16 @@ argument_list|,
 name|exception
 operator|.
 name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|exception
+operator|.
+name|setRequestId
+argument_list|(
+name|requestIdentifier
+operator|.
+name|getRequestId
 argument_list|()
 argument_list|)
 expr_stmt|;
