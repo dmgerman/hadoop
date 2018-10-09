@@ -26,6 +26,26 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|ratis
 operator|.
 name|shaded
@@ -319,6 +339,11 @@ specifier|private
 name|int
 name|chunkSize
 decl_stmt|;
+DECL|field|blockCommitSequenceId
+specifier|private
+name|long
+name|blockCommitSequenceId
+decl_stmt|;
 comment|/**    * Creates a new ChunkOutputStream.    *    * @param blockID block ID    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    * @param chunkSize chunk size    */
 DECL|method|ChunkOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize)
 specifier|public
@@ -451,6 +476,10 @@ name|chunkIndex
 operator|=
 literal|0
 expr_stmt|;
+name|blockCommitSequenceId
+operator|=
+literal|0
+expr_stmt|;
 block|}
 DECL|method|getBuffer ()
 specifier|public
@@ -460,6 +489,16 @@ parameter_list|()
 block|{
 return|return
 name|buffer
+return|;
+block|}
+DECL|method|getBlockCommitSequenceId ()
+specifier|public
+name|long
+name|getBlockCommitSequenceId
+parameter_list|()
+block|{
+return|return
+name|blockCommitSequenceId
 return|;
 block|}
 annotation|@
@@ -787,6 +826,11 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|ContainerProtos
+operator|.
+name|PutBlockResponseProto
+name|responseProto
+init|=
 name|putBlock
 argument_list|(
 name|xceiverClient
@@ -798,6 +842,16 @@ argument_list|()
 argument_list|,
 name|traceID
 argument_list|)
+decl_stmt|;
+name|blockCommitSequenceId
+operator|=
+name|responseProto
+operator|.
+name|getCommittedBlockLength
+argument_list|()
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch

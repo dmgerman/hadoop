@@ -1222,6 +1222,11 @@ argument_list|(
 name|scmBlockSize
 argument_list|)
 operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|setOffset
 argument_list|(
 literal|0
@@ -1571,6 +1576,11 @@ operator|.
 name|setLength
 argument_list|(
 name|allocateSize
+argument_list|)
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+literal|0
 argument_list|)
 operator|.
 name|setOffset

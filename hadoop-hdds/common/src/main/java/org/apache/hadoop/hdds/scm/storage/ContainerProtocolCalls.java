@@ -812,11 +812,13 @@ name|getGetCommittedBlockLength
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|putBlock (XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
+comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @return putBlockResponse    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|putBlock ( XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
 specifier|public
 specifier|static
-name|void
+name|ContainerProtos
+operator|.
+name|PutBlockResponseProto
 name|putBlock
 parameter_list|(
 name|XceiverClientSpi
@@ -919,6 +921,12 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
+return|return
+name|response
+operator|.
+name|getPutBlock
+argument_list|()
+return|;
 block|}
 comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param blockID ID of the block    * @param traceID container protocol call args    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
 DECL|method|readChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, String traceID)
