@@ -104,7 +104,17 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
 import|;
 end_import
 
@@ -212,13 +222,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|router
-operator|.
-name|RBFConfigKeys
+name|DistributedFileSystem
 import|;
 end_import
 
@@ -232,7 +236,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DistributedFileSystem
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|RBFConfigKeys
 import|;
 end_import
 
@@ -789,6 +799,8 @@ argument_list|(
 literal|"Cannot open read stream for {}"
 argument_list|,
 name|path
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
@@ -875,6 +887,8 @@ argument_list|(
 literal|"Cannot open write stream for {}"
 argument_list|,
 name|path
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
@@ -896,17 +910,6 @@ name|String
 name|pathName
 parameter_list|)
 block|{
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|ret
-init|=
-operator|new
-name|LinkedList
-argument_list|<>
-argument_list|()
-decl_stmt|;
 name|Path
 name|path
 init|=
@@ -929,6 +932,21 @@ operator|.
 name|listStatus
 argument_list|(
 name|path
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|ret
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|files
+operator|.
+name|length
 argument_list|)
 decl_stmt|;
 for|for
@@ -963,6 +981,9 @@ name|fileName
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|ret
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -981,10 +1002,13 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 return|return
-name|ret
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
 return|;
+block|}
 block|}
 block|}
 end_class
