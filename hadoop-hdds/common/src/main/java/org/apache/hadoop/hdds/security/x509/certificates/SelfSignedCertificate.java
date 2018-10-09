@@ -557,6 +557,14 @@ name|getSignatureAlgo
 argument_list|()
 argument_list|)
 operator|.
+name|setProvider
+argument_list|(
+name|config
+operator|.
+name|getProvider
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|(
 name|key
