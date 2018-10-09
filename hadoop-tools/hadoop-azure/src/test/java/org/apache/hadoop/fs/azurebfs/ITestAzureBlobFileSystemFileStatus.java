@@ -46,34 +46,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|azurebfs
-operator|.
-name|services
-operator|.
-name|AuthType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Test
@@ -162,6 +134,15 @@ name|String
 name|DEFAULT_UMASK_VALUE
 init|=
 literal|"027"
+decl_stmt|;
+DECL|field|FULL_PERMISSION
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FULL_PERMISSION
+init|=
+literal|"777"
 decl_stmt|;
 DECL|field|TEST_FILE
 specifier|private
@@ -252,11 +233,6 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Ignore
-argument_list|(
-literal|"When running against live abfs with Oauth account, this test will fail. Need to check the tenant."
-argument_list|)
-annotation|@
 name|Test
 DECL|method|testFileStatusPermissionsAndOwnerAndGroup ()
 specifier|public
@@ -345,22 +321,12 @@ literal|" from "
 operator|+
 name|fs
 decl_stmt|;
-comment|// When running with Oauth, the owner and group info retrieved from server will be digit ids.
 if|if
 condition|(
-name|this
-operator|.
-name|getAuthType
-argument_list|()
-operator|!=
-name|AuthType
-operator|.
-name|OAuth
-operator|&&
 operator|!
 name|fs
 operator|.
-name|isSecureScheme
+name|getIsNamespaceEnabled
 argument_list|()
 condition|)
 block|{
@@ -398,9 +364,26 @@ name|getGroup
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+operator|new
+name|FsPermission
+argument_list|(
+name|FULL_PERMISSION
+argument_list|)
+argument_list|,
+name|fileStatus
+operator|.
+name|getPermission
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
+comment|// When running with namespace enabled account,
+comment|// the owner and group info retrieved from server will be digit ids.
+comment|// hence skip the owner and group validation
 if|if
 condition|(
 name|isDir
@@ -451,11 +434,6 @@ return|return
 name|fileStatus
 return|;
 block|}
-annotation|@
-name|Ignore
-argument_list|(
-literal|"When running against live abfs with Oauth account, this test will fail. Need to check the tenant."
-argument_list|)
 annotation|@
 name|Test
 DECL|method|testFolderStatusPermissionsAndOwnerAndGroup ()

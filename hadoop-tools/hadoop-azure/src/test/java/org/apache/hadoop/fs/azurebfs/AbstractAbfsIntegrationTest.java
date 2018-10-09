@@ -841,16 +841,17 @@ comment|//Create filesystem first to make sure getWasbFileSystem() can return an
 name|createFileSystem
 argument_list|()
 expr_stmt|;
+comment|// Only live account without namespace support can run ABFS&WASB compatibility tests
 if|if
 condition|(
 operator|!
 name|isIPAddress
 operator|&&
-name|authType
-operator|==
-name|AuthType
+operator|!
+name|abfs
 operator|.
-name|SharedKey
+name|getIsNamespaceEnabled
+argument_list|()
 condition|)
 block|{
 specifier|final
