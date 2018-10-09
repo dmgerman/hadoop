@@ -176,6 +176,24 @@ name|util
 operator|.
 name|StripedBlockUtil
 operator|.
+name|BlockReadStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+operator|.
 name|StripingChunkReadResult
 import|;
 end_import
@@ -469,7 +487,7 @@ name|Map
 argument_list|<
 name|Future
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 argument_list|,
 name|Integer
@@ -486,7 +504,7 @@ specifier|private
 specifier|final
 name|CompletionService
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|readService
 decl_stmt|;
@@ -1557,7 +1575,7 @@ condition|)
 block|{
 name|Callable
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|readCallable
 init|=
@@ -1572,7 +1590,7 @@ argument_list|)
 decl_stmt|;
 name|Future
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|f
 init|=
@@ -2124,7 +2142,7 @@ condition|)
 block|{
 name|Callable
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|readCallable
 init|=
@@ -2139,7 +2157,7 @@ argument_list|)
 decl_stmt|;
 name|Future
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|f
 init|=
@@ -2173,7 +2191,7 @@ literal|1
 return|;
 block|}
 comment|// Cancel all reads.
-DECL|method|cancelReads (Collection<Future<Void>> futures)
+DECL|method|cancelReads (Collection<Future<BlockReadStats>> futures)
 specifier|private
 specifier|static
 name|void
@@ -2183,7 +2201,7 @@ name|Collection
 argument_list|<
 name|Future
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 argument_list|>
 name|futures
@@ -2193,7 +2211,7 @@ for|for
 control|(
 name|Future
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|future
 range|:

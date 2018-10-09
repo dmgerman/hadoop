@@ -158,6 +158,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+operator|.
+name|BlockReadStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|ByteBufferPool
@@ -916,7 +934,7 @@ block|}
 DECL|method|createReadService ()
 name|CompletionService
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|createReadService
 parameter_list|()

@@ -250,6 +250,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|StripedBlockUtil
+operator|.
+name|BlockReadStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -889,7 +907,7 @@ block|}
 DECL|method|readFromBlock (final int length, final CorruptedBlocks corruptedBlocks)
 name|Callable
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 name|readFromBlock
 parameter_list|(
@@ -906,14 +924,14 @@ return|return
 operator|new
 name|Callable
 argument_list|<
-name|Void
+name|BlockReadStats
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|Void
+name|BlockReadStats
 name|call
 parameter_list|()
 throws|throws
@@ -929,11 +947,9 @@ argument_list|(
 name|length
 argument_list|)
 expr_stmt|;
+return|return
 name|actualReadFromBlock
 argument_list|()
-expr_stmt|;
-return|return
-literal|null
 return|;
 block|}
 catch|catch
@@ -998,7 +1014,7 @@ block|}
 comment|/**    * Perform actual reading of bytes from block.    */
 DECL|method|actualReadFromBlock ()
 specifier|private
-name|void
+name|BlockReadStats
 name|actualReadFromBlock
 parameter_list|()
 throws|throws
@@ -1060,6 +1076,23 @@ name|nread
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+operator|new
+name|BlockReadStats
+argument_list|(
+name|n
+argument_list|,
+name|blockReader
+operator|.
+name|isShortCircuit
+argument_list|()
+argument_list|,
+name|blockReader
+operator|.
+name|getNetworkDistance
+argument_list|()
+argument_list|)
+return|;
 block|}
 comment|// close block reader
 DECL|method|closeBlockReader ()
