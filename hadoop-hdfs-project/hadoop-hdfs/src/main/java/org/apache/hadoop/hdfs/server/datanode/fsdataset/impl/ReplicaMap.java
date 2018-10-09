@@ -672,7 +672,7 @@ else|else
 block|{
 name|set
 operator|.
-name|add
+name|addOrReplace
 argument_list|(
 name|replicaInfo
 argument_list|)

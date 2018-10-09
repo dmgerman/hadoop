@@ -1279,12 +1279,20 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|addReplicaThreadPool
+operator|==
+literal|null
+condition|)
+block|{
 comment|// initialize add replica fork join pool
 name|initializeAddReplicaPool
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Make the dfs usage to be saved during shutdown.
 name|shutdownHook
 operator|=
