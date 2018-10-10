@@ -13636,7 +13636,12 @@ name|getMaximumResourceCapability
 argument_list|()
 return|;
 block|}
-return|return
+comment|// queue.getMaxAllocation returns *configured* maximum allocation.
+comment|// getMaximumResourceCapability() returns maximum allocation considers
+comment|// per-node maximum resources. So return (component-wise) min of the two.
+name|Resource
+name|queueMaxAllocation
+init|=
 operator|(
 operator|(
 name|LeafQueue
@@ -13646,6 +13651,22 @@ operator|)
 operator|.
 name|getMaximumAllocation
 argument_list|()
+decl_stmt|;
+name|Resource
+name|clusterMaxAllocationConsiderNodeMax
+init|=
+name|getMaximumResourceCapability
+argument_list|()
+decl_stmt|;
+return|return
+name|Resources
+operator|.
+name|componentwiseMin
+argument_list|(
+name|queueMaxAllocation
+argument_list|,
+name|clusterMaxAllocationConsiderNodeMax
+argument_list|)
 return|;
 block|}
 DECL|method|handleMoveToPlanQueue (String targetQueueName)
