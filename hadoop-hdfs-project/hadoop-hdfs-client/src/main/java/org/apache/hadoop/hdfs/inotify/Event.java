@@ -102,6 +102,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
+import|;
+end_import
+
 begin_comment
 comment|/**  * Events sent by the inotify system. Note that no events are necessarily sent  * when a file is opened for read (although a MetadataUpdateEvent will be sent  * if the atime is updated).  */
 end_comment
@@ -383,6 +393,14 @@ specifier|private
 name|long
 name|defaultBlockSize
 decl_stmt|;
+DECL|field|erasureCoded
+specifier|private
+name|Optional
+argument_list|<
+name|Boolean
+argument_list|>
+name|erasureCoded
+decl_stmt|;
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -440,6 +458,19 @@ name|long
 name|defaultBlockSize
 init|=
 literal|0
+decl_stmt|;
+DECL|field|erasureCoded
+specifier|private
+name|Optional
+argument_list|<
+name|Boolean
+argument_list|>
+name|erasureCoded
+init|=
+name|Optional
+operator|.
+name|empty
+argument_list|()
 decl_stmt|;
 DECL|method|iNodeType (INodeType type)
 specifier|public
@@ -631,6 +662,30 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|erasureCoded (boolean ecCoded)
+specifier|public
+name|Builder
+name|erasureCoded
+parameter_list|(
+name|boolean
+name|ecCoded
+parameter_list|)
+block|{
+name|this
+operator|.
+name|erasureCoded
+operator|=
+name|Optional
+operator|.
+name|of
+argument_list|(
+name|ecCoded
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|CreateEvent
@@ -741,6 +796,14 @@ name|b
 operator|.
 name|defaultBlockSize
 expr_stmt|;
+name|this
+operator|.
+name|erasureCoded
+operator|=
+name|b
+operator|.
+name|erasureCoded
+expr_stmt|;
 block|}
 DECL|method|getiNodeType ()
 specifier|public
@@ -843,6 +906,19 @@ parameter_list|()
 block|{
 return|return
 name|defaultBlockSize
+return|;
+block|}
+DECL|method|isErasureCoded ()
+specifier|public
+name|Optional
+argument_list|<
+name|Boolean
+argument_list|>
+name|isErasureCoded
+parameter_list|()
+block|{
+return|return
+name|erasureCoded
 return|;
 block|}
 annotation|@
@@ -986,6 +1062,16 @@ operator|.
 name|append
 argument_list|(
 name|defaultBlockSize
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", erasureCoded="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|erasureCoded
 argument_list|)
 operator|.
 name|append
