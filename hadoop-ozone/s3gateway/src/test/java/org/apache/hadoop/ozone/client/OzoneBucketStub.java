@@ -481,6 +481,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|keyDetails
+operator|.
+name|containsKey
+argument_list|(
+name|key
+argument_list|)
+condition|)
+block|{
 return|return
 name|keyDetails
 operator|.
@@ -489,6 +499,17 @@ argument_list|(
 name|key
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Lookup key failed, error:KEY_NOT_FOUND"
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override

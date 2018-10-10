@@ -125,6 +125,23 @@ argument_list|,
 name|HTTP_CONFLICT
 argument_list|)
 decl_stmt|;
+DECL|field|NO_SUCH_OBJECT
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|NO_SUCH_OBJECT
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"NoSuchObject"
+argument_list|,
+literal|"The specified object does not exist"
+argument_list|,
+name|HTTP_NOT_FOUND
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
 DECL|method|newError (OS3Exception e, Resource resource)
 specifier|public
@@ -185,6 +202,12 @@ DECL|enumConstant|BUCKET
 name|BUCKET
 argument_list|(
 literal|"Bucket"
+argument_list|)
+block|,
+DECL|enumConstant|OBJECT
+name|OBJECT
+argument_list|(
+literal|"Object"
 argument_list|)
 block|;
 DECL|field|resource
