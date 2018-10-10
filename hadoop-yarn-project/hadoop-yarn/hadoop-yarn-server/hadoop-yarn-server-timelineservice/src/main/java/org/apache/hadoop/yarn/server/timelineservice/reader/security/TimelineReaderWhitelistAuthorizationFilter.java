@@ -345,11 +345,9 @@ name|callerUGI
 init|=
 name|TimelineReaderWebServicesUtils
 operator|.
-name|getCallerUserGroupInformation
+name|getUser
 argument_list|(
 name|httpRequest
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 if|if
