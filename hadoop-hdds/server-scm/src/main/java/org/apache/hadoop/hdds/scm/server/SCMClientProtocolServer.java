@@ -1165,7 +1165,7 @@ argument_list|()
 operator|.
 name|checkAdminAccess
 argument_list|(
-name|remoteUser
+literal|null
 argument_list|)
 expr_stmt|;
 return|return
