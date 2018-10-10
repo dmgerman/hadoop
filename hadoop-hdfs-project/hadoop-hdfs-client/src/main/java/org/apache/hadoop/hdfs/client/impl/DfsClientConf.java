@@ -1380,6 +1380,12 @@ specifier|final
 name|int
 name|blockWriteLocateFollowingInitialDelayMs
 decl_stmt|;
+DECL|field|blockWriteLocateFollowingMaxDelayMs
+specifier|private
+specifier|final
+name|int
+name|blockWriteLocateFollowingMaxDelayMs
+decl_stmt|;
 DECL|field|defaultBlockSize
 specifier|private
 specifier|final
@@ -1956,6 +1962,21 @@ operator|.
 name|LOCATEFOLLOWINGBLOCK_INITIAL_DELAY_MS_DEFAULT
 argument_list|)
 expr_stmt|;
+name|blockWriteLocateFollowingMaxDelayMs
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|BlockWrite
+operator|.
+name|LOCATEFOLLOWINGBLOCK_MAX_DELAY_MS_KEY
+argument_list|,
+name|BlockWrite
+operator|.
+name|LOCATEFOLLOWINGBLOCK_MAX_DELAY_MS_DEFAULT
+argument_list|)
+expr_stmt|;
 name|uMask
 operator|=
 name|FsPermission
@@ -2483,6 +2504,16 @@ parameter_list|()
 block|{
 return|return
 name|blockWriteLocateFollowingInitialDelayMs
+return|;
+block|}
+DECL|method|getBlockWriteLocateFollowingMaxDelayMs ()
+specifier|public
+name|int
+name|getBlockWriteLocateFollowingMaxDelayMs
+parameter_list|()
+block|{
+return|return
+name|blockWriteLocateFollowingMaxDelayMs
 return|;
 block|}
 comment|/**    * @return the hdfsTimeout    */

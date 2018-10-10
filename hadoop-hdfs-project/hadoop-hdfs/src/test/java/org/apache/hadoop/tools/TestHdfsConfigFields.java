@@ -128,6 +128,12 @@ name|HdfsClientConfigKeys
 operator|.
 name|BlockWrite
 operator|.
+name|class
+block|,
+name|HdfsClientConfigKeys
+operator|.
+name|BlockWrite
+operator|.
 name|ReplaceDatanodeOnFailure
 operator|.
 name|class
