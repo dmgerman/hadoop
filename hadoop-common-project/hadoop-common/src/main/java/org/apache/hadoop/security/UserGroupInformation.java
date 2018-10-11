@@ -4200,10 +4200,19 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"TGT is destroyed. Aborting renew thread for {}."
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"TGT is destroyed. "
+operator|+
+literal|"Aborting renew thread for %s."
 argument_list|,
 name|getUserName
 argument_list|()
+argument_list|)
+argument_list|,
+name|ie
 argument_list|)
 expr_stmt|;
 return|return;
@@ -4238,12 +4247,19 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"NPE thrown while getting KerberosTicket endTime. "
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"NPE thrown while getting "
 operator|+
-literal|"Aborting renew thread for {}."
+literal|"KerberosTicket endTime. Aborting renew thread for %s."
 argument_list|,
 name|getUserName
 argument_list|()
+argument_list|)
+argument_list|,
+name|ie
 argument_list|)
 expr_stmt|;
 return|return;
@@ -4252,11 +4268,17 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception encountered while running the renewal "
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Exception encountered while running the "
 operator|+
-literal|"command for {}. (TGT end time:{}, renewalFailures: {},"
+literal|"renewal command for %s. "
 operator|+
-literal|"renewalFailuresTotal: {})"
+literal|"(TGT end time:%d, renewalFailures: %d, "
+operator|+
+literal|"renewalFailuresTotal: %d)"
 argument_list|,
 name|getUserName
 argument_list|()
@@ -4276,6 +4298,7 @@ name|renewalFailuresTotal
 operator|.
 name|value
 argument_list|()
+argument_list|)
 argument_list|,
 name|ie
 argument_list|)
