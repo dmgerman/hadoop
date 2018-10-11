@@ -123,8 +123,7 @@ specifier|final
 name|int
 name|DEFAULT_CONTAINER_RETRY_MAX
 init|=
-operator|-
-literal|1
+literal|10
 decl_stmt|;
 DECL|field|CONTAINER_RETRY_INTERVAL
 specifier|public
@@ -160,8 +159,7 @@ specifier|final
 name|long
 name|DEFAULT_CONTAINER_FAILURES_VALIDITY_INTERVAL
 init|=
-operator|-
-literal|1
+literal|600000
 decl_stmt|;
 DECL|field|AM_RESTART_MAX
 specifier|public
