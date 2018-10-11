@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class that optimizes reading from FSInputStream by buffering  */
+comment|/**  * A class that optimizes reading from FSInputStream by buffering.  */
 end_comment
 
 begin_class
@@ -110,7 +110,7 @@ name|PositionedReadable
 implements|,
 name|HasFileDescriptor
 block|{
-comment|/**    * Creates a<code>BufferedFSInputStream</code>    * with the specified buffer size,    * and saves its  argument, the input stream    *<code>in</code>, for later use.  An internal    * buffer array of length<code>size</code>    * is created and stored in<code>buf</code>.    *    * @param   in     the underlying input stream.    * @param   size   the buffer size.    * @exception IllegalArgumentException if size<= 0.    */
+comment|/**    * Creates a<code>BufferedFSInputStream</code>    * with the specified buffer size,    * and saves its  argument, the input stream    *<code>in</code>, for later use.  An internal    * buffer array of length<code>size</code>    * is created and stored in<code>buf</code>.    *    * @param   in     the underlying input stream.    * @param   size   the buffer size.    * @exception IllegalArgumentException if size {@literal<=} 0.    */
 DECL|method|BufferedFSInputStream (FSInputStream in, int size)
 specifier|public
 name|BufferedFSInputStream

@@ -62,7 +62,7 @@ specifier|public
 interface|interface
 name|Configurable
 block|{
-comment|/** Set the configuration to be used by this object. */
+comment|/**    * Set the configuration to be used by this object.    * @param conf configuration to be used    */
 DECL|method|setConf (Configuration conf)
 name|void
 name|setConf
@@ -71,7 +71,7 @@ name|Configuration
 name|conf
 parameter_list|)
 function_decl|;
-comment|/** Return the configuration used by this object. */
+comment|/**    * Return the configuration used by this object.    * @return Configuration    */
 DECL|method|getConf ()
 name|Configuration
 name|getConf

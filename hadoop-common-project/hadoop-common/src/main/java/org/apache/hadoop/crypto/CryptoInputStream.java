@@ -379,7 +379,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * CryptoInputStream decrypts data. It is not thread-safe. AES CTR mode is  * required in order to ensure that the plain text and cipher text have a 1:1  * mapping. The decryption is buffer based. The key points of the decryption  * are (1) calculating the counter and (2) padding through stream position:  *<p/>  * counter = base + pos/(algorithm blocksize);   * padding = pos%(algorithm blocksize);   *<p/>  * The underlying stream offset is maintained as state.  */
+comment|/**  * CryptoInputStream decrypts data. It is not thread-safe. AES CTR mode is  * required in order to ensure that the plain text and cipher text have a 1:1  * mapping. The decryption is buffer based. The key points of the decryption  * are (1) calculating the counter and (2) padding through stream position:  *<p>  * counter = base + pos/(algorithm blocksize);   * padding = pos%(algorithm blocksize);   *<p>  * The underlying stream offset is maintained as state.  */
 end_comment
 
 begin_class

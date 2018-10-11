@@ -231,7 +231,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract Checksumed Fs.  * It provide a basic implementation of a Checksumed Fs,  * which creates a checksum file for each raw file.  * It generates& verifies checksums at the client side.  */
+comment|/**  * Abstract Checksumed Fs.  * It provide a basic implementation of a Checksumed Fs,  * which creates a checksum file for each raw file.  * It generates&amp; verifies checksums at the client side.  */
 end_comment
 
 begin_class

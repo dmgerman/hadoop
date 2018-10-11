@@ -1352,7 +1352,7 @@ name|stream
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the total number of uncompressed bytes input so far.</p>    *    * @return the total (non-negative) number of uncompressed bytes input so far    */
+comment|/**    * Returns the total number of uncompressed bytes input so far.    *    * @return the total (non-negative) number of uncompressed bytes input so far    */
 annotation|@
 name|Override
 DECL|method|getBytesRead ()

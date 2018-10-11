@@ -221,7 +221,7 @@ name|scheme
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>file</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p>    *    * @return<code>file</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()

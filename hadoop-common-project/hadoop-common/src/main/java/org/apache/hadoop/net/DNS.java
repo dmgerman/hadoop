@@ -644,7 +644,7 @@ return|return
 name|addrs
 return|;
 block|}
-comment|/**    * Like {@link DNS#getIPs(String, boolean), but returns all    * IPs associated with the given interface and its subinterfaces.    */
+comment|/**    * Like {@link DNS#getIPs(String, boolean)}, but returns all    * IPs associated with the given interface and its subinterfaces.    */
 DECL|method|getIPs (String strInterface)
 specifier|public
 specifier|static

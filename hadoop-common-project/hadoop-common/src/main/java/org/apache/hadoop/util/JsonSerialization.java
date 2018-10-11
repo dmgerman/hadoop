@@ -715,7 +715,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Save to a local file. Any existing file is overwritten unless    * the OS blocks that.    * @param file file    * @param path path    * @throws IOException IO exception    */
+comment|/**    * Save to a local file. Any existing file is overwritten unless    * the OS blocks that.    * @param file file    * @param instance instance    * @throws IOException IO exception    */
 DECL|method|save (File file, T instance)
 specifier|public
 name|void

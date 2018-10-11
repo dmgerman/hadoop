@@ -742,7 +742,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Util method to build socket addr from either:    *<host>:<port>    *<fs>://<host>:<port>/<path>    */
+comment|/**    * Util method to build socket addr from either:    *   {@literal<host>:<port>}    *   {@literal<fs>://<host>:<port>/<path>}    */
 DECL|method|createSocketAddr (String target)
 specifier|public
 specifier|static
@@ -763,7 +763,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Util method to build socket addr from either:    *<host>    *<host>:<port>    *<fs>://<host>:<port>/<path>    */
+comment|/**    * Util method to build socket addr from either:    *   {@literal<host>}    *   {@literal<host>:<port>}    *   {@literal<fs>://<host>:<port>/<path>}    */
 DECL|method|createSocketAddr (String target, int defaultPort)
 specifier|public
 specifier|static
@@ -3417,7 +3417,7 @@ return|return
 name|addrs
 return|;
 block|}
-comment|/**    * Return a free port number. There is no guarantee it will remain free, so    * it should be used immediately.    *    * @returns A free port for binding a local socket    */
+comment|/**    * Return a free port number. There is no guarantee it will remain free, so    * it should be used immediately.    *    * @return A free port for binding a local socket    */
 DECL|method|getFreeSocketPort ()
 specifier|public
 specifier|static
@@ -3469,7 +3469,7 @@ return|return
 name|port
 return|;
 block|}
-comment|/**    * Return an @{@link InetAddress} to bind to. If bindWildCardAddress is true    * than returns null.    *    * @param localAddr    * @param bindWildCardAddress    * @returns InetAddress    */
+comment|/**    * Return an @{@link InetAddress} to bind to. If bindWildCardAddress is true    * than returns null.    *    * @param localAddr    * @param bindWildCardAddress    * @return InetAddress    */
 DECL|method|bindToLocalAddress (InetAddress localAddr, boolean bindWildCardAddress)
 specifier|public
 specifier|static

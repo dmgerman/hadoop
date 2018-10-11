@@ -59,7 +59,7 @@ extends|extends
 name|Throwable
 parameter_list|>
 block|{
-comment|/**    * Get the result.    *    * @param timeout The maximum time period to wait.    *                When timeout == 0, it does not wait at all.    *                When timeout< 0, it waits indefinitely.    * @param unit The unit of the timeout value    * @return the result, which is possibly null.    * @throws E an exception thrown by the underlying implementation.    * @throws TimeoutException if it cannot return after the given time period.    * @throws InterruptedException if the thread is interrupted.    */
+comment|/**    * Get the result.    *    * @param timeout The maximum time period to wait.    *                When timeout == 0, it does not wait at all.    *                When timeout&lt; 0, it waits indefinitely.    * @param unit The unit of the timeout value    * @return the result, which is possibly null.    * @throws E an exception thrown by the underlying implementation.    * @throws TimeoutException if it cannot return after the given time period.    * @throws InterruptedException if the thread is interrupted.    */
 DECL|method|get (long timeout, TimeUnit unit)
 name|R
 name|get

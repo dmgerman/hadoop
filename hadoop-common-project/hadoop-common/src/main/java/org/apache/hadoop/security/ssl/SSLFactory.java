@@ -285,7 +285,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Factory that creates SSLEngine and SSLSocketFactory instances using  * Hadoop configuration information.  *<p/>  * This SSLFactory uses a {@link ReloadingX509TrustManager} instance,  * which reloads public keys if the truststore file changes.  *<p/>  * This factory is used to configure HTTPS in Hadoop HTTP based endpoints, both  * client and server.  */
+comment|/**  * Factory that creates SSLEngine and SSLSocketFactory instances using  * Hadoop configuration information.  *<p>  * This SSLFactory uses a {@link ReloadingX509TrustManager} instance,  * which reloads public keys if the truststore file changes.  *<p>  * This factory is used to configure HTTPS in Hadoop HTTP based endpoints, both  * client and server.  */
 end_comment
 
 begin_class

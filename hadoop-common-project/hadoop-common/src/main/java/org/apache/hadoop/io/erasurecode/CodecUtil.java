@@ -267,7 +267,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A codec& coder utility to help create coders conveniently.  *  * {@link CodecUtil} includes erasure coder configurations key and default  * values such as coder class name and erasure codec option values included  * by {@link ErasureCodecOptions}. {@link ErasureEncoder} and  * {@link ErasureDecoder} are created by createEncoder and createDecoder  * respectively.{@link RawErasureEncoder} and {@link RawErasureDecoder} are  * are created by createRawEncoder and createRawDecoder.  */
+comment|/**  * A codec&amp; coder utility to help create coders conveniently.  *  * {@link CodecUtil} includes erasure coder configurations key and default  * values such as coder class name and erasure codec option values included  * by {@link ErasureCodecOptions}. {@link ErasureEncoder} and  * {@link ErasureDecoder} are created by createEncoder and createDecoder  * respectively.{@link RawErasureEncoder} and {@link RawErasureDecoder} are  * are created by createRawEncoder and createRawDecoder.  */
 end_comment
 
 begin_class

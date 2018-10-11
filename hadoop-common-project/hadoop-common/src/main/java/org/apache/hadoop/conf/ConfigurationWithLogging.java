@@ -120,7 +120,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @see Configuration#get(String).    */
+comment|/**    * See {@link Configuration#get(String)}.    */
 annotation|@
 name|Override
 DECL|method|get (String name)
@@ -164,7 +164,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * @see Configuration#get(String, String).    */
+comment|/**    * See {@link Configuration#get(String, String)}.    */
 annotation|@
 name|Override
 DECL|method|get (String name, String defaultValue)
@@ -222,7 +222,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * @see Configuration#getBoolean(String, boolean).    */
+comment|/**    * See {@link Configuration#getBoolean(String, boolean)}.    */
 annotation|@
 name|Override
 DECL|method|getBoolean (String name, boolean defaultValue)
@@ -266,7 +266,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * @see Configuration#getFloat(String, float).    */
+comment|/**    * See {@link Configuration#getFloat(String, float)}.    */
 annotation|@
 name|Override
 DECL|method|getFloat (String name, float defaultValue)
@@ -310,7 +310,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * @see Configuration#getInt(String, int).    */
+comment|/**    * See {@link Configuration#getInt(String, int)}.    */
 annotation|@
 name|Override
 DECL|method|getInt (String name, int defaultValue)
@@ -354,7 +354,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * @see Configuration#getLong(String, long).    */
+comment|/**    * See {@link Configuration#getLong(String, long)}.    */
 annotation|@
 name|Override
 DECL|method|getLong (String name, long defaultValue)
@@ -398,7 +398,7 @@ return|return
 name|value
 return|;
 block|}
-comment|/**    * @see Configuration#set(String, String, String).    */
+comment|/**    * See {@link Configuration#set(String, String, String)}.    */
 annotation|@
 name|Override
 DECL|method|set (String name, String value, String source)

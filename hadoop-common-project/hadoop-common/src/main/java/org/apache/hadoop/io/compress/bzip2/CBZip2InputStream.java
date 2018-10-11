@@ -440,7 +440,7 @@ return|return
 name|read
 return|;
 block|}
-comment|/**   * This method tries to find the marker (passed to it as the first parameter)   * in the stream.  It can find bit patterns of length<= 63 bits.  Specifically   * this method is used in CBZip2InputStream to find the end of block (EOB)   * delimiter in the stream, starting from the current position of the stream.   * If marker is found, the stream position will be at the byte containing   * the starting bit of the marker.   *   * @param marker  The bit pattern to be found in the stream   * @param markerBitLength  No of bits in the marker   * @return true if the marker was found otherwise false   *   * @throws IOException   * @throws IllegalArgumentException  if marketBitLength is greater than 63   */
+comment|/**    * This method tries to find the marker (passed to it as the first parameter)    * in the stream. It can find bit patterns of length&lt;= 63 bits.    * Specifically this method is used in CBZip2InputStream to find the end of    * block (EOB) delimiter in the stream, starting from the current position    * of the stream. If marker is found, the stream position will be at the    * byte containing the starting bit of the marker.    * @param marker The bit pattern to be found in the stream    * @param markerBitLength No of bits in the marker    * @return true if the marker was found otherwise false    * @throws IOException    * @throws IllegalArgumentException if marketBitLength is greater than 63    */
 DECL|method|skipToNextMarker (long marker, int markerBitLength)
 specifier|public
 name|boolean

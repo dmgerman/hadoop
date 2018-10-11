@@ -160,7 +160,7 @@ name|Client
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Construct& cache an IPC client with the user-provided SocketFactory     * if no cached client exists.    *     * @param conf Configuration    * @param factory SocketFactory for client socket    * @param valueClass Class of the expected response    * @return an IPC client    */
+comment|/**    * Construct&amp; cache an IPC client with the user-provided SocketFactory    * if no cached client exists.    *     * @param conf Configuration    * @param factory SocketFactory for client socket    * @param valueClass Class of the expected response    * @return an IPC client    */
 DECL|method|getClient (Configuration conf, SocketFactory factory, Class<? extends Writable> valueClass)
 specifier|public
 specifier|synchronized
@@ -260,7 +260,7 @@ return|return
 name|client
 return|;
 block|}
-comment|/**    * Construct& cache an IPC client with the default SocketFactory     * and default valueClass if no cached client exists.     *     * @param conf Configuration    * @return an IPC client    */
+comment|/**    * Construct&amp; cache an IPC client with the default SocketFactory    * and default valueClass if no cached client exists.     *     * @param conf Configuration    * @return an IPC client    */
 DECL|method|getClient (Configuration conf)
 specifier|public
 specifier|synchronized
@@ -287,7 +287,7 @@ name|class
 argument_list|)
 return|;
 block|}
-comment|/**    * Construct& cache an IPC client with the user-provided SocketFactory     * if no cached client exists. Default response type is ObjectWritable.    *     * @param conf Configuration    * @param factory SocketFactory for client socket    * @return an IPC client    */
+comment|/**    * Construct&amp; cache an IPC client with the user-provided SocketFactory    * if no cached client exists. Default response type is ObjectWritable.    *     * @param conf Configuration    * @param factory SocketFactory for client socket    * @return an IPC client    */
 DECL|method|getClient (Configuration conf, SocketFactory factory)
 specifier|public
 specifier|synchronized

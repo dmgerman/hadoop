@@ -157,7 +157,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HTTP utility class to help propagate server side exception to the client  * over HTTP as a JSON payload.  *<p/>  * It creates HTTP Servlet and JAX-RPC error responses including details of the  * exception that allows a client to recreate the remote exception.  *<p/>  * It parses HTTP client connections and recreates the exception.  */
+comment|/**  * HTTP utility class to help propagate server side exception to the client  * over HTTP as a JSON payload.  *<p>  * It creates HTTP Servlet and JAX-RPC error responses including details of the  * exception that allows a client to recreate the remote exception.  *<p>  * It parses HTTP client connections and recreates the exception.  */
 end_comment
 
 begin_class
@@ -613,7 +613,7 @@ operator|)
 name|ex
 throw|;
 block|}
-comment|/**    * Validates the status of an<code>HttpURLConnection</code> against an    * expected HTTP status code. If the current status code is not the expected    * one it throws an exception with a detail message using Server side error    * messages if available.    *<p/>    *<b>NOTE:</b> this method will throw the deserialized exception even if not    * declared in the<code>throws</code> of the method signature.    *    * @param conn the<code>HttpURLConnection</code>.    * @param expectedStatus the expected HTTP status code.    * @throws IOException thrown if the current status code does not match the    * expected one.    */
+comment|/**    * Validates the status of an<code>HttpURLConnection</code> against an    * expected HTTP status code. If the current status code is not the expected    * one it throws an exception with a detail message using Server side error    * messages if available.    *<p>    *<b>NOTE:</b> this method will throw the deserialized exception even if not    * declared in the<code>throws</code> of the method signature.    *    * @param conn the<code>HttpURLConnection</code>.    * @param expectedStatus the expected HTTP status code.    * @throws IOException thrown if the current status code does not match the    * expected one.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

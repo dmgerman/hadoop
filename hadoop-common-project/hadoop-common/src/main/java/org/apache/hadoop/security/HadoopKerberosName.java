@@ -167,7 +167,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the static configuration to get the rules.    *<p/>    * IMPORTANT: This method does a NOP if the rules have been set already.    * If there is a need to reset the rules, the {@link KerberosName#setRules(String)}    * method should be invoked directly.    *     * @param conf the new configuration    * @throws IOException    */
+comment|/**    * Set the static configuration to get the rules.    *<p>    * IMPORTANT: This method does a NOP if the rules have been set already.    * If there is a need to reset the rules, the {@link KerberosName#setRules(String)}    * method should be invoked directly.    *     * @param conf the new configuration    * @throws IOException    */
 DECL|method|setConfiguration (Configuration conf)
 specifier|public
 specifier|static

@@ -634,8 +634,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** We search through all the configured dirs for the file's existence    *  and return true when we find      *  @param pathStr the requested file (this will be searched)    *  @param conf the Configuration object    *  @return true if files exist. false otherwise    *  @throws IOException    */
-DECL|method|ifExists (String pathStr,Configuration conf)
+comment|/** We search through all the configured dirs for the file's existence    *  and return true when we find      *  @param pathStr the requested file (this will be searched)    *  @param conf the Configuration object    *  @return true if files exist. false otherwise    */
+DECL|method|ifExists (String pathStr, Configuration conf)
 specifier|public
 name|boolean
 name|ifExists

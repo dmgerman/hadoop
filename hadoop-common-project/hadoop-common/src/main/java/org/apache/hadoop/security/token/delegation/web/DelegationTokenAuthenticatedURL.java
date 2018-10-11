@@ -299,7 +299,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>DelegationTokenAuthenticatedURL</code> is a  * {@link AuthenticatedURL} sub-class with built-in Hadoop Delegation Token  * functionality.  *<p/>  * The authentication mechanisms supported by default are Hadoop Simple  * authentication (also known as pseudo authentication) and Kerberos SPNEGO  * authentication.  *<p/>  * Additional authentication mechanisms can be supported via {@link  * DelegationTokenAuthenticator} implementations.  *<p/>  * The default {@link DelegationTokenAuthenticator} is the {@link  * KerberosDelegationTokenAuthenticator} class which supports  * automatic fallback from Kerberos SPNEGO to Hadoop Simple authentication via  * the {@link PseudoDelegationTokenAuthenticator} class.  *<p/>  *<code>AuthenticatedURL</code> instances are not thread-safe.  */
+comment|/**  * The<code>DelegationTokenAuthenticatedURL</code> is a  * {@link AuthenticatedURL} sub-class with built-in Hadoop Delegation Token  * functionality.  *<p>  * The authentication mechanisms supported by default are Hadoop Simple  * authentication (also known as pseudo authentication) and Kerberos SPNEGO  * authentication.  *<p>  * Additional authentication mechanisms can be supported via {@link  * DelegationTokenAuthenticator} implementations.  *<p>  * The default {@link DelegationTokenAuthenticator} is the {@link  * KerberosDelegationTokenAuthenticator} class which supports  * automatic fallback from Kerberos SPNEGO to Hadoop Simple authentication via  * the {@link PseudoDelegationTokenAuthenticator} class.  *<p>  *<code>AuthenticatedURL</code> instances are not thread-safe.  */
 end_comment
 
 begin_class
@@ -469,7 +469,7 @@ operator|=
 name|authenticator
 expr_stmt|;
 block|}
-comment|/**    * Returns the default {@link DelegationTokenAuthenticator} class to use when    * an {@link DelegationTokenAuthenticatedURL} instance is created without    * specifying one.    *<p/>    * The default class is {@link KerberosDelegationTokenAuthenticator}    *    * @return the delegation token authenticator class to use as default.    */
+comment|/**    * Returns the default {@link DelegationTokenAuthenticator} class to use when    * an {@link DelegationTokenAuthenticatedURL} instance is created without    * specifying one.    *<p>    * The default class is {@link KerberosDelegationTokenAuthenticator}    *    * @return the delegation token authenticator class to use as default.    */
 specifier|public
 specifier|static
 name|Class
@@ -549,7 +549,7 @@ name|useQueryStringforDelegationToken
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Creates an<code>DelegationTokenAuthenticatedURL</code>.    *<p/>    * An instance of the default {@link DelegationTokenAuthenticator} will be    * used.    */
+comment|/**    * Creates an<code>DelegationTokenAuthenticatedURL</code>.    *<p>    * An instance of the default {@link DelegationTokenAuthenticator} will be    * used.    */
 DECL|method|DelegationTokenAuthenticatedURL ()
 specifier|public
 name|DelegationTokenAuthenticatedURL
@@ -622,7 +622,7 @@ name|connConfigurator
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sets if delegation token should be transmitted in the URL query string.    * By default it is transmitted using the    * {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP header.    *<p/>    * This method is provided to enable WebHDFS backwards compatibility.    *    * @param useQueryString<code>TRUE</code> if the token is transmitted in the    * URL query string,<code>FALSE</code> if the delegation token is transmitted    * using the {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP    * header.    */
+comment|/**    * Sets if delegation token should be transmitted in the URL query string.    * By default it is transmitted using the    * {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP header.    *<p>    * This method is provided to enable WebHDFS backwards compatibility.    *    * @param useQueryString<code>TRUE</code> if the token is transmitted in the    * URL query string,<code>FALSE</code> if the delegation token is transmitted    * using the {@link DelegationTokenAuthenticator#DELEGATION_TOKEN_HEADER} HTTP    * header.    */
 annotation|@
 name|Deprecated
 DECL|method|setUseQueryStringForDelegationToken (boolean useQueryString)

@@ -166,6 +166,24 @@ name|authentication
 operator|.
 name|server
 operator|.
+name|AuthenticationHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authentication
+operator|.
+name|server
+operator|.
 name|AuthenticationHandlerUtil
 import|;
 end_import
@@ -271,7 +289,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A {@link CompositeAuthenticationHandler} that supports multiple HTTP  * authentication schemes along with Delegation Token functionality. e.g.  * server can support multiple authentication mechanisms such as Kerberos  * (SPENGO) and LDAP. During the authentication phase, server will specify  * all possible authentication schemes and let client choose the appropriate  * scheme. Please refer to RFC-2616 and HADOOP-12082 for more details.  *  * Internally it uses {@link MultiSchemeAuthenticationHandler} implementation.  * This handler also provides an option to enable delegation token management  * functionality for only a specified subset of authentication schemes. This is  * required to ensure that only schemes with strongest level of security should  * be used for delegation token management.  *  *<p/>  * In addition to the wrapped {@link AuthenticationHandler} configuration  * properties, this handler supports the following properties prefixed with the  * type of the wrapped<code>AuthenticationHandler</code>:  *<ul>  *<li>delegation-token.token-kind: the token kind for generated tokens (no  * default, required property).</li>  *<li>delegation-token.update-interval.sec: secret manager master key update  * interval in seconds (default 1 day).</li>  *<li>delegation-token.max-lifetime.sec: maximum life of a delegation token in  * seconds (default 7 days).</li>  *<li>delegation-token.renewal-interval.sec: renewal interval for delegation  * tokens in seconds (default 1 day).</li>  *<li>delegation-token.removal-scan-interval.sec: delegation tokens removal  * scan interval in seconds (default 1 hour).</li>  *<li>delegation.http.schemes: A comma separated list of HTTP authentication  * mechanisms (e.g. Negotiate, Basic) etc. to be allowed for delegation token  * management operations.</li>  *</ul>  */
+comment|/**  * A {@link CompositeAuthenticationHandler} that supports multiple HTTP  * authentication schemes along with Delegation Token functionality. e.g.  * server can support multiple authentication mechanisms such as Kerberos  * (SPENGO) and LDAP. During the authentication phase, server will specify  * all possible authentication schemes and let client choose the appropriate  * scheme. Please refer to RFC-2616 and HADOOP-12082 for more details.  *  * Internally it uses {@link MultiSchemeAuthenticationHandler} implementation.  * This handler also provides an option to enable delegation token management  * functionality for only a specified subset of authentication schemes. This is  * required to ensure that only schemes with strongest level of security should  * be used for delegation token management.  *  *<p>  * In addition to the wrapped {@link AuthenticationHandler} configuration  * properties, this handler supports the following properties prefixed with the  * type of the wrapped<code>AuthenticationHandler</code>:  *<ul>  *<li>delegation-token.token-kind: the token kind for generated tokens (no  * default, required property).</li>  *<li>delegation-token.update-interval.sec: secret manager master key update  * interval in seconds (default 1 day).</li>  *<li>delegation-token.max-lifetime.sec: maximum life of a delegation token in  * seconds (default 7 days).</li>  *<li>delegation-token.renewal-interval.sec: renewal interval for delegation  * tokens in seconds (default 1 day).</li>  *<li>delegation-token.removal-scan-interval.sec: delegation tokens removal  * scan interval in seconds (default 1 hour).</li>  *<li>delegation.http.schemes: A comma separated list of HTTP authentication  * mechanisms (e.g. Negotiate, Basic) etc. to be allowed for delegation token  * management operations.</li>  *</ul>  */
 end_comment
 
 begin_class

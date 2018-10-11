@@ -1723,7 +1723,7 @@ return|return
 name|values
 return|;
 block|}
-comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and    * trailing whitespace on each value. Duplicate and empty values are removed.    *    * @param str a comma separated<String> with values, may be null    * @return a<code>Collection</code> of<code>String</code> values, empty    *         Collection if null String input    */
+comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and    * trailing whitespace on each value. Duplicate and empty values are removed.    *    * @param str a comma separated<code>String</code> with values, may be null    * @return a<code>Collection</code> of<code>String</code> values, empty    *         Collection if null String input    */
 DECL|method|getTrimmedStringCollection (String str)
 specifier|public
 specifier|static
@@ -4298,7 +4298,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Matches a template string against a pattern, replaces matched tokens with    * the supplied replacements, and returns the result.  The regular expression    * must use a capturing group.  The value of the first capturing group is used    * to look up the replacement.  If no replacement is found for the token, then    * it is replaced with the empty string.    *     * For example, assume template is "%foo%_%bar%_%baz%", pattern is "%(.*?)%",    * and replacements contains 2 entries, mapping "foo" to "zoo" and "baz" to    * "zaz".  The result returned would be "zoo__zaz".    *     * @param template String template to receive replacements    * @param pattern Pattern to match for identifying tokens, must use a capturing    *   group    * @param replacements Map<String, String> mapping tokens identified by the    *   capturing group to their replacement values    * @return String template with replacements    */
+comment|/**    * Matches a template string against a pattern, replaces matched tokens with    * the supplied replacements, and returns the result.  The regular expression    * must use a capturing group.  The value of the first capturing group is used    * to look up the replacement.  If no replacement is found for the token, then    * it is replaced with the empty string.    *     * For example, assume template is "%foo%_%bar%_%baz%", pattern is "%(.*?)%",    * and replacements contains 2 entries, mapping "foo" to "zoo" and "baz" to    * "zaz".  The result returned would be "zoo__zaz".    *     * @param template String template to receive replacements    * @param pattern Pattern to match for identifying tokens, must use a capturing    *   group    * @param replacements Map&lt;String, String&gt; mapping tokens identified by    * the capturing group to their replacement values    * @return String template with replacements    */
 DECL|method|replaceTokens (String template, Pattern pattern, Map<String, String> replacements)
 specifier|public
 specifier|static

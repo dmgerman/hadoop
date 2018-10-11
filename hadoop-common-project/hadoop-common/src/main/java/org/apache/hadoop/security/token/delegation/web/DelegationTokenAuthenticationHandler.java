@@ -491,7 +491,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An {@link AuthenticationHandler} that implements Kerberos SPNEGO mechanism  * for HTTP and supports Delegation Token functionality.  *<p/>  * In addition to the wrapped {@link AuthenticationHandler} configuration  * properties, this handler supports the following properties prefixed  * with the type of the wrapped<code>AuthenticationHandler</code>:  *<ul>  *<li>delegation-token.token-kind: the token kind for generated tokens  * (no default, required property).</li>  *<li>delegation-token.update-interval.sec: secret manager master key  * update interval in seconds (default 1 day).</li>  *<li>delegation-token.max-lifetime.sec: maximum life of a delegation  * token in seconds (default 7 days).</li>  *<li>delegation-token.renewal-interval.sec: renewal interval for  * delegation tokens in seconds (default 1 day).</li>  *<li>delegation-token.removal-scan-interval.sec: delegation tokens  * removal scan interval in seconds (default 1 hour).</li>  *</ul>  *  */
+comment|/**  * An {@link AuthenticationHandler} that implements Kerberos SPNEGO mechanism  * for HTTP and supports Delegation Token functionality.  *<p>  * In addition to the wrapped {@link AuthenticationHandler} configuration  * properties, this handler supports the following properties prefixed  * with the type of the wrapped<code>AuthenticationHandler</code>:  *<ul>  *<li>delegation-token.token-kind: the token kind for generated tokens  * (no default, required property).</li>  *<li>delegation-token.update-interval.sec: secret manager master key  * update interval in seconds (default 1 day).</li>  *<li>delegation-token.max-lifetime.sec: maximum life of a delegation  * token in seconds (default 7 days).</li>  *<li>delegation-token.renewal-interval.sec: renewal interval for  * delegation tokens in seconds (default 1 day).</li>  *<li>delegation-token.removal-scan-interval.sec: delegation tokens  * removal scan interval in seconds (default 1 hour).</li>  *</ul>  *  */
 end_comment
 
 begin_class
@@ -729,7 +729,7 @@ name|config
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sets an external<code>DelegationTokenSecretManager</code> instance to    * manage creation and verification of Delegation Tokens.    *<p/>    * This is useful for use cases where secrets must be shared across multiple    * services.    *    * @param secretManager a<code>DelegationTokenSecretManager</code> instance    */
+comment|/**    * Sets an external<code>DelegationTokenSecretManager</code> instance to    * manage creation and verification of Delegation Tokens.    *<p>    * This is useful for use cases where secrets must be shared across multiple    * services.    *    * @param secretManager a<code>DelegationTokenSecretManager</code> instance    */
 DECL|method|setExternalDelegationTokenSecretManager ( AbstractDelegationTokenSecretManager secretManager)
 specifier|public
 name|void

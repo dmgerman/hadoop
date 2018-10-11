@@ -5928,7 +5928,7 @@ name|unrefAndCleanup
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**     * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc respond.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
+comment|/**     * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc respond.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @return the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
 DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, AtomicBoolean fallbackToSimpleAuth)
 specifier|public
 name|Writable
@@ -6025,7 +6025,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc response.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
+comment|/**    * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc response.    *    * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @param serviceClass - service class for RPC    * @param fallbackToSimpleAuth - set to true or false during this method to    *   indicate if a secure client falls back to simple auth    * @return the rpc response    * Throws exceptions if there are network problems or if the remote code    * threw an exception.    */
 DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId, int serviceClass, AtomicBoolean fallbackToSimpleAuth)
 name|Writable
 name|call
@@ -6316,7 +6316,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Check if RPC is in asynchronous mode or not.    *    * @returns true, if RPC is in asynchronous mode, otherwise false for    *          synchronous mode.    */
+comment|/**    * Check if RPC is in asynchronous mode or not.    *    * @return true, if RPC is in asynchronous mode, otherwise false for    *          synchronous mode.    */
 annotation|@
 name|Unstable
 DECL|method|isAsynchronousMode ()
@@ -6721,7 +6721,7 @@ return|return
 name|connection
 return|;
 block|}
-comment|/**    * This class holds the address and the user ticket. The client connections    * to servers are uniquely identified by<remoteAddress, protocol, ticket>    */
+comment|/**    * This class holds the address and the user ticket. The client connections    * to servers are uniquely identified by {@literal<}remoteAddress, protocol,    * ticket{@literal>}    */
 annotation|@
 name|InterfaceAudience
 operator|.

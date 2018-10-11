@@ -1099,7 +1099,7 @@ name|classname
 argument_list|)
 return|;
 block|}
-comment|/**      * Find the relevant compression codec for the codec's canonical class name      * or by codec alias.      *<p/>      * Codec aliases are case insensitive.      *<p/>      * The code alias is the short class name (without the package name).      * If the short class name ends with 'Codec', then there are two aliases for      * the codec, the complete short class name and the short class name without      * the 'Codec' ending. For example for the 'GzipCodec' codec class name the      * alias are 'gzip' and 'gzipcodec'.      *      * @param codecName the canonical class name of the codec      * @return the codec object      */
+comment|/**      * Find the relevant compression codec for the codec's canonical class name      * or by codec alias.      *<p>      * Codec aliases are case insensitive.      *<p>      * The code alias is the short class name (without the package name).      * If the short class name ends with 'Codec', then there are two aliases for      * the codec, the complete short class name and the short class name without      * the 'Codec' ending. For example for the 'GzipCodec' codec class name the      * alias are 'gzip' and 'gzipcodec'.      *      * @param codecName the canonical class name of the codec      * @return the codec object      */
 DECL|method|getCodecByName (String codecName)
 specifier|public
 name|CompressionCodec
@@ -1156,7 +1156,7 @@ return|return
 name|codec
 return|;
 block|}
-comment|/**      * Find the relevant compression codec for the codec's canonical class name      * or by codec alias and returns its implemetation class.      *<p/>      * Codec aliases are case insensitive.      *<p/>      * The code alias is the short class name (without the package name).      * If the short class name ends with 'Codec', then there are two aliases for      * the codec, the complete short class name and the short class name without      * the 'Codec' ending. For example for the 'GzipCodec' codec class name the      * alias are 'gzip' and 'gzipcodec'.      *      * @param codecName the canonical class name of the codec      * @return the codec class      */
+comment|/**      * Find the relevant compression codec for the codec's canonical class name      * or by codec alias and returns its implemetation class.      *<p>      * Codec aliases are case insensitive.      *<p>      * The code alias is the short class name (without the package name).      * If the short class name ends with 'Codec', then there are two aliases for      * the codec, the complete short class name and the short class name without      * the 'Codec' ending. For example for the 'GzipCodec' codec class name the      * alias are 'gzip' and 'gzipcodec'.      *      * @param codecName the canonical class name of the codec      * @return the codec class      */
 DECL|method|getCodecClassByName ( String codecName)
 specifier|public
 name|Class

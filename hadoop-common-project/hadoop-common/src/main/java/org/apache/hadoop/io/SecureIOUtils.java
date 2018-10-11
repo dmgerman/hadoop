@@ -203,7 +203,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides secure APIs for opening and creating files on the local  * disk. The main issue this class tries to handle is that of symlink traversal.  *<br/>  * An example of such an attack is:  *<ol>  *<li> Malicious user removes his task's syslog file, and puts a link to the  * jobToken file of a target user.</li>  *<li> Malicious user tries to open the syslog file via the servlet on the  * tasktracker.</li>  *<li> The tasktracker is unaware of the symlink, and simply streams the contents  * of the jobToken file. The malicious user can now access potentially sensitive  * map outputs, etc. of the target user's job.</li>  *</ol>  * A similar attack is possible involving task log truncation, but in that case  * due to an insecure write to a file.  *<br/>  */
+comment|/**  * This class provides secure APIs for opening and creating files on the local  * disk. The main issue this class tries to handle is that of symlink traversal.  *<br>  * An example of such an attack is:  *<ol>  *<li> Malicious user removes his task's syslog file, and puts a link to the  * jobToken file of a target user.</li>  *<li> Malicious user tries to open the syslog file via the servlet on the  * tasktracker.</li>  *<li> The tasktracker is unaware of the symlink, and simply streams the contents  * of the jobToken file. The malicious user can now access potentially sensitive  * map outputs, etc. of the target user's job.</li>  *</ol>  * A similar attack is possible involving task log truncation, but in that case  * due to an insecure write to a file.  *<br>  */
 end_comment
 
 begin_class

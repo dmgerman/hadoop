@@ -299,7 +299,7 @@ specifier|private
 name|MBeans
 parameter_list|()
 block|{   }
-comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service=<serviceName>,name=<nameName>"    * Where the<serviceName> and<nameName> are the supplied parameters.    *    * @param serviceName    * @param nameName    * @param theMbean - the MBean to register    * @return the named used to register the MBean    */
+comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service={@literal<serviceName>,name=<nameName>}"    * Where the {@literal<serviceName> and<nameName>} are the supplied    * parameters.    *    * @param serviceName    * @param nameName    * @param theMbean - the MBean to register    * @return the named used to register the MBean    */
 DECL|method|register (String serviceName, String nameName, Object theMbean)
 specifier|static
 specifier|public
@@ -336,7 +336,7 @@ name|theMbean
 argument_list|)
 return|;
 block|}
-comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service=<serviceName>,name=<nameName>"    * Where the<serviceName> and<nameName> are the supplied parameters.    *    * @param serviceName    * @param nameName    * @param properties - Key value pairs to define additional JMX ObjectName    *                     properties.    * @param theMbean    - the MBean to register    * @return the named used to register the MBean    */
+comment|/**    * Register the MBean using our standard MBeanName format    * "hadoop:service={@literal<serviceName>,name=<nameName>}"    * Where the {@literal<serviceName> and<nameName>} are the supplied    * parameters.    *    * @param serviceName    * @param nameName    * @param properties - Key value pairs to define additional JMX ObjectName    *                     properties.    * @param theMbean    - the MBean to register    * @return the named used to register the MBean    */
 DECL|method|register (String serviceName, String nameName, Map<String, String> properties, Object theMbean)
 specifier|static
 specifier|public

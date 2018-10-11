@@ -287,7 +287,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * Instantiate and return the exception wrapped up by this remote exception.    *     *<p> This unwraps any<code>Throwable</code> that has a constructor taking    * a<code>String</code> as a parameter.    * Otherwise it returns this.    *     * @return<code>Throwable    */
+comment|/**    * Instantiate and return the exception wrapped up by this remote exception.    *     *<p> This unwraps any<code>Throwable</code> that has a constructor taking    * a<code>String</code> as a parameter.    * Otherwise it returns this.    *     * @return<code>Throwable</code>    */
 DECL|method|unwrapRemoteException ()
 specifier|public
 name|IOException

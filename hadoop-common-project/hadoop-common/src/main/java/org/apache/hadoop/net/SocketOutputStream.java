@@ -166,22 +166,6 @@ name|LongWritable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
-name|MutableRate
-import|;
-end_import
-
 begin_comment
 comment|/**  * This implements an output stream that can have a timeout while writing.  * This sets non-blocking flag on the socket channel.  * So after creating this object , read() on   * {@link Socket#getInputStream()} and write() on   * {@link Socket#getOutputStream()} on the associated socket will throw   * llegalBlockingModeException.  * Please use {@link SocketInputStream} for reading.  */
 end_comment
@@ -574,7 +558,7 @@ name|OP_WRITE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Transfers data from FileChannel using     * {@link FileChannel#transferTo(long, long, WritableByteChannel)}.    * Updates<code>waitForWritableTime</code> and<code>transferToTime</code>    * with the time spent blocked on the network and the time spent transferring    * data from disk to network respectively.    *     * Similar to readFully(), this waits till requested amount of     * data is transfered.    *     * @param fileCh FileChannel to transfer data from.    * @param position position within the channel where the transfer begins    * @param count number of bytes to transfer.    * @param waitForWritableTime nanoseconds spent waiting for the socket     *        to become writable    * @param transferTime nanoseconds spent transferring data    *     * @throws EOFException     *         If end of input file is reached before requested number of     *         bytes are transfered.    *    * @throws SocketTimeoutException     *         If this channel blocks transfer longer than timeout for     *         this stream.    *              * @throws IOException Includes any exception thrown by     *         {@link FileChannel#transferTo(long, long, WritableByteChannel)}.     */
+comment|/**    * Transfers data from FileChannel using     * {@link FileChannel#transferTo(long, long, WritableByteChannel)}.    * Updates<code>waitForWritableTime</code> and<code>transferToTime</code>    * with the time spent blocked on the network and the time spent transferring    * data from disk to network respectively.    *     * Similar to readFully(), this waits till requested amount of     * data is transfered.    *     * @param fileCh FileChannel to transfer data from.    * @param position position within the channel where the transfer begins    * @param count number of bytes to transfer.    * @param waitForWritableTime nanoseconds spent waiting for the socket     *        to become writable    * @param transferToTime nanoseconds spent transferring data    *     * @throws EOFException     *         If end of input file is reached before requested number of     *         bytes are transfered.    *    * @throws SocketTimeoutException     *         If this channel blocks transfer longer than timeout for     *         this stream.    *              * @throws IOException Includes any exception thrown by     *         {@link FileChannel#transferTo(long, long, WritableByteChannel)}.     */
 DECL|method|transferToFully (FileChannel fileCh, long position, int count, LongWritable waitForWritableTime, LongWritable transferToTime)
 specifier|public
 name|void
@@ -778,7 +762,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Call    * {@link #transferToFully(FileChannel, long, int, MutableRate, MutableRate)}    * with null<code>waitForWritableTime</code> and<code>transferToTime</code>    */
+comment|/**    * Call    * {@link #transferToFully(FileChannel, long, int, LongWritable, LongWritable)    * }    * with null<code>waitForWritableTime</code> and<code>transferToTime</code>    */
 DECL|method|transferToFully (FileChannel fileCh, long position, int count)
 specifier|public
 name|void

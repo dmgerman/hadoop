@@ -286,7 +286,7 @@ operator|=
 name|isLoaded
 expr_stmt|;
 block|}
-comment|/**    * Check if native-zlib code is loaded& initialized correctly and     * can be loaded for this job.    *     * @param conf configuration    * @return<code>true</code> if native-zlib is loaded& initialized     *         and can be loaded for this job, else<code>false</code>    */
+comment|/**    * Check if native-zlib code is loaded&amp; initialized correctly and    * can be loaded for this job.    *     * @param conf configuration    * @return<code>true</code> if native-zlib is loaded&amp; initialized    *         and can be loaded for this job, else<code>false</code>    */
 DECL|method|isNativeZlibLoaded (Configuration conf)
 specifier|public
 specifier|static

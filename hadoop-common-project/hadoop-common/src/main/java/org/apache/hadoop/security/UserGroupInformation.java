@@ -3148,7 +3148,7 @@ return|return
 name|loginUser
 return|;
 block|}
-comment|/**    * remove the login method that is followed by a space from the username    * e.g. "jack (auth:SIMPLE)" -> "jack"    *    * @param userName    * @return userName without login method    */
+comment|/**    * remove the login method that is followed by a space from the username    * e.g. "jack (auth:SIMPLE)" {@literal ->} "jack"    *    * @param userName    * @return userName without login method    */
 DECL|method|trimLoginMethod (String userName)
 specifier|public
 specifier|static

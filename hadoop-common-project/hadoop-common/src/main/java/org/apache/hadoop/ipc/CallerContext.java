@@ -508,7 +508,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * The thread local current caller context.    *<p/>    * Internal class for defered singleton idiom.    * https://en.wikipedia.org/wiki/Initialization_on_demand_holder_idiom    */
+comment|/**    * The thread local current caller context.    *<p>    * Internal class for defered singleton idiom.    * https://en.wikipedia.org/wiki/Initialization_on_demand_holder_idiom    */
 DECL|class|CurrentCallerContextHolder
 specifier|private
 specifier|static

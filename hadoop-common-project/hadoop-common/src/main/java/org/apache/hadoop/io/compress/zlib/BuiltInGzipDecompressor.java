@@ -1330,7 +1330,7 @@ block|{
 return|return;
 block|}
 block|}
-comment|/**    * Returns the total number of compressed bytes input so far, including    * gzip header/trailer bytes.</p>    *    * @return the total (non-negative) number of compressed bytes read so far    */
+comment|/**    * Returns the total number of compressed bytes input so far, including    * gzip header/trailer bytes.    *    * @return the total (non-negative) number of compressed bytes read so far    */
 DECL|method|getBytesRead ()
 specifier|public
 specifier|synchronized
@@ -1349,7 +1349,7 @@ operator|+
 name|trailerBytesRead
 return|;
 block|}
-comment|/**    * Returns the number of bytes remaining in the input buffer; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.  Note that, other than the finished state with concatenated data    * after the end of the current gzip stream, this will never return a    * non-zero value unless called after {@link #setInput(byte[] b, int off,    * int len)} and before {@link #decompress(byte[] b, int off, int len)}.    * (That is, after {@link #decompress(byte[] b, int off, int len)} it    * always returns zero, except in finished state with concatenated data.)</p>    *    * @return the total (non-negative) number of unprocessed bytes in input    */
+comment|/**    * Returns the number of bytes remaining in the input buffer; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.  Note that, other than the finished state with concatenated data    * after the end of the current gzip stream, this will never return a    * non-zero value unless called after {@link #setInput(byte[] b, int off,    * int len)} and before {@link #decompress(byte[] b, int off, int len)}.    * (That is, after {@link #decompress(byte[] b, int off, int len)} it    * always returns zero, except in finished state with concatenated data.)    *    * @return the total (non-negative) number of unprocessed bytes in input    */
 annotation|@
 name|Override
 DECL|method|getRemaining ()
@@ -1410,7 +1410,7 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns true if the end of the gzip substream (single "member") has been    * reached.</p>    */
+comment|/**    * Returns true if the end of the gzip substream (single "member") has been    * reached.    */
 annotation|@
 name|Override
 DECL|method|finished ()
@@ -1430,7 +1430,7 @@ name|FINISHED
 operator|)
 return|;
 block|}
-comment|/**    * Resets everything, including the input buffer, regardless of whether the    * current gzip substream is finished.</p>    */
+comment|/**    * Resets everything, including the input buffer, regardless of whether the    * current gzip substream is finished.    */
 annotation|@
 name|Override
 DECL|method|reset ()

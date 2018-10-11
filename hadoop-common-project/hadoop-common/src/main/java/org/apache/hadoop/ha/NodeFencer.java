@@ -165,7 +165,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class parses the configured list of fencing methods, and  * is responsible for trying each one in turn while logging informative  * output.<p>  *   * The fencing methods are configured as a carriage-return separated list.  * Each line in the list is of the form:<p>  *<code>com.example.foo.MyMethod(arg string)</code>  * or  *<code>com.example.foo.MyMethod</code>  * The class provided must implement the {@link FenceMethod} interface.  * The fencing methods that ship with Hadoop may also be referred to  * by shortened names:<p>  *<ul>  *<li><code>shell(/path/to/some/script.sh args...)</code></li>  *<li><code>sshfence(...)</code> (see {@link SshFenceByTcpPort})  *</ul>  */
+comment|/**  * This class parses the configured list of fencing methods, and  * is responsible for trying each one in turn while logging informative  * output.<p>  *   * The fencing methods are configured as a carriage-return separated list.  * Each line in the list is of the form:<p>  *<code>com.example.foo.MyMethod(arg string)</code>  * or  *<code>com.example.foo.MyMethod</code>  * The class provided must implement the {@link FenceMethod} interface.  * The fencing methods that ship with Hadoop may also be referred to  * by shortened names:<br>  *<ul>  *<li><code>shell(/path/to/some/script.sh args...)</code></li>  *<li><code>sshfence(...)</code> (see {@link SshFenceByTcpPort})  *</ul>  */
 end_comment
 
 begin_class

@@ -670,7 +670,7 @@ name|option
 argument_list|)
 return|;
 block|}
-comment|/** Returns all the options that are set    *     * @return Set<String> of the enabled options    */
+comment|/** Returns all the options that are set    *     * @return Set{@literal<}String{@literal>} of the enabled options    */
 DECL|method|getOpts ()
 specifier|public
 name|Set

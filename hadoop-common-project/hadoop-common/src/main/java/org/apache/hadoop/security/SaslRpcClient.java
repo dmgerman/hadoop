@@ -1946,7 +1946,7 @@ return|return
 name|serverPrincipal
 return|;
 block|}
-comment|/**    * Do client side SASL authentication with server via the given InputStream    * and OutputStream    *     * @param inS    *          InputStream to use    * @param outS    *          OutputStream to use    * @return AuthMethod used to negotiate the connection    * @throws IOException    */
+comment|/**    * Do client side SASL authentication with server via the given IpcStreams.    *    * @param ipcStreams    * @return AuthMethod used to negotiate the connection    * @throws IOException    */
 DECL|method|saslConnect (IpcStreams ipcStreams)
 specifier|public
 name|AuthMethod

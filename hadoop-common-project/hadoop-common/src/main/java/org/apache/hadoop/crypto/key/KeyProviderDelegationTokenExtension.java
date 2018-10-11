@@ -270,7 +270,7 @@ name|credentials
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a<code>KeyProviderDelegationTokenExtension</code> using a given     * {@link KeyProvider}.    *<p/>    * If the given<code>KeyProvider</code> implements the     * {@link DelegationTokenExtension} interface the<code>KeyProvider</code>     * itself will provide the extension functionality, otherwise a default     * extension implementation will be used.    *     * @param keyProvider<code>KeyProvider</code> to use to create the     *<code>KeyProviderDelegationTokenExtension</code> extension.    * @return a<code>KeyProviderDelegationTokenExtension</code> instance     * using the given<code>KeyProvider</code>.    */
+comment|/**    * Creates a<code>KeyProviderDelegationTokenExtension</code> using a given     * {@link KeyProvider}.    *<p>    * If the given<code>KeyProvider</code> implements the     * {@link DelegationTokenExtension} interface the<code>KeyProvider</code>     * itself will provide the extension functionality, otherwise a default     * extension implementation will be used.    *     * @param keyProvider<code>KeyProvider</code> to use to create the     *<code>KeyProviderDelegationTokenExtension</code> extension.    * @return a<code>KeyProviderDelegationTokenExtension</code> instance     * using the given<code>KeyProvider</code>.    */
 specifier|public
 specifier|static
 name|KeyProviderDelegationTokenExtension

@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OpenSSL secure random using JNI.  * This implementation is thread-safe.  *<p/>  *   * If using an Intel chipset with RDRAND, the high-performance hardware   * random number generator will be used and it's much faster than  * {@link java.security.SecureRandom}. If RDRAND is unavailable, default  * OpenSSL secure random generator will be used. It's still faster  * and can generate strong random bytes.  *<p/>  * @see https://wiki.openssl.org/index.php/Random_Numbers  * @see http://en.wikipedia.org/wiki/RdRand  */
+comment|/**  * OpenSSL secure random using JNI.  * This implementation is thread-safe.  *<p>  *   * If using an Intel chipset with RDRAND, the high-performance hardware   * random number generator will be used and it's much faster than  * {@link java.security.SecureRandom}. If RDRAND is unavailable, default  * OpenSSL secure random generator will be used. It's still faster  * and can generate strong random bytes.  *<p>  * See https://wiki.openssl.org/index.php/Random_Numbers  * See http://en.wikipedia.org/wiki/RdRand  */
 end_comment
 
 begin_class
@@ -304,7 +304,7 @@ parameter_list|)
 block|{
 comment|// Self-seeding.
 block|}
-comment|/**    * Generates an integer containing the user-specified number of    * random bits (right justified, with leading zeros).    *    * @param numBits number of random bits to be generated, where    * 0<=<code>numBits</code><= 32.    *    * @return int an<code>int</code> containing the user-specified number    * of random bits (right justified, with leading zeros).    */
+comment|/**    * Generates an integer containing the user-specified number of    * random bits (right justified, with leading zeros).    *    * @param numBits number of random bits to be generated, where    * 0 {@literal<=}<code>numBits</code> {@literal<=} 32.    *    * @return int an<code>int</code> containing the user-specified number    * of random bits (right justified, with leading zeros).    */
 annotation|@
 name|Override
 DECL|method|next (int numBits)

@@ -1393,7 +1393,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the host name from the principal name of format<service>/host@realm.    * @param principalName principal name of format as described above    * @return host name if the the string conforms to the above format, else null    */
+comment|/**    * Get the host name from the principal name of format {@literal<}service    * {@literal>}/host@realm.    * @param principalName principal name of format as described above    * @return host name if the the string conforms to the above format, else null    */
 DECL|method|getHostFromPrincipal (String principalName)
 specifier|public
 specifier|static

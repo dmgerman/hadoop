@@ -353,7 +353,7 @@ name|remoteAddress
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This function is kept to provide backward compatibility.    * @param user    * @param remoteAddress    * @param conf    * @throws AuthorizationException    * @deprecated use {@link #authorize(UserGroupInformation, String) instead.     */
+comment|/**    * This function is kept to provide backward compatibility.    * @param user    * @param remoteAddress    * @param conf    * @throws AuthorizationException    * @deprecated use {@link #authorize(UserGroupInformation, String)} instead.    */
 annotation|@
 name|Deprecated
 DECL|method|authorize (UserGroupInformation user, String remoteAddress, Configuration conf)

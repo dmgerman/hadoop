@@ -322,7 +322,7 @@ parameter_list|()
 block|{
 comment|// Must call #initialize() method to set the underlying file system
 block|}
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>har</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p>    *    * @return<code>har</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()

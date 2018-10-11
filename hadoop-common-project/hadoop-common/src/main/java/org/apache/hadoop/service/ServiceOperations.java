@@ -138,7 +138,7 @@ specifier|private
 name|ServiceOperations
 parameter_list|()
 block|{   }
-comment|/**    * Stop a service.    *<p/>Do nothing if the service is null or not    * in a state in which it can be/needs to be stopped.    *<p/>    * The service state is checked<i>before</i> the operation begins.    * This process is<i>not</i> thread safe.    * @param service a service or null    */
+comment|/**    * Stop a service.    *<p>Do nothing if the service is null or not    * in a state in which it can be/needs to be stopped.    *<p>    * The service state is checked<i>before</i> the operation begins.    * This process is<i>not</i> thread safe.    * @param service a service or null    */
 DECL|method|stop (Service service)
 specifier|public
 specifier|static

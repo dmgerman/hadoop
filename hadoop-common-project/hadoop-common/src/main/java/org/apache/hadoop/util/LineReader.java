@@ -214,7 +214,7 @@ name|byte
 index|[]
 name|recordDelimiterBytes
 decl_stmt|;
-comment|/**    * Create a line reader that reads from the given stream using the    * default buffer-size (64k).    * @param in The input stream    * @throws IOException    */
+comment|/**    * Create a line reader that reads from the given stream using the    * default buffer-size (64k).    * @param in The input stream    */
 DECL|method|LineReader (InputStream in)
 specifier|public
 name|LineReader
@@ -231,7 +231,7 @@ name|DEFAULT_BUFFER_SIZE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a line reader that reads from the given stream using the     * given buffer-size.    * @param in The input stream    * @param bufferSize Size of the read buffer    * @throws IOException    */
+comment|/**    * Create a line reader that reads from the given stream using the     * given buffer-size.    * @param in The input stream    * @param bufferSize Size of the read buffer    */
 DECL|method|LineReader (InputStream in, int bufferSize)
 specifier|public
 name|LineReader
@@ -347,7 +347,7 @@ operator|=
 name|recordDelimiterBytes
 expr_stmt|;
 block|}
-comment|/**    * Create a line reader that reads from the given stream using the    * given buffer-size, and using a custom delimiter of array of    * bytes.    * @param in The input stream    * @param bufferSize Size of the read buffer    * @param recordDelimiterBytes The delimiter    * @throws IOException    */
+comment|/**    * Create a line reader that reads from the given stream using the    * given buffer-size, and using a custom delimiter of array of    * bytes.    * @param in The input stream    * @param bufferSize Size of the read buffer    * @param recordDelimiterBytes The delimiter    */
 DECL|method|LineReader (InputStream in, int bufferSize, byte[] recordDelimiterBytes)
 specifier|public
 name|LineReader

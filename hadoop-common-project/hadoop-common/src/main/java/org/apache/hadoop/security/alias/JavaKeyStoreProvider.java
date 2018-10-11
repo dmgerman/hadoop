@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * CredentialProvider based on Java's KeyStore file format. The file may be  * stored in any Hadoop FileSystem using the following name mangling:  * jceks://hdfs@nn1.example.com/my/creds.jceks ->  * hdfs://nn1.example.com/my/creds.jceks jceks://file/home/larry/creds.jceks ->  * file:///home/larry/creds.jceks  */
+comment|/**  * CredentialProvider based on Java's KeyStore file format. The file may be  * stored in any Hadoop FileSystem using the following name mangling:  * jceks://hdfs@nn1.example.com/my/creds.jceks {@literal ->}  * hdfs://nn1.example.com/my/creds.jceks jceks://file/home/larry/creds.jceks  * {@literal ->} file:///home/larry/creds.jceks  */
 end_comment
 
 begin_class

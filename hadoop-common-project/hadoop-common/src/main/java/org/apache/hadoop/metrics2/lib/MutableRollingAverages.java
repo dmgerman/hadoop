@@ -1127,7 +1127,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Retrieve a map of metric name -> (aggregate).    * Filter out entries that don't have at least minSamples.    *    * @return a map of peer DataNode Id to the average latency to that    *         node seen over the measurement period.    */
+comment|/**    * Retrieve a map of metric name {@literal ->} (aggregate).    * Filter out entries that don't have at least minSamples.    *    * @return a map of peer DataNode Id to the average latency to that    *         node seen over the measurement period.    */
 DECL|method|getStats (long minSamples)
 specifier|public
 specifier|synchronized

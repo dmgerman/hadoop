@@ -506,7 +506,7 @@ specifier|private
 name|URI
 name|uri
 decl_stmt|;
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>ftp</code>    */
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p>    *    * @return<code>ftp</code>    */
 annotation|@
 name|Override
 DECL|method|getScheme ()
@@ -954,7 +954,7 @@ return|return
 name|client
 return|;
 block|}
-comment|/**    * Set FTP's transfer mode based on configuration. Valid values are    * STREAM_TRANSFER_MODE, BLOCK_TRANSFER_MODE and COMPRESSED_TRANSFER_MODE.    *<p/>    * Defaults to BLOCK_TRANSFER_MODE.    *    * @param conf    * @return    */
+comment|/**    * Set FTP's transfer mode based on configuration. Valid values are    * STREAM_TRANSFER_MODE, BLOCK_TRANSFER_MODE and COMPRESSED_TRANSFER_MODE.    *<p>    * Defaults to BLOCK_TRANSFER_MODE.    *    * @param conf    * @return    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getTransferMode (Configuration conf)
@@ -1074,7 +1074,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Set the FTPClient's data connection mode based on configuration. Valid    * values are ACTIVE_LOCAL_DATA_CONNECTION_MODE,    * PASSIVE_LOCAL_DATA_CONNECTION_MODE and PASSIVE_REMOTE_DATA_CONNECTION_MODE.    *<p/>    * Defaults to ACTIVE_LOCAL_DATA_CONNECTION_MODE.    *    * @param client    * @param conf    * @throws IOException    */
+comment|/**    * Set the FTPClient's data connection mode based on configuration. Valid    * values are ACTIVE_LOCAL_DATA_CONNECTION_MODE,    * PASSIVE_LOCAL_DATA_CONNECTION_MODE and PASSIVE_REMOTE_DATA_CONNECTION_MODE.    *<p>    * Defaults to ACTIVE_LOCAL_DATA_CONNECTION_MODE.    *    * @param client    * @param conf    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
 DECL|method|setDataConnectionMode (FTPClient client, Configuration conf)

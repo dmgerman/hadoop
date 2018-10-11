@@ -1884,7 +1884,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Return the serviceId as is, we are assuming it was    * given as a service address of form<host:ipcport>.    */
+comment|/**    * Return the serviceId as is, we are assuming it was    * given as a service address of form {@literal<}host:ipcport{@literal>}.    */
 DECL|method|getServiceAddr (String serviceId)
 specifier|protected
 name|String

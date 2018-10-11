@@ -293,7 +293,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>ShutdownHookManager</code> enables running shutdownHook  * in a deterministic order, higher priority first.  *<p/>  * The JVM runs ShutdownHooks in a non-deterministic order or in parallel.  * This class registers a single JVM shutdownHook and run all the  * shutdownHooks registered to it (to this class) in order based on their  * priority.  *  * Unless a hook was registered with a shutdown explicitly set through  * {@link #addShutdownHook(Runnable, int, long, TimeUnit)},  * the shutdown time allocated to it is set by the configuration option  * {@link CommonConfigurationKeysPublic#SERVICE_SHUTDOWN_TIMEOUT} in  * {@code core-site.xml}, with a default value of  * {@link CommonConfigurationKeysPublic#SERVICE_SHUTDOWN_TIMEOUT_DEFAULT}  * seconds.  */
+comment|/**  * The<code>ShutdownHookManager</code> enables running shutdownHook  * in a deterministic order, higher priority first.  *<p>  * The JVM runs ShutdownHooks in a non-deterministic order or in parallel.  * This class registers a single JVM shutdownHook and run all the  * shutdownHooks registered to it (to this class) in order based on their  * priority.  *  * Unless a hook was registered with a shutdown explicitly set through  * {@link #addShutdownHook(Runnable, int, long, TimeUnit)},  * the shutdown time allocated to it is set by the configuration option  * {@link CommonConfigurationKeysPublic#SERVICE_SHUTDOWN_TIMEOUT} in  * {@code core-site.xml}, with a default value of  * {@link CommonConfigurationKeysPublic#SERVICE_SHUTDOWN_TIMEOUT_DEFAULT}  * seconds.  */
 end_comment
 
 begin_class

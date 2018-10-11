@@ -110,7 +110,7 @@ name|SHUTDOWN_WAIT_MS
 init|=
 literal|3000
 decl_stmt|;
-comment|/**    * @param thread {@link Thread to be shutdown}    * @return<tt>true</tt> if the thread is successfully interrupted,    *<tt>false</tt> otherwise    * @throws InterruptedException    */
+comment|/**    * @param thread {@link Thread to be shutdown}    * @return<tt>true</tt> if the thread is successfully interrupted,    *<tt>false</tt> otherwise    */
 DECL|method|shutdownThread (Thread thread)
 specifier|public
 specifier|static
@@ -130,7 +130,7 @@ name|SHUTDOWN_WAIT_MS
 argument_list|)
 return|;
 block|}
-comment|/**    * @param thread {@link Thread to be shutdown}    * @param timeoutInMilliSeconds time to wait for thread to join after being    *                              interrupted    * @return<tt>true</tt> if the thread is successfully interrupted,    *<tt>false</tt> otherwise    * @throws InterruptedException    */
+comment|/**    * @param thread {@link Thread to be shutdown}    * @param timeoutInMilliSeconds time to wait for thread to join after being    *                              interrupted    * @return<tt>true</tt> if the thread is successfully interrupted,    *<tt>false</tt> otherwise    */
 DECL|method|shutdownThread (Thread thread, long timeoutInMilliSeconds)
 specifier|public
 specifier|static

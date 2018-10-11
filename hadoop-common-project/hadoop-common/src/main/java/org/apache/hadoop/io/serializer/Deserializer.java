@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Provides a facility for deserializing objects of type<T> from an  * {@link InputStream}.  *</p>  *   *<p>  * Deserializers are stateful, but must not buffer the input since  * other producers may read from the input between calls to  * {@link #deserialize(Object)}.  *</p>  * @param<T>  */
+comment|/**  *<p>  * Provides a facility for deserializing objects of type {@literal<T>} from an  * {@link InputStream}.  *</p>  *   *<p>  * Deserializers are stateful, but must not buffer the input since  * other producers may read from the input between calls to  * {@link #deserialize(Object)}.  *</p>  * @param<T>  */
 end_comment
 
 begin_interface

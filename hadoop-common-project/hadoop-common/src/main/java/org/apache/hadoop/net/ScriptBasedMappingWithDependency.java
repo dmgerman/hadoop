@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class extends ScriptBasedMapping class and implements   * the {@link DNSToSwitchMappingWithDependency} interface using   * a script configured via the   * {@link CommonConfigurationKeys#NET_DEPENDENCY_SCRIPT_FILE_NAME_KEY} option.  *<p/>  * It contains a static class<code>RawScriptBasedMappingWithDependency</code>  * that performs the getDependency work.  *<p/>  */
+comment|/**  * This class extends ScriptBasedMapping class and implements   * the {@link DNSToSwitchMappingWithDependency} interface using   * a script configured via the   * {@link CommonConfigurationKeys#NET_DEPENDENCY_SCRIPT_FILE_NAME_KEY} option.  *<p>  * It contains a static class<code>RawScriptBasedMappingWithDependency</code>  * that performs the getDependency work.  */
 end_comment
 
 begin_class
@@ -152,7 +152,7 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an instance with the default configuration.    *</p>    * Calling {@link #setConf(Configuration)} will trigger a    * re-evaluation of the configuration settings and so be used to    * set up the mapping script.    */
+comment|/**    * Create an instance with the default configuration.    *<p>    * Calling {@link #setConf(Configuration)} will trigger a    * re-evaluation of the configuration settings and so be used to    * set up the mapping script.    */
 DECL|method|ScriptBasedMappingWithDependency ()
 specifier|public
 name|ScriptBasedMappingWithDependency
@@ -198,7 +198,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * {@inheritDoc}    *<p/>    * This will get called in the superclass constructor, so a check is needed    * to ensure that the raw mapping is defined before trying to relaying a null    * configuration.    * @param conf    */
+comment|/**    * {@inheritDoc}    *<p>    * This will get called in the superclass constructor, so a check is needed    * to ensure that the raw mapping is defined before trying to relaying a null    * configuration.    * @param conf    */
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)

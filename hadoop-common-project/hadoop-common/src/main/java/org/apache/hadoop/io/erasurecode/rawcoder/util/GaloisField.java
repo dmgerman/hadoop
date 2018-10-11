@@ -3107,7 +3107,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Perform Gaussian elimination on the given matrix. This matrix has to be a    * fat matrix (number of rows> number of columns).    */
+comment|/**    * Perform Gaussian elimination on the given matrix. This matrix has to be a    * fat matrix (number of rows&gt; number of columns).    */
 DECL|method|gaussianElimination (int[][] matrix)
 specifier|public
 name|void

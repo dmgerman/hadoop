@@ -582,7 +582,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/** Add a leaf node    * Update node counter& rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave     *                                     or node to be added is not a leaf    */
+comment|/** Add a leaf node    * Update node counter&amp; rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave     *                                     or node to be added is not a leaf    */
 annotation|@
 name|Override
 DECL|method|add (Node node)
@@ -1069,7 +1069,7 @@ return|return
 name|weight
 return|;
 block|}
-comment|/**    * Sort nodes array by their distances to<i>reader</i>.    *<p/>    * This is the same as {@link NetworkTopology#sortByDistance(Node, Node[],    * int)} except with a four-level network topology which contains the    * additional network distance of a "node group" which is between local and    * same rack.    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
+comment|/**    * Sort nodes array by their distances to<i>reader</i>.    *<p>    * This is the same as {@link NetworkTopology#sortByDistance(Node, Node[],    * int)} except with a four-level network topology which contains the    * additional network distance of a "node group" which is between local and    * same rack.    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
 annotation|@
 name|Override
 DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen)

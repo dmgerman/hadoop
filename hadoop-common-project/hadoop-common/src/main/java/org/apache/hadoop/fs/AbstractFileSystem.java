@@ -1544,7 +1544,7 @@ name|port
 argument_list|)
 return|;
 block|}
-comment|/**    * The default port of this file system.    *     * @return default port of this file system's Uri scheme    *         A uri with a port of -1 => default port;    */
+comment|/**    * The default port of this file system.    *     * @return default port of this file system's Uri scheme    *         A uri with a port of -1 =&gt; default port;    */
 DECL|method|getUriDefaultPort ()
 specifier|public
 specifier|abstract
@@ -1947,7 +1947,7 @@ name|getServerDefaults
 argument_list|()
 return|;
 block|}
-comment|/**    * Return the fully-qualified path of path f resolving the path    * through any internal symlinks or mount point    * @param p path to be resolved    * @return fully qualified path     * @throws FileNotFoundException, AccessControlException, IOException    *         UnresolvedLinkException if symbolic link on path cannot be resolved    *          internally    */
+comment|/**    * Return the fully-qualified path of path f resolving the path    * through any internal symlinks or mount point    * @param p path to be resolved    * @return fully qualified path     * @throws FileNotFoundException    * @throws AccessControlException    * @throws IOException    * @throws UnresolvedLinkException if symbolic link on path cannot be    * resolved internally    */
 DECL|method|resolvePath (final Path p)
 specifier|public
 name|Path
@@ -3942,7 +3942,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List{@literal<AclEntry>} describing modifications    * @throws IOException if an ACL could not be modified    */
 DECL|method|modifyAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -3974,7 +3974,7 @@ literal|" doesn't support modifyAclEntries"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing entries to remove    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List{@literal<AclEntry>} describing entries to remove    * @throws IOException if an ACL could not be modified    */
 DECL|method|removeAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -4058,7 +4058,7 @@ literal|" doesn't support removeAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications, must include entries    *   for user, group, and others for compatibility with permission bits.    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List{@literal<AclEntry>} describing modifications, must    * include entries for user, group, and others for compatibility with    * permission bits.    * @throws IOException if an ACL could not be modified    */
 DECL|method|setAcl (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -4090,7 +4090,7 @@ literal|" doesn't support setAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Gets the ACLs of files and directories.    *    * @param path Path to get    * @return RemoteIterator<AclStatus> which returns each AclStatus    * @throws IOException if an ACL could not be read    */
+comment|/**    * Gets the ACLs of files and directories.    *    * @param path Path to get    * @return RemoteIterator{@literal<AclStatus>} which returns each AclStatus    * @throws IOException if an ACL could not be read    */
 DECL|method|getAclStatus (Path path)
 specifier|public
 name|AclStatus
@@ -4116,7 +4116,7 @@ literal|" doesn't support getAclStatus"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @throws IOException    */
+comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @throws IOException    */
 DECL|method|setXAttr (Path path, String name, byte[] value)
 specifier|public
 name|void
@@ -4158,7 +4158,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @param flag xattr set flag    * @throws IOException    */
+comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @param flag xattr set flag    * @throws IOException    */
 DECL|method|setXAttr (Path path, String name, byte[] value, EnumSet<XAttrSetFlag> flag)
 specifier|public
 name|void
@@ -4197,7 +4197,7 @@ literal|" doesn't support setXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get an xattr for a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attribute    * @param name xattr name.    * @return byte[] xattr value.    * @throws IOException    */
+comment|/**    * Get an xattr for a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attribute    * @param name xattr name.    * @return byte[] xattr value.    * @throws IOException    */
 DECL|method|getXAttr (Path path, String name)
 specifier|public
 name|byte
@@ -4227,7 +4227,7 @@ literal|" doesn't support getXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    *    * @return {@literal Map<String, byte[]>} describing the XAttrs of the file    * or directory    * @throws IOException    */
 DECL|method|getXAttrs (Path path)
 specifier|public
 name|Map
@@ -4259,7 +4259,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattrs for a file or directory.    * Only those xattrs for which the logged-in user has permissions to view    * are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return {@literal Map<String, byte[]>} describing the XAttrs of the file    * or directory    * @throws IOException    */
 DECL|method|getXAttrs (Path path, List<String> names)
 specifier|public
 name|Map
@@ -4297,7 +4297,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattr names for a file or directory.    * Only the xattr names for which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map<String, byte[]> describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattr names for a file or directory.    * Only the xattr names for which the logged-in user has permissions to view    * are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return {@literal Map<String, byte[]>} describing the XAttrs of the file    * or directory    * @throws IOException    */
 DECL|method|listXAttrs (Path path)
 specifier|public
 name|List
@@ -4326,7 +4326,7 @@ literal|" doesn't support listXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException    */
+comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException    */
 DECL|method|removeXAttr (Path path, String name)
 specifier|public
 name|void

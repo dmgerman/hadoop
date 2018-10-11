@@ -185,7 +185,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Span receiver that puts all spans into a single set.  * This is useful for testing.  *<p/>  * We're not using HTrace's POJOReceiver here so as that doesn't  * push all the metrics to a static place, and would make testing  * SpanReceiverHost harder.  */
+comment|/**  * Span receiver that puts all spans into a single set.  * This is useful for testing.  *<p>  * We're not using HTrace's POJOReceiver here so as that doesn't  * push all the metrics to a static place, and would make testing  * SpanReceiverHost harder.  */
 end_comment
 
 begin_class

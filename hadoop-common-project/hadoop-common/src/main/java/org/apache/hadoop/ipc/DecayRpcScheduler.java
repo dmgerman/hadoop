@@ -492,7 +492,7 @@ name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 init|=
 literal|"faircallqueue.decay-scheduler.period-ms"
 decl_stmt|;
-comment|/**    * Decay factor controls how much each count is suppressed by on each sweep.    * Valid numbers are> 0 and< 1. Decay factor works in tandem with period    * to control how long the scheduler remembers an identity.    */
+comment|/**    * Decay factor controls how much each count is suppressed by on each sweep.    * Valid numbers are&gt; 0 and&lt; 1. Decay factor works in tandem with    * period    * to control how long the scheduler remembers an identity.    */
 DECL|field|IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY
 specifier|public
 specifier|static

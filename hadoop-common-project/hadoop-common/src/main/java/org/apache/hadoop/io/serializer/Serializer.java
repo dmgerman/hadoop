@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Provides a facility for serializing objects of type<T> to an  * {@link OutputStream}.  *</p>  *   *<p>  * Serializers are stateful, but must not buffer the output since  * other producers may write to the output between calls to  * {@link #serialize(Object)}.  *</p>  * @param<T>  */
+comment|/**  *<p>  * Provides a facility for serializing objects of type&lt;T&gt; to an  * {@link OutputStream}.  *</p>  *   *<p>  * Serializers are stateful, but must not buffer the output since  * other producers may write to the output between calls to  * {@link #serialize(Object)}.  *</p>  * @param<T>  */
 end_comment
 
 begin_interface

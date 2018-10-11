@@ -198,7 +198,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Are the native lz4 libraries loaded& initialized?    *    * @return true if loaded& initialized, otherwise false    */
+comment|/**    * Are the native lz4 libraries loaded&amp; initialized?    *    * @return true if loaded&amp; initialized, otherwise false    */
 DECL|method|isNativeCodeLoaded ()
 specifier|public
 specifier|static

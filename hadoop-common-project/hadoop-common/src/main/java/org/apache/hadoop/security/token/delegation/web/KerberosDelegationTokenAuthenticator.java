@@ -87,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>KerberosDelegationTokenAuthenticator</code> provides support for  * Kerberos SPNEGO authentication mechanism and support for Hadoop Delegation  * Token operations.  *<p/>  * It falls back to the {@link PseudoDelegationTokenAuthenticator} if the HTTP  * endpoint does not trigger a SPNEGO authentication  */
+comment|/**  * The<code>KerberosDelegationTokenAuthenticator</code> provides support for  * Kerberos SPNEGO authentication mechanism and support for Hadoop Delegation  * Token operations.  *<p>  * It falls back to the {@link PseudoDelegationTokenAuthenticator} if the HTTP  * endpoint does not trigger a SPNEGO authentication  */
 end_comment
 
 begin_class

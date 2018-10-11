@@ -797,7 +797,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * returns the contents of the MachineList as a Collection<String>    * This can be used for testing     * @return contents of the MachineList    */
+comment|/**    * returns the contents of the MachineList as a Collection&lt;String&gt;    * This can be used for testing     * @return contents of the MachineList    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getCollection ()

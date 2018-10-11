@@ -212,7 +212,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Are the native snappy libraries loaded& initialized?    */
+comment|/**    * Are the native snappy libraries loaded&amp; initialized?    */
 DECL|method|checkNativeCodeLoaded ()
 specifier|public
 specifier|static

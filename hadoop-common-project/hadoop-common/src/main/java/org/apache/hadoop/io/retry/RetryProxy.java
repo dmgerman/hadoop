@@ -218,11 +218,11 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Create a proxy for an interface of implementations of that interface using    * the given {@link FailoverProxyProvider} and the a set of retry policies    * specified by method name. If no retry policy is defined for a method then a    * default of {@link RetryPolicies#TRY_ONCE_THEN_FAIL} is used.    *     * @param iface the interface that the retry will implement    * @param proxyProvider provides implementation instances whose methods should be retried    * @param methodNameToPolicyMapa map of method names to retry policies    * @return the retry proxy    */
+comment|/**    * Create a proxy for an interface of implementations of that interface using    * the given {@link FailoverProxyProvider} and the a set of retry policies    * specified by method name. If no retry policy is defined for a method then a    * default of {@link RetryPolicies#TRY_ONCE_THEN_FAIL} is used.    *     * @param iface the interface that the retry will implement    * @param proxyProvider provides implementation instances whose methods should be retried    * @param methodNameToPolicyMap map of method names to retry policies    * @return the retry proxy    */
 end_comment
 
 begin_function
-DECL|method|create (Class<T> iface, FailoverProxyProvider<T> proxyProvider, Map<String,RetryPolicy> methodNameToPolicyMap, RetryPolicy defaultPolicy)
+DECL|method|create (Class<T> iface, FailoverProxyProvider<T> proxyProvider, Map<String, RetryPolicy> methodNameToPolicyMap, RetryPolicy defaultPolicy)
 specifier|public
 specifier|static
 parameter_list|<

@@ -1006,7 +1006,7 @@ operator|)
 name|result
 return|;
 block|}
-comment|/**    * Output format:    *<----12----><----15----><----15----><----15----><-------18------->    *    QUOTA   REMAINING_QUATA SPACE_QUOTA SPACE_QUOTA_REM FILE_NAME    */
+comment|/**    * Output format:    * |----12----| |----15----| |----15----| |----15----| |-------18-------|    *    QUOTA   REMAINING_QUOTA SPACE_QUOTA SPACE_QUOTA_REM FILE_NAME    */
 DECL|field|QUOTA_STRING_FORMAT
 specifier|protected
 specifier|static
@@ -1068,7 +1068,7 @@ operator|)
 name|QUOTA_HEADER_FIELDS
 argument_list|)
 decl_stmt|;
-comment|/**    * Output format:    *<----12----><------15-----><------15-----><------15----->    *        QUOTA       REM_QUOTA     SPACE_QUOTA REM_SPACE_QUOTA    *<----12----><----12----><-------18------->    *    DIR_COUNT   FILE_COUNT       CONTENT_SIZE    */
+comment|/**    * Output format:    * |----12----| |------15-----| |------15-----| |------15-----|    *        QUOTA       REM_QUOTA     SPACE_QUOTA REM_SPACE_QUOTA    * |----12----| |----12----| |-------18-------|    *    DIR_COUNT   FILE_COUNT       CONTENT_SIZE    */
 DECL|field|STORAGE_TYPE_SUMMARY_FORMAT
 specifier|private
 specifier|static

@@ -650,7 +650,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * Sets an external<code>DelegationTokenSecretManager</code> instance to    * manage creation and verification of Delegation Tokens.    *<p/>    * This is useful for use cases where secrets must be shared across multiple    * services.    *    * @param secretManager a<code>DelegationTokenSecretManager</code> instance    */
+comment|/**    * Sets an external<code>DelegationTokenSecretManager</code> instance to    * manage creation and verification of Delegation Tokens.    *<p>    * This is useful for use cases where secrets must be shared across multiple    * services.    *    * @param secretManager a<code>DelegationTokenSecretManager</code> instance    */
 DECL|method|setExternalDelegationTokenSecretManager ( AbstractDelegationTokenSecretManager secretManager)
 specifier|public
 name|void

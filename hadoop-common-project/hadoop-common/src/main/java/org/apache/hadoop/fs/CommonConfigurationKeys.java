@@ -950,7 +950,7 @@ name|DEFAULT_HADOOP_HTTP_STATIC_USER
 init|=
 literal|"dr.who"
 decl_stmt|;
-comment|/**    * User->groups static mapping to override the groups lookup    */
+comment|/**    * User{@literal ->}groups static mapping to override the groups lookup    */
 DECL|field|HADOOP_USER_GROUP_STATIC_OVERRIDES
 specifier|public
 specifier|static

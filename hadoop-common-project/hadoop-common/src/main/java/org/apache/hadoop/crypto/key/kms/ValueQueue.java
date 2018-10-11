@@ -1438,7 +1438,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This removes the "num" values currently at the head of the Queue for the    * provided key. Will immediately fire the Queue filler function if key    * does not exist    * How many values are actually returned is governed by the    *<code>SyncGenerationPolicy</code> specified by the user.    * @param keyName String key name    * @param num Minimum number of values to return.    * @return List<E> values returned    * @throws IOException    * @throws ExecutionException    */
+comment|/**    * This removes the "num" values currently at the head of the Queue for the    * provided key. Will immediately fire the Queue filler function if key    * does not exist    * How many values are actually returned is governed by the    *<code>SyncGenerationPolicy</code> specified by the user.    * @param keyName String key name    * @param num Minimum number of values to return.    * @return {@literal List<E>} values returned    * @throws IOException    * @throws ExecutionException    */
 DECL|method|getAtMost (String keyName, int num)
 specifier|public
 name|List

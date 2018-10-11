@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a base class for DNS to Switch mappings.<p/> It is not mandatory to  * derive {@link DNSToSwitchMapping} implementations from it, but it is strongly  * recommended, as it makes it easy for the Hadoop developers to add new methods  * to this base class that are automatically picked up by all implementations.  *<p/>  *  * This class does not extend the<code>Configured</code>  * base class, and should not be changed to do so, as it causes problems  * for subclasses. The constructor of the<code>Configured</code> calls  * the  {@link #setConf(Configuration)} method, which will call into the  * subclasses before they have been fully constructed.  *  */
+comment|/**  * This is a base class for DNS to Switch mappings.<p> It is not mandatory to  * derive {@link DNSToSwitchMapping} implementations from it, but it is strongly  * recommended, as it makes it easy for the Hadoop developers to add new methods  * to this base class that are automatically picked up by all implementations.  *<p>  *  * This class does not extend the<code>Configured</code>  * base class, and should not be changed to do so, as it causes problems  * for subclasses. The constructor of the<code>Configured</code> calls  * the  {@link #setConf(Configuration)} method, which will call into the  * subclasses before they have been fully constructed.  *  */
 end_comment
 
 begin_class
@@ -196,7 +196,7 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
-comment|/**    * Predicate that indicates that the switch mapping is known to be    * single-switch. The base class returns false: it assumes all mappings are    * multi-rack. Subclasses may override this with methods that are more aware    * of their topologies.    *    *<p/>    *    * This method is used when parts of Hadoop need know whether to apply    * single rack vs multi-rack policies, such as during block placement.    * Such algorithms behave differently if they are on multi-switch systems.    *</p>    *    * @return true if the mapping thinks that it is on a single switch    */
+comment|/**    * Predicate that indicates that the switch mapping is known to be    * single-switch. The base class returns false: it assumes all mappings are    * multi-rack. Subclasses may override this with methods that are more aware    * of their topologies.    *    *<p>    *    * This method is used when parts of Hadoop need know whether to apply    * single rack vs multi-rack policies, such as during block placement.    * Such algorithms behave differently if they are on multi-switch systems.    *</p>    *    * @return true if the mapping thinks that it is on a single switch    */
 DECL|method|isSingleSwitch ()
 specifier|public
 name|boolean
@@ -436,7 +436,7 @@ operator|==
 literal|null
 return|;
 block|}
-comment|/**    * Query for a {@link DNSToSwitchMapping} instance being on a single    * switch.    *<p/>    * This predicate simply assumes that all mappings not derived from    * this class are multi-switch.    * @param mapping the mapping to query    * @return true if the base class says it is single switch, or the mapping    * is not derived from this class.    */
+comment|/**    * Query for a {@link DNSToSwitchMapping} instance being on a single    * switch.    *<p>    * This predicate simply assumes that all mappings not derived from    * this class are multi-switch.    * @param mapping the mapping to query    * @return true if the base class says it is single switch, or the mapping    * is not derived from this class.    */
 DECL|method|isMappingSingleSwitch (DNSToSwitchMapping mapping)
 specifier|public
 specifier|static

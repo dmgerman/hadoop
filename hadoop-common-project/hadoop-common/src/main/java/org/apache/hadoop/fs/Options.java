@@ -1227,7 +1227,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**      * A helper method for processing user input and default value to       * create a combined checksum option. This is a bit complicated because      * bytesPerChecksum is kept for backward compatibility.      *      * @param defaultOpt Default checksum option      * @param userOpt User-specified checksum option. Ignored if null.      * @param userBytesPerChecksum User-specified bytesPerChecksum      *                Ignored if< 0.      */
+comment|/**      * A helper method for processing user input and default value to       * create a combined checksum option. This is a bit complicated because      * bytesPerChecksum is kept for backward compatibility.      *      * @param defaultOpt Default checksum option      * @param userOpt User-specified checksum option. Ignored if null.      * @param userBytesPerChecksum User-specified bytesPerChecksum      *                Ignored if {@literal<} 0.      */
 DECL|method|processChecksumOpt (ChecksumOpt defaultOpt, ChecksumOpt userOpt, int userBytesPerChecksum)
 specifier|public
 specifier|static

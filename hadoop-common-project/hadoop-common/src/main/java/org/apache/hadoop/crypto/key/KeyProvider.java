@@ -283,7 +283,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A provider of secret key material for Hadoop applications. Provides an  * abstraction to separate key storage from users of encryption. It  * is intended to support getting or storing keys in a variety of ways,  * including third party bindings.  *<P/>  *<code>KeyProvider</code> implementations must be thread safe.  */
+comment|/**  * A provider of secret key material for Hadoop applications. Provides an  * abstraction to separate key storage from users of encryption. It  * is intended to support getting or storing keys in a variety of ways,  * including third party bindings.  *<p>  *<code>KeyProvider</code> implementations must be thread safe.  */
 end_comment
 
 begin_class
@@ -2419,7 +2419,7 @@ return|return
 name|key
 return|;
 block|}
-comment|/**    * Create a new key generating the material for it.    * The given key must not already exist.    *<p/>    * This implementation generates the key material and calls the    * {@link #createKey(String, byte[], Options)} method.    *    * @param name the base name of the key    * @param options the options for the new key.    * @return the version name of the first version of the key.    * @throws IOException    * @throws NoSuchAlgorithmException    */
+comment|/**    * Create a new key generating the material for it.    * The given key must not already exist.    *<p>    * This implementation generates the key material and calls the    * {@link #createKey(String, byte[], Options)} method.    *    * @param name the base name of the key    * @param options the options for the new key.    * @return the version name of the first version of the key.    * @throws IOException    * @throws NoSuchAlgorithmException    */
 DECL|method|createKey (String name, Options options)
 specifier|public
 name|KeyVersion
@@ -2505,7 +2505,7 @@ name|IOException
 block|{
 comment|// NOP
 block|}
-comment|/**    * Roll a new version of the given key generating the material for it.    *<p/>    * This implementation generates the key material and calls the    * {@link #rollNewVersion(String, byte[])} method.    *    * @param name the basename of the key    * @return the name of the new version of the key    * @throws IOException    */
+comment|/**    * Roll a new version of the given key generating the material for it.    *<p>    * This implementation generates the key material and calls the    * {@link #rollNewVersion(String, byte[])} method.    *    * @param name the basename of the key    * @return the name of the new version of the key    * @throws IOException    */
 DECL|method|rollNewVersion (String name)
 specifier|public
 name|KeyVersion

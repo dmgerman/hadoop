@@ -1363,7 +1363,7 @@ literal|0
 condition|)
 do|;
 block|}
-comment|/**    * Return the complete list of files in a directory as strings.<p/>    *    * This is better than File#listDir because it does not ignore IOExceptions.    *    * @param dir              The directory to list.    * @param filter           If non-null, the filter to use when listing    *                         this directory.    * @return                 The list of files in the directory.    *    * @throws IOException     On I/O error    */
+comment|/**    * Return the complete list of files in a directory as strings.<p>    *    * This is better than File#listDir because it does not ignore IOExceptions.    *    * @param dir              The directory to list.    * @param filter           If non-null, the filter to use when listing    *                         this directory.    * @return                 The list of files in the directory.    *    * @throws IOException     On I/O error    */
 DECL|method|listDirectory (File dir, FilenameFilter filter)
 specifier|public
 specifier|static

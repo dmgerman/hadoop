@@ -724,7 +724,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Launch the service and exit.    *    *<ol>    *<li>Parse the command line.</li>     *<li>Build the service configuration from it.</li>    *<li>Start the service.</li>.    *<li>If it is a {@link LaunchableService}: execute it</li>    *<li>Otherwise: wait for it to finish.</li>    *<li>Exit passing the status code to the {@link #exit(int, String)}    * method.</li>    *</ol>    * @param args arguments to the service. {@code arg[0]} is     * assumed to be the service classname.    */
+comment|/**    * Launch the service and exit.    *    *<ol>    *<li>Parse the command line.</li>     *<li>Build the service configuration from it.</li>    *<li>Start the service.</li>    *<li>If it is a {@link LaunchableService}: execute it</li>    *<li>Otherwise: wait for it to finish.</li>    *<li>Exit passing the status code to the {@link #exit(int, String)}    * method.</li>    *</ol>    * @param args arguments to the service. {@code arg[0]} is     * assumed to be the service classname.    */
 DECL|method|launchServiceAndExit (List<String> args)
 specifier|public
 name|void

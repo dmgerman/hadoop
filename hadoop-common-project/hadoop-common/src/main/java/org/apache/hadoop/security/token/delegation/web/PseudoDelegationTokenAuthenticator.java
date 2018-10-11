@@ -93,7 +93,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>PseudoDelegationTokenAuthenticator</code> provides support for  * Hadoop's pseudo authentication mechanism that accepts  * the user name specified as a query string parameter and support for Hadoop  * Delegation Token operations.  *<p/>  * This mimics the model of Hadoop Simple authentication trusting the  * {@link UserGroupInformation#getCurrentUser()} value.  */
+comment|/**  * The<code>PseudoDelegationTokenAuthenticator</code> provides support for  * Hadoop's pseudo authentication mechanism that accepts  * the user name specified as a query string parameter and support for Hadoop  * Delegation Token operations.  *<p>  * This mimics the model of Hadoop Simple authentication trusting the  * {@link UserGroupInformation#getCurrentUser()} value.  */
 end_comment
 
 begin_class

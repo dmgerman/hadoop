@@ -205,7 +205,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@link KeyStoresFactory} implementation that reads the certificates from  * keystore files.  *<p/>  * if the trust certificates keystore file changes, the {@link TrustManager}  * is refreshed with the new trust certificate entries (using a  * {@link ReloadingX509TrustManager} trustmanager).  */
+comment|/**  * {@link KeyStoresFactory} implementation that reads the certificates from  * keystore files.  *<p>  * if the trust certificates keystore file changes, the {@link TrustManager}  * is refreshed with the new trust certificate entries (using a  * {@link ReloadingX509TrustManager} trustmanager).  */
 end_comment
 
 begin_class
@@ -363,7 +363,7 @@ specifier|private
 name|ReloadingX509TrustManager
 name|trustManager
 decl_stmt|;
-comment|/**    * Resolves a property name to its client/server version if applicable.    *<p/>    * NOTE: This method is public for testing purposes.    *    * @param mode client/server mode.    * @param template property name template.    * @return the resolved property name.    */
+comment|/**    * Resolves a property name to its client/server version if applicable.    *<p>    * NOTE: This method is public for testing purposes.    *    * @param mode client/server mode.    * @param template property name template.    * @return the resolved property name.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|resolvePropertyName (SSLFactory.Mode mode, String template)

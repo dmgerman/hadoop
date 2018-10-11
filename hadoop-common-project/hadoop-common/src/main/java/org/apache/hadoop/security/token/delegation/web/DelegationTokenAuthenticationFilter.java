@@ -515,7 +515,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *  The<code>DelegationTokenAuthenticationFilter</code> filter is a  *  {@link AuthenticationFilter} with Hadoop Delegation Token support.  *<p/>  *  By default it uses it own instance of the {@link  *  AbstractDelegationTokenSecretManager}. For situations where an external  *<code>AbstractDelegationTokenSecretManager</code> is required (i.e. one that  *  shares the secret with<code>AbstractDelegationTokenSecretManager</code>  *  instance running in other services), the external  *<code>AbstractDelegationTokenSecretManager</code> must be set as an  *  attribute in the {@link ServletContext} of the web application using the  *  {@link #DELEGATION_TOKEN_SECRET_MANAGER_ATTR} attribute name (  *  'hadoop.http.delegation-token-secret-manager').  */
+comment|/**  *  The<code>DelegationTokenAuthenticationFilter</code> filter is a  *  {@link AuthenticationFilter} with Hadoop Delegation Token support.  *<p>  *  By default it uses it own instance of the {@link  *  AbstractDelegationTokenSecretManager}. For situations where an external  *<code>AbstractDelegationTokenSecretManager</code> is required (i.e. one that  *  shares the secret with<code>AbstractDelegationTokenSecretManager</code>  *  instance running in other services), the external  *<code>AbstractDelegationTokenSecretManager</code> must be set as an  *  attribute in the {@link ServletContext} of the web application using the  *  {@link #DELEGATION_TOKEN_SECRET_MANAGER_ATTR} attribute name (  *  'hadoop.http.delegation-token-secret-manager').  */
 end_comment
 
 begin_class
@@ -577,7 +577,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Sets an external<code>DelegationTokenSecretManager</code> instance to    * manage creation and verification of Delegation Tokens.    *<p/>    * This is useful for use cases where secrets must be shared across multiple    * services.    */
+comment|/**    * Sets an external<code>DelegationTokenSecretManager</code> instance to    * manage creation and verification of Delegation Tokens.    *<p>    * This is useful for use cases where secrets must be shared across multiple    * services.    */
 DECL|field|DELEGATION_TOKEN_SECRET_MANAGER_ATTR
 specifier|public
 specifier|static
@@ -797,7 +797,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the proxyuser configuration. All returned properties must start    * with<code>proxyuser.</code>'    *<p/>    * Subclasses may override this method if the proxyuser configuration is     * read from other place than the filter init parameters.    *    * @param filterConfig filter configuration object    * @return the proxyuser configuration properties.    * @throws ServletException thrown if the configuration could not be created.    */
+comment|/**    * Returns the proxyuser configuration. All returned properties must start    * with<code>proxyuser.</code>'    *<p>    * Subclasses may override this method if the proxyuser configuration is     * read from other place than the filter init parameters.    *    * @param filterConfig filter configuration object    * @return the proxyuser configuration properties.    * @throws ServletException thrown if the configuration could not be created.    */
 DECL|method|getProxyuserConfiguration (FilterConfig filterConfig)
 specifier|protected
 name|Configuration

@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An interface for the implementation of<userId, userName> mapping  * and<groupId, groupName> mapping  */
+comment|/**  * An interface for the implementation of {@literal<}userId,  * userName{@literal>} mapping and {@literal<}groupId, groupName{@literal>}  * mapping.  */
 end_comment
 
 begin_interface

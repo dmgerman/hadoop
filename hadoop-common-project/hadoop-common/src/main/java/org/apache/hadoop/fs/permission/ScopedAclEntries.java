@@ -152,7 +152,7 @@ name|AclEntry
 argument_list|>
 name|defaultEntries
 decl_stmt|;
-comment|/**    * Creates a new ScopedAclEntries from the given list.  It is assumed that the    * list is already sorted such that all access entries precede all default    * entries.    *    * @param aclEntries List<AclEntry> to separate    */
+comment|/**    * Creates a new ScopedAclEntries from the given list.  It is assumed that the    * list is already sorted such that all access entries precede all default    * entries.    *    * @param aclEntries List&lt;AclEntry&gt; to separate    */
 DECL|method|ScopedAclEntries (List<AclEntry> aclEntries)
 specifier|public
 name|ScopedAclEntries
@@ -232,7 +232,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns access entries.    *    * @return List<AclEntry> containing just access entries, or an empty list if    *   there are no access entries    */
+comment|/**    * Returns access entries.    *    * @return List&lt;AclEntry&gt; containing just access entries, or an empty    * list if there are no access entries    */
 DECL|method|getAccessEntries ()
 specifier|public
 name|List
@@ -246,7 +246,7 @@ return|return
 name|accessEntries
 return|;
 block|}
-comment|/**    * Returns default entries.    *    * @return List<AclEntry> containing just default entries, or an empty list if    *   there are no default entries    */
+comment|/**    * Returns default entries.    *    * @return List&lt;AclEntry&gt; containing just default entries, or an empty    * list if there are no default entries    */
 DECL|method|getDefaultEntries ()
 specifier|public
 name|List
@@ -260,7 +260,7 @@ return|return
 name|defaultEntries
 return|;
 block|}
-comment|/**    * Returns the pivot point in the list between the access entries and the    * default entries.  This is the index of the first element in the list that is    * a default entry.    *    * @param aclBuilder ArrayList<AclEntry> containing entries to build    * @return int pivot point, or -1 if list contains no default entries    */
+comment|/**    * Returns the pivot point in the list between the access entries and the    * default entries.  This is the index of the first element in the list that    * is a default entry.    *    * @param aclBuilder ArrayList<AclEntry> containing entries to build    * @return int pivot point, or -1 if list contains no default entries    */
 DECL|method|calculatePivotOnDefaultEntries (List<AclEntry> aclBuilder)
 specifier|private
 specifier|static

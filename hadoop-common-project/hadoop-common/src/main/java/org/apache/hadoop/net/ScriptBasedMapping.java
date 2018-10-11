@@ -129,7 +129,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via the  * {@link CommonConfigurationKeys#NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY} option.  *<p/>  * It contains a static class<code>RawScriptBasedMapping</code> that performs  * the work: reading the configuration parameters, executing any defined  * script, handling errors and such like. The outer  * class extends {@link CachedDNSToSwitchMapping} to cache the delegated  * queries.  *<p/>  * This DNS mapper's {@link #isSingleSwitch()} predicate returns  * true if and only if a script is defined.  */
+comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via the  * {@link CommonConfigurationKeys#NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY} option.  *<p>  * It contains a static class<code>RawScriptBasedMapping</code> that performs  * the work: reading the configuration parameters, executing any defined  * script, handling errors and such like. The outer  * class extends {@link CachedDNSToSwitchMapping} to cache the delegated  * queries.  *<p>  * This DNS mapper's {@link #isSingleSwitch()} predicate returns  * true if and only if a script is defined.  */
 end_comment
 
 begin_class
@@ -200,7 +200,7 @@ name|NO_SCRIPT
 init|=
 literal|"no script"
 decl_stmt|;
-comment|/**    * Create an instance with the default configuration.    *</p>    * Calling {@link #setConf(Configuration)} will trigger a    * re-evaluation of the configuration settings and so be used to    * set up the mapping script.    *    */
+comment|/**    * Create an instance with the default configuration.    *<p>    * Calling {@link #setConf(Configuration)} will trigger a    * re-evaluation of the configuration settings and so be used to    * set up the mapping script.    *    */
 DECL|method|ScriptBasedMapping ()
 specifier|public
 name|ScriptBasedMapping
@@ -295,7 +295,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * {@inheritDoc}    *<p/>    * This will get called in the superclass constructor, so a check is needed    * to ensure that the raw mapping is defined before trying to relaying a null    * configuration.    * @param conf    */
+comment|/**    * {@inheritDoc}    *<p>    * This will get called in the superclass constructor, so a check is needed    * to ensure that the raw mapping is defined before trying to relaying a null    * configuration.    * @param conf    */
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)

@@ -333,7 +333,7 @@ operator|^
 name|remove
 return|;
 block|}
-comment|/**    * Parse comma separated list of ACL entries to secure generated nodes, e.g.    *<code>sasl:hdfs/host1@MY.DOMAIN:cdrwa,sasl:hdfs/host2@MY.DOMAIN:cdrwa</code>    *    * @return ACL list    * @throws {@link BadAclFormatException} if an ACL is invalid    */
+comment|/**    * Parse comma separated list of ACL entries to secure generated nodes, e.g.    *<code>sasl:hdfs/host1@MY.DOMAIN:cdrwa,sasl:hdfs/host2@MY.DOMAIN:cdrwa</code>    *    * @return ACL list    * @throws BadAclFormatException if an ACL is invalid    */
 DECL|method|parseACLs (String aclString)
 specifier|public
 specifier|static
@@ -523,7 +523,7 @@ return|return
 name|acl
 return|;
 block|}
-comment|/**    * Parse a comma-separated list of authentication mechanisms. Each    * such mechanism should be of the form 'scheme:auth' -- the same    * syntax used for the 'addAuth' command in the ZK CLI.    *     * @param authString the comma-separated auth mechanisms    * @return a list of parsed authentications    * @throws {@link BadAuthFormatException} if the auth format is invalid    */
+comment|/**    * Parse a comma-separated list of authentication mechanisms. Each    * such mechanism should be of the form 'scheme:auth' -- the same    * syntax used for the 'addAuth' command in the ZK CLI.    *     * @param authString the comma-separated auth mechanisms    * @return a list of parsed authentications    * @throws BadAuthFormatException if the auth format is invalid    */
 DECL|method|parseAuth (String authString)
 specifier|public
 specifier|static

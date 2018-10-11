@@ -317,7 +317,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * reset the EnumSetWritable with specified    *<tt>value</value> and<tt>elementType</tt>. If the<tt>value</tt> argument    * is null or its size is zero, the<tt>elementType</tt> argument must not be    * null. If the argument<tt>value</tt>'s size is bigger than zero, the    * argument<tt>elementType</tt> is not be used.    *     * @param value    * @param elementType    */
+comment|/**    * reset the EnumSetWritable with specified    *<tt>value</tt> and<tt>elementType</tt>. If the<tt>value</tt> argument    * is null or its size is zero, the<tt>elementType</tt> argument must not be    * null. If the argument<tt>value</tt>'s size is bigger than zero, the    * argument<tt>elementType</tt> is not be used.    *     * @param value    * @param elementType    */
 DECL|method|set (EnumSet<E> value, Class<E> elementType)
 specifier|public
 name|void

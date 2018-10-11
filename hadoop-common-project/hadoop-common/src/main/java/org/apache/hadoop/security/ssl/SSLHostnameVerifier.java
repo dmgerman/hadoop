@@ -265,7 +265,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  ************************************************************************  * Copied from the not-yet-commons-ssl project at  * http://juliusdavies.ca/commons-ssl/  * This project is not yet in Apache, but it is Apache 2.0 licensed.  ************************************************************************  * Interface for checking if a hostname matches the names stored inside the  * server's X.509 certificate.  Correctly implements  * javax.net.ssl.HostnameVerifier, but that interface is not recommended.  * Instead we added several check() methods that take SSLSocket,  * or X509Certificate, or ultimately (they all end up calling this one),  * String.  (It's easier to supply JUnit with Strings instead of mock  * SSLSession objects!)  *</p><p>Our check() methods throw exceptions if the name is  * invalid, whereas javax.net.ssl.HostnameVerifier just returns true/false.  *<p/>  * We provide the HostnameVerifier.DEFAULT, HostnameVerifier.STRICT, and  * HostnameVerifier.ALLOW_ALL implementations.  We also provide the more  * specialized HostnameVerifier.DEFAULT_AND_LOCALHOST, as well as  * HostnameVerifier.STRICT_IE6.  But feel free to define your own  * implementations!  *<p/>  * Inspired by Sebastian Hauer's original StrictSSLProtocolSocketFactory in the  * HttpClient "contrib" repository.  */
+comment|/**  ************************************************************************  * Copied from the not-yet-commons-ssl project at  * http://juliusdavies.ca/commons-ssl/  * This project is not yet in Apache, but it is Apache 2.0 licensed.  ************************************************************************  * Interface for checking if a hostname matches the names stored inside the  * server's X.509 certificate.  Correctly implements  * javax.net.ssl.HostnameVerifier, but that interface is not recommended.  * Instead we added several check() methods that take SSLSocket,  * or X509Certificate, or ultimately (they all end up calling this one),  * String.  (It's easier to supply JUnit with Strings instead of mock  * SSLSession objects!)  *<p>Our check() methods throw exceptions if the name is  * invalid, whereas javax.net.ssl.HostnameVerifier just returns true/false.  *<p>  * We provide the HostnameVerifier.DEFAULT, HostnameVerifier.STRICT, and  * HostnameVerifier.ALLOW_ALL implementations.  We also provide the more  * specialized HostnameVerifier.DEFAULT_AND_LOCALHOST, as well as  * HostnameVerifier.STRICT_IE6.  But feel free to define your own  * implementations!  *<p>  * Inspired by Sebastian Hauer's original StrictSSLProtocolSocketFactory in the  * HttpClient "contrib" repository.  */
 end_comment
 
 begin_interface
@@ -395,7 +395,7 @@ parameter_list|)
 throws|throws
 name|SSLException
 function_decl|;
-comment|/**      * The DEFAULT HostnameVerifier works the same way as Curl and Firefox.      *<p/>      * The hostname must match either the first CN, or any of the subject-alts.      * A wildcard can occur in the CN, and in any of the subject-alts.      *<p/>      * The only difference between DEFAULT and STRICT is that a wildcard (such      * as "*.foo.com") with DEFAULT matches all subdomains, including      * "a.b.foo.com".      */
+comment|/**      * The DEFAULT HostnameVerifier works the same way as Curl and Firefox.      *<p>      * The hostname must match either the first CN, or any of the subject-alts.      * A wildcard can occur in the CN, and in any of the subject-alts.      *<p>      * The only difference between DEFAULT and STRICT is that a wildcard (such      * as "*.foo.com") with DEFAULT matches all subdomains, including      * "a.b.foo.com".      */
 DECL|field|DEFAULT
 specifier|public
 specifier|final
@@ -538,7 +538,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**      * The STRICT HostnameVerifier works the same way as java.net.URL in Sun      * Java 1.4, Sun Java 5, Sun Java 6.  It's also pretty close to IE6.      * This implementation appears to be compliant with RFC 2818 for dealing      * with wildcards.      *<p/>      * The hostname must match either the first CN, or any of the subject-alts.      * A wildcard can occur in the CN, and in any of the subject-alts.  The      * one divergence from IE6 is how we only check the first CN.  IE6 allows      * a match against any of the CNs present.  We decided to follow in      * Sun Java 1.4's footsteps and only check the first CN.      *<p/>      * A wildcard such as "*.foo.com" matches only subdomains in the same      * level, for example "a.foo.com".  It does not match deeper subdomains      * such as "a.b.foo.com".      */
+comment|/**      * The STRICT HostnameVerifier works the same way as java.net.URL in Sun      * Java 1.4, Sun Java 5, Sun Java 6.  It's also pretty close to IE6.      * This implementation appears to be compliant with RFC 2818 for dealing      * with wildcards.      *<p>      * The hostname must match either the first CN, or any of the subject-alts.      * A wildcard can occur in the CN, and in any of the subject-alts.  The      * one divergence from IE6 is how we only check the first CN.  IE6 allows      * a match against any of the CNs present.  We decided to follow in      * Sun Java 1.4's footsteps and only check the first CN.      *<p>      * A wildcard such as "*.foo.com" matches only subdomains in the same      * level, for example "a.foo.com".  It does not match deeper subdomains      * such as "a.b.foo.com".      */
 DECL|field|STRICT
 specifier|public
 specifier|final
@@ -742,7 +742,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**          * This contains a list of 2nd-level domains that aren't allowed to          * have wildcards when combined with country-codes.          * For example: [*.co.uk].          *<p/>          * The [*.co.uk] problem is an interesting one.  Should we just hope          * that CA's would never foolishly allow such a certificate to happen?          * Looks like we're the only implementation guarding against this.          * Firefox, Curl, Sun Java 1.4, 5, 6 don't bother with this check.          */
+comment|/**          * This contains a list of 2nd-level domains that aren't allowed to          * have wildcards when combined with country-codes.          * For example: [*.co.uk].          *<p>          * The [*.co.uk] problem is an interesting one.  Should we just hope          * that CA's would never foolishly allow such a certificate to happen?          * Looks like we're the only implementation guarding against this.          * Firefox, Curl, Sun Java 1.4, 5, 6 don't bother with this check.          */
 DECL|field|BAD_COUNTRY_2LDS
 specifier|private
 specifier|final
@@ -2259,7 +2259,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**        * Extracts the array of SubjectAlt DNS names from an X509Certificate.        * Returns null if there aren't any.        *<p/>        * Note:  Java doesn't appear able to extract international characters        * from the SubjectAlts.  It can only extract international characters        * from the CN field.        *<p/>        * (Or maybe the version of OpenSSL I'm using to test isn't storing the        * international characters correctly in the SubjectAlts?).        *        * @param cert X509Certificate        * @return Array of SubjectALT DNS names stored in the certificate.        */
+comment|/**        * Extracts the array of SubjectAlt DNS names from an X509Certificate.        * Returns null if there aren't any.        *<p>        * Note:  Java doesn't appear able to extract international characters        * from the SubjectAlts.  It can only extract international characters        * from the CN field.        *<p>        * (Or maybe the version of OpenSSL I'm using to test isn't storing the        * international characters correctly in the SubjectAlts?).        *        * @param cert X509Certificate        * @return Array of SubjectALT DNS names stored in the certificate.        */
 DECL|method|getDNSSubjectAlts (X509Certificate cert)
 specifier|public
 specifier|static

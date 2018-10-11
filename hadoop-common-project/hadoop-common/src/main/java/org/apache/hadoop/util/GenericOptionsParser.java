@@ -17,7 +17,6 @@ package|;
 end_package
 
 begin_import
-DECL|package|org.apache.hadoop.util
 import|import
 name|java
 operator|.
@@ -376,7 +375,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>GenericOptionsParser</code> is a utility to parse command line  * arguments generic to the Hadoop framework.   *   *<code>GenericOptionsParser</code> recognizes several standard command  * line arguments, enabling applications to easily specify a namenode, a   * ResourceManager, additional configuration resources etc.  *   *<h4 id="GenericOptions">Generic Options</h4>  *   *<p>The supported generic options are:</p>  *<p><blockquote><pre>  *     -conf&lt;configuration file&gt;     specify a configuration file  *     -D&lt;property=value&gt;            use value for given property  *     -fs&lt;local|namenode:port&gt;      specify a namenode  *     -jt&lt;local|resourcemanager:port&gt;    specify a ResourceManager  *     -files&lt;comma separated list of files&gt;    specify comma separated  *                            files to be copied to the map reduce cluster  *     -libjars&lt;comma separated list of jars&gt;   specify comma separated  *                            jar files to include in the classpath.  *     -archives&lt;comma separated list of archives&gt;    specify comma  *             separated archives to be unarchived on the compute machines.   *</pre></blockquote></p>  *   *<p>The general command line syntax is:</p>  *<p><tt><pre>  * bin/hadoop command [genericOptions] [commandOptions]  *</pre></tt></p>  *   *<p>Generic command line arguments<strong>might</strong> modify   *<code>Configuration</code> objects, given to constructors.</p>  *   *<p>The functionality is implemented using Commons CLI.</p>  *  *<p>Examples:</p>  *<p><blockquote><pre>  * $ bin/hadoop dfs -fs darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *   * $ bin/hadoop dfs -D fs.default.name=darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *       * $ bin/hadoop dfs -conf core-site.xml -conf hdfs-site.xml -ls /data  * list /data directory in dfs with multiple conf files specified.  *  * $ bin/hadoop job -D yarn.resourcemanager.address=darwin:8032 -submit job.xml  * submit a job to ResourceManager darwin:8032  *  * $ bin/hadoop job -jt darwin:8032 -submit job.xml  * submit a job to ResourceManager darwin:8032  *  * $ bin/hadoop job -jt local -submit job.xml  * submit a job to local runner  *   * $ bin/hadoop jar -libjars testlib.jar   * -archives test.tgz -files file.txt inputjar args  * job submission with libjars, files and archives  *</pre></blockquote></p>  *  * @see Tool  * @see ToolRunner  */
+comment|/**  *<code>GenericOptionsParser</code> is a utility to parse command line  * arguments generic to the Hadoop framework.   *   *<code>GenericOptionsParser</code> recognizes several standard command  * line arguments, enabling applications to easily specify a namenode, a   * ResourceManager, additional configuration resources etc.  *   *<h3 id="GenericOptions">Generic Options</h3>  *   *<p>The supported generic options are:  *<p><blockquote><pre>  *     -conf&lt;configuration file&gt;     specify a configuration file  *     -D&lt;property=value&gt;            use value for given property  *     -fs&lt;local|namenode:port&gt;      specify a namenode  *     -jt&lt;local|resourcemanager:port&gt;    specify a ResourceManager  *     -files&lt;comma separated list of files&gt;    specify comma separated  *                            files to be copied to the map reduce cluster  *     -libjars&lt;comma separated list of jars&gt;   specify comma separated  *                            jar files to include in the classpath.  *     -archives&lt;comma separated list of archives&gt;    specify comma  *             separated archives to be unarchived on the compute machines.   *</pre></blockquote><p>  *   *<p>The general command line syntax is:</p>  *<p><pre><code>  * bin/hadoop command [genericOptions] [commandOptions]  *</code></pre><p>  *   *<p>Generic command line arguments<strong>might</strong> modify   *<code>Configuration</code> objects, given to constructors.</p>  *   *<p>The functionality is implemented using Commons CLI.</p>  *  *<p>Examples:</p>  *<p><blockquote><pre>  * $ bin/hadoop dfs -fs darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *   * $ bin/hadoop dfs -D fs.default.name=darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *       * $ bin/hadoop dfs -conf core-site.xml -conf hdfs-site.xml -ls /data  * list /data directory in dfs with multiple conf files specified.  *  * $ bin/hadoop job -D yarn.resourcemanager.address=darwin:8032 -submit job.xml  * submit a job to ResourceManager darwin:8032  *  * $ bin/hadoop job -jt darwin:8032 -submit job.xml  * submit a job to ResourceManager darwin:8032  *  * $ bin/hadoop job -jt local -submit job.xml  * submit a job to local runner  *   * $ bin/hadoop jar -libjars testlib.jar   * -archives test.tgz -files file.txt inputjar args  * job submission with libjars, files and archives  *</pre></blockquote><p>  *  * @see Tool  * @see ToolRunner  */
 end_comment
 
 begin_class
@@ -478,7 +477,7 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Create a<code>GenericOptionsParser<code> to parse only the generic Hadoop      * arguments.     *     * The array of string arguments other than the generic arguments can be     * obtained by {@link #getRemainingArgs()}.    *     * @param conf the<code>Configuration</code> to modify.    * @param args command-line arguments.    * @throws IOException     */
+comment|/**     * Create a<code>GenericOptionsParser</code> to parse only the generic    * Hadoop arguments.    *     * The array of string arguments other than the generic arguments can be     * obtained by {@link #getRemainingArgs()}.    *     * @param conf the<code>Configuration</code> to modify.    * @param args command-line arguments.    * @throws IOException     */
 DECL|method|GenericOptionsParser (Configuration conf, String[] args)
 specifier|public
 name|GenericOptionsParser
@@ -598,7 +597,7 @@ return|return
 name|parseSuccessful
 return|;
 block|}
-comment|/**    * Specify properties of each generic option.    *<i>Important</i?: as {@link OptionBuilder} is not thread safe, subclasses    * must synchronize use on {@code OptionBuilder.class}    */
+comment|/**    * Specify properties of each generic option.    *<i>Important</i>: as {@link OptionBuilder} is not thread safe, subclasses    * must synchronize use on {@code OptionBuilder.class}    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

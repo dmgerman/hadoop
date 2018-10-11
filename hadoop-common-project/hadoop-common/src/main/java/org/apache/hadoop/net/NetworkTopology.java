@@ -494,7 +494,7 @@ name|ROOT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Add a leaf node    * Update node counter& rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave                                           or node to be added is not a leaf    */
+comment|/** Add a leaf node    * Update node counter&amp; rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave                                           or node to be added is not a leaf    */
 DECL|method|add (Node node)
 specifier|public
 name|void
@@ -3507,7 +3507,7 @@ return|return
 name|path
 return|;
 block|}
-comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p/>    * In a three-level topology, a node can be either local, on the same rack,    * or on a different rack from the reader. Sorting the nodes based on network    * distance from the reader reduces network traffic and improves    * performance.    *<p/>    * As an additional twist, we also randomize the nodes at each network    * distance. This helps with load balancing when there is data skew.    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
+comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p>    * In a three-level topology, a node can be either local, on the same rack,    * or on a different rack from the reader. Sorting the nodes based on network    * distance from the reader reduces network traffic and improves    * performance.    *<p>    * As an additional twist, we also randomize the nodes at each network    * distance. This helps with load balancing when there is data skew.    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
 DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen)
 specifier|public
 name|void
@@ -3537,7 +3537,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p/> using network location. This is used when the reader    * is not a datanode. Sorting the nodes based on network distance    * from the reader reduces network traffic and improves    * performance.    *<p/>    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
+comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p> using network location. This is used when the reader    * is not a datanode. Sorting the nodes based on network distance    * from the reader reduces network traffic and improves    * performance.    *<p>    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
 DECL|method|sortByDistanceUsingNetworkLocation (Node reader, Node[] nodes, int activeLen)
 specifier|public
 name|void
@@ -3567,7 +3567,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p/>    * As an additional twist, we also randomize the nodes at each network    * distance. This helps with load balancing when there is data skew.    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    * @param nonDataNodeReader True if the reader is not a datanode    */
+comment|/**    * Sort nodes array by network distance to<i>reader</i>.    *<p>    * As an additional twist, we also randomize the nodes at each network    * distance. This helps with load balancing when there is data skew.    *    * @param reader    Node where data will be read    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    * @param nonDataNodeReader True if the reader is not a datanode    */
 DECL|method|sortByDistance (Node reader, Node[] nodes, int activeLen, boolean nonDataNodeReader)
 specifier|private
 name|void

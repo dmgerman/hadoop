@@ -1705,7 +1705,7 @@ name|Factory
 extends|extends
 name|KeyProviderFactory
 block|{
-comment|/**      * This provider expects URIs in the following form :      * kms://<PROTO>@<AUTHORITY>/<PATH>      *      * where :      * - PROTO = http or https      * - AUTHORITY =<HOSTS>[:<PORT>]      * - HOSTS =<HOSTNAME>[;<HOSTS>]      * - HOSTNAME = string      * - PORT = integer      *      * This will always create a {@link LoadBalancingKMSClientProvider}      * if the uri is correct.      */
+comment|/**      * This provider expects URIs in the following form :      * {@literal kms://<PROTO>@<AUTHORITY>/<PATH>}      *      * where :      * - PROTO = http or https      * - AUTHORITY = {@literal<HOSTS>[:<PORT>]}      * - HOSTS = {@literal<HOSTNAME>[;<HOSTS>]}      * - HOSTNAME = string      * - PORT = integer      *      * This will always create a {@link LoadBalancingKMSClientProvider}      * if the uri is correct.      */
 annotation|@
 name|Override
 DECL|method|createProvider (URI providerUri, Configuration conf)

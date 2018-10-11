@@ -716,7 +716,7 @@ name|stream
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the total number of compressed bytes input so far.</p>    *    * @return the total (non-negative) number of compressed bytes input so far    */
+comment|/**    * Returns the total number of compressed bytes input so far.    *    * @return the total (non-negative) number of compressed bytes input so far    */
 DECL|method|getBytesRead ()
 specifier|public
 specifier|synchronized
@@ -734,7 +734,7 @@ name|stream
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the number of bytes remaining in the input buffers; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.</p>    *    * @return the total (non-negative) number of unprocessed bytes in input    */
+comment|/**    * Returns the number of bytes remaining in the input buffers; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.    *    * @return the total (non-negative) number of unprocessed bytes in input    */
 annotation|@
 name|Override
 DECL|method|getRemaining ()
@@ -757,7 +757,7 @@ argument_list|)
 return|;
 comment|// userBuf + compressedDirectBuf
 block|}
-comment|/**    * Resets everything including the input buffers (user and direct).</p>    */
+comment|/**    * Resets everything including the input buffers (user and direct).    */
 annotation|@
 name|Override
 DECL|method|reset ()
