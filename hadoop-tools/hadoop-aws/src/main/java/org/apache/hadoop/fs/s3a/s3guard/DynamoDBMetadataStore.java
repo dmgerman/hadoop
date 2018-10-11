@@ -274,6 +274,16 @@ name|com
 operator|.
 name|amazonaws
 operator|.
+name|SdkBaseException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
 name|auth
 operator|.
 name|AWSCredentialsProvider
@@ -656,6 +666,18 @@ begin_import
 import|import
 name|com
 operator|.
+name|amazonaws
+operator|.
+name|waiters
+operator|.
+name|WaiterTimedOutException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|google
 operator|.
 name|common
@@ -795,6 +817,22 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|AWSClientIOException
 import|;
 end_import
 
@@ -5161,7 +5199,7 @@ operator|+
 literal|'}'
 return|;
 block|}
-comment|/**    * Create a table if it does not exist and wait for it to become active.    *    * If a table with the intended name already exists, then it uses that table.    * Otherwise, it will automatically create the table if the config    * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_CREATE_KEY} is    * enabled. The DynamoDB table creation API is asynchronous.  This method wait    * for the table to become active after sending the creation request, so    * overall, this method is synchronous, and the table is guaranteed to exist    * after this method returns successfully.    *    * @throws IOException if table does not exist and auto-creation is disabled;    * or table is being deleted, or any other I/O exception occurred.    */
+comment|/**    * Create a table if it does not exist and wait for it to become active.    *    * If a table with the intended name already exists, then it uses that table.    * Otherwise, it will automatically create the table if the config    * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_CREATE_KEY} is    * enabled. The DynamoDB table creation API is asynchronous.  This method wait    * for the table to become active after sending the creation request, so    * overall, this method is synchronous, and the table is guaranteed to exist    * after this method returns successfully.    *    * The wait for a table becoming active is Retry+Translated; it can fail    * while a table is not yet ready.    *    * @throws IOException if table does not exist and auto-creation is disabled;    * or table is being deleted, or any other I/O exception occurred.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
@@ -5231,9 +5269,6 @@ block|{
 case|case
 literal|"CREATING"
 case|:
-case|case
-literal|"UPDATING"
-case|:
 name|LOG
 operator|.
 name|debug
@@ -5275,6 +5310,18 @@ operator|+
 name|region
 argument_list|)
 throw|;
+case|case
+literal|"UPDATING"
+case|:
+comment|// table being updated; it can still be used.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Table is being updated."
+argument_list|)
+expr_stmt|;
+break|break;
 case|case
 literal|"ACTIVE"
 case|:
@@ -5726,7 +5773,7 @@ comment|/**    * Wait for table being active.    * @param t table to block on.  
 annotation|@
 name|Retries
 operator|.
-name|OnceRaw
+name|RetryTranslated
 DECL|method|waitForTableActive (Table t)
 specifier|private
 name|void
@@ -5736,7 +5783,22 @@ name|Table
 name|t
 parameter_list|)
 throws|throws
-name|InterruptedIOException
+name|IOException
+block|{
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"Waiting for active state of table "
+operator|+
+name|tableName
+argument_list|,
+literal|null
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 try|try
 block|{
@@ -5748,6 +5810,21 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|IllegalArgumentException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+name|translateTableWaitFailure
+argument_list|(
+name|tableName
+argument_list|,
+name|ex
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
@@ -5756,7 +5833,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Interrupted while waiting for table {} in region {} active"
+literal|"Interrupted while waiting for table {} in region {}"
+operator|+
+literal|" active"
 argument_list|,
 name|tableName
 argument_list|,
@@ -5796,7 +5875,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a table, wait for it to become active, then add the version    * marker.    * @param capacity capacity to provision    * @throws IOException on any failure.    * @throws InterruptedIOException if the wait was interrupted    */
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a table, wait for it to become active, then add the version    * marker.    * Creating an setting up the table isn't wrapped by any retry operations;    * the wait for a table to become available is RetryTranslated.    * @param capacity capacity to provision    * @throws IOException on any failure.    * @throws InterruptedIOException if the wait was interrupted    */
 annotation|@
 name|Retries
 operator|.
@@ -7055,6 +7137,127 @@ block|{
 return|return
 name|invoker
 return|;
+block|}
+comment|/**    * Take an {@code IllegalArgumentException} raised by a DDB operation    * and if it contains an inner SDK exception, unwrap it.    * @param ex exception.    * @return the inner AWS exception or null.    */
+DECL|method|extractInnerException ( IllegalArgumentException ex)
+specifier|public
+specifier|static
+name|SdkBaseException
+name|extractInnerException
+parameter_list|(
+name|IllegalArgumentException
+name|ex
+parameter_list|)
+block|{
+if|if
+condition|(
+name|ex
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|SdkBaseException
+condition|)
+block|{
+return|return
+operator|(
+name|SdkBaseException
+operator|)
+name|ex
+operator|.
+name|getCause
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+comment|/**    * Handle a table wait failure by extracting any inner cause and    * converting it, or, if unconvertable by wrapping    * the IllegalArgumentException in an IOE.    *    * @param name name of the table    * @param e exception    * @return an IOE to raise.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|translateTableWaitFailure ( final String name, IllegalArgumentException e)
+specifier|static
+name|IOException
+name|translateTableWaitFailure
+parameter_list|(
+specifier|final
+name|String
+name|name
+parameter_list|,
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+specifier|final
+name|SdkBaseException
+name|ex
+init|=
+name|extractInnerException
+argument_list|(
+name|e
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|ex
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|ex
+operator|instanceof
+name|WaiterTimedOutException
+condition|)
+block|{
+comment|// a timeout waiting for state change: extract the
+comment|// message from the outer exception, but translate
+comment|// the inner one for the throttle policy.
+return|return
+operator|new
+name|AWSClientIOException
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|ex
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+name|translateException
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|name
+argument_list|,
+name|ex
+argument_list|)
+return|;
+block|}
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+return|;
+block|}
 block|}
 block|}
 end_class
