@@ -228,13 +228,19 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|protobuf
+name|hadoop
 operator|.
-name|GeneratedMessage
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|commands
+operator|.
+name|ReregisterCommand
 import|;
 end_import
 
@@ -253,6 +259,18 @@ operator|.
 name|commands
 operator|.
 name|SCMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|GeneratedMessage
 import|;
 end_import
 
@@ -283,6 +301,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -509,20 +537,77 @@ name|getDatanodeDetails
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// should we dispatch heartbeat through eventPublisher?
 name|List
 argument_list|<
 name|SCMCommand
 argument_list|>
 name|commands
+decl_stmt|;
+comment|// If node is not registered, ask the node to re-register. Do not process
+comment|// Heartbeat for unregistered nodes.
+if|if
+condition|(
+operator|!
+name|nodeManager
+operator|.
+name|isNodeRegistered
+argument_list|(
+name|datanodeDetails
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"SCM received heartbeat from an unregistered datanode {}. "
+operator|+
+literal|"Asking datanode to re-register."
+argument_list|,
+name|datanodeDetails
+argument_list|)
+expr_stmt|;
+name|UUID
+name|dnID
 init|=
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+decl_stmt|;
+name|nodeManager
+operator|.
+name|addDatanodeCommand
+argument_list|(
+name|dnID
+argument_list|,
+operator|new
+name|ReregisterCommand
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|commands
+operator|=
+name|nodeManager
+operator|.
+name|getCommandQueue
+argument_list|(
+name|dnID
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// should we dispatch heartbeat through eventPublisher?
+name|commands
+operator|=
 name|nodeManager
 operator|.
 name|processHeartbeat
 argument_list|(
 name|datanodeDetails
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|heartbeat
@@ -729,6 +814,7 @@ name|commandStatusReport
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return

@@ -584,6 +584,18 @@ name|UUID
 name|dnUuid
 parameter_list|)
 function_decl|;
+comment|/**    * Get list of SCMCommands in the Command Queue for a particular Datanode.    * @param dnID - Datanode uuid.    * @return list of commands    */
+DECL|method|getCommandQueue (UUID dnID)
+name|List
+argument_list|<
+name|SCMCommand
+argument_list|>
+name|getCommandQueue
+parameter_list|(
+name|UUID
+name|dnID
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

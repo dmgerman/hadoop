@@ -932,6 +932,21 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isNodeRegistered ( DatanodeDetails datanodeDetails)
+specifier|public
+name|Boolean
+name|isNodeRegistered
+parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Clears all nodes from the node Manager.    */
 DECL|method|clearMap ()
 specifier|public
@@ -1042,6 +1057,24 @@ name|dnUuid
 parameter_list|)
 block|{
 comment|// do nothing.
+block|}
+annotation|@
+name|Override
+DECL|method|getCommandQueue (UUID dnID)
+specifier|public
+name|List
+argument_list|<
+name|SCMCommand
+argument_list|>
+name|getCommandQueue
+parameter_list|(
+name|UUID
+name|dnID
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
 block|}
 block|}
 end_class

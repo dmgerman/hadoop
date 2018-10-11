@@ -299,7 +299,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Register a container with SCM.  */
+comment|/**  * Register a datanode with SCM.  */
 end_comment
 
 begin_class

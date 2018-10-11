@@ -204,6 +204,15 @@ name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 function_decl|;
+comment|/**    * Check if node is registered or not.    * Return true if Node is registered and false otherwise.    * @param datanodeDetails - Datanode ID.    * @return true if Node is registered, false otherwise    */
+DECL|method|isNodeRegistered (DatanodeDetails datanodeDetails)
+name|Boolean
+name|isNodeRegistered
+parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

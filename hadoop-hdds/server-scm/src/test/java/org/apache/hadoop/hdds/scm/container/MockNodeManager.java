@@ -1821,6 +1821,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isNodeRegistered ( DatanodeDetails datanodeDetails)
+specifier|public
+name|Boolean
+name|isNodeRegistered
+parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getNodeCount ()
 specifier|public
 name|Map
@@ -2108,6 +2123,24 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getCommandQueue (UUID dnID)
+specifier|public
+name|List
+argument_list|<
+name|SCMCommand
+argument_list|>
+name|getCommandQueue
+parameter_list|(
+name|UUID
+name|dnID
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * A class to declare some values for the nodes so that our tests    * won't fail.    */
 DECL|class|NodeData

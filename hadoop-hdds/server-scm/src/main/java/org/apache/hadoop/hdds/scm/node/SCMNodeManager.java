@@ -564,24 +564,6 @@ name|protocol
 operator|.
 name|commands
 operator|.
-name|ReregisterCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|commands
-operator|.
 name|SCMCommand
 import|;
 end_import
@@ -1054,7 +1036,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"SCM updateNodeStat based on heartbeat from previous"
+literal|"SCM updateNodeStat based on heartbeat from previous "
 operator|+
 literal|"dead datanode {}"
 argument_list|,
@@ -1353,12 +1335,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Data node with ID: {} Registered."
+literal|"Registered Data node : {}"
 argument_list|,
 name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1473,25 +1452,13 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
-literal|"SCM receive heartbeat from unregistered datanode {}"
+literal|"SCM trying to process heartbeat from an "
+operator|+
+literal|"unregistered node {}. Ignoring the heartbeat."
 argument_list|,
 name|datanodeDetails
-argument_list|)
-expr_stmt|;
-name|commandQueue
-operator|.
-name|addCommand
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
-argument_list|,
-operator|new
-name|ReregisterCommand
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1506,6 +1473,41 @@ name|getUuid
 argument_list|()
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isNodeRegistered (DatanodeDetails datanodeDetails)
+specifier|public
+name|Boolean
+name|isNodeRegistered
+parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|)
+block|{
+try|try
+block|{
+name|nodeStateManager
+operator|.
+name|getNode
+argument_list|(
+name|datanodeDetails
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|NodeNotFoundException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 comment|/**    * Process node report.    *    * @param dnUuid    * @param nodeReport    */
 annotation|@
@@ -2003,6 +2005,29 @@ name|dnUuid
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getCommandQueue (UUID dnID)
+specifier|public
+name|List
+argument_list|<
+name|SCMCommand
+argument_list|>
+name|getCommandQueue
+parameter_list|(
+name|UUID
+name|dnID
+parameter_list|)
+block|{
+return|return
+name|commandQueue
+operator|.
+name|getCommand
+argument_list|(
+name|dnID
+argument_list|)
+return|;
 block|}
 block|}
 end_class
