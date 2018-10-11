@@ -1387,11 +1387,11 @@ specifier|final
 name|LocalDirsHandlerService
 name|dirsHandler
 decl_stmt|;
-DECL|field|containerExecLock
+DECL|field|launchLock
 specifier|private
 specifier|final
 name|Lock
-name|containerExecLock
+name|launchLock
 init|=
 operator|new
 name|ReentrantLock
@@ -3384,7 +3384,7 @@ operator|==
 literal|0
 condition|)
 block|{
-name|containerExecLock
+name|launchLock
 operator|.
 name|lock
 argument_list|()
@@ -3402,7 +3402,7 @@ return|;
 block|}
 finally|finally
 block|{
-name|containerExecLock
+name|launchLock
 operator|.
 name|unlock
 argument_list|()
@@ -3441,7 +3441,7 @@ operator|==
 literal|0
 condition|)
 block|{
-name|containerExecLock
+name|launchLock
 operator|.
 name|lock
 argument_list|()
@@ -3459,7 +3459,7 @@ return|;
 block|}
 finally|finally
 block|{
-name|containerExecLock
+name|launchLock
 operator|.
 name|unlock
 argument_list|()
@@ -3477,7 +3477,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|containerExecLock
+name|launchLock
 operator|.
 name|lock
 argument_list|()
@@ -3543,7 +3543,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|containerExecLock
+name|launchLock
 operator|.
 name|unlock
 argument_list|()
