@@ -2798,7 +2798,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Checks for the presence of the property<code>name</code> in the    * deprecation map. Returns the first of the list of new keys if present    * in the deprecation map or the<code>name</code> itself. If the property    * is not presently set but the property map contains an entry for the    * deprecated key, the value of the deprecated key is set as the value for    * the provided property name.    *    * @param deprecations deprecation context    * @param name the property name    * @return the first property in the list of properties mapping    *         the<code>name</code> or the<code>name</code> itself.    */
+comment|/**    * Checks for the presence of the property<code>name</code> in the    * deprecation map. Returns the first of the list of new keys if present    * in the deprecation map or the<code>name</code> itself. If the property    * is not presently set but the property map contains an entry for the    * deprecated key, the value of the deprecated key is set as the value for    * the provided property name.    *    * Also updates properties and overlays with deprecated keys, if the new    * key does not already exist.    *    * @param deprecations deprecation context    * @param name the property name    * @return the first property in the list of properties mapping    *         the<code>name</code> or the<code>name</code> itself.    */
 DECL|method|handleDeprecation (DeprecationContext deprecations, String name)
 specifier|private
 name|String
@@ -2888,6 +2888,15 @@ operator|.
 name|newKeys
 expr_stmt|;
 block|}
+comment|// Update properties with deprecated key if already loaded and new
+comment|// deprecation has been added
+name|updatePropertiesWithDeprecatedKeys
+argument_list|(
+name|deprecations
+argument_list|,
+name|names
+argument_list|)
+expr_stmt|;
 comment|// If there are no overlay values we can return early
 name|Properties
 name|overlayProperties
@@ -2986,6 +2995,88 @@ block|}
 return|return
 name|names
 return|;
+block|}
+DECL|method|updatePropertiesWithDeprecatedKeys ( DeprecationContext deprecations, String[] newNames)
+specifier|private
+name|void
+name|updatePropertiesWithDeprecatedKeys
+parameter_list|(
+name|DeprecationContext
+name|deprecations
+parameter_list|,
+name|String
+index|[]
+name|newNames
+parameter_list|)
+block|{
+for|for
+control|(
+name|String
+name|newName
+range|:
+name|newNames
+control|)
+block|{
+name|String
+name|deprecatedKey
+init|=
+name|deprecations
+operator|.
+name|getReverseDeprecatedKeyMap
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|newName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|deprecatedKey
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|getProps
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|newName
+argument_list|)
+condition|)
+block|{
+name|String
+name|deprecatedValue
+init|=
+name|getProps
+argument_list|()
+operator|.
+name|getProperty
+argument_list|(
+name|deprecatedKey
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|deprecatedValue
+operator|!=
+literal|null
+condition|)
+block|{
+name|getProps
+argument_list|()
+operator|.
+name|setProperty
+argument_list|(
+name|newName
+argument_list|,
+name|deprecatedValue
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 DECL|method|handleDeprecation ()
 specifier|private
@@ -4595,7 +4686,7 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the value of the<code>name</code> property,<code>null</code> if    * no such property exists. If the key is deprecated, it returns the value of    * the first key which replaces the deprecated key and is not null.    *     * Values are processed for<a href="#VariableExpansion">variable expansion</a>     * before being returned.     *     * @param name the property name, will be trimmed before get value.    * @return the value of the<code>name</code> or its replacing property,     *         or null if no such property exists.    */
+comment|/**    * Get the value of the<code>name</code> property,<code>null</code> if    * no such property exists. If the key is deprecated, it returns the value of    * the first key which replaces the deprecated key and is not null.    *     * Values are processed for<a href="#VariableExpansion">variable expansion</a>     * before being returned.    *    * As a side effect get loads the properties from the sources if called for    * the first time as a lazy init.    *     * @param name the property name, will be trimmed before get value.    * @return the value of the<code>name</code> or its replacing property,     *         or null if no such property exists.    */
 DECL|method|get (String name)
 specifier|public
 name|String
