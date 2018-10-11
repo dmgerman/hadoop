@@ -204,7 +204,7 @@ name|HDDS_DEFAULT_DB_PROFILE
 init|=
 name|DBProfile
 operator|.
-name|SSD
+name|DISK
 decl_stmt|;
 comment|// Once a container usage crosses this threshold, it is eligible for
 comment|// closing.
