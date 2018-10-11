@@ -24,26 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -246,26 +226,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|DelegationTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|web
 operator|.
 name|WebHdfsConstants
@@ -313,6 +273,22 @@ operator|.
 name|token
 operator|.
 name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|TokenIdentifier
 import|;
 end_import
 
@@ -460,7 +436,7 @@ name|VERBOSE
 init|=
 literal|"verbose"
 decl_stmt|;
-comment|/**    * Command-line interface    */
+comment|/**    * Command-line interface.    * @param args argument list.    * @throws Exception on a failure.    * @throws org.apache.hadoop.util.ExitUtil.ExitException if the command    * failed and exiting was disabled.    */
 DECL|method|main (final String[] args)
 specifier|public
 specifier|static
@@ -475,14 +451,36 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-specifier|final
-name|Configuration
-name|conf
-init|=
+name|main
+argument_list|(
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Command line interface with a specific configuration.    * Errors in this operation will call {@link ExitUtil#terminate(int)} to    * exit the process.    * @param conf configuration to create filesystems with.    * @param args argument list.    * @throws Exception on a failure.    * @throws org.apache.hadoop.util.ExitUtil.ExitException if the command    * failed and exiting was disabled.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|main (Configuration conf, final String[] args)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|Options
 name|fetcherOptions
 init|=
@@ -695,13 +693,7 @@ operator|.
 name|out
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+return|return;
 block|}
 name|int
 name|commandCount
@@ -753,6 +745,7 @@ operator|.
 name|err
 argument_list|)
 expr_stmt|;
+return|return;
 block|}
 if|if
 condition|(
@@ -791,6 +784,7 @@ operator|.
 name|err
 argument_list|)
 expr_stmt|;
+return|return;
 block|}
 comment|// default to using the local file system
 name|FileSystem
@@ -1290,6 +1284,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|printTokensToString ( final Configuration conf, final Path tokenFile, final boolean verbose)
+specifier|public
 specifier|static
 name|String
 name|printTokensToString
@@ -1327,26 +1322,6 @@ argument_list|(
 literal|"line.separator"
 argument_list|)
 decl_stmt|;
-name|DelegationTokenIdentifier
-name|id
-init|=
-operator|new
-name|DelegationTokenSecretManager
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|null
-argument_list|)
-operator|.
-name|createIdentifier
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|Token
@@ -1363,32 +1338,34 @@ name|conf
 argument_list|)
 control|)
 block|{
-name|DataInputStream
-name|in
+name|TokenIdentifier
+name|tokenId
 init|=
-operator|new
-name|DataInputStream
-argument_list|(
-operator|new
-name|ByteArrayInputStream
-argument_list|(
 name|token
 operator|.
-name|getIdentifier
+name|decodeIdentifier
 argument_list|()
-argument_list|)
-argument_list|)
 decl_stmt|;
-name|id
-operator|.
-name|readFields
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
 name|String
 name|idStr
+decl_stmt|;
+if|if
+condition|(
+name|tokenId
+operator|instanceof
+name|DelegationTokenIdentifier
+condition|)
+block|{
+name|DelegationTokenIdentifier
+name|id
 init|=
+operator|(
+name|DelegationTokenIdentifier
+operator|)
+name|tokenId
+decl_stmt|;
+name|idStr
+operator|=
 operator|(
 name|verbose
 condition|?
@@ -1402,7 +1379,18 @@ operator|.
 name|toStringStable
 argument_list|()
 operator|)
-decl_stmt|;
+expr_stmt|;
+block|}
+else|else
+block|{
+name|idStr
+operator|=
+name|tokenId
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
 name|sbld
 operator|.
 name|append
@@ -1479,6 +1467,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Print usage to the error stream, then    * call {@link ExitUtil#terminate(int)} with status code 1.    * This will exit or raise an exception if that's been disabled.    * @param err stream for the messages.    */
 DECL|method|printUsage (PrintStream err)
 specifier|private
 specifier|static
@@ -1519,9 +1508,9 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"  --webservice<url>  Url to contact NN on (starts with "
+literal|"  --webservice<url>  URL to contact NN on (starts with "
 operator|+
-literal|"http:// or https://)"
+literal|"http:// or https://), or other filesystem URL"
 argument_list|)
 expr_stmt|;
 name|err
