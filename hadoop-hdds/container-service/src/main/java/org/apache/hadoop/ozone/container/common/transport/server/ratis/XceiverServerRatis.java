@@ -554,8 +554,6 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
-operator|.
 name|proto
 operator|.
 name|RaftProtos
@@ -569,8 +567,6 @@ operator|.
 name|apache
 operator|.
 name|ratis
-operator|.
-name|shaded
 operator|.
 name|proto
 operator|.
@@ -587,8 +583,6 @@ operator|.
 name|apache
 operator|.
 name|ratis
-operator|.
-name|shaded
 operator|.
 name|proto
 operator|.
@@ -887,6 +881,11 @@ specifier|private
 name|long
 name|nodeFailureTimeoutMs
 decl_stmt|;
+DECL|field|stateMachine
+specifier|private
+name|ContainerStateMachine
+name|stateMachine
+decl_stmt|;
 DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, Configuration conf, StateContext context)
 specifier|private
 name|XceiverServerRatis
@@ -978,6 +977,23 @@ name|CallerRunsPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
+specifier|final
+name|int
+name|numContainerOpExecutors
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_CONTAINER_RATIS_NUM_CONTAINER_OP_EXECUTORS_KEY
+argument_list|,
+name|OzoneConfigKeys
+operator|.
+name|DFS_CONTAINER_RATIS_NUM_CONTAINER_OP_EXECUTORS_DEFAULT
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|context
@@ -1001,9 +1017,8 @@ operator|.
 name|DFS_CONTAINER_RATIS_REPLICATION_LEVEL_DEFAULT
 argument_list|)
 expr_stmt|;
-name|ContainerStateMachine
 name|stateMachine
-init|=
+operator|=
 operator|new
 name|ContainerStateMachine
 argument_list|(
@@ -1012,8 +1027,10 @@ argument_list|,
 name|chunkExecutor
 argument_list|,
 name|this
+argument_list|,
+name|numContainerOpExecutors
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|this
 operator|.
 name|server
@@ -1874,6 +1891,11 @@ block|{
 name|chunkExecutor
 operator|.
 name|shutdown
+argument_list|()
+expr_stmt|;
+name|stateMachine
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 name|server

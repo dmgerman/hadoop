@@ -128,7 +128,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|com
 operator|.

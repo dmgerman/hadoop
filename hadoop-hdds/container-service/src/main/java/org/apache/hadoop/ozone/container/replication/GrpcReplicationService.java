@@ -132,7 +132,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|com
 operator|.
@@ -152,7 +152,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|io
 operator|.

@@ -256,7 +256,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|io
 operator|.
@@ -274,7 +274,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|io
 operator|.
@@ -294,7 +294,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|io
 operator|.

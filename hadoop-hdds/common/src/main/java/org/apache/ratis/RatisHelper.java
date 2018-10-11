@@ -228,7 +228,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|com
 operator|.
@@ -247,8 +247,6 @@ operator|.
 name|apache
 operator|.
 name|ratis
-operator|.
-name|shaded
 operator|.
 name|proto
 operator|.
@@ -701,8 +699,9 @@ DECL|field|EMPTY_GROUP
 name|RaftGroup
 name|EMPTY_GROUP
 init|=
-operator|new
 name|RaftGroup
+operator|.
+name|valueOf
 argument_list|(
 name|DUMMY_GROUP_ID
 argument_list|,
@@ -743,8 +742,9 @@ condition|?
 name|emptyRaftGroup
 argument_list|()
 else|:
-operator|new
 name|RaftGroup
+operator|.
+name|valueOf
 argument_list|(
 name|DUMMY_GROUP_ID
 argument_list|,
@@ -800,8 +800,9 @@ operator|.
 name|isEmpty
 argument_list|()
 condition|?
-operator|new
 name|RaftGroup
+operator|.
+name|valueOf
 argument_list|(
 name|groupId
 argument_list|,
@@ -811,8 +812,9 @@ name|emptyList
 argument_list|()
 argument_list|)
 else|:
-operator|new
 name|RaftGroup
+operator|.
+name|valueOf
 argument_list|(
 name|groupId
 argument_list|,
@@ -830,8 +832,9 @@ name|pipeline
 parameter_list|)
 block|{
 return|return
-operator|new
 name|RaftGroup
+operator|.
+name|valueOf
 argument_list|(
 name|pipeline
 operator|.

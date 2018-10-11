@@ -144,7 +144,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|shaded
+name|thirdparty
 operator|.
 name|com
 operator|.
@@ -2378,6 +2378,13 @@ operator|.
 name|setChunks
 argument_list|(
 name|newList
+argument_list|)
+expr_stmt|;
+name|blockData
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+literal|0
 argument_list|)
 expr_stmt|;
 name|putRequest

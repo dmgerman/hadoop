@@ -3237,6 +3237,21 @@ name|getBlockCommitSequenceId
 argument_list|()
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+name|outputStream
+operator|==
+literal|null
+condition|)
+block|{
+comment|// For a pre allocated block for which no write has been initiated,
+comment|// the OutputStream will be null here.
+comment|// In such cases, the default blockCommitSequenceId will be 0
+return|return
+literal|0
+return|;
+block|}
 throw|throw
 operator|new
 name|IOException
