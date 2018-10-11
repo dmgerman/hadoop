@@ -90,6 +90,12 @@ name|REDIRECTED_FROM_NODE
 init|=
 literal|"redirected_from_node"
 decl_stmt|;
+DECL|field|CLUSTER_ID
+name|String
+name|CLUSTER_ID
+init|=
+literal|"clusterid"
+decl_stmt|;
 block|}
 end_interface
 
