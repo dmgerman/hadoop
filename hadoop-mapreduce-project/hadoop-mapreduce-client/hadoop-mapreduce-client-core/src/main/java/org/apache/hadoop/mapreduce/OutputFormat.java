@@ -112,7 +112,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**     * Check for validity of the output-specification for the job.    *      *<p>This is to validate the output specification for the job when it is    * a job is submitted.  Typically checks that it does not already exist,    * throwing an exception when it already exists, so that output is not    * overwritten.</p>    *    * @param context information about the job    * @throws IOException when output should not be attempted    */
+comment|/**     * Check for validity of the output-specification for the job.    *      *<p>This is to validate the output specification for the job when it is    * a job is submitted.  Typically checks that it does not already exist,    * throwing an exception when it already exists, so that output is not    * overwritten.</p>    *    * Implementations which write to filesystems which support delegation    * tokens usually collect the tokens for the destination path(s)    * and attach them to the job context's JobConf.    * @param context information about the job    * @throws IOException when output should not be attempted    */
 DECL|method|checkOutputSpecs (JobContext context )
 specifier|public
 specifier|abstract
