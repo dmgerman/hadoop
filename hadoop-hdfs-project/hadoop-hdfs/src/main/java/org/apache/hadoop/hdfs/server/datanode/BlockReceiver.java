@@ -136,6 +136,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayDeque
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -146,7 +156,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|Queue
 import|;
 end_import
 
@@ -5633,17 +5643,15 @@ comment|/** queue for packets waiting for ack - synchronization using monitor lo
 DECL|field|ackQueue
 specifier|private
 specifier|final
-name|LinkedList
+name|Queue
 argument_list|<
 name|Packet
 argument_list|>
 name|ackQueue
 init|=
 operator|new
-name|LinkedList
-argument_list|<
-name|Packet
-argument_list|>
+name|ArrayDeque
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/** the thread that spawns this responder */
@@ -5918,26 +5926,17 @@ argument_list|,
 name|ackStatus
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|myString
-operator|+
-literal|": enqueue "
-operator|+
+literal|"{}: enqueue {}"
+argument_list|,
+name|this
+argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
-block|}
 synchronized|synchronized
 init|(
 name|ackQueue
@@ -5950,7 +5949,7 @@ condition|)
 block|{
 name|ackQueue
 operator|.
-name|addLast
+name|add
 argument_list|(
 name|p
 argument_list|)
@@ -6118,17 +6117,7 @@ argument_list|()
 operator|&&
 name|ackQueue
 operator|.
-name|size
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
+name|isEmpty
 argument_list|()
 condition|)
 block|{
@@ -6136,16 +6125,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: seqno={} waiting for local datanode to finish write."
+argument_list|,
 name|myString
-operator|+
-literal|": seqno="
-operator|+
+argument_list|,
 name|seqno
-operator|+
-literal|" waiting for local datanode to finish write."
 argument_list|)
 expr_stmt|;
-block|}
 name|ackQueue
 operator|.
 name|wait
@@ -6158,7 +6144,7 @@ argument_list|()
 condition|?
 name|ackQueue
 operator|.
-name|getFirst
+name|element
 argument_list|()
 else|:
 literal|null
@@ -6184,12 +6170,11 @@ condition|(
 name|isRunning
 argument_list|()
 operator|&&
+operator|!
 name|ackQueue
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|!=
-literal|0
 condition|)
 block|{
 try|try
@@ -6220,24 +6205,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|myString
-operator|+
-literal|": closing"
+literal|"{}: closing"
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
-block|}
 name|running
 operator|=
 literal|false
@@ -7583,7 +7559,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Remove a packet from the head of the ack queue      *       * This should be called only when the ack queue is not empty      */
+comment|/**      * Remove a packet from the head of the ack queue      *      * This should be called only when the ack queue is not empty      */
 DECL|method|removeAckHead ()
 specifier|private
 name|void
@@ -7597,7 +7573,7 @@ init|)
 block|{
 name|ackQueue
 operator|.
-name|removeFirst
+name|remove
 argument_list|()
 expr_stmt|;
 name|ackQueue
