@@ -177,6 +177,24 @@ operator|.
 name|proto
 operator|.
 name|HddsProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
 operator|.
 name|ScmOps
 import|;
@@ -735,7 +753,7 @@ specifier|private
 name|double
 name|chillModeCutoff
 decl_stmt|;
-comment|// Containers read from scm db.
+comment|// Containers read from scm db (excluding containers in ALLOCATED state).
 DECL|field|containerMap
 specifier|private
 name|Map
@@ -801,11 +819,37 @@ argument_list|(
 name|c
 lambda|->
 block|{
+comment|// Containers in ALLOCATED state should not be included while
+comment|// calculating the total number of containers here. They are not
+comment|// reported by DNs and hence should not affect the chill mode exit
+comment|// rule.
 if|if
 condition|(
 name|c
 operator|!=
 literal|null
+operator|&&
+name|c
+operator|.
+name|getState
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|c
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|ALLOCATED
+argument_list|)
 condition|)
 block|{
 name|containerMap
@@ -826,7 +870,7 @@ argument_list|)
 expr_stmt|;
 name|maxContainer
 operator|=
-name|containers
+name|containerMap
 operator|.
 name|size
 argument_list|()
