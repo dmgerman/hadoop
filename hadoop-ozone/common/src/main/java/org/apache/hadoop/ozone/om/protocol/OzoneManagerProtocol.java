@@ -532,6 +532,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Delets an S3 bucket inside Ozone manager and deletes the mapping.    * @param s3BucketName - S3 bucket Name.    * @throws IOException in case the bucket cannot be deleted.    */
+DECL|method|deleteS3Bucket (String s3BucketName)
+name|void
+name|deleteS3Bucket
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Returns the Ozone Namespace for the S3Bucket. It will return the    * OzoneVolume/OzoneBucketName.    * @param s3BucketName  - S3 Bucket Name.    * @return String - The Ozone canonical name for this s3 bucket. This    * string is useful for mounting an OzoneFS.    * @throws IOException - Error is throw if the s3bucket does not exist.    */
 DECL|method|getOzoneBucketMapping (String s3BucketName)
 name|String

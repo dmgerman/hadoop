@@ -497,6 +497,101 @@ operator|+
 name|location
 return|;
 block|}
+comment|/**    * Deletes an s3 bucket and removes mapping of Ozone volume/bucket.    * @param s3BucketName - S3 Bucket Name.    * @throws  IOException in case the bucket cannot be deleted.    */
+DECL|method|deleteS3Bucket (String s3BucketName)
+specifier|public
+name|void
+name|deleteS3Bucket
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|client
+operator|.
+name|getObjectStore
+argument_list|()
+operator|.
+name|deleteS3Bucket
+argument_list|(
+name|s3BucketName
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Returns the Ozone Namespace for the S3Bucket. It will return the    * OzoneVolume/OzoneBucketName.    * @param s3BucketName  - S3 Bucket Name.    * @return String - The Ozone canonical name for this s3 bucket. This    * string is useful for mounting an OzoneFS.    * @throws IOException - Error is throw if the s3bucket does not exist.    */
+DECL|method|getOzoneBucketMapping (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneBucketMapping
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|client
+operator|.
+name|getObjectStore
+argument_list|()
+operator|.
+name|getOzoneBucketMapping
+argument_list|(
+name|s3BucketName
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the corresponding Ozone volume given an S3 Bucket.    * @param s3BucketName - S3Bucket Name.    * @return String - Ozone Volume name.    * @throws IOException - Throws if the s3Bucket does not exist.    */
+DECL|method|getOzoneVolumeName (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneVolumeName
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|client
+operator|.
+name|getObjectStore
+argument_list|()
+operator|.
+name|getOzoneVolumeName
+argument_list|(
+name|s3BucketName
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the corresponding Ozone bucket name for the given S3 bucket.    * @param s3BucketName - S3Bucket Name.    * @return String - Ozone bucket Name.    * @throws IOException - Throws if the s3bucket does not exist.    */
+DECL|method|getOzoneBucketName (String s3BucketName)
+specifier|public
+name|String
+name|getOzoneBucketName
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|client
+operator|.
+name|getObjectStore
+argument_list|()
+operator|.
+name|getOzoneBucketName
+argument_list|(
+name|s3BucketName
+argument_list|)
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setClient (OzoneClient ozoneClient)

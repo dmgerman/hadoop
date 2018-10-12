@@ -6036,6 +6036,28 @@ block|}
 annotation|@
 name|Override
 comment|/**    * {@inheritDoc}    */
+DECL|method|deleteS3Bucket (String s3BucketName)
+specifier|public
+name|void
+name|deleteS3Bucket
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|s3BucketManager
+operator|.
+name|deleteS3Bucket
+argument_list|(
+name|s3BucketName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|/**    * {@inheritDoc}    */
 DECL|method|getOzoneBucketMapping (String s3BucketName)
 specifier|public
 name|String

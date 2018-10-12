@@ -5117,6 +5117,29 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|deleteS3Bucket (String s3BucketName)
+specifier|public
+name|void
+name|deleteS3Bucket
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getOzoneBucketMapping (String s3BucketName)
 specifier|public
 name|String

@@ -3739,6 +3739,43 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|deleteS3Bucket (String s3BucketName)
+specifier|public
+name|void
+name|deleteS3Bucket
+parameter_list|(
+name|String
+name|s3BucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|Strings
+operator|.
+name|isNotBlank
+argument_list|(
+name|s3BucketName
+argument_list|)
+argument_list|,
+literal|"bucket "
+operator|+
+literal|"name cannot be null or empty."
+argument_list|)
+expr_stmt|;
+name|ozoneManagerClient
+operator|.
+name|deleteS3Bucket
+argument_list|(
+name|s3BucketName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getOzoneBucketMapping (String s3BucketName)
 specifier|public
 name|String

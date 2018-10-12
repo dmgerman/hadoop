@@ -52,6 +52,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes an s3 bucket and removes mapping of Ozone volume/bucket.    * @param bucketName - S3 Bucket Name.    * @throws  IOException in case the bucket cannot be deleted.    */
+DECL|method|deleteS3Bucket (String bucketName)
+name|void
+name|deleteS3Bucket
+parameter_list|(
+name|String
+name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Returns the Ozone volume/bucket where the S3 Bucket points to.    * @param s3BucketName - S3 Bucket Name    * @return String - Ozone volume/bucket    * @throws IOException in case of failure to retrieve mapping.    */
 DECL|method|getOzoneBucketMapping (String s3BucketName)
 name|String
