@@ -2451,6 +2451,17 @@ return|return
 name|workingDir
 return|;
 block|}
+comment|/**    * Get the username of the FS.    * @return the short name of the user who instantiated the FS    */
+DECL|method|getUsername ()
+specifier|public
+name|String
+name|getUsername
+parameter_list|()
+block|{
+return|return
+name|userName
+return|;
+block|}
 comment|/**    * Check whether the path is valid and then create directories.    * Directory is represented using a key with no value.    * All the non-existent parent directories are also created.    *    * @param path directory path to be created    * @return true if directory exists or created successfully.    * @throws IOException    */
 DECL|method|mkdir (Path path)
 specifier|private
@@ -2852,6 +2863,19 @@ operator|.
 name|getModificationTime
 argument_list|()
 argument_list|,
+literal|0
+argument_list|,
+name|FsPermission
+operator|.
+name|getDirDefault
+argument_list|()
+argument_list|,
+name|getUsername
+argument_list|()
+argument_list|,
+name|getUsername
+argument_list|()
+argument_list|,
 name|qualifiedPath
 argument_list|)
 return|;
@@ -2880,6 +2904,19 @@ argument_list|,
 name|meta
 operator|.
 name|getModificationTime
+argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+name|FsPermission
+operator|.
+name|getFileDefault
+argument_list|()
+argument_list|,
+name|getUsername
+argument_list|()
+argument_list|,
+name|getUsername
 argument_list|()
 argument_list|,
 name|qualifiedPath
