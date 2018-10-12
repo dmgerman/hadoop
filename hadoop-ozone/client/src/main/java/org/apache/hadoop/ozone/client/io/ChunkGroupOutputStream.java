@@ -1094,11 +1094,6 @@ name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
-argument_list|,
-name|container
-operator|.
-name|getContainerID
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// create container if needed

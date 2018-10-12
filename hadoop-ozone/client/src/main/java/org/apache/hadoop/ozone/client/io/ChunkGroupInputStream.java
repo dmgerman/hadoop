@@ -1436,8 +1436,6 @@ name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
-argument_list|,
-name|containerID
 argument_list|)
 decl_stmt|;
 name|boolean

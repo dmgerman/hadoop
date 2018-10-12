@@ -501,14 +501,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerWithPipeline
-operator|.
-name|getContainerInfo
-argument_list|()
-operator|.
-name|getContainerID
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Allocated State means that SCM has allocated this pipeline in its
@@ -849,14 +841,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerWithPipeline
-operator|.
-name|getContainerInfo
-argument_list|()
-operator|.
-name|getContainerID
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Allocated State means that SCM has allocated this pipeline in its
@@ -888,14 +872,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerWithPipeline
-operator|.
-name|getContainerInfo
-argument_list|()
-operator|.
-name|getContainerID
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|createContainer
@@ -1090,8 +1066,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerId
 argument_list|)
 expr_stmt|;
 name|String
@@ -1273,8 +1247,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerID
 argument_list|)
 expr_stmt|;
 name|String
@@ -1478,8 +1450,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerId
 argument_list|)
 expr_stmt|;
 name|String

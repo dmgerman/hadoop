@@ -626,8 +626,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerID
 argument_list|)
 decl_stmt|;
 comment|//create the container
@@ -851,8 +849,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerID
 argument_list|)
 decl_stmt|;
 comment|// create the container
@@ -1063,8 +1059,6 @@ name|container
 operator|.
 name|getPipeline
 argument_list|()
-argument_list|,
-name|containerID
 argument_list|)
 decl_stmt|;
 name|ContainerProtocolCalls
@@ -1217,8 +1211,6 @@ name|container
 operator|.
 name|getPipeline
 argument_list|()
-argument_list|,
-name|containerID
 argument_list|)
 decl_stmt|;
 name|ContainerProtocolCalls
@@ -1435,8 +1427,6 @@ operator|.
 name|acquireClient
 argument_list|(
 name|pipeline
-argument_list|,
-name|containerID
 argument_list|)
 decl_stmt|;
 comment|//create the container
