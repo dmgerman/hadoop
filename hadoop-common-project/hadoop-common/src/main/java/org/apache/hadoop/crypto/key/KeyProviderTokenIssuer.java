@@ -66,6 +66,32 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|DelegationTokenIssuer
+import|;
+end_import
+
 begin_comment
 comment|/**  * File systems that support Encryption Zones have to implement this interface.  */
 end_comment
@@ -83,6 +109,8 @@ DECL|interface|KeyProviderTokenIssuer
 specifier|public
 interface|interface
 name|KeyProviderTokenIssuer
+extends|extends
+name|DelegationTokenIssuer
 block|{
 DECL|method|getKeyProvider ()
 name|KeyProvider

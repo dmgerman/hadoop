@@ -20,6 +20,48 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -50,6 +92,32 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|DelegationTokenIssuer
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -74,6 +142,8 @@ name|KeyProviderDelegationTokenExtension
 operator|.
 name|DelegationTokenExtension
 argument_list|>
+implements|implements
+name|DelegationTokenIssuer
 block|{
 DECL|field|DEFAULT_EXTENSION
 specifier|private
@@ -94,26 +164,9 @@ extends|extends
 name|KeyProviderExtension
 operator|.
 name|Extension
+extends|,
+name|DelegationTokenIssuer
 block|{
-comment|/**      * The implementer of this class will take a renewer and add all      * delegation tokens associated with the renewer to the       *<code>Credentials</code> object if it is not already present,       * @param renewer the user allowed to renew the delegation tokens      * @param credentials cache in which to add new delegation tokens      * @return list of new delegation tokens      * @throws IOException thrown if IOException if an IO error occurs.      */
-DECL|method|addDelegationTokens (final String renewer, Credentials credentials)
-name|Token
-argument_list|<
-name|?
-argument_list|>
-index|[]
-name|addDelegationTokens
-parameter_list|(
-specifier|final
-name|String
-name|renewer
-parameter_list|,
-name|Credentials
-name|credentials
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**      * Renews the given token.      * @param token The token to be renewed.      * @return The token's lifetime after renewal, or 0 if it can't be renewed.      * @throws IOException      */
 DECL|method|renewDelegationToken (final Token<?> token)
 name|long
@@ -144,6 +197,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|// Do NOT call this. Only intended for internal use.
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|selectDelegationToken (Credentials creds)
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|selectDelegationToken
+parameter_list|(
+name|Credentials
+name|creds
+parameter_list|)
+function_decl|;
 block|}
 comment|/**    * Default implementation of {@link DelegationTokenExtension} that    * implements the method as a no-op.    */
 DECL|class|DefaultDelegationTokenExtension
@@ -170,6 +245,36 @@ name|renewer
 parameter_list|,
 name|Credentials
 name|credentials
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDelegationToken (String renewer)
+specifier|public
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|getDelegationToken
+parameter_list|(
+name|String
+name|renewer
 parameter_list|)
 block|{
 return|return
@@ -218,6 +323,24 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|selectDelegationToken (Credentials creds)
+specifier|public
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|selectDelegationToken
+parameter_list|(
+name|Credentials
+name|creds
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 DECL|method|KeyProviderDelegationTokenExtension (KeyProvider keyProvider, DelegationTokenExtension extensions)
 specifier|private
@@ -238,22 +361,35 @@ name|extensions
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Passes the renewer and Credentials object to the underlying     * {@link DelegationTokenExtension}     * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add new delegation tokens    * @return list of new delegation tokens    * @throws IOException thrown if IOException if an IO error occurs.    */
-DECL|method|addDelegationTokens (final String renewer, Credentials credentials)
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+name|getExtension
+argument_list|()
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDelegationToken (final String renewer)
 specifier|public
 name|Token
 argument_list|<
 name|?
 argument_list|>
-index|[]
-name|addDelegationTokens
+name|getDelegationToken
 parameter_list|(
 specifier|final
 name|String
 name|renewer
-parameter_list|,
-name|Credentials
-name|credentials
 parameter_list|)
 throws|throws
 name|IOException
@@ -262,11 +398,9 @@ return|return
 name|getExtension
 argument_list|()
 operator|.
-name|addDelegationTokens
+name|getDelegationToken
 argument_list|(
 name|renewer
-argument_list|,
-name|credentials
 argument_list|)
 return|;
 block|}
