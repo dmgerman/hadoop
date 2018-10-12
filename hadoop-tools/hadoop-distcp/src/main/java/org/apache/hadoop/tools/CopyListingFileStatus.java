@@ -2195,6 +2195,15 @@ name|this
 operator|.
 name|getPath
 argument_list|()
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+name|this
+operator|.
+name|getPath
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -2237,6 +2246,18 @@ operator|.
 name|append
 argument_list|(
 name|xAttrs
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", modTime = "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|modificationTime
 argument_list|)
 expr_stmt|;
 if|if
