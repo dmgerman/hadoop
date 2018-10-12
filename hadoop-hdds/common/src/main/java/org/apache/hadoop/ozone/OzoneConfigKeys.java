@@ -322,7 +322,7 @@ specifier|final
 name|String
 name|OZONE_METADATA_STORE_ROCKSDB_STATISTICS_DEFAULT
 init|=
-literal|"ALL"
+literal|"OFF"
 decl_stmt|;
 DECL|field|OZONE_METADATA_STORE_ROCKSDB_STATISTICS_OFF
 specifier|public
