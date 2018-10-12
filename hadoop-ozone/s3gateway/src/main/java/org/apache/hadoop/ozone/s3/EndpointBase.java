@@ -410,6 +410,93 @@ return|return
 name|volume
 return|;
 block|}
+comment|/**    * Create an S3Bucket, and also it creates mapping needed to access via    * ozone and S3.    * @param userName    * @param bucketName    * @return location of the S3Bucket.    * @throws IOException    */
+DECL|method|createS3Bucket (String userName, String bucketName)
+specifier|protected
+name|String
+name|createS3Bucket
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|client
+operator|.
+name|getObjectStore
+argument_list|()
+operator|.
+name|createS3Bucket
+argument_list|(
+name|userName
+argument_list|,
+name|bucketName
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"createS3Bucket error:"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"ALREADY_EXISTS"
+argument_list|)
+condition|)
+block|{
+comment|// S3 does not return error for bucket already exists, it just
+comment|// returns the location.
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+comment|// Not required to call as bucketname is same, but calling now in future
+comment|// if mapping changes we get right location.
+name|String
+name|location
+init|=
+name|client
+operator|.
+name|getObjectStore
+argument_list|()
+operator|.
+name|getOzoneBucketName
+argument_list|(
+name|bucketName
+argument_list|)
+decl_stmt|;
+return|return
+literal|"/"
+operator|+
+name|location
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setClient (OzoneClient ozoneClient)

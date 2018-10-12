@@ -142,6 +142,25 @@ argument_list|,
 name|HTTP_NOT_FOUND
 argument_list|)
 decl_stmt|;
+DECL|field|MALFORMED_HEADER
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|MALFORMED_HEADER
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"AuthorizationHeaderMalformed"
+argument_list|,
+literal|"The authorization header you provided "
+operator|+
+literal|"is invalid."
+argument_list|,
+name|HTTP_NOT_FOUND
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
 DECL|method|newError (OS3Exception e, Resource resource)
 specifier|public
@@ -208,6 +227,12 @@ DECL|enumConstant|OBJECT
 name|OBJECT
 argument_list|(
 literal|"Object"
+argument_list|)
+block|,
+DECL|enumConstant|HEADER
+name|HEADER
+argument_list|(
+literal|"header"
 argument_list|)
 block|;
 DECL|field|resource
