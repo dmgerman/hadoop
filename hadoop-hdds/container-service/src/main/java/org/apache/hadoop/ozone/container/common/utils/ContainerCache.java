@@ -512,8 +512,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerID - ID of the container.    * @param containerDBType - DB type of the container.    * @param containerDBPath - DB path of the container.    * @return MetadataStore.    */
-DECL|method|getDB (long containerID, String containerDBType, String containerDBPath)
+comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerID - ID of the container.    * @param containerDBType - DB type of the container.    * @param containerDBPath - DB path of the container.    * @param conf - Hadoop Configuration.    * @return MetadataStore.    */
+DECL|method|getDB (long containerID, String containerDBType, String containerDBPath, Configuration conf)
 specifier|public
 name|MetadataStore
 name|getDB
@@ -526,6 +526,9 @@ name|containerDBType
 parameter_list|,
 name|String
 name|containerDBPath
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -587,6 +590,11 @@ operator|.
 name|setCreateIfMissing
 argument_list|(
 literal|false
+argument_list|)
+operator|.
+name|setConf
+argument_list|(
+name|conf
 argument_list|)
 operator|.
 name|setDBType
