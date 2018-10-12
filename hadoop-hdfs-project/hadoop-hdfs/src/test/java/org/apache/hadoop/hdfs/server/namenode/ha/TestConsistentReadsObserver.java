@@ -26,54 +26,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_LOGROLL_PERIOD_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_TAILEDITS_INPROGRESS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_HA_TAILEDITS_PERIOD_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -113,18 +65,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeUnit
 import|;
 end_import
 
@@ -183,20 +123,6 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
 import|;
 end_import
 
@@ -440,59 +366,10 @@ operator|new
 name|Configuration
 argument_list|()
 expr_stmt|;
-comment|// disable block scanner
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
 comment|// disable fast tailing here because this test's assertions are based on the
 comment|// timing of explicitly called rollEditLogAndTail. Although this means this
 comment|// test takes some time to run
 comment|// TODO: revisit if there is a better way.
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFS_HA_TAILEDITS_INPROGRESS_KEY
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-comment|// disable fast tailing so that coordination takes time.
-name|conf
-operator|.
-name|setTimeDuration
-argument_list|(
-name|DFS_HA_LOGROLL_PERIOD_KEY
-argument_list|,
-literal|300
-argument_list|,
-name|TimeUnit
-operator|.
-name|SECONDS
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setTimeDuration
-argument_list|(
-name|DFS_HA_TAILEDITS_PERIOD_KEY
-argument_list|,
-literal|200
-argument_list|,
-name|TimeUnit
-operator|.
-name|SECONDS
-argument_list|)
-expr_stmt|;
 name|qjmhaCluster
 operator|=
 name|HATestUtil
@@ -502,6 +379,10 @@ argument_list|(
 name|conf
 argument_list|,
 literal|1
+argument_list|,
+literal|0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|dfsCluster
@@ -958,6 +839,10 @@ argument_list|(
 name|dfsCluster
 argument_list|,
 name|conf
+argument_list|,
+name|ObserverReadProxyProvider
+operator|.
+name|class
 argument_list|,
 name|flag
 argument_list|)
