@@ -242,7 +242,7 @@ specifier|final
 name|String
 name|DFS_CONTAINER_RATIS_NUM_CONTAINER_OP_EXECUTORS_KEY
 init|=
-literal|"dfs.container.ratis.num.container.op.threads"
+literal|"dfs.container.ratis.num.container.op.executors"
 decl_stmt|;
 DECL|field|DFS_CONTAINER_RATIS_NUM_CONTAINER_OP_EXECUTORS_DEFAULT
 specifier|public
