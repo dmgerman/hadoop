@@ -178,7 +178,7 @@ begin_class
 annotation|@
 name|Path
 argument_list|(
-literal|"/{volume}/{bucket}"
+literal|"/{bucket}"
 argument_list|)
 DECL|class|DeleteBucket
 specifier|public
@@ -196,19 +196,11 @@ name|MediaType
 operator|.
 name|APPLICATION_XML
 argument_list|)
-DECL|method|delete (@athParamR) String volumeName, @PathParam(R) String bucketName)
+DECL|method|delete (@athParamR) String bucketName)
 specifier|public
 name|Response
 name|delete
 parameter_list|(
-annotation|@
-name|PathParam
-argument_list|(
-literal|"volume"
-argument_list|)
-name|String
-name|volumeName
-parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -224,12 +216,7 @@ name|OS3Exception
 block|{
 try|try
 block|{
-name|getVolume
-argument_list|(
-name|volumeName
-argument_list|)
-operator|.
-name|deleteBucket
+name|deleteS3Bucket
 argument_list|(
 name|bucketName
 argument_list|)

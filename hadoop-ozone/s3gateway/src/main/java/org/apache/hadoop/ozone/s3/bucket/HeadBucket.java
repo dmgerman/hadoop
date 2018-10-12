@@ -180,7 +180,7 @@ begin_class
 annotation|@
 name|Path
 argument_list|(
-literal|"/{volume}/{bucket}"
+literal|"/{bucket}"
 argument_list|)
 DECL|class|HeadBucket
 specifier|public
@@ -207,19 +207,11 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|HEAD
-DECL|method|head (@athParamR) String volumeName, @PathParam(R) String bucketName)
+DECL|method|head (@athParamR) String bucketName)
 specifier|public
 name|Response
 name|head
 parameter_list|(
-annotation|@
-name|PathParam
-argument_list|(
-literal|"volume"
-argument_list|)
-name|String
-name|volumeName
-parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -235,7 +227,10 @@ try|try
 block|{
 name|getVolume
 argument_list|(
-name|volumeName
+name|getOzoneVolumeName
+argument_list|(
+name|bucketName
+argument_list|)
 argument_list|)
 operator|.
 name|getBucket
@@ -243,8 +238,6 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
-comment|// Not sure what kind of error, we need to show for volume not exist
-comment|// to end user. As right now we throw run time exception.
 block|}
 catch|catch
 parameter_list|(
