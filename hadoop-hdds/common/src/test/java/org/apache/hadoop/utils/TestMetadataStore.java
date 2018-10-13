@@ -977,6 +977,16 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
+name|dbStore
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|dbStore
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 name|FileUtils
 operator|.
 name|deleteDirectory
