@@ -260,6 +260,16 @@ return|return
 name|offset
 return|;
 block|}
+DECL|method|getBlockCommitSequenceId ()
+specifier|public
+name|long
+name|getBlockCommitSequenceId
+parameter_list|()
+block|{
+return|return
+name|blockCommitSequenceId
+return|;
+block|}
 comment|/**    * Builder of OmKeyLocationInfo.    */
 DECL|class|Builder
 specifier|public
