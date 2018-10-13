@@ -2450,25 +2450,6 @@ name|CONTAINER_EXTENSION
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|updateBlockCommitSequenceId (long blockCommitSequenceId)
-specifier|public
-name|void
-name|updateBlockCommitSequenceId
-parameter_list|(
-name|long
-name|blockCommitSequenceId
-parameter_list|)
-block|{
-name|containerData
-operator|.
-name|updateBlockCommitSequenceId
-argument_list|(
-name|blockCommitSequenceId
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Returns KeyValueContainerReport for the KeyValueContainer.    */
 annotation|@
 name|Override
@@ -2565,14 +2546,6 @@ argument_list|(
 name|containerData
 operator|.
 name|getDeleteTransactionId
-argument_list|()
-argument_list|)
-operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|containerData
-operator|.
-name|getBlockCommitSequenceId
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -179,15 +179,6 @@ name|DELETE_TRANSACTION_KEY_PREFIX
 argument_list|,
 literal|true
 argument_list|)
-operator|.
-name|addFilter
-argument_list|(
-name|OzoneConsts
-operator|.
-name|BLOCK_COMMIT_SEQUENCE_ID_PREFIX
-argument_list|,
-literal|true
-argument_list|)
 decl_stmt|;
 DECL|method|MetadataKeyFilters ()
 specifier|private

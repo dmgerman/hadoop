@@ -576,15 +576,6 @@ name|DELETE_TRANSACTION_KEY_PREFIX
 init|=
 literal|"#delTX#"
 decl_stmt|;
-DECL|field|BLOCK_COMMIT_SEQUENCE_ID_PREFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|BLOCK_COMMIT_SEQUENCE_ID_PREFIX
-init|=
-literal|"#BCSID"
-decl_stmt|;
 comment|/**    * OM LevelDB prefixes.    *    * OM DB stores metadata as KV pairs with certain prefixes,    * prefix is used to improve the performance to get related    * metadata.    *    * OM DB Schema:    *  ----------------------------------------------------------    *  |  KEY                                     |     VALUE   |    *  ----------------------------------------------------------    *  | $userName                                |  VolumeList |    *  ----------------------------------------------------------    *  | /#volumeName                             |  VolumeInfo |    *  ----------------------------------------------------------    *  | /#volumeName/#bucketName                 |  BucketInfo |    *  ----------------------------------------------------------    *  | /volumeName/bucketName/keyName           |  KeyInfo    |    *  ----------------------------------------------------------    *  | #deleting#/volumeName/bucketName/keyName |  KeyInfo    |    *  ----------------------------------------------------------    */
 DECL|field|OM_KEY_PREFIX
 specifier|public

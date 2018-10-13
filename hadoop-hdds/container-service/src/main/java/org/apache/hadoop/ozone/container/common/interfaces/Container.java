@@ -369,15 +369,6 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * updates the blockCommitSequenceId.    */
-DECL|method|updateBlockCommitSequenceId (long blockCommitSequenceId)
-name|void
-name|updateBlockCommitSequenceId
-parameter_list|(
-name|long
-name|blockCommitSequenceId
-parameter_list|)
-function_decl|;
 block|}
 end_interface
 
