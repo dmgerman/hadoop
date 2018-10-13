@@ -344,6 +344,11 @@ specifier|private
 name|long
 name|deleteTransactionId
 decl_stmt|;
+DECL|field|blockCommitSequenceId
+specifier|private
+name|long
+name|blockCommitSequenceId
+decl_stmt|;
 static|static
 block|{
 comment|// Initialize YAML fields
@@ -554,6 +559,34 @@ operator|.
 name|getParent
 argument_list|()
 return|;
+block|}
+comment|/**    * Returns the blockCommitSequenceId.    */
+DECL|method|getBlockCommitSequenceId ()
+specifier|public
+name|long
+name|getBlockCommitSequenceId
+parameter_list|()
+block|{
+return|return
+name|blockCommitSequenceId
+return|;
+block|}
+comment|/**    * updates the blockCommitSequenceId.    */
+DECL|method|updateBlockCommitSequenceId (long id)
+specifier|public
+name|void
+name|updateBlockCommitSequenceId
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockCommitSequenceId
+operator|=
+name|id
+expr_stmt|;
 block|}
 comment|/**    * Get chunks path.    * @return - Path where chunks are stored    */
 DECL|method|getChunksPath ()
