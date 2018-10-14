@@ -91,6 +91,23 @@ argument_list|,
 name|HTTP_BAD_REQUEST
 argument_list|)
 decl_stmt|;
+DECL|field|NO_SUCH_VOLUME
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|NO_SUCH_VOLUME
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"NoSuchVolume"
+argument_list|,
+literal|"The specified volume does not exist"
+argument_list|,
+name|HTTP_NOT_FOUND
+argument_list|)
+decl_stmt|;
 DECL|field|NO_SUCH_BUCKET
 specifier|public
 specifier|static
@@ -233,6 +250,12 @@ DECL|enumConstant|HEADER
 name|HEADER
 argument_list|(
 literal|"header"
+argument_list|)
+block|,
+DECL|enumConstant|VOLUME
+name|VOLUME
+argument_list|(
+literal|"Volume"
 argument_list|)
 block|;
 DECL|field|resource
