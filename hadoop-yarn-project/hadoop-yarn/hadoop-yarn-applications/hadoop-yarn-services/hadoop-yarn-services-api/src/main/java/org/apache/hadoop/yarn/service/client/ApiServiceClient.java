@@ -765,22 +765,6 @@ operator|.
 name|client
 operator|.
 name|WebResource
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|jersey
-operator|.
-name|api
-operator|.
-name|client
-operator|.
-name|WebResource
 operator|.
 name|Builder
 import|;
@@ -1151,7 +1135,6 @@ return|;
 block|}
 comment|/**    * Calculate Resource Manager address base on working REST API.    */
 DECL|method|getRMWebAddress ()
-specifier|private
 name|String
 name|getRMWebAddress
 parameter_list|()
@@ -1220,15 +1203,9 @@ name|String
 argument_list|>
 name|rmServers
 init|=
-name|RMHAUtils
-operator|.
-name|getRMHAWebappAddresses
-argument_list|(
-operator|new
-name|YarnConfiguration
+name|getRMHAWebAddresses
 argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 decl_stmt|;
 for|for
@@ -1335,8 +1312,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|WebResource
-name|webResource
+name|Builder
+name|builder
 init|=
 name|client
 operator|.
@@ -1346,6 +1323,13 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+operator|.
+name|type
+argument_list|(
+name|MediaType
+operator|.
+name|APPLICATION_JSON
 argument_list|)
 decl_stmt|;
 if|if
@@ -1375,7 +1359,7 @@ literal|0
 index|]
 argument_list|)
 decl_stmt|;
-name|webResource
+name|builder
 operator|.
 name|header
 argument_list|(
@@ -1401,7 +1385,7 @@ block|}
 name|ClientResponse
 name|test
 init|=
-name|webResource
+name|builder
 operator|.
 name|get
 argument_list|(
@@ -1457,6 +1441,30 @@ return|return
 name|scheme
 operator|+
 name|rmAddress
+return|;
+block|}
+DECL|method|getRMHAWebAddresses (Configuration conf)
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getRMHAWebAddresses
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|RMHAUtils
+operator|.
+name|getRMHAWebappAddresses
+argument_list|(
+operator|new
+name|YarnConfiguration
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Compute active resource manager API service location.    *    * @param appName - YARN service name    * @return URI to API Service    * @throws IOException    */
