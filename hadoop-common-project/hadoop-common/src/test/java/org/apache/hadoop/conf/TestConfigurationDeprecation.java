@@ -481,6 +481,15 @@ operator|.
 name|delete
 argument_list|()
 expr_stmt|;
+operator|new
+name|File
+argument_list|(
+name|CONFIG4
+argument_list|)
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|startConfig ()
 specifier|private
