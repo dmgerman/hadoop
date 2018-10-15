@@ -1675,23 +1675,20 @@ expr_stmt|;
 block|}
 else|else
 block|{
-throw|throw
-operator|new
-name|StorageContainerException
+comment|// The create container request for an already existing container can
+comment|// arrive in case the ContainerStateMachine reapplies the transaction
+comment|// on datanode restart. Just log a warning msg here.
+name|LOG
+operator|.
+name|warn
 argument_list|(
-literal|"Container already exists with "
+literal|"Container already exists."
 operator|+
 literal|"container Id "
 operator|+
 name|containerID
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|CONTAINER_EXISTS
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 block|}
 catch|catch
@@ -2226,7 +2223,7 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Handles Close Container Request. An open container is closed.    */
+comment|/**    * Handles Close Container Request. An open container is closed.    * Close Container call is idempotent.    */
 DECL|method|handleCloseContainer ( ContainerCommandRequestProto request, KeyValueContainer kvContainer)
 name|ContainerCommandResponseProto
 name|handleCloseContainer

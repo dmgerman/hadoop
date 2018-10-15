@@ -591,6 +591,68 @@ block|{
 case|case
 name|WRITE_DATA
 case|:
+if|if
+condition|(
+name|isOverwrite
+condition|)
+block|{
+comment|// if the actual chunk file already exists here while writing the temp
+comment|// chunk file, then it means the same ozone client request has
+comment|// generated two raft log entries. This can happen either because
+comment|// retryCache expired in Ratis (or log index mismatch/corruption in
+comment|// Ratis). This can be solved by two approaches as of now:
+comment|// 1. Read the complete data in the actual chunk file ,
+comment|//    verify the data integrity and in case it mismatches , either
+comment|// 2. Delete the chunk File and write the chunk again. For now,
+comment|//    let's rewrite the chunk file
+comment|// TODO: once the checksum support for write chunks gets plugged in,
+comment|// the checksum needs to be verified for the actual chunk file and
+comment|// the data to be written here which should be efficient and
+comment|// it matches we can safely return without rewriting.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"ChunkFile already exists"
+operator|+
+name|chunkFile
+operator|+
+literal|".Deleting it."
+argument_list|)
+expr_stmt|;
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|chunkFile
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|tmpChunkFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+comment|// If the tmp chunk file already exists it means the raft log got
+comment|// appended, but later on the log entry got truncated in Ratis leaving
+comment|// behind garbage.
+comment|// TODO: once the checksum support for data chunks gets plugged in,
+comment|// instead of rewriting the chunk here, let's compare the checkSums
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"tmpChunkFile already exists"
+operator|+
+name|tmpChunkFile
+operator|+
+literal|"Overwriting it."
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Initially writes to temporary chunk file.
 name|ChunkUtils
 operator|.
@@ -613,6 +675,27 @@ name|COMMIT_DATA
 case|:
 comment|// commit the data, means move chunk data from temporary chunk file
 comment|// to actual chunk file.
+if|if
+condition|(
+name|isOverwrite
+condition|)
+block|{
+comment|// if the actual chunk file already exists , it implies the write
+comment|// chunk transaction in the containerStateMachine is getting
+comment|// reapplied. This can happen when a node restarts.
+comment|// TODO: verify the checkSums for the existing chunkFile and the
+comment|// chunkInfo to be committed here
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"ChunkFile already exists"
+operator|+
+name|chunkFile
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|commitChunk
 argument_list|(
 name|tmpChunkFile
@@ -1095,6 +1178,32 @@ argument_list|,
 name|info
 argument_list|)
 decl_stmt|;
+comment|// if the chunk file does not exist, it might have already been deleted.
+comment|// The call might be because of reapply of transactions on datanode
+comment|// restart.
+if|if
+condition|(
+operator|!
+name|chunkFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Chunk file doe not exist. chunk info :"
+operator|+
+name|info
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 if|if
 condition|(
 operator|(

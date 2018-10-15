@@ -3053,8 +3053,6 @@ argument_list|,
 name|COMBINED
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|chunkManager
 operator|.
 name|writeChunk
@@ -3070,45 +3068,6 @@ argument_list|,
 name|COMBINED
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|StorageContainerException
-name|ex
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|ex
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Rejecting write chunk request. OverWrite flag required"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|ex
-operator|.
-name|getResult
-argument_list|()
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|OVERWRITE_FLAG_REQUIRED
-argument_list|)
-expr_stmt|;
-block|}
 comment|// With the overwrite flag it should work now.
 name|info
 operator|.
@@ -3173,7 +3132,7 @@ name|assertEquals
 argument_list|(
 name|datalen
 operator|*
-literal|2
+literal|3
 argument_list|,
 name|bytesWrite
 argument_list|)
@@ -4705,13 +4664,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeBlockHelper (BlockID blockID)
+DECL|method|writeBlockHelper (BlockID blockID, int i)
 specifier|private
 name|BlockData
 name|writeBlockHelper
 parameter_list|(
 name|BlockID
 name|blockID
+parameter_list|,
+name|int
+name|i
 parameter_list|)
 throws|throws
 name|IOException
@@ -4735,6 +4697,16 @@ argument_list|(
 name|blockID
 argument_list|)
 decl_stmt|;
+name|blockData
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+operator|(
+name|long
+operator|)
+name|i
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|ContainerProtos
@@ -4845,6 +4817,8 @@ init|=
 name|writeBlockHelper
 argument_list|(
 name|blockID
+argument_list|,
+name|i
 argument_list|)
 decl_stmt|;
 name|blockManager

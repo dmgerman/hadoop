@@ -1253,7 +1253,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param chunkFile - chunkFile to write data into.    * @param info - chunk info.    * @return boolean isOverwrite    * @throws StorageContainerException    */
+comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param chunkFile - chunkFile to write data into.    * @param info - chunk info.    * @return true if the chunkFile exists and chunkOffset< chunkFile length,    *         false otherwise.    */
 DECL|method|validateChunkForOverwrite (File chunkFile, ChunkInfo info)
 specifier|public
 specifier|static
@@ -1266,8 +1266,6 @@ parameter_list|,
 name|ChunkInfo
 name|info
 parameter_list|)
-throws|throws
-name|StorageContainerException
 block|{
 name|Logger
 name|log
@@ -1302,9 +1300,9 @@ condition|)
 block|{
 name|log
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Rejecting write chunk request. Chunk overwrite "
+literal|"Duplicate write chunk request. Chunk overwrite "
 operator|+
 literal|"without explicit request. {}"
 argument_list|,
@@ -1314,22 +1312,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Rejecting write chunk request. "
-operator|+
-literal|"OverWrite flag required."
-operator|+
-name|info
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|OVERWRITE_FLAG_REQUIRED
-argument_list|)
-throw|;
 block|}
 return|return
 literal|true

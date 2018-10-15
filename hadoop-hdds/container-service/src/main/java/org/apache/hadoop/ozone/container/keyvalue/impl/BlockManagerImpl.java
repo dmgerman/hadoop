@@ -532,6 +532,91 @@ operator|.
 name|getBlockCommitSequenceId
 argument_list|()
 decl_stmt|;
+name|byte
+index|[]
+name|blockCommitSequenceIdKey
+init|=
+name|DFSUtil
+operator|.
+name|string2Bytes
+argument_list|(
+name|OzoneConsts
+operator|.
+name|BLOCK_COMMIT_SEQUENCE_ID_PREFIX
+argument_list|)
+decl_stmt|;
+name|byte
+index|[]
+name|blockCommitSequenceIdValue
+init|=
+name|db
+operator|.
+name|get
+argument_list|(
+name|blockCommitSequenceIdKey
+argument_list|)
+decl_stmt|;
+comment|// default blockCommitSequenceId for any block is 0. It the putBlock
+comment|// request is not coming via Ratis(for test scenarios), it will be 0.
+comment|// In such cases, we should overwrite the block as well
+if|if
+condition|(
+name|blockCommitSequenceIdValue
+operator|!=
+literal|null
+operator|&&
+name|blockCommitSequenceId
+operator|!=
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|blockCommitSequenceId
+operator|<=
+name|Longs
+operator|.
+name|fromByteArray
+argument_list|(
+name|blockCommitSequenceIdValue
+argument_list|)
+condition|)
+block|{
+comment|// Since the blockCommitSequenceId stored in the db is greater than
+comment|// equal to blockCommitSequenceId to be updated, it means the putBlock
+comment|// transaction is reapplied in the ContainerStateMachine on restart.
+comment|// It also implies that the given block must already exist in the db.
+comment|// just log and return
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"blockCommitSequenceId "
+operator|+
+name|Longs
+operator|.
+name|fromByteArray
+argument_list|(
+name|blockCommitSequenceIdValue
+argument_list|)
+operator|+
+literal|" in the Container Db is greater than"
+operator|+
+literal|" the supplied value "
+operator|+
+name|blockCommitSequenceId
+operator|+
+literal|" .Ignoring it"
+argument_list|)
+expr_stmt|;
+return|return
+name|data
+operator|.
+name|getSize
+argument_list|()
+return|;
+block|}
+block|}
 comment|// update the blockData as well as BlockCommitSequenceId here
 name|BatchOperation
 name|batch
@@ -567,14 +652,7 @@ name|batch
 operator|.
 name|put
 argument_list|(
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
-name|OzoneConsts
-operator|.
-name|BLOCK_COMMIT_SEQUENCE_ID_PREFIX
-argument_list|)
+name|blockCommitSequenceIdKey
 argument_list|,
 name|Longs
 operator|.
