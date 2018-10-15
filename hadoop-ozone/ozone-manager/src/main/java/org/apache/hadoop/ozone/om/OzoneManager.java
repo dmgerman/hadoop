@@ -1238,7 +1238,7 @@ literal|"[ "
 operator|+
 name|StartupOption
 operator|.
-name|CREATEOBJECTSTORE
+name|INIT
 operator|.
 name|getName
 argument_list|()
@@ -2199,7 +2199,7 @@ name|startOpt
 condition|)
 block|{
 case|case
-name|CREATEOBJECTSTORE
+name|INIT
 case|:
 if|if
 condition|(
@@ -2298,8 +2298,9 @@ return|;
 block|}
 block|}
 comment|/**    * Initializes the OM instance.    *    * @param conf OzoneConfiguration    * @return true if OM initialization succeeds, false otherwise    * @throws IOException in case ozone metadata directory path is not    *                     accessible    */
+annotation|@
+name|VisibleForTesting
 DECL|method|omInit (OzoneConfiguration conf)
-specifier|private
 specifier|static
 name|boolean
 name|omInit
@@ -6084,22 +6085,22 @@ specifier|public
 enum|enum
 name|StartupOption
 block|{
-DECL|enumConstant|CREATEOBJECTSTORE
-name|CREATEOBJECTSTORE
+DECL|enumConstant|INIT
+name|INIT
 argument_list|(
-literal|"-createObjectStore"
+literal|"--init"
 argument_list|)
 block|,
 DECL|enumConstant|HELP
 name|HELP
 argument_list|(
-literal|"-help"
+literal|"--help"
 argument_list|)
 block|,
 DECL|enumConstant|REGULAR
 name|REGULAR
 argument_list|(
-literal|"-regular"
+literal|"--regular"
 argument_list|)
 block|;
 DECL|field|name
