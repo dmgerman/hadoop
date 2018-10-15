@@ -49,6 +49,17 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|interface|Enum
+specifier|public
+interface|interface
+name|Enum
+block|{
+DECL|method|getLength ()
+name|int
+name|getLength
+parameter_list|()
+function_decl|;
+block|}
 DECL|field|NAME
 specifier|private
 specifier|final
@@ -263,6 +274,16 @@ parameter_list|()
 block|{
 return|return
 name|MIN
+return|;
+block|}
+DECL|method|getLength ()
+specifier|public
+name|int
+name|getLength
+parameter_list|()
+block|{
+return|return
+name|LENGTH
 return|;
 block|}
 block|}

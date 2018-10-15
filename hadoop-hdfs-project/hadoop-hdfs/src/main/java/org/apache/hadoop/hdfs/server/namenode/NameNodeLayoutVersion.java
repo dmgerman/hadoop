@@ -403,6 +403,18 @@ literal|61
 argument_list|,
 literal|"Support erasure coding"
 argument_list|)
+block|,
+DECL|enumConstant|EXPANDED_STRING_TABLE
+name|EXPANDED_STRING_TABLE
+argument_list|(
+operator|-
+literal|65
+argument_list|,
+operator|-
+literal|61
+argument_list|,
+literal|"Support expanded string table in fsimage"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private
