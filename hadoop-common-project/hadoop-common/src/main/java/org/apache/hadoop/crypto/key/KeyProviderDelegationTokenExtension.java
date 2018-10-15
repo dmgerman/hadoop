@@ -102,16 +102,6 @@ name|security
 operator|.
 name|token
 operator|.
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
 name|DelegationTokenIssuer
 import|;
 end_import

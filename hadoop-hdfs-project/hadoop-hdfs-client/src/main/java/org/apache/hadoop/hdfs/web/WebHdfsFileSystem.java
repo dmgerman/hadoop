@@ -1390,16 +1390,6 @@ name|security
 operator|.
 name|token
 operator|.
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
 name|DelegationTokenIssuer
 import|;
 end_import
@@ -1724,6 +1714,11 @@ DECL|field|storageStatistics
 specifier|private
 name|DFSOpsCountStatistics
 name|storageStatistics
+decl_stmt|;
+DECL|field|testProvider
+specifier|private
+name|KeyProvider
+name|testProvider
 decl_stmt|;
 comment|/**    * Return the protocol scheme for the FileSystem.    *    * @return<code>webhdfs</code>    */
 annotation|@
@@ -11239,6 +11234,17 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|testProvider
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|testProvider
+return|;
+block|}
 name|URI
 name|keyProviderUri
 init|=
@@ -11267,6 +11273,22 @@ argument_list|,
 name|keyProviderUri
 argument_list|)
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setTestProvider (KeyProvider kp)
+specifier|public
+name|void
+name|setTestProvider
+parameter_list|(
+name|KeyProvider
+name|kp
+parameter_list|)
+block|{
+name|testProvider
+operator|=
+name|kp
+expr_stmt|;
 block|}
 comment|/**    * This class is used for opening, reading, and seeking files while using the    * WebHdfsFileSystem. This class will invoke the retry policy when performing    * any of these actions.    */
 annotation|@

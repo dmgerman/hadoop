@@ -4,18 +4,8 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.security.token.org.apache.hadoop.security.token
+DECL|package|org.apache.hadoop.security.token
 package|package
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
 name|org
 operator|.
 name|apache
@@ -81,22 +71,6 @@ operator|.
 name|security
 operator|.
 name|Credentials
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
 import|;
 end_import
 

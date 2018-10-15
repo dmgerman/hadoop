@@ -1104,6 +1104,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|DelegationTokenIssuer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DataChecksum
@@ -1339,18 +1355,6 @@ operator|.
 name|Mockito
 operator|.
 name|withSettings
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|any
 import|;
 end_import
 
@@ -8655,9 +8659,6 @@ argument_list|(
 literal|"rawtypes"
 argument_list|)
 name|Token
-argument_list|<
-name|?
-argument_list|>
 name|testToken
 init|=
 operator|new
@@ -8686,37 +8687,43 @@ name|when
 argument_list|(
 operator|(
 operator|(
-name|DelegationTokenExtension
+name|DelegationTokenIssuer
 operator|)
 name|keyProvider
 operator|)
 operator|.
-name|addDelegationTokens
+name|getCanonicalServiceName
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|"service"
+argument_list|)
+expr_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+operator|(
+operator|(
+name|DelegationTokenIssuer
+operator|)
+name|keyProvider
+operator|)
+operator|.
+name|getDelegationToken
 argument_list|(
 name|anyString
-argument_list|()
-argument_list|,
-operator|(
-name|Credentials
-operator|)
-name|any
 argument_list|()
 argument_list|)
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-operator|new
-name|Token
-argument_list|<
-name|?
-argument_list|>
-index|[]
-block|{
 name|testToken
-block|}
-block|)
-function|;
+argument_list|)
+expr_stmt|;
 name|dfs
 operator|.
 name|getClient
@@ -8781,20 +8788,20 @@ expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
-parameter_list|(
+argument_list|(
 name|tokens
 index|[
 literal|1
 index|]
-parameter_list|,
+argument_list|,
 name|testToken
-parameter_list|)
-constructor_decl|;
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 name|creds
 operator|.
@@ -8803,13 +8810,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_class
-
-begin_comment
 comment|/**    * Test running fsck on a system with encryption zones.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testFsckOnEncryptionZones ()
@@ -9032,13 +9033,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Test correctness of successive snapshot creation and deletion    * on a system with encryption zones.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testSnapshotsOnEncryptionZones ()
@@ -9744,13 +9739,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Test correctness of encryption zones on a existing snapshot path.    * Specifically, test the file in encryption zones with no encryption info    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testSnapshotWithFile ()
@@ -9964,13 +9953,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Check the correctness of the diff reports.    */
-end_comment
-
-begin_function
 DECL|method|verifyDiffReport (Path dir, String from, String to, DiffReportEntry... entries)
 specifier|private
 name|void
@@ -10008,13 +9991,7 @@ name|entries
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Test correctness of snapshotDiff for encryption zone.    * snapshtoDiff should work when the path parameter is prefixed with    * /.reserved/raw for path that's both snapshottable and encryption zone.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testSnapshotDiffOnEncryptionZones ()
@@ -10236,13 +10213,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Verify symlinks can be created in encryption zones and that    * they function properly when the target is in the same    * or different ez.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testEncryptionZonesWithSymlinks ()
@@ -10529,9 +10500,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testConcatFailsInEncryptionZones ()
@@ -10714,13 +10682,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Test running the OfflineImageViewer on a system with encryption zones.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testOfflineImageViewerOnEncryptionZones ()
@@ -10954,13 +10916,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Test creating encryption zone on the root path    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testEncryptionZonesOnRootPath ()
@@ -11105,9 +11061,6 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testEncryptionZonesOnRelativePath ()
@@ -11230,9 +11183,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testGetEncryptionZoneOnANonExistentPaths ()
@@ -11336,9 +11286,6 @@ name|ez
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testEncryptionZoneWithTrash ()
@@ -11769,9 +11716,6 @@ name|topEZ
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testRootDirEZTrash ()
@@ -12019,9 +11963,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testGetTrashRoots ()
@@ -12311,9 +12252,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 DECL|method|verifyShellDeleteWithTrash (FsShell shell, Path path)
 specifier|private
 name|void
@@ -12500,13 +12438,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/** This test tests that client will first lookup secrets map    * for key provider uri from {@link Credentials} in    * {@link UserGroupInformation}    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testProviderUriInCredentials ()
@@ -12601,13 +12533,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**   * Testing the fallback behavior of keyProviderUri.   * This test tests first the key provider uri is used from conf   * and then used from serverDefaults.   * @throws IOException   */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testKeyProviderFallBackBehavior ()
@@ -12783,13 +12709,7 @@ name|getServerDefaults
 argument_list|()
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * This test makes sure the client gets the key provider uri from namenode    * instead of its own conf.    * This test assumes both the namenode and client are upgraded.    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testDifferentKMSProviderOnUpgradedNamenode ()
@@ -12908,13 +12828,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * This test makes sure the client trusts its local conf    * This test assumes the client is upgraded but the namenode is not.    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testDifferentKMSProviderOnUnUpgradedNamenode ()
@@ -13081,21 +12995,9 @@ name|getServerDefaults
 argument_list|()
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|// Given a provider uri return serverdefaults.
-end_comment
-
-begin_comment
 comment|// provider uri == null means the namenode does not support returning
-end_comment
-
-begin_comment
 comment|// provider uri in FSServerDefaults object.
-end_comment
-
-begin_function
 DECL|method|getTestServerDefaults (String providerPath)
 specifier|private
 name|FsServerDefaults
@@ -13195,13 +13097,7 @@ return|return
 name|serverDefaults
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * This test performs encrypted read/write and picks up the key provider uri    * from the credentials and not the conf.    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testEncryptedReadWriteUsingDiffKeyProvider ()
@@ -13413,13 +13309,7 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * Test listing encryption zones after zones had been deleted,    * but still exist under snapshots. This test first moves EZs    * to trash folder, so that an inodereference is created for the EZ,    * then it removes the EZ from trash folder to emulate condition where    * the EZ inode will not be complete.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testListEncryptionZonesWithSnapshots ()
@@ -13691,13 +13581,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/**   * This test returns mocked kms token when   * {@link WebHdfsFileSystem#addDelegationTokens(String, Credentials)} method   * is called.   * @throws Exception   */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|addMockKmsToken ()
@@ -13780,9 +13664,6 @@ name|getBytes
 argument_list|()
 decl_stmt|;
 name|Token
-argument_list|<
-name|?
-argument_list|>
 name|testToken
 init|=
 operator|new
@@ -13813,71 +13694,50 @@ name|when
 argument_list|(
 operator|(
 operator|(
-name|DelegationTokenExtension
+name|DelegationTokenIssuer
 operator|)
 name|keyProvider
 operator|)
 operator|.
-name|addDelegationTokens
+name|getCanonicalServiceName
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|"service"
+argument_list|)
+expr_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+operator|(
+operator|(
+name|DelegationTokenIssuer
+operator|)
+name|keyProvider
+operator|)
+operator|.
+name|getDelegationToken
 argument_list|(
 name|anyString
-argument_list|()
-argument_list|,
-operator|(
-name|Credentials
-operator|)
-name|any
 argument_list|()
 argument_list|)
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-operator|new
-name|Token
-argument_list|<
-name|?
-argument_list|>
-index|[]
-block|{
 name|testToken
-block|}
-block|)
-function|;
-end_function
-
-begin_decl_stmt
-name|WebHdfsFileSystem
-name|webfsSpy
-init|=
-name|Mockito
-operator|.
-name|spy
-argument_list|(
-name|webfs
 argument_list|)
-decl_stmt|;
-end_decl_stmt
-
-begin_expr_stmt
-name|Mockito
+expr_stmt|;
+name|webfs
 operator|.
-name|doReturn
+name|setTestProvider
 argument_list|(
 name|keyProvider
 argument_list|)
-operator|.
-name|when
-argument_list|(
-name|webfsSpy
-argument_list|)
-operator|.
-name|getKeyProvider
-argument_list|()
 expr_stmt|;
-end_expr_stmt
-
-begin_decl_stmt
 name|Credentials
 name|creds
 init|=
@@ -13885,9 +13745,6 @@ operator|new
 name|Credentials
 argument_list|()
 decl_stmt|;
-end_decl_stmt
-
-begin_decl_stmt
 specifier|final
 name|Token
 argument_list|<
@@ -13896,7 +13753,7 @@ argument_list|>
 index|[]
 name|tokens
 init|=
-name|webfsSpy
+name|webfs
 operator|.
 name|addDelegationTokens
 argument_list|(
@@ -13905,9 +13762,6 @@ argument_list|,
 name|creds
 argument_list|)
 decl_stmt|;
-end_decl_stmt
-
-begin_expr_stmt
 name|Assert
 operator|.
 name|assertEquals
@@ -13919,9 +13773,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-end_expr_stmt
-
-begin_expr_stmt
 name|Assert
 operator|.
 name|assertEquals
@@ -13934,14 +13785,11 @@ argument_list|,
 name|testToken
 argument_list|)
 expr_stmt|;
-end_expr_stmt
-
-begin_expr_stmt
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 name|creds
 operator|.
@@ -13949,15 +13797,9 @@ name|numberOfTokens
 argument_list|()
 argument_list|)
 expr_stmt|;
-end_expr_stmt
-
-begin_comment
-unit|}
+block|}
 comment|/**    * Creates a file with stable {@link DistributedFileSystem}.    * Tests the following 2 scenarios.    * 1. The decrypted data using {@link WebHdfsFileSystem} should be same as    * input data.    * 2. Gets the underlying raw encrypted stream and verifies that the    * encrypted data is different than input data.    * @throws Exception    */
-end_comment
-
-begin_function
-unit|@
+annotation|@
 name|Test
 DECL|method|testWebhdfsRead ()
 specifier|public
@@ -14133,9 +13975,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 DECL|method|verifyStreamsSame (String content, InputStream is)
 specifier|private
 name|void
@@ -14198,9 +14037,6 @@ name|streamBytes
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 DECL|method|verifyRaw (String content, InputStream is, InputStream rawIs)
 specifier|private
 name|void
@@ -14314,13 +14150,7 @@ name|streamBytes
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/* Tests that if client is old and namenode is new then the    * data will be decrypted by datanode.    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testWebhdfsReadOldBehavior ()
@@ -14520,13 +14350,7 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/* Tests namenode returns path starting with /.reserved/raw if client    * supports EZ and not if otherwise    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testWebhfsEZRedirectLocation ()
@@ -14809,9 +14633,6 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_function
 DECL|method|returnConnection (URL url, String httpRequestType, boolean supportEZ)
 specifier|private
 specifier|static
@@ -14887,13 +14708,7 @@ return|return
 name|conn
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/*    * Test seek behavior of the webhdfs input stream which reads data from    * encryption zone.    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testPread ()
@@ -15047,13 +14862,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/**    * Tests that namenode doesn't generate edek if we are writing to    * /.reserved/raw directory.    * @throws Exception    */
-end_comment
-
-begin_function
 annotation|@
 name|Test
 DECL|method|testWriteToEZReservedRaw ()
@@ -15182,8 +14991,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-end_function
+block|}
+end_class
 
-unit|}
 end_unit
 
