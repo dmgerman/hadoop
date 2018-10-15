@@ -162,22 +162,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|MiniYARNCluster
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|nodemanager
 operator|.
 name|LocalDirsHandlerService
@@ -358,16 +342,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|DISK_HEALTH_CHECK_INTERVAL
+comment|/*    * Set disk check interval high enough so that it never runs during the test.    * Checks will be called manually if necessary.    */
+DECL|field|TOO_HIGH_DISK_HEALTH_CHECK_INTERVAL
 specifier|private
 specifier|static
 specifier|final
 name|long
-name|DISK_HEALTH_CHECK_INTERVAL
+name|TOO_HIGH_DISK_HEALTH_CHECK_INTERVAL
 init|=
 literal|1000
+operator|*
+literal|60
+operator|*
+literal|60
+operator|*
+literal|24
 decl_stmt|;
-comment|//1 sec
 DECL|field|localFS
 specifier|private
 specifier|static
@@ -821,7 +811,8 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-comment|// set disk health check interval to a small value (say 1 sec).
+comment|// set disk health check interval to a large value to effectively disable
+comment|// disk health check done internally in LocalDirsHandlerService"
 name|conf
 operator|.
 name|setLong
@@ -830,7 +821,7 @@ name|YarnConfiguration
 operator|.
 name|NM_DISK_HEALTH_CHECK_INTERVAL_MS
 argument_list|,
-name|DISK_HEALTH_CHECK_INTERVAL
+name|TOO_HIGH_DISK_HEALTH_CHECK_INTERVAL
 argument_list|)
 expr_stmt|;
 comment|// If 2 out of the total 4 local-dirs fail OR if 2 Out of the total 4
@@ -1133,80 +1124,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Wait for the NodeManger to go for the disk-health-check at least once.    */
-DECL|method|waitForDiskHealthCheck ()
-specifier|private
-name|void
-name|waitForDiskHealthCheck
-parameter_list|()
-block|{
-name|long
-name|lastDisksCheckTime
-init|=
-name|dirsHandler
-operator|.
-name|getLastDisksCheckTime
-argument_list|()
-decl_stmt|;
-name|long
-name|time
-init|=
-name|lastDisksCheckTime
-decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-literal|10
-operator|&&
-operator|(
-name|time
-operator|<=
-name|lastDisksCheckTime
-operator|)
-condition|;
-name|i
-operator|++
-control|)
-block|{
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Interrupted while waiting for NodeManager's disk health check."
-argument_list|)
-expr_stmt|;
-block|}
-name|time
-operator|=
-name|dirsHandler
-operator|.
-name|getLastDisksCheckTime
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Verify if the NodeManager could identify disk failures.    * @param localORLogDirs<em>true</em> represent nm-local-dirs and<em>false    *</em> means nm-log-dirs    * @param expectedDirs expected nm-local-dirs/nm-log-dirs as a string    * @param isHealthy<em>true</em> if the overall node should be healthy    */
 DECL|method|verifyDisksHealth (boolean localORLogDirs, String expectedDirs, boolean isHealthy)
 specifier|private
@@ -1223,8 +1140,10 @@ name|boolean
 name|isHealthy
 parameter_list|)
 block|{
-comment|// Wait for the NodeManager to identify disk failures.
-name|waitForDiskHealthCheck
+comment|// identify disk failures
+name|dirsHandler
+operator|.
+name|checkDirs
 argument_list|()
 expr_stmt|;
 name|List
@@ -1460,13 +1379,30 @@ argument_list|(
 name|dir
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
 name|FileUtil
 operator|.
 name|fullyDelete
 argument_list|(
 name|file
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Delete of file was unsuccessful! Path: "
+operator|+
+name|file
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|file
 operator|.
 name|createNewFile
