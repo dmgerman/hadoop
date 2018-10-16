@@ -376,7 +376,7 @@ operator|.
 name|getConfiguration
 argument_list|()
 argument_list|,
-name|currentDef
+name|targetDef
 operator|.
 name|getConfiguration
 argument_list|()
