@@ -364,9 +364,10 @@ argument_list|)
 decl_stmt|;
 comment|// C[] would need Array.newInstance which requires a Class<C> reference.
 comment|// Just a few local casts probably worth not having to carry it around.
+comment|// Initialized lazily, since in some situations millions of empty maps can
+comment|// waste a substantial (e.g. 4% as we observed) portion of the heap
 DECL|field|map
 specifier|private
-specifier|final
 name|Map
 argument_list|<
 name|String
@@ -375,16 +376,6 @@ name|Object
 index|[]
 argument_list|>
 name|map
-init|=
-operator|new
-name|ConcurrentSkipListMap
-argument_list|<
-name|String
-argument_list|,
-name|Object
-index|[]
-argument_list|>
-argument_list|()
 decl_stmt|;
 DECL|field|displayName
 specifier|private
@@ -1056,6 +1047,21 @@ argument_list|(
 name|scheme
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|map
+operator|==
+literal|null
+condition|)
+block|{
+name|map
+operator|=
+operator|new
+name|ConcurrentSkipListMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
 name|Object
 index|[]
 name|counters
@@ -1238,6 +1244,7 @@ annotation|@
 name|Override
 DECL|method|size ()
 specifier|public
+specifier|synchronized
 name|int
 name|size
 parameter_list|()
@@ -1247,6 +1254,13 @@ name|n
 init|=
 literal|0
 decl_stmt|;
+if|if
+condition|(
+name|map
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|Object
@@ -1266,6 +1280,7 @@ argument_list|(
 name|counters
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|n
@@ -1365,6 +1380,7 @@ annotation|@
 name|Override
 DECL|method|write (DataOutput out)
 specifier|public
+specifier|synchronized
 name|void
 name|write
 parameter_list|(
@@ -1373,6 +1389,13 @@ name|out
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+if|if
+condition|(
+name|map
+operator|!=
+literal|null
+condition|)
 block|{
 name|WritableUtils
 operator|.
@@ -1503,6 +1526,19 @@ argument_list|)
 expr_stmt|;
 comment|// value
 block|}
+block|}
+block|}
+else|else
+block|{
+name|WritableUtils
+operator|.
+name|writeVInt
+argument_list|(
+name|out
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_function
@@ -1691,21 +1727,33 @@ argument_list|>
 name|it
 init|=
 name|map
+operator|!=
+literal|null
+condition|?
+name|map
 operator|.
 name|values
 argument_list|()
 operator|.
 name|iterator
 argument_list|()
+else|:
+literal|null
 decl_stmt|;
 name|Object
 index|[]
 name|counters
 init|=
+operator|(
+name|it
+operator|!=
+literal|null
+operator|&&
 name|it
 operator|.
 name|hasNext
 argument_list|()
+operator|)
 condition|?
 name|it
 operator|.
@@ -1775,10 +1823,16 @@ literal|0
 expr_stmt|;
 name|counters
 operator|=
+operator|(
+name|it
+operator|!=
+literal|null
+operator|&&
 name|it
 operator|.
 name|hasNext
 argument_list|()
+operator|)
 condition|?
 name|it
 operator|.
@@ -1882,6 +1936,13 @@ operator|.
 name|hashCode
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|map
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|Object
@@ -1909,6 +1970,7 @@ argument_list|(
 name|counters
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|hash

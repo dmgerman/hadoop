@@ -3387,7 +3387,9 @@ name|TaskAttemptID
 argument_list|,
 name|TaskAttemptInfo
 argument_list|>
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|printAll ()

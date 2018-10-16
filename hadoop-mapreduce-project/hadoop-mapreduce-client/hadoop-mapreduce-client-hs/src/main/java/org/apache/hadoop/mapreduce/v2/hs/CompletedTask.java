@@ -46,16 +46,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -382,11 +372,13 @@ argument_list|>
 name|reportDiagnostics
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<
 name|String
 argument_list|>
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 decl_stmt|;
 DECL|field|taskAttemptsLock
 specifier|private
@@ -426,7 +418,9 @@ name|TaskAttemptId
 argument_list|,
 name|TaskAttempt
 argument_list|>
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 decl_stmt|;
 DECL|method|CompletedTask (TaskId taskId, TaskInfo taskInfo)
 name|CompletedTask

@@ -298,7 +298,9 @@ name|ArrayList
 argument_list|<
 name|String
 argument_list|>
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 decl_stmt|;
 DECL|field|report
 specifier|private
