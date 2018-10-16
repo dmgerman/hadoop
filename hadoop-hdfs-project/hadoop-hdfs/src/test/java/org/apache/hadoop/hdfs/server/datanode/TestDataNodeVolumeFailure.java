@@ -2512,6 +2512,11 @@ name|dn0Vol2
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|dn0
+operator|.
+name|checkDiskError
+argument_list|()
+expr_stmt|;
 name|assertFalse
 argument_list|(
 name|dn0
