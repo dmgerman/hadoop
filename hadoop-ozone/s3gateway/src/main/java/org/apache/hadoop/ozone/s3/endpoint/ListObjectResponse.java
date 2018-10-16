@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.s3.object
+DECL|package|org.apache.hadoop.ozone.s3.endpoint
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|ozone
 operator|.
 name|s3
 operator|.
-name|object
+name|endpoint
 package|;
 end_package
 
@@ -209,6 +209,18 @@ DECL|field|maxKeys
 specifier|private
 name|int
 name|maxKeys
+decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"KeyCount"
+argument_list|)
+DECL|field|keyCount
+specifier|private
+name|int
+name|keyCount
 decl_stmt|;
 annotation|@
 name|XmlElement
@@ -570,6 +582,32 @@ argument_list|(
 name|relativeKeyName
 argument_list|)
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getKeyCount ()
+specifier|public
+name|int
+name|getKeyCount
+parameter_list|()
+block|{
+return|return
+name|keyCount
+return|;
+block|}
+DECL|method|setKeyCount (int keyCount)
+specifier|public
+name|void
+name|setKeyCount
+parameter_list|(
+name|int
+name|keyCount
+parameter_list|)
+block|{
+name|this
+operator|.
+name|keyCount
+operator|=
+name|keyCount
 expr_stmt|;
 block|}
 block|}

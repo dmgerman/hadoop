@@ -101,7 +101,7 @@ name|DateTimeFormatter
 operator|.
 name|ofPattern
 argument_list|(
-literal|"yyyy-MM-dd'T'HH:mmX"
+literal|"yyyy-MM-dd'T'HH:mm:ss.SSSX"
 argument_list|)
 operator|.
 name|withZone

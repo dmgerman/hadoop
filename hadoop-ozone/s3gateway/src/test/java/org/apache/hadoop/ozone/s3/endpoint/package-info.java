@@ -4,11 +4,11 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Unit tests for the bucket related rest endpoints.  */
+comment|/**  * Unit tests for the rest endpoint implementations.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.s3.bucket
+DECL|package|org.apache.hadoop.ozone.s3.endpoint
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|ozone
 operator|.
 name|s3
 operator|.
-name|bucket
+name|endpoint
 package|;
 end_package
 

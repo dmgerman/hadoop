@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Rest endpoint implementation for the Object specific methods.  */
+comment|/**  * Rest endpoint implementation for the s3 gateway.  */
 end_comment
 
 begin_annotation
@@ -68,7 +68,7 @@ argument_list|)
 end_annotation
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.s3.object
+DECL|package|org.apache.hadoop.ozone.s3.endpoint
 package|package
 name|org
 operator|.
@@ -80,7 +80,7 @@ name|ozone
 operator|.
 name|s3
 operator|.
-name|object
+name|endpoint
 package|;
 end_package
 

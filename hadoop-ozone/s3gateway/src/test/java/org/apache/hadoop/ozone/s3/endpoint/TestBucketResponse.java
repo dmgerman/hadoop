@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.s3.bucket
+DECL|package|org.apache.hadoop.ozone.s3.endpoint
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|ozone
 operator|.
 name|s3
 operator|.
-name|bucket
+name|endpoint
 package|;
 end_package
 
@@ -41,24 +41,6 @@ operator|.
 name|bind
 operator|.
 name|JAXBException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|s3
-operator|.
-name|object
-operator|.
-name|ListObjectResponse
 import|;
 end_import
 
