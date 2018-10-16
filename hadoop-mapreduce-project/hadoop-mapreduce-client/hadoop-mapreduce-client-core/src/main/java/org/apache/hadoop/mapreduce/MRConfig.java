@@ -326,7 +326,7 @@ specifier|final
 name|int
 name|MAX_BLOCK_LOCATIONS_DEFAULT
 init|=
-literal|10
+literal|15
 decl_stmt|;
 DECL|field|MAX_BLOCK_LOCATIONS_KEY
 specifier|public
