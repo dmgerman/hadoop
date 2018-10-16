@@ -40,9 +40,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdds
 operator|.
-name|StorageType
+name|conf
+operator|.
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -56,9 +58,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|conf
+name|protocol
 operator|.
-name|OzoneConfiguration
+name|StorageType
 import|;
 end_import
 

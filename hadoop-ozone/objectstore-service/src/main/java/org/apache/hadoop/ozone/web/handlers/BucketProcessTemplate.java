@@ -150,7 +150,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdds
+operator|.
+name|protocol
 operator|.
 name|StorageType
 import|;

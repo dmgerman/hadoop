@@ -26,9 +26,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|ozone
 operator|.
-name|StorageType
+name|OzoneAcl
 import|;
 end_import
 
@@ -40,9 +40,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|OzoneAcl
+name|protocol
+operator|.
+name|StorageType
 import|;
 end_import
 
