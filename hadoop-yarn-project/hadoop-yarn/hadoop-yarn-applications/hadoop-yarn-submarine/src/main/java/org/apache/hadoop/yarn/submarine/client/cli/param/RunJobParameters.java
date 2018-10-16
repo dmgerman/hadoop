@@ -378,6 +378,34 @@ name|N_WORKERS
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Only check null value.
+comment|// Training job shouldn't ignore INPUT_PATH option
+comment|// But if nWorkers is 0, INPUT_PATH can be ignored because user can only run Tensorboard
+if|if
+condition|(
+literal|null
+operator|==
+name|input
+operator|&&
+literal|0
+operator|!=
+name|nWorkers
+condition|)
+block|{
+throw|throw
+operator|new
+name|ParseException
+argument_list|(
+literal|"\"--"
+operator|+
+name|CliConstants
+operator|.
+name|INPUT_PATH
+operator|+
+literal|"\" is absent"
+argument_list|)
+throw|;
+block|}
 block|}
 name|int
 name|nPS
