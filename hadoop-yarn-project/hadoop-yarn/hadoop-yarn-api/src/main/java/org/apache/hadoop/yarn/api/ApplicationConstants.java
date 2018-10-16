@@ -146,6 +146,34 @@ name|UserGroupInformation
 operator|.
 name|HADOOP_TOKEN_FILE_LOCATION
 decl_stmt|;
+comment|/**    * The file into which the keystore containing the AM's certificate is    * written.    */
+DECL|field|KEYSTORE_FILE_LOCATION_ENV_NAME
+name|String
+name|KEYSTORE_FILE_LOCATION_ENV_NAME
+init|=
+literal|"KEYSTORE_FILE_LOCATION"
+decl_stmt|;
+comment|/**    * The password for the AM's keystore.    */
+DECL|field|KEYSTORE_PASSWORD_ENV_NAME
+name|String
+name|KEYSTORE_PASSWORD_ENV_NAME
+init|=
+literal|"KEYSTORE_PASSWORD"
+decl_stmt|;
+comment|/**    * The file into which the truststore containing the AM's certificate is    * written.    */
+DECL|field|TRUSTSTORE_FILE_LOCATION_ENV_NAME
+name|String
+name|TRUSTSTORE_FILE_LOCATION_ENV_NAME
+init|=
+literal|"TRUSTSTORE_FILE_LOCATION"
+decl_stmt|;
+comment|/**    * The password for the AM's truststore.    */
+DECL|field|TRUSTSTORE_PASSWORD_ENV_NAME
+name|String
+name|TRUSTSTORE_PASSWORD_ENV_NAME
+init|=
+literal|"TRUSTSTORE_PASSWORD"
+decl_stmt|;
 comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in    * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
 DECL|field|APPLICATION_WEB_PROXY_BASE_ENV
 specifier|public

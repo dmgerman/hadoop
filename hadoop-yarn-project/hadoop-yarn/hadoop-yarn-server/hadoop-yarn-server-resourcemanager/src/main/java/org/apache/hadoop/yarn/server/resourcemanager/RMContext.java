@@ -660,6 +660,26 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
+name|ProxyCAManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
 name|RMContainerTokenSecretManager
 import|;
 end_import
@@ -1097,6 +1117,19 @@ argument_list|<
 name|SchedulerNode
 argument_list|>
 name|multiNodeSortingManager
+parameter_list|)
+function_decl|;
+DECL|method|getProxyCAManager ()
+name|ProxyCAManager
+name|getProxyCAManager
+parameter_list|()
+function_decl|;
+DECL|method|setProxyCAManager (ProxyCAManager proxyCAManager)
+name|void
+name|setProxyCAManager
+parameter_list|(
+name|ProxyCAManager
+name|proxyCAManager
 parameter_list|)
 function_decl|;
 block|}

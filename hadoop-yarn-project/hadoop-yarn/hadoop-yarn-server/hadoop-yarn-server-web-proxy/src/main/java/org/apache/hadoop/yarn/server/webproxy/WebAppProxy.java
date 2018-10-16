@@ -245,6 +245,15 @@ name|PROXY_HOST_ATTRIBUTE
 init|=
 literal|"proxyHost"
 decl_stmt|;
+DECL|field|PROXY_CA
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PROXY_CA
+init|=
+literal|"ProxyCA"
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static

@@ -7020,6 +7020,27 @@ name|DEFAULT_RM_APPLICATION_MONITOR_INTERVAL_MS
 init|=
 literal|3000
 decl_stmt|;
+comment|/**    * Specifies what the RM does regarding HTTPS enforcement for communication    * with AM Web Servers, as well as generating and providing certificates.    * Possible values are:    *<ul>    *<li>NONE - the RM will do nothing special.</li>    *<li>LENIENT - the RM will generate and provide a keystore and truststore    *   to the AM, which it is free to use for HTTPS in its tracking URL web    *   server.  The RM proxy will still allow HTTP connections to AMs that opt    *   not to use HTTPS.</li>    *<li>STRICT - this is the same as LENIENT, except that the RM proxy will    *   only allow HTTPS connections to AMs; HTTP connections will be blocked    *   and result in a warning page to the user.</li>    *</ul>    */
+DECL|field|RM_APPLICATION_HTTPS_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_APPLICATION_HTTPS_POLICY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"application-https.policy"
+decl_stmt|;
+DECL|field|DEFAULT_RM_APPLICATION_HTTPS_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_RM_APPLICATION_HTTPS_POLICY
+init|=
+literal|"NONE"
+decl_stmt|;
 comment|/**    * Interval of time the linux container executor should try cleaning up    * cgroups entry when cleaning up a container. This is required due to what     * it seems a race condition because the SIGTERM/SIGKILL is asynch.    */
 DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
 specifier|public
