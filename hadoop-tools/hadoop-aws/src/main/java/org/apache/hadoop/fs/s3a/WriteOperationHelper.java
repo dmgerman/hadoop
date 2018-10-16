@@ -1499,7 +1499,7 @@ comment|/**    * PUT an object via the transfer manager.    * @param putObjectRe
 annotation|@
 name|Retries
 operator|.
-name|OnceTranslated
+name|RetryTranslated
 DECL|method|uploadObject (PutObjectRequest putObjectRequest)
 specifier|public
 name|UploadResult
@@ -1541,7 +1541,7 @@ comment|/**    * Revert a commit by deleting the file.    * Relies on retry code
 annotation|@
 name|Retries
 operator|.
-name|RetryTranslated
+name|OnceTranslated
 DECL|method|revertCommit (String destKey)
 specifier|public
 name|void

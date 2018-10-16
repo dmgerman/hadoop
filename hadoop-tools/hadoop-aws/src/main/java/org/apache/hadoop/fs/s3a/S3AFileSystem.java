@@ -9719,7 +9719,11 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Wait for an upload to complete.    * If the waiting for completion is interrupted, the upload will be    * aborted before an {@code InterruptedIOException} is thrown.    * @param upload upload to wait for    * @param key destination key    * @return the upload result    * @throws InterruptedIOException if the blocking was interrupted.    */
+comment|/**    * Wait for an upload to complete.    * If the waiting for completion is interrupted, the upload will be    * aborted before an {@code InterruptedIOException} is thrown.    * If the upload (or its result collection) failed, this is where    * the failure is raised as an AWS exception    * @param key destination key    * @param uploadInfo upload to wait for    * @return the upload result    * @throws InterruptedIOException if the blocking was interrupted.    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|waitForUploadCompletion (String key, UploadInfo uploadInfo)
 name|UploadResult
 name|waitForUploadCompletion
