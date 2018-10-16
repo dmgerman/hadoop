@@ -176,6 +176,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
 name|picocli
 operator|.
 name|CommandLine
@@ -259,10 +273,6 @@ argument_list|,
 name|description
 operator|=
 literal|"Owner of of the volume"
-argument_list|,
-name|required
-operator|=
-literal|true
 argument_list|)
 DECL|field|userName
 specifier|private
@@ -320,6 +330,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|userName
+operator|==
+literal|null
+condition|)
+block|{
+name|userName
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
+expr_stmt|;
+block|}
 name|URI
 name|ozoneURI
 init|=
