@@ -50,7 +50,7 @@ name|proto
 operator|.
 name|HddsProtos
 operator|.
-name|ReplicationType
+name|ReplicationFactor
 import|;
 end_import
 
@@ -70,7 +70,7 @@ name|proto
 operator|.
 name|HddsProtos
 operator|.
-name|LifeCycleState
+name|ReplicationType
 import|;
 end_import
 
@@ -89,6 +89,26 @@ operator|.
 name|container
 operator|.
 name|ContainerID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|Pipeline
+operator|.
+name|PipelineState
 import|;
 end_import
 
@@ -198,6 +218,7 @@ DECL|method|PipelineStateMap ()
 name|PipelineStateMap
 parameter_list|()
 block|{
+comment|// TODO: Use TreeMap for range operations?
 name|this
 operator|.
 name|pipelineMap
@@ -384,14 +405,13 @@ argument_list|(
 name|pipelineID
 argument_list|)
 decl_stmt|;
-comment|// TODO: verify the state we need the pipeline to be in
 if|if
 condition|(
 operator|!
-name|isOpen
-argument_list|(
 name|pipeline
-argument_list|)
+operator|.
+name|isOpen
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -470,12 +490,12 @@ name|pipeline
 return|;
 block|}
 comment|/**    * Get pipeline corresponding to specified replication type.    *    * @param type - ReplicationType    * @return List of pipelines which have the specified replication type    */
-DECL|method|getPipelines (ReplicationType type)
+DECL|method|getPipelinesByType (ReplicationType type)
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelines
+name|getPipelinesByType
 parameter_list|(
 name|ReplicationType
 name|type
@@ -523,7 +543,64 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get set of containers corresponding to a pipeline.    *    * @param pipelineID - PipelineID    * @return Set of Containers belonging to the pipeline    * @throws IOException if pipeline is not found    */
+comment|/**    * Get open pipeline corresponding to specified replication type and factor.    *    * @param type - ReplicationType    * @param factor - ReplicationFactor    * @return List of open pipelines with specified replication type and factor    */
+DECL|method|getPipelinesByTypeAndFactor (ReplicationType type, ReplicationFactor factor)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelinesByTypeAndFactor
+parameter_list|(
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|)
+block|{
+return|return
+name|pipelineMap
+operator|.
+name|values
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|filter
+argument_list|(
+name|pipeline
+lambda|->
+name|pipeline
+operator|.
+name|isOpen
+argument_list|()
+operator|&&
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|type
+operator|&&
+name|pipeline
+operator|.
+name|getFactor
+argument_list|()
+operator|==
+name|factor
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Get set of containerIDs corresponding to a pipeline.    *    * @param pipelineID - PipelineID    * @return Set of containerIDs belonging to the pipeline    * @throws IOException if pipeline is not found    */
 DECL|method|getContainers (PipelineID pipelineID)
 name|Set
 argument_list|<
@@ -581,6 +658,59 @@ name|containerIDs
 argument_list|)
 return|;
 block|}
+comment|/**    * Get number of containers corresponding to a pipeline.    *    * @param pipelineID - PipelineID    * @return Number of containers belonging to the pipeline    * @throws IOException if pipeline is not found    */
+DECL|method|getNumberOfContainers (PipelineID pipelineID)
+name|int
+name|getNumberOfContainers
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|containerIDs
+init|=
+name|pipeline2container
+operator|.
+name|get
+argument_list|(
+name|pipelineID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|containerIDs
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s not found"
+argument_list|,
+name|pipelineID
+argument_list|)
+argument_list|)
+throw|;
+block|}
+return|return
+name|containerIDs
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 comment|/**    * Remove pipeline from the data structures.    *    * @param pipelineID - PipelineID of the pipeline to be removed    * @throws IOException if the pipeline is not empty or does not exist    */
 DECL|method|removePipeline (PipelineID pipelineID)
 name|void
@@ -601,14 +731,47 @@ argument_list|,
 literal|"Pipeline Id cannot be null"
 argument_list|)
 expr_stmt|;
-comment|//TODO: Add a flag which suppresses exception if pipeline does not exist?
+name|Pipeline
+name|pipeline
+init|=
+name|getPipeline
+argument_list|(
+name|pipelineID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|pipeline
+operator|.
+name|isClosed
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Pipeline with %s is not yet closed"
+argument_list|,
+name|pipelineID
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|Set
 argument_list|<
 name|ContainerID
 argument_list|>
 name|containerIDs
 init|=
-name|getContainers
+name|pipeline2container
+operator|.
+name|get
 argument_list|(
 name|pipelineID
 argument_list|)
@@ -685,14 +848,6 @@ argument_list|,
 literal|"container Id cannot be null"
 argument_list|)
 expr_stmt|;
-name|Pipeline
-name|pipeline
-init|=
-name|getPipeline
-argument_list|(
-name|pipelineID
-argument_list|)
-decl_stmt|;
 name|Set
 argument_list|<
 name|ContainerID
@@ -713,37 +868,16 @@ argument_list|(
 name|containerID
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|containerIDs
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|0
-operator|&&
-name|isClosingOrClosed
-argument_list|(
-name|pipeline
-argument_list|)
-condition|)
-block|{
-name|removePipeline
-argument_list|(
-name|pipelineID
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Updates the state of pipeline.    *    * @param pipelineID - PipelineID of the pipeline whose state needs    *                   to be updated    * @param state - new state of the pipeline    * @return Pipeline with the updated state    * @throws IOException if pipeline does not exist    */
-DECL|method|updatePipelineState (PipelineID pipelineID, LifeCycleState state)
+DECL|method|updatePipelineState (PipelineID pipelineID, PipelineState state)
 name|Pipeline
 name|updatePipelineState
 parameter_list|(
 name|PipelineID
 name|pipelineID
 parameter_list|,
-name|LifeCycleState
+name|PipelineState
 name|state
 parameter_list|)
 throws|throws
@@ -767,6 +901,7 @@ argument_list|,
 literal|"Pipeline LifeCycleState cannot be null"
 argument_list|)
 expr_stmt|;
+specifier|final
 name|Pipeline
 name|pipeline
 init|=
@@ -775,14 +910,19 @@ argument_list|(
 name|pipelineID
 argument_list|)
 decl_stmt|;
-name|pipeline
-operator|=
+return|return
 name|pipelineMap
 operator|.
-name|put
+name|compute
 argument_list|(
 name|pipelineID
 argument_list|,
+parameter_list|(
+name|id
+parameter_list|,
+name|p
+parameter_list|)
+lambda|->
 name|Pipeline
 operator|.
 name|newBuilder
@@ -798,61 +938,6 @@ operator|.
 name|build
 argument_list|()
 argument_list|)
-expr_stmt|;
-comment|// TODO: Verify if need to throw exception for non-existent pipeline
-return|return
-name|pipeline
-return|;
-block|}
-DECL|method|isClosingOrClosed (Pipeline pipeline)
-specifier|private
-name|boolean
-name|isClosingOrClosed
-parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|)
-block|{
-name|LifeCycleState
-name|state
-init|=
-name|pipeline
-operator|.
-name|getLifeCycleState
-argument_list|()
-decl_stmt|;
-return|return
-name|state
-operator|==
-name|LifeCycleState
-operator|.
-name|CLOSING
-operator|||
-name|state
-operator|==
-name|LifeCycleState
-operator|.
-name|CLOSED
-return|;
-block|}
-DECL|method|isOpen (Pipeline pipeline)
-specifier|private
-name|boolean
-name|isOpen
-parameter_list|(
-name|Pipeline
-name|pipeline
-parameter_list|)
-block|{
-return|return
-name|pipeline
-operator|.
-name|getLifeCycleState
-argument_list|()
-operator|==
-name|LifeCycleState
-operator|.
-name|OPEN
 return|;
 block|}
 block|}

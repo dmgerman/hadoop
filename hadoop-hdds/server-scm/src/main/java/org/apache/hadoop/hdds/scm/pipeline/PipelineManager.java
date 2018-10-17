@@ -185,6 +185,31 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|getPipelinesByType (ReplicationType type)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelinesByType
+parameter_list|(
+name|ReplicationType
+name|type
+parameter_list|)
+function_decl|;
+DECL|method|getPipelinesByTypeAndFactor (ReplicationType type, ReplicationFactor factor)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelinesByTypeAndFactor
+parameter_list|(
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|)
+function_decl|;
 DECL|method|addContainerToPipeline (PipelineID pipelineID, ContainerID containerID)
 name|void
 name|addContainerToPipeline
@@ -224,6 +249,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|getNumberOfContainers (PipelineID pipelineID)
+name|int
+name|getNumberOfContainers
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|finalizePipeline (PipelineID pipelineID)
 name|void
 name|finalizePipeline
@@ -234,9 +269,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|closePipeline (PipelineID pipelineId)
+DECL|method|openPipeline (PipelineID pipelineId)
 name|void
-name|closePipeline
+name|openPipeline
 parameter_list|(
 name|PipelineID
 name|pipelineId

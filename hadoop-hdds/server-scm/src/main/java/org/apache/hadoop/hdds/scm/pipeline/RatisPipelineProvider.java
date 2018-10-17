@@ -120,13 +120,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|ScmConfigKeys
 import|;
 end_import
 
@@ -142,7 +138,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|ScmConfigKeys
+name|XceiverClientRatis
 import|;
 end_import
 
@@ -205,6 +201,26 @@ operator|.
 name|node
 operator|.
 name|NodeManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|Pipeline
+operator|.
+name|PipelineState
 import|;
 end_import
 
@@ -308,7 +324,13 @@ specifier|final
 name|PipelineStateManager
 name|stateManager
 decl_stmt|;
-DECL|method|RatisPipelineProvider (NodeManager nodeManager, PipelineStateManager stateManager)
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|method|RatisPipelineProvider (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf)
 name|RatisPipelineProvider
 parameter_list|(
 name|NodeManager
@@ -316,6 +338,9 @@ name|nodeManager
 parameter_list|,
 name|PipelineStateManager
 name|stateManager
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -329,6 +354,12 @@ operator|.
 name|stateManager
 operator|=
 name|stateManager
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 comment|/**    * Create pluggable container placement policy implementation instance.    *    * @param nodeManager - SCM node manager.    * @param conf - configuration.    * @return SCM container placement policy implementation instance.    */
@@ -498,7 +529,7 @@ argument_list|()
 decl_stmt|;
 name|stateManager
 operator|.
-name|getPipelines
+name|getPipelinesByType
 argument_list|(
 name|ReplicationType
 operator|.
@@ -609,7 +640,9 @@ name|e
 argument_list|)
 throw|;
 block|}
-return|return
+name|Pipeline
+name|pipeline
+init|=
 name|Pipeline
 operator|.
 name|newBuilder
@@ -625,7 +658,7 @@ argument_list|)
 operator|.
 name|setState
 argument_list|(
-name|LifeCycleState
+name|PipelineState
 operator|.
 name|ALLOCATED
 argument_list|)
@@ -649,6 +682,14 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+decl_stmt|;
+name|initializePipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
+return|return
+name|pipeline
 return|;
 block|}
 annotation|@
@@ -721,7 +762,7 @@ argument_list|)
 operator|.
 name|setState
 argument_list|(
-name|LifeCycleState
+name|PipelineState
 operator|.
 name|ALLOCATED
 argument_list|)
@@ -746,6 +787,40 @@ operator|.
 name|build
 argument_list|()
 return|;
+block|}
+DECL|method|initializePipeline (Pipeline pipeline)
+specifier|private
+name|void
+name|initializePipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO: remove old code in XceiverClientRatis#newXceiverClientRatis
+try|try
+init|(
+name|XceiverClientRatis
+name|client
+init|=
+name|XceiverClientRatis
+operator|.
+name|newXceiverClientRatis
+argument_list|(
+name|pipeline
+argument_list|,
+name|conf
+argument_list|)
+init|)
+block|{
+name|client
+operator|.
+name|createPipeline
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

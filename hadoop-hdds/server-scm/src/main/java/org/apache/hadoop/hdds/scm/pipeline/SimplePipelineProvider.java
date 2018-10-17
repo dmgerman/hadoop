@@ -106,13 +106,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|proto
+name|node
 operator|.
-name|HddsProtos
-operator|.
-name|LifeCycleState
+name|NodeManager
 import|;
 end_import
 
@@ -128,9 +126,11 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|node
+name|pipeline
 operator|.
-name|NodeManager
+name|Pipeline
+operator|.
+name|PipelineState
 import|;
 end_import
 
@@ -289,7 +289,7 @@ argument_list|)
 operator|.
 name|setState
 argument_list|(
-name|LifeCycleState
+name|PipelineState
 operator|.
 name|ALLOCATED
 argument_list|)
@@ -395,7 +395,7 @@ argument_list|)
 operator|.
 name|setState
 argument_list|(
-name|LifeCycleState
+name|PipelineState
 operator|.
 name|ALLOCATED
 argument_list|)
