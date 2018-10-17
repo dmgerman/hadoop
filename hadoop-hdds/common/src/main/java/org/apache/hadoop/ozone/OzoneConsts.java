@@ -271,12 +271,22 @@ name|OZONE_REQUEST
 init|=
 literal|"request"
 decl_stmt|;
+comment|// Ozone File System scheme
 DECL|field|OZONE_URI_SCHEME
 specifier|public
 specifier|static
 specifier|final
 name|String
 name|OZONE_URI_SCHEME
+init|=
+literal|"o3fs"
+decl_stmt|;
+DECL|field|OZONE_RPC_SCHEME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_RPC_SCHEME
 init|=
 literal|"o3"
 decl_stmt|;

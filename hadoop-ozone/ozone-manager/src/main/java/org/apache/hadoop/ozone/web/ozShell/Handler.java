@@ -242,7 +242,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|OZONE_URI_SCHEME
+name|OZONE_RPC_SCHEME
 import|;
 end_import
 
@@ -477,7 +477,7 @@ condition|)
 block|{
 name|scheme
 operator|=
-name|OZONE_URI_SCHEME
+name|OZONE_RPC_SCHEME
 expr_stmt|;
 block|}
 if|if
@@ -567,7 +567,7 @@ name|scheme
 operator|.
 name|equals
 argument_list|(
-name|OZONE_URI_SCHEME
+name|OZONE_RPC_SCHEME
 argument_list|)
 condition|)
 block|{

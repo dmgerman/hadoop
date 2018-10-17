@@ -1447,7 +1447,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-literal|"o3://test1/key1/key2"
+literal|"o3fs://test1/key1/key2"
 argument_list|)
 argument_list|)
 argument_list|)

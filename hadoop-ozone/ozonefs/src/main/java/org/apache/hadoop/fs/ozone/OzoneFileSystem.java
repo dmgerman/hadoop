@@ -824,7 +824,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Ozone file system url should be "
 operator|+
-literal|"in the form o3://bucket.volume"
+literal|"in the form o3fs://bucket.volume"
 argument_list|)
 throw|;
 block|}

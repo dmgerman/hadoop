@@ -478,7 +478,7 @@ name|xmlPrefixToSkipCompare
 operator|.
 name|add
 argument_list|(
-literal|"fs.o3."
+literal|"fs.o3fs."
 argument_list|)
 expr_stmt|;
 comment|//ftp properties are in a different subtree.
