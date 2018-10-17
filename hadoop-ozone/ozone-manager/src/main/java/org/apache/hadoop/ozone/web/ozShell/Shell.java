@@ -220,7 +220,7 @@ literal|"with o3:// or http(s):// or without prefix. REST protocol will "
 operator|+
 literal|"be used for http(s), RPC otherwise. URI may contain the host and port "
 operator|+
-literal|"of the SCM server. Both are optional. "
+literal|"of the OM server. Both are optional. "
 operator|+
 literal|"If they are not specified it will be identified from "
 operator|+
@@ -256,6 +256,19 @@ name|String
 name|OZONE_KEY_URI_DESCRIPTION
 init|=
 literal|"URI of the volume/bucket/key.\n"
+operator|+
+name|OZONE_URI_DESCRIPTION
+decl_stmt|;
+DECL|field|OZONE_S3BUCKET_URI_DESCRIPTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_S3BUCKET_URI_DESCRIPTION
+init|=
+literal|"URI of the "
+operator|+
+literal|"S3Bucket.\n"
 operator|+
 name|OZONE_URI_DESCRIPTION
 decl_stmt|;

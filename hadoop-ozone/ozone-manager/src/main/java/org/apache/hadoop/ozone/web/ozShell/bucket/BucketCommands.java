@@ -158,6 +158,10 @@ block|,
 name|DeleteBucketHandler
 operator|.
 name|class
+block|,
+name|S3BucketMapping
+operator|.
+name|class
 block|}
 argument_list|,
 name|mixinStandardHelpOptions
