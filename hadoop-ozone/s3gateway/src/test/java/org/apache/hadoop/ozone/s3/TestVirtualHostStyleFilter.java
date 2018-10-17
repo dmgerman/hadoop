@@ -168,6 +168,18 @@ name|URI
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class test virtual host style mapping conversion to path style.  */
 end_comment
@@ -439,7 +451,7 @@ name|createContainerRequest
 argument_list|(
 literal|"mybucket"
 operator|+
-literal|".myvolume.localhost:9878"
+literal|".localhost:9878"
 argument_list|,
 literal|"/myfile"
 argument_list|,
@@ -463,7 +475,7 @@ literal|"http://"
 operator|+
 name|s3HttpAddr
 operator|+
-literal|"/myvolume/mybucket/myfile"
+literal|"/mybucket/myfile"
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -510,7 +522,7 @@ name|createContainerRequest
 argument_list|(
 name|s3HttpAddr
 argument_list|,
-literal|"/myvolume/mybucket/myfile"
+literal|"/mybucket/myfile"
 argument_list|,
 literal|false
 argument_list|)
@@ -532,7 +544,7 @@ literal|"http://"
 operator|+
 name|s3HttpAddr
 operator|+
-literal|"/myvolume/mybucket/myfile"
+literal|"/mybucket/myfile"
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -579,7 +591,7 @@ name|createContainerRequest
 argument_list|(
 literal|"mybucket"
 operator|+
-literal|".myvolume.localhost:9878"
+literal|".localhost:9878"
 argument_list|,
 literal|null
 argument_list|,
@@ -603,7 +615,7 @@ literal|"http://"
 operator|+
 name|s3HttpAddr
 operator|+
-literal|"/myvolume/mybucket"
+literal|"/mybucket"
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -650,7 +662,7 @@ name|createContainerRequest
 argument_list|(
 literal|"mybucket"
 operator|+
-literal|".myvolume.localhost:9999"
+literal|".localhost:9999"
 argument_list|,
 literal|null
 argument_list|,
@@ -686,10 +698,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testVirtualHostStyleWithoutVolumeName ()
+DECL|method|testIncorrectVirtualHostStyle ()
 specifier|public
 name|void
-name|testVirtualHostStyleWithoutVolumeName
+name|testIncorrectVirtualHostStyle
 parameter_list|()
 throws|throws
 name|Exception
@@ -713,9 +725,9 @@ name|containerRequest
 init|=
 name|createContainerRequest
 argument_list|(
-literal|"mybucket."
+literal|"mybucket"
 operator|+
-literal|".localhost:9878"
+literal|"localhost:9878"
 argument_list|,
 literal|null
 argument_list|,
@@ -729,6 +741,11 @@ operator|.
 name|filter
 argument_list|(
 name|containerRequest
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"testIncorrectVirtualHostStyle failed"
 argument_list|)
 expr_stmt|;
 block|}
