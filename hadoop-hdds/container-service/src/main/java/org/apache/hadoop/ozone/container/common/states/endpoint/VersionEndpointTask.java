@@ -437,7 +437,7 @@ argument_list|()
 decl_stmt|;
 name|volumeSet
 operator|.
-name|readLock
+name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
@@ -554,7 +554,7 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|// All volumes are inconsistent state
+comment|// All volumes are in inconsistent state
 throw|throw
 operator|new
 name|DiskOutOfSpaceException
@@ -570,7 +570,7 @@ finally|finally
 block|{
 name|volumeSet
 operator|.
-name|readUnlock
+name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
