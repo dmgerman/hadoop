@@ -438,6 +438,15 @@ literal|4
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|DEFAULT_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_TIMEOUT
+init|=
+literal|0
+decl_stmt|;
 DECL|field|FS_FTP_USER_PREFIX
 specifier|public
 specifier|static
@@ -500,6 +509,15 @@ name|String
 name|E_SAME_DIRECTORY_ONLY
 init|=
 literal|"only same directory renames are supported"
+decl_stmt|;
+DECL|field|FS_FTP_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_FTP_TIMEOUT
+init|=
+literal|"fs.ftp.timeout"
 decl_stmt|;
 DECL|field|uri
 specifier|private
@@ -920,6 +938,13 @@ argument_list|(
 name|DEFAULT_BUFFER_SIZE
 argument_list|)
 expr_stmt|;
+name|setTimeout
+argument_list|(
+name|client
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 name|setDataConnectionMode
 argument_list|(
 name|client
@@ -953,6 +978,40 @@ block|}
 return|return
 name|client
 return|;
+block|}
+comment|/**    * Set the FTPClient's timeout based on configuration.    * FS_FTP_TIMEOUT is set as timeout (defaults to DEFAULT_TIMEOUT).    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setTimeout (FTPClient client, Configuration conf)
+name|void
+name|setTimeout
+parameter_list|(
+name|FTPClient
+name|client
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|long
+name|timeout
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|FS_FTP_TIMEOUT
+argument_list|,
+name|DEFAULT_TIMEOUT
+argument_list|)
+decl_stmt|;
+name|client
+operator|.
+name|setControlKeepAliveTimeout
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Set FTP's transfer mode based on configuration. Valid values are    * STREAM_TRANSFER_MODE, BLOCK_TRANSFER_MODE and COMPRESSED_TRANSFER_MODE.    *<p>    * Defaults to BLOCK_TRANSFER_MODE.    *    * @param conf    * @return    */
 annotation|@

@@ -434,6 +434,13 @@ name|xmlPropsToSkipCompare
 operator|.
 name|add
 argument_list|(
+literal|"fs.ftp.timeout"
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
 literal|"hadoop.tmp.dir"
 argument_list|)
 expr_stmt|;
