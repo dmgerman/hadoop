@@ -52,42 +52,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|DatanodeDetails
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -118,11 +82,61 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
+name|ContainerNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|helpers
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|ContainerReplica
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
 operator|.
 name|ContainerInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|ContainerReplicaNotFoundException
 import|;
 end_import
 
@@ -208,26 +222,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|exceptions
-operator|.
-name|SCMException
-operator|.
-name|ResultCodes
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -241,6 +235,26 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -378,28 +392,6 @@ name|FAILED_TO_CHANGE_CONTAINER_STATE
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|exceptions
-operator|.
-name|SCMException
-operator|.
-name|ResultCodes
-operator|.
-name|FAILED_TO_FIND_CONTAINER
-import|;
-end_import
-
 begin_comment
 comment|/**  * Container State Map acts like a unified map for various attributes that are  * used to select containers when we need allocated blocks.  *<p>  * This class provides the ability to query 5 classes of attributes. They are  *<p>  * 1. LifeCycleStates - LifeCycle States of container describe in which state  * a container is. For example, a container needs to be in Open State for a  * client to able to write to it.  *<p>  * 2. Owners - Each instance of Name service, for example, Namenode of HDFS or  * Ozone Manager (OM) of Ozone or CBlockServer --  is an owner. It is  * possible to have many OMs for a Ozone cluster and only one SCM. But SCM  * keeps the data from each OM in separate bucket, never mixing them. To  * write data, often we have to find all open containers for a specific owner.  *<p>  * 3. ReplicationType - The clients are allowed to specify what kind of  * replication pipeline they want to use. Each Container exists on top of a  * pipeline, so we need to get ReplicationType that is specified by the user.  *<p>  * 4. ReplicationFactor - The replication factor represents how many copies  * of data should be made, right now we support 2 different types, ONE  * Replica and THREE Replica. User can specify how many copies should be made  * for a ozone key.  *<p>  * The most common access pattern of this class is to select a container based  * on all these parameters, for example, when allocating a block we will  * select a container that belongs to user1, with Ratis replication which can  * make 3 copies of data. The fact that we will look for open containers by  * default and if we cannot find them we will add new containers.  */
 end_comment
@@ -424,6 +416,26 @@ argument_list|(
 name|ContainerStateMap
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+DECL|field|EMPTY_SET
+specifier|private
+specifier|final
+specifier|static
+name|NavigableSet
+argument_list|<
+name|ContainerID
+argument_list|>
+name|EMPTY_SET
+init|=
+name|Collections
+operator|.
+name|unmodifiableNavigableSet
+argument_list|(
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|()
 argument_list|)
 decl_stmt|;
 DECL|field|lifeCycleStateMap
@@ -473,8 +485,7 @@ name|ContainerInfo
 argument_list|>
 name|containerMap
 decl_stmt|;
-comment|// Map to hold replicas of given container.
-DECL|field|contReplicaMap
+DECL|field|replicaMap
 specifier|private
 specifier|final
 name|Map
@@ -483,30 +494,10 @@ name|ContainerID
 argument_list|,
 name|Set
 argument_list|<
-name|DatanodeDetails
+name|ContainerReplica
 argument_list|>
 argument_list|>
-name|contReplicaMap
-decl_stmt|;
-DECL|field|EMPTY_SET
-specifier|private
-specifier|final
-specifier|static
-name|NavigableSet
-argument_list|<
-name|ContainerID
-argument_list|>
-name|EMPTY_SET
-init|=
-name|Collections
-operator|.
-name|unmodifiableNavigableSet
-argument_list|(
-operator|new
-name|TreeSet
-argument_list|<>
-argument_list|()
-argument_list|)
+name|replicaMap
 decl_stmt|;
 DECL|field|resultCache
 specifier|private
@@ -537,6 +528,8 @@ specifier|public
 name|ContainerStateMap
 parameter_list|()
 block|{
+name|this
+operator|.
 name|lifeCycleStateMap
 operator|=
 operator|new
@@ -544,6 +537,8 @@ name|ContainerAttribute
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
 name|ownerMap
 operator|=
 operator|new
@@ -551,6 +546,8 @@ name|ContainerAttribute
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
 name|factorMap
 operator|=
 operator|new
@@ -558,6 +555,8 @@ name|ContainerAttribute
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
 name|typeMap
 operator|=
 operator|new
@@ -565,6 +564,8 @@ name|ContainerAttribute
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
 name|containerMap
 operator|=
 operator|new
@@ -572,23 +573,25 @@ name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
 name|lock
 operator|=
 operator|new
 name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
-name|contReplicaMap
+name|this
+operator|.
+name|replicaMap
 operator|=
 operator|new
 name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-comment|//        new InstrumentedLock(getClass().getName(), LOG,
-comment|//            new ReentrantLock(),
-comment|//            1000,
-comment|//            300));
+name|this
+operator|.
 name|resultCache
 operator|=
 operator|new
@@ -598,11 +601,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Adds a ContainerInfo Entry in the ContainerStateMap.    *    * @param info - container info    * @throws SCMException - throws if create failed.    */
-DECL|method|addContainer (ContainerInfo info)
+DECL|method|addContainer (final ContainerInfo info)
 specifier|public
 name|void
 name|addContainer
 parameter_list|(
+specifier|final
 name|ContainerInfo
 name|info
 parameter_list|)
@@ -645,18 +649,14 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+specifier|final
 name|ContainerID
 name|id
 init|=
-name|ContainerID
-operator|.
-name|valueof
-argument_list|(
 name|info
 operator|.
-name|getContainerID
+name|containerID
 argument_list|()
-argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -739,6 +739,18 @@ argument_list|,
 name|id
 argument_list|)
 expr_stmt|;
+name|replicaMap
+operator|.
+name|put
+argument_list|(
+name|id
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Flush the cache of this container type, will be added later when
 comment|// get container queries are executed.
 name|flushCache
@@ -768,57 +780,144 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns the latest state of Container from SCM's Container State Map.    *    * @param info - ContainerInfo    * @return ContainerInfo    */
-DECL|method|getContainerInfo (ContainerInfo info)
+comment|/**    * Removes a Container Entry from ContainerStateMap.    *    * @param containerID - ContainerID    * @throws SCMException - throws if create failed.    */
+DECL|method|removeContainer (final ContainerID containerID)
 specifier|public
-name|ContainerInfo
-name|getContainerInfo
+name|void
+name|removeContainer
 parameter_list|(
-name|ContainerInfo
-name|info
-parameter_list|)
-block|{
-return|return
-name|getContainerInfo
-argument_list|(
-name|info
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns the latest state of Container from SCM's Container State Map.    *    * @param containerID - int    * @return container info, if found.    */
-DECL|method|getContainerInfo (long containerID)
-specifier|public
-name|ContainerInfo
-name|getContainerInfo
-parameter_list|(
-name|long
-name|containerID
-parameter_list|)
-block|{
-return|return
-name|getContainerInfo
-argument_list|(
+specifier|final
 name|ContainerID
+name|containerID
+parameter_list|)
+throws|throws
+name|ContainerNotFoundException
+block|{
+name|Preconditions
 operator|.
-name|valueof
+name|checkNotNull
+argument_list|(
+name|containerID
+argument_list|,
+literal|"ContainerID cannot be null"
+argument_list|)
+expr_stmt|;
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkIfContainerExist
 argument_list|(
 name|containerID
 argument_list|)
+expr_stmt|;
+comment|// Should we revert back to the original state if any of the below
+comment|// remove operation fails?
+specifier|final
+name|ContainerInfo
+name|info
+init|=
+name|containerMap
+operator|.
+name|remove
+argument_list|(
+name|containerID
 argument_list|)
-return|;
+decl_stmt|;
+name|lifeCycleStateMap
+operator|.
+name|remove
+argument_list|(
+name|info
+operator|.
+name|getState
+argument_list|()
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+name|ownerMap
+operator|.
+name|remove
+argument_list|(
+name|info
+operator|.
+name|getOwner
+argument_list|()
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+name|factorMap
+operator|.
+name|remove
+argument_list|(
+name|info
+operator|.
+name|getReplicationFactor
+argument_list|()
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+name|typeMap
+operator|.
+name|remove
+argument_list|(
+name|info
+operator|.
+name|getReplicationType
+argument_list|()
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+comment|// Flush the cache of this container type.
+name|flushCache
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Removed container with {} successfully."
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the latest state of Container from SCM's Container State Map.    *    * @param containerID - ContainerID    * @return container info, if found.    */
-DECL|method|getContainerInfo (ContainerID containerID)
+DECL|method|getContainerInfo (final ContainerID containerID)
 specifier|public
 name|ContainerInfo
 name|getContainerInfo
 parameter_list|(
+specifier|final
 name|ContainerID
 name|containerID
 parameter_list|)
+throws|throws
+name|ContainerNotFoundException
 block|{
 name|lock
 operator|.
@@ -830,6 +929,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|checkIfContainerExist
+argument_list|(
+name|containerID
+argument_list|)
+expr_stmt|;
 return|return
 name|containerMap
 operator|.
@@ -852,19 +956,20 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns the latest list of DataNodes where replica for given containerId    * exist. Throws an SCMException if no entry is found for given containerId.    *    * @param containerID    * @return Set<DatanodeDetails>    */
-DECL|method|getContainerReplicas (ContainerID containerID)
+DECL|method|getContainerReplicas ( final ContainerID containerID)
 specifier|public
 name|Set
 argument_list|<
-name|DatanodeDetails
+name|ContainerReplica
 argument_list|>
 name|getContainerReplicas
 parameter_list|(
+specifier|final
 name|ContainerID
 name|containerID
 parameter_list|)
 throws|throws
-name|SCMException
+name|ContainerNotFoundException
 block|{
 name|Preconditions
 operator|.
@@ -883,30 +988,29 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|contReplicaMap
-operator|.
-name|containsKey
+name|checkIfContainerExist
 argument_list|(
 name|containerID
 argument_list|)
-condition|)
-block|{
+expr_stmt|;
 return|return
 name|Collections
 operator|.
 name|unmodifiableSet
 argument_list|(
-name|contReplicaMap
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
+name|replicaMap
 operator|.
 name|get
 argument_list|(
 name|containerID
 argument_list|)
 argument_list|)
+argument_list|)
 return|;
-block|}
 block|}
 finally|finally
 block|{
@@ -919,35 +1023,23 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"No entry exist for containerId: "
-operator|+
-name|containerID
-operator|+
-literal|" in replica map."
-argument_list|,
-name|ResultCodes
-operator|.
-name|NO_REPLICA_FOUND
-argument_list|)
-throw|;
 block|}
-comment|/**    * Adds given datanodes as nodes where replica for given containerId exist.    * Logs a debug entry if a datanode is already added as replica for given    * ContainerId.    *    * @param containerID    * @param dnList    */
-DECL|method|addContainerReplica (ContainerID containerID, DatanodeDetails... dnList)
+comment|/**    * Adds given datanodes as nodes where replica for given containerId exist.    * Logs a debug entry if a datanode is already added as replica for given    * ContainerId.    *    * @param containerID    * @param replica    */
+DECL|method|updateContainerReplica (final ContainerID containerID, final ContainerReplica replica)
 specifier|public
 name|void
-name|addContainerReplica
+name|updateContainerReplica
 parameter_list|(
+specifier|final
 name|ContainerID
 name|containerID
 parameter_list|,
-name|DatanodeDetails
-modifier|...
-name|dnList
+specifier|final
+name|ContainerReplica
+name|replica
 parameter_list|)
+throws|throws
+name|ContainerNotFoundException
 block|{
 name|Preconditions
 operator|.
@@ -966,93 +1058,38 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-for|for
-control|(
-name|DatanodeDetails
-name|dn
-range|:
-name|dnList
-control|)
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|dn
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|contReplicaMap
-operator|.
-name|containsKey
+name|checkIfContainerExist
 argument_list|(
 name|containerID
 argument_list|)
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|contReplicaMap
+expr_stmt|;
+name|Set
+argument_list|<
+name|ContainerReplica
+argument_list|>
+name|replicas
+init|=
+name|replicaMap
 operator|.
 name|get
 argument_list|(
 name|containerID
 argument_list|)
-operator|.
-name|add
-argument_list|(
-name|dn
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"ReplicaMap already contains entry for container Id: "
-operator|+
-literal|"{},DataNode: {}"
-argument_list|,
-name|containerID
-argument_list|,
-name|dn
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-name|Set
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|dnSet
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
 decl_stmt|;
-name|dnSet
+name|replicas
+operator|.
+name|remove
+argument_list|(
+name|replica
+argument_list|)
+expr_stmt|;
+name|replicas
 operator|.
 name|add
 argument_list|(
-name|dn
+name|replica
 argument_list|)
 expr_stmt|;
-name|contReplicaMap
-operator|.
-name|put
-argument_list|(
-name|containerID
-argument_list|,
-name|dnSet
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 block|}
 finally|finally
 block|{
@@ -1066,20 +1103,24 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove a container Replica for given DataNode.    *    * @param containerID    * @param dn    * @return True of dataNode is removed successfully else false.    */
-DECL|method|removeContainerReplica (ContainerID containerID, DatanodeDetails dn)
+comment|/**    * Remove a container Replica for given DataNode.    *    * @param containerID    * @param replica    * @return True of dataNode is removed successfully else false.    */
+DECL|method|removeContainerReplica (final ContainerID containerID, final ContainerReplica replica)
 specifier|public
-name|boolean
+name|void
 name|removeContainerReplica
 parameter_list|(
+specifier|final
 name|ContainerID
 name|containerID
 parameter_list|,
-name|DatanodeDetails
-name|dn
+specifier|final
+name|ContainerReplica
+name|replica
 parameter_list|)
 throws|throws
-name|SCMException
+name|ContainerNotFoundException
+throws|,
+name|ContainerReplicaNotFoundException
 block|{
 name|Preconditions
 operator|.
@@ -1092,7 +1133,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|dn
+name|replica
 argument_list|)
 expr_stmt|;
 name|lock
@@ -1105,18 +1146,15 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|contReplicaMap
-operator|.
-name|containsKey
+name|checkIfContainerExist
 argument_list|(
 name|containerID
 argument_list|)
-condition|)
-block|{
-return|return
-name|contReplicaMap
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|replicaMap
 operator|.
 name|get
 argument_list|(
@@ -1125,9 +1163,26 @@ argument_list|)
 operator|.
 name|remove
 argument_list|(
-name|dn
+name|replica
 argument_list|)
-return|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|ContainerReplicaNotFoundException
+argument_list|(
+literal|"Container #"
+operator|+
+name|containerID
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|", replica: "
+operator|+
+name|replica
+argument_list|)
+throw|;
 block|}
 block|}
 finally|finally
@@ -1141,24 +1196,10 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"No entry exist for containerId: "
-operator|+
-name|containerID
-operator|+
-literal|" in replica map."
-argument_list|,
-name|ResultCodes
-operator|.
-name|FAILED_TO_FIND_CONTAINER
-argument_list|)
-throw|;
 block|}
 annotation|@
 name|VisibleForTesting
+comment|// TODO: fix the test case and remove this method!
 DECL|method|getLOG ()
 specifier|public
 specifier|static
@@ -1170,73 +1211,19 @@ return|return
 name|LOG
 return|;
 block|}
-comment|/**    * Returns the full container Map.    *    * @return - Map    */
-DECL|method|getContainerMap ()
-specifier|public
-name|Map
-argument_list|<
-name|ContainerID
-argument_list|,
-name|ContainerInfo
-argument_list|>
-name|getContainerMap
-parameter_list|()
-block|{
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|Collections
-operator|.
-name|unmodifiableMap
-argument_list|(
-name|containerMap
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Just update the container State.    * @param info ContainerInfo.    */
-DECL|method|updateContainerInfo (ContainerInfo info)
+DECL|method|updateContainerInfo (final ContainerInfo info)
 specifier|public
 name|void
 name|updateContainerInfo
 parameter_list|(
+specifier|final
 name|ContainerInfo
 name|info
 parameter_list|)
 throws|throws
-name|SCMException
+name|ContainerNotFoundException
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|info
-argument_list|)
-expr_stmt|;
-name|ContainerInfo
-name|currentInfo
-init|=
-literal|null
-decl_stmt|;
 name|lock
 operator|.
 name|writeLock
@@ -1247,40 +1234,35 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+name|checkIfContainerExist
+argument_list|(
+name|info
+operator|.
+name|containerID
+argument_list|()
+argument_list|)
+expr_stmt|;
+specifier|final
+name|ContainerInfo
 name|currentInfo
-operator|=
+init|=
 name|containerMap
 operator|.
 name|get
 argument_list|(
-name|ContainerID
-operator|.
-name|valueof
-argument_list|(
 name|info
 operator|.
-name|getContainerID
+name|containerID
 argument_list|()
 argument_list|)
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|currentInfo
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"No such container."
-argument_list|,
-name|FAILED_TO_FIND_CONTAINER
-argument_list|)
-throw|;
-block|}
+decl_stmt|;
 name|flushCache
 argument_list|(
 name|info
@@ -1313,14 +1295,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Update the State of a container.    *    * @param info - ContainerInfo    * @param currentState - CurrentState    * @param newState - NewState.    * @throws SCMException - in case of failure.    */
-DECL|method|updateState (ContainerInfo info, LifeCycleState currentState, LifeCycleState newState)
+comment|/**    * Update the State of a container.    *    * @param containerID - ContainerID    * @param currentState - CurrentState    * @param newState - NewState.    * @throws SCMException - in case of failure.    */
+DECL|method|updateState (ContainerID containerID, LifeCycleState currentState, LifeCycleState newState)
 specifier|public
 name|void
 name|updateState
 parameter_list|(
-name|ContainerInfo
-name|info
+name|ContainerID
+name|containerID
 parameter_list|,
 name|LifeCycleState
 name|currentState
@@ -1330,6 +1312,8 @@ name|newState
 parameter_list|)
 throws|throws
 name|SCMException
+throws|,
+name|ContainerNotFoundException
 block|{
 name|Preconditions
 operator|.
@@ -1345,23 +1329,6 @@ argument_list|(
 name|newState
 argument_list|)
 expr_stmt|;
-name|ContainerID
-name|id
-init|=
-operator|new
-name|ContainerID
-argument_list|(
-name|info
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|ContainerInfo
-name|currentInfo
-init|=
-literal|null
-decl_stmt|;
 name|lock
 operator|.
 name|writeLock
@@ -1372,16 +1339,32 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|checkIfContainerExist
+argument_list|(
+name|containerID
+argument_list|)
+expr_stmt|;
+specifier|final
+name|ContainerInfo
+name|currentInfo
+init|=
+name|containerMap
+operator|.
+name|get
+argument_list|(
+name|containerID
+argument_list|)
+decl_stmt|;
 try|try
 block|{
-comment|// Just flush both old and new data sets from the result cache.
+specifier|final
 name|ContainerInfo
 name|newInfo
 init|=
 operator|new
 name|ContainerInfo
 argument_list|(
-name|info
+name|currentInfo
 argument_list|)
 decl_stmt|;
 name|newInfo
@@ -1391,39 +1374,6 @@ argument_list|(
 name|newState
 argument_list|)
 expr_stmt|;
-name|flushCache
-argument_list|(
-name|newInfo
-argument_list|,
-name|info
-argument_list|)
-expr_stmt|;
-name|currentInfo
-operator|=
-name|containerMap
-operator|.
-name|get
-argument_list|(
-name|id
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|currentInfo
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"No such container."
-argument_list|,
-name|FAILED_TO_FIND_CONTAINER
-argument_list|)
-throw|;
-block|}
 comment|// We are updating two places before this update is done, these can
 comment|// fail independently, since the code needs to handle it.
 comment|// We update the attribute map, if that fails it will throw an
@@ -1432,20 +1382,13 @@ comment|// fact that we have updated the lifecycle state in the map, and update
 comment|// the container state. If this second update fails, we will attempt to
 comment|// roll back the earlier change we did. If the rollback fails, we can
 comment|// be in an inconsistent state,
-name|info
-operator|.
-name|setState
-argument_list|(
-name|newState
-argument_list|)
-expr_stmt|;
 name|containerMap
 operator|.
 name|put
 argument_list|(
-name|id
+name|containerID
 argument_list|,
-name|info
+name|newInfo
 argument_list|)
 expr_stmt|;
 name|lifeCycleStateMap
@@ -1456,7 +1399,7 @@ name|currentState
 argument_list|,
 name|newState
 argument_list|,
-name|id
+name|containerID
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1467,11 +1410,19 @@ literal|"Updated the container {} to new state. Old = {}, new = "
 operator|+
 literal|"{}"
 argument_list|,
-name|id
+name|containerID
 argument_list|,
 name|currentState
 argument_list|,
 name|newState
+argument_list|)
+expr_stmt|;
+comment|// Just flush both old and new data sets from the result cache.
+name|flushCache
+argument_list|(
+name|currentInfo
+argument_list|,
+name|newInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -1509,7 +1460,7 @@ name|containerMap
 operator|.
 name|put
 argument_list|(
-name|id
+name|containerID
 argument_list|,
 name|currentInfo
 argument_list|)
@@ -1526,7 +1477,7 @@ name|newState
 argument_list|,
 name|currentState
 argument_list|,
-name|id
+name|containerID
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1554,14 +1505,31 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getAllContainerIDs ()
+specifier|public
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|getAllContainerIDs
+parameter_list|()
+block|{
+return|return
+name|containerMap
+operator|.
+name|keySet
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns A list of containers owned by a name service.    *    * @param ownerName - Name of the NameService.    * @return - NavigableSet of ContainerIDs.    */
-DECL|method|getContainerIDsByOwner (String ownerName)
+DECL|method|getContainerIDsByOwner (final String ownerName)
 name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
 name|getContainerIDsByOwner
 parameter_list|(
+specifier|final
 name|String
 name|ownerName
 parameter_list|)
@@ -1605,13 +1573,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns Containers in the System by the Type.    *    * @param type - Replication type -- StandAlone, Ratis etc.    * @return NavigableSet    */
-DECL|method|getContainerIDsByType (ReplicationType type)
+DECL|method|getContainerIDsByType (final ReplicationType type)
 name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
 name|getContainerIDsByType
 parameter_list|(
+specifier|final
 name|ReplicationType
 name|type
 parameter_list|)
@@ -1655,13 +1624,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns Containers by replication factor.    *    * @param factor - Replication Factor.    * @return NavigableSet.    */
-DECL|method|getContainerIDsByFactor (ReplicationFactor factor)
+DECL|method|getContainerIDsByFactor ( final ReplicationFactor factor)
 name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
 name|getContainerIDsByFactor
 parameter_list|(
+specifier|final
 name|ReplicationFactor
 name|factor
 parameter_list|)
@@ -1705,7 +1675,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns Containers by State.    *    * @param state - State - Open, Closed etc.    * @return List of containers by state.    */
-DECL|method|getContainerIDsByState ( LifeCycleState state)
+DECL|method|getContainerIDsByState ( final LifeCycleState state)
 specifier|public
 name|NavigableSet
 argument_list|<
@@ -1713,6 +1683,7 @@ name|ContainerID
 argument_list|>
 name|getContainerIDsByState
 parameter_list|(
+specifier|final
 name|LifeCycleState
 name|state
 parameter_list|)
@@ -1756,7 +1727,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Gets the containers that matches the  following filters.    *    * @param state - LifeCycleState    * @param owner - Owner    * @param factor - Replication Factor    * @param type - Replication Type    * @return ContainerInfo or Null if not container satisfies the criteria.    */
-DECL|method|getMatchingContainerIDs ( LifeCycleState state, String owner, ReplicationFactor factor, ReplicationType type)
+DECL|method|getMatchingContainerIDs ( final LifeCycleState state, final String owner, final ReplicationFactor factor, final ReplicationType type)
 specifier|public
 name|NavigableSet
 argument_list|<
@@ -1764,15 +1735,19 @@ name|ContainerID
 argument_list|>
 name|getMatchingContainerIDs
 parameter_list|(
+specifier|final
 name|LifeCycleState
 name|state
 parameter_list|,
+specifier|final
 name|String
 name|owner
 parameter_list|,
+specifier|final
 name|ReplicationFactor
 name|factor
 parameter_list|,
+specifier|final
 name|ReplicationType
 name|type
 parameter_list|)
@@ -1823,6 +1798,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+specifier|final
 name|ContainerQueryKey
 name|queryKey
 init|=
@@ -1860,6 +1836,7 @@ block|}
 comment|// If we cannot meet any one condition we return EMPTY_SET immediately.
 comment|// Since when we intersect these sets, the result will be empty if any
 comment|// one is empty.
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -1887,6 +1864,7 @@ return|return
 name|EMPTY_SET
 return|;
 block|}
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -1914,6 +1892,7 @@ return|return
 name|EMPTY_SET
 return|;
 block|}
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -1941,6 +1920,7 @@ return|return
 name|EMPTY_SET
 return|;
 block|}
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -1969,6 +1949,7 @@ name|EMPTY_SET
 return|;
 block|}
 comment|// if we add more constraints we will just add those sets here..
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -2056,7 +2037,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Calculates the intersection between sets and returns a new set.    *    * @param smaller - First Set    * @param bigger - Second Set    * @return resultSet which is the intersection of these two sets.    */
-DECL|method|intersectSets ( NavigableSet<ContainerID> smaller, NavigableSet<ContainerID> bigger)
+DECL|method|intersectSets ( final NavigableSet<ContainerID> smaller, final NavigableSet<ContainerID> bigger)
 specifier|private
 name|NavigableSet
 argument_list|<
@@ -2064,12 +2045,14 @@ name|ContainerID
 argument_list|>
 name|intersectSets
 parameter_list|(
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
 name|smaller
 parameter_list|,
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -2096,6 +2079,7 @@ operator|+
 literal|"set"
 argument_list|)
 expr_stmt|;
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -2144,7 +2128,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|sortBySize ( NavigableSet<ContainerID>.... sets)
+DECL|method|sortBySize ( final NavigableSet<ContainerID>... sets)
 specifier|private
 name|NavigableSet
 argument_list|<
@@ -2153,6 +2137,7 @@ argument_list|>
 index|[]
 name|sortBySize
 parameter_list|(
+specifier|final
 name|NavigableSet
 argument_list|<
 name|ContainerID
@@ -2222,6 +2207,7 @@ name|size
 argument_list|()
 condition|)
 block|{
+specifier|final
 name|NavigableSet
 name|temp
 init|=
@@ -2258,11 +2244,12 @@ return|return
 name|sets
 return|;
 block|}
-DECL|method|flushCache (ContainerInfo... containerInfos)
+DECL|method|flushCache (final ContainerInfo... containerInfos)
 specifier|private
 name|void
 name|flushCache
 parameter_list|(
+specifier|final
 name|ContainerInfo
 modifier|...
 name|containerInfos
@@ -2276,6 +2263,7 @@ range|:
 name|containerInfos
 control|)
 block|{
+specifier|final
 name|ContainerQueryKey
 name|key
 init|=
@@ -2310,6 +2298,42 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+DECL|method|checkIfContainerExist (ContainerID containerID)
+specifier|private
+name|void
+name|checkIfContainerExist
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|)
+throws|throws
+name|ContainerNotFoundException
+block|{
+if|if
+condition|(
+operator|!
+name|containerMap
+operator|.
+name|containsKey
+argument_list|(
+name|containerID
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|ContainerNotFoundException
+argument_list|(
+literal|"#"
+operator|+
+name|containerID
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+throw|;
 block|}
 block|}
 block|}

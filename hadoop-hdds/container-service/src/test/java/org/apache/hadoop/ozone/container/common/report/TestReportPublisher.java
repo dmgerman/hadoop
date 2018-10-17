@@ -956,35 +956,12 @@ argument_list|,
 name|obj2
 argument_list|)
 expr_stmt|;
+comment|// We are not sending the commands whose status is PENDING.
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 literal|"Should publish report with 2 status objects"
-argument_list|,
-literal|2
-argument_list|,
-operator|(
-operator|(
-name|CommandStatusReportPublisher
-operator|)
-name|publisher
-operator|)
-operator|.
-name|getReport
-argument_list|()
-operator|.
-name|getCmdStatusCount
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Next report should have 1 status objects as command status o"
-operator|+
-literal|"bjects are still in Pending state"
 argument_list|,
 literal|1
 argument_list|,
@@ -1000,43 +977,6 @@ argument_list|()
 operator|.
 name|getCmdStatusCount
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-literal|"Next report should have 1 status objects as command status "
-operator|+
-literal|"objects are still in Pending state"
-argument_list|,
-operator|(
-operator|(
-name|CommandStatusReportPublisher
-operator|)
-name|publisher
-operator|)
-operator|.
-name|getReport
-argument_list|()
-operator|.
-name|getCmdStatusList
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getStatus
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|Status
-operator|.
-name|PENDING
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|executorService

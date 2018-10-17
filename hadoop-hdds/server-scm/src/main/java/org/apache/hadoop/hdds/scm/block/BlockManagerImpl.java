@@ -176,10 +176,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -618,12 +614,6 @@ decl_stmt|;
 comment|// TODO : FIX ME : Hard coding the owner.
 comment|// Currently only user of the block service is Ozone, CBlock manages blocks
 comment|// by itself and does not rely on the Block service offered by SCM.
-DECL|field|nodeManager
-specifier|private
-specifier|final
-name|NodeManager
-name|nodeManager
-decl_stmt|;
 DECL|field|containerManager
 specifier|private
 specifier|final
@@ -693,12 +683,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
-name|nodeManager
-operator|=
-name|nodeManager
-expr_stmt|;
 name|this
 operator|.
 name|containerManager
@@ -1062,13 +1046,7 @@ condition|(
 operator|!
 name|containerManager
 operator|.
-name|getStateManager
-argument_list|()
-operator|.
-name|getContainerStateMap
-argument_list|()
-operator|.
-name|getContainerIDsByState
+name|getContainers
 argument_list|(
 name|HddsProtos
 operator|.
@@ -1130,7 +1108,7 @@ operator|.
 name|getContainerInfo
 argument_list|()
 operator|.
-name|getContainerID
+name|containerID
 argument_list|()
 argument_list|,
 name|HddsProtos
@@ -1215,13 +1193,7 @@ condition|(
 operator|!
 name|containerManager
 operator|.
-name|getStateManager
-argument_list|()
-operator|.
-name|getContainerStateMap
-argument_list|()
-operator|.
-name|getContainerIDsByState
+name|getContainers
 argument_list|(
 name|HddsProtos
 operator|.
@@ -1312,7 +1284,7 @@ operator|.
 name|getContainerInfo
 argument_list|()
 operator|.
-name|getContainerID
+name|containerID
 argument_list|()
 argument_list|,
 name|HddsProtos

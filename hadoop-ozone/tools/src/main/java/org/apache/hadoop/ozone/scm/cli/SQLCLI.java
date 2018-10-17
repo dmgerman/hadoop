@@ -336,10 +336,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -653,8 +649,6 @@ literal|"replicationFactor TEXT NOT NULL,"
 operator|+
 literal|"usedBytes LONG NOT NULL,"
 operator|+
-literal|"allocatedBytes LONG NOT NULL,"
-operator|+
 literal|"owner TEXT,"
 operator|+
 literal|"numberOfKeys LONG)"
@@ -685,9 +679,9 @@ name|INSERT_CONTAINER_INFO
 init|=
 literal|"INSERT INTO containerInfo (containerID, replicationType, "
 operator|+
-literal|"replicationFactor, usedBytes, allocatedBytes, owner, "
+literal|"replicationFactor, usedBytes, owner, "
 operator|+
-literal|"numberOfKeys) VALUES (\"%d\", \"%s\", \"%s\", \"%d\", \"%d\", "
+literal|"numberOfKeys) VALUES (\"%d\", \"%s\", \"%s\", \"%d\", "
 operator|+
 literal|"\"%s\", \"%d\")"
 decl_stmt|;
@@ -2313,11 +2307,6 @@ argument_list|,
 name|containerInfo
 operator|.
 name|getUsedBytes
-argument_list|()
-argument_list|,
-name|containerInfo
-operator|.
-name|getAllocatedBytes
 argument_list|()
 argument_list|,
 name|containerInfo

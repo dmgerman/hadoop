@@ -128,28 +128,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|ContainerInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|protocol
 operator|.
 name|proto
@@ -236,6 +214,24 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_comment
+comment|// TODO: Write extensive java doc.
+end_comment
+
+begin_comment
+comment|// This is the main interface of ContainerManager.
+end_comment
+
 begin_comment
 comment|/**  * ContainerManager class contains the mapping from a name to a pipeline  * mapping. This is used by SCM when allocating new locations and when  * looking up a key.  */
 end_comment
@@ -248,44 +244,65 @@ name|ContainerManager
 extends|extends
 name|Closeable
 block|{
+comment|/**    * Returns all the containers managed by ContainerManager.    *    * @return List of ContainerInfo    */
+DECL|method|getContainers ()
+name|List
+argument_list|<
+name|ContainerInfo
+argument_list|>
+name|getContainers
+parameter_list|()
+function_decl|;
+comment|/**    * Returns all the containers which are in the specified state.    *    * @return List of ContainerInfo    */
+DECL|method|getContainers (HddsProtos.LifeCycleState state)
+name|List
+argument_list|<
+name|ContainerInfo
+argument_list|>
+name|getContainers
+parameter_list|(
+name|HddsProtos
+operator|.
+name|LifeCycleState
+name|state
+parameter_list|)
+function_decl|;
 comment|/**    * Returns the ContainerInfo from the container ID.    *    * @param containerID - ID of container.    * @return - ContainerInfo such as creation state and the pipeline.    * @throws IOException    */
-DECL|method|getContainer (long containerID)
+DECL|method|getContainer (ContainerID containerID)
 name|ContainerInfo
 name|getContainer
 parameter_list|(
-name|long
+name|ContainerID
 name|containerID
 parameter_list|)
 throws|throws
-name|IOException
+name|ContainerNotFoundException
 function_decl|;
 comment|/**    * Returns the ContainerInfo from the container ID.    *    * @param containerID - ID of container.    * @return - ContainerWithPipeline such as creation state and the pipeline.    * @throws IOException    */
-DECL|method|getContainerWithPipeline (long containerID)
+DECL|method|getContainerWithPipeline (ContainerID containerID)
 name|ContainerWithPipeline
 name|getContainerWithPipeline
 parameter_list|(
-name|long
+name|ContainerID
 name|containerID
 parameter_list|)
 throws|throws
-name|IOException
+name|ContainerNotFoundException
 function_decl|;
 comment|/**    * Returns containers under certain conditions.    * Search container IDs from start ID(exclusive),    * The max size of the searching range cannot exceed the    * value of count.    *    * @param startContainerID start containerID,>=0,    * start searching at the head if 0.    * @param count count must be>= 0    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big.    *    * @return a list of container.    * @throws IOException    */
-DECL|method|listContainer (long startContainerID, int count)
+DECL|method|listContainer (ContainerID startContainerID, int count)
 name|List
 argument_list|<
 name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
-name|long
+name|ContainerID
 name|startContainerID
 parameter_list|,
 name|int
 name|count
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param owner    * @return - ContainerWithPipeline.    * @throws IOException    */
 DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
@@ -309,24 +326,24 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Deletes a container from SCM.    *    * @param containerID - Container ID    * @throws IOException    */
-DECL|method|deleteContainer (long containerID)
+DECL|method|deleteContainer (ContainerID containerID)
 name|void
 name|deleteContainer
 parameter_list|(
-name|long
+name|ContainerID
 name|containerID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update container state.    * @param containerID - Container ID    * @param event - container life cycle event    * @return - new container state    * @throws IOException    */
-DECL|method|updateContainerState (long containerID, HddsProtos.LifeCycleEvent event)
+DECL|method|updateContainerState (ContainerID containerID, HddsProtos.LifeCycleEvent event)
 name|HddsProtos
 operator|.
 name|LifeCycleState
 name|updateContainerState
 parameter_list|(
-name|long
+name|ContainerID
 name|containerID
 parameter_list|,
 name|HddsProtos
@@ -337,14 +354,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the container State Manager.    * @return ContainerStateManager    */
-DECL|method|getStateManager ()
-name|ContainerStateManager
-name|getStateManager
-parameter_list|()
-function_decl|;
 comment|/**    * Process container report from Datanode.    *    * @param reports Container report    */
-DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports, boolean isRegisterCall)
+DECL|method|processContainerReports (DatanodeDetails datanodeDetails, ContainerReportsProto reports)
 name|void
 name|processContainerReports
 parameter_list|(
@@ -353,12 +364,53 @@ name|datanodeDetails
 parameter_list|,
 name|ContainerReportsProto
 name|reports
-parameter_list|,
-name|boolean
-name|isRegisterCall
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Returns the latest list of replicas for given containerId.    *    * @param containerID Container ID    * @return Set of ContainerReplica    */
+DECL|method|getContainerReplicas (ContainerID containerID)
+name|Set
+argument_list|<
+name|ContainerReplica
+argument_list|>
+name|getContainerReplicas
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|)
+throws|throws
+name|ContainerNotFoundException
+function_decl|;
+comment|/**    * Adds a container Replica for the given Container.    *    * @param containerID Container ID    * @param replica ContainerReplica    */
+DECL|method|updateContainerReplica (ContainerID containerID, ContainerReplica replica)
+name|void
+name|updateContainerReplica
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|,
+name|ContainerReplica
+name|replica
+parameter_list|)
+throws|throws
+name|ContainerNotFoundException
+function_decl|;
+comment|/**    * Remove a container Replica form a given Container.    *    * @param containerID Container ID    * @param replica ContainerReplica    * @return True of dataNode is removed successfully else false.    */
+DECL|method|removeContainerReplica (ContainerID containerID, ContainerReplica replica)
+name|void
+name|removeContainerReplica
+parameter_list|(
+name|ContainerID
+name|containerID
+parameter_list|,
+name|ContainerReplica
+name|replica
+parameter_list|)
+throws|throws
+name|ContainerNotFoundException
+throws|,
+name|ContainerReplicaNotFoundException
 function_decl|;
 comment|/**    * Update deleteTransactionId according to deleteTransactionMap.    *    * @param deleteTransactionMap Maps the containerId to latest delete    *                             transaction id for the container.    * @throws IOException    */
 DECL|method|updateDeleteTransactionId (Map<Long, Long> deleteTransactionMap)

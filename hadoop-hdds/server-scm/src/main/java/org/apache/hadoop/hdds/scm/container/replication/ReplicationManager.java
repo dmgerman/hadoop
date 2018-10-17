@@ -86,6 +86,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -152,7 +164,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerStateManager
+name|ContainerInfo
 import|;
 end_import
 
@@ -170,11 +182,25 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
+name|ContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|helpers
+name|apache
 operator|.
-name|ContainerInfo
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|ContainerReplica
 import|;
 end_import
 
@@ -463,20 +489,20 @@ name|running
 init|=
 literal|true
 decl_stmt|;
-DECL|field|containerStateManager
+DECL|field|containerManager
 specifier|private
-name|ContainerStateManager
-name|containerStateManager
+name|ContainerManager
+name|containerManager
 decl_stmt|;
-DECL|method|ReplicationManager (ContainerPlacementPolicy containerPlacement, ContainerStateManager containerStateManager, EventQueue eventQueue, LeaseManager<Long> commandWatcherLeaseManager)
+DECL|method|ReplicationManager (ContainerPlacementPolicy containerPlacement, ContainerManager containerManager, EventQueue eventQueue, LeaseManager<Long> commandWatcherLeaseManager)
 specifier|public
 name|ReplicationManager
 parameter_list|(
 name|ContainerPlacementPolicy
 name|containerPlacement
 parameter_list|,
-name|ContainerStateManager
-name|containerStateManager
+name|ContainerManager
+name|containerManager
 parameter_list|,
 name|EventQueue
 name|eventQueue
@@ -496,9 +522,9 @@ name|containerPlacement
 expr_stmt|;
 name|this
 operator|.
-name|containerStateManager
+name|containerManager
 operator|=
-name|containerStateManager
+name|containerManager
 expr_stmt|;
 name|this
 operator|.
@@ -640,7 +666,7 @@ decl_stmt|;
 name|ContainerInfo
 name|containerInfo
 init|=
-name|containerStateManager
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -680,9 +706,9 @@ expr_stmt|;
 comment|//check the current replication
 name|List
 argument_list|<
-name|DatanodeDetails
+name|ContainerReplica
 argument_list|>
-name|datanodesWithReplicas
+name|containerReplicas
 init|=
 operator|new
 name|ArrayList
@@ -696,7 +722,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|datanodesWithReplicas
+name|containerReplicas
 operator|.
 name|size
 argument_list|()
@@ -755,7 +781,7 @@ operator|.
 name|getExpecReplicationCount
 argument_list|()
 operator|-
-name|datanodesWithReplicas
+name|containerReplicas
 operator|.
 name|size
 argument_list|()
@@ -773,13 +799,39 @@ name|List
 argument_list|<
 name|DatanodeDetails
 argument_list|>
+name|datanodes
+init|=
+name|containerReplicas
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|ContainerReplica
+operator|::
+name|getDatanodeDetails
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
 name|selectedDatanodes
 init|=
 name|containerPlacement
 operator|.
 name|chooseDatanodes
 argument_list|(
-name|datanodesWithReplicas
+name|datanodes
 argument_list|,
 name|deficit
 argument_list|,
@@ -809,7 +861,7 @@ operator|.
 name|getId
 argument_list|()
 argument_list|,
-name|datanodesWithReplicas
+name|datanodes
 argument_list|)
 decl_stmt|;
 name|eventPublisher
@@ -895,7 +947,7 @@ DECL|method|getCurrentReplicas (ReplicationRequest request)
 specifier|protected
 name|Set
 argument_list|<
-name|DatanodeDetails
+name|ContainerReplica
 argument_list|>
 name|getCurrentReplicas
 parameter_list|(
@@ -906,7 +958,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|containerStateManager
+name|containerManager
 operator|.
 name|getContainerReplicas
 argument_list|(
@@ -1091,6 +1143,7 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Add javadoc.    */
 DECL|class|ReplicationCompleted
 specifier|public
 specifier|static

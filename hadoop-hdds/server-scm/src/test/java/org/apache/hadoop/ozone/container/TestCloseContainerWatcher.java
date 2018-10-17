@@ -182,10 +182,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -1814,7 +1810,12 @@ name|containerManager
 operator|.
 name|getContainer
 argument_list|(
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
 name|id1
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -1829,7 +1830,12 @@ name|containerManager
 operator|.
 name|getContainer
 argument_list|(
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
 name|id2
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -1842,7 +1848,7 @@ name|when
 argument_list|(
 name|containerInfo
 operator|.
-name|isContainerOpen
+name|isOpen
 argument_list|()
 argument_list|)
 operator|.
@@ -1855,7 +1861,7 @@ name|when
 argument_list|(
 name|containerInfo2
 operator|.
-name|isContainerOpen
+name|isOpen
 argument_list|()
 argument_list|)
 operator|.

@@ -2621,10 +2621,6 @@ throw|;
 block|}
 comment|// A rename is a no-op if the target and source name is same.
 comment|// TODO: Discuss if we need to throw?.
-comment|// TODO: Define the semantics of rename more clearly. Today this code
-comment|// will allow rename of a Key across volumes. This should *not* be
-comment|// allowed. The documentation of Ozone says that rename is permitted only
-comment|// within a volume.
 if|if
 condition|(
 name|fromKeyName

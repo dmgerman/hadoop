@@ -232,10 +232,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -918,10 +914,7 @@ operator|.
 name|getContainerManager
 argument_list|()
 operator|.
-name|getStateManager
-argument_list|()
-operator|.
-name|getAllContainers
+name|getContainers
 argument_list|()
 decl_stmt|;
 name|GenericTestUtils
@@ -1575,10 +1568,7 @@ operator|.
 name|getContainerManager
 argument_list|()
 operator|.
-name|getStateManager
-argument_list|()
-operator|.
-name|getAllContainers
+name|getContainers
 argument_list|()
 decl_stmt|;
 name|GenericTestUtils
@@ -1664,7 +1654,7 @@ name|updateContainerState
 argument_list|(
 name|c
 operator|.
-name|getContainerID
+name|containerID
 argument_list|()
 argument_list|,
 name|HddsProtos
@@ -1680,7 +1670,7 @@ name|updateContainerState
 argument_list|(
 name|c
 operator|.
-name|getContainerID
+name|containerID
 argument_list|()
 argument_list|,
 name|LifeCycleEvent
@@ -2154,10 +2144,7 @@ operator|.
 name|getContainerManager
 argument_list|()
 operator|.
-name|getStateManager
-argument_list|()
-operator|.
-name|getAllContainers
+name|getContainers
 argument_list|()
 decl_stmt|;
 name|scm

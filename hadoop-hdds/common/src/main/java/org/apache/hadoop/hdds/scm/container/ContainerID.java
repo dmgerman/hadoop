@@ -36,6 +36,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Longs
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -89,10 +103,14 @@ end_comment
 begin_class
 DECL|class|ContainerID
 specifier|public
+specifier|final
 class|class
 name|ContainerID
 implements|implements
 name|Comparable
+argument_list|<
+name|ContainerID
+argument_list|>
 block|{
 DECL|field|id
 specifier|private
@@ -100,6 +118,7 @@ specifier|final
 name|long
 name|id
 decl_stmt|;
+comment|// TODO: make this private.
 comment|/**    * Constructs ContainerID.    *    * @param id int    */
 DECL|method|ContainerID (long id)
 specifier|public
@@ -109,19 +128,6 @@ name|long
 name|id
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|id
-operator|>
-literal|0
-argument_list|,
-literal|"Container ID should be a positive long. "
-operator|+
-name|id
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|id
@@ -130,16 +136,30 @@ name|id
 expr_stmt|;
 block|}
 comment|/**    * Factory method for creation of ContainerID.    * @param containerID  long    * @return ContainerID.    */
-DECL|method|valueof (long containerID)
+DECL|method|valueof (final long containerID)
 specifier|public
 specifier|static
 name|ContainerID
 name|valueof
 parameter_list|(
+specifier|final
 name|long
 name|containerID
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|containerID
+operator|>
+literal|0
+argument_list|,
+literal|"Container ID should be a positive long. "
+operator|+
+name|containerID
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ContainerID
@@ -159,13 +179,30 @@ return|return
 name|id
 return|;
 block|}
+DECL|method|getBytes ()
+specifier|public
+name|byte
+index|[]
+name|getBytes
+parameter_list|()
+block|{
+return|return
+name|Longs
+operator|.
+name|toByteArray
+argument_list|(
+name|id
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
-DECL|method|equals (Object o)
+DECL|method|equals (final Object o)
 specifier|public
 name|boolean
 name|equals
 parameter_list|(
+specifier|final
 name|Object
 name|o
 parameter_list|)
@@ -200,6 +237,7 @@ return|return
 literal|false
 return|;
 block|}
+specifier|final
 name|ContainerID
 name|that
 init|=
@@ -257,57 +295,23 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (Object o)
+DECL|method|compareTo (final ContainerID that)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
-name|o
+specifier|final
+name|ContainerID
+name|that
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|o
+name|that
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|getClass
-argument_list|()
-operator|!=
-name|o
-operator|.
-name|getClass
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|ClassCastException
-argument_list|(
-literal|"ContainerID class expected. found:"
-operator|+
-name|o
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
-block|}
-name|ContainerID
-name|that
-init|=
-operator|(
-name|ContainerID
-operator|)
-name|o
-decl_stmt|;
 return|return
 operator|new
 name|CompareToBuilder

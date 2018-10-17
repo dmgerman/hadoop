@@ -84,6 +84,24 @@ name|HddsProtos
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|ContainerInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class wraps ozone container info.  */
 end_comment

@@ -66,28 +66,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerWithPipeline
 import|;
 end_import
@@ -357,9 +335,6 @@ operator|.
 name|getContainerWithPipeline
 argument_list|(
 name|containerID
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|info
@@ -444,7 +419,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Closing container {} in {} state"
+literal|"Closing container #{} in {} state"
 argument_list|,
 name|containerID
 argument_list|,
@@ -456,9 +431,6 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|containerID
-operator|.
-name|getId
-argument_list|()
 argument_list|,
 name|HddsProtos
 operator|.
@@ -493,9 +465,6 @@ operator|.
 name|updateContainerState
 argument_list|(
 name|containerID
-operator|.
-name|getId
-argument_list|()
 argument_list|,
 name|HddsProtos
 operator|.
@@ -540,17 +509,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"container with id : {} is in {} state and need not be closed."
+literal|"Cannot close container #{}, it is already in {} state."
 argument_list|,
 name|containerID
 operator|.
 name|getId
 argument_list|()
 argument_list|,
-name|info
-operator|.
-name|getState
-argument_list|()
+name|state
 argument_list|)
 expr_stmt|;
 break|break;
@@ -559,7 +525,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Invalid container state for container "
+literal|"Invalid container state for container #"
 operator|+
 name|containerID
 argument_list|)
@@ -576,9 +542,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to update the container state for"
-operator|+
-literal|"container : {}"
+literal|"Failed to update the container state for container #{}"
 operator|+
 name|containerID
 argument_list|,
@@ -651,13 +615,13 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|datanode
+name|node
 lambda|->
 operator|new
 name|CommandForDatanode
 argument_list|<>
 argument_list|(
-name|datanode
+name|node
 operator|.
 name|getUuid
 argument_list|()
@@ -668,11 +632,8 @@ argument_list|)
 operator|.
 name|forEach
 argument_list|(
-parameter_list|(
 name|command
-parameter_list|)
 lambda|->
-block|{
 name|publisher
 operator|.
 name|fireEvent
@@ -681,13 +642,8 @@ name|DATANODE_COMMAND
 argument_list|,
 name|command
 argument_list|)
-argument_list|;
-block|}
-block|)
-class|;
-end_class
-
-begin_expr_stmt
+argument_list|)
+expr_stmt|;
 name|publisher
 operator|.
 name|fireEvent
@@ -701,9 +657,6 @@ name|containerID
 argument_list|)
 argument_list|)
 expr_stmt|;
-end_expr_stmt
-
-begin_expr_stmt
 name|LOG
 operator|.
 name|trace
@@ -717,16 +670,10 @@ argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
-end_expr_stmt
-
-begin_comment
-unit|}
+block|}
 comment|/**    * Class to create retryable event. Prevents redundant requests for same    * container Id.    */
-end_comment
-
-begin_class
 DECL|class|CloseContainerRetryableReq
-unit|public
+specifier|public
 specifier|static
 class|class
 name|CloseContainerRetryableReq
@@ -779,8 +726,8 @@ argument_list|()
 return|;
 block|}
 block|}
+block|}
 end_class
 
-unit|}
 end_unit
 

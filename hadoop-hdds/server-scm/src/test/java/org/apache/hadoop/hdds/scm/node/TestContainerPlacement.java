@@ -664,8 +664,6 @@ name|config
 argument_list|,
 name|scmNodeManager
 argument_list|,
-name|cacheSize
-argument_list|,
 name|eventQueue
 argument_list|)
 return|;

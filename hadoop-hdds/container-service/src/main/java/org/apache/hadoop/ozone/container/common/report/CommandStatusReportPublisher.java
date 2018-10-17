@@ -325,16 +325,6 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-name|builder
-operator|.
-name|addCmdStatus
-argument_list|(
-name|cmdStatus
-operator|.
-name|getProtoBufMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// If status is still pending then don't remove it from map as
 comment|// CommandHandler will change its status when it works on this command.
 if|if
@@ -353,6 +343,16 @@ name|PENDING
 argument_list|)
 condition|)
 block|{
+name|builder
+operator|.
+name|addCmdStatus
+argument_list|(
+name|cmdStatus
+operator|.
+name|getProtoBufMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|map
 operator|.
 name|remove

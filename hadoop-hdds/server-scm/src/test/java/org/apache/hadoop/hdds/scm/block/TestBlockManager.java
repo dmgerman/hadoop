@@ -680,8 +680,6 @@ name|conf
 argument_list|,
 name|nodeManager
 argument_list|,
-literal|128
-argument_list|,
 name|eventQueue
 argument_list|)
 expr_stmt|;

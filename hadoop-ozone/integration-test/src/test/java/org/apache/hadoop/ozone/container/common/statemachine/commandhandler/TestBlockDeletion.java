@@ -1705,8 +1705,6 @@ name|getDatanodeDetails
 argument_list|()
 argument_list|,
 name|dummyReport
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 comment|// wait for event to be handled by event handler

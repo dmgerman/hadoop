@@ -120,10 +120,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -290,6 +286,8 @@ DECL|field|startId
 specifier|private
 name|long
 name|startId
+init|=
+literal|1
 decl_stmt|;
 annotation|@
 name|Option

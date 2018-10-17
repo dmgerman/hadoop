@@ -102,10 +102,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -559,13 +555,6 @@ operator|.
 name|getFactor
 argument_list|()
 argument_list|)
-comment|// This is bytes allocated for blocks inside container, not the
-comment|// container size
-operator|.
-name|setAllocatedBytes
-argument_list|(
-literal|0
-argument_list|)
 operator|.
 name|setUsedBytes
 argument_list|(
@@ -681,13 +670,6 @@ operator|.
 name|getFactor
 argument_list|()
 argument_list|)
-comment|// This is bytes allocated for blocks inside container, not the
-comment|// container size
-operator|.
-name|setAllocatedBytes
-argument_list|(
-literal|0
-argument_list|)
 operator|.
 name|setUsedBytes
 argument_list|(
@@ -787,13 +769,6 @@ name|pipeline
 operator|.
 name|getFactor
 argument_list|()
-argument_list|)
-comment|// This is bytes allocated for blocks inside container, not the
-comment|// container size
-operator|.
-name|setAllocatedBytes
-argument_list|(
-literal|0
 argument_list|)
 operator|.
 name|setUsedBytes
@@ -1187,13 +1162,6 @@ name|pipeline
 operator|.
 name|getFactor
 argument_list|()
-argument_list|)
-comment|// This is bytes allocated for blocks inside container, not the
-comment|// container size
-operator|.
-name|setAllocatedBytes
-argument_list|(
-literal|0
 argument_list|)
 operator|.
 name|setUsedBytes

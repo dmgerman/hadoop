@@ -376,11 +376,11 @@ specifier|static
 name|MockNodeManager
 name|nodeManager
 decl_stmt|;
-DECL|field|mapping
+DECL|field|containerManager
 specifier|private
 specifier|static
 name|SCMContainerManager
-name|mapping
+name|containerManager
 decl_stmt|;
 DECL|field|size
 specifier|private
@@ -474,7 +474,7 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
-name|mapping
+name|containerManager
 operator|=
 operator|new
 name|SCMContainerManager
@@ -482,8 +482,6 @@ argument_list|(
 name|configuration
 argument_list|,
 name|nodeManager
-argument_list|,
-literal|128
 argument_list|,
 operator|new
 name|EventQueue
@@ -505,7 +503,7 @@ argument_list|,
 operator|new
 name|CloseContainerEventHandler
 argument_list|(
-name|mapping
+name|containerManager
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -532,12 +530,12 @@ name|Exception
 block|{
 if|if
 condition|(
-name|mapping
+name|containerManager
 operator|!=
 literal|null
 condition|)
 block|{
-name|mapping
+name|containerManager
 operator|.
 name|close
 argument_list|()
@@ -721,7 +719,7 @@ decl_stmt|;
 name|ContainerWithPipeline
 name|containerWithPipeline
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -810,14 +808,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//Execute these state transitions so that we can close the container.
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
 name|id
-operator|.
-name|getId
-argument_list|()
 argument_list|,
 name|CREATED
 argument_list|)
@@ -874,10 +869,7 @@ name|LifeCycleState
 operator|.
 name|CLOSING
 argument_list|,
-name|mapping
-operator|.
-name|getStateManager
-argument_list|()
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(
@@ -918,7 +910,7 @@ decl_stmt|;
 name|ContainerWithPipeline
 name|containerWithPipeline
 init|=
-name|mapping
+name|containerManager
 operator|.
 name|allocateContainer
 argument_list|(
@@ -1053,14 +1045,11 @@ operator|++
 expr_stmt|;
 block|}
 comment|//Execute these state transitions so that we can close the container.
-name|mapping
+name|containerManager
 operator|.
 name|updateContainerState
 argument_list|(
 name|id
-operator|.
-name|getId
-argument_list|()
 argument_list|,
 name|CREATED
 argument_list|)
@@ -1129,10 +1118,7 @@ name|LifeCycleState
 operator|.
 name|CLOSING
 argument_list|,
-name|mapping
-operator|.
-name|getStateManager
-argument_list|()
+name|containerManager
 operator|.
 name|getContainer
 argument_list|(

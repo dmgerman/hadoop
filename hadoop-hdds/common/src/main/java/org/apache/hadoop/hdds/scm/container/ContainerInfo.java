@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.container.common.helpers
+DECL|package|org.apache.hadoop.hdds.scm.container
 package|package
 name|org
 operator|.
@@ -17,10 +17,6 @@ operator|.
 name|scm
 operator|.
 name|container
-operator|.
-name|common
-operator|.
-name|helpers
 package|;
 end_package
 
@@ -284,7 +280,11 @@ name|scm
 operator|.
 name|container
 operator|.
-name|ContainerID
+name|common
+operator|.
+name|helpers
+operator|.
+name|PipelineID
 import|;
 end_import
 
@@ -413,13 +413,6 @@ specifier|private
 name|ReplicationType
 name|replicationType
 decl_stmt|;
-comment|// Bytes allocated by SCM for clients.
-DECL|field|allocatedBytes
-specifier|private
-name|long
-name|allocatedBytes
-decl_stmt|;
-comment|// Actual container usage, updated through heartbeat.
 DECL|field|usedBytes
 specifier|private
 name|long
@@ -465,7 +458,7 @@ name|byte
 index|[]
 name|data
 decl_stmt|;
-DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, PipelineID pipelineID, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId, ReplicationFactor replicationFactor, ReplicationType repType)
+DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, PipelineID pipelineID, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId, ReplicationFactor replicationFactor, ReplicationType repType)
 name|ContainerInfo
 parameter_list|(
 name|long
@@ -478,9 +471,6 @@ name|state
 parameter_list|,
 name|PipelineID
 name|pipelineID
-parameter_list|,
-name|long
-name|allocatedBytes
 parameter_list|,
 name|long
 name|usedBytes
@@ -515,12 +505,6 @@ operator|.
 name|pipelineID
 operator|=
 name|pipelineID
-expr_stmt|;
-name|this
-operator|.
-name|allocatedBytes
-operator|=
-name|allocatedBytes
 expr_stmt|;
 name|this
 operator|.
@@ -607,11 +591,6 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getAllocatedBytes
-argument_list|()
-argument_list|,
-name|info
-operator|.
 name|getUsedBytes
 argument_list|()
 argument_list|,
@@ -690,14 +669,6 @@ operator|.
 name|getPipelineID
 argument_list|()
 argument_list|)
-argument_list|)
-operator|.
-name|setAllocatedBytes
-argument_list|(
-name|info
-operator|.
-name|getAllocatedBytes
-argument_list|()
 argument_list|)
 operator|.
 name|setUsedBytes
@@ -846,33 +817,6 @@ return|return
 name|pipelineID
 return|;
 block|}
-DECL|method|getAllocatedBytes ()
-specifier|public
-name|long
-name|getAllocatedBytes
-parameter_list|()
-block|{
-return|return
-name|allocatedBytes
-return|;
-block|}
-comment|/**    * Set Allocated bytes.    *    * @param size - newly allocated bytes -- negative size is case of deletes    * can be used.    */
-DECL|method|updateAllocatedBytes (long size)
-specifier|public
-name|void
-name|updateAllocatedBytes
-parameter_list|(
-name|long
-name|size
-parameter_list|)
-block|{
-name|this
-operator|.
-name|allocatedBytes
-operator|+=
-name|size
-expr_stmt|;
-block|}
 DECL|method|getUsedBytes ()
 specifier|public
 name|long
@@ -972,22 +916,6 @@ name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|allocate (long size)
-specifier|public
-name|void
-name|allocate
-parameter_list|(
-name|long
-name|size
-parameter_list|)
-block|{
-comment|// should we also have total container size in ContainerInfo
-comment|// and check before allocating?
-name|allocatedBytes
-operator|+=
-name|size
-expr_stmt|;
-block|}
 DECL|method|getProtobuf ()
 specifier|public
 name|HddsProtos
@@ -1021,12 +949,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|builder
-operator|.
-name|setAllocatedBytes
-argument_list|(
-name|getAllocatedBytes
-argument_list|()
-argument_list|)
 operator|.
 name|setContainerID
 argument_list|(
@@ -1487,11 +1409,6 @@ operator|.
 name|LifeCycleState
 name|state
 decl_stmt|;
-DECL|field|allocated
-specifier|private
-name|long
-name|allocated
-decl_stmt|;
 DECL|field|used
 specifier|private
 name|long
@@ -1643,25 +1560,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setAllocatedBytes (long bytesAllocated)
-specifier|public
-name|Builder
-name|setAllocatedBytes
-parameter_list|(
-name|long
-name|bytesAllocated
-parameter_list|)
-block|{
-name|this
-operator|.
-name|allocated
-operator|=
-name|bytesAllocated
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|setUsedBytes (long bytesUsed)
 specifier|public
 name|Builder
@@ -1773,8 +1671,6 @@ name|state
 argument_list|,
 name|pipelineID
 argument_list|,
-name|allocated
-argument_list|,
 name|used
 argument_list|,
 name|keys
@@ -1793,10 +1689,10 @@ return|;
 block|}
 block|}
 comment|/**    * Check if a container is in open state, this will check if the    * container is either open, allocated, creating or creating.    * Any containers in these states is managed as an open container by SCM.    */
-DECL|method|isContainerOpen ()
+DECL|method|isOpen ()
 specifier|public
 name|boolean
-name|isContainerOpen
+name|isOpen
 parameter_list|()
 block|{
 return|return

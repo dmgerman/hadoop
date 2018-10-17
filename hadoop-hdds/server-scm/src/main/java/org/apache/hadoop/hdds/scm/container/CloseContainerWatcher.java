@@ -471,10 +471,15 @@ name|containerManager
 operator|.
 name|getContainer
 argument_list|(
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
 name|containerID
 argument_list|)
+argument_list|)
 operator|.
-name|isContainerOpen
+name|isOpen
 argument_list|()
 condition|)
 block|{
