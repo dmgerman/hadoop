@@ -1178,8 +1178,8 @@ parameter_list|)
 function_decl|;
 DECL|method|getStreamSize ()
 specifier|private
-specifier|static
 specifier|native
+specifier|static
 name|int
 name|getStreamSize
 parameter_list|()
