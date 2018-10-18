@@ -1919,6 +1919,13 @@ argument_list|)
 decl_stmt|;
 name|c
 operator|.
+name|setHttpOnly
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|c
+operator|.
 name|setPath
 argument_list|(
 name|ProxyUriUtils
