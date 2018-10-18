@@ -6555,6 +6555,14 @@ init|=
 name|getRemoteUgi
 argument_list|()
 decl_stmt|;
+name|String
+name|remoteUser
+init|=
+name|remoteUgi
+operator|.
+name|getUserName
+argument_list|()
+decl_stmt|;
 name|NMTokenIdentifier
 name|nmTokenIdentifier
 init|=
@@ -6731,6 +6739,8 @@ argument_list|(
 name|containerTokenIdentifier
 argument_list|,
 name|request
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 name|succeededContainers
@@ -7240,7 +7250,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|startContainerInternal ( ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest request)
+DECL|method|startContainerInternal ( ContainerTokenIdentifier containerTokenIdentifier, StartContainerRequest request, String remoteUser)
 specifier|protected
 name|void
 name|startContainerInternal
@@ -7250,6 +7260,9 @@ name|containerTokenIdentifier
 parameter_list|,
 name|StartContainerRequest
 name|request
+parameter_list|,
+name|String
+name|remoteUser
 parameter_list|)
 throws|throws
 name|YarnException
@@ -7290,7 +7303,7 @@ name|containerIdStr
 operator|+
 literal|" by user "
 operator|+
-name|user
+name|remoteUser
 argument_list|)
 expr_stmt|;
 name|ContainerLaunchContext
@@ -7511,7 +7524,7 @@ name|NMAuditLogger
 operator|.
 name|logFailure
 argument_list|(
-name|user
+name|remoteUser
 argument_list|,
 name|AuditConstants
 operator|.
@@ -7865,7 +7878,7 @@ name|NMAuditLogger
 operator|.
 name|logSuccess
 argument_list|(
-name|user
+name|remoteUser
 argument_list|,
 name|AuditConstants
 operator|.
@@ -8966,6 +8979,14 @@ name|INVALID_NMTOKEN_MSG
 argument_list|)
 throw|;
 block|}
+name|String
+name|remoteUser
+init|=
+name|remoteUgi
+operator|.
+name|getUserName
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|ContainerId
@@ -9003,11 +9024,15 @@ argument_list|,
 literal|true
 argument_list|,
 name|identifier
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 name|stopContainerInternal
 argument_list|(
 name|id
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 name|succeededRequests
@@ -9056,13 +9081,16 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|stopContainerInternal (ContainerId containerID)
+DECL|method|stopContainerInternal (ContainerId containerID, String remoteUser)
 specifier|protected
 name|void
 name|stopContainerInternal
 parameter_list|(
 name|ContainerId
 name|containerID
+parameter_list|,
+name|String
+name|remoteUser
 parameter_list|)
 throws|throws
 name|YarnException
@@ -9180,10 +9208,7 @@ name|NMAuditLogger
 operator|.
 name|logSuccess
 argument_list|(
-name|container
-operator|.
-name|getUser
-argument_list|()
+name|remoteUser
 argument_list|,
 name|AuditConstants
 operator|.
@@ -9280,6 +9305,14 @@ name|INVALID_NMTOKEN_MSG
 argument_list|)
 throw|;
 block|}
+name|String
+name|remoteUser
+init|=
+name|remoteUgi
+operator|.
+name|getUserName
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|ContainerId
@@ -9301,6 +9334,8 @@ argument_list|(
 name|id
 argument_list|,
 name|identifier
+argument_list|,
+name|remoteUser
 argument_list|)
 decl_stmt|;
 name|succeededRequests
@@ -9344,7 +9379,7 @@ name|failedRequests
 argument_list|)
 return|;
 block|}
-DECL|method|getContainerStatusInternal (ContainerId containerID, NMTokenIdentifier nmTokenIdentifier)
+DECL|method|getContainerStatusInternal (ContainerId containerID, NMTokenIdentifier nmTokenIdentifier, String remoteUser)
 specifier|protected
 name|ContainerStatus
 name|getContainerStatusInternal
@@ -9354,6 +9389,9 @@ name|containerID
 parameter_list|,
 name|NMTokenIdentifier
 name|nmTokenIdentifier
+parameter_list|,
+name|String
+name|remoteUser
 parameter_list|)
 throws|throws
 name|YarnException
@@ -9399,6 +9437,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|nmTokenIdentifier
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 if|if
@@ -9723,7 +9763,7 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|authorizeGetAndStopContainerRequest (ContainerId containerId, Container container, boolean stopRequest, NMTokenIdentifier identifier)
+DECL|method|authorizeGetAndStopContainerRequest (ContainerId containerId, Container container, boolean stopRequest, NMTokenIdentifier identifier, String remoteUser)
 specifier|protected
 name|void
 name|authorizeGetAndStopContainerRequest
@@ -9739,6 +9779,9 @@ name|stopRequest
 parameter_list|,
 name|NMTokenIdentifier
 name|identifier
+parameter_list|,
+name|String
+name|remoteUser
 parameter_list|)
 throws|throws
 name|YarnException
@@ -9836,7 +9879,7 @@ name|NMAuditLogger
 operator|.
 name|logFailure
 argument_list|(
-literal|"UnknownUser"
+name|remoteUser
 argument_list|,
 name|AuditConstants
 operator|.

@@ -3627,6 +3627,9 @@ name|stopRequest
 parameter_list|,
 name|NMTokenIdentifier
 name|identifier
+parameter_list|,
+name|String
+name|remoteUser
 parameter_list|)
 throws|throws
 name|YarnException

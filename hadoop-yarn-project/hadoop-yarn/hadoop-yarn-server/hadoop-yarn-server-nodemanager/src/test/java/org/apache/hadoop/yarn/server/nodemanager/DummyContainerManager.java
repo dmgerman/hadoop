@@ -1410,7 +1410,7 @@ comment|// do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|authorizeGetAndStopContainerRequest (ContainerId containerId, Container container, boolean stopRequest, NMTokenIdentifier identifier)
+DECL|method|authorizeGetAndStopContainerRequest (ContainerId containerId, Container container, boolean stopRequest, NMTokenIdentifier identifier, String remoteUser)
 specifier|protected
 name|void
 name|authorizeGetAndStopContainerRequest
@@ -1426,6 +1426,9 @@ name|stopRequest
 parameter_list|,
 name|NMTokenIdentifier
 name|identifier
+parameter_list|,
+name|String
+name|remoteUser
 parameter_list|)
 throws|throws
 name|YarnException
