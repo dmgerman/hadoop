@@ -475,7 +475,7 @@ name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * updates the length of the each block in the list given.    * This will be called when the key is being committed to OzoneManager.    *    * @param locationInfoList list of locationInfo    * @throws IOException    */
+comment|/**    * updates the length of the each block in the list given.    * This will be called when the key is being committed to OzoneManager.    *    * @param locationInfoList list of locationInfo    */
 DECL|method|updateLocationInfoList (List<OmKeyLocationInfo> locationInfoList)
 specifier|public
 name|void

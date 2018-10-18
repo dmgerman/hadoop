@@ -334,7 +334,7 @@ return|return
 name|bucketName
 return|;
 block|}
-comment|/**    * Returns the ACL's that are to be added.    * @return List<OzoneAclInfo>    */
+comment|/**    * Returns the ACL's that are to be added.    * @return {@literal List<OzoneAclInfo>}    */
 DECL|method|getAddAcls ()
 specifier|public
 name|List
@@ -348,7 +348,7 @@ return|return
 name|addAcls
 return|;
 block|}
-comment|/**    * Returns the ACL's that are to be removed.    * @return List<OzoneAclInfo>    */
+comment|/**    * Returns the ACL's that are to be removed.    * @return {@literal List<OzoneAclInfo>}    */
 DECL|method|getRemoveAcls ()
 specifier|public
 name|List

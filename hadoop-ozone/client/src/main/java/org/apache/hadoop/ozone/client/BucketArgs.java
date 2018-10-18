@@ -149,7 +149,7 @@ return|return
 name|storageType
 return|;
 block|}
-comment|/**    * Returns the ACL's associated with this bucket.    * @return List<OzoneAcl>    */
+comment|/**    * Returns the ACL's associated with this bucket.    * @return {@literal List<OzoneAcl>}    */
 DECL|method|getAcls ()
 specifier|public
 name|List

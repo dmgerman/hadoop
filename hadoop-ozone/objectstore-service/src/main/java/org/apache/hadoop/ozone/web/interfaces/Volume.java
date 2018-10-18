@@ -312,7 +312,7 @@ specifier|public
 interface|interface
 name|Volume
 block|{
-comment|/**    * Creates a Volume owned by the user.    *    * Params :    * Quota - Specifies the Maximum usable size by the user    * the valid parameters for quota are<int>(<BYTES| MB|GB|TB>) | remove.    * For example 10GB or "remove".    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this Storage Volume -<int>(<MB|GB|TB>) | remove    * @param req - Request Object - Request Object    * @param uriInfo - Http UriInfo    * @param headers Http Headers HttpHeaders    *    * @return Response    *    * @throws OzoneException    */
+comment|/**    * Creates a Volume owned by the user.    *    * Params :    * Quota - Specifies the Maximum usable size by the user    * the valid parameters for quota are {@literal<int>(<BYTES| MB|GB|TB>)}    * | remove. For example 10GB or "remove".    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this Storage Volume - {@literal<int>(<MB|GB|TB>)}    *             | remove    * @param req - Request Object - Request Object    * @param uriInfo - Http UriInfo    * @param headers Http Headers HttpHeaders    *    * @return Response    *    * @throws OzoneException    */
 annotation|@
 name|POST
 annotation|@
@@ -454,7 +454,7 @@ parameter_list|)
 throws|throws
 name|OzoneException
 function_decl|;
-comment|/**    * Updates a Volume owned by the user.    *    * Params :    * Owner - Specifies the name of the owner    * Quota - Specifies the Maximum usable size by the user    * the valid parameters for quota are<int>(<MB|GB|TB>) | remove.    * For example 10GB or "remove".    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this Storage Volume -<int>(<MB|GB|TB>) | remove    * @param req - Request Object - Request Object    * @param headers Http Headers HttpHeaders    *    * @return Response    *    * @throws OzoneException    */
+comment|/**    * Updates a Volume owned by the user.    *    * Params :    * Owner - Specifies the name of the owner    * Quota - Specifies the Maximum usable size by the user    * the valid parameters for quota are {@literal<int>(<MB|GB|TB>)} | remove.    * For example 10GB or "remove".    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this Storage Volume - {@literal<int>(<MB|GB|TB>)}    *             | remove    * @param req - Request Object - Request Object    * @param headers Http Headers HttpHeaders    *    * @return Response    *    * @throws OzoneException    */
 annotation|@
 name|PUT
 annotation|@

@@ -147,7 +147,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Provides REST access to Ozone Service List.  *<p>  * This servlet generally will be placed under the /serviceList URL of  * OzoneManager HttpServer.  *  * The return format is of JSON and in the form  *<p>  *<code><pre>  *  {  *    "services" : [  *      {  *        "NodeType":"OM",  *        "Hostname" "$hostname",  *        "ports" : {  *          "$PortType" : "$port",  *          ...  *        }  *      }  *    ]  *  }  *</pre></code>  *<p>  *  */
+comment|/**  * Provides REST access to Ozone Service List.  *<p>  * This servlet generally will be placed under the /serviceList URL of  * OzoneManager HttpServer.  *  * The return format is of JSON and in the form  *<p>  *<pre><code>  *  {  *    "services" : [  *      {  *        "NodeType":"OM",  *        "Hostname" "$hostname",  *        "ports" : {  *          "$PortType" : "$port",  *          ...  *        }  *      }  *    ]  *  }  *</code></pre>  *<p>  *  */
 end_comment
 
 begin_class

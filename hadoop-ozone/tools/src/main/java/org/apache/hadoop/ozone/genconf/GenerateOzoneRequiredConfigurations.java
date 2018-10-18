@@ -209,7 +209,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * GenerateOzoneRequiredConfigurations - A tool to generate ozone-site.xml<br>  * This tool generates an ozone-site.xml with minimally required configs.  * This tool can be invoked as follows:<br>  *<ul>  *<li>ozone genconf<Path to output file></li>  *<li>ozone genconf --help</li>  *<li>ozone genconf -h</li>  *</ul>  */
+comment|/**  * GenerateOzoneRequiredConfigurations - A tool to generate ozone-site.xml<br>  * This tool generates an ozone-site.xml with minimally required configs.  * This tool can be invoked as follows:<br>  *<ul>  *<li>ozone genconf {@literal<Path to output file>}</li>  *<li>ozone genconf --help</li>  *<li>ozone genconf -h</li>  *</ul>  */
 end_comment
 
 begin_class

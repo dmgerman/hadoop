@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * This in the accounting interface, Ozone Rest interface will call into this  * interface whenever a put or delete key happens.  *<p>  * TODO : Technically we need to report bucket creation and deletion too  * since the bucket names and metadata consume storage.  *<p>  * TODO : We should separate out reporting metadata& data --  *<p>  * In some cases end users will only want to account for the data they are  * storing since metadata is mostly a cost of business.  */
+comment|/**  * This in the accounting interface, Ozone Rest interface will call into this  * interface whenever a put or delete key happens.  *<p>  * TODO : Technically we need to report bucket creation and deletion too  * since the bucket names and metadata consume storage.  *<p>  * TODO : We should separate out reporting metadata&amp; data --  *<p>  * In some cases end users will only want to account for the data they are  * storing since metadata is mostly a cost of business.  */
 end_comment
 
 begin_interface

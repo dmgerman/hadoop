@@ -326,7 +326,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Creates a volume.    *    * @param volume Volume Name, this has to be unique at Ozone cluster level    * @param quota Quota for this Storage Volume -<int>(<BYTES|MB|GB|TB>)    * @param req Request Object    * @param uriInfo URI info    * @param headers Http Headers    *    * @return Standard JAX-RS Response    *    * @throws OzoneException    */
+comment|/**    * Creates a volume.    *    * @param volume Volume Name, this has to be unique at Ozone cluster level    * @param quota Quota for this Storage Volume    *             - {@literal<int>(<BYTES|MB|GB|TB>)}    * @param req Request Object    * @param uriInfo URI info    * @param headers Http Headers    *    * @return Standard JAX-RS Response    *    * @throws OzoneException    */
 annotation|@
 name|Override
 DECL|method|createVolume (String volume, final String quota, Request req, UriInfo uriInfo, HttpHeaders headers)
@@ -563,7 +563,7 @@ name|headers
 argument_list|)
 return|;
 block|}
-comment|/**    * Updates  volume metadata.    *    * There are only two actions possible currently with updateVolume.    * Change the volume ownership or update quota. if you make a call    * with neither of these actions, update just returns 200 OK.    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this volume -<int>(<BYTES|MB|GB|TB>)|remove    * @param req - Request Object    * @param uriInfo - URI info    * @param headers Http Headers    *    * @return Standard JAX-RS Response    *    * @throws OzoneException    */
+comment|/**    * Updates  volume metadata.    *    * There are only two actions possible currently with updateVolume.    * Change the volume ownership or update quota. if you make a call    * with neither of these actions, update just returns 200 OK.    *    * @param volume Volume Name, this has to be unique at Ozone Level    * @param quota Quota for this volume    *             - {@literal<int>(<BYTES|MB|GB|TB>)}|remove    * @param req - Request Object    * @param uriInfo - URI info    * @param headers Http Headers    *    * @return Standard JAX-RS Response    *    * @throws OzoneException    */
 annotation|@
 name|Override
 DECL|method|updateVolume (String volume, final String quota, Request req, UriInfo uriInfo, HttpHeaders headers)

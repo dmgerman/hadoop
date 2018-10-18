@@ -192,7 +192,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Given the args of a key to put, write an open key entry to meta data.    *    * In case that the container creation or key write failed on    * DistributedStorageHandler, this key's metadata will still stay in OM.    * TODO garbage collect the open keys that never get closed    *    * @param args the args of the key provided by client.    * @return a OpenKeySession instance client uses to talk to container.    * @throws Exception    */
+comment|/**    * Given the args of a key to put, write an open key entry to meta data.    *    * In case that the container creation or key write failed on    * DistributedStorageHandler, this key's metadata will still stay in OM.    * TODO garbage collect the open keys that never get closed    *    * @param args the args of the key provided by client.    * @return a OpenKeySession instance client uses to talk to container.    * @throws IOException    */
 DECL|method|openKey (OmKeyArgs args)
 name|OpenKeySession
 name|openKey
