@@ -4669,14 +4669,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|SaverContext
-name|state
-init|=
-name|parent
-operator|.
-name|getSaverContext
-argument_list|()
-decl_stmt|;
 name|INodeSection
 operator|.
 name|INodeSymlink
