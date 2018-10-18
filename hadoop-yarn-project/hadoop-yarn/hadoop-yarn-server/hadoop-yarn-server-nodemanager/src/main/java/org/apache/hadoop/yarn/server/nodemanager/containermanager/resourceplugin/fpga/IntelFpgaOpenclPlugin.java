@@ -544,7 +544,19 @@ condition|)
 block|{
 name|pathToExecutable
 operator|=
-name|pluginDefaultPreferredPath
+name|binaryPath
+operator|.
+name|getAbsolutePath
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Succeed in finding FPGA discoverer executable: "
+operator|+
+name|pathToExecutable
+argument_list|)
 expr_stmt|;
 block|}
 else|else
