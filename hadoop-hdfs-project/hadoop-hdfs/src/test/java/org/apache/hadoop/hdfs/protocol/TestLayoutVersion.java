@@ -589,6 +589,12 @@ operator|.
 name|Feature
 operator|.
 name|ERASURE_CODING
+argument_list|,
+name|NameNodeLayoutVersion
+operator|.
+name|Feature
+operator|.
+name|EXPANDED_STRING_TABLE
 argument_list|)
 decl_stmt|;
 for|for
