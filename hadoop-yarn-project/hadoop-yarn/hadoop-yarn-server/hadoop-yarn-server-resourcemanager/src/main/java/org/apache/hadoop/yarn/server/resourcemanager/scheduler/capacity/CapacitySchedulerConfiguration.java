@@ -1778,6 +1778,7 @@ name|PREFIX
 operator|+
 literal|"per-node-heartbeat.maximum-container-assignments"
 decl_stmt|;
+comment|/**    * Avoid potential risk that greedy assign multiple may involve    * */
 annotation|@
 name|Private
 DECL|field|DEFAULT_MAX_ASSIGN_PER_HEARTBEAT
@@ -1787,8 +1788,7 @@ specifier|final
 name|int
 name|DEFAULT_MAX_ASSIGN_PER_HEARTBEAT
 init|=
-operator|-
-literal|1
+literal|100
 decl_stmt|;
 comment|/** Configuring absolute min/max resources in a queue. **/
 annotation|@
