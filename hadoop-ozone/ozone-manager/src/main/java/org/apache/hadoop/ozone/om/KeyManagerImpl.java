@@ -2390,7 +2390,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Get key failed for volume:{} bucket:{} key:{}"
 argument_list|,
