@@ -54,6 +54,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collection
 import|;
 end_import
@@ -64,7 +74,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
+name|Collections
 import|;
 end_import
 
@@ -74,7 +84,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|Set
 import|;
 end_import
 
@@ -84,7 +94,21 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|TreeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -214,20 +238,6 @@ name|UserGroupInformation
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Class representing a configured access control list.  */
 end_comment
@@ -302,20 +312,32 @@ decl_stmt|;
 comment|// Set of users who are granted access.
 DECL|field|users
 specifier|private
-name|Collection
+specifier|final
+name|Set
 argument_list|<
 name|String
 argument_list|>
 name|users
+init|=
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|()
 decl_stmt|;
 comment|// Set of groups which are granted access
 DECL|field|groups
 specifier|private
-name|Collection
+specifier|final
+name|Set
 argument_list|<
 name|String
 argument_list|>
 name|groups
+init|=
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|()
 decl_stmt|;
 comment|// Whether all users are granted access.
 DECL|field|allAllowed
@@ -343,7 +365,7 @@ specifier|public
 name|AccessControlList
 parameter_list|()
 block|{   }
-comment|/**    * Construct a new ACL from a String representation of the same.    *     * The String is a a comma separated list of users and groups.    * The user list comes first and is separated by a space followed     * by the group list. For e.g. "user1,user2 group1,group2"    *     * @param aclString String representation of the ACL    */
+comment|/**    * Construct a new ACL from a String representation of the same.    *    * The String is a a comma separated list of users and groups.    * The user list comes first and is separated by a space followed    * by the group list. For e.g. "user1,user2 group1,group2"    *    * @param aclString String representation of the ACL    */
 DECL|method|AccessControlList (String aclString)
 specifier|public
 name|AccessControlList
@@ -365,7 +387,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Construct a new ACL from String representation of users and groups    *     * The arguments are comma separated lists    *     * @param users comma separated list of users    * @param groups comma separated list of groups    */
+comment|/**    * Construct a new ACL from String representation of users and groups.    *    * The arguments are comma separated lists    *    * @param users comma separated list of users    * @param groups comma separated list of groups    */
 DECL|method|AccessControlList (String users, String groups)
 specifier|public
 name|AccessControlList
@@ -401,24 +423,6 @@ index|[]
 name|userGroupStrings
 parameter_list|)
 block|{
-name|users
-operator|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-expr_stmt|;
-name|groups
-operator|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-expr_stmt|;
 for|for
 control|(
 name|String
@@ -443,15 +447,9 @@ name|allAllowed
 operator|=
 literal|true
 expr_stmt|;
-break|break;
+return|return;
 block|}
 block|}
-if|if
-condition|(
-operator|!
-name|allAllowed
-condition|)
-block|{
 if|if
 condition|(
 name|userGroupStrings
@@ -468,18 +466,50 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|users
-operator|=
-name|StringUtils
-operator|.
-name|getTrimmedStringCollection
-argument_list|(
+name|String
+index|[]
+name|userList
+init|=
 name|userGroupStrings
 index|[
 literal|0
 index|]
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|String
+name|user
+range|:
+name|userList
+control|)
+block|{
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isNotBlank
+argument_list|(
+name|user
+argument_list|)
+condition|)
+block|{
+name|users
+operator|.
+name|add
+argument_list|(
+name|user
+operator|.
+name|trim
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 if|if
 condition|(
@@ -497,27 +527,57 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|groups
-operator|=
-name|StringUtils
-operator|.
-name|getTrimmedStringCollection
-argument_list|(
+name|String
+index|[]
+name|groupList
+init|=
 name|userGroupStrings
 index|[
 literal|1
 index|]
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|String
+name|group
+range|:
+name|groupList
+control|)
+block|{
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isNotBlank
+argument_list|(
+name|group
+argument_list|)
+condition|)
+block|{
+name|groups
+operator|.
+name|add
+argument_list|(
+name|group
+operator|.
+name|trim
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 name|groupsMapping
 operator|.
 name|cacheGroupsAdd
 argument_list|(
 operator|new
-name|LinkedList
-argument_list|<
-name|String
-argument_list|>
+name|ArrayList
+argument_list|<>
 argument_list|(
 name|groups
 argument_list|)
@@ -525,8 +585,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * Checks whether ACL string contains wildcard    *    * @param aclString check this ACL string for wildcard    * @return true if ACL string contains wildcard false otherwise    */
+comment|/**    * Checks whether ACL string contains wildcard.    *    * @param aclString check this ACL string for wildcard    * @return true if ACL string contains wildcard false otherwise    */
 DECL|method|isWildCardACLValue (String aclString)
 specifier|private
 name|boolean
@@ -536,32 +595,16 @@ name|String
 name|aclString
 parameter_list|)
 block|{
-if|if
-condition|(
-name|aclString
-operator|.
-name|contains
-argument_list|(
+return|return
 name|WILDCARD_ACL_VALUE
-argument_list|)
-operator|&&
+operator|.
+name|equals
+argument_list|(
 name|aclString
 operator|.
 name|trim
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|WILDCARD_ACL_VALUE
 argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|isAllAllowed ()
@@ -574,7 +617,7 @@ return|return
 name|allAllowed
 return|;
 block|}
-comment|/**    * Add user to the names of users allowed for this service.    *     * @param user    *          The user name    */
+comment|/**    * Add user to the names of users allowed for this service.    *    * @param user The user name    */
 DECL|method|addUser (String user)
 specifier|public
 name|void
@@ -620,7 +663,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add group to the names of groups allowed for this service.    *     * @param group    *          The group name    */
+comment|/**    * Add group to the names of groups allowed for this service.    *    * @param group The group name    */
 DECL|method|addGroup (String group)
 specifier|public
 name|void
@@ -657,31 +700,16 @@ name|isAllAllowed
 argument_list|()
 condition|)
 block|{
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|groupsList
-init|=
-operator|new
-name|LinkedList
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-decl_stmt|;
-name|groupsList
-operator|.
-name|add
-argument_list|(
-name|group
-argument_list|)
-expr_stmt|;
 name|groupsMapping
 operator|.
 name|cacheGroupsAdd
 argument_list|(
-name|groupsList
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|group
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|groups
@@ -693,7 +721,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove user from the names of users allowed for this service.    *     * @param user    *          The user name    */
+comment|/**    * Remove user from the names of users allowed for this service.    *    * @param user The user name    */
 DECL|method|removeUser (String user)
 specifier|public
 name|void
@@ -739,7 +767,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove group from the names of groups allowed for this service.    *     * @param group    *          The group name    */
+comment|/**    * Remove group from the names of groups allowed for this service.    *    * @param group The group name    */
 DECL|method|removeGroup (String group)
 specifier|public
 name|void
@@ -785,7 +813,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the names of users allowed for this service.    * @return the set of user names. the set must not be modified.    */
+comment|/**    * Get the names of users allowed for this service.    *    * @return an unmodifiable set of user names in alphabetic order.    */
 DECL|method|getUsers ()
 specifier|public
 name|Collection
@@ -796,10 +824,15 @@ name|getUsers
 parameter_list|()
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
 name|users
+argument_list|)
 return|;
 block|}
-comment|/**    * Get the names of user groups allowed for this service.    * @return the set of group names. the set must not be modified.    */
+comment|/**    * Get the names of user groups allowed for this service.    *    * @return an unmodifiable set of group names in alphabetic order.    */
 DECL|method|getGroups ()
 specifier|public
 name|Collection
@@ -810,7 +843,12 @@ name|getGroups
 parameter_list|()
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
 name|groups
+argument_list|)
 return|;
 block|}
 comment|/**    * Checks if a user represented by the provided {@link UserGroupInformation}    * is a member of the Access Control List    * @param ugi UserGroupInformation to check if contained in the ACL    * @return true if ugi is member of the list    */
@@ -843,7 +881,6 @@ return|return
 literal|true
 return|;
 block|}
-elseif|else
 if|if
 condition|(
 operator|!
@@ -1190,8 +1227,12 @@ name|getUsersString
 parameter_list|()
 block|{
 return|return
-name|getString
+name|String
+operator|.
+name|join
 argument_list|(
+literal|","
+argument_list|,
 name|users
 argument_list|)
 return|;
@@ -1204,81 +1245,14 @@ name|getGroupsString
 parameter_list|()
 block|{
 return|return
-name|getString
-argument_list|(
-name|groups
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns comma-separated concatenated single String of all strings of    * the given set    *    * @param strings set of strings to concatenate    */
-DECL|method|getString (Collection<String> strings)
-specifier|private
 name|String
-name|getString
-parameter_list|(
-name|Collection
-argument_list|<
-name|String
-argument_list|>
-name|strings
-parameter_list|)
-block|{
-name|StringBuilder
-name|sb
-init|=
-operator|new
-name|StringBuilder
-argument_list|(
-name|INITIAL_CAPACITY
-argument_list|)
-decl_stmt|;
-name|boolean
-name|first
-init|=
-literal|true
-decl_stmt|;
-for|for
-control|(
-name|String
-name|str
-range|:
-name|strings
-control|)
-block|{
-if|if
-condition|(
-operator|!
-name|first
-condition|)
-block|{
-name|sb
 operator|.
-name|append
+name|join
 argument_list|(
 literal|","
+argument_list|,
+name|groups
 argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|first
-operator|=
-literal|false
-expr_stmt|;
-block|}
-name|sb
-operator|.
-name|append
-argument_list|(
-name|str
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|sb
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}
