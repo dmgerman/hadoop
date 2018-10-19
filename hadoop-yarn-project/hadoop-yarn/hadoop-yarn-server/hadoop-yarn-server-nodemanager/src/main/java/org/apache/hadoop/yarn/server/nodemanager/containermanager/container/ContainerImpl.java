@@ -8695,28 +8695,55 @@ name|int
 name|retryInterval
 parameter_list|)
 block|{
+if|if
+condition|(
+name|remainingRetryAttempts
+operator|==
+name|ContainerRetryContext
+operator|.
+name|RETRY_FOREVER
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Relaunching Container "
+literal|"Relaunching Container {}. "
 operator|+
+literal|"retry interval {} ms"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|". Remaining retry attempts(after relaunch) : "
-operator|+
-name|remainingRetryAttempts
-operator|+
-literal|". Interval between retries is "
-operator|+
+argument_list|,
 name|retryInterval
-operator|+
-literal|"ms"
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Relaunching Container {}. "
+operator|+
+literal|"remaining retry attempts(after relaunch) {}, "
+operator|+
+literal|"retry interval {} ms"
+argument_list|,
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|remainingRetryAttempts
+argument_list|,
+name|retryInterval
+argument_list|)
+expr_stmt|;
+block|}
 name|container
 operator|.
 name|wasLaunched
