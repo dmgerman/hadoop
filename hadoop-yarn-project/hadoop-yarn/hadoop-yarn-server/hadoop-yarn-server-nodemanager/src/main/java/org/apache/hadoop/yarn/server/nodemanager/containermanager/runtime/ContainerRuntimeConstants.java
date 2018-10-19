@@ -58,6 +58,17 @@ name|ENV_CONTAINER_TYPE
 init|=
 literal|"YARN_CONTAINER_RUNTIME_TYPE"
 decl_stmt|;
+annotation|@
+name|Private
+DECL|field|CONTAINER_RUNTIME_DOCKER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_RUNTIME_DOCKER
+init|=
+literal|"docker"
+decl_stmt|;
 block|}
 end_class
 

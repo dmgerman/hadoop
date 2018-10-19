@@ -358,7 +358,9 @@ name|YarnConfiguration
 operator|.
 name|LINUX_CONTAINER_RUNTIME_ALLOWED_RUNTIMES
 argument_list|,
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 expr_stmt|;
 name|delegatingLinuxContainerRuntime
@@ -919,7 +921,9 @@ name|ContainerRuntimeConstants
 operator|.
 name|ENV_CONTAINER_TYPE
 argument_list|,
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 expr_stmt|;
 name|conf

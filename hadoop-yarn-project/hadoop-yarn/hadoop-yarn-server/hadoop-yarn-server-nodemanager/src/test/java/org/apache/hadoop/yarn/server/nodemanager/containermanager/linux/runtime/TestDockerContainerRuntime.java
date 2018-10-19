@@ -3094,7 +3094,9 @@ name|ContainerRuntimeConstants
 operator|.
 name|ENV_CONTAINER_TYPE
 argument_list|,
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 expr_stmt|;
 name|envOtherType
@@ -3199,7 +3201,9 @@ name|YarnConfiguration
 operator|.
 name|LINUX_CONTAINER_RUNTIME_TYPE
 argument_list|,
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 expr_stmt|;
 name|envDockerType
@@ -3210,7 +3214,9 @@ name|ContainerRuntimeConstants
 operator|.
 name|ENV_CONTAINER_TYPE
 argument_list|,
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 expr_stmt|;
 name|envOtherType
@@ -3326,7 +3332,9 @@ name|ContainerRuntimeConstants
 operator|.
 name|ENV_CONTAINER_TYPE
 argument_list|,
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 expr_stmt|;
 name|envOtherType

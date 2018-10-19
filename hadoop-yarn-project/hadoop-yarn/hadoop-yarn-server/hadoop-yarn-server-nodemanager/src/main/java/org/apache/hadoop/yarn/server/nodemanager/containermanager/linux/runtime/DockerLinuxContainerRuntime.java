@@ -1499,7 +1499,9 @@ name|type
 operator|.
 name|equals
 argument_list|(
-literal|"docker"
+name|ContainerRuntimeConstants
+operator|.
+name|CONTAINER_RUNTIME_DOCKER
 argument_list|)
 return|;
 block|}
