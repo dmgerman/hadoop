@@ -743,10 +743,6 @@ DECL|field|chillModePrecheck
 specifier|private
 name|ChillModePrecheck
 name|chillModePrecheck
-init|=
-operator|new
-name|ChillModePrecheck
-argument_list|()
 decl_stmt|;
 DECL|method|SCMClientProtocolServer (OzoneConfiguration conf, StorageContainerManager scm)
 specifier|public
@@ -772,6 +768,14 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|chillModePrecheck
+operator|=
+operator|new
+name|ChillModePrecheck
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 specifier|final
 name|int
@@ -1847,13 +1851,13 @@ block|}
 comment|/**    * Set chill mode status based on SCMEvents.CHILL_MODE_STATUS event.    */
 annotation|@
 name|Override
-DECL|method|onMessage (Boolean inChillMOde, EventPublisher publisher)
+DECL|method|onMessage (Boolean inChillMode, EventPublisher publisher)
 specifier|public
 name|void
 name|onMessage
 parameter_list|(
 name|Boolean
-name|inChillMOde
+name|inChillMode
 parameter_list|,
 name|EventPublisher
 name|publisher
@@ -1863,7 +1867,7 @@ name|chillModePrecheck
 operator|.
 name|setInChillMode
 argument_list|(
-name|inChillMOde
+name|inChillMode
 argument_list|)
 expr_stmt|;
 block|}

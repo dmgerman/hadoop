@@ -816,7 +816,9 @@ name|chillModePrecheck
 operator|=
 operator|new
 name|ChillModePrecheck
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Start block manager services.    *    * @throws IOException    */
