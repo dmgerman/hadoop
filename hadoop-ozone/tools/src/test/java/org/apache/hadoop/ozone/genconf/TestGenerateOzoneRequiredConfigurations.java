@@ -793,6 +793,65 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Generates ozone-site.xml at specified path.    * Verify that it does not overwrite if file already exists in path.    *    * @throws Exception    */
+annotation|@
+name|Test
+DECL|method|testDoesNotOverwrite ()
+specifier|public
+name|void
+name|testDoesNotOverwrite
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|File
+name|tempPath
+init|=
+name|getRandomTempDir
+argument_list|()
+decl_stmt|;
+name|String
+index|[]
+name|args
+init|=
+operator|new
+name|String
+index|[]
+block|{
+name|tempPath
+operator|.
+name|getAbsolutePath
+argument_list|()
+block|}
+decl_stmt|;
+name|execute
+argument_list|(
+name|args
+argument_list|,
+literal|"ozone-site.xml has been generated at "
+operator|+
+name|tempPath
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|//attempt overwrite
+name|execute
+argument_list|(
+name|args
+argument_list|,
+literal|"ozone-site.xml already exists at "
+operator|+
+name|tempPath
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|" and will not be overwritten"
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Test to avoid generating ozone-site.xml when insufficient permission.    * @throws Exception    */
 annotation|@
 name|Test
