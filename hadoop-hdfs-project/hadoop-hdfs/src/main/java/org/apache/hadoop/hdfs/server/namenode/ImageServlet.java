@@ -1411,7 +1411,7 @@ name|transferBandwidth
 init|=
 name|conf
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -1462,7 +1462,7 @@ name|transferBandwidth
 init|=
 name|conf
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.

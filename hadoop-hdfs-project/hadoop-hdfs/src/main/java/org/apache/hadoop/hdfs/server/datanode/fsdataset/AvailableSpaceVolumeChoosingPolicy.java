@@ -366,7 +366,7 @@ name|balancedSpaceThreshold
 operator|=
 name|conf
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFS_DATANODE_AVAILABLE_SPACE_VOLUME_CHOOSING_POLICY_BALANCED_SPACE_THRESHOLD_KEY
 argument_list|,

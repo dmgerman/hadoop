@@ -1621,7 +1621,7 @@ operator|=
 name|getConf
 argument_list|()
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
 argument_list|,

@@ -498,7 +498,7 @@ name|duReserved
 operator|=
 name|conf
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.

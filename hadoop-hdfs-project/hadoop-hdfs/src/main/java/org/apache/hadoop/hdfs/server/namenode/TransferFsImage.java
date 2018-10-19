@@ -1797,9 +1797,12 @@ expr_stmt|;
 name|int
 name|chunkSize
 init|=
+operator|(
+name|int
+operator|)
 name|conf
 operator|.
-name|getInt
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.

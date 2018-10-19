@@ -1945,9 +1945,12 @@ name|this
 operator|.
 name|xattrMaxSize
 operator|=
+operator|(
+name|int
+operator|)
 name|conf
 operator|.
-name|getInt
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -2106,9 +2109,12 @@ name|this
 operator|.
 name|maxComponentLength
 operator|=
+operator|(
+name|int
+operator|)
 name|conf
 operator|.
-name|getInt
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.
