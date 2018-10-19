@@ -4391,7 +4391,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"--- START: testNotAssignMultiple ---"
+literal|"--- END: testNotAssignMultiple ---"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5002,7 +5002,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"--- START: testAssignMultiple ---"
+literal|"--- END: testAssignMultiple ---"
 argument_list|)
 expr_stmt|;
 block|}
