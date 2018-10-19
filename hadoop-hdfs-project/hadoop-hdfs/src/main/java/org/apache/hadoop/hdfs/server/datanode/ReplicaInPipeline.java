@@ -42,6 +42,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -200,6 +212,23 @@ name|stopWriter
 parameter_list|(
 name|long
 name|xceiverStopTimeout
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Causes the current thread to wait until a minimum length is reached, the    * thread is interrupted, or the specified waiting time elapses.    *    * @param minLength The minimum length to achieve    * @param time the maximum time to wait    * @param unit the time unit of the time argument    * @throws IOException if the current thread is interrupted or the minimum    *           length is not achieved within the time allowed.    */
+DECL|method|waitForMinLength (long minLength, long time, TimeUnit unit)
+name|void
+name|waitForMinLength
+parameter_list|(
+name|long
+name|minLength
+parameter_list|,
+name|long
+name|time
+parameter_list|,
+name|TimeUnit
+name|unit
 parameter_list|)
 throws|throws
 name|IOException

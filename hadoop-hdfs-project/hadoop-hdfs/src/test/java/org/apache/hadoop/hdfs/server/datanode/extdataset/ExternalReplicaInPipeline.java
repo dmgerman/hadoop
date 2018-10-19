@@ -44,6 +44,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -434,6 +446,25 @@ specifier|public
 name|void
 name|interruptThread
 parameter_list|()
+block|{   }
+annotation|@
+name|Override
+DECL|method|waitForMinLength (long minLength, long time, TimeUnit unit)
+specifier|public
+name|void
+name|waitForMinLength
+parameter_list|(
+name|long
+name|minLength
+parameter_list|,
+name|long
+name|time
+parameter_list|,
+name|TimeUnit
+name|unit
+parameter_list|)
+throws|throws
+name|IOException
 block|{   }
 block|}
 end_class
