@@ -762,10 +762,10 @@ specifier|final
 name|int
 name|LAYOUT_VERSION
 init|=
-operator|-
-literal|64
+name|NameNodeLayoutVersion
+operator|.
+name|CURRENT_LAYOUT_VERSION
 decl_stmt|;
-comment|// see NameNodeLayoutVersion
 DECL|field|outdir
 specifier|private
 specifier|final
@@ -1094,6 +1094,8 @@ operator|+
 literal|" (expected "
 operator|+
 name|LAYOUT_VERSION
+operator|+
+literal|")"
 argument_list|)
 throw|;
 block|}
