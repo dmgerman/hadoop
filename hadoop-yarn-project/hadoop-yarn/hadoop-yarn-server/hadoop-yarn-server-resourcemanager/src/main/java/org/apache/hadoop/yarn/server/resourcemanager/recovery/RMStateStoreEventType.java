@@ -73,6 +73,9 @@ name|STORE_RESERVATION
 block|,
 DECL|enumConstant|REMOVE_RESERVATION
 name|REMOVE_RESERVATION
+block|,
+DECL|enumConstant|STORE_PROXY_CA_CERT
+name|STORE_PROXY_CA_CERT
 block|, }
 end_enum
 

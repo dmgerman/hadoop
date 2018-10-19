@@ -7792,6 +7792,17 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
+comment|// recover ProxyCA
+name|rmContext
+operator|.
+name|getProxyCAManager
+argument_list|()
+operator|.
+name|recover
+argument_list|(
+name|state
+argument_list|)
+expr_stmt|;
 name|setSchedulerRecoveryStartAndWaitTime
 argument_list|(
 name|state

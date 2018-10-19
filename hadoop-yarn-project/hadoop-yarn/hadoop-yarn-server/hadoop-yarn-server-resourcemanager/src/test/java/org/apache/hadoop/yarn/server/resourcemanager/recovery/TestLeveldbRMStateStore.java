@@ -665,6 +665,34 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
+DECL|method|testProxyCA ()
+specifier|public
+name|void
+name|testProxyCA
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|LeveldbStateStoreTester
+name|tester
+init|=
+operator|new
+name|LeveldbStateStoreTester
+argument_list|()
+decl_stmt|;
+name|testProxyCA
+argument_list|(
+name|tester
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testCompactionCycle ()
 specifier|public
 name|void

@@ -2167,6 +2167,11 @@ operator|.
 name|testRetryingCreateRootDir
 argument_list|()
 expr_stmt|;
+name|testProxyCA
+argument_list|(
+name|zkTester
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test

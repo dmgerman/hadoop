@@ -226,6 +226,28 @@ name|ApplicationStateData
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|PrivateKey
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|cert
+operator|.
+name|X509Certificate
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Unstable
@@ -618,6 +640,24 @@ name|removeApplication
 parameter_list|(
 name|ApplicationId
 name|removeAppId
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|storeProxyCACertState ( X509Certificate caCert, PrivateKey caPrivateKey)
+specifier|protected
+name|void
+name|storeProxyCACertState
+parameter_list|(
+name|X509Certificate
+name|caCert
+parameter_list|,
+name|PrivateKey
+name|caPrivateKey
 parameter_list|)
 throws|throws
 name|Exception
