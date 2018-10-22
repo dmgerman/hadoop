@@ -838,6 +838,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|ComponentContainers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -3250,7 +3270,7 @@ return|;
 block|}
 DECL|method|getContainers (String appName, List<String> components, String version, List<ContainerState> containerStates)
 specifier|public
-name|Container
+name|ComponentContainers
 index|[]
 name|getContainers
 parameter_list|(
@@ -3318,7 +3338,7 @@ decl_stmt|;
 return|return
 name|ServiceApiUtil
 operator|.
-name|CONTAINER_JSON_SERDE
+name|COMP_CONTAINERS_JSON_SERDE
 operator|.
 name|fromJson
 argument_list|(

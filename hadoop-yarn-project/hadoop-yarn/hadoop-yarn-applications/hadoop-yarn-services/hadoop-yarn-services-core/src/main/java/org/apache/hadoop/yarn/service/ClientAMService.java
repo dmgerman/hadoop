@@ -522,7 +522,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|ComponentContainers
 import|;
 end_import
 
@@ -1460,7 +1460,7 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|Container
+name|ComponentContainers
 argument_list|>
 name|containers
 init|=
@@ -1483,7 +1483,7 @@ name|setCompInstances
 argument_list|(
 name|ServiceApiUtil
 operator|.
-name|CONTAINER_JSON_SERDE
+name|COMP_CONTAINERS_JSON_SERDE
 operator|.
 name|toJson
 argument_list|(
@@ -1492,7 +1492,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|Container
+name|ComponentContainers
 index|[
 name|containers
 operator|.

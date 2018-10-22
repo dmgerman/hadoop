@@ -228,6 +228,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|ComponentContainers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ComponentState
 import|;
 end_import
@@ -5419,7 +5439,7 @@ end_function
 begin_function
 unit|}    private
 DECL|method|getContainers (UserGroupInformation ugi, String serviceName, List<String> componentNames, String version, List<ContainerState> containerStates)
-name|Container
+name|ComponentContainers
 index|[]
 name|getContainers
 parameter_list|(
@@ -5457,14 +5477,14 @@ argument_list|(
 call|(
 name|PrivilegedExceptionAction
 argument_list|<
-name|Container
+name|ComponentContainers
 index|[]
 argument_list|>
 call|)
 argument_list|()
 operator|->
 block|{
-name|Container
+name|ComponentContainers
 index|[]
 name|result
 block|;
