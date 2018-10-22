@@ -2527,6 +2527,13 @@ argument_list|(
 name|blockID
 argument_list|)
 expr_stmt|;
+name|getRequest
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 name|ContainerCommandRequestProto
 operator|.
 name|Builder

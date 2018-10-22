@@ -1218,11 +1218,7 @@ name|S3ErrorTable
 operator|.
 name|BUCKET_NOT_EMPTY
 argument_list|,
-name|S3ErrorTable
-operator|.
-name|Resource
-operator|.
-name|BUCKET
+name|bucketName
 argument_list|)
 decl_stmt|;
 throw|throw
@@ -1254,11 +1250,7 @@ name|S3ErrorTable
 operator|.
 name|NO_SUCH_BUCKET
 argument_list|,
-name|S3ErrorTable
-operator|.
-name|Resource
-operator|.
-name|BUCKET
+name|bucketName
 argument_list|)
 decl_stmt|;
 throw|throw
