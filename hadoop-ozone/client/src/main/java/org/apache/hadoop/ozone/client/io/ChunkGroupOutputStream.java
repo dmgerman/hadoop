@@ -750,6 +750,18 @@ return|return
 name|streamEntries
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getXceiverClientManager ()
+specifier|public
+name|XceiverClientManager
+name|getXceiverClientManager
+parameter_list|()
+block|{
+return|return
+name|xceiverClientManager
+return|;
+block|}
 DECL|method|getLocationInfoList ()
 specifier|public
 name|List

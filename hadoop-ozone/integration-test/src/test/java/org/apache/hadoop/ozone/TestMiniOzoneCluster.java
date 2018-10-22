@@ -721,7 +721,12 @@ argument_list|(
 name|client
 operator|.
 name|isConnected
+argument_list|(
+name|pipeline
+operator|.
+name|getLeader
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
