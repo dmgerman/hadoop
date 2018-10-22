@@ -1367,11 +1367,6 @@ lambda|->
 block|{
 try|try
 block|{
-name|supervisor
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|start
 argument_list|()
 expr_stmt|;
