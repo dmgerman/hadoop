@@ -772,6 +772,8 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// In this case, adding resource as Authorization, need to revisit in
+comment|// future if it needs to be changed.
 throw|throw
 name|S3ErrorTable
 operator|.
@@ -781,7 +783,7 @@ name|S3ErrorTable
 operator|.
 name|MALFORMED_HEADER
 argument_list|,
-name|auth
+literal|"Authorization"
 argument_list|)
 throw|;
 block|}

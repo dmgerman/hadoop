@@ -171,7 +171,7 @@ init|=
 operator|new
 name|OS3Exception
 argument_list|(
-literal|"NoSuchObject"
+literal|"NoSuchKey"
 argument_list|,
 literal|"The specified key does not exist"
 argument_list|,
