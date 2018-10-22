@@ -3242,6 +3242,7 @@ name|void
 name|registerMXBean
 parameter_list|()
 block|{
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -3268,9 +3269,9 @@ name|this
 operator|.
 name|scmInfoBeanName
 operator|=
-name|MBeans
+name|HddsUtils
 operator|.
-name|register
+name|registerWithJmxProperties
 argument_list|(
 literal|"StorageContainerManager"
 argument_list|,
