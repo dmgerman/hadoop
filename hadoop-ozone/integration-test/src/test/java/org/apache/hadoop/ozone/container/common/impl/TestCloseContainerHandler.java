@@ -1916,8 +1916,6 @@ argument_list|(
 name|container
 argument_list|,
 name|blockID
-argument_list|,
-literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;

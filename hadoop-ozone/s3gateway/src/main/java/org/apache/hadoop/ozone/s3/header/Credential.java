@@ -192,7 +192,11 @@ name|S3ErrorTable
 operator|.
 name|MALFORMED_HEADER
 argument_list|,
-name|credential
+name|S3ErrorTable
+operator|.
+name|Resource
+operator|.
+name|HEADER
 argument_list|)
 throw|;
 block|}

@@ -1205,24 +1205,6 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|setType (HddsProtos.ReplicationType type)
-specifier|public
-name|void
-name|setType
-parameter_list|(
-name|HddsProtos
-operator|.
-name|ReplicationType
-name|type
-parameter_list|)
-block|{
-name|this
-operator|.
-name|type
-operator|=
-name|type
-expr_stmt|;
-block|}
 comment|/**    * Returns a JSON string of this object.    *    * @return String - json string    * @throws IOException    */
 DECL|method|toJsonString ()
 specifier|public

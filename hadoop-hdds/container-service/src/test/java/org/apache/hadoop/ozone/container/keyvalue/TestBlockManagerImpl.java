@@ -750,8 +750,6 @@ name|blockData
 operator|.
 name|getBlockID
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -899,8 +897,6 @@ argument_list|(
 name|keyValueContainer
 argument_list|,
 name|blockID
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1231,8 +1227,6 @@ argument_list|(
 name|keyValueContainer
 argument_list|,
 name|blockID
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 name|fail

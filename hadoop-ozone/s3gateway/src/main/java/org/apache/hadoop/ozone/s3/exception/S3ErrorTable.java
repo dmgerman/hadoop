@@ -142,6 +142,23 @@ argument_list|,
 name|HTTP_CONFLICT
 argument_list|)
 decl_stmt|;
+DECL|field|NO_SUCH_OBJECT
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|NO_SUCH_OBJECT
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"NoSuchObject"
+argument_list|,
+literal|"The specified object does not exist"
+argument_list|,
+name|HTTP_NOT_FOUND
+argument_list|)
+decl_stmt|;
 DECL|field|MALFORMED_HEADER
 specifier|public
 specifier|static
@@ -161,25 +178,8 @@ argument_list|,
 name|HTTP_NOT_FOUND
 argument_list|)
 decl_stmt|;
-DECL|field|NO_SUCH_KEY
-specifier|public
-specifier|static
-specifier|final
-name|OS3Exception
-name|NO_SUCH_KEY
-init|=
-operator|new
-name|OS3Exception
-argument_list|(
-literal|"NoSuchObject"
-argument_list|,
-literal|"The specified key does not exist"
-argument_list|,
-name|HTTP_NOT_FOUND
-argument_list|)
-decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
-DECL|method|newError (OS3Exception e, String resource)
+DECL|method|newError (OS3Exception e, Resource resource)
 specifier|public
 specifier|static
 name|OS3Exception
@@ -188,7 +188,7 @@ parameter_list|(
 name|OS3Exception
 name|e
 parameter_list|,
-name|String
+name|Resource
 name|resource
 parameter_list|)
 block|{
@@ -219,11 +219,79 @@ operator|.
 name|setResource
 argument_list|(
 name|resource
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
 name|err
 return|;
+block|}
+comment|/**    * Resources, which can be defined in OS3Exception.    */
+DECL|enum|Resource
+specifier|public
+enum|enum
+name|Resource
+block|{
+DECL|enumConstant|BUCKET
+name|BUCKET
+argument_list|(
+literal|"Bucket"
+argument_list|)
+block|,
+DECL|enumConstant|OBJECT
+name|OBJECT
+argument_list|(
+literal|"Object"
+argument_list|)
+block|,
+DECL|enumConstant|HEADER
+name|HEADER
+argument_list|(
+literal|"header"
+argument_list|)
+block|,
+DECL|enumConstant|VOLUME
+name|VOLUME
+argument_list|(
+literal|"Volume"
+argument_list|)
+block|;
+DECL|field|resource
+specifier|private
+specifier|final
+name|String
+name|resource
+decl_stmt|;
+comment|/**      * Constructs resource.      * @param value      */
+DECL|method|Resource (String value)
+name|Resource
+parameter_list|(
+name|String
+name|value
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resource
+operator|=
+name|value
+expr_stmt|;
+block|}
+comment|/**      * Get resource.      * @return string      */
+DECL|method|getResource ()
+specifier|public
+name|String
+name|getResource
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resource
+return|;
+block|}
 block|}
 block|}
 end_class

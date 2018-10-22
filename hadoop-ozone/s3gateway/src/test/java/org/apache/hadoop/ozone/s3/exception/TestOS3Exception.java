@@ -105,7 +105,11 @@ name|newError
 argument_list|(
 name|ex
 argument_list|,
-literal|"bucket"
+name|S3ErrorTable
+operator|.
+name|Resource
+operator|.
+name|BUCKET
 argument_list|)
 expr_stmt|;
 name|ex
