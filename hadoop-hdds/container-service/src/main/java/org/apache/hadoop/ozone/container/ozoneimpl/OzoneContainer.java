@@ -1165,6 +1165,26 @@ operator|.
 name|hddsDispatcher
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getServer (ReplicationType replicationType)
+specifier|public
+name|XceiverServerSpi
+name|getServer
+parameter_list|(
+name|ReplicationType
+name|replicationType
+parameter_list|)
+block|{
+return|return
+name|servers
+operator|.
+name|get
+argument_list|(
+name|replicationType
+argument_list|)
+return|;
+block|}
 DECL|method|getVolumeSet ()
 specifier|public
 name|VolumeSet
