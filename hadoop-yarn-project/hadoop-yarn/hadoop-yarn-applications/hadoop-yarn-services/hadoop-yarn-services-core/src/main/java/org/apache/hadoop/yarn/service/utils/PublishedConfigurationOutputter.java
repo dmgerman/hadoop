@@ -376,16 +376,6 @@ name|owner
 argument_list|)
 return|;
 case|case
-name|ENV
-case|:
-return|return
-operator|new
-name|EnvOutputter
-argument_list|(
-name|owner
-argument_list|)
-return|;
-case|case
 name|TEMPLATE
 case|:
 return|return

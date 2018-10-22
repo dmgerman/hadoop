@@ -98,12 +98,6 @@ argument_list|(
 literal|"hadoop_xml"
 argument_list|)
 block|,
-DECL|enumConstant|ENV
-name|ENV
-argument_list|(
-literal|"env"
-argument_list|)
-block|,
 DECL|enumConstant|TEMPLATE
 name|TEMPLATE
 argument_list|(
@@ -115,7 +109,7 @@ name|YAML
 argument_list|(
 literal|"yaml"
 argument_list|)
-block|,   ;
+block|;
 DECL|method|ConfigFormat (String suffix)
 name|ConfigFormat
 parameter_list|(
