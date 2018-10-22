@@ -1166,6 +1166,16 @@ name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_KEY
 init|=
 literal|"hadoop.security.groups.shell.command.timeout"
 decl_stmt|;
+comment|/**    * @deprecated use    * {@link CommonConfigurationKeysPublic#HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_KEY}    * instead.    */
+DECL|field|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS
+init|=
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_KEY
+decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 specifier|public
 specifier|static
@@ -1175,6 +1185,16 @@ DECL|field|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_DEFAULT
 name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_DEFAULT
 init|=
 literal|0L
+decl_stmt|;
+comment|/**    * @deprecated use    * {@link CommonConfigurationKeysPublic#HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_DEFAULT}    * instead.    */
+specifier|public
+specifier|static
+specifier|final
+name|long
+DECL|field|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS_DEFAULT
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS_DEFAULT
+init|=
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_DEFAULT
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_AUTHENTICATION
