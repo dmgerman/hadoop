@@ -407,6 +407,53 @@ name|storageIds
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,    * String, ExtendedBlock, BlockTokenIdentifier.AccessMode,    * StorageType[])}    */
+DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes)
+specifier|public
+name|void
+name|checkAccess
+parameter_list|(
+name|BlockTokenIdentifier
+name|id
+parameter_list|,
+name|String
+name|userId
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|AccessMode
+name|mode
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
+parameter_list|)
+throws|throws
+name|InvalidToken
+block|{
+name|get
+argument_list|(
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+operator|.
+name|checkAccess
+argument_list|(
+name|id
+argument_list|,
+name|userId
+argument_list|,
+name|block
+argument_list|,
+name|mode
+argument_list|,
+name|storageTypes
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,    *                ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[], String[])}    */
 DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
@@ -463,7 +510,7 @@ name|storageIds
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#addKeys(ExportedBlockKeys)}    */
+comment|/**    * See {@link BlockTokenSecretManager#addKeys(ExportedBlockKeys)}.    */
 DECL|method|addKeys (String bpid, ExportedBlockKeys exportedKeys)
 specifier|public
 name|void
