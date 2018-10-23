@@ -511,9 +511,10 @@ name|currentQuotaUsage
 init|=
 literal|null
 decl_stmt|;
-comment|// Check whether destination path exists in filesystem. If destination
-comment|// is not present, reset the usage. For other mount entry get current
-comment|// quota usage
+comment|// Check whether destination path exists in filesystem. When the
+comment|// mtime is zero, the destination is not present and reset the usage.
+comment|// This is because mount table does not have mtime.
+comment|// For other mount entry get current quota usage
 name|HdfsFileStatus
 name|ret
 init|=
@@ -531,6 +532,13 @@ condition|(
 name|ret
 operator|==
 literal|null
+operator|||
+name|ret
+operator|.
+name|getModificationTime
+argument_list|()
+operator|==
+literal|0
 condition|)
 block|{
 name|currentQuotaUsage

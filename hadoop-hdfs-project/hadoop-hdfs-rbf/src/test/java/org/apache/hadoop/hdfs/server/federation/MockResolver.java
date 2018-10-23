@@ -1653,6 +1653,22 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Mounts only supported under root level
+if|if
+condition|(
+operator|!
+name|path
+operator|.
+name|equals
+argument_list|(
+literal|"/"
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|List
 argument_list|<
 name|String
@@ -1664,17 +1680,6 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|path
-operator|.
-name|equals
-argument_list|(
-literal|"/"
-argument_list|)
-condition|)
-block|{
-comment|// Mounts only supported under root level
 for|for
 control|(
 name|String
@@ -1714,7 +1719,6 @@ literal|""
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 return|return
