@@ -7747,6 +7747,17 @@ name|DFSNetworkTopology
 operator|.
 name|class
 decl_stmt|;
+DECL|field|DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY
+init|=
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY
+decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@
 name|Deprecated

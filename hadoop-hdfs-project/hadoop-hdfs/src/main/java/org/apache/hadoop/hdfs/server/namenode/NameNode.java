@@ -92,6 +92,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -5455,6 +5465,23 @@ name|getRpcAddress
 argument_list|()
 return|;
 block|}
+comment|/**    * @return The auxiliary nameNode RPC addresses, or empty set if there    * is none.    */
+DECL|method|getAuxiliaryNameNodeAddresses ()
+specifier|public
+name|Set
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|getAuxiliaryNameNodeAddresses
+parameter_list|()
+block|{
+return|return
+name|rpcServer
+operator|.
+name|getAuxiliaryRpcAddresses
+argument_list|()
+return|;
+block|}
 comment|/**    * @return NameNode RPC address in "host:port" string form    */
 DECL|method|getNameNodeAddressHostPortString ()
 specifier|public
@@ -5469,6 +5496,58 @@ name|getHostPortString
 argument_list|(
 name|getNameNodeAddress
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Return a host:port format string corresponds to an auxiliary    * port configured on NameNode. If there are multiple auxiliary ports,    * an arbitrary one is returned. If there is no auxiliary listener, returns    * null.    *    * @return a string of format host:port that points to an auxiliary NameNode    *         address, or null if there is no such address.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getNNAuxiliaryRpcAddress ()
+specifier|public
+name|String
+name|getNNAuxiliaryRpcAddress
+parameter_list|()
+block|{
+name|Set
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|auxiliaryAddrs
+init|=
+name|getAuxiliaryNameNodeAddresses
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|auxiliaryAddrs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|// since set has no particular order, returning the first element of
+comment|// from the iterator is effectively arbitrary.
+name|InetSocketAddress
+name|addr
+init|=
+name|auxiliaryAddrs
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+return|return
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|addr
 argument_list|)
 return|;
 block|}

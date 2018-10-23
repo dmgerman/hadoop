@@ -402,7 +402,10 @@ name|ingressPort
 parameter_list|)
 block|{
 return|return
-name|properties
+name|getServerProperties
+argument_list|(
+name|clientAddress
+argument_list|)
 return|;
 block|}
 comment|/**    * Identify the Sasl Properties to be used for a connection with a server.    * @param serverAddress server's address    * @return the sasl properties to be used for the connection.    */
@@ -443,7 +446,10 @@ name|ingressPort
 parameter_list|)
 block|{
 return|return
-name|properties
+name|getClientProperties
+argument_list|(
+name|serverAddress
+argument_list|)
 return|;
 block|}
 comment|/**    * A util function to retrieve specific additional sasl property from config.    * Used by subclasses to read sasl properties used by themselves.    * @param conf the configuration    * @param configKey the config key to look for    * @param defaultQOP the default QOP if the key is missing    * @return sasl property associated with the given key    */

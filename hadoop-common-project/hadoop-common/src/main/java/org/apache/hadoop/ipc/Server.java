@@ -2298,6 +2298,57 @@ else|:
 literal|null
 return|;
 block|}
+comment|/**    * Returns the SASL qop for the current call, if the current call is    * set, and the SASL negotiation is done. Otherwise return null. Note    * that CurCall is thread local object. So in fact, different handler    * threads will process different CurCall object.    *    * Also, only return for RPC calls, not supported for other protocols.    * @return the QOP of the current connection.    */
+DECL|method|getEstablishedQOP ()
+specifier|public
+specifier|static
+name|String
+name|getEstablishedQOP
+parameter_list|()
+block|{
+name|Call
+name|call
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|call
+operator|==
+literal|null
+operator|||
+operator|!
+operator|(
+name|call
+operator|instanceof
+name|RpcCall
+operator|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|RpcCall
+name|rpcCall
+init|=
+operator|(
+name|RpcCall
+operator|)
+name|call
+decl_stmt|;
+return|return
+name|rpcCall
+operator|.
+name|connection
+operator|.
+name|getEstablishedQOP
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns the clientId from the current RPC request    */
 DECL|method|getClientId ()
 specifier|public
@@ -2642,6 +2693,19 @@ name|Listener
 name|listener
 init|=
 literal|null
+decl_stmt|;
+comment|// Auxiliary listeners maintained as in a map, to allow
+comment|// arbitrary number of of auxiliary listeners. A map from
+comment|// the port to the listener binding to it.
+DECL|field|auxiliaryListenerMap
+specifier|private
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|Listener
+argument_list|>
+name|auxiliaryListenerMap
 decl_stmt|;
 DECL|field|responder
 specifier|private
@@ -5162,6 +5226,12 @@ name|InetSocketAddress
 name|address
 decl_stmt|;
 comment|//the address we bind at
+DECL|field|listenPort
+specifier|private
+name|int
+name|listenPort
+decl_stmt|;
+comment|//the port we bind at
 DECL|field|backlogLength
 specifier|private
 name|int
@@ -5180,10 +5250,12 @@ operator|.
 name|IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT
 argument_list|)
 decl_stmt|;
-DECL|method|Listener ()
-specifier|public
+DECL|method|Listener (int port)
 name|Listener
-parameter_list|()
+parameter_list|(
+name|int
+name|port
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -5229,7 +5301,10 @@ argument_list|,
 name|portRangeConfig
 argument_list|)
 expr_stmt|;
-name|port
+comment|//Could be an ephemeral port
+name|this
+operator|.
+name|listenPort
 operator|=
 name|acceptChannel
 operator|.
@@ -5239,7 +5314,24 @@ operator|.
 name|getLocalPort
 argument_list|()
 expr_stmt|;
-comment|//Could be an ephemeral port
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"Listener at "
+operator|+
+name|bindAddress
+operator|+
+literal|"/"
+operator|+
+name|this
+operator|.
+name|listenPort
+argument_list|)
+expr_stmt|;
 comment|// create a selector;
 name|selector
 operator|=
@@ -6159,6 +6251,10 @@ operator|.
 name|register
 argument_list|(
 name|channel
+argument_list|,
+name|this
+operator|.
+name|listenPort
 argument_list|)
 decl_stmt|;
 comment|// If the connectionManager can't take it, close the connection.
@@ -8055,6 +8151,11 @@ name|shouldClose
 init|=
 literal|false
 decl_stmt|;
+DECL|field|ingressPort
+specifier|private
+name|int
+name|ingressPort
+decl_stmt|;
 DECL|field|user
 name|UserGroupInformation
 name|user
@@ -8098,7 +8199,7 @@ name|useWrap
 init|=
 literal|false
 decl_stmt|;
-DECL|method|Connection (SocketChannel channel, long lastContact)
+DECL|method|Connection (SocketChannel channel, long lastContact, int ingressPort)
 specifier|public
 name|Connection
 parameter_list|(
@@ -8107,6 +8208,9 @@ name|channel
 parameter_list|,
 name|long
 name|lastContact
+parameter_list|,
+name|int
+name|ingressPort
 parameter_list|)
 block|{
 name|this
@@ -8174,6 +8278,12 @@ name|socket
 operator|.
 name|getInetAddress
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|ingressPort
+operator|=
+name|ingressPort
 expr_stmt|;
 if|if
 condition|(
@@ -8303,6 +8413,16 @@ return|return
 name|hostAddress
 return|;
 block|}
+DECL|method|getIngressPort ()
+specifier|public
+name|int
+name|getIngressPort
+parameter_list|()
+block|{
+return|return
+name|ingressPort
+return|;
+block|}
 DECL|method|getHostInetAddress ()
 specifier|public
 name|InetAddress
@@ -8311,6 +8431,47 @@ parameter_list|()
 block|{
 return|return
 name|addr
+return|;
+block|}
+DECL|method|getEstablishedQOP ()
+specifier|public
+name|String
+name|getEstablishedQOP
+parameter_list|()
+block|{
+comment|// In practice, saslServer should not be null when this is
+comment|// called. If it is null, it must be either some
+comment|// configuration mistake or it is called from unit test.
+if|if
+condition|(
+name|saslServer
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"SASL server should not be null!"
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|(
+name|String
+operator|)
+name|saslServer
+operator|.
+name|getNegotiatedProperty
+argument_list|(
+name|Sasl
+operator|.
+name|QOP
+argument_list|)
 return|;
 block|}
 DECL|method|setLastContact (long lastContact)
@@ -10229,6 +10390,8 @@ operator|.
 name|getServerProperties
 argument_list|(
 name|addr
+argument_list|,
+name|ingressPort
 argument_list|)
 decl_stmt|;
 return|return
@@ -12259,7 +12422,7 @@ literal|"IPC Server handler "
 operator|+
 name|instanceNumber
 operator|+
-literal|" on "
+literal|" on default port "
 operator|+
 name|port
 argument_list|)
@@ -12916,6 +13079,12 @@ name|serverName
 expr_stmt|;
 name|this
 operator|.
+name|auxiliaryListenerMap
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
 name|maxDataLength
 operator|=
 name|conf
@@ -13138,8 +13307,11 @@ name|listener
 operator|=
 operator|new
 name|Listener
-argument_list|()
+argument_list|(
+name|port
+argument_list|)
 expr_stmt|;
+comment|// set the server port to the default listener port.
 name|this
 operator|.
 name|port
@@ -13264,6 +13436,98 @@ argument_list|(
 name|StandbyException
 operator|.
 name|class
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addAuxiliaryListener (int auxiliaryPort)
+specifier|public
+specifier|synchronized
+name|void
+name|addAuxiliaryListener
+parameter_list|(
+name|int
+name|auxiliaryPort
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|auxiliaryListenerMap
+operator|==
+literal|null
+condition|)
+block|{
+name|auxiliaryListenerMap
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|auxiliaryListenerMap
+operator|.
+name|containsKey
+argument_list|(
+name|auxiliaryPort
+argument_list|)
+operator|&&
+name|auxiliaryPort
+operator|!=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"There is already a listener binding to: "
+operator|+
+name|auxiliaryPort
+argument_list|)
+throw|;
+block|}
+name|Listener
+name|newListener
+init|=
+operator|new
+name|Listener
+argument_list|(
+name|auxiliaryPort
+argument_list|)
+decl_stmt|;
+comment|// in the case of port = 0, the listener would be on a != 0 port.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Adding a server listener on port "
+operator|+
+name|newListener
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|auxiliaryListenerMap
+operator|.
+name|put
+argument_list|(
+name|newListener
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|getPort
+argument_list|()
+argument_list|,
+name|newListener
 argument_list|)
 expr_stmt|;
 block|}
@@ -14525,6 +14789,38 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|auxiliaryListenerMap
+operator|!=
+literal|null
+operator|&&
+name|auxiliaryListenerMap
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+for|for
+control|(
+name|Listener
+name|newListener
+range|:
+name|auxiliaryListenerMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|newListener
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 name|handlers
 operator|=
 operator|new
@@ -14643,6 +14939,43 @@ operator|.
 name|doStop
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|auxiliaryListenerMap
+operator|!=
+literal|null
+operator|&&
+name|auxiliaryListenerMap
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+for|for
+control|(
+name|Listener
+name|newListener
+range|:
+name|auxiliaryListenerMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|newListener
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|newListener
+operator|.
+name|doStop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 name|responder
 operator|.
 name|interrupt
@@ -14699,6 +15032,69 @@ name|listener
 operator|.
 name|getAddress
 argument_list|()
+return|;
+block|}
+comment|/**    * Return the set of all the configured auxiliary socket addresses NameNode    * RPC is listening on. If there are none, or it is not configured at all, an    * empty set is returned.    * @return the set of all the auxiliary addresses on which the    *         RPC server is listening on.    */
+DECL|method|getAuxiliaryListenerAddresses ()
+specifier|public
+specifier|synchronized
+name|Set
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|getAuxiliaryListenerAddresses
+parameter_list|()
+block|{
+name|Set
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|allAddrs
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|auxiliaryListenerMap
+operator|!=
+literal|null
+operator|&&
+name|auxiliaryListenerMap
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+for|for
+control|(
+name|Listener
+name|auxListener
+range|:
+name|auxiliaryListenerMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|allAddrs
+operator|.
+name|add
+argument_list|(
+name|auxListener
+operator|.
+name|getAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|allAddrs
 return|;
 block|}
 comment|/**     * Called for each call.     * @deprecated Use  {@link #call(RPC.RpcKind, String,    *  Writable, long)} instead    */
@@ -15776,12 +16172,15 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|register (SocketChannel channel)
+DECL|method|register (SocketChannel channel, int ingressPort)
 name|Connection
 name|register
 parameter_list|(
 name|SocketChannel
 name|channel
+parameter_list|,
+name|int
+name|ingressPort
 parameter_list|)
 block|{
 if|if
@@ -15806,6 +16205,8 @@ name|Time
 operator|.
 name|now
 argument_list|()
+argument_list|,
+name|ingressPort
 argument_list|)
 decl_stmt|;
 name|add
