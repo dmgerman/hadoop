@@ -2649,6 +2649,36 @@ name|MR_AM_PREFIX
 operator|+
 literal|"webapp.port-range"
 decl_stmt|;
+comment|/**    * True if the MR AM should use HTTPS for its webapp.  If    * {@link org.apache.hadoop.yarn.conf.YarnConfiguration#RM_APPLICATION_HTTPS_POLICY}    * is set to LENIENT or STRICT, the MR AM will automatically use the    * keystore provided by YARN with a certificate for the MR AM webapp, unless    * provided by the user.    */
+DECL|field|MR_AM_WEBAPP_HTTPS_ENABLED
+name|String
+name|MR_AM_WEBAPP_HTTPS_ENABLED
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"webapp.https.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_WEBAPP_HTTPS_ENABLED
+name|boolean
+name|DEFAULT_MR_AM_WEBAPP_HTTPS_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * True if the MR AM webapp should require client HTTPS authentication (i.e.    * the proxy server (RM) should present a certificate to the MR AM webapp).    * If {@link org.apache.hadoop.yarn.conf.YarnConfiguration#RM_APPLICATION_HTTPS_POLICY}    * is set to LENIENT or STRICT, the MR AM will automatically use the    * truststore provided by YARN with the RMs certificate, unless provided by    * the user.    */
+DECL|field|MR_AM_WEBAPP_HTTPS_CLIENT_AUTH
+name|String
+name|MR_AM_WEBAPP_HTTPS_CLIENT_AUTH
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"webapp.https.client.auth"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_WEBAPP_HTTPS_CLIENT_AUTH
+name|boolean
+name|DEFAULT_MR_AM_WEBAPP_HTTPS_CLIENT_AUTH
+init|=
+literal|false
+decl_stmt|;
 comment|/** Enable blacklisting of nodes in the job.*/
 DECL|field|MR_AM_JOB_NODE_BLACKLISTING_ENABLE
 specifier|public
