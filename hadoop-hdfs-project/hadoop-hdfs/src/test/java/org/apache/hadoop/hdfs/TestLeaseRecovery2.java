@@ -1103,7 +1103,10 @@ name|AppendTestUtil
 operator|.
 name|nextInt
 argument_list|(
-name|FILE_SIZE
+operator|(
+name|int
+operator|)
+name|BLOCK_SIZE
 argument_list|)
 decl_stmt|;
 name|String
