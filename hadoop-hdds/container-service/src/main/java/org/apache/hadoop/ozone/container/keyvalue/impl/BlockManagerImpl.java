@@ -394,6 +394,54 @@ name|NO_SUCH_BLOCK
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNKNOWN_BCSID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|BCSID_MISMATCH
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is for performing block related operations on the KeyValue  * Container.  */
 end_comment
@@ -541,48 +589,44 @@ literal|"DB cannot be null here"
 argument_list|)
 expr_stmt|;
 name|long
-name|blockCommitSequenceId
+name|bcsId
 init|=
 name|data
 operator|.
 name|getBlockCommitSequenceId
 argument_list|()
 decl_stmt|;
-name|byte
-index|[]
-name|blockCommitSequenceIdValue
+name|long
+name|containerBCSId
 init|=
-name|db
+operator|(
+operator|(
+name|KeyValueContainerData
+operator|)
+name|container
 operator|.
-name|get
-argument_list|(
-name|blockCommitSequenceIdKey
-argument_list|)
+name|getContainerData
+argument_list|()
+operator|)
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
 decl_stmt|;
 comment|// default blockCommitSequenceId for any block is 0. It the putBlock
 comment|// request is not coming via Ratis(for test scenarios), it will be 0.
 comment|// In such cases, we should overwrite the block as well
 if|if
 condition|(
-name|blockCommitSequenceIdValue
-operator|!=
-literal|null
-operator|&&
-name|blockCommitSequenceId
+name|bcsId
 operator|!=
 literal|0
 condition|)
 block|{
 if|if
 condition|(
-name|blockCommitSequenceId
+name|bcsId
 operator|<=
-name|Longs
-operator|.
-name|fromByteArray
-argument_list|(
-name|blockCommitSequenceIdValue
-argument_list|)
+name|containerBCSId
 condition|)
 block|{
 comment|// Since the blockCommitSequenceId stored in the db is greater than
@@ -596,18 +640,13 @@ name|warn
 argument_list|(
 literal|"blockCommitSequenceId "
 operator|+
-name|Longs
-operator|.
-name|fromByteArray
-argument_list|(
-name|blockCommitSequenceIdValue
-argument_list|)
+name|containerBCSId
 operator|+
 literal|" in the Container Db is greater than"
 operator|+
 literal|" the supplied value "
 operator|+
-name|blockCommitSequenceId
+name|bcsId
 operator|+
 literal|" .Ignoring it"
 argument_list|)
@@ -661,7 +700,7 @@ name|Longs
 operator|.
 name|toByteArray
 argument_list|(
-name|blockCommitSequenceId
+name|bcsId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -676,7 +715,7 @@ name|container
 operator|.
 name|updateBlockCommitSequenceId
 argument_list|(
-name|blockCommitSequenceId
+name|bcsId
 argument_list|)
 expr_stmt|;
 comment|// Increment keycount here
@@ -695,8 +734,10 @@ name|getSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @return Key Data.    * @throws IOException    */
-DECL|method|getBlock (Container container, BlockID blockID)
+comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @param bcsId latest commit Id of the block    * @return Key Data.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|getBlock (Container container, BlockID blockID, long bcsId)
 specifier|public
 name|BlockData
 name|getBlock
@@ -706,6 +747,9 @@ name|container
 parameter_list|,
 name|BlockID
 name|blockID
+parameter_list|,
+name|long
+name|bcsId
 parameter_list|)
 throws|throws
 name|IOException
@@ -765,6 +809,49 @@ argument_list|,
 literal|"DB cannot be null here"
 argument_list|)
 expr_stmt|;
+name|long
+name|containerBCSId
+init|=
+name|containerData
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|containerBCSId
+operator|<
+name|bcsId
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Unable to find the block with bcsID "
+operator|+
+name|bcsId
+operator|+
+literal|" .Container "
+operator|+
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|getContainerID
+argument_list|()
+operator|+
+literal|" bcsId is "
+operator|+
+name|containerBCSId
+operator|+
+literal|"."
+argument_list|,
+name|UNKNOWN_BCSID
+argument_list|)
+throw|;
+block|}
 name|byte
 index|[]
 name|kData
@@ -815,6 +902,43 @@ argument_list|(
 name|kData
 argument_list|)
 decl_stmt|;
+name|long
+name|id
+init|=
+name|blockData
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|id
+operator|<
+name|bcsId
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"bcsId "
+operator|+
+name|bcsId
+operator|+
+literal|" mismatches with existing block Id "
+operator|+
+name|id
+operator|+
+literal|" for block "
+operator|+
+name|blockID
+operator|+
+literal|"."
+argument_list|,
+name|BCSID_MISMATCH
+argument_list|)
+throw|;
+block|}
 return|return
 name|BlockData
 operator|.

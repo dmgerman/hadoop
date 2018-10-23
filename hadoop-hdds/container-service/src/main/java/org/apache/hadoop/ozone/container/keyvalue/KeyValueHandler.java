@@ -2779,6 +2779,14 @@ argument_list|(
 name|kvContainer
 argument_list|,
 name|blockID
+argument_list|,
+name|request
+operator|.
+name|getGetBlock
+argument_list|()
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|long
@@ -3988,6 +3996,7 @@ argument_list|(
 name|chunks
 argument_list|)
 expr_stmt|;
+comment|// TODO: add bcsId as a part of putSmallFile transaction
 name|blockManager
 operator|.
 name|putBlock
@@ -4134,6 +4143,8 @@ name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// TODO: add bcsId as a part of getSmallFile transaction
+comment|// by default its 0
 name|BlockData
 name|responseData
 init|=
@@ -4144,6 +4155,8 @@ argument_list|(
 name|kvContainer
 argument_list|,
 name|blockID
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|ContainerProtos

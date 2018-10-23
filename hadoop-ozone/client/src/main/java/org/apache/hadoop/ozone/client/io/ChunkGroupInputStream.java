@@ -1578,6 +1578,11 @@ argument_list|,
 name|datanodeBlockID
 argument_list|,
 name|requestId
+argument_list|,
+name|omKeyLocationInfo
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|List
