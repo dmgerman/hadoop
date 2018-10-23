@@ -914,7 +914,7 @@ operator|.
 name|size
 argument_list|()
 operator|>
-literal|1
+literal|0
 condition|)
 block|{
 synchronized|synchronized
