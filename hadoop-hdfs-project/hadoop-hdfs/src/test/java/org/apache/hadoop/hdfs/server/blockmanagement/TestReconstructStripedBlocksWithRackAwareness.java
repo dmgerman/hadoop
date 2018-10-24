@@ -1134,16 +1134,31 @@ argument_list|,
 literal|0L
 argument_list|)
 expr_stmt|;
-name|Assert
+name|GenericTestUtils
 operator|.
-name|assertEquals
+name|waitFor
 argument_list|(
-literal|0
-argument_list|,
+parameter_list|()
+lambda|->
 name|bm
 operator|.
 name|numOfUnderReplicatedBlocks
 argument_list|()
+operator|==
+literal|0
+argument_list|,
+literal|100
+argument_list|,
+literal|30000
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Created file {}"
+argument_list|,
+name|file
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1217,6 +1232,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"rackSet size is wrong: "
+operator|+
+name|rackSet
+argument_list|,
 name|dataBlocks
 operator|-
 literal|1
@@ -1252,6 +1271,15 @@ operator|.
 name|getNetworkTopology
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"topology is: {}"
+argument_list|,
+name|topology
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -1372,6 +1400,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Block to be erasure coded is wrong for datanode:"
+operator|+
+name|dn
+argument_list|,
 literal|0
 argument_list|,
 name|dn
