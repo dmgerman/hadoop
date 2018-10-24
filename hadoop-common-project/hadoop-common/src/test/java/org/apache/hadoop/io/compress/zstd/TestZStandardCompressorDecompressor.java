@@ -2626,16 +2626,6 @@ argument_list|,
 name|outBuf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|outBuf
-operator|.
-name|remaining
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
 name|outBuf
 operator|.
 name|flip
@@ -2670,7 +2660,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 name|outBuf
 operator|.

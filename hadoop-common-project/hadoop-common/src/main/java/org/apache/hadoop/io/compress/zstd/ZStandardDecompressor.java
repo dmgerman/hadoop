@@ -1028,7 +1028,7 @@ argument_list|()
 argument_list|,
 name|src
 operator|.
-name|remaining
+name|limit
 argument_list|()
 argument_list|,
 name|dst
@@ -1040,7 +1040,7 @@ argument_list|()
 argument_list|,
 name|dst
 operator|.
-name|remaining
+name|limit
 argument_list|()
 argument_list|)
 decl_stmt|;
