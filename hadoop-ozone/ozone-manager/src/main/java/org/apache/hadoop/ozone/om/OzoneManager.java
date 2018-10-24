@@ -2699,12 +2699,12 @@ name|OM_METRICS_FILE
 argument_list|)
 return|;
 block|}
-comment|/**    * Login KSM service user if security and Kerberos are enabled.    *    * @param  conf    * @throws IOException, AuthenticationException    */
-DECL|method|loginKSMUser (OzoneConfiguration conf)
+comment|/**    * Login OM service user if security and Kerberos are enabled.    *    * @param  conf    * @throws IOException, AuthenticationException    */
+DECL|method|loginOMUser (OzoneConfiguration conf)
 specifier|private
 specifier|static
 name|void
-name|loginKSMUser
+name|loginOMUser
 parameter_list|(
 name|OzoneConfiguration
 name|conf
@@ -2735,7 +2735,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Ozone security is enabled. Attempting login for KSM user. "
+literal|"Ozone security is enabled. Attempting login for OM user. "
 operator|+
 literal|"Principal: {},keytab: {}"
 argument_list|,
@@ -2799,7 +2799,7 @@ argument_list|(
 name|conf
 argument_list|)
 operator|+
-literal|" authentication method not supported. KSM user login "
+literal|" authentication method not supported. OM user login "
 operator|+
 literal|"failed."
 argument_list|)
@@ -2809,7 +2809,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"KSM login successful."
+literal|"Ozone Manager login successful."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3410,7 +3410,7 @@ literal|true
 argument_list|)
 condition|)
 block|{
-name|loginKSMUser
+name|loginOMUser
 argument_list|(
 name|conf
 argument_list|)
