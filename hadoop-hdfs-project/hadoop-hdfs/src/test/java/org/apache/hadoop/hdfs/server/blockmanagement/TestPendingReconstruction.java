@@ -2522,6 +2522,25 @@ argument_list|,
 literal|0L
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitForReplication
+argument_list|(
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+argument_list|,
+name|filePath
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|10000
+argument_list|)
+expr_stmt|;
 comment|// 2. disable the heartbeats
 for|for
 control|(
