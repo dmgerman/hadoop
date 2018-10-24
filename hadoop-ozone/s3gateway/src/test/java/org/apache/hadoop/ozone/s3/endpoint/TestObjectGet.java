@@ -364,6 +364,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|rest
+operator|.
+name|setHeaders
+argument_list|(
+name|headers
+argument_list|)
+expr_stmt|;
 name|ByteArrayInputStream
 name|body
 init|=
@@ -381,8 +388,6 @@ name|rest
 operator|.
 name|get
 argument_list|(
-name|headers
-argument_list|,
 literal|"b1"
 argument_list|,
 literal|"key1"

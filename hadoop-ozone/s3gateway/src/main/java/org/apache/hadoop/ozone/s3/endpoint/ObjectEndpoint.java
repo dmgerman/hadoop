@@ -456,6 +456,22 @@ name|ozone
 operator|.
 name|s3
 operator|.
+name|SignedChunksInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|s3
+operator|.
 name|exception
 operator|.
 name|OS3Exception
@@ -477,6 +493,20 @@ operator|.
 name|exception
 operator|.
 name|S3ErrorTable
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -559,6 +589,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Context
+DECL|field|headers
+specifier|private
+name|HttpHeaders
+name|headers
+decl_stmt|;
 DECL|field|customizableGetHeaders
 specifier|private
 name|List
@@ -623,16 +660,11 @@ block|}
 comment|/**    * Rest endpoint to upload object to a bucket.    *<p>    * See: https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectPUT.html for    * more details.    */
 annotation|@
 name|PUT
-DECL|method|put ( @ontext HttpHeaders headers, @PathParam(R) String bucketName, @PathParam(R) String keyPath, @DefaultValue(R) @QueryParam(R) ReplicationType replicationType, @DefaultValue(R) @QueryParam(R) ReplicationFactor replicationFactor, @DefaultValue(R) @QueryParam(R) String chunkSize, @HeaderParam(R) long length, InputStream body)
+DECL|method|put ( @athParamR) String bucketName, @PathParam(R) String keyPath, @DefaultValue(R) @QueryParam(R) ReplicationType replicationType, @DefaultValue(R) @QueryParam(R) ReplicationFactor replicationFactor, @DefaultValue(R) @QueryParam(R) String chunkSize, @HeaderParam(R) long length, InputStream body)
 specifier|public
 name|Response
 name|put
 parameter_list|(
-annotation|@
-name|Context
-name|HttpHeaders
-name|headers
-parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -748,6 +780,30 @@ argument_list|,
 name|replicationFactor
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|"STREAMING-AWS4-HMAC-SHA256-PAYLOAD"
+operator|.
+name|equals
+argument_list|(
+name|headers
+operator|.
+name|getHeaderString
+argument_list|(
+literal|"x-amz-content-sha256"
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|body
+operator|=
+operator|new
+name|SignedChunksInputStream
+argument_list|(
+name|body
+argument_list|)
+expr_stmt|;
+block|}
 name|IOUtils
 operator|.
 name|copy
@@ -802,16 +858,11 @@ block|}
 comment|/**    * Rest endpoint to download object from a bucket.    *<p>    * See: https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html for    * more details.    */
 annotation|@
 name|GET
-DECL|method|get ( @ontext HttpHeaders headers, @PathParam(R) String bucketName, @PathParam(R) String keyPath, InputStream body)
+DECL|method|get ( @athParamR) String bucketName, @PathParam(R) String keyPath, InputStream body)
 specifier|public
 name|Response
 name|get
 parameter_list|(
-annotation|@
-name|Context
-name|HttpHeaders
-name|headers
-parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -1268,6 +1319,24 @@ operator|.
 name|build
 argument_list|()
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setHeaders (HttpHeaders headers)
+specifier|public
+name|void
+name|setHeaders
+parameter_list|(
+name|HttpHeaders
+name|headers
+parameter_list|)
+block|{
+name|this
+operator|.
+name|headers
+operator|=
+name|headers
+expr_stmt|;
 block|}
 block|}
 end_class
