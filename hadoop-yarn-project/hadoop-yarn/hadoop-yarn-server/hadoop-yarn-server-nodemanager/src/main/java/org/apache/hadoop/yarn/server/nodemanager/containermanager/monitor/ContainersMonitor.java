@@ -167,11 +167,6 @@ name|resource
 operator|.
 name|getVirtualCores
 argument_list|()
-operator|/
-name|containersMonitor
-operator|.
-name|getVCoresAllocatedForContainers
-argument_list|()
 decl_stmt|;
 name|int
 name|vmem
@@ -234,11 +229,6 @@ operator|)
 name|resource
 operator|.
 name|getVirtualCores
-argument_list|()
-operator|/
-name|containersMonitor
-operator|.
-name|getVCoresAllocatedForContainers
 argument_list|()
 decl_stmt|;
 name|int

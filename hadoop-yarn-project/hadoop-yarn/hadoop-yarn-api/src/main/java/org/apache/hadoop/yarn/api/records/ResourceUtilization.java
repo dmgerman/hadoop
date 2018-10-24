@@ -233,7 +233,7 @@ name|int
 name|pmem
 parameter_list|)
 function_decl|;
-comment|/**    * Get<em>CPU</em> utilization.    *    * @return<em>CPU utilization</em> normalized to 1 CPU    */
+comment|/**    * Get<em>CPU</em> utilization (The amount of vcores used).    *    * @return<em>CPU utilization</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -245,7 +245,7 @@ name|float
 name|getCPU
 parameter_list|()
 function_decl|;
-comment|/**    * Set<em>CPU</em> utilization.    *    * @param cpu<em>CPU utilization</em> normalized to 1 CPU    */
+comment|/**    * Set<em>CPU</em> utilization (The amount of vcores used).    *    * @param cpu<em>CPU utilization</em>    */
 annotation|@
 name|Public
 annotation|@

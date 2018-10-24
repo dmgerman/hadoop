@@ -4039,7 +4039,8 @@ operator|>>
 literal|20
 argument_list|)
 argument_list|,
-literal|1.0f
+name|getVCoresAllocatedForContainers
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

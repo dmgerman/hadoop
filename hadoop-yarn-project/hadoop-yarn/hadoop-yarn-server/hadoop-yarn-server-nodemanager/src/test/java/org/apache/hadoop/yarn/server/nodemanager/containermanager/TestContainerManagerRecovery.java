@@ -4560,7 +4560,7 @@ literal|1024
 argument_list|,
 literal|2048
 argument_list|,
-literal|0.25F
+literal|1.0F
 argument_list|)
 decl_stmt|;
 name|assertEquals
