@@ -1771,7 +1771,7 @@ name|Path
 operator|.
 name|SEPARATOR
 operator|+
-name|CGROUP_FILE_TASKS
+name|CGROUP_PROCS_FILE
 return|;
 block|}
 annotation|@
@@ -2787,7 +2787,7 @@ name|param
 operator|.
 name|equals
 argument_list|(
-name|CGROUP_FILE_TASKS
+name|CGROUP_PROCS_FILE
 argument_list|)
 condition|?
 name|getPathForCGroup

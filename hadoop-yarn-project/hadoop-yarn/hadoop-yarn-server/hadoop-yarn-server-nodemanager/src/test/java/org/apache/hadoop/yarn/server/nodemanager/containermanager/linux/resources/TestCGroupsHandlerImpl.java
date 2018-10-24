@@ -1338,7 +1338,7 @@ name|SEPARATOR
 operator|+
 name|CGroupsHandler
 operator|.
-name|CGROUP_FILE_TASKS
+name|CGROUP_PROCS_FILE
 decl_stmt|;
 name|path
 operator|=

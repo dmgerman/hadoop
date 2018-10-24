@@ -276,7 +276,7 @@ name|resources
 operator|.
 name|CGroupsHandler
 operator|.
-name|CGROUP_FILE_TASKS
+name|CGROUP_PROCS_FILE
 import|;
 end_import
 
@@ -631,16 +631,21 @@ return|return
 name|outOfLimit
 return|;
 block|}
-comment|/**    * SIGKILL the specified container. We do this not using the standard    * container logic. The reason is that the processes are frozen by    * the cgroups OOM handler, so they cannot respond to SIGTERM.    * On the other hand we have to be as fast as possible.    * We walk through the list of active processes in the container.    * This is needed because frozen parents cannot signal their children.    * We kill each process and then try again until the whole cgroup    * is cleaned up. This logic avoids leaking processes in a cgroup.    * Currently the killing only succeeds for PGIDS.    *    * @param container Container to clean up    */
+comment|/**    * SIGKILL the specified container. We do this not using the standard    * container logic. The reason is that the processes are frozen by    * the cgroups OOM handler, so they cannot respond to SIGTERM.    * On the other hand we have to be as fast as possible.    * We walk through the list of active processes in the container.    * This is needed because frozen parents cannot signal their children.    * We kill each process and then try again until the whole cgroup    * is cleaned up. This logic avoids leaking processes in a cgroup.    * Currently the killing only succeeds for PGIDS.    *    * @param container Container to clean up    * @return true if the container is killed successfully, false otherwise    */
 DECL|method|sigKill (Container container)
 specifier|private
-name|void
+name|boolean
 name|sigKill
 parameter_list|(
 name|Container
 name|container
 parameter_list|)
 block|{
+name|boolean
+name|containerKilled
+init|=
+literal|false
+decl_stmt|;
 name|boolean
 name|finished
 init|=
@@ -676,7 +681,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|CGROUP_FILE_TASKS
+name|CGROUP_PROCS_FILE
 argument_list|)
 operator|.
 name|split
@@ -838,6 +843,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|containerKilled
+operator|=
+literal|true
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -845,6 +854,9 @@ name|ResourceHandlerException
 name|ex
 parameter_list|)
 block|{
+comment|// the tasks file of the container may not be available because the
+comment|// container may not have been launched at this point when the root
+comment|// cgroup is under oom
 name|LOG
 operator|.
 name|warn
@@ -863,6 +875,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|containerKilled
+return|;
 block|}
 comment|/**    * It is called when the node is under an OOM condition. All processes in    * all sub-cgroups are suspended. We need to act fast, so that we do not    * affect the overall system utilization. In general we try to find a    * newly launched container that exceeded its limits. The justification is    * cost, since probably this is the one that has accumulated the least    * amount of uncommitted data so far. OPPORTUNISTIC containers are always    * killed before any GUARANTEED containers are considered.  We continue the    * process until the OOM is resolved.    */
 annotation|@
@@ -1002,6 +1017,23 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|container
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+comment|// skip containers that are not running yet because killing them
+comment|// won't release any memory to get us out of OOM.
+continue|continue;
+comment|// note even if it is indicated that the container is running from
+comment|// container.isRunning(), the container process might not have been
+comment|// running yet. From NM's perspective, a container is running as
+comment|// soon as the container launch is handed over the container executor
+block|}
 name|candidates
 operator|.
 name|add
@@ -1030,11 +1062,39 @@ if|if
 condition|(
 name|candidates
 operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Found no running containers to kill in order to release memory"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// make sure one container is killed successfully to release memory
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+operator|!
+name|containerKilled
+operator|&&
+name|i
+operator|<
+name|candidates
+operator|.
 name|size
 argument_list|()
-operator|>
-literal|0
-condition|)
+condition|;
+name|i
+operator|++
+control|)
 block|{
 name|ContainerCandidate
 name|candidate
@@ -1043,16 +1103,19 @@ name|candidates
 operator|.
 name|get
 argument_list|(
-literal|0
+name|i
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|sigKill
 argument_list|(
 name|candidate
 operator|.
 name|container
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|String
 name|message
 init|=
@@ -1081,6 +1144,7 @@ name|containerKilled
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 return|return
 name|containerKilled

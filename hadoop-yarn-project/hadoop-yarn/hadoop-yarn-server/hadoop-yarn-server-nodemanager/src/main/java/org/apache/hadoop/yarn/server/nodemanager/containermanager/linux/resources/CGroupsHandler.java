@@ -224,11 +224,11 @@ name|validCgroups
 return|;
 block|}
 block|}
-DECL|field|CGROUP_FILE_TASKS
+DECL|field|CGROUP_PROCS_FILE
 name|String
-name|CGROUP_FILE_TASKS
+name|CGROUP_PROCS_FILE
 init|=
-literal|"tasks"
+literal|"cgroup.procs"
 decl_stmt|;
 DECL|field|CGROUP_PARAM_CLASSID
 name|String
