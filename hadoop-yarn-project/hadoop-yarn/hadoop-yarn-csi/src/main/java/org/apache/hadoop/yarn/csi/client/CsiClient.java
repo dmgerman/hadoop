@@ -52,7 +52,7 @@ specifier|public
 interface|interface
 name|CsiClient
 block|{
-comment|/**    * Gets some basic info about the CSI plugin, including the driver name,    * version and optionally some manifest info.    * @return {@link GetPluginInfoResponse}    * @throws IOException    */
+comment|/**    * Gets some basic info about the CSI plugin, including the driver name,    * version and optionally some manifest info.    * @return {@link GetPluginInfoResponse}    * @throws IOException when unable to get plugin info from the driver.    */
 DECL|method|getPluginInfo ()
 name|GetPluginInfoResponse
 name|getPluginInfo

@@ -390,7 +390,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Shutdown the communication channel gracefully,    * wait for 5 seconds before it is enforced.    * @throws InterruptedException    */
+comment|/**    * Shutdown the communication channel gracefully,    * wait for 5 seconds before it is enforced.    */
 annotation|@
 name|Override
 DECL|method|close ()
