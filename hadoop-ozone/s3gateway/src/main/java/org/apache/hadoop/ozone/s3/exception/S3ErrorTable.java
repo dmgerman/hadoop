@@ -178,6 +178,40 @@ argument_list|,
 name|HTTP_NOT_FOUND
 argument_list|)
 decl_stmt|;
+DECL|field|INVALID_ARGUMENT
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|INVALID_ARGUMENT
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"InvalidArgument"
+argument_list|,
+literal|"Invalid Argument"
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
+DECL|field|INVALID_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|INVALID_REQUEST
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"InvalidRequest"
+argument_list|,
+literal|"Invalid Request"
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
 DECL|method|newError (OS3Exception e, String resource)
 specifier|public
