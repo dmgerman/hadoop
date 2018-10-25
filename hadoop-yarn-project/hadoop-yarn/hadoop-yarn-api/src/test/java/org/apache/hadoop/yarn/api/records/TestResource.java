@@ -26,6 +26,10 @@ name|org
 operator|.
 name|junit
 operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
 name|Test
 import|;
 end_import
@@ -36,7 +40,11 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
 operator|.
 name|assertEquals
 import|;
@@ -48,14 +56,12 @@ end_comment
 
 begin_class
 DECL|class|TestResource
-specifier|public
 class|class
 name|TestResource
 block|{
 annotation|@
 name|Test
 DECL|method|testCastToIntSafely ()
-specifier|public
 name|void
 name|testCastToIntSafely
 parameter_list|()
@@ -102,10 +108,6 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Cast to Integer.MAX_VALUE if the long is greater than "
-operator|+
-literal|"Integer.MAX_VALUE"
-argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -120,14 +122,14 @@ name|MAX_VALUE
 operator|+
 literal|1L
 argument_list|)
+argument_list|,
+literal|"Cast to Integer.MAX_VALUE if the long is greater than "
+operator|+
+literal|"Integer.MAX_VALUE"
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Cast to Integer.MAX_VALUE if the long is greater than "
-operator|+
-literal|"Integer.MAX_VALUE"
-argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -140,6 +142,10 @@ name|Long
 operator|.
 name|MAX_VALUE
 argument_list|)
+argument_list|,
+literal|"Cast to Integer.MAX_VALUE if the long is greater than "
+operator|+
+literal|"Integer.MAX_VALUE"
 argument_list|)
 expr_stmt|;
 block|}

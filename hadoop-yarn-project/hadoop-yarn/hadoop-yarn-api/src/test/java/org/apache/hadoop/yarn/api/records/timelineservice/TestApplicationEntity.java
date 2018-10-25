@@ -28,7 +28,11 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
 operator|.
 name|assertTrue
 import|;
@@ -40,7 +44,11 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
 operator|.
 name|assertEquals
 import|;
@@ -52,6 +60,10 @@ name|org
 operator|.
 name|junit
 operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
 name|Test
 import|;
 end_import
@@ -62,14 +74,12 @@ end_comment
 
 begin_class
 DECL|class|TestApplicationEntity
-specifier|public
 class|class
 name|TestApplicationEntity
 block|{
 annotation|@
 name|Test
 DECL|method|testIsApplicationEntity ()
-specifier|public
 name|void
 name|testIsApplicationEntity
 parameter_list|()
@@ -153,7 +163,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testGetApplicationEvent ()
-specifier|public
 name|void
 name|testGetApplicationEvent
 parameter_list|()

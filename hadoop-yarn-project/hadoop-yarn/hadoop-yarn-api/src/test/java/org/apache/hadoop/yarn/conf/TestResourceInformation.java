@@ -88,17 +88,59 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Test
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertNotEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|fail
 import|;
 end_import
 
@@ -108,14 +150,12 @@ end_comment
 
 begin_class
 DECL|class|TestResourceInformation
-specifier|public
 class|class
 name|TestResourceInformation
 block|{
 annotation|@
 name|Test
 DECL|method|testName ()
-specifier|public
 name|void
 name|testName
 parameter_list|()
@@ -135,25 +175,22 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource name incorrect"
-argument_list|,
 name|name
 argument_list|,
 name|ri
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|"Resource name incorrect"
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
 DECL|method|testUnits ()
-specifier|public
 name|void
 name|testUnits
 parameter_list|()
@@ -180,32 +217,28 @@ argument_list|,
 name|units
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource name incorrect"
-argument_list|,
 name|name
 argument_list|,
 name|ri
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|"Resource name incorrect"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource units incorrect"
-argument_list|,
 name|units
 argument_list|,
 name|ri
 operator|.
 name|getUnits
 argument_list|()
+argument_list|,
+literal|"Resource units incorrect"
 argument_list|)
 expr_stmt|;
 name|units
@@ -228,8 +261,6 @@ argument_list|(
 name|units
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 name|units
@@ -250,7 +281,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testValue ()
-specifier|public
 name|void
 name|testValue
 parameter_list|()
@@ -277,39 +307,34 @@ argument_list|,
 name|value
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource name incorrect"
-argument_list|,
 name|name
 argument_list|,
 name|ri
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|"Resource name incorrect"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource value incorrect"
-argument_list|,
 name|value
 argument_list|,
 name|ri
 operator|.
 name|getValue
 argument_list|()
+argument_list|,
+literal|"Resource value incorrect"
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
 DECL|method|testResourceInformation ()
-specifier|public
 name|void
 name|testResourceInformation
 parameter_list|()
@@ -343,53 +368,46 @@ argument_list|,
 name|value
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource name incorrect"
-argument_list|,
 name|name
 argument_list|,
 name|ri
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|"Resource name incorrect"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource value incorrect"
-argument_list|,
 name|value
 argument_list|,
 name|ri
 operator|.
 name|getValue
 argument_list|()
+argument_list|,
+literal|"Resource value incorrect"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Resource units incorrect"
-argument_list|,
 name|units
 argument_list|,
 name|ri
 operator|.
 name|getUnits
 argument_list|()
+argument_list|,
+literal|"Resource units incorrect"
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
 DECL|method|testEqualsWithTagsAndAttributes ()
-specifier|public
 name|void
 name|testEqualsWithTagsAndAttributes
 parameter_list|()
@@ -461,8 +479,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ri01
@@ -530,8 +546,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotEquals
 argument_list|(
 name|ri11
@@ -614,8 +628,6 @@ literal|"B2"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotEquals
 argument_list|(
 name|ri21
@@ -676,8 +688,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ri31
@@ -744,8 +754,6 @@ name|of
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ri41

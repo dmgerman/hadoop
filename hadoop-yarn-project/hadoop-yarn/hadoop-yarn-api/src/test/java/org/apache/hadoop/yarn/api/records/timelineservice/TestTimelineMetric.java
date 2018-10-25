@@ -28,7 +28,11 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
 operator|.
 name|assertEquals
 import|;
@@ -40,7 +44,11 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
 operator|.
 name|fail
 import|;
@@ -94,20 +102,22 @@ name|org
 operator|.
 name|junit
 operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
 name|Test
 import|;
 end_import
 
 begin_class
 DECL|class|TestTimelineMetric
-specifier|public
 class|class
 name|TestTimelineMetric
 block|{
 annotation|@
 name|Test
 DECL|method|testTimelineMetricAggregation ()
-specifier|public
 name|void
 name|testTimelineMetricAggregation
 parameter_list|()

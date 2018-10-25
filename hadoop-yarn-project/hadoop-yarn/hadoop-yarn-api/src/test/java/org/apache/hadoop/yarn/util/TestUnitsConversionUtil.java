@@ -24,17 +24,43 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Test
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|fail
 import|;
 end_import
 
@@ -44,14 +70,12 @@ end_comment
 
 begin_class
 DECL|class|TestUnitsConversionUtil
-specifier|public
 class|class
 name|TestUnitsConversionUtil
 block|{
 annotation|@
 name|Test
 DECL|method|testUnitsConversion ()
-specifier|public
 name|void
 name|testUnitsConversion
 parameter_list|()
@@ -71,12 +95,8 @@ name|test
 init|=
 name|value
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"pico test failed"
-argument_list|,
 name|value
 operator|*
 literal|1000L
@@ -97,14 +117,12 @@ literal|"p"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"pico test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"nano test failed"
-argument_list|,
 name|value
 operator|*
 literal|1000L
@@ -123,14 +141,12 @@ literal|"n"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"nano test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"micro test failed"
-argument_list|,
 name|value
 operator|*
 literal|1000L
@@ -147,14 +163,12 @@ literal|"u"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"micro test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"milli test failed"
-argument_list|,
 name|value
 operator|*
 literal|1000L
@@ -169,6 +183,8 @@ literal|"m"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"milli test failed"
 argument_list|)
 expr_stmt|;
 name|test
@@ -189,12 +205,8 @@ name|fromUnit
 operator|=
 literal|""
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"kilo test failed"
-argument_list|,
 name|test
 operator|/
 literal|1000L
@@ -209,14 +221,12 @@ literal|"k"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"kilo test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"mega test failed"
-argument_list|,
 name|test
 operator|/
 operator|(
@@ -235,14 +245,12 @@ literal|"M"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"mega test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"giga test failed"
-argument_list|,
 name|test
 operator|/
 operator|(
@@ -263,14 +271,12 @@ literal|"G"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"giga test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"tera test failed"
-argument_list|,
 name|test
 operator|/
 operator|(
@@ -293,14 +299,12 @@ literal|"T"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"tera test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"peta test failed"
-argument_list|,
 name|test
 operator|/
 operator|(
@@ -325,14 +329,12 @@ literal|"P"
 argument_list|,
 name|test
 argument_list|)
+argument_list|,
+literal|"peta test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"nano to pico test failed"
-argument_list|,
 name|value
 operator|*
 literal|1000L
@@ -347,14 +349,12 @@ literal|"p"
 argument_list|,
 name|value
 argument_list|)
+argument_list|,
+literal|"nano to pico test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"mega to giga test failed"
-argument_list|,
 name|value
 argument_list|,
 name|UnitsConversionUtil
@@ -369,14 +369,12 @@ name|value
 operator|*
 literal|1000L
 argument_list|)
+argument_list|,
+literal|"mega to giga test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Mi to Gi test failed"
-argument_list|,
 name|value
 argument_list|,
 name|UnitsConversionUtil
@@ -391,14 +389,12 @@ name|value
 operator|*
 literal|1024L
 argument_list|)
+argument_list|,
+literal|"Mi to Gi test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Mi to Ki test failed"
-argument_list|,
 name|value
 operator|*
 literal|1024
@@ -413,14 +409,12 @@ literal|"Ki"
 argument_list|,
 name|value
 argument_list|)
+argument_list|,
+literal|"Mi to Ki test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Ki to base units test failed"
-argument_list|,
 literal|5
 operator|*
 literal|1024
@@ -435,14 +429,12 @@ literal|""
 argument_list|,
 literal|5
 argument_list|)
+argument_list|,
+literal|"Ki to base units test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Mi to k test failed"
-argument_list|,
 literal|1073741
 argument_list|,
 name|UnitsConversionUtil
@@ -455,14 +447,12 @@ literal|"k"
 argument_list|,
 literal|1024
 argument_list|)
+argument_list|,
+literal|"Mi to k test failed"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"M to Mi test failed"
-argument_list|,
 literal|953
 argument_list|,
 name|UnitsConversionUtil
@@ -475,13 +465,14 @@ literal|"Mi"
 argument_list|,
 literal|1000
 argument_list|)
+argument_list|,
+literal|"M to Mi test failed"
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
 DECL|method|testOverflow ()
-specifier|public
 name|void
 name|testOverflow
 parameter_list|()
@@ -514,8 +505,6 @@ argument_list|,
 name|test
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"this operation should result in an overflow"
@@ -547,8 +536,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"this operation should result in an overflow"
@@ -567,7 +554,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testCompare ()
-specifier|public
 name|void
 name|testCompare
 parameter_list|()
@@ -592,8 +578,6 @@ name|valueB
 init|=
 literal|2
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -612,8 +596,6 @@ name|valueB
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 operator|-
@@ -633,8 +615,6 @@ name|valueA
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -653,8 +633,6 @@ name|valueA
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 operator|-
@@ -674,8 +652,6 @@ name|valueB
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -698,8 +674,6 @@ name|unitB
 operator|=
 literal|"T"
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -718,8 +692,6 @@ name|valueB
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 operator|-
@@ -739,8 +711,6 @@ name|valueA
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -767,8 +737,6 @@ name|unitB
 operator|=
 literal|"n"
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 operator|-
@@ -788,8 +756,6 @@ name|valueB
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -808,8 +774,6 @@ name|valueA
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0

@@ -26,7 +26,11 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
 operator|.
 name|assertEquals
 import|;
@@ -98,6 +102,10 @@ name|org
 operator|.
 name|junit
 operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
 name|Test
 import|;
 end_import
@@ -108,14 +116,12 @@ end_comment
 
 begin_class
 DECL|class|TestURL
-specifier|public
 class|class
 name|TestURL
 block|{
 annotation|@
 name|Test
 DECL|method|testConversion ()
-specifier|public
 name|void
 name|testConversion
 parameter_list|()

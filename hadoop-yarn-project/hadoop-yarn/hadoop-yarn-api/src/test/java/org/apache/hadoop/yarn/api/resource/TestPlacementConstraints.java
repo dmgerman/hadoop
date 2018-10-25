@@ -205,6 +205,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -330,15 +362,9 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|jupiter
 operator|.
-name|junit
+name|api
 operator|.
 name|Test
 import|;
@@ -350,14 +376,12 @@ end_comment
 
 begin_class
 DECL|class|TestPlacementConstraints
-specifier|public
 class|class
 name|TestPlacementConstraints
 block|{
 annotation|@
 name|Test
 DECL|method|testNodeAffinityToTag ()
-specifier|public
 name|void
 name|testNodeAffinityToTag
 parameter_list|()
@@ -383,8 +407,6 @@ name|SingleConstraint
 operator|)
 name|constraintExpr
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|NODE
@@ -395,8 +417,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -407,8 +427,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Integer
@@ -421,8 +439,6 @@ name|getMaxCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -450,8 +466,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|AllocationTagNamespaceType
@@ -467,8 +481,6 @@ name|getTargetKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|TargetType
@@ -481,8 +493,6 @@ name|getTargetType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -496,8 +506,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"hbase-m"
@@ -524,8 +532,6 @@ argument_list|(
 name|constraintExpr
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|constraint
@@ -566,8 +572,6 @@ name|SingleConstraint
 operator|)
 name|constraintExpr
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|NODE
@@ -578,8 +582,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -590,8 +592,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -602,8 +602,6 @@ name|getMaxCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -631,8 +629,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"java"
@@ -643,8 +639,6 @@ name|getTargetKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|TargetType
@@ -657,8 +651,6 @@ name|getTargetType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -672,8 +664,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"1.8"
@@ -746,8 +736,6 @@ name|And
 operator|)
 name|constraintExpr
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -791,8 +779,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"spark"
@@ -824,8 +810,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -836,8 +820,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -863,8 +845,6 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -875,8 +855,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|10

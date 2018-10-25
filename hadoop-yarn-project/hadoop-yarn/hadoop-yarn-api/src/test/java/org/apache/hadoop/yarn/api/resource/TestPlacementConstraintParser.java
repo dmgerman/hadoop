@@ -531,12 +531,50 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|fail
 import|;
 end_import
 
@@ -545,6 +583,10 @@ import|import
 name|org
 operator|.
 name|junit
+operator|.
+name|jupiter
+operator|.
+name|api
 operator|.
 name|Test
 import|;
@@ -556,14 +598,12 @@ end_comment
 
 begin_class
 DECL|class|TestPlacementConstraintParser
-specifier|public
 class|class
 name|TestPlacementConstraintParser
 block|{
 annotation|@
 name|Test
 DECL|method|testTargetExpressionParser ()
-specifier|public
 name|void
 name|testTargetExpressionParser
 parameter_list|()
@@ -603,8 +643,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -619,8 +657,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"node"
@@ -631,8 +667,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -643,8 +677,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -682,8 +714,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -698,8 +728,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"node"
@@ -710,8 +738,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -722,8 +748,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -762,8 +786,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -778,8 +800,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"node"
@@ -790,8 +810,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -802,8 +820,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Integer
@@ -844,8 +860,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -860,8 +874,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"node"
@@ -872,8 +884,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -884,8 +894,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -896,8 +904,6 @@ name|getMaxCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -943,8 +949,6 @@ literal|"exp"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|Sets
@@ -993,8 +997,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -1002,8 +1004,6 @@ operator|instanceof
 name|PlacementConstraintParseException
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -1022,7 +1022,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testCardinalityConstraintParser ()
-specifier|public
 name|void
 name|testCardinalityConstraintParser
 parameter_list|()
@@ -1061,8 +1060,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1077,8 +1074,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"node"
@@ -1089,8 +1084,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -1101,8 +1094,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -1113,8 +1104,6 @@ name|getMaxCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -1142,8 +1131,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"ALLOCATION_TAG"
@@ -1157,8 +1144,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -1172,8 +1157,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -1217,8 +1200,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1233,8 +1214,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"rack"
@@ -1245,8 +1224,6 @@ name|getScope
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -1257,8 +1234,6 @@ name|getMinCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -1269,8 +1244,6 @@ name|getMaxCardinality
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -1316,8 +1289,6 @@ literal|"moo"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|Sets
@@ -1359,8 +1330,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Expecting a parsing failure!"
@@ -1373,8 +1342,6 @@ name|PlacementConstraintParseException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -1405,8 +1372,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Expecting a parsing failure!"
@@ -1419,8 +1384,6 @@ name|PlacementConstraintParseException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -1439,7 +1402,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testAndConstraintParser ()
-specifier|public
 name|void
 name|testAndConstraintParser
 parameter_list|()
@@ -1477,8 +1439,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1493,8 +1453,6 @@ name|And
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -1534,8 +1492,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1543,8 +1499,6 @@ operator|instanceof
 name|And
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -1584,8 +1538,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1600,8 +1552,6 @@ name|And
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|and
@@ -1617,8 +1567,6 @@ operator|instanceof
 name|SingleConstraint
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|and
@@ -1649,8 +1597,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -1675,7 +1621,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testOrConstraintParser ()
-specifier|public
 name|void
 name|testOrConstraintParser
 parameter_list|()
@@ -1713,8 +1658,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1729,8 +1672,6 @@ name|Or
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -1770,8 +1711,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1779,8 +1718,6 @@ operator|instanceof
 name|Or
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -1820,8 +1757,6 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -1836,8 +1771,6 @@ name|Or
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|or
@@ -1853,8 +1786,6 @@ operator|instanceof
 name|SingleConstraint
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|or
@@ -1885,8 +1816,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -1911,7 +1840,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testMultipleConstraintsTokenizer ()
-specifier|public
 name|void
 name|testMultipleConstraintsTokenizer
 parameter_list|()
@@ -2141,8 +2069,6 @@ operator|.
 name|verify
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Expecting a parsing failure"
@@ -2155,8 +2081,6 @@ name|PlacementConstraintParseException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -2247,8 +2171,6 @@ operator|.
 name|nextElement
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|i
@@ -2258,8 +2180,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedExtractions
@@ -2279,7 +2199,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testParsePlacementSpec ()
-specifier|public
 name|void
 name|testParsePlacementSpec
 parameter_list|()
@@ -2319,8 +2238,6 @@ argument_list|(
 literal|"foo(3)"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -2344,8 +2261,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -2356,8 +2271,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -2385,8 +2298,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -2404,8 +2315,6 @@ argument_list|(
 literal|"foo(3),notin,node,foo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -2429,8 +2338,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -2441,8 +2348,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -2481,8 +2386,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -2500,8 +2403,6 @@ argument_list|(
 literal|"foo(3),NOTIN,NODE,foo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -2525,8 +2426,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -2537,8 +2436,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -2577,8 +2474,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -2596,8 +2491,6 @@ argument_list|(
 literal|"foo(10),cardinality,node,foo,bar,0,100"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -2621,8 +2514,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -2633,8 +2524,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|10
@@ -2686,8 +2575,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -2714,8 +2601,6 @@ argument_list|(
 literal|"foo(3),notin,node,foo:bar(2),in,node,foo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -2747,8 +2632,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -2759,8 +2642,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -2778,8 +2659,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"bar"
@@ -2790,8 +2669,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -2846,8 +2723,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -2858,8 +2733,6 @@ name|next
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc2
@@ -2880,8 +2753,6 @@ argument_list|(
 literal|"foo(1000),and(notin,node,bar:in,node,foo)"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -2909,8 +2780,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -2921,8 +2790,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1000
@@ -2974,8 +2841,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -2995,8 +2860,6 @@ operator|+
 literal|":bar(200),notin,node,foo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -3031,8 +2894,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -3043,8 +2904,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1000
@@ -3055,8 +2914,6 @@ name|getNumOfAllocations
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"bar"
@@ -3067,8 +2924,6 @@ name|getTag
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|200
@@ -3144,8 +2999,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|actualPc1
@@ -3168,8 +3021,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc2
@@ -3211,8 +3062,6 @@ argument_list|(
 name|spec
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Expected a failure!"
@@ -3225,8 +3074,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -3310,8 +3157,6 @@ name|PlacementConstraintParseException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"The parser is unable to parse the expression: "
@@ -3331,7 +3176,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testParseNodeAttributeSpec ()
-specifier|public
 name|void
 name|testParseNodeAttributeSpec
 parameter_list|()
@@ -3368,8 +3212,6 @@ argument_list|(
 literal|"xyz(4),rm.yarn.io/foo=true"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3418,8 +3260,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -3440,8 +3280,6 @@ argument_list|(
 literal|"xyz(3),rm.yarn.io/foo!=abc"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3489,8 +3327,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -3514,8 +3350,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -3536,8 +3370,6 @@ argument_list|(
 literal|"xyz(1),rm.yarn.io/foo!=abc:zxy(1),rm.yarn.io/bar=true"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -3624,8 +3456,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -3636,8 +3466,6 @@ name|getConstraintExpr
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc2
@@ -3658,8 +3486,6 @@ argument_list|(
 literal|"rm.yarn.io/foo=true"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3708,8 +3534,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|actualSourceTags
@@ -3731,8 +3555,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -3753,8 +3575,6 @@ argument_list|(
 literal|"java=1.7,1.8"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3841,8 +3661,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|actualSourceTags
@@ -3864,8 +3682,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedPc1
@@ -3887,8 +3703,6 @@ argument_list|(
 literal|"rm.yarn.io/foo=true:xyz(1),notin,node,xyz"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Expected a failure!"
@@ -3901,8 +3715,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|e
@@ -3915,7 +3727,6 @@ block|}
 annotation|@
 name|Test
 DECL|method|testParseAllocationTagNameSpace ()
-specifier|public
 name|void
 name|testParseAllocationTagNameSpace
 parameter_list|()
@@ -3940,8 +3751,6 @@ argument_list|(
 literal|"foo(2),notin,node,not-self/bar,all/moo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3998,8 +3807,6 @@ operator|.
 name|getConstraintExpr
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -4015,8 +3822,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -4030,8 +3835,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|Sets
@@ -4060,8 +3863,6 @@ argument_list|(
 literal|"foo(2),notin,node,moo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -4100,8 +3901,6 @@ operator|.
 name|getConstraintExpr
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|constraint
@@ -4116,8 +3915,6 @@ name|SingleConstraint
 operator|)
 name|constraint
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -4131,8 +3928,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedTargetExpression
@@ -4178,13 +3973,11 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
-literal|"PlacementConstraintParseException is expected"
-argument_list|,
 name|caughtException
+argument_list|,
+literal|"PlacementConstraintParseException is expected"
 argument_list|)
 expr_stmt|;
 block|}
