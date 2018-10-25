@@ -112,30 +112,6 @@ name|linux
 operator|.
 name|resources
 operator|.
-name|MemoryResourceHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
-name|linux
-operator|.
-name|resources
-operator|.
 name|ResourceHandlerModule
 import|;
 end_import
@@ -585,16 +561,6 @@ operator|.
 name|Map
 operator|.
 name|Entry
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Optional
 import|;
 end_import
 
@@ -3073,16 +3039,26 @@ name|long
 name|currentPmemUsage
 parameter_list|)
 block|{
-name|Optional
-argument_list|<
-name|Boolean
-argument_list|>
+if|if
+condition|(
+name|strictMemoryEnforcement
+operator|&&
+operator|!
+name|elasticMemoryEnforcement
+condition|)
+block|{
+comment|// When cgroup-based strict memory enforcement is used alone without
+comment|// elastic memory control, the oom-kill would take care of it.
+comment|// However, when elastic memory control is also enabled, the oom killer
+comment|// would be disabled at the root yarn container cgroup level (all child
+comment|// cgroups would inherit that setting). Hence, we fall back to the
+comment|// polling-based mechanism.
+return|return;
+block|}
+name|boolean
 name|isMemoryOverLimit
 init|=
-name|Optional
-operator|.
-name|empty
-argument_list|()
+literal|false
 decl_stmt|;
 name|String
 name|msg
@@ -3096,87 +3072,6 @@ name|ContainerExitStatus
 operator|.
 name|INVALID
 decl_stmt|;
-if|if
-condition|(
-name|strictMemoryEnforcement
-operator|&&
-name|elasticMemoryEnforcement
-condition|)
-block|{
-comment|// Both elastic memory control and strict memory control are enabled
-comment|// through cgroups. A container will be frozen by the elastic memory
-comment|// control mechanism if it exceeds its request, so we check for this
-comment|// here and kill it. Otherwise, the container will not be killed if
-comment|// the node never exceeds its limit and the procfs-based
-comment|// memory accounting is different from the cgroup-based accounting.
-name|MemoryResourceHandler
-name|handler
-init|=
-name|ResourceHandlerModule
-operator|.
-name|getMemoryResourceHandler
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|handler
-operator|!=
-literal|null
-condition|)
-block|{
-name|isMemoryOverLimit
-operator|=
-name|handler
-operator|.
-name|isUnderOOM
-argument_list|(
-name|containerId
-argument_list|)
-expr_stmt|;
-name|containerExitStatus
-operator|=
-name|ContainerExitStatus
-operator|.
-name|KILLED_EXCEEDED_PMEM
-expr_stmt|;
-name|msg
-operator|=
-name|containerId
-operator|+
-literal|" is under oom because it exceeded its"
-operator|+
-literal|" physical memory limit"
-expr_stmt|;
-block|}
-block|}
-elseif|else
-if|if
-condition|(
-name|strictMemoryEnforcement
-operator|||
-name|elasticMemoryEnforcement
-condition|)
-block|{
-comment|// if cgroup-based memory control is enabled
-name|isMemoryOverLimit
-operator|=
-name|Optional
-operator|.
-name|of
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|isMemoryOverLimit
-operator|.
-name|isPresent
-argument_list|()
-condition|)
-block|{
 name|long
 name|vmemLimit
 init|=
@@ -3276,12 +3171,7 @@ argument_list|)
 expr_stmt|;
 name|isMemoryOverLimit
 operator|=
-name|Optional
-operator|.
-name|of
-argument_list|(
 literal|true
-argument_list|)
 expr_stmt|;
 name|containerExitStatus
 operator|=
@@ -3352,12 +3242,7 @@ argument_list|)
 expr_stmt|;
 name|isMemoryOverLimit
 operator|=
-name|Optional
-operator|.
-name|of
-argument_list|(
 literal|true
-argument_list|)
 expr_stmt|;
 name|containerExitStatus
 operator|=
@@ -3366,18 +3251,9 @@ operator|.
 name|KILLED_EXCEEDED_PMEM
 expr_stmt|;
 block|}
-block|}
 if|if
 condition|(
 name|isMemoryOverLimit
-operator|.
-name|isPresent
-argument_list|()
-operator|&&
-name|isMemoryOverLimit
-operator|.
-name|get
-argument_list|()
 condition|)
 block|{
 comment|// Virtual or physical memory over limit. Fail the container and

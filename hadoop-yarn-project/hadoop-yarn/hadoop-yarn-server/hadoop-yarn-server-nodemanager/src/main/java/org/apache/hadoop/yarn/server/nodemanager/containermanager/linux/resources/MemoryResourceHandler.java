@@ -54,34 +54,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Optional
-import|;
-end_import
-
 begin_interface
 annotation|@
 name|InterfaceAudience
@@ -97,20 +69,7 @@ interface|interface
 name|MemoryResourceHandler
 extends|extends
 name|ResourceHandler
-block|{
-comment|/**    * check whether a container is under OOM.    * @param containerId the id of the container    * @return empty if the status is unknown, true is the container is under oom,    *         false otherwise    */
-DECL|method|isUnderOOM (ContainerId containerId)
-name|Optional
-argument_list|<
-name|Boolean
-argument_list|>
-name|isUnderOOM
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|)
-function_decl|;
-block|}
+block|{ }
 end_interface
 
 end_unit
