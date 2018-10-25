@@ -58,34 +58,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|core
-operator|.
-name|Context
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|core
-operator|.
-name|HttpHeaders
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -238,16 +210,11 @@ decl_stmt|;
 comment|/**    * Rest endpoint to list all the buckets of the current user.    *    * See https://docs.aws.amazon.com/AmazonS3/latest/API/RESTServiceGET.html    * for more details.    */
 annotation|@
 name|GET
-DECL|method|get (@ontext HttpHeaders headers)
+DECL|method|get ()
 specifier|public
 name|ListBucketResponse
 name|get
-parameter_list|(
-annotation|@
-name|Context
-name|HttpHeaders
-name|headers
-parameter_list|)
+parameter_list|()
 throws|throws
 name|OS3Exception
 throws|,
@@ -268,12 +235,10 @@ name|volumeName
 init|=
 literal|"s3"
 operator|+
-name|parseUsername
-argument_list|(
-name|headers
-argument_list|)
+name|getAuthenticationHeaderParser
+argument_list|()
 operator|.
-name|toLowerCase
+name|getAccessKeyID
 argument_list|()
 decl_stmt|;
 try|try
