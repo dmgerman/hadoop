@@ -1180,6 +1180,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Update cluster information inside container.    *    * @param ctx ContainerRuntimeContext    * @param user Owner of application    * @param appId YARN application ID    * @param spec Service Specification    * @throws IOException if there is a failure while writing spec to disk    */
+DECL|method|updateYarnSysFS (Context ctx, String user, String appId, String spec)
+specifier|public
+specifier|abstract
+name|void
+name|updateYarnSysFS
+parameter_list|(
+name|Context
+name|ctx
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|appId
+parameter_list|,
+name|String
+name|spec
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Recover an already existing container. This is a blocking call and returns    * only when the container exits.  Note that the container must have been    * activated prior to this call.    *    * @param ctx encapsulates information necessary to reacquire container    * @return The exit code of the pre-existing container    * @throws IOException if there is a failure while reacquiring the container    * @throws InterruptedException if interrupted while waiting to reacquire    * the container    */
 DECL|method|reacquireContainer (ContainerReacquisitionContext ctx)
 specifier|public

@@ -946,6 +946,28 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|updateYarnSysFS (Context ctx, String user, String appId, String spec)
+specifier|public
+name|void
+name|updateYarnSysFS
+parameter_list|(
+name|Context
+name|ctx
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|appId
+parameter_list|,
+name|String
+name|spec
+parameter_list|)
+throws|throws
+name|IOException
+block|{     }
 block|}
 DECL|class|MockContainerEventHandler
 specifier|private

@@ -1065,7 +1065,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>This class is a {@link ContainerRuntime} implementation that uses the  * native {@code container-executor} binary via a  * {@link PrivilegedOperationExecutor} instance to launch processes inside  * Docker containers.</p>  *  *<p>The following environment variables are used to configure the Docker  * engine:</p>  *  *<ul>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_TYPE} ultimately determines whether a  *     Docker container will be used. If the value is {@code docker}, a Docker  *     container will be used. Otherwise a regular process tree container will  *     be used. This environment variable is checked by the  *     {@link #isDockerContainerRequested} method, which is called by the  *     {@link DelegatingLinuxContainerRuntime}.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_IMAGE} names which image  *     will be used to launch the Docker container.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE} controls  *     whether the Docker container's default command is overridden.  When set  *     to {@code true}, the Docker container's command will be  *     {@code bash<path_to_launch_script>}. When unset or set to {@code false}  *     the Docker container's default command is used.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_NETWORK} sets the  *     network type to be used by the Docker container. It must be a valid  *     value as determined by the  *     {@code yarn.nodemanager.runtime.linux.docker.allowed-container-networks}  *     property.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_PID_NAMESPACE}  *     controls which PID namespace will be used by the Docker container. By  *     default, each Docker container has its own PID namespace. To share the  *     namespace of the host, the  *     {@code yarn.nodemanager.runtime.linux.docker.host-pid-namespace.allowed}  *     property must be set to {@code true}. If the host PID namespace is  *     allowed and this environment variable is set to {@code host}, the  *     Docker container will share the host's PID namespace. No other value is  *     allowed.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_HOSTNAME} sets the  *     hostname to be used by the Docker container. If not specified, a  *     hostname will be derived from the container ID and set as default  *     hostname for networks other than 'host'.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_RUN_PRIVILEGED_CONTAINER}  *     controls whether the Docker container is a privileged container. In order  *     to use privileged containers, the  *     {@code yarn.nodemanager.runtime.linux.docker.privileged-containers.allowed}  *     property must be set to {@code true}, and the application owner must  *     appear in the value of the  *     {@code yarn.nodemanager.runtime.linux.docker.privileged-containers.acl}  *     property. If this environment variable is set to {@code true}, a  *     privileged Docker container will be used if allowed. No other value is  *     allowed, so the environment variable should be left unset rather than  *     setting it to false.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS} allows users to specify  +     additional volume mounts for the Docker container. The value of the  *     environment variable should be a comma-separated list of mounts.  *     All such mounts must be given as {@code source:dest[:mode]} and the mode  *     must be "ro" (read-only) or "rw" (read-write) to specify the type of  *     access being requested. If neither is specified, read-write will be  *     assumed. The mode may include a bind propagation option. In that case,  *     the mode should either be of the form [option], rw+[option], or  *     ro+[option]. Valid bind propagation options are shared, rshared, slave,  *     rslave, private, and rprivate. The requested mounts will be validated by  *     container-executor based on the values set in container-executor.cfg for  *     {@code docker.allowed.ro-mounts} and {@code docker.allowed.rw-mounts}.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_TMPFS_MOUNTS} allows users to  *     specify additional tmpfs mounts for the Docker container. The value of  *     the environment variable should be a comma-separated list of mounts.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL} allows a user  *     to request delayed deletion of the Docker containers on a per  *     container basis. If true, Docker containers will not be removed until  *     the duration defined by {@code yarn.nodemanager.delete.debug-delay-sec}  *     has elapsed. Administrators can disable this feature through the  *     yarn-site property  *     {@code yarn.nodemanager.runtime.linux.docker.delayed-removal.allowed}.  *     This feature is disabled by default. When this feature is disabled or set  *     to false, the container will be removed as soon as it exits.  *</li>  *</ul>  */
+comment|/**  *<p>This class is a {@link ContainerRuntime} implementation that uses the  * native {@code container-executor} binary via a  * {@link PrivilegedOperationExecutor} instance to launch processes inside  * Docker containers.</p>  *  *<p>The following environment variables are used to configure the Docker  * engine:</p>  *  *<ul>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_TYPE} ultimately determines whether a  *     Docker container will be used. If the value is {@code docker}, a Docker  *     container will be used. Otherwise a regular process tree container will  *     be used. This environment variable is checked by the  *     {@link #isDockerContainerRequested} method, which is called by the  *     {@link DelegatingLinuxContainerRuntime}.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_IMAGE} names which image  *     will be used to launch the Docker container.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE} controls  *     whether the Docker container's default command is overridden.  When set  *     to {@code true}, the Docker container's command will be  *     {@code bash<path_to_launch_script>}. When unset or set to {@code false}  *     the Docker container's default command is used.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_NETWORK} sets the  *     network type to be used by the Docker container. It must be a valid  *     value as determined by the  *     {@code yarn.nodemanager.runtime.linux.docker.allowed-container-networks}  *     property.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_PID_NAMESPACE}  *     controls which PID namespace will be used by the Docker container. By  *     default, each Docker container has its own PID namespace. To share the  *     namespace of the host, the  *     {@code yarn.nodemanager.runtime.linux.docker.host-pid-namespace.allowed}  *     property must be set to {@code true}. If the host PID namespace is  *     allowed and this environment variable is set to {@code host}, the  *     Docker container will share the host's PID namespace. No other value is  *     allowed.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_HOSTNAME} sets the  *     hostname to be used by the Docker container. If not specified, a  *     hostname will be derived from the container ID and set as default  *     hostname for networks other than 'host'.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_RUN_PRIVILEGED_CONTAINER}  *     controls whether the Docker container is a privileged container. In order  *     to use privileged containers, the  *     {@code yarn.nodemanager.runtime.linux.docker.privileged-containers.allowed}  *     property must be set to {@code true}, and the application owner must  *     appear in the value of the  *     {@code yarn.nodemanager.runtime.linux.docker.privileged-containers.acl}  *     property. If this environment variable is set to {@code true}, a  *     privileged Docker container will be used if allowed. No other value is  *     allowed, so the environment variable should be left unset rather than  *     setting it to false.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS} allows users to specify  +     additional volume mounts for the Docker container. The value of the  *     environment variable should be a comma-separated list of mounts.  *     All such mounts must be given as {@code source:dest[:mode]} and the mode  *     must be "ro" (read-only) or "rw" (read-write) to specify the type of  *     access being requested. If neither is specified, read-write will be  *     assumed. The mode may include a bind propagation option. In that case,  *     the mode should either be of the form [option], rw+[option], or  *     ro+[option]. Valid bind propagation options are shared, rshared, slave,  *     rslave, private, and rprivate. The requested mounts will be validated by  *     container-executor based on the values set in container-executor.cfg for  *     {@code docker.allowed.ro-mounts} and {@code docker.allowed.rw-mounts}.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_TMPFS_MOUNTS} allows users to  *     specify additional tmpfs mounts for the Docker container. The value of  *     the environment variable should be a comma-separated list of mounts.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL} allows a user  *     to request delayed deletion of the Docker containers on a per  *     container basis. If true, Docker containers will not be removed until  *     the duration defined by {@code yarn.nodemanager.delete.debug-delay-sec}  *     has elapsed. Administrators can disable this feature through the  *     yarn-site property  *     {@code yarn.nodemanager.runtime.linux.docker.delayed-removal.allowed}.  *     This feature is disabled by default. When this feature is disabled or set  *     to false, the container will be removed as soon as it exits.  *</li>  *<li>  *     {@code YARN_CONTAINER_RUNTIME_YARN_SYSFS_ENABLE} allows export yarn  *     service json to docker container.  This feature is disabled by default.  *     when this feature is set, app.json will be available in  *     /hadoop/yarn/sysfs/app.json.  *</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -1311,6 +1311,28 @@ name|String
 name|ENV_DOCKER_CONTAINER_DELAYED_REMOVAL
 init|=
 literal|"YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL"
+decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|field|ENV_DOCKER_CONTAINER_YARN_SYSFS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENV_DOCKER_CONTAINER_YARN_SYSFS
+init|=
+literal|"YARN_CONTAINER_RUNTIME_YARN_SYSFS_ENABLE"
+decl_stmt|;
+DECL|field|YARN_SYSFS_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_SYSFS_PATH
+init|=
+literal|"/hadoop/yarn/sysfs"
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -4607,6 +4629,36 @@ argument_list|,
 name|runCommand
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|environment
+operator|.
+name|containsKey
+argument_list|(
+name|ENV_DOCKER_CONTAINER_YARN_SYSFS
+argument_list|)
+operator|&&
+name|Boolean
+operator|.
+name|parseBoolean
+argument_list|(
+name|environment
+operator|.
+name|get
+argument_list|(
+name|ENV_DOCKER_CONTAINER_YARN_SYSFS
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|runCommand
+operator|.
+name|setYarnSysFS
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|useEntryPoint

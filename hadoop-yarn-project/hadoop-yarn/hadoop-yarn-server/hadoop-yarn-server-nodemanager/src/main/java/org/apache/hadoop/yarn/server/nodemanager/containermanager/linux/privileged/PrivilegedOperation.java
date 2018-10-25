@@ -231,6 +231,12 @@ name|INSPECT_DOCKER_CONTAINER
 argument_list|(
 literal|"--inspect-docker-container"
 argument_list|)
+block|,
+DECL|enumConstant|SYNC_YARN_SYSFS
+name|SYNC_YARN_SYSFS
+argument_list|(
+literal|""
+argument_list|)
 block|;
 DECL|field|option
 specifier|private
@@ -640,6 +646,12 @@ DECL|enumConstant|LIST_AS_USER
 name|LIST_AS_USER
 argument_list|(
 literal|5
+argument_list|)
+block|,
+DECL|enumConstant|SYNC_YARN_SYSFS
+name|SYNC_YARN_SYSFS
+argument_list|(
+literal|6
 argument_list|)
 block|;
 DECL|field|value

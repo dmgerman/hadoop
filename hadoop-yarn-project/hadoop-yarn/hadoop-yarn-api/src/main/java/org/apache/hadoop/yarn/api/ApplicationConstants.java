@@ -445,6 +445,13 @@ name|YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE
 argument_list|(
 literal|"YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE"
 argument_list|)
+block|,
+comment|/**      * $YARN_CONTAINER_RUNTIME_YARN_SYSFS_ENABLE      * Final, expose cluster information to container.      */
+DECL|enumConstant|YARN_CONTAINER_RUNTIME_YARN_SYSFS_ENABLE
+name|YARN_CONTAINER_RUNTIME_YARN_SYSFS_ENABLE
+argument_list|(
+literal|"YARN_CONTAINER_RUNTIME_YARN_SYSFS_ENABLE"
+argument_list|)
 block|;
 DECL|field|variable
 specifier|private
