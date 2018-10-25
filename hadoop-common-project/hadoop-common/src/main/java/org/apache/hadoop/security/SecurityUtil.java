@@ -1708,6 +1708,10 @@ condition|(
 name|token
 operator|!=
 literal|null
+operator|&&
+name|service
+operator|!=
+literal|null
 condition|)
 block|{
 name|token
@@ -1780,20 +1784,22 @@ argument_list|()
 condition|)
 block|{
 comment|// host has no ip address
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-operator|new
-name|UnknownHostException
-argument_list|(
-name|addr
+name|LOG
 operator|.
-name|getHostName
-argument_list|()
+name|warn
+argument_list|(
+literal|"unable to resolve host name "
+operator|+
+name|addr
+operator|+
+literal|". Failure to construct a correct token service "
+operator|+
+literal|"name may result in operation failures"
 argument_list|)
-argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 name|host
 operator|=
