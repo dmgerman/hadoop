@@ -749,6 +749,11 @@ block|}
 comment|/**   * If NN restarted then lazyPersist files should not deleted   */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testFileShouldNotDiscardedIfNNRestarted ()
 specifier|public
 name|void
@@ -821,20 +826,22 @@ name|restartNameNodes
 argument_list|()
 expr_stmt|;
 comment|// wait for the redundancy monitor to mark the file as corrupt.
+name|Long
+name|corruptBlkCount
+decl_stmt|;
+do|do
+block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2
-operator|*
 name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
-name|Long
 name|corruptBlkCount
-init|=
+operator|=
 operator|(
 name|long
 operator|)
@@ -856,18 +863,15 @@ operator|.
 name|getCorruptReplicaBlockIterator
 argument_list|()
 argument_list|)
-decl_stmt|;
-comment|// Check block detected as corrupted
-name|assertThat
-argument_list|(
-name|corruptBlkCount
-argument_list|,
-name|is
-argument_list|(
-literal|1L
-argument_list|)
-argument_list|)
 expr_stmt|;
+block|}
+do|while
+condition|(
+name|corruptBlkCount
+operator|!=
+literal|1L
+condition|)
+do|;
 comment|// Ensure path1 exist.
 name|Assert
 operator|.
