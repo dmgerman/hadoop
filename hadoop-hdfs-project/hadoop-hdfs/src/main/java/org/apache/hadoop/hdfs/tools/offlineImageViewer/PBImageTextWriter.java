@@ -68,20 +68,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|io
-operator|.
-name|FileUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -1495,13 +1481,19 @@ name|exists
 argument_list|()
 condition|)
 block|{
-name|FileUtils
-operator|.
-name|deleteDirectory
+throw|throw
+operator|new
+name|IOException
 argument_list|(
+literal|"Folder "
+operator|+
 name|dbDir
+operator|+
+literal|" already exists! Delete "
+operator|+
+literal|"manually or provide another (not existing) directory!"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 if|if
 condition|(
