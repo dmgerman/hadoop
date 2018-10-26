@@ -252,7 +252,7 @@ name|factor
 argument_list|)
 return|;
 block|}
-DECL|method|create (ReplicationType type, List<DatanodeDetails> nodes)
+DECL|method|create (ReplicationType type, ReplicationFactor factor, List<DatanodeDetails> nodes)
 specifier|public
 name|Pipeline
 name|create
@@ -260,14 +260,15 @@ parameter_list|(
 name|ReplicationType
 name|type
 parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|,
 name|List
 argument_list|<
 name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|providers
@@ -279,6 +280,8 @@ argument_list|)
 operator|.
 name|create
 argument_list|(
+name|factor
+argument_list|,
 name|nodes
 argument_list|)
 return|;

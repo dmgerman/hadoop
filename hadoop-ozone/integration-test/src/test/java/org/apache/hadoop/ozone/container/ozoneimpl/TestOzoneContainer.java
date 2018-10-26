@@ -192,11 +192,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -419,7 +415,7 @@ name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getPort
@@ -607,7 +603,7 @@ name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getPort
@@ -2793,7 +2789,7 @@ name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getPort

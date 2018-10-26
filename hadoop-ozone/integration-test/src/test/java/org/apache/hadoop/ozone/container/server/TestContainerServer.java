@@ -458,11 +458,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -577,18 +573,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|function
-operator|.
-name|BiConsumer
 import|;
 end_import
 
@@ -737,7 +721,7 @@ name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getPort
@@ -788,7 +772,7 @@ parameter_list|,
 name|p
 parameter_list|)
 lambda|->
-block|{}
+block|{         }
 argument_list|)
 expr_stmt|;
 block|}
@@ -1017,7 +1001,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestClientServer ( int numDatanodes, BiConsumer<Pipeline, OzoneConfiguration> initConf, CheckedBiFunction<Pipeline, OzoneConfiguration, XceiverClientSpi, IOException> createClient, CheckedBiFunction<DatanodeDetails, OzoneConfiguration, XceiverServerSpi, IOException> createServer, CheckedBiConsumer<DatanodeDetails, Pipeline, IOException> initServer)
+DECL|method|runTestClientServer ( int numDatanodes, CheckedBiConsumer<Pipeline, OzoneConfiguration, IOException> initConf, CheckedBiFunction<Pipeline, OzoneConfiguration, XceiverClientSpi, IOException> createClient, CheckedBiFunction<DatanodeDetails, OzoneConfiguration, XceiverServerSpi, IOException> createServer, CheckedBiConsumer<DatanodeDetails, Pipeline, IOException> initServer)
 specifier|static
 name|void
 name|runTestClientServer
@@ -1025,11 +1009,13 @@ parameter_list|(
 name|int
 name|numDatanodes
 parameter_list|,
-name|BiConsumer
+name|CheckedBiConsumer
 argument_list|<
 name|Pipeline
 argument_list|,
 name|OzoneConfiguration
+argument_list|,
+name|IOException
 argument_list|>
 name|initConf
 parameter_list|,
@@ -1132,7 +1118,7 @@ name|dn
 range|:
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 control|)
 block|{
@@ -1315,7 +1301,7 @@ name|DFS_CONTAINER_IPC_PORT
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getPort

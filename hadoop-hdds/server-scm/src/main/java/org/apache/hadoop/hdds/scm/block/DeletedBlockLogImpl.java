@@ -202,11 +202,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -1410,10 +1406,7 @@ name|containerDnsDetails
 init|=
 name|pipeline
 operator|.
-name|getDatanodes
-argument_list|()
-operator|.
-name|values
+name|getNodes
 argument_list|()
 decl_stmt|;
 comment|// The delete entry can be safely removed from the log if all the

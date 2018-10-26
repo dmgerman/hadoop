@@ -248,11 +248,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -781,7 +777,7 @@ name|containerId
 argument_list|,
 name|sourcePipelines
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 argument_list|)
 argument_list|)
@@ -968,7 +964,7 @@ condition|(
 operator|!
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|.
 name|contains

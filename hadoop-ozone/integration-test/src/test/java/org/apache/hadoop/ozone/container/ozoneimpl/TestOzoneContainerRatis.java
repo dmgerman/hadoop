@@ -140,11 +140,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -503,12 +499,12 @@ expr_stmt|;
 comment|// Create Ratis cluster
 comment|//      final String ratisId = "ratis1";
 comment|//      final PipelineManager manager = RatisManagerImpl.newRatisManager(conf);
-comment|//      manager.createPipeline(ratisId, pipeline.getMachines());
+comment|//      manager.createPipeline(ratisId, pipeline.getNodes());
 comment|//      LOG.info("Created RatisCluster " + ratisId);
 comment|//
 comment|//      // check Ratis cluster members
 comment|//      final List<DatanodeDetails> dns = manager.getMembers(ratisId);
-comment|//      Assert.assertEquals(pipeline.getMachines(), dns);
+comment|//      Assert.assertEquals(pipeline.getNodes(), dns);
 comment|//
 comment|//      // run test
 comment|//      final XceiverClientSpi client = XceiverClientRatis

@@ -1074,7 +1074,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|.
 name|size
@@ -1144,7 +1144,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|.
 name|size

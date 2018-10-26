@@ -150,11 +150,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -1499,7 +1495,28 @@ argument_list|()
 decl_stmt|;
 comment|// irrespective of the container state, we will always read via Standalone
 comment|// protocol.
+if|if
+condition|(
 name|pipeline
+operator|.
+name|getType
+argument_list|()
+operator|!=
+name|HddsProtos
+operator|.
+name|ReplicationType
+operator|.
+name|STAND_ALONE
+condition|)
+block|{
+name|pipeline
+operator|=
+name|Pipeline
+operator|.
+name|newBuilder
+argument_list|(
+name|pipeline
+argument_list|)
 operator|.
 name|setType
 argument_list|(
@@ -1509,7 +1526,11 @@ name|ReplicationType
 operator|.
 name|STAND_ALONE
 argument_list|)
+operator|.
+name|build
+argument_list|()
 expr_stmt|;
+block|}
 name|XceiverClientSpi
 name|xceiverClient
 init|=

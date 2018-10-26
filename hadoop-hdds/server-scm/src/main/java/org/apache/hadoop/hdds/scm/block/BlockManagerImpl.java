@@ -1361,7 +1361,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getDatanodes
+name|getNodes
 argument_list|()
 operator|.
 name|size

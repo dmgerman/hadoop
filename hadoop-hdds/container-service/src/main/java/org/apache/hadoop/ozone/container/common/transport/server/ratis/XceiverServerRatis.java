@@ -198,11 +198,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|PipelineID
 import|;
@@ -2184,6 +2180,10 @@ operator|.
 name|getId
 argument_list|()
 argument_list|,
+name|RaftGroupId
+operator|.
+name|valueOf
+argument_list|(
 name|PipelineID
 operator|.
 name|getFromProtobuf
@@ -2191,8 +2191,9 @@ argument_list|(
 name|pipelineID
 argument_list|)
 operator|.
-name|getRaftGroupID
+name|getId
 argument_list|()
+argument_list|)
 argument_list|,
 name|nextCallId
 argument_list|()
@@ -2419,6 +2420,9 @@ operator|.
 name|valueOf
 argument_list|(
 name|groupId
+operator|.
+name|getUuid
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ClosePipelineInfo
@@ -2571,6 +2575,9 @@ operator|.
 name|valueOf
 argument_list|(
 name|groupId
+operator|.
+name|getUuid
+argument_list|()
 argument_list|)
 operator|.
 name|getProtobuf

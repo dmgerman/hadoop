@@ -204,11 +204,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -2107,7 +2103,7 @@ name|datanodes
 init|=
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2197,7 +2193,7 @@ name|datanodes
 init|=
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2411,7 +2407,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -3180,7 +3176,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 decl_stmt|;
 name|Assert

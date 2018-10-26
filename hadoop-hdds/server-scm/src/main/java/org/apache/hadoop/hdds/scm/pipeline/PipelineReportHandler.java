@@ -410,13 +410,29 @@ decl_stmt|;
 name|Pipeline
 name|pipeline
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|pipeline
+operator|=
 name|pipelineManager
 operator|.
 name|getPipeline
 argument_list|(
 name|pipelineID
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|PipelineNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|//TODO: introduce per datanode command for pipeline destroy
+return|return;
+block|}
 if|if
 condition|(
 name|pipeline
@@ -482,7 +498,16 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|// if all the containers have been closed the pipeline can be destroyed
+comment|// remove the pipeline from the pipeline manager
+name|pipelineManager
+operator|.
+name|removePipeline
+argument_list|(
+name|pipelineID
+argument_list|)
+expr_stmt|;
+comment|// since all the containers have been closed the pipeline can be
+comment|// destroyed
 try|try
 init|(
 name|XceiverClientRatis
@@ -504,15 +529,6 @@ name|destroyPipeline
 argument_list|()
 expr_stmt|;
 block|}
-comment|// after successfully destroying the pipeline, the pipeline can be
-comment|// removed from the pipeline manager
-name|pipelineManager
-operator|.
-name|removePipeline
-argument_list|(
-name|pipelineID
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 else|else

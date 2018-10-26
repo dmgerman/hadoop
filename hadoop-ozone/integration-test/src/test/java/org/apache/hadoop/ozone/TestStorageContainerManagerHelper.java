@@ -1230,14 +1230,14 @@ name|containerID
 argument_list|)
 decl_stmt|;
 name|DatanodeDetails
-name|leadDN
+name|dn
 init|=
 name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 decl_stmt|;
 name|OzoneContainer
@@ -1245,7 +1245,7 @@ name|containerServer
 init|=
 name|getContainerServerByDatanodeUuid
 argument_list|(
-name|leadDN
+name|dn
 operator|.
 name|getUuidString
 argument_list|()

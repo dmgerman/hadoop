@@ -159,12 +159,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|createPipeline (ReplicationType type, List<DatanodeDetails> nodes)
+DECL|method|createPipeline (ReplicationType type, ReplicationFactor factor, List<DatanodeDetails> nodes)
 name|Pipeline
 name|createPipeline
 parameter_list|(
 name|ReplicationType
 name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
 parameter_list|,
 name|List
 argument_list|<
@@ -172,8 +175,6 @@ name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 DECL|method|getPipeline (PipelineID pipelineID)
 name|Pipeline
@@ -183,25 +184,25 @@ name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
-name|IOException
+name|PipelineNotFoundException
 function_decl|;
-DECL|method|getPipelinesByType (ReplicationType type)
+DECL|method|getPipelines (ReplicationType type)
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelinesByType
+name|getPipelines
 parameter_list|(
 name|ReplicationType
 name|type
 parameter_list|)
 function_decl|;
-DECL|method|getPipelinesByTypeAndFactor (ReplicationType type, ReplicationFactor factor)
+DECL|method|getPipelines (ReplicationType type, ReplicationFactor factor)
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelinesByTypeAndFactor
+name|getPipelines
 parameter_list|(
 name|ReplicationType
 name|type

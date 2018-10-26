@@ -102,6 +102,24 @@ name|ContainerInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|Pipeline
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class wraps ozone container info.  */
 end_comment
@@ -206,7 +224,7 @@ argument_list|)
 argument_list|,
 name|Pipeline
 operator|.
-name|getFromProtoBuf
+name|getFromProtobuf
 argument_list|(
 name|allocatedContainer
 operator|.

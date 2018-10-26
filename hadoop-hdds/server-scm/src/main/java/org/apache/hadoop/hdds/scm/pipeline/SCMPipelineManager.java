@@ -556,6 +556,11 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setCreateIfMissing
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|setConf
 argument_list|(
 name|conf
@@ -578,20 +583,20 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|eventPublisher
+operator|=
+name|eventPublisher
+expr_stmt|;
+name|this
+operator|.
+name|nodeManager
+operator|=
+name|nodeManager
+expr_stmt|;
 name|initializePipelineState
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|eventPublisher
-operator|=
-name|eventPublisher
-expr_stmt|;
-name|this
-operator|.
-name|nodeManager
-operator|=
-name|nodeManager
 expr_stmt|;
 block|}
 DECL|method|initializePipelineState ()
@@ -669,7 +674,7 @@ name|pipeline
 init|=
 name|Pipeline
 operator|.
-name|fromProtobuf
+name|getFromProtobuf
 argument_list|(
 name|HddsProtos
 operator|.
@@ -700,8 +705,13 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
-comment|// TODO: add pipeline to node manager
-comment|// nodeManager.addPipeline(pipeline);
+name|nodeManager
+operator|.
+name|addPipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -749,7 +759,7 @@ name|put
 argument_list|(
 name|pipeline
 operator|.
-name|getID
+name|getId
 argument_list|()
 operator|.
 name|getProtobuf
@@ -774,7 +784,13 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
-comment|// TODO: add pipeline to node manager
+name|nodeManager
+operator|.
+name|addPipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
 return|return
 name|pipeline
 return|;
@@ -793,7 +809,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createPipeline (ReplicationType type, List<DatanodeDetails> nodes)
+DECL|method|createPipeline (ReplicationType type, ReplicationFactor factor, List<DatanodeDetails> nodes)
 specifier|public
 name|Pipeline
 name|createPipeline
@@ -801,14 +817,15 @@ parameter_list|(
 name|ReplicationType
 name|type
 parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|,
 name|List
 argument_list|<
 name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// This will mostly be used to create dummy pipeline for SimplePipelines.
 name|lock
@@ -827,6 +844,8 @@ operator|.
 name|create
 argument_list|(
 name|type
+argument_list|,
+name|factor
 argument_list|,
 name|nodes
 argument_list|)
@@ -855,7 +874,7 @@ name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
-name|IOException
+name|PipelineNotFoundException
 block|{
 name|lock
 operator|.
@@ -890,13 +909,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getPipelinesByType (ReplicationType type)
+DECL|method|getPipelines (ReplicationType type)
 specifier|public
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelinesByType
+name|getPipelines
 parameter_list|(
 name|ReplicationType
 name|type
@@ -915,7 +934,7 @@ block|{
 return|return
 name|stateManager
 operator|.
-name|getPipelinesByType
+name|getPipelines
 argument_list|(
 name|type
 argument_list|)
@@ -935,13 +954,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getPipelinesByTypeAndFactor (ReplicationType type, ReplicationFactor factor)
+DECL|method|getPipelines (ReplicationType type, ReplicationFactor factor)
 specifier|public
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelinesByTypeAndFactor
+name|getPipelines
 parameter_list|(
 name|ReplicationType
 name|type
@@ -963,7 +982,7 @@ block|{
 return|return
 name|stateManager
 operator|.
-name|getPipelinesByTypeAndFactor
+name|getPipelines
 argument_list|(
 name|type
 argument_list|,
@@ -1290,13 +1309,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|stateManager
-operator|.
-name|removePipeline
-argument_list|(
-name|pipelineID
-argument_list|)
-expr_stmt|;
 name|pipelineStore
 operator|.
 name|delete
@@ -1310,7 +1322,23 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO: remove pipeline from node manager
+name|Pipeline
+name|pipeline
+init|=
+name|stateManager
+operator|.
+name|removePipeline
+argument_list|(
+name|pipelineID
+argument_list|)
+decl_stmt|;
+name|nodeManager
+operator|.
+name|removePipeline
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{

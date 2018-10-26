@@ -345,7 +345,7 @@ name|Pipeline
 operator|.
 name|PipelineState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -456,7 +456,7 @@ name|Pipeline
 operator|.
 name|PipelineState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -559,6 +559,8 @@ name|provider
 operator|.
 name|create
 argument_list|(
+name|factor
+argument_list|,
 name|createListOfNodes
 argument_list|(
 name|factor
@@ -609,7 +611,7 @@ name|Pipeline
 operator|.
 name|PipelineState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -644,6 +646,8 @@ name|provider
 operator|.
 name|create
 argument_list|(
+name|factor
+argument_list|,
 name|createListOfNodes
 argument_list|(
 name|factor
@@ -694,7 +698,7 @@ name|Pipeline
 operator|.
 name|PipelineState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 name|Assert

@@ -631,7 +631,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -751,7 +751,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -864,7 +864,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -989,7 +989,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1119,7 +1119,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1337,7 +1337,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1452,7 +1452,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1580,7 +1580,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1681,7 +1681,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1783,7 +1783,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -1927,7 +1927,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getLeader
+name|getFirstNode
 argument_list|()
 operator|.
 name|getUuidString

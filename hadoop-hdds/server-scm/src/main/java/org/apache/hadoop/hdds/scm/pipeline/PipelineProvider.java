@@ -96,18 +96,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|create (List<DatanodeDetails> nodes)
+DECL|method|create (ReplicationFactor factor, List<DatanodeDetails> nodes)
 name|Pipeline
 name|create
 parameter_list|(
+name|ReplicationFactor
+name|factor
+parameter_list|,
 name|List
 argument_list|<
 name|DatanodeDetails
 argument_list|>
 name|nodes
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 block|}
 end_interface

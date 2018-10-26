@@ -82,11 +82,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -607,7 +603,7 @@ argument_list|()
 decl_stmt|;
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|.
 name|stream

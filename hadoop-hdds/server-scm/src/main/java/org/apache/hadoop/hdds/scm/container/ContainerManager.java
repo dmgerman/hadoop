@@ -168,9 +168,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|pipelines
+name|pipeline
 operator|.
-name|PipelineSelector
+name|PipelineNotFoundException
 import|;
 end_import
 
@@ -288,6 +288,8 @@ name|containerID
 parameter_list|)
 throws|throws
 name|ContainerNotFoundException
+throws|,
+name|PipelineNotFoundException
 function_decl|;
 comment|/**    * Returns containers under certain conditions.    * Search container IDs from start ID(exclusive),    * The max size of the searching range cannot exceed the    * value of count.    *    * @param startContainerID start containerID,>=0,    * start searching at the head if 0.    * @param count count must be>= 0    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big.    *    * @return a list of container.    * @throws IOException    */
 DECL|method|listContainer (ContainerID startContainerID, int count)
@@ -450,11 +452,6 @@ name|state
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-DECL|method|getPipelineSelector ()
-name|PipelineSelector
-name|getPipelineSelector
-parameter_list|()
 function_decl|;
 block|}
 end_interface

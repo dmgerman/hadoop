@@ -128,11 +128,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -500,7 +496,7 @@ name|checkArgument
 argument_list|(
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|!=
 literal|null
@@ -513,7 +509,7 @@ argument_list|(
 operator|!
 name|pipeline
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|.
 name|isEmpty

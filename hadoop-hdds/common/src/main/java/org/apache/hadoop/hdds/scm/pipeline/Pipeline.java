@@ -303,10 +303,10 @@ name|nodeStatus
 expr_stmt|;
 block|}
 comment|/**    * Returns the ID of this pipeline.    *    * @return PipelineID    */
-DECL|method|getID ()
+DECL|method|getId ()
 specifier|public
 name|PipelineID
-name|getID
+name|getId
 parameter_list|()
 block|{
 return|return
@@ -337,13 +337,79 @@ return|;
 block|}
 comment|/**    * Returns the State of the pipeline.    *    * @return - LifeCycleStates.    */
 DECL|method|getPipelineState ()
+specifier|public
 name|PipelineState
 name|getPipelineState
 parameter_list|()
 block|{
-comment|// TODO: See if we need to expose this.
 return|return
 name|state
+return|;
+block|}
+comment|/**    * Returns the list of nodes which form this pipeline.    *    * @return List of DatanodeDetails    */
+DECL|method|getNodes ()
+specifier|public
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|getNodes
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|nodeStatus
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getFirstNode ()
+specifier|public
+name|DatanodeDetails
+name|getFirstNode
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|nodeStatus
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Pipeline=%s is empty"
+argument_list|,
+name|id
+argument_list|)
+argument_list|)
+throw|;
+block|}
+return|return
+name|nodeStatus
+operator|.
+name|keySet
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
 return|;
 block|}
 DECL|method|isClosed ()
@@ -458,26 +524,17 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns the list of nodes which form this pipeline.    *    * @return List of DatanodeDetails    */
-DECL|method|getNodes ()
+DECL|method|isEmpty ()
 specifier|public
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|getNodes
+name|boolean
+name|isEmpty
 parameter_list|()
 block|{
 return|return
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
 name|nodeStatus
 operator|.
-name|keySet
+name|isEmpty
 argument_list|()
-argument_list|)
 return|;
 block|}
 DECL|method|getProtobufMessage ()
@@ -558,11 +615,11 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|fromProtobuf (HddsProtos.Pipeline pipeline)
+DECL|method|getFromProtobuf (HddsProtos.Pipeline pipeline)
 specifier|public
 specifier|static
 name|Pipeline
-name|fromProtobuf
+name|getFromProtobuf
 parameter_list|(
 name|HddsProtos
 operator|.
@@ -724,20 +781,13 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|state
+name|getNodes
+argument_list|()
 argument_list|,
 name|that
 operator|.
-name|state
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|nodeStatus
-argument_list|,
-name|that
-operator|.
-name|nodeStatus
+name|getNodes
+argument_list|()
 argument_list|)
 operator|.
 name|isEquals
@@ -770,11 +820,6 @@ operator|.
 name|append
 argument_list|(
 name|factor
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|state
 argument_list|)
 operator|.
 name|append
@@ -1094,7 +1139,9 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Possible Pipeline states in SCM.    */
 DECL|enum|PipelineState
+specifier|public
 enum|enum
 name|PipelineState
 block|{

@@ -260,11 +260,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -1480,7 +1476,7 @@ expr_stmt|;
 return|return
 name|Pipeline
 operator|.
-name|getFromProtoBuf
+name|getFromProtobuf
 argument_list|(
 name|response
 operator|.

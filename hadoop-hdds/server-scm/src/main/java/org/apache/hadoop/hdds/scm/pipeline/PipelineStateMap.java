@@ -165,7 +165,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Holds the data structures which maintain the information about pipeline and  * its state. All the read write operations in this class are protected by a  * lock.  * Invariant: If a pipeline exists in PipelineStateMap, both pipelineMap and  * pipeline2container would have a non-null mapping for it.  */
+comment|/**  * Holds the data structures which maintain the information about pipeline and  * its state.  * Invariant: If a pipeline exists in PipelineStateMap, both pipelineMap and  * pipeline2container would have a non-null mapping for it.  */
 end_comment
 
 begin_class
@@ -310,7 +310,7 @@ name|putIfAbsent
 argument_list|(
 name|pipeline
 operator|.
-name|getID
+name|getId
 argument_list|()
 argument_list|,
 name|pipeline
@@ -327,7 +327,7 @@ literal|"Duplicate pipeline ID detected. {}"
 argument_list|,
 name|pipeline
 operator|.
-name|getID
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -343,7 +343,7 @@ literal|"Duplicate pipeline ID %s detected."
 argument_list|,
 name|pipeline
 operator|.
-name|getID
+name|getId
 argument_list|()
 argument_list|)
 argument_list|)
@@ -355,7 +355,7 @@ name|put
 argument_list|(
 name|pipeline
 operator|.
-name|getID
+name|getId
 argument_list|()
 argument_list|,
 operator|new
@@ -394,7 +394,7 @@ name|checkNotNull
 argument_list|(
 name|containerID
 argument_list|,
-literal|"container Id cannot be null"
+literal|"Container Id cannot be null"
 argument_list|)
 expr_stmt|;
 name|Pipeline
@@ -407,10 +407,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|pipeline
 operator|.
-name|isOpen
+name|isClosed
 argument_list|()
 condition|)
 block|{
@@ -422,7 +421,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s is not in open state"
+literal|"Cannot add container to pipeline=%s in closed state"
 argument_list|,
 name|pipelineID
 argument_list|)
@@ -451,8 +450,17 @@ name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
-name|IOException
+name|PipelineNotFoundException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|pipelineID
+argument_list|,
+literal|"Pipeline Id cannot be null"
+argument_list|)
+expr_stmt|;
 name|Pipeline
 name|pipeline
 init|=
@@ -472,7 +480,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PipelineNotFoundException
 argument_list|(
 name|String
 operator|.
@@ -490,12 +498,12 @@ name|pipeline
 return|;
 block|}
 comment|/**    * Get pipeline corresponding to specified replication type.    *    * @param type - ReplicationType    * @return List of pipelines which have the specified replication type    */
-DECL|method|getPipelinesByType (ReplicationType type)
+DECL|method|getPipelines (ReplicationType type)
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelinesByType
+name|getPipelines
 parameter_list|(
 name|ReplicationType
 name|type
@@ -543,13 +551,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get open pipeline corresponding to specified replication type and factor.    *    * @param type - ReplicationType    * @param factor - ReplicationFactor    * @return List of open pipelines with specified replication type and factor    */
-DECL|method|getPipelinesByTypeAndFactor (ReplicationType type, ReplicationFactor factor)
+comment|/**    * Get pipeline corresponding to specified replication type and factor.    *    * @param type - ReplicationType    * @param factor - ReplicationFactor    * @return List of pipelines with specified replication type and factor    */
+DECL|method|getPipelines (ReplicationType type, ReplicationFactor factor)
 name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|getPipelinesByTypeAndFactor
+name|getPipelines
 parameter_list|(
 name|ReplicationType
 name|type
@@ -558,6 +566,24 @@ name|ReplicationFactor
 name|factor
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|type
+argument_list|,
+literal|"Replication type cannot be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|factor
+argument_list|,
+literal|"Replication factor cannot be null"
+argument_list|)
+expr_stmt|;
 return|return
 name|pipelineMap
 operator|.
@@ -571,11 +597,6 @@ name|filter
 argument_list|(
 name|pipeline
 lambda|->
-name|pipeline
-operator|.
-name|isOpen
-argument_list|()
-operator|&&
 name|pipeline
 operator|.
 name|getType
@@ -600,6 +621,103 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Get list of pipeline corresponding to specified replication type and    * pipeline states.    *    * @param type - ReplicationType    * @param states - Array of required PipelineState    * @return List of pipelines with specified replication type and states    */
+DECL|method|getPipelines (ReplicationType type, PipelineState... states)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelines
+parameter_list|(
+name|ReplicationType
+name|type
+parameter_list|,
+name|PipelineState
+modifier|...
+name|states
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|type
+argument_list|,
+literal|"Replication type cannot be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|states
+argument_list|,
+literal|"Pipeline state cannot be null"
+argument_list|)
+expr_stmt|;
+name|Set
+argument_list|<
+name|PipelineState
+argument_list|>
+name|pipelineStates
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|pipelineStates
+operator|.
+name|addAll
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|states
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|pipelineMap
+operator|.
+name|values
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|filter
+argument_list|(
+name|pipeline
+lambda|->
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|type
+operator|&&
+name|pipelineStates
+operator|.
+name|contains
+argument_list|(
+name|pipeline
+operator|.
+name|getPipelineState
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/**    * Get set of containerIDs corresponding to a pipeline.    *    * @param pipelineID - PipelineID    * @return Set of containerIDs belonging to the pipeline    * @throws IOException if pipeline is not found    */
 DECL|method|getContainers (PipelineID pipelineID)
 name|Set
@@ -612,8 +730,17 @@ name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
-name|IOException
+name|PipelineNotFoundException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|pipelineID
+argument_list|,
+literal|"Pipeline Id cannot be null"
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|ContainerID
@@ -636,7 +763,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PipelineNotFoundException
 argument_list|(
 name|String
 operator|.
@@ -667,8 +794,17 @@ name|PipelineID
 name|pipelineID
 parameter_list|)
 throws|throws
-name|IOException
+name|PipelineNotFoundException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|pipelineID
+argument_list|,
+literal|"Pipeline Id cannot be null"
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|ContainerID
@@ -691,7 +827,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PipelineNotFoundException
 argument_list|(
 name|String
 operator|.
@@ -713,7 +849,7 @@ return|;
 block|}
 comment|/**    * Remove pipeline from the data structures.    *    * @param pipelineID - PipelineID of the pipeline to be removed    * @throws IOException if the pipeline is not empty or does not exist    */
 DECL|method|removePipeline (PipelineID pipelineID)
-name|void
+name|Pipeline
 name|removePipeline
 parameter_list|(
 name|PipelineID
@@ -815,6 +951,9 @@ argument_list|(
 name|pipelineID
 argument_list|)
 expr_stmt|;
+return|return
+name|pipeline
+return|;
 block|}
 comment|/**    * Remove container from a pipeline.    *    * @param pipelineID - PipelineID of the pipeline from which container needs    *                   to be removed    * @param containerID - ContainerID of the container to remove    * @throws IOException if pipeline does not exist    */
 DECL|method|removeContainerFromPipeline (PipelineID pipelineID, ContainerID containerID)
@@ -861,6 +1000,28 @@ argument_list|(
 name|pipelineID
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|containerIDs
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|PipelineNotFoundException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s not found"
+argument_list|,
+name|pipelineID
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|containerIDs
 operator|.
 name|remove
@@ -881,7 +1042,7 @@ name|PipelineState
 name|state
 parameter_list|)
 throws|throws
-name|IOException
+name|PipelineNotFoundException
 block|{
 name|Preconditions
 operator|.

@@ -118,11 +118,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
+name|pipeline
 operator|.
 name|Pipeline
 import|;
@@ -296,50 +292,6 @@ name|UUID
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|ALLOCATED
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|OPEN
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class provides the client-facing APIs of container operations.  */
 end_comment
@@ -499,48 +451,39 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
-comment|// Allocated State means that SCM has allocated this pipeline in its
-comment|// namespace. The client needs to create the pipeline on the machines
-comment|// which was choosen by the SCM.
 name|Preconditions
 operator|.
 name|checkState
 argument_list|(
 name|pipeline
 operator|.
-name|getLifeCycleState
+name|isOpen
 argument_list|()
-operator|==
-name|ALLOCATED
-operator|||
-name|pipeline
-operator|.
-name|getLifeCycleState
-argument_list|()
-operator|==
-name|OPEN
 argument_list|,
-literal|"Unexpected pipeline state"
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|pipeline
+name|String
 operator|.
-name|getLifeCycleState
-argument_list|()
-operator|==
-name|ALLOCATED
-condition|)
-block|{
-name|createPipeline
+name|format
 argument_list|(
-name|client
+literal|"Unexpected state=%s for pipeline=%s, expected state=%s"
 argument_list|,
 name|pipeline
+operator|.
+name|getPipelineState
+argument_list|()
+argument_list|,
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|Pipeline
+operator|.
+name|PipelineState
+operator|.
+name|OPEN
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|createContainer
 argument_list|(
 name|client
@@ -682,16 +625,6 @@ literal|"Created container "
 operator|+
 name|containerId
 operator|+
-literal|" leader:"
-operator|+
-name|client
-operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getLeader
-argument_list|()
-operator|+
 literal|" machines:"
 operator|+
 name|client
@@ -699,7 +632,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -839,27 +772,6 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
-comment|// Allocated State means that SCM has allocated this pipeline in its
-comment|// namespace. The client needs to create the pipeline on the machines
-comment|// which was choosen by the SCM.
-if|if
-condition|(
-name|pipeline
-operator|.
-name|getLifeCycleState
-argument_list|()
-operator|==
-name|ALLOCATED
-condition|)
-block|{
-name|createPipeline
-argument_list|(
-name|client
-argument_list|,
-name|pipeline
-argument_list|)
-expr_stmt|;
-block|}
 comment|// connect to pipeline leader and allocate container on leader datanode.
 name|client
 operator|=
@@ -1107,18 +1019,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleted container {}, leader: {}, machines: {} "
+literal|"Deleted container {}, machines: {} "
 argument_list|,
 name|containerId
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
-argument_list|()
-argument_list|,
-name|pipeline
-operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1282,18 +1189,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Read container {}, leader: {}, machines: {} "
+literal|"Read container {}, machines: {} "
 argument_list|,
 name|containerID
 argument_list|,
 name|pipeline
 operator|.
-name|getLeader
-argument_list|()
-argument_list|,
-name|pipeline
-operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -472,24 +472,6 @@ name|metadataStr
 argument_list|)
 expr_stmt|;
 comment|// Print pipeline of an existing container.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"LeaderID: {}"
-argument_list|,
-name|container
-operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getLeader
-argument_list|()
-operator|.
-name|getHostName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|String
 name|machinesStr
 init|=
@@ -498,7 +480,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getMachines
+name|getNodes
 argument_list|()
 operator|.
 name|stream
