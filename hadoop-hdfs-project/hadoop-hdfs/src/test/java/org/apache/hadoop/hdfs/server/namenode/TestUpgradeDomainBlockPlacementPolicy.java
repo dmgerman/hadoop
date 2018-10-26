@@ -506,7 +506,6 @@ block|,
 literal|"/RACK2"
 block|}
 decl_stmt|;
-comment|/**    *  Use host names that can be resolved (    *  InetSocketAddress#isUnresolved == false). Otherwise,    *  CombinedHostFileManager won't allow those hosts.    */
 DECL|field|hosts
 specifier|static
 specifier|final
@@ -515,17 +514,17 @@ index|[]
 name|hosts
 init|=
 block|{
-literal|"127.0.0.1"
+literal|"host1"
 block|,
-literal|"127.0.0.1"
+literal|"host2"
 block|,
-literal|"127.0.0.1"
+literal|"host3"
 block|,
-literal|"127.0.0.1"
+literal|"host4"
 block|,
-literal|"127.0.0.1"
+literal|"host5"
 block|,
-literal|"127.0.0.1"
+literal|"host6"
 block|}
 decl_stmt|;
 DECL|field|upgradeDomains
@@ -851,6 +850,7 @@ operator|.
 name|getDatanodeId
 argument_list|()
 decl_stmt|;
+comment|/*        *  Use host names that can be resolved (        *  InetSocketAddress#isUnresolved == false). Otherwise,        *  CombinedHostFileManager won't allow those hosts.        */
 name|datanodes
 index|[
 name|i
@@ -860,7 +860,7 @@ name|setHostName
 argument_list|(
 name|datanodeID
 operator|.
-name|getHostName
+name|getIpAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1039,6 +1039,7 @@ operator|.
 name|getDatanodeId
 argument_list|()
 decl_stmt|;
+comment|/*        *  Use host names that can be resolved (        *  InetSocketAddress#isUnresolved == false). Otherwise,        *  CombinedHostFileManager won't allow those hosts.        */
 name|datanodes
 index|[
 name|i
@@ -1048,7 +1049,7 @@ name|setHostName
 argument_list|(
 name|datanodeID
 operator|.
-name|getHostName
+name|getIpAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
