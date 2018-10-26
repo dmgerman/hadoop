@@ -286,9 +286,18 @@ name|Throwable
 name|error
 parameter_list|)
 block|{
+comment|//message could be null in case of NPE. This is unexpected so we can
+comment|//print out the stack trace.
 if|if
 condition|(
 name|verbose
+operator|||
+name|error
+operator|.
+name|getMessage
+argument_list|()
+operator|==
+literal|null
 condition|)
 block|{
 name|error
@@ -371,6 +380,8 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|createOzoneConfiguration ()
 specifier|public
 name|OzoneConfiguration

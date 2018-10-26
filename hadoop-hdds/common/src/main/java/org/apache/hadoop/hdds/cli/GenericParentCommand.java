@@ -18,6 +18,22 @@ name|cli
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface to access the higher level parameters.  */
 end_comment
@@ -31,6 +47,11 @@ block|{
 DECL|method|isVerbose ()
 name|boolean
 name|isVerbose
+parameter_list|()
+function_decl|;
+DECL|method|createOzoneConfiguration ()
+name|OzoneConfiguration
+name|createOzoneConfiguration
 parameter_list|()
 function_decl|;
 block|}
