@@ -1306,6 +1306,26 @@ init|=
 literal|60
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED
+init|=
+literal|"hadoop.kerberos.keytab.login.autorenewal.enabled"
+decl_stmt|;
+comment|/** Default value for HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED. */
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED_DEFAULT
+name|HADOOP_KERBEROS_KEYTAB_LOGIN_AUTORENEWAL_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_RPC_PROTECTION
 specifier|public
 specifier|static

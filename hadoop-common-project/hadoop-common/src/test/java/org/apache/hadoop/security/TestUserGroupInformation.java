@@ -7806,7 +7806,7 @@ init|=
 name|ugi
 operator|.
 expr|new
-name|AutoRenewalForUserCredsRunnable
+name|TicketCacheRenewalRunnable
 argument_list|(
 name|tgt
 argument_list|,
