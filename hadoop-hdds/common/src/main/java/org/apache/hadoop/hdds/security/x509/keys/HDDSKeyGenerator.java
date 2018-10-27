@@ -261,7 +261,7 @@ name|NoSuchAlgorithmException
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Generating key pair using size:{}, Algorithm:{}, Provider:{}"
 argument_list|,
