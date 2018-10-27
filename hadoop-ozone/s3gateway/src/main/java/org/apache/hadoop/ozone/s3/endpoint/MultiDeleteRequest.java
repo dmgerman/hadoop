@@ -135,8 +135,12 @@ literal|"Quiet"
 argument_list|)
 DECL|field|quiet
 specifier|private
-name|boolean
+name|Boolean
 name|quiet
+init|=
+name|Boolean
+operator|.
+name|FALSE
 decl_stmt|;
 annotation|@
 name|XmlElement
