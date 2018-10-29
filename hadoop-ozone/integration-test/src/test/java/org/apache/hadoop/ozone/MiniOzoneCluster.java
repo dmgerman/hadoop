@@ -326,12 +326,15 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Restart a particular HddsDatanode.    *    * @param i index of HddsDatanode in the MiniOzoneCluster    */
-DECL|method|restartHddsDatanode (int i)
+DECL|method|restartHddsDatanode (int i, boolean waitForDatanode)
 name|void
 name|restartHddsDatanode
 parameter_list|(
 name|int
 name|i
+parameter_list|,
+name|boolean
+name|waitForDatanode
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -339,12 +342,15 @@ throws|,
 name|TimeoutException
 function_decl|;
 comment|/**    * Restart a particular HddsDatanode.    *    * @param dn HddsDatanode in the MiniOzoneCluster    */
-DECL|method|restartHddsDatanode (DatanodeDetails dn)
+DECL|method|restartHddsDatanode (DatanodeDetails dn, boolean waitForDatanode)
 name|void
 name|restartHddsDatanode
 parameter_list|(
 name|DatanodeDetails
 name|dn
+parameter_list|,
+name|boolean
+name|waitForDatanode
 parameter_list|)
 throws|throws
 name|InterruptedException

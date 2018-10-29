@@ -1383,6 +1383,8 @@ operator|.
 name|restartHddsDatanode
 argument_list|(
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|matchContainerTransactionIds
@@ -1514,6 +1516,8 @@ operator|.
 name|restartHddsDatanode
 argument_list|(
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

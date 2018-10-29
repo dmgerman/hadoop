@@ -132,6 +132,20 @@ name|MutableCounterLong
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
+name|RaftGroupId
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is for maintaining Container State Machine statistics.  */
 end_comment
@@ -220,12 +234,15 @@ specifier|public
 name|CSMMetrics
 parameter_list|()
 block|{   }
-DECL|method|create ()
+DECL|method|create (RaftGroupId gid)
 specifier|public
 specifier|static
 name|CSMMetrics
 name|create
-parameter_list|()
+parameter_list|(
+name|RaftGroupId
+name|gid
+parameter_list|)
 block|{
 name|MetricsSystem
 name|ms
@@ -241,6 +258,11 @@ operator|.
 name|register
 argument_list|(
 name|SOURCE_NAME
+operator|+
+name|gid
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 literal|"Container State Machine"
 argument_list|,

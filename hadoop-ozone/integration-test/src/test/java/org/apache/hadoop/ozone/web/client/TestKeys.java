@@ -2227,6 +2227,8 @@ operator|.
 name|restartHddsDatanode
 argument_list|(
 name|datanodeIdx
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

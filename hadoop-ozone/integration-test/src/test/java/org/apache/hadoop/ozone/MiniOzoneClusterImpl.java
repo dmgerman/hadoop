@@ -1241,13 +1241,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|restartHddsDatanode (int i)
+DECL|method|restartHddsDatanode (int i, boolean waitForDatanode)
 specifier|public
 name|void
 name|restartHddsDatanode
 parameter_list|(
 name|int
 name|i
+parameter_list|,
+name|boolean
+name|waitForDatanode
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -1370,10 +1373,16 @@ argument_list|(
 name|i
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|waitForDatanode
+condition|)
+block|{
 comment|// wait for node to be removed from SCM healthy node list.
 name|waitForClusterToBeReady
 argument_list|()
 expr_stmt|;
+block|}
 name|HddsDatanodeService
 name|service
 init|=
@@ -1400,20 +1409,29 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|waitForDatanode
+condition|)
+block|{
 comment|// wait for the node to be identified as a healthy node again.
 name|waitForClusterToBeReady
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|Override
-DECL|method|restartHddsDatanode (DatanodeDetails dn)
+DECL|method|restartHddsDatanode (DatanodeDetails dn, boolean waitForDatanode)
 specifier|public
 name|void
 name|restartHddsDatanode
 parameter_list|(
 name|DatanodeDetails
 name|dn
+parameter_list|,
+name|boolean
+name|waitForDatanode
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -1428,6 +1446,8 @@ name|getHddsDatanodeIndex
 argument_list|(
 name|dn
 argument_list|)
+argument_list|,
+name|waitForDatanode
 argument_list|)
 expr_stmt|;
 block|}
