@@ -896,6 +896,30 @@ name|MAXIMUM_ALLOCATION_MB
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|MAX_ASSIGN_PER_HEARTBEAT
+import|;
+end_import
+
 begin_class
 DECL|class|TestContainerAllocation
 specifier|public
@@ -6199,6 +6223,17 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// make sure an unlimited number of containers can be assigned,
+comment|// overriding the default of 100 after YARN-8896
+name|newConf
+operator|.
+name|set
+argument_list|(
+name|MAX_ASSIGN_PER_HEARTBEAT
+argument_list|,
+literal|"-1"
+argument_list|)
+expr_stmt|;
 name|newConf
 operator|.
 name|setUserLimit
