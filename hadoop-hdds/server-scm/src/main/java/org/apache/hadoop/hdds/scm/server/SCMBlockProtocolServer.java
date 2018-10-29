@@ -747,7 +747,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-comment|// SCM Block Service RPC
+comment|// SCM Block Service RPC.
 name|BlockingService
 name|blockProtoPbService
 init|=
