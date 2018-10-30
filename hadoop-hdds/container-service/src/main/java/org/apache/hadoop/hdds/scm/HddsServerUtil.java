@@ -148,6 +148,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -449,8 +459,8 @@ comment|// We try the following settings in decreasing priority to retrieve the
 comment|// target host.
 comment|// - OZONE_SCM_DATANODE_ADDRESS_KEY
 comment|// - OZONE_SCM_CLIENT_ADDRESS_KEY
+comment|// - OZONE_SCM_NAMES
 comment|//
-specifier|final
 name|Optional
 argument_list|<
 name|String
@@ -470,6 +480,70 @@ operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|host
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+comment|// Fallback to Ozone SCM names.
+name|Collection
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|scmAddresses
+init|=
+name|getSCMAddresses
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|scmAddresses
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_NAMES
+operator|+
+literal|" must contain a single hostname. Multiple SCM hosts are "
+operator|+
+literal|"currently unsupported"
+argument_list|)
+throw|;
+block|}
+name|host
+operator|=
+name|Optional
+operator|.
+name|of
+argument_list|(
+name|scmAddresses
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+operator|.
+name|getHostName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
