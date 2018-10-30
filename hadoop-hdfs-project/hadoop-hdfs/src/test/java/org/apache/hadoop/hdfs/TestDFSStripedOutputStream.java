@@ -36,6 +36,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|fail
 import|;
 end_import
@@ -77,6 +89,16 @@ operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
 import|;
 end_import
 
@@ -155,6 +177,24 @@ operator|.
 name|StreamCapabilities
 operator|.
 name|StreamCapability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
+operator|.
+name|SyncFlag
 import|;
 end_import
 
@@ -1004,6 +1044,8 @@ operator|+
 literal|123
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|FSDataOutputStream
 name|os
 init|=
@@ -1017,12 +1059,11 @@ argument_list|(
 literal|"/ec-file-1"
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|assertFalse
 argument_list|(
-literal|"DFSStripedOutputStream should not have hflush() "
-operator|+
-literal|"capability yet!"
+literal|"DFSStripedOutputStream should not have hflush() capability yet!"
 argument_list|,
 name|os
 operator|.
@@ -1039,9 +1080,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"DFSStripedOutputStream should not have hsync() "
-operator|+
-literal|"capability yet!"
+literal|"DFSStripedOutputStream should not have hsync() capability yet!"
 argument_list|,
 name|os
 operator|.
@@ -1056,6 +1095,8 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|InputStream
 name|is
 init|=
@@ -1064,7 +1105,8 @@ name|ByteArrayInputStream
 argument_list|(
 name|bytes
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|IOUtils
 operator|.
 name|copyBytes
@@ -1101,11 +1143,59 @@ operator|.
 name|hsync
 argument_list|()
 expr_stmt|;
+name|IOUtils
+operator|.
+name|copyBytes
+argument_list|(
+name|is
+argument_list|,
+name|os
+argument_list|,
+name|bytes
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+name|assertTrue
+argument_list|(
+literal|"stream is not a DFSStripedOutputStream"
+argument_list|,
 name|os
 operator|.
-name|close
+name|getWrappedStream
 argument_list|()
+operator|instanceof
+name|DFSStripedOutputStream
+argument_list|)
 expr_stmt|;
+specifier|final
+name|DFSStripedOutputStream
+name|dfssos
+init|=
+operator|(
+name|DFSStripedOutputStream
+operator|)
+name|os
+operator|.
+name|getWrappedStream
+argument_list|()
+decl_stmt|;
+name|dfssos
+operator|.
+name|hsync
+argument_list|(
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|SyncFlag
+operator|.
+name|UPDATE_LENGTH
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|testOneFile (String src, int writeBytes)
 specifier|private

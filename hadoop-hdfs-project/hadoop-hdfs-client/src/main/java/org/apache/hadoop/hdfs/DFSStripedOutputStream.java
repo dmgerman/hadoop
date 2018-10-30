@@ -124,6 +124,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
+operator|.
+name|SyncFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -5008,6 +5026,15 @@ name|hflush
 parameter_list|()
 block|{
 comment|// not supported yet
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DFSStripedOutputStream does not support hflush. "
+operator|+
+literal|"Caller should check StreamCapabilities before calling."
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -5018,6 +5045,42 @@ name|hsync
 parameter_list|()
 block|{
 comment|// not supported yet
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DFSStripedOutputStream does not support hsync. "
+operator|+
+literal|"Caller should check StreamCapabilities before calling."
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|hsync (EnumSet<SyncFlag> syncFlags)
+specifier|public
+name|void
+name|hsync
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|SyncFlag
+argument_list|>
+name|syncFlags
+parameter_list|)
+block|{
+comment|// not supported yet
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DFSStripedOutputStream does not support hsync {}. "
+operator|+
+literal|"Caller should check StreamCapabilities before calling."
+argument_list|,
+name|syncFlags
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
