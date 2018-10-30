@@ -2660,7 +2660,6 @@ block|}
 comment|/**    * Build a location for this result beneath the discovered mount point.    *    * @param path Path to build for.    * @param entry Mount table entry.    * @return PathLocation containing the namespace, local path.    */
 DECL|method|buildLocation ( final String path, final MountTable entry)
 specifier|private
-specifier|static
 name|PathLocation
 name|buildLocation
 parameter_list|(
@@ -2672,6 +2671,8 @@ specifier|final
 name|MountTable
 name|entry
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|String
 name|srcPath
@@ -2706,6 +2707,52 @@ expr_stmt|;
 return|return
 literal|null
 return|;
+block|}
+name|List
+argument_list|<
+name|RemoteLocation
+argument_list|>
+name|dests
+init|=
+name|entry
+operator|.
+name|getDestinations
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|getClass
+argument_list|()
+operator|==
+name|MountTableResolver
+operator|.
+name|class
+operator|&&
+name|dests
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannnot build location, "
+operator|+
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" should not resolve multiple destinations for "
+operator|+
+name|path
+argument_list|)
+throw|;
 block|}
 name|String
 name|remainingPath
@@ -2758,10 +2805,7 @@ control|(
 name|RemoteLocation
 name|oneDst
 range|:
-name|entry
-operator|.
-name|getDestinations
-argument_list|()
+name|dests
 control|)
 block|{
 name|String
