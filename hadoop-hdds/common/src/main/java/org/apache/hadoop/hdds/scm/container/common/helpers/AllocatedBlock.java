@@ -34,11 +34,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
+name|client
 operator|.
-name|pipeline
-operator|.
-name|Pipeline
+name|ContainerBlockID
 import|;
 end_import
 
@@ -52,9 +50,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|client
+name|scm
 operator|.
-name|BlockID
+name|pipeline
+operator|.
+name|Pipeline
 import|;
 end_import
 
@@ -74,10 +74,10 @@ specifier|private
 name|Pipeline
 name|pipeline
 decl_stmt|;
-DECL|field|blockID
+DECL|field|containerBlockID
 specifier|private
-name|BlockID
-name|blockID
+name|ContainerBlockID
+name|containerBlockID
 decl_stmt|;
 comment|// Indicates whether the client should create container before writing block.
 DECL|field|shouldCreateContainer
@@ -97,10 +97,10 @@ specifier|private
 name|Pipeline
 name|pipeline
 decl_stmt|;
-DECL|field|blockID
+DECL|field|containerBlockID
 specifier|private
-name|BlockID
-name|blockID
+name|ContainerBlockID
+name|containerBlockID
 decl_stmt|;
 DECL|field|shouldCreateContainer
 specifier|private
@@ -126,18 +126,18 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setBlockID (BlockID blockId)
+DECL|method|setContainerBlockID (ContainerBlockID blockId)
 specifier|public
 name|Builder
-name|setBlockID
+name|setContainerBlockID
 parameter_list|(
-name|BlockID
+name|ContainerBlockID
 name|blockId
 parameter_list|)
 block|{
 name|this
 operator|.
-name|blockID
+name|containerBlockID
 operator|=
 name|blockId
 expr_stmt|;
@@ -176,22 +176,22 @@ name|AllocatedBlock
 argument_list|(
 name|pipeline
 argument_list|,
-name|blockID
+name|containerBlockID
 argument_list|,
 name|shouldCreateContainer
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|AllocatedBlock (Pipeline pipeline, BlockID blockID, boolean shouldCreateContainer)
+DECL|method|AllocatedBlock (Pipeline pipeline, ContainerBlockID containerBlockID, boolean shouldCreateContainer)
 specifier|private
 name|AllocatedBlock
 parameter_list|(
 name|Pipeline
 name|pipeline
 parameter_list|,
-name|BlockID
-name|blockID
+name|ContainerBlockID
+name|containerBlockID
 parameter_list|,
 name|boolean
 name|shouldCreateContainer
@@ -205,9 +205,9 @@ name|pipeline
 expr_stmt|;
 name|this
 operator|.
-name|blockID
+name|containerBlockID
 operator|=
-name|blockID
+name|containerBlockID
 expr_stmt|;
 name|this
 operator|.
@@ -228,12 +228,12 @@ return|;
 block|}
 DECL|method|getBlockID ()
 specifier|public
-name|BlockID
+name|ContainerBlockID
 name|getBlockID
 parameter_list|()
 block|{
 return|return
-name|blockID
+name|containerBlockID
 return|;
 block|}
 DECL|method|getCreateContainer ()

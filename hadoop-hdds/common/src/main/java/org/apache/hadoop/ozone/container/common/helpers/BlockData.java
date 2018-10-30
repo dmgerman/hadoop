@@ -159,11 +159,6 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
-DECL|field|blockCommitSequenceId
-specifier|private
-name|long
-name|blockCommitSequenceId
-decl_stmt|;
 comment|/**    * Represent a list of chunks.    * In order to reduce memory usage, chunkList is declared as an    * {@link Object}.    * When #elements == 0, chunkList is null.    * When #elements == 1, chunkList refers to the only element.    * When #elements> 1, chunkList refers to the list.    *    * Please note : when we are working with blocks, we don't care what they    * point to. So we We don't read chunkinfo nor validate them. It is    * responsibility of higher layer like ozone. We just read and write data    * from network.    */
 DECL|field|chunkList
 specifier|private
@@ -206,10 +201,6 @@ name|size
 operator|=
 literal|0
 expr_stmt|;
-name|blockCommitSequenceId
-operator|=
-literal|0
-expr_stmt|;
 block|}
 DECL|method|getBlockCommitSequenceId ()
 specifier|public
@@ -218,7 +209,10 @@ name|getBlockCommitSequenceId
 parameter_list|()
 block|{
 return|return
-name|blockCommitSequenceId
+name|blockID
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
 return|;
 block|}
 DECL|method|setBlockCommitSequenceId (long blockCommitSequenceId)
@@ -232,9 +226,12 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|blockID
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
 name|blockCommitSequenceId
-operator|=
-name|blockCommitSequenceId
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Returns a blockData object from the protobuf data.    *    * @param data - Protobuf data.    * @return - BlockData    * @throws IOException    */
@@ -347,16 +344,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|blockData
-operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|data
-operator|.
-name|getBlockCommitSequenceId
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|blockData
 return|;
@@ -468,13 +455,6 @@ operator|.
 name|setSize
 argument_list|(
 name|size
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|blockCommitSequenceId
 argument_list|)
 expr_stmt|;
 return|return

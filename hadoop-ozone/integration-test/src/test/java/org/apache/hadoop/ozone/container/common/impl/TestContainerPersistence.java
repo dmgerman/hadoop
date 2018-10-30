@@ -3648,8 +3648,6 @@ name|blockData
 operator|.
 name|getBlockID
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|ChunkInfo
@@ -3857,6 +3855,13 @@ name|readBlockData
 decl_stmt|;
 try|try
 block|{
+name|blockID1
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+literal|5
+argument_list|)
+expr_stmt|;
 comment|// read with bcsId higher than container bcsId
 name|blockManager
 operator|.
@@ -3865,8 +3870,6 @@ argument_list|(
 name|container
 argument_list|,
 name|blockID1
-argument_list|,
-literal|5
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3898,6 +3901,13 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|blockID1
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+literal|4
+argument_list|)
+expr_stmt|;
 comment|// read with bcsId lower than container bcsId but greater than committed
 comment|// bcsId.
 name|blockManager
@@ -3907,8 +3917,6 @@ argument_list|(
 name|container
 argument_list|,
 name|blockID1
-argument_list|,
-literal|4
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3950,8 +3958,6 @@ name|blockData
 operator|.
 name|getBlockID
 argument_list|()
-argument_list|,
-literal|4
 argument_list|)
 expr_stmt|;
 name|ChunkInfo
@@ -4303,8 +4309,6 @@ name|blockData
 operator|.
 name|getBlockID
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|ChunkInfo
@@ -4494,8 +4498,6 @@ name|blockData
 operator|.
 name|getBlockID
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}

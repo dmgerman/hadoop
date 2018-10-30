@@ -448,7 +448,7 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setBlockID
+name|setContainerBlockID
 argument_list|(
 name|allocatedBlock
 operator|.

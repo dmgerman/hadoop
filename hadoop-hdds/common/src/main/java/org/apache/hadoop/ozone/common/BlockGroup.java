@@ -257,10 +257,16 @@ name|BlockID
 argument_list|(
 name|block
 operator|.
+name|getContainerBlockID
+argument_list|()
+operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
 name|block
+operator|.
+name|getContainerBlockID
+argument_list|()
 operator|.
 name|getLocalID
 argument_list|()

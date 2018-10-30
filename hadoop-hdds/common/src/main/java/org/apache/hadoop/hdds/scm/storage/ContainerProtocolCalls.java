@@ -581,8 +581,8 @@ specifier|private
 name|ContainerProtocolCalls
 parameter_list|()
 block|{   }
-comment|/**    * Calls the container protocol to get a container block.    *    * @param xceiverClient client to perform call    * @param datanodeBlockID blockID to identify container    * @param traceID container protocol call args    * @param blockCommitSequenceId latest commit Id of the block    * @return container protocol get block response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|getBlock (XceiverClientSpi xceiverClient, DatanodeBlockID datanodeBlockID, String traceID, long blockCommitSequenceId)
+comment|/**    * Calls the container protocol to get a container block.    *    * @param xceiverClient client to perform call    * @param datanodeBlockID blockID to identify container    * @param traceID container protocol call args    * @return container protocol get block response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|getBlock (XceiverClientSpi xceiverClient, DatanodeBlockID datanodeBlockID, String traceID)
 specifier|public
 specifier|static
 name|GetBlockResponseProto
@@ -596,9 +596,6 @@ name|datanodeBlockID
 parameter_list|,
 name|String
 name|traceID
-parameter_list|,
-name|long
-name|blockCommitSequenceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -616,11 +613,6 @@ operator|.
 name|setBlockID
 argument_list|(
 name|datanodeBlockID
-argument_list|)
-operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|blockCommitSequenceId
 argument_list|)
 decl_stmt|;
 name|String

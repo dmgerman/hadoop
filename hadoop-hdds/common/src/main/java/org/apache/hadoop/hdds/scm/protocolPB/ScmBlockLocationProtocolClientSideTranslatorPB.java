@@ -84,7 +84,7 @@ name|hdds
 operator|.
 name|client
 operator|.
-name|BlockID
+name|ContainerBlockID
 import|;
 end_import
 
@@ -604,15 +604,15 @@ operator|.
 name|Builder
 argument_list|()
 operator|.
-name|setBlockID
+name|setContainerBlockID
 argument_list|(
-name|BlockID
+name|ContainerBlockID
 operator|.
 name|getFromProtobuf
 argument_list|(
 name|response
 operator|.
-name|getBlockID
+name|getContainerBlockID
 argument_list|()
 argument_list|)
 argument_list|)

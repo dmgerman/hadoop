@@ -1526,29 +1526,6 @@ operator|.
 name|getPutBlock
 argument_list|()
 expr_stmt|;
-comment|// make sure the block ids in the request and response are same.
-comment|// This will also ensure that closing the container committed the block
-comment|// on the Datanodes.
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|BlockID
-operator|.
-name|getFromProtobuf
-argument_list|(
-name|response
-operator|.
-name|getCommittedBlockLength
-argument_list|()
-operator|.
-name|getBlockID
-argument_list|()
-argument_list|)
-argument_list|,
-name|blockID
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -1575,10 +1552,51 @@ operator|.
 name|getCommittedBlockLength
 argument_list|()
 operator|.
+name|getBlockID
+argument_list|()
+operator|.
 name|getBlockCommitSequenceId
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|BlockID
+name|responseBlockID
+init|=
+name|BlockID
+operator|.
+name|getFromProtobuf
+argument_list|(
+name|response
+operator|.
+name|getCommittedBlockLength
+argument_list|()
+operator|.
+name|getBlockID
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|blockID
+operator|.
+name|setBlockCommitSequenceId
+argument_list|(
+name|responseBlockID
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// make sure the block ids in the request and response are same.
+comment|// This will also ensure that closing the container committed the block
+comment|// on the Datanodes.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|responseBlockID
+argument_list|,
+name|blockID
 argument_list|)
 expr_stmt|;
 name|xceiverClientManager

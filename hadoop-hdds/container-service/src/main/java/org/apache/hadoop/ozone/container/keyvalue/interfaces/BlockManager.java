@@ -144,8 +144,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be get.    * @param blockID - BlockID of the Block.    * @param bcsId latest commit id of the block    * @return Block Data.    * @throws IOException    */
-DECL|method|getBlock (Container container, BlockID blockID, long bcsId)
+comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be get.    * @param blockID - BlockID of the Block.    * @return Block Data.    * @throws IOException    */
+DECL|method|getBlock (Container container, BlockID blockID)
 name|BlockData
 name|getBlock
 parameter_list|(
@@ -154,9 +154,6 @@ name|container
 parameter_list|,
 name|BlockID
 name|blockID
-parameter_list|,
-name|long
-name|bcsId
 parameter_list|)
 throws|throws
 name|IOException

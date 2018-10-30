@@ -2779,14 +2779,6 @@ argument_list|(
 name|kvContainer
 argument_list|,
 name|blockID
-argument_list|,
-name|request
-operator|.
-name|getGetBlock
-argument_list|()
-operator|.
-name|getBlockCommitSequenceId
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|long
@@ -4155,8 +4147,6 @@ argument_list|(
 name|kvContainer
 argument_list|,
 name|blockID
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|ContainerProtos

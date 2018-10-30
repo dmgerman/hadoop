@@ -825,14 +825,6 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|streamEntry
-operator|.
-name|getBlockCommitSequenceId
-argument_list|()
-argument_list|)
-operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -2786,7 +2778,6 @@ name|outputStream
 decl_stmt|;
 DECL|field|blockID
 specifier|private
-specifier|final
 name|BlockID
 name|blockID
 decl_stmt|;
@@ -3162,6 +3153,32 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// after closing the chunkOutPutStream, blockId would have been
+comment|// reconstructed with updated bcsId
+if|if
+condition|(
+name|this
+operator|.
+name|outputStream
+operator|instanceof
+name|ChunkOutputStream
+condition|)
+block|{
+name|this
+operator|.
+name|blockID
+operator|=
+operator|(
+operator|(
+name|ChunkOutputStream
+operator|)
+name|outputStream
+operator|)
+operator|.
+name|getBlockID
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|getBuffer ()
@@ -3195,64 +3212,6 @@ name|out
 operator|.
 name|getBuffer
 argument_list|()
-return|;
-block|}
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid Output Stream for Key: "
-operator|+
-name|key
-argument_list|)
-throw|;
-block|}
-DECL|method|getBlockCommitSequenceId ()
-name|long
-name|getBlockCommitSequenceId
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|this
-operator|.
-name|outputStream
-operator|instanceof
-name|ChunkOutputStream
-condition|)
-block|{
-name|ChunkOutputStream
-name|out
-init|=
-operator|(
-name|ChunkOutputStream
-operator|)
-name|this
-operator|.
-name|outputStream
-decl_stmt|;
-return|return
-name|out
-operator|.
-name|getBlockCommitSequenceId
-argument_list|()
-return|;
-block|}
-elseif|else
-if|if
-condition|(
-name|outputStream
-operator|==
-literal|null
-condition|)
-block|{
-comment|// For a pre allocated block for which no write has been initiated,
-comment|// the OutputStream will be null here.
-comment|// In such cases, the default blockCommitSequenceId will be 0
-return|return
-literal|0
 return|;
 block|}
 throw|throw

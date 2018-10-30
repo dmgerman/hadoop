@@ -97,13 +97,7 @@ specifier|private
 name|long
 name|createVersion
 decl_stmt|;
-DECL|field|blockCommitSequenceId
-specifier|private
-specifier|final
-name|long
-name|blockCommitSequenceId
-decl_stmt|;
-DECL|method|OmKeyLocationInfo (BlockID blockID, boolean shouldCreateContainer, long length, long offset, long blockCommitSequenceId)
+DECL|method|OmKeyLocationInfo (BlockID blockID, boolean shouldCreateContainer, long length, long offset)
 specifier|private
 name|OmKeyLocationInfo
 parameter_list|(
@@ -118,9 +112,6 @@ name|length
 parameter_list|,
 name|long
 name|offset
-parameter_list|,
-name|long
-name|blockCommitSequenceId
 parameter_list|)
 block|{
 name|this
@@ -146,12 +137,6 @@ operator|.
 name|offset
 operator|=
 name|offset
-expr_stmt|;
-name|this
-operator|.
-name|blockCommitSequenceId
-operator|=
-name|blockCommitSequenceId
 expr_stmt|;
 block|}
 DECL|method|setCreateVersion (long version)
@@ -267,7 +252,10 @@ name|getBlockCommitSequenceId
 parameter_list|()
 block|{
 return|return
-name|blockCommitSequenceId
+name|blockID
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
 return|;
 block|}
 comment|/**    * Builder of OmKeyLocationInfo.    */
@@ -296,11 +284,6 @@ DECL|field|offset
 specifier|private
 name|long
 name|offset
-decl_stmt|;
-DECL|field|blockCommitSequenceId
-specifier|private
-name|long
-name|blockCommitSequenceId
 decl_stmt|;
 DECL|method|setBlockID (BlockID blockId)
 specifier|public
@@ -378,25 +361,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setBlockCommitSequenceId (long sequenceId)
-specifier|public
-name|Builder
-name|setBlockCommitSequenceId
-parameter_list|(
-name|long
-name|sequenceId
-parameter_list|)
-block|{
-name|this
-operator|.
-name|blockCommitSequenceId
-operator|=
-name|sequenceId
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|build ()
 specifier|public
 name|OmKeyLocationInfo
@@ -414,8 +378,6 @@ argument_list|,
 name|length
 argument_list|,
 name|offset
-argument_list|,
-name|blockCommitSequenceId
 argument_list|)
 return|;
 block|}
@@ -458,11 +420,6 @@ operator|.
 name|setCreateVersion
 argument_list|(
 name|createVersion
-argument_list|)
-operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|blockCommitSequenceId
 argument_list|)
 operator|.
 name|build
@@ -508,11 +465,6 @@ argument_list|,
 name|keyLocation
 operator|.
 name|getOffset
-argument_list|()
-argument_list|,
-name|keyLocation
-operator|.
-name|getBlockCommitSequenceId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -566,10 +518,6 @@ operator|+
 literal|", offset="
 operator|+
 name|offset
-operator|+
-literal|", blockCommitSequenceId="
-operator|+
-name|blockCommitSequenceId
 operator|+
 literal|", createVersion="
 operator|+

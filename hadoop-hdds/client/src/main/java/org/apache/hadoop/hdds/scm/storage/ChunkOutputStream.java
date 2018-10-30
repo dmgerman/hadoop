@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -284,7 +298,6 @@ name|OutputStream
 block|{
 DECL|field|blockID
 specifier|private
-specifier|final
 name|BlockID
 name|blockID
 decl_stmt|;
@@ -338,11 +351,6 @@ DECL|field|chunkSize
 specifier|private
 name|int
 name|chunkSize
-decl_stmt|;
-DECL|field|blockCommitSequenceId
-specifier|private
-name|long
-name|blockCommitSequenceId
 decl_stmt|;
 comment|/**    * Creates a new ChunkOutputStream.    *    * @param blockID block ID    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    * @param chunkSize chunk size    */
 DECL|method|ChunkOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize)
@@ -476,10 +484,6 @@ name|chunkIndex
 operator|=
 literal|0
 expr_stmt|;
-name|blockCommitSequenceId
-operator|=
-literal|0
-expr_stmt|;
 block|}
 DECL|method|getBuffer ()
 specifier|public
@@ -491,14 +495,14 @@ return|return
 name|buffer
 return|;
 block|}
-DECL|method|getBlockCommitSequenceId ()
+DECL|method|getBlockID ()
 specifier|public
-name|long
-name|getBlockCommitSequenceId
+name|BlockID
+name|getBlockID
 parameter_list|()
 block|{
 return|return
-name|blockCommitSequenceId
+name|blockID
 return|;
 block|}
 annotation|@
@@ -843,15 +847,44 @@ argument_list|,
 name|traceID
 argument_list|)
 decl_stmt|;
-name|blockCommitSequenceId
-operator|=
+name|BlockID
+name|responseBlockID
+init|=
+name|BlockID
+operator|.
+name|getFromProtobuf
+argument_list|(
 name|responseProto
 operator|.
 name|getCommittedBlockLength
 argument_list|()
 operator|.
-name|getBlockCommitSequenceId
+name|getBlockID
 argument_list|()
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|blockID
+operator|.
+name|getContainerBlockID
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|responseBlockID
+operator|.
+name|getContainerBlockID
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// updates the bcsId of the block
+name|blockID
+operator|=
+name|responseBlockID
 expr_stmt|;
 block|}
 catch|catch

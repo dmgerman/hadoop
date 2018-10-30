@@ -734,10 +734,10 @@ name|getSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @param bcsId latest commit Id of the block    * @return Key Data.    * @throws IOException    */
+comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @return Key Data.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|getBlock (Container container, BlockID blockID, long bcsId)
+DECL|method|getBlock (Container container, BlockID blockID)
 specifier|public
 name|BlockData
 name|getBlock
@@ -747,13 +747,18 @@ name|container
 parameter_list|,
 name|BlockID
 name|blockID
-parameter_list|,
-name|long
-name|bcsId
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|bcsId
+init|=
+name|blockID
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+decl_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -906,6 +911,9 @@ name|long
 name|id
 init|=
 name|blockData
+operator|.
+name|getBlockID
+argument_list|()
 operator|.
 name|getBlockCommitSequenceId
 argument_list|()

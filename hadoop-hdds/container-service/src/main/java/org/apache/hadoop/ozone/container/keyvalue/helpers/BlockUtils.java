@@ -666,16 +666,6 @@ name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|committedBlockLengthResponseBuilder
-operator|.
-name|setBlockCommitSequenceId
-argument_list|(
-name|blockData
-operator|.
-name|getBlockCommitSequenceId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|PutBlockResponseProto
 operator|.
 name|Builder
