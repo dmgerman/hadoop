@@ -741,6 +741,13 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// TODO : make this configurable or remove this variable
+name|this
+operator|.
+name|observerReadEnabled
+operator|=
+literal|true
+expr_stmt|;
 block|}
 end_class
 
