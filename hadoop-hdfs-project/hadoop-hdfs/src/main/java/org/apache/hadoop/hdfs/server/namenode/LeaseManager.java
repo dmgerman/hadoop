@@ -1020,7 +1020,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Get {@link INodesInPath} for all files under the ancestor directory which    * has valid lease. If the ancestor directory is null, then return all files    * in the system with valid lease. Callers must hold {@link FSNamesystem}    * read or write lock.    *    * @param ancestorDir the ancestor {@link INodeDirectory}    * @return Set<INodesInPath>    */
+comment|/**    * Get {@link INodesInPath} for all files under the ancestor directory which    * has valid lease. If the ancestor directory is null, then return all files    * in the system with valid lease. Callers must hold {@link FSNamesystem}    * read or write lock.    *    * @param ancestorDir the ancestor {@link INodeDirectory}    * @return {@code Set<INodesInPath>}    */
 DECL|method|getINodeWithLeases (final INodeDirectory ancestorDir)
 specifier|public
 name|Set

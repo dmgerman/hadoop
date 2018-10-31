@@ -182,6 +182,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|SlowPeerReports
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Timer
@@ -407,7 +425,7 @@ name|MAX_NODES_TO_REPORT
 init|=
 literal|5
 decl_stmt|;
-comment|/**    * Information about peers that have reported a node as being slow.    * Each outer map entry is a map of (DatanodeId) -> (timestamp),    * mapping reporting nodes to the timestamp of the last report from    * that node.    *    * DatanodeId could be the DataNodeId or its address. We    * don't care as long as the caller uses it consistently.    *    * Stale reports are not evicted proactively and can potentially    * hang around forever.    */
+comment|/**    * Information about peers that have reported a node as being slow.    * Each outer map entry is a map of (DatanodeId) {@literal ->} (timestamp),    * mapping reporting nodes to the timestamp of the last report from    * that node.    *    * DatanodeId could be the DataNodeId or its address. We    * don't care as long as the caller uses it consistently.    *    * Stale reports are not evicted proactively and can potentially    * hang around forever.    */
 specifier|private
 specifier|final
 name|ConcurrentMap
@@ -606,7 +624,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve all reports for all nodes. Stale reports are excluded.    *    * @return map from SlowNodeId -> (set of nodes reporting peers).    */
+comment|/**    * Retrieve all reports for all nodes. Stale reports are excluded.    *    * @return map from SlowNodeId {@literal ->} (set of nodes reporting peers).    */
 DECL|method|getReportsForAllDataNodes ()
 specifier|public
 name|Map

@@ -1248,7 +1248,7 @@ literal|"]"
 return|;
 block|}
 block|}
-comment|/**    * Create a new directory scanner, but don't cycle it running yet.    *    * @param datanode the parent datanode    * @param dataset the dataset to scan    * @param conf the Configuration object    */
+comment|/**    * Create a new directory scanner, but don't cycle it running yet.    *    * @param dataset the dataset to scan    * @param conf the Configuration object    */
 DECL|method|DirectoryScanner (FsDatasetSpi<?> dataset, Configuration conf)
 specifier|public
 name|DirectoryScanner

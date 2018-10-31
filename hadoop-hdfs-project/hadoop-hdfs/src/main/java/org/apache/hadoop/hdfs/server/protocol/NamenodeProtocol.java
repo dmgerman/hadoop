@@ -238,7 +238,7 @@ init|=
 literal|51
 decl_stmt|;
 comment|// do checkpoint
-comment|/**    * Get a list of blocks belonging to<code>datanode</code>    * whose total size equals<code>size</code>.    *    * @see org.apache.hadoop.hdfs.server.balancer.Balancer    * @param datanode  a data node    * @param size      requested size    * @param minBlockSize each block should be of this minimum Block Size    * @return          a list of blocks& their locations    * @throws IOException if size is less than or equal to 0 or   datanode does not exist    */
+comment|/**    * Get a list of blocks belonging to<code>datanode</code>    * whose total size equals<code>size</code>.    *    * @see org.apache.hadoop.hdfs.server.balancer.Balancer    * @param datanode  a data node    * @param size      requested size    * @param minBlockSize each block should be of this minimum Block Size    * @return BlocksWithLocations a list of blocks&amp; their locations    * @throws IOException if size is less than or equal to 0 or   datanode does not exist    */
 annotation|@
 name|Idempotent
 DECL|method|getBlocks (DatanodeInfo datanode, long size, long minBlockSize)
@@ -377,7 +377,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return a structure containing details about all edit logs    * available to be fetched from the NameNode.    * @param sinceTxId return only logs that contain transactions>= sinceTxId    */
+comment|/**    * Return a structure containing details about all edit logs    * available to be fetched from the NameNode.    * @param sinceTxId return only logs that contain transactions {@literal>=}    * sinceTxId    */
 annotation|@
 name|Idempotent
 DECL|method|getEditLogManifest (long sinceTxId)

@@ -323,7 +323,7 @@ name|scanCompleted
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add the itemInfo to tracking list for which storage movement expected if    * necessary.    *    * @param itemInfoList    *          - List of child in the directory    * @param scanCompleted    *          -Indicates whether the ItemInfo start id directory has no more    *          elements to scan.    */
+comment|/**    * Add the itemInfo to tracking list for which storage movement expected if    * necessary.    *    * @param itemInfo    *          - child in the directory    * @param scanCompleted    *          -Indicates whether the ItemInfo start id directory has no more    *          elements to scan.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|add (ItemInfo itemInfo, boolean scanCompleted)
@@ -613,7 +613,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Clean all the movements in spsDirsToBeTraveresed/storageMovementNeeded    * and notify to clean up required resources.    * @throws IOException    */
+comment|/**    * Clean all the movements in spsDirsToBeTraveresed/storageMovementNeeded    * and notify to clean up required resources.    */
 DECL|method|clearQueuesWithNotification ()
 specifier|public
 specifier|synchronized

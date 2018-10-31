@@ -861,7 +861,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Call sync_file_range on the given file descriptor.    *    * @param  volume target volume. null if unavailable.    * @throws IOException    */
+comment|/**    * Call sync_file_range on the given file descriptor.    *    * @param  volume target volume. null if unavailable.    */
 DECL|method|syncFileRange ( @ullable FsVolumeSpi volume, FileDescriptor outFd, long offset, long numBytes, int flags)
 specifier|public
 name|void
@@ -962,7 +962,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Call posix_fadvise on the given file descriptor.    *    * @param  volume target volume. null if unavailable.    * @throws IOException    */
+comment|/**    * Call posix_fadvise on the given file descriptor.    *    * @param  volume target volume. null if unavailable.    */
 DECL|method|posixFadvise ( @ullable FsVolumeSpi volume, String identifier, FileDescriptor outFd, long offset, long length, int flags)
 specifier|public
 name|void
@@ -1677,7 +1677,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileOutputStream using    * {@link FileOutputStream#FileOutputStream(FileDescriptor)}.    *    * Wraps the created output stream to intercept write calls    * before delegating to the wrapped stream.    *    * @param volume  target volume. null if unavailable.    * @param fd  File descriptor object.    * @return  FileOutputStream to the given file object.    * @throws  FileNotFoundException    */
+comment|/**    * Create a FileOutputStream using    * {@link FileOutputStream#FileOutputStream(FileDescriptor)}.    *    * Wraps the created output stream to intercept write calls    * before delegating to the wrapped stream.    *    * @param volume  target volume. null if unavailable.    * @param fd  File descriptor object.    * @return  FileOutputStream to the given file object.    */
 DECL|method|getFileOutputStream ( @ullable FsVolumeSpi volume, FileDescriptor fd)
 specifier|public
 name|FileOutputStream

@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * File name distribution visitor.   *<p>  * It analyzes file names in fsimage and prints the following information:   *<li>Number of unique file names</li>   *<li>Number file names and the corresponding number range of files that use   * these same names</li>  *<li>Heap saved if the file name objects are reused</li>  */
+comment|/**  * File name distribution visitor.   *<p>  * It analyzes file names in fsimage and prints the following information:  *<ul>  *<li>Number of unique file names</li>   *<li>Number file names and the corresponding number range of files that use   * these same names</li>  *<li>Heap saved if the file name objects are reused</li>  *</ul>  */
 end_comment
 
 begin_class

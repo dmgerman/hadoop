@@ -509,7 +509,7 @@ literal|0.0f
 return|;
 block|}
 block|}
-comment|/**    * Returns all phases.    *     * @return Iterable<Phase> containing all phases    */
+comment|/**    * Returns all phases.    *     * @return {@code Iterable<Phase>} containing all phases    */
 DECL|method|getPhases ()
 specifier|public
 name|Iterable
@@ -530,7 +530,7 @@ name|class
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns all steps within a phase.    *     * @param phase Phase to get    * @return Iterable<Step> all steps    */
+comment|/**    * Returns all steps within a phase.    *     * @param phase Phase to get    * @return {@code Iterable<Step>} all steps    */
 DECL|method|getSteps (Phase phase)
 specifier|public
 name|Iterable

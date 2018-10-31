@@ -677,7 +677,7 @@ name|getSnapshotId
 argument_list|()
 return|;
 block|}
-comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchorId The returned snapshot's id must be<= or< this given     *                 snapshot id.    * @param exclusive True means the returned snapshot's id must be< the given    *                  id, otherwise<=.    * @return The id of the latest snapshot before the given snapshot.    */
+comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchorId The returned snapshot's id must be&lt;= or&lt; this    *                 given snapshot id.    * @param exclusive True means the returned snapshot's id must be&lt; the    *                  given id, otherwise&lt;=.    * @return The id of the latest snapshot before the given snapshot.    */
 DECL|method|getPrior (int anchorId, boolean exclusive)
 specifier|public
 specifier|final

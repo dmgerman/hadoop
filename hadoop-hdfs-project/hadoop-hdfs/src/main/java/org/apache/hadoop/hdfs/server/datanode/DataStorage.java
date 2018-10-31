@@ -1214,7 +1214,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * VolumeBuilder holds the metadata (e.g., the storage directories) of the    * prepared volume returned from {@link prepareVolume()}. Calling {@link build()}    * to add the metadata to {@link DataStorage} so that this prepared volume can    * be active.    */
+comment|/**    * VolumeBuilder holds the metadata (e.g., the storage directories) of the    * prepared volume returned from    * {@link #prepareVolume(DataNode, StorageLocation, List)}.    * Calling {@link VolumeBuilder#build()}    * to add the metadata to {@link DataStorage} so that this prepared volume can    * be active.    */
 annotation|@
 name|InterfaceAudience
 operator|.

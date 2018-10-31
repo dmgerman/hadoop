@@ -712,7 +712,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Reads the existing extended ACL entries of an inode.  This method returns    * only the extended ACL entries stored in the AclFeature.  If the inode does    * not have an ACL, then this method returns an empty list.  This method    * supports querying by snapshot ID.    *    * @param inode INode to read    * @param snapshotId int ID of snapshot to read    * @return List<AclEntry> containing extended inode ACL entries    */
+comment|/**    * Reads the existing extended ACL entries of an inode.  This method returns    * only the extended ACL entries stored in the AclFeature.  If the inode does    * not have an ACL, then this method returns an empty list.  This method    * supports querying by snapshot ID.    *    * @param inode INode to read    * @param snapshotId int ID of snapshot to read    * @return {@literal List<AclEntry>} containing extended inode ACL entries    */
 DECL|method|readINodeAcl (INode inode, int snapshotId)
 specifier|public
 specifier|static
@@ -746,7 +746,7 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * Reads the existing extended ACL entries of an INodeAttribute object.    *    * @param inodeAttr INode to read    * @return List<AclEntry> containing extended inode ACL entries    */
+comment|/**    * Reads the existing extended ACL entries of an INodeAttribute object.    *    * @param inodeAttr INode to read    * @return {@code List<AclEntry>} containing extended inode ACL entries    */
 DECL|method|readINodeAcl (INodeAttributes inodeAttr)
 specifier|public
 specifier|static
@@ -775,7 +775,7 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * Build list of AclEntries from the AclFeature    * @param aclFeature AclFeature    * @return List of entries    */
+comment|/**    * Build list of AclEntries from the {@link AclFeature}    * @param aclFeature AclFeature    * @return List of entries    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getEntriesFromAclFeature (AclFeature aclFeature)
@@ -873,7 +873,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Reads the existing ACL of an inode.  This method always returns the full    * logical ACL of the inode after reading relevant data from the inode's    * {@link FsPermission} and {@link AclFeature}.  Note that every inode    * logically has an ACL, even if no ACL has been set explicitly.  If the inode    * does not have an extended ACL, then the result is a minimal ACL consising of    * exactly 3 entries that correspond to the owner, group and other permissions.    * This method always reads the inode's current state and does not support    * querying by snapshot ID.  This is because the method is intended to support    * ACL modification APIs, which always apply a delta on top of current state.    *    * @param inode INode to read    * @return List<AclEntry> containing all logical inode ACL entries    */
+comment|/**    * Reads the existing ACL of an inode.  This method always returns the full    * logical ACL of the inode after reading relevant data from the inode's    * {@link FsPermission} and {@link AclFeature}.  Note that every inode    * logically has an ACL, even if no ACL has been set explicitly.  If the inode    * does not have an extended ACL, then the result is a minimal ACL consising of    * exactly 3 entries that correspond to the owner, group and other permissions.    * This method always reads the inode's current state and does not support    * querying by snapshot ID.  This is because the method is intended to support    * ACL modification APIs, which always apply a delta on top of current state.    *    * @param inode INode to read    * @return {@code List<AclEntry>} containing all logical inode ACL entries    */
 DECL|method|readINodeLogicalAcl (INode inode)
 specifier|public
 specifier|static
@@ -1145,7 +1145,7 @@ return|return
 name|existingAcl
 return|;
 block|}
-comment|/**    * Updates an inode with a new ACL.  This method takes a full logical ACL and    * stores the entries to the inode's {@link FsPermission} and    * {@link AclFeature}.    *    * @param inode INode to update    * @param newAcl List<AclEntry> containing new ACL entries    * @param snapshotId int latest snapshot ID of inode    * @throws AclException if the ACL is invalid for the given inode    * @throws QuotaExceededException if quota limit is exceeded    */
+comment|/**    * Updates an inode with a new ACL.  This method takes a full logical ACL and    * stores the entries to the inode's {@link FsPermission} and    * {@link AclFeature}.    *    * @param inode INode to update    * @param newAcl {@code List<AclEntry>} containing new ACL entries    * @param snapshotId int latest snapshot ID of inode    * @throws AclException if the ACL is invalid for the given inode    * @throws QuotaExceededException if quota limit is exceeded    */
 DECL|method|updateINodeAcl (INode inode, List<AclEntry> newAcl, int snapshotId)
 specifier|public
 specifier|static
@@ -1353,7 +1353,7 @@ specifier|private
 name|AclStorage
 parameter_list|()
 block|{   }
-comment|/**    * Creates an AclFeature from the given ACL entries.    *    * @param accessEntries List<AclEntry> access ACL entries    * @param defaultEntries List<AclEntry> default ACL entries    * @return AclFeature containing the required ACL entries    */
+comment|/**    * Creates an AclFeature from the given ACL entries.    *    * @param accessEntries {@code List<AclEntry>} access ACL entries    * @param defaultEntries {@code List<AclEntry>} default ACL entries    * @return AclFeature containing the required ACL entries    */
 DECL|method|createAclFeature (List<AclEntry> accessEntries, List<AclEntry> defaultEntries)
 specifier|private
 specifier|static
@@ -1456,7 +1456,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates the new FsPermission for an inode that is receiving an extended    * ACL, based on its access ACL entries.  For a correctly sorted ACL, the    * first entry is the owner and the last 2 entries are the mask and other    * entries respectively.  Also preserve sticky bit and toggle ACL bit on.    * Note that this method intentionally copies the permissions of the mask    * entry into the FsPermission group permissions.  This is consistent with the    * POSIX ACLs model, which presents the mask as the permissions of the group    * class.    *    * @param accessEntries List<AclEntry> access ACL entries    * @param existingPerm FsPermission existing permissions    * @return FsPermission new permissions    */
+comment|/**    * Creates the new FsPermission for an inode that is receiving an extended    * ACL, based on its access ACL entries.  For a correctly sorted ACL, the    * first entry is the owner and the last 2 entries are the mask and other    * entries respectively.  Also preserve sticky bit and toggle ACL bit on.    * Note that this method intentionally copies the permissions of the mask    * entry into the FsPermission group permissions.  This is consistent with the    * POSIX ACLs model, which presents the mask as the permissions of the group    * class.    *    * @param accessEntries {@code List<AclEntry>} access ACL entries    * @param existingPerm FsPermission existing permissions    * @return FsPermission new permissions    */
 DECL|method|createFsPermissionForExtendedAcl ( List<AclEntry> accessEntries, FsPermission existingPerm)
 specifier|private
 specifier|static
@@ -1524,7 +1524,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates the new FsPermission for an inode that is receiving a minimal ACL,    * based on its access ACL entries.  For a correctly sorted ACL, the owner,    * group and other permissions are in order.  Also preserve sticky bit and    * toggle ACL bit off.    *    * @param accessEntries List<AclEntry> access ACL entries    * @param existingPerm FsPermission existing permissions    * @return FsPermission new permissions    */
+comment|/**    * Creates the new FsPermission for an inode that is receiving a minimal ACL,    * based on its access ACL entries.  For a correctly sorted ACL, the owner,    * group and other permissions are in order.  Also preserve sticky bit and    * toggle ACL bit off.    *    * @param accessEntries {@code List<AclEntry>} access ACL entries    * @param existingPerm FsPermission existing permissions    * @return FsPermission new permissions    */
 DECL|method|createFsPermissionForMinimalAcl ( List<AclEntry> accessEntries, FsPermission existingPerm)
 specifier|private
 specifier|static

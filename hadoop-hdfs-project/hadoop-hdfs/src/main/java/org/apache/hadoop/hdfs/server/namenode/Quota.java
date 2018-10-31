@@ -139,7 +139,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Is quota violated?    * The quota is violated if quota is set and usage> quota.     */
+comment|/**    * Is quota violated?    * The quota is violated if quota is set and usage&gt; quota.    */
 DECL|method|isViolated (final long quota, final long usage)
 specifier|public
 specifier|static
@@ -165,7 +165,7 @@ operator|>
 name|quota
 return|;
 block|}
-comment|/**    * Is quota violated?    * The quota is violated if quota is set, delta> 0 and usage + delta> quota.    */
+comment|/**    * Is quota violated?    * The quota is violated if quota is set, delta&gt; 0 and    * usage + delta&gt; quota.    */
 DECL|method|isViolated (final long quota, final long usage, final long delta)
 specifier|static
 name|boolean

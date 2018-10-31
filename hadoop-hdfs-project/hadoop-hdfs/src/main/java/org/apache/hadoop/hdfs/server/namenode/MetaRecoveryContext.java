@@ -196,7 +196,7 @@ operator|=
 name|force
 expr_stmt|;
 block|}
-comment|/**    * Display a prompt to the user and get his or her choice.    *      * @param prompt      The prompt to display    * @param default     First choice (will be taken if autoChooseDefault is    *                    true)    * @param choices     Other choies    *    * @return            The choice that was taken    * @throws IOException    */
+comment|/**    * Display a prompt to the user and get his or her choice.    *      * @param prompt      The prompt to display    * @param firstChoice First choice (will be taken if autoChooseDefault is    *                    true)    * @param choices     Other choies    *    * @return            The choice that was taken    * @throws IOException    */
 DECL|method|ask (String prompt, String firstChoice, String... choices)
 specifier|public
 name|String

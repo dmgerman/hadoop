@@ -277,7 +277,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Discard the segments whose first txid is>= the given txid.    * @param startTxId The given txid should be right at the segment boundary,     * i.e., it should be the first txid of some segment, if segment corresponding    * to the txid exists.    */
+comment|/**    * Discard the segments whose first txid is {@literal>=} the given txid.    * @param startTxId The given txid should be right at the segment boundary,     * i.e., it should be the first txid of some segment, if segment corresponding    * to the txid exists.    */
 DECL|method|discardSegments (long startTxId)
 name|void
 name|discardSegments

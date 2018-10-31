@@ -306,7 +306,7 @@ name|DatanodeMap
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Returns the live datanodes and its storage details, which has available    * space (> 0) to schedule block moves. This will return array of datanodes    * from its local cache. It has a configurable refresh interval in millis and    * periodically refresh the datanode cache by fetching latest    * {@link Context#getLiveDatanodeStorageReport()} once it elapsed refresh    * interval.    *    * @throws IOException    */
+comment|/**    * Returns the live datanodes and its storage details, which has available    * space (&gt; 0) to schedule block moves. This will return array of datanodes    * from its local cache. It has a configurable refresh interval in millis and    * periodically refresh the datanode cache by fetching latest    * {@link Context#getLiveDatanodeStorageReport()} once it elapsed refresh    * interval.    *    * @throws IOException    */
 DECL|method|getLiveDatanodeStorageReport ( Context spsContext)
 specifier|public
 name|DatanodeMap

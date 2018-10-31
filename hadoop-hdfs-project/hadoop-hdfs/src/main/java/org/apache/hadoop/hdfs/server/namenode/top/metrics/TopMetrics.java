@@ -395,7 +395,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The interface to the top metrics.  *<p/>  * Metrics are collected by a custom audit logger, {@link org.apache.hadoop  * .hdfs.server.namenode.top.TopAuditLogger}, which calls TopMetrics to  * increment per-operation, per-user counts on every audit log call. These  * counts are used to show the top users by NameNode operation as well as  * across all operations.  *<p/>  * TopMetrics maintains these counts for a configurable number of time  * intervals, e.g. 1min, 5min, 25min. Each interval is tracked by a  * RollingWindowManager.  *<p/>  * These metrics are published as a JSON string via {@link org.apache.hadoop  * .hdfs.server .namenode.metrics.FSNamesystemMBean#getTopWindows}. This is  * done by calling {@link org.apache.hadoop.hdfs.server.namenode.top.window  * .RollingWindowManager#snapshot} on each RollingWindowManager.  *<p/>  * Thread-safe: relies on thread-safety of RollingWindowManager  */
+comment|/**  * The interface to the top metrics.  *<p>  * Metrics are collected by a custom audit logger, {@link org.apache.hadoop  * .hdfs.server.namenode.top.TopAuditLogger}, which calls TopMetrics to  * increment per-operation, per-user counts on every audit log call. These  * counts are used to show the top users by NameNode operation as well as  * across all operations.  *<p>  * TopMetrics maintains these counts for a configurable number of time  * intervals, e.g. 1min, 5min, 25min. Each interval is tracked by a  * RollingWindowManager.  *<p>  * These metrics are published as a JSON string via {@link org.apache.hadoop  * .hdfs.server .namenode.metrics.FSNamesystemMBean#getTopWindows}. This is  * done by calling {@link org.apache.hadoop.hdfs.server.namenode.top.window  * .RollingWindowManager#snapshot} on each RollingWindowManager.  *<p>  * Thread-safe: relies on thread-safety of RollingWindowManager  */
 end_comment
 
 begin_class
@@ -685,7 +685,7 @@ return|return
 name|windows
 return|;
 block|}
-comment|/**    * Pick the same information that DefaultAuditLogger does before writing to a    * log file. This is to be consistent when {@link TopMetrics} is charged with    * data read back from log files instead of being invoked directly by the    * FsNamesystem    */
+comment|/**    * Pick the same information that DefaultAuditLogger does before writing to a    * log file. This is to be consistent when {@link TopMetrics} is charged with    * data read back from log files instead of being invoked directly by the    * FsNamesystem    * @param succeeded    * @param userName    * @param addr    * @param cmd    * @param src    * @param dst    * @param status    */
 DECL|method|report (boolean succeeded, String userName, InetAddress addr, String cmd, String src, String dst, FileStatus status)
 specifier|public
 name|void
@@ -828,7 +828,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Flatten out the top window metrics into    * {@link org.apache.hadoop.metrics2.MetricsRecord}s for consumption by    * external metrics systems. Each metrics record added corresponds to the    * reporting period a.k.a window length of the configured rolling windows.    */
+comment|/**    * Flatten out the top window metrics into    * {@link org.apache.hadoop.metrics2.MetricsRecord}s for consumption by    * external metrics systems. Each metrics record added corresponds to the    * reporting period a.k.a window length of the configured rolling windows.    * @param collector    * @param all    */
 annotation|@
 name|Override
 DECL|method|getMetrics (MetricsCollector collector, boolean all)

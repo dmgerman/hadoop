@@ -1483,7 +1483,7 @@ return|return
 name|VOID_JOURNAL_RESPONSE
 return|;
 block|}
-comment|/** @see JournalProtocol#heartbeat */
+comment|/** @see QJournalProtocol#heartbeat */
 annotation|@
 name|Override
 DECL|method|heartbeat (RpcController controller, HeartbeatRequestProto req)

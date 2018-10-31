@@ -98,7 +98,7 @@ specifier|public
 class|class
 name|XAttrStorage
 block|{
-comment|/**    * Reads the extended attribute of an inode by name with prefix.    *<p/>    *    * @param inode INode to read    * @param snapshotId the snapshotId of the requested path    * @param prefixedName xAttr name with prefix    * @return the xAttr    */
+comment|/**    * Reads the extended attribute of an inode by name with prefix.    *<p>    *    * @param inode INode to read    * @param snapshotId the snapshotId of the requested path    * @param prefixedName xAttr name with prefix    * @return the xAttr    */
 DECL|method|readINodeXAttrByPrefixedName (INode inode, int snapshotId, String prefixedName)
 specifier|public
 specifier|static
@@ -140,7 +140,7 @@ name|prefixedName
 argument_list|)
 return|;
 block|}
-comment|/**    * Reads the existing extended attributes of an inode.    *<p/>    * Must be called while holding the FSDirectory read lock.    *    * @param inodeAttr INodeAttributes to read.    * @return List<XAttr><code>XAttr</code> list.    */
+comment|/**    * Reads the existing extended attributes of an inode.    *<p>    * Must be called while holding the FSDirectory read lock.    *    * @param inodeAttr INodeAttributes to read.    * @return {@code XAttr} list.    */
 DECL|method|readINodeXAttrs (INodeAttributes inodeAttr)
 specifier|public
 specifier|static
@@ -182,7 +182,7 @@ name|getXAttrs
 argument_list|()
 return|;
 block|}
-comment|/**    * Update xattrs of inode.    *<p/>    * Must be called while holding the FSDirectory write lock.    *     * @param inode INode to update    * @param xAttrs to update xAttrs.    * @param snapshotId id of the latest snapshot of the inode    */
+comment|/**    * Update xattrs of inode.    *<p>    * Must be called while holding the FSDirectory write lock.    *     * @param inode INode to update    * @param xAttrs to update xAttrs.    * @param snapshotId id of the latest snapshot of the inode    */
 DECL|method|updateINodeXAttrs (INode inode, List<XAttr> xAttrs, int snapshotId)
 specifier|public
 specifier|static

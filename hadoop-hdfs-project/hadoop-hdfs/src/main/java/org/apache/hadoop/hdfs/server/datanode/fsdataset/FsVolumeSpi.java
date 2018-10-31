@@ -419,14 +419,14 @@ name|long
 name|bytesToRelease
 parameter_list|)
 function_decl|;
-comment|/**    * BlockIterator will return ExtendedBlock entries from a block pool in    * this volume.  The entries will be returned in sorted order.<p/>    *    * BlockIterator objects themselves do not always have internal    * synchronization, so they can only safely be used by a single thread at a    * time.<p/>    *    * Closing the iterator does not save it.  You must call save to save it.    */
+comment|/**    * BlockIterator will return ExtendedBlock entries from a block pool in    * this volume.  The entries will be returned in sorted order.<p>    *    * BlockIterator objects themselves do not always have internal    * synchronization, so they can only safely be used by a single thread at a    * time.<p>    *    * Closing the iterator does not save it.  You must call save to save it.    */
 DECL|interface|BlockIterator
 interface|interface
 name|BlockIterator
 extends|extends
 name|Closeable
 block|{
-comment|/**      * Get the next block.<p/>      *      * Note that this block may be removed in between the time we list it,      * and the time the caller tries to use it, or it may represent a stale      * entry.  Callers should handle the case where the returned block no      * longer exists.      *      * @return               The next block, or null if there are no      *                         more blocks.  Null if there was an error      *                         determining the next block.      *      * @throws IOException   If there was an error getting the next block in      *                         this volume.  In this case, EOF will be set on      *                         the iterator.      */
+comment|/**      * Get the next block.<p>      *      * Note that this block may be removed in between the time we list it,      * and the time the caller tries to use it, or it may represent a stale      * entry.  Callers should handle the case where the returned block no      * longer exists.      *      * @return               The next block, or null if there are no      *                         more blocks.  Null if there was an error      *                         determining the next block.      *      * @throws IOException   If there was an error getting the next block in      *                         this volume.  In this case, EOF will be set on      *                         the iterator.      */
 DECL|method|nextBlock ()
 name|ExtendedBlock
 name|nextBlock
@@ -454,7 +454,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**      * Set the maximum staleness of entries that we will return.<p/>      *      * A maximum staleness of 0 means we will never return stale entries; a      * larger value will allow us to reduce resource consumption in exchange      * for returning more potentially stale entries.  Even with staleness set      * to 0, consumers of this API must handle race conditions where block      * disappear before they can be processed.      */
+comment|/**      * Set the maximum staleness of entries that we will return.<p>      *      * A maximum staleness of 0 means we will never return stale entries; a      * larger value will allow us to reduce resource consumption in exchange      * for returning more potentially stale entries.  Even with staleness set      * to 0, consumers of this API must handle race conditions where block      * disappear before they can be processed.      */
 DECL|method|setMaxStalenessMs (long maxStalenessMs)
 name|void
 name|setMaxStalenessMs
@@ -514,7 +514,7 @@ name|FsDatasetSpi
 name|getDataset
 parameter_list|()
 function_decl|;
-comment|/**    * Tracks the files and other information related to a block on the disk    * Missing file is indicated by setting the corresponding member    * to null.    *    * Because millions of these structures may be created, we try to save    * memory here.  So instead of storing full paths, we store path suffixes.    * The block file, if it exists, will have a path like this:    *<volume_base_path>/<block_path>    * So we don't need to store the volume path, since we already know what the    * volume is.    *    * The metadata file, if it exists, will have a path like this:    *<volume_base_path>/<block_path>_<genstamp>.meta    * So if we have a block file, there isn't any need to store the block path    * again.    *    * The accessor functions take care of these manipulations.    */
+comment|/**    * Tracks the files and other information related to a block on the disk    * Missing file is indicated by setting the corresponding member    * to null.    *    * Because millions of these structures may be created, we try to save    * memory here.  So instead of storing full paths, we store path suffixes.    * The block file, if it exists, will have a path like this:    * {@literal<volume_base_path>/<block_path>}    * So we don't need to store the volume path, since we already know what the    * volume is.    *    * The metadata file, if it exists, will have a path like this:    * {@literal<volume_base_path>/<block_path>_<genstamp>.meta}    * So if we have a block file, there isn't any need to store the block path    * again.    *    * The accessor functions take care of these manipulations.    */
 DECL|class|ScanInfo
 specifier|public
 specifier|static
@@ -1160,7 +1160,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Compile a list of {@link ScanInfo} for the blocks in    * the block pool with id {@code bpid}.    *    * @param bpid block pool id to scan    * @param report the list onto which blocks reports are placed    * @param reportCompiler    * @throws IOException    */
+comment|/**    * Compile a list of {@link ScanInfo} for the blocks in    * the block pool with id {@code bpid}.    *    * @param bpid block pool id to scan    * @param report the list onto which blocks reports are placed    * @param reportCompiler    * @throws InterruptedException    * @throws IOException    */
 DECL|method|compileReport (String bpid, Collection<ScanInfo> report, ReportCompiler reportCompiler)
 name|void
 name|compileReport

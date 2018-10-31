@@ -77,7 +77,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode pass the array of block movement  * details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. Later, StoragePolicySatisfyWorker will schedule block movement tasks  * for these blocks and monitors the completion of each task. After the block  * movement attempt is finished(with success or failure) this DataNode will send  * response back to NameNode about the block movement attempt finished details.  */
+comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode pass the array of block movement  * details to  * {@link org.apache.hadoop.hdfs.server.sps.ExternalSPSBlockMoveTaskHandler}  * service. Later, ExternalSPSBlockMoveTaskHandler will schedule block movement  * tasks for these blocks and monitors the completion of each task. After the  * block movement attempt is finished(with success or failure) this DataNode  * will send response back to NameNode about the block movement attempt  * finished details.  */
 end_comment
 
 begin_class

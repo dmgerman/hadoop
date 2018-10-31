@@ -841,7 +841,7 @@ name|int
 name|getNumberOfBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Very efficient encoding of the block report into a ByteString to avoid    * the overhead of protobuf repeating fields.  Primitive repeating fields    * require re-allocs of an ArrayList<Long> and the associated (un)boxing    * overhead which puts pressure on GC.    *     * The structure of the buffer is as follows:    * - each replica is represented by 4 longs:    *   blockId, block length, genstamp, replica state    *    * @return ByteString encoded block report    */
+comment|/**    * Very efficient encoding of the block report into a ByteString to avoid    * the overhead of protobuf repeating fields.  Primitive repeating fields    * require re-allocs of an ArrayList&lt;Long&gt; and the associated (un)boxing    * overhead which puts pressure on GC.    *     * The structure of the buffer is as follows:    * - each replica is represented by 4 longs:    *   blockId, block length, genstamp, replica state    *    * @return ByteString encoded block report    */
 DECL|method|getBlocksBuffer ()
 specifier|abstract
 specifier|public

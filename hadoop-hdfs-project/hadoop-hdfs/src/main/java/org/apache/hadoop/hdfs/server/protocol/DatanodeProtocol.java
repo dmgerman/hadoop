@@ -440,7 +440,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[], BlockReportContext)},    * which is used to communicated blocks stored on disk.    *    * @param            The datanode registration.    * @param poolId     The block pool ID for the blocks.    * @param blockIds   A list of block IDs.    * @return           The DatanodeCommand.    * @throws IOException    */
+comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[], BlockReportContext)},    * which is used to communicated blocks stored on disk.    *    * @param registration The datanode registration.    * @param poolId     The block pool ID for the blocks.    * @param blockIds   A list of block IDs.    * @return           The DatanodeCommand.    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|cacheReport (DatanodeRegistration registration, String poolId, List<Long> blockIds)

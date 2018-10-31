@@ -212,7 +212,7 @@ name|Long
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Create a processor that writes to the file named and may or may not    * also output to the screen, as specified.    *    * @param filename Name of file to write output to    * @param tokenizer Input tokenizer    * @param printToScreen Mirror output to screen?    */
+comment|/**    * Create a processor that writes to the file named and may or may not    * also output to the screen, as specified.    *    * @param out Name of file to write output to    */
 DECL|method|StatisticsEditsVisitor (OutputStream out)
 specifier|public
 name|StatisticsEditsVisitor

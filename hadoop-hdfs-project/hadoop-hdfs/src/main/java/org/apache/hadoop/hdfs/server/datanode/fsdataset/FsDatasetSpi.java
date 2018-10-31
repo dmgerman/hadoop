@@ -1096,7 +1096,7 @@ name|FsVolumeReferences
 name|getFsVolumeReferences
 parameter_list|()
 function_decl|;
-comment|/**    * Add a new volume to the FsDataset.<p/>    *    * If the FSDataset supports block scanning, this function registers    * the new volume with the block scanner.    *    * @param location      The storage location for the new volume.    * @param nsInfos       Namespace information for the new volume.    */
+comment|/**    * Add a new volume to the FsDataset.    *    * If the FSDataset supports block scanning, this function registers    * the new volume with the block scanner.    *    * @param location      The storage location for the new volume.    * @param nsInfos       Namespace information for the new volume.    */
 DECL|method|addVolume ( final StorageLocation location, final List<NamespaceInfo> nsInfos)
 name|void
 name|addVolume
@@ -1161,7 +1161,7 @@ name|ExtendedBlock
 name|b
 parameter_list|)
 function_decl|;
-comment|/** @return a volume information map (name => info). */
+comment|/** @return a volume information map (name {@literal =>} info). */
 DECL|method|getVolumeInfoMap ()
 name|Map
 argument_list|<
@@ -1226,7 +1226,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get reference to the replica meta info in the replicasMap.     * To be called from methods that are synchronized on {@link FSDataset}    * @return replica from the replicas map    */
+comment|/**    * Get reference to the replica meta info in the replicasMap.     * To be called from methods that are synchronized on    * implementations of {@link FsDatasetSpi}    * @return replica from the replicas map    */
 annotation|@
 name|Deprecated
 DECL|method|getReplica (String bpid, long blockId)
@@ -1419,7 +1419,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @param block Block to be finalized    * @param fsyncDir whether to sync the directory changes to durable device.    * @throws IOException    * @throws ReplicaNotFoundException if the replica can not be found when the    * block is been finalized. For instance, the block resides on an HDFS volume    * that has been removed.    */
+comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @param b Block to be finalized    * @param fsyncDir whether to sync the directory changes to durable device.    * @throws IOException    * @throws ReplicaNotFoundException if the replica can not be found when the    * block is been finalized. For instance, the block resides on an HDFS volume    * that has been removed.    */
 DECL|method|finalizeBlock (ExtendedBlock b, boolean fsyncDir)
 name|void
 name|finalizeBlock
@@ -1563,7 +1563,7 @@ index|[]
 name|blockIds
 parameter_list|)
 function_decl|;
-comment|/**    * Determine if the specified block is cached.    * @param bpid Block pool id    * @param blockIds - block id    * @return true if the block is cached    */
+comment|/**    * Determine if the specified block is cached.    * @param bpid Block pool id    * @param blockId - block id    * @return true if the block is cached    */
 DECL|method|isCached (String bpid, long blockId)
 name|boolean
 name|isCached
@@ -1575,7 +1575,7 @@ name|long
 name|blockId
 parameter_list|)
 function_decl|;
-comment|/**      * Check if all the data directories are healthy      * @return A set of unhealthy data directories.      * @param failedVolumes      */
+comment|/**      * Check if all the data directories are healthy      * @param failedVolumes      */
 DECL|method|handleVolumeFailures (Set<FsVolumeSpi> failedVolumes)
 name|void
 name|handleVolumeFailures

@@ -1100,7 +1100,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Update block keys if update time> update interval.    * @return true if the keys are updated.    */
+comment|/**    * Update block keys if update time {@literal>} update interval.    * @return true if the keys are updated.    */
 DECL|method|updateKeys (final long updateTime)
 specifier|public
 specifier|synchronized

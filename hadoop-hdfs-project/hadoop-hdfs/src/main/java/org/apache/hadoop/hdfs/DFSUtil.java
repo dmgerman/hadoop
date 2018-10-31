@@ -1319,7 +1319,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Comparator for sorting DataNodeInfo[] based on    * stale, decommissioned and entering_maintenance states.    * Order: live -> stale -> entering_maintenance -> decommissioned    */
+comment|/**    * Comparator for sorting DataNodeInfo[] based on    * stale, decommissioned and entering_maintenance states.    * Order: live {@literal ->} stale {@literal ->} entering_maintenance    * {@literal ->} decommissioned    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -2221,7 +2221,7 @@ name|keySuffix
 argument_list|)
 return|;
 block|}
-comment|/**    * Get all of the RPC addresses of the individual NNs in a given nameservice.    *     * @param conf Configuration    * @param nsId the nameservice whose NNs addresses we want.    * @param defaultValue default address to return in case key is not found.    * @return A map from nnId -> RPC address of each NN in the nameservice.    */
+comment|/**    * Get all of the RPC addresses of the individual NNs in a given nameservice.    *     * @param conf Configuration    * @param nsId the nameservice whose NNs addresses we want.    * @param defaultValue default address to return in case key is not found.    * @return A map from nnId {@literal ->} RPC address of each NN in the    * nameservice.    */
 DECL|method|getRpcAddressesForNameserviceId ( Configuration conf, String nsId, String defaultValue)
 specifier|public
 specifier|static
@@ -5865,7 +5865,7 @@ return|return
 name|uri
 return|;
 block|}
-comment|/**    * Add protobuf based protocol to the {@link org.apache.hadoop.ipc.RPC.Server}    * @param conf configuration    * @param protocol Protocol interface    * @param service service that implements the protocol    * @param server RPC server to which the protocol& implementation is added to    * @throws IOException    */
+comment|/**    * Add protobuf based protocol to the {@link org.apache.hadoop.ipc.RPC.Server}    * @param conf configuration    * @param protocol Protocol interface    * @param service service that implements the protocol    * @param server RPC server to which the protocol&amp; implementation is    *               added to    * @throws IOException    */
 DECL|method|addPBProtocol (Configuration conf, Class<?> protocol, BlockingService service, RPC.Server server)
 specifier|public
 specifier|static
@@ -6084,7 +6084,7 @@ return|return
 name|webAddr
 return|;
 block|}
-comment|/**    * Get all of the Web addresses of the individual NNs in a given nameservice.    *    * @param conf Configuration    * @param nsId the nameservice whose NNs addresses we want.    * @param defaultValue default address to return in case key is not found.    * @return A map from nnId -> Web address of each NN in the nameservice.    */
+comment|/**    * Get all of the Web addresses of the individual NNs in a given nameservice.    *    * @param conf Configuration    * @param nsId the nameservice whose NNs addresses we want.    * @param defaultValue default address to return in case key is not found.    * @return A map from nnId {@literal ->} Web address of each NN in the    * nameservice.    */
 DECL|method|getWebAddressesForNameserviceId ( Configuration conf, String nsId, String defaultValue)
 specifier|public
 specifier|static

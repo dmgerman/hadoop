@@ -96,7 +96,55 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|Futures
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ListeningExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ListenableFuture
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|SettableFuture
 import|;
 end_import
 
@@ -311,7 +359,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An abstract implementation of {@link ListenableFuture}, intended for  * advanced users only. More common ways to create a {@code ListenableFuture}  * include instantiating a {@link SettableFuture}, submitting a task to a  * {@link ListeningExecutorService}, and deriving a {@code Future} from an  * existing one, typically using methods like {@link Futures#transform  * (ListenableFuture, com.google.common.base.Function) Futures.transform}  * and {@link Futures#catching(ListenableFuture, Class,  * com.google.common.base.Function, java.util.concurrent.Executor)  * Futures.catching}.  *<p>  *<p>This class implements all methods in {@code ListenableFuture}.  * Subclasses should provide a way to set the result of the computation  * through the protected methods {@link #set(Object)},  * {@link #setFuture(ListenableFuture)} and {@link #setException(Throwable)}.  * Subclasses may also override {@link #interruptTask()}, which will be  * invoked automatically if a call to {@link #cancel(boolean) cancel(true)}  * succeeds in canceling the future. Subclasses should rarely override other  * methods.  */
+comment|/**  * An abstract implementation of {@link ListenableFuture}, intended for  * advanced users only. More common ways to create a {@code ListenableFuture}  * include instantiating a {@link SettableFuture}, submitting a task to a  * {@link ListeningExecutorService}, and deriving a {@code Future} from an  * existing one, typically using methods like {@link Futures#transform  * (ListenableFuture, com.google.common.base.Function) Futures.transform}  * and its overloaded versions.  *<p>  *<p>This class implements all methods in {@code ListenableFuture}.  * Subclasses should provide a way to set the result of the computation  * through the protected methods {@link #set(Object)},  * {@link #setFuture(ListenableFuture)} and {@link #setException(Throwable)}.  * Subclasses may also override {@link #interruptTask()}, which will be  * invoked automatically if a call to {@link #cancel(boolean) cancel(true)}  * succeeds in canceling the future. Subclasses should rarely override other  * methods.  */
 end_comment
 
 begin_class
@@ -4364,7 +4412,7 @@ return|return
 name|exception
 return|;
 block|}
-comment|/**    * Returns an {@link Executor} that runs each task in the thread that invokes    * {@link Executor#execute execute}, as in {@link CallerRunsPolicy}.    *<p>    *<p>This instance is equivalent to:<pre>   {@code    *   final class DirectExecutor implements Executor {    *     public void execute(Runnable r) {    *       r.run();    *     }    *   }}</pre>    *<p>    *<p>This should be preferred to {@link #newDirectExecutorService()}    * because implementing the {@link ExecutorService} subinterface    * necessitates significant performance overhead.    *    * @since 18.0    */
+comment|/**    * Returns an {@link Executor} that runs each task in the thread that invokes    * {@link Executor#execute execute}, as in {@link CallerRunsPolicy}.    *<p>    *<p>This instance is equivalent to:<pre>   {@code    *   final class DirectExecutor implements Executor {    *     public void execute(Runnable r) {    *       r.run();    *     }    *   }}</pre>    */
 DECL|method|directExecutor ()
 specifier|public
 specifier|static

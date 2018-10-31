@@ -505,7 +505,7 @@ return|return
 name|options
 return|;
 block|}
-comment|/** Process an edit log using the chosen processor or visitor.    *     * @param inputFilename   The file to process    * @param outputFilename  The output file name    * @param processor       If visitor is null, the processor to use    * @param visitor         If non-null, the visitor to use.    *     * @return                0 on success; error code otherwise    */
+comment|/** Process an edit log using the chosen processor or visitor.    *     * @param inputFileName   The file to process    * @param outputFileName  The output file name    * @param processor       If visitor is null, the processor to use    * @param visitor         If non-null, the visitor to use.    *     * @return                0 on success; error code otherwise    */
 DECL|method|go (String inputFileName, String outputFileName, String processor, Flags flags, OfflineEditsVisitor visitor)
 specifier|public
 name|int

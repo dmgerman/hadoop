@@ -993,7 +993,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides rudimentary checking of DFS volumes for errors and  * sub-optimal conditions.  *<p>The tool scans all files and directories, starting from an indicated  *  root path. The following abnormal conditions are detected and handled:</p>  *<ul>  *<li>files with blocks that are completely missing from all datanodes.<br/>  * In this case the tool can perform one of the following actions:  *<ul>  *<li>none ({@link #FIXING_NONE})</li>  *<li>move corrupted files to /lost+found directory on DFS  *      ({@link #FIXING_MOVE}). Remaining data blocks are saved as a  *      block chains, representing longest consecutive series of valid blocks.</li>  *<li>delete corrupted files ({@link #FIXING_DELETE})</li>  *</ul>  *</li>  *<li>detect files with under-replicated or over-replicated blocks</li>  *</ul>  *  Additionally, the tool collects a detailed overall DFS statistics, and  *  optionally can print detailed statistics on block locations and replication  *  factors of each file.  */
+comment|/**  * This class provides rudimentary checking of DFS volumes for errors and  * sub-optimal conditions.  *<p>The tool scans all files and directories, starting from an indicated  *  root path. The following abnormal conditions are detected and handled:</p>  *<ul>  *<li>files with blocks that are completely missing from all datanodes.<br>  * In this case the tool can perform one of the following actions:  *<ul>  *<li>move corrupted files to /lost+found directory on DFS  *      ({@link #doMove}). Remaining data blocks are saved as a  *      block chains, representing longest consecutive series of valid blocks.</li>  *<li>delete corrupted files ({@link #doDelete})</li>  *</ul>  *</li>  *<li>detect files with under-replicated or over-replicated blocks</li>  *</ul>  *  Additionally, the tool collects a detailed overall DFS statistics, and  *  optionally can print detailed statistics on block locations and replication  *  factors of each file.  */
 end_comment
 
 begin_class
@@ -1351,7 +1351,7 @@ init|=
 literal|null
 decl_stmt|;
 comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param remoteAddress source address of the fsck request    */
-DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String,String[]> pmap, PrintWriter out, int totalDatanodes, InetAddress remoteAddress)
+DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String, String[]> pmap, PrintWriter out, int totalDatanodes, InetAddress remoteAddress)
 name|NamenodeFsck
 parameter_list|(
 name|Configuration

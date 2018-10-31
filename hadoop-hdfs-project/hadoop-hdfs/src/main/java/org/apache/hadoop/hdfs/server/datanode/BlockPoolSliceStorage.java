@@ -431,7 +431,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manages storage for the set of BlockPoolSlices which share a particular   * block pool id, on this DataNode.  *   * This class supports the following functionality:  *<ol>  *<li> Formatting a new block pool storage</li>  *<li> Recovering a storage state to a consistent state (if possible></li>  *<li> Taking a snapshot of the block pool during upgrade</li>  *<li> Rolling back a block pool to a previous snapshot</li>  *<li> Finalizing block storage by deletion of a snapshot</li>  *</ul>  *   * @see Storage  */
+comment|/**  * Manages storage for the set of BlockPoolSlices which share a particular   * block pool id, on this DataNode.  *   * This class supports the following functionality:  *<ul>  *<li> Formatting a new block pool storage</li>  *<li> Recovering a storage state to a consistent state (if possible)</li>  *<li> Taking a snapshot of the block pool during upgrade</li>  *<li> Rolling back a block pool to a previous snapshot</li>  *<li> Finalizing block storage by deletion of a snapshot</li>  *</ul>  *   * @see Storage  */
 end_comment
 
 begin_class
@@ -748,7 +748,7 @@ name|sd
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load one storage directory. Recover from previous transitions if required.    *    * @param nsInfo namespace information    * @param dataDir the root path of the storage directory    * @param startOpt startup option    * @return the StorageDirectory successfully loaded.    * @throws IOException    */
+comment|/**    * Load one storage directory. Recover from previous transitions if required.    * @param nsInfo  namespace information    * @param location  the root path of the storage directory    * @param startOpt  startup option    * @param callables list of callable storage directory    * @param conf configuration    * @return    * @throws IOException    */
 DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 specifier|private
 name|StorageDirectory
@@ -982,7 +982,7 @@ name|ioe
 throw|;
 block|}
 block|}
-comment|/**    * Analyze and load storage directories. Recover from previous transitions if    * required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @return an array of loaded block pool directories.    * @throws IOException on error    */
+comment|/**    * Analyze and load storage directories. Recover from previous transitions if    * required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param location storage directories of block pool    * @param startOpt startup option    * @param callables list of callable storage directory    * @param conf configuration    * @return an array of loaded block pool directories.    * @throws IOException on error    */
 DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
@@ -1105,7 +1105,7 @@ return|return
 name|succeedDirs
 return|;
 block|}
-comment|/**    * Analyze storage directories. Recover from previous transitions if required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @throws IOException on error    */
+comment|/**    * Analyze storage directories. Recover from previous transitions if required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param location storage directories of block pool    * @param startOpt startup option    * @param callables list of callable storage directory    * @param conf configuration    * @throws IOException on error    */
 DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
@@ -1602,7 +1602,7 @@ name|sbpid
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @return true if the new properties has been written.    */
+comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if:    * previousLV&gt;= LAYOUT_VERSION&& prevCTime&lt;= namenode.cTime.    * Upgrade if:    * this.LV&gt; LAYOUT_VERSION || this.cTime&lt; namenode.cTime    * Regular startup if:    * this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param sd storage directory @{literal<SD>/current/<bpid>}    * @param nsInfo namespace info    * @param startOpt startup option    * @param callables list of callable storage directory    * @param conf configuration    * @return true if the new properties has been written.    */
 DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 specifier|private
 name|boolean
@@ -1987,7 +1987,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Upgrade to any release after 0.22 (0.22 included) release e.g. 0.22 => 0.23    * Upgrade procedure is as follows:    *<ol>    *<li>If<SD>/current/<bpid>/previous exists then delete it</li>    *<li>Rename<SD>/current/<bpid>/current to    *<SD>/current/bpid/current/previous.tmp</li>    *<li>Create new<SD>current/<bpid>/current directory</li>    *<ol>    *<li>Hard links for block files are created from previous.tmp to current</li>    *<li>Save new version file in current directory</li>    *</ol>    *<li>Rename previous.tmp to previous</li></ol>    *     * @param bpSd storage directory<SD>/current/<bpid>    * @param nsInfo Namespace Info from the namenode    * @throws IOException on error    */
+comment|/**    * Upgrade to any release after 0.22 (0.22 included) release    * e.g. 0.22 =&gt; 0.23    * Upgrade procedure is as follows:    *<ol>    *<li>If {@literal<SD>/current/<bpid>/previous} exists then delete it</li>    *<li>Rename {@literal<SD>/current/<bpid>/current} to    * {@literal<SD>/current/bpid/current/previous.tmp}</li>    *<li>Create new {@literal<SD>current/<bpid>/current} directory</li>    *<li>Hard links for block files are created from previous.tmp to current</li>    *<li>Save new version file in current directory</li>    *<li>Rename previous.tmp to previous</li>    *</ol>    *     * @param bpSd storage directory {@literal<SD>/current/<bpid>}    * @param nsInfo Namespace Info from the namenode    * @throws IOException on error    */
 DECL|method|doUpgrade (final StorageDirectory bpSd, final NamespaceInfo nsInfo, final List<Callable<StorageDirectory>> callables, final Configuration conf)
 specifier|private
 name|void
@@ -3496,7 +3496,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Get a target subdirectory under current/ for a given block file that is being    * restored from trash.    *    * The subdirectory structure under trash/ mirrors that under current/ to keep    * implicit memory of where the files are to be restored.    *    * @return the target directory to restore a previously deleted block file.    */
+comment|/**    * Get a target subdirectory under current/ for a given block file that is    * being restored from trash.    *    * The subdirectory structure under trash/ mirrors that under current/ to keep    * implicit memory of where the files are to be restored.    * @param blockFile  block file that is being restored from trash.    * @return the target directory to restore a previously deleted block file.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getRestoreDirectory (File blockFile)
@@ -3752,7 +3752,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Create a rolling upgrade marker file for each BP storage root, if it    * does not exist already.    */
+comment|/**    * Create a rolling upgrade marker file for each BP storage root, if it    * does not exist already.    * @param dnStorageDirs    */
 DECL|method|setRollingUpgradeMarkers (List<StorageDirectory> dnStorageDirs)
 specifier|public
 name|void
@@ -3884,7 +3884,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Check whether the rolling upgrade marker file exists for each BP storage    * root. If it does exist, then the marker file is cleared and more    * importantly the layout upgrade is finalized.    */
+comment|/**    * Check whether the rolling upgrade marker file exists for each BP storage    * root. If it does exist, then the marker file is cleared and more    * importantly the layout upgrade is finalized.    * @param dnStorageDirs    */
 DECL|method|clearRollingUpgradeMarkers (List<StorageDirectory> dnStorageDirs)
 specifier|public
 name|void

@@ -119,7 +119,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Begin visiting an element that encloses another element, such as    * the beginning of the list of blocks that comprise a file.    *    * @param value Token being visited    */
+comment|/**    * Begin visiting an element that encloses another element, such as    * the beginning of the list of blocks that comprise a file.    *    * @param op Token being visited    */
 DECL|method|visitOp (FSEditLogOp op)
 specifier|abstract
 name|void

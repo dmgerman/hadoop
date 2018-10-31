@@ -1556,7 +1556,7 @@ else|:
 name|CURRENT_STATE_ID
 return|;
 block|}
-comment|/**    * @return the i-th inode if i>= 0;    *         otherwise, i< 0, return the (length + i)-th inode.    */
+comment|/**    * @return the i-th inode if i {@literal>=} 0;    *         otherwise, i {@literal<} 0, return the (length + i)-th inode.    */
 DECL|method|getINode (int i)
 specifier|public
 name|INode

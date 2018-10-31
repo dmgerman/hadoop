@@ -213,7 +213,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class to manage the set of {@link RollingWindow}s. This class is the  * interface of metrics system to the {@link RollingWindow}s to retrieve the  * current top metrics.  *<p/>  * Thread-safety is provided by each {@link RollingWindow} being thread-safe as  * well as {@link ConcurrentHashMap} for the collection of them.  */
+comment|/**  * A class to manage the set of {@link RollingWindow}s. This class is the  * interface of metrics system to the {@link RollingWindow}s to retrieve the  * current top metrics.  *<p>  * Thread-safety is provided by each {@link RollingWindow} being thread-safe as  * well as {@link ConcurrentHashMap} for the collection of them.  */
 end_comment
 
 begin_class

@@ -621,7 +621,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manages the list of encryption zones in the filesystem.  *<p/>  * The EncryptionZoneManager has its own lock, but relies on the FSDirectory  * lock being held for many operations. The FSDirectory lock should not be  * taken if the manager lock is already held.  */
+comment|/**  * Manages the list of encryption zones in the filesystem.  *<p>  * The EncryptionZoneManager has its own lock, but relies on the FSDirectory  * lock being held for many operations. The FSDirectory lock should not be  * taken if the manager lock is already held.  */
 end_comment
 
 begin_class
@@ -1513,7 +1513,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
+comment|/**    * Add a new encryption zone.    *<p>    * Called while holding the FSDirectory lock.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
 DECL|method|addEncryptionZone (Long inodeId, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|void
 name|addEncryptionZone
@@ -1549,7 +1549,7 @@ name|keyName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a new encryption zone.    *<p/>    * Does not assume that the FSDirectory lock is held.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
+comment|/**    * Add a new encryption zone.    *<p>    * Does not assume that the FSDirectory lock is held.    *    * @param inodeId of the encryption zone    * @param keyName encryption zone key name    */
 DECL|method|unprotectedAddEncryptionZone (Long inodeId, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|void
 name|unprotectedAddEncryptionZone
@@ -1608,7 +1608,7 @@ name|ez
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove an encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Remove an encryption zone.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|removeEncryptionZone (Long inodeId)
 name|void
 name|removeEncryptionZone
@@ -1669,7 +1669,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Returns true if an IIP is within an encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Returns true if an IIP is within an encryption zone.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|isInAnEZ (INodesInPath iip)
 name|boolean
 name|isInAnEZ
@@ -1701,7 +1701,7 @@ literal|null
 operator|)
 return|;
 block|}
-comment|/**    * Returns the full path from an INode id.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Returns the full path from an INode id.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|getFullPathName (Long nodeId)
 name|String
 name|getFullPathName
@@ -1744,7 +1744,7 @@ name|getFullPathName
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the key name for an encryption zone. Returns null if<tt>iip</tt> is    * not within an encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Get the key name for an encryption zone. Returns null if<tt>iip</tt> is    * not within an encryption zone.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|getKeyName (final INodesInPath iip)
 name|String
 name|getKeyName
@@ -1788,7 +1788,7 @@ name|getKeyName
 argument_list|()
 return|;
 block|}
-comment|/**    * Looks up the EncryptionZoneInt for a path within an encryption zone.    * Returns null if path is not within an EZ.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Looks up the EncryptionZoneInt for a path within an encryption zone.    * Returns null if path is not within an EZ.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|getEncryptionZoneForPath (INodesInPath iip)
 specifier|private
 name|EncryptionZoneInt
@@ -2022,7 +2022,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Looks up the nearest ancestor EncryptionZoneInt that contains the given    * path (excluding itself).    * Returns null if path is not within an EZ, or the path is the root dir '/'    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Looks up the nearest ancestor EncryptionZoneInt that contains the given    * path (excluding itself).    * Returns null if path is not within an EZ, or the path is the root dir '/'    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|getParentEncryptionZoneForPath (INodesInPath iip)
 specifier|private
 name|EncryptionZoneInt
@@ -2136,7 +2136,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Throws an exception if the provided path cannot be renamed into the    * destination because of differing parent encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    *    * @param srcIIP source IIP    * @param dstIIP destination IIP    * @throws IOException if the src cannot be renamed to the dst    */
+comment|/**    * Throws an exception if the provided path cannot be renamed into the    * destination because of differing parent encryption zones.    *<p>    * Called while holding the FSDirectory lock.    *    * @param srcIIP source IIP    * @param dstIIP destination IIP    * @throws IOException if the src cannot be renamed to the dst    */
 DECL|method|checkMoveValidity (INodesInPath srcIIP, INodesInPath dstIIP)
 name|void
 name|checkMoveValidity
@@ -2477,7 +2477,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a new encryption zone.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Create a new encryption zone.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|createEncryptionZone (INodesInPath srcIIP, CipherSuite suite, CryptoProtocolVersion version, String keyName)
 name|XAttr
 name|createEncryptionZone
@@ -2683,7 +2683,7 @@ return|return
 name|ezXAttr
 return|;
 block|}
-comment|/**    * Cursor-based listing of encryption zones.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Cursor-based listing of encryption zones.    *<p>    * Called while holding the FSDirectory lock.    */
 DECL|method|listEncryptionZones (long prevId)
 name|BatchedListEntries
 argument_list|<
@@ -2889,7 +2889,7 @@ name|hasMore
 argument_list|)
 return|;
 block|}
-comment|/**    * Resolves the path to inode id, then check if it's the same as the inode id    * passed in. This is necessary to filter out zones in snapshots.    * @param zoneId    * @param zonePath    * @return true if path resolve to the id, false if not.    * @throws UnresolvedLinkException    */
+comment|/**    * Resolves the path to inode id, then check if it's the same as the inode id    * passed in. This is necessary to filter out zones in snapshots.    * @param zoneId    * @param zonePath    * @return true if path resolve to the id, false if not.    * @throws AccessControlException    * @throws ParentNotDirectoryException    * @throws UnresolvedLinkException    */
 DECL|method|pathResolvesToId (final long zoneId, final String zonePath)
 specifier|private
 name|boolean
@@ -2996,7 +2996,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Re-encrypts the given encryption zone path. If the given path is not the    * root of an encryption zone, an exception is thrown.    */
+comment|/**    * Re-encrypts the given encryption zone path. If the given path is not the    * root of an encryption zone, an exception is thrown.    * @param zoneIIP    * @param keyVersionName    * @throws IOException    */
 DECL|method|reencryptEncryptionZone (final INodesInPath zoneIIP, final String keyVersionName)
 name|List
 argument_list|<
@@ -3148,7 +3148,7 @@ return|return
 name|xAttrs
 return|;
 block|}
-comment|/**    * Cancels the currently-running re-encryption of the given encryption zone.    * If the given path is not the root of an encryption zone,    * * an exception is thrown.    */
+comment|/**    * Cancels the currently-running re-encryption of the given encryption zone.    * If the given path is not the root of an encryption zone,    * an exception is thrown.    * @param zoneIIP    * @throws IOException    */
 DECL|method|cancelReencryptEncryptionZone (final INodesInPath zoneIIP)
 name|List
 argument_list|<
@@ -3255,7 +3255,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Cursor-based listing of zone re-encryption status.    *<p/>    * Called while holding the FSDirectory lock.    */
+comment|/**    * Cursor-based listing of zone re-encryption status.    *<p>    * Called while holding the FSDirectory lock.    * @param prevId    * @throws IOException    */
 DECL|method|listReencryptionStatus ( final long prevId)
 name|BatchedListEntries
 argument_list|<
@@ -3460,7 +3460,7 @@ name|hasMore
 argument_list|)
 return|;
 block|}
-comment|/**    * Return whether an INode is an encryption zone root.    */
+comment|/**    * Return whether an INode is an encryption zone root.    * @param inode    * @param name    * @return true when INode is an encryption zone root else false    * @throws FileNotFoundException    */
 DECL|method|isEncryptionZoneRoot (final INode inode, final String name)
 name|boolean
 name|isEncryptionZoneRoot
@@ -3538,7 +3538,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Return whether an INode is an encryption zone root.    *    * @param inode the zone inode    * @throws IOException if the inode is not a directory,    *                     or is a directory but not the root of an EZ.    */
+comment|/**    * Return whether an INode is an encryption zone root.    *    * @param inode the zone inode    * @param name    * @throws IOException if the inode is not a directory,    *                     or is a directory but not the root of an EZ.    */
 DECL|method|checkEncryptionZoneRoot (final INode inode, final String name)
 name|void
 name|checkEncryptionZoneRoot

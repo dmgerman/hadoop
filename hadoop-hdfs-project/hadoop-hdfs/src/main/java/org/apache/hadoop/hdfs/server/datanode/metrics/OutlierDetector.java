@@ -254,7 +254,7 @@ operator|=
 name|lowThresholdMs
 expr_stmt|;
 block|}
-comment|/**    * Return a set of nodes/ disks whose latency is much higher than    * their counterparts. The input is a map of (resource -> aggregate latency)    * entries.    *    * The aggregate may be an arithmetic mean or a percentile e.g.    * 90th percentile. Percentiles are a better choice than median    * since latency is usually not a normal distribution.    *    * This method allocates temporary memory O(n) and    * has run time O(n.log(n)), where n = stats.size().    *    * @return    */
+comment|/**    * Return a set of nodes/ disks whose latency is much higher than    * their counterparts. The input is a map of (resource {@literal ->} aggregate    * latency)    * entries.    *    * The aggregate may be an arithmetic mean or a percentile e.g.    * 90th percentile. Percentiles are a better choice than median    * since latency is usually not a normal distribution.    *    * This method allocates temporary memory O(n) and    * has run time O(n.log(n)), where n = stats.size().    *    * @return    */
 DECL|method|getOutliers (Map<String, Double> stats)
 specifier|public
 name|Map

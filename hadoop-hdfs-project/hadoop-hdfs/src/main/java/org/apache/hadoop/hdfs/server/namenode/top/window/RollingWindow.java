@@ -83,7 +83,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class for exposing a rolling window view on the event that occur over time.  * Events are reported based on occurrence time. The total number of events in  * the last period covered by the rolling window can be retrieved by the  * {@link #getSum(long)} method.  *<p/>  *  * Assumptions:  *<p/>  *  * (1) Concurrent invocation of {@link #incAt} method are possible  *<p/>  *  * (2) The time parameter of two consecutive invocation of {@link #incAt} could  * be in any given order  *<p/>  *  * (3) The buffering delays are not more than the window length, i.e., after two  * consecutive invocation {@link #incAt(long time1, long)} and  * {@link #incAt(long time2, long)}, time1< time2 || time1 - time2< windowLenMs.  * This assumption helps avoiding unnecessary synchronizations.  *<p/>  *  * Thread-safety is built in the {@link RollingWindow.Bucket}  */
+comment|/**  * A class for exposing a rolling window view on the event that occur over time.  * Events are reported based on occurrence time. The total number of events in  * the last period covered by the rolling window can be retrieved by the  * {@link #getSum(long)} method.  *<p>  *  * Assumptions:  *<p>  *  * (1) Concurrent invocation of {@link #incAt} method are possible  *<p>  *  * (2) The time parameter of two consecutive invocation of {@link #incAt} could  * be in any given order  *<p>  *  * (3) The buffering delays are not more than the window length, i.e., after two  * consecutive invocation {@link #incAt(long time1, long)} and  * {@link #incAt(long time2, long)}, time1&lt; time2 || time1 - time2&lt;  * windowLenMs.  * This assumption helps avoiding unnecessary synchronizations.  *<p>  *  * Thread-safety is built in the {@link RollingWindow.Bucket}  */
 end_comment
 
 begin_class
@@ -212,7 +212,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * When an event occurs at the specified time, this method reflects that in    * the rolling window.    *<p/>    *    * @param time the time at which the event occurred    * @param delta the delta that will be added to the window    */
+comment|/**    * When an event occurs at the specified time, this method reflects that in    * the rolling window.    *<p>    *    * @param time the time at which the event occurred    * @param delta the delta that will be added to the window    */
 DECL|method|incAt (long time, long delta)
 specifier|public
 name|void
@@ -401,7 +401,7 @@ block|}
 comment|// else a concurrent thread has already reset it: do nothing
 block|}
 block|}
-comment|/**      * Increment the bucket. It assumes that staleness check is already      * performed. We do not need to update the {@link #updateTime} because as      * long as the {@link #updateTime} belongs to the current view of the      * rolling window, the algorithm works fine.      */
+comment|/**      * Increment the bucket. It assumes that staleness check is already      * performed. We do not need to update the {@link #updateTime} because as      * long as the {@link #updateTime} belongs to the current view of the      * rolling window, the algorithm works fine.      * @param delta      */
 DECL|method|inc (long delta)
 name|void
 name|inc
@@ -419,7 +419,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get value represented by this window at the specified time    *<p/>    *    * If time lags behind the latest update time, the new updates are still    * included in the sum    *    * @param time    * @return number of events occurred in the past period    */
+comment|/**    * Get value represented by this window at the specified time    *<p>    *    * If time lags behind the latest update time, the new updates are still    * included in the sum    *    * @param time    * @return number of events occurred in the past period    */
 DECL|method|getSum (long time)
 specifier|public
 name|long

@@ -438,7 +438,7 @@ name|hashCode
 argument_list|()
 return|;
 block|}
-comment|/**    * returns NodeDataDensity Metric.    *    * @return float    */
+comment|/**    * Returns NodeDataDensity Metric.    *    * @return float    */
 DECL|method|getNodeDataDensity ()
 specifier|public
 name|double
@@ -449,7 +449,7 @@ return|return
 name|nodeDataDensity
 return|;
 block|}
-comment|/**    * computes nodes data density.    *<p/>    * This metric allows us to compare different  nodes and how well the data is    * spread across a set of volumes inside the node.    */
+comment|/**    * Computes nodes data density.    *    * This metric allows us to compare different  nodes and how well the data is    * spread across a set of volumes inside the node.    */
 DECL|method|computeNodeDensity ()
 specifier|public
 name|void
@@ -557,7 +557,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Adds a volume to the DataNode.    *<p/>    * it is assumed that we have one thread per node hence this call is not    * synchronised neither is the map is protected.    *    * @param volume - volume    */
+comment|/**    * Adds a volume to the DataNode.    *    * It is assumed that we have one thread per node hence this call is not    * synchronised neither is the map is protected.    *    * @param volume - volume    */
 DECL|method|addVolume (DiskBalancerVolume volume)
 specifier|public
 name|void

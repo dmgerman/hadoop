@@ -1643,7 +1643,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  * For block state management, it tries to maintain the  safety  * property of "# of live replicas == # of expected redundancy" under  * any events such as decommission, namenode failover, datanode failure.  *  * The motivation of maintenance mode is to allow admins quickly repair nodes  * without paying the cost of decommission. Thus with maintenance mode,  * # of live replicas doesn't have to be equal to # of expected redundancy.  * If any of the replica is in maintenance mode, the safety property  * is extended as follows. These property still apply for the case of zero  * maintenance replicas, thus we can use these safe property for all scenarios.  * a. # of live replicas>= # of min replication for maintenance.  * b. # of live replicas<= # of expected redundancy.  * c. # of live replicas and maintenance replicas>= # of expected redundancy.  *  * For regular replication, # of min live replicas for maintenance is determined  * by DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY. This number has to<=  * DFS_NAMENODE_REPLICATION_MIN_KEY.  * For erasure encoding, # of min live replicas for maintenance is  * BlockInfoStriped#getRealDataBlockNum.  *  * Another safety property is to satisfy the block placement policy. While the  * policy is configurable, the replicas the policy is applied to are the live  * replicas + maintenance replicas.  */
+comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  * For block state management, it tries to maintain the  safety  * property of "# of live replicas == # of expected redundancy" under  * any events such as decommission, namenode failover, datanode failure.  *  * The motivation of maintenance mode is to allow admins quickly repair nodes  * without paying the cost of decommission. Thus with maintenance mode,  * # of live replicas doesn't have to be equal to # of expected redundancy.  * If any of the replica is in maintenance mode, the safety property  * is extended as follows. These property still apply for the case of zero  * maintenance replicas, thus we can use these safe property for all scenarios.  * a. # of live replicas&gt;= # of min replication for maintenance.  * b. # of live replicas&lt;= # of expected redundancy.  * c. # of live replicas and maintenance replicas&gt;= # of expected  * redundancy.  *  * For regular replication, # of min live replicas for maintenance is determined  * by DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY. This number has to&lt;=  * DFS_NAMENODE_REPLICATION_MIN_KEY.  * For erasure encoding, # of min live replicas for maintenance is  * BlockInfoStriped#getRealDataBlockNum.  *  * Another safety property is to satisfy the block placement policy. While the  * policy is configurable, the replicas the policy is applied to are the live  * replicas + maintenance replicas.  */
 end_comment
 
 begin_class
@@ -2118,7 +2118,7 @@ specifier|final
 name|double
 name|storageInfoDefragmentRatio
 decl_stmt|;
-comment|/**    * Mapping: Block -> { BlockCollection, datanodes, self ref }    * Updated only in response to client-sent information.    */
+comment|/**    * Mapping: Block {@literal ->} { BlockCollection, datanodes, self ref }    * Updated only in response to client-sent information.    */
 DECL|field|blocksMap
 specifier|final
 name|BlocksMap
@@ -2165,7 +2165,7 @@ operator|new
 name|BlockReportProcessingThread
 argument_list|()
 decl_stmt|;
-comment|/** Store blocks -> datanodedescriptor(s) map of corrupt replicas */
+comment|/**    * Store blocks {@literal ->} datanodedescriptor(s) map of corrupt replicas.    */
 DECL|field|corruptReplicas
 specifier|final
 name|CorruptReplicasMap
@@ -10510,7 +10510,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy, EnumSet)    */
+comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets {@literal<} minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy, EnumSet)    */
 DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final BlockType blockType, final ErasureCodingPolicy ecPolicy, final EnumSet<AddBlockFlag> flags)
 specifier|public
 name|DatanodeStorageInfo
@@ -12089,7 +12089,7 @@ name|reported
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The given storage is reporting all its blocks.    * Update the (storage-->block list) and (block-->storage list) maps.    *    * @return true if all known storages of the given DN have finished reporting.    * @throws IOException    */
+comment|/**    * The given storage is reporting all its blocks.    * Update the (storage{@literal -->}block list) and    * (block{@literal -->}storage list) maps.    *    * @return true if all known storages of the given DN have finished reporting.    * @throws IOException    */
 DECL|method|processReport (final DatanodeID nodeID, final DatanodeStorage storage, final BlockListAsLongs newReport, BlockReportContext context)
 specifier|public
 name|boolean
@@ -17943,7 +17943,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify (block-->datanode) map. Possibly generate replication tasks, if the    * removed block is still valid.    */
+comment|/**    * Modify (block{@literal -->}datanode) map. Possibly generate replication    * tasks, if the removed block is still valid.    */
 DECL|method|removeStoredBlock (BlockInfo storedBlock, DatanodeDescriptor node)
 specifier|public
 name|void
@@ -20664,7 +20664,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Get blocks to invalidate for<i>nodeId</i>    * in {@link #invalidateBlocks}.    *    * @return number of blocks scheduled for removal during this iteration.    */
+comment|/**    * Get blocks to invalidate for {@code nodeId}    * in {@link #invalidateBlocks}.    *    * @return number of blocks scheduled for removal during this iteration.    */
 DECL|method|invalidateWorkForOneNode (DatanodeInfo dn)
 specifier|private
 name|int

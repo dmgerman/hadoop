@@ -885,7 +885,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns true if the block scanner is enabled.<p/>    *    * If the block scanner is disabled, no volume scanners will be created, and    * no threads will start.    */
+comment|/**    * Returns true if the block scanner is enabled.    *    * If the block scanner is disabled, no volume scanners will be created, and    * no threads will start.    */
 DECL|method|isEnabled ()
 specifier|public
 name|boolean
@@ -1057,7 +1057,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Stops and removes a volume scanner.<p/>    *    * This function will block until the volume scanner has stopped.    *    * @param volume           The volume to remove.    */
+comment|/**    * Stops and removes a volume scanner.    *    * This function will block until the volume scanner has stopped.    *    * @param volume           The volume to remove.    */
 DECL|method|removeVolumeScanner (FsVolumeSpi volume)
 specifier|public
 specifier|synchronized
@@ -1168,7 +1168,7 @@ name|MINUTES
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Stops and removes all volume scanners.<p/>    *    * This function will block until all the volume scanners have stopped.    */
+comment|/**    * Stops and removes all volume scanners.    *    * This function will block until all the volume scanners have stopped.    */
 DECL|method|removeAllVolumeScanners ()
 specifier|public
 specifier|synchronized

@@ -197,7 +197,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This manages satisfy storage policy invoked path ids and expose methods to  * process these path ids. It maintains sps mode(EXTERNAL/NONE)  * configured by the administrator.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then  * it won't do anything, just maintains the sps invoked path ids. Administrator  * requires to start external sps service explicitly, to fetch the sps invoked  * path ids from namenode, then do necessary computations and block movement in  * order to satisfy the storage policy. Please refer  * {@link ExternalStoragePolicySatisfier} class to understand more about the  * external sps service functionality.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then it  * will disable the sps feature completely by clearing all queued up sps path's  * hint.  *  * This class is instantiated by the BlockManager.  */
+comment|/**  * This manages satisfy storage policy invoked path ids and expose methods to  * process these path ids. It maintains sps mode(EXTERNAL/NONE)  * configured by the administrator.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode#EXTERNAL}, then  * it won't do anything, just maintains the sps invoked path ids. Administrator  * requires to start external sps service explicitly, to fetch the sps invoked  * path ids from namenode, then do necessary computations and block movement in  * order to satisfy the storage policy. Please refer  * {@link ExternalStoragePolicySatisfier} class to understand more about the  * external sps service functionality.  *  *<p>  * If the configured mode is {@link StoragePolicySatisfierMode#NONE}, then it  * will disable the sps feature completely by clearing all queued up sps path's  * hint.  *  * This class is instantiated by the BlockManager.  */
 end_comment
 
 begin_class
@@ -354,7 +354,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything. Administrator requires to start external sps service    * explicitly.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled and won't do any action.    */
+comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode#EXTERNAL}, then    * it won't do anything. Administrator requires to start external sps service    * explicitly.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode#NONE}, then the    * service is disabled and won't do any action.    */
 DECL|method|start ()
 specifier|public
 name|void
@@ -424,7 +424,7 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.EXTERNAL}, then    * it won't do anything. Administrator requires to stop external sps service    * explicitly, if needed.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode.NONE}, then the    * service is disabled and won't do any action.    */
+comment|/**    * This function will do following logic based on the configured sps mode:    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode#EXTERNAL}, then    * it won't do anything. Administrator requires to stop external sps service    * explicitly, if needed.    *    *<p>    * If the configured mode is {@link StoragePolicySatisfierMode#NONE}, then the    * service is disabled and won't do any action.    */
 DECL|method|stop ()
 specifier|public
 name|void
@@ -718,7 +718,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Verify that satisfier queue limit exceeds allowed outstanding limit.    */
+comment|/**    * Verify that satisfier queue limit exceeds allowed outstanding limit.    * @throws IOException    */
 DECL|method|verifyOutstandingPathQLimit ()
 specifier|public
 name|void
@@ -865,7 +865,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Adds the sps path to SPSPathIds list.    */
+comment|/**    * Adds the sps path to SPSPathIds list.    * @param id    */
 DECL|method|addPathId (long id)
 specifier|public
 name|void

@@ -1659,7 +1659,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Main loop. It takes at most 1 zone per scan, and executes until the zone    * is completed.    * {@see #reencryptEncryptionZoneInt(Long)}.    */
+comment|/**    * Main loop. It takes at most 1 zone per scan, and executes until the zone    * is completed.    * {@link #reencryptEncryptionZone(long)}.    */
 annotation|@
 name|Override
 DECL|method|run ()

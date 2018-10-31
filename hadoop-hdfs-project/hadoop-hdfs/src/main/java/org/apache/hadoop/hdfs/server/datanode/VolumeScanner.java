@@ -357,7 +357,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * VolumeScanner scans a single volume.  Each VolumeScanner has its own thread.<p/>  * They are all managed by the DataNode's BlockScanner.  */
+comment|/**  * VolumeScanner scans a single volume.  Each VolumeScanner has its own thread.  *<p>They are all managed by the DataNode's BlockScanner.  */
 end_comment
 
 begin_class

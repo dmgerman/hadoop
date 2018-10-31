@@ -4665,7 +4665,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * FSNamesystem is a container of both transient  * and persisted name-space state, and does all the book-keeping  * work on a NameNode.  *  * Its roles are briefly described below:  *  * 1) Is the container for BlockManager, DatanodeManager,  *    DelegationTokens, LeaseManager, etc. services.  * 2) RPC calls that modify or inspect the name-space  *    should get delegated here.  * 3) Anything that touches only blocks (eg. block reports),  *    it delegates to BlockManager.  * 4) Anything that touches only file information (eg. permissions, mkdirs),  *    it delegates to FSDirectory.  * 5) Anything that crosses two of the above components should be  *    coordinated here.  * 6) Logs mutations to FSEditLog.  *  * This class and its contents keep:  *  * 1)  Valid fsname --> blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block --> machinelist (kept in memory, rebuilt dynamically from reports)  * 4)  machine --> blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  */
+comment|/**  * FSNamesystem is a container of both transient  * and persisted name-space state, and does all the book-keeping  * work on a NameNode.  *  * Its roles are briefly described below:  *  * 1) Is the container for BlockManager, DatanodeManager,  *    DelegationTokens, LeaseManager, etc. services.  * 2) RPC calls that modify or inspect the name-space  *    should get delegated here.  * 3) Anything that touches only blocks (eg. block reports),  *    it delegates to BlockManager.  * 4) Anything that touches only file information (eg. permissions, mkdirs),  *    it delegates to FSDirectory.  * 5) Anything that crosses two of the above components should be  *    coordinated here.  * 6) Logs mutations to FSEditLog.  *  * This class and its contents keep:  *  * 1)  Valid fsname {@literal -->} blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block {@literal -->} machinelist (kept in memory, rebuilt dynamically  *     from reports)  * 4)  machine {@literal -->} blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  */
 end_comment
 
 begin_class
@@ -10336,7 +10336,7 @@ name|getServiceState
 argument_list|()
 return|;
 block|}
-comment|/**    * return a list of blocks& their locations on<code>datanode</code> whose    * total size is<code>size</code>    *    * @param datanode on which blocks are located    * @param size total size of blocks    */
+comment|/**    * return a list of blocks&amp; their locations on {@code datanode} whose    * total size is {@code size}    *    * @param datanode on which blocks are located    * @param size total size of blocks    * @param minimumBlockSize    */
 DECL|method|getBlocks (DatanodeID datanode, long size, long minimumBlockSize)
 specifier|public
 name|BlocksWithLocations
@@ -10396,7 +10396,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Dump all metadata into specified file    */
+comment|/**    * Dump all metadata into specified file    * @param filename    */
 DECL|method|metaSave (String filename)
 name|void
 name|metaSave
@@ -11028,7 +11028,7 @@ comment|//
 comment|// These methods are called by HadoopFS clients
 comment|//
 comment|/////////////////////////////////////////////////////////
-comment|/**    * Set permissions for an existing file.    * @throws IOException    */
+comment|/**    * Set permissions for an existing file.    * @param src    * @param permission    * @throws IOException    */
 DECL|method|setPermission (String src, FsPermission permission)
 name|void
 name|setPermission
@@ -11147,7 +11147,7 @@ name|auditStat
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set owner for an existing file.    * @throws IOException    */
+comment|/**    * Set owner for an existing file.    * @param src    * @param group    * @param username    * @throws IOException    */
 DECL|method|setOwner (String src, String username, String group)
 name|void
 name|setOwner
@@ -12417,7 +12417,7 @@ name|auditStat
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set replication for an existing file.    *     * The NameNode sets new replication and schedules either replication of     * under-replicated data blocks or removal of the excessive block copies     * if the blocks are over-replicated.    *     * @see ClientProtocol#setReplication(String, short)    * @param src file name    * @param replication new replication    * @return true if successful;     *         false if file does not exist or is a directory    */
+comment|/**    * Set replication for an existing file.    *     * The NameNode sets new replication and schedules either replication of     * under-replicated data blocks or removal of the excessive block copies     * if the blocks are over-replicated.    *     * @see ClientProtocol#setReplication(String, short)    * @param src file name    * @param replication new replication    * @return true if successful;     *         false if file does not exist or is a directory    * @throws  IOException    */
 DECL|method|setReplication (final String src, final short replication)
 name|boolean
 name|setReplication
@@ -12547,7 +12547,7 @@ return|return
 name|success
 return|;
 block|}
-comment|/**    * Set the storage policy for a file or a directory.    *    * @param src file/directory path    * @param policyName storage policy name    */
+comment|/**    * Set the storage policy for a file or a directory.    *    * @param src file/directory path    * @param policyName storage policy name    * @throws  IOException    */
 DECL|method|setStoragePolicy (String src, String policyName)
 name|void
 name|setStoragePolicy
@@ -12668,7 +12668,7 @@ name|auditStat
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Satisfy the storage policy for a file or a directory.    *    * @param src file/directory path    */
+comment|/**    * Satisfy the storage policy for a file or a directory.    *    * @param src file/directory path    * @throws  IOException    */
 DECL|method|satisfyStoragePolicy (String src, boolean logRetryCache)
 name|void
 name|satisfyStoragePolicy
@@ -12862,7 +12862,7 @@ name|verifyOutstandingPathQLimit
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * unset storage policy set for a given file or a directory.    *    * @param src file/directory path    */
+comment|/**    * unset storage policy set for a given file or a directory.    *    * @param src file/directory path    * @throws  IOException    */
 DECL|method|unsetStoragePolicy (String src)
 name|void
 name|unsetStoragePolicy
@@ -12978,7 +12978,7 @@ name|auditStat
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the storage policy for a file or a directory.    *    * @param src    *          file/directory path    * @return storage policy object    */
+comment|/**    * Get the storage policy for a file or a directory.    *    * @param src    *          file/directory path    * @return storage policy object    * @throws  IOException    */
 DECL|method|getStoragePolicy (String src)
 name|BlockStoragePolicy
 name|getStoragePolicy
@@ -13039,7 +13039,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @return All the existing block storage policies    */
+comment|/**    * @return All the existing block storage policies    * @throws  IOException    */
 DECL|method|getStoragePolicies ()
 name|BlockStoragePolicy
 index|[]

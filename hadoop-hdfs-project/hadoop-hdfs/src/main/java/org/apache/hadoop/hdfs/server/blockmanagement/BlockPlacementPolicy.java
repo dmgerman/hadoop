@@ -487,7 +487,7 @@ name|Host2NodesMap
 name|host2datanodeMap
 parameter_list|)
 function_decl|;
-comment|/**    * Check if the move is allowed. Used by balancer and other tools.    * @    *    * @param candidates all replicas including source and target    * @param source source replica of the move    * @param target target replica of the move    */
+comment|/**    * Check if the move is allowed. Used by balancer and other tools.    *    * @param candidates all replicas including source and target    * @param source source replica of the move    * @param target target replica of the move    */
 DECL|method|isMovable (Collection<DatanodeInfo> candidates, DatanodeInfo source, DatanodeInfo target)
 specifier|public
 specifier|abstract

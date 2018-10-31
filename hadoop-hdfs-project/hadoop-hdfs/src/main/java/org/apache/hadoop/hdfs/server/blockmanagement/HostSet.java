@@ -179,7 +179,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The HostSet allows efficient queries on matching wildcard addresses.  *<p/>  * For InetSocketAddress A and B with the same host address,  * we define a partial order between A and B, A<= B iff A.getPort() == B  * .getPort() || B.getPort() == 0.  */
+comment|/**  * The HostSet allows efficient queries on matching wildcard addresses.  *<p>  * For InetSocketAddress A and B with the same host address,  * we define a partial order between A and B, A&lt;= B iff A.getPort() == B  * .getPort() || B.getPort() == 0.  */
 end_comment
 
 begin_class
@@ -210,7 +210,7 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
-comment|/**    * The function that checks whether there exists an entry foo in the set    * so that foo<= addr.    */
+comment|/**    * The function that checks whether there exists an entry foo in the set    * so that foo&lt;= addr.    */
 DECL|method|matchedBy (InetSocketAddress addr)
 name|boolean
 name|matchedBy
@@ -260,7 +260,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * The function that checks whether there exists an entry foo in the set    * so that addr<= foo.    */
+comment|/**    * The function that checks whether there exists an entry foo in the set    * so that addr&lt;= foo.    */
 DECL|method|match (InetSocketAddress addr)
 name|boolean
 name|match

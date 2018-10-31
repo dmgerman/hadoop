@@ -177,7 +177,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Stores information about all corrupt blocks in the File System.  * A Block is considered corrupt only if all of its replicas are  * corrupt. While reporting replicas of a Block, we hide any corrupt  * copies. These copies are removed once Block is found to have   * expected number of good replicas.  * Mapping: Block -> TreeSet<DatanodeDescriptor>   */
+comment|/**  * Stores information about all corrupt blocks in the File System.  * A Block is considered corrupt only if all of its replicas are  * corrupt. While reporting replicas of a Block, we hide any corrupt  * copies. These copies are removed once Block is found to have   * expected number of good replicas.  * Mapping: Block {@literal -> TreeSet<DatanodeDescriptor>}  */
 end_comment
 
 begin_class
