@@ -753,6 +753,15 @@ name|HddsDatanodeService
 argument_list|>
 name|hddsDatanodes
 decl_stmt|;
+comment|// Timeout for the cluster to be ready
+DECL|field|waitForClusterToBeReadyTimeout
+specifier|private
+name|int
+name|waitForClusterToBeReadyTimeout
+init|=
+literal|60000
+decl_stmt|;
+comment|// 1 min
 comment|/**    * Creates a new MiniOzoneCluster.    *    * @throws IOException if there is an I/O error    */
 DECL|method|MiniOzoneClusterImpl (OzoneConfiguration conf, OzoneManager ozoneManager, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
 specifier|private
@@ -878,12 +887,26 @@ block|}
 argument_list|,
 literal|1000
 argument_list|,
-literal|60
-operator|*
-literal|1000
+name|waitForClusterToBeReadyTimeout
 argument_list|)
 expr_stmt|;
-comment|//wait for 1 min.
+block|}
+comment|/**    * Sets the timeout value after which    * {@link MiniOzoneClusterImpl#waitForClusterToBeReady} times out.    *    * @param timeoutInMs timeout value in milliseconds    */
+annotation|@
+name|Override
+DECL|method|setWaitForClusterToBeReadyTimeout (int timeoutInMs)
+specifier|public
+name|void
+name|setWaitForClusterToBeReadyTimeout
+parameter_list|(
+name|int
+name|timeoutInMs
+parameter_list|)
+block|{
+name|waitForClusterToBeReadyTimeout
+operator|=
+name|timeoutInMs
+expr_stmt|;
 block|}
 comment|/**    * Waits for SCM to be out of Chill Mode. Many tests can be run iff we are out    * of Chill mode.    *    * @throws TimeoutException    * @throws InterruptedException    */
 annotation|@

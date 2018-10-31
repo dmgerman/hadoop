@@ -504,6 +504,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300_000L
+argument_list|)
 DECL|method|testPipelineFail ()
 specifier|public
 name|void
@@ -623,6 +628,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Now restart the datanode and make sure that a new pipeline is created.
+name|cluster
+operator|.
+name|setWaitForClusterToBeReadyTimeout
+argument_list|(
+literal|300000
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|restartHddsDatanode

@@ -1785,13 +1785,12 @@ argument_list|()
 decl_stmt|;
 name|long
 name|scmUsed
-init|=
-literal|0
 decl_stmt|;
 name|long
 name|remaining
-init|=
-literal|0
+decl_stmt|;
+name|long
+name|capacity
 decl_stmt|;
 name|failed
 operator|=
@@ -1813,6 +1812,13 @@ operator|.
 name|getAvailable
 argument_list|()
 expr_stmt|;
+name|capacity
+operator|=
+name|volumeInfo
+operator|.
+name|getCapacity
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1832,6 +1838,8 @@ name|volumeInfo
 operator|.
 name|getRootDir
 argument_list|()
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 comment|// reset scmUsed and remaining if df/du failed.
@@ -1840,6 +1848,10 @@ operator|=
 literal|0
 expr_stmt|;
 name|remaining
+operator|=
+literal|0
+expr_stmt|;
+name|capacity
 operator|=
 literal|0
 expr_stmt|;
@@ -1883,10 +1895,7 @@ argument_list|)
 operator|.
 name|setCapacity
 argument_list|(
-name|hddsVolume
-operator|.
-name|getCapacity
-argument_list|()
+name|capacity
 argument_list|)
 operator|.
 name|setRemaining

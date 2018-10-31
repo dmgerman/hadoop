@@ -242,6 +242,15 @@ name|TimeoutException
 throws|,
 name|InterruptedException
 function_decl|;
+comment|/**    * Sets the timeout value after which    * {@link MiniOzoneCluster#waitForClusterToBeReady} times out.    *    * @param timeoutInMs timeout value in milliseconds    */
+DECL|method|setWaitForClusterToBeReadyTimeout (int timeoutInMs)
+name|void
+name|setWaitForClusterToBeReadyTimeout
+parameter_list|(
+name|int
+name|timeoutInMs
+parameter_list|)
+function_decl|;
 comment|/**    * Waits/blocks till the cluster is out of chill mode.    *    * @throws TimeoutException TimeoutException In case of timeout    * @throws InterruptedException In case of interrupt while waiting    */
 DECL|method|waitTobeOutOfChillMode ()
 name|void

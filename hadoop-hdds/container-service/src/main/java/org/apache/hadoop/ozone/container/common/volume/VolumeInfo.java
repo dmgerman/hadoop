@@ -404,17 +404,41 @@ specifier|public
 name|long
 name|getCapacity
 parameter_list|()
+throws|throws
+name|IOException
 block|{
-return|return
+if|if
+condition|(
 name|configuredCapacity
 operator|<
 literal|0
-condition|?
+condition|)
+block|{
+if|if
+condition|(
+name|usage
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Volume Usage thread is not running. This error"
+operator|+
+literal|" is usually seen during DataNode shutdown."
+argument_list|)
+throw|;
+block|}
+return|return
 name|usage
 operator|.
 name|getCapacity
 argument_list|()
-else|:
+return|;
+block|}
+return|return
 name|configuredCapacity
 return|;
 block|}
@@ -426,6 +450,23 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|usage
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Volume Usage thread is not running. This error "
+operator|+
+literal|"is usually seen during DataNode shutdown."
+argument_list|)
+throw|;
+block|}
 return|return
 name|usage
 operator|.
@@ -441,6 +482,23 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|usage
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Volume Usage thread is not running. This error "
+operator|+
+literal|"is usually seen during DataNode shutdown."
+argument_list|)
+throw|;
+block|}
 return|return
 name|usage
 operator|.

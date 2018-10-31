@@ -1240,11 +1240,24 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|NullPointerException
+name|IOException
 name|ex
 parameter_list|)
 block|{
 comment|// Do Nothing. Exception is expected.
+name|assertTrue
+argument_list|(
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Volume Usage thread is not running."
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
