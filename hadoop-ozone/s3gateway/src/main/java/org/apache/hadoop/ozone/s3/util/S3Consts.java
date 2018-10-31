@@ -69,6 +69,15 @@ name|STORAGE_CLASS_HEADER
 init|=
 literal|"x-amz-storage-class"
 decl_stmt|;
+DECL|field|ENCODING_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENCODING_TYPE
+init|=
+literal|"url"
+decl_stmt|;
 block|}
 end_class
 
