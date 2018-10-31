@@ -400,6 +400,22 @@ end_import
 
 begin_import
 import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -518,6 +534,8 @@ decl_stmt|;
 comment|/**    * Rest endpoint to list objects in a specific bucket.    *<p>    * See: https://docs.aws.amazon.com/AmazonS3/latest/API/v2-RESTBucketGET.html    * for more details.    */
 annotation|@
 name|GET
+annotation|@
+name|SuppressFBWarnings
 DECL|method|list ( @athParamR) String bucketName, @QueryParam(R) String delimiter, @QueryParam(R) String encodingType, @QueryParam(R) String marker, @DefaultValue(R) @QueryParam(R) int maxKeys, @QueryParam(R) String prefix, @QueryParam(R) String browser, @QueryParam(R) String continueToken, @QueryParam(R) String startAfter, @Context HttpHeaders hh)
 specifier|public
 name|Response
@@ -617,8 +635,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-try|try
-init|(
 name|InputStream
 name|browserPage
 init|=
@@ -629,8 +645,7 @@ name|getResourceAsStream
 argument_list|(
 literal|"/browser.html"
 argument_list|)
-init|)
-block|{
+decl_stmt|;
 return|return
 name|Response
 operator|.
@@ -646,7 +661,6 @@ operator|.
 name|build
 argument_list|()
 return|;
-block|}
 block|}
 if|if
 condition|(
