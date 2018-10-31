@@ -102,6 +102,28 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -737,22 +759,16 @@ block|}
 comment|/**    * Returns a ProtoBuf Message from ContainerData.    *    * @return Protocol Buffer Message    */
 DECL|method|getProtoBufMessage ()
 specifier|public
-name|ContainerProtos
-operator|.
-name|ContainerData
+name|ContainerDataProto
 name|getProtoBufMessage
 parameter_list|()
 block|{
-name|ContainerProtos
-operator|.
-name|ContainerData
+name|ContainerDataProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|ContainerProtos
-operator|.
-name|ContainerData
+name|ContainerDataProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -919,15 +935,13 @@ block|}
 comment|/**    * Constructs a KeyValueContainerData object from ProtoBuf classes.    *    * @param protoData - ProtoBuf Message    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getFromProtoBuf ( ContainerProtos.ContainerData protoData)
+DECL|method|getFromProtoBuf ( ContainerDataProto protoData)
 specifier|public
 specifier|static
 name|KeyValueContainerData
 name|getFromProtoBuf
 parameter_list|(
-name|ContainerProtos
-operator|.
-name|ContainerData
+name|ContainerDataProto
 name|protoData
 parameter_list|)
 throws|throws

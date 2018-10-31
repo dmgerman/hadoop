@@ -1255,7 +1255,9 @@ name|setState
 argument_list|(
 name|ContainerProtos
 operator|.
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|OPEN
 argument_list|)
@@ -1270,7 +1272,9 @@ name|setState
 argument_list|(
 name|ContainerProtos
 operator|.
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|CLOSING
 argument_list|)
@@ -1285,7 +1289,9 @@ name|setState
 argument_list|(
 name|ContainerProtos
 operator|.
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|CLOSED
 argument_list|)

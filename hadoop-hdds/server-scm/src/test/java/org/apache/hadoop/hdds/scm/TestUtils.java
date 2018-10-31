@@ -48,6 +48,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ContainerReplicaProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|PipelineReport
 import|;
 end_import
@@ -143,26 +163,6 @@ operator|.
 name|proto
 operator|.
 name|HddsProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
 import|;
 end_import
 
@@ -1138,7 +1138,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|ContainerInfo
+name|ContainerReplicaProto
 argument_list|>
 name|containerInfos
 init|=
@@ -1286,13 +1286,13 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates container report with the given ContainerInfo(s).    *    * @param containerInfos one or more ContainerInfo    *    * @return ContainerReportsProto    */
-DECL|method|getContainerReports ( ContainerInfo... containerInfos)
+DECL|method|getContainerReports ( ContainerReplicaProto... containerInfos)
 specifier|public
 specifier|static
 name|ContainerReportsProto
 name|getContainerReports
 parameter_list|(
-name|ContainerInfo
+name|ContainerReplicaProto
 modifier|...
 name|containerInfos
 parameter_list|)
@@ -1310,7 +1310,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates container report with the given ContainerInfo(s).    *    * @param containerInfos list of ContainerInfo    *    * @return ContainerReportsProto    */
-DECL|method|getContainerReports ( List<ContainerInfo> containerInfos)
+DECL|method|getContainerReports ( List<ContainerReplicaProto> containerInfos)
 specifier|public
 specifier|static
 name|ContainerReportsProto
@@ -1318,7 +1318,7 @@ name|getContainerReports
 parameter_list|(
 name|List
 argument_list|<
-name|ContainerInfo
+name|ContainerReplicaProto
 argument_list|>
 name|containerInfos
 parameter_list|)
@@ -1335,7 +1335,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ContainerInfo
+name|ContainerReplicaProto
 name|containerInfo
 range|:
 name|containerInfos
@@ -1357,10 +1357,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Generates random ContainerInfo.    *    * @param containerId container id of the ContainerInfo    *    * @return ContainerInfo    */
-DECL|method|getRandomContainerInfo (long containerId)
+DECL|method|getRandomContainerInfo ( long containerId)
 specifier|public
 specifier|static
-name|ContainerInfo
+name|ContainerReplicaProto
 name|getRandomContainerInfo
 parameter_list|(
 name|long
@@ -1438,7 +1438,7 @@ comment|/**    * Creates ContainerInfo with the given details.    *    * @param 
 DECL|method|createContainerInfo ( long containerId, long size, long keyCount, long bytesUsed, long readCount, long readBytes, long writeCount, long writeBytes)
 specifier|public
 specifier|static
-name|ContainerInfo
+name|ContainerReplicaProto
 name|createContainerInfo
 parameter_list|(
 name|long
@@ -1467,7 +1467,7 @@ name|writeBytes
 parameter_list|)
 block|{
 return|return
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -1475,6 +1475,15 @@ operator|.
 name|setContainerID
 argument_list|(
 name|containerId
+argument_list|)
+operator|.
+name|setState
+argument_list|(
+name|ContainerReplicaProto
+operator|.
+name|State
+operator|.
+name|OPEN
 argument_list|)
 operator|.
 name|setSize

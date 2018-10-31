@@ -1068,7 +1068,7 @@ for|for
 control|(
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 name|containerInfoProto
 range|:
 name|response

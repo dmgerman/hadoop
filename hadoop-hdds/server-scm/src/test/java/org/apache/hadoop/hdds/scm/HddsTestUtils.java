@@ -171,7 +171,7 @@ name|List
 argument_list|<
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 argument_list|>
 name|containers
 init|=

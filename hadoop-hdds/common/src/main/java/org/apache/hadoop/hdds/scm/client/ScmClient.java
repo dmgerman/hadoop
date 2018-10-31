@@ -110,7 +110,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|ContainerData
+name|ContainerDataProto
 import|;
 end_import
 
@@ -286,7 +286,7 @@ name|IOException
 function_decl|;
 comment|/**    * Read meta data from an existing container.    * @param containerID - ID of the container.    * @param pipeline - Pipeline where the container is located.    * @return ContainerInfo    * @throws IOException    */
 DECL|method|readContainer (long containerID, Pipeline pipeline)
-name|ContainerData
+name|ContainerDataProto
 name|readContainer
 parameter_list|(
 name|long
@@ -300,7 +300,7 @@ name|IOException
 function_decl|;
 comment|/**    * Read meta data from an existing container.    * @param containerID - ID of the container.    * @return ContainerInfo    * @throws IOException    */
 DECL|method|readContainer (long containerID)
-name|ContainerData
+name|ContainerDataProto
 name|readContainer
 parameter_list|(
 name|long

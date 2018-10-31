@@ -167,8 +167,6 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
-operator|.
-name|ContainerLifeCycleState
 import|;
 end_import
 
@@ -208,25 +206,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HddsProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
 name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReplicaProto
 import|;
 end_import
 
@@ -1624,7 +1606,11 @@ name|containerData
 operator|.
 name|setState
 argument_list|(
-name|ContainerLifeCycleState
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|CLOSING
 argument_list|)
@@ -1713,7 +1699,11 @@ annotation|@
 name|Override
 DECL|method|getContainerState ()
 specifier|public
-name|ContainerLifeCycleState
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+operator|.
+name|State
 name|getContainerState
 parameter_list|()
 block|{
@@ -2238,7 +2228,11 @@ operator|.
 name|getState
 argument_list|()
 operator|!=
-name|ContainerLifeCycleState
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|CLOSED
 condition|)
@@ -2472,26 +2466,20 @@ block|}
 comment|/**    * Returns KeyValueContainerReport for the KeyValueContainer.    */
 annotation|@
 name|Override
-specifier|public
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
 DECL|method|getContainerReport ()
+specifier|public
+name|ContainerReplicaProto
 name|getContainerReport
 parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|.
 name|Builder
 name|ciBuilder
 init|=
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -2586,17 +2574,17 @@ block|}
 comment|/**    * Returns LifeCycle State of the container.    * @return LifeCycle State of the container in HddsProtos format    * @throws StorageContainerException    */
 DECL|method|getHddsState ()
 specifier|private
-name|HddsProtos
+name|ContainerReplicaProto
 operator|.
-name|LifeCycleState
+name|State
 name|getHddsState
 parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
-name|HddsProtos
+name|ContainerReplicaProto
 operator|.
-name|LifeCycleState
+name|State
 name|state
 decl_stmt|;
 switch|switch
@@ -2612,9 +2600,9 @@ name|OPEN
 case|:
 name|state
 operator|=
-name|HddsProtos
+name|ContainerReplicaProto
 operator|.
-name|LifeCycleState
+name|State
 operator|.
 name|OPEN
 expr_stmt|;
@@ -2624,9 +2612,9 @@ name|CLOSING
 case|:
 name|state
 operator|=
-name|HddsProtos
+name|ContainerReplicaProto
 operator|.
-name|LifeCycleState
+name|State
 operator|.
 name|CLOSING
 expr_stmt|;
@@ -2636,9 +2624,9 @@ name|CLOSED
 case|:
 name|state
 operator|=
-name|HddsProtos
+name|ContainerReplicaProto
 operator|.
-name|LifeCycleState
+name|State
 operator|.
 name|CLOSED
 expr_stmt|;

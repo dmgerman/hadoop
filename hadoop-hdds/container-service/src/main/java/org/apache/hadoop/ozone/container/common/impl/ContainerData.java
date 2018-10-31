@@ -142,7 +142,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|ContainerLifeCycleState
+name|ContainerDataProto
 import|;
 end_import
 
@@ -403,7 +403,9 @@ decl_stmt|;
 comment|// State of the Container
 DECL|field|state
 specifier|private
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 name|state
 decl_stmt|;
 DECL|field|maxSize
@@ -616,7 +618,9 @@ name|this
 operator|.
 name|state
 operator|=
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|OPEN
 expr_stmt|;
@@ -724,7 +728,9 @@ comment|/**    * Returns the state of the container.    * @return ContainerLifeC
 DECL|method|getState ()
 specifier|public
 specifier|synchronized
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 name|getState
 parameter_list|()
 block|{
@@ -733,13 +739,15 @@ name|state
 return|;
 block|}
 comment|/**    * Set the state of the container.    * @param state    */
-DECL|method|setState (ContainerLifeCycleState state)
+DECL|method|setState (ContainerDataProto.State state)
 specifier|public
 specifier|synchronized
 name|void
 name|setState
 parameter_list|(
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 name|state
 parameter_list|)
 block|{
@@ -863,7 +871,9 @@ name|isOpen
 parameter_list|()
 block|{
 return|return
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|OPEN
 operator|==
@@ -881,7 +891,9 @@ block|{
 return|return
 operator|!
 operator|(
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|INVALID
 operator|==
@@ -898,7 +910,9 @@ name|isClosed
 parameter_list|()
 block|{
 return|return
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|CLOSED
 operator|==
@@ -915,7 +929,9 @@ parameter_list|()
 block|{
 name|setState
 argument_list|(
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|CLOSED
 argument_list|)
@@ -1307,7 +1323,7 @@ specifier|public
 specifier|abstract
 name|ContainerProtos
 operator|.
-name|ContainerData
+name|ContainerDataProto
 name|getProtoBufMessage
 parameter_list|()
 function_decl|;

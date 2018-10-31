@@ -122,6 +122,26 @@ name|proto
 operator|.
 name|HddsProtos
 operator|.
+name|ContainerInfoProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
 name|LifeCycleEvent
 import|;
 end_import
@@ -383,6 +403,8 @@ operator|.
 name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReplicaProto
 import|;
 end_import
 
@@ -1129,9 +1151,7 @@ name|ContainerInfo
 operator|.
 name|fromProtobuf
 argument_list|(
-name|HddsProtos
-operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|PARSER
 operator|.
@@ -2390,7 +2410,7 @@ name|fromProtobuf
 argument_list|(
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|parseFrom
 argument_list|(
@@ -2556,9 +2576,7 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 argument_list|>
 name|containerInfos
 init|=
@@ -2578,9 +2596,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 name|newInfo
 range|:
 name|containerInfos
@@ -2661,7 +2677,9 @@ operator|.
 name|getState
 argument_list|()
 operator|==
-name|LifeCycleState
+name|ContainerReplicaProto
+operator|.
+name|State
 operator|.
 name|CLOSED
 operator|&&
@@ -2709,9 +2727,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|HddsProtos
-operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 name|newState
 init|=
 name|reconcileState
@@ -2844,16 +2860,14 @@ comment|/**    * Reconciles the state from Datanode with the state in SCM.    * 
 end_comment
 
 begin_function
-DECL|method|reconcileState ( StorageContainerDatanodeProtocolProtos.ContainerInfo datanodeState, ContainerInfo knownState)
+DECL|method|reconcileState ( ContainerReplicaProto datanodeState, ContainerInfo knownState)
 specifier|private
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 name|reconcileState
 parameter_list|(
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 name|datanodeState
 parameter_list|,
 name|ContainerInfo
@@ -2862,14 +2876,14 @@ parameter_list|)
 block|{
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|Builder
 name|builder
 init|=
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|newBuilder
 argument_list|()

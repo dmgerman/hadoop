@@ -1047,7 +1047,9 @@ argument_list|()
 operator|==
 name|ContainerProtos
 operator|.
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|UNHEALTHY
 argument_list|)

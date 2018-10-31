@@ -454,7 +454,7 @@ name|map
 argument_list|(
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|::
 name|getContainerID
 argument_list|)

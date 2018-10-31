@@ -2204,7 +2204,7 @@ name|fromProtobuf
 argument_list|(
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|PARSER
 operator|.

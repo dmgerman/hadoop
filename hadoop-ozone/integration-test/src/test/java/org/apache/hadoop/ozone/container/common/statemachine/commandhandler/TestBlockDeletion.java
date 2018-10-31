@@ -134,7 +134,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 import|;
 end_import
 
@@ -1645,7 +1645,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ContainerInfo
+name|ContainerReplicaProto
 name|containerInfo
 range|:
 name|containerReport
@@ -1658,7 +1658,7 @@ name|dummyReportsBuilder
 operator|.
 name|addReports
 argument_list|(
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -1729,7 +1729,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ContainerInfo
+name|ContainerReplicaProto
 name|containerInfo
 range|:
 name|dummyReport

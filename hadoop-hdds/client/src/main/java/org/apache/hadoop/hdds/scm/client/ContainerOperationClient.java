@@ -178,7 +178,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|ContainerData
+name|ContainerDataProto
 import|;
 end_import
 
@@ -1124,7 +1124,7 @@ annotation|@
 name|Override
 DECL|method|readContainer (long containerID, Pipeline pipeline)
 specifier|public
-name|ContainerData
+name|ContainerDataProto
 name|readContainer
 parameter_list|(
 name|long
@@ -1231,7 +1231,7 @@ annotation|@
 name|Override
 DECL|method|readContainer (long containerID)
 specifier|public
-name|ContainerData
+name|ContainerDataProto
 name|readContainer
 parameter_list|(
 name|long

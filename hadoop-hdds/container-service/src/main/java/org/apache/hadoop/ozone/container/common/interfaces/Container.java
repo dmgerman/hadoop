@@ -104,13 +104,11 @@ name|hdds
 operator|.
 name|protocol
 operator|.
-name|datanode
-operator|.
 name|proto
 operator|.
-name|ContainerProtos
+name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerLifeCycleState
+name|ContainerReplicaProto
 import|;
 end_import
 
@@ -133,24 +131,6 @@ operator|.
 name|helpers
 operator|.
 name|StorageContainerException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|StorageContainerDatanodeProtocolProtos
 import|;
 end_import
 
@@ -282,7 +262,11 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get the Container Lifecycle state.    *    * @return ContainerLifeCycleState - Container State.    * @throws StorageContainerException    */
 DECL|method|getContainerState ()
-name|ContainerLifeCycleState
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+operator|.
+name|State
 name|getContainerState
 parameter_list|()
 function_decl|;
@@ -361,9 +345,7 @@ name|IOException
 function_decl|;
 comment|/**    * Returns containerReport for the container.    */
 DECL|method|getContainerReport ()
-name|StorageContainerDatanodeProtocolProtos
-operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 name|getContainerReport
 parameter_list|()
 throws|throws

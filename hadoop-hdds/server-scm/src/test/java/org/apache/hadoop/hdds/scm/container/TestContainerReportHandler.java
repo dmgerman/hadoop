@@ -1210,7 +1210,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|.
 name|Builder
 name|ciBuilder
@@ -1229,7 +1229,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 operator|.
 name|newBuilder
 argument_list|()

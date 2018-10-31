@@ -96,29 +96,7 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|ContainerData
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|datanode
-operator|.
-name|proto
-operator|.
-name|ContainerProtos
-operator|.
-name|ContainerLifeCycleState
+name|ContainerDataProto
 import|;
 end_import
 
@@ -355,7 +333,7 @@ argument_list|,
 literal|"Container cannot be null"
 argument_list|)
 expr_stmt|;
-name|ContainerData
+name|ContainerDataProto
 name|containerData
 init|=
 name|scmClient
@@ -394,7 +372,9 @@ operator|.
 name|getState
 argument_list|()
 operator|==
-name|ContainerLifeCycleState
+name|ContainerDataProto
+operator|.
+name|State
 operator|.
 name|OPEN
 condition|?

@@ -1986,7 +1986,7 @@ name|List
 argument_list|<
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 argument_list|>
 name|reports
 init|=
@@ -2014,7 +2014,7 @@ for|for
 control|(
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerInfo
+name|ContainerReplicaProto
 name|report
 range|:
 name|reports

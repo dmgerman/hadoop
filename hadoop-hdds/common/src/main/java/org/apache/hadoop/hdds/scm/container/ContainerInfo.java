@@ -628,7 +628,7 @@ specifier|public
 name|ContainerInfo
 parameter_list|()
 block|{   }
-DECL|method|fromProtobuf (HddsProtos.SCMContainerInfo info)
+DECL|method|fromProtobuf (HddsProtos.ContainerInfoProto info)
 specifier|public
 specifier|static
 name|ContainerInfo
@@ -636,7 +636,7 @@ name|fromProtobuf
 parameter_list|(
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 name|info
 parameter_list|)
 block|{
@@ -916,20 +916,20 @@ DECL|method|getProtobuf ()
 specifier|public
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 name|getProtobuf
 parameter_list|()
 block|{
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|Builder
 name|builder
 init|=
 name|HddsProtos
 operator|.
-name|SCMContainerInfo
+name|ContainerInfoProto
 operator|.
 name|newBuilder
 argument_list|()
