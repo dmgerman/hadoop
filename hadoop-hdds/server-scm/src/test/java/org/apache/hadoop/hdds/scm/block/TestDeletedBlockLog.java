@@ -58,6 +58,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -542,22 +556,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|OZONE_METADATA_DIRS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -660,6 +658,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|HddsConfigKeys
+operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,
 name|testDir

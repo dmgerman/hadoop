@@ -40,6 +40,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
@@ -406,22 +420,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|OZONE_METADATA_DIRS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -513,6 +511,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|HddsConfigKeys
+operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,
 name|TEST_ROOT
@@ -1039,6 +1039,8 @@ name|ozoneConf
 operator|.
 name|set
 argument_list|(
+name|HddsConfigKeys
+operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,
 name|TEST_ROOT

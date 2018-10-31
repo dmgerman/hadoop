@@ -742,6 +742,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|OZONE_METADATA_DIRS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -793,22 +809,6 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|OZONE_METADATA_DIRS
 import|;
 end_import
 

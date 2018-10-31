@@ -218,6 +218,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
@@ -2427,7 +2441,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,
@@ -2582,7 +2596,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,
@@ -2724,7 +2738,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,
@@ -2891,7 +2905,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
 argument_list|,

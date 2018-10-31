@@ -1434,7 +1434,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|OzoneConfigKeys
+name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
 argument_list|)

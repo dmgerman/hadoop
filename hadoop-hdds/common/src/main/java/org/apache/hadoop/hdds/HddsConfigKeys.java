@@ -300,6 +300,21 @@ name|HDDS_LOCK_MAX_CONCURRENCY_DEFAULT
 init|=
 literal|100
 decl_stmt|;
+comment|// This configuration setting is used as a fallback location by all
+comment|// Ozone/HDDS services for their metadata. It is useful as a single
+comment|// config point for test/PoC clusters.
+comment|//
+comment|// In any real cluster where performance matters, the SCM, OM and DN
+comment|// metadata locations must be configured explicitly.
+DECL|field|OZONE_METADATA_DIRS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_METADATA_DIRS
+init|=
+literal|"ozone.metadata.dirs"
+decl_stmt|;
 block|}
 end_class
 

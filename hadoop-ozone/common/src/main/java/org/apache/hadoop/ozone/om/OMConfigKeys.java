@@ -49,6 +49,17 @@ specifier|private
 name|OMConfigKeys
 parameter_list|()
 block|{   }
+comment|// Location where the OM stores its DB files. In the future we may support
+comment|// multiple entries for performance (sharding)..
+DECL|field|OZONE_OM_DB_DIRS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_DB_DIRS
+init|=
+literal|"ozone.om.db.dirs"
+decl_stmt|;
 DECL|field|OZONE_OM_HANDLER_COUNT_KEY
 specifier|public
 specifier|static

@@ -107,6 +107,18 @@ specifier|final
 class|class
 name|ScmConfigKeys
 block|{
+comment|// Location of SCM DB files. For now we just support a single
+comment|// metadata dir but in future we may support multiple for redundancy or
+comment|// performance.
+DECL|field|OZONE_SCM_DB_DIRS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_DB_DIRS
+init|=
+literal|"ozone.scm.db.dirs"
+decl_stmt|;
 DECL|field|SCM_CONTAINER_CLIENT_STALE_THRESHOLD_KEY
 specifier|public
 specifier|static
