@@ -4904,6 +4904,11 @@ argument_list|,
 name|applicationId
 argument_list|,
 name|callerContext
+argument_list|,
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5039,6 +5044,11 @@ argument_list|,
 literal|"Exception in submitting application"
 argument_list|,
 name|applicationId
+argument_list|,
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5340,6 +5350,11 @@ argument_list|,
 name|applicationId
 argument_list|,
 name|callerContext
+argument_list|,
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5382,6 +5397,11 @@ argument_list|,
 name|applicationId
 argument_list|,
 name|callerContext
+argument_list|,
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw

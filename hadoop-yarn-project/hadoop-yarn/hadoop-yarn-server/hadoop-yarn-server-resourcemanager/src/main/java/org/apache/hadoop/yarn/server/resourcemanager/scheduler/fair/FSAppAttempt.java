@@ -1210,6 +1210,13 @@ argument_list|,
 name|containerId
 argument_list|,
 name|containerResource
+argument_list|,
+name|rmContainer
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Update usage metrics
@@ -2676,6 +2683,11 @@ name|container
 operator|.
 name|getResource
 argument_list|()
+argument_list|,
+name|getQueueName
+argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

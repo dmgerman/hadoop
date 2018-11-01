@@ -690,6 +690,31 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
+comment|// In order to save space in the audit log, only include the partition
+comment|// if it is not the default partition.
+name|String
+name|partition
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|appAMNodePartitionName
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|appAMNodePartitionName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|partition
+operator|=
+name|appAMNodePartitionName
+expr_stmt|;
+block|}
 name|RMAuditLogger
 operator|.
 name|logSuccess
@@ -714,6 +739,11 @@ name|container
 operator|.
 name|getResource
 argument_list|()
+argument_list|,
+name|getQueueName
+argument_list|()
+argument_list|,
+name|partition
 argument_list|)
 expr_stmt|;
 return|return

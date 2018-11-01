@@ -1890,6 +1890,31 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+comment|// In order to save space in the audit log, only include the partition
+comment|// if it is not the default partition.
+name|String
+name|containerPartition
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|partition
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|partition
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|containerPartition
+operator|=
+name|partition
+expr_stmt|;
+block|}
 name|Resource
 name|containerResource
 init|=
@@ -1920,6 +1945,11 @@ argument_list|,
 name|containerId
 argument_list|,
 name|containerResource
+argument_list|,
+name|getQueueName
+argument_list|()
+argument_list|,
+name|containerPartition
 argument_list|)
 expr_stmt|;
 comment|// Update usage metrics
@@ -3706,6 +3736,36 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// In order to save space in the audit log, only include the partition
+comment|// if it is not the default partition.
+name|String
+name|partition
+init|=
+name|schedulerContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|.
+name|getPartition
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|partition
+operator|!=
+literal|null
+operator|&&
+name|partition
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|partition
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|RMAuditLogger
 operator|.
 name|logSuccess
@@ -3728,6 +3788,11 @@ name|allocation
 operator|.
 name|getAllocatedOrReservedResource
 argument_list|()
+argument_list|,
+name|getQueueName
+argument_list|()
+argument_list|,
+name|partition
 argument_list|)
 expr_stmt|;
 block|}
