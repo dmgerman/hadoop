@@ -1707,7 +1707,7 @@ argument_list|)
 argument_list|,
 name|jsonObject
 operator|.
-name|getLong
+name|optLong
 argument_list|(
 literal|"ProvidedCapacityTotal"
 argument_list|)
