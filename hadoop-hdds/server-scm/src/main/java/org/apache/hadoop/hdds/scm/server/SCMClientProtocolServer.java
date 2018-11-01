@@ -1196,12 +1196,6 @@ throw|;
 block|}
 block|}
 block|}
-name|String
-name|remoteUser
-init|=
-name|getRpcRemoteUsername
-argument_list|()
-decl_stmt|;
 name|getScm
 argument_list|()
 operator|.
