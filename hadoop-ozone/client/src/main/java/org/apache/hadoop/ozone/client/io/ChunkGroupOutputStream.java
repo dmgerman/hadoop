@@ -2028,6 +2028,13 @@ comment|// Since closeContainer auto commit pending keys, no need to do
 comment|// anything here.
 return|return;
 block|}
+comment|// update currentStreamIndex in case of closed container exception. The
+comment|// current stream entry cannot be used for further writes because
+comment|// container is closed.
+name|currentStreamIndex
+operator|+=
+literal|1
+expr_stmt|;
 comment|// In case where not a single chunk of data has been written to the Datanode
 comment|// yet. This block does not yet exist on the datanode but cached on the
 comment|// outputStream buffer. No need to call GetCommittedBlockLength here
@@ -2089,10 +2096,6 @@ argument_list|()
 operator|<
 name|chunkSize
 argument_list|)
-expr_stmt|;
-name|currentStreamIndex
-operator|+=
-literal|1
 expr_stmt|;
 comment|// readjust the byteOffset value to the length actually been written.
 name|byteOffset
