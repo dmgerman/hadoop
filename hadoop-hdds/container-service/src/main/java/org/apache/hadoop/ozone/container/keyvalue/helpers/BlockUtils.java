@@ -854,7 +854,7 @@ name|build
 argument_list|()
 return|;
 block|}
-specifier|private
+specifier|public
 specifier|static
 name|GetCommittedBlockLengthResponseProto
 operator|.

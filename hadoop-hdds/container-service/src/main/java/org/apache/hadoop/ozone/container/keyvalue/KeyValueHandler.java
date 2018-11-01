@@ -4141,8 +4141,6 @@ name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// TODO: add bcsId as a part of getSmallFile transaction
-comment|// by default its 0
 name|BlockData
 name|responseData
 init|=

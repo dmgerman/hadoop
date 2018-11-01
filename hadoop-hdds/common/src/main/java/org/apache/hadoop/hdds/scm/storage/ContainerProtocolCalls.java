@@ -548,6 +548,28 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|PutSmallFileResponseProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|client
 operator|.
 name|BlockID
@@ -1174,11 +1196,11 @@ name|response
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, block name and data to write sends all that data to the container    * using a single RPC. This API is designed to be used for files which are    * smaller than 1 MB.    *    * @param client - client that communicates with the container.    * @param blockID - ID of the block    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @throws IOException    */
-DECL|method|writeSmallFile (XceiverClientSpi client, BlockID blockID, byte[] data, String traceID)
+comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, block name and data to write sends all that data to the container    * using a single RPC. This API is designed to be used for files which are    * smaller than 1 MB.    *    * @param client - client that communicates with the container.    * @param blockID - ID of the block    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @return container protocol writeSmallFile response    * @throws IOException    */
+DECL|method|writeSmallFile ( XceiverClientSpi client, BlockID blockID, byte[] data, String traceID)
 specifier|public
 specifier|static
-name|void
+name|PutSmallFileResponseProto
 name|writeSmallFile
 parameter_list|(
 name|XceiverClientSpi
@@ -1391,6 +1413,12 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
+return|return
+name|response
+operator|.
+name|getPutSmallFile
+argument_list|()
+return|;
 block|}
 comment|/**    * createContainer call that creates a container on the datanode.    * @param client  - client    * @param containerID - ID of container    * @param traceID - traceID    * @throws IOException    */
 DECL|method|createContainer (XceiverClientSpi client, long containerID, String traceID)
