@@ -1732,7 +1732,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"KSM login successful"
+literal|"Ozone Manager login successful."
 argument_list|)
 argument_list|)
 expr_stmt|;

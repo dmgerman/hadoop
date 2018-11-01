@@ -208,9 +208,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|ipc
 operator|.
-name|IOUtils
+name|ProtobufRpcEngine
 import|;
 end_import
 
@@ -380,6 +380,21 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|// SCM security service RPC service.
+name|RPC
+operator|.
+name|setProtocolEngine
+argument_list|(
+name|conf
+argument_list|,
+name|SCMSecurityProtocolPB
+operator|.
+name|class
+argument_list|,
+name|ProtobufRpcEngine
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 name|BlockingService
 name|secureProtoPbService
 init|=
