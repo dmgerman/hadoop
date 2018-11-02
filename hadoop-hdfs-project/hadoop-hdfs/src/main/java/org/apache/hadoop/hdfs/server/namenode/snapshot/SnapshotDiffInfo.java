@@ -684,6 +684,36 @@ name|RenameEntry
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// Total directories compared
+DECL|field|totalDirsCompared
+specifier|private
+name|long
+name|totalDirsCompared
+decl_stmt|;
+comment|// Total directories
+DECL|field|totalDirsProcessed
+specifier|private
+name|long
+name|totalDirsProcessed
+decl_stmt|;
+comment|// Total files compared
+DECL|field|totalFilesCompared
+specifier|private
+name|long
+name|totalFilesCompared
+decl_stmt|;
+comment|// Total files
+DECL|field|totalFilesProcessed
+specifier|private
+name|long
+name|totalFilesProcessed
+decl_stmt|;
+comment|// Total children listing time
+DECL|field|childrenListingTime
+specifier|private
+name|long
+name|childrenListingTime
+decl_stmt|;
 DECL|method|SnapshotDiffInfo (INodeDirectory snapshotRootDir, INodeDirectory snapshotDiffScopeDir, Snapshot start, Snapshot end)
 name|SnapshotDiffInfo
 parameter_list|(
@@ -740,6 +770,30 @@ operator|.
 name|to
 operator|=
 name|end
+expr_stmt|;
+name|this
+operator|.
+name|totalDirsCompared
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalDirsProcessed
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalFilesCompared
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|totalFilesProcessed
+operator|=
+literal|0
 expr_stmt|;
 block|}
 comment|/** Add a dir-diff pair */
@@ -890,6 +944,72 @@ block|{
 return|return
 name|to
 return|;
+block|}
+DECL|method|incrementDirsCompared ()
+name|void
+name|incrementDirsCompared
+parameter_list|()
+block|{
+name|this
+operator|.
+name|totalDirsCompared
+operator|++
+expr_stmt|;
+name|incrementDirsProcessed
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrementDirsProcessed ()
+name|void
+name|incrementDirsProcessed
+parameter_list|()
+block|{
+name|this
+operator|.
+name|totalDirsProcessed
+operator|++
+expr_stmt|;
+block|}
+DECL|method|incrementFilesCompared ()
+name|void
+name|incrementFilesCompared
+parameter_list|()
+block|{
+name|this
+operator|.
+name|totalFilesCompared
+operator|++
+expr_stmt|;
+name|incrementFilesProcessed
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrementFilesProcessed ()
+name|void
+name|incrementFilesProcessed
+parameter_list|()
+block|{
+name|this
+operator|.
+name|totalFilesProcessed
+operator|++
+expr_stmt|;
+block|}
+DECL|method|addChildrenListingTime (long millis)
+specifier|public
+name|void
+name|addChildrenListingTime
+parameter_list|(
+name|long
+name|millis
+parameter_list|)
+block|{
+name|this
+operator|.
+name|childrenListingTime
+operator|+=
+name|millis
+expr_stmt|;
 block|}
 DECL|method|getEntry (long inodeId)
 specifier|private
@@ -1119,6 +1239,37 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|SnapshotDiffReport
+operator|.
+name|DiffStats
+name|dStats
+init|=
+operator|new
+name|SnapshotDiffReport
+operator|.
+name|DiffStats
+argument_list|(
+name|this
+operator|.
+name|totalDirsCompared
+argument_list|,
+name|this
+operator|.
+name|totalDirsProcessed
+argument_list|,
+name|this
+operator|.
+name|totalFilesCompared
+argument_list|,
+name|this
+operator|.
+name|totalFilesProcessed
+argument_list|,
+name|this
+operator|.
+name|childrenListingTime
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|SnapshotDiffReport
@@ -1141,6 +1292,8 @@ name|getSnapshotName
 argument_list|(
 name|to
 argument_list|)
+argument_list|,
+name|dStats
 argument_list|,
 name|diffReportList
 argument_list|)
