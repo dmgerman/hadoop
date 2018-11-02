@@ -225,6 +225,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getReservations ()
+specifier|public
+name|List
+argument_list|<
+name|ReservationInfo
+argument_list|>
+name|getReservations
+parameter_list|()
+block|{
+return|return
+name|reservations
+return|;
+block|}
 block|}
 end_class
 
