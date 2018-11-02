@@ -28,20 +28,6 @@ name|common
 operator|.
 name|base
 operator|.
-name|Optional
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
 name|Strings
 import|;
 end_import
@@ -185,6 +171,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
 import|;
 end_import
 
@@ -618,7 +614,7 @@ literal|":"
 operator|+
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -680,7 +676,7 @@ name|createSocketAddr
 argument_list|(
 name|host
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -691,7 +687,7 @@ literal|":"
 operator|+
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -750,7 +746,7 @@ name|createSocketAddr
 argument_list|(
 name|host
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -761,7 +757,7 @@ literal|":"
 operator|+
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -821,7 +817,7 @@ name|createSocketAddr
 argument_list|(
 name|host
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -832,7 +828,7 @@ literal|":"
 operator|+
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.

@@ -48,6 +48,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -101,20 +111,6 @@ operator|.
 name|net
 operator|.
 name|NetUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Optional
 import|;
 end_import
 
@@ -340,7 +336,7 @@ name|createSocketAddr
 argument_list|(
 name|host
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|OZONE_OM_BIND_HOST_DEFAULT
 argument_list|)
@@ -449,7 +445,7 @@ decl_stmt|;
 return|return
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|OZONE_OM_PORT_DEFAULT
 argument_list|)
@@ -484,7 +480,7 @@ decl_stmt|;
 return|return
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|OZONE_OM_HTTP_BIND_PORT_DEFAULT
 argument_list|)
