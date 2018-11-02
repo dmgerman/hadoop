@@ -1695,6 +1695,103 @@ return|return
 name|response
 return|;
 block|}
+comment|/**    * Shutdown an UAM client without killing it in YarnRM.    *    * @param uamId uam Id    * @throws YarnException if fails    */
+DECL|method|shutDownConnections (String uamId)
+specifier|public
+name|void
+name|shutDownConnections
+parameter_list|(
+name|String
+name|uamId
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|containsKey
+argument_list|(
+name|uamId
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"UAM "
+operator|+
+name|uamId
+operator|+
+literal|" does not exist"
+argument_list|)
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutting down UAM id {} for application {} without killing the UAM"
+argument_list|,
+name|uamId
+argument_list|,
+name|this
+operator|.
+name|appIdMap
+operator|.
+name|get
+argument_list|(
+name|uamId
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|remove
+argument_list|(
+name|uamId
+argument_list|)
+operator|.
+name|shutDownConnections
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Shutdown all UAM clients without killing them in YarnRM.    *    * @throws YarnException if fails    */
+DECL|method|shutDownConnections ()
+specifier|public
+name|void
+name|shutDownConnections
+parameter_list|()
+throws|throws
+name|YarnException
+block|{
+for|for
+control|(
+name|String
+name|uamId
+range|:
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+name|shutDownConnections
+argument_list|(
+name|uamId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Get the id of all running UAMs.    *    * @return uamId set    */
 DECL|method|getAllUAMIds ()
 specifier|public

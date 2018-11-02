@@ -1108,18 +1108,6 @@ argument_list|(
 name|finshResponse
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|false
-argument_list|,
-name|finshResponse
-operator|.
-name|getIsUnregistered
-argument_list|()
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 comment|// Try to finish an application master that is already finished.

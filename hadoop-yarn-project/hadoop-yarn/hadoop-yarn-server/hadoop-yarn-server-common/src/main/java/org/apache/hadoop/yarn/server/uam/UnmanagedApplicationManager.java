@@ -1460,13 +1460,6 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|this
-operator|.
-name|heartbeatHandler
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|this
@@ -1516,7 +1509,9 @@ argument_list|)
 throw|;
 block|}
 block|}
-return|return
+name|FinishApplicationMasterResponse
+name|response
+init|=
 name|this
 operator|.
 name|rmProxyRelayer
@@ -1525,6 +1520,21 @@ name|finishApplicationMaster
 argument_list|(
 name|request
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|response
+operator|.
+name|getIsUnregistered
+argument_list|()
+condition|)
+block|{
+name|shutDownConnections
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|response
 return|;
 block|}
 comment|/**    * Force kill the UAM.    *    * @return kill response    * @throws IOException if fails to create rmProxy    * @throws YarnException if force kill fails    */
@@ -1538,6 +1548,9 @@ name|IOException
 throws|,
 name|YarnException
 block|{
+name|shutDownConnections
+argument_list|()
+expr_stmt|;
 name|KillApplicationRequest
 name|request
 init|=
@@ -1550,13 +1563,6 @@ operator|.
 name|applicationId
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|heartbeatHandler
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|this
@@ -1676,6 +1682,28 @@ argument_list|)
 throw|;
 block|}
 block|}
+block|}
+comment|/**    * Shutdown this UAM client, without killing the UAM in the YarnRM side.    */
+DECL|method|shutDownConnections ()
+specifier|public
+name|void
+name|shutDownConnections
+parameter_list|()
+block|{
+name|this
+operator|.
+name|heartbeatHandler
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|rmProxyRelayer
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Returns the application id of the UAM.    *    * @return application id of the UAM    */
 DECL|method|getAppId ()
@@ -2476,6 +2504,23 @@ operator|.
 name|drainHeartbeatThread
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isHeartbeatThreadAlive ()
+specifier|protected
+name|boolean
+name|isHeartbeatThreadAlive
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|heartbeatHandler
+operator|.
+name|isAlive
+argument_list|()
+return|;
 block|}
 block|}
 end_class
