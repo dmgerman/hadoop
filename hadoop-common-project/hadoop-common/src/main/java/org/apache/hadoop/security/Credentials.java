@@ -146,6 +146,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -790,6 +800,32 @@ name|values
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns an unmodifiable version of the full map of aliases to Tokens.    */
+DECL|method|getTokenMap ()
+specifier|public
+name|Map
+argument_list|<
+name|Text
+argument_list|,
+name|Token
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+argument_list|>
+name|getTokenMap
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableMap
+argument_list|(
+name|tokenMap
+argument_list|)
+return|;
+block|}
 comment|/**    * @return number of Tokens in the in-memory map    */
 DECL|method|numberOfTokens ()
 specifier|public
@@ -919,6 +955,28 @@ argument_list|)
 expr_stmt|;
 return|return
 name|list
+return|;
+block|}
+comment|/**    * Returns an unmodifiable version of the full map of aliases to secret keys.    */
+DECL|method|getSecretKeyMap ()
+specifier|public
+name|Map
+argument_list|<
+name|Text
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+name|getSecretKeyMap
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableMap
+argument_list|(
+name|secretKeysMap
+argument_list|)
 return|;
 block|}
 comment|/**    * Convenience method for reading a token storage file and loading its Tokens.    * @param filename    * @param conf    * @throws IOException    */
