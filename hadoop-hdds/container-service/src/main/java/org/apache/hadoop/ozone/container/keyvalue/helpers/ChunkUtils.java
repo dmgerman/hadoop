@@ -846,9 +846,7 @@ literal|"Write Chunk completed for chunkFile: {}, size {}"
 argument_list|,
 name|chunkFile
 argument_list|,
-name|data
-operator|.
-name|length
+name|bufferSize
 argument_list|)
 expr_stmt|;
 block|}
