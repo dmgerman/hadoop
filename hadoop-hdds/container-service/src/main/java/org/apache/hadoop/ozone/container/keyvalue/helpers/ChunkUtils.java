@@ -476,7 +476,7 @@ name|ChunkUtils
 parameter_list|()
 block|{    }
 comment|/**    * Writes the data in chunk Info to the specified location in the chunkfile.    *    * @param chunkFile - File to write data to.    * @param chunkInfo - Data stream to write.    * @param data - The data buffer.    * @param volumeIOStats    * @throws StorageContainerException    */
-DECL|method|writeData (File chunkFile, ChunkInfo chunkInfo, byte[] data, VolumeIOStats volumeIOStats)
+DECL|method|writeData (File chunkFile, ChunkInfo chunkInfo, ByteBuffer data, VolumeIOStats volumeIOStats)
 specifier|public
 specifier|static
 name|void
@@ -488,8 +488,7 @@ parameter_list|,
 name|ChunkInfo
 name|chunkInfo
 parameter_list|,
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 parameter_list|,
 name|VolumeIOStats
@@ -504,6 +503,14 @@ name|InterruptedException
 throws|,
 name|NoSuchAlgorithmException
 block|{
+name|int
+name|bufferSize
+init|=
+name|data
+operator|.
+name|capacity
+argument_list|()
+decl_stmt|;
 name|Logger
 name|log
 init|=
@@ -518,9 +525,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|data
-operator|.
-name|length
+name|bufferSize
 operator|!=
 name|chunkInfo
 operator|.
@@ -544,9 +549,7 @@ operator|.
 name|getLen
 argument_list|()
 argument_list|,
-name|data
-operator|.
-name|length
+name|bufferSize
 argument_list|)
 decl_stmt|;
 name|log
@@ -660,12 +663,7 @@ name|file
 operator|.
 name|write
 argument_list|(
-name|ByteBuffer
-operator|.
-name|wrap
-argument_list|(
 name|data
-argument_list|)
 argument_list|,
 name|chunkInfo
 operator|.
@@ -705,9 +703,7 @@ if|if
 condition|(
 name|size
 operator|!=
-name|data
-operator|.
-name|length
+name|bufferSize
 condition|)
 block|{
 name|log
@@ -718,9 +714,7 @@ literal|"Invalid write size found. Size:{}  Expected: {} "
 argument_list|,
 name|size
 argument_list|,
-name|data
-operator|.
-name|length
+name|bufferSize
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -735,9 +729,7 @@ name|size
 operator|+
 literal|" Expected: "
 operator|+
-name|data
-operator|.
-name|length
+name|bufferSize
 argument_list|,
 name|INVALID_WRITE_SIZE
 argument_list|)
@@ -1058,14 +1050,16 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|buf
+operator|.
+name|rewind
+argument_list|()
+expr_stmt|;
 name|verifyChecksum
 argument_list|(
 name|data
 argument_list|,
 name|buf
-operator|.
-name|array
-argument_list|()
 argument_list|,
 name|log
 argument_list|)
@@ -1141,7 +1135,7 @@ block|}
 block|}
 block|}
 comment|/**    * Verifies the checksum of a chunk against the data buffer.    *    * @param chunkInfo - Chunk Info.    * @param data - data buffer    * @param log - log    * @throws NoSuchAlgorithmException    * @throws StorageContainerException    */
-DECL|method|verifyChecksum (ChunkInfo chunkInfo, byte[] data, Logger log)
+DECL|method|verifyChecksum (ChunkInfo chunkInfo, ByteBuffer data, Logger log)
 specifier|private
 specifier|static
 name|void
@@ -1150,8 +1144,7 @@ parameter_list|(
 name|ChunkInfo
 name|chunkInfo
 parameter_list|,
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 parameter_list|,
 name|Logger
@@ -1180,6 +1173,11 @@ name|update
 argument_list|(
 name|data
 argument_list|)
+expr_stmt|;
+name|data
+operator|.
+name|rewind
+argument_list|()
 expr_stmt|;
 if|if
 condition|(

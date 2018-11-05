@@ -476,7 +476,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block    * @param info - ChunkInfo    * @param data - data of the chunk    * @param stage - Stage of the Chunk operation    * @throws StorageContainerException    */
-DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
+DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, ContainerProtos.Stage stage)
 specifier|public
 name|void
 name|writeChunk
@@ -490,8 +490,7 @@ parameter_list|,
 name|ChunkInfo
 name|info
 parameter_list|,
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 parameter_list|,
 name|ContainerProtos

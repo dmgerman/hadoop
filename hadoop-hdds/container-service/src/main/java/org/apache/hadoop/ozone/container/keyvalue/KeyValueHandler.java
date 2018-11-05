@@ -44,6 +44,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -864,6 +874,14 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|thirdparty
+operator|.
 name|com
 operator|.
 name|google
@@ -3602,8 +3620,7 @@ argument_list|(
 name|chunkInfo
 argument_list|)
 expr_stmt|;
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 init|=
 literal|null
@@ -3645,7 +3662,7 @@ operator|.
 name|getData
 argument_list|()
 operator|.
-name|toByteArray
+name|asReadOnlyByteBuffer
 argument_list|()
 expr_stmt|;
 block|}
@@ -3933,8 +3950,7 @@ argument_list|(
 name|chunkInfo
 argument_list|)
 expr_stmt|;
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 init|=
 name|putSmallFileReq
@@ -3942,7 +3958,7 @@ operator|.
 name|getData
 argument_list|()
 operator|.
-name|toByteArray
+name|asReadOnlyByteBuffer
 argument_list|()
 decl_stmt|;
 comment|// chunks will be committed as a part of handling putSmallFile
@@ -4014,7 +4030,8 @@ name|PutSmallFile
 argument_list|,
 name|data
 operator|.
-name|length
+name|capacity
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -120,6 +120,16 @@ name|Container
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
 begin_comment
 comment|/**  * Chunk Manager allows read, write, delete and listing of chunks in  * a container.  */
 end_comment
@@ -131,7 +141,7 @@ interface|interface
 name|ChunkManager
 block|{
 comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param stage - Chunk Stage write.    * @throws StorageContainerException    */
-DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
+DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, ContainerProtos.Stage stage)
 name|void
 name|writeChunk
 parameter_list|(
@@ -144,8 +154,7 @@ parameter_list|,
 name|ChunkInfo
 name|info
 parameter_list|,
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 parameter_list|,
 name|ContainerProtos
