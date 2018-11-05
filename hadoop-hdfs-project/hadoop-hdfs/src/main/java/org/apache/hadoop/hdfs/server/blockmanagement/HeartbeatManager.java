@@ -1056,10 +1056,12 @@ comment|// This intentionally calls updateHeartbeatState instead of
 comment|// updateHeartbeat, because we don't want to modify the
 comment|// heartbeatedSinceRegistration flag.  Arrival of a lifeline message does
 comment|// not count as arrival of the first heartbeat.
-name|node
+name|blockManager
 operator|.
 name|updateHeartbeatState
 argument_list|(
+name|node
+argument_list|,
 name|reports
 argument_list|,
 name|cacheCapacity

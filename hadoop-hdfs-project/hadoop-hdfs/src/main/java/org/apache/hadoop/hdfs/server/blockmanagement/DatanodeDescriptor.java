@@ -1710,7 +1710,6 @@ return|;
 block|}
 comment|/**    * Updates stats from datanode heartbeat.    */
 DECL|method|updateHeartbeat (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures, VolumeFailureSummary volumeFailureSummary)
-specifier|public
 name|void
 name|updateHeartbeat
 parameter_list|(
@@ -1756,7 +1755,6 @@ expr_stmt|;
 block|}
 comment|/**    * process datanode heartbeat or stats initialization.    */
 DECL|method|updateHeartbeatState (StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures, VolumeFailureSummary volumeFailureSummary)
-specifier|public
 name|void
 name|updateHeartbeatState
 parameter_list|(
