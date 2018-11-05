@@ -568,7 +568,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"writing chunk:{} chunk stage:{} chunk file:{} tmp chunk file"
+literal|"writing chunk:{} chunk stage:{} chunk file:{} tmp chunk file:{}"
 argument_list|,
 name|info
 operator|.

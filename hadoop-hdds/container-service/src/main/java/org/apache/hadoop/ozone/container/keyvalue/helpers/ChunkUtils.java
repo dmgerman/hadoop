@@ -838,6 +838,19 @@ throw|;
 block|}
 block|}
 block|}
+name|log
+operator|.
+name|debug
+argument_list|(
+literal|"Write Chunk completed for chunkFile: {}, size {}"
+argument_list|,
+name|chunkFile
+argument_list|,
+name|data
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Reads data from an existing chunk file.    *    * @param chunkFile - file where data lives.    * @param data - chunk definition.    * @param volumeIOStats    * @return ByteBuffer    * @throws StorageContainerException    * @throws ExecutionException    * @throws InterruptedException    */
 DECL|method|readData (File chunkFile, ChunkInfo data, VolumeIOStats volumeIOStats)

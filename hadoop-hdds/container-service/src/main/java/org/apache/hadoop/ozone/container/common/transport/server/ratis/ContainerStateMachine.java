@@ -1760,6 +1760,32 @@ argument_list|,
 name|writeChunkFuture
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"writeChunk writeStateMachineData : blockId "
+operator|+
+name|write
+operator|.
+name|getBlockID
+argument_list|()
+operator|+
+literal|" logIndex "
+operator|+
+name|entryIndex
+operator|+
+literal|" chunkName "
+operator|+
+name|write
+operator|.
+name|getChunkData
+argument_list|()
+operator|.
+name|getChunkName
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Remove the future once it finishes execution from the
 comment|// writeChunkFutureMap.
 name|writeChunkFuture
@@ -1768,12 +1794,44 @@ name|thenApply
 argument_list|(
 name|r
 lambda|->
+block|{
 name|writeChunkFutureMap
 operator|.
 name|remove
 argument_list|(
 name|entryIndex
 argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"writeChunk writeStateMachineData  completed: blockId "
+operator|+
+name|write
+operator|.
+name|getBlockID
+argument_list|()
+operator|+
+literal|" logIndex "
+operator|+
+name|entryIndex
+operator|+
+literal|" chunkName "
+operator|+
+name|write
+operator|.
+name|getChunkData
+argument_list|()
+operator|.
+name|getChunkName
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|r
+return|;
+block|}
 argument_list|)
 expr_stmt|;
 return|return
@@ -2852,6 +2910,7 @@ name|thenApply
 argument_list|(
 name|r
 lambda|->
+block|{
 name|createContainerFutureMap
 operator|.
 name|remove
@@ -2863,6 +2922,24 @@ name|complete
 argument_list|(
 literal|null
 argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"create Container Transaction completed for container "
+operator|+
+name|containerID
+operator|+
+literal|" log index "
+operator|+
+name|index
+argument_list|)
+expr_stmt|;
+return|return
+name|r
+return|;
+block|}
 argument_list|)
 expr_stmt|;
 block|}
