@@ -106,6 +106,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -145,6 +155,8 @@ DECL|class|ComponentContainers
 specifier|public
 class|class
 name|ComponentContainers
+implements|implements
+name|Serializable
 block|{
 DECL|field|serialVersionUID
 specifier|private
