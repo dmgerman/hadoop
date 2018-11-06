@@ -1885,6 +1885,9 @@ name|VisibleForTesting
 DECL|method|getNodeTracker ()
 specifier|public
 name|ClusterNodeTracker
+argument_list|<
+name|N
+argument_list|>
 name|getNodeTracker
 parameter_list|()
 block|{

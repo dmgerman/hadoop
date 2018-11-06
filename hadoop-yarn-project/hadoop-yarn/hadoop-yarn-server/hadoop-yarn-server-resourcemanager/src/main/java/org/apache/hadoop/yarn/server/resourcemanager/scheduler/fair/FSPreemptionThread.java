@@ -1050,9 +1050,6 @@ block|{
 name|FSSchedulerNode
 name|node
 init|=
-operator|(
-name|FSSchedulerNode
-operator|)
 name|scheduler
 operator|.
 name|getNodeTracker
