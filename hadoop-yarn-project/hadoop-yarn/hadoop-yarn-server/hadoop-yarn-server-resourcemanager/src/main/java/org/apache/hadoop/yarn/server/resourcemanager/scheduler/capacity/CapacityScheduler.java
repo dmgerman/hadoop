@@ -9171,9 +9171,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"This node or this node partition doesn't have available or"
+literal|"This node or node partition doesn't have available or"
 operator|+
-literal|"killable resource"
+literal|" preemptible resource"
 argument_list|)
 expr_stmt|;
 block|}
