@@ -18,6 +18,22 @@ name|client
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|ReplicationType
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that encapsulates OzoneKey.  */
 end_comment
@@ -68,8 +84,13 @@ specifier|private
 name|long
 name|modificationTime
 decl_stmt|;
+DECL|field|replicationType
+specifier|private
+name|ReplicationType
+name|replicationType
+decl_stmt|;
 comment|/**    * Constructs OzoneKey from OmKeyInfo.    *    */
-DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime)
+DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, ReplicationType type)
 specifier|public
 name|OzoneKey
 parameter_list|(
@@ -90,6 +111,9 @@ name|creationTime
 parameter_list|,
 name|long
 name|modificationTime
+parameter_list|,
+name|ReplicationType
+name|type
 parameter_list|)
 block|{
 name|this
@@ -127,6 +151,12 @@ operator|.
 name|modificationTime
 operator|=
 name|modificationTime
+expr_stmt|;
+name|this
+operator|.
+name|replicationType
+operator|=
+name|type
 expr_stmt|;
 block|}
 comment|/**    * Returns Volume Name associated with the Key.    *    * @return volumeName    */
@@ -193,6 +223,17 @@ parameter_list|()
 block|{
 return|return
 name|modificationTime
+return|;
+block|}
+comment|/**    * Returns the replication type of the key.    *    * @return replicationType    */
+DECL|method|getReplicationType ()
+specifier|public
+name|ReplicationType
+name|getReplicationType
+parameter_list|()
+block|{
+return|return
+name|replicationType
 return|;
 block|}
 block|}

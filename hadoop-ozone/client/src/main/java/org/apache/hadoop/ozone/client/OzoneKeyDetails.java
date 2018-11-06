@@ -20,6 +20,22 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -50,7 +66,7 @@ argument_list|>
 name|ozoneKeyLocations
 decl_stmt|;
 comment|/**    * Constructs OzoneKeyDetails from OmKeyInfo.    */
-DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations)
+DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type)
 specifier|public
 name|OzoneKeyDetails
 parameter_list|(
@@ -77,6 +93,9 @@ argument_list|<
 name|OzoneKeyLocation
 argument_list|>
 name|ozoneKeyLocations
+parameter_list|,
+name|ReplicationType
+name|type
 parameter_list|)
 block|{
 name|super
@@ -92,6 +111,8 @@ argument_list|,
 name|creationTime
 argument_list|,
 name|modificationTime
+argument_list|,
+name|type
 argument_list|)
 expr_stmt|;
 name|this

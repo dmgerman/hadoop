@@ -70,6 +70,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|web
@@ -388,6 +404,39 @@ specifier|private
 name|String
 name|dataFileName
 decl_stmt|;
+DECL|field|type
+specifier|private
+name|ReplicationType
+name|type
+decl_stmt|;
+comment|/**    * Return replication type of the key.    *    * @return replication type    */
+DECL|method|getType ()
+specifier|public
+name|ReplicationType
+name|getType
+parameter_list|()
+block|{
+return|return
+name|type
+return|;
+block|}
+comment|/**    * Set replication type of the key.    *    * @param replicationType    */
+DECL|method|setType (ReplicationType replicationType)
+specifier|public
+name|void
+name|setType
+parameter_list|(
+name|ReplicationType
+name|replicationType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|replicationType
+expr_stmt|;
+block|}
 comment|/**    * When this key was created.    *    * @return Date String    */
 DECL|method|getCreatedOn ()
 specifier|public
