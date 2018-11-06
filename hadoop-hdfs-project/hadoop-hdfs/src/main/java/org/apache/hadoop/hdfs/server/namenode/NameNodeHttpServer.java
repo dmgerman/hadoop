@@ -575,7 +575,7 @@ operator|=
 name|bindAddress
 expr_stmt|;
 block|}
-DECL|method|initWebHdfs (Configuration conf, String hostname, HttpServer2 httpServer2, String jerseyResourcePackage)
+DECL|method|initWebHdfs (Configuration conf, String hostname, String httpKeytab, HttpServer2 httpServer2, String jerseyResourcePackage)
 specifier|public
 specifier|static
 name|void
@@ -586,6 +586,9 @@ name|conf
 parameter_list|,
 name|String
 name|hostname
+parameter_list|,
+name|String
+name|httpKeytab
 parameter_list|,
 name|HttpServer2
 name|httpServer2
@@ -680,6 +683,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|hostname
+argument_list|,
+name|httpKeytab
 argument_list|)
 decl_stmt|;
 name|HttpServer2
@@ -1049,6 +1054,25 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|String
+name|httpKeytab
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSUtil
+operator|.
+name|getSpnegoKeytabKey
+argument_list|(
+name|conf
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_KEYTAB_FILE_KEY
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|initWebHdfs
 argument_list|(
 name|conf
@@ -1057,6 +1081,8 @@ name|bindAddress
 operator|.
 name|getHostName
 argument_list|()
+argument_list|,
+name|httpKeytab
 argument_list|,
 name|httpServer
 argument_list|,
@@ -1178,7 +1204,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getAuthFilterParams (Configuration conf, String hostname)
+DECL|method|getAuthFilterParams (Configuration conf, String hostname, String httpKeytab)
 specifier|private
 specifier|static
 name|Map
@@ -1194,6 +1220,9 @@ name|conf
 parameter_list|,
 name|String
 name|hostname
+parameter_list|,
+name|String
+name|httpKeytab
 parameter_list|)
 throws|throws
 name|IOException
@@ -1356,25 +1385,6 @@ literal|"' is not set."
 argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|httpKeytab
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|DFSUtil
-operator|.
-name|getSpnegoKeytabKey
-argument_list|(
-name|conf
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_KEYTAB_FILE_KEY
-argument_list|)
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|httpKeytab

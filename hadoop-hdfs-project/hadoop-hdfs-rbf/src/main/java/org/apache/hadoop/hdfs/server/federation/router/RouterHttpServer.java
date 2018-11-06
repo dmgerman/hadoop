@@ -371,6 +371,8 @@ operator|.
 name|getHostName
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|httpServer
 argument_list|,
 name|RouterWebHdfsMethods
