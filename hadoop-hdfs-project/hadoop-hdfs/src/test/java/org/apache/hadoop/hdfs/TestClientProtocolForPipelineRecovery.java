@@ -2603,6 +2603,12 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// Ensure that subsequent closes are idempotent and do not throw errors
+name|out
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{

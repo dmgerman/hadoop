@@ -8305,6 +8305,11 @@ operator|.
 name|resetInternalError
 argument_list|()
 expr_stmt|;
+name|lastException
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 comment|// remove all restarting nodes from failed nodes list
 name|failed
 operator|.
