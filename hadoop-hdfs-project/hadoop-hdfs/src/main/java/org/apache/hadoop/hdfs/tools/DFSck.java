@@ -385,7 +385,7 @@ literal|"[-includeSnapshots] [-showprogress] "
 operator|+
 literal|"[-storagepolicies] [-maintenance] "
 operator|+
-literal|"[-blockId<blk_Id>]\n"
+literal|"[-blockId<blk_Id>] [-replicate]\n"
 operator|+
 literal|"\t<path>\tstart checking from this path\n"
 operator|+
@@ -431,9 +431,13 @@ literal|"\t-blockId\tprint out which file this blockId belongs to, locations"
 operator|+
 literal|" (nodes, racks) of this block, and other diagnostics info"
 operator|+
-literal|" (under replicated, corrupted or not, etc)\n\n"
+literal|" (under replicated, corrupted or not, etc)\n"
 operator|+
-literal|"Please Note:\n"
+literal|"\t-replicate initiate replication work to make mis-replicated\n"
+operator|+
+literal|" blocks satisfy block placement policy\n\n"
+operator|+
+literal|"Please Note:\n\n"
 operator|+
 literal|"\t1. By default fsck ignores files opened for write, "
 operator|+
@@ -1651,6 +1655,28 @@ argument_list|()
 argument_list|,
 literal|"UTF-8"
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-replicate"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&replicate=1"
 argument_list|)
 expr_stmt|;
 block|}
