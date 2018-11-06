@@ -255,7 +255,7 @@ literal|"0A;chunk-signature"
 operator|+
 literal|"=23abb2bd920ddeeaac78a63ed808bc59fa6e7d3ef0e356474b82cdc2f8c93c40\r"
 operator|+
-literal|"\n1234567890\r\n"
+literal|"\n1234567890"
 argument_list|)
 decl_stmt|;
 name|String
