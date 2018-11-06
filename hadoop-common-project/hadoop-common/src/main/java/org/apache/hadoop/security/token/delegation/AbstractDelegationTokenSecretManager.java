@@ -1014,7 +1014,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method is intended to be used for recovering persisted delegation    * tokens    * This method must be called before this secret manager is activated (before    * startThreads() is called)    * @param identifier identifier read from persistent storage    * @param renewDate token renew time    * @throws IOException    */
+comment|/**    * This method is intended to be used for recovering persisted delegation    * tokens. Tokens that have an unknown<code>DelegationKey</code> are    * marked as expired and automatically cleaned up.    * This method must be called before this secret manager is activated (before    * startThreads() is called)    * @param identifier identifier read from persistent storage    * @param renewDate token renew time    * @throws IOException    */
 DECL|method|addPersistedDelegationToken ( TokenIdent identifier, long renewDate)
 specifier|public
 specifier|synchronized
@@ -1062,6 +1062,12 @@ argument_list|(
 name|keyId
 argument_list|)
 decl_stmt|;
+name|byte
+index|[]
+name|password
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|dKey
@@ -1073,7 +1079,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"No KEY found for persisted identifier "
+literal|"No KEY found for persisted identifier, expiring stored token "
 operator|+
 name|formatTokenId
 argument_list|(
@@ -1081,12 +1087,16 @@ name|identifier
 argument_list|)
 argument_list|)
 expr_stmt|;
-return|return;
+comment|// make sure the token is expired
+name|renewDate
+operator|=
+literal|0L
+expr_stmt|;
 block|}
-name|byte
-index|[]
+else|else
+block|{
 name|password
-init|=
+operator|=
 name|createPassword
 argument_list|(
 name|identifier
@@ -1099,7 +1109,8 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|identifier
