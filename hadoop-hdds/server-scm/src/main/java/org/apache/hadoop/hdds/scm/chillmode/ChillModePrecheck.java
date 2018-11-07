@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.server
+DECL|package|org.apache.hadoop.hdds.scm.chillmode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|server
+name|chillmode
 package|;
 end_package
 
@@ -117,26 +117,6 @@ operator|.
 name|SCMException
 operator|.
 name|ResultCodes
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|server
-operator|.
-name|SCMChillModeManager
-operator|.
-name|ChillModeRestrictedOps
 import|;
 end_import
 

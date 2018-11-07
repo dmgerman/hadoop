@@ -50,9 +50,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
+name|chillmode
 operator|.
-name|SCMException
+name|Precheck
 import|;
 end_import
 
@@ -68,9 +68,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|server
+name|exceptions
 operator|.
-name|Precheck
+name|SCMException
 import|;
 end_import
 
