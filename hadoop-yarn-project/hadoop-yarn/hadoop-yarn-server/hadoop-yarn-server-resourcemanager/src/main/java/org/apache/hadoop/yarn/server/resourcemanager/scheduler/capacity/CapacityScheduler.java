@@ -11773,9 +11773,6 @@ block|{
 name|FiCaSchedulerNode
 name|node
 init|=
-operator|(
-name|FiCaSchedulerNode
-operator|)
 name|getSchedulerNode
 argument_list|(
 name|killableContainer
@@ -11900,9 +11897,6 @@ block|}
 name|FiCaSchedulerNode
 name|node
 init|=
-operator|(
-name|FiCaSchedulerNode
-operator|)
 name|getSchedulerNode
 argument_list|(
 name|nonKillableContainer
