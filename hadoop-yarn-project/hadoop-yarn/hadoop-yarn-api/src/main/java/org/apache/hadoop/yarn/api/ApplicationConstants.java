@@ -126,9 +126,6 @@ name|ApplicationConstants
 block|{
 comment|/**    * The environment variable for APP_SUBMIT_TIME. Set in AppMaster environment    * only    */
 DECL|field|APP_SUBMIT_TIME_ENV
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|APP_SUBMIT_TIME_ENV
 init|=
@@ -136,9 +133,6 @@ literal|"APP_SUBMIT_TIME_ENV"
 decl_stmt|;
 comment|/**    * The cache file into which container token is written    */
 DECL|field|CONTAINER_TOKEN_FILE_ENV_NAME
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CONTAINER_TOKEN_FILE_ENV_NAME
 init|=
@@ -176,9 +170,6 @@ literal|"TRUSTSTORE_PASSWORD"
 decl_stmt|;
 comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in    * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
 DECL|field|APPLICATION_WEB_PROXY_BASE_ENV
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|APPLICATION_WEB_PROXY_BASE_ENV
 init|=
@@ -186,9 +177,6 @@ literal|"APPLICATION_WEB_PROXY_BASE"
 decl_stmt|;
 comment|/**    * The temporary environmental variable for container log directory. This    * should be replaced by real container log directory on container launch.    */
 DECL|field|LOG_DIR_EXPANSION_VAR
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|LOG_DIR_EXPANSION_VAR
 init|=
@@ -200,9 +188,6 @@ name|Public
 annotation|@
 name|Unstable
 DECL|field|CLASS_PATH_SEPARATOR
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CLASS_PATH_SEPARATOR
 init|=
@@ -214,9 +199,6 @@ name|Public
 annotation|@
 name|Unstable
 DECL|field|PARAMETER_EXPANSION_LEFT
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|PARAMETER_EXPANSION_LEFT
 init|=
@@ -228,27 +210,18 @@ name|Public
 annotation|@
 name|Unstable
 DECL|field|PARAMETER_EXPANSION_RIGHT
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|PARAMETER_EXPANSION_RIGHT
 init|=
 literal|"}}"
 decl_stmt|;
 DECL|field|STDERR
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|STDERR
 init|=
 literal|"stderr"
 decl_stmt|;
 DECL|field|STDOUT
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|STDOUT
 init|=
@@ -271,7 +244,6 @@ name|RELAUNCH
 block|}
 comment|/**    * Environment for Applications.    *    * Some of the environment variables for applications are<em>final</em>    * i.e. they cannot be modified by the applications.    */
 DECL|enum|Environment
-specifier|public
 enum|enum
 name|Environment
 block|{
@@ -460,7 +432,6 @@ name|String
 name|variable
 decl_stmt|;
 DECL|method|Environment (String variable)
-specifier|private
 name|Environment
 parameter_list|(
 name|String
