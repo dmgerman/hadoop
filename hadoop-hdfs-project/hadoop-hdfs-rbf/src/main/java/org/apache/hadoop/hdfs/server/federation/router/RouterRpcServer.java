@@ -30,6 +30,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTHORIZATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -633,6 +649,20 @@ operator|.
 name|hdfs
 operator|.
 name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HDFSPolicyProvider
 import|;
 end_import
 
@@ -2039,6 +2069,13 @@ specifier|final
 name|RouterRpcMonitor
 name|rpcMonitor
 decl_stmt|;
+comment|/** If we use authentication for the connections. */
+DECL|field|serviceAuthEnabled
+specifier|private
+specifier|final
+name|boolean
+name|serviceAuthEnabled
+decl_stmt|;
 comment|/** Interface to identify the active NN for a nameservice or blockpool ID. */
 DECL|field|namenodeResolver
 specifier|private
@@ -2395,6 +2432,39 @@ operator|.
 name|rpcServer
 argument_list|)
 expr_stmt|;
+comment|// Set service-level authorization security policy
+name|this
+operator|.
+name|serviceAuthEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|HADOOP_SECURITY_AUTHORIZATION
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|serviceAuthEnabled
+condition|)
+block|{
+name|rpcServer
+operator|.
+name|refreshServiceAcl
+argument_list|(
+name|conf
+argument_list|,
+operator|new
+name|HDFSPolicyProvider
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// We don't want the server to log the full stack trace for some exceptions
 name|this
 operator|.

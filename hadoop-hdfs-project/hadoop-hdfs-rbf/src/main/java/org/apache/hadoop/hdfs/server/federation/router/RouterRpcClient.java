@@ -1143,6 +1143,42 @@ comment|// and may need to be adjusted and/or selectively pruned. The cache is
 comment|// important due to the excessive overhead of creating a new proxy wrapper
 comment|// for each individual request.
 comment|// TODO Add tokens from the federated UGI
+name|UserGroupInformation
+name|connUGI
+init|=
+name|ugi
+decl_stmt|;
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|UserGroupInformation
+name|routerUser
+init|=
+name|UserGroupInformation
+operator|.
+name|getLoginUser
+argument_list|()
+decl_stmt|;
+name|connUGI
+operator|=
+name|UserGroupInformation
+operator|.
+name|createProxyUser
+argument_list|(
+name|ugi
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
+name|routerUser
+argument_list|)
+expr_stmt|;
+block|}
 name|connection
 operator|=
 name|this
@@ -1151,7 +1187,7 @@ name|connectionManager
 operator|.
 name|getConnection
 argument_list|(
-name|ugi
+name|connUGI
 argument_list|,
 name|rpcAddress
 argument_list|,

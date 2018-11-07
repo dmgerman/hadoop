@@ -30,6 +30,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTHORIZATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -123,6 +139,20 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HDFSPolicyProvider
 import|;
 end_import
 
@@ -1212,6 +1242,33 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+comment|// Set service-level authorization security policy
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|HADOOP_SECURITY_AUTHORIZATION
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+name|this
+operator|.
+name|adminServer
+operator|.
+name|refreshServiceAcl
+argument_list|(
+name|conf
+argument_list|,
+operator|new
+name|HDFSPolicyProvider
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// The RPC-server port can be ephemeral... ensure we have the correct info
 name|InetSocketAddress
 name|listenAddress
