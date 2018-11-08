@@ -1383,9 +1383,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Updated NodeAttribute event to RM:"
 operator|+
@@ -1395,6 +1403,7 @@ name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|rmContext
 operator|.
 name|getDispatcher
