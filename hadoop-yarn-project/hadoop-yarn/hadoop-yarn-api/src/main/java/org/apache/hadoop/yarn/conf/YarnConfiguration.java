@@ -5601,6 +5601,46 @@ name|NM_PREFIX
 operator|+
 literal|"resource-plugins"
 decl_stmt|;
+comment|/**    * This setting controls if pluggable device plugin framework is enabled.    * */
+annotation|@
+name|Private
+DECL|field|NM_PLUGGABLE_DEVICE_FRAMEWORK_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_PLUGGABLE_DEVICE_FRAMEWORK_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"pluggable-device-framework.enabled"
+decl_stmt|;
+comment|/**    * The pluggable device plugin framework is disabled by default    * */
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_PLUGGABLE_DEVICE_FRAMEWORK_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_PLUGGABLE_DEVICE_FRAMEWORK_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * This setting contains vendor plugin class names for    * device plugin framework to load. Split by comma    * */
+annotation|@
+name|Private
+DECL|field|NM_PLUGGABLE_DEVICE_FRAMEWORK_DEVICE_CLASSES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_PLUGGABLE_DEVICE_FRAMEWORK_DEVICE_CLASSES
+init|=
+name|NM_PREFIX
+operator|+
+literal|"pluggable-device-framework.device-classes"
+decl_stmt|;
 comment|/**    * Prefix for gpu configurations. Work in progress: This configuration    * parameter may be changed/removed in the future.    */
 annotation|@
 name|Private
@@ -5700,7 +5740,7 @@ name|DEFAULT_NM_GPU_DOCKER_PLUGIN_IMPL
 init|=
 name|NVIDIA_DOCKER_V1
 decl_stmt|;
-comment|/**    * This setting controls end point of nvidia-docker-v1 plugin    */
+comment|/**    * This setting controls end point of nvidia-docker-v1 plugin.    */
 annotation|@
 name|Private
 DECL|field|NVIDIA_DOCKER_PLUGIN_V1_ENDPOINT
