@@ -176,6 +176,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ContainerReplicaProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|NodeReportProto
 import|;
 end_import
@@ -398,9 +418,11 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
+name|node
 operator|.
-name|SCMException
+name|states
+operator|.
+name|NodeNotFoundException
 import|;
 end_import
 
@@ -769,6 +791,8 @@ name|testOnMessage
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|NodeNotFoundException
 block|{
 comment|//GIVEN
 name|DatanodeDetails
@@ -2011,13 +2035,6 @@ name|containerID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|registerReplicas
-argument_list|(
-name|dn1
-argument_list|,
-name|container1
-argument_list|)
-expr_stmt|;
 name|deadNodeHandler
 operator|.
 name|onMessage
@@ -2038,7 +2055,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Exception while removing container replica "
+literal|"DeadNode event for a unregistered node"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2087,6 +2104,15 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setContainerState
+argument_list|(
+name|ContainerReplicaProto
+operator|.
+name|State
+operator|.
+name|OPEN
+argument_list|)
+operator|.
 name|setContainerID
 argument_list|(
 name|container
@@ -2119,16 +2145,13 @@ modifier|...
 name|containers
 parameter_list|)
 throws|throws
-name|SCMException
+name|NodeNotFoundException
 block|{
 name|nodeManager
 operator|.
-name|addDatanodeInContainerMap
+name|setContainers
 argument_list|(
 name|datanode
-operator|.
-name|getUuid
-argument_list|()
 argument_list|,
 name|Arrays
 operator|.

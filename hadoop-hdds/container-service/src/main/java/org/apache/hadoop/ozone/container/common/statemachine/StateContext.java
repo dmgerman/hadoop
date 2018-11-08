@@ -1710,6 +1710,25 @@ name|SCMCommand
 name|cmd
 parameter_list|)
 block|{
+if|if
+condition|(
+name|cmd
+operator|.
+name|getType
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|Type
+operator|.
+name|closeContainerCommand
+argument_list|)
+condition|)
+block|{
+comment|// We will be removing CommandStatus completely.
+comment|// As a first step, removed it for CloseContainerCommand.
+return|return;
+block|}
 name|CommandStatusBuilder
 name|statusBuilder
 decl_stmt|;
@@ -1796,24 +1815,6 @@ block|{
 return|return
 name|cmdStatusMap
 return|;
-block|}
-comment|/**    * Remove object from cache in StateContext#cmdStatusMap.    *    */
-DECL|method|removeCommandStatus (Long cmdId)
-specifier|public
-name|void
-name|removeCommandStatus
-parameter_list|(
-name|Long
-name|cmdId
-parameter_list|)
-block|{
-name|cmdStatusMap
-operator|.
-name|remove
-argument_list|(
-name|cmdId
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Updates status of a pending status command.    * @param cmdId       command id    * @param cmdStatusUpdater Consumer to update command status.    * @return true if command status updated successfully else false.    */
 DECL|method|updateCommandStatus (Long cmdId, Consumer<CommandStatus> cmdStatusUpdater)

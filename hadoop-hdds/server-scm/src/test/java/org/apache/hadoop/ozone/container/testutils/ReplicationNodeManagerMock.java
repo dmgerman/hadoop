@@ -164,24 +164,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
-operator|.
-name|SCMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|node
 operator|.
 name|CommandQueue
@@ -299,26 +281,6 @@ operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMVersionRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|node
-operator|.
-name|states
-operator|.
-name|ReportResult
 import|;
 end_import
 
@@ -544,28 +506,6 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws NodeNotFoundException    */
-annotation|@
-name|Override
-DECL|method|removeNode (DatanodeDetails node)
-specifier|public
-name|void
-name|removeNode
-parameter_list|(
-name|DatanodeDetails
-name|node
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-name|nodeStateMap
-operator|.
-name|remove
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    *    * @param nodestate - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
 annotation|@
 name|Override
@@ -688,15 +628,15 @@ block|}
 comment|/**    * Get set of pipelines a datanode is part of.    * @param dnId - datanodeID    * @return Set of PipelineID    */
 annotation|@
 name|Override
-DECL|method|getPipelineByDnID (UUID dnId)
+DECL|method|getPipelines (DatanodeDetails dnId)
 specifier|public
 name|Set
 argument_list|<
 name|PipelineID
 argument_list|>
-name|getPipelineByDnID
+name|getPipelines
 parameter_list|(
-name|UUID
+name|DatanodeDetails
 name|dnId
 parameter_list|)
 block|{
@@ -748,15 +688,15 @@ literal|"Not yet implemented"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
+comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                                 use addDatanodeInContainerMap call.    */
 annotation|@
 name|Override
-DECL|method|setContainersForDatanode (UUID uuid, Set<ContainerID> containerIds)
+DECL|method|setContainers (DatanodeDetails uuid, Set<ContainerID> containerIds)
 specifier|public
 name|void
-name|setContainersForDatanode
+name|setContainers
 parameter_list|(
-name|UUID
+name|DatanodeDetails
 name|uuid
 parameter_list|,
 name|Set
@@ -766,36 +706,7 @@ argument_list|>
 name|containerIds
 parameter_list|)
 throws|throws
-name|SCMException
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not yet implemented"
-argument_list|)
-throw|;
-block|}
-comment|/**    * Process containerReport received from datanode.    * @param uuid - DataonodeID    * @param containerIds - Set of containerIDs    * @return The result after processing containerReport    */
-annotation|@
-name|Override
-DECL|method|processContainerReport (UUID uuid, Set<ContainerID> containerIds)
-specifier|public
-name|ReportResult
-argument_list|<
-name|ContainerID
-argument_list|>
-name|processContainerReport
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|Set
-argument_list|<
-name|ContainerID
-argument_list|>
-name|containerIds
-parameter_list|)
+name|NodeNotFoundException
 block|{
 throw|throw
 operator|new
@@ -808,7 +719,7 @@ block|}
 comment|/**    * Return set of containerIDs available on a datanode.    * @param uuid - DatanodeID    * @return - set of containerIDs    */
 annotation|@
 name|Override
-DECL|method|getContainers (UUID uuid)
+DECL|method|getContainers (DatanodeDetails uuid)
 specifier|public
 name|Set
 argument_list|<
@@ -816,37 +727,9 @@ name|ContainerID
 argument_list|>
 name|getContainers
 parameter_list|(
-name|UUID
+name|DatanodeDetails
 name|uuid
 parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not yet implemented"
-argument_list|)
-throw|;
-block|}
-comment|/**    * Insert a new datanode with set of containerIDs for containers available    * on it.    * @param uuid - DatanodeID    * @param containerIDs - Set of ContainerIDs    * @throws SCMException - if datanode already exists    */
-annotation|@
-name|Override
-DECL|method|addDatanodeInContainerMap (UUID uuid, Set<ContainerID> containerIDs)
-specifier|public
-name|void
-name|addDatanodeInContainerMap
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|Set
-argument_list|<
-name|ContainerID
-argument_list|>
-name|containerIDs
-parameter_list|)
-throws|throws
-name|SCMException
 block|{
 throw|throw
 operator|new
@@ -1006,12 +889,12 @@ block|}
 comment|/**    * Empty implementation for processNodeReport.    * @param dnUuid    * @param nodeReport    */
 annotation|@
 name|Override
-DECL|method|processNodeReport (UUID dnUuid, NodeReportProto nodeReport)
+DECL|method|processNodeReport (DatanodeDetails dnUuid, NodeReportProto nodeReport)
 specifier|public
 name|void
 name|processNodeReport
 parameter_list|(
-name|UUID
+name|DatanodeDetails
 name|dnUuid
 parameter_list|,
 name|NodeReportProto

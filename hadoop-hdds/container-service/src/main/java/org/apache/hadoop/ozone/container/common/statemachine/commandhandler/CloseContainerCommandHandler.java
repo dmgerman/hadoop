@@ -78,6 +78,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|IncrementalContainerReportProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMCommandProto
 import|;
 end_import
@@ -315,10 +335,6 @@ expr_stmt|;
 name|invocationCount
 operator|++
 expr_stmt|;
-name|cmdExecuted
-operator|=
-literal|false
-expr_stmt|;
 name|long
 name|startTime
 init|=
@@ -356,8 +372,11 @@ operator|.
 name|getContainerID
 argument_list|()
 expr_stmt|;
+comment|// CloseContainer operation is idempotent, if the container is already
+comment|// closed, then do nothing.
 if|if
 condition|(
+operator|!
 name|container
 operator|.
 name|getContainerSet
@@ -379,22 +398,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container {} is already closed"
+literal|"Closing container {}."
 argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
-comment|// It might happen that the where the first attempt of closing the
-comment|// container failed with NOT_LEADER_EXCEPTION. In such cases, SCM will
-comment|// retry to check the container got really closed via Ratis.
-comment|// In such cases of the retry attempt, if the container is already
-comment|// closed via Ratis, we should just return.
-name|cmdExecuted
-operator|=
-literal|true
-expr_stmt|;
-return|return;
-block|}
 name|HddsProtos
 operator|.
 name|PipelineID
@@ -503,6 +511,50 @@ argument_list|,
 name|pipelineID
 argument_list|)
 expr_stmt|;
+comment|// Since the container is closed, we trigger an ICR
+name|IncrementalContainerReportProto
+name|icr
+init|=
+name|IncrementalContainerReportProto
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|addReport
+argument_list|(
+name|container
+operator|.
+name|getContainerSet
+argument_list|()
+operator|.
+name|getContainer
+argument_list|(
+name|containerID
+argument_list|)
+operator|.
+name|getContainerReport
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
+name|context
+operator|.
+name|addReport
+argument_list|(
+name|icr
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|triggerHeartbeat
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -521,24 +573,14 @@ comment|// If the particular datanode is not the Ratis leader, the close
 comment|// container command will not be executed by the follower but will be
 comment|// executed by Ratis stateMachine transactions via leader to follower.
 comment|// There can also be case where the datanode is in candidate state.
-comment|// In these situations, NotLeaderException is thrown. Remove the status
-comment|// from cmdStatus Map here so that it will be retried only by SCM if the
-comment|// leader could not not close the container after a certain time.
-name|context
-operator|.
-name|removeCommandStatus
-argument_list|(
-name|containerID
-argument_list|)
-expr_stmt|;
+comment|// In these situations, NotLeaderException is thrown.
 name|LOG
 operator|.
 name|info
 argument_list|(
-name|e
-operator|.
-name|getLocalizedMessage
-argument_list|()
+literal|"Follower cannot close the container {}."
+argument_list|,
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}
@@ -555,34 +597,10 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|cmdExecuted
-operator|=
-literal|false
-expr_stmt|;
 block|}
 block|}
 finally|finally
 block|{
-name|updateCommandStatus
-argument_list|(
-name|context
-argument_list|,
-name|command
-argument_list|,
-parameter_list|(
-name|cmdStatus
-parameter_list|)
-lambda|->
-name|cmdStatus
-operator|.
-name|setStatus
-argument_list|(
-name|cmdExecuted
-argument_list|)
-argument_list|,
-name|LOG
-argument_list|)
-expr_stmt|;
 name|long
 name|endTime
 init|=

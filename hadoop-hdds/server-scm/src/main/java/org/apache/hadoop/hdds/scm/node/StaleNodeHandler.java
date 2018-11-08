@@ -237,12 +237,9 @@ name|pipelineIds
 init|=
 name|nodeManager
 operator|.
-name|getPipelineByDnID
+name|getPipelines
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
 decl_stmt|;
 for|for

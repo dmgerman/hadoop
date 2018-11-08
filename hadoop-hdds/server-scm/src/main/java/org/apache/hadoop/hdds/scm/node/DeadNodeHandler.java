@@ -202,6 +202,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|scm
+operator|.
+name|node
+operator|.
+name|states
+operator|.
+name|NodeNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|server
 operator|.
 name|events
@@ -347,16 +367,38 @@ name|ContainerID
 argument_list|>
 name|ids
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|ids
+operator|=
 name|nodeManager
 operator|.
 name|getContainers
 argument_list|(
 name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NodeNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// This should not happen, we cannot get a dead node event for an
+comment|// unregistered node!
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"DeadNode event for a unregistered node: {}!"
+argument_list|,
+name|datanodeDetails
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|ids
@@ -415,6 +457,9 @@ argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
+comment|// TODO: For open containers, trigger close on other nodes
+comment|// TODO: Check replica count and call replication manager
+comment|// on these containers.
 if|if
 condition|(
 operator|!
@@ -424,29 +469,48 @@ name|isOpen
 argument_list|()
 condition|)
 block|{
-specifier|final
+name|Set
+argument_list|<
 name|ContainerReplica
-name|replica
+argument_list|>
+name|replicas
 init|=
-name|ContainerReplica
+name|containerManager
 operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setContainerID
+name|getContainerReplicas
 argument_list|(
 name|id
 argument_list|)
+decl_stmt|;
+name|replicas
 operator|.
-name|setDatanodeDetails
+name|stream
+argument_list|()
+operator|.
+name|filter
+argument_list|(
+name|r
+lambda|->
+name|r
+operator|.
+name|getDatanodeDetails
+argument_list|()
+operator|.
+name|equals
 argument_list|(
 name|datanodeDetails
 argument_list|)
+argument_list|)
 operator|.
-name|build
+name|findFirst
 argument_list|()
-decl_stmt|;
-try|try
+operator|.
+name|ifPresent
+argument_list|(
+name|replica
+lambda|->
+block|{
+lambda|try
 block|{
 name|containerManager
 operator|.
@@ -455,13 +519,6 @@ argument_list|(
 name|id
 argument_list|,
 name|replica
-argument_list|)
-expr_stmt|;
-name|replicateIfNeeded
-argument_list|(
-name|container
-argument_list|,
-name|publisher
 argument_list|)
 expr_stmt|;
 block|}
@@ -475,9 +532,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception while removing container replica #{} for "
+literal|"Exception while removing container replica #{} "
 operator|+
-literal|"container #{}."
+literal|"for container #{}."
 argument_list|,
 name|replica
 argument_list|,
@@ -487,6 +544,9 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|)
+empty_stmt|;
 block|}
 block|}
 catch|catch
@@ -506,10 +566,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
+end_class
+
+begin_comment
+unit|}
 comment|/**    * Compare the existing replication number with the expected one.    */
+end_comment
+
+begin_function
 DECL|method|replicateIfNeeded (ContainerInfo container, EventPublisher publisher)
-specifier|private
+unit|private
 name|void
 name|replicateIfNeeded
 parameter_list|(
@@ -582,8 +648,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Returns logger.    * */
+end_comment
+
+begin_comment
 comment|// TODO: remove this.
+end_comment
+
+begin_function
 DECL|method|getLogger ()
 specifier|public
 specifier|static
@@ -595,8 +670,8 @@ return|return
 name|LOG
 return|;
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

@@ -823,6 +823,20 @@ return|return
 name|usedBytes
 return|;
 block|}
+DECL|method|setUsedBytes (long value)
+specifier|public
+name|void
+name|setUsedBytes
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+name|usedBytes
+operator|=
+name|value
+expr_stmt|;
+block|}
 DECL|method|getNumberOfKeys ()
 specifier|public
 name|long
@@ -832,6 +846,20 @@ block|{
 return|return
 name|numberOfKeys
 return|;
+block|}
+DECL|method|setNumberOfKeys (long value)
+specifier|public
+name|void
+name|setNumberOfKeys
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+name|numberOfKeys
+operator|=
+name|value
+expr_stmt|;
 block|}
 DECL|method|getDeleteTransactionId ()
 specifier|public

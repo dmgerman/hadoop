@@ -519,7 +519,7 @@ operator|.
 name|getScmNodeManager
 argument_list|()
 operator|.
-name|getPipelineByDnID
+name|getPipelines
 argument_list|(
 name|dns
 operator|.
@@ -527,9 +527,6 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -684,7 +681,7 @@ operator|.
 name|getScmNodeManager
 argument_list|()
 operator|.
-name|getPipelineByDnID
+name|getPipelines
 argument_list|(
 name|dns
 operator|.
@@ -692,9 +689,6 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert

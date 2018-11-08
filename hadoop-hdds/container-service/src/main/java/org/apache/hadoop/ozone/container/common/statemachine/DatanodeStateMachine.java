@@ -1015,6 +1015,15 @@ name|get
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+condition|)
+block|{
 name|Thread
 operator|.
 name|sleep
@@ -1029,13 +1038,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
 block|{
-comment|// Ignore this exception.
+comment|// Some one has sent interrupt signal, this could be because
+comment|// 1. Trigger heartbeat immediately
+comment|// 2. Shutdown has be initiated.
 block|}
 catch|catch
 parameter_list|(
@@ -1450,6 +1462,19 @@ expr_stmt|;
 name|stateMachineThread
 operator|.
 name|start
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Calling this will immediately trigger a heartbeat to the SCMs.    * This heartbeat will also include all the reports which are ready to    * be sent by datanode.    */
+DECL|method|triggerHeartbeat ()
+specifier|public
+name|void
+name|triggerHeartbeat
+parameter_list|()
+block|{
+name|stateMachineThread
+operator|.
+name|interrupt
 argument_list|()
 expr_stmt|;
 block|}

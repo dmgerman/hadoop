@@ -69,26 +69,6 @@ operator|.
 name|command
 operator|.
 name|CommandStatusReportHandler
-operator|.
-name|CloseContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|command
-operator|.
-name|CommandStatusReportHandler
 import|;
 end_import
 
@@ -126,9 +106,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|CloseContainerEventHandler
-operator|.
-name|CloseContainerRetryableReq
+name|ContainerID
 import|;
 end_import
 
@@ -144,9 +122,11 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
+name|server
 operator|.
-name|ContainerID
+name|SCMDatanodeHeartbeatDispatcher
+operator|.
+name|IncrementalContainerReportFromDatanode
 import|;
 end_import
 
@@ -483,6 +463,28 @@ argument_list|,
 literal|"Container_Report"
 argument_list|)
 decl_stmt|;
+comment|/**    * IncrementalContainerReports are send out by Datanodes.    * This report is received by SCMDatanodeHeartbeatDispatcher and    * Incremental_Container_Report Event is generated.    */
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|IncrementalContainerReportFromDatanode
+argument_list|>
+DECL|field|INCREMENTAL_CONTAINER_REPORT
+name|INCREMENTAL_CONTAINER_REPORT
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|IncrementalContainerReportFromDatanode
+operator|.
+name|class
+argument_list|,
+literal|"Incremental_Container_Report"
+argument_list|)
+decl_stmt|;
 comment|/**    * ContainerActions are sent by Datanode. This event is received by    * SCMDatanodeHeartbeatDispatcher and CONTAINER_ACTIONS event is generated.    */
 specifier|public
 specifier|static
@@ -636,28 +638,6 @@ argument_list|,
 literal|"Close_Container"
 argument_list|)
 decl_stmt|;
-comment|/**    * A CLOSE_CONTAINER_RETRYABLE_REQ will be triggered by    * CloseContainerEventHandler after sending a SCMCommand to DataNode.    * CloseContainerWatcher will track this event. Watcher will be responsible    * for retrying it in event of failure or timeout.    */
-specifier|public
-specifier|static
-specifier|final
-name|TypedEvent
-argument_list|<
-name|CloseContainerRetryableReq
-argument_list|>
-DECL|field|CLOSE_CONTAINER_RETRYABLE_REQ
-name|CLOSE_CONTAINER_RETRYABLE_REQ
-init|=
-operator|new
-name|TypedEvent
-argument_list|<>
-argument_list|(
-name|CloseContainerRetryableReq
-operator|.
-name|class
-argument_list|,
-literal|"Close_Container_Retryable"
-argument_list|)
-decl_stmt|;
 comment|/**    * This event will be triggered whenever a new datanode is registered with    * SCM.    */
 DECL|field|NEW_NODE
 specifier|public
@@ -744,28 +724,6 @@ operator|.
 name|class
 argument_list|,
 literal|"Replicate_Command_Status"
-argument_list|)
-decl_stmt|;
-comment|/**    * This event will be triggered by CommandStatusReportHandler whenever a    * status for CloseContainer SCMCommand is received.    */
-specifier|public
-specifier|static
-specifier|final
-name|Event
-argument_list|<
-name|CloseContainerStatus
-argument_list|>
-DECL|field|CLOSE_CONTAINER_STATUS
-name|CLOSE_CONTAINER_STATUS
-init|=
-operator|new
-name|TypedEvent
-argument_list|<>
-argument_list|(
-name|CloseContainerStatus
-operator|.
-name|class
-argument_list|,
-literal|"Close_Container_Command_Status"
 argument_list|)
 decl_stmt|;
 comment|/**    * This event will be triggered by CommandStatusReportHandler whenever a    * status for DeleteBlock SCMCommand is received.    */

@@ -222,26 +222,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|node
-operator|.
-name|states
-operator|.
-name|ReportResult
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|server
 operator|.
 name|events
@@ -373,17 +353,6 @@ name|NodeManagerMXBean
 extends|,
 name|Closeable
 block|{
-comment|/**    * Removes a data node from the management of this Node Manager.    *    * @param node - DataNode.    * @throws NodeNotFoundException    */
-DECL|method|removeNode (DatanodeDetails node)
-name|void
-name|removeNode
-parameter_list|(
-name|DatanodeDetails
-name|node
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-function_decl|;
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    * @param nodeState - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
 DECL|method|getNodes (NodeState nodeState)
 name|List
@@ -421,6 +390,7 @@ name|getStats
 parameter_list|()
 function_decl|;
 comment|/**    * Return a map of node stats.    * @return a map of individual node stats (live/stale but not dead).    */
+comment|// TODO: try to change the return type to Map<DatanodeDetails, SCMNodeStat>
 DECL|method|getNodeStats ()
 name|Map
 argument_list|<
@@ -449,16 +419,16 @@ name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 function_decl|;
-comment|/**    * Get set of pipelines a datanode is part of.    * @param dnId - datanodeID    * @return Set of PipelineID    */
-DECL|method|getPipelineByDnID (UUID dnId)
+comment|/**    * Get set of pipelines a datanode is part of.    * @param datanodeDetails DatanodeDetails    * @return Set of PipelineID    */
+DECL|method|getPipelines (DatanodeDetails datanodeDetails)
 name|Set
 argument_list|<
 name|PipelineID
 argument_list|>
-name|getPipelineByDnID
+name|getPipelines
 parameter_list|(
-name|UUID
-name|dnId
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 function_decl|;
 comment|/**    * Add pipeline information in the NodeManager.    * @param pipeline - Pipeline to be added    */
@@ -479,13 +449,13 @@ name|Pipeline
 name|pipeline
 parameter_list|)
 function_decl|;
-comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
-DECL|method|setContainersForDatanode (UUID uuid, Set<ContainerID> containerIds)
+comment|/**    * Remaps datanode to containers mapping to the new set of containers.    * @param datanodeDetails - DatanodeDetails    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
+DECL|method|setContainers (DatanodeDetails datanodeDetails, Set<ContainerID> containerIds)
 name|void
-name|setContainersForDatanode
+name|setContainers
 parameter_list|(
-name|UUID
-name|uuid
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|,
 name|Set
 argument_list|<
@@ -494,54 +464,21 @@ argument_list|>
 name|containerIds
 parameter_list|)
 throws|throws
-name|SCMException
+name|NodeNotFoundException
 function_decl|;
-comment|/**    * Process containerReport received from datanode.    * @param uuid - DataonodeID    * @param containerIds - Set of containerIDs    * @return The result after processing containerReport    */
-DECL|method|processContainerReport (UUID uuid, Set<ContainerID> containerIds)
-name|ReportResult
-argument_list|<
-name|ContainerID
-argument_list|>
-name|processContainerReport
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|Set
-argument_list|<
-name|ContainerID
-argument_list|>
-name|containerIds
-parameter_list|)
-function_decl|;
-comment|/**    * Return set of containerIDs available on a datanode.    * @param uuid - DatanodeID    * @return - set of containerIDs    */
-DECL|method|getContainers (UUID uuid)
+comment|/**    * Return set of containerIDs available on a datanode.    * @param datanodeDetails DatanodeDetails    * @return set of containerIDs    */
+DECL|method|getContainers (DatanodeDetails datanodeDetails)
 name|Set
 argument_list|<
 name|ContainerID
 argument_list|>
 name|getContainers
 parameter_list|(
-name|UUID
-name|uuid
-parameter_list|)
-function_decl|;
-comment|/**    * Insert a new datanode with set of containerIDs for containers available    * on it.    * @param uuid - DatanodeID    * @param containerIDs - Set of ContainerIDs    * @throws SCMException - if datanode already exists    */
-DECL|method|addDatanodeInContainerMap (UUID uuid, Set<ContainerID> containerIDs)
-name|void
-name|addDatanodeInContainerMap
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|Set
-argument_list|<
-name|ContainerID
-argument_list|>
-name|containerIDs
+name|DatanodeDetails
+name|datanodeDetails
 parameter_list|)
 throws|throws
-name|SCMException
+name|NodeNotFoundException
 function_decl|;
 comment|/**    * Add a {@link SCMCommand} to the command queue, which are    * handled by HB thread asynchronously.    * @param dnId datanode uuid    * @param command    */
 DECL|method|addDatanodeCommand (UUID dnId, SCMCommand command)
@@ -556,11 +493,11 @@ name|command
 parameter_list|)
 function_decl|;
 comment|/**    * Process node report.    *    * @param dnUuid    * @param nodeReport    */
-DECL|method|processNodeReport (UUID dnUuid, NodeReportProto nodeReport)
+DECL|method|processNodeReport (DatanodeDetails dnUuid, NodeReportProto nodeReport)
 name|void
 name|processNodeReport
 parameter_list|(
-name|UUID
+name|DatanodeDetails
 name|dnUuid
 parameter_list|,
 name|NodeReportProto
@@ -577,6 +514,7 @@ name|dnUuid
 parameter_list|)
 function_decl|;
 comment|/**    * Get list of SCMCommands in the Command Queue for a particular Datanode.    * @param dnID - Datanode uuid.    * @return list of commands    */
+comment|// TODO: We can give better name to this method!
 DECL|method|getCommandQueue (UUID dnID)
 name|List
 argument_list|<

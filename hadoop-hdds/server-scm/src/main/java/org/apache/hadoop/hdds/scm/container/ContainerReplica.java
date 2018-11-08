@@ -100,6 +100,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReplicaProto
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -140,6 +160,14 @@ specifier|private
 name|ContainerID
 name|containerID
 decl_stmt|;
+DECL|field|state
+specifier|final
+specifier|private
+name|ContainerReplicaProto
+operator|.
+name|State
+name|state
+decl_stmt|;
 DECL|field|datanodeDetails
 specifier|final
 specifier|private
@@ -157,16 +185,25 @@ specifier|private
 name|Long
 name|sequenceId
 decl_stmt|;
-DECL|method|ContainerReplica (ContainerID containerID, DatanodeDetails datanode, UUID originNodeId)
+DECL|method|ContainerReplica (final ContainerID containerID, final ContainerReplicaProto.State state, final DatanodeDetails datanode, final UUID originNodeId)
 specifier|private
 name|ContainerReplica
 parameter_list|(
+specifier|final
 name|ContainerID
 name|containerID
 parameter_list|,
+specifier|final
+name|ContainerReplicaProto
+operator|.
+name|State
+name|state
+parameter_list|,
+specifier|final
 name|DatanodeDetails
 name|datanode
 parameter_list|,
+specifier|final
 name|UUID
 name|originNodeId
 parameter_list|)
@@ -176,6 +213,12 @@ operator|.
 name|containerID
 operator|=
 name|containerID
+expr_stmt|;
+name|this
+operator|.
+name|state
+operator|=
+name|state
 expr_stmt|;
 name|this
 operator|.
@@ -224,6 +267,19 @@ parameter_list|()
 block|{
 return|return
 name|placeOfBirth
+return|;
+block|}
+comment|/**    * Returns the state of this replica.    *    * @return replica state    */
+DECL|method|getState ()
+specifier|public
+name|ContainerReplicaProto
+operator|.
+name|State
+name|getState
+parameter_list|()
+block|{
+return|return
+name|state
 return|;
 block|}
 comment|/**    * Returns the Sequence Id of this replica.    *    * @return Sequence Id    */
@@ -420,6 +476,13 @@ specifier|private
 name|ContainerID
 name|containerID
 decl_stmt|;
+DECL|field|state
+specifier|private
+name|ContainerReplicaProto
+operator|.
+name|State
+name|state
+decl_stmt|;
 DECL|field|datanode
 specifier|private
 name|DatanodeDetails
@@ -449,6 +512,26 @@ block|{
 name|containerID
 operator|=
 name|containerId
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setContainerState ( final ContainerReplicaProto.State containerState)
+specifier|public
+name|ContainerReplicaBuilder
+name|setContainerState
+parameter_list|(
+specifier|final
+name|ContainerReplicaProto
+operator|.
+name|State
+name|containerState
+parameter_list|)
+block|{
+name|state
+operator|=
+name|containerState
 expr_stmt|;
 return|return
 name|this
@@ -528,6 +611,15 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
+name|state
+argument_list|,
+literal|"Container state can't be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
 name|datanode
 argument_list|,
 literal|"DatanodeDetails can't be null"
@@ -540,6 +632,8 @@ operator|new
 name|ContainerReplica
 argument_list|(
 name|containerID
+argument_list|,
+name|state
 argument_list|,
 name|datanode
 argument_list|,

@@ -222,24 +222,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
-operator|.
-name|SCMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|node
 operator|.
 name|states
@@ -577,13 +559,6 @@ specifier|final
 name|Node2PipelineMap
 name|node2PipelineMap
 decl_stmt|;
-comment|/**    * Maintains the map from node to ContainerIDs for the containers    * available on the node.    */
-DECL|field|node2ContainerMap
-specifier|private
-specifier|final
-name|Node2ContainerMap
-name|node2ContainerMap
-decl_stmt|;
 comment|/**    * Used for publishing node state change events.    */
 DECL|field|eventPublisher
 specifier|private
@@ -660,14 +635,6 @@ name|node2PipelineMap
 operator|=
 operator|new
 name|Node2PipelineMap
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|node2ContainerMap
-operator|=
-operator|new
-name|Node2ContainerMap
 argument_list|()
 expr_stmt|;
 name|this
@@ -1437,29 +1404,6 @@ name|getTotalNodeCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Removes a node from NodeStateManager.    *    * @param datanodeDetails DatanodeDetails    *    * @throws NodeNotFoundException if the node is not present    */
-DECL|method|removeNode (DatanodeDetails datanodeDetails)
-specifier|public
-name|void
-name|removeNode
-parameter_list|(
-name|DatanodeDetails
-name|datanodeDetails
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-name|nodeStateMap
-operator|.
-name|removeNode
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Returns the current stats of the node.    *    * @param uuid node id    *    * @return SCMNodeStat    *    * @throws NodeNotFoundException if the node is not present    */
 DECL|method|getNodeStat (UUID uuid)
 specifier|public
@@ -1523,27 +1467,6 @@ name|newstat
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove the current stats of the specify node.    *    * @param uuid node id    *    * @return SCMNodeStat the stat removed from the node.    *    * @throws NodeNotFoundException if the node is not present.    */
-DECL|method|removeNodeStat (UUID uuid)
-specifier|public
-name|SCMNodeStat
-name|removeNodeStat
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-return|return
-name|nodeStateMap
-operator|.
-name|removeNodeStat
-argument_list|(
-name|uuid
-argument_list|)
-return|;
-block|}
 comment|/**    * Removes a pipeline from the node2PipelineMap.    * @param pipeline - Pipeline to be removed    */
 DECL|method|removePipeline (Pipeline pipeline)
 specifier|public
@@ -1562,11 +1485,11 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
-DECL|method|setContainersForDatanode (UUID uuid, Set<ContainerID> containerIds)
+comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known.    */
+DECL|method|setContainers (UUID uuid, Set<ContainerID> containerIds)
 specifier|public
 name|void
-name|setContainersForDatanode
+name|setContainers
 parameter_list|(
 name|UUID
 name|uuid
@@ -1578,47 +1501,17 @@ argument_list|>
 name|containerIds
 parameter_list|)
 throws|throws
-name|SCMException
+name|NodeNotFoundException
 block|{
-name|node2ContainerMap
+name|nodeStateMap
 operator|.
-name|setContainersForDatanode
+name|setContainers
 argument_list|(
 name|uuid
 argument_list|,
 name|containerIds
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Process containerReport received from datanode.    * @param uuid - DataonodeID    * @param containerIds - Set of containerIDs    * @return The result after processing containerReport    */
-DECL|method|processContainerReport (UUID uuid, Set<ContainerID> containerIds)
-specifier|public
-name|ReportResult
-argument_list|<
-name|ContainerID
-argument_list|>
-name|processContainerReport
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|Set
-argument_list|<
-name|ContainerID
-argument_list|>
-name|containerIds
-parameter_list|)
-block|{
-return|return
-name|node2ContainerMap
-operator|.
-name|processReport
-argument_list|(
-name|uuid
-argument_list|,
-name|containerIds
-argument_list|)
-return|;
 block|}
 comment|/**    * Return set of containerIDs available on a datanode.    * @param uuid - DatanodeID    * @return - set of containerIDs    */
 DECL|method|getContainers (UUID uuid)
@@ -1632,43 +1525,17 @@ parameter_list|(
 name|UUID
 name|uuid
 parameter_list|)
+throws|throws
+name|NodeNotFoundException
 block|{
 return|return
-name|node2ContainerMap
+name|nodeStateMap
 operator|.
 name|getContainers
 argument_list|(
 name|uuid
 argument_list|)
 return|;
-block|}
-comment|/**    * Insert a new datanode with set of containerIDs for containers available    * on it.    * @param uuid - DatanodeID    * @param containerIDs - Set of ContainerIDs    * @throws SCMException - if datanode already exists    */
-DECL|method|addDatanodeInContainerMap (UUID uuid, Set<ContainerID> containerIDs)
-specifier|public
-name|void
-name|addDatanodeInContainerMap
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|Set
-argument_list|<
-name|ContainerID
-argument_list|>
-name|containerIDs
-parameter_list|)
-throws|throws
-name|SCMException
-block|{
-name|node2ContainerMap
-operator|.
-name|insertNewDatanode
-argument_list|(
-name|uuid
-argument_list|,
-name|containerIDs
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Move Stale or Dead node to healthy if we got a heartbeat from them.    * Move healthy nodes to stale nodes if it is needed.    * Move Stales node to dead if needed.    *    * @see Thread#run()    */
 annotation|@

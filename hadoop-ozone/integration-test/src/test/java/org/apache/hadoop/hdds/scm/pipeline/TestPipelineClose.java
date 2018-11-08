@@ -671,12 +671,9 @@ operator|.
 name|getScmNodeManager
 argument_list|()
 operator|.
-name|getPipelineByDnID
+name|getPipelines
 argument_list|(
 name|dn
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
 operator|.
 name|size

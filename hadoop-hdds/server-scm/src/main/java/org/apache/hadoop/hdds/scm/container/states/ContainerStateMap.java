@@ -30,20 +30,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|base
 operator|.
 name|Preconditions
@@ -1196,20 +1182,6 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|VisibleForTesting
-comment|// TODO: fix the test case and remove this method!
-DECL|method|getLOG ()
-specifier|public
-specifier|static
-name|Logger
-name|getLOG
-parameter_list|()
-block|{
-return|return
-name|LOG
-return|;
 block|}
 comment|/**    * Just update the container State.    * @param info ContainerInfo.    */
 DECL|method|updateContainerInfo (final ContainerInfo info)
