@@ -4626,7 +4626,7 @@ name|defaultECPolicyName
 operator|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.

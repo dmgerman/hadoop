@@ -2548,6 +2548,8 @@ operator|.
 name|loadPolicies
 argument_list|(
 name|ecPolicies
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -3677,7 +3679,7 @@ operator|.
 name|getErasureCodingPolicyManager
 argument_list|()
 operator|.
-name|getPolicies
+name|getPersistedPolicies
 argument_list|()
 decl_stmt|;
 name|ArrayList

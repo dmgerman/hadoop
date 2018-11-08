@@ -730,6 +730,8 @@ specifier|public
 name|void
 name|init
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|Configuration
 name|conf
