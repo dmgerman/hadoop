@@ -278,6 +278,36 @@ name|factor
 argument_list|)
 return|;
 block|}
+DECL|method|getPipelines (ReplicationType type, ReplicationFactor factor, PipelineState state)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelines
+parameter_list|(
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|PipelineState
+name|state
+parameter_list|)
+block|{
+return|return
+name|pipelineStateMap
+operator|.
+name|getPipelines
+argument_list|(
+name|type
+argument_list|,
+name|factor
+argument_list|,
+name|state
+argument_list|)
+return|;
+block|}
 DECL|method|getPipelines (ReplicationType type, PipelineState... states)
 name|List
 argument_list|<

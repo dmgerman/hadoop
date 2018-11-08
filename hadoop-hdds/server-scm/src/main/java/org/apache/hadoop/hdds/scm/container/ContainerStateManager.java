@@ -876,6 +876,12 @@ argument_list|(
 name|type
 argument_list|,
 name|replicationFactor
+argument_list|,
+name|Pipeline
+operator|.
+name|PipelineState
+operator|.
+name|OPEN
 argument_list|)
 decl_stmt|;
 if|if

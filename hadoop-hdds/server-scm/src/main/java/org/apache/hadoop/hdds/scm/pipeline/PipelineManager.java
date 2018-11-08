@@ -211,6 +211,25 @@ name|ReplicationFactor
 name|factor
 parameter_list|)
 function_decl|;
+DECL|method|getPipelines (ReplicationType type, ReplicationFactor factor, Pipeline.PipelineState state)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelines
+parameter_list|(
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|Pipeline
+operator|.
+name|PipelineState
+name|state
+parameter_list|)
+function_decl|;
 DECL|method|addContainerToPipeline (PipelineID pipelineID, ContainerID containerID)
 name|void
 name|addContainerToPipeline
