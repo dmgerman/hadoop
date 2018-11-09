@@ -1423,6 +1423,17 @@ argument_list|(
 name|newScmId
 argument_list|)
 expr_stmt|;
+name|rpcEndPoint
+operator|.
+name|setState
+argument_list|(
+name|EndpointStateMachine
+operator|.
+name|EndPointStates
+operator|.
+name|GETVERSION
+argument_list|)
+expr_stmt|;
 name|newState
 operator|=
 name|versionTask
