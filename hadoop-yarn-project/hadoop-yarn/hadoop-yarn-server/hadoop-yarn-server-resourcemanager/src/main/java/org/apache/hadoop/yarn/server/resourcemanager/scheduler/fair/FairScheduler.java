@@ -2801,6 +2801,8 @@ argument_list|,
 name|queueName
 argument_list|,
 name|user
+argument_list|,
+name|applicationId
 argument_list|)
 decl_stmt|;
 if|if
@@ -2896,6 +2898,13 @@ argument_list|,
 name|msg
 argument_list|)
 expr_stmt|;
+name|queue
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 block|}
@@ -2967,6 +2976,13 @@ argument_list|,
 name|msg
 argument_list|)
 expr_stmt|;
+name|queue
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 name|SchedulerApplication
@@ -3003,13 +3019,6 @@ operator|.
 name|submitApp
 argument_list|(
 name|user
-argument_list|)
-expr_stmt|;
-name|queue
-operator|.
-name|addAssignedApp
-argument_list|(
-name|applicationId
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -3359,7 +3368,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper method that attempts to assign the app to a queue. The method is    * responsible to call the appropriate event-handler if the app is rejected.    */
+comment|/**    * Helper method for the tests to assign the app to a queue.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|assignToQueue (RMApp rmApp, String queueName, String user)
@@ -3374,6 +3383,38 @@ name|queueName
 parameter_list|,
 name|String
 name|user
+parameter_list|)
+block|{
+return|return
+name|assignToQueue
+argument_list|(
+name|rmApp
+argument_list|,
+name|queueName
+argument_list|,
+name|user
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Helper method that attempts to assign the app to a queue. The method is    * responsible to call the appropriate event-handler if the app is rejected.    */
+DECL|method|assignToQueue (RMApp rmApp, String queueName, String user, ApplicationId applicationId)
+specifier|private
+name|FSLeafQueue
+name|assignToQueue
+parameter_list|(
+name|RMApp
+name|rmApp
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|ApplicationId
+name|applicationId
 parameter_list|)
 block|{
 name|FSLeafQueue
@@ -3430,6 +3471,8 @@ argument_list|(
 name|queueName
 argument_list|,
 literal|true
+argument_list|,
+name|applicationId
 argument_list|)
 expr_stmt|;
 if|if

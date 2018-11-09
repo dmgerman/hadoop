@@ -2687,6 +2687,40 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * This method is called when an application is removed from this queue    * during the submit process.    * @param applicationId the application's id    */
+DECL|method|removeAssignedApp (ApplicationId applicationId)
+specifier|public
+name|void
+name|removeAssignedApp
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|)
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|assignedApps
+operator|.
+name|remove
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

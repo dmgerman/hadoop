@@ -240,6 +240,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -436,6 +454,8 @@ argument_list|,
 name|queueType
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -670,7 +690,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a leaf queue by name, creating it if the create param is    * true and is necessary.    * If the queue is not or can not be a leaf queue, i.e. it already exists as a    * parent queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+comment|/**    * Get a leaf queue by name, creating it if the create param is    *<code>true</code> and the queue does not exist.    * If the queue is not or can not be a leaf queue, i.e. it already exists as    * a parent queue, or one of the parents in its name is already a leaf queue,    *<code>null</code> is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    * @param name name of the queue    * @param create<code>true</code> if the queue must be created if it does    *               not exist,<code>false</code> otherwise    * @return the leaf queue or<code>null</code> if the queue cannot be found    */
 DECL|method|getLeafQueue (String name, boolean create)
 specifier|public
 name|FSLeafQueue
@@ -690,11 +710,42 @@ name|name
 argument_list|,
 name|create
 argument_list|,
+literal|null
+argument_list|,
 literal|true
 argument_list|)
 return|;
 block|}
-DECL|method|getLeafQueue ( String name, boolean create, boolean recomputeSteadyShares)
+comment|/**    * Get a leaf queue by name, creating it if the create param is    *<code>true</code> and the queue does not exist.    * If the queue is not or can not be a leaf queue, i.e. it already exists as    * a parent queue, or one of the parents in its name is already a leaf queue,    *<code>null</code> is returned.    *    * If the application will be assigned to the queue if the applicationId is    * not<code>null</code>    * @param name name of the queue    * @param create<code>true</code> if the queue must be created if it does    *               not exist,<code>false</code> otherwise    * @param applicationId the application ID to assign to the queue    * @return the leaf queue or<code>null</code> if teh queue cannot be found    */
+DECL|method|getLeafQueue (String name, boolean create, ApplicationId applicationId)
+specifier|public
+name|FSLeafQueue
+name|getLeafQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|create
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+block|{
+return|return
+name|getLeafQueue
+argument_list|(
+name|name
+argument_list|,
+name|create
+argument_list|,
+name|applicationId
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|getLeafQueue (String name, boolean create, ApplicationId applicationId, boolean recomputeSteadyShares)
 specifier|private
 name|FSLeafQueue
 name|getLeafQueue
@@ -704,6 +755,9 @@ name|name
 parameter_list|,
 name|boolean
 name|create
+parameter_list|,
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|boolean
 name|recomputeSteadyShares
@@ -723,6 +777,8 @@ operator|.
 name|LEAF
 argument_list|,
 name|recomputeSteadyShares
+argument_list|,
+name|applicationId
 argument_list|)
 decl_stmt|;
 if|if
@@ -784,7 +840,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a parent queue by name, creating it if the create param is    * true and is necessary.    * If the queue is not or can not be a parent queue,    * i.e. it already exists as a    * leaf queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+comment|/**    * Get a parent queue by name, creating it if the create param is    *<code>true</code> and the queue does not exist.    * If the queue is not or can not be a parent queue, i.e. it already exists    * as a leaf queue, or one of the parents in its name is already a leaf    * queue,<code>null</code> is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    * @param name name of the queue    * @param create<code>true</code> if the queue must be created if it does    *               not exist,<code>false</code> otherwise    * @return the parent queue or<code>null</code> if the queue cannot be found    */
 DECL|method|getParentQueue (String name, boolean create)
 specifier|public
 name|FSParentQueue
@@ -808,7 +864,8 @@ literal|true
 argument_list|)
 return|;
 block|}
-DECL|method|getParentQueue ( String name, boolean create, boolean recomputeSteadyShares)
+comment|/**    * Get a parent queue by name, creating it if the create param is    *<code>true</code> and the queue does not exist.    * If the queue is not or can not be a parent queue, i.e. it already exists    * as a leaf queue, or one of the parents in its name is already a leaf    * queue,<code>null</code> is returned.    *    * The root part of the name is optional, so a queue underneath the root    * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root    * could be referred to as just "parent1.queue2".    * @param name name of the queue    * @param create<code>true</code> if the queue must be created if it does    *               not exist,<code>false</code> otherwise    * @param recomputeSteadyShares<code>true</code> if the steady fair share    *                              should be recalculated when a queue is added,    *<code>false</code> otherwise    * @return the parent queue or<code>null</code> if the queue cannot be found    */
+DECL|method|getParentQueue (String name, boolean create, boolean recomputeSteadyShares)
 specifier|public
 name|FSParentQueue
 name|getParentQueue
@@ -837,6 +894,8 @@ operator|.
 name|PARENT
 argument_list|,
 name|recomputeSteadyShares
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -857,7 +916,7 @@ operator|)
 name|queue
 return|;
 block|}
-DECL|method|getQueue ( String name, boolean create, FSQueueType queueType, boolean recomputeSteadyShares)
+DECL|method|getQueue (String name, boolean create, FSQueueType queueType, boolean recomputeSteadyShares, ApplicationId applicationId)
 specifier|private
 name|FSQueue
 name|getQueue
@@ -873,6 +932,9 @@ name|queueType
 parameter_list|,
 name|boolean
 name|recomputeSteadyShares
+parameter_list|,
+name|ApplicationId
+name|applicationId
 parameter_list|)
 block|{
 name|boolean
@@ -931,10 +993,41 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+comment|// At this point the queue exists and we need to assign the app if to the
+comment|// but only to a leaf queue
+if|if
+condition|(
+name|applicationId
+operator|!=
+literal|null
+operator|&&
+name|queue
+operator|instanceof
+name|FSLeafQueue
+condition|)
+block|{
+operator|(
+operator|(
+name|FSLeafQueue
+operator|)
+name|queue
+operator|)
+operator|.
+name|addAssignedApp
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
 block|}
+block|}
+comment|// Don't recompute if it is an existing queue or no change was made
 if|if
 condition|(
 name|recompute
+operator|&&
+name|queue
+operator|!=
+literal|null
 condition|)
 block|{
 name|rootQueue
@@ -2451,6 +2544,8 @@ argument_list|,
 name|queueType
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
