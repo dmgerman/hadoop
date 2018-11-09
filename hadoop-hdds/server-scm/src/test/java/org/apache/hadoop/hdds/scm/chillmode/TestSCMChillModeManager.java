@@ -538,7 +538,7 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|OPEN
+name|CLOSED
 argument_list|)
 expr_stmt|;
 block|}
@@ -792,7 +792,7 @@ literal|4
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Assign OPEN state to first 25 containers and ALLLOCATED state to rest
+comment|// Assign CLOSED state to first 25 containers and OPEM state to rest
 comment|// of the containers
 for|for
 control|(
@@ -817,7 +817,7 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|OPEN
+name|CLOSED
 argument_list|)
 expr_stmt|;
 block|}
@@ -844,7 +844,7 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 block|}
@@ -879,9 +879,9 @@ name|getInChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// When 10 OPEN containers are reported by DNs, the computed container
-comment|// threshold should be 10/25 as there are only 25 open containers.
-comment|// Containers in ALLOCATED state should not contribute towards list of
+comment|// When 10 CLOSED containers are reported by DNs, the computed container
+comment|// threshold should be 10/25 as there are only 25 CLOSED containers.
+comment|// Containers in OPEN state should not contribute towards list of
 comment|// containers while calculating container threshold in SCMChillNodeManager
 name|testContainerThreshold
 argument_list|(

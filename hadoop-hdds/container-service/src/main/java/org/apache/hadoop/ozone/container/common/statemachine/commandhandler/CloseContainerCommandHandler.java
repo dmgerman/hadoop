@@ -136,6 +136,26 @@ name|container
 operator|.
 name|common
 operator|.
+name|interfaces
+operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|statemachine
 operator|.
 name|SCMConnectionManager
@@ -304,10 +324,10 @@ specifier|public
 name|CloseContainerCommandHandler
 parameter_list|()
 block|{   }
-comment|/**    * Handles a given SCM command.    *    * @param command           - SCM Command    * @param container         - Ozone Container.    * @param context           - Current Context.    * @param connectionManager - The SCMs that we are talking to.    */
+comment|/**    * Handles a given SCM command.    *    * @param command           - SCM Command    * @param ozoneContainer         - Ozone Container.    * @param context           - Current Context.    * @param connectionManager - The SCMs that we are talking to.    */
 annotation|@
 name|Override
-DECL|method|handle (SCMCommand command, OzoneContainer container, StateContext context, SCMConnectionManager connectionManager)
+DECL|method|handle (SCMCommand command, OzoneContainer ozoneContainer, StateContext context, SCMConnectionManager connectionManager)
 specifier|public
 name|void
 name|handle
@@ -316,7 +336,7 @@ name|SCMCommand
 name|command
 parameter_list|,
 name|OzoneContainer
-name|container
+name|ozoneContainer
 parameter_list|,
 name|StateContext
 name|context
@@ -374,10 +394,11 @@ argument_list|()
 expr_stmt|;
 comment|// CloseContainer operation is idempotent, if the container is already
 comment|// closed, then do nothing.
-if|if
-condition|(
-operator|!
+comment|// TODO: Non-existent container should be handled properly
+name|Container
 name|container
+init|=
+name|ozoneContainer
 operator|.
 name|getContainerSet
 argument_list|()
@@ -386,6 +407,34 @@ name|getContainer
 argument_list|(
 name|containerID
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|container
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Container {} does not exist in datanode. "
+operator|+
+literal|"Container close failed."
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+name|cmdExecuted
+operator|=
+literal|false
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|container
 operator|.
 name|getContainerData
 argument_list|()
@@ -497,7 +546,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// submit the close container request for the XceiverServer to handle
-name|container
+name|ozoneContainer
 operator|.
 name|submitContainerRequest
 argument_list|(
@@ -522,7 +571,7 @@ argument_list|()
 operator|.
 name|addReport
 argument_list|(
-name|container
+name|ozoneContainer
 operator|.
 name|getContainerSet
 argument_list|()

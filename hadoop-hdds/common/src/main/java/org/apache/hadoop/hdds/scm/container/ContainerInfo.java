@@ -1712,7 +1712,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Check if a container is in open state, this will check if the    * container is either open, allocated, creating or creating.    * Any containers in these states is managed as an open container by SCM.    */
+comment|/**    * Check if a container is in open state, this will check if the    * container is either open or closing state. Any containers in these states    * is managed as an open container by SCM.    */
 DECL|method|isOpen ()
 specifier|public
 name|boolean
@@ -1720,22 +1720,6 @@ name|isOpen
 parameter_list|()
 block|{
 return|return
-name|state
-operator|==
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|ALLOCATED
-operator|||
-name|state
-operator|==
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|CREATING
-operator|||
 name|state
 operator|==
 name|HddsProtos

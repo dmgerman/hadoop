@@ -629,14 +629,6 @@ name|getPipeline
 argument_list|()
 argument_list|)
 argument_list|)
-operator|.
-name|setShouldCreateContainer
-argument_list|(
-name|response
-operator|.
-name|getCreateContainer
-argument_list|()
-argument_list|)
 decl_stmt|;
 return|return
 name|builder

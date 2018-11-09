@@ -79,12 +79,6 @@ specifier|private
 name|ContainerBlockID
 name|containerBlockID
 decl_stmt|;
-comment|// Indicates whether the client should create container before writing block.
-DECL|field|shouldCreateContainer
-specifier|private
-name|boolean
-name|shouldCreateContainer
-decl_stmt|;
 comment|/**    * Builder for AllocatedBlock.    */
 DECL|class|Builder
 specifier|public
@@ -101,11 +95,6 @@ DECL|field|containerBlockID
 specifier|private
 name|ContainerBlockID
 name|containerBlockID
-decl_stmt|;
-DECL|field|shouldCreateContainer
-specifier|private
-name|boolean
-name|shouldCreateContainer
 decl_stmt|;
 DECL|method|setPipeline (Pipeline p)
 specifier|public
@@ -145,25 +134,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setShouldCreateContainer (boolean shouldCreate)
-specifier|public
-name|Builder
-name|setShouldCreateContainer
-parameter_list|(
-name|boolean
-name|shouldCreate
-parameter_list|)
-block|{
-name|this
-operator|.
-name|shouldCreateContainer
-operator|=
-name|shouldCreate
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|build ()
 specifier|public
 name|AllocatedBlock
@@ -177,13 +147,11 @@ argument_list|(
 name|pipeline
 argument_list|,
 name|containerBlockID
-argument_list|,
-name|shouldCreateContainer
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|AllocatedBlock (Pipeline pipeline, ContainerBlockID containerBlockID, boolean shouldCreateContainer)
+DECL|method|AllocatedBlock (Pipeline pipeline, ContainerBlockID containerBlockID)
 specifier|private
 name|AllocatedBlock
 parameter_list|(
@@ -192,9 +160,6 @@ name|pipeline
 parameter_list|,
 name|ContainerBlockID
 name|containerBlockID
-parameter_list|,
-name|boolean
-name|shouldCreateContainer
 parameter_list|)
 block|{
 name|this
@@ -208,12 +173,6 @@ operator|.
 name|containerBlockID
 operator|=
 name|containerBlockID
-expr_stmt|;
-name|this
-operator|.
-name|shouldCreateContainer
-operator|=
-name|shouldCreateContainer
 expr_stmt|;
 block|}
 DECL|method|getPipeline ()
@@ -234,16 +193,6 @@ parameter_list|()
 block|{
 return|return
 name|containerBlockID
-return|;
-block|}
-DECL|method|getCreateContainer ()
-specifier|public
-name|boolean
-name|getCreateContainer
-parameter_list|()
-block|{
-return|return
-name|shouldCreateContainer
 return|;
 block|}
 block|}

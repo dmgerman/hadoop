@@ -275,10 +275,9 @@ argument_list|(
 name|c
 lambda|->
 block|{
-comment|// Containers in ALLOCATED state should not be included while
-comment|// calculating the total number of containers here. They are not
-comment|// reported by DNs and hence should not affect the chill mode exit
-comment|// rule.
+comment|// TODO: There can be containers in OPEN state which were never
+comment|// created by the client. We are not considering these containers for
+comment|// now. These containers can be handled by tracking pipelines.
 if|if
 condition|(
 name|c
@@ -304,7 +303,7 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 condition|)
 block|{

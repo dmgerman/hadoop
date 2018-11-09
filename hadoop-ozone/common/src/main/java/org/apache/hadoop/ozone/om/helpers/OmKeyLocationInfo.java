@@ -73,12 +73,6 @@ specifier|final
 name|BlockID
 name|blockID
 decl_stmt|;
-DECL|field|shouldCreateContainer
-specifier|private
-specifier|final
-name|boolean
-name|shouldCreateContainer
-decl_stmt|;
 comment|// the id of this subkey in all the subkeys.
 DECL|field|length
 specifier|private
@@ -97,15 +91,12 @@ specifier|private
 name|long
 name|createVersion
 decl_stmt|;
-DECL|method|OmKeyLocationInfo (BlockID blockID, boolean shouldCreateContainer, long length, long offset)
+DECL|method|OmKeyLocationInfo (BlockID blockID, long length, long offset)
 specifier|private
 name|OmKeyLocationInfo
 parameter_list|(
 name|BlockID
 name|blockID
-parameter_list|,
-name|boolean
-name|shouldCreateContainer
 parameter_list|,
 name|long
 name|length
@@ -119,12 +110,6 @@ operator|.
 name|blockID
 operator|=
 name|blockID
-expr_stmt|;
-name|this
-operator|.
-name|shouldCreateContainer
-operator|=
-name|shouldCreateContainer
 expr_stmt|;
 name|this
 operator|.
@@ -199,16 +184,6 @@ name|getLocalID
 argument_list|()
 return|;
 block|}
-DECL|method|getShouldCreateContainer ()
-specifier|public
-name|boolean
-name|getShouldCreateContainer
-parameter_list|()
-block|{
-return|return
-name|shouldCreateContainer
-return|;
-block|}
 DECL|method|getLength ()
 specifier|public
 name|long
@@ -270,11 +245,6 @@ specifier|private
 name|BlockID
 name|blockID
 decl_stmt|;
-DECL|field|shouldCreateContainer
-specifier|private
-name|boolean
-name|shouldCreateContainer
-decl_stmt|;
 DECL|field|length
 specifier|private
 name|long
@@ -299,25 +269,6 @@ operator|.
 name|blockID
 operator|=
 name|blockId
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|setShouldCreateContainer (boolean create)
-specifier|public
-name|Builder
-name|setShouldCreateContainer
-parameter_list|(
-name|boolean
-name|create
-parameter_list|)
-block|{
-name|this
-operator|.
-name|shouldCreateContainer
-operator|=
-name|create
 expr_stmt|;
 return|return
 name|this
@@ -373,8 +324,6 @@ name|OmKeyLocationInfo
 argument_list|(
 name|blockID
 argument_list|,
-name|shouldCreateContainer
-argument_list|,
 name|length
 argument_list|,
 name|offset
@@ -400,11 +349,6 @@ name|blockID
 operator|.
 name|getProtobuf
 argument_list|()
-argument_list|)
-operator|.
-name|setShouldCreateContainer
-argument_list|(
-name|shouldCreateContainer
 argument_list|)
 operator|.
 name|setLength
@@ -451,11 +395,6 @@ operator|.
 name|getBlockID
 argument_list|()
 argument_list|)
-argument_list|,
-name|keyLocation
-operator|.
-name|getShouldCreateContainer
-argument_list|()
 argument_list|,
 name|keyLocation
 operator|.
@@ -506,10 +445,6 @@ name|getLocalID
 argument_list|()
 operator|+
 literal|"}"
-operator|+
-literal|", shouldCreateContainer="
-operator|+
-name|shouldCreateContainer
 operator|+
 literal|", length="
 operator|+

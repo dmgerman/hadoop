@@ -1046,112 +1046,10 @@ name|INVALID_BLOCK_SIZE
 argument_list|)
 throw|;
 block|}
-comment|/*       Here is the high level logic.        1. First we check if there are containers in ALLOCATED state, that is          SCM has allocated them in the SCM namespace but the corresponding          container has not been created in the Datanode yet. If we have any in          that state, we will return that to the client, which allows client to          finish creating those containers. This is a sort of greedy algorithm,          our primary purpose is to get as many containers as possible.        2. If there are no allocated containers -- Then we find a Open container          that matches that pattern.        3. If both of them fail, the we will pre-allocate a bunch of containers          in SCM and try again.        TODO : Support random picking of two containers from the list. So we can              use different kind of policies.     */
+comment|/*       Here is the high level logic.        1. We try to find containers in open state.        2. If there are no containers in open state, then we will pre-allocate a       bunch of containers in SCM and try again.        TODO : Support random picking of two containers from the list. So we can              use different kind of policies.     */
 name|ContainerWithPipeline
 name|containerWithPipeline
 decl_stmt|;
-comment|// This is to optimize performance, if the below condition is evaluated
-comment|// to false, then we can be sure that there are no containers in
-comment|// ALLOCATED state.
-comment|// This can result in false positive, but it will never be false negative.
-comment|// How can this result in false positive? We check if there are any
-comment|// containers in ALLOCATED state, this check doesn't care about the
-comment|// USER of the containers. So there might be cases where a different
-comment|// USER has few containers in ALLOCATED state, which will result in
-comment|// false positive.
-if|if
-condition|(
-operator|!
-name|containerManager
-operator|.
-name|getContainers
-argument_list|(
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|ALLOCATED
-argument_list|)
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// Since the above check can result in false positive, we have to do
-comment|// the actual check and find out if there are containers in ALLOCATED
-comment|// state matching our criteria.
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-comment|// Using containers from ALLOCATED state should be done within
-comment|// synchronized block (or) write lock. Since we already hold a
-comment|// read lock, we will end up in deadlock situation if we take
-comment|// write lock here.
-name|containerWithPipeline
-operator|=
-name|containerManager
-operator|.
-name|getMatchingContainerWithPipeline
-argument_list|(
-name|size
-argument_list|,
-name|owner
-argument_list|,
-name|type
-argument_list|,
-name|factor
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|ALLOCATED
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|containerWithPipeline
-operator|!=
-literal|null
-condition|)
-block|{
-name|containerManager
-operator|.
-name|updateContainerState
-argument_list|(
-name|containerWithPipeline
-operator|.
-name|getContainerInfo
-argument_list|()
-operator|.
-name|containerID
-argument_list|()
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleEvent
-operator|.
-name|CREATE
-argument_list|)
-expr_stmt|;
-return|return
-name|newBlock
-argument_list|(
-name|containerWithPipeline
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|ALLOCATED
-argument_list|)
-return|;
-block|}
-block|}
-block|}
-comment|// Since we found no allocated containers that match our criteria, let us
 comment|// look for OPEN containers that match the criteria.
 name|containerWithPipeline
 operator|=
@@ -1174,33 +1072,20 @@ operator|.
 name|OPEN
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|containerWithPipeline
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|newBlock
-argument_list|(
-name|containerWithPipeline
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|OPEN
-argument_list|)
-return|;
-block|}
-comment|// We found neither ALLOCATED or OPEN Containers. This generally means
+comment|// We did not find OPEN Containers. This generally means
 comment|// that most of our containers are full or we have not allocated
 comment|// containers of the type and replication factor. So let us go and
 comment|// allocate some.
-comment|// Even though we have already checked the containers in ALLOCATED
+comment|// Even though we have already checked the containers in OPEN
 comment|// state, we have to check again as we only hold a read lock.
 comment|// Some other thread might have pre-allocated container in meantime.
+if|if
+condition|(
+name|containerWithPipeline
+operator|==
+literal|null
+condition|)
+block|{
 synchronized|synchronized
 init|(
 name|this
@@ -1217,7 +1102,7 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 operator|.
 name|isEmpty
@@ -1242,7 +1127,7 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 block|}
@@ -1282,9 +1167,11 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 if|if
 condition|(
@@ -1293,25 +1180,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|containerManager
-operator|.
-name|updateContainerState
-argument_list|(
-name|containerWithPipeline
-operator|.
-name|getContainerInfo
-argument_list|()
-operator|.
-name|containerID
-argument_list|()
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleEvent
-operator|.
-name|CREATE
-argument_list|)
-expr_stmt|;
 return|return
 name|newBlock
 argument_list|(
@@ -1321,10 +1189,9 @@ name|HddsProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|OPEN
 argument_list|)
 return|;
-block|}
 block|}
 comment|// we have tried all strategies we know and but somehow we are not able
 comment|// to get a container for this block. Log that info and return a null.
@@ -1414,19 +1281,6 @@ operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
-name|boolean
-name|createContainer
-init|=
-operator|(
-name|state
-operator|==
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|ALLOCATED
-operator|)
-decl_stmt|;
 name|AllocatedBlock
 operator|.
 name|Builder
@@ -1455,11 +1309,6 @@ name|containerWithPipeline
 operator|.
 name|getPipeline
 argument_list|()
-argument_list|)
-operator|.
-name|setShouldCreateContainer
-argument_list|(
-name|createContainer
 argument_list|)
 decl_stmt|;
 name|LOG

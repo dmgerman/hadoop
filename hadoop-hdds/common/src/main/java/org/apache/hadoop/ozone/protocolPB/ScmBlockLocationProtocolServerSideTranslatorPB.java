@@ -470,14 +470,6 @@ name|getProtobufMessage
 argument_list|()
 argument_list|)
 operator|.
-name|setCreateContainer
-argument_list|(
-name|allocatedBlock
-operator|.
-name|getCreateContainer
-argument_list|()
-argument_list|)
-operator|.
 name|setErrorCode
 argument_list|(
 name|AllocateScmBlockResponseProto

@@ -368,54 +368,6 @@ name|state
 condition|)
 block|{
 case|case
-name|ALLOCATED
-case|:
-comment|// We cannot close a container in ALLOCATED state, moving the
-comment|// container to CREATING state, this should eventually
-comment|// timeout and the container will be moved to DELETING state.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Closing container #{} in {} state"
-argument_list|,
-name|containerID
-argument_list|,
-name|state
-argument_list|)
-expr_stmt|;
-name|containerManager
-operator|.
-name|updateContainerState
-argument_list|(
-name|containerID
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleEvent
-operator|.
-name|CREATE
-argument_list|)
-expr_stmt|;
-break|break;
-case|case
-name|CREATING
-case|:
-comment|// We cannot close a container in CREATING state, it will eventually
-comment|// timeout and moved to DELETING state.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Closing container {} in {} state"
-argument_list|,
-name|containerID
-argument_list|,
-name|state
-argument_list|)
-expr_stmt|;
-break|break;
-case|case
 name|OPEN
 case|:
 name|containerManager

@@ -659,11 +659,6 @@ name|setPipeline
 argument_list|(
 name|pipeline
 argument_list|)
-operator|.
-name|setShouldCreateContainer
-argument_list|(
-literal|false
-argument_list|)
 decl_stmt|;
 return|return
 name|abb

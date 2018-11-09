@@ -739,6 +739,22 @@ operator|.
 name|ONE
 argument_list|)
 decl_stmt|;
+comment|// First write and flush creates a container in the datanode
+name|key
+operator|.
+name|write
+argument_list|(
+literal|"ratis"
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|key
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|key
 operator|.
 name|write
@@ -884,7 +900,8 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-comment|// flush will throw an exception
+comment|// flush will throw an exception for the second write as the container
+comment|// dir has been deleted.
 name|key
 operator|.
 name|flush
