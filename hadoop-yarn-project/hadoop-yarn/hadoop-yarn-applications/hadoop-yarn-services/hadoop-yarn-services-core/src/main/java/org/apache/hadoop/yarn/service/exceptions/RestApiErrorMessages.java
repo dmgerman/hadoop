@@ -344,18 +344,6 @@ literal|"%s. Expression element names should be a valid constraint name or an "
 operator|+
 literal|"expression name defined for this component only."
 decl_stmt|;
-DECL|field|ERROR_KEYTAB_URI_SCHEME_INVALID
-name|String
-name|ERROR_KEYTAB_URI_SCHEME_INVALID
-init|=
-literal|"Unsupported keytab URI scheme: %s"
-decl_stmt|;
-DECL|field|ERROR_KEYTAB_URI_INVALID
-name|String
-name|ERROR_KEYTAB_URI_INVALID
-init|=
-literal|"Invalid keytab URI: %s"
-decl_stmt|;
 DECL|field|ERROR_COMP_INSTANCE_DOES_NOT_NEED_UPGRADE
 name|String
 name|ERROR_COMP_INSTANCE_DOES_NOT_NEED_UPGRADE
