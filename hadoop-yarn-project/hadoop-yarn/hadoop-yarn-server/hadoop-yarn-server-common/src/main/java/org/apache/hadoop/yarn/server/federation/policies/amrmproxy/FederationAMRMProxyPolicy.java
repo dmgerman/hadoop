@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -150,8 +160,8 @@ name|FederationAMRMProxyPolicy
 extends|extends
 name|ConfigurableFederationPolicy
 block|{
-comment|/**    * Splits the {@link ResourceRequest}s from the client across one or more    * sub-clusters based on the policy semantics (e.g., broadcast, load-based).    *    * @param resourceRequests the list of {@link ResourceRequest}s from the AM to    *          be split    *    * @return map of sub-cluster as identified by {@link SubClusterId} to the    *         list of {@link ResourceRequest}s that should be forwarded to it    *    * @throws YarnException in case the request is malformed or no viable    *           sub-clusters can be found.    */
-DECL|method|splitResourceRequests ( List<ResourceRequest> resourceRequests)
+comment|/**    * Splits the {@link ResourceRequest}s from the client across one or more    * sub-clusters based on the policy semantics (e.g., broadcast, load-based).    *    * @param resourceRequests the list of {@link ResourceRequest}s from the AM to    *          be split    * @param timedOutSubClusters the set of sub-clusters that haven't had a    *          successful heart-beat response for a while.    * @return map of sub-cluster as identified by {@link SubClusterId} to the    *         list of {@link ResourceRequest}s that should be forwarded to it    * @throws YarnException in case the request is malformed or no viable    *           sub-clusters can be found.    */
+DECL|method|splitResourceRequests ( List<ResourceRequest> resourceRequests, Set<SubClusterId> timedOutSubClusters)
 name|Map
 argument_list|<
 name|SubClusterId
@@ -168,6 +178,12 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|resourceRequests
+parameter_list|,
+name|Set
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|timedOutSubClusters
 parameter_list|)
 throws|throws
 name|YarnException

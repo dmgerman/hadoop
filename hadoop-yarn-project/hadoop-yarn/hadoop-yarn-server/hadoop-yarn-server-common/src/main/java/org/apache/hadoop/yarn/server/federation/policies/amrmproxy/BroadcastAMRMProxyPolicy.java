@@ -56,6 +56,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -244,7 +254,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|splitResourceRequests ( List<ResourceRequest> resourceRequests)
+DECL|method|splitResourceRequests ( List<ResourceRequest> resourceRequests, Set<SubClusterId> timedOutSubClusters)
 specifier|public
 name|Map
 argument_list|<
@@ -262,6 +272,12 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|resourceRequests
+parameter_list|,
+name|Set
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|timedOutSubClusters
 parameter_list|)
 throws|throws
 name|YarnException

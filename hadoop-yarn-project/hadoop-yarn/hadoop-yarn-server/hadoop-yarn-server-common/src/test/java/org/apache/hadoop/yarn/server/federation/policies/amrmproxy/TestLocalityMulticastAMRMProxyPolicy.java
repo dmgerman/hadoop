@@ -1103,6 +1103,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// pretty print requests
@@ -1220,6 +1227,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1398,6 +1412,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|validateSplit
@@ -1499,6 +1520,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// we expect all three to appear for a zero-sized ANY
@@ -1657,6 +1685,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// pretty print requests
@@ -2078,6 +2113,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|validateSplit
@@ -4298,6 +4340,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|checkExpectedAllocation
@@ -4471,6 +4520,13 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+operator|new
+name|HashSet
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|/*      * Since node request is a cancel, it should not be considered associated      * with localized requests. Based on headroom, we expect 75 containers to      * got to subcluster0 (60) and subcluster2 (15) according to the advertised      * headroom (40 and 10), no containers for sublcuster1 as it advertise zero      * headroom, and 25 to subcluster5 which has unknown headroom, and so it      * gets 1/4th of the load      */
@@ -4581,12 +4637,23 @@ init|=
 name|createSimpleRequest
 argument_list|()
 decl_stmt|;
-comment|// Update the response timestamp for the first time
 name|prepPolicyWithHeadroom
 argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// For first time, no sub-cluster expired
+name|Set
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|expiredSCList
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|Map
 argument_list|<
 name|SubClusterId
@@ -4609,6 +4676,8 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+name|expiredSCList
 argument_list|)
 decl_stmt|;
 comment|// pretty print requests
@@ -4684,10 +4753,29 @@ argument_list|(
 literal|800
 argument_list|)
 expr_stmt|;
-comment|// Update the response timestamp for the second time, skipping sc0 and sc5
-name|prepPolicyWithHeadroom
+comment|// For the second time, sc0 and sc5 expired
+name|expiredSCList
+operator|.
+name|add
 argument_list|(
-literal|false
+name|SubClusterId
+operator|.
+name|newInstance
+argument_list|(
+literal|"subcluster0"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|expiredSCList
+operator|.
+name|add
+argument_list|(
+name|SubClusterId
+operator|.
+name|newInstance
+argument_list|(
+literal|"subcluster5"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|response
@@ -4703,6 +4791,8 @@ operator|.
 name|splitResourceRequests
 argument_list|(
 name|resourceRequests
+argument_list|,
+name|expiredSCList
 argument_list|)
 expr_stmt|;
 comment|// pretty print requests
