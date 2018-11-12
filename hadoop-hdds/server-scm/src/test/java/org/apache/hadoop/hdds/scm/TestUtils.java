@@ -1606,9 +1606,6 @@ name|THREE
 argument_list|,
 literal|"root"
 argument_list|)
-operator|.
-name|getContainerInfo
-argument_list|()
 return|;
 block|}
 DECL|method|closeContainer (ContainerManager containerManager, ContainerID id)

@@ -748,6 +748,8 @@ name|conf
 argument_list|,
 name|nodeManager
 argument_list|,
+name|pipelineManager
+argument_list|,
 name|mapping
 argument_list|,
 name|eventQueue

@@ -256,7 +256,7 @@ operator|.
 name|getContainerManager
 argument_list|()
 operator|.
-name|getContainerWithPipeline
+name|getContainer
 argument_list|(
 name|ContainerID
 operator|.
@@ -268,9 +268,6 @@ name|getContainerID
 argument_list|()
 argument_list|)
 argument_list|)
-operator|.
-name|getContainerInfo
-argument_list|()
 operator|.
 name|isOpen
 argument_list|()

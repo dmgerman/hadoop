@@ -90,51 +90,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|ContainerWithPipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
 name|HddsProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|pipeline
-operator|.
-name|PipelineNotFoundException
 import|;
 end_import
 
@@ -242,19 +202,6 @@ parameter_list|)
 throws|throws
 name|ContainerNotFoundException
 function_decl|;
-comment|/**    * Returns the ContainerInfo from the container ID.    *    * @param containerID - ID of container.    * @return - ContainerWithPipeline such as creation state and the pipeline.    * @throws IOException    */
-DECL|method|getContainerWithPipeline (ContainerID containerID)
-name|ContainerWithPipeline
-name|getContainerWithPipeline
-parameter_list|(
-name|ContainerID
-name|containerID
-parameter_list|)
-throws|throws
-name|ContainerNotFoundException
-throws|,
-name|PipelineNotFoundException
-function_decl|;
 comment|/**    * Returns containers under certain conditions.    * Search container IDs from start ID(exclusive),    * The max size of the searching range cannot exceed the    * value of count.    *    * @param startContainerID start containerID,>=0,    * start searching at the head if 0.    * @param count count must be>= 0    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big.    *    * @return a list of container.    * @throws IOException    */
 DECL|method|listContainer (ContainerID startContainerID, int count)
 name|List
@@ -270,9 +217,9 @@ name|int
 name|count
 parameter_list|)
 function_decl|;
-comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param owner    * @return - ContainerWithPipeline.    * @throws IOException    */
+comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param owner    * @return - ContainerInfo.    * @throws IOException    */
 DECL|method|allocateContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor replicationFactor, String owner)
-name|ContainerWithPipeline
+name|ContainerInfo
 name|allocateContainer
 parameter_list|(
 name|HddsProtos
@@ -380,10 +327,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the ContainerWithPipeline.    * @return NodeManager    */
-DECL|method|getMatchingContainerWithPipeline (long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
-name|ContainerWithPipeline
-name|getMatchingContainerWithPipeline
+comment|/**    * Returns the ContainerInfo.    * @return NodeManager    */
+DECL|method|getMatchingContainer (long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
+name|ContainerInfo
+name|getMatchingContainer
 parameter_list|(
 name|long
 name|size

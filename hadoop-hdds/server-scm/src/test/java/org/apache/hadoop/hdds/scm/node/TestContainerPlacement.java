@@ -138,7 +138,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|SCMContainerManager
+name|ContainerInfo
 import|;
 end_import
 
@@ -156,11 +156,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|ContainerWithPipeline
+name|SCMContainerManager
 import|;
 end_import
 
@@ -956,8 +952,8 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerWithPipeline
-name|containerWithPipeline
+name|ContainerInfo
+name|container
 init|=
 name|containerManager
 operator|.
@@ -986,13 +982,15 @@ operator|.
 name|getNumber
 argument_list|()
 argument_list|,
-name|containerWithPipeline
+name|containerManager
 operator|.
-name|getPipeline
-argument_list|()
+name|getContainerReplicas
+argument_list|(
+name|container
 operator|.
-name|getNodes
+name|containerID
 argument_list|()
+argument_list|)
 operator|.
 name|size
 argument_list|()

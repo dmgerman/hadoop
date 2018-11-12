@@ -202,28 +202,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|ContainerWithPipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -319,6 +297,60 @@ operator|.
 name|HddsProtos
 operator|.
 name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|PipelineManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|PipelineNotFoundException
 import|;
 end_import
 
@@ -630,6 +662,12 @@ decl_stmt|;
 comment|// TODO : FIX ME : Hard coding the owner.
 comment|// Currently only user of the block service is Ozone, CBlock manages blocks
 comment|// by itself and does not rely on the Block service offered by SCM.
+DECL|field|pipelineManager
+specifier|private
+specifier|final
+name|PipelineManager
+name|pipelineManager
+decl_stmt|;
 DECL|field|containerManager
 specifier|private
 specifier|final
@@ -676,8 +714,8 @@ specifier|private
 name|ChillModePrecheck
 name|chillModePrecheck
 decl_stmt|;
-comment|/**    * Constructor.    *    * @param conf - configuration.    * @param nodeManager - node manager.    * @param containerManager - container manager.    * @param eventPublisher - event publisher.    * @throws IOException    */
-DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final ContainerManager containerManager, EventPublisher eventPublisher)
+comment|/**    * Constructor.    *    * @param conf - configuration.    * @param nodeManager - node manager.    * @param pipelineManager - pipeline manager.    * @param containerManager - container manager.    * @param eventPublisher - event publisher.    * @throws IOException    */
+DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final PipelineManager pipelineManager, final ContainerManager containerManager, EventPublisher eventPublisher)
 specifier|public
 name|BlockManagerImpl
 parameter_list|(
@@ -690,6 +728,10 @@ name|NodeManager
 name|nodeManager
 parameter_list|,
 specifier|final
+name|PipelineManager
+name|pipelineManager
+parameter_list|,
+specifier|final
 name|ContainerManager
 name|containerManager
 parameter_list|,
@@ -699,6 +741,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+operator|.
+name|pipelineManager
+operator|=
+name|pipelineManager
+expr_stmt|;
 name|this
 operator|.
 name|containerManager
@@ -895,8 +943,6 @@ parameter_list|,
 name|String
 name|owner
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 for|for
 control|(
@@ -913,13 +959,13 @@ name|i
 operator|++
 control|)
 block|{
-name|ContainerWithPipeline
-name|containerWithPipeline
+name|ContainerInfo
+name|containerInfo
 decl_stmt|;
 try|try
 block|{
 comment|// TODO: Fix this later when Ratis is made the Default.
-name|containerWithPipeline
+name|containerInfo
 operator|=
 name|containerManager
 operator|.
@@ -934,7 +980,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|containerWithPipeline
+name|containerInfo
 operator|==
 literal|null
 condition|)
@@ -1047,15 +1093,15 @@ argument_list|)
 throw|;
 block|}
 comment|/*       Here is the high level logic.        1. We try to find containers in open state.        2. If there are no containers in open state, then we will pre-allocate a       bunch of containers in SCM and try again.        TODO : Support random picking of two containers from the list. So we can              use different kind of policies.     */
-name|ContainerWithPipeline
-name|containerWithPipeline
+name|ContainerInfo
+name|containerInfo
 decl_stmt|;
 comment|// look for OPEN containers that match the criteria.
-name|containerWithPipeline
+name|containerInfo
 operator|=
 name|containerManager
 operator|.
-name|getMatchingContainerWithPipeline
+name|getMatchingContainer
 argument_list|(
 name|size
 argument_list|,
@@ -1081,7 +1127,7 @@ comment|// state, we have to check again as we only hold a read lock.
 comment|// Some other thread might have pre-allocated container in meantime.
 if|if
 condition|(
-name|containerWithPipeline
+name|containerInfo
 operator|==
 literal|null
 condition|)
@@ -1109,11 +1155,11 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|containerWithPipeline
+name|containerInfo
 operator|=
 name|containerManager
 operator|.
-name|getMatchingContainerWithPipeline
+name|getMatchingContainer
 argument_list|(
 name|size
 argument_list|,
@@ -1133,7 +1179,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|containerWithPipeline
+name|containerInfo
 operator|==
 literal|null
 condition|)
@@ -1149,11 +1195,11 @@ argument_list|,
 name|owner
 argument_list|)
 expr_stmt|;
-name|containerWithPipeline
+name|containerInfo
 operator|=
 name|containerManager
 operator|.
-name|getMatchingContainerWithPipeline
+name|getMatchingContainer
 argument_list|(
 name|size
 argument_list|,
@@ -1175,7 +1221,7 @@ block|}
 block|}
 if|if
 condition|(
-name|containerWithPipeline
+name|containerInfo
 operator|!=
 literal|null
 condition|)
@@ -1183,13 +1229,7 @@ block|{
 return|return
 name|newBlock
 argument_list|(
-name|containerWithPipeline
-argument_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|OPEN
+name|containerInfo
 argument_list|)
 return|;
 block|}
@@ -1212,58 +1252,32 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * newBlock - returns a new block assigned to a container.    *    * @param containerWithPipeline - Container Info.    * @param state - Current state of the container.    * @return AllocatedBlock    */
-DECL|method|newBlock (ContainerWithPipeline containerWithPipeline, HddsProtos.LifeCycleState state)
+comment|/**    * newBlock - returns a new block assigned to a container.    *    * @param containerInfo - Container Info.    * @return AllocatedBlock    */
+DECL|method|newBlock (ContainerInfo containerInfo)
 specifier|private
 name|AllocatedBlock
 name|newBlock
 parameter_list|(
-name|ContainerWithPipeline
-name|containerWithPipeline
-parameter_list|,
-name|HddsProtos
-operator|.
-name|LifeCycleState
-name|state
-parameter_list|)
-throws|throws
-name|IOException
-block|{
 name|ContainerInfo
 name|containerInfo
+parameter_list|)
+block|{
+try|try
+block|{
+specifier|final
+name|Pipeline
+name|pipeline
 init|=
-name|containerWithPipeline
-operator|.
-name|getContainerInfo
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|containerWithPipeline
+name|pipelineManager
 operator|.
 name|getPipeline
-argument_list|()
-operator|.
-name|getNodes
-argument_list|()
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
 argument_list|(
-literal|"Pipeline Machine count is zero."
+name|containerInfo
+operator|.
+name|getPipelineID
+argument_list|()
 argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
+decl_stmt|;
 comment|// TODO : Revisit this local ID allocation when HA is added.
 name|long
 name|localID
@@ -1305,10 +1319,7 @@ argument_list|)
 operator|.
 name|setPipeline
 argument_list|(
-name|containerWithPipeline
-operator|.
-name|getPipeline
-argument_list|()
+name|pipeline
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1328,6 +1339,26 @@ operator|.
 name|build
 argument_list|()
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|PipelineNotFoundException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Pipeline Machine count is zero."
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 block|}
 comment|/**    * Deletes a list of blocks in an atomic operation. Internally, SCM writes    * these blocks into a    * {@link DeletedBlockLog} and deletes them from SCM DB. If this is    * successful, given blocks are    * entering pending deletion state and becomes invisible from SCM namespace.    *    * @param blockIDs block IDs. This is often the list of blocks of a    * particular object key.    * @throws IOException if exception happens, non of the blocks is deleted.    */
 annotation|@

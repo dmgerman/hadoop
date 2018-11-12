@@ -717,9 +717,6 @@ name|THREE
 argument_list|,
 literal|"root"
 argument_list|)
-operator|.
-name|getContainerInfo
-argument_list|()
 decl_stmt|;
 name|ContainerInfo
 name|cont2
@@ -738,9 +735,6 @@ name|THREE
 argument_list|,
 literal|"root"
 argument_list|)
-operator|.
-name|getContainerInfo
-argument_list|()
 decl_stmt|;
 comment|// Open Container
 name|ContainerInfo
@@ -760,9 +754,6 @@ name|THREE
 argument_list|,
 literal|"root"
 argument_list|)
-operator|.
-name|getContainerInfo
-argument_list|()
 decl_stmt|;
 name|long
 name|c1

@@ -845,7 +845,17 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Could not allocate container"
+literal|"Could not allocate container. Cannot get any"
+operator|+
+literal|" matching pipeline for Type:"
+operator|+
+name|type
+operator|+
+literal|", Factor:"
+operator|+
+name|replicationFactor
+operator|+
+literal|", State:PipelineState.OPEN"
 argument_list|)
 throw|;
 block|}

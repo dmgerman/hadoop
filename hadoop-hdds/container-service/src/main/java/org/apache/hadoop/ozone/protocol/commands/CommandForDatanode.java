@@ -92,6 +92,7 @@ name|T
 argument_list|>
 name|command
 decl_stmt|;
+comment|// TODO: Command for datanode should take DatanodeDetails as parameter.
 DECL|method|CommandForDatanode (UUID datanodeId, SCMCommand<T> command)
 specifier|public
 name|CommandForDatanode

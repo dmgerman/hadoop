@@ -434,6 +434,7 @@ return|return;
 block|}
 if|if
 condition|(
+operator|!
 name|container
 operator|.
 name|getContainerData

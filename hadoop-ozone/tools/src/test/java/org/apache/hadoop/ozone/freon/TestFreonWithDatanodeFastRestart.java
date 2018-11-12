@@ -530,6 +530,20 @@ name|getIndex
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// TODO: fix me
+comment|// Give some time for the datanode to register again with SCM.
+comment|// If we try to use the pipeline before the datanode registers with SCM
+comment|// we end up in "NullPointerException: scmId cannot be null" in
+comment|// datanode statemachine and datanode crashes.
+comment|// This has to be fixed. Check HDDS-830.
+comment|// Until then this sleep should help us!
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
 name|startFreon
 argument_list|()
 expr_stmt|;

@@ -50,6 +50,24 @@ name|scm
 operator|.
 name|container
 operator|.
+name|ContainerInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
 name|ContainerManager
 import|;
 end_import
@@ -328,6 +346,10 @@ argument_list|()
 expr_stmt|;
 name|ratisPipeline1
 operator|=
+name|pipelineManager
+operator|.
+name|getPipeline
+argument_list|(
 name|containerManager
 operator|.
 name|allocateContainer
@@ -339,11 +361,16 @@ argument_list|,
 literal|"Owner1"
 argument_list|)
 operator|.
-name|getPipeline
+name|getPipelineID
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|ratisPipeline2
 operator|=
+name|pipelineManager
+operator|.
+name|getPipeline
+argument_list|(
 name|containerManager
 operator|.
 name|allocateContainer
@@ -355,8 +382,9 @@ argument_list|,
 literal|"Owner2"
 argument_list|)
 operator|.
-name|getPipeline
+name|getPipelineID
 argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// At this stage, there should be 2 pipeline one with 1 open container
 comment|// each. Try restarting the SCM and then discover that pipeline are in
@@ -484,10 +512,10 @@ argument_list|,
 name|ratisPipeline2
 argument_list|)
 expr_stmt|;
-comment|// Try creating a new ratis pipeline, it should be from the same pipeline
+comment|// Try creating a new container, it should be from the same pipeline
 comment|// as was before restart
-name|Pipeline
-name|newRatisPipeline
+name|ContainerInfo
+name|containerInfo
 init|=
 name|newContainerManager
 operator|.
@@ -499,17 +527,14 @@ name|THREE
 argument_list|,
 literal|"Owner1"
 argument_list|)
-operator|.
-name|getPipeline
-argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|newRatisPipeline
+name|containerInfo
 operator|.
-name|getId
+name|getPipelineID
 argument_list|()
 argument_list|,
 name|ratisPipeline1

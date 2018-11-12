@@ -948,6 +948,8 @@ name|conf
 argument_list|,
 name|nodeManager
 argument_list|,
+name|pipelineManager
+argument_list|,
 name|containerManager
 argument_list|,
 name|eventQueue
