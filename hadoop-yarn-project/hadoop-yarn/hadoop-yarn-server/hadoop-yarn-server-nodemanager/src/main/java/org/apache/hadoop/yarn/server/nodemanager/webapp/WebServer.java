@@ -690,6 +690,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|ContainerShellWebSocket
+operator|.
+name|init
+argument_list|(
+name|nmContext
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info

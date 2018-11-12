@@ -60,6 +60,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|IOStreamPair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|server
@@ -71,6 +89,26 @@ operator|.
 name|container
 operator|.
 name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|executor
+operator|.
+name|ContainerExecContext
 import|;
 end_import
 
@@ -147,7 +185,18 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
-comment|/**    * Return the host and ip of the container    *    * @param container the {@link Container}    * @throws ContainerExecutionException if an error occurs while getting the ip    * and hostname    */
+comment|/**    * Run a program in container.    *    * @param ctx the {@link ContainerExecContext}    * @return stdin and stdout of container exec    * @throws ContainerExecutionException    */
+DECL|method|execContainer (ContainerExecContext ctx)
+name|IOStreamPair
+name|execContainer
+parameter_list|(
+name|ContainerExecContext
+name|ctx
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+function_decl|;
+comment|/**    * Return the host and ip of the container.    *    * @param container the {@link Container}    * @throws ContainerExecutionException if an error occurs while getting the ip    * and hostname    */
 DECL|method|getIpAndHost (Container container)
 name|String
 index|[]

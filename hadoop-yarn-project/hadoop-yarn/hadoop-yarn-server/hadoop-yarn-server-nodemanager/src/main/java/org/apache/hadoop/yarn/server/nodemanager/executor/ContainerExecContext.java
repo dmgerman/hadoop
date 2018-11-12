@@ -50,6 +50,28 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|Container
+import|;
+end_import
+
 begin_comment
 comment|/**  * Encapsulates information required for starting/launching containers.  */
 end_comment
@@ -84,7 +106,7 @@ decl_stmt|;
 DECL|field|container
 specifier|private
 specifier|final
-name|String
+name|Container
 name|container
 decl_stmt|;
 comment|/**    *  Builder for ContainerExecContext.    */
@@ -107,7 +129,7 @@ name|appId
 decl_stmt|;
 DECL|field|container
 specifier|private
-name|String
+name|Container
 name|container
 decl_stmt|;
 DECL|method|Builder ()
@@ -115,20 +137,20 @@ specifier|public
 name|Builder
 parameter_list|()
 block|{     }
-DECL|method|setContainer (String container)
+DECL|method|setContainer (Container c)
 specifier|public
 name|Builder
 name|setContainer
 parameter_list|(
-name|String
-name|container
+name|Container
+name|c
 parameter_list|)
 block|{
 name|this
 operator|.
 name|container
 operator|=
-name|container
+name|c
 expr_stmt|;
 return|return
 name|this
@@ -244,10 +266,10 @@ operator|.
 name|appId
 return|;
 block|}
-DECL|method|getContainerId ()
+DECL|method|getContainer ()
 specifier|public
-name|String
-name|getContainerId
+name|Container
+name|getContainer
 parameter_list|()
 block|{
 return|return

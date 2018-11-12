@@ -1410,6 +1410,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Container
+name|container
+init|=
+name|mock
+argument_list|(
+name|Container
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|ContainerExecContext
@@ -1437,7 +1447,7 @@ argument_list|)
 operator|.
 name|setContainer
 argument_list|(
-literal|"container1"
+name|container
 argument_list|)
 expr_stmt|;
 name|ContainerExecContext

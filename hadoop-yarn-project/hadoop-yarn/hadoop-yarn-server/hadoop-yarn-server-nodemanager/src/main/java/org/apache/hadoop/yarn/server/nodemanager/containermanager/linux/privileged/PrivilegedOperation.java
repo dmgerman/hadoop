@@ -149,6 +149,13 @@ literal|""
 argument_list|)
 block|,
 comment|//no CLI switch supported yet
+DECL|enumConstant|EXEC_CONTAINER
+name|EXEC_CONTAINER
+argument_list|(
+literal|"--run-docker"
+argument_list|)
+block|,
+comment|//no CLI switch supported yet
 DECL|enumConstant|DELETE_AS_USER
 name|DELETE_AS_USER
 argument_list|(
