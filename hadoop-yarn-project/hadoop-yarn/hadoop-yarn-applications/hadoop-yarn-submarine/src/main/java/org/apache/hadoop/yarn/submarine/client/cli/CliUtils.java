@@ -982,8 +982,7 @@ operator|==
 literal|1
 condition|)
 block|{
-if|if
-condition|(
+return|return
 name|args
 index|[
 literal|0
@@ -1003,12 +1002,7 @@ name|equals
 argument_list|(
 literal|"--help"
 argument_list|)
-condition|)
-block|{
-return|return
-literal|true
 return|;
-block|}
 block|}
 return|return
 literal|false

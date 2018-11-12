@@ -316,9 +316,7 @@ name|int
 name|port
 parameter_list|)
 block|{
-name|String
-name|commonEndpointSuffix
-init|=
+return|return
 literal|"."
 operator|+
 name|serviceName
@@ -334,9 +332,6 @@ operator|+
 literal|":"
 operator|+
 name|port
-decl_stmt|;
-return|return
-name|commonEndpointSuffix
 return|;
 block|}
 DECL|method|getTFConfigEnv (String curCommponentName, int nWorkers, int nPs, String serviceName, String userName, String domain)

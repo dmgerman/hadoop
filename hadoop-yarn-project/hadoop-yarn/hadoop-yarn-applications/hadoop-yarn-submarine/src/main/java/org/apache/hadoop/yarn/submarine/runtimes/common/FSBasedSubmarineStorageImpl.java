@@ -433,9 +433,7 @@ argument_list|,
 name|create
 argument_list|)
 decl_stmt|;
-name|Path
-name|modelInfo
-init|=
+return|return
 operator|new
 name|Path
 argument_list|(
@@ -445,9 +443,6 @@ name|version
 operator|+
 literal|".info"
 argument_list|)
-decl_stmt|;
-return|return
-name|modelInfo
 return|;
 block|}
 DECL|method|serializeMap (FSDataOutputStream fos, Map<String, String> map)
@@ -586,9 +581,7 @@ argument_list|,
 name|create
 argument_list|)
 decl_stmt|;
-name|Path
-name|fileName
-init|=
+return|return
 operator|new
 name|Path
 argument_list|(
@@ -596,9 +589,6 @@ name|path
 argument_list|,
 literal|"job.info"
 argument_list|)
-decl_stmt|;
-return|return
-name|fileName
 return|;
 block|}
 block|}

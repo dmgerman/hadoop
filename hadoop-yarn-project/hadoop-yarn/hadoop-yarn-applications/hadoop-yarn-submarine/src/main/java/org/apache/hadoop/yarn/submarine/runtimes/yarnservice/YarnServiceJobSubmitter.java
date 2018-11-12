@@ -860,8 +860,7 @@ name|String
 name|content
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|content
 operator|!=
 literal|null
@@ -872,14 +871,6 @@ name|contains
 argument_list|(
 literal|"hdfs://"
 argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|addHdfsClassPathIfNeeded (RunJobParameters parameters, PrintWriter fw, Component comp)
