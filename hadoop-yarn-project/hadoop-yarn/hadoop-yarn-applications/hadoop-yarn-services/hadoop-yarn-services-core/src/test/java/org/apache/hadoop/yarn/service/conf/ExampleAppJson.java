@@ -153,6 +153,15 @@ name|EXTERNAL_JSON_2
 init|=
 literal|"external2.json"
 decl_stmt|;
+DECL|field|EXTERNAL_JSON_3
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXTERNAL_JSON_3
+init|=
+literal|"external3.json"
+decl_stmt|;
 DECL|field|PACKAGE
 specifier|public
 specifier|static

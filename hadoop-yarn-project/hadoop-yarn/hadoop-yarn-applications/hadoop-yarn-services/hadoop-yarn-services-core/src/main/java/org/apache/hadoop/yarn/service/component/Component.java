@@ -4821,6 +4821,11 @@ name|specInfo
 operator|.
 name|getValue
 argument_list|()
+argument_list|,
+name|specInfo
+operator|.
+name|getAttributes
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|resource
