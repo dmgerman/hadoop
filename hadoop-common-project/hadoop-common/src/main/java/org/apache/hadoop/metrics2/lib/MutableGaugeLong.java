@@ -287,6 +287,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * @return  the value of the metric    */
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|value
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
