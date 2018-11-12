@@ -1646,6 +1646,74 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|volume
+operator|.
+name|csi
+operator|.
+name|VolumeManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|volume
+operator|.
+name|csi
+operator|.
+name|VolumeManagerImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|volume
+operator|.
+name|csi
+operator|.
+name|processor
+operator|.
+name|VolumeAMSProcessor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|webapp
 operator|.
 name|RMWebApp
@@ -2005,6 +2073,16 @@ operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
 import|;
 end_import
 
@@ -4979,13 +5057,78 @@ name|systemServiceManager
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Add volume manager to RM context when it is necessary
+name|String
+index|[]
+name|amsProcessorList
+init|=
+name|conf
+operator|.
+name|getStrings
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_APPLICATION_MASTER_SERVICE_PROCESSORS
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|amsProcessorList
+operator|!=
+literal|null
+operator|&&
+name|Arrays
+operator|.
+name|stream
+argument_list|(
+name|amsProcessorList
+argument_list|)
+operator|.
+name|anyMatch
+argument_list|(
+name|s
+lambda|->
+name|VolumeAMSProcessor
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|s
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|VolumeManager
+name|volumeManager
+operator|=
+operator|new
+name|VolumeManagerImpl
+argument_list|()
+block|;
+name|rmContext
+operator|.
+name|setVolumeManager
+argument_list|(
+name|volumeManager
+argument_list|)
+empty_stmt|;
+name|addIfService
+argument_list|(
+name|volumeManager
+argument_list|)
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceInit
-argument_list|(
+parameter_list|(
 name|conf
-argument_list|)
-expr_stmt|;
+parameter_list|)
+constructor_decl|;
 block|}
 DECL|method|createAndRegisterOpportunisticDispatcher ( ApplicationMasterService service)
 specifier|private
@@ -5275,6 +5418,9 @@ block|}
 block|}
 block|}
 block|}
+end_class
+
+begin_class
 annotation|@
 name|Private
 DECL|class|RMFatalEventDispatcher
@@ -5451,7 +5597,13 @@ block|}
 block|}
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/**    * Transition to standby state in a new thread. The transition operation is    * asynchronous to avoid deadlock caused by cyclic dependency.    */
+end_comment
+
+begin_function
 DECL|method|handleTransitionToStandByInNewThread ()
 specifier|private
 name|void
@@ -5482,7 +5634,13 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * The class to transition RM to standby state. The same    * {@link StandByTransitionRunnable} object could be used in multiple threads,    * but runs only once. That's because RM can go back to active state after    * transition to standby state, the same runnable in the old context can't    * transition RM to standby state again. A new runnable is created every time    * RM transitions to active state.    */
+end_comment
+
+begin_class
 DECL|class|StandByTransitionRunnable
 specifier|private
 class|class
@@ -5599,6 +5757,9 @@ block|}
 block|}
 block|}
 block|}
+end_class
+
+begin_class
 annotation|@
 name|Private
 DECL|class|ApplicationEventDispatcher
@@ -5713,6 +5874,9 @@ block|}
 block|}
 block|}
 block|}
+end_class
+
+begin_class
 annotation|@
 name|Private
 DECL|class|ApplicationAttemptEventDispatcher
@@ -5985,6 +6149,9 @@ block|}
 block|}
 block|}
 block|}
+end_class
+
+begin_class
 annotation|@
 name|Private
 DECL|class|NodeEventDispatcher
@@ -6107,7 +6274,13 @@ block|}
 block|}
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/**    * Return a HttpServer.Builder that the journalnode / namenode / secondary    * namenode can use to initialize their HTTP / HTTPS server.    *    * @param conf configuration object    * @param httpAddr HTTP address    * @param httpsAddr HTTPS address    * @param name  Name of the server    * @throws IOException from Builder    * @return builder object    */
+end_comment
+
+begin_function
 DECL|method|httpServerTemplateForRM (Configuration conf, final InetSocketAddress httpAddr, final InetSocketAddress httpsAddr, String name)
 specifier|public
 specifier|static
@@ -6218,6 +6391,9 @@ return|return
 name|builder
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|startWepApp ()
 specifier|protected
 name|void
@@ -6741,6 +6917,9 @@ name|uiWebAppContext
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|getWebAppsPath (String appName)
 specifier|private
 name|String
@@ -6784,7 +6963,13 @@ name|toString
 argument_list|()
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Helper method to create and init {@link #activeServices}. This creates an    * instance of {@link RMActiveServices} and initializes it.    *    * @param fromActive Indicates if the call is from the active state transition    *                   or the RM initialization.    */
+end_comment
+
+begin_function
 DECL|method|createAndInitActiveServices (boolean fromActive)
 specifier|protected
 name|void
@@ -6816,7 +7001,13 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Helper method to start {@link #activeServices}.    * @throws Exception    */
+end_comment
+
+begin_function
 DECL|method|startActiveServices ()
 name|void
 name|startActiveServices
@@ -6845,7 +7036,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Helper method to stop {@link #activeServices}.    * @throws Exception    */
+end_comment
+
+begin_function
 DECL|method|stopActiveServices ()
 name|void
 name|stopActiveServices
@@ -6869,6 +7066,9 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|reinitialize (boolean initialize)
 name|void
 name|reinitialize
@@ -6908,6 +7108,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 annotation|@
 name|VisibleForTesting
 DECL|method|areActiveServicesRunning ()
@@ -6931,6 +7134,9 @@ name|STARTED
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|transitionToActive ()
 specifier|synchronized
 name|void
@@ -7038,6 +7244,9 @@ literal|"Transitioned to active state"
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|transitionToStandby (boolean initialize)
 specifier|synchronized
 name|void
@@ -7126,6 +7335,9 @@ literal|"Transitioned to standby state"
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|serviceStart ()
@@ -7210,6 +7422,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|doSecureLogin ()
 specifier|protected
 name|void
@@ -7268,6 +7483,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -7350,6 +7568,9 @@ name|STOPPING
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|createResourceTrackerService ()
 specifier|protected
 name|ResourceTrackerService
@@ -7388,6 +7609,9 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|createClientRMService ()
 specifier|protected
 name|ClientRMService
@@ -7425,6 +7649,9 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|createApplicationMasterService ()
 specifier|protected
 name|ApplicationMasterService
@@ -7518,6 +7745,9 @@ name|scheduler
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|createAdminService ()
 specifier|protected
 name|AdminService
@@ -7532,6 +7762,9 @@ name|this
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|createRMSecretManagerService ()
 specifier|protected
 name|RMSecretManagerService
@@ -7548,6 +7781,9 @@ name|rmContext
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|isOpportunisticSchedulingEnabled (Configuration conf)
 specifier|private
 name|boolean
@@ -7573,7 +7809,13 @@ name|conf
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Create RMDelegatedNodeLabelsUpdater based on configuration.    */
+end_comment
+
+begin_function
 DECL|method|createRMDelegatedNodeLabelsUpdater ()
 specifier|protected
 name|RMDelegatedNodeLabelsUpdater
@@ -7618,6 +7860,9 @@ literal|null
 return|;
 block|}
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getClientRMService ()
@@ -7632,7 +7877,13 @@ operator|.
 name|clientRM
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * return the scheduler.    * @return the scheduler for the Resource Manager.    */
+end_comment
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getResourceScheduler ()
@@ -7647,7 +7898,13 @@ operator|.
 name|scheduler
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * return the resource tracking component.    * @return the resource tracking component.    */
+end_comment
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getResourceTrackerService ()
@@ -7662,6 +7919,9 @@ operator|.
 name|resourceTracker
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getApplicationMasterService ()
@@ -7676,6 +7936,9 @@ operator|.
 name|masterService
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getApplicationACLsManager ()
@@ -7690,6 +7953,9 @@ operator|.
 name|applicationACLsManager
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getQueueACLsManager ()
@@ -7704,6 +7970,9 @@ operator|.
 name|queueACLsManager
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Private
 annotation|@
@@ -7720,6 +7989,9 @@ operator|.
 name|federationStateStoreService
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Private
 DECL|method|getWebapp ()
@@ -7733,6 +8005,9 @@ operator|.
 name|webApp
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|recover (RMState state)
@@ -7811,6 +8086,9 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|main (String argv[])
 specifier|public
 specifier|static
@@ -8006,7 +8284,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Register the handlers for alwaysOn services    */
+end_comment
+
+begin_function
 DECL|method|setupDispatcher ()
 specifier|private
 name|Dispatcher
@@ -8038,6 +8322,9 @@ return|return
 name|dispatcher
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|resetRMContext ()
 specifier|private
 name|void
@@ -8134,6 +8421,9 @@ operator|=
 name|rmContextImpl
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|setSchedulerRecoveryStartAndWaitTime (RMState state, Configuration conf)
 specifier|private
 name|void
@@ -8183,7 +8473,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Retrieve RM bind address from configuration    *     * @param conf    * @return InetSocketAddress    */
+end_comment
+
+begin_function
 DECL|method|getBindAddress (Configuration conf)
 specifier|public
 specifier|static
@@ -8213,7 +8509,13 @@ name|DEFAULT_RM_PORT
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Deletes the RMStateStore    *    * @param conf    * @throws Exception    */
+end_comment
+
+begin_function
 annotation|@
 name|VisibleForTesting
 DECL|method|deleteRMStateStore (Configuration conf)
@@ -8289,6 +8591,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 annotation|@
 name|VisibleForTesting
 DECL|method|removeApplication (Configuration conf, String applicationId)
@@ -8383,6 +8688,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|printUsage (PrintStream out)
 specifier|private
 specifier|static
@@ -8412,6 +8720,9 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|createRMAppLifetimeMonitor ()
 specifier|protected
 name|RMAppLifetimeMonitor
@@ -8428,7 +8739,13 @@ name|rmContext
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Register ResourceManagerMXBean.    */
+end_comment
+
+begin_function
 DECL|method|registerMXBean ()
 specifier|private
 name|void
@@ -8447,6 +8764,9 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|isSecurityEnabled ()
@@ -8462,8 +8782,8 @@ name|isSecurityEnabled
 argument_list|()
 return|;
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

@@ -724,6 +724,28 @@ name|RMTimelineCollectorManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|volume
+operator|.
+name|csi
+operator|.
+name|VolumeManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * Context of the ResourceManager.  */
 end_comment
@@ -1130,6 +1152,19 @@ name|setProxyCAManager
 parameter_list|(
 name|ProxyCAManager
 name|proxyCAManager
+parameter_list|)
+function_decl|;
+DECL|method|getVolumeManager ()
+name|VolumeManager
+name|getVolumeManager
+parameter_list|()
+function_decl|;
+DECL|method|setVolumeManager (VolumeManager volumeManager)
+name|void
+name|setVolumeManager
+parameter_list|(
+name|VolumeManager
+name|volumeManager
 parameter_list|)
 function_decl|;
 block|}
