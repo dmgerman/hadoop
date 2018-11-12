@@ -28,6 +28,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -1527,6 +1549,19 @@ specifier|public
 name|void
 name|init
 parameter_list|()
+block|{     }
+annotation|@
+name|Override
+DECL|method|validateContainerCommand ( ContainerCommandRequestProto msg)
+specifier|public
+name|void
+name|validateContainerCommand
+parameter_list|(
+name|ContainerCommandRequestProto
+name|msg
+parameter_list|)
+throws|throws
+name|StorageContainerException
 block|{     }
 annotation|@
 name|Override

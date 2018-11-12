@@ -172,6 +172,50 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerNotOpenException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|InvalidContainerStateException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|StorageContainerException
 import|;
 end_import
@@ -373,6 +417,52 @@ operator|.
 name|ContainerProtos
 operator|.
 name|ContainerType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+operator|.
+name|State
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
 import|;
 end_import
 
@@ -650,6 +740,45 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Returns true for exceptions which can be ignored for marking the container    * unhealthy.    * @param result ContainerCommandResponse error code.    * @return true if exception can be ignored, false otherwise.    */
+DECL|method|canIgnoreException (Result result)
+specifier|private
+name|boolean
+name|canIgnoreException
+parameter_list|(
+name|Result
+name|result
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|result
+condition|)
+block|{
+case|case
+name|SUCCESS
+case|:
+case|case
+name|CONTAINER_UNHEALTHY
+case|:
+case|case
+name|CLOSED_CONTAINER_IO
+case|:
+case|case
+name|DELETE_ON_OPEN_CONTAINER
+case|:
+case|case
+name|ERROR_CONTAINER_NOT_EMPTY
+case|:
+return|return
+literal|true
+return|;
+default|default:
+return|return
+literal|false
+return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -977,6 +1106,18 @@ comment|// is unsuccessful, it implies the applyTransaction on the container
 comment|// failed. All subsequent transactions on the container should fail and
 comment|// hence replica will be marked unhealthy here. In this case, a close
 comment|// container action will be sent to SCM to close the container.
+comment|// ApplyTransaction called on closed Container will fail with Closed
+comment|// container exception. In such cases, ignore the exception here
+comment|// If the container is already marked unhealthy, no need to change the
+comment|// state here.
+name|Result
+name|result
+init|=
+name|responseProto
+operator|.
+name|getResult
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -987,38 +1128,50 @@ argument_list|(
 name|msg
 argument_list|)
 operator|&&
-name|responseProto
-operator|.
-name|getResult
-argument_list|()
-operator|!=
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|SUCCESS
+operator|!
+name|canIgnoreException
+argument_list|(
+name|result
+argument_list|)
 condition|)
 block|{
-comment|// If the container is open and the container operation has failed,
-comment|// it should be first marked unhealthy and the initiate the close
-comment|// container action. This also implies this is the first transaction
-comment|// which has failed, so the container is marked unhealthy right here.
+comment|// If the container is open/closing and the container operation
+comment|// has failed, it should be first marked unhealthy and the initiate the
+comment|// close container action. This also implies this is the first
+comment|// transaction which has failed, so the container is marked unhealthy
+comment|// right here.
 comment|// Once container is marked unhealthy, all the subsequent write
 comment|// transactions will fail with UNHEALTHY_CONTAINER exception.
-if|if
-condition|(
+comment|// For container to be moved to unhealthy state here, the container can
+comment|// only be in open or closing state.
+name|State
+name|containerState
+init|=
 name|container
 operator|.
-name|getContainerState
+name|getContainerData
 argument_list|()
-operator|==
-name|ContainerDataProto
 operator|.
+name|getState
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|containerState
+operator|==
 name|State
 operator|.
 name|OPEN
-condition|)
-block|{
+operator|||
+name|containerState
+operator|==
+name|State
+operator|.
+name|CLOSING
+argument_list|)
+expr_stmt|;
 name|container
 operator|.
 name|getContainerData
@@ -1038,7 +1191,6 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|responseProto
@@ -1169,6 +1321,200 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * This will be called as a part of creating the log entry during    * startTransaction in Ratis on the leader node. In such cases, if the    * container is not in open state for writing we should just fail.    * Leader will propagate the exception to client.    * @param msg  container command proto    * @throws StorageContainerException In case container state is open for write    *         requests and in invalid state for read requests.    */
+annotation|@
+name|Override
+DECL|method|validateContainerCommand ( ContainerCommandRequestProto msg)
+specifier|public
+name|void
+name|validateContainerCommand
+parameter_list|(
+name|ContainerCommandRequestProto
+name|msg
+parameter_list|)
+throws|throws
+name|StorageContainerException
+block|{
+name|ContainerType
+name|containerType
+init|=
+name|msg
+operator|.
+name|getCreateContainer
+argument_list|()
+operator|.
+name|getContainerType
+argument_list|()
+decl_stmt|;
+name|Handler
+name|handler
+init|=
+name|getHandler
+argument_list|(
+name|containerType
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|handler
+operator|==
+literal|null
+condition|)
+block|{
+name|StorageContainerException
+name|ex
+init|=
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Invalid "
+operator|+
+literal|"ContainerType "
+operator|+
+name|containerType
+argument_list|,
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_INTERNAL_ERROR
+argument_list|)
+decl_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+name|ContainerProtos
+operator|.
+name|Type
+name|cmdType
+init|=
+name|msg
+operator|.
+name|getCmdType
+argument_list|()
+decl_stmt|;
+name|long
+name|containerID
+init|=
+name|msg
+operator|.
+name|getContainerID
+argument_list|()
+decl_stmt|;
+name|Container
+name|container
+decl_stmt|;
+name|container
+operator|=
+name|getContainer
+argument_list|(
+name|containerID
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|container
+operator|!=
+literal|null
+condition|)
+block|{
+name|State
+name|containerState
+init|=
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|HddsUtils
+operator|.
+name|isReadOnly
+argument_list|(
+name|msg
+argument_list|)
+operator|&&
+name|containerState
+operator|!=
+name|State
+operator|.
+name|OPEN
+condition|)
+block|{
+switch|switch
+condition|(
+name|cmdType
+condition|)
+block|{
+case|case
+name|CreateContainer
+case|:
+comment|// Create Container is idempotent. There is nothing to validate.
+break|break;
+case|case
+name|CloseContainer
+case|:
+comment|// If the container is unhealthy, closeContainer will be rejected
+comment|// while execution. Nothing to validate here.
+break|break;
+default|default:
+comment|// if the container is not open, no updates can happen. Just throw
+comment|// an exception
+throw|throw
+operator|new
+name|ContainerNotOpenException
+argument_list|(
+literal|"Container "
+operator|+
+name|containerID
+operator|+
+literal|" in "
+operator|+
+name|containerState
+operator|+
+literal|" state"
+argument_list|)
+throw|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|HddsUtils
+operator|.
+name|isReadOnly
+argument_list|(
+name|msg
+argument_list|)
+operator|&&
+name|containerState
+operator|==
+name|State
+operator|.
+name|INVALID
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidContainerStateException
+argument_list|(
+literal|"Container "
+operator|+
+name|containerID
+operator|+
+literal|" in "
+operator|+
+name|containerState
+operator|+
+literal|" state"
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 comment|/**    * If the container usage reaches the close threshold or the container is    * marked unhealthy we send Close ContainerAction to SCM.    * @param container current state of container    */
 DECL|method|sendCloseContainerActionIfNeeded (Container container)
@@ -1487,8 +1833,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getContainer (long containerID)
 specifier|public
 name|Container

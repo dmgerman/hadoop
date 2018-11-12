@@ -2294,82 +2294,13 @@ operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
-name|ContainerDataProto
-operator|.
-name|State
-name|containerState
-init|=
-name|kvContainer
-operator|.
-name|getContainerState
-argument_list|()
-decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|containerState
-operator|==
-name|ContainerDataProto
-operator|.
-name|State
-operator|.
-name|CLOSED
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|checkContainerOpen
 argument_list|(
-literal|"Container {} is already closed."
-argument_list|,
-name|containerID
+name|kvContainer
 argument_list|)
 expr_stmt|;
-return|return
-name|ContainerUtils
-operator|.
-name|getSuccessResponse
-argument_list|(
-name|request
-argument_list|)
-return|;
-block|}
-elseif|else
-if|if
-condition|(
-name|containerState
-operator|==
-name|ContainerDataProto
-operator|.
-name|State
-operator|.
-name|INVALID
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Invalid container data. ContainerID: {}"
-argument_list|,
-name|containerID
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Invalid container data. "
-operator|+
-literal|"ContainerID: "
-operator|+
-name|containerID
-argument_list|,
-name|INVALID_CONTAINER_STATE
-argument_list|)
-throw|;
-block|}
 name|KeyValueContainerData
 name|kvData
 init|=
@@ -2380,22 +2311,15 @@ argument_list|()
 decl_stmt|;
 comment|// remove the container from open block map once, all the blocks
 comment|// have been committed and the container is closed
-name|kvData
-operator|.
-name|setState
-argument_list|(
-name|ContainerDataProto
-operator|.
-name|State
-operator|.
-name|CLOSING
-argument_list|)
-expr_stmt|;
 name|commitPendingBlocks
 argument_list|(
 name|kvContainer
 argument_list|)
 expr_stmt|;
+comment|// TODO : The close command should move the container to either quasi
+comment|// closed/closed depending upon how the closeContainer gets executed.
+comment|// If it arrives by Standalone, it will be moved to Quasi Closed or
+comment|// otherwise moved to Closed state if it gets executed via Ratis.
 name|kvContainer
 operator|.
 name|close
@@ -2419,6 +2343,34 @@ name|StorageContainerException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|ex
+operator|.
+name|getResult
+argument_list|()
+operator|==
+name|CLOSED_CONTAINER_IO
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Container {} is already closed."
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+return|return
+name|ContainerUtils
+operator|.
+name|getSuccessResponse
+argument_list|(
+name|request
+argument_list|)
+return|;
+block|}
 return|return
 name|ContainerUtils
 operator|.
@@ -4364,6 +4316,7 @@ operator|.
 name|getContainerState
 argument_list|()
 decl_stmt|;
+comment|/**      * In a closing state, follower will receive transactions from leader.      * Once the leader is put to closing state, it will reject further requests      * from clients. Only the transactions which happened before the container      * in the leader goes to closing state, will arrive here even the container      * might already be in closing state here.      */
 if|if
 condition|(
 name|containerState
@@ -4373,6 +4326,14 @@ operator|.
 name|State
 operator|.
 name|OPEN
+operator|||
+name|containerState
+operator|==
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|CLOSING
 condition|)
 block|{
 return|return;
@@ -4398,9 +4359,6 @@ condition|(
 name|containerState
 condition|)
 block|{
-case|case
-name|CLOSING
-case|:
 case|case
 name|CLOSED
 case|:

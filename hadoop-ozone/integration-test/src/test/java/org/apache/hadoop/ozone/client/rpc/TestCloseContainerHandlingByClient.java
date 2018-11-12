@@ -3905,7 +3905,7 @@ name|ContainerDataProto
 operator|.
 name|State
 operator|.
-name|CLOSING
+name|CLOSED
 argument_list|)
 expr_stmt|;
 block|}

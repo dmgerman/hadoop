@@ -1005,9 +1005,6 @@ operator|.
 name|assertTrue
 argument_list|(
 name|ioe
-operator|.
-name|getCause
-argument_list|()
 operator|instanceof
 name|StorageContainerException
 argument_list|)
@@ -1021,9 +1018,6 @@ operator|(
 name|StorageContainerException
 operator|)
 name|ioe
-operator|.
-name|getCause
-argument_list|()
 operator|)
 operator|.
 name|getResult
@@ -1033,7 +1027,7 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
-name|CONTAINER_UNHEALTHY
+name|BLOCK_NOT_COMMITTED
 argument_list|)
 expr_stmt|;
 block|}
