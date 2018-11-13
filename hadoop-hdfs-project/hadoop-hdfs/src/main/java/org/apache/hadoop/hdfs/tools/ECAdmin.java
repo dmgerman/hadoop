@@ -1900,19 +1900,18 @@ argument_list|,
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
-name|String
-name|actualECPolicyName
-init|=
-name|dfs
-operator|.
-name|getErasureCodingPolicy
-argument_list|(
-name|p
-argument_list|)
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
+if|if
+condition|(
+name|ecPolicyName
+operator|==
+literal|null
+condition|)
+block|{
+name|ecPolicyName
+operator|=
+literal|"default"
+expr_stmt|;
+block|}
 name|System
 operator|.
 name|out
@@ -1921,9 +1920,11 @@ name|println
 argument_list|(
 literal|"Set "
 operator|+
-name|actualECPolicyName
+name|ecPolicyName
 operator|+
-literal|" erasure coding policy on "
+literal|" erasure coding policy on"
+operator|+
+literal|" "
 operator|+
 name|path
 argument_list|)
@@ -1961,7 +1962,7 @@ literal|"non-empty directory will not automatically convert existing "
 operator|+
 literal|"files to "
 operator|+
-name|actualECPolicyName
+name|ecPolicyName
 operator|+
 literal|" erasure coding policy"
 argument_list|)
