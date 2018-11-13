@@ -318,6 +318,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -421,6 +435,26 @@ operator|.
 name|resolver
 operator|.
 name|RemoteLocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|RBFConfigKeys
 import|;
 end_import
 
@@ -999,21 +1033,11 @@ init|=
 literal|"yyyy/MM/dd HH:mm:ss"
 decl_stmt|;
 comment|/** Prevent holding the page from load too long. */
-DECL|field|TIME_OUT
+DECL|field|timeOut
 specifier|private
-specifier|static
 specifier|final
 name|long
-name|TIME_OUT
-init|=
-name|TimeUnit
-operator|.
-name|SECONDS
-operator|.
-name|toMillis
-argument_list|(
-literal|1
-argument_list|)
+name|timeOut
 decl_stmt|;
 comment|/** Router interface. */
 DECL|field|router
@@ -1217,6 +1241,36 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Initialize the cache for the DN reports
+name|Configuration
+name|conf
+init|=
+name|router
+operator|.
+name|getConfig
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|timeOut
+operator|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DN_REPORT_TIME_OUT
+argument_list|,
+name|RBFConfigKeys
+operator|.
+name|DN_REPORT_TIME_OUT_MS_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Unregister the JMX beans.    */
 DECL|method|close ()
@@ -2759,7 +2813,7 @@ name|LIVE
 argument_list|,
 literal|false
 argument_list|,
-name|TIME_OUT
+name|timeOut
 argument_list|)
 decl_stmt|;
 if|if

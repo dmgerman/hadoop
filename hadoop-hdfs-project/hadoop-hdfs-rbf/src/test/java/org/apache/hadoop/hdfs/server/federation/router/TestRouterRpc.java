@@ -1499,7 +1499,7 @@ name|routerConf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|NamenodeBeanMetrics
+name|RBFConfigKeys
 operator|.
 name|DN_REPORT_CACHE_EXPIRE
 argument_list|,
