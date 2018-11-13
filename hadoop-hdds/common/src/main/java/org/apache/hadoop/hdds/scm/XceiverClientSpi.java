@@ -140,7 +140,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|CompletableFuture
+name|ExecutionException
 import|;
 end_import
 
@@ -152,7 +152,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ExecutionException
+name|TimeoutException
 import|;
 end_import
 
@@ -339,14 +339,29 @@ name|IOException
 block|{
 try|try
 block|{
-return|return
+name|XceiverClientAsyncReply
+name|reply
+decl_stmt|;
+name|reply
+operator|=
 name|sendCommandAsync
 argument_list|(
 name|request
 argument_list|)
+expr_stmt|;
+name|ContainerCommandResponseProto
+name|responseProto
+init|=
+name|reply
+operator|.
+name|getResponse
+argument_list|()
 operator|.
 name|get
 argument_list|()
+decl_stmt|;
+return|return
+name|responseProto
 return|;
 block|}
 catch|catch
@@ -373,10 +388,7 @@ block|}
 comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    * @throws IOException    */
 specifier|public
 specifier|abstract
-name|CompletableFuture
-argument_list|<
-name|ContainerCommandResponseProto
-argument_list|>
+name|XceiverClientAsyncReply
 DECL|method|sendCommandAsync (ContainerCommandRequestProto request)
 name|sendCommandAsync
 parameter_list|(
@@ -419,6 +431,25 @@ operator|.
 name|ReplicationType
 name|getPipelineType
 parameter_list|()
+function_decl|;
+DECL|method|watchForCommit (long index, long timeout)
+specifier|public
+specifier|abstract
+name|void
+name|watchForCommit
+parameter_list|(
+name|long
+name|index
+parameter_list|,
+name|long
+name|timeout
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|ExecutionException
+throws|,
+name|TimeoutException
 function_decl|;
 block|}
 end_class

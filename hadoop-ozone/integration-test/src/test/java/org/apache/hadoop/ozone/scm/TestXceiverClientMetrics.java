@@ -730,6 +730,9 @@ name|sendCommandAsync
 argument_list|(
 name|smallFileRequest
 argument_list|)
+operator|.
+name|getResponse
+argument_list|()
 decl_stmt|;
 name|computeResults
 operator|.

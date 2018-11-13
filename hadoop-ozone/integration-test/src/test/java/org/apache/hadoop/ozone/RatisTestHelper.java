@@ -348,7 +348,7 @@ name|RPC
 init|=
 name|SupportedRpcType
 operator|.
-name|NETTY
+name|GRPC
 decl_stmt|;
 DECL|field|NUM_DATANODES
 specifier|static

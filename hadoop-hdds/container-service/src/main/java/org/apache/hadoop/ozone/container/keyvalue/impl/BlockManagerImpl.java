@@ -727,6 +727,32 @@ operator|.
 name|incrKeyCount
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block "
+operator|+
+name|data
+operator|.
+name|getBlockID
+argument_list|()
+operator|+
+literal|" successfully committed with bcsId "
+operator|+
+name|bcsId
+operator|+
+literal|" chunk size "
+operator|+
+name|data
+operator|.
+name|getChunks
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|data
 operator|.

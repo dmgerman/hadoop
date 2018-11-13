@@ -450,7 +450,7 @@ name|replicationType
 init|=
 name|ReplicationType
 operator|.
-name|STAND_ALONE
+name|RATIS
 decl_stmt|;
 annotation|@
 name|Rule

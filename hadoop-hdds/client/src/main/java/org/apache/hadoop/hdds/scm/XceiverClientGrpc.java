@@ -70,6 +70,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|protocol
 operator|.
 name|DatanodeDetails
@@ -437,6 +451,18 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
 import|;
 end_import
 
@@ -969,6 +995,9 @@ argument_list|,
 name|dn
 argument_list|)
 operator|.
+name|getResponse
+argument_list|()
+operator|.
 name|get
 argument_list|()
 expr_stmt|;
@@ -1059,10 +1088,7 @@ annotation|@
 name|Override
 DECL|method|sendCommandAsync ( ContainerCommandRequestProto request)
 specifier|public
-name|CompletableFuture
-argument_list|<
-name|ContainerCommandResponseProto
-argument_list|>
+name|XceiverClientAsyncReply
 name|sendCommandAsync
 parameter_list|(
 name|ContainerCommandRequestProto
@@ -1075,7 +1101,9 @@ name|ExecutionException
 throws|,
 name|InterruptedException
 block|{
-return|return
+name|XceiverClientAsyncReply
+name|asyncReply
+init|=
 name|sendCommandAsync
 argument_list|(
 name|request
@@ -1085,14 +1113,38 @@ operator|.
 name|getFirstNode
 argument_list|()
 argument_list|)
+decl_stmt|;
+comment|// TODO : for now make this API sync in nature as async requests are
+comment|// served out of order over XceiverClientGrpc. This needs to be fixed
+comment|// if this API is to be used for I/O path. Currently, this is not
+comment|// used for Read/Write Operation but for tests.
+if|if
+condition|(
+operator|!
+name|HddsUtils
+operator|.
+name|isReadOnly
+argument_list|(
+name|request
+argument_list|)
+condition|)
+block|{
+name|asyncReply
+operator|.
+name|getResponse
+argument_list|()
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|asyncReply
 return|;
 block|}
 DECL|method|sendCommandAsync ( ContainerCommandRequestProto request, DatanodeDetails dn)
 specifier|private
-name|CompletableFuture
-argument_list|<
-name|ContainerCommandResponseProto
-argument_list|>
+name|XceiverClientAsyncReply
 name|sendCommandAsync
 parameter_list|(
 name|ContainerCommandRequestProto
@@ -1363,7 +1415,11 @@ name|onCompleted
 argument_list|()
 expr_stmt|;
 return|return
+operator|new
+name|XceiverClientAsyncReply
+argument_list|(
 name|replyFuture
+argument_list|)
 return|;
 block|}
 DECL|method|reconnect (DatanodeDetails dn)
@@ -1464,6 +1520,29 @@ parameter_list|()
 block|{
 comment|// For stand alone pipeline, there is no notion called destroy pipeline.
 block|}
+annotation|@
+name|Override
+DECL|method|watchForCommit (long index, long timeout)
+specifier|public
+name|void
+name|watchForCommit
+parameter_list|(
+name|long
+name|index
+parameter_list|,
+name|long
+name|timeout
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|ExecutionException
+throws|,
+name|TimeoutException
+block|{
+comment|// there is no notion of watch for commit index in standalone pipeline
+block|}
+empty_stmt|;
 comment|/**    * Returns pipeline Type.    *    * @return - Stand Alone as the type.    */
 annotation|@
 name|Override
