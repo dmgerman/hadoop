@@ -60,13 +60,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|client
 operator|.
 name|api
 operator|.
-name|records
-operator|.
-name|Service
+name|AppAdminClient
 import|;
 end_import
 
@@ -82,9 +80,11 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|client
+name|api
 operator|.
-name|ServiceClient
+name|records
+operator|.
+name|Service
 import|;
 end_import
 
@@ -166,6 +166,26 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|AppAdminClient
+operator|.
+name|DEFAULT_TYPE
+import|;
+end_import
+
 begin_class
 DECL|class|YarnServiceUtils
 specifier|public
@@ -192,7 +212,7 @@ comment|// This will be true only in UT.
 DECL|field|stubServiceClient
 specifier|private
 specifier|static
-name|ServiceClient
+name|AppAdminClient
 name|stubServiceClient
 init|=
 literal|null
@@ -200,7 +220,7 @@ decl_stmt|;
 DECL|method|createServiceClient ( Configuration yarnConfiguration)
 specifier|public
 specifier|static
-name|ServiceClient
+name|AppAdminClient
 name|createServiceClient
 parameter_list|(
 name|Configuration
@@ -218,38 +238,31 @@ return|return
 name|stubServiceClient
 return|;
 block|}
-name|ServiceClient
+name|AppAdminClient
 name|serviceClient
 init|=
-operator|new
-name|ServiceClient
-argument_list|()
-decl_stmt|;
-name|serviceClient
+name|AppAdminClient
 operator|.
-name|init
+name|createAppAdminClient
 argument_list|(
+name|DEFAULT_TYPE
+argument_list|,
 name|yarnConfiguration
 argument_list|)
-expr_stmt|;
-name|serviceClient
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
+decl_stmt|;
 return|return
 name|serviceClient
 return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|setStubServiceClient (ServiceClient stubServiceClient)
+DECL|method|setStubServiceClient (AppAdminClient stubServiceClient)
 specifier|public
 specifier|static
 name|void
 name|setStubServiceClient
 parameter_list|(
-name|ServiceClient
+name|AppAdminClient
 name|stubServiceClient
 parameter_list|)
 block|{

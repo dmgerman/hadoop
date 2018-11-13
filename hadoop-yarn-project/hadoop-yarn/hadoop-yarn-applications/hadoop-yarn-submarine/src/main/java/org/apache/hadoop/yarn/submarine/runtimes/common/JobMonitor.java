@@ -208,6 +208,15 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    * Cleanup AppAdminClient, etc.    */
+DECL|method|cleanup ()
+specifier|public
+name|void
+name|cleanup
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 comment|/**    * Continue wait and print status if job goes to ready or final state.    * @param jobName    * @throws IOException    * @throws YarnException    * @throws SubmarineException    */
 DECL|method|waitTrainingFinal (String jobName)
 specifier|public
@@ -351,6 +360,9 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|cleanup
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

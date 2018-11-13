@@ -10197,6 +10197,16 @@ return|return
 name|appSpec
 return|;
 block|}
+name|appSpec
+operator|.
+name|setId
+argument_list|(
+name|currentAppId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ApplicationReport
 name|appReport
 init|=
