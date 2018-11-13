@@ -566,11 +566,6 @@ argument_list|,
 name|encoder
 argument_list|)
 expr_stmt|;
-name|encoder
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|this
