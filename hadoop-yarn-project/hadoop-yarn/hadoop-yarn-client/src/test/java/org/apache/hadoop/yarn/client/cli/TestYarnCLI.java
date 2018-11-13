@@ -17386,6 +17386,69 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|"                                          Multiple components should be"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          separated by commas."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -decommission<Application Name>         Decommissions component"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          instances for an application /"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          long-running service. Requires"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -instances option. Supports"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -appTypes option to specify"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          which client implementation to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -destroy<Application Name>              Destroys a saved application"
 argument_list|)
 expr_stmt|;
@@ -17673,7 +17736,35 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                          application."
+literal|"                                          application. Also works with"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -decommission option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          decommission specified component"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          instances. Multiple instances"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          should be separated by commas."
 argument_list|)
 expr_stmt|;
 name|pw

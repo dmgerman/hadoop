@@ -797,6 +797,31 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
+comment|/**    * Decommission component instances of a long running service.    *    * @param appName            the name of the application.    * @param componentInstances the name of the component instances.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|actionDecommissionInstances (String appName, List<String> componentInstances)
+specifier|public
+specifier|abstract
+name|int
+name|actionDecommissionInstances
+parameter_list|(
+name|String
+name|appName
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|componentInstances
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+function_decl|;
 block|}
 end_class
 

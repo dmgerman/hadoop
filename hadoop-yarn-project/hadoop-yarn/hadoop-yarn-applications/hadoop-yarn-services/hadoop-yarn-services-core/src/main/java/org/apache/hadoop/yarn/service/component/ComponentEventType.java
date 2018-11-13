@@ -49,6 +49,9 @@ name|UPGRADE
 block|,
 DECL|enumConstant|CHECK_STABLE
 name|CHECK_STABLE
+block|,
+DECL|enumConstant|DECOMMISSION_INSTANCE
+name|DECOMMISSION_INSTANCE
 block|}
 end_enum
 

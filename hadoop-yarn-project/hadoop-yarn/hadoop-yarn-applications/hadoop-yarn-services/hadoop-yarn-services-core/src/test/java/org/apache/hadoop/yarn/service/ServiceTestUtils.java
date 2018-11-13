@@ -1834,9 +1834,10 @@ operator|=
 operator|new
 name|MiniYARNCluster
 argument_list|(
-name|TestYarnNativeServices
+name|this
 operator|.
-name|class
+name|getClass
+argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()

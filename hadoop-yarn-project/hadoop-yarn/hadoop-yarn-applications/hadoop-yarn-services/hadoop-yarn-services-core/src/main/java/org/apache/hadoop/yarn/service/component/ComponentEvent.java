@@ -162,6 +162,11 @@ specifier|private
 name|ComponentInstance
 name|instance
 decl_stmt|;
+DECL|field|instanceName
+specifier|private
+name|String
+name|instanceName
+decl_stmt|;
 DECL|field|status
 specifier|private
 name|ContainerStatus
@@ -356,6 +361,35 @@ operator|.
 name|instance
 operator|=
 name|instance
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|getInstanceName ()
+specifier|public
+name|String
+name|getInstanceName
+parameter_list|()
+block|{
+return|return
+name|instanceName
+return|;
+block|}
+DECL|method|setInstanceName (String instanceName)
+specifier|public
+name|ComponentEvent
+name|setInstanceName
+parameter_list|(
+name|String
+name|instanceName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|instanceName
+operator|=
+name|instanceName
 expr_stmt|;
 return|return
 name|this
