@@ -1843,7 +1843,7 @@ name|RandomStringUtils
 operator|.
 name|randomNumeric
 argument_list|(
-literal|1
+literal|5
 argument_list|)
 decl_stmt|;
 name|String
