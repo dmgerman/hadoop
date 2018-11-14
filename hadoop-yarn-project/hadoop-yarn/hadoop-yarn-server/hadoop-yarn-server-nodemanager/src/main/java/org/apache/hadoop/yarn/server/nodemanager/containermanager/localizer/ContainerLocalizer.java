@@ -42,6 +42,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -982,15 +996,6 @@ name|USERCACHE
 init|=
 literal|"usercache"
 decl_stmt|;
-DECL|field|TOKEN_FILE_NAME_FMT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TOKEN_FILE_NAME_FMT
-init|=
-literal|"%s.tokens"
-decl_stmt|;
 DECL|field|APPCACHE_CTXT_FMT
 specifier|private
 specifier|static
@@ -1130,7 +1135,13 @@ argument_list|<>
 argument_list|()
 argument_list|)
 decl_stmt|;
-DECL|method|ContainerLocalizer (FileContext lfs, String user, String appId, String localizerId, List<Path> localDirs, RecordFactory recordFactory)
+DECL|field|tokenFileName
+specifier|private
+specifier|final
+name|String
+name|tokenFileName
+decl_stmt|;
+DECL|method|ContainerLocalizer (FileContext lfs, String user, String appId, String localizerId, String tokenFileName, List<Path> localDirs, RecordFactory recordFactory)
 specifier|public
 name|ContainerLocalizer
 parameter_list|(
@@ -1145,6 +1156,9 @@ name|appId
 parameter_list|,
 name|String
 name|localizerId
+parameter_list|,
+name|String
+name|tokenFileName
 parameter_list|,
 name|List
 argument_list|<
@@ -1274,6 +1288,19 @@ argument_list|>
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|tokenFileName
+operator|=
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|tokenFileName
+argument_list|,
+literal|"token file name cannot be null"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Private
@@ -1373,14 +1400,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-name|TOKEN_FILE_NAME_FMT
-argument_list|,
-name|localizerId
-argument_list|)
+name|tokenFileName
 argument_list|)
 decl_stmt|;
 name|credFile
@@ -2598,7 +2618,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Adds the ContainerLocalizer arguments for a @{link ShellCommandExecutor},    * as expected by ContainerLocalizer.main    * @param command the current ShellCommandExecutor command line    * @param user localization user    * @param appId localized app id    * @param locId localizer id    * @param nmAddr nodemanager address    * @param localDirs list of local dirs    */
-DECL|method|buildMainArgs (List<String> command, String user, String appId, String locId, InetSocketAddress nmAddr, List<String> localDirs, Configuration conf)
+DECL|method|buildMainArgs (List<String> command, String user, String appId, String locId, InetSocketAddress nmAddr, String tokenFileName, List<String> localDirs, Configuration conf)
 specifier|public
 specifier|static
 name|void
@@ -2621,6 +2641,9 @@ name|locId
 parameter_list|,
 name|InetSocketAddress
 name|nmAddr
+parameter_list|,
+name|String
+name|tokenFileName
 parameter_list|,
 name|List
 argument_list|<
@@ -2711,6 +2734,13 @@ operator|.
 name|getPort
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|command
+operator|.
+name|add
+argument_list|(
+name|tokenFileName
 argument_list|)
 expr_stmt|;
 for|for
@@ -2884,6 +2914,14 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 name|String
+name|tokenFileName
+init|=
+name|argv
+index|[
+literal|5
+index|]
+decl_stmt|;
+name|String
 index|[]
 name|sLocaldirs
 init|=
@@ -2893,7 +2931,7 @@ name|copyOfRange
 argument_list|(
 name|argv
 argument_list|,
-literal|5
+literal|6
 argument_list|,
 name|argv
 operator|.
@@ -2908,9 +2946,7 @@ name|localDirs
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Path
-argument_list|>
+argument_list|<>
 argument_list|(
 name|sLocaldirs
 operator|.
@@ -2992,6 +3028,8 @@ name|appId
 argument_list|,
 name|locId
 argument_list|,
+name|tokenFileName
+argument_list|,
 name|localDirs
 argument_list|,
 name|RecordFactoryProvider
@@ -3009,7 +3047,6 @@ argument_list|(
 name|nmAddr
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
 catch|catch
 parameter_list|(

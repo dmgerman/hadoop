@@ -860,6 +860,15 @@ name|WILDCARD
 init|=
 literal|"*"
 decl_stmt|;
+DECL|field|TOKEN_FILE_NAME_FMT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TOKEN_FILE_NAME_FMT
+init|=
+literal|"%s.tokens"
+decl_stmt|;
 comment|/**    * The permissions to use when creating the launch script.    */
 DECL|field|TASK_LAUNCH_SCRIPT_PERMISSION
 specifier|public

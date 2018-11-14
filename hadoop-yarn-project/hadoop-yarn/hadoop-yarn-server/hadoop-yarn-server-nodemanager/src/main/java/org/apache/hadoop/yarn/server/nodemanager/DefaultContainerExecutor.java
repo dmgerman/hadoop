@@ -1057,8 +1057,6 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|ContainerLocalizer
-operator|.
 name|TOKEN_FILE_NAME_FMT
 argument_list|,
 name|locId
@@ -1157,6 +1155,8 @@ name|appId
 argument_list|,
 name|locId
 argument_list|,
+name|tokenFn
+argument_list|,
 name|localDirs
 argument_list|,
 name|localizerFc
@@ -1176,7 +1176,7 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|createContainerLocalizer (String user, String appId, String locId, List<String> localDirs, FileContext localizerFc)
+DECL|method|createContainerLocalizer (String user, String appId, String locId, String tokenFileName, List<String> localDirs, FileContext localizerFc)
 specifier|protected
 name|ContainerLocalizer
 name|createContainerLocalizer
@@ -1189,6 +1189,9 @@ name|appId
 parameter_list|,
 name|String
 name|locId
+parameter_list|,
+name|String
+name|tokenFileName
 parameter_list|,
 name|List
 argument_list|<
@@ -1215,6 +1218,8 @@ argument_list|,
 name|appId
 argument_list|,
 name|locId
+argument_list|,
+name|tokenFileName
 argument_list|,
 name|getPaths
 argument_list|(

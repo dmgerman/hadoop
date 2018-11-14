@@ -2270,6 +2270,11 @@ name|locId
 argument_list|,
 name|nmAddr
 argument_list|,
+name|nmPrivateContainerTokensPath
+operator|.
+name|getName
+argument_list|()
+argument_list|,
 name|localDirs
 argument_list|)
 expr_stmt|;
@@ -2499,7 +2504,7 @@ block|}
 comment|/**    * Set up the {@link ContainerLocalizer}.    *    * @param command the current ShellCommandExecutor command line    * @param user localization user    * @param appId localized app id    * @param locId localizer id    * @param nmAddr nodemanager address    * @param localDirs list of local dirs    * @see ContainerLocalizer#buildMainArgs    */
 annotation|@
 name|VisibleForTesting
-DECL|method|buildMainArgs (List<String> command, String user, String appId, String locId, InetSocketAddress nmAddr, List<String> localDirs)
+DECL|method|buildMainArgs (List<String> command, String user, String appId, String locId, InetSocketAddress nmAddr, String tokenFileName, List<String> localDirs)
 specifier|public
 name|void
 name|buildMainArgs
@@ -2522,6 +2527,9 @@ parameter_list|,
 name|InetSocketAddress
 name|nmAddr
 parameter_list|,
+name|String
+name|tokenFileName
+parameter_list|,
 name|List
 argument_list|<
 name|String
@@ -2542,6 +2550,8 @@ argument_list|,
 name|locId
 argument_list|,
 name|nmAddr
+argument_list|,
+name|tokenFileName
 argument_list|,
 name|localDirs
 argument_list|,

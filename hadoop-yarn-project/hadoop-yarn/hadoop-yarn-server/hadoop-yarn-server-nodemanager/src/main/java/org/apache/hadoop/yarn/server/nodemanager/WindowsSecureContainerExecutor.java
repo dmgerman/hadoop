@@ -3363,7 +3363,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|ContainerLocalizer
+name|ContainerExecutor
 operator|.
 name|TOKEN_FILE_NAME_FMT
 argument_list|,
@@ -3630,6 +3630,8 @@ argument_list|,
 name|locId
 argument_list|,
 name|nmAddr
+argument_list|,
+name|tokenFn
 argument_list|,
 name|localDirs
 argument_list|,

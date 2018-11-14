@@ -18160,7 +18160,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|ContainerLocalizer
+name|ContainerExecutor
 operator|.
 name|TOKEN_FILE_NAME_FMT
 argument_list|,

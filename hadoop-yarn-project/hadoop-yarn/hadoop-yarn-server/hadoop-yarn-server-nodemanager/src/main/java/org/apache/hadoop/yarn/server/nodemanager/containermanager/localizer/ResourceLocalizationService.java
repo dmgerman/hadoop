@@ -6700,6 +6700,12 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|tokenFileName
+specifier|private
+specifier|final
+name|String
+name|tokenFileName
+decl_stmt|;
 DECL|method|LocalizerRunner (LocalizerContext context, String localizerId)
 name|LocalizerRunner
 parameter_list|(
@@ -6751,12 +6757,31 @@ name|scheduled
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|LocalResourceRequest
-argument_list|,
-name|LocalizerResourceRequestEvent
-argument_list|>
+argument_list|<>
 argument_list|()
+expr_stmt|;
+name|tokenFileName
+operator|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|ContainerExecutor
+operator|.
+name|TOKEN_FILE_NAME_FMT
+argument_list|,
+name|localizerId
+operator|+
+name|Long
+operator|.
+name|toHexString
+argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addResource (LocalizerResourceRequestEvent request)
@@ -7664,16 +7689,7 @@ name|Path
 operator|.
 name|SEPARATOR
 operator|+
-name|String
-operator|.
-name|format
-argument_list|(
-name|ContainerLocalizer
-operator|.
-name|TOKEN_FILE_NAME_FMT
-argument_list|,
-name|localizerId
-argument_list|)
+name|tokenFileName
 argument_list|)
 expr_stmt|;
 comment|// 0) init queue, etc.

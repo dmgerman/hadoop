@@ -7977,10 +7977,10 @@ comment|// While the container is running, localize new resources.
 comment|// Verify the symlink is created properly
 annotation|@
 name|Test
-DECL|method|testLocalingResourceWhileContainerRunning ()
+DECL|method|testLocalizingResourceWhileContainerRunning ()
 specifier|public
 name|void
-name|testLocalingResourceWhileContainerRunning
+name|testLocalizingResourceWhileContainerRunning
 parameter_list|()
 throws|throws
 name|Exception

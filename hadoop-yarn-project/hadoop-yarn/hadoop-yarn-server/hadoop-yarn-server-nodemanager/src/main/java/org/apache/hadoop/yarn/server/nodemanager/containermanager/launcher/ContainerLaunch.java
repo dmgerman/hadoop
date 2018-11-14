@@ -57,6 +57,26 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|ContainerExecutor
+operator|.
+name|TOKEN_FILE_NAME_FMT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -1967,8 +1987,6 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|ContainerLocalizer
-operator|.
 name|TOKEN_FILE_NAME_FMT
 argument_list|,
 name|containerIdStr
