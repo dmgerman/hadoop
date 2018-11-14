@@ -474,6 +474,16 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// Making an uncoordinated call, which initialize the proxy
+comment|// to Observer node.
+name|dfs
+operator|.
+name|getClient
+argument_list|()
+operator|.
+name|getHAServiceState
+argument_list|()
+expr_stmt|;
 name|dfs
 operator|.
 name|mkdir

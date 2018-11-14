@@ -138,6 +138,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|AddBlockFlag
@@ -2437,7 +2451,11 @@ annotation|@
 name|Idempotent
 annotation|@
 name|ReadOnly
-comment|// TODO : after HDFS-13749 is done, change to coordinated call
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|checkAccess (String path, FsAction mode)
 name|void
 name|checkAccess
@@ -2705,6 +2723,20 @@ parameter_list|,
 name|String
 name|path
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get HA service state of the server.    *    * @return server HA state    * @throws IOException    */
+annotation|@
+name|Idempotent
+annotation|@
+name|ReadOnly
+DECL|method|getHAServiceState ()
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

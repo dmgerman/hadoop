@@ -1030,6 +1030,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|NameNodeProxiesClient
@@ -14908,6 +14922,26 @@ operator|.
 name|msync
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * An unblocking call to get the HA service state of NameNode.    *    * @return HA state of NameNode    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getHAServiceState ()
+specifier|public
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|namenode
+operator|.
+name|getHAServiceState
+argument_list|()
+return|;
 block|}
 block|}
 end_class

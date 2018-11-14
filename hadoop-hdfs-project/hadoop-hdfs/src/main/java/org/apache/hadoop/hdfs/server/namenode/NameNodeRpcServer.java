@@ -8672,6 +8672,30 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|getHAServiceState ()
+specifier|public
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+return|return
+name|nn
+operator|.
+name|getServiceStatus
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|listCorruptFileBlocks (String path, String cookie)
 specifier|public
 name|CorruptFileBlocks
