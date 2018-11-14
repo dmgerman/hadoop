@@ -786,7 +786,7 @@ specifier|final
 name|int
 name|numExecutors
 decl_stmt|;
-DECL|field|containerCommandCompletionMap
+DECL|field|applyTransactionCompletionMap
 specifier|private
 specifier|final
 name|Map
@@ -795,7 +795,12 @@ name|Long
 argument_list|,
 name|Long
 argument_list|>
-name|containerCommandCompletionMap
+name|applyTransactionCompletionMap
+decl_stmt|;
+DECL|field|lastIndex
+specifier|private
+name|long
+name|lastIndex
 decl_stmt|;
 comment|/**    * CSM metrics.    */
 DECL|field|metrics
@@ -902,12 +907,20 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|containerCommandCompletionMap
+name|applyTransactionCompletionMap
 operator|=
 operator|new
 name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|lastIndex
+operator|=
+name|RaftServerConstants
+operator|.
+name|INVALID_LOG_INDEX
 expr_stmt|;
 block|}
 annotation|@
@@ -1003,7 +1016,9 @@ name|newTermIndex
 argument_list|(
 literal|0
 argument_list|,
-literal|0
+name|RaftServerConstants
+operator|.
+name|INVALID_LOG_INDEX
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1021,6 +1036,12 @@ name|setLastAppliedTermIndex
 argument_list|(
 name|empty
 argument_list|)
+expr_stmt|;
+name|lastIndex
+operator|=
+name|RaftServerConstants
+operator|.
+name|INVALID_LOG_INDEX
 expr_stmt|;
 return|return
 name|RaftServerConstants
@@ -1061,6 +1082,13 @@ name|setLastAppliedTermIndex
 argument_list|(
 name|last
 argument_list|)
+expr_stmt|;
+name|lastIndex
+operator|=
+name|last
+operator|.
+name|getIndex
+argument_list|()
 expr_stmt|;
 return|return
 name|last
@@ -2527,7 +2555,7 @@ specifier|final
 name|Long
 name|removed
 init|=
-name|containerCommandCompletionMap
+name|applyTransactionCompletionMap
 operator|.
 name|remove
 argument_list|(
@@ -2561,9 +2589,9 @@ condition|)
 block|{
 name|updateLastAppliedTermIndex
 argument_list|(
-name|appliedIndex
-argument_list|,
 name|appliedTerm
+argument_list|,
+name|appliedIndex
 argument_list|)
 expr_stmt|;
 block|}
@@ -2594,6 +2622,52 @@ operator|.
 name|getIndex
 argument_list|()
 decl_stmt|;
+comment|// ApplyTransaction call can come with an entryIndex much greater than
+comment|// lastIndex updated because in between entries in the raft log can be
+comment|// appended because raft config persistence. Just add a dummy entry
+comment|// for those.
+for|for
+control|(
+name|long
+name|i
+init|=
+name|lastIndex
+operator|+
+literal|1
+init|;
+name|i
+operator|<
+name|index
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Gap in indexes at:{} detected, adding dummy entries "
+argument_list|,
+name|i
+argument_list|)
+expr_stmt|;
+name|applyTransactionCompletionMap
+operator|.
+name|put
+argument_list|(
+name|i
+argument_list|,
+name|trx
+operator|.
+name|getLogEntry
+argument_list|()
+operator|.
+name|getTerm
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|metrics
@@ -2953,6 +3027,10 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+name|lastIndex
+operator|=
+name|index
+expr_stmt|;
 name|future
 operator|.
 name|thenAccept
@@ -2964,7 +3042,7 @@ specifier|final
 name|Long
 name|previous
 init|=
-name|containerCommandCompletionMap
+name|applyTransactionCompletionMap
 operator|.
 name|put
 argument_list|(

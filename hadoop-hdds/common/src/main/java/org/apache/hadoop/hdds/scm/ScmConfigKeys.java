@@ -281,11 +281,7 @@ specifier|final
 name|int
 name|DFS_CONTAINER_RATIS_SEGMENT_SIZE_DEFAULT
 init|=
-literal|1
-operator|*
-literal|1024
-operator|*
-literal|1024
+literal|16
 operator|*
 literal|1024
 decl_stmt|;
