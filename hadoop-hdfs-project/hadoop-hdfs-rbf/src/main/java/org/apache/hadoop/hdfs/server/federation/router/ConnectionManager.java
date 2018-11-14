@@ -1599,7 +1599,6 @@ block|}
 block|}
 comment|/**    * Thread that creates connections asynchronously.    */
 DECL|class|ConnectionCreator
-specifier|private
 specifier|static
 class|class
 name|ConnectionCreator
@@ -1778,6 +1777,22 @@ operator|.
 name|running
 operator|=
 literal|false
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Fatal error caught by connection creator "
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 block|}
 block|}
