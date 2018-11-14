@@ -2101,13 +2101,6 @@ condition|(
 literal|true
 condition|)
 block|{
-name|statistics
-operator|.
-name|incrementReadOps
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|OSSObjectSummary
@@ -2367,13 +2360,6 @@ argument_list|,
 name|nextMarker
 argument_list|,
 literal|false
-argument_list|)
-expr_stmt|;
-name|statistics
-operator|.
-name|incrementReadOps
-argument_list|(
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -3551,13 +3537,6 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-name|statistics
-operator|.
-name|incrementReadOps
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
 comment|// Copy files from src folder to dst
 name|int
 name|copiesToFinish
@@ -3669,13 +3648,6 @@ argument_list|,
 name|nextMarker
 argument_list|,
 literal|true
-argument_list|)
-expr_stmt|;
-name|statistics
-operator|.
-name|incrementReadOps
-argument_list|(
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
