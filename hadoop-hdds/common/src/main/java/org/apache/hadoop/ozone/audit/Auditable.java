@@ -38,7 +38,7 @@ specifier|public
 interface|interface
 name|Auditable
 block|{
-comment|/**    * Must override in implementation.    * @return Map<String, String> with values to be logged in audit.    */
+comment|/**    * Must override in implementation.    * @return {@literal Map<String, String>} with values to be logged in audit.    */
 DECL|method|toAuditMap ()
 name|Map
 argument_list|<

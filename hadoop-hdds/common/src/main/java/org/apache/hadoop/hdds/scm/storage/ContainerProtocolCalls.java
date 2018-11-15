@@ -978,7 +978,7 @@ name|getPutBlock
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @return putBlockResponse    * @throws Exception if there is an error while performing the call    */
+comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @return putBlockResponse    * @throws IOException if there is an error while performing the call    * @throws InterruptedException    * @throws ExecutionException    */
 DECL|method|putBlockAsync ( XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
 specifier|public
 specifier|static
@@ -1212,7 +1212,7 @@ name|getReadChunk
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws Exception if there is an error while performing the call    */
+comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an error while performing the call    */
 DECL|method|writeChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, ByteString data, String traceID)
 specifier|public
 specifier|static
@@ -2277,7 +2277,7 @@ name|getGetSmallFile
 argument_list|()
 return|;
 block|}
-comment|/**    * Validates a response from a container protocol call.  Any non-successful    * return code is mapped to a corresponding exception and thrown.    *    * @param response container protocol call response    * @throws IOException if the container protocol call failed    */
+comment|/**    * Validates a response from a container protocol call.  Any non-successful    * return code is mapped to a corresponding exception and thrown.    *    * @param response container protocol call response    * @throws StorageContainerException if the container protocol call failed    */
 DECL|method|validateContainerResponse ( ContainerCommandResponseProto response )
 specifier|public
 specifier|static

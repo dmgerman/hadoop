@@ -174,7 +174,7 @@ operator|.
 name|leader
 return|;
 block|}
-comment|/**    * Returns the nodes that currently host the block.    *    * @return List<DatanodeInfo> nodes that currently host the block    */
+comment|/**    * Returns the nodes that currently host the block.    *    * @return {@literal List<DatanodeInfo>} nodes that currently host the block    */
 DECL|method|getLocations ()
 specifier|public
 name|List

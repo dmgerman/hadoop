@@ -267,7 +267,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Lists a range of containers and get their info.    *    * @param startContainerID start containerID.    * @param count count must be> 0.    *    * @return a list of pipeline.    * @throws IOException    */
+comment|/**    * Lists a range of containers and get their info.    *    * @param startContainerID start containerID.    * @param count count must be {@literal>} 0.    *    * @return a list of pipeline.    * @throws IOException    */
 DECL|method|listContainer (long startContainerID, int count)
 name|List
 argument_list|<

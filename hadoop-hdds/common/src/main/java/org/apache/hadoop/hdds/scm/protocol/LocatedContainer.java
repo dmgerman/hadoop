@@ -202,7 +202,7 @@ operator|.
 name|leader
 return|;
 block|}
-comment|/**    * Returns the nodes that currently host the container.    *    * @return Set<DatanodeInfo> nodes that currently host the container    */
+comment|/**    * Returns the nodes that currently host the container.    *    * @return {@code Set<DatanodeInfo>} nodes that currently host the container    */
 DECL|method|getLocations ()
 specifier|public
 name|Set

@@ -205,7 +205,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Ask SCM a list of containers with a range of container names    * and the limit of count.    * Search container names between start name(exclusive), and    * use prefix name to filter the result. the max size of the    * searching range cannot exceed the value of count.    *    * @param startContainerID start container ID.    * @param count count, if count< 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of container.    * @throws IOException    */
+comment|/**    * Ask SCM a list of containers with a range of container names    * and the limit of count.    * Search container names between start name(exclusive), and    * use prefix name to filter the result. the max size of the    * searching range cannot exceed the value of count.    *    * @param startContainerID start container ID.    * @param count count, if count {@literal<} 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of container.    * @throws IOException    */
 DECL|method|listContainer (long startContainerID, int count)
 name|List
 argument_list|<
