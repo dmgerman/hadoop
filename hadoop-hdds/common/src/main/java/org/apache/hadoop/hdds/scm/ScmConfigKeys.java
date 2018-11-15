@@ -991,10 +991,10 @@ DECL|field|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT
 specifier|public
 specifier|static
 specifier|final
-name|long
+name|String
 name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT
 init|=
-literal|1000
+literal|"1s"
 decl_stmt|;
 comment|/**    * Defines how frequently we will log the missing of heartbeat to a specific    * SCM. In the default case we will write a warning message for each 10    * sequential heart beats that we miss to a specific SCM. This is to avoid    * overrunning the log with lots of HB missed Log statements.    */
 DECL|field|OZONE_SCM_HEARTBEAT_LOG_WARN_INTERVAL_COUNT
