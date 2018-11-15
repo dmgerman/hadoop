@@ -1296,6 +1296,26 @@ name|OZONE_CONTAINER_COPY_WORKDIR
 init|=
 literal|"hdds.datanode.replication.work.dir"
 decl_stmt|;
+DECL|field|OZONE_MAX_KEY_LEN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_MAX_KEY_LEN
+init|=
+literal|"ozone.max.key.len"
+decl_stmt|;
+DECL|field|OZONE_MAX_KEY_LEN_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_MAX_KEY_LEN_DEFAULT
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 comment|/**    * Config properties to set client side checksum properties.    */
 DECL|field|OZONE_CLIENT_CHECKSUM_TYPE
 specifier|public

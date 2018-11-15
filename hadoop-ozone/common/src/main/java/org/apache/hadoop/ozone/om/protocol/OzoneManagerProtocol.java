@@ -324,6 +324,8 @@ DECL|interface|OzoneManagerProtocol
 specifier|public
 interface|interface
 name|OzoneManagerProtocol
+extends|extends
+name|OzoneManagerSecurityProtocol
 block|{
 comment|/**    * Creates a volume.    * @param args - Arguments to create Volume.    * @throws IOException    */
 DECL|method|createVolume (OmVolumeArgs args)

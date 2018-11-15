@@ -438,10 +438,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testGetOmAddress ()
+DECL|method|testgetOmSocketAddress ()
 specifier|public
 name|void
-name|testGetOmAddress
+name|testgetOmSocketAddress
 parameter_list|()
 block|{
 specifier|final

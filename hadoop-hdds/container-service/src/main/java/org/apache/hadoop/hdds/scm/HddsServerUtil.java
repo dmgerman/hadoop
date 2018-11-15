@@ -816,7 +816,7 @@ name|createSocketAddr
 argument_list|(
 name|host
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|ScmConfigKeys
 operator|.
@@ -827,7 +827,7 @@ literal|":"
 operator|+
 name|port
 operator|.
-name|or
+name|orElse
 argument_list|(
 name|conf
 operator|.

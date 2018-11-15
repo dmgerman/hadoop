@@ -323,11 +323,34 @@ name|OmUtils
 parameter_list|()
 block|{   }
 comment|/**    * Retrieve the socket address that is used by OM.    * @param conf    * @return Target InetSocketAddress for the SCM service endpoint.    */
-DECL|method|getOmAddress ( Configuration conf)
+DECL|method|getOmAddress (Configuration conf)
 specifier|public
 specifier|static
 name|InetSocketAddress
 name|getOmAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|getOmRpcAddress
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Retrieve the socket address that is used by OM.    * @param conf    * @return Target InetSocketAddress for the SCM service endpoint.    */
+DECL|method|getOmRpcAddress (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getOmRpcAddress
 parameter_list|(
 name|Configuration
 name|conf
@@ -348,10 +371,6 @@ name|OZONE_OM_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
 return|return
-name|NetUtils
-operator|.
-name|createSocketAddr
-argument_list|(
 name|host
 operator|.
 name|orElse
@@ -364,7 +383,6 @@ operator|+
 name|getOmRpcPort
 argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 return|;
 block|}

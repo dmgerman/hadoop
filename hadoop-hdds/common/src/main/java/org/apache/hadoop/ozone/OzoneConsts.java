@@ -588,6 +588,15 @@ name|OM_DB_NAME
 init|=
 literal|"om.db"
 decl_stmt|;
+DECL|field|OZONE_MANAGER_TOKEN_DB_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_MANAGER_TOKEN_DB_NAME
+init|=
+literal|"om-token.db"
+decl_stmt|;
 DECL|field|STORAGE_DIR_CHUNKS
 specifier|public
 specifier|static

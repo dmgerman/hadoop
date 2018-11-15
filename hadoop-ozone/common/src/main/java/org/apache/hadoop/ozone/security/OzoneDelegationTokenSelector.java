@@ -50,26 +50,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|DelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|Text
@@ -162,7 +142,7 @@ name|OzoneDelegationTokenSelector
 extends|extends
 name|AbstractDelegationTokenSelector
 argument_list|<
-name|DelegationTokenIdentifier
+name|OzoneTokenIdentifier
 argument_list|>
 block|{
 DECL|method|OzoneDelegationTokenSelector ()
