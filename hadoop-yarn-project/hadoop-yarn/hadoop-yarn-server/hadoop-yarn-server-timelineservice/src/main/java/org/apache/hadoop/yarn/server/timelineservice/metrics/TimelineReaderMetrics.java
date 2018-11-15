@@ -163,7 +163,6 @@ operator|=
 literal|"timelineservice"
 argument_list|)
 DECL|class|TimelineReaderMetrics
-specifier|final
 specifier|public
 class|class
 name|TimelineReaderMetrics
@@ -266,8 +265,10 @@ specifier|private
 name|MutableQuantiles
 name|getEntityTypesSuccessLatency
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|method|TimelineReaderMetrics ()
-specifier|private
+specifier|protected
 name|TimelineReaderMetrics
 parameter_list|()
 block|{   }
