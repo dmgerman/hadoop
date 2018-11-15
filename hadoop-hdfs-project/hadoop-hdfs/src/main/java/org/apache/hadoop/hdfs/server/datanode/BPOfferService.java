@@ -531,12 +531,18 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|BPOfferService ( final String nameserviceId, List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs, DataNode dn)
+DECL|method|BPOfferService ( final String nameserviceId, List<String> nnIds, List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs, DataNode dn)
 name|BPOfferService
 parameter_list|(
 specifier|final
 name|String
 name|nameserviceId
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|nnIds
 parameter_list|,
 name|List
 argument_list|<
@@ -623,6 +629,15 @@ argument_list|(
 operator|new
 name|BPServiceActor
 argument_list|(
+name|nameserviceId
+argument_list|,
+name|nnIds
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+argument_list|,
 name|nnAddrs
 operator|.
 name|get
@@ -643,10 +658,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|refreshNNList (ArrayList<InetSocketAddress> addrs, ArrayList<InetSocketAddress> lifelineAddrs)
+DECL|method|refreshNNList (String serviceId, List<String> nnIds, ArrayList<InetSocketAddress> addrs, ArrayList<InetSocketAddress> lifelineAddrs)
 name|void
 name|refreshNNList
 parameter_list|(
+name|String
+name|serviceId
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|nnIds
+parameter_list|,
 name|ArrayList
 argument_list|<
 name|InetSocketAddress
@@ -735,6 +759,20 @@ init|=
 operator|new
 name|BPServiceActor
 argument_list|(
+name|serviceId
+argument_list|,
+name|nnIds
+operator|.
+name|get
+argument_list|(
+name|addrs
+operator|.
+name|indexOf
+argument_list|(
+name|addedNN
+argument_list|)
+argument_list|)
+argument_list|,
 name|addedNN
 argument_list|,
 name|lifelineAddrs

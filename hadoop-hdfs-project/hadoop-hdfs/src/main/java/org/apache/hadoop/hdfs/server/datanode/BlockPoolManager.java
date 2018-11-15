@@ -1120,6 +1120,22 @@ argument_list|)
 decl_stmt|;
 name|ArrayList
 argument_list|<
+name|String
+argument_list|>
+name|nnIds
+init|=
+name|Lists
+operator|.
+name|newArrayListWithCapacity
+argument_list|(
+name|nnIdToAddr
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|ArrayList
+argument_list|<
 name|InetSocketAddress
 argument_list|>
 name|lifelineAddrs
@@ -1157,6 +1173,13 @@ name|nnId
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|nnIds
+operator|.
+name|add
+argument_list|(
+name|nnId
+argument_list|)
+expr_stmt|;
 name|lifelineAddrs
 operator|.
 name|add
@@ -1182,6 +1205,8 @@ init|=
 name|createBPOS
 argument_list|(
 name|nsToAdd
+argument_list|,
+name|nnIds
 argument_list|,
 name|addrs
 argument_list|,
@@ -1391,6 +1416,22 @@ name|size
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+name|nnIds
+init|=
+name|Lists
+operator|.
+name|newArrayListWithCapacity
+argument_list|(
+name|nnIdToAddr
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -1432,6 +1473,13 @@ else|:
 literal|null
 argument_list|)
 expr_stmt|;
+name|nnIds
+operator|.
+name|add
+argument_list|(
+name|nnId
+argument_list|)
+expr_stmt|;
 block|}
 try|try
 block|{
@@ -1462,6 +1510,10 @@ name|bpos
 operator|.
 name|refreshNNList
 argument_list|(
+name|nsToRefresh
+argument_list|,
+name|nnIds
+argument_list|,
 name|addrs
 argument_list|,
 name|lifelineAddrs
@@ -1506,7 +1558,7 @@ block|}
 block|}
 block|}
 comment|/**    * Extracted out for test purposes.    */
-DECL|method|createBPOS ( final String nameserviceId, List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs)
+DECL|method|createBPOS ( final String nameserviceId, List<String> nnIds, List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs)
 specifier|protected
 name|BPOfferService
 name|createBPOS
@@ -1514,6 +1566,12 @@ parameter_list|(
 specifier|final
 name|String
 name|nameserviceId
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|nnIds
 parameter_list|,
 name|List
 argument_list|<
@@ -1533,6 +1591,8 @@ operator|new
 name|BPOfferService
 argument_list|(
 name|nameserviceId
+argument_list|,
+name|nnIds
 argument_list|,
 name|nnAddrs
 argument_list|,

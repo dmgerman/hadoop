@@ -388,6 +388,10 @@ operator|=
 operator|new
 name|BPServiceActor
 argument_list|(
+literal|"test"
+argument_list|,
+literal|"test"
+argument_list|,
 name|INVALID_ADDR
 argument_list|,
 literal|null

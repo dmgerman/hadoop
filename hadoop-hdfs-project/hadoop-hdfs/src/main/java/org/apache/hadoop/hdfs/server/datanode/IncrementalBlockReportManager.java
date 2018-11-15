@@ -896,7 +896,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Send IBRs to namenode. */
-DECL|method|sendIBRs (DatanodeProtocol namenode, DatanodeRegistration registration, String bpid)
+DECL|method|sendIBRs (DatanodeProtocol namenode, DatanodeRegistration registration, String bpid, String nnRpcLatencySuffix)
 name|void
 name|sendIBRs
 parameter_list|(
@@ -908,6 +908,9 @@ name|registration
 parameter_list|,
 name|String
 name|bpid
+parameter_list|,
+name|String
+name|nnRpcLatencySuffix
 parameter_list|)
 throws|throws
 name|IOException
@@ -1002,6 +1005,8 @@ name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
+argument_list|,
+name|nnRpcLatencySuffix
 argument_list|)
 expr_stmt|;
 name|lastIBR
