@@ -602,7 +602,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|_
+name|e
 parameter_list|)
 block|{
 comment|// nothing
