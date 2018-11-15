@@ -663,6 +663,29 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns Iterator to iterate over all buckets after prevBucket for a    * specific user. If prevBucket is null it returns an iterator to iterate over    * all the buckets of a user. The result can be restricted using bucket    * prefix, will return all buckets if bucket prefix is null.    *    * @param userName user name    * @param bucketPrefix Bucket prefix to match    * @param prevBucket Buckets are listed after this bucket    * @return {@code Iterator<OzoneBucket>}    * @throws IOException    */
+DECL|method|listS3Buckets (String userName, String bucketPrefix, String prevBucket, int maxListResult)
+name|List
+argument_list|<
+name|OzoneBucket
+argument_list|>
+name|listS3Buckets
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|bucketPrefix
+parameter_list|,
+name|String
+name|prevBucket
+parameter_list|,
+name|int
+name|maxListResult
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Close and release the resources.    */
 DECL|method|close ()
 name|void

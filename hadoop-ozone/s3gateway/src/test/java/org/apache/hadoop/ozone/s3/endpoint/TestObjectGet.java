@@ -289,13 +289,6 @@ argument_list|(
 name|volumeName
 argument_list|)
 decl_stmt|;
-name|volume
-operator|.
-name|createBucket
-argument_list|(
-literal|"b1"
-argument_list|)
-expr_stmt|;
 name|OzoneBucket
 name|bucket
 init|=

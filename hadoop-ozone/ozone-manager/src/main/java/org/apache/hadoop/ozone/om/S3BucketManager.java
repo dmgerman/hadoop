@@ -96,6 +96,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns volume Name for a user.    * @param userName    */
+DECL|method|getOzoneVolumeNameForUser (String userName)
+name|String
+name|getOzoneVolumeNameForUser
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

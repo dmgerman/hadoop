@@ -5235,6 +5235,41 @@ literal|"support this operation."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|listS3Buckets (String userName, String bucketPrefix, String prevBucket, int maxListResult)
+specifier|public
+name|List
+argument_list|<
+name|OzoneBucket
+argument_list|>
+name|listS3Buckets
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|bucketPrefix
+parameter_list|,
+name|String
+name|prevBucket
+parameter_list|,
+name|int
+name|maxListResult
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
 comment|/**    * Adds Ozone headers to http request.    *    * @param httpRequest Http Request    */
 DECL|method|addOzoneHeaders (HttpUriRequest httpRequest)
 specifier|private

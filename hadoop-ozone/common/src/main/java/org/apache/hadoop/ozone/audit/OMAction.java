@@ -163,6 +163,12 @@ name|READ_KEY
 argument_list|(
 literal|"READ_BUCKET"
 argument_list|)
+block|,
+DECL|enumConstant|LIST_S3BUCKETS
+name|LIST_S3BUCKETS
+argument_list|(
+literal|"LIST_S3BUCKETS"
+argument_list|)
 block|;
 DECL|field|action
 specifier|private

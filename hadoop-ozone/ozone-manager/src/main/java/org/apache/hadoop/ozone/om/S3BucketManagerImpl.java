@@ -191,6 +191,32 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Objects
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
+name|OM_S3_VOLUME_PREFIX
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -701,7 +727,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"s3%s"
+name|OM_S3_VOLUME_PREFIX
+operator|+
+literal|"%s"
 argument_list|,
 name|userName
 argument_list|)
@@ -1073,6 +1101,35 @@ argument_list|)
 index|[
 literal|1
 index|]
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOzoneVolumeNameForUser (String userName)
+specifier|public
+name|String
+name|getOzoneVolumeNameForUser
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Objects
+operator|.
+name|requireNonNull
+argument_list|(
+name|userName
+argument_list|,
+literal|"UserName cannot be null"
+argument_list|)
+expr_stmt|;
+return|return
+name|formatOzoneVolumeName
+argument_list|(
+name|userName
+argument_list|)
 return|;
 block|}
 block|}

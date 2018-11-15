@@ -319,6 +319,13 @@ name|Metric
 name|MutableCounterLong
 name|numGetServiceLists
 decl_stmt|;
+DECL|field|numListS3Buckets
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListS3Buckets
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -452,6 +459,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numGetServiceListFails
+decl_stmt|;
+DECL|field|numListS3BucketsFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListS3BucketsFails
 decl_stmt|;
 DECL|method|OMMetrics ()
 specifier|public
@@ -687,6 +701,40 @@ name|incr
 argument_list|()
 expr_stmt|;
 name|numVolumeLists
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListS3Buckets ()
+specifier|public
+name|void
+name|incNumListS3Buckets
+parameter_list|()
+block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numListS3Buckets
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListS3BucketsFails ()
+specifier|public
+name|void
+name|incNumListS3BucketsFails
+parameter_list|()
+block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numListS3BucketsFails
 operator|.
 name|incr
 argument_list|()
@@ -1599,6 +1647,36 @@ parameter_list|()
 block|{
 return|return
 name|numGetServiceListFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumListS3Buckets ()
+specifier|public
+name|long
+name|getNumListS3Buckets
+parameter_list|()
+block|{
+return|return
+name|numListS3Buckets
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumListS3BucketsFails ()
+specifier|public
+name|long
+name|getNumListS3BucketsFails
+parameter_list|()
+block|{
+return|return
+name|numListS3BucketsFails
 operator|.
 name|value
 argument_list|()
