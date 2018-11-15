@@ -758,6 +758,13 @@ condition|(
 name|storageType
 operator|==
 literal|null
+operator|||
+name|storageType
+operator|.
+name|equals
+argument_list|(
+literal|""
+argument_list|)
 condition|)
 block|{
 name|replicationType
