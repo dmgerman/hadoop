@@ -134,24 +134,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
-operator|.
-name|SCMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|node
 operator|.
 name|states
@@ -1339,7 +1321,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - DatanodeDetailsProto.    * @return SCMheartbeat response.    * @throws IOException    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeDetails - DatanodeDetailsProto.    * @return SCMheartbeat response.    */
 annotation|@
 name|Override
 DECL|method|processHeartbeat (DatanodeDetails datanodeDetails)
@@ -1689,7 +1671,7 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Update set of containers available on a datanode.    * @param datanodeDetails - DatanodeID    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
+comment|/**    * Update set of containers available on a datanode.    * @param datanodeDetails - DatanodeID    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                        use addDatanodeInContainerMap call.    */
 annotation|@
 name|Override
 DECL|method|setContainers (DatanodeDetails datanodeDetails, Set<ContainerID> containerIds)

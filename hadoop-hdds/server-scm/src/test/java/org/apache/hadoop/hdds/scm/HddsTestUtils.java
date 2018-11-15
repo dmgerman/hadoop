@@ -223,7 +223,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates list of ContainerInfo.    *    * @param numContainers number of ContainerInfo to be included in list.    * @return List<ContainerInfo>    */
+comment|/**    * Creates list of ContainerInfo.    *    * @param numContainers number of ContainerInfo to be included in list.    * @return {@literal List<ContainerInfo>}    */
 DECL|method|getContainerInfo (int numContainers)
 specifier|public
 specifier|static

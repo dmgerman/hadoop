@@ -150,24 +150,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|exceptions
-operator|.
-name|SCMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|node
 operator|.
 name|states
@@ -333,7 +315,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A node manager supports a simple interface for managing a datanode.  *<p/>  * 1. A datanode registers with the NodeManager.  *<p/>  * 2. If the node is allowed to register, we add that to the nodes that we need  * to keep track of.  *<p/>  * 3. A heartbeat is made by the node at a fixed frequency.  *<p/>  * 4. A node can be in any of these 4 states: {HEALTHY, STALE, DEAD,  * DECOMMISSIONED}  *<p/>  * HEALTHY - It is a datanode that is regularly heartbeating us.  *  * STALE - A datanode for which we have missed few heart beats.  *  * DEAD - A datanode that we have not heard from for a while.  *  * DECOMMISSIONED - Someone told us to remove this node from the tracking  * list, by calling removeNode. We will throw away this nodes info soon.  */
+comment|/**  * A node manager supports a simple interface for managing a datanode.  *<p>  * 1. A datanode registers with the NodeManager.  *<p>  * 2. If the node is allowed to register, we add that to the nodes that we need  * to keep track of.  *<p>  * 3. A heartbeat is made by the node at a fixed frequency.  *<p>  * 4. A node can be in any of these 4 states: {HEALTHY, STALE, DEAD,  * DECOMMISSIONED}  *<p>  * HEALTHY - It is a datanode that is regularly heartbeating us.  *  * STALE - A datanode for which we have missed few heart beats.  *  * DEAD - A datanode that we have not heard from for a while.  *  * DECOMMISSIONED - Someone told us to remove this node from the tracking  * list, by calling removeNode. We will throw away this nodes info soon.  */
 end_comment
 
 begin_interface
@@ -449,7 +431,7 @@ name|Pipeline
 name|pipeline
 parameter_list|)
 function_decl|;
-comment|/**    * Remaps datanode to containers mapping to the new set of containers.    * @param datanodeDetails - DatanodeDetails    * @param containerIds - Set of containerIDs    * @throws SCMException - if datanode is not known. For new datanode use    *                        addDatanodeInContainerMap call.    */
+comment|/**    * Remaps datanode to containers mapping to the new set of containers.    * @param datanodeDetails - DatanodeDetails    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                        use addDatanodeInContainerMap call.    */
 DECL|method|setContainers (DatanodeDetails datanodeDetails, Set<ContainerID> containerIds)
 name|void
 name|setContainers
