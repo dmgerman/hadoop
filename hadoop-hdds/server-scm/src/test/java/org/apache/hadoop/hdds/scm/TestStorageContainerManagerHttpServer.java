@@ -634,6 +634,17 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
+name|OZONE_SCM_HTTP_ADDRESS_KEY
+argument_list|,
+literal|"localhost:0"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_HTTPS_ADDRESS_KEY
 argument_list|,
 literal|"localhost:0"
