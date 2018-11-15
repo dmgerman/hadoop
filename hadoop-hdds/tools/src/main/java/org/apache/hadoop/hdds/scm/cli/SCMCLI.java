@@ -635,6 +635,10 @@ argument_list|,
 name|subcommands
 operator|=
 block|{
+name|ChillModeCommands
+operator|.
+name|class
+block|,
 name|ListSubcommand
 operator|.
 name|class

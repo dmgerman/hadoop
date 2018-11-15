@@ -1473,6 +1473,38 @@ return|return
 name|size
 return|;
 block|}
+comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
+DECL|method|inChillMode ()
+specifier|public
+name|boolean
+name|inChillMode
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|storageContainerLocationClient
+operator|.
+name|inChillMode
+argument_list|()
+return|;
+block|}
+comment|/**    * Force SCM out of chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+DECL|method|forceExitChillMode ()
+specifier|public
+name|boolean
+name|forceExitChillMode
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|storageContainerLocationClient
+operator|.
+name|forceExitChillMode
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
