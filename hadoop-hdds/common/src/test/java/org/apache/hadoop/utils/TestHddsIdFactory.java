@@ -301,6 +301,8 @@ control|)
 block|{
 name|assertEquals
 argument_list|(
+name|IDS_PER_THREAD
+argument_list|,
 name|r
 operator|.
 name|get
@@ -308,8 +310,6 @@ argument_list|()
 operator|.
 name|intValue
 argument_list|()
-argument_list|,
-name|IDS_PER_THREAD
 argument_list|)
 expr_stmt|;
 block|}

@@ -184,6 +184,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Insert a new datanode into Node2Container Map.    *    * @param datanodeID   -- Datanode UUID    * @param containerIDs - List of ContainerIDs.    */
+annotation|@
+name|Override
 DECL|method|insertNewDatanode (UUID datanodeID, Set<ContainerID> containerIDs)
 specifier|public
 name|void
@@ -284,6 +286,8 @@ end_class
 begin_function
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|Override
 DECL|method|size ()
 specifier|public
 name|int

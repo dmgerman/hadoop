@@ -22,18 +22,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|charset
-operator|.
-name|StandardCharsets
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Arrays
@@ -434,6 +422,20 @@ name|StatsLevel
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test class for @{@link KeyManagerImpl}.  * */
 end_comment
@@ -742,7 +744,9 @@ argument_list|(
 name|VOLUME_NAME
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -764,7 +768,9 @@ argument_list|(
 name|BUCKET_NAME
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -790,7 +796,9 @@ argument_list|(
 name|KEY_NAME
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -992,7 +1000,9 @@ argument_list|(
 name|VOLUME_NAME
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|,
 name|RandomStringUtils
 operator|.
@@ -1003,8 +1013,6 @@ argument_list|)
 operator|.
 name|getBytes
 argument_list|(
-name|StandardCharsets
-operator|.
 name|UTF_8
 argument_list|)
 argument_list|)
@@ -1016,7 +1024,9 @@ argument_list|(
 name|BUCKET_NAME
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|,
 name|RandomStringUtils
 operator|.
@@ -1027,8 +1037,6 @@ argument_list|)
 operator|.
 name|getBytes
 argument_list|(
-name|StandardCharsets
-operator|.
 name|UTF_8
 argument_list|)
 argument_list|)
@@ -1040,7 +1048,9 @@ argument_list|(
 name|KEY_NAME
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|,
 name|keyData
 operator|.

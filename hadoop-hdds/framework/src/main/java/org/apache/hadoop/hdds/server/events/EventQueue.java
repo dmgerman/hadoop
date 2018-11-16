@@ -592,6 +592,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Route an event with payload to the right listener(s).    *    * @param event   The event identifier    * @param payload The payload of the event.    * @throws IllegalArgumentException If there is no EventHandler for    *                                  the specific event.    */
+annotation|@
+name|Override
 DECL|method|fireEvent ( EVENT_TYPE event, PAYLOAD payload)
 specifier|public
 parameter_list|<
@@ -883,11 +885,17 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|e
+name|LOG
 operator|.
-name|printStackTrace
-argument_list|()
+name|warn
+argument_list|(
+literal|"Interrupted exception while sleeping."
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
+comment|// We ignore this exception for time being. Review? should we
+comment|// propogate it back to caller?
 block|}
 if|if
 condition|(
@@ -920,6 +928,8 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

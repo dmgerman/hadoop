@@ -3924,6 +3924,11 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|getOzoneVolumeName (String s3BucketName)
 specifier|public
 name|String
@@ -3957,6 +3962,11 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|getOzoneBucketName (String s3BucketName)
 specifier|public
 name|String

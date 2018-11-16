@@ -717,6 +717,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Close and remove all the cached clients.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

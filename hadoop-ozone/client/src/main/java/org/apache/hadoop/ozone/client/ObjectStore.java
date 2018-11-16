@@ -347,6 +347,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns the corresponding Ozone volume given an S3 Bucket.    * @param s3BucketName - S3Bucket Name.    * @return String - Ozone Volume name.    * @throws IOException - Throws if the s3Bucket does not exist.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|getOzoneVolumeName (String s3BucketName)
 specifier|public
 name|String
@@ -379,6 +384,11 @@ index|]
 return|;
 block|}
 comment|/**    * Returns the corresponding Ozone bucket name for the given S3 bucket.    * @param s3BucketName - S3Bucket Name.    * @return String - Ozone bucket Name.    * @throws IOException - Throws if the s3bucket does not exist.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|getOzoneBucketName (String s3BucketName)
 specifier|public
 name|String

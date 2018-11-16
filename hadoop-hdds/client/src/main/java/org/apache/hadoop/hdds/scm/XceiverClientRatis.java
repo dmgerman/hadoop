@@ -702,6 +702,8 @@ name|retryPolicy
 expr_stmt|;
 block|}
 comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|createPipeline ()
 specifier|public
 name|void
@@ -763,6 +765,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|destroyPipeline ()
 specifier|public
 name|void

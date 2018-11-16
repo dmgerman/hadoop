@@ -86,7 +86,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|ArrayList
 import|;
 end_import
 
@@ -96,7 +96,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|HashMap
 import|;
 end_import
 
@@ -180,7 +180,7 @@ argument_list|>
 name|DEFAULT_LIST
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -486,7 +486,7 @@ block|{
 name|commands
 operator|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -592,7 +592,7 @@ operator|.
 name|commands
 operator|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;

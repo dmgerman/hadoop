@@ -108,6 +108,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -573,6 +583,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get volumes owned by the user.    *    * @throws IOException    */
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Test is ignored for time being, to be enabled after security."
+argument_list|)
 DECL|method|testGetVolumesByUser ()
 specifier|public
 name|void
@@ -588,6 +603,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Admins can read volumes belonging to other users.    *    * @throws IOException    */
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Test is ignored for time being, to be enabled after security."
+argument_list|)
 DECL|method|testGetVolumesOfAnotherUser ()
 specifier|public
 name|void
@@ -605,6 +625,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * if you try to read volumes belonging to another user,    * then server always ignores it.    *    * @throws IOException    */
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Test is ignored for time being, to be enabled after security."
+argument_list|)
 DECL|method|testGetVolumesOfAnotherUserShouldFail ()
 specifier|public
 name|void

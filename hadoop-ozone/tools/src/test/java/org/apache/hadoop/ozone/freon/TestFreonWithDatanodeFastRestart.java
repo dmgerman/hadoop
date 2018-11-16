@@ -482,6 +482,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|expectedSnapFile
+argument_list|,
 name|snapshotInfo
 operator|.
 name|getFile
@@ -492,8 +494,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|expectedSnapFile
 argument_list|)
 expr_stmt|;
 name|Assert

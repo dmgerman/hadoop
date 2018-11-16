@@ -109,6 +109,7 @@ decl_stmt|;
 comment|/**    * Dummy resource on which leases can be acquired.    */
 DECL|class|DummyResource
 specifier|private
+specifier|static
 specifier|final
 class|class
 name|DummyResource
@@ -185,6 +186,27 @@ return|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+comment|/**      * Adding to String method to fix the ErrorProne warning that this method      * is later used in String functions, which would print out (e.g.      * `org.apache.hadoop.ozone.lease.TestLeaseManager.DummyResource@      * 4488aabb`) instead of useful information.      *      * @return Name of the Dummy object.      */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"DummyResource{"
+operator|+
+literal|"name='"
+operator|+
+name|name
+operator|+
+literal|'\''
+operator|+
+literal|'}'
 return|;
 block|}
 block|}

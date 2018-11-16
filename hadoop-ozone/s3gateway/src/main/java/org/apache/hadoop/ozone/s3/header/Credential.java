@@ -117,6 +117,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Parse credential value.    *    * Sample credential value:    * Credential=AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request    *    * @throws OS3Exception    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|parseCredential ()
 specifier|public
 name|void

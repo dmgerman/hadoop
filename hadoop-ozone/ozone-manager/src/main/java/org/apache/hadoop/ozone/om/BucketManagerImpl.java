@@ -1227,6 +1227,8 @@ name|existingAcls
 return|;
 block|}
 comment|/**    * Deletes an existing empty bucket from volume.    *    * @param volumeName - Name of the volume.    * @param bucketName - Name of the bucket.    * @throws IOException - on Failure.    */
+annotation|@
+name|Override
 DECL|method|deleteBucket (String volumeName, String bucketName)
 specifier|public
 name|void

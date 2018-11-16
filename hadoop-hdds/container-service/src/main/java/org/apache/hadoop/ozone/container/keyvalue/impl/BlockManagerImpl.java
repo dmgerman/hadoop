@@ -798,12 +798,9 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|blockID
-operator|.
-name|getContainerID
-argument_list|()
+name|container
 argument_list|,
-literal|"Container name cannot be null"
+literal|"Container cannot be null"
 argument_list|)
 expr_stmt|;
 name|KeyValueContainerData

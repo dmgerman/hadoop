@@ -774,6 +774,8 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|//BUG:BUG TODO: The return value is ignored, if an exception is thrown in
+comment|// the executing funtion, it will be ignored.
 name|executorService
 operator|.
 name|schedule
@@ -1172,7 +1174,7 @@ argument_list|>
 name|nodes
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1246,7 +1248,7 @@ argument_list|>
 name|nodes
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1855,6 +1857,8 @@ name|isShutdown
 argument_list|()
 condition|)
 block|{
+comment|//BUGBUG: The return future needs to checked here to make sure the
+comment|// exceptions are handled correctly.
 name|executorService
 operator|.
 name|schedule

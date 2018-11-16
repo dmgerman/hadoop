@@ -685,6 +685,10 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
 name|Arrays
 operator|.
 name|equals
@@ -692,6 +696,7 @@ argument_list|(
 name|value
 argument_list|,
 name|temp
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -881,6 +886,10 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
 name|Arrays
 operator|.
 name|equals
@@ -888,6 +897,7 @@ argument_list|(
 name|value
 argument_list|,
 name|temp
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -15,22 +15,6 @@ operator|.
 name|utils
 package|;
 end_package
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|PlatformAssumptions
-operator|.
-name|assumeNotWindows
-import|;
-end_import
 
 begin_import
 import|import
@@ -172,22 +156,6 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|MetadataStore
-operator|.
-name|KeyValue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
 name|MetadataKeyFilters
 operator|.
 name|KeyPrefixFilter
@@ -207,6 +175,22 @@ operator|.
 name|MetadataKeyFilters
 operator|.
 name|MetadataKeyFilter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|MetadataStore
+operator|.
+name|KeyValue
 import|;
 end_import
 
@@ -414,6 +398,36 @@ end_import
 
 begin_import
 import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PlatformAssumptions
+operator|.
+name|assumeNotWindows
+import|;
+end_import
+
+begin_import
+import|import static
 name|org
 operator|.
 name|junit
@@ -491,11 +505,42 @@ specifier|public
 class|class
 name|TestMetadataStore
 block|{
+DECL|field|MAX_GETRANGE_LENGTH
+specifier|private
+specifier|final
+specifier|static
+name|int
+name|MAX_GETRANGE_LENGTH
+init|=
+literal|100
+decl_stmt|;
 DECL|field|storeImpl
 specifier|private
 specifier|final
 name|String
 name|storeImpl
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|expectedException
+specifier|public
+name|ExpectedException
+name|expectedException
+init|=
+name|ExpectedException
+operator|.
+name|none
+argument_list|()
+decl_stmt|;
+DECL|field|store
+specifier|private
+name|MetadataStore
+name|store
+decl_stmt|;
+DECL|field|testDir
+specifier|private
+name|File
+name|testDir
 decl_stmt|;
 DECL|method|TestMetadataStore (String metadataImpl)
 specifier|public
@@ -550,37 +595,6 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|field|store
-specifier|private
-name|MetadataStore
-name|store
-decl_stmt|;
-DECL|field|testDir
-specifier|private
-name|File
-name|testDir
-decl_stmt|;
-DECL|field|MAX_GETRANGE_LENGTH
-specifier|private
-specifier|final
-specifier|static
-name|int
-name|MAX_GETRANGE_LENGTH
-init|=
-literal|100
-decl_stmt|;
-annotation|@
-name|Rule
-DECL|field|expectedException
-specifier|public
-name|ExpectedException
-name|expectedException
-init|=
-name|ExpectedException
-operator|.
-name|none
-argument_list|()
-decl_stmt|;
 annotation|@
 name|Before
 DECL|method|init ()
@@ -1631,7 +1645,7 @@ argument_list|()
 decl_stmt|;
 return|return
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 operator|.
 name|append
@@ -2484,6 +2498,8 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
+argument_list|,
+name|UTF_8
 argument_list|)
 operator|.
 name|startsWith
@@ -2766,6 +2782,10 @@ literal|null
 argument_list|,
 literal|1
 argument_list|,
+operator|(
+name|MetadataKeyFilter
+index|[]
+operator|)
 literal|null
 argument_list|)
 expr_stmt|;
@@ -3091,12 +3111,12 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|kvs
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -3601,7 +3621,6 @@ name|exception
 operator|=
 name|e
 expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 name|exception
@@ -3617,6 +3636,7 @@ literal|"rejected"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 operator|new
@@ -3646,7 +3666,6 @@ name|exception
 operator|=
 name|e
 expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 name|exception
@@ -3662,6 +3681,7 @@ literal|"accepted"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 operator|new
@@ -3691,7 +3711,6 @@ name|exception
 operator|=
 name|e
 expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 name|exception
@@ -3707,6 +3726,7 @@ literal|"rejected"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 operator|new
@@ -3736,7 +3756,6 @@ name|exception
 operator|=
 name|e
 expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 name|exception
@@ -3752,6 +3771,7 @@ literal|"accepted"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|MetadataKeyFilter
 name|filter1
 init|=
@@ -3819,6 +3839,8 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
+argument_list|,
+name|UTF_8
 argument_list|)
 operator|.
 name|startsWith
@@ -3843,6 +3865,8 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
+argument_list|,
+name|UTF_8
 argument_list|)
 operator|.
 name|startsWith
@@ -3944,6 +3968,8 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
+argument_list|,
+name|UTF_8
 argument_list|)
 operator|.
 name|startsWith

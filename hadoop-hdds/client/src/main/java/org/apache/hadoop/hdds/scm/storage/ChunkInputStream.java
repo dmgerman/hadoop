@@ -384,7 +384,7 @@ name|void
 name|initializeChunkOffset
 parameter_list|()
 block|{
-name|int
+name|long
 name|tempOffset
 init|=
 literal|0

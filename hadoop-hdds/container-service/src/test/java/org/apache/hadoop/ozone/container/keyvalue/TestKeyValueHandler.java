@@ -1518,6 +1518,10 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|"org.apache.hadoop.ozone.container.common"
+operator|+
+literal|".volume.RoundRobinVolumeChoosingPolicy"
+argument_list|,
 name|keyValueHandler
 operator|.
 name|getVolumeChoosingPolicyForTesting
@@ -1528,10 +1532,6 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-argument_list|,
-literal|"org.apache.hadoop.ozone.container.common"
-operator|+
-literal|".volume.RoundRobinVolumeChoosingPolicy"
 argument_list|)
 expr_stmt|;
 comment|//Set a class which is not of sub class of VolumeChoosingPolicy

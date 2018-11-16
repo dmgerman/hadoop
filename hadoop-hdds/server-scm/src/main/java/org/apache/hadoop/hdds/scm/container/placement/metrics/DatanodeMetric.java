@@ -56,11 +56,6 @@ name|T
 parameter_list|,
 name|S
 parameter_list|>
-extends|extends
-name|Comparable
-argument_list|<
-name|T
-argument_list|>
 block|{
 comment|/**    * Some syntactic sugar over Comparable interface. This makes code easier to    * read.    *    * @param o - Other Object    * @return - True if *this* object is greater than argument.    */
 DECL|method|isGreater (T o)

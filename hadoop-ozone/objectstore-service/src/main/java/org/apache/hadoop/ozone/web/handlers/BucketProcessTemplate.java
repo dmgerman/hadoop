@@ -128,7 +128,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
 import|;
 end_import
 
@@ -1073,7 +1073,7 @@ block|{
 name|filteredSet
 operator|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;

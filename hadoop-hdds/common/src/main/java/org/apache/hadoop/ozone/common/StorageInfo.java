@@ -220,13 +220,6 @@ argument_list|(
 name|cid
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|cT
-argument_list|)
-expr_stmt|;
 name|properties
 operator|.
 name|setProperty

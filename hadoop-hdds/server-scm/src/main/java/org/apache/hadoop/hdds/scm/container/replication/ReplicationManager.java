@@ -625,6 +625,8 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -919,6 +921,13 @@ literal|0
 condition|)
 block|{
 comment|//TODO: too many replicas. Not handled yet.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Too many replicas is not handled yet."
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 catch|catch

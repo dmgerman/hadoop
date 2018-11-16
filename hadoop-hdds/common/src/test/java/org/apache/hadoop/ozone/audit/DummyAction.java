@@ -116,6 +116,7 @@ argument_list|)
 block|;
 DECL|field|action
 specifier|private
+specifier|final
 name|String
 name|action
 decl_stmt|;

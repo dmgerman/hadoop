@@ -139,6 +139,11 @@ comment|/**  * This helper class keeps a map of all user and their permissions. 
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"ProtocolBufferOrdinal"
+argument_list|)
 DECL|class|OmOzoneAclMap
 specifier|public
 class|class

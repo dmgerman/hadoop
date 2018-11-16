@@ -189,6 +189,8 @@ specifier|transient
 name|OzoneManager
 name|om
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|init ()
 specifier|public
 name|void

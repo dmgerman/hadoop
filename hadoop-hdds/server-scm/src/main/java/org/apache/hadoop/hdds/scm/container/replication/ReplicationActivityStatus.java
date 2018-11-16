@@ -233,6 +233,8 @@ name|ChillModeStatusListener
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|isReplicationEnabled ()
 specifier|public
 name|boolean
@@ -248,6 +250,8 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|Override
 DECL|method|setReplicationEnabled (boolean enabled)
 specifier|public
 name|void

@@ -287,7 +287,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Unit tests for {@link HddsServerUtil}  */
+comment|/**  * Unit tests for {@link HddsServerUtil}.  */
 end_comment
 
 begin_class
@@ -340,6 +340,11 @@ decl_stmt|;
 comment|/**    * Test getting OZONE_SCM_DATANODE_ADDRESS_KEY with port.    */
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|testGetDatanodeAddressWithPort ()
 specifier|public
 name|void
@@ -467,22 +472,22 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+name|scmHost
+argument_list|,
 name|address
 operator|.
 name|getHostName
 argument_list|()
-argument_list|,
-name|scmHost
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|OZONE_SCM_DATANODE_PORT_DEFAULT
+argument_list|,
 name|address
 operator|.
 name|getPort
 argument_list|()
-argument_list|,
-name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -531,28 +536,33 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+name|scmHost
+argument_list|,
 name|address
 operator|.
 name|getHostName
 argument_list|()
-argument_list|,
-name|scmHost
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|OZONE_SCM_DATANODE_PORT_DEFAULT
+argument_list|,
 name|address
 operator|.
 name|getPort
 argument_list|()
-argument_list|,
-name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * When OZONE_SCM_DATANODE_ADDRESS_KEY is undefined, test fallback to    * OZONE_SCM_CLIENT_ADDRESS_KEY. Port number defined by    * OZONE_SCM_CLIENT_ADDRESS_KEY should be ignored.    */
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|testDatanodeAddressFallbackToClientWithPort ()
 specifier|public
 name|void
@@ -667,28 +677,33 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
+name|scmHost
+argument_list|,
 name|address
 operator|.
 name|getHostName
 argument_list|()
-argument_list|,
-name|scmHost
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|OZONE_SCM_DATANODE_PORT_DEFAULT
+argument_list|,
 name|address
 operator|.
 name|getPort
 argument_list|()
-argument_list|,
-name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * When OZONE_SCM_DATANODE_ADDRESS_KEY and OZONE_SCM_CLIENT_ADDRESS_KEY    * are undefined, test fallback to OZONE_SCM_NAMES. Port number    * defined by OZONE_SCM_NAMES should be ignored.    */
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|testDatanodeAddressFallbackToScmNamesWithPort ()
 specifier|public
 name|void
@@ -749,12 +764,12 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|OZONE_SCM_DATANODE_PORT_DEFAULT
+argument_list|,
 name|address
 operator|.
 name|getPort
 argument_list|()
-argument_list|,
-name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}

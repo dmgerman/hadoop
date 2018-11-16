@@ -1625,6 +1625,9 @@ argument_list|()
 expr_stmt|;
 name|maxValue
 operator|=
+operator|(
+name|long
+operator|)
 name|numOfVolumes
 operator|*
 name|numOfBuckets

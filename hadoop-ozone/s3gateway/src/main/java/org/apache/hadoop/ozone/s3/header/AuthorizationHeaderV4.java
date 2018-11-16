@@ -166,6 +166,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * This method parses authorization header.    *    *  Authorization Header sample:    *  AWS4-HMAC-SHA256 Credential=AKIAJWFJK62WUTKNFJJA/20181009/us-east-1/s3    *  /aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date,    * Signature=db81b057718d7c1b3b8dffa29933099551c51d787b3b13b9e0f9ebed45982bf2    * @throws OS3Exception    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|parseAuthHeader ()
 specifier|public
 name|void

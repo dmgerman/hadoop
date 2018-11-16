@@ -212,6 +212,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @return the total configured capacity of the node.    */
+annotation|@
+name|Override
 DECL|method|getCapacity ()
 specifier|public
 name|LongMetric
@@ -223,6 +225,8 @@ name|capacity
 return|;
 block|}
 comment|/**    * @return the total SCM used space on the node.    */
+annotation|@
+name|Override
 DECL|method|getScmUsed ()
 specifier|public
 name|LongMetric
@@ -234,6 +238,8 @@ name|scmUsed
 return|;
 block|}
 comment|/**    * @return the total remaining space available on the node.    */
+annotation|@
+name|Override
 DECL|method|getRemaining ()
 specifier|public
 name|LongMetric
@@ -245,6 +251,8 @@ name|remaining
 return|;
 block|}
 comment|/**    * Set the capacity, used and remaining space on a datanode.    *    * @param newCapacity in bytes    * @param newUsed in bytes    * @param newRemaining in bytes    */
+annotation|@
+name|Override
 annotation|@
 name|VisibleForTesting
 DECL|method|set (long newCapacity, long newUsed, long newRemaining)
@@ -262,33 +270,6 @@ name|long
 name|newRemaining
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|newCapacity
-argument_list|,
-literal|"Capacity cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|newUsed
-argument_list|,
-literal|"used cannot be null"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|newRemaining
-argument_list|,
-literal|"remaining cannot be null"
-argument_list|)
-expr_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
@@ -360,6 +341,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Adds a new nodestat to existing values of the node.    *    * @param stat Nodestat.    * @return SCMNodeStat    */
+annotation|@
+name|Override
 DECL|method|add (NodeStat stat)
 specifier|public
 name|SCMNodeStat
@@ -443,6 +426,8 @@ name|this
 return|;
 block|}
 comment|/**    * Subtracts the stat values from the existing NodeStat.    *    * @param stat SCMNodeStat.    * @return Modified SCMNodeStat    */
+annotation|@
+name|Override
 DECL|method|subtract (NodeStat stat)
 specifier|public
 name|SCMNodeStat

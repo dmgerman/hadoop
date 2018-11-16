@@ -464,6 +464,36 @@ name|ContainerReplicaBuilder
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"ContainerReplica{"
+operator|+
+literal|"containerID="
+operator|+
+name|containerID
+operator|+
+literal|", datanodeDetails="
+operator|+
+name|datanodeDetails
+operator|+
+literal|", placeOfBirth="
+operator|+
+name|placeOfBirth
+operator|+
+literal|", sequenceId="
+operator|+
+name|sequenceId
+operator|+
+literal|'}'
+return|;
+block|}
 comment|/**    * Used for building ContainerReplica instance.    */
 DECL|class|ContainerReplicaBuilder
 specifier|public
@@ -498,20 +528,22 @@ specifier|private
 name|Long
 name|sequenceId
 decl_stmt|;
-comment|/**      * Set Container Id.      *      * @param containerId ContainerID      * @return ContainerReplicaBuilder      */
-DECL|method|setContainerID ( final ContainerID containerId)
+comment|/**      * Set Container Id.      *      * @param cID ContainerID      * @return ContainerReplicaBuilder      */
+DECL|method|setContainerID ( final ContainerID cID)
 specifier|public
 name|ContainerReplicaBuilder
 name|setContainerID
 parameter_list|(
 specifier|final
 name|ContainerID
-name|containerId
+name|cID
 parameter_list|)
 block|{
+name|this
+operator|.
 name|containerID
 operator|=
-name|containerId
+name|cID
 expr_stmt|;
 return|return
 name|this

@@ -862,6 +862,40 @@ name|pipeline
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Pipeline{"
+operator|+
+literal|"id="
+operator|+
+name|id
+operator|+
+literal|", type="
+operator|+
+name|type
+operator|+
+literal|", factor="
+operator|+
+name|factor
+operator|+
+literal|", state="
+operator|+
+name|state
+operator|+
+literal|", nodeStatus="
+operator|+
+name|nodeStatus
+operator|+
+literal|'}'
+return|;
+block|}
 comment|/**    * Builder class for Pipeline.    */
 DECL|class|Builder
 specifier|public

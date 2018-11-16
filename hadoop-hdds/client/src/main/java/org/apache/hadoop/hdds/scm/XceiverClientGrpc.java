@@ -1512,6 +1512,8 @@ parameter_list|()
 block|{
 comment|// For stand alone pipeline, there is no notion called setup pipeline.
 block|}
+annotation|@
+name|Override
 DECL|method|destroyPipeline ()
 specifier|public
 name|void

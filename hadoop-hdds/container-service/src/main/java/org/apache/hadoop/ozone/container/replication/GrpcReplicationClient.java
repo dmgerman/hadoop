@@ -558,13 +558,13 @@ name|outputPath
 expr_stmt|;
 try|try
 block|{
-name|outputPath
-operator|=
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
 name|outputPath
+argument_list|,
+literal|"Output path cannot be null"
 argument_list|)
 expr_stmt|;
 name|Path

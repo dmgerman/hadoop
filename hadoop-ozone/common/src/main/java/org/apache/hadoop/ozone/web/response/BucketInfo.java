@@ -36,7 +36,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
 import|;
 end_import
 
@@ -470,10 +470,8 @@ block|{
 name|acls
 operator|=
 operator|new
-name|LinkedList
-argument_list|<
-name|OzoneAcl
-argument_list|>
+name|ArrayList
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -910,6 +908,7 @@ argument_list|(
 name|BUCKET_INFO
 argument_list|)
 DECL|class|MixIn
+specifier|static
 class|class
 name|MixIn
 block|{    }

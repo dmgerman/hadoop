@@ -246,7 +246,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
 import|;
 end_import
 
@@ -453,7 +453,7 @@ argument_list|>
 name|prevVolList
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -612,7 +612,7 @@ argument_list|>
 name|prevVolList
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -864,7 +864,7 @@ argument_list|>
 name|metadataList
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1508,6 +1508,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Changes the Quota on a volume.    *    * @param volume - Name of the volume.    * @param quota - Quota in bytes.    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|setQuota (String volume, long quota)
 specifier|public
 name|void
@@ -1748,6 +1750,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Gets the volume information.    * @param volume - Volume name.    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|getVolumeInfo (String volume)
 specifier|public
 name|OmVolumeArgs
@@ -2239,6 +2243,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Checks if the specified user with a role can access this volume.    *    * @param volume - volume    * @param userAcl - user acl which needs to be checked for access    * @return true if the user has access for the volume, false otherwise    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|checkVolumeAccess (String volume, OzoneAclInfo userAcl)
 specifier|public
 name|boolean

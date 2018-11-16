@@ -5167,6 +5167,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Deletes an existing empty bucket from volume.    *    * @param volume - Name of the volume.    * @param bucket - Name of the bucket.    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|deleteBucket (String volume, String bucket)
 specifier|public
 name|void

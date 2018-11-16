@@ -82,20 +82,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdds
 operator|.
 name|conf
@@ -481,7 +467,7 @@ init|=
 operator|new
 name|Timeout
 argument_list|(
-literal|300_000
+literal|300000
 argument_list|)
 decl_stmt|;
 annotation|@
@@ -885,15 +871,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Failed volume should not exist in VolumeMap
-name|Path
-name|volume1Path
-init|=
-operator|new
-name|Path
-argument_list|(
-name|volume1
-argument_list|)
-decl_stmt|;
 name|assertFalse
 argument_list|(
 name|volumeSet
@@ -903,7 +880,7 @@ argument_list|()
 operator|.
 name|containsKey
 argument_list|(
-name|volume1Path
+name|volume1
 argument_list|)
 argument_list|)
 expr_stmt|;

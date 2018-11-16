@@ -42,7 +42,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
 import|;
 end_import
 
@@ -55,6 +55,10 @@ operator|.
 name|List
 import|;
 end_import
+
+begin_comment
+comment|/**  * Pending Deletes in the block space.  */
+end_comment
 
 begin_class
 DECL|class|PendingDeleteStatusList
@@ -92,7 +96,7 @@ expr_stmt|;
 name|pendingDeleteStatuses
 operator|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -128,6 +132,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Status of pending deletes.    */
 DECL|class|PendingDeleteStatus
 specifier|public
 specifier|static

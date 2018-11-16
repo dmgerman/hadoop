@@ -412,6 +412,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -442,17 +452,21 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|UUID
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|java
 operator|.
-name|util
+name|nio
 operator|.
-name|UUID
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
 import|;
 end_import
 
@@ -961,7 +975,7 @@ argument_list|>
 name|chunkList
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1097,15 +1111,6 @@ operator|!=
 literal|null
 argument_list|)
 expr_stmt|;
-name|File
-name|containerMetaDataLoc
-init|=
-operator|new
-name|File
-argument_list|(
-name|containerMetaDataPath
-argument_list|)
-decl_stmt|;
 comment|//Check whether container file and container db file exists or not.
 name|assertTrue
 argument_list|(
@@ -1233,12 +1238,16 @@ name|i
 operator|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|,
 literal|"test"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1551,7 +1560,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|ex
 parameter_list|)
 block|{

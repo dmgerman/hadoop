@@ -164,12 +164,23 @@ name|Consumer
 import|;
 end_import
 
+begin_comment
+comment|/**  * Helper class for Tests.  */
+end_comment
+
 begin_class
 DECL|class|OzoneTestUtils
 specifier|public
+specifier|final
 class|class
 name|OzoneTestUtils
 block|{
+comment|/**    * Never Constructed.    */
+DECL|method|OzoneTestUtils ()
+specifier|private
+name|OzoneTestUtils
+parameter_list|()
+block|{   }
 comment|/**    * Close containers which contain the blocks listed in    * omKeyLocationInfoGroups.    *    * @param omKeyLocationInfoGroups locationInfos for a key.    * @param scm StorageContainerManager instance.    * @return true if close containers is successful.    * @throws IOException    */
 DECL|method|closeContainers ( List<OmKeyLocationInfoGroup> omKeyLocationInfoGroups, StorageContainerManager scm)
 specifier|public
@@ -280,11 +291,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Failed to close the container"
+argument_list|,
 name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
+argument_list|)
+throw|;
 block|}
 block|}
 argument_list|,

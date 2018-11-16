@@ -526,7 +526,7 @@ argument_list|>
 name|cmdStatusList
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -539,7 +539,7 @@ argument_list|>
 name|scmCommandRequests
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;

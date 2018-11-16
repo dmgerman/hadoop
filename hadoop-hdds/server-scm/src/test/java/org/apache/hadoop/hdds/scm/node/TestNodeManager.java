@@ -446,7 +446,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
 import|;
 end_import
 
@@ -1784,7 +1784,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check for NPE when datanodeDetails is passed null for sendHeartbeat.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * Check for NPE when datanodeDetails is passed null for sendHeartbeat.    *    * @throws IOException    */
 annotation|@
 name|Test
 DECL|method|testScmCheckForErrorOnNullDatanodeDetails ()
@@ -1794,10 +1794,6 @@ name|testScmCheckForErrorOnNullDatanodeDetails
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
-throws|,
-name|TimeoutException
 block|{
 try|try
 init|(
@@ -2512,7 +2508,7 @@ argument_list|>
 name|list
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -4257,6 +4253,8 @@ specifier|public
 name|void
 name|testHandlingSCMCommandEvent
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|OzoneConfiguration
 name|conf
@@ -4468,6 +4466,9 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+throw|throw
+name|e
+throw|;
 block|}
 block|}
 block|}

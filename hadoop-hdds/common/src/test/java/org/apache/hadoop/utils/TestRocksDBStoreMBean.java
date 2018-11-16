@@ -136,6 +136,20 @@ name|ManagementFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test the JMX interface for the rocksdb metastore implementation.  */
 end_comment
@@ -147,6 +161,7 @@ class|class
 name|TestRocksDBStoreMBean
 block|{
 DECL|field|conf
+specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
@@ -268,12 +283,16 @@ argument_list|(
 literal|"key"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|,
 literal|"value"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

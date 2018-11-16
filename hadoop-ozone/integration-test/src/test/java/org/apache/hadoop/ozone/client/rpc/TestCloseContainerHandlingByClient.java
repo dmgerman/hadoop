@@ -632,6 +632,20 @@ name|OZONE_SCM_STALENODE_INTERVAL
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests Close Container Exception handling by Ozone Client.  */
 end_comment
@@ -935,7 +949,9 @@ literal|2
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|key
 operator|.
@@ -1071,8 +1087,12 @@ operator|new
 name|String
 argument_list|(
 name|data
+argument_list|,
+name|UTF_8
 argument_list|)
 decl_stmt|;
+name|dataString
+operator|=
 name|dataString
 operator|.
 name|concat
@@ -1087,7 +1107,9 @@ argument_list|,
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1139,7 +1161,9 @@ literal|2
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|key
 operator|.
@@ -1340,7 +1364,9 @@ operator|)
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
@@ -1449,7 +1475,9 @@ name|blockSize
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|key
@@ -1639,7 +1667,9 @@ init|=
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|key
 operator|.
@@ -1673,7 +1703,9 @@ argument_list|(
 name|dataString2
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//get the name of a valid container
@@ -1790,7 +1822,9 @@ name|dataString2
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 operator|.
 name|length
 argument_list|,
@@ -1812,7 +1846,9 @@ name|dataString2
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1894,7 +1930,9 @@ name|keyLen
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|byte
 index|[]
@@ -2658,7 +2696,9 @@ init|=
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|key
 operator|.
@@ -2792,7 +2832,9 @@ operator|=
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 expr_stmt|;
 name|key
 operator|.
@@ -3001,7 +3043,9 @@ literal|2
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|key
 operator|.
@@ -3122,8 +3166,12 @@ operator|new
 name|String
 argument_list|(
 name|data
+argument_list|,
+name|UTF_8
 argument_list|)
 decl_stmt|;
+name|dataString
+operator|=
 name|dataString
 operator|.
 name|concat
@@ -3154,7 +3202,9 @@ argument_list|,
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

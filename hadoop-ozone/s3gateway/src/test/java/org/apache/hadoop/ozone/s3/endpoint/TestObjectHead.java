@@ -185,6 +185,20 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -371,7 +385,9 @@ argument_list|,
 name|value
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 operator|.
 name|length
 argument_list|,
@@ -391,7 +407,9 @@ argument_list|(
 name|value
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|out
@@ -432,7 +450,9 @@ argument_list|(
 name|value
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 operator|.
 name|length
 argument_list|,
@@ -477,6 +497,9 @@ block|{
 comment|//Head an object that doesn't exist.
 try|try
 block|{
+name|Response
+name|response
+init|=
 name|keyEndpoint
 operator|.
 name|head
@@ -484,6 +507,18 @@ argument_list|(
 name|bucketName
 argument_list|,
 literal|"badKeyName"
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|404
+argument_list|,
+name|response
+operator|.
+name|getStatus
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

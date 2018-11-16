@@ -153,6 +153,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * This method parses the authorization header.    *    * Authorization header sample:    * AWS AKIAIOSFODNN7EXAMPLE:frJIUN8DYpKDtOLCwo//yllqDzg=    *    * @throws OS3Exception    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StringSplitter"
+argument_list|)
 DECL|method|parseHeader ()
 specifier|public
 name|void

@@ -170,7 +170,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayList
 import|;
 end_import
 
@@ -321,6 +321,8 @@ name|conf
 return|;
 block|}
 comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *<p>    * Here are some invariants of container placement.    *<p>    * 1. We place containers only on healthy nodes.    * 2. We place containers on nodes with enough space for that container.    * 3. if a set of containers are requested, we either meet the required    * number of nodes or we fail that request.    *    *    * @param excludedNodes - datanodes with existing replicas    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws SCMException SCM exception.    */
+annotation|@
+name|Override
 DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
@@ -625,7 +627,7 @@ argument_list|>
 name|results
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;

@@ -170,6 +170,20 @@ end_import
 
 begin_import
 import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
+begin_import
+import|import static
 name|org
 operator|.
 name|junit
@@ -304,7 +318,9 @@ init|=
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|groupOutputStream
 operator|.
@@ -487,7 +503,9 @@ literal|100
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -526,7 +544,9 @@ literal|500
 argument_list|)
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -589,7 +609,9 @@ init|=
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|int
 name|offset
@@ -659,6 +681,7 @@ decl_stmt|;
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|void
 name|seek
 parameter_list|(
@@ -677,6 +700,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|long
 name|getPos
 parameter_list|()
@@ -708,6 +732,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|int
 name|read
 parameter_list|()
@@ -724,6 +749,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|int
 name|read
 parameter_list|(
@@ -824,6 +850,8 @@ operator|new
 name|String
 argument_list|(
 name|resBuf
+argument_list|,
+name|UTF_8
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -877,7 +905,9 @@ init|=
 name|dataString
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|UTF_8
+argument_list|)
 decl_stmt|;
 name|int
 name|offset
@@ -947,6 +977,7 @@ decl_stmt|;
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|void
 name|seek
 parameter_list|(
@@ -965,6 +996,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|long
 name|getPos
 parameter_list|()
@@ -978,6 +1010,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|boolean
 name|seekToNewSource
 parameter_list|(
@@ -996,6 +1029,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|int
 name|read
 parameter_list|()
@@ -1012,6 +1046,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|int
 name|read
 parameter_list|(
@@ -1142,6 +1177,8 @@ operator|new
 name|String
 argument_list|(
 name|resBuf
+argument_list|,
+name|UTF_8
 argument_list|)
 operator|.
 name|substring
@@ -1203,6 +1240,8 @@ operator|new
 name|String
 argument_list|(
 name|resBuf
+argument_list|,
+name|UTF_8
 argument_list|)
 operator|.
 name|substring

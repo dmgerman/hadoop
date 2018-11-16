@@ -622,6 +622,8 @@ throws|,
 name|OzoneException
 function_decl|;
 comment|/**    * Closes all the opened resources.    */
+annotation|@
+name|Override
 DECL|method|close ()
 name|void
 name|close

@@ -618,7 +618,7 @@ try|try
 block|{
 return|return
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|(
 name|stateMap
@@ -664,7 +664,7 @@ try|try
 block|{
 return|return
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|(
 name|nodeMap

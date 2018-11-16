@@ -385,6 +385,7 @@ block|}
 comment|/**    * Dummy report publisher for testing.    */
 DECL|class|DummyReportPublisher
 specifier|private
+specifier|static
 class|class
 name|DummyReportPublisher
 extends|extends
