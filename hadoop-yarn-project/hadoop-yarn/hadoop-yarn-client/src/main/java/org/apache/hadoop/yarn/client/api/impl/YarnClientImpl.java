@@ -2011,6 +2011,11 @@ specifier|protected
 name|AHSClient
 name|historyClient
 decl_stmt|;
+DECL|field|ahsV2Client
+specifier|private
+name|AHSClient
+name|ahsV2Client
+decl_stmt|;
 DECL|field|historyServiceEnabled
 specifier|private
 name|boolean
@@ -2048,6 +2053,11 @@ DECL|field|loadResourceTypesFromServer
 specifier|private
 name|boolean
 name|loadResourceTypesFromServer
+decl_stmt|;
+DECL|field|timelineV2ServiceEnabled
+specifier|private
+name|boolean
+name|timelineV2ServiceEnabled
 decl_stmt|;
 DECL|field|ROOT
 specifier|private
@@ -2187,6 +2197,21 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|timelineV2ServiceEnabled
+operator|=
+literal|true
+expr_stmt|;
+block|}
 comment|// The AHSClientService is enabled by default when we start the
 comment|// TimelineServer which means we are able to get history information
 comment|// for applications/applicationAttempts/containers by using ahsClient
@@ -2221,6 +2246,26 @@ name|createAHSClient
 argument_list|()
 expr_stmt|;
 name|historyClient
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+name|ahsV2Client
+operator|=
+name|AHSClient
+operator|.
+name|createAHSv2Client
+argument_list|()
+expr_stmt|;
+name|ahsV2Client
 operator|.
 name|init
 argument_list|(
@@ -2319,6 +2364,17 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+name|ahsV2Client
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2391,6 +2447,17 @@ name|historyServiceEnabled
 condition|)
 block|{
 name|historyClient
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+name|ahsV2Client
 operator|.
 name|stop
 argument_list|()
@@ -3668,6 +3735,41 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|ahsV2Client
+operator|.
+name|getApplicationReport
+argument_list|(
+name|appId
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to fetch application report from "
+operator|+
+literal|"ATS v2"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
 operator|!
 name|historyServiceEnabled
 condition|)
@@ -4773,17 +4875,6 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|historyServiceEnabled
-condition|)
-block|{
-comment|// Just throw it as usual if historyService is not enabled.
-throw|throw
-name|e
-throw|;
-block|}
 comment|// Even if history-service is enabled, treat all exceptions still the same
 comment|// except the following
 if|if
@@ -4798,6 +4889,52 @@ operator|.
 name|class
 condition|)
 block|{
+throw|throw
+name|e
+throw|;
+block|}
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|ahsV2Client
+operator|.
+name|getApplicationAttemptReport
+argument_list|(
+name|appAttemptId
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to fetch application attempt report from "
+operator|+
+literal|"ATS v2"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|historyServiceEnabled
+condition|)
+block|{
+comment|// Just throw it as usual if historyService is not enabled.
 throw|throw
 name|e
 throw|;
@@ -4874,17 +5011,6 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|historyServiceEnabled
-condition|)
-block|{
-comment|// Just throw it as usual if historyService is not enabled.
-throw|throw
-name|e
-throw|;
-block|}
 comment|// Even if history-service is enabled, treat all exceptions still the same
 comment|// except the following
 if|if
@@ -4899,6 +5025,52 @@ operator|.
 name|class
 condition|)
 block|{
+throw|throw
+name|e
+throw|;
+block|}
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|ahsV2Client
+operator|.
+name|getApplicationAttempts
+argument_list|(
+name|appId
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to fetch application attempts from "
+operator|+
+literal|"ATS v2"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|historyServiceEnabled
+condition|)
+block|{
+comment|// Just throw it as usual if historyService is not enabled.
 throw|throw
 name|e
 throw|;
@@ -4972,17 +5144,6 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|historyServiceEnabled
-condition|)
-block|{
-comment|// Just throw it as usual if historyService is not enabled.
-throw|throw
-name|e
-throw|;
-block|}
 comment|// Even if history-service is enabled, treat all exceptions still the same
 comment|// except the following
 if|if
@@ -5006,6 +5167,52 @@ operator|.
 name|class
 condition|)
 block|{
+throw|throw
+name|e
+throw|;
+block|}
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|ahsV2Client
+operator|.
+name|getContainerReport
+argument_list|(
+name|containerId
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to fetch container report from "
+operator|+
+literal|"ATS v2"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|historyServiceEnabled
+condition|)
+block|{
+comment|// Just throw it as usual if historyService is not enabled.
 throw|throw
 name|e
 throw|;
@@ -5104,6 +5311,8 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
+comment|// Even if history-service is enabled, treat all exceptions still the same
+comment|// except the following
 if|if
 condition|(
 name|e
@@ -5114,13 +5323,22 @@ operator|!=
 name|ApplicationNotFoundException
 operator|.
 name|class
-operator|||
-operator|!
-name|historyServiceEnabled
 condition|)
 block|{
-comment|// If Application is not in RM and history service is enabled then we
-comment|// need to check with history service else throw exception.
+throw|throw
+name|e
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|historyServiceEnabled
+operator|&&
+operator|!
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+comment|// if both history server and ATSv2 are not enabled throw exception.
 throw|throw
 name|e
 throw|;
@@ -5130,11 +5348,6 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|historyServiceEnabled
-condition|)
-block|{
 comment|// Check with AHS even if found in RM because to capture info of finished
 comment|// containers also
 name|List
@@ -5149,9 +5362,7 @@ try|try
 block|{
 name|containersListFromAHS
 operator|=
-name|historyClient
-operator|.
-name|getContainers
+name|getContainerReportFromHistory
 argument_list|(
 name|applicationAttemptId
 argument_list|)
@@ -5163,14 +5374,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// History service access might be enabled but system metrics publisher
-comment|// is disabled hence app not found exception is possible
 if|if
 condition|(
 name|appNotFoundInRM
 condition|)
 block|{
-comment|// app not found in bothM and RM then propagate the exception.
 throw|throw
 name|e
 throw|;
@@ -5370,9 +5578,107 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
 return|return
 name|containersForAttempt
+return|;
+block|}
+DECL|method|getContainerReportFromHistory ( ApplicationAttemptId applicationAttemptId)
+specifier|private
+name|List
+argument_list|<
+name|ContainerReport
+argument_list|>
+name|getContainerReportFromHistory
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+block|{
+name|List
+argument_list|<
+name|ContainerReport
+argument_list|>
+name|containersListFromAHS
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|timelineV2ServiceEnabled
+condition|)
+block|{
+try|try
+block|{
+name|containersListFromAHS
+operator|=
+name|ahsV2Client
+operator|.
+name|getContainers
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Got an error while fetching container report from ATSv2"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|historyServiceEnabled
+condition|)
+block|{
+name|containersListFromAHS
+operator|=
+name|historyClient
+operator|.
+name|getContainers
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|historyServiceEnabled
+condition|)
+block|{
+name|containersListFromAHS
+operator|=
+name|historyClient
+operator|.
+name|getContainers
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|containersListFromAHS
 return|;
 block|}
 annotation|@

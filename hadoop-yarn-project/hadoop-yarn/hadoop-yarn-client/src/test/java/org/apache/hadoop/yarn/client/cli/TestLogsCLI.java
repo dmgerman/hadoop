@@ -1925,6 +1925,27 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -clusterId<Cluster ID>                      ClusterId. By default, it"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              will take default cluster id"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              from the RM"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -containerId<Container ID>                  ContainerId. By default, it"
 argument_list|)
 expr_stmt|;
