@@ -393,7 +393,6 @@ operator|=
 name|size
 expr_stmt|;
 block|}
-comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
 DECL|method|createContainer (String owner)
@@ -659,7 +658,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
 DECL|method|createContainer (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
@@ -1038,7 +1036,6 @@ name|force
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|listContainer (long startContainerID, int count)

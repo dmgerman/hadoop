@@ -701,7 +701,6 @@ operator|=
 name|retryPolicy
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|createPipeline ()
@@ -764,7 +763,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|destroyPipeline ()
@@ -1321,7 +1319,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    * @throws IOException    */
+comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    */
 annotation|@
 name|Override
 DECL|method|sendCommandAsync ( ContainerCommandRequestProto request)
