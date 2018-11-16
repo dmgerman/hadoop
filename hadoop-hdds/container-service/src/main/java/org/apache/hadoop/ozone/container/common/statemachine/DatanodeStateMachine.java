@@ -742,7 +742,7 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
-name|getDispatcher
+name|getController
 argument_list|()
 argument_list|,
 operator|new

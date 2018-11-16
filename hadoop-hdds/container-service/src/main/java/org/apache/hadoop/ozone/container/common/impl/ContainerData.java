@@ -919,6 +919,42 @@ operator|==
 name|state
 return|;
 block|}
+comment|/**    * checks if the container is quasi closed.    * @return - boolean    */
+DECL|method|isQuasiClosed ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isQuasiClosed
+parameter_list|()
+block|{
+return|return
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|QUASI_CLOSED
+operator|==
+name|state
+return|;
+block|}
+comment|/**    * Marks this container as quasi closed.    */
+DECL|method|quasiCloseContainer ()
+specifier|public
+specifier|synchronized
+name|void
+name|quasiCloseContainer
+parameter_list|()
+block|{
+name|setState
+argument_list|(
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|QUASI_CLOSED
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Marks this container as closed.    */
 DECL|method|closeContainer ()
 specifier|public

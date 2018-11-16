@@ -270,7 +270,23 @@ name|State
 name|getContainerState
 parameter_list|()
 function_decl|;
-comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    *    * @throws StorageContainerException    */
+comment|/**    * Marks the container for closing. Moves the container to CLOSING state.    */
+DECL|method|markContainerForClose ()
+name|void
+name|markContainerForClose
+parameter_list|()
+throws|throws
+name|StorageContainerException
+function_decl|;
+comment|/**    * Quasi Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    *    * @throws StorageContainerException    */
+DECL|method|quasiClose ()
+name|void
+name|quasiClose
+parameter_list|()
+throws|throws
+name|StorageContainerException
+function_decl|;
+comment|/**    * Closes a open/quasi closed container, if it is already closed or does not    * exist a StorageContainerException is thrown.    *    * @throws StorageContainerException    */
 DECL|method|close ()
 name|void
 name|close

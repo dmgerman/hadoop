@@ -1004,7 +1004,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to allocate container: {}"
+literal|"Unable to allocate container."
 argument_list|,
 name|ex
 argument_list|)

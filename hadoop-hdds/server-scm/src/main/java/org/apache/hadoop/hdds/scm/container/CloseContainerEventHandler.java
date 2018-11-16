@@ -419,11 +419,6 @@ argument_list|()
 argument_list|,
 name|container
 operator|.
-name|getReplicationType
-argument_list|()
-argument_list|,
-name|container
-operator|.
 name|getPipelineID
 argument_list|()
 argument_list|)

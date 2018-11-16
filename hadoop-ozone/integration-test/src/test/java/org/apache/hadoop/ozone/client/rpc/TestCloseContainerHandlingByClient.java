@@ -1023,12 +1023,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 name|key
@@ -1235,12 +1229,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 name|key
@@ -1451,12 +1439,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 comment|// write 1 more block worth of data. It will fail and new block will be
@@ -1759,12 +1741,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 name|key
@@ -2038,12 +2014,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 comment|// write 3 more chunks worth of data. It will fail and new block will be
@@ -2203,7 +2173,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForContainerClose (String keyName, OzoneOutputStream outputStream, HddsProtos.ReplicationType type)
+DECL|method|waitForContainerClose (String keyName, OzoneOutputStream outputStream)
 specifier|private
 name|void
 name|waitForContainerClose
@@ -2213,11 +2183,6 @@ name|keyName
 parameter_list|,
 name|OzoneOutputStream
 name|outputStream
-parameter_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-name|type
 parameter_list|)
 throws|throws
 name|Exception
@@ -2287,8 +2252,6 @@ argument_list|)
 expr_stmt|;
 name|waitForContainerClose
 argument_list|(
-name|type
-argument_list|,
 name|containerIdList
 operator|.
 name|toArray
@@ -2302,16 +2265,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForContainerClose (HddsProtos.ReplicationType type, Long... containerIdList)
+DECL|method|waitForContainerClose (Long... containerIdList)
 specifier|private
 name|void
 name|waitForContainerClose
 parameter_list|(
-name|HddsProtos
-operator|.
-name|ReplicationType
-name|type
-parameter_list|,
 name|Long
 modifier|...
 name|containerIdList
@@ -2468,8 +2426,6 @@ operator|new
 name|CloseContainerCommand
 argument_list|(
 name|containerID
-argument_list|,
-name|type
 argument_list|,
 name|pipeline
 operator|.
@@ -2804,12 +2760,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 name|dataString
@@ -3117,12 +3067,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|key
-argument_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-operator|.
-name|RATIS
 argument_list|)
 expr_stmt|;
 comment|// Again Write the Data. This will throw an exception which will be handled

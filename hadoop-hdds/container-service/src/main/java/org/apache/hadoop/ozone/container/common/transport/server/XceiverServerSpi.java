@@ -158,6 +158,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns true if the given pipeline exist.    *    * @return true if pipeline present, else false    */
+DECL|method|isExist (HddsProtos.PipelineID pipelineId)
+name|boolean
+name|isExist
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineId
+parameter_list|)
+function_decl|;
 comment|/**    * Get pipeline report for the XceiverServer instance.    * @return list of report for each pipeline.    */
 DECL|method|getPipelineReport ()
 name|List

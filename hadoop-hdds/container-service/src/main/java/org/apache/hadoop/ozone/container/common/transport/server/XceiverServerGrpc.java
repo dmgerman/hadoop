@@ -821,6 +821,36 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|isExist (HddsProtos.PipelineID pipelineId)
+specifier|public
+name|boolean
+name|isExist
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineId
+parameter_list|)
+block|{
+return|return
+name|PipelineID
+operator|.
+name|valueOf
+argument_list|(
+name|id
+argument_list|)
+operator|.
+name|getProtobuf
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|pipelineId
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getPipelineReport ()
 specifier|public
 name|List

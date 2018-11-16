@@ -265,6 +265,9 @@ operator|.
 name|getContainer
 argument_list|()
 operator|.
+name|getController
+argument_list|()
+operator|.
 name|getContainerReport
 argument_list|()
 return|;

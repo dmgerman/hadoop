@@ -500,22 +500,6 @@ name|Consumer
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|INVALID_PORT
-import|;
-end_import
-
 begin_comment
 comment|/**  * Current Context of State Machine.  */
 end_comment
@@ -725,52 +709,6 @@ parameter_list|()
 block|{
 return|return
 name|parent
-return|;
-block|}
-comment|/**    * Get the container server port.    * @return The container server port if available, return -1 if otherwise    */
-DECL|method|getContainerPort ()
-specifier|public
-name|int
-name|getContainerPort
-parameter_list|()
-block|{
-return|return
-name|parent
-operator|==
-literal|null
-condition|?
-name|INVALID_PORT
-else|:
-name|parent
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getContainerServerPort
-argument_list|()
-return|;
-block|}
-comment|/**    * Gets the Ratis Port.    * @return int , return -1 if not valid.    */
-DECL|method|getRatisPort ()
-specifier|public
-name|int
-name|getRatisPort
-parameter_list|()
-block|{
-return|return
-name|parent
-operator|==
-literal|null
-condition|?
-name|INVALID_PORT
-else|:
-name|parent
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getRatisContainerServerPort
-argument_list|()
 return|;
 block|}
 comment|/**    * Returns true if we are entering a new state.    *    * @return boolean    */

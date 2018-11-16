@@ -432,6 +432,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|UUID
@@ -1509,6 +1519,8 @@ name|KeyValueHandler
 argument_list|(
 name|conf
 argument_list|,
+literal|null
+argument_list|,
 name|cset
 argument_list|,
 name|volumeSet
@@ -1550,6 +1562,8 @@ operator|new
 name|KeyValueHandler
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|,
 name|cset
 argument_list|,
@@ -1641,6 +1655,8 @@ specifier|public
 name|void
 name|testCloseInvalidContainer
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|long
 name|containerID
@@ -1767,6 +1783,20 @@ argument_list|)
 operator|.
 name|thenCallRealMethod
 argument_list|()
+expr_stmt|;
+name|doCallRealMethod
+argument_list|()
+operator|.
+name|when
+argument_list|(
+name|handler
+argument_list|)
+operator|.
+name|closeContainer
+argument_list|(
+name|any
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// Closing invalid container should return error response.
 name|ContainerProtos

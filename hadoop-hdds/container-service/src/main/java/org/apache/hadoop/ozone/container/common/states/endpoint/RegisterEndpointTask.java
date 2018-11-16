@@ -497,6 +497,9 @@ name|containerReport
 init|=
 name|datanodeContainerManager
 operator|.
+name|getController
+argument_list|()
+operator|.
 name|getContainerReport
 argument_list|()
 decl_stmt|;
