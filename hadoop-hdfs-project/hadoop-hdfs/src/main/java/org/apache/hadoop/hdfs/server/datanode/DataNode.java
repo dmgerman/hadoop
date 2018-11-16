@@ -3228,7 +3228,7 @@ specifier|final
 name|String
 name|MAX_VOLUME_FAILURES_TOLERATED_MSG
 init|=
-literal|"should be greater than -1"
+literal|"should be greater than or equal to -1"
 decl_stmt|;
 comment|/** A list of property that are reconfigurable at runtime. */
 DECL|field|RECONFIGURABLE_PROPERTIES
@@ -8219,7 +8219,7 @@ literal|"dfs.datanode.failed.volumes.tolerated - "
 operator|+
 name|volFailuresTolerated
 operator|+
-literal|". Value configured is either greater than -1 or>= "
+literal|". Value configured is either less than -1 or>= "
 operator|+
 literal|"to the number of configured volumes ("
 operator|+
