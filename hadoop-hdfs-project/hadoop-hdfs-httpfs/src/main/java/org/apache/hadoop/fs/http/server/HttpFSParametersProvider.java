@@ -399,6 +399,10 @@ block|,
 name|LenParam
 operator|.
 name|class
+block|,
+name|NoRedirectParam
+operator|.
+name|class
 block|}
 argument_list|)
 expr_stmt|;
@@ -473,7 +477,11 @@ argument_list|,
 operator|new
 name|Class
 index|[]
-block|{}
+block|{
+name|NoRedirectParam
+operator|.
+name|class
+block|}
 argument_list|)
 expr_stmt|;
 name|PARAMS_DEF
@@ -545,6 +553,10 @@ name|Class
 index|[]
 block|{
 name|DataParam
+operator|.
+name|class
+block|,
+name|NoRedirectParam
 operator|.
 name|class
 block|}
@@ -619,6 +631,10 @@ operator|.
 name|class
 block|,
 name|UnmaskedPermissionParam
+operator|.
+name|class
+block|,
+name|NoRedirectParam
 operator|.
 name|class
 block|}
@@ -1255,6 +1271,44 @@ comment|/**      * Constructor.      */
 DECL|method|DataParam ()
 specifier|public
 name|DataParam
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|NAME
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Class for noredirect parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|NoRedirectParam
+specifier|public
+specifier|static
+class|class
+name|NoRedirectParam
+extends|extends
+name|BooleanParam
+block|{
+comment|/**      * Parameter name.      */
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+literal|"noredirect"
+decl_stmt|;
+comment|/**      * Constructor.      */
+DECL|method|NoRedirectParam ()
+specifier|public
+name|NoRedirectParam
 parameter_list|()
 block|{
 name|super
