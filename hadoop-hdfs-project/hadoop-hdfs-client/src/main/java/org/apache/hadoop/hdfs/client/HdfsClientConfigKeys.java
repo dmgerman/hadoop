@@ -727,6 +727,16 @@ name|DFS_PROVIDED_ALIASMAP_INMEMORY_RPC_ADDRESS
 init|=
 literal|"dfs.provided.aliasmap.inmemory.dnrpc-address"
 decl_stmt|;
+DECL|field|DFS_CLIENT_FAILOVER_IPFAILOVER_VIRTUAL_ADDRESS
+name|String
+name|DFS_CLIENT_FAILOVER_IPFAILOVER_VIRTUAL_ADDRESS
+init|=
+name|Failover
+operator|.
+name|PREFIX
+operator|+
+literal|"ipfailover.virtual-address"
+decl_stmt|;
 comment|/**    * These are deprecated config keys to client code.    */
 DECL|interface|DeprecatedKeys
 interface|interface
