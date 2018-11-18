@@ -410,7 +410,7 @@ operator|)
 operator|/
 literal|2.0
 decl_stmt|;
-name|int
+name|long
 name|plannedResourceUsed
 init|=
 name|resourceUsedWithWeightToResourceRatio
@@ -521,7 +521,7 @@ comment|/**    * Compute the resources that would be used given a weight-to-reso
 DECL|method|resourceUsedWithWeightToResourceRatio (double w2rRatio, Collection<? extends Schedulable> schedulables, String type)
 specifier|private
 specifier|static
-name|int
+name|long
 name|resourceUsedWithWeightToResourceRatio
 parameter_list|(
 name|double
@@ -539,7 +539,7 @@ name|String
 name|type
 parameter_list|)
 block|{
-name|int
+name|long
 name|resourcesTaken
 init|=
 literal|0
@@ -552,7 +552,7 @@ range|:
 name|schedulables
 control|)
 block|{
-name|int
+name|long
 name|share
 init|=
 name|computeShare
@@ -564,6 +564,23 @@ argument_list|,
 name|type
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|Long
+operator|.
+name|MAX_VALUE
+operator|-
+name|resourcesTaken
+operator|<
+name|share
+condition|)
+block|{
+return|return
+name|Long
+operator|.
+name|MAX_VALUE
+return|;
+block|}
 name|resourcesTaken
 operator|+=
 name|share
@@ -577,7 +594,7 @@ comment|/**    * Compute the resources assigned to a Schedulable given a particu
 DECL|method|computeShare (Schedulable sched, double w2rRatio, String type)
 specifier|private
 specifier|static
-name|int
+name|long
 name|computeShare
 parameter_list|(
 name|Schedulable
@@ -640,7 +657,7 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|(
-name|int
+name|long
 operator|)
 name|share
 return|;
