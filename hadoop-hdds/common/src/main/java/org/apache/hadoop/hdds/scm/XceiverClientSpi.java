@@ -430,6 +430,8 @@ throws|,
 name|ExecutionException
 throws|,
 name|TimeoutException
+throws|,
+name|IOException
 function_decl|;
 block|}
 end_class

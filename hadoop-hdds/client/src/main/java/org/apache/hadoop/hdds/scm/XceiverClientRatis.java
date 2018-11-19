@@ -734,9 +734,25 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|closeRaftClient
+argument_list|(
+name|c
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|closeRaftClient (RaftClient raftClient)
+specifier|private
+name|void
+name|closeRaftClient
+parameter_list|(
+name|RaftClient
+name|raftClient
+parameter_list|)
+block|{
 try|try
 block|{
-name|c
+name|raftClient
 operator|.
 name|close
 argument_list|()
@@ -755,7 +771,6 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
-block|}
 block|}
 block|}
 DECL|method|getClient ()
@@ -862,16 +877,43 @@ throws|,
 name|ExecutionException
 throws|,
 name|TimeoutException
+throws|,
+name|IOException
 block|{
-comment|// TODO: Create a new Raft client instance to watch
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"commit index : {} watch timeout : {}"
+argument_list|,
+name|index
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
+comment|// create a new RaftClient instance for watch request
+name|RaftClient
+name|raftClient
+init|=
+name|RatisHelper
+operator|.
+name|newRaftClient
+argument_list|(
+name|rpcType
+argument_list|,
+name|getPipeline
+argument_list|()
+argument_list|,
+name|retryPolicy
+argument_list|)
+decl_stmt|;
 name|CompletableFuture
 argument_list|<
 name|RaftClientReply
 argument_list|>
 name|replyFuture
 init|=
-name|getClient
-argument_list|()
+name|raftClient
 operator|.
 name|sendWatchAsync
 argument_list|(
@@ -913,8 +955,31 @@ argument_list|,
 name|toe
 argument_list|)
 expr_stmt|;
-name|getClient
+name|closeRaftClient
+argument_list|(
+name|raftClient
+argument_list|)
+expr_stmt|;
+comment|// generate a new raft client instance again so that next watch request
+comment|// does not get blocked for the previous one
+comment|// TODO : need to remove the code to create the new RaftClient instance
+comment|// here once the watch request bypassing sliding window in Raft Client
+comment|// gets fixed.
+name|raftClient
+operator|=
+name|RatisHelper
+operator|.
+name|newRaftClient
+argument_list|(
+name|rpcType
+argument_list|,
+name|getPipeline
 argument_list|()
+argument_list|,
+name|retryPolicy
+argument_list|)
+expr_stmt|;
+name|raftClient
 operator|.
 name|sendWatchAsync
 argument_list|(
@@ -947,6 +1012,14 @@ operator|+
 literal|" to all the nodes."
 operator|+
 literal|"Committed by majority."
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|closeRaftClient
+argument_list|(
+name|raftClient
 argument_list|)
 expr_stmt|;
 block|}

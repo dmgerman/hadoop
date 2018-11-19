@@ -1520,6 +1520,8 @@ throws|,
 name|ExecutionException
 throws|,
 name|TimeoutException
+throws|,
+name|IOException
 block|{
 comment|// there is no notion of watch for commit index in standalone pipeline
 block|}
