@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.aliyun.oss.contract
+DECL|package|org.apache.hadoop.fs.aliyun.oss.fileContext
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|aliyun
 operator|.
 name|oss
 operator|.
-name|contract
+name|fileContext
 package|;
 end_package
 
@@ -46,21 +46,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
+name|FileContextMainOperationsBaseTest
 import|;
 end_import
 
@@ -86,15 +72,29 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|fs
+name|junit
 operator|.
-name|contract
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|AbstractBondedFSContract
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -109,117 +109,118 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The contract of Aliyun OSS: only enabled if the test bucket is provided.  */
+comment|/**  * OSS implementation of FileContextMainOperationsBaseTest.  */
 end_comment
 
 begin_class
-DECL|class|AliyunOSSContract
+DECL|class|TestOSSFileContextMainOperations
 specifier|public
 class|class
-name|AliyunOSSContract
+name|TestOSSFileContextMainOperations
 extends|extends
-name|AbstractBondedFSContract
+name|FileContextMainOperationsBaseTest
 block|{
-DECL|field|CONTRACT_XML
+annotation|@
+name|Before
+DECL|method|setUp ()
 specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONTRACT_XML
-init|=
-literal|"contract/aliyun-oss.xml"
-decl_stmt|;
-DECL|method|AliyunOSSContract (Configuration conf)
-specifier|public
-name|AliyunOSSContract
-parameter_list|(
+name|void
+name|setUp
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|Exception
+block|{
 name|Configuration
 name|conf
-parameter_list|)
-block|{
-name|super
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|fc
+operator|=
+name|AliyunOSSTestUtils
+operator|.
+name|createTestFileContext
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-comment|//insert the base features
-name|addConfResource
-argument_list|(
-name|CONTRACT_XML
-argument_list|)
+name|super
+operator|.
+name|setUp
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getScheme ()
-specifier|public
-name|String
-name|getScheme
+DECL|method|listCorruptedBlocksSupported ()
+specifier|protected
+name|boolean
+name|listCorruptedBlocksSupported
 parameter_list|()
 block|{
 return|return
-literal|"oss"
+literal|false
 return|;
 block|}
 annotation|@
-name|Override
-DECL|method|getTestFileSystem ()
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testCreateFlagAppendExistingFile ()
 specifier|public
-name|FileSystem
-name|getTestFileSystem
+name|void
+name|testCreateFlagAppendExistingFile
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-return|return
-name|AliyunOSSTestUtils
-operator|.
-name|createTestFileSystem
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|)
-return|;
+comment|// append not supported, so test removed
 block|}
 annotation|@
-name|Override
-DECL|method|getTestPath ()
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testCreateFlagCreateAppendExistingFile ()
 specifier|public
-name|Path
-name|getTestPath
+name|void
+name|testCreateFlagCreateAppendExistingFile
 parameter_list|()
+throws|throws
+name|IOException
 block|{
-name|String
-name|testUniqueForkId
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"test.unique.fork.id"
-argument_list|)
-decl_stmt|;
-return|return
-name|testUniqueForkId
-operator|==
-literal|null
-condition|?
-name|super
-operator|.
-name|getTestPath
-argument_list|()
-else|:
-operator|new
-name|Path
-argument_list|(
-literal|"/"
-operator|+
-name|testUniqueForkId
-argument_list|,
-literal|"test"
-argument_list|)
-return|;
+comment|// append not supported, so test removed
+block|}
+annotation|@
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testSetVerifyChecksum ()
+specifier|public
+name|void
+name|testSetVerifyChecksum
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// checksums ignored, so test ignored
+block|}
+annotation|@
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testBuilderCreateAppendExistingFile ()
+specifier|public
+name|void
+name|testBuilderCreateAppendExistingFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// append not supported, so test removed
 block|}
 block|}
 end_class

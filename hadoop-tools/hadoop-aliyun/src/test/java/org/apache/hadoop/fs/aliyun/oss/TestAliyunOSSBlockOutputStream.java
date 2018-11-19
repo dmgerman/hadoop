@@ -398,6 +398,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|FileSystem
+operator|.
+name|clearStatistics
+argument_list|()
+expr_stmt|;
 name|long
 name|size
 init|=
@@ -629,6 +634,11 @@ literal|1024
 decl_stmt|;
 name|FileSystem
 operator|.
+name|clearStatistics
+argument_list|()
+expr_stmt|;
+name|FileSystem
+operator|.
 name|Statistics
 name|statistics
 init|=
@@ -830,6 +840,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|FileSystem
+operator|.
+name|clearStatistics
+argument_list|()
+expr_stmt|;
 name|long
 name|size
 init|=

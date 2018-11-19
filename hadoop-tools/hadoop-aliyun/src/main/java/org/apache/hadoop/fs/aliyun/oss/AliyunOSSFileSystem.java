@@ -866,12 +866,7 @@ literal|true
 argument_list|)
 argument_list|)
 argument_list|,
-call|(
-name|Statistics
-call|)
-argument_list|(
-literal|null
-argument_list|)
+name|statistics
 argument_list|)
 return|;
 block|}
@@ -1595,6 +1590,20 @@ parameter_list|()
 block|{
 return|return
 name|uri
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultPort ()
+specifier|public
+name|int
+name|getDefaultPort
+parameter_list|()
+block|{
+return|return
+name|Constants
+operator|.
+name|OSS_DEFAULT_PORT
 return|;
 block|}
 annotation|@

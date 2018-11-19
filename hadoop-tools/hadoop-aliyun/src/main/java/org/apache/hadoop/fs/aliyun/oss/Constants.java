@@ -100,6 +100,16 @@ name|CREDENTIALS_PROVIDER_KEY
 init|=
 literal|"fs.oss.credentials.provider"
 decl_stmt|;
+DECL|field|OSS_DEFAULT_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OSS_DEFAULT_PORT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|// OSS access verification
 DECL|field|ACCESS_KEY_ID
 specifier|public
