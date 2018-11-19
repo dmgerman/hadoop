@@ -1617,6 +1617,8 @@ argument_list|(
 name|scmNodeManager
 argument_list|,
 name|pipelineManager
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|DeadNodeHandler
@@ -1682,6 +1684,8 @@ operator|new
 name|PipelineActionHandler
 argument_list|(
 name|pipelineManager
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|long

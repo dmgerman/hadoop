@@ -402,26 +402,6 @@ name|ExecutionException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Create a pipeline.    */
-DECL|method|createPipeline ()
-specifier|public
-specifier|abstract
-name|void
-name|createPipeline
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Destroy a pipeline.    * @throws IOException    */
-DECL|method|destroyPipeline ()
-specifier|public
-specifier|abstract
-name|void
-name|destroyPipeline
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Returns pipeline Type.    *    * @return - {Stand_Alone, Ratis or Chained}    */
 DECL|method|getPipelineType ()
 specifier|public

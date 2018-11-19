@@ -633,11 +633,8 @@ comment|//    ObjectStageChangeRequestProto.Type.pipeline,
 comment|//    pipeline.getPipelineName(),
 comment|//    ObjectStageChangeRequestProto.Op.create,
 comment|//    ObjectStageChangeRequestProto.Stage.begin);
-name|client
-operator|.
-name|createPipeline
-argument_list|()
-expr_stmt|;
+comment|// client.createPipeline();
+comment|// TODO: Use PipelineManager to createPipeline
 comment|//storageContainerLocationClient.notifyObjectStageChange(
 comment|//    ObjectStageChangeRequestProto.Type.pipeline,
 comment|//    pipeline.getPipelineName(),

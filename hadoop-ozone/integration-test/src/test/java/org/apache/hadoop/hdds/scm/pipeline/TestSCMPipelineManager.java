@@ -909,7 +909,7 @@ name|pipelineReportFromDatanode
 init|=
 name|TestUtils
 operator|.
-name|getRandomPipelineReportFromDatanode
+name|getPipelineReportFromDatanode
 argument_list|(
 name|dn
 argument_list|,
@@ -1015,7 +1015,7 @@ name|pipelineReportFromDatanode
 init|=
 name|TestUtils
 operator|.
-name|getRandomPipelineReportFromDatanode
+name|getPipelineReportFromDatanode
 argument_list|(
 name|dn
 argument_list|,

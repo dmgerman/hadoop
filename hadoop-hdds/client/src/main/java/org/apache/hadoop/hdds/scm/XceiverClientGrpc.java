@@ -1501,27 +1501,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a pipeline.    */
-annotation|@
-name|Override
-DECL|method|createPipeline ()
-specifier|public
-name|void
-name|createPipeline
-parameter_list|()
-block|{
-comment|// For stand alone pipeline, there is no notion called setup pipeline.
-block|}
-annotation|@
-name|Override
-DECL|method|destroyPipeline ()
-specifier|public
-name|void
-name|destroyPipeline
-parameter_list|()
-block|{
-comment|// For stand alone pipeline, there is no notion called destroy pipeline.
-block|}
 annotation|@
 name|Override
 DECL|method|watchForCommit (long index, long timeout)
