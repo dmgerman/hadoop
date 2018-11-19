@@ -390,6 +390,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns the list of active Pipelines.    *    * @return list of Pipeline    * @throws IOException in case of any exception    */
+DECL|method|listPipelines ()
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|listPipelines
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Closes the pipeline given a pipeline ID.    *    * @param pipelineID PipelineID to close.    * @throws IOException In case of exception while closing the pipeline    */
+DECL|method|closePipeline (HddsProtos.PipelineID pipelineID)
+name|void
+name|closePipeline
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
 DECL|method|inChillMode ()
 name|boolean

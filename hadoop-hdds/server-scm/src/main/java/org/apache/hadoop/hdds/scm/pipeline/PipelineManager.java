@@ -186,6 +186,14 @@ parameter_list|)
 throws|throws
 name|PipelineNotFoundException
 function_decl|;
+DECL|method|getPipelines ()
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelines
+parameter_list|()
+function_decl|;
 DECL|method|getPipelines (ReplicationType type)
 name|List
 argument_list|<

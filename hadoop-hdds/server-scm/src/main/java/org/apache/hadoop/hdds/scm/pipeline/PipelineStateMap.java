@@ -497,6 +497,28 @@ return|return
 name|pipeline
 return|;
 block|}
+comment|/**    * Get list of pipelines in SCM.    * @return List of pipelines    */
+DECL|method|getPipelines ()
+specifier|public
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelines
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|pipelineMap
+operator|.
+name|values
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/**    * Get pipeline corresponding to specified replication type.    *    * @param type - ReplicationType    * @return List of pipelines which have the specified replication type    */
 DECL|method|getPipelines (ReplicationType type)
 name|List

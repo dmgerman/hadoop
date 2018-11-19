@@ -308,6 +308,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns the list of active Pipelines.    *    * @return list of Pipeline    *    * @throws IOException in case of any exception    */
+DECL|method|listPipelines ()
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|listPipelines
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Closes a pipeline given the pipelineID.    *    * @param pipelineID ID of the pipeline to demolish    * @throws IOException    */
+DECL|method|closePipeline (HddsProtos.PipelineID pipelineID)
+name|void
+name|closePipeline
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Returns information about SCM.    *    * @return {@link ScmInfo}    * @throws IOException    */
 DECL|method|getScmInfo ()
 name|ScmInfo

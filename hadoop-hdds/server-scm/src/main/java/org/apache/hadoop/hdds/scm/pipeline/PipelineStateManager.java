@@ -233,6 +233,22 @@ name|pipelineID
 argument_list|)
 return|;
 block|}
+DECL|method|getPipelines ()
+specifier|public
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|getPipelines
+parameter_list|()
+block|{
+return|return
+name|pipelineStateMap
+operator|.
+name|getPipelines
+argument_list|()
+return|;
+block|}
 DECL|method|getPipelines (ReplicationType type)
 name|List
 argument_list|<

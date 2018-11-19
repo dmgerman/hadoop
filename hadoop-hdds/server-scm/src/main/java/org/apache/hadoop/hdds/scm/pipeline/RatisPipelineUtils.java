@@ -407,6 +407,7 @@ expr_stmt|;
 block|}
 comment|/**    * Removes pipeline from SCM. Sends ratis command to destroy pipeline on all    * the datanodes.    * @param pipelineManager - SCM pipeline manager    * @param pipeline - Pipeline to be destroyed    * @param ozoneConf - Ozone configuration    * @throws IOException    */
 DECL|method|destroyPipeline (PipelineManager pipelineManager, Pipeline pipeline, Configuration ozoneConf)
+specifier|public
 specifier|static
 name|void
 name|destroyPipeline
