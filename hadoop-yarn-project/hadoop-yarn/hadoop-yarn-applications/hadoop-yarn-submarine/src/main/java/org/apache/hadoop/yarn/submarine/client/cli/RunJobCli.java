@@ -795,6 +795,63 @@ name|options
 operator|.
 name|addOption
 argument_list|(
+name|CliConstants
+operator|.
+name|KEYTAB
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify keytab used by the "
+operator|+
+literal|"job under security environment"
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
+name|PRINCIPAL
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify principal used "
+operator|+
+literal|"by the job under security environment"
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
+name|DISTRIBUTE_KEYTAB
+argument_list|,
+literal|false
+argument_list|,
+literal|"Distribute "
+operator|+
+literal|"local keytab to cluster machines for service authentication. If not "
+operator|+
+literal|"sepcified, pre-destributed keytab of which path specified by"
+operator|+
+literal|" parameter"
+operator|+
+name|CliConstants
+operator|.
+name|KEYTAB
+operator|+
+literal|" on cluster machines will be "
+operator|+
+literal|"used"
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
 literal|"h"
 argument_list|,
 literal|"help"
