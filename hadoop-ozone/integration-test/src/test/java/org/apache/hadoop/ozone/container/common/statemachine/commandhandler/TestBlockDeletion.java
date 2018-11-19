@@ -1068,11 +1068,7 @@ name|void
 name|testBlockDeletion
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-throws|,
-name|TimeoutException
+name|Exception
 block|{
 name|String
 name|volumeName
@@ -1274,14 +1270,9 @@ name|getKeyLocationVersions
 argument_list|()
 decl_stmt|;
 comment|// verify key blocks were created in DN.
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
 name|verifyBlocksCreated
 argument_list|(
 name|omKeyLocationInfoGroupList
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// No containers with deleted blocks
@@ -1316,22 +1307,58 @@ literal|5000
 argument_list|)
 expr_stmt|;
 comment|// The blocks should not be deleted in the DN as the container is open
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-operator|!
+try|try
+block|{
 name|verifyBlocksDeleted
 argument_list|(
 name|omKeyLocationInfoGroupList
 argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Blocks should not have been deleted"
 argument_list|)
 expr_stmt|;
-comment|// close the containers which hold the blocks for the key
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"expected null, but was"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|e
+operator|.
+name|getClass
+argument_list|()
+argument_list|,
+name|AssertionError
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
+comment|// close the containers which hold the blocks for the key
 name|OzoneTestUtils
 operator|.
 name|closeContainers
@@ -1339,7 +1366,6 @@ argument_list|(
 name|omKeyLocationInfoGroupList
 argument_list|,
 name|scm
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|waitForDatanodeCommandRetry
@@ -1349,14 +1375,9 @@ name|waitForDatanodeBlockDeletionStart
 argument_list|()
 expr_stmt|;
 comment|// The blocks should be deleted in the DN.
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
 name|verifyBlocksDeleted
 argument_list|(
 name|omKeyLocationInfoGroupList
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Few containers with deleted blocks
@@ -1985,7 +2006,7 @@ block|}
 block|}
 DECL|method|verifyBlocksCreated ( List<OmKeyLocationInfoGroup> omKeyLocationInfoGroups)
 specifier|private
-name|boolean
+name|void
 name|verifyBlocksCreated
 parameter_list|(
 name|List
@@ -1995,7 +2016,7 @@ argument_list|>
 name|omKeyLocationInfoGroups
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|ContainerSet
 name|dnContainerSet
@@ -2019,7 +2040,6 @@ operator|.
 name|getContainerSet
 argument_list|()
 decl_stmt|;
-return|return
 name|OzoneTestUtils
 operator|.
 name|performOperationOnKeyContainers
@@ -2028,8 +2048,6 @@ parameter_list|(
 name|blockID
 parameter_list|)
 lambda|->
-block|{
-try|try
 block|{
 name|MetadataStore
 name|db
@@ -2078,27 +2096,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 argument_list|,
 name|omKeyLocationInfoGroups
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 DECL|method|verifyBlocksDeleted ( List<OmKeyLocationInfoGroup> omKeyLocationInfoGroups)
 specifier|private
-name|boolean
+name|void
 name|verifyBlocksDeleted
 parameter_list|(
 name|List
@@ -2108,7 +2113,7 @@ argument_list|>
 name|omKeyLocationInfoGroups
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|ContainerSet
 name|dnContainerSet
@@ -2132,7 +2137,6 @@ operator|.
 name|getContainerSet
 argument_list|()
 decl_stmt|;
-return|return
 name|OzoneTestUtils
 operator|.
 name|performOperationOnKeyContainers
@@ -2141,8 +2145,6 @@ parameter_list|(
 name|blockID
 parameter_list|)
 lambda|->
-block|{
-try|try
 block|{
 name|MetadataStore
 name|db
@@ -2244,23 +2246,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 argument_list|,
 name|omKeyLocationInfoGroups
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 block|}
 end_class
