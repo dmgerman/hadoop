@@ -350,6 +350,38 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
+name|ORIGIN_NODE_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
+name|ORIGIN_PIPELINE_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
 name|STATE
 import|;
 end_import
@@ -413,6 +445,18 @@ specifier|private
 specifier|final
 name|long
 name|maxSize
+decl_stmt|;
+comment|//ID of the pipeline where this container is created
+DECL|field|originPipelineId
+specifier|private
+name|String
+name|originPipelineId
+decl_stmt|;
+comment|//ID of the datanode where this container is created
+DECL|field|originNodeId
+specifier|private
+name|String
+name|originNodeId
 decl_stmt|;
 comment|/** parameters for read/write statistics on the container. **/
 DECL|field|readBytes
@@ -526,11 +570,15 @@ argument_list|,
 name|MAX_SIZE
 argument_list|,
 name|CHECKSUM
+argument_list|,
+name|ORIGIN_PIPELINE_ID
+argument_list|,
+name|ORIGIN_NODE_ID
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size in bytes    */
-DECL|method|ContainerData (ContainerType type, long containerId, long size)
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param size - container maximum size in bytes    * @param originPipelineId - Pipeline Id where this container is/was created    * @param originNodeId - Node Id where this container is/was created    */
+DECL|method|ContainerData (ContainerType type, long containerId, long size, String originPipelineId, String originNodeId)
 specifier|protected
 name|ContainerData
 parameter_list|(
@@ -542,6 +590,12 @@ name|containerId
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|String
+name|originPipelineId
+parameter_list|,
+name|String
+name|originNodeId
 parameter_list|)
 block|{
 name|this
@@ -559,11 +613,15 @@ name|getVersion
 argument_list|()
 argument_list|,
 name|size
+argument_list|,
+name|originPipelineId
+argument_list|,
+name|originNodeId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size in bytes    */
-DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, long size)
+comment|/**    * Creates a ContainerData Object, which holds metadata of the container.    * @param type - ContainerType    * @param containerId - ContainerId    * @param layOutVersion - Container layOutVersion    * @param size - Container maximum size in bytes    * @param originPipelineId - Pipeline Id where this container is/was created    * @param originNodeId - Node Id where this container is/was created    */
+DECL|method|ContainerData (ContainerType type, long containerId, int layOutVersion, long size, String originPipelineId, String originNodeId)
 specifier|protected
 name|ContainerData
 parameter_list|(
@@ -578,6 +636,12 @@ name|layOutVersion
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|String
+name|originPipelineId
+parameter_list|,
+name|String
+name|originNodeId
 parameter_list|)
 block|{
 name|Preconditions
@@ -689,6 +753,18 @@ operator|.
 name|maxSize
 operator|=
 name|size
+expr_stmt|;
+name|this
+operator|.
+name|originPipelineId
+operator|=
+name|originPipelineId
+expr_stmt|;
+name|this
+operator|.
+name|originNodeId
+operator|=
+name|originNodeId
 expr_stmt|;
 name|setChecksumTo0ByteArray
 argument_list|()
@@ -1311,6 +1387,28 @@ return|return
 name|this
 operator|.
 name|checksum
+return|;
+block|}
+comment|/**    * Returns the origin pipeline Id of this container.    * @return origin node Id    */
+DECL|method|getOriginPipelineId ()
+specifier|public
+name|String
+name|getOriginPipelineId
+parameter_list|()
+block|{
+return|return
+name|originPipelineId
+return|;
+block|}
+comment|/**    * Returns the origin node Id of this container.    * @return origin node Id    */
+DECL|method|getOriginNodeId ()
+specifier|public
+name|String
+name|getOriginNodeId
+parameter_list|()
+block|{
+return|return
+name|originNodeId
 return|;
 block|}
 comment|/**    * Compute the checksum for ContainerData using the specified Yaml (based    * on ContainerType) and set the checksum.    *    * Checksum of ContainerData is calculated by setting the    * {@link ContainerData#checksum} field to a 64-byte array with all 0's -    * {@link ContainerData#DUMMY_CHECKSUM}. After the checksum is calculated,    * the checksum field is updated with this value.    *    * @param yaml Yaml for ContainerType to get the ContainerData as Yaml String    * @throws IOException    */

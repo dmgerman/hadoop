@@ -1546,6 +1546,14 @@ name|build
 argument_list|()
 argument_list|)
 operator|.
+name|setPipelineID
+argument_list|(
+name|containerRequest
+operator|.
+name|getPipelineID
+argument_list|()
+argument_list|)
+operator|.
 name|setDatanodeUuid
 argument_list|(
 name|containerRequest

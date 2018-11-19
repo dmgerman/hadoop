@@ -429,6 +429,16 @@ operator|.
 name|getMaxSize
 argument_list|()
 argument_list|,
+name|originalContainerData
+operator|.
+name|getOriginPipelineId
+argument_list|()
+argument_list|,
+name|originalContainerData
+operator|.
+name|getOriginNodeId
+argument_list|()
+argument_list|,
 name|tempContainerTarStream
 argument_list|,
 name|packer

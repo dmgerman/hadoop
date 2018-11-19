@@ -1622,6 +1622,17 @@ argument_list|(
 name|containerID
 argument_list|,
 name|maxContainerSize
+argument_list|,
+name|request
+operator|.
+name|getPipelineID
+argument_list|()
+argument_list|,
+name|getDatanodeDetails
+argument_list|()
+operator|.
+name|getUuidString
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// TODO: Add support to add metadataList to ContainerData. Add metadata
@@ -4134,7 +4145,7 @@ name|result
 argument_list|)
 throw|;
 block|}
-DECL|method|importContainer (long containerID, long maxSize, FileInputStream rawContainerStream, TarContainerPacker packer)
+DECL|method|importContainer (long containerID, long maxSize, String originPipelineId, String originNodeId, FileInputStream rawContainerStream, TarContainerPacker packer)
 specifier|public
 name|Container
 name|importContainer
@@ -4144,6 +4155,12 @@ name|containerID
 parameter_list|,
 name|long
 name|maxSize
+parameter_list|,
+name|String
+name|originPipelineId
+parameter_list|,
+name|String
+name|originNodeId
 parameter_list|,
 name|FileInputStream
 name|rawContainerStream
@@ -4163,6 +4180,10 @@ argument_list|(
 name|containerID
 argument_list|,
 name|maxSize
+argument_list|,
+name|originPipelineId
+argument_list|,
+name|originNodeId
 argument_list|)
 decl_stmt|;
 name|KeyValueContainer

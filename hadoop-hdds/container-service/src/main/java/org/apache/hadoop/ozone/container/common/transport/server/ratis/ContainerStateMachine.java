@@ -1593,13 +1593,35 @@ parameter_list|)
 throws|throws
 name|InvalidProtocolBufferException
 block|{
+comment|// TODO: We can avoid creating new builder and set pipeline Id if
+comment|// the client is already sending the pipeline id, then we just have to
+comment|// validate the pipeline Id.
 return|return
+name|ContainerCommandRequestProto
+operator|.
+name|newBuilder
+argument_list|(
 name|ContainerCommandRequestProto
 operator|.
 name|parseFrom
 argument_list|(
 name|request
 argument_list|)
+argument_list|)
+operator|.
+name|setPipelineID
+argument_list|(
+name|gid
+operator|.
+name|getUuid
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
 return|;
 block|}
 DECL|method|dispatchCommand ( ContainerCommandRequestProto requestProto)

@@ -68,6 +68,22 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
 name|datanode
 operator|.
 name|proto
@@ -326,6 +342,12 @@ specifier|final
 name|StateContext
 name|context
 decl_stmt|;
+DECL|field|datanodeDetails
+specifier|private
+specifier|final
+name|DatanodeDetails
+name|datanodeDetails
+decl_stmt|;
 DECL|method|Handler (Configuration config, StateContext context, ContainerSet contSet, VolumeSet volumeSet, ContainerMetrics containerMetrics)
 specifier|protected
 name|Handler
@@ -375,6 +397,18 @@ operator|.
 name|metrics
 operator|=
 name|containerMetrics
+expr_stmt|;
+name|this
+operator|.
+name|datanodeDetails
+operator|=
+name|context
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getDatanodeDetails
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getHandlerForContainerType ( final ContainerType containerType, final Configuration config, final StateContext context, final ContainerSet contSet, final VolumeSet volumeSet, final ContainerMetrics metrics)
@@ -445,6 +479,17 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Returns the Id of this datanode.    * @return datanode Id    */
+DECL|method|getDatanodeDetails ()
+specifier|protected
+name|DatanodeDetails
+name|getDatanodeDetails
+parameter_list|()
+block|{
+return|return
+name|datanodeDetails
+return|;
+block|}
 comment|/**    * This should be called whenever there is state change. It will trigger    * an ICR to SCM.    *    * @param container Container for which ICR has to be sent    */
 DECL|method|sendICR (final Container container)
 specifier|protected
@@ -507,7 +552,7 @@ name|container
 parameter_list|)
 function_decl|;
 comment|/**    * Import container data from a raw input stream.    */
-DECL|method|importContainer ( long containerID, long maxSize, FileInputStream rawContainerStream, TarContainerPacker packer)
+DECL|method|importContainer ( long containerID, long maxSize, String originPipelineId, String originNodeId, FileInputStream rawContainerStream, TarContainerPacker packer)
 specifier|public
 specifier|abstract
 name|Container
@@ -518,6 +563,12 @@ name|containerID
 parameter_list|,
 name|long
 name|maxSize
+parameter_list|,
+name|String
+name|originPipelineId
+parameter_list|,
+name|String
+name|originNodeId
 parameter_list|,
 name|FileInputStream
 name|rawContainerStream

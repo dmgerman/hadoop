@@ -405,7 +405,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|importContainer (final ContainerType type, final long containerId, final long maxSize, final FileInputStream rawContainerStream, final TarContainerPacker packer)
+DECL|method|importContainer (final ContainerType type, final long containerId, final long maxSize, final String originPipelineId, final String originNodeId, final FileInputStream rawContainerStream, final TarContainerPacker packer)
 specifier|public
 name|Container
 name|importContainer
@@ -421,6 +421,14 @@ parameter_list|,
 specifier|final
 name|long
 name|maxSize
+parameter_list|,
+specifier|final
+name|String
+name|originPipelineId
+parameter_list|,
+specifier|final
+name|String
+name|originNodeId
 parameter_list|,
 specifier|final
 name|FileInputStream
@@ -446,6 +454,10 @@ argument_list|(
 name|containerId
 argument_list|,
 name|maxSize
+argument_list|,
+name|originPipelineId
+argument_list|,
+name|originNodeId
 argument_list|,
 name|rawContainerStream
 argument_list|,

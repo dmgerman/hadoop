@@ -786,6 +786,24 @@ name|CHECKSUM
 init|=
 literal|"checksum"
 decl_stmt|;
+DECL|field|ORIGIN_PIPELINE_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ORIGIN_PIPELINE_ID
+init|=
+literal|"originPipelineId"
+decl_stmt|;
+DECL|field|ORIGIN_NODE_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ORIGIN_NODE_ID
+init|=
+literal|"originNodeId"
+decl_stmt|;
 comment|// For OM Audit usage
 DECL|field|VOLUME
 specifier|public

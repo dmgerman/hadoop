@@ -167,6 +167,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -289,6 +299,22 @@ argument_list|(
 name|containerID
 argument_list|,
 name|MAXSIZE
+argument_list|,
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|keyValueContainerData

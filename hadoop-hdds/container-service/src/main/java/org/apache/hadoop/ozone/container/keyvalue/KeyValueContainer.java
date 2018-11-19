@@ -2674,6 +2674,14 @@ operator|.
 name|getBlockCommitSequenceId
 argument_list|()
 argument_list|)
+operator|.
+name|setOriginNodeId
+argument_list|(
+name|containerData
+operator|.
+name|getOriginNodeId
+argument_list|()
+argument_list|)
 expr_stmt|;
 return|return
 name|ciBuilder
