@@ -69,6 +69,17 @@ argument_list|>
 name|getNodeCount
 parameter_list|()
 function_decl|;
+comment|/**    * Get the disk metrics like capacity, usage and remaining based on the    * storage type.    */
+DECL|method|getNodeInfo ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getNodeInfo
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

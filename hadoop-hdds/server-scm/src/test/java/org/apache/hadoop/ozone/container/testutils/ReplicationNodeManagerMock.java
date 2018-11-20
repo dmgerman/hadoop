@@ -506,6 +506,23 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNodeInfo ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getNodeInfo
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    *    * @param nodestate - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
 annotation|@
 name|Override

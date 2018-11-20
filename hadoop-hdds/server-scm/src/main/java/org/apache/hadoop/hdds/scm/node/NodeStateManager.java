@@ -1047,6 +1047,27 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Get information about the node.    *    * @param datanodeUUID datanode UUID    *    * @return DatanodeInfo    *    * @throws NodeNotFoundException if the node is not present    */
+DECL|method|getNode (UUID datanodeUUID)
+specifier|public
+name|DatanodeInfo
+name|getNode
+parameter_list|(
+name|UUID
+name|datanodeUUID
+parameter_list|)
+throws|throws
+name|NodeNotFoundException
+block|{
+return|return
+name|nodeStateMap
+operator|.
+name|getNodeInfo
+argument_list|(
+name|datanodeUUID
+argument_list|)
+return|;
+block|}
 comment|/**    * Updates the last heartbeat time of the node.    *    * @throws NodeNotFoundException if the node is not present    */
 DECL|method|updateLastHeartbeatTime (DatanodeDetails datanodeDetails)
 specifier|public
