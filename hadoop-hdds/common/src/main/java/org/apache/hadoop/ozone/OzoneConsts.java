@@ -632,20 +632,6 @@ name|OM_S3_VOLUME_PREFIX
 init|=
 literal|"s3"
 decl_stmt|;
-comment|/**    *   Max chunk size limit.    */
-DECL|field|OZONE_SCM_CHUNK_MAX_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|OZONE_SCM_CHUNK_MAX_SIZE
-init|=
-literal|32
-operator|*
-literal|1024
-operator|*
-literal|1024
-decl_stmt|;
 comment|/**    * Max OM Quota size of 1024 PB.    */
 DECL|field|MAX_QUOTA_IN_BYTES
 specifier|public
