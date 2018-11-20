@@ -174,20 +174,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -197,6 +183,20 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
 import|;
 end_import
 
@@ -352,9 +352,9 @@ argument_list|()
 operator|.
 name|maxInboundMessageSize
 argument_list|(
-name|OzoneConfigKeys
+name|OzoneConsts
 operator|.
-name|DFS_CONTAINER_CHUNK_MAX_SIZE
+name|OZONE_SCM_CHUNK_MAX_SIZE
 argument_list|)
 operator|.
 name|build
