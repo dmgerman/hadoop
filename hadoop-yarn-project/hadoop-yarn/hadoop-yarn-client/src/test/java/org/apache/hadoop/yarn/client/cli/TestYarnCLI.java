@@ -18445,6 +18445,13 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|" -shell<Container ID> Run a shell in the container."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|" -signal<container ID [signal command]> Signal the container."
 argument_list|)
 expr_stmt|;
