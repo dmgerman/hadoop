@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.csi.client
+DECL|package|org.apache.hadoop.yarn.api
 package|package
 name|org
 operator|.
@@ -14,77 +14,67 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|csi
-operator|.
-name|client
+name|api
 package|;
 end_package
 
 begin_import
 import|import
-name|csi
+name|org
 operator|.
-name|v0
+name|apache
 operator|.
-name|Csi
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|ProtocolInfo
 import|;
 end_import
 
 begin_import
 import|import
-name|csi
+name|org
 operator|.
-name|v0
+name|apache
 operator|.
-name|Csi
+name|hadoop
 operator|.
-name|GetPluginInfoResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|yarn
 operator|.
-name|io
+name|proto
 operator|.
-name|IOException
+name|CsiAdaptorProtocol
 import|;
 end_import
 
 begin_comment
-comment|/**  * General interface for a CSI client. This interface defines all APIs  * that CSI spec supports, including both identity/controller/node service  * APIs.  */
+comment|/**  * Interface for the CSI adaptor protocol.  */
 end_comment
 
 begin_interface
-DECL|interface|CsiClient
+annotation|@
+name|ProtocolInfo
+argument_list|(
+name|protocolName
+operator|=
+literal|"CsiAdaptorPB"
+argument_list|,
+name|protocolVersion
+operator|=
+literal|1
+argument_list|)
+DECL|interface|CsiAdaptorPB
 specifier|public
 interface|interface
-name|CsiClient
-block|{
-comment|/**    * Gets some basic info about the CSI plugin, including the driver name,    * version and optionally some manifest info.    * @return {@link GetPluginInfoResponse}    * @throws IOException when unable to get plugin info from the driver.    */
-DECL|method|getPluginInfo ()
-name|GetPluginInfoResponse
-name|getPluginInfo
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-DECL|method|validateVolumeCapabilities ( Csi.ValidateVolumeCapabilitiesRequest request)
-name|Csi
+name|CsiAdaptorPB
+extends|extends
+name|CsiAdaptorProtocol
 operator|.
-name|ValidateVolumeCapabilitiesResponse
-name|validateVolumeCapabilities
-parameter_list|(
-name|Csi
+name|CsiAdaptorProtocolService
 operator|.
-name|ValidateVolumeCapabilitiesRequest
-name|request
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-block|}
+name|BlockingInterface
+block|{ }
 end_interface
 
 end_unit

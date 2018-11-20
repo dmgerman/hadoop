@@ -70,6 +70,22 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|CsiAdaptorProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|protocolrecords
 operator|.
 name|AllocateRequest
@@ -235,6 +251,22 @@ operator|.
 name|records
 operator|.
 name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
 import|;
 end_import
 
@@ -1008,6 +1040,8 @@ parameter_list|(
 name|VolumeMetaData
 name|metaData
 parameter_list|)
+throws|throws
+name|InvalidVolumeException
 block|{
 name|Volume
 name|toAdd
@@ -1018,6 +1052,60 @@ argument_list|(
 name|metaData
 argument_list|)
 decl_stmt|;
+name|CsiAdaptorProtocol
+name|adaptor
+init|=
+name|volumeManager
+operator|.
+name|getAdaptorByDriverName
+argument_list|(
+name|metaData
+operator|.
+name|getDriverName
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|adaptor
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidVolumeException
+argument_list|(
+literal|"It seems for the driver name"
+operator|+
+literal|" specified in the volume "
+operator|+
+name|metaData
+operator|.
+name|getDriverName
+argument_list|()
+operator|+
+literal|" ,there is no matched driver-adaptor can be found. "
+operator|+
+literal|"Is the driver probably registered? Please check if"
+operator|+
+literal|" adaptors service addresses defined in "
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_CSI_ADAPTOR_ADDRESSES
+operator|+
+literal|" are correct and services are started."
+argument_list|)
+throw|;
+block|}
+name|toAdd
+operator|.
+name|setClient
+argument_list|(
+name|adaptor
+argument_list|)
+expr_stmt|;
 return|return
 name|this
 operator|.

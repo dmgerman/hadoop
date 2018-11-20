@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.volume.csi
+DECL|package|org.apache.hadoop.yarn.csi.translator
 package|package
 name|org
 operator|.
@@ -14,11 +14,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|volume
-operator|.
 name|csi
+operator|.
+name|translator
 package|;
 end_package
 
@@ -30,79 +28,50 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
-name|server
+name|exceptions
 operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|exception
-operator|.
-name|VolumeException
+name|YarnException
 import|;
 end_import
 
 begin_comment
-comment|/**  * Protocol for the CSI adaptor.  */
+comment|/**  * ProtoTranslator converts a YARN side message to CSI proto message  * and vice versa. Each CSI proto message should have a corresponding  * YARN side message implementation, and a transformer to convert them  * one to the other. This layer helps we to hide CSI spec messages  * from YARN components.  *  * @param<A> YARN side internal messages  * @param<B> CSI proto messages  */
 end_comment
 
 begin_interface
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|interface|CsiAdaptorClientProtocol
+DECL|interface|ProtoTranslator
 specifier|public
 interface|interface
-name|CsiAdaptorClientProtocol
+name|ProtoTranslator
+parameter_list|<
+name|A
+parameter_list|,
+name|B
+parameter_list|>
 block|{
-DECL|method|validateVolume ()
-name|void
-name|validateVolume
-parameter_list|()
+comment|/**    * Convert message from type A to type B.    * @param messageA    * @return messageB    * @throws YarnException    */
+DECL|method|convertTo (A messageA)
+name|B
+name|convertTo
+parameter_list|(
+name|A
+name|messageA
+parameter_list|)
 throws|throws
-name|VolumeException
+name|YarnException
 function_decl|;
-DECL|method|controllerPublishVolume ()
-name|void
-name|controllerPublishVolume
-parameter_list|()
+comment|/**    * Convert message from type B to type A.    * @param messageB    * @return messageA    * @throws YarnException    */
+DECL|method|convertFrom (B messageB)
+name|A
+name|convertFrom
+parameter_list|(
+name|B
+name|messageB
+parameter_list|)
 throws|throws
-name|VolumeException
+name|YarnException
 function_decl|;
 block|}
 end_interface

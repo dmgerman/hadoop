@@ -26,20 +26,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -67,6 +53,22 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|CsiAdaptorProtocol
 import|;
 end_import
 
@@ -144,26 +146,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|CsiAdaptorClientProtocol
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -189,22 +171,10 @@ interface|interface
 name|VolumeManager
 block|{
 comment|/**    * @return all known volumes and their states.    */
-annotation|@
-name|VisibleForTesting
 DECL|method|getVolumeStates ()
 name|VolumeStates
 name|getVolumeStates
 parameter_list|()
-function_decl|;
-annotation|@
-name|VisibleForTesting
-DECL|method|setClient (CsiAdaptorClientProtocol client)
-name|void
-name|setClient
-parameter_list|(
-name|CsiAdaptorClientProtocol
-name|client
-parameter_list|)
 function_decl|;
 comment|/**    * Start to supervise on a volume.    * @param volume    * @return the volume being managed by the manager.    */
 DECL|method|addOrGetVolume (Volume volume)
@@ -228,6 +198,27 @@ name|volumeProvisioningTask
 parameter_list|,
 name|int
 name|delaySecond
+parameter_list|)
+function_decl|;
+comment|/**    * Register a csi-driver-adaptor to the volume manager.    * @param driverName    * @param client    */
+DECL|method|registerCsiDriverAdaptor (String driverName, CsiAdaptorProtocol client)
+name|void
+name|registerCsiDriverAdaptor
+parameter_list|(
+name|String
+name|driverName
+parameter_list|,
+name|CsiAdaptorProtocol
+name|client
+parameter_list|)
+function_decl|;
+comment|/**    * Returns the csi-driver-adaptor client from cache by the given driver name.    * If the client is not found, null is returned.    * @param driverName    * @return a csi-driver-adaptor client working for given driver or null    * if the adaptor could not be found.    */
+DECL|method|getAdaptorByDriverName (String driverName)
+name|CsiAdaptorProtocol
+name|getAdaptorByDriverName
+parameter_list|(
+name|String
+name|driverName
 parameter_list|)
 function_decl|;
 block|}

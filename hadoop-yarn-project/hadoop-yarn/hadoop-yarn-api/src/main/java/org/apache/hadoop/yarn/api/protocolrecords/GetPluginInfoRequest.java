@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.volume.csi
+DECL|package|org.apache.hadoop.yarn.api.protocolrecords
 package|package
 name|org
 operator|.
@@ -14,13 +14,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
-operator|.
-name|volume
-operator|.
-name|csi
+name|protocolrecords
 package|;
 end_package
 
@@ -34,73 +30,40 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|exception
-operator|.
-name|VolumeException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|CsiAdaptorClientProtocol
+name|Records
 import|;
 end_import
 
 begin_comment
-comment|/**  * Client talks to CSI adaptor.  */
+comment|/**  * Get plugin info request.  */
 end_comment
 
 begin_class
-DECL|class|CsiAdaptorClient
+DECL|class|GetPluginInfoRequest
 specifier|public
+specifier|abstract
 class|class
-name|CsiAdaptorClient
-implements|implements
-name|CsiAdaptorClientProtocol
+name|GetPluginInfoRequest
 block|{
-annotation|@
-name|Override
-DECL|method|validateVolume ()
+DECL|method|newInstance ()
 specifier|public
-name|void
-name|validateVolume
+specifier|static
+name|GetPluginInfoRequest
+name|newInstance
 parameter_list|()
-throws|throws
-name|VolumeException
 block|{
-comment|// TODO
-block|}
-DECL|method|controllerPublishVolume ()
-annotation|@
-name|Override
-specifier|public
-name|void
-name|controllerPublishVolume
-parameter_list|()
-throws|throws
-name|VolumeException
-block|{
-comment|// TODO
+return|return
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetPluginInfoRequest
+operator|.
+name|class
+argument_list|)
+return|;
 block|}
 block|}
 end_class

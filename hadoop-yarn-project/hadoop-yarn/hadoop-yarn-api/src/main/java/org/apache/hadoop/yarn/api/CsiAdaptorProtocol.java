@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.volume.csi.lifecycle
+DECL|package|org.apache.hadoop.yarn.api
 package|package
 name|org
 operator|.
@@ -14,15 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|lifecycle
+name|api
 package|;
 end_package
 
@@ -34,27 +26,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceAudience
+name|api
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|protocolrecords
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
+name|GetPluginInfoRequest
 import|;
 end_import
 
@@ -70,7 +48,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|CsiAdaptorProtocol
+name|protocolrecords
+operator|.
+name|GetPluginInfoResponse
 import|;
 end_import
 
@@ -84,9 +64,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|api
 operator|.
-name|EventHandler
+name|protocolrecords
+operator|.
+name|ValidateVolumeCapabilitiesRequest
 import|;
 end_import
 
@@ -100,17 +82,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
+name|protocolrecords
 operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|event
-operator|.
-name|VolumeEvent
+name|ValidateVolumeCapabilitiesResponse
 import|;
 end_import
 
@@ -124,82 +100,55 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|exceptions
 operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|VolumeId
+name|YarnException
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|io
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|volume
-operator|.
-name|csi
-operator|.
-name|VolumeMetaData
+name|IOException
 import|;
 end_import
 
 begin_comment
-comment|/**  * Major volume interface at RM's view, it maintains the volume states and  * state transition according to the CSI volume lifecycle.  */
+comment|/**  * CSI adaptor delegates all the calls from YARN to a CSI driver.  */
 end_comment
 
 begin_interface
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|interface|Volume
+DECL|interface|CsiAdaptorProtocol
 specifier|public
 interface|interface
-name|Volume
-extends|extends
-name|EventHandler
-argument_list|<
-name|VolumeEvent
-argument_list|>
+name|CsiAdaptorProtocol
 block|{
-DECL|method|getVolumeState ()
-name|VolumeState
-name|getVolumeState
-parameter_list|()
-function_decl|;
-DECL|method|getVolumeId ()
-name|VolumeId
-name|getVolumeId
-parameter_list|()
-function_decl|;
-DECL|method|getVolumeMeta ()
-name|VolumeMetaData
-name|getVolumeMeta
-parameter_list|()
-function_decl|;
-DECL|method|getClient ()
-name|CsiAdaptorProtocol
-name|getClient
-parameter_list|()
-function_decl|;
-DECL|method|setClient (CsiAdaptorProtocol client)
-name|void
-name|setClient
+DECL|method|getPluginInfo (GetPluginInfoRequest request)
+name|GetPluginInfoResponse
+name|getPluginInfo
 parameter_list|(
-name|CsiAdaptorProtocol
-name|client
+name|GetPluginInfoRequest
+name|request
 parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+DECL|method|validateVolumeCapacity ( ValidateVolumeCapabilitiesRequest request)
+name|ValidateVolumeCapabilitiesResponse
+name|validateVolumeCapacity
+parameter_list|(
+name|ValidateVolumeCapabilitiesRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
 function_decl|;
 block|}
 end_interface

@@ -11119,6 +11119,32 @@ init|=
 literal|false
 decl_stmt|;
 comment|////////////////////////////////
+comment|// CSI Volume configs
+comment|////////////////////////////////
+comment|/**    * One or more socket addresses for csi-adaptor.    * Multiple addresses are delimited by ",".    */
+DECL|field|NM_CSI_ADAPTOR_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_ADAPTOR_PREFIX
+init|=
+name|NM_PREFIX
+operator|+
+literal|"csi-driver-adaptor."
+decl_stmt|;
+DECL|field|NM_CSI_ADAPTOR_ADDRESSES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_ADAPTOR_ADDRESSES
+init|=
+name|NM_CSI_ADAPTOR_PREFIX
+operator|+
+literal|"addresses"
+decl_stmt|;
+comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////
 DECL|field|YARN_REGISTRY_CLASS
