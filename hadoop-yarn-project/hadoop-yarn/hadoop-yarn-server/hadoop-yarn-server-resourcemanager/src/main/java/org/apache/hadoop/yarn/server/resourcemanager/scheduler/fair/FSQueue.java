@@ -2652,6 +2652,13 @@ operator|=
 name|dynamic
 expr_stmt|;
 block|}
+DECL|method|isEmpty ()
+specifier|public
+specifier|abstract
+name|boolean
+name|isEmpty
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

@@ -64,16 +64,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -278,14 +268,6 @@ specifier|private
 name|QueueManager
 name|queueManager
 decl_stmt|;
-DECL|field|notEmptyQueues
-specifier|private
-name|Set
-argument_list|<
-name|FSQueue
-argument_list|>
-name|notEmptyQueues
-decl_stmt|;
 DECL|field|scheduler
 specifier|private
 name|FairScheduler
@@ -436,13 +418,6 @@ argument_list|(
 name|clock
 argument_list|)
 expr_stmt|;
-name|notEmptyQueues
-operator|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-expr_stmt|;
 name|queueManager
 operator|=
 operator|new
@@ -450,28 +425,6 @@ name|QueueManager
 argument_list|(
 name|scheduler
 argument_list|)
-block|{
-annotation|@
-name|Override
-specifier|public
-name|boolean
-name|isEmpty
-parameter_list|(
-name|FSQueue
-name|queue
-parameter_list|)
-block|{
-return|return
-operator|!
-name|notEmptyQueues
-operator|.
-name|contains
-argument_list|(
-name|queue
-argument_list|)
-return|;
-block|}
-block|}
 expr_stmt|;
 name|FSQueueMetrics
 operator|.
@@ -493,7 +446,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|queueManager
+operator|.
+name|updateAllocationConfiguration
+argument_list|(
+name|allocConf
+argument_list|)
+expr_stmt|;
 block|}
+comment|/**    * Test the leaf to parent queue conversion, excluding the default queue.    */
 annotation|@
 name|Test
 DECL|method|testReloadTurnsLeafQueueIntoParent ()
@@ -501,8 +462,6 @@ specifier|public
 name|void
 name|testReloadTurnsLeafQueueIntoParent
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|updateConfiguredLeafQueues
 argument_list|(
@@ -579,10 +538,9 @@ argument_list|)
 expr_stmt|;
 comment|// When apps exist in leaf queue, we shouldn't be able to create
 comment|// children under it, but things should work otherwise.
-name|notEmptyQueues
-operator|.
-name|add
-argument_list|(
+name|FSLeafQueue
+name|q1
+init|=
 name|queueManager
 operator|.
 name|getLeafQueue
@@ -591,6 +549,24 @@ literal|"queue1"
 argument_list|,
 literal|false
 argument_list|)
+decl_stmt|;
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|q1
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 name|updateConfiguredLeafQueues
@@ -626,10 +602,12 @@ argument_list|)
 expr_stmt|;
 comment|// When apps exist in leaf queues under a parent queue, shouldn't be
 comment|// able to turn it into a leaf queue, but things should work otherwise.
-name|notEmptyQueues
+name|q1
 operator|.
-name|clear
-argument_list|()
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
 expr_stmt|;
 name|updateConfiguredLeafQueues
 argument_list|(
@@ -638,16 +616,23 @@ argument_list|,
 literal|"queue1.queue2"
 argument_list|)
 expr_stmt|;
-name|notEmptyQueues
-operator|.
-name|add
-argument_list|(
+name|FSLeafQueue
+name|q2
+init|=
 name|queueManager
 operator|.
-name|getQueue
+name|getLeafQueue
 argument_list|(
-literal|"root.queue1"
+literal|"queue1.queue2"
+argument_list|,
+literal|false
 argument_list|)
+decl_stmt|;
+name|q2
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 name|updateConfiguredLeafQueues
@@ -714,6 +699,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test the postponed leaf to parent queue conversion (app running).    */
 annotation|@
 name|Test
 DECL|method|testReloadTurnsLeafToParentWithNoLeaf ()
@@ -770,18 +756,35 @@ expr_stmt|;
 comment|// Lets say later on admin makes queue1 a parent queue by
 comment|// specifying "type=parent" in the alloc xml and lets say apps running in
 comment|// queue1
-name|notEmptyQueues
-operator|.
-name|add
-argument_list|(
+name|FSLeafQueue
+name|q1
+init|=
 name|queueManager
 operator|.
 name|getLeafQueue
 argument_list|(
-literal|"root.queue1"
+literal|"queue1"
 argument_list|,
 literal|false
 argument_list|)
+decl_stmt|;
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|q1
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 name|allocConf
@@ -841,10 +844,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Now lets assume apps completed and there are no apps in queue1
-name|notEmptyQueues
+name|q1
 operator|.
-name|clear
-argument_list|()
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
 expr_stmt|;
 comment|// We should see queue1 transform from leaf queue to parent queue.
 name|queueManager
@@ -898,6 +903,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Check the queue name parsing (blank space in all forms).    */
 annotation|@
 name|Test
 DECL|method|testCheckQueueNodeName ()
@@ -1067,21 +1073,6 @@ name|void
 name|testCreateLeafQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSQueue
 name|q1
 init|=
@@ -1132,21 +1123,6 @@ name|void
 name|testCreateLeafQueueAndParent
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSQueue
 name|q2
 init|=
@@ -1211,21 +1187,6 @@ name|void
 name|testCreateQueueWithChildDefaults
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|queueManager
 operator|.
 name|getQueue
@@ -1459,14 +1420,6 @@ name|void
 name|testCreateLeafQueueWithDefaults
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
 name|FSQueue
 name|q1
 init|=
@@ -1553,21 +1506,6 @@ name|void
 name|testCreateParentQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSQueue
 name|q1
 init|=
@@ -1618,21 +1556,6 @@ name|void
 name|testCreateParentQueueAndParent
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSQueue
 name|q2
 init|=
@@ -1688,6 +1611,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test the removal of a dynamic leaf under a hierarchy of static parents.    */
 annotation|@
 name|Test
 DECL|method|testRemovalOfDynamicLeafQueue ()
@@ -1696,22 +1620,7 @@ name|void
 name|testRemovalOfDynamicLeafQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
-name|FSQueue
+name|FSLeafQueue
 name|q1
 init|=
 name|queueManager
@@ -1753,11 +1662,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// an application is submitted to root.test.childB.dynamic1
-name|notEmptyQueues
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
 operator|.
-name|add
+name|newInstance
 argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 name|q1
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 comment|// root.test.childB.dynamic1 is not empty and should not be removed
@@ -1791,11 +1712,11 @@ argument_list|)
 expr_stmt|;
 comment|// the application finishes, the next removeEmptyDynamicQueues() should
 comment|// clean root.test.childB.dynamic1 up, but keep its static parent
-name|notEmptyQueues
-operator|.
-name|remove
-argument_list|(
 name|q1
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 name|queueManager
@@ -1841,6 +1762,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test the removal of a dynamic parent and its child in one cleanup action.    */
 annotation|@
 name|Test
 DECL|method|testRemovalOfDynamicParentQueue ()
@@ -1849,21 +1771,6 @@ name|void
 name|testRemovalOfDynamicParentQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSQueue
 name|q1
 init|=
@@ -1981,6 +1888,7 @@ name|p1
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test the change from dynamic to static for a leaf queue.    */
 annotation|@
 name|Test
 DECL|method|testNonEmptyDynamicQueueBecomingStaticQueue ()
@@ -1989,21 +1897,6 @@ name|void
 name|testNonEmptyDynamicQueueBecomingStaticQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSLeafQueue
 name|q1
 init|=
@@ -2046,11 +1939,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// pretend that we submitted an app to the queue
-name|notEmptyQueues
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
 operator|.
-name|add
+name|newInstance
 argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 name|q1
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 comment|// non-empty queues should not be deleted
@@ -2083,6 +1988,14 @@ name|q1
 argument_list|)
 expr_stmt|;
 comment|// next we add leaf1 under root in the allocation config
+name|AllocationConfiguration
+name|allocConf
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+decl_stmt|;
 name|allocConf
 operator|.
 name|configuredQueues
@@ -2120,10 +2033,12 @@ expr_stmt|;
 comment|// application finished now and the queue is empty, but since leaf1 is a
 comment|// static queue at this point, hence not affected by
 comment|// removeEmptyDynamicQueues()
-name|notEmptyQueues
+name|q1
 operator|.
-name|clear
-argument_list|()
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
 expr_stmt|;
 name|queueManager
 operator|.
@@ -2164,6 +2079,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test the change from static to dynamic for a leaf queue.    */
 annotation|@
 name|Test
 DECL|method|testNonEmptyStaticQueueBecomingDynamicQueue ()
@@ -2172,21 +2088,6 @@ name|void
 name|testNonEmptyStaticQueueBecomingDynamicQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSLeafQueue
 name|q1
 init|=
@@ -2229,11 +2130,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// we submitted an app to the queue
-name|notEmptyQueues
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
 operator|.
-name|add
+name|newInstance
 argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 name|q1
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 comment|// the next removeEmptyDynamicQueues() call should not modify
@@ -2278,6 +2191,14 @@ argument_list|)
 expr_stmt|;
 comment|// next we remove all queues from the allocation config,
 comment|// this causes all queues to change to dynamic
+name|AllocationConfiguration
+name|allocConf
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|Set
@@ -2344,11 +2265,11 @@ argument_list|)
 expr_stmt|;
 comment|// application finished - the queue does not have runnable app
 comment|// the next removeEmptyDynamicQueues() call should remove the queues
-name|notEmptyQueues
-operator|.
-name|remove
-argument_list|(
 name|q1
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 name|queueManager
@@ -2399,6 +2320,7 @@ name|p1
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Testing the removal of a dynamic parent queue without a child.    */
 annotation|@
 name|Test
 DECL|method|testRemovalOfChildlessParentQueue ()
@@ -2407,21 +2329,6 @@ name|void
 name|testRemovalOfChildlessParentQueue
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSParentQueue
 name|q1
 init|=
@@ -2493,6 +2400,14 @@ name|q1
 argument_list|)
 expr_stmt|;
 comment|// next we remove root.test.childB from the allocation config
+name|AllocationConfiguration
+name|allocConf
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+decl_stmt|;
 name|allocConf
 operator|.
 name|configuredQueues
@@ -2559,6 +2474,7 @@ name|q1
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test if a queue is correctly changed from dynamic to static and vice    * versa.    */
 annotation|@
 name|Test
 DECL|method|testQueueTypeChange ()
@@ -2567,21 +2483,6 @@ name|void
 name|testQueueTypeChange
 parameter_list|()
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSQueue
 name|q1
 init|=
@@ -2653,6 +2554,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// adding root.parent1.leaf1 and root.parent1 to the allocation config
+name|AllocationConfiguration
+name|allocConf
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+decl_stmt|;
 name|allocConf
 operator|.
 name|configuredQueues
@@ -2835,6 +2744,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test that an assigned app flags a queue as being not empty.    */
 annotation|@
 name|Test
 DECL|method|testApplicationAssignmentPreventsRemovalOfDynamicQueue ()
@@ -2842,39 +2752,7 @@ specifier|public
 name|void
 name|testApplicationAssignmentPreventsRemovalOfDynamicQueue
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-name|AllocationConfiguration
-name|allocConf
-init|=
-name|scheduler
-operator|.
-name|getAllocationConfiguration
-argument_list|()
-decl_stmt|;
-name|queueManager
-operator|=
-operator|new
-name|QueueManager
-argument_list|(
-name|scheduler
-argument_list|)
-expr_stmt|;
-name|queueManager
-operator|.
-name|initialize
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|queueManager
-operator|.
-name|updateAllocationConfiguration
-argument_list|(
-name|allocConf
-argument_list|)
-expr_stmt|;
 name|FSLeafQueue
 name|q
 init|=
@@ -2898,12 +2776,10 @@ name|assertTrue
 argument_list|(
 literal|"root.leaf1 is not empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// assigning an application (without an appAttempt so far) to the queue
@@ -2942,12 +2818,10 @@ name|assertFalse
 argument_list|(
 literal|"root.leaf1 is empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|queueManager
@@ -2982,12 +2856,10 @@ name|assertFalse
 argument_list|(
 literal|"root.leaf1 is empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|ApplicationAttemptId
@@ -3083,12 +2955,10 @@ name|assertFalse
 argument_list|(
 literal|"root.leaf1 is empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// the appAttempt finished, the queue should be empty
@@ -3114,12 +2984,10 @@ name|assertTrue
 argument_list|(
 literal|"root.leaf1 is not empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// removeEmptyDynamicQueues() should remove the queue
@@ -3152,6 +3020,7 @@ name|q
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test changing a leaf into a parent queue and auto create of the leaf queue    * under the newly created parent.    */
 annotation|@
 name|Test
 DECL|method|testRemovalOfIncompatibleNonEmptyQueue ()
@@ -3159,8 +3028,6 @@ specifier|public
 name|void
 name|testRemovalOfIncompatibleNonEmptyQueue
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|AllocationConfiguration
 name|allocConf
@@ -3222,50 +3089,40 @@ name|assertTrue
 argument_list|(
 literal|"root.a is not empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// we start to run an application on root.a
-name|notEmptyQueues
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
 operator|.
-name|add
+name|newInstance
 argument_list|(
-name|q
+literal|0
+argument_list|,
+literal|0
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|q
-operator|=
-name|queueManager
 operator|.
-name|getLeafQueue
+name|addAssignedApp
 argument_list|(
-literal|"root.a"
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|assertNotNull
-argument_list|(
-literal|"root.a does not exist"
-argument_list|,
-name|q
+name|appId
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
 literal|"root.a is empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// root.a should not be removed by removeEmptyDynamicQueues or by
@@ -3377,12 +3234,10 @@ name|assertFalse
 argument_list|(
 literal|"root.a is empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// removePendingIncompatibleQueues should still keep root.a as a leaf queue
@@ -3413,19 +3268,21 @@ name|assertFalse
 argument_list|(
 literal|"root.a is empty"
 argument_list|,
-name|queueManager
+name|q
 operator|.
 name|isEmpty
-argument_list|(
-name|q
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// when the application finishes, root.a should be a parent queue
-name|notEmptyQueues
+comment|// when the application finishes, root.a will become a parent queue on next
+comment|// config cleanup. The leaf queue will be created below it on reload of the
+comment|// config.
+name|q
 operator|.
-name|clear
-argument_list|()
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
 expr_stmt|;
 name|queueManager
 operator|.
@@ -3452,6 +3309,377 @@ decl_stmt|;
 name|assertNotNull
 argument_list|(
 literal|"root.a does not exist"
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
+name|queueManager
+operator|.
+name|updateAllocationConfiguration
+argument_list|(
+name|allocConf
+argument_list|)
+expr_stmt|;
+name|q
+operator|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.a.b"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"root.a.b was not created"
+argument_list|,
+name|q
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test to check multiple levels of parent queue removal.    */
+annotation|@
+name|Test
+DECL|method|testRemoveDeepHierarchy ()
+specifier|public
+name|void
+name|testRemoveDeepHierarchy
+parameter_list|()
+block|{
+comment|// create a deeper queue hierarchy
+name|FSLeafQueue
+name|q
+init|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2.p3.leaf"
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"root.p1.p2.p3.leaf does not exist"
+argument_list|,
+name|q
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"root.p1.p2.p3.leaf is not empty"
+argument_list|,
+name|q
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Add an application to make the queue not empty
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|q
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+comment|// remove should not remove the queues
+name|queueManager
+operator|.
+name|removePendingIncompatibleQueues
+argument_list|()
+expr_stmt|;
+name|queueManager
+operator|.
+name|removeEmptyDynamicQueues
+argument_list|()
+expr_stmt|;
+name|q
+operator|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2.p3.leaf"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"root.p1.p2.p3.leaf does not exist"
+argument_list|,
+name|q
+argument_list|)
+expr_stmt|;
+comment|// Remove the application
+name|q
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+comment|// Cleanup should remove the whole tree
+name|queueManager
+operator|.
+name|removeEmptyDynamicQueues
+argument_list|()
+expr_stmt|;
+name|q
+operator|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2.p3.leaf"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"root.p1.p2.p3.leaf does exist"
+argument_list|,
+name|q
+argument_list|)
+expr_stmt|;
+name|FSParentQueue
+name|p
+init|=
+name|queueManager
+operator|.
+name|getParentQueue
+argument_list|(
+literal|"root.p1"
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|assertNull
+argument_list|(
+literal|"root.p1 does exist"
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test the removal of queues when a parent is shared in the tree. First    * remove one branch then the second branch of the tree.    */
+annotation|@
+name|Test
+DECL|method|testRemoveSplitHierarchy ()
+specifier|public
+name|void
+name|testRemoveSplitHierarchy
+parameter_list|()
+block|{
+comment|// create a deeper queue hierarchy
+name|FSLeafQueue
+name|leaf1
+init|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2-1.leaf-1"
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"root.p1.p2-1.leaf-1 does not exist"
+argument_list|,
+name|leaf1
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"root.p1.p2-1.leaf1 is not empty"
+argument_list|,
+name|leaf1
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Create a split below the first level
+name|FSLeafQueue
+name|leaf2
+init|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2-2.leaf-2"
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"root.p1.p2-2.leaf2 does not exist"
+argument_list|,
+name|leaf2
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"root.p1.p2-2.leaf2 is not empty"
+argument_list|,
+name|leaf2
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Add an application to make one of the queues not empty
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|leaf1
+operator|.
+name|addAssignedApp
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+comment|// remove should not remove the non empty split
+name|queueManager
+operator|.
+name|removePendingIncompatibleQueues
+argument_list|()
+expr_stmt|;
+name|queueManager
+operator|.
+name|removeEmptyDynamicQueues
+argument_list|()
+expr_stmt|;
+name|leaf1
+operator|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2-1.leaf-1"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"root.p1.p2-1.leaf-1 does not exist"
+argument_list|,
+name|leaf1
+argument_list|)
+expr_stmt|;
+name|leaf2
+operator|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2-2.leaf-2"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"root.p1.p2-2.leaf2 does exist"
+argument_list|,
+name|leaf2
+argument_list|)
+expr_stmt|;
+name|FSParentQueue
+name|p
+init|=
+name|queueManager
+operator|.
+name|getParentQueue
+argument_list|(
+literal|"root.p1.p2-2"
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|assertNull
+argument_list|(
+literal|"root.p1.p2-2 does exist"
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
+comment|// Remove the application
+name|leaf1
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+comment|// Cleanup should remove the whole tree
+name|queueManager
+operator|.
+name|removeEmptyDynamicQueues
+argument_list|()
+expr_stmt|;
+name|leaf1
+operator|=
+name|queueManager
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"root.p1.p2-1.leaf-1"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"root.p1.p2-1.leaf-1 does exist"
+argument_list|,
+name|leaf1
+argument_list|)
+expr_stmt|;
+name|p
+operator|=
+name|queueManager
+operator|.
+name|getParentQueue
+argument_list|(
+literal|"root.p1"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"root.p1 does exist"
 argument_list|,
 name|p
 argument_list|)
