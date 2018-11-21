@@ -826,6 +826,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|UnsupportedFileSystemException
 import|;
 end_import
@@ -1340,6 +1354,16 @@ name|int
 name|numDatanodesPerNameservice
 init|=
 literal|2
+decl_stmt|;
+comment|/** Custom storage type for each datanode. */
+DECL|field|storageTypes
+specifier|private
+name|StorageType
+index|[]
+index|[]
+name|storageTypes
+init|=
+literal|null
 decl_stmt|;
 comment|/** Mini cluster. */
 DECL|field|cluster
@@ -3594,6 +3618,25 @@ operator|=
 name|num
 expr_stmt|;
 block|}
+comment|/**    * Set custom storage type configuration for each datanode.    * If storageTypes is uninitialized or passed null then    * StorageType.DEFAULT is used.    */
+DECL|method|setStorageTypes (StorageType[][] storageTypes)
+specifier|public
+name|void
+name|setStorageTypes
+parameter_list|(
+name|StorageType
+index|[]
+index|[]
+name|storageTypes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageTypes
+operator|=
+name|storageTypes
+expr_stmt|;
+block|}
 comment|/**    * Set the DNs to belong to only one subcluster.    */
 DECL|method|setIndependentDNs ()
 specifier|public
@@ -4394,6 +4437,11 @@ operator|.
 name|dataNodeConfOverlays
 argument_list|(
 name|dnConfs
+argument_list|)
+operator|.
+name|storageTypes
+argument_list|(
+name|storageTypes
 argument_list|)
 operator|.
 name|build
