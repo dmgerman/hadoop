@@ -56,6 +56,26 @@ name|HTTP_NOT_FOUND
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|s3
+operator|.
+name|util
+operator|.
+name|S3Consts
+operator|.
+name|RANGE_NOT_SATISFIABLE
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class represents errors from Ozone S3 service.  * This class needs to be updated to add new errors when required.  */
 end_comment
@@ -210,6 +230,23 @@ argument_list|,
 literal|"Invalid Request"
 argument_list|,
 name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
+DECL|field|INVALID_RANGE
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|INVALID_RANGE
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"InvalidRange"
+argument_list|,
+literal|"The requested range is not satisfiable"
+argument_list|,
+name|RANGE_NOT_SATISFIABLE
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
