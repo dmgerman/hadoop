@@ -697,14 +697,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test the Node Manager class.  */
+comment|/**  * Test the SCM Node Manager class.  */
 end_comment
 
 begin_class
-DECL|class|TestNodeManager
+DECL|class|TestSCMNodeManager
 specifier|public
 class|class
-name|TestNodeManager
+name|TestSCMNodeManager
 block|{
 DECL|field|testDir
 specifier|private
@@ -748,7 +748,7 @@ name|PathUtils
 operator|.
 name|getTestDir
 argument_list|(
-name|TestNodeManager
+name|TestSCMNodeManager
 operator|.
 name|class
 argument_list|)

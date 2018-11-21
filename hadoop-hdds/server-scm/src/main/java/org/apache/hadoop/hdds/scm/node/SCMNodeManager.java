@@ -1001,6 +1001,13 @@ argument_list|(
 name|dnId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nodeReport
+operator|!=
+literal|null
+condition|)
+block|{
 name|datanodeInfo
 operator|.
 name|updateStorageReports
@@ -1011,6 +1018,7 @@ name|getStorageReportList
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
