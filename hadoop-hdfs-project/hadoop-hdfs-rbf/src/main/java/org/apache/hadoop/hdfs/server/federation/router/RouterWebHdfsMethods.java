@@ -602,6 +602,24 @@ name|web
 operator|.
 name|resources
 operator|.
+name|ECPolicyParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
 name|ExcludeDatanodesParam
 import|;
 end_import
@@ -1787,7 +1805,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final UnmaskedPermissionParam unmaskedPermission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final ExcludeDatanodesParam exclDatanodes, final CreateFlagParam createFlagParam, final NoRedirectParam noredirectParam, final StoragePolicyParam policyName )
+DECL|method|put ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PutOpParam op, final DestinationParam destination, final OwnerParam owner, final GroupParam group, final PermissionParam permission, final UnmaskedPermissionParam unmaskedPermission, final OverwriteParam overwrite, final BufferSizeParam bufferSize, final ReplicationParam replication, final BlockSizeParam blockSize, final ModificationTimeParam modificationTime, final AccessTimeParam accessTime, final RenameOptionSetParam renameOptions, final CreateParentParam createParent, final TokenArgumentParam delegationTokenArgument, final AclPermissionParam aclPermission, final XAttrNameParam xattrName, final XAttrValueParam xattrValue, final XAttrSetFlagParam xattrSetFlag, final SnapshotNameParam snapshotName, final OldSnapshotNameParam oldSnapshotName, final ExcludeDatanodesParam exclDatanodes, final CreateFlagParam createFlagParam, final NoRedirectParam noredirectParam, final StoragePolicyParam policyName, final ECPolicyParam ecpolicy )
 specifier|protected
 name|Response
 name|put
@@ -1911,6 +1929,10 @@ parameter_list|,
 specifier|final
 name|StoragePolicyParam
 name|policyName
+parameter_list|,
+specifier|final
+name|ECPolicyParam
+name|ecpolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -2073,6 +2095,12 @@ case|:
 case|case
 name|SETSTORAGEPOLICY
 case|:
+case|case
+name|ENABLEECPOLICY
+case|:
+case|case
+name|DISABLEECPOLICY
+case|:
 block|{
 comment|// Whitelist operations that can handled by NamenodeWebHdfsMethods
 return|return
@@ -2139,6 +2167,8 @@ argument_list|,
 name|noredirectParam
 argument_list|,
 name|policyName
+argument_list|,
+name|ecpolicy
 argument_list|)
 return|;
 block|}
