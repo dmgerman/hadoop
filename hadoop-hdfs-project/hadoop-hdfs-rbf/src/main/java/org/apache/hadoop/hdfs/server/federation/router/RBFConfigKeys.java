@@ -740,6 +740,26 @@ name|DFS_ROUTER_CLIENT_REJECT_OVERLOAD_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_ROUTER_ALLOW_PARTIAL_LIST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_ROUTER_ALLOW_PARTIAL_LIST
+init|=
+name|FEDERATION_ROUTER_PREFIX
+operator|+
+literal|"client.allow-partial-listing"
+decl_stmt|;
+DECL|field|DFS_ROUTER_ALLOW_PARTIAL_LIST_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_ROUTER_ALLOW_PARTIAL_LIST_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// HDFS Router State Store connection
 DECL|field|FEDERATION_FILE_RESOLVER_CLIENT_CLASS
 specifier|public

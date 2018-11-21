@@ -1271,6 +1271,13 @@ specifier|final
 name|ActiveNamenodeResolver
 name|namenodeResolver
 decl_stmt|;
+comment|/** If it requires response from all subclusters. */
+DECL|field|allowPartialList
+specifier|private
+specifier|final
+name|boolean
+name|allowPartialList
+decl_stmt|;
 comment|/** Identifier for the super user. */
 DECL|field|superUser
 specifier|private
@@ -1333,6 +1340,23 @@ name|rpcServer
 operator|.
 name|getNamenodeResolver
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|allowPartialList
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_ALLOW_PARTIAL_LIST
+argument_list|,
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_ALLOW_PARTIAL_LIST_DEFAULT
+argument_list|)
 expr_stmt|;
 comment|// User and group for reporting
 try|try
@@ -4671,7 +4695,10 @@ name|locations
 argument_list|,
 name|method
 argument_list|,
-literal|false
+operator|!
+name|this
+operator|.
+name|allowPartialList
 argument_list|,
 literal|false
 argument_list|,
@@ -7244,7 +7271,10 @@ name|locations
 argument_list|,
 name|method
 argument_list|,
-literal|false
+operator|!
+name|this
+operator|.
+name|allowPartialList
 argument_list|,
 literal|false
 argument_list|,

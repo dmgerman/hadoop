@@ -8034,6 +8034,27 @@ block|}
 end_function
 
 begin_comment
+comment|/**    * Get ClientProtocol module implementation.    * @return ClientProtocol implementation    */
+end_comment
+
+begin_function
+annotation|@
+name|VisibleForTesting
+DECL|method|getClientProtocolModule ()
+specifier|public
+name|RouterClientProtocol
+name|getClientProtocolModule
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|clientProto
+return|;
+block|}
+end_function
+
+begin_comment
 comment|/**    * Get RPC metrics info.    * @return The instance of FederationRPCMetrics.    */
 end_comment
 
