@@ -1555,6 +1555,10 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
+name|completed
+operator|=
+literal|true
+expr_stmt|;
 name|progressbar
 operator|.
 name|shutdown
