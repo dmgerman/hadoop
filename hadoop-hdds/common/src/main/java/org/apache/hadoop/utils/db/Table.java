@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -29,36 +39,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|rocksdb
-operator|.
-name|ColumnFamilyHandle
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|rocksdb
-operator|.
-name|WriteBatch
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
 import|;
 end_import
 
@@ -83,6 +63,25 @@ DECL|method|put (byte[] key, byte[] value)
 name|void
 name|put
 parameter_list|(
+name|byte
+index|[]
+name|key
+parameter_list|,
+name|byte
+index|[]
+name|value
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Puts a key-value pair into the store as part of a bath operation.    *    * @param batch the batch operation    * @param key metadata key    * @param value metadata value    */
+DECL|method|putWithBatch (BatchOperation batch, byte[] key, byte[] value)
+name|void
+name|putWithBatch
+parameter_list|(
+name|BatchOperation
+name|batch
+parameter_list|,
 name|byte
 index|[]
 name|key
@@ -127,19 +126,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return the Column Family handle. TODO: This leaks an RockDB abstraction    * into Ozone code, cleanup later.    *    * @return ColumnFamilyHandle    */
-DECL|method|getHandle ()
-name|ColumnFamilyHandle
-name|getHandle
-parameter_list|()
-function_decl|;
-comment|/**    * A batch of PUT, DELETE operations handled as a single atomic write.    *    * @throws IOException write fails    */
-DECL|method|writeBatch (WriteBatch operation)
+comment|/**    * Deletes a key from the metadata store as part of a batch operation.    *    * @param batch the batch operation    * @param key metadata key    * @throws IOException on Failure    */
+DECL|method|deleteWithBatch (BatchOperation batch, byte[] key)
 name|void
-name|writeBatch
+name|deleteWithBatch
 parameter_list|(
-name|WriteBatch
-name|operation
+name|BatchOperation
+name|batch
+parameter_list|,
+name|byte
+index|[]
+name|key
 parameter_list|)
 throws|throws
 name|IOException

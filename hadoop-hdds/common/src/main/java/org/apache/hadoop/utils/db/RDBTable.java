@@ -20,6 +20,28 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -78,16 +100,6 @@ name|org
 operator|.
 name|rocksdb
 operator|.
-name|WriteBatch
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|rocksdb
-operator|.
 name|WriteOptions
 import|;
 end_import
@@ -109,28 +121,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|charset
-operator|.
-name|StandardCharsets
 import|;
 end_import
 
@@ -289,8 +279,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns the Column family Handle.    *    * @return ColumnFamilyHandle.    */
-annotation|@
-name|Override
 DECL|method|getHandle ()
 specifier|public
 name|ColumnFamilyHandle
@@ -366,6 +354,63 @@ operator|+
 literal|"store"
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|putWithBatch (BatchOperation batch, byte[] key, byte[] value)
+specifier|public
+name|void
+name|putWithBatch
+parameter_list|(
+name|BatchOperation
+name|batch
+parameter_list|,
+name|byte
+index|[]
+name|key
+parameter_list|,
+name|byte
+index|[]
+name|value
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|batch
+operator|instanceof
+name|RDBBatchOperation
+condition|)
+block|{
+operator|(
+operator|(
+name|RDBBatchOperation
+operator|)
+name|batch
+operator|)
+operator|.
+name|put
+argument_list|(
+name|getHandle
+argument_list|()
+argument_list|,
+name|key
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"batch should be RDBBatchOperation"
 argument_list|)
 throw|;
 block|}
@@ -494,63 +539,55 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|writeBatch (WriteBatch operation)
+DECL|method|deleteWithBatch (BatchOperation batch, byte[] key)
 specifier|public
 name|void
-name|writeBatch
+name|deleteWithBatch
 parameter_list|(
-name|WriteBatch
-name|operation
+name|BatchOperation
+name|batch
+parameter_list|,
+name|byte
+index|[]
+name|key
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-try|try
+if|if
+condition|(
+name|batch
+operator|instanceof
+name|RDBBatchOperation
+condition|)
 block|{
-name|db
+operator|(
+operator|(
+name|RDBBatchOperation
+operator|)
+name|batch
+operator|)
 operator|.
-name|write
+name|delete
 argument_list|(
-name|writeOptions
+name|getHandle
+argument_list|()
 argument_list|,
-name|operation
+name|key
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|RocksDBException
-name|e
-parameter_list|)
+else|else
 block|{
 throw|throw
-name|toIOException
+operator|new
+name|IllegalArgumentException
 argument_list|(
-literal|"Batch write operation failed"
-argument_list|,
-name|e
+literal|"batch should be RDBBatchOperation"
 argument_list|)
 throw|;
 block|}
 block|}
-comment|//  @Override
-comment|//  public void iterate(byte[] from, EntryConsumer consumer)
-comment|//      throws IOException {
-comment|//
-comment|//    try (RocksIterator it = db.newIterator(handle)) {
-comment|//      if (from != null) {
-comment|//        it.seek(from);
-comment|//      } else {
-comment|//        it.seekToFirst();
-comment|//      }
-comment|//      while (it.isValid()) {
-comment|//        if (!consumer.consume(it.key(), it.value())) {
-comment|//          break;
-comment|//        }
-comment|//        it.next();
-comment|//      }
-comment|//    }
-comment|//  }
 annotation|@
 name|Override
 DECL|method|iterator ()

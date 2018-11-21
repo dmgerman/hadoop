@@ -20,30 +20,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|rocksdb
-operator|.
-name|WriteBatch
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -59,6 +35,20 @@ operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
@@ -182,13 +172,19 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Writes a transaction into the DB using the default write Options.    * @param batch - Batch to write.    */
-DECL|method|write (WriteBatch batch)
+comment|/**    * Initialize an atomic batch operation which can hold multiple PUT/DELETE    * operations and committed later in one step.    *    * @return BatchOperation holder which can be used to add or commit batch    * operations.    */
+DECL|method|initBatchOperation ()
+name|BatchOperation
+name|initBatchOperation
+parameter_list|()
+function_decl|;
+comment|/**    * Commit the batch operations.    *    * @param operation which contains all the required batch operation.    * @throws IOException on Failure.    */
+DECL|method|commitBatchOperation (BatchOperation operation)
 name|void
-name|write
+name|commitBatchOperation
 parameter_list|(
-name|WriteBatch
-name|batch
+name|BatchOperation
+name|operation
 parameter_list|)
 throws|throws
 name|IOException
