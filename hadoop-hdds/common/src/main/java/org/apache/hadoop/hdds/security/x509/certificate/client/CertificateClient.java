@@ -205,6 +205,23 @@ name|X509Certificate
 name|cert
 parameter_list|)
 function_decl|;
+comment|/**    * Verifies a digital Signature, given the signature and the certificate of    * the signer.    * @param data - Data in byte array.    * @param signature - Byte Array containing the signature.    * @param cert - Certificate of the Signer.    * @return true if verified, false if not.    */
+DECL|method|verifySignature (byte[] data, byte[] signature, X509Certificate cert)
+name|boolean
+name|verifySignature
+parameter_list|(
+name|byte
+index|[]
+name|data
+parameter_list|,
+name|byte
+index|[]
+name|signature
+parameter_list|,
+name|X509Certificate
+name|cert
+parameter_list|)
+function_decl|;
 comment|/**    * Returns a CSR builder that can be used to creates a Certificate sigining    * request.    *    * @return CertificateSignRequest.Builder    */
 DECL|method|getCSRBuilder ()
 name|CertificateSignRequest

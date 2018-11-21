@@ -501,6 +501,26 @@ name|HDDS_X509_SIGNATURE_ALGO_DEFAULT
 init|=
 literal|"SHA256withRSA"
 decl_stmt|;
+DECL|field|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+init|=
+literal|"hdds.grpc.block"
+operator|+
+literal|".token.enabled"
+decl_stmt|;
+DECL|field|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

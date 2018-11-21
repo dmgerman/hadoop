@@ -36,11 +36,9 @@ name|hdds
 operator|.
 name|security
 operator|.
-name|x509
+name|exception
 operator|.
-name|certificates
-operator|.
-name|CertificateSignRequest
+name|SCMSecurityException
 import|;
 end_import
 
@@ -58,9 +56,9 @@ name|security
 operator|.
 name|x509
 operator|.
-name|exceptions
+name|certificates
 operator|.
-name|SCMSecurityException
+name|CertificateSignRequest
 import|;
 end_import
 

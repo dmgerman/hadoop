@@ -22,6 +22,24 @@ name|exceptions
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|exception
+operator|.
+name|SCMSecurityException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Certificate Exceptions from the SCM Security layer.  */
 end_comment
@@ -81,36 +99,6 @@ block|{
 name|super
 argument_list|(
 name|cause
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Ctor.    * @param message - Error Message    * @param cause  - Cause    * @param enableSuppression - Enable suppression.    * @param writableStackTrace - Writable stack trace.    */
-DECL|method|CertificateException (String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
-specifier|public
-name|CertificateException
-parameter_list|(
-name|String
-name|message
-parameter_list|,
-name|Throwable
-name|cause
-parameter_list|,
-name|boolean
-name|enableSuppression
-parameter_list|,
-name|boolean
-name|writableStackTrace
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|,
-name|cause
-argument_list|,
-name|enableSuppression
-argument_list|,
-name|writableStackTrace
 argument_list|)
 expr_stmt|;
 block|}

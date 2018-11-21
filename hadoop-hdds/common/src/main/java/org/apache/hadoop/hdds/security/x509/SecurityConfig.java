@@ -196,6 +196,38 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
+name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
 name|HDDS_KEY_ALGORITHM
 import|;
 end_import
@@ -517,6 +549,12 @@ specifier|final
 name|String
 name|x509SignatureAlgo
 decl_stmt|;
+DECL|field|grpcBlockTokenEnabled
+specifier|private
+specifier|final
+name|Boolean
+name|grpcBlockTokenEnabled
+decl_stmt|;
 comment|/**    * Constructs a SecurityConfig.    *    * @param configuration - HDDS Configuration    */
 DECL|method|SecurityConfig (Configuration configuration)
 specifier|public
@@ -707,6 +745,21 @@ argument_list|,
 name|HDDS_X509_SIGNATURE_ALGO_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|grpcBlockTokenEnabled
+operator|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|getBoolean
+argument_list|(
+name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+argument_list|,
+name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// First Startup -- if the provider is null, check for the provider.
 if|if
 condition|(
@@ -865,6 +918,18 @@ return|return
 name|this
 operator|.
 name|certDuration
+return|;
+block|}
+DECL|method|isGrpcBlockTokenEnabled ()
+specifier|public
+name|Boolean
+name|isGrpcBlockTokenEnabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|grpcBlockTokenEnabled
 return|;
 block|}
 comment|/**    * Adds a security provider dynamically if it is not loaded already.    *    * @param providerName - name of the provider.    */

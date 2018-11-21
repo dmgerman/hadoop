@@ -50,9 +50,9 @@ name|hdds
 operator|.
 name|security
 operator|.
-name|x509
+name|exception
 operator|.
-name|SecurityConfig
+name|SCMSecurityException
 import|;
 end_import
 
@@ -70,9 +70,7 @@ name|security
 operator|.
 name|x509
 operator|.
-name|exceptions
-operator|.
-name|SCMSecurityException
+name|SecurityConfig
 import|;
 end_import
 

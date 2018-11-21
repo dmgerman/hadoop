@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.security.x509.exceptions
+DECL|package|org.apache.hadoop.hdds.security.token
 package|package
 name|org
 operator|.
@@ -16,28 +16,44 @@ name|hdds
 operator|.
 name|security
 operator|.
-name|x509
-operator|.
-name|exceptions
+name|token
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|exception
+operator|.
+name|SCMSecurityException
+import|;
+end_import
+
 begin_comment
-comment|/**  * Root Security Exception call for all Certificate related Execptions.  */
+comment|/**  * Block Token Exceptions from the SCM Security layer.  */
 end_comment
 
 begin_class
-DECL|class|SCMSecurityException
+DECL|class|BlockTokenException
 specifier|public
 class|class
-name|SCMSecurityException
+name|BlockTokenException
 extends|extends
-name|Exception
+name|SCMSecurityException
 block|{
 comment|/**    * Ctor.    * @param message - Error Message.    */
-DECL|method|SCMSecurityException (String message)
+DECL|method|BlockTokenException (String message)
 specifier|public
-name|SCMSecurityException
+name|BlockTokenException
 parameter_list|(
 name|String
 name|message
@@ -50,9 +66,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Ctor.    * @param message - Message.    * @param cause  - Actual cause.    */
-DECL|method|SCMSecurityException (String message, Throwable cause)
+DECL|method|BlockTokenException (String message, Throwable cause)
 specifier|public
-name|SCMSecurityException
+name|BlockTokenException
 parameter_list|(
 name|String
 name|message
@@ -70,9 +86,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Ctor.    * @param cause - Base Exception.    */
-DECL|method|SCMSecurityException (Throwable cause)
+DECL|method|BlockTokenException (Throwable cause)
 specifier|public
-name|SCMSecurityException
+name|BlockTokenException
 parameter_list|(
 name|Throwable
 name|cause
@@ -81,36 +97,6 @@ block|{
 name|super
 argument_list|(
 name|cause
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Ctor.    * @param message - Error Message    * @param cause  - Cause    * @param enableSuppression - Enable suppression.    * @param writableStackTrace - Writable stack trace.    */
-DECL|method|SCMSecurityException (String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
-specifier|public
-name|SCMSecurityException
-parameter_list|(
-name|String
-name|message
-parameter_list|,
-name|Throwable
-name|cause
-parameter_list|,
-name|boolean
-name|enableSuppression
-parameter_list|,
-name|boolean
-name|writableStackTrace
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|,
-name|cause
-argument_list|,
-name|enableSuppression
-argument_list|,
-name|writableStackTrace
 argument_list|)
 expr_stmt|;
 block|}
