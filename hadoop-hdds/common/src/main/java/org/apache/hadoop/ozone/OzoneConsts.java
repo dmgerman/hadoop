@@ -1062,6 +1062,27 @@ name|KEY_LOCATION_INFO
 init|=
 literal|"keyLocationInfo"
 decl_stmt|;
+comment|// For OM metrics saving to a file
+DECL|field|OM_METRICS_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_METRICS_FILE
+init|=
+literal|"omMetrics"
+decl_stmt|;
+DECL|field|OM_METRICS_TEMP_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_METRICS_TEMP_FILE
+init|=
+name|OM_METRICS_FILE
+operator|+
+literal|".tmp"
+decl_stmt|;
 block|}
 end_class
 

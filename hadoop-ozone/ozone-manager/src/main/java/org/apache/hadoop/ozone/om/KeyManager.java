@@ -26,6 +26,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|common
@@ -150,11 +166,14 @@ specifier|public
 interface|interface
 name|KeyManager
 block|{
-comment|/**    * Start key manager.    */
-DECL|method|start ()
+comment|/**    * Start key manager.    *    * @param configuration    * @throws IOException    */
+DECL|method|start (OzoneConfiguration configuration)
 name|void
 name|start
-parameter_list|()
+parameter_list|(
+name|OzoneConfiguration
+name|configuration
+parameter_list|)
 function_decl|;
 comment|/**    * Stop key manager.    */
 DECL|method|stop ()

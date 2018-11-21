@@ -40,6 +40,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|common
@@ -164,11 +180,16 @@ specifier|public
 interface|interface
 name|OMMetadataManager
 block|{
-comment|/**    * Start metadata manager.    */
-DECL|method|start ()
+comment|/**    * Start metadata manager.    *    * @param configuration    * @throws IOException    */
+DECL|method|start (OzoneConfiguration configuration)
 name|void
 name|start
-parameter_list|()
+parameter_list|(
+name|OzoneConfiguration
+name|configuration
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Stop metadata manager.    */
 DECL|method|stop ()
@@ -423,6 +444,17 @@ DECL|method|getS3Table ()
 name|Table
 name|getS3Table
 parameter_list|()
+function_decl|;
+comment|/**    * Returns number of rows in a table.  This should not be used for very    * large tables.    * @param table    * @return long    * @throws IOException    */
+DECL|method|countRowsInTable (Table table)
+name|long
+name|countRowsInTable
+parameter_list|(
+name|Table
+name|table
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

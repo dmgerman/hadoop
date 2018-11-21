@@ -423,11 +423,6 @@ comment|//
 comment|// You might wonder if all names map to this pattern, why we need to
 comment|// store the S3 bucketName in a table at all. This is to support
 comment|// anonymous access to bucket where the user name is absent.
-comment|// About Locking:
-comment|// We need to do this before we take the S3Bucket Lock since createVolume
-comment|// takes the userLock. So an attempt to take the user lock while holding
-comment|// S3Bucket lock will throw, so we need to create the volume if needed
-comment|// before we execute the bucket mapping functions.
 name|String
 name|ozoneVolumeName
 init|=
@@ -436,13 +431,6 @@ argument_list|(
 name|userName
 argument_list|)
 decl_stmt|;
-name|createOzoneVolumeIfNeeded
-argument_list|(
-name|userName
-argument_list|,
-name|ozoneVolumeName
-argument_list|)
-expr_stmt|;
 name|omMetadataManager
 operator|.
 name|getLock
@@ -735,22 +723,34 @@ name|userName
 argument_list|)
 return|;
 block|}
-DECL|method|createOzoneVolumeIfNeeded (String userName, String volumeName)
-specifier|private
-name|void
+annotation|@
+name|Override
+DECL|method|createOzoneVolumeIfNeeded (String userName)
+specifier|public
+name|boolean
 name|createOzoneVolumeIfNeeded
 parameter_list|(
 name|String
 name|userName
-parameter_list|,
-name|String
-name|volumeName
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 comment|// We don't have to time of check. time of use problem here because
 comment|// this call is invoked while holding the s3Bucket lock.
+name|boolean
+name|newVolumeCreate
+init|=
+literal|true
+decl_stmt|;
+name|String
+name|ozoneVolumeName
+init|=
+name|formatOzoneVolumeName
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|OmVolumeArgs
@@ -773,7 +773,7 @@ argument_list|)
 operator|.
 name|setVolume
 argument_list|(
-name|volumeName
+name|ozoneVolumeName
 argument_list|)
 operator|.
 name|setQuotaInBytes
@@ -800,6 +800,10 @@ name|OMException
 name|exp
 parameter_list|)
 block|{
+name|newVolumeCreate
+operator|=
+literal|false
+expr_stmt|;
 if|if
 condition|(
 name|exp
@@ -844,6 +848,9 @@ name|exp
 throw|;
 block|}
 block|}
+return|return
+name|newVolumeCreate
+return|;
 block|}
 DECL|method|createOzoneBucket (String volumeName, String bucketName)
 specifier|private

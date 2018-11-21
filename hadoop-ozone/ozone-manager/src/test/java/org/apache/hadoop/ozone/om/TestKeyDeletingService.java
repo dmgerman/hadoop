@@ -482,30 +482,6 @@ operator|.
 name|getDeletingService
 argument_list|()
 decl_stmt|;
-name|keyManager
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|keyManager
-operator|.
-name|getPendingDeletionKeys
-argument_list|(
-name|Integer
-operator|.
-name|MAX_VALUE
-argument_list|)
-operator|.
-name|size
-argument_list|()
-argument_list|,
-name|keyCount
-argument_list|)
-expr_stmt|;
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -655,7 +631,9 @@ decl_stmt|;
 name|keyManager
 operator|.
 name|start
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
@@ -827,7 +805,9 @@ decl_stmt|;
 name|keyManager
 operator|.
 name|start
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 comment|// Since empty keys are directly deleted from db there should be no
 comment|// pending deletion keys. Also deletedKeyCount should be zero.

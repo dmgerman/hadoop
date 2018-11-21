@@ -107,6 +107,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create ozone volume if required, this will be needed during creates3Bucket.    * @param userName    * @return true - if volume is successfully created. false - if volume    * already exists or volume creation failure.    * @throws IOException - incase of volume creation failure.    */
+DECL|method|createOzoneVolumeIfNeeded (String userName)
+name|boolean
+name|createOzoneVolumeIfNeeded
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

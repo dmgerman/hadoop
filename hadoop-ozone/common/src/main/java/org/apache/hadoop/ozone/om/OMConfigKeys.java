@@ -290,6 +290,24 @@ name|OZONE_KEY_DELETING_LIMIT_PER_TASK_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|OZONE_OM_METRICS_SAVE_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_METRICS_SAVE_INTERVAL
+init|=
+literal|"ozone.om.save.metrics.interval"
+decl_stmt|;
+DECL|field|OZONE_OM_METRICS_SAVE_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_METRICS_SAVE_INTERVAL_DEFAULT
+init|=
+literal|"5m"
+decl_stmt|;
 block|}
 end_class
 
