@@ -448,7 +448,6 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-comment|// TODO: Closing of QUASI_CLOSED container.
 specifier|final
 name|Container
 name|container
@@ -505,6 +504,25 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|closeCommand
+operator|.
+name|getForce
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot force close a container when the container is"
+operator|+
+literal|" part of an active pipeline."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|ContainerCommandRequestProto
 name|request
 init|=
@@ -535,8 +553,17 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// The container is not part of any open pipeline.
-comment|// QUASI_CLOSE the container using ContainerController.
+comment|// If we reach here, there is no active pipeline for this container.
+if|if
+condition|(
+operator|!
+name|closeCommand
+operator|.
+name|getForce
+argument_list|()
+condition|)
+block|{
+comment|// QUASI_CLOSE the container.
 name|controller
 operator|.
 name|quasiCloseContainer
@@ -544,6 +571,18 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// SCM told us to force close the container.
+name|controller
+operator|.
+name|closeContainer
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

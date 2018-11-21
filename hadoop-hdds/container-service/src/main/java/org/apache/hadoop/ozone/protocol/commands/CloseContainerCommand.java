@@ -113,6 +113,11 @@ specifier|final
 name|PipelineID
 name|pipelineID
 decl_stmt|;
+DECL|field|force
+specifier|private
+name|boolean
+name|force
+decl_stmt|;
 DECL|method|CloseContainerCommand (final long containerID, final PipelineID pipelineID)
 specifier|public
 name|CloseContainerCommand
@@ -126,6 +131,32 @@ name|PipelineID
 name|pipelineID
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|containerID
+argument_list|,
+name|pipelineID
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|CloseContainerCommand (final long containerID, final PipelineID pipelineID, boolean force)
+specifier|public
+name|CloseContainerCommand
+parameter_list|(
+specifier|final
+name|long
+name|containerID
+parameter_list|,
+specifier|final
+name|PipelineID
+name|pipelineID
+parameter_list|,
+name|boolean
+name|force
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|containerID
@@ -136,6 +167,12 @@ operator|.
 name|pipelineID
 operator|=
 name|pipelineID
+expr_stmt|;
+name|this
+operator|.
+name|force
+operator|=
+name|force
 expr_stmt|;
 block|}
 comment|/**    * Returns the type of this command.    *    * @return Type    */
@@ -207,6 +244,11 @@ name|getProtobuf
 argument_list|()
 argument_list|)
 operator|.
+name|setForce
+argument_list|(
+name|force
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -246,6 +288,11 @@ operator|.
 name|getPipelineID
 argument_list|()
 argument_list|)
+argument_list|,
+name|closeContainerProto
+operator|.
+name|getForce
+argument_list|()
 argument_list|)
 return|;
 block|}
