@@ -997,15 +997,6 @@ name|getAllocationTags
 argument_list|()
 operator|!=
 literal|null
-operator|&&
-operator|!
-name|container
-operator|.
-name|getAllocationTags
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
 condition|)
 block|{
 name|List

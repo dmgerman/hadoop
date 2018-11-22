@@ -1337,6 +1337,13 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+if|if
+condition|(
+name|yarnClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|yarnClient
 operator|.
 name|killApplication
@@ -1347,6 +1354,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|attemptId
 operator|=
 literal|null

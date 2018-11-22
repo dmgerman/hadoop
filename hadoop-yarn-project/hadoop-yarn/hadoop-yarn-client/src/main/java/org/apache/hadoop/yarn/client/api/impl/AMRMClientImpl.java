@@ -5982,6 +5982,28 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getOutstandingSchedRequests ()
+name|Map
+argument_list|<
+name|Set
+argument_list|<
+name|String
+argument_list|>
+argument_list|,
+name|List
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+argument_list|>
+name|getOutstandingSchedRequests
+parameter_list|()
+block|{
+return|return
+name|outstandingSchedRequests
+return|;
+block|}
 DECL|method|putTable (long allocationRequestId, RemoteRequestsTable<T> table)
 name|RemoteRequestsTable
 argument_list|<
