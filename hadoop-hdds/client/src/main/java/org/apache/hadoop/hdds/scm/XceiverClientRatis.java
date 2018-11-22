@@ -1101,13 +1101,33 @@ parameter_list|)
 lambda|->
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"received reply {} for request: {} exception: {}"
-argument_list|,
-name|request
+literal|"received reply {} for request: cmdType={} containerID={}"
+operator|+
+literal|" pipelineID={} traceID={} exception: {}"
 argument_list|,
 name|reply
+argument_list|,
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getPipelineID
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getTraceID
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
