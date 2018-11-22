@@ -193,6 +193,10 @@ block|,
 block|{
 literal|"/"
 block|}
+block|,
+block|{
+literal|""
+block|}
 block|}
 argument_list|)
 return|;
