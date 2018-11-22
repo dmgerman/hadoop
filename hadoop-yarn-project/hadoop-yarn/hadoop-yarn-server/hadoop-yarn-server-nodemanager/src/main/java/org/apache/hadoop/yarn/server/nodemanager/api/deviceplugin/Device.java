@@ -97,7 +97,7 @@ specifier|final
 name|int
 name|minorNumber
 decl_stmt|;
-comment|/**    * PCI Bus ID in format [[[[<domain>]:]<bus>]:][<slot>][.[<func>]].    * Optional. Can get from "lspci -D" in Linux    * */
+comment|/**    * PCI Bus ID in format.    * [[[[&lt;domain&gt;]:]&lt;bus&gt;]:][&lt;slot&gt;][.[&lt;func&gt;]].    * Optional. Can get from "lspci -D" in Linux    * */
 DECL|field|busID
 specifier|private
 specifier|final

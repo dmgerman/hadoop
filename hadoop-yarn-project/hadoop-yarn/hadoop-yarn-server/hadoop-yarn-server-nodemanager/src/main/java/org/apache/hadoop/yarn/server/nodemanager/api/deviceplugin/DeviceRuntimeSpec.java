@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a spec used to prepare& run container.  * It's return value of onDeviceAllocated invoked by the framework.  * For preparation, if volumeSpecs is populated then the framework will  * create the volume before using the device  * When running container, the envs indicates environment variable needed.  * The containerRuntime indicates what Docker runtime to use.  * The volume& device mounts describes key isolation requirements  * */
+comment|/**  * This is a spec used to prepare and run container.  * It's return value of onDeviceAllocated invoked by the framework.  * For preparation, if volumeSpecs is populated then the framework will  * create the volume before using the device  * When running container, the envs indicates environment variable needed.  * The containerRuntime indicates what Docker runtime to use.  * The volume and device mounts describes key isolation requirements  * */
 end_comment
 
 begin_class
