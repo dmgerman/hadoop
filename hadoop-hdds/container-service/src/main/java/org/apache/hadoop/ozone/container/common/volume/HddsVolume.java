@@ -279,7 +279,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HddsVolume represents volume in a datanode. {@link VolumeSet} maitains a  * list of HddsVolumes, one for each volume in the Datanode.  * {@link VolumeInfo} in encompassed by this class.  *  * The disk layout per volume is as follows:  * ../hdds/VERSION  * ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID>>/metadata  * ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID>>/<<dataDir>>  *  * Each hdds volume has its own VERSION file. The hdds volume will have one  * scmUuid directory for each SCM it is a part of (currently only one SCM is  * supported).  *  * During DN startup, if the VERSION file exists, we verify that the  * clusterID in the version file matches the clusterID from SCM.  */
+comment|/**  * HddsVolume represents volume in a datanode. {@link VolumeSet} maintains a  * list of HddsVolumes, one for each volume in the Datanode.  * {@link VolumeInfo} in encompassed by this class.  *<p>  * The disk layout per volume is as follows:  *<p>../hdds/VERSION  *<p>{@literal ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID  *>>/metadata}  *<p>{@literal ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID  *>>/<<dataDir>>}  *<p>  * Each hdds volume has its own VERSION file. The hdds volume will have one  * scmUuid directory for each SCM it is a part of (currently only one SCM is  * supported).  *  * During DN startup, if the VERSION file exists, we verify that the  * clusterID in the version file matches the clusterID from SCM.  */
 end_comment
 
 begin_class
@@ -1600,7 +1600,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * VolumeState represents the different states a HddsVolume can be in.    * NORMAL          => Volume can be used for storage    * FAILED          => Volume has failed due and can no longer be used for    *                    storing containers.    * NON_EXISTENT    => Volume Root dir does not exist    * INCONSISTENT    => Volume Root dir is not empty but VERSION file is    *                    missing or Volume Root dir is not a directory    * NOT_FORMATTED   => Volume Root exists but not formatted (no VERSION file)    * NOT_INITIALIZED => VERSION file exists but has not been verified for    *                    correctness.    */
+comment|/**    * VolumeState represents the different states a HddsVolume can be in.    * NORMAL          =&gt; Volume can be used for storage    * FAILED          =&gt; Volume has failed due and can no longer be used for    *                    storing containers.    * NON_EXISTENT    =&gt; Volume Root dir does not exist    * INCONSISTENT    =&gt; Volume Root dir is not empty but VERSION file is    *                    missing or Volume Root dir is not a directory    * NOT_FORMATTED   =&gt; Volume Root exists but not formatted(no VERSION file)    * NOT_INITIALIZED =&gt; VERSION file exists but has not been verified for    *                    correctness.    */
 DECL|enum|VolumeState
 specifier|public
 enum|enum

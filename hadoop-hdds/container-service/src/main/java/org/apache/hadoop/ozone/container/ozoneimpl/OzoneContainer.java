@@ -958,7 +958,7 @@ return|return
 name|containerSet
 return|;
 block|}
-comment|/**    * Returns container report.    * @return - container report.    * @throws IOException    */
+comment|/**    * Returns container report.    * @return - container report.    */
 DECL|method|getPipelineReport ()
 specifier|public
 name|PipelineReportsProto

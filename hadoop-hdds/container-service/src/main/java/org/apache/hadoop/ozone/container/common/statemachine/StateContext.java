@@ -861,7 +861,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns all the available reports from the report queue, or empty list if    * the queue is empty.    *    * @return List<reports>    */
+comment|/**    * Returns all the available reports from the report queue, or empty list if    * the queue is empty.    *    * @return List of reports    */
 DECL|method|getAllAvailableReports ()
 specifier|public
 name|List
@@ -880,7 +880,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns available reports from the report queue with a max limit on    * list size, or empty list if the queue is empty.    *    * @return List<reports>    */
+comment|/**    * Returns available reports from the report queue with a max limit on    * list size, or empty list if the queue is empty.    *    * @return List of reports    */
 DECL|method|getReports (int maxLimit)
 specifier|public
 name|List
@@ -1009,7 +1009,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Returns all the pending ContainerActions from the ContainerAction queue,    * or empty list if the queue is empty.    *    * @return List<ContainerAction>    */
+comment|/**    * Returns all the pending ContainerActions from the ContainerAction queue,    * or empty list if the queue is empty.    *    * @return {@literal List<ContainerAction>}    */
 DECL|method|getAllPendingContainerActions ()
 specifier|public
 name|List
@@ -1028,7 +1028,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns pending ContainerActions from the ContainerAction queue with a    * max limit on list size, or empty list if the queue is empty.    *    * @return List<ContainerAction>    */
+comment|/**    * Returns pending ContainerActions from the ContainerAction queue with a    * max limit on list size, or empty list if the queue is empty.    *    * @return {@literal List<ContainerAction>}    */
 DECL|method|getPendingContainerAction (int maxLimit)
 specifier|public
 name|List
@@ -1209,7 +1209,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns pending PipelineActions from the PipelineAction queue with a    * max limit on list size, or empty list if the queue is empty.    *    * @return List<ContainerAction>    */
+comment|/**    * Returns pending PipelineActions from the PipelineAction queue with a    * max limit on list size, or empty list if the queue is empty.    *    * @return {@literal List<ContainerAction>}    */
 DECL|method|getPendingPipelineAction (int maxLimit)
 specifier|public
 name|List

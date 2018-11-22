@@ -804,7 +804,7 @@ name|containerID
 argument_list|)
 return|;
 block|}
-comment|/**    * Verifies that this is indeed a new container.    *    * @param containerFile - Container File to verify    * @throws IOException    */
+comment|/**    * Verifies that this is indeed a new container.    *    * @param containerFile - Container File to verify    * @throws FileAlreadyExistsException    */
 DECL|method|verifyIsNewContainer (File containerFile)
 specifier|public
 specifier|static

@@ -494,7 +494,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * remove Container if it is empty.    *<p/>    * There are three things we need to delete.    *<p/>    * 1. Container file and metadata file. 2. The Level DB file 3. The path that    * we created on the data location.    *    * @param containerData - Data of the container to remove.    * @param conf - configuration of the cluster.    * @param forceDelete - whether this container should be deleted forcibly.    * @throws IOException    */
+comment|/**    * remove Container if it is empty.    *<p>    * There are three things we need to delete.    *<p>    * 1. Container file and metadata file. 2. The Level DB file 3. The path that    * we created on the data location.    *    * @param containerData - Data of the container to remove.    * @param conf - configuration of the cluster.    * @param forceDelete - whether this container should be deleted forcibly.    * @throws IOException    */
 DECL|method|removeContainer (KeyValueContainerData containerData, Configuration conf, boolean forceDelete)
 specifier|public
 specifier|static

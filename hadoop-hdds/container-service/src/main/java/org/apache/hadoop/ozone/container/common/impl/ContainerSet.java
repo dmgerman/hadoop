@@ -508,7 +508,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Return an container Iterator over {@link ContainerSet#containerMap}.    * @return Iterator<Container>    */
+comment|/**    * Return an container Iterator over {@link ContainerSet#containerMap}.    * @return {@literal Iterator<Container>}    */
 DECL|method|getContainerIterator ()
 specifier|public
 name|Iterator
@@ -576,7 +576,7 @@ name|containerMap
 argument_list|)
 return|;
 block|}
-comment|/**    * A simple interface for container Iterations.    *<p/>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param startContainerId -  Return containers with Id>= startContainerId.    * @param count - how many to return    * @param data - Actual containerData    * @throws StorageContainerException    */
+comment|/**    * A simple interface for container Iterations.    *<p>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param startContainerId - Return containers with Id&gt;= startContainerId.    * @param count - how many to return    * @param data - Actual containerData    * @throws StorageContainerException    */
 DECL|method|listContainer (long startContainerId, long count, List<ContainerData> data)
 specifier|public
 name|void

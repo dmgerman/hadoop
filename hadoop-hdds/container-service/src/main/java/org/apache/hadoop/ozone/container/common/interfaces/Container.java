@@ -254,13 +254,13 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Get metadata about the container.    *    * @return ContainerData - Container Data.    * @throws StorageContainerException    */
+comment|/**    * Get metadata about the container.    *    * @return ContainerData - Container Data.    */
 DECL|method|getContainerData ()
 name|CONTAINERDATA
 name|getContainerData
 parameter_list|()
 function_decl|;
-comment|/**    * Get the Container Lifecycle state.    *    * @return ContainerLifeCycleState - Container State.    * @throws StorageContainerException    */
+comment|/**    * Get the Container Lifecycle state.    *    * @return ContainerLifeCycleState - Container State.    */
 DECL|method|getContainerState ()
 name|ContainerProtos
 operator|.

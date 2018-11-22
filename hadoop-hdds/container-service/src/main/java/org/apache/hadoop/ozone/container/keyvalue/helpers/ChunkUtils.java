@@ -1262,7 +1262,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param chunkFile - chunkFile to write data into.    * @param info - chunk info.    * @return true if the chunkFile exists and chunkOffset< chunkFile length,    *         false otherwise.    */
+comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param chunkFile - chunkFile to write data into.    * @param info - chunk info.    * @return true if the chunkFile exists and chunkOffset&lt; chunkFile length,    *         false otherwise.    */
 DECL|method|validateChunkForOverwrite (File chunkFile, ChunkInfo info)
 specifier|public
 specifier|static

@@ -104,7 +104,7 @@ name|ExecutorService
 name|executor
 parameter_list|)
 function_decl|;
-comment|/**    * Wait for execute to finish.    *    * @param time - Time    * @param timeUnit - Unit of time.    */
+comment|/**    * Wait for execute to finish.    *    * @param time - Time    * @param timeUnit - Unit of time.    * @throws InterruptedException    * @throws ExecutionException    * @throws TimeoutException    */
 DECL|method|await (long time, TimeUnit timeUnit)
 name|T
 name|await
