@@ -2789,8 +2789,6 @@ name|PipelineID
 name|pipelineId
 parameter_list|)
 block|{
-try|try
-block|{
 for|for
 control|(
 name|RaftGroupId
@@ -2831,17 +2829,6 @@ block|}
 return|return
 literal|false
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
 block|}
 annotation|@
 name|Override

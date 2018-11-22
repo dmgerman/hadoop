@@ -709,9 +709,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// TODO: currently, shutting down 2 datanodes in Ratis leads to
-comment|// watchForCommit Api in RaftClient to hand=g forever. Once that gets
-comment|// fixed, we need to execute the tets with 2 node failures.
 annotation|@
 name|Test
 DECL|method|testBlockWritesWithDnFailures ()
@@ -891,7 +888,18 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// cluster.shutdownHddsDatanode(datanodes.get(1));
+name|cluster
+operator|.
+name|shutdownHddsDatanode
+argument_list|(
+name|datanodes
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// The write will fail but exception will be handled and length will be
 comment|// updated correctly in OzoneManager once the steam is closed
 name|key
@@ -977,20 +985,6 @@ argument_list|(
 name|keyName
 argument_list|,
 name|data
-argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|restartHddsDatanode
-argument_list|(
-name|datanodes
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1170,7 +1164,18 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//  cluster.shutdownHddsDatanode(datanodes.get(1));
+name|cluster
+operator|.
+name|shutdownHddsDatanode
+argument_list|(
+name|datanodes
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// The write will fail but exception will be handled and length will be
 comment|// updated correctly in OzoneManager once the steam is closed
 name|key
@@ -1278,20 +1283,6 @@ argument_list|)
 operator|.
 name|getBytes
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|restartHddsDatanode
-argument_list|(
-name|datanodes
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}

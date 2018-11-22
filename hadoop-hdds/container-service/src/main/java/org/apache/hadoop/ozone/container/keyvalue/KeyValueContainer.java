@@ -1757,6 +1757,23 @@ operator|.
 name|compactDB
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container {} is closed with bcsId {}."
+argument_list|,
+name|containerData
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|containerData
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

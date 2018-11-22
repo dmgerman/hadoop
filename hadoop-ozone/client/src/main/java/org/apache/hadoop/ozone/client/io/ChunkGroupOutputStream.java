@@ -386,6 +386,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
+name|RaftRetryFailureException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1945,7 +1959,7 @@ literal|null
 condition|)
 block|{
 return|return
-name|checkIfContainerNotOpenException
+name|checkIfContainerNotOpenOrRaftRetryFailureException
 argument_list|(
 name|ioe
 argument_list|)
@@ -2001,10 +2015,10 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|checkIfContainerNotOpenException (IOException ioe)
+DECL|method|checkIfContainerNotOpenOrRaftRetryFailureException ( IOException ioe)
 specifier|private
 name|boolean
-name|checkIfContainerNotOpenException
+name|checkIfContainerNotOpenOrRaftRetryFailureException
 parameter_list|(
 name|IOException
 name|ioe
@@ -2030,6 +2044,10 @@ condition|(
 name|t
 operator|instanceof
 name|ContainerNotOpenException
+operator|||
+name|t
+operator|instanceof
+name|RaftRetryFailureException
 condition|)
 block|{
 return|return
