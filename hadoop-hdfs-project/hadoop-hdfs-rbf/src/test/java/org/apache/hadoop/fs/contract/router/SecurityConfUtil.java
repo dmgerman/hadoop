@@ -28,38 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|HADOOP_SECURITY_AUTHENTICATION
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -834,25 +802,6 @@ name|kdc
 operator|.
 name|getRealm
 argument_list|()
-expr_stmt|;
-comment|// Set auth configuration for mini DFS
-name|conf
-operator|.
-name|set
-argument_list|(
-name|HADOOP_SECURITY_AUTHENTICATION
-argument_list|,
-literal|"kerberos"
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
-argument_list|,
-name|routerPrincipal
-argument_list|)
 expr_stmt|;
 comment|// Setup principles and keytabs for dfs
 name|conf
