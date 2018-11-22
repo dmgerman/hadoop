@@ -746,6 +746,13 @@ specifier|protected
 name|String
 name|fileControllerName
 decl_stmt|;
+DECL|field|fsSupportsChmod
+specifier|protected
+name|boolean
+name|fsSupportsChmod
+init|=
+literal|true
+decl_stmt|;
 DECL|method|LogAggregationFileController ()
 specifier|public
 name|LogAggregationFileController
@@ -1031,11 +1038,6 @@ name|void
 name|verifyAndCreateRemoteLogDir
 parameter_list|()
 block|{
-name|boolean
-name|logPermError
-init|=
-literal|true
-decl_stmt|;
 comment|// Checking the existence of the TLD
 name|FileSystem
 name|remoteFS
@@ -1103,8 +1105,6 @@ name|equals
 argument_list|(
 name|TLDIR_PERMISSIONS
 argument_list|)
-operator|&&
-name|logPermError
 condition|)
 block|{
 name|LOG
@@ -1129,17 +1129,6 @@ literal|"]."
 operator|+
 literal|" The cluster may have problems with multiple users."
 argument_list|)
-expr_stmt|;
-name|logPermError
-operator|=
-literal|false
-expr_stmt|;
-block|}
-else|else
-block|{
-name|logPermError
-operator|=
-literal|true
 expr_stmt|;
 block|}
 block|}
@@ -1174,6 +1163,24 @@ name|e
 argument_list|)
 throw|;
 block|}
+name|Path
+name|qualified
+init|=
+name|remoteRootLogDir
+operator|.
+name|makeQualified
+argument_list|(
+name|remoteFS
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|remoteFS
+operator|.
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1193,24 +1200,6 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|Path
-name|qualified
-init|=
-name|remoteRootLogDir
-operator|.
-name|makeQualified
-argument_list|(
-name|remoteFS
-operator|.
-name|getUri
-argument_list|()
-argument_list|,
-name|remoteFS
-operator|.
-name|getWorkingDirectory
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|remoteFS
 operator|.
 name|mkdirs
@@ -1224,6 +1213,11 @@ name|TLDIR_PERMISSIONS
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Not possible to query FileSystem API to check if it supports
+comment|// chmod, chown etc. Hence resorting to catching exceptions here.
+comment|// Remove when FS APi is ready
+try|try
+block|{
 name|remoteFS
 operator|.
 name|setPermission
@@ -1237,6 +1231,32 @@ name|TLDIR_PERMISSIONS
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|use
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Unable to set permissions for configured filesystem since"
+operator|+
+literal|" it does not support this"
+argument_list|,
+name|remoteFS
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|fsSupportsChmod
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|UserGroupInformation
 name|loginUser
 init|=
@@ -1286,6 +1306,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|remoteFS
 operator|.
 name|setOwner
@@ -1300,6 +1322,28 @@ argument_list|,
 name|primaryGroupName
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|use
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"File System does not support setting user/group"
+operator|+
+name|remoteFS
+operator|.
+name|getScheme
+argument_list|()
+argument_list|,
+name|use
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
@@ -1321,6 +1365,73 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
+block|}
+else|else
+block|{
+comment|//Check if FS has capability to set/modify permissions
+try|try
+block|{
+name|remoteFS
+operator|.
+name|setPermission
+argument_list|(
+name|qualified
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+name|TLDIR_PERMISSIONS
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|use
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Unable to set permissions for configured filesystem since"
+operator|+
+literal|" it does not support this"
+argument_list|,
+name|remoteFS
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|fsSupportsChmod
+operator|=
+literal|false
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to check if FileSystem suppports permissions on "
+operator|+
+literal|"remoteLogDir ["
+operator|+
+name|remoteRootLogDir
+operator|+
+literal|"]"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -1667,6 +1778,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|fsSupportsChmod
+condition|)
+block|{
 name|FsPermission
 name|dirPerm
 init|=
@@ -1729,6 +1845,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+else|else
+block|{
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|checkExists (FileSystem fs, Path path, FsPermission fsPerm)
 specifier|protected
 name|boolean
@@ -1765,6 +1892,11 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|fsSupportsChmod
+condition|)
+block|{
+if|if
+condition|(
 operator|!
 name|APP_DIR_PERMISSIONS
 operator|.
@@ -1786,6 +1918,7 @@ argument_list|,
 name|APP_DIR_PERMISSIONS
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
@@ -2291,6 +2424,16 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+DECL|method|isFsSupportsChmod ()
+specifier|public
+name|boolean
+name|isFsSupportsChmod
+parameter_list|()
+block|{
+return|return
+name|fsSupportsChmod
 return|;
 block|}
 block|}
