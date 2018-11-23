@@ -370,6 +370,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|BlockingThreadPoolExecutorService
@@ -583,6 +597,11 @@ DECL|field|bucket
 specifier|private
 name|String
 name|bucket
+decl_stmt|;
+DECL|field|username
+specifier|private
+name|String
+name|username
 decl_stmt|;
 DECL|field|workingDir
 specifier|private
@@ -1363,7 +1382,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 literal|0
 argument_list|,
@@ -1376,6 +1395,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|qualifiedPath
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -1468,7 +1489,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 literal|0
 argument_list|,
@@ -1481,6 +1502,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|qualifiedPath
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -1513,7 +1536,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 literal|0
 argument_list|,
@@ -1532,6 +1555,8 @@ name|getTime
 argument_list|()
 argument_list|,
 name|qualifiedPath
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -1539,7 +1564,7 @@ else|else
 block|{
 return|return
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 name|meta
 operator|.
@@ -1564,6 +1589,8 @@ name|getTime
 argument_list|()
 argument_list|,
 name|qualifiedPath
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -1705,6 +1732,17 @@ name|getAuthority
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Username is the current user at the time the FS was instantiated.
+name|username
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+expr_stmt|;
 name|workingDir
 operator|=
 operator|new
@@ -1712,12 +1750,7 @@ name|Path
 argument_list|(
 literal|"/user"
 argument_list|,
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
+name|username
 argument_list|)
 operator|.
 name|makeQualified
@@ -1767,6 +1800,8 @@ argument_list|(
 name|name
 argument_list|,
 name|conf
+argument_list|,
+name|username
 argument_list|,
 name|statistics
 argument_list|)
@@ -2204,7 +2239,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 name|objectSummary
 operator|.
@@ -2229,6 +2264,8 @@ name|getTime
 argument_list|()
 argument_list|,
 name|keyPath
+argument_list|,
+name|username
 argument_list|)
 argument_list|)
 expr_stmt|;

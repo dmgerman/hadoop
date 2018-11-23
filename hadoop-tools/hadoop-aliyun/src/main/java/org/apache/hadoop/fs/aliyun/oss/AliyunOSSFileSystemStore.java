@@ -730,6 +730,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|username
+specifier|private
+name|String
+name|username
+decl_stmt|;
 DECL|field|statistics
 specifier|private
 name|FileSystem
@@ -767,7 +772,7 @@ specifier|private
 name|String
 name|serverSideEncryptionAlgorithm
 decl_stmt|;
-DECL|method|initialize (URI uri, Configuration conf, FileSystem.Statistics stat)
+DECL|method|initialize (URI uri, Configuration conf, String user, FileSystem.Statistics stat)
 specifier|public
 name|void
 name|initialize
@@ -778,6 +783,9 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
+name|String
+name|user
+parameter_list|,
 name|FileSystem
 operator|.
 name|Statistics
@@ -786,6 +794,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+operator|.
+name|username
+operator|=
+name|user
+expr_stmt|;
 name|statistics
 operator|=
 name|stat
@@ -3106,7 +3120,7 @@ name|FileStatus
 name|status
 init|=
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 name|summary
 operator|.
@@ -3138,6 +3152,8 @@ name|getTime
 argument_list|()
 argument_list|,
 name|path
+argument_list|,
+name|username
 argument_list|)
 decl_stmt|;
 name|stats
@@ -3199,7 +3215,7 @@ name|FileStatus
 name|status
 init|=
 operator|new
-name|FileStatus
+name|OSSFileStatus
 argument_list|(
 literal|0
 argument_list|,
@@ -3212,6 +3228,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|path
+argument_list|,
+name|username
 argument_list|)
 decl_stmt|;
 name|stats
