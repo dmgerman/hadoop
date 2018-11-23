@@ -140,6 +140,15 @@ name|GET_ACCESS_CONTROL
 init|=
 literal|"getAccessControl"
 decl_stmt|;
+DECL|field|GET_STATUS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_STATUS
+init|=
+literal|"getStatus"
+decl_stmt|;
 DECL|field|DEFAULT_TIMEOUT
 specifier|public
 specifier|static
@@ -349,6 +358,15 @@ name|SEMICOLON
 init|=
 literal|";"
 decl_stmt|;
+DECL|field|AT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AT
+init|=
+literal|"@"
+decl_stmt|;
 DECL|field|HTTP_HEADER_PREFIX
 specifier|public
 specifier|static
@@ -519,6 +537,15 @@ name|String
 name|PERMISSION_FORMAT
 init|=
 literal|"%04d"
+decl_stmt|;
+DECL|field|SUPER_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SUPER_USER
+init|=
+literal|"$superuser"
 decl_stmt|;
 DECL|method|AbfsHttpConstants ()
 specifier|private

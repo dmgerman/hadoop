@@ -1146,6 +1146,22 @@ specifier|private
 name|boolean
 name|alwaysUseHttps
 decl_stmt|;
+annotation|@
+name|BooleanConfigurationValidatorAnnotation
+argument_list|(
+name|ConfigurationKey
+operator|=
+name|FS_AZURE_USE_UPN
+argument_list|,
+name|DefaultValue
+operator|=
+name|DEFAULT_USE_UPN
+argument_list|)
+DECL|field|useUpn
+specifier|private
+name|boolean
+name|useUpn
+decl_stmt|;
 DECL|field|storageAccountKeys
 specifier|private
 name|Map
@@ -2160,6 +2176,18 @@ return|return
 name|this
 operator|.
 name|alwaysUseHttps
+return|;
+block|}
+DECL|method|isUpnUsed ()
+specifier|public
+name|boolean
+name|isUpnUsed
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|useUpn
 return|;
 block|}
 DECL|method|getTokenProvider ()

@@ -276,6 +276,15 @@ name|FS_AZURE_SSL_CHANNEL_MODE_KEY
 init|=
 literal|"fs.azure.ssl.channel.mode"
 decl_stmt|;
+DECL|field|FS_AZURE_USE_UPN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_USE_UPN
+init|=
+literal|"fs.azure.use.upn"
+decl_stmt|;
 DECL|field|AZURE_KEY_ACCOUNT_KEYPROVIDER
 specifier|public
 specifier|static

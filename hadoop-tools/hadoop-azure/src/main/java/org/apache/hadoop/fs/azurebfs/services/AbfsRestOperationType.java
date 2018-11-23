@@ -57,6 +57,9 @@ block|,
 DECL|enumConstant|GetPathProperties
 name|GetPathProperties
 block|,
+DECL|enumConstant|GetPathStatus
+name|GetPathStatus
+block|,
 DECL|enumConstant|SetAcl
 name|SetAcl
 block|,
