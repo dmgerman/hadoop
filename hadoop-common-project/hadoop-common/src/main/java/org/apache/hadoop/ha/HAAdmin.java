@@ -2361,6 +2361,13 @@ argument_list|(
 name|cmd
 argument_list|)
 operator|||
+literal|"-transitionToObserver"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+operator|||
 literal|"-failover"
 operator|.
 name|equals
