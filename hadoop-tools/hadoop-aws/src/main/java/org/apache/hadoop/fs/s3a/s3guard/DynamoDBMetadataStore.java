@@ -2858,7 +2858,7 @@ name|metas
 operator|.
 name|isEmpty
 argument_list|()
-operator|||
+operator|&&
 name|dirPathMeta
 operator|==
 literal|null

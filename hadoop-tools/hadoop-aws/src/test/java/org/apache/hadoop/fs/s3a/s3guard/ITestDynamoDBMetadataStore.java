@@ -608,6 +608,15 @@ name|ITestDynamoDBMetadataStore
 extends|extends
 name|MetadataStoreTestBase
 block|{
+DECL|method|ITestDynamoDBMetadataStore ()
+specifier|public
+name|ITestDynamoDBMetadataStore
+parameter_list|()
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -2975,13 +2984,18 @@ name|void
 name|testProvisionTable
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 specifier|final
 name|String
 name|tableName
 init|=
-literal|"testProvisionTable"
+literal|"testProvisionTable-"
+operator|+
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
 decl_stmt|;
 name|Configuration
 name|conf
@@ -3067,6 +3081,16 @@ operator|.
 name|initTable
 argument_list|()
 expr_stmt|;
+comment|// we have to wait until the provisioning settings are applied,
+comment|// so until the table is ACTIVE again and not in UPDATING
+name|ddbms
+operator|.
+name|getTable
+argument_list|()
+operator|.
+name|waitForActive
+argument_list|()
+expr_stmt|;
 specifier|final
 name|ProvisionedThroughputDescription
 name|newProvision
@@ -3097,6 +3121,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Check newly provisioned table read capacity units."
+argument_list|,
 name|oldProvision
 operator|.
 name|getReadCapacityUnits
@@ -3115,6 +3141,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Check newly provisioned table write capacity units."
+argument_list|,
 name|oldProvision
 operator|.
 name|getWriteCapacityUnits
