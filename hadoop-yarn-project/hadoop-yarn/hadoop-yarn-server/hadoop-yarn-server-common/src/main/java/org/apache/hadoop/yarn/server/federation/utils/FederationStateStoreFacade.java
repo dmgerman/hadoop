@@ -2221,7 +2221,12 @@ argument_list|()
 argument_list|,
 name|GET_SUBCLUSTERS_CACHEID
 argument_list|,
-literal|null
+name|Boolean
+operator|.
+name|toString
+argument_list|(
+name|filterInactiveSubClusters
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|CacheRequest

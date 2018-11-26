@@ -1068,7 +1068,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|deRegisterSubCluster (SubClusterId subClusterId)
-specifier|private
+specifier|public
 name|void
 name|deRegisterSubCluster
 parameter_list|(
