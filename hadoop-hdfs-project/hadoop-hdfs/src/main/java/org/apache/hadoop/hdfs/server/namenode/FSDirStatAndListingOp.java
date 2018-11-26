@@ -3126,6 +3126,26 @@ operator|.
 name|getLastINode
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|targetNode
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File/Directory does not exist: "
+operator|+
+name|iip
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|QuotaUsage
 name|usage
 init|=
