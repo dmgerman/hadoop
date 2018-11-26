@@ -1432,14 +1432,6 @@ name|URISyntaxException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|Path
-operator|.
-name|WINDOWS
-condition|)
-block|{
-comment|// Unlike URI, PathData knows how to parse Windows drive-letter paths.
 name|items
 operator|.
 name|add
@@ -1454,19 +1446,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"unexpected URISyntaxException"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 block|}
 return|return
 name|items
