@@ -7342,9 +7342,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"s3a delete the {} root directory of {}"
+literal|"s3a delete the {} root directory. Path: {}. Recursive: {}"
 argument_list|,
 name|bucket
+argument_list|,
+name|status
+operator|.
+name|getPath
+argument_list|()
 argument_list|,
 name|recursive
 argument_list|)
@@ -7375,6 +7380,18 @@ condition|(
 name|recursive
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cannot delete root path: {}"
+argument_list|,
+name|status
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -7382,13 +7399,30 @@ block|}
 else|else
 block|{
 comment|// reject
+name|String
+name|msg
+init|=
+literal|"Cannot delete root path: "
+operator|+
+name|status
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|PathIOException
 argument_list|(
 name|bucket
 argument_list|,
-literal|"Cannot delete root path"
+name|msg
 argument_list|)
 throw|;
 block|}
