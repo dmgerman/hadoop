@@ -1024,6 +1024,8 @@ name|Assume
 operator|.
 name|assumeTrue
 argument_list|(
+literal|"FS needs to have a metadatastore."
+argument_list|,
 name|fs
 operator|.
 name|hasMetadataStore
@@ -1070,6 +1072,10 @@ control|)
 block|{
 name|assertTrue
 argument_list|(
+literal|"Can't create directory: "
+operator|+
+name|path
+argument_list|,
 name|fs
 operator|.
 name|mkdirs
@@ -1094,6 +1100,10 @@ control|)
 block|{
 name|assertTrue
 argument_list|(
+literal|"Can't delete path: "
+operator|+
+name|path
+argument_list|,
 name|fs
 operator|.
 name|delete
@@ -1151,6 +1161,8 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
+literal|"This path should be deleted."
+argument_list|,
 name|list
 operator|.
 name|contains
@@ -1164,6 +1176,8 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+literal|"This path should be deleted."
+argument_list|,
 name|list
 operator|.
 name|contains
@@ -1175,9 +1189,10 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// This should fail without S3Guard, and succeed with it.
 name|assertFalse
 argument_list|(
+literal|"This should fail without S3Guard, and succeed with it."
+argument_list|,
 name|list
 operator|.
 name|contains

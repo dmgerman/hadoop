@@ -55,6 +55,10 @@ specifier|private
 name|DirListingMetadata
 name|dirListingMetadata
 decl_stmt|;
+DECL|method|LocalMetadataEntry ()
+name|LocalMetadataEntry
+parameter_list|()
+block|{   }
 DECL|method|LocalMetadataEntry (PathMetadata pmd)
 name|LocalMetadataEntry
 parameter_list|(
