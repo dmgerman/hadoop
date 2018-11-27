@@ -690,6 +690,29 @@ return|return
 name|this
 return|;
 block|}
+comment|/* Ports mapping for bridge network, -p */
+DECL|method|addPortsMapping (String mapping)
+specifier|public
+name|DockerRunCommand
+name|addPortsMapping
+parameter_list|(
+name|String
+name|mapping
+parameter_list|)
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"ports-mapping"
+argument_list|,
+name|mapping
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|groupAdd (String[] groups)
 specifier|public
 name|DockerRunCommand
