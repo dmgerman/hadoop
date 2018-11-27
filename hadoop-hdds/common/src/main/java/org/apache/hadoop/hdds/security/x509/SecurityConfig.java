@@ -388,6 +388,70 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
+name|HDDS_X509_DIR_NAME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_DIR_NAME_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_FILE_NAME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_FILE_NAME_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
 name|HDDS_X509_MAX_DURATION
 import|;
 end_import
@@ -457,7 +521,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class that deals with all Security related configs in HDDS.  *  * This class allows security configs to be read and used consistently across  * all of security related code base.  */
+comment|/**  * A class that deals with all Security related configs in HDDS.  *<p>  * This class allows security configs to be read and used consistently across  * all of security related code base.  */
 end_comment
 
 begin_class
@@ -554,6 +618,18 @@ specifier|private
 specifier|final
 name|Boolean
 name|grpcBlockTokenEnabled
+decl_stmt|;
+DECL|field|certificateDir
+specifier|private
+specifier|final
+name|String
+name|certificateDir
+decl_stmt|;
+DECL|field|certificateFileName
+specifier|private
+specifier|final
+name|String
+name|certificateFileName
 decl_stmt|;
 comment|/**    * Constructs a SecurityConfig.    *    * @param configuration - HDDS Configuration    */
 DECL|method|SecurityConfig (Configuration configuration)
@@ -747,6 +823,36 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|certificateDir
+operator|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|get
+argument_list|(
+name|HDDS_X509_DIR_NAME
+argument_list|,
+name|HDDS_X509_DIR_NAME_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|certificateFileName
+operator|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|get
+argument_list|(
+name|HDDS_X509_FILE_NAME
+argument_list|,
+name|HDDS_X509_FILE_NAME_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|grpcBlockTokenEnabled
 operator|=
 name|this
@@ -812,7 +918,18 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Returns the public key file name, This is used for storing the public    * keys on disk.    *    * @return String, File name used for public keys.    */
+comment|/**    * Returns the Standard Certificate file name.    *    * @return String - Name of the Certificate File.    */
+DECL|method|getCertificateFileName ()
+specifier|public
+name|String
+name|getCertificateFileName
+parameter_list|()
+block|{
+return|return
+name|certificateFileName
+return|;
+block|}
+comment|/**    * Returns the public key file name, This is used for storing the public keys    * on disk.    *    * @return String, File name used for public keys.    */
 DECL|method|getPublicKeyFileName ()
 specifier|public
 name|String
@@ -823,7 +940,7 @@ return|return
 name|publicKeyFileName
 return|;
 block|}
-comment|/**    * Returns the private key file name.This is used for storing the private    * keys on disk.    *    * @return String, File name used for private keys.    */
+comment|/**    * Returns the private key file name.This is used for storing the private keys    * on disk.    *    * @return String, File name used for private keys.    */
 DECL|method|getPrivateKeyFileName ()
 specifier|public
 name|String
@@ -834,7 +951,7 @@ return|return
 name|privateKeyFileName
 return|;
 block|}
-comment|/**    * Returns the File path to where keys are stored.    *    * @return String Key location.    */
+comment|/**    * Returns the File path to where keys are stored.    *    * @return path Key location.    */
 DECL|method|getKeyLocation ()
 specifier|public
 name|Path
@@ -852,7 +969,71 @@ name|keyDir
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the Key Size, The default key size is 2048, since the default    * algorithm used is RSA. User can change this by setting the "hdds.key    * .len" in configuration.    *    * @return key size.    */
+comment|/**    * Returns the File path to where keys are stored with an additional component    * name inserted in between.    *    * @param component - Component Name - String.    * @return Path location.    */
+DECL|method|getKeyLocation (String component)
+specifier|public
+name|Path
+name|getKeyLocation
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
+name|Paths
+operator|.
+name|get
+argument_list|(
+name|metadatDir
+argument_list|,
+name|component
+argument_list|,
+name|keyDir
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the File path to where keys are stored.    *    * @return path Key location.    */
+DECL|method|getCertificateLocation ()
+specifier|public
+name|Path
+name|getCertificateLocation
+parameter_list|()
+block|{
+return|return
+name|Paths
+operator|.
+name|get
+argument_list|(
+name|metadatDir
+argument_list|,
+name|certificateDir
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the File path to where keys are stored with an addition component    * name inserted in between.    *    * @param component - Component Name - String.    * @return Path location.    */
+DECL|method|getCertificateLocation (String component)
+specifier|public
+name|Path
+name|getCertificateLocation
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
+name|Paths
+operator|.
+name|get
+argument_list|(
+name|metadatDir
+argument_list|,
+name|component
+argument_list|,
+name|certificateDir
+argument_list|)
+return|;
+block|}
+comment|/**    * Gets the Key Size, The default key size is 2048, since the default    * algorithm used is RSA. User can change this by setting the "hdds.key.len"    * in configuration.    *    * @return key size.    */
 DECL|method|getSize ()
 specifier|public
 name|int
@@ -874,7 +1055,7 @@ return|return
 name|providerString
 return|;
 block|}
-comment|/**    * Returns the Key generation Algorithm used.  User can change this by    * setting the "hdds.key.algo" in configuration.    *    * @return String Algo.    */
+comment|/**    * Returns the Key generation Algorithm used.  User can change this by setting    * the "hdds.key.algo" in configuration.    *    * @return String Algo.    */
 DECL|method|getKeyAlgo ()
 specifier|public
 name|String
@@ -885,7 +1066,7 @@ return|return
 name|keyAlgo
 return|;
 block|}
-comment|/**    * Returns the X.509 Signature Algorithm used. This can be changed by setting    * "hdds.x509.signature.algorithm" to the new name. The default algorithm    * is SHA256withRSA.    *    * @return String    */
+comment|/**    * Returns the X.509 Signature Algorithm used. This can be changed by setting    * "hdds.x509.signature.algorithm" to the new name. The default algorithm is    * SHA256withRSA.    *    * @return String    */
 DECL|method|getSignatureAlgo ()
 specifier|public
 name|String
@@ -907,7 +1088,7 @@ return|return
 name|configuration
 return|;
 block|}
-comment|/**    * Returns the maximum length a certificate can be valid in SCM. The    * default value is 5 years. This can be changed by setting    * "hdds.x509.max.duration" in configuration. The formats accepted are    * based on the ISO-8601 duration format PnDTnHnMn.nS    *    * Default value is 5 years and written as P1865D.    *    * @return Duration.    */
+comment|/**    * Returns the maximum length a certificate can be valid in SCM. The default    * value is 5 years. This can be changed by setting "hdds.x509.max.duration"    * in configuration. The formats accepted are based on the ISO-8601 duration    * format PnDTnHnMn.nS    *<p>    * Default value is 5 years and written as P1865D.    *    * @return Duration.    */
 DECL|method|getMaxCertificateDuration ()
 specifier|public
 name|Duration

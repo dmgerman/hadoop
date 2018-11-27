@@ -40,6 +40,8 @@ name|x509
 operator|.
 name|certificates
 operator|.
+name|utils
+operator|.
 name|CertificateSignRequest
 import|;
 end_import
@@ -165,7 +167,7 @@ name|String
 name|component
 parameter_list|)
 function_decl|;
-comment|/**    * Verifies if this certificate is part of a trusted chain.    *    * @return true if it trusted, false otherwise.    */
+comment|/**    * Verifies if this certificate is part of a trusted chain.    * @param certificate - certificate.    * @return true if it trusted, false otherwise.    */
 DECL|method|verifyCertificate (X509Certificate certificate)
 name|boolean
 name|verifyCertificate
@@ -174,7 +176,7 @@ name|X509Certificate
 name|certificate
 parameter_list|)
 function_decl|;
-comment|/**    * Creates digital signature over the data stream using the components private    * key.    *    * @param stream - Data stream to sign.    * @return byte array - containing the signature.    */
+comment|/**    * Creates digital signature over the data stream using the components private    * key.    *    * @param stream - Data stream to sign.    * @param component - name of the component.    * @return byte array - containing the signature.    * @throws CertificateException - on Error.    */
 DECL|method|signDataStream (InputStream stream, String component)
 name|byte
 index|[]
@@ -189,7 +191,7 @@ parameter_list|)
 throws|throws
 name|CertificateException
 function_decl|;
-comment|/**    * Verifies a digital Signature, given the signature and the certificate of    * the signer.    * @param stream - Data Stream.    * @param signature - Byte Array containing the signature.    * @param cert - Certificate of the Signer.    * @return true if verified, false if not.    */
+comment|/**    * Verifies a digital Signature, given the signature and the certificate of    * the signer.    *    * @param stream - Data Stream.    * @param signature - Byte Array containing the signature.    * @param cert - Certificate of the Signer.    * @return true if verified, false if not.    */
 DECL|method|verifySignature (InputStream stream, byte[] signature, X509Certificate cert)
 name|boolean
 name|verifySignature
@@ -239,7 +241,7 @@ name|String
 name|query
 parameter_list|)
 function_decl|;
-comment|/**    * Stores the private key of a specified component.    *    * @param key - private key    * @param component - name of the component.    * @throws CertificateException    */
+comment|/**    * Stores the private key of a specified component.    *    * @param key - private key    * @param component - name of the component.    * @throws CertificateException - on Error.    */
 DECL|method|storePrivateKey (PrivateKey key, String component)
 name|void
 name|storePrivateKey
@@ -253,7 +255,7 @@ parameter_list|)
 throws|throws
 name|CertificateException
 function_decl|;
-comment|/**    * Stores the public key of a specified component.    *    * @param key - public key    * @throws CertificateException    */
+comment|/**    * Stores the public key of a specified component.    *    * @param key - public key    * @param component - name of the component.    * @throws CertificateException - on Error.    */
 DECL|method|storePublicKey (PublicKey key, String component)
 name|void
 name|storePublicKey
@@ -267,7 +269,7 @@ parameter_list|)
 throws|throws
 name|CertificateException
 function_decl|;
-comment|/**    * Stores the Certificate of a specific component.    *    * @param certificate - X509 Certificate    * @param component - Name of the component.    * @throws CertificateException    */
+comment|/**    * Stores the Certificate of a specific component.    *    * @param certificate - X509 Certificate    * @param component - Name of the component.    * @throws CertificateException - on Error.    */
 DECL|method|storeCertificate (X509Certificate certificate, String component)
 name|void
 name|storeCertificate
@@ -281,7 +283,7 @@ parameter_list|)
 throws|throws
 name|CertificateException
 function_decl|;
-comment|/**    * Stores the trusted chain of certificates for a specific component.    *    * @param certStore - Cert Store.    * @param component - Trust Chain.    * @throws CertificateException    */
+comment|/**    * Stores the trusted chain of certificates for a specific component.    *    * @param certStore - Cert Store.    * @param component - Trust Chain.    * @throws CertificateException - on Error.    */
 DECL|method|storeTrustChain (CertStore certStore, String component)
 name|void
 name|storeTrustChain
@@ -295,7 +297,7 @@ parameter_list|)
 throws|throws
 name|CertificateException
 function_decl|;
-comment|/**    * Stores the trusted chain of certificates for a specific component.    *    * @param certificates - List of Certificates.    * @param component - String component.    * @throws CertificateException    */
+comment|/**    * Stores the trusted chain of certificates for a specific component.    *    * @param certificates - List of Certificates.    * @param component - String component.    * @throws CertificateException - on Error.    */
 DECL|method|storeTrustChain (List<X509Certificate> certificates, String component)
 name|void
 name|storeTrustChain

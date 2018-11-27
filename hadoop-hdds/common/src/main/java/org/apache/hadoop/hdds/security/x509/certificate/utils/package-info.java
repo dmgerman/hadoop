@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Test classes for Certificate utilities.  */
+comment|/**  * Certificate Utils.  */
 end_comment
 
 begin_package

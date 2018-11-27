@@ -426,7 +426,7 @@ name|x509
 operator|.
 name|keys
 operator|.
-name|HDDSKeyPEMWriter
+name|KeyCodec
 import|;
 end_import
 
@@ -909,10 +909,10 @@ literal|2
 operator|*
 literal|1000
 decl_stmt|;
-DECL|field|LOGGER
+DECL|field|logger
 specifier|private
 name|Logger
-name|LOGGER
+name|logger
 init|=
 name|LoggerFactory
 operator|.
@@ -1121,7 +1121,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOGGER
+name|logger
 operator|.
 name|error
 argument_list|(
@@ -1137,7 +1137,7 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|LOGGER
+name|logger
 operator|.
 name|error
 argument_list|(
@@ -1217,7 +1217,7 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|LOGGER
+name|logger
 operator|.
 name|error
 argument_list|(
@@ -2755,11 +2755,11 @@ operator|.
 name|generateKey
 argument_list|()
 expr_stmt|;
-name|HDDSKeyPEMWriter
+name|KeyCodec
 name|pemWriter
 init|=
 operator|new
-name|HDDSKeyPEMWriter
+name|KeyCodec
 argument_list|(
 name|config
 argument_list|)
@@ -2785,19 +2785,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Capture logs for assertions.
-name|LogCapturer
-name|logs
-init|=
-name|LogCapturer
-operator|.
-name|captureLogs
-argument_list|(
-name|Server
-operator|.
-name|AUDITLOG
-argument_list|)
-decl_stmt|;
 name|GenericTestUtils
 operator|.
 name|setLogLevel
@@ -2874,14 +2861,6 @@ init|=
 name|UserGroupInformation
 operator|.
 name|getCurrentUser
-argument_list|()
-decl_stmt|;
-name|String
-name|username
-init|=
-name|ugi
-operator|.
-name|getUserName
 argument_list|()
 decl_stmt|;
 comment|// Get first OM client which will authenticate via Kerberos

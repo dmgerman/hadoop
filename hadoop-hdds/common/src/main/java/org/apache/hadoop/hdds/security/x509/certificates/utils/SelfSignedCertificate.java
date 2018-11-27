@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  *  with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.security.x509.certificates
+DECL|package|org.apache.hadoop.hdds.security.x509.certificates.utils
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|x509
 operator|.
 name|certificates
+operator|.
+name|utils
 package|;
 end_package
 
@@ -158,6 +160,18 @@ name|bouncycastle
 operator|.
 name|asn1
 operator|.
+name|DEROctetString
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|bouncycastle
+operator|.
+name|asn1
+operator|.
 name|x500
 operator|.
 name|X500Name
@@ -189,6 +203,20 @@ operator|.
 name|x509
 operator|.
 name|Extension
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|bouncycastle
+operator|.
+name|asn1
+operator|.
+name|x509
+operator|.
+name|KeyUsage
 import|;
 end_import
 
@@ -284,6 +312,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|math
 operator|.
 name|BigInteger
@@ -314,6 +352,36 @@ begin_import
 import|import
 name|java
 operator|.
+name|time
+operator|.
+name|LocalDate
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|time
+operator|.
+name|LocalTime
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|time
+operator|.
+name|ZoneOffset
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Date
@@ -321,7 +389,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A Self Signed Certificate with CA basic constraint can be used to boot-strap  * a certificate infra-structure, if no external certificate is provided.  */
+comment|/**  * A Self Signed Certificate with CertificateServer basic constraint can be used  * to bootstrap a certificate infrastructure, if no external certificate is  * provided.  */
 end_comment
 
 begin_class
@@ -357,12 +425,12 @@ name|scmID
 decl_stmt|;
 DECL|field|beginDate
 specifier|private
-name|Date
+name|LocalDate
 name|beginDate
 decl_stmt|;
 DECL|field|endDate
 specifier|private
-name|Date
+name|LocalDate
 name|endDate
 decl_stmt|;
 DECL|field|key
@@ -375,13 +443,8 @@ specifier|private
 name|SecurityConfig
 name|config
 decl_stmt|;
-DECL|field|isCA
-specifier|private
-name|boolean
-name|isCA
-decl_stmt|;
-comment|/**    * Private Ctor invoked only via Builder Interface.    * @param subject - Subject    * @param scmID - SCM ID    * @param clusterID - Cluster ID    * @param beginDate - NotBefore    * @param endDate - Not After    * @param configuration - SCM Config    * @param keyPair - KeyPair    * @param ca - isCA?    */
-DECL|method|SelfSignedCertificate (String subject, String scmID, String clusterID, Date beginDate, Date endDate, SecurityConfig configuration, KeyPair keyPair, boolean ca)
+comment|/**    * Private Ctor invoked only via Builder Interface.    *    * @param subject - Subject    * @param scmID - SCM ID    * @param clusterID - Cluster ID    * @param beginDate - NotBefore    * @param endDate - Not After    * @param configuration - SCM Config    * @param keyPair - KeyPair    */
+DECL|method|SelfSignedCertificate (String subject, String scmID, String clusterID, LocalDate beginDate, LocalDate endDate, SecurityConfig configuration, KeyPair keyPair)
 specifier|private
 name|SelfSignedCertificate
 parameter_list|(
@@ -394,10 +457,10 @@ parameter_list|,
 name|String
 name|clusterID
 parameter_list|,
-name|Date
+name|LocalDate
 name|beginDate
 parameter_list|,
-name|Date
+name|LocalDate
 name|endDate
 parameter_list|,
 name|SecurityConfig
@@ -405,9 +468,6 @@ name|configuration
 parameter_list|,
 name|KeyPair
 name|keyPair
-parameter_list|,
-name|boolean
-name|ca
 parameter_list|)
 block|{
 name|this
@@ -450,12 +510,6 @@ name|key
 operator|=
 name|keyPair
 expr_stmt|;
-name|this
-operator|.
-name|isCA
-operator|=
-name|ca
-expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -483,15 +537,18 @@ name|Builder
 argument_list|()
 return|;
 block|}
-DECL|method|generateCertificate ()
+DECL|method|generateCertificate (boolean isCA)
 specifier|private
 name|X509CertificateHolder
 name|generateCertificate
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isCA
+parameter_list|)
 throws|throws
 name|OperatorCreationException
 throws|,
-name|CertIOException
+name|IOException
 block|{
 comment|// For the Root Certificate we form the name from Subject, SCM ID and
 comment|// Cluster ID.
@@ -605,6 +662,68 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|ZoneOffset
+name|zoneOffset
+init|=
+name|beginDate
+operator|.
+name|atStartOfDay
+argument_list|(
+name|ZoneOffset
+operator|.
+name|systemDefault
+argument_list|()
+argument_list|)
+operator|.
+name|getOffset
+argument_list|()
+decl_stmt|;
+comment|// Valid from the Start of the day when we generate this Certificate.
+name|Date
+name|validFrom
+init|=
+name|Date
+operator|.
+name|from
+argument_list|(
+name|beginDate
+operator|.
+name|atTime
+argument_list|(
+name|LocalTime
+operator|.
+name|MIN
+argument_list|)
+operator|.
+name|toInstant
+argument_list|(
+name|zoneOffset
+argument_list|)
+argument_list|)
+decl_stmt|;
+comment|// Valid till end day finishes.
+name|Date
+name|validTill
+init|=
+name|Date
+operator|.
+name|from
+argument_list|(
+name|endDate
+operator|.
+name|atTime
+argument_list|(
+name|LocalTime
+operator|.
+name|MAX
+argument_list|)
+operator|.
+name|toInstant
+argument_list|(
+name|zoneOffset
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|X509v3CertificateBuilder
 name|builder
 init|=
@@ -615,9 +734,9 @@ name|name
 argument_list|,
 name|serial
 argument_list|,
-name|beginDate
+name|validFrom
 argument_list|,
-name|endDate
+name|validTill
 argument_list|,
 name|name
 argument_list|,
@@ -643,6 +762,43 @@ operator|new
 name|BasicConstraints
 argument_list|(
 literal|true
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|int
+name|keyUsageFlag
+init|=
+name|KeyUsage
+operator|.
+name|keyCertSign
+operator||
+name|KeyUsage
+operator|.
+name|cRLSign
+decl_stmt|;
+name|KeyUsage
+name|keyUsage
+init|=
+operator|new
+name|KeyUsage
+argument_list|(
+name|keyUsageFlag
+argument_list|)
+decl_stmt|;
+name|builder
+operator|.
+name|addExtension
+argument_list|(
+name|Extension
+operator|.
+name|keyUsage
+argument_list|,
+literal|false
+argument_list|,
+operator|new
+name|DEROctetString
+argument_list|(
+name|keyUsage
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -680,12 +836,12 @@ name|scmID
 decl_stmt|;
 DECL|field|beginDate
 specifier|private
-name|Date
+name|LocalDate
 name|beginDate
 decl_stmt|;
 DECL|field|endDate
 specifier|private
-name|Date
+name|LocalDate
 name|endDate
 decl_stmt|;
 DECL|field|key
@@ -802,12 +958,12 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setBeginDate (Date date)
+DECL|method|setBeginDate (LocalDate date)
 specifier|public
 name|Builder
 name|setBeginDate
 parameter_list|(
-name|Date
+name|LocalDate
 name|date
 parameter_list|)
 block|{
@@ -815,28 +971,18 @@ name|this
 operator|.
 name|beginDate
 operator|=
-operator|new
-name|Date
-argument_list|(
 name|date
-operator|.
-name|toInstant
-argument_list|()
-operator|.
-name|toEpochMilli
-argument_list|()
-argument_list|)
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setEndDate (Date date)
+DECL|method|setEndDate (LocalDate date)
 specifier|public
 name|Builder
 name|setEndDate
 parameter_list|(
-name|Date
+name|LocalDate
 name|date
 parameter_list|)
 block|{
@@ -844,17 +990,7 @@ name|this
 operator|.
 name|endDate
 operator|=
-operator|new
-name|Date
-argument_list|(
 name|date
-operator|.
-name|toInstant
-argument_list|()
-operator|.
-name|toEpochMilli
-argument_list|()
-argument_list|)
 expr_stmt|;
 return|return
 name|this
@@ -881,6 +1017,8 @@ name|build
 parameter_list|()
 throws|throws
 name|SCMSecurityException
+throws|,
+name|IOException
 block|{
 name|Preconditions
 operator|.
@@ -945,7 +1083,7 @@ name|checkArgument
 argument_list|(
 name|beginDate
 operator|.
-name|before
+name|isBefore
 argument_list|(
 name|endDate
 argument_list|)
@@ -955,6 +1093,8 @@ operator|+
 literal|"begin date should be before end date"
 argument_list|)
 expr_stmt|;
+comment|// We just read the beginDate and EndDate as Start of the Day and
+comment|// confirm that we do not violate the maxDuration Config.
 name|Duration
 name|certDuration
 init|=
@@ -964,34 +1104,53 @@ name|between
 argument_list|(
 name|beginDate
 operator|.
-name|toInstant
+name|atStartOfDay
 argument_list|()
 argument_list|,
 name|endDate
 operator|.
-name|toInstant
+name|atStartOfDay
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|certDuration
-operator|.
-name|compareTo
-argument_list|(
+name|Duration
+name|maxDuration
+init|=
 name|config
 operator|.
 name|getMaxCertificateDuration
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|certDuration
+operator|.
+name|compareTo
+argument_list|(
+name|maxDuration
 argument_list|)
-operator|<
+operator|>
 literal|0
-argument_list|,
-literal|"Certificate life time cannot be greater than max configured value."
+condition|)
+block|{
+throw|throw
+operator|new
+name|SCMSecurityException
+argument_list|(
+literal|"The cert duration violates the "
+operator|+
+literal|"maximum configured value. Please check the hdds.x509.max"
+operator|+
+literal|".duration config key. Current Value: "
+operator|+
+name|certDuration
+operator|+
+literal|" config: "
+operator|+
+name|maxDuration
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
 name|SelfSignedCertificate
 name|rootCertificate
 init|=
@@ -1023,8 +1182,6 @@ operator|.
 name|config
 argument_list|,
 name|key
-argument_list|,
-name|isCA
 argument_list|)
 decl_stmt|;
 try|try
@@ -1033,7 +1190,9 @@ return|return
 name|rootCertificate
 operator|.
 name|generateCertificate
-argument_list|()
+argument_list|(
+name|isCA
+argument_list|)
 return|;
 block|}
 catch|catch

@@ -115,7 +115,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** A class to generate Key Pair for use with Certificates. */
+comment|/**  * A class to generate Key Pair for use with Certificates.  */
 end_comment
 
 begin_class
@@ -166,7 +166,23 @@ name|configuration
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the Security config used for this object.    * @return SecurityConfig    */
+comment|/**    * Constructor that takes a SecurityConfig as the Argument.    *    * @param config - SecurityConfig    */
+DECL|method|HDDSKeyGenerator (SecurityConfig config)
+specifier|public
+name|HDDSKeyGenerator
+parameter_list|(
+name|SecurityConfig
+name|config
+parameter_list|)
+block|{
+name|this
+operator|.
+name|securityConfig
+operator|=
+name|config
+expr_stmt|;
+block|}
+comment|/**    * Returns the Security config used for this object.    *    * @return SecurityConfig    */
 DECL|method|getSecurityConfig ()
 specifier|public
 name|SecurityConfig
@@ -177,7 +193,7 @@ return|return
 name|securityConfig
 return|;
 block|}
-comment|/**    * Use Config to generate key.    *    * @return KeyPair    * @throws NoSuchProviderException - On Error, due to missing Java    * dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    * dependencies.    */
+comment|/**    * Use Config to generate key.    *    * @return KeyPair    * @throws NoSuchProviderException  - On Error, due to missing Java    *                                  dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    *                                  dependencies.    */
 DECL|method|generateKey ()
 specifier|public
 name|KeyPair
@@ -208,7 +224,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Specify the size -- all other parameters are used from config.    *    * @param size - int, valid key sizes.    * @return KeyPair    * @throws NoSuchProviderException - On Error, due to missing Java    * dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    * dependencies.    */
+comment|/**    * Specify the size -- all other parameters are used from config.    *    * @param size - int, valid key sizes.    * @return KeyPair    * @throws NoSuchProviderException  - On Error, due to missing Java    *                                  dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    *                                  dependencies.    */
 DECL|method|generateKey (int size)
 specifier|public
 name|KeyPair
@@ -239,7 +255,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Custom Key Generation, all values are user provided.    *    * @param size - Key Size    * @param algorithm - Algorithm to use    * @param provider - Security provider.    * @return KeyPair.    * @throws NoSuchProviderException - On Error, due to missing Java    * dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    * dependencies.    */
+comment|/**    * Custom Key Generation, all values are user provided.    *    * @param size - Key Size    * @param algorithm - Algorithm to use    * @param provider - Security provider.    * @return KeyPair.    * @throws NoSuchProviderException  - On Error, due to missing Java    *                                  dependencies.    * @throws NoSuchAlgorithmException - On Error,  due to missing Java    *                                  dependencies.    */
 DECL|method|generateKey (int size, String algorithm, String provider)
 specifier|public
 name|KeyPair

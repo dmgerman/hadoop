@@ -56,9 +56,7 @@ name|security
 operator|.
 name|x509
 operator|.
-name|certificates
-operator|.
-name|CertificateSignRequest
+name|SecurityConfig
 import|;
 end_import
 
@@ -76,7 +74,11 @@ name|security
 operator|.
 name|x509
 operator|.
-name|SecurityConfig
+name|certificates
+operator|.
+name|utils
+operator|.
+name|CertificateSignRequest
 import|;
 end_import
 
@@ -89,6 +91,28 @@ operator|.
 name|cert
 operator|.
 name|X509CertificateHolder
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|cert
+operator|.
+name|CertificateException
 import|;
 end_import
 
@@ -140,15 +164,17 @@ parameter_list|)
 throws|throws
 name|SCMSecurityException
 function_decl|;
-comment|/**    * Returns the CA Certificate for this CA.    *    * @return X509CertificateHolder - Certificate for this CA.    * @throws SCMSecurityException -- usually thrown if this CA is not    *                              initialized.    */
+comment|/**    * Returns the CA Certificate for this CA.    *    * @return X509CertificateHolder - Certificate for this CA.    * @throws CertificateException - usually thrown if this CA is not    *                              initialized.    * @throws IOException - on Error.    */
 DECL|method|getCACertificate ()
 name|X509CertificateHolder
 name|getCACertificate
 parameter_list|()
 throws|throws
-name|SCMSecurityException
+name|CertificateException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr - Certificate Signing Request.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
+comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr - Certificate Signing Request.    * @param approver - An Enum which says what kind of approval process to    * follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
 DECL|method|requestCertificate (CertificateSignRequest csr, CertificateApprover approver)
 name|Future
 argument_list|<

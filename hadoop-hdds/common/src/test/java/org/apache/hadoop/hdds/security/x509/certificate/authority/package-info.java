@@ -4,11 +4,11 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Test classes for Certificate utilities.  */
+comment|/**  * Tests for Default CA.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.security.x509.certificate.utils
+DECL|package|org.apache.hadoop.hdds.security.x509.certificate.authority
 package|package
 name|org
 operator|.
@@ -24,7 +24,7 @@ name|x509
 operator|.
 name|certificate
 operator|.
-name|utils
+name|authority
 package|;
 end_package
 

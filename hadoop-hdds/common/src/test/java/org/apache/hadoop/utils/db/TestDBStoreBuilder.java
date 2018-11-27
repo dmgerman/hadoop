@@ -142,16 +142,6 @@ name|StandardCharsets
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
 begin_comment
 comment|/**  * Tests RDBStore creation.  */
 end_comment
@@ -694,16 +684,11 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-name|Arrays
-operator|.
-name|equals
+name|assertArrayEquals
 argument_list|(
 name|value
 argument_list|,
 name|temp
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -902,16 +887,11 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-name|Arrays
-operator|.
-name|equals
+name|assertArrayEquals
 argument_list|(
 name|value
 argument_list|,
 name|temp
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

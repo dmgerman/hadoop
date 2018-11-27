@@ -189,7 +189,7 @@ name|CREATION_TIME
 init|=
 literal|"cTime"
 decl_stmt|;
-comment|/**    * Constructs StorageInfo instance.    * @param type    *          Type of the node using the storage    * @param cid    *          Cluster ID    * @param cT    *          Cluster creation Time     * @throws IOException    */
+comment|/**    * Constructs StorageInfo instance.    * @param type    *          Type of the node using the storage    * @param cid    *          Cluster ID    * @param cT    *          Cluster creation Time     * @throws IOException - on Error.    */
 DECL|method|StorageInfo (NodeType type, String cid, long cT)
 specifier|public
 name|StorageInfo

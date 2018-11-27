@@ -351,10 +351,10 @@ comment|/**  * Test class for HDDS pem writer.  */
 end_comment
 
 begin_class
-DECL|class|TestHDDSKeyPEMWriter
+DECL|class|TestKeyCodec
 specifier|public
 class|class
-name|TestHDDSKeyPEMWriter
+name|TestKeyCodec
 block|{
 annotation|@
 name|Rule
@@ -451,11 +451,11 @@ operator|.
 name|generateKey
 argument_list|()
 decl_stmt|;
-name|HDDSKeyPEMWriter
+name|KeyCodec
 name|pemWriter
 init|=
 operator|new
-name|HDDSKeyPEMWriter
+name|KeyCodec
 argument_list|(
 name|configuration
 argument_list|)
@@ -916,11 +916,11 @@ operator|.
 name|generateKey
 argument_list|()
 decl_stmt|;
-name|HDDSKeyPEMWriter
+name|KeyCodec
 name|pemWriter
 init|=
 operator|new
-name|HDDSKeyPEMWriter
+name|KeyCodec
 argument_list|(
 name|configuration
 argument_list|)
@@ -1075,11 +1075,11 @@ operator|.
 name|generateKey
 argument_list|()
 decl_stmt|;
-name|HDDSKeyPEMWriter
+name|KeyCodec
 name|pemWriter
 init|=
 operator|new
-name|HDDSKeyPEMWriter
+name|KeyCodec
 argument_list|(
 name|configuration
 argument_list|)
