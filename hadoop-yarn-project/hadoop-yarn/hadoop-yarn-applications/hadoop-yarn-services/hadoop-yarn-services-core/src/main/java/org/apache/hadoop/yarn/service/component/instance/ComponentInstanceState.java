@@ -42,6 +42,9 @@ name|UPGRADING
 block|,
 DECL|enumConstant|CANCEL_UPGRADING
 name|CANCEL_UPGRADING
+block|,
+DECL|enumConstant|REINITIALIZED
+name|REINITIALIZED
 block|}
 end_enum
 

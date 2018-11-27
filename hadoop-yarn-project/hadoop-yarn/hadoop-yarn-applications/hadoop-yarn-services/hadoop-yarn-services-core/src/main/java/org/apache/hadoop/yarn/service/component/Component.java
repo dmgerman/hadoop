@@ -1749,6 +1749,8 @@ operator|.
 name|of
 argument_list|(
 name|STABLE
+argument_list|,
+name|FLEXING
 argument_list|)
 argument_list|,
 name|CHECK_STABLE
@@ -1781,6 +1783,8 @@ operator|.
 name|of
 argument_list|(
 name|UPGRADING
+argument_list|,
+name|FLEXING
 argument_list|,
 name|STABLE
 argument_list|)

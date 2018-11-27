@@ -3339,7 +3339,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Test to verify ANTI_AFFINITY placement policy
-comment|// 1. Start mini cluster with 3 NMs and scheduler placement-constraint handler
+comment|// 1. Start mini cluster
+comment|// with 3 NMs and scheduler placement-constraint handler
 comment|// 2. Create an example service with 3 containers
 comment|// 3. Verify no more than 1 container comes up in each of the 3 NMs
 comment|// 4. Flex the component to 4 containers
