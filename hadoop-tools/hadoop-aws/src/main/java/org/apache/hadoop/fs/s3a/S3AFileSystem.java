@@ -9372,7 +9372,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|innerCopyFromLocalFile
+name|entryPoint
+argument_list|(
+name|INVOCATION_COPY_FROM_LOCAL_FILE
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Copying local file from {} to {}"
+argument_list|,
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+comment|//    innerCopyFromLocalFile(delSrc, overwrite, src, dst);
+name|super
+operator|.
+name|copyFromLocalFile
 argument_list|(
 name|delSrc
 argument_list|,
@@ -9384,7 +9403,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    *    * This version doesn't need to create a temporary file to calculate the md5.    * Sadly this doesn't seem to be used by the shell cp :(    *    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src Source path: must be on local filesystem    * @param dst path    * @throws IOException IO problem    * @throws FileAlreadyExistsException the destination file exists and    * overwrite==false, or if the destination is a directory.    * @throws FileNotFoundException if the source file does not exit    * @throws AmazonClientException failure in the AWS SDK    * @throws IllegalArgumentException if the source path is not on the local FS    */
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    *    * This version doesn't need to create a temporary file to calculate the md5.    * Sadly this doesn't seem to be used by the shell cp :(    *    *<i>HADOOP-15932:</i> this method has been unwired from    * {@link #copyFromLocalFile(boolean, boolean, Path, Path)} until    * it is extended to list and copy whole directories.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src Source path: must be on local filesystem    * @param dst path    * @throws IOException IO problem    * @throws FileAlreadyExistsException the destination file exists and    * overwrite==false, or if the destination is a directory.    * @throws FileNotFoundException if the source file does not exit    * @throws AmazonClientException failure in the AWS SDK    * @throws IllegalArgumentException if the source path is not on the local FS    */
 annotation|@
 name|Retries
 operator|.
