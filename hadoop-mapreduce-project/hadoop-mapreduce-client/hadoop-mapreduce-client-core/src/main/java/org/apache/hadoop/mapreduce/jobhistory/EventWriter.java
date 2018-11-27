@@ -573,6 +573,11 @@ operator|.
 name|jsonOutput
 condition|)
 block|{
+name|encoder
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|writeBytes
