@@ -315,6 +315,15 @@ name|OZONE_METADATA_DIRS
 init|=
 literal|"ozone.metadata.dirs"
 decl_stmt|;
+DECL|field|HDDS_PROMETHEUS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_PROMETHEUS_ENABLED
+init|=
+literal|"hdds.prometheus.endpoint.enabled"
+decl_stmt|;
 block|}
 end_class
 
