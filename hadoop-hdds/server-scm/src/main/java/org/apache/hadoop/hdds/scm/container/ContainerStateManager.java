@@ -645,7 +645,7 @@ name|ContainerStateMap
 argument_list|()
 expr_stmt|;
 block|}
-comment|/*    *    * Event and State Transition Mapping:    *    * State: OPEN      ---------------> CLOSING    * Event:               FINALIZE    *    * State: CLOSING   ---------------> CLOSED    * Event:                CLOSE    *    * State: CLOSED   ----------------> DELETING    * Event:                DELETE    *    * State: DELETING ----------------> DELETED    * Event:               CLEANUP    *    *    * Container State Flow:    *    * [OPEN]-------->[CLOSING]------->[CLOSED]    *       (FINALIZE)         (CLOSE)   |    *                                    |    *                                    |    *                            (DELETE)|    *                                    |    *                                    |    *                                [DELETING] ----------> [DELETED]    *                                            (CLEANUP)    */
+comment|/*    *    * Event and State Transition Mapping:    *    * State: OPEN         ----------------> CLOSING    * Event:                    FINALIZE    *    * State: CLOSING      ----------------> QUASI_CLOSED    * Event:                  QUASI_CLOSE    *    * State: CLOSING      ----------------> CLOSED    * Event:                     CLOSE    *    * State: QUASI_CLOSED ----------------> CLOSED    * Event:                  FORCE_CLOSE    *    * State: CLOSED       ----------------> DELETING    * Event:                    DELETE    *    * State: DELETING     ----------------> DELETED    * Event:                    CLEANUP    *    *    * Container State Flow:    *    * [OPEN]--------------->[CLOSING]--------------->[QUASI_CLOSED]    *          (FINALIZE)      |      (QUASI_CLOSE)        |    *                          |                           |    *                          |                           |    *                  (CLOSE) |             (FORCE_CLOSE) |    *                          |                           |    *                          |                           |    *                          +--------->[CLOSED]<--------+    *                                        |    *                                (DELETE)|    *                                        |    *                                        |    *                                   [DELETING]    *                                        |    *                              (CLEANUP) |    *                                        |    *                                        V    *                                    [DELETED]    *    */
 DECL|method|initializeStateMachine ()
 specifier|private
 name|void
@@ -679,11 +679,45 @@ name|CLOSING
 argument_list|,
 name|LifeCycleState
 operator|.
+name|QUASI_CLOSED
+argument_list|,
+name|LifeCycleEvent
+operator|.
+name|QUASI_CLOSE
+argument_list|)
+expr_stmt|;
+name|stateMachine
+operator|.
+name|addTransition
+argument_list|(
+name|LifeCycleState
+operator|.
+name|CLOSING
+argument_list|,
+name|LifeCycleState
+operator|.
 name|CLOSED
 argument_list|,
 name|LifeCycleEvent
 operator|.
 name|CLOSE
+argument_list|)
+expr_stmt|;
+name|stateMachine
+operator|.
+name|addTransition
+argument_list|(
+name|LifeCycleState
+operator|.
+name|QUASI_CLOSED
+argument_list|,
+name|LifeCycleState
+operator|.
+name|CLOSED
+argument_list|,
+name|LifeCycleEvent
+operator|.
+name|FORCE_CLOSE
 argument_list|)
 expr_stmt|;
 name|stateMachine

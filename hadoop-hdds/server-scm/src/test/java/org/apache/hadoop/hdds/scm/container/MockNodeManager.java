@@ -938,6 +938,15 @@ operator|.
 name|randomDatanodeDetails
 argument_list|()
 decl_stmt|;
+name|register
+argument_list|(
+name|dd
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|populateNodeMetric
 argument_list|(
 name|dd

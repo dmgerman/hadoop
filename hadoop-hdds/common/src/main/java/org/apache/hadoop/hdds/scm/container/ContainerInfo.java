@@ -445,6 +445,13 @@ specifier|private
 name|long
 name|deleteTransactionId
 decl_stmt|;
+comment|// The sequenceId of a close container cannot change, and all the
+comment|// container replica should have the same sequenceId.
+DECL|field|sequenceId
+specifier|private
+name|long
+name|sequenceId
+decl_stmt|;
 comment|/**    * Allows you to maintain private data on ContainerInfo. This is not    * serialized via protobuf, just allows us to maintain some private data.    */
 annotation|@
 name|JsonIgnore
@@ -454,7 +461,7 @@ name|byte
 index|[]
 name|data
 decl_stmt|;
-DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, PipelineID pipelineID, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId, ReplicationFactor replicationFactor, ReplicationType repType)
+DECL|method|ContainerInfo ( long containerID, HddsProtos.LifeCycleState state, PipelineID pipelineID, long usedBytes, long numberOfKeys, long stateEnterTime, String owner, long deleteTransactionId, long sequenceId, ReplicationFactor replicationFactor, ReplicationType repType)
 name|ContainerInfo
 parameter_list|(
 name|long
@@ -482,6 +489,9 @@ name|owner
 parameter_list|,
 name|long
 name|deleteTransactionId
+parameter_list|,
+name|long
+name|sequenceId
 parameter_list|,
 name|ReplicationFactor
 name|replicationFactor
@@ -549,6 +559,12 @@ name|deleteTransactionId
 expr_stmt|;
 name|this
 operator|.
+name|sequenceId
+operator|=
+name|sequenceId
+expr_stmt|;
+name|this
+operator|.
 name|replicationFactor
 operator|=
 name|replicationFactor
@@ -608,6 +624,11 @@ argument_list|,
 name|info
 operator|.
 name|getDeleteTransactionId
+argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getSequenceId
 argument_list|()
 argument_list|,
 name|info
@@ -871,6 +892,16 @@ return|return
 name|deleteTransactionId
 return|;
 block|}
+DECL|method|getSequenceId ()
+specifier|public
+name|long
+name|getSequenceId
+parameter_list|()
+block|{
+return|return
+name|sequenceId
+return|;
+block|}
 DECL|method|updateDeleteTransactionId (long transactionId)
 specifier|public
 name|void
@@ -887,6 +918,39 @@ argument_list|(
 name|transactionId
 argument_list|,
 name|deleteTransactionId
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateSequenceId (long sequenceID)
+specifier|public
+name|void
+name|updateSequenceId
+parameter_list|(
+name|long
+name|sequenceID
+parameter_list|)
+block|{
+assert|assert
+operator|(
+name|isOpen
+argument_list|()
+operator|||
+name|state
+operator|==
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|QUASI_CLOSED
+operator|)
+assert|;
+name|sequenceId
+operator|=
+name|max
+argument_list|(
+name|sequenceID
+argument_list|,
+name|sequenceId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1463,6 +1527,11 @@ specifier|private
 name|long
 name|deleteTransactionId
 decl_stmt|;
+DECL|field|sequenceId
+specifier|private
+name|long
+name|sequenceId
+decl_stmt|;
 DECL|field|pipelineID
 specifier|private
 name|PipelineID
@@ -1679,6 +1748,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setSequenceId (long sequenceID)
+specifier|public
+name|Builder
+name|setSequenceId
+parameter_list|(
+name|long
+name|sequenceID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|sequenceId
+operator|=
+name|sequenceID
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|ContainerInfo
@@ -1704,6 +1792,8 @@ argument_list|,
 name|owner
 argument_list|,
 name|deleteTransactionId
+argument_list|,
+name|sequenceId
 argument_list|,
 name|replicationFactor
 argument_list|,
