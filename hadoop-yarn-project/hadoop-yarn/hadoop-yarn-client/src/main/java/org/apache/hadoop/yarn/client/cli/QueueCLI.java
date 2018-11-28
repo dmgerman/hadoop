@@ -447,6 +447,9 @@ operator|-
 literal|1
 return|;
 block|}
+name|createAndStartYarnClient
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|cliParser

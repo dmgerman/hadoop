@@ -670,6 +670,19 @@ operator|.
 name|DEFAULT_RM_CLUSTER_ID
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized TimelineReader URI="
+operator|+
+name|baseUri
+operator|+
+literal|", clusterId="
+operator|+
+name|clusterId
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit

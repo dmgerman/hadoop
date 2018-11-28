@@ -229,6 +229,26 @@ name|YarnConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|createYarnClient ()
+specifier|protected
+name|YarnClient
+name|createYarnClient
+parameter_list|()
+block|{
+return|return
+name|YarnClient
+operator|.
+name|createYarnClient
+argument_list|()
+return|;
+block|}
+DECL|method|createAndStartYarnClient ()
+specifier|protected
+name|void
+name|createAndStartYarnClient
+parameter_list|()
+block|{
 name|client
 operator|=
 name|createYarnClient
@@ -247,19 +267,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-block|}
-DECL|method|createYarnClient ()
-specifier|protected
-name|YarnClient
-name|createYarnClient
-parameter_list|()
-block|{
-return|return
-name|YarnClient
-operator|.
-name|createYarnClient
-argument_list|()
-return|;
 block|}
 DECL|method|setSysOutPrintStream (PrintStream sysout)
 specifier|public

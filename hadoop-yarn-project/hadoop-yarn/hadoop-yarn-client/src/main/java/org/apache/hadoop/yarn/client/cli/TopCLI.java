@@ -2986,6 +2986,9 @@ return|return
 literal|1
 return|;
 block|}
+name|createAndStartYarnClient
+argument_list|()
+expr_stmt|;
 name|setAppsHeader
 argument_list|()
 expr_stmt|;
