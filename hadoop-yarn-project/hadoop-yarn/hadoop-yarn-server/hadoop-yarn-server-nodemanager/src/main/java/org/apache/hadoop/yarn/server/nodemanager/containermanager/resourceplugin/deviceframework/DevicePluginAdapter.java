@@ -271,7 +271,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link DevicePluginAdapter} will adapt existing hooks  * into vendor plugin's logic.  * It decouples the vendor plugin from YARN's device framework  *  * */
+comment|/**  * The {@link DevicePluginAdapter} will adapt existing hooks.  * into vendor plugin's logic.  * It decouples the vendor plugin from YARN's device framework  *  * */
 end_comment
 
 begin_class
@@ -310,12 +310,22 @@ specifier|final
 name|DevicePlugin
 name|devicePlugin
 decl_stmt|;
+DECL|field|deviceMappingManager
+specifier|private
+name|DeviceMappingManager
+name|deviceMappingManager
+decl_stmt|;
 DECL|field|deviceResourceUpdater
 specifier|private
 name|DeviceResourceUpdaterImpl
 name|deviceResourceUpdater
 decl_stmt|;
-DECL|method|DevicePluginAdapter (String name, DevicePlugin dp)
+DECL|field|deviceResourceHandler
+specifier|private
+name|DeviceResourceHandlerImpl
+name|deviceResourceHandler
+decl_stmt|;
+DECL|method|DevicePluginAdapter (String name, DevicePlugin dp, DeviceMappingManager dmm)
 specifier|public
 name|DevicePluginAdapter
 parameter_list|(
@@ -324,8 +334,15 @@ name|name
 parameter_list|,
 name|DevicePlugin
 name|dp
+parameter_list|,
+name|DeviceMappingManager
+name|dmm
 parameter_list|)
 block|{
+name|deviceMappingManager
+operator|=
+name|dmm
+expr_stmt|;
 name|resourceName
 operator|=
 name|name
@@ -334,6 +351,16 @@ name|devicePlugin
 operator|=
 name|dp
 expr_stmt|;
+block|}
+DECL|method|getDeviceMappingManager ()
+specifier|public
+name|DeviceMappingManager
+name|getDeviceMappingManager
+parameter_list|()
+block|{
+return|return
+name|deviceMappingManager
+return|;
 block|}
 annotation|@
 name|Override
@@ -386,8 +413,28 @@ name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
 parameter_list|)
 block|{
+name|this
+operator|.
+name|deviceResourceHandler
+operator|=
+operator|new
+name|DeviceResourceHandlerImpl
+argument_list|(
+name|resourceName
+argument_list|,
+name|devicePlugin
+argument_list|,
+name|this
+argument_list|,
+name|deviceMappingManager
+argument_list|,
+name|cGroupsHandler
+argument_list|,
+name|privilegedOperationExecutor
+argument_list|)
+expr_stmt|;
 return|return
-literal|null
+name|deviceResourceHandler
 return|;
 block|}
 annotation|@
@@ -434,6 +481,16 @@ name|YarnException
 block|{
 return|return
 literal|null
+return|;
+block|}
+DECL|method|getDeviceResourceHandler ()
+specifier|public
+name|DeviceResourceHandlerImpl
+name|getDeviceResourceHandler
+parameter_list|()
+block|{
+return|return
+name|deviceResourceHandler
 return|;
 block|}
 block|}

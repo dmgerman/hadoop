@@ -242,6 +242,30 @@ name|resourceplugin
 operator|.
 name|deviceframework
 operator|.
+name|DeviceMappingManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|resourceplugin
+operator|.
+name|deviceframework
+operator|.
 name|DevicePluginAdapter
 import|;
 end_import
@@ -483,6 +507,13 @@ name|Collections
 operator|.
 name|emptyMap
 argument_list|()
+decl_stmt|;
+DECL|field|deviceMappingManager
+specifier|private
+name|DeviceMappingManager
+name|deviceMappingManager
+init|=
+literal|null
 decl_stmt|;
 DECL|method|initialize (Context context)
 specifier|public
@@ -779,6 +810,14 @@ operator|+
 literal|"trying to load the vendor plugins"
 argument_list|)
 expr_stmt|;
+name|deviceMappingManager
+operator|=
+operator|new
+name|DeviceMappingManager
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
 name|String
 index|[]
 name|pluginClassNames
@@ -1008,6 +1047,8 @@ argument_list|(
 name|resourceName
 argument_list|,
 name|dpInstance
+argument_list|,
+name|deviceMappingManager
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1290,6 +1331,16 @@ return|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+DECL|method|getDeviceMappingManager ()
+specifier|public
+name|DeviceMappingManager
+name|getDeviceMappingManager
+parameter_list|()
+block|{
+return|return
+name|deviceMappingManager
 return|;
 block|}
 DECL|method|cleanup ()
