@@ -270,6 +270,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Progressable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1439,6 +1453,8 @@ argument_list|,
 name|stat
 argument_list|,
 name|finalOutput
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1581,7 +1597,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Merge two paths together.  Anything in from will be moved into to, if there    * are any name conflicts while merging the files or directories in from win.    * @param fs the File System to use    * @param from the path data is coming from.    * @param to the path data is going to.    * @throws IOException on any error    */
-DECL|method|mergePaths (FileSystem fs, final FileStatus from, final Path to)
+DECL|method|mergePaths (FileSystem fs, final FileStatus from, final Path to, JobContext context)
 specifier|private
 name|void
 name|mergePaths
@@ -1596,6 +1612,9 @@ parameter_list|,
 specifier|final
 name|Path
 name|to
+parameter_list|,
+name|JobContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1622,6 +1641,11 @@ name|to
 argument_list|)
 expr_stmt|;
 block|}
+name|reportProgress
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
 name|FileStatus
 name|toStat
 decl_stmt|;
@@ -1773,6 +1797,8 @@ argument_list|,
 name|from
 argument_list|,
 name|to
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1819,6 +1845,8 @@ argument_list|,
 name|subFrom
 argument_list|,
 name|subTo
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -1833,12 +1861,42 @@ argument_list|,
 name|from
 argument_list|,
 name|to
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|renameOrMerge (FileSystem fs, FileStatus from, Path to)
+DECL|method|reportProgress (JobContext context)
+specifier|private
+name|void
+name|reportProgress
+parameter_list|(
+name|JobContext
+name|context
+parameter_list|)
+block|{
+if|if
+condition|(
+name|context
+operator|instanceof
+name|Progressable
+condition|)
+block|{
+operator|(
+operator|(
+name|Progressable
+operator|)
+name|context
+operator|)
+operator|.
+name|progress
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|renameOrMerge (FileSystem fs, FileStatus from, Path to, JobContext context)
 specifier|private
 name|void
 name|renameOrMerge
@@ -1851,6 +1909,9 @@ name|from
 parameter_list|,
 name|Path
 name|to
+parameter_list|,
+name|JobContext
+name|context
 parameter_list|)
 throws|throws
 name|IOException
@@ -1942,6 +2003,8 @@ argument_list|,
 name|subFrom
 argument_list|,
 name|subTo
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 block|}
@@ -2296,6 +2359,8 @@ argument_list|,
 name|taskAttemptDirStatus
 argument_list|,
 name|outputPath
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2870,6 +2935,8 @@ argument_list|,
 name|from
 argument_list|,
 name|outputPath
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 block|}
