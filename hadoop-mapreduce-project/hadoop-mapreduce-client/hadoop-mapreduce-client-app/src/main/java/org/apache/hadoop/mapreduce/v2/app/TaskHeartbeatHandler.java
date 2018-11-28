@@ -66,6 +66,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -296,7 +310,6 @@ extends|extends
 name|AbstractService
 block|{
 DECL|class|ReportTime
-specifier|private
 specifier|static
 class|class
 name|ReportTime
@@ -305,6 +318,12 @@ DECL|field|lastProgress
 specifier|private
 name|long
 name|lastProgress
+decl_stmt|;
+DECL|field|reported
+specifier|private
+specifier|final
+name|AtomicBoolean
+name|reported
 decl_stmt|;
 DECL|method|ReportTime (long time)
 specifier|public
@@ -317,6 +336,14 @@ block|{
 name|setLastProgress
 argument_list|(
 name|time
+argument_list|)
+expr_stmt|;
+name|reported
+operator|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -344,6 +371,19 @@ parameter_list|()
 block|{
 return|return
 name|lastProgress
+return|;
+block|}
+DECL|method|isReported ()
+specifier|public
+name|boolean
+name|isReported
+parameter_list|()
+block|{
+return|return
+name|reported
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 block|}
@@ -385,6 +425,11 @@ DECL|field|unregisterTimeOut
 specifier|private
 name|long
 name|unregisterTimeOut
+decl_stmt|;
+DECL|field|taskStuckTimeOut
+specifier|private
+name|long
+name|taskStuckTimeOut
 decl_stmt|;
 DECL|field|taskTimeOutCheckInterval
 specifier|private
@@ -544,6 +589,21 @@ operator|.
 name|TASK_EXIT_TIMEOUT_DEFAULT
 argument_list|)
 expr_stmt|;
+name|taskStuckTimeOut
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|MRJobConfig
+operator|.
+name|TASK_STUCK_TIMEOUT_MS
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_TASK_STUCK_TIMEOUT_MS
+argument_list|)
+expr_stmt|;
 comment|// enforce task timeout is at least twice as long as task report interval
 name|long
 name|taskProgressReportIntervalMillis
@@ -700,6 +760,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|time
+operator|.
+name|reported
+operator|.
+name|compareAndSet
+argument_list|(
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|time
 operator|.
 name|setLastProgress
@@ -942,9 +1013,43 @@ name|taskTimeOut
 operator|)
 operator|)
 decl_stmt|;
+comment|// when container in NM not started in a long time,
+comment|// we think the taskAttempt is stuck
+name|boolean
+name|taskStuck
+init|=
+operator|(
+operator|!
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|isReported
+argument_list|()
+operator|)
+operator|&&
+operator|(
+name|currentTime
+operator|>
+operator|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|getLastProgress
+argument_list|()
+operator|+
+name|taskStuckTimeOut
+operator|)
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|taskTimedOut
+operator|||
+name|taskStuck
 condition|)
 block|{
 comment|// task is lost, remove from the list and raise lost event
@@ -975,13 +1080,31 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|" Timed out after "
+literal|" task timeout set: "
 operator|+
 name|taskTimeOut
 operator|/
 literal|1000
 operator|+
-literal|" secs"
+literal|"s,"
+operator|+
+literal|" taskTimedOut: "
+operator|+
+name|taskTimedOut
+operator|+
+literal|";"
+operator|+
+literal|" task stuck timeout set: "
+operator|+
+name|taskStuckTimeOut
+operator|/
+literal|1000
+operator|+
+literal|"s,"
+operator|+
+literal|" taskStuck: "
+operator|+
+name|taskStuck
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1065,6 +1188,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRunningAttempts ()
+name|ConcurrentMap
+name|getRunningAttempts
+parameter_list|()
+block|{
+return|return
+name|runningAttempts
+return|;
 block|}
 annotation|@
 name|VisibleForTesting

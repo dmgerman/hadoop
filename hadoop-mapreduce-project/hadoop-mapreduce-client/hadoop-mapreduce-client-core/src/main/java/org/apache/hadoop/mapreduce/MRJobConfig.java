@@ -1187,6 +1187,23 @@ literal|60
 operator|*
 literal|1000L
 decl_stmt|;
+comment|/**    * The max timeout before receiving remote task's first heartbeat.    * This parameter is in order to avoid waiting for the container    * to start indefinitely, which made task stuck in the NEW state.    */
+DECL|field|TASK_STUCK_TIMEOUT_MS
+name|String
+name|TASK_STUCK_TIMEOUT_MS
+init|=
+literal|"mapreduce.task.stuck.timeout-ms"
+decl_stmt|;
+DECL|field|DEFAULT_TASK_STUCK_TIMEOUT_MS
+name|long
+name|DEFAULT_TASK_STUCK_TIMEOUT_MS
+init|=
+literal|10
+operator|*
+literal|60
+operator|*
+literal|1000L
+decl_stmt|;
 DECL|field|TASK_PROGRESS_REPORT_INTERVAL
 name|String
 name|TASK_PROGRESS_REPORT_INTERVAL
