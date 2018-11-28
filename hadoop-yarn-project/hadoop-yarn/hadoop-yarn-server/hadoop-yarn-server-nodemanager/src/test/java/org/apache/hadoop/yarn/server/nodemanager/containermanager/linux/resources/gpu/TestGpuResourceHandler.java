@@ -3125,7 +3125,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Should fail since requested device Id is not in allowed list"
+literal|"Should fail since requested device Id is already assigned"
 argument_list|,
 name|caughtException
 argument_list|)
