@@ -86,6 +86,22 @@ name|TreeMap
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|common
+operator|.
+name|ChecksumData
+import|;
+end_import
+
 begin_comment
 comment|/**  * Java class that represents ChunkInfo ProtoBuf class. This helper class allows  * us to convert to and from protobuf to normal java.  */
 end_comment
@@ -114,10 +130,10 @@ specifier|final
 name|long
 name|len
 decl_stmt|;
-DECL|field|checksum
+DECL|field|checksumData
 specifier|private
-name|String
-name|checksum
+name|ChecksumData
+name|checksumData
 decl_stmt|;
 DECL|field|metadata
 specifier|private
@@ -316,25 +332,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|info
-operator|.
-name|hasChecksum
-argument_list|()
-condition|)
-block|{
 name|chunkInfo
 operator|.
-name|setChecksum
+name|setChecksumData
+argument_list|(
+name|ChecksumData
+operator|.
+name|getFromProtoBuf
 argument_list|(
 name|info
 operator|.
-name|getChecksum
+name|getChecksumData
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|chunkInfo
 return|;
@@ -392,36 +404,18 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|getChecksum
-argument_list|()
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|this
-operator|.
-name|getChecksum
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
 name|builder
 operator|.
-name|setChecksum
+name|setChecksumData
 argument_list|(
 name|this
 operator|.
-name|getChecksum
+name|checksumData
+operator|.
+name|getProtoBufMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|Map
@@ -521,32 +515,32 @@ return|return
 name|len
 return|;
 block|}
-comment|/**    * Returns the SHA256 value of this chunk.    *    * @return - Hash String    */
-DECL|method|getChecksum ()
+comment|/**    * Returns the checksumData of this chunk.    */
+DECL|method|getChecksumData ()
 specifier|public
-name|String
-name|getChecksum
+name|ChecksumData
+name|getChecksumData
 parameter_list|()
 block|{
 return|return
-name|checksum
+name|checksumData
 return|;
 block|}
-comment|/**    * Sets the Hash value of this chunk.    *    * @param checksum - Hash String.    */
-DECL|method|setChecksum (String checksum)
+comment|/**    * Sets the checksums of this chunk.    */
+DECL|method|setChecksumData (ChecksumData cData)
 specifier|public
 name|void
-name|setChecksum
+name|setChecksumData
 parameter_list|(
-name|String
-name|checksum
+name|ChecksumData
+name|cData
 parameter_list|)
 block|{
 name|this
 operator|.
-name|checksum
+name|checksumData
 operator|=
-name|checksum
+name|cData
 expr_stmt|;
 block|}
 comment|/**    * Returns Metadata associated with this Chunk.    *    * @return - Map of Key,values.    */

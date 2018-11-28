@@ -1017,33 +1017,6 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|NoSuchAlgorithmException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"read data failed. error: {}"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Internal error: "
-argument_list|,
-name|ex
-argument_list|,
-name|NO_SUCH_ALGORITHM
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
 name|ExecutionException
 name|ex
 parameter_list|)

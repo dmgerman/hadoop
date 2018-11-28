@@ -1181,6 +1181,57 @@ name|OZONE_CONTAINER_COPY_WORKDIR
 init|=
 literal|"hdds.datanode.replication.work.dir"
 decl_stmt|;
+comment|/**    * Config properties to set client side checksum properties.    */
+DECL|field|OZONE_CLIENT_CHECKSUM_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CLIENT_CHECKSUM_TYPE
+init|=
+literal|"ozone.client.checksum.type"
+decl_stmt|;
+DECL|field|OZONE_CLIENT_CHECKSUM_TYPE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CLIENT_CHECKSUM_TYPE_DEFAULT
+init|=
+literal|"SHA256"
+decl_stmt|;
+DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CLIENT_BYTES_PER_CHECKSUM
+init|=
+literal|"ozone.client.bytes.per.checksum"
+decl_stmt|;
+DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+comment|// 1 MB
+DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM_MIN_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_CLIENT_BYTES_PER_CHECKSUM_MIN_SIZE
+init|=
+literal|256
+operator|*
+literal|1024
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

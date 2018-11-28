@@ -98,6 +98,54 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|common
+operator|.
+name|Checksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|common
+operator|.
+name|ChecksumData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|common
+operator|.
+name|OzoneChecksumException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|ratis
 operator|.
 name|thirdparty
@@ -485,6 +533,12 @@ specifier|private
 name|XceiverClientSpi
 name|xceiverClient
 decl_stmt|;
+DECL|field|checksum
+specifier|private
+specifier|final
+name|Checksum
+name|checksum
+decl_stmt|;
 DECL|field|streamId
 specifier|private
 specifier|final
@@ -574,7 +628,7 @@ argument_list|>
 name|commitIndexList
 decl_stmt|;
 comment|/**    * Creates a new ChunkOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient        client to perform container calls    * @param traceID              container protocol call args    * @param chunkSize            chunk size    */
-DECL|method|ChunkOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, ByteBuffer buffer)
+DECL|method|ChunkOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, ByteBuffer buffer, Checksum checksum)
 specifier|public
 name|ChunkOutputStream
 parameter_list|(
@@ -607,6 +661,9 @@ name|watchTimeout
 parameter_list|,
 name|ByteBuffer
 name|buffer
+parameter_list|,
+name|Checksum
+name|checksum
 parameter_list|)
 block|{
 name|this
@@ -735,6 +792,12 @@ operator|.
 name|ioException
 operator|=
 literal|null
+expr_stmt|;
+name|this
+operator|.
+name|checksum
+operator|=
+name|checksum
 expr_stmt|;
 comment|// A single thread executor handle the responses of async requests
 name|responseExecutor
@@ -2228,7 +2291,7 @@ name|ioException
 throw|;
 block|}
 block|}
-comment|/**    * Writes buffered data as a new chunk to the container and saves chunk    * information to be used later in putKey call.    *    * @throws IOException if there is an I/O error while performing the call    */
+comment|/**    * Writes buffered data as a new chunk to the container and saves chunk    * information to be used later in putKey call.    *    * @throws IOException if there is an I/O error while performing the call    * @throws OzoneChecksumException if there is an error while computing    * checksum    */
 DECL|method|writeChunkToContainer (ByteBuffer chunk)
 specifier|private
 name|void
@@ -2256,6 +2319,16 @@ operator|.
 name|copyFrom
 argument_list|(
 name|chunk
+argument_list|)
+decl_stmt|;
+name|ChecksumData
+name|checksumData
+init|=
+name|checksum
+operator|.
+name|computeChecksum
+argument_list|(
+name|data
 argument_list|)
 decl_stmt|;
 name|ChunkInfo
@@ -2293,6 +2366,14 @@ operator|.
 name|setLen
 argument_list|(
 name|effectiveChunkSize
+argument_list|)
+operator|.
+name|setChecksumData
+argument_list|(
+name|checksumData
+operator|.
+name|getProtoBufMessage
+argument_list|()
 argument_list|)
 operator|.
 name|build

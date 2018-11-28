@@ -154,6 +154,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|common
+operator|.
+name|Checksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|om
 operator|.
 name|helpers
@@ -617,6 +633,12 @@ specifier|private
 name|ByteBuffer
 name|buffer
 decl_stmt|;
+DECL|field|checksum
+specifier|private
+specifier|final
+name|Checksum
+name|checksum
+decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
@@ -690,6 +712,14 @@ name|blockSize
 operator|=
 literal|0
 expr_stmt|;
+name|this
+operator|.
+name|checksum
+operator|=
+operator|new
+name|Checksum
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * For testing purpose only. Not building output stream from blocks, but    * taking from externally.    *    * @param outputStream    * @param length    */
 annotation|@
@@ -716,6 +746,8 @@ argument_list|(
 name|outputStream
 argument_list|,
 name|length
+argument_list|,
+name|checksum
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -846,7 +878,7 @@ return|return
 name|locationInfoList
 return|;
 block|}
-DECL|method|ChunkGroupOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout)
+DECL|method|ChunkGroupOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, Checksum checksum)
 specifier|public
 name|ChunkGroupOutputStream
 parameter_list|(
@@ -885,6 +917,9 @@ name|size
 parameter_list|,
 name|long
 name|watchTimeout
+parameter_list|,
+name|Checksum
+name|checksum
 parameter_list|)
 block|{
 name|this
@@ -1027,6 +1062,12 @@ operator|.
 name|watchTimeout
 operator|=
 name|watchTimeout
+expr_stmt|;
+name|this
+operator|.
+name|checksum
+operator|=
+name|checksum
 expr_stmt|;
 name|Preconditions
 operator|.
@@ -1240,6 +1281,8 @@ argument_list|,
 name|watchTimeout
 argument_list|,
 name|buffer
+argument_list|,
+name|checksum
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2493,6 +2536,11 @@ specifier|private
 name|long
 name|watchTimeout
 decl_stmt|;
+DECL|field|checksum
+specifier|private
+name|Checksum
+name|checksum
+decl_stmt|;
 DECL|method|setHandler (OpenKeySession handler)
 specifier|public
 name|Builder
@@ -2721,6 +2769,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setChecksum (Checksum checksumObj)
+specifier|public
+name|Builder
+name|setChecksum
+parameter_list|(
+name|Checksum
+name|checksumObj
+parameter_list|)
+block|{
+name|this
+operator|.
+name|checksum
+operator|=
+name|checksumObj
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|ChunkGroupOutputStream
@@ -2756,6 +2823,8 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|watchTimeout
+argument_list|,
+name|checksum
 argument_list|)
 return|;
 block|}
@@ -2795,6 +2864,12 @@ specifier|private
 specifier|final
 name|XceiverClientSpi
 name|xceiverClient
+decl_stmt|;
+DECL|field|checksum
+specifier|private
+specifier|final
+name|Checksum
+name|checksum
 decl_stmt|;
 DECL|field|requestId
 specifier|private
@@ -2844,7 +2919,7 @@ specifier|private
 name|ByteBuffer
 name|buffer
 decl_stmt|;
-DECL|method|ChunkOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, ByteBuffer buffer)
+DECL|method|ChunkOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, ByteBuffer buffer, Checksum checksum)
 name|ChunkOutputStreamEntry
 parameter_list|(
 name|BlockID
@@ -2879,6 +2954,9 @@ name|watchTimeout
 parameter_list|,
 name|ByteBuffer
 name|buffer
+parameter_list|,
+name|Checksum
+name|checksum
 parameter_list|)
 block|{
 name|this
@@ -2959,9 +3037,15 @@ name|buffer
 operator|=
 name|buffer
 expr_stmt|;
+name|this
+operator|.
+name|checksum
+operator|=
+name|checksum
+expr_stmt|;
 block|}
 comment|/**      * For testing purpose, taking a some random created stream instance.      * @param  outputStream a existing writable output stream      * @param  length the length of data to write to the stream      */
-DECL|method|ChunkOutputStreamEntry (OutputStream outputStream, long length)
+DECL|method|ChunkOutputStreamEntry (OutputStream outputStream, long length, Checksum checksum)
 name|ChunkOutputStreamEntry
 parameter_list|(
 name|OutputStream
@@ -2969,6 +3053,9 @@ name|outputStream
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|Checksum
+name|checksum
 parameter_list|)
 block|{
 name|this
@@ -3042,6 +3129,12 @@ name|watchTimeout
 operator|=
 literal|0
 expr_stmt|;
+name|this
+operator|.
+name|checksum
+operator|=
+name|checksum
+expr_stmt|;
 block|}
 DECL|method|getLength ()
 name|long
@@ -3104,6 +3197,8 @@ argument_list|,
 name|watchTimeout
 argument_list|,
 name|buffer
+argument_list|,
+name|checksum
 argument_list|)
 expr_stmt|;
 block|}

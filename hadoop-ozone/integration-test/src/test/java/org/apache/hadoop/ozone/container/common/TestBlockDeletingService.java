@@ -1154,9 +1154,14 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|setChecksum
+name|setChecksumData
 argument_list|(
-literal|""
+name|ContainerProtos
+operator|.
+name|ChecksumData
+operator|.
+name|getDefaultInstance
+argument_list|()
 argument_list|)
 operator|.
 name|build
