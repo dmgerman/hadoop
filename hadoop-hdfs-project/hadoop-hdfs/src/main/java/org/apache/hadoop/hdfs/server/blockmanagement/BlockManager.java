@@ -214,16 +214,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -255,16 +245,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|TreeSet
 import|;
 end_import
 
@@ -4447,7 +4427,7 @@ argument_list|,
 name|numReplicas
 argument_list|,
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<
 name|Byte
 argument_list|>
@@ -9195,7 +9175,7 @@ argument_list|>
 name|reconWork
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -9281,18 +9261,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Step 2: choose target nodes for each reconstruction task
-specifier|final
-name|Set
-argument_list|<
-name|Node
-argument_list|>
-name|excludedNodes
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|BlockReconstructionWork
@@ -9303,30 +9271,23 @@ control|)
 block|{
 comment|// Exclude all of the containing nodes from being targets.
 comment|// This list includes decommissioning or corrupt nodes.
+specifier|final
+name|Set
+argument_list|<
+name|Node
+argument_list|>
 name|excludedNodes
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-for|for
-control|(
-name|DatanodeDescriptor
-name|dn
-range|:
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|(
 name|rw
 operator|.
 name|getContainingNodes
 argument_list|()
-control|)
-block|{
-name|excludedNodes
-operator|.
-name|add
-argument_list|(
-name|dn
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 comment|// choose replication targets: NOT HOLDING THE GLOBAL LOCK
 specifier|final
 name|BlockPlacementPolicy
@@ -12959,7 +12920,7 @@ argument_list|>
 name|toAdd
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -12970,7 +12931,7 @@ argument_list|>
 name|toRemove
 init|=
 operator|new
-name|TreeSet
+name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -12981,7 +12942,7 @@ argument_list|>
 name|toInvalidate
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -12992,7 +12953,7 @@ argument_list|>
 name|toCorrupt
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -13003,7 +12964,7 @@ argument_list|>
 name|toUC
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
