@@ -12294,7 +12294,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|//single invocation expected
+comment|//Three invocations expected (volume creation, volume check, run container)
 comment|//due to type erasure + mocking, this verification requires a suppress
 comment|// warning annotation on the entire method
 name|verify
@@ -12303,7 +12303,7 @@ name|mockExecutor
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|3
 argument_list|)
 argument_list|)
 operator|.
@@ -12336,13 +12336,7 @@ argument_list|)
 expr_stmt|;
 comment|//verification completed. we need to isolate specific invications.
 comment|// hence, reset mock here
-name|Mockito
-operator|.
-name|reset
-argument_list|(
-name|mockExecutor
-argument_list|)
-expr_stmt|;
+comment|//Mockito.reset(mockExecutor);
 name|List
 argument_list|<
 name|PrivilegedOperation
@@ -12917,15 +12911,15 @@ argument_list|(
 name|containerRuntimeContext
 argument_list|)
 expr_stmt|;
-name|checkVolumeCreateCommand
-argument_list|()
-expr_stmt|;
 name|runtime
 operator|.
 name|launchContainer
 argument_list|(
 name|containerRuntimeContext
 argument_list|)
+expr_stmt|;
+name|checkVolumeCreateCommand
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -13341,15 +13335,15 @@ argument_list|(
 name|containerRuntimeContext
 argument_list|)
 expr_stmt|;
-name|checkVolumeCreateCommand
-argument_list|()
-expr_stmt|;
 name|runtime
 operator|.
 name|launchContainer
 argument_list|(
 name|containerRuntimeContext
 argument_list|)
+expr_stmt|;
+name|checkVolumeCreateCommand
+argument_list|()
 expr_stmt|;
 name|List
 argument_list|<
@@ -13358,7 +13352,9 @@ argument_list|>
 name|dockerCommands
 init|=
 name|readDockerCommands
-argument_list|()
+argument_list|(
+literal|3
+argument_list|)
 decl_stmt|;
 name|int
 name|expected
