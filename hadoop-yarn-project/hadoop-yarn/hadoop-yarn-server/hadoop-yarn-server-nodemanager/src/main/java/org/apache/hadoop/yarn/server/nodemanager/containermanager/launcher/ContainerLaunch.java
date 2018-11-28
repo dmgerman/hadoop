@@ -7308,7 +7308,7 @@ name|IOException
 block|{
 name|line
 argument_list|(
-literal|"ln -sf \""
+literal|"ln -sf -- \""
 argument_list|,
 name|src
 operator|.

@@ -1888,7 +1888,7 @@ name|WINDOWS
 condition|?
 literal|"foo@zz_#!-+bar.cmd"
 else|:
-literal|"foo@zz%_#*&!-+= bar()"
+literal|"-foo@zz%_#*&!-+= bar()"
 decl_stmt|;
 name|File
 name|symLinkFile
