@@ -2261,37 +2261,20 @@ argument_list|,
 literal|"other-user4"
 argument_list|)
 expr_stmt|;
-comment|// pass through test, no transformation
-name|testConstructorSuccess
-argument_list|(
-literal|"user2@DEFAULT.REALM"
-argument_list|,
-literal|"user2@DEFAULT.REALM"
-argument_list|)
-expr_stmt|;
-name|testConstructorSuccess
-argument_list|(
-literal|"user3/cron@DEFAULT.REALM"
-argument_list|,
-literal|"user3/cron@DEFAULT.REALM"
-argument_list|)
-expr_stmt|;
-name|testConstructorSuccess
-argument_list|(
-literal|"user5/cron@OTHER.REALM"
-argument_list|,
-literal|"user5/cron@OTHER.REALM"
-argument_list|)
-expr_stmt|;
-comment|// failures
+comment|// failure test
 name|testConstructorFailures
 argument_list|(
-literal|"user6@example.com@OTHER.REALM"
+literal|"user2@DEFAULT.REALM"
 argument_list|)
 expr_stmt|;
 name|testConstructorFailures
 argument_list|(
-literal|"user7@example.com@DEFAULT.REALM"
+literal|"user3/cron@DEFAULT.REALM"
+argument_list|)
+expr_stmt|;
+name|testConstructorFailures
+argument_list|(
+literal|"user5/cron@OTHER.REALM"
 argument_list|)
 expr_stmt|;
 name|testConstructorFailures
@@ -2361,22 +2344,17 @@ argument_list|,
 literal|"user3"
 argument_list|)
 expr_stmt|;
-comment|// no rules applied, local name remains the same
-name|testConstructorSuccess
-argument_list|(
-literal|"user4@OTHER.REALM"
-argument_list|,
-literal|"user4@OTHER.REALM"
-argument_list|)
-expr_stmt|;
-name|testConstructorSuccess
-argument_list|(
-literal|"user5/cron@OTHER.REALM"
-argument_list|,
-literal|"user5/cron@OTHER.REALM"
-argument_list|)
-expr_stmt|;
 comment|// failure test
+name|testConstructorFailures
+argument_list|(
+literal|"user4@OTHER.REALM"
+argument_list|)
+expr_stmt|;
+name|testConstructorFailures
+argument_list|(
+literal|"user5/cron@OTHER.REALM"
+argument_list|)
+expr_stmt|;
 name|testConstructorFailures
 argument_list|(
 literal|null
@@ -2583,22 +2561,11 @@ literal|"Illegal principal name "
 operator|+
 name|userName
 decl_stmt|;
-name|String
-name|expect2
-init|=
-literal|"Malformed Kerberos name: "
-operator|+
-name|userName
-decl_stmt|;
 name|assertTrue
 argument_list|(
 literal|"Did not find "
 operator|+
 name|expect
-operator|+
-literal|" or "
-operator|+
-name|expect2
 operator|+
 literal|" in "
 operator|+
@@ -2612,16 +2579,6 @@ operator|.
 name|contains
 argument_list|(
 name|expect
-argument_list|)
-operator|||
-name|e
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-name|expect2
 argument_list|)
 argument_list|)
 expr_stmt|;

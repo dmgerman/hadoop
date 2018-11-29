@@ -1302,17 +1302,19 @@ name|find
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
+throw|throw
+operator|new
+name|NoMatchingRule
 argument_list|(
-literal|"Non-simple name {} after auth_to_local rule {}"
-argument_list|,
+literal|"Non-simple name "
+operator|+
 name|result
-argument_list|,
+operator|+
+literal|" after auth_to_local rule "
+operator|+
 name|this
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 if|if
 condition|(
@@ -1599,7 +1601,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the translation of the principal name into an operating system    * user name.    * @return the user name    * @throws IOException throws if something is wrong with the rules    */
+comment|/**    * Get the translation of the principal name into an operating system    * user name.    * @return the short name    * @throws IOException throws if something is wrong with the rules    */
 DECL|method|getShortName ()
 specifier|public
 name|String
@@ -1689,19 +1691,16 @@ name|result
 return|;
 block|}
 block|}
-name|LOG
-operator|.
-name|info
+throw|throw
+operator|new
+name|NoMatchingRule
 argument_list|(
-literal|"No auth_to_local rules applied to {}"
-argument_list|,
-name|this
-argument_list|)
-expr_stmt|;
-return|return
+literal|"No rules applied to "
+operator|+
 name|toString
 argument_list|()
-return|;
+argument_list|)
+throw|;
 block|}
 comment|/**    * Set the rules.    * @param ruleString the rules string.    */
 DECL|method|setRules (String ruleString)
