@@ -262,6 +262,24 @@ name|HDDS_SCM_CHILLMODE_MIN_DATANODE_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+DECL|field|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+init|=
+literal|"hdds.scm.chillmode.pipeline-availability.check"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK_DEFAULT
+name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// % of containers which should have at least one reported replica
 comment|// before SCM comes out of chill mode.
 DECL|field|HDDS_SCM_CHILLMODE_THRESHOLD_PCT

@@ -2084,6 +2084,8 @@ operator|.
 name|getContainers
 argument_list|()
 argument_list|,
+name|pipelineManager
+argument_list|,
 name|eventQueue
 argument_list|)
 expr_stmt|;
