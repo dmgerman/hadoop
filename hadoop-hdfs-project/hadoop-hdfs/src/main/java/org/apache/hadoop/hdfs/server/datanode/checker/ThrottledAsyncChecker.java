@@ -851,6 +851,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

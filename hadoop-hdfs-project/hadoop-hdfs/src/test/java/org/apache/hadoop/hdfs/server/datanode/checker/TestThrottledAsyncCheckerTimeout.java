@@ -72,6 +72,22 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|MoreExecutors
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -616,6 +632,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 while|while
@@ -794,6 +815,11 @@ name|get
 argument_list|()
 argument_list|,
 name|futureCallback
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Verify that timeout results in only 1 onFailure call and 0 onSuccess
@@ -893,6 +919,11 @@ name|get
 argument_list|()
 argument_list|,
 name|futureCallback
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Verify that normal check (dummy) results in only 1 onSuccess call.
@@ -1117,6 +1148,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 while|while

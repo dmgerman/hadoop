@@ -4892,6 +4892,8 @@ argument_list|)
 expr_stmt|;
 comment|// Write human-readable data after the protobuf. This is only
 comment|// to assist in debugging -- it's not parsed at all.
+try|try
+init|(
 name|OutputStreamWriter
 name|writer
 init|=
@@ -4904,7 +4906,8 @@ name|Charsets
 operator|.
 name|UTF_8
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|writer
 operator|.
 name|write
@@ -4929,6 +4932,7 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+block|}
 name|fos
 operator|.
 name|flush

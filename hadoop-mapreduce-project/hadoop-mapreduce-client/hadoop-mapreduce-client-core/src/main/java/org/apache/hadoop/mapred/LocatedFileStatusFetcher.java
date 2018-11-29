@@ -720,6 +720,11 @@ argument_list|(
 name|future
 argument_list|,
 name|processInitialInputPathCallback
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1399,6 +1404,11 @@ argument_list|(
 name|future
 argument_list|,
 name|processInputDirCallback
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1774,6 +1784,11 @@ argument_list|(
 name|future
 argument_list|,
 name|processInputDirCallback
+argument_list|,
+name|MoreExecutors
+operator|.
+name|directExecutor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

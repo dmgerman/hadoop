@@ -1021,7 +1021,7 @@ argument_list|(
 name|rpcAddress
 argument_list|)
 operator|.
-name|getHostText
+name|getHost
 argument_list|()
 decl_stmt|;
 name|ret
