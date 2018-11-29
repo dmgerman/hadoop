@@ -110,6 +110,30 @@ return|return
 literal|1024
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|finalizeConsumesUploadIdImmediately ()
+specifier|protected
+name|boolean
+name|finalizeConsumesUploadIdImmediately
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|supportsConcurrentUploadsToSamePath ()
+specifier|protected
+name|boolean
+name|supportsConcurrentUploadsToSamePath
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

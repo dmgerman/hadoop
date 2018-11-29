@@ -199,6 +199,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Get the multipart loader for a specific filesystem.    * @param fs filesystem    * @param conf configuration    * @return an uploader, or null if one was found.    * @throws IOException failure during the creation process.    */
 DECL|method|get (FileSystem fs, Configuration conf)
 specifier|public
 specifier|static

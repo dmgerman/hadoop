@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|slf4j
@@ -107,6 +97,22 @@ operator|.
 name|contract
 operator|.
 name|AbstractContractMultipartUploaderTest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
 import|;
 end_import
 
@@ -199,7 +205,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test MultipartUploader with S3A.  */
+comment|/**  * Test MultipartUploader with S3A.  * Although not an S3A Scale test subclass, it uses the -Dscale option  * to enable it, and partition size option to control the size of  * parts uploaded.  */
 end_comment
 
 begin_class
@@ -319,6 +325,58 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Bigger test: use the scale timeout.    * @return the timeout for scale tests.    */
+annotation|@
+name|Override
+DECL|method|getTestTimeoutMillis ()
+specifier|protected
+name|int
+name|getTestTimeoutMillis
+parameter_list|()
+block|{
+return|return
+name|SCALE_TEST_TIMEOUT_MILLIS
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|supportsConcurrentUploadsToSamePath ()
+specifier|protected
+name|boolean
+name|supportsConcurrentUploadsToSamePath
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|/**    * Provide a pessimistic time to become consistent.    * @return a time in milliseconds    */
+annotation|@
+name|Override
+DECL|method|timeToBecomeConsistentMillis ()
+specifier|protected
+name|int
+name|timeToBecomeConsistentMillis
+parameter_list|()
+block|{
+return|return
+literal|30
+operator|*
+literal|1000
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|finalizeConsumesUploadIdImmediately ()
+specifier|protected
+name|boolean
+name|finalizeConsumesUploadIdImmediately
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|setup ()
@@ -407,6 +465,13 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
 name|WriteOperationHelper
 name|helper
 init|=
@@ -453,7 +518,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -461,16 +526,46 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"IOE in teardown"
+literal|"Exeception in teardown"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 name|super
 operator|.
 name|teardown
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * S3 has no concept of directories, so this test does not apply.    */
+DECL|method|testDirectoryInTheWay ()
+specifier|public
+name|void
+name|testDirectoryInTheWay
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// no-op
+block|}
+annotation|@
+name|Override
+DECL|method|testMultipartUploadReverseOrder ()
+specifier|public
+name|void
+name|testMultipartUploadReverseOrder
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|ContractTestUtils
+operator|.
+name|skip
+argument_list|(
+literal|"skipped for speed"
+argument_list|)
 expr_stmt|;
 block|}
 block|}

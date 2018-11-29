@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -42,21 +52,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
+name|Map
 import|;
 end_import
 
@@ -86,22 +82,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|tuple
-operator|.
-name|Pair
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -124,8 +104,24 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkArgument
+import|;
+end_import
+
 begin_comment
-comment|/**  * MultipartUploader is an interface for copying files multipart and across  * multiple nodes. Users should:  *<ol>  *<li>Initialize an upload</li>  *<li>Upload parts in any order</li>  *<li>Complete the upload in order to have it materialize in the destination  *   FS</li>  *</ol>  *  * Implementers should make sure that the complete function should make sure  * that 'complete' will reorder parts if the destination FS doesn't already  * do it for them.  */
+comment|/**  * MultipartUploader is an interface for copying files multipart and across  * multiple nodes. Users should:  *<ol>  *<li>Initialize an upload.</li>  *<li>Upload parts in any order.</li>  *<li>Complete the upload in order to have it materialize in the destination  *   FS.</li>  *</ol>  */
 end_comment
 
 begin_class
@@ -142,6 +138,8 @@ specifier|public
 specifier|abstract
 class|class
 name|MultipartUploader
+implements|implements
+name|Closeable
 block|{
 DECL|field|LOG
 specifier|public
@@ -159,6 +157,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Perform any cleanup.    * The upload is not required to support any operations after this.    * @throws IOException problems on close.    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{   }
 comment|/**    * Initialize a multipart upload.    * @param filePath Target path for upload.    * @return unique identifier associating part uploads.    * @throws IOException IO failure    */
 DECL|method|initialize (Path filePath)
 specifier|public
@@ -172,7 +181,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Put part as part of a multipart upload. It should be possible to have    * parts uploaded in any order (or in parallel).    * @param filePath Target path for upload (same as {@link #initialize(Path)}).    * @param inputStream Data for this part. Implementations MUST close this    * stream after reading in the data.    * @param partNumber Index of the part relative to others.    * @param uploadId Identifier from {@link #initialize(Path)}.    * @param lengthInBytes Target length to read from the stream.    * @return unique PartHandle identifier for the uploaded part.    * @throws IOException IO failure    */
+comment|/**    * Put part as part of a multipart upload.    * It is possible to have parts uploaded in any order (or in parallel).    * @param filePath Target path for upload (same as {@link #initialize(Path)}).    * @param inputStream Data for this part. Implementations MUST close this    * stream after reading in the data.    * @param partNumber Index of the part relative to others.    * @param uploadId Identifier from {@link #initialize(Path)}.    * @param lengthInBytes Target length to read from the stream.    * @return unique PartHandle identifier for the uploaded part.    * @throws IOException IO failure    */
 DECL|method|putPart (Path filePath, InputStream inputStream, int partNumber, UploadHandle uploadId, long lengthInBytes)
 specifier|public
 specifier|abstract
@@ -197,8 +206,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Complete a multipart upload.    * @param filePath Target path for upload (same as {@link #initialize(Path)}.    * @param handles non-empty list of identifiers with associated part numbers    *          from {@link #putPart(Path, InputStream, int, UploadHandle, long)}.    *          Depending on the backend, the list order may be significant.    * @param multipartUploadId Identifier from {@link #initialize(Path)}.    * @return unique PathHandle identifier for the uploaded file.    * @throws IOException IO failure or the handle list is empty.    */
-DECL|method|complete (Path filePath, List<Pair<Integer, PartHandle>> handles, UploadHandle multipartUploadId)
+comment|/**    * Complete a multipart upload.    * @param filePath Target path for upload (same as {@link #initialize(Path)}.    * @param handles non-empty map of part number to part handle.    *          from {@link #putPart(Path, InputStream, int, UploadHandle, long)}.    * @param multipartUploadId Identifier from {@link #initialize(Path)}.    * @return unique PathHandle identifier for the uploaded file.    * @throws IOException IO failure    */
+DECL|method|complete (Path filePath, Map<Integer, PartHandle> handles, UploadHandle multipartUploadId)
 specifier|public
 specifier|abstract
 name|PathHandle
@@ -207,14 +216,11 @@ parameter_list|(
 name|Path
 name|filePath
 parameter_list|,
-name|List
-argument_list|<
-name|Pair
+name|Map
 argument_list|<
 name|Integer
 argument_list|,
 name|PartHandle
-argument_list|>
 argument_list|>
 name|handles
 parameter_list|,
@@ -240,7 +246,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Utility method to validate uploadIDs    * @param uploadId    * @throws IllegalArgumentException    */
+comment|/**    * Utility method to validate uploadIDs.    * @param uploadId Upload ID    * @throws IllegalArgumentException invalid ID    */
 DECL|method|checkUploadId (byte[] uploadId)
 specifier|protected
 name|void
@@ -253,8 +259,15 @@ parameter_list|)
 throws|throws
 name|IllegalArgumentException
 block|{
-name|Preconditions
-operator|.
+name|checkArgument
+argument_list|(
+name|uploadId
+operator|!=
+literal|null
+argument_list|,
+literal|"null uploadId"
+argument_list|)
+expr_stmt|;
 name|checkArgument
 argument_list|(
 name|uploadId
@@ -264,6 +277,131 @@ operator|>
 literal|0
 argument_list|,
 literal|"Empty UploadId is not valid"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Utility method to validate partHandles.    * @param partHandles handles    * @throws IllegalArgumentException if the parts are invalid    */
+DECL|method|checkPartHandles (Map<Integer, PartHandle> partHandles)
+specifier|protected
+name|void
+name|checkPartHandles
+parameter_list|(
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|PartHandle
+argument_list|>
+name|partHandles
+parameter_list|)
+block|{
+name|checkArgument
+argument_list|(
+operator|!
+name|partHandles
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|,
+literal|"Empty upload"
+argument_list|)
+expr_stmt|;
+name|partHandles
+operator|.
+name|keySet
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|forEach
+argument_list|(
+name|key
+lambda|->
+name|checkArgument
+argument_list|(
+name|key
+operator|>
+literal|0
+argument_list|,
+literal|"Invalid part handle index %s"
+argument_list|,
+name|key
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Check all the arguments to the    * {@link #putPart(Path, InputStream, int, UploadHandle, long)} operation.    * @param filePath Target path for upload (same as {@link #initialize(Path)}).    * @param inputStream Data for this part. Implementations MUST close this    * stream after reading in the data.    * @param partNumber Index of the part relative to others.    * @param uploadId Identifier from {@link #initialize(Path)}.    * @param lengthInBytes Target length to read from the stream.    * @throws IllegalArgumentException invalid argument    */
+DECL|method|checkPutArguments (Path filePath, InputStream inputStream, int partNumber, UploadHandle uploadId, long lengthInBytes)
+specifier|protected
+name|void
+name|checkPutArguments
+parameter_list|(
+name|Path
+name|filePath
+parameter_list|,
+name|InputStream
+name|inputStream
+parameter_list|,
+name|int
+name|partNumber
+parameter_list|,
+name|UploadHandle
+name|uploadId
+parameter_list|,
+name|long
+name|lengthInBytes
+parameter_list|)
+throws|throws
+name|IllegalArgumentException
+block|{
+name|checkArgument
+argument_list|(
+name|filePath
+operator|!=
+literal|null
+argument_list|,
+literal|"null filePath"
+argument_list|)
+expr_stmt|;
+name|checkArgument
+argument_list|(
+name|inputStream
+operator|!=
+literal|null
+argument_list|,
+literal|"null inputStream"
+argument_list|)
+expr_stmt|;
+name|checkArgument
+argument_list|(
+name|partNumber
+operator|>
+literal|0
+argument_list|,
+literal|"Invalid part number: %d"
+argument_list|,
+name|partNumber
+argument_list|)
+expr_stmt|;
+name|checkArgument
+argument_list|(
+name|uploadId
+operator|!=
+literal|null
+argument_list|,
+literal|"null uploadId"
+argument_list|)
+expr_stmt|;
+name|checkArgument
+argument_list|(
+name|lengthInBytes
+operator|>=
+literal|0
+argument_list|,
+literal|"Invalid part length: %d"
+argument_list|,
+name|lengthInBytes
 argument_list|)
 expr_stmt|;
 block|}
