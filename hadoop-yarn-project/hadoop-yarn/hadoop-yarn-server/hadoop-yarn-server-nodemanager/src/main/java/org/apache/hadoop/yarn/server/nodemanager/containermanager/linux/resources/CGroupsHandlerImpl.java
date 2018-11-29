@@ -573,6 +573,7 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 block|{
+comment|// Remove leading and trialing slash(es)
 name|this
 operator|.
 name|cGroupPrefix
@@ -590,14 +591,14 @@ argument_list|)
 operator|.
 name|replaceAll
 argument_list|(
-literal|"^/"
+literal|"^/+"
 argument_list|,
 literal|""
 argument_list|)
 operator|.
 name|replaceAll
 argument_list|(
-literal|"$/"
+literal|"/+$"
 argument_list|,
 literal|""
 argument_list|)
