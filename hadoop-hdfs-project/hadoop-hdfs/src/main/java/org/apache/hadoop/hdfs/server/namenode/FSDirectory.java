@@ -1489,6 +1489,12 @@ specifier|final
 name|boolean
 name|isPermissionEnabled
 decl_stmt|;
+DECL|field|isPermissionContentSummarySubAccess
+specifier|private
+specifier|final
+name|boolean
+name|isPermissionContentSummarySubAccess
+decl_stmt|;
 comment|/**    * Support for ACLs is controlled by a configuration flag. If the    * configuration flag is false, then the NameNode will reject all    * ACL-related operations.    */
 DECL|field|aclsEnabled
 specifier|private
@@ -1832,6 +1838,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_PERMISSIONS_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isPermissionContentSummarySubAccess
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_PERMISSIONS_CONTENT_SUMMARY_SUBACCESS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_PERMISSIONS_CONTENT_SUMMARY_SUBACCESS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -2846,6 +2869,15 @@ parameter_list|()
 block|{
 return|return
 name|aclsEnabled
+return|;
+block|}
+DECL|method|isPermissionContentSummarySubAccess ()
+name|boolean
+name|isPermissionContentSummarySubAccess
+parameter_list|()
+block|{
+return|return
+name|isPermissionContentSummarySubAccess
 return|;
 block|}
 annotation|@
