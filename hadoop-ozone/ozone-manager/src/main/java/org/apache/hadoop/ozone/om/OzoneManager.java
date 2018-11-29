@@ -4716,6 +4716,16 @@ expr_stmt|;
 try|try
 block|{
 name|httpServer
+operator|=
+operator|new
+name|OzoneManagerHttpServer
+argument_list|(
+name|configuration
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+name|httpServer
 operator|.
 name|start
 argument_list|()
