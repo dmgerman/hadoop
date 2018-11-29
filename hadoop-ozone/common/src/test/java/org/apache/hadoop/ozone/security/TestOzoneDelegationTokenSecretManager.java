@@ -20,46 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|KeyPair
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|Signature
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -262,22 +222,62 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|KeyPair
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|Signature
+import|;
+end_import
+
 begin_comment
-comment|/**  * Test class for {@link OzoneSecretManager}.  */
+comment|/**  * Test class for {@link OzoneDelegationTokenSecretManager}.  */
 end_comment
 
 begin_class
-DECL|class|TestOzoneSecretManager
+DECL|class|TestOzoneDelegationTokenSecretManager
 specifier|public
 class|class
-name|TestOzoneSecretManager
+name|TestOzoneDelegationTokenSecretManager
 block|{
-DECL|field|secretManager
 specifier|private
-name|OzoneSecretManager
+name|OzoneDelegationTokenSecretManager
 argument_list|<
 name|OzoneTokenIdentifier
 argument_list|>
+DECL|field|secretManager
 name|secretManager
 decl_stmt|;
 DECL|field|securityConfig
@@ -316,7 +316,7 @@ name|GenericTestUtils
 operator|.
 name|getTempPath
 argument_list|(
-name|TestOzoneSecretManager
+name|TestOzoneDelegationTokenSecretManager
 operator|.
 name|class
 operator|.
@@ -474,7 +474,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -594,7 +594,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -676,7 +676,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -750,7 +750,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -836,7 +836,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -919,7 +919,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -1016,7 +1016,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -1076,7 +1076,7 @@ argument_list|)
 expr_stmt|;
 name|secretManager
 operator|.
-name|startThreads
+name|start
 argument_list|(
 name|keyPair
 argument_list|)
@@ -1189,13 +1189,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create instance of {@link OzoneSecretManager}.    */
-DECL|method|createSecretManager ( OzoneConfiguration config, long tokenMaxLife, long expiry, long tokenRemoverScanTime)
+comment|/**    * Create instance of {@link OzoneDelegationTokenSecretManager}.    */
 specifier|private
-name|OzoneSecretManager
+name|OzoneDelegationTokenSecretManager
 argument_list|<
 name|OzoneTokenIdentifier
 argument_list|>
+DECL|method|createSecretManager (OzoneConfiguration config, long tokenMaxLife, long expiry, long tokenRemoverScanTime)
 name|createSecretManager
 parameter_list|(
 name|OzoneConfiguration
@@ -1215,7 +1215,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|OzoneSecretManager
+name|OzoneDelegationTokenSecretManager
 argument_list|<>
 argument_list|(
 name|config
