@@ -314,6 +314,21 @@ operator|=
 literal|"Fifo Scheduler"
 expr_stmt|;
 block|}
+else|else
+block|{
+name|this
+operator|.
+name|schedulerName
+operator|=
+name|rs
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|minAllocResource
