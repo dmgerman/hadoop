@@ -1895,6 +1895,14 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+name|fs
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|serviceStop
