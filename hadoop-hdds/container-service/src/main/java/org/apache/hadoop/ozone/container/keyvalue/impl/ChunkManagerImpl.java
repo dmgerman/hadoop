@@ -891,8 +891,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
-DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info)
+comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param readFromTmpFile whether to read from tmp chunk file or not.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, boolean readFromTmpFile)
 specifier|public
 name|byte
 index|[]
@@ -906,6 +906,9 @@ name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
+parameter_list|,
+name|boolean
+name|readFromTmpFile
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -974,6 +977,29 @@ argument_list|,
 name|info
 argument_list|)
 decl_stmt|;
+comment|// In case the chunk file does not exist but tmp chunk file exist,
+comment|// read from tmp chunk file if readFromTmpFile is set to true
+if|if
+condition|(
+operator|!
+name|chunkFile
+operator|.
+name|exists
+argument_list|()
+operator|&&
+name|readFromTmpFile
+condition|)
+block|{
+name|chunkFile
+operator|=
+name|getTmpChunkFile
+argument_list|(
+name|chunkFile
+argument_list|,
+name|info
+argument_list|)
+expr_stmt|;
+block|}
 name|data
 operator|=
 name|ChunkUtils

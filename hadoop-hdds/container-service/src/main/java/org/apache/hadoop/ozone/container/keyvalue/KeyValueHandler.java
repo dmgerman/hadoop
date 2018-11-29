@@ -3025,6 +3025,14 @@ argument_list|,
 name|blockID
 argument_list|,
 name|chunkInfo
+argument_list|,
+name|request
+operator|.
+name|getReadChunk
+argument_list|()
+operator|.
+name|getReadFromTmpFile
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -3895,6 +3903,8 @@ name|getChunks
 argument_list|()
 control|)
 block|{
+comment|// if the block is committed, all chunks must have been committed.
+comment|// Tmp chunk files won't exist here.
 name|byte
 index|[]
 name|data
@@ -3913,6 +3923,8 @@ name|getFromProtoBuf
 argument_list|(
 name|chunk
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|ByteString

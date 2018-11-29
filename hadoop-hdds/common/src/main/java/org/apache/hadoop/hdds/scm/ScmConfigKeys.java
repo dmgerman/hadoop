@@ -365,6 +365,25 @@ name|DFS_CONTAINER_RATIS_LOG_QUEUE_SIZE_DEFAULT
 init|=
 literal|128
 decl_stmt|;
+comment|// expiry interval stateMachineData cache entry inside containerStateMachine
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_CONTAINER_RATIS_STATEMACHINEDATA_CACHE_EXPIRY_INTERVAL
+name|DFS_CONTAINER_RATIS_STATEMACHINEDATA_CACHE_EXPIRY_INTERVAL
+init|=
+literal|"dfs.container.ratis.statemachine.cache.expiry.interval"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_CONTAINER_RATIS_STATEMACHINEDATA_CACHE_EXPIRY_INTERVAL_DEFAULT
+name|DFS_CONTAINER_RATIS_STATEMACHINEDATA_CACHE_EXPIRY_INTERVAL_DEFAULT
+init|=
+literal|"10s"
+decl_stmt|;
 DECL|field|DFS_RATIS_CLIENT_REQUEST_TIMEOUT_DURATION_KEY
 specifier|public
 specifier|static

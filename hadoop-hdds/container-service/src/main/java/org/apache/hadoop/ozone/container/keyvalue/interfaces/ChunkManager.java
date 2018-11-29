@@ -165,8 +165,8 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
-DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info)
+comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param readFromTmpFile whether to read from tmp chunk file or not    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, boolean readFromTmpFile)
 name|byte
 index|[]
 name|readChunk
@@ -179,6 +179,9 @@ name|blockID
 parameter_list|,
 name|ChunkInfo
 name|info
+parameter_list|,
+name|boolean
+name|readFromTmpFile
 parameter_list|)
 throws|throws
 name|StorageContainerException
