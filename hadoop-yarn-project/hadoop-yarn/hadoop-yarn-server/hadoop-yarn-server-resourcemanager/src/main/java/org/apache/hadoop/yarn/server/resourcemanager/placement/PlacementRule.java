@@ -82,9 +82,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|capacity
-operator|.
-name|CapacitySchedulerContext
+name|ResourceScheduler
 import|;
 end_import
 
@@ -111,14 +109,14 @@ name|getName
 argument_list|()
 return|;
 block|}
-DECL|method|initialize ( CapacitySchedulerContext schedulerContext)
+DECL|method|initialize ( ResourceScheduler scheduler)
 specifier|public
 specifier|abstract
 name|boolean
 name|initialize
 parameter_list|(
-name|CapacitySchedulerContext
-name|schedulerContext
+name|ResourceScheduler
+name|scheduler
 parameter_list|)
 throws|throws
 name|IOException
