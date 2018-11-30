@@ -1077,8 +1077,6 @@ literal|"/pageBlobs/"
 block|,
 literal|"/pageBlobs"
 block|,
-literal|"pageBlobs"
-block|,
 literal|"pageBlobsxyz/"
 block|}
 decl_stmt|;
@@ -1215,8 +1213,6 @@ block|,
 literal|"/hbase/"
 block|,
 literal|"/hbase"
-block|,
-literal|"hbase"
 block|,
 literal|"hbasexyz/"
 block|,
