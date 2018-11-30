@@ -156,6 +156,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -186,7 +196,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|TreeSet
+name|Set
 import|;
 end_import
 
@@ -6256,14 +6266,14 @@ name|targetAddr
 init|=
 literal|null
 decl_stmt|;
-name|TreeSet
+name|Set
 argument_list|<
 name|DatanodeInfo
 argument_list|>
 name|deadNodes
 init|=
 operator|new
-name|TreeSet
+name|HashSet
 argument_list|<
 name|DatanodeInfo
 argument_list|>
@@ -6817,7 +6827,7 @@ argument_list|()
 return|;
 block|}
 comment|/*    * XXX (ab) See comment above for copyBlock().    *    * Pick the best node from which to stream the data.    * That's the local one, if available.    */
-DECL|method|bestNode (DFSClient dfs, DatanodeInfo[] nodes, TreeSet<DatanodeInfo> deadNodes)
+DECL|method|bestNode (DFSClient dfs, DatanodeInfo[] nodes, Set<DatanodeInfo> deadNodes)
 specifier|private
 name|DatanodeInfo
 name|bestNode
@@ -6829,7 +6839,7 @@ name|DatanodeInfo
 index|[]
 name|nodes
 parameter_list|,
-name|TreeSet
+name|Set
 argument_list|<
 name|DatanodeInfo
 argument_list|>
