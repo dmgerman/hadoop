@@ -72,6 +72,26 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|BlockData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ChunkInfo
 import|;
 end_import
@@ -178,7 +198,7 @@ name|SmallFileUtils
 parameter_list|()
 block|{   }
 comment|/**    * Gets a response for the putSmallFile RPC.    * @param msg - ContainerCommandRequestProto    * @return - ContainerCommandResponseProto    */
-DECL|method|getPutFileResponseSuccess ( ContainerCommandRequestProto msg)
+DECL|method|getPutFileResponseSuccess ( ContainerCommandRequestProto msg, BlockData blockData)
 specifier|public
 specifier|static
 name|ContainerCommandResponseProto
@@ -186,6 +206,9 @@ name|getPutFileResponseSuccess
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
+parameter_list|,
+name|BlockData
+name|blockData
 parameter_list|)
 block|{
 name|ContainerProtos
@@ -205,17 +228,11 @@ decl_stmt|;
 name|ContainerProtos
 operator|.
 name|BlockData
-name|blockData
+name|blockDataProto
 init|=
-name|msg
+name|blockData
 operator|.
-name|getPutSmallFile
-argument_list|()
-operator|.
-name|getBlock
-argument_list|()
-operator|.
-name|getBlockData
+name|getProtoBufMessage
 argument_list|()
 decl_stmt|;
 name|ContainerProtos
@@ -229,12 +246,12 @@ name|BlockUtils
 operator|.
 name|getCommittedBlockLengthResponseBuilder
 argument_list|(
-name|blockData
+name|blockDataProto
 operator|.
 name|getSize
 argument_list|()
 argument_list|,
-name|blockData
+name|blockDataProto
 operator|.
 name|getBlockID
 argument_list|()

@@ -1149,13 +1149,16 @@ block|{
 comment|/**      * Dispatches commands to container layer.      *      * @param msg - Command Request      * @return Command Response      */
 annotation|@
 name|Override
-DECL|method|dispatch ( ContainerCommandRequestProto msg)
+DECL|method|dispatch ( ContainerCommandRequestProto msg, DispatcherContext context)
 specifier|public
 name|ContainerCommandResponseProto
 name|dispatch
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
+parameter_list|,
+name|DispatcherContext
+name|context
 parameter_list|)
 block|{
 return|return

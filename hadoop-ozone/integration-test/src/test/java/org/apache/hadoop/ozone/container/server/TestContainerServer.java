@@ -150,6 +150,30 @@ name|container
 operator|.
 name|common
 operator|.
+name|transport
+operator|.
+name|server
+operator|.
+name|ratis
+operator|.
+name|DispatcherContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|volume
 operator|.
 name|VolumeSet
@@ -1672,13 +1696,16 @@ block|{
 comment|/**      * Dispatches commands to container layer.      *      * @param msg - Command Request      * @return Command Response      */
 annotation|@
 name|Override
+DECL|method|dispatch ( ContainerCommandRequestProto msg, DispatcherContext context)
 specifier|public
 name|ContainerCommandResponseProto
-DECL|method|dispatch (ContainerCommandRequestProto msg)
 name|dispatch
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
+parameter_list|,
+name|DispatcherContext
+name|context
 parameter_list|)
 block|{
 return|return

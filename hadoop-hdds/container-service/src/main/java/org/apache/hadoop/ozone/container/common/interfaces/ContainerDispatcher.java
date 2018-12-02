@@ -108,6 +108,30 @@ name|StorageContainerException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|transport
+operator|.
+name|server
+operator|.
+name|ratis
+operator|.
+name|DispatcherContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * Dispatcher acts as the bridge between the transport layer and  * the actual container layer. This layer is capable of transforming  * protobuf objects into corresponding class and issue the function call  * into the lower layers.  *  * The reply from the request is dispatched to the client.  */
 end_comment
@@ -118,13 +142,16 @@ specifier|public
 interface|interface
 name|ContainerDispatcher
 block|{
-comment|/**    * Dispatches commands to container layer.    * @param msg - Command Request    * @return Command Response    */
-DECL|method|dispatch (ContainerCommandRequestProto msg)
+comment|/**    * Dispatches commands to container layer.    * @param msg - Command Request    * @param context - Context info related to ContainerStateMachine    * @return Command Response    */
+DECL|method|dispatch (ContainerCommandRequestProto msg, DispatcherContext context)
 name|ContainerCommandResponseProto
 name|dispatch
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
+parameter_list|,
+name|DispatcherContext
+name|context
 parameter_list|)
 function_decl|;
 comment|/**    * Validates whether the container command should be executed on the pipeline    * or not. Will be invoked by the leader node in the Ratis pipeline    * @param msg containerCommand    * @throws StorageContainerException    */

@@ -625,7 +625,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Returns putBlock response success.    * @param msg - Request.    * @return Response.    */
-DECL|method|putBlockResponseSuccess ( ContainerCommandRequestProto msg, long blockLength)
+DECL|method|putBlockResponseSuccess ( ContainerCommandRequestProto msg, BlockData blockData)
 specifier|public
 specifier|static
 name|ContainerCommandResponseProto
@@ -634,21 +634,18 @@ parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|,
-name|long
-name|blockLength
+name|BlockData
+name|blockData
 parameter_list|)
 block|{
 name|ContainerProtos
 operator|.
 name|BlockData
-name|blockData
+name|blockDataProto
 init|=
-name|msg
+name|blockData
 operator|.
-name|getPutBlock
-argument_list|()
-operator|.
-name|getBlockData
+name|getProtoBufMessage
 argument_list|()
 decl_stmt|;
 name|GetCommittedBlockLengthResponseProto
@@ -658,9 +655,12 @@ name|committedBlockLengthResponseBuilder
 init|=
 name|getCommittedBlockLengthResponseBuilder
 argument_list|(
-name|blockLength
-argument_list|,
 name|blockData
+operator|.
+name|getSize
+argument_list|()
+argument_list|,
+name|blockDataProto
 operator|.
 name|getBlockID
 argument_list|()

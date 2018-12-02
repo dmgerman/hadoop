@@ -48,26 +48,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
-operator|.
-name|datanode
-operator|.
-name|proto
-operator|.
-name|ContainerProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|scm
 operator|.
 name|container
@@ -122,6 +102,30 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|transport
+operator|.
+name|server
+operator|.
+name|ratis
+operator|.
+name|DispatcherContext
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|nio
@@ -141,7 +145,7 @@ interface|interface
 name|ChunkManager
 block|{
 comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param stage - Chunk Stage write.    * @throws StorageContainerException    */
-DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, ContainerProtos.Stage stage)
+DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, DispatcherContext.WriteChunkStage stage)
 name|void
 name|writeChunk
 parameter_list|(
@@ -157,9 +161,9 @@ parameter_list|,
 name|ByteBuffer
 name|data
 parameter_list|,
-name|ContainerProtos
+name|DispatcherContext
 operator|.
-name|Stage
+name|WriteChunkStage
 name|stage
 parameter_list|)
 throws|throws

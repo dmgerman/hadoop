@@ -452,6 +452,30 @@ name|container
 operator|.
 name|common
 operator|.
+name|transport
+operator|.
+name|server
+operator|.
+name|ratis
+operator|.
+name|DispatcherContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|volume
 operator|.
 name|VolumeSet
@@ -886,13 +910,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|dispatch ( ContainerCommandRequestProto msg)
+DECL|method|dispatch ( ContainerCommandRequestProto msg, DispatcherContext dispatcherContext)
 specifier|public
 name|ContainerCommandResponseProto
 name|dispatch
 parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
+parameter_list|,
+name|DispatcherContext
+name|dispatcherContext
 parameter_list|)
 block|{
 name|Preconditions
@@ -1268,6 +1295,8 @@ argument_list|(
 name|msg
 argument_list|,
 name|container
+argument_list|,
+name|dispatcherContext
 argument_list|)
 expr_stmt|;
 if|if
@@ -1585,6 +1614,8 @@ name|requestBuilder
 operator|.
 name|build
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

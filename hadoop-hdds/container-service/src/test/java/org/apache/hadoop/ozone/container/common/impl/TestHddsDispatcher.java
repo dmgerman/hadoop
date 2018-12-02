@@ -908,6 +908,8 @@ literal|1L
 argument_list|,
 literal|1L
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -988,6 +990,8 @@ literal|1L
 argument_list|,
 literal|2L
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1291,6 +1295,8 @@ name|getReadChunkRequest
 argument_list|(
 name|writeChunkRequest
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1317,6 +1323,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|writeChunkRequest
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// container should be created as part of write chunk request
@@ -1347,6 +1355,8 @@ name|getReadChunkRequest
 argument_list|(
 name|writeChunkRequest
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert

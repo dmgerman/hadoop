@@ -286,6 +286,30 @@ name|container
 operator|.
 name|common
 operator|.
+name|transport
+operator|.
+name|server
+operator|.
+name|ratis
+operator|.
+name|DispatcherContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|volume
 operator|.
 name|VolumeSet
@@ -646,6 +670,9 @@ name|dispatch
 argument_list|(
 name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
@@ -685,6 +712,9 @@ name|handler
 operator|.
 name|handle
 argument_list|(
+name|any
+argument_list|()
+argument_list|,
 name|any
 argument_list|()
 argument_list|,
@@ -820,11 +850,25 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|DispatcherContext
+name|context
+init|=
+operator|new
+name|DispatcherContext
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 name|dispatcher
 operator|.
 name|dispatch
 argument_list|(
 name|createContainerRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -870,6 +914,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|readContainerRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -915,6 +961,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|updateContainerRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -960,6 +1008,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|deleteContainerRequest
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1005,6 +1055,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|listContainerRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1047,6 +1099,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|closeContainerRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1092,6 +1146,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|putBlockRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1117,6 +1173,9 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test Get Block Request handling
@@ -1137,6 +1196,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|getBlockRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1182,6 +1243,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|deleteBlockRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1227,6 +1290,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|listBlockRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1269,6 +1334,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|readChunkRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1294,6 +1361,9 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test Delete Chunk Request handling
@@ -1314,6 +1384,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|deleteChunkRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1359,6 +1431,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|writeChunkRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1384,6 +1458,9 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test List Chunk Request handling
@@ -1404,6 +1481,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|listChunkRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1446,6 +1525,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|putSmallFileRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1471,6 +1552,9 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test Get Small File Request handling
@@ -1491,6 +1575,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|getSmallFileRequest
+argument_list|,
+name|context
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -1942,6 +2028,8 @@ operator|.
 name|dispatch
 argument_list|(
 name|closeContainerRequest
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Mockito

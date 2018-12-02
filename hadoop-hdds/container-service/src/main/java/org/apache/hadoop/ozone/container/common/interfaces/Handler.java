@@ -254,6 +254,30 @@ name|container
 operator|.
 name|common
 operator|.
+name|transport
+operator|.
+name|server
+operator|.
+name|ratis
+operator|.
+name|DispatcherContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|volume
 operator|.
 name|VolumeSet
@@ -538,7 +562,7 @@ name|triggerHeartbeat
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|handle ( ContainerCommandRequestProto msg, Container container)
+DECL|method|handle ( ContainerCommandRequestProto msg, Container container, DispatcherContext dispatcherContext)
 specifier|public
 specifier|abstract
 name|ContainerCommandResponseProto
@@ -549,6 +573,9 @@ name|msg
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|DispatcherContext
+name|dispatcherContext
 parameter_list|)
 function_decl|;
 comment|/**    * Import container data from a raw input stream.    */

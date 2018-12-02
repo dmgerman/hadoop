@@ -889,26 +889,28 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
-name|protocol
+name|container
 operator|.
-name|datanode
+name|common
 operator|.
-name|proto
+name|transport
 operator|.
-name|ContainerProtos
+name|server
 operator|.
-name|Stage
+name|ratis
 operator|.
-name|COMBINED
+name|DispatcherContext
+operator|.
+name|WriteChunkStage
 import|;
 end_import
 
@@ -2422,6 +2424,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -2586,6 +2590,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -2949,6 +2955,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -3143,6 +3151,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -3163,6 +3173,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -3195,6 +3207,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -3384,6 +3398,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -3565,6 +3581,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
@@ -4216,6 +4234,8 @@ argument_list|(
 name|data
 argument_list|)
 argument_list|,
+name|WriteChunkStage
+operator|.
 name|COMBINED
 argument_list|)
 expr_stmt|;
