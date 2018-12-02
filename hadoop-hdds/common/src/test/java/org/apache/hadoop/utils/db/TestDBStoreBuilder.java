@@ -619,6 +619,13 @@ block|{
 try|try
 init|(
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|firstTable
 init|=
 name|dbStore
@@ -820,6 +827,13 @@ block|{
 try|try
 init|(
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|firstTable
 init|=
 name|dbStore

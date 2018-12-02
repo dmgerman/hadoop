@@ -20,69 +20,105 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|Closeable
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|hadoop
 operator|.
-name|util
+name|hdfs
 operator|.
-name|Iterator
+name|DFSUtil
 import|;
 end_import
 
 begin_comment
-comment|/**  * Iterator for MetaDataStore DB.  *  * @param<T>  */
+comment|/**  * Codec to convert String to/from byte array.  */
 end_comment
 
-begin_interface
-DECL|interface|TableIterator
+begin_class
+DECL|class|StringCodec
 specifier|public
-interface|interface
-name|TableIterator
-parameter_list|<
-name|KEY
-parameter_list|,
-name|T
-parameter_list|>
-extends|extends
-name|Iterator
+class|class
+name|StringCodec
+implements|implements
+name|Codec
 argument_list|<
-name|T
+name|String
 argument_list|>
-extends|,
-name|Closeable
 block|{
-comment|/**    * seek to first entry.    */
-DECL|method|seekToFirst ()
-name|void
-name|seekToFirst
-parameter_list|()
-function_decl|;
-comment|/**    * seek to last entry.    */
-DECL|method|seekToLast ()
-name|void
-name|seekToLast
-parameter_list|()
-function_decl|;
-comment|/**    * Seek to the specific key.    *    * @param key - Bytes that represent the key.    * @return VALUE.    */
-DECL|method|seek (KEY key)
-name|T
-name|seek
+annotation|@
+name|Override
+DECL|method|toPersistedFormat (String object)
+specifier|public
+name|byte
+index|[]
+name|toPersistedFormat
 parameter_list|(
-name|KEY
-name|key
+name|String
+name|object
 parameter_list|)
-function_decl|;
+block|{
+if|if
+condition|(
+name|object
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|string2Bytes
+argument_list|(
+name|object
+argument_list|)
+return|;
 block|}
-end_interface
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|fromPersistedFormat (byte[] rawData)
+specifier|public
+name|String
+name|fromPersistedFormat
+parameter_list|(
+name|byte
+index|[]
+name|rawData
+parameter_list|)
+block|{
+if|if
+condition|(
+name|rawData
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|bytes2String
+argument_list|(
+name|rawData
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+block|}
+end_class
 
 end_unit
 

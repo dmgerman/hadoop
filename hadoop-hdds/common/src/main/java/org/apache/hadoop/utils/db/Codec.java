@@ -18,67 +18,37 @@ name|db
 package|;
 end_package
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|Closeable
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
 begin_comment
-comment|/**  * Iterator for MetaDataStore DB.  *  * @param<T>  */
+comment|/**  * Codec interface to marshall/unmarshall data to/from a byte[] based  * key/value store.  *  * @param<T> Unserialized type  */
 end_comment
 
 begin_interface
-DECL|interface|TableIterator
+DECL|interface|Codec
 specifier|public
 interface|interface
-name|TableIterator
+name|Codec
 parameter_list|<
-name|KEY
-parameter_list|,
 name|T
 parameter_list|>
-extends|extends
-name|Iterator
-argument_list|<
-name|T
-argument_list|>
-extends|,
-name|Closeable
 block|{
-comment|/**    * seek to first entry.    */
-DECL|method|seekToFirst ()
-name|void
-name|seekToFirst
-parameter_list|()
-function_decl|;
-comment|/**    * seek to last entry.    */
-DECL|method|seekToLast ()
-name|void
-name|seekToLast
-parameter_list|()
-function_decl|;
-comment|/**    * Seek to the specific key.    *    * @param key - Bytes that represent the key.    * @return VALUE.    */
-DECL|method|seek (KEY key)
-name|T
-name|seek
+comment|/**    * Convert object to raw persisted format.    */
+DECL|method|toPersistedFormat (T object)
+name|byte
+index|[]
+name|toPersistedFormat
 parameter_list|(
-name|KEY
-name|key
+name|T
+name|object
+parameter_list|)
+function_decl|;
+comment|/**    * Convert object from raw persisted format.    */
+DECL|method|fromPersistedFormat (byte[] rawData)
+name|T
+name|fromPersistedFormat
+parameter_list|(
+name|byte
+index|[]
+name|rawData
 parameter_list|)
 function_decl|;
 block|}

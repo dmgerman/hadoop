@@ -20,34 +20,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|db
-operator|.
-name|Table
-operator|.
-name|KeyValue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|rocksdb
-operator|.
-name|RocksIterator
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -78,6 +50,16 @@ name|Consumer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|rocksdb
+operator|.
+name|RocksIterator
+import|;
+end_import
+
 begin_comment
 comment|/**  * RocksDB store iterator.  */
 end_comment
@@ -90,7 +72,10 @@ name|RDBStoreIterator
 implements|implements
 name|TableIterator
 argument_list|<
-name|KeyValue
+name|byte
+index|[]
+argument_list|,
+name|ByteArrayKeyValue
 argument_list|>
 block|{
 DECL|field|rocksDBIterator
@@ -120,7 +105,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|forEachRemaining (Consumer<? super KeyValue> action)
+DECL|method|forEachRemaining ( Consumer<? super ByteArrayKeyValue> action)
 specifier|public
 name|void
 name|forEachRemaining
@@ -129,7 +114,7 @@ name|Consumer
 argument_list|<
 name|?
 super|super
-name|KeyValue
+name|ByteArrayKeyValue
 argument_list|>
 name|action
 parameter_list|)
@@ -169,9 +154,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|Table
-operator|.
-name|KeyValue
+name|ByteArrayKeyValue
 name|next
 parameter_list|()
 block|{
@@ -183,10 +166,10 @@ name|isValid
 argument_list|()
 condition|)
 block|{
-name|KeyValue
+name|ByteArrayKeyValue
 name|value
 init|=
-name|KeyValue
+name|ByteArrayKeyValue
 operator|.
 name|create
 argument_list|(
@@ -250,7 +233,7 @@ annotation|@
 name|Override
 DECL|method|seek (byte[] key)
 specifier|public
-name|KeyValue
+name|ByteArrayKeyValue
 name|seek
 parameter_list|(
 name|byte
@@ -274,7 +257,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|KeyValue
+name|ByteArrayKeyValue
 operator|.
 name|create
 argument_list|(

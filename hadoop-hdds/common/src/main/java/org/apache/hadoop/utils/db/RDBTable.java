@@ -135,6 +135,13 @@ class|class
 name|RDBTable
 implements|implements
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -429,7 +436,10 @@ try|try
 init|(
 name|TableIterator
 argument_list|<
-name|KeyValue
+name|byte
+index|[]
+argument_list|,
+name|ByteArrayKeyValue
 argument_list|>
 name|keyIter
 init|=
@@ -594,7 +604,10 @@ DECL|method|iterator ()
 specifier|public
 name|TableIterator
 argument_list|<
-name|KeyValue
+name|byte
+index|[]
+argument_list|,
+name|ByteArrayKeyValue
 argument_list|>
 name|iterator
 parameter_list|()

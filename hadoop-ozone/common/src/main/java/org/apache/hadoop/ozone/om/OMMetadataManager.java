@@ -406,51 +406,110 @@ function_decl|;
 comment|/**    * Returns the user Table.    *    * @return UserTable.    */
 DECL|method|getUserTable ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getUserTable
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the Volume Table.    *    * @return VolumeTable.    */
 DECL|method|getVolumeTable ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getVolumeTable
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the BucketTable.    *    * @return BucketTable.    */
 DECL|method|getBucketTable ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getBucketTable
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the KeyTable.    *    * @return KeyTable.    */
 DECL|method|getKeyTable ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getKeyTable
 parameter_list|()
 function_decl|;
 comment|/**    * Get Deleted Table.    *    * @return Deleted Table.    */
 DECL|method|getDeletedTable ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getDeletedTable
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the OpenKeyTable.    *    * @return Table.    */
 DECL|method|getOpenKeyTable ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getOpenKeyTable
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the S3Bucket to Ozone Volume/bucket mapping table.    *    * @return Table.    */
 DECL|method|getS3Table ()
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getS3Table
 parameter_list|()
 function_decl|;
 comment|/**    * Returns number of rows in a table.  This should not be used for very    * large tables.    * @param table    * @return long    * @throws IOException    */
-DECL|method|countRowsInTable (Table table)
+DECL|method|countRowsInTable (Table<KEY, VALUE> table)
+parameter_list|<
+name|KEY
+parameter_list|,
+name|VALUE
+parameter_list|>
 name|long
 name|countRowsInTable
 parameter_list|(
 name|Table
+argument_list|<
+name|KEY
+argument_list|,
+name|VALUE
+argument_list|>
 name|table
 parameter_list|)
 throws|throws

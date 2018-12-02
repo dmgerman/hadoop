@@ -71,10 +71,50 @@ block|{
 comment|/**    * Gets an existing TableStore.    *    * @param name - Name of the TableStore to get    * @return - TableStore.    * @throws IOException on Failure    */
 DECL|method|getTable (String name)
 name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
 name|getTable
 parameter_list|(
 name|String
 name|name
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets an existing TableStore with implicit key/value conversion.    *    * @param name - Name of the TableStore to get    * @return - TableStore.    * @throws IOException on Failure    */
+DECL|method|getTable (String name, Class<KEY> keyType, Class<VALUE> valueType)
+parameter_list|<
+name|KEY
+parameter_list|,
+name|VALUE
+parameter_list|>
+name|Table
+argument_list|<
+name|KEY
+argument_list|,
+name|VALUE
+argument_list|>
+name|getTable
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|Class
+argument_list|<
+name|KEY
+argument_list|>
+name|keyType
+parameter_list|,
+name|Class
+argument_list|<
+name|VALUE
+argument_list|>
+name|valueType
 parameter_list|)
 throws|throws
 name|IOException
