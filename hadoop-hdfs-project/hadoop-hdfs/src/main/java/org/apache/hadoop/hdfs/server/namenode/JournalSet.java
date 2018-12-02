@@ -270,6 +270,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -437,7 +451,6 @@ name|CheckableNameNodeResource
 block|{
 DECL|field|journal
 specifier|private
-specifier|final
 name|JournalManager
 name|journal
 decl_stmt|;
@@ -682,6 +695,23 @@ operator|.
 name|stream
 operator|=
 name|stream
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setJournalForTests (JournalManager jm)
+name|void
+name|setJournalForTests
+parameter_list|(
+name|JournalManager
+name|jm
+parameter_list|)
+block|{
+name|this
+operator|.
+name|journal
+operator|=
+name|jm
 expr_stmt|;
 block|}
 DECL|method|getManager ()

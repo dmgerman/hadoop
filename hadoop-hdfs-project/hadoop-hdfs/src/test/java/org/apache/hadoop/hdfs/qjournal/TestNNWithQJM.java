@@ -212,6 +212,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|ExitException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -978,6 +994,11 @@ comment|// Start the NN - should fail because the JNs are still formatted
 comment|// with the old namespace ID.
 try|try
 block|{
+name|ExitUtil
+operator|.
+name|disableSystemExit
+argument_list|()
+expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -1003,6 +1024,11 @@ argument_list|(
 literal|false
 argument_list|)
 operator|.
+name|checkExitOnShutdown
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -1014,8 +1040,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|ExitException
+name|ee
 parameter_list|)
 block|{
 name|GenericTestUtils
@@ -1024,7 +1050,17 @@ name|assertExceptionContains
 argument_list|(
 literal|"Unable to start log segment 1: too few journals"
 argument_list|,
-name|ioe
+name|ee
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Didn't terminate properly "
+argument_list|,
+name|ExitUtil
+operator|.
+name|terminateCalled
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
