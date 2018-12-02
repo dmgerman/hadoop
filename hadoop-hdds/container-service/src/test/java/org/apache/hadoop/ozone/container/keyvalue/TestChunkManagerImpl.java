@@ -741,7 +741,9 @@ name|chunkManager
 operator|=
 operator|new
 name|ChunkManagerImpl
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

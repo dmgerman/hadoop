@@ -433,8 +433,8 @@ specifier|private
 name|ChunkUtils
 parameter_list|()
 block|{    }
-comment|/**    * Writes the data in chunk Info to the specified location in the chunkfile.    *    * @param chunkFile - File to write data to.    * @param chunkInfo - Data stream to write.    * @param data - The data buffer.    * @param volumeIOStats    * @throws StorageContainerException    */
-DECL|method|writeData (File chunkFile, ChunkInfo chunkInfo, ByteBuffer data, VolumeIOStats volumeIOStats)
+comment|/**    * Writes the data in chunk Info to the specified location in the chunkfile.    *    * @param chunkFile - File to write data to.    * @param chunkInfo - Data stream to write.    * @param data - The data buffer.    * @param volumeIOStats    * @param sync whether to do fsync or not    * @throws StorageContainerException    */
+DECL|method|writeData (File chunkFile, ChunkInfo chunkInfo, ByteBuffer data, VolumeIOStats volumeIOStats, boolean sync)
 specifier|public
 specifier|static
 name|void
@@ -451,6 +451,9 @@ name|data
 parameter_list|,
 name|VolumeIOStats
 name|volumeIOStats
+parameter_list|,
+name|boolean
+name|sync
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -549,6 +552,8 @@ argument_list|()
 decl_stmt|;
 name|file
 operator|=
+name|sync
+condition|?
 name|AsynchronousFileChannel
 operator|.
 name|open
@@ -573,6 +578,28 @@ argument_list|,
 name|StandardOpenOption
 operator|.
 name|SYNC
+argument_list|)
+else|:
+name|AsynchronousFileChannel
+operator|.
+name|open
+argument_list|(
+name|chunkFile
+operator|.
+name|toPath
+argument_list|()
+argument_list|,
+name|StandardOpenOption
+operator|.
+name|CREATE
+argument_list|,
+name|StandardOpenOption
+operator|.
+name|WRITE
+argument_list|,
+name|StandardOpenOption
+operator|.
+name|SPARSE
 argument_list|)
 expr_stmt|;
 name|lock

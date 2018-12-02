@@ -187,6 +187,24 @@ name|DFS_CONTAINER_IPC_RANDOM_PORT_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_CONTAINER_CHUNK_WRITE_SYNC_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CONTAINER_CHUNK_WRITE_SYNC_KEY
+init|=
+literal|"dfs.container.chunk.write.sync"
+decl_stmt|;
+DECL|field|DFS_CONTAINER_CHUNK_WRITE_SYNC_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_CONTAINER_CHUNK_WRITE_SYNC_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * Ratis Port where containers listen to.    */
 DECL|field|DFS_CONTAINER_RATIS_IPC_PORT
 specifier|public

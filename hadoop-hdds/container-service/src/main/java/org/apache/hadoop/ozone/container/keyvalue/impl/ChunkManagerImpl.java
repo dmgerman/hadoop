@@ -479,6 +479,25 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|doSyncWrite
+specifier|private
+specifier|final
+name|boolean
+name|doSyncWrite
+decl_stmt|;
+DECL|method|ChunkManagerImpl (boolean sync)
+specifier|public
+name|ChunkManagerImpl
+parameter_list|(
+name|boolean
+name|sync
+parameter_list|)
+block|{
+name|doSyncWrite
+operator|=
+name|sync
+expr_stmt|;
+block|}
 comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block    * @param info - ChunkInfo    * @param data - data of the chunk    * @param stage - Stage of the Chunk operation    * @throws StorageContainerException    */
 DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, DispatcherContext.WriteChunkStage stage)
 specifier|public
@@ -668,6 +687,8 @@ argument_list|,
 name|data
 argument_list|,
 name|volumeIOStats
+argument_list|,
+name|doSyncWrite
 argument_list|)
 expr_stmt|;
 comment|// No need to increment container stats here, as still data is not
@@ -748,6 +769,8 @@ argument_list|,
 name|data
 argument_list|,
 name|volumeIOStats
+argument_list|,
+name|doSyncWrite
 argument_list|)
 expr_stmt|;
 if|if
