@@ -369,6 +369,12 @@ name|String
 name|getNameDirSize
 parameter_list|()
 function_decl|;
+comment|/**    * Verifies whether the cluster setup can support all enabled EC policies.    *    * @return the result of the verification    */
+DECL|method|getVerifyECWithTopologyResult ()
+name|String
+name|getVerifyECWithTopologyResult
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -5448,6 +5448,26 @@ name|size
 argument_list|()
 return|;
 block|}
+comment|/** @return the number of datanodes. */
+DECL|method|getNumOfDataNodes ()
+specifier|public
+name|int
+name|getNumOfDataNodes
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+return|return
+name|datanodeMap
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+block|}
 comment|/** @return list of datanodes where decommissioning is in progress. */
 DECL|method|getDecommissioningNodes ()
 specifier|public

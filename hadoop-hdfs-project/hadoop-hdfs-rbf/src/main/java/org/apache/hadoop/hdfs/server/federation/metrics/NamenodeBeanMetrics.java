@@ -3030,6 +3030,18 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getVerifyECWithTopologyResult ()
+specifier|public
+name|String
+name|getVerifyECWithTopologyResult
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
