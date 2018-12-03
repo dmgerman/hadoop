@@ -103,6 +103,26 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
 operator|.
 name|ChecksumType
 import|;
@@ -323,8 +343,9 @@ name|bytesPerChecksum
 operator|=
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT
+name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT_BYTES
 expr_stmt|;
+comment|// Default is 1MB
 block|}
 comment|/**    * Computes checksum for give data.    * @param byteString input data in the form of ByteString.    * @return ChecksumData computed for input data.    */
 DECL|method|computeChecksum (ByteString byteString)
@@ -955,6 +976,33 @@ name|verifyChecksumDataMatches
 argument_list|(
 name|computedChecksumData
 argument_list|)
+return|;
+block|}
+comment|/**    * Returns a ChecksumData with type NONE for testing.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getNoChecksumDataProto ()
+specifier|public
+specifier|static
+name|ContainerProtos
+operator|.
+name|ChecksumData
+name|getNoChecksumDataProto
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ChecksumData
+argument_list|(
+name|ChecksumType
+operator|.
+name|NONE
+argument_list|,
+literal|0
+argument_list|)
+operator|.
+name|getProtoBufMessage
+argument_list|()
 return|;
 block|}
 block|}

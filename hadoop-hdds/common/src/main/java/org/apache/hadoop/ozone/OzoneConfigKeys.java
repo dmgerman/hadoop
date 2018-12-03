@@ -1253,14 +1253,22 @@ DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|String
 name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT
+init|=
+literal|"1MB"
+decl_stmt|;
+DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT_BYTES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT_BYTES
 init|=
 literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-comment|// 1 MB
 DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM_MIN_SIZE
 specifier|public
 specifier|static

@@ -1364,9 +1364,12 @@ expr_stmt|;
 name|int
 name|configuredChecksumSize
 init|=
+operator|(
+name|int
+operator|)
 name|conf
 operator|.
-name|getInt
+name|getStorageSize
 argument_list|(
 name|OzoneConfigKeys
 operator|.
@@ -1375,6 +1378,10 @@ argument_list|,
 name|OzoneConfigKeys
 operator|.
 name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT
+argument_list|,
+name|StorageUnit
+operator|.
+name|BYTES
 argument_list|)
 decl_stmt|;
 name|int
