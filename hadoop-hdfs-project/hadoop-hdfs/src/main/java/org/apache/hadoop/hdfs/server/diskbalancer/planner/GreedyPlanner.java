@@ -260,6 +260,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+specifier|final
 name|long
 name|startTime
 init|=
@@ -339,6 +340,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+specifier|final
 name|long
 name|endTime
 init|=
@@ -347,14 +349,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|String
-name|message
-init|=
-name|String
+name|LOG
 operator|.
-name|format
+name|info
 argument_list|(
-literal|"Compute Plan for Node : %s:%d took %d ms "
+literal|"Compute Plan for Node : {}:{} took {} ms"
 argument_list|,
 name|node
 operator|.
@@ -369,13 +368,6 @@ argument_list|,
 name|endTime
 operator|-
 name|startTime
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|message
 argument_list|)
 expr_stmt|;
 return|return
@@ -548,9 +540,6 @@ argument_list|(
 literal|"Step : {} "
 argument_list|,
 name|nextStep
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|plan
@@ -562,14 +551,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|String
-name|message
-init|=
-name|String
+name|LOG
 operator|.
-name|format
+name|info
 argument_list|(
-literal|"Disk Volume set %s Type : %s plan completed."
+literal|"Disk Volume set {} - Type : {} plan completed."
 argument_list|,
 name|currentSet
 operator|.
@@ -589,7 +575,7 @@ operator|.
 name|getStorageType
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|plan
 operator|.
 name|setNodeName
@@ -628,13 +614,6 @@ name|node
 operator|.
 name|getDataNodePort
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|message
 argument_list|)
 expr_stmt|;
 block|}
@@ -903,10 +882,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Next Step: {}"
+argument_list|,
 name|nextStep
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
