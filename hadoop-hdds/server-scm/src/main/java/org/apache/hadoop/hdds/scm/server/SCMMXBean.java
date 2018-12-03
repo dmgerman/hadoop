@@ -111,6 +111,17 @@ name|double
 name|getChillModeCurrentContainerThreshold
 parameter_list|()
 function_decl|;
+comment|/**    * Returns the container count in all states.    */
+DECL|method|getContainerStateCount ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Integer
+argument_list|>
+name|getContainerStateCount
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
