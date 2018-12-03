@@ -20,16 +20,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Arrays
@@ -395,8 +385,6 @@ name|void
 name|testGetGroups
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
 name|NamingException
 block|{
 comment|// given a user whose ldap query returns a user object with three "memberOf"
@@ -439,29 +427,21 @@ argument_list|>
 name|expectedGroups
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
 name|NamingException
 block|{
+name|String
+name|ldapUrl
+init|=
+literal|"ldap://test"
+decl_stmt|;
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-comment|// Set this, so we don't throw an exception
-name|conf
-operator|.
-name|set
+name|getBaseConf
 argument_list|(
-name|LdapGroupsMapping
-operator|.
-name|LDAP_URL_KEY
-argument_list|,
-literal|"ldap://test"
+name|ldapUrl
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// enable single-query lookup
 name|conf
 operator|.
