@@ -351,6 +351,18 @@ literal|"    delimiter. The default delimiter is \\t, though this may be\n"
 operator|+
 literal|"    changed via the -delimiter argument.\n"
 operator|+
+literal|"  * DetectCorruption: Detect potential corruption of the image by\n"
+operator|+
+literal|"    selectively loading parts of it and actively searching for\n"
+operator|+
+literal|"    inconsistencies. Outputs a summary of the found corruptions\n"
+operator|+
+literal|"    in a delimited format.\n"
+operator|+
+literal|"    Note that the check is not exhaustive, and only catches\n"
+operator|+
+literal|"    missing nodes during the namespace reconstruction.\n"
+operator|+
 literal|"\n"
 operator|+
 literal|"Required command line arguments:\n"
@@ -375,17 +387,23 @@ literal|"-p,--processor<arg>   Select which type of processor to apply\n"
 operator|+
 literal|"                       against image file. (XML|FileDistribution|\n"
 operator|+
-literal|"                       ReverseXML|Web|Delimited)\n"
+literal|"                       ReverseXML|Web|Delimited|DetectCorruption)\n"
 operator|+
 literal|"                       The default is Web.\n"
 operator|+
-literal|"-delimiter<arg>       Delimiting string to use with Delimited processor.  \n"
+literal|"-delimiter<arg>       Delimiting string to use with Delimited or \n"
 operator|+
-literal|"-t,--temp<arg>        Use temporary dir to cache intermediate result to generate\n"
+literal|"                       DetectCorruption processor. \n"
 operator|+
-literal|"                       Delimited outputs. If not set, Delimited processor constructs\n"
+literal|"-t,--temp<arg>        Use temporary dir to cache intermediate\n"
 operator|+
-literal|"                       the namespace in memory before outputting text.\n"
+literal|"                       result to generate DetectCorruption or\n"
+operator|+
+literal|"                       Delimited outputs. If not set, the processor\n"
+operator|+
+literal|"                       constructs the namespace in memory \n"
+operator|+
+literal|"                       before outputting text.\n"
 operator|+
 literal|"-h,--help              Display usage information and exit\n"
 decl_stmt|;
@@ -746,7 +764,7 @@ name|getOptionValue
 argument_list|(
 literal|"delimiter"
 argument_list|,
-name|PBImageDelimitedTextWriter
+name|PBImageTextWriter
 operator|.
 name|DEFAULT_DELIMITER
 argument_list|)
@@ -1060,6 +1078,40 @@ operator|.
 name|visit
 argument_list|(
 name|r
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+case|case
+literal|"DETECTCORRUPTION"
+case|:
+try|try
+init|(
+name|PBImageCorruptionDetector
+name|detector
+init|=
+operator|new
+name|PBImageCorruptionDetector
+argument_list|(
+name|out
+argument_list|,
+name|delimiter
+argument_list|,
+name|tempPath
+argument_list|)
+init|)
+block|{
+name|detector
+operator|.
+name|visit
+argument_list|(
+operator|new
+name|RandomAccessFile
+argument_list|(
+name|inputFile
+argument_list|,
+literal|"r"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
