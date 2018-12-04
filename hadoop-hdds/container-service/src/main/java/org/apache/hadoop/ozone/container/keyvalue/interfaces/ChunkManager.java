@@ -144,8 +144,8 @@ specifier|public
 interface|interface
 name|ChunkManager
 block|{
-comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param stage - Chunk Stage write.    * @throws StorageContainerException    */
-DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, DispatcherContext.WriteChunkStage stage)
+comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param dispatcherContext - dispatcher context info.    * @throws StorageContainerException    */
+DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, DispatcherContext dispatcherContext)
 name|void
 name|writeChunk
 parameter_list|(
@@ -162,15 +162,13 @@ name|ByteBuffer
 name|data
 parameter_list|,
 name|DispatcherContext
-operator|.
-name|WriteChunkStage
-name|stage
+name|dispatcherContext
 parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param readFromTmpFile whether to read from tmp chunk file or not    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
-DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, boolean readFromTmpFile)
+comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param dispatcherContext - dispatcher context info.    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, DispatcherContext dispatcherContext)
 name|byte
 index|[]
 name|readChunk
@@ -184,8 +182,8 @@ parameter_list|,
 name|ChunkInfo
 name|info
 parameter_list|,
-name|boolean
-name|readFromTmpFile
+name|DispatcherContext
+name|dispatcherContext
 parameter_list|)
 throws|throws
 name|StorageContainerException

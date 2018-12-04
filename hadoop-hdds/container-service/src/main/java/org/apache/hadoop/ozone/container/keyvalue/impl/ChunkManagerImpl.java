@@ -498,8 +498,8 @@ operator|=
 name|sync
 expr_stmt|;
 block|}
-comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block    * @param info - ChunkInfo    * @param data - data of the chunk    * @param stage - Stage of the Chunk operation    * @throws StorageContainerException    */
-DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, DispatcherContext.WriteChunkStage stage)
+comment|/**    * writes a given chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block    * @param info - ChunkInfo    * @param data - data of the chunk    * @param dispatcherContext - dispatcherContextInfo    * @throws StorageContainerException    */
+DECL|method|writeChunk (Container container, BlockID blockID, ChunkInfo info, ByteBuffer data, DispatcherContext dispatcherContext)
 specifier|public
 name|void
 name|writeChunk
@@ -517,13 +517,28 @@ name|ByteBuffer
 name|data
 parameter_list|,
 name|DispatcherContext
-operator|.
-name|WriteChunkStage
-name|stage
+name|dispatcherContext
 parameter_list|)
 throws|throws
 name|StorageContainerException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|dispatcherContext
+argument_list|)
+expr_stmt|;
+name|DispatcherContext
+operator|.
+name|WriteChunkStage
+name|stage
+init|=
+name|dispatcherContext
+operator|.
+name|getStage
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|KeyValueContainerData
@@ -584,7 +599,7 @@ name|getTmpChunkFile
 argument_list|(
 name|chunkFile
 argument_list|,
-name|info
+name|dispatcherContext
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -720,6 +735,8 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// While committing a chunk , just rename the tmp chunk file which has
+comment|// the same term and log index appended as the current transaction
 name|commitChunk
 argument_list|(
 name|tmpChunkFile
@@ -918,8 +935,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param readFromTmpFile whether to read from tmp chunk file or not.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
-DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, boolean readFromTmpFile)
+comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param dispatcherContext dispatcher context info.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, DispatcherContext dispatcherContext)
 specifier|public
 name|byte
 index|[]
@@ -934,8 +951,8 @@ parameter_list|,
 name|ChunkInfo
 name|info
 parameter_list|,
-name|boolean
-name|readFromTmpFile
+name|DispatcherContext
+name|dispatcherContext
 parameter_list|)
 throws|throws
 name|StorageContainerException
@@ -1014,7 +1031,10 @@ operator|.
 name|exists
 argument_list|()
 operator|&&
-name|readFromTmpFile
+name|dispatcherContext
+operator|.
+name|isReadFromTmpFile
+argument_list|()
 condition|)
 block|{
 name|chunkFile
@@ -1023,7 +1043,7 @@ name|getTmpChunkFile
 argument_list|(
 name|chunkFile
 argument_list|,
-name|info
+name|dispatcherContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1315,8 +1335,8 @@ parameter_list|()
 block|{
 comment|//TODO: need to revisit this during integration of container IO.
 block|}
-comment|/**    * Returns the temporary chunkFile path.    * @param chunkFile    * @param info    * @return temporary chunkFile path    * @throws StorageContainerException    */
-DECL|method|getTmpChunkFile (File chunkFile, ChunkInfo info)
+comment|/**    * Returns the temporary chunkFile path.    * @param chunkFile chunkFileName    * @param dispatcherContext dispatcher context info    * @return temporary chunkFile path    * @throws StorageContainerException    */
+DECL|method|getTmpChunkFile (File chunkFile, DispatcherContext dispatcherContext)
 specifier|private
 name|File
 name|getTmpChunkFile
@@ -1324,11 +1344,9 @@ parameter_list|(
 name|File
 name|chunkFile
 parameter_list|,
-name|ChunkInfo
-name|info
+name|DispatcherContext
+name|dispatcherContext
 parameter_list|)
-throws|throws
-name|StorageContainerException
 block|{
 return|return
 operator|new
@@ -1351,6 +1369,24 @@ operator|+
 name|OzoneConsts
 operator|.
 name|CONTAINER_TEMPORARY_CHUNK_PREFIX
+operator|+
+name|OzoneConsts
+operator|.
+name|CONTAINER_CHUNK_NAME_DELIMITER
+operator|+
+name|dispatcherContext
+operator|.
+name|getTerm
+argument_list|()
+operator|+
+name|OzoneConsts
+operator|.
+name|CONTAINER_CHUNK_NAME_DELIMITER
+operator|+
+name|dispatcherContext
+operator|.
+name|getLogIndex
+argument_list|()
 argument_list|)
 return|;
 block|}
