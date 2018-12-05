@@ -1275,12 +1275,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|finished ()
+DECL|method|finished (boolean unregisterWithoutDelay)
 specifier|public
 specifier|synchronized
 name|void
 name|finished
-parameter_list|()
+parameter_list|(
+name|boolean
+name|unregisterWithoutDelay
+parameter_list|)
 block|{
 if|if
 condition|(
@@ -1311,9 +1314,28 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|unregisterWithoutDelay
+condition|)
+block|{
 name|scheduleTimerTaskForUnregistration
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|ContainerMetrics
+operator|.
+name|unregisterContainerMetrics
+argument_list|(
+name|ContainerMetrics
+operator|.
+name|this
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|pMemMBQuantiles

@@ -2416,8 +2416,8 @@ name|warn
 argument_list|(
 literal|"Uncaught exception in ContainersMonitorImpl "
 operator|+
-literal|"while monitoring resource of "
-operator|+
+literal|"while monitoring resource of {}"
+argument_list|,
 name|containerId
 argument_list|,
 name|e
@@ -3679,6 +3679,14 @@ break|break;
 case|case
 name|STOP_MONITORING_CONTAINER
 case|:
+name|ContainerStopMonitoringEvent
+name|stopEvent
+init|=
+operator|(
+name|ContainerStopMonitoringEvent
+operator|)
+name|monitoringEvent
+decl_stmt|;
 name|usageMetrics
 operator|=
 name|ContainerMetrics
@@ -3698,7 +3706,12 @@ block|{
 name|usageMetrics
 operator|.
 name|finished
+argument_list|(
+name|stopEvent
+operator|.
+name|isForReInit
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 break|break;
