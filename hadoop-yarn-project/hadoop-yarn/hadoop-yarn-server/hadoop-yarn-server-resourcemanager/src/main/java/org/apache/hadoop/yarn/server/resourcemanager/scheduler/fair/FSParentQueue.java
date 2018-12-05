@@ -1078,9 +1078,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Assign container precheck on node "
+literal|"Assign container precheck for queue "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" on node "
 operator|+
 name|node
+operator|.
+name|getNodeName
+argument_list|()
 operator|+
 literal|" failed"
 argument_list|)
@@ -1121,6 +1129,41 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Node "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" offered to parent queue: "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" visiting "
+operator|+
+name|childQueues
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" children"
+argument_list|)
+expr_stmt|;
+block|}
 name|sortedChildQueues
 operator|.
 name|addAll
