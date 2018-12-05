@@ -302,16 +302,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** Minimum amount of active connections: 50%. */
-DECL|field|MIN_ACTIVE_RATIO
-specifier|protected
-specifier|static
-specifier|final
-name|float
-name|MIN_ACTIVE_RATIO
-init|=
-literal|0.5f
-decl_stmt|;
 comment|/** Configuration for the connection manager, pool and sockets. */
 DECL|field|conf
 specifier|private
@@ -334,6 +324,13 @@ specifier|private
 specifier|final
 name|int
 name|maxSize
+decl_stmt|;
+comment|/** Min ratio of active connections per user + nn. */
+DECL|field|minActiveRatio
+specifier|private
+specifier|final
+name|float
+name|minActiveRatio
 decl_stmt|;
 comment|/** How often we close a pool for a particular user + nn. */
 DECL|field|poolCleanupPeriodMs
@@ -454,7 +451,7 @@ name|conf
 operator|=
 name|config
 expr_stmt|;
-comment|// Configure minimum and maximum connection pools
+comment|// Configure minimum, maximum and active connection pools
 name|this
 operator|.
 name|maxSize
@@ -472,6 +469,25 @@ argument_list|,
 name|RBFConfigKeys
 operator|.
 name|DFS_ROUTER_NAMENODE_CONNECTION_POOL_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|minActiveRatio
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getFloat
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_NAMENODE_CONNECTION_MIN_ACTIVE_RATIO
+argument_list|,
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_NAMENODE_CONNECTION_MIN_ACTIVE_RATIO_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// Map with the connections indexed by UGI and Namenode
@@ -898,6 +914,10 @@ name|this
 operator|.
 name|maxSize
 argument_list|,
+name|this
+operator|.
+name|minActiveRatio
+argument_list|,
 name|protocol
 argument_list|)
 expr_stmt|;
@@ -1321,6 +1341,14 @@ operator|.
 name|getNumActiveConnections
 argument_list|()
 decl_stmt|;
+name|float
+name|poolMinActiveRatio
+init|=
+name|pool
+operator|.
+name|getMinActiveRatio
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|timeSinceLastActive
@@ -1329,7 +1357,7 @@ name|connectionCleanupPeriodMs
 operator|||
 name|active
 operator|<
-name|MIN_ACTIVE_RATIO
+name|poolMinActiveRatio
 operator|*
 name|total
 condition|)
@@ -1689,6 +1717,14 @@ operator|.
 name|getNumActiveConnections
 argument_list|()
 decl_stmt|;
+name|float
+name|poolMinActiveRatio
+init|=
+name|pool
+operator|.
+name|getMinActiveRatio
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|pool
@@ -1703,7 +1739,7 @@ argument_list|()
 operator|&&
 name|active
 operator|>=
-name|MIN_ACTIVE_RATIO
+name|poolMinActiveRatio
 operator|*
 name|total
 condition|)

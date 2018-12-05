@@ -624,6 +624,13 @@ specifier|final
 name|int
 name|maxSize
 decl_stmt|;
+comment|/** Min ratio of active connections per user. */
+DECL|field|minActiveRatio
+specifier|private
+specifier|final
+name|float
+name|minActiveRatio
+decl_stmt|;
 comment|/** The last time a connection was active. */
 DECL|field|lastActiveTime
 specifier|private
@@ -633,7 +640,7 @@ name|lastActiveTime
 init|=
 literal|0
 decl_stmt|;
-DECL|method|ConnectionPool (Configuration config, String address, UserGroupInformation user, int minPoolSize, int maxPoolSize, Class<?> proto)
+DECL|method|ConnectionPool (Configuration config, String address, UserGroupInformation user, int minPoolSize, int maxPoolSize, float minActiveRatio, Class<?> proto)
 specifier|protected
 name|ConnectionPool
 parameter_list|(
@@ -651,6 +658,9 @@ name|minPoolSize
 parameter_list|,
 name|int
 name|maxPoolSize
+parameter_list|,
+name|float
+name|minActiveRatio
 parameter_list|,
 name|Class
 argument_list|<
@@ -718,6 +728,12 @@ operator|.
 name|maxSize
 operator|=
 name|maxPoolSize
+expr_stmt|;
+name|this
+operator|.
+name|minActiveRatio
+operator|=
+name|minActiveRatio
 expr_stmt|;
 comment|// Add minimum connections to the pool
 for|for
@@ -793,6 +809,19 @@ return|return
 name|this
 operator|.
 name|minSize
+return|;
+block|}
+comment|/**    * Get the minimum ratio of active connections in this pool.    *    * @return Minimum ratio of active connections.    */
+DECL|method|getMinActiveRatio ()
+specifier|protected
+name|float
+name|getMinActiveRatio
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|minActiveRatio
 return|;
 block|}
 comment|/**    * Get the connection pool identifier.    *    * @return Connection pool identifier.    */
