@@ -8550,6 +8550,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|// app could have finished between pre check and now
 name|SchedulerApplication
 argument_list|<
 name|FSAppAttempt
@@ -8582,18 +8583,20 @@ literal|" not found."
 argument_list|)
 throw|;
 block|}
+name|FSLeafQueue
+name|targetQueue
+init|=
+literal|null
+decl_stmt|;
+comment|// To serialize with FairScheduler#allocate, synchronize on app attempt
 name|FSAppAttempt
 name|attempt
 init|=
-operator|(
-name|FSAppAttempt
-operator|)
 name|app
 operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
-comment|// To serialize with FairScheduler#allocate, synchronize on app attempt
 name|attempt
 operator|.
 name|getWriteLock
@@ -8656,9 +8659,10 @@ argument_list|(
 name|queueName
 argument_list|)
 decl_stmt|;
-name|FSLeafQueue
+comment|// Prevent removal of the queue while the move is in progress by
+comment|// registering the app as submitted to the queue.
 name|targetQueue
-init|=
+operator|=
 name|queueMgr
 operator|.
 name|getLeafQueue
@@ -8666,8 +8670,10 @@ argument_list|(
 name|destQueueName
 argument_list|,
 literal|false
+argument_list|,
+name|appId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|targetQueue
@@ -8721,6 +8727,7 @@ name|targetQueue
 argument_list|)
 expr_stmt|;
 block|}
+comment|// The move itself will clean up the app submit registration.
 name|executeMove
 argument_list|(
 name|app
@@ -8741,6 +8748,22 @@ return|;
 block|}
 finally|finally
 block|{
+comment|// Cleanup the submit registration in case of move failure.
+if|if
+condition|(
+name|targetQueue
+operator|!=
+literal|null
+condition|)
+block|{
+name|targetQueue
+operator|.
+name|removeAssignedApp
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+block|}
 name|attempt
 operator|.
 name|getWriteLock
@@ -8760,6 +8783,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Perform pre-checks while moving the application. This should not check any    * application values that can change since the check is not part of an    * atomic action. During a move the scheduler can still assign containers and    * the app can still be updated until the real move is performed under    * proper locking.    *    * @param appId The ID of the app to be moved    * @param newQueue The name of the queue the app should move to    * @throws YarnException if the validate fails    */
 annotation|@
 name|Override
 DECL|method|preValidateMoveApplication (ApplicationId appId, String newQueue)
@@ -8815,36 +8839,9 @@ literal|" not found."
 argument_list|)
 throw|;
 block|}
-name|FSAppAttempt
-name|attempt
-init|=
-name|app
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-decl_stmt|;
-comment|// To serialize with FairScheduler#allocate, synchronize on app attempt
-name|attempt
-operator|.
-name|getWriteLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|FSLeafQueue
-name|oldQueue
-init|=
-operator|(
-name|FSLeafQueue
-operator|)
-name|app
-operator|.
-name|getQueue
-argument_list|()
-decl_stmt|;
+comment|// Do not register the app on the new queue: lots of things can still
+comment|// change between this check and the real move and unregistering the move
+comment|// becomes a problem.
 name|String
 name|destQueueName
 init|=
@@ -8883,38 +8880,6 @@ operator|+
 literal|" not found or is not a leaf queue."
 argument_list|)
 throw|;
-block|}
-if|if
-condition|(
-name|oldQueue
-operator|.
-name|isRunnableApp
-argument_list|(
-name|attempt
-argument_list|)
-condition|)
-block|{
-name|verifyMoveDoesNotViolateConstraints
-argument_list|(
-name|attempt
-argument_list|,
-name|oldQueue
-argument_list|,
-name|targetQueue
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
-name|attempt
-operator|.
-name|getWriteLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 finally|finally
