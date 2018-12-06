@@ -748,6 +748,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|util
+operator|.
+name|LifeCycle
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|AfterClass
@@ -9453,6 +9467,74 @@ argument_list|)
 argument_list|)
 argument_list|,
 name|scmAddress
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test that OM Ratis server is started only when OZONE_OM_RATIS_ENABLE_KEY is    * set to true.    */
+annotation|@
+name|Test
+DECL|method|testRatsiServerOnOmInitialization ()
+specifier|public
+name|void
+name|testRatsiServerOnOmInitialization
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// OM Ratis server should not be started when OZONE_OM_RATIS_ENABLE_KEY
+comment|// is not set to true
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+literal|"OM Ratis server started though OM Ratis is disabled."
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getOmRatisServerState
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Enable OM Ratis and restart OM
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_RATIS_ENABLE_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|restartOzoneManager
+argument_list|()
+expr_stmt|;
+comment|// On enabling OM Ratis, the Ratis server should be started
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"OM Ratis server did not start"
+argument_list|,
+name|LifeCycle
+operator|.
+name|State
+operator|.
+name|RUNNING
+argument_list|,
+name|cluster
+operator|.
+name|getOzoneManager
+argument_list|()
+operator|.
+name|getOmRatisServerState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

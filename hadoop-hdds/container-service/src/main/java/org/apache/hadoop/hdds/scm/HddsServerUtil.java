@@ -1284,17 +1284,35 @@ name|storageDir
 argument_list|)
 condition|)
 block|{
+name|storageDir
+operator|=
+name|getDefaultRatisDirectory
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|storageDir
+return|;
+block|}
+DECL|method|getDefaultRatisDirectory (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getDefaultRatisDirectory
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Storage directory for Ratis is not configured."
+literal|"Storage directory for Ratis is not configured. It is a good "
 operator|+
-literal|"Mapping Ratis storage under {}. It is a good idea "
-operator|+
-literal|"to map this to an SSD disk. Falling back to {}"
-argument_list|,
-name|storageDir
+literal|"idea to map this to an SSD disk. Falling back to {}"
 argument_list|,
 name|HddsConfigKeys
 operator|.
@@ -1311,8 +1329,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|storageDir
-operator|=
+return|return
 operator|(
 operator|new
 name|File
@@ -1325,10 +1342,6 @@ operator|)
 operator|.
 name|getPath
 argument_list|()
-expr_stmt|;
-block|}
-return|return
-name|storageDir
 return|;
 block|}
 block|}
