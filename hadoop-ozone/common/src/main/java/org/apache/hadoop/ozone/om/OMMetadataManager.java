@@ -20,15 +20,21 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|annotations
+name|util
 operator|.
-name|VisibleForTesting
+name|List
 import|;
 end_import
 
@@ -126,6 +132,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|VolumeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|db
@@ -152,21 +178,15 @@ end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|common
 operator|.
-name|util
+name|annotations
 operator|.
-name|List
+name|VisibleForTesting
 import|;
 end_import
 
@@ -215,8 +235,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Given a volume return the corresponding DB key.    *    * @param volume - Volume name    */
 DECL|method|getVolumeKey (String volume)
-name|byte
-index|[]
+name|String
 name|getVolumeKey
 parameter_list|(
 name|String
@@ -225,8 +244,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Given a user return the corresponding DB key.    *    * @param user - User name    */
 DECL|method|getUserKey (String user)
-name|byte
-index|[]
+name|String
 name|getUserKey
 parameter_list|(
 name|String
@@ -235,8 +253,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Given a volume and bucket, return the corresponding DB key.    *    * @param volume - User name    * @param bucket - Bucket name    */
 DECL|method|getBucketKey (String volume, String bucket)
-name|byte
-index|[]
+name|String
 name|getBucketKey
 parameter_list|(
 name|String
@@ -246,11 +263,10 @@ name|String
 name|bucket
 parameter_list|)
 function_decl|;
-comment|/**    * Given a volume, bucket and a key, return the corresponding DB key.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @return bytes of DB key.    */
-DECL|method|getOzoneKeyBytes (String volume, String bucket, String key)
-name|byte
-index|[]
-name|getOzoneKeyBytes
+comment|/**    * Given a volume, bucket and a key, return the corresponding DB key.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key    - key name    * @return DB key as String.    */
+DECL|method|getOzoneKey (String volume, String bucket, String key)
+name|String
+name|getOzoneKey
 parameter_list|(
 name|String
 name|volume
@@ -263,10 +279,9 @@ name|key
 parameter_list|)
 function_decl|;
 comment|/**    * Returns the DB key name of a open key in OM metadata store. Should be    * #open# prefix followed by actual key name.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param id - the id for this open    * @return bytes of DB key.    */
-DECL|method|getOpenKeyBytes (String volume, String bucket, String key, long id)
-name|byte
-index|[]
-name|getOpenKeyBytes
+DECL|method|getOpenKey (String volume, String bucket, String key, long id)
+name|String
+name|getOpenKey
 parameter_list|(
 name|String
 name|volume
@@ -407,11 +422,9 @@ comment|/**    * Returns the user Table.    *    * @return UserTable.    */
 DECL|method|getUserTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|VolumeList
 argument_list|>
 name|getUserTable
 parameter_list|()
@@ -420,11 +433,9 @@ comment|/**    * Returns the Volume Table.    *    * @return VolumeTable.    */
 DECL|method|getVolumeTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|OmVolumeArgs
 argument_list|>
 name|getVolumeTable
 parameter_list|()
@@ -433,11 +444,9 @@ comment|/**    * Returns the BucketTable.    *    * @return BucketTable.    */
 DECL|method|getBucketTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|OmBucketInfo
 argument_list|>
 name|getBucketTable
 parameter_list|()
@@ -446,11 +455,9 @@ comment|/**    * Returns the KeyTable.    *    * @return KeyTable.    */
 DECL|method|getKeyTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|OmKeyInfo
 argument_list|>
 name|getKeyTable
 parameter_list|()
@@ -459,11 +466,9 @@ comment|/**    * Get Deleted Table.    *    * @return Deleted Table.    */
 DECL|method|getDeletedTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|OmKeyInfo
 argument_list|>
 name|getDeletedTable
 parameter_list|()
@@ -472,11 +477,9 @@ comment|/**    * Gets the OpenKeyTable.    *    * @return Table.    */
 DECL|method|getOpenKeyTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|OmKeyInfo
 argument_list|>
 name|getOpenKeyTable
 parameter_list|()

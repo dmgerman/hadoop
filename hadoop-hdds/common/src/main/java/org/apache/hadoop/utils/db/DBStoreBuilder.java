@@ -318,6 +318,11 @@ specifier|private
 name|Configuration
 name|configuration
 decl_stmt|;
+DECL|field|registry
+specifier|private
+name|CodecRegistry
+name|registry
+decl_stmt|;
 DECL|method|DBStoreBuilder (Configuration configuration)
 specifier|private
 name|DBStoreBuilder
@@ -345,6 +350,14 @@ operator|.
 name|configuration
 operator|=
 name|configuration
+expr_stmt|;
+name|this
+operator|.
+name|registry
+operator|=
+operator|new
+name|CodecRegistry
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|newBuilder (Configuration configuration)
@@ -413,6 +426,40 @@ operator|.
 name|add
 argument_list|(
 name|tableName
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|addCodec (Class<T> type, Codec<T> codec)
+specifier|public
+parameter_list|<
+name|T
+parameter_list|>
+name|DBStoreBuilder
+name|addCodec
+parameter_list|(
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|type
+parameter_list|,
+name|Codec
+argument_list|<
+name|T
+argument_list|>
+name|codec
+parameter_list|)
+block|{
+name|registry
+operator|.
+name|addCodec
+argument_list|(
+name|type
+argument_list|,
+name|codec
 argument_list|)
 expr_stmt|;
 return|return
@@ -622,6 +669,8 @@ argument_list|,
 name|options
 argument_list|,
 name|tables
+argument_list|,
+name|registry
 argument_list|)
 return|;
 block|}

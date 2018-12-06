@@ -31,7 +31,7 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Convert object to raw persisted format.    */
+comment|/**    * Convert object to raw persisted format.    * @param object The original java object. Should not be null.    */
 DECL|method|toPersistedFormat (T object)
 name|byte
 index|[]
@@ -41,7 +41,7 @@ name|T
 name|object
 parameter_list|)
 function_decl|;
-comment|/**    * Convert object from raw persisted format.    */
+comment|/**    * Convert object from raw persisted format.    *    * @param rawData Byte array from the key/value store. Should not be null.    */
 DECL|method|fromPersistedFormat (byte[] rawData)
 name|T
 name|fromPersistedFormat

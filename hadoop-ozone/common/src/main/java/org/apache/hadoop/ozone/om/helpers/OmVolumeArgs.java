@@ -904,6 +904,15 @@ operator|.
 name|setCreationTime
 argument_list|(
 name|creationTime
+operator|==
+literal|0
+condition|?
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+else|:
+name|creationTime
 argument_list|)
 operator|.
 name|build

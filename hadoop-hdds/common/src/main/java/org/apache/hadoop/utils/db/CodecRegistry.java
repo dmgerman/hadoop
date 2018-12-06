@@ -38,6 +38,20 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Collection of available codecs.  */
 end_comment
@@ -109,6 +123,17 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|rawData
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
 name|valueCodecs
 operator|.
 name|containsKey
@@ -161,6 +186,15 @@ name|T
 name|object
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|object
+argument_list|,
+literal|"Null value shouldn't be persisted in the database"
+argument_list|)
+expr_stmt|;
 name|Class
 argument_list|<
 name|T
@@ -228,6 +262,38 @@ name|format
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Addds codec to the internal collection.    *    * @param type  Type of the codec source/destination object.    * @param codec The codec itself.    * @param<T>   The type of the codec    */
+DECL|method|addCodec (Class<T> type, Codec<T> codec)
+specifier|public
+parameter_list|<
+name|T
+parameter_list|>
+name|void
+name|addCodec
+parameter_list|(
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|type
+parameter_list|,
+name|Codec
+argument_list|<
+name|T
+argument_list|>
+name|codec
+parameter_list|)
+block|{
+name|valueCodecs
+operator|.
+name|put
+argument_list|(
+name|type
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
