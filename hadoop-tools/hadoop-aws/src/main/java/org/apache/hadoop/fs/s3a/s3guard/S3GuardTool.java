@@ -5020,7 +5020,7 @@ literal|"  -"
 operator|+
 name|UNGUARDED_FLAG
 operator|+
-literal|" - Require S3Guard to be disabled\n"
+literal|" - Force S3Guard to be disabled\n"
 operator|+
 literal|"  -"
 operator|+
@@ -5164,6 +5164,47 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|CommandFormat
+name|commands
+init|=
+name|getCommandFormat
+argument_list|()
+decl_stmt|;
+comment|// check if UNGUARDED_FLAG is passed and use NullMetadataStore in
+comment|// config to avoid side effects like creating the table if not exists
+if|if
+condition|(
+name|commands
+operator|.
+name|getOpt
+argument_list|(
+name|UNGUARDED_FLAG
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unguarded flag is passed to command :"
+operator|+
+name|this
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|getConf
+argument_list|()
+operator|.
+name|set
+argument_list|(
+name|S3_METADATA_STORE_IMPL
+argument_list|,
+name|S3GUARD_METASTORE_NULL
+argument_list|)
+expr_stmt|;
+block|}
 name|S3AFileSystem
 name|fs
 init|=
@@ -5398,12 +5439,6 @@ argument_list|,
 name|INPUT_FADV_NORMAL
 argument_list|)
 expr_stmt|;
-name|CommandFormat
-name|commands
-init|=
-name|getCommandFormat
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|usingS3Guard
