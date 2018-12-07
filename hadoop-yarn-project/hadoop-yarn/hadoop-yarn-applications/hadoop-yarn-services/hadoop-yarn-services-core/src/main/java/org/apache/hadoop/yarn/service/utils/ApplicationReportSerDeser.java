@@ -22,49 +22,15 @@ end_package
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|JsonGenerationException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|codehaus
+name|fasterxml
 operator|.
 name|jackson
 operator|.
-name|JsonParseException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|core
 operator|.
-name|codehaus
-operator|.
-name|jackson
-operator|.
-name|map
-operator|.
-name|JsonMappingException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
+name|JsonProcessingException
 import|;
 end_import
 
@@ -107,7 +73,7 @@ operator|new
 name|ApplicationReportSerDeser
 argument_list|()
 decl_stmt|;
-comment|/**    * Convert an instance to a JSON string -sync access to a shared ser/deser    * object instance    * @param instance object to convert    * @return a JSON string description    * @throws JsonParseException parse problems    * @throws JsonMappingException O/J mapping problems    */
+comment|/**    * Convert an instance to a JSON string -sync access to a shared ser/deser    * object instance    * @param instance object to convert    * @return a JSON string description    * @throws JsonProcessingException parse problems    */
 DECL|method|toString (SerializedApplicationReport instance)
 specifier|public
 specifier|static
@@ -118,11 +84,7 @@ name|SerializedApplicationReport
 name|instance
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
-name|JsonGenerationException
-throws|,
-name|JsonMappingException
+name|JsonProcessingException
 block|{
 synchronized|synchronized
 init|(
