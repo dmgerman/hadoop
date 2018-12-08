@@ -240,6 +240,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|aliasmap
+operator|.
+name|InMemoryAliasMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|JspHelper
@@ -542,6 +560,15 @@ name|String
 name|STARTUP_PROGRESS_ATTRIBUTE_KEY
 init|=
 literal|"startup.progress"
+decl_stmt|;
+DECL|field|ALIASMAP_ATTRIBUTE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ALIASMAP_ATTRIBUTE_KEY
+init|=
+literal|"name.system.aliasmap"
 decl_stmt|;
 DECL|method|NameNodeHttpServer (Configuration conf, NameNode nn, InetSocketAddress bindAddress)
 name|NameNodeHttpServer
@@ -1600,6 +1627,25 @@ name|prog
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Sets the aliasmap URI.    *    * @param aliasMap the alias map used.    */
+DECL|method|setAliasMap (InMemoryAliasMap aliasMap)
+name|void
+name|setAliasMap
+parameter_list|(
+name|InMemoryAliasMap
+name|aliasMap
+parameter_list|)
+block|{
+name|httpServer
+operator|.
+name|setAttribute
+argument_list|(
+name|ALIASMAP_ATTRIBUTE_KEY
+argument_list|,
+name|aliasMap
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|setupServlets (HttpServer2 httpServer, Configuration conf)
 specifier|private
 specifier|static
@@ -1741,6 +1787,27 @@ argument_list|(
 name|JspHelper
 operator|.
 name|CURRENT_CONF
+argument_list|)
+return|;
+block|}
+DECL|method|getAliasMapFromContext (ServletContext context)
+specifier|static
+name|InMemoryAliasMap
+name|getAliasMapFromContext
+parameter_list|(
+name|ServletContext
+name|context
+parameter_list|)
+block|{
+return|return
+operator|(
+name|InMemoryAliasMap
+operator|)
+name|context
+operator|.
+name|getAttribute
+argument_list|(
+name|ALIASMAP_ATTRIBUTE_KEY
 argument_list|)
 return|;
 block|}

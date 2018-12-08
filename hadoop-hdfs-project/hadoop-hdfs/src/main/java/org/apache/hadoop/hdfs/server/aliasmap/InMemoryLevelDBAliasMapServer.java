@@ -817,6 +817,17 @@ return|return
 name|conf
 return|;
 block|}
+comment|/**    * Get the {@link InMemoryAliasMap} used by this server.    * @return the inmemoryaliasmap used.    */
+DECL|method|getAliasMap ()
+specifier|public
+name|InMemoryAliasMap
+name|getAliasMap
+parameter_list|()
+block|{
+return|return
+name|aliasMap
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()

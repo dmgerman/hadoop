@@ -865,6 +865,15 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"GetImageServlet getAliasMap"
+argument_list|)
+DECL|field|getAliasMap
+name|MutableRate
+name|getAliasMap
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"GetImageServlet putImage"
 argument_list|)
 DECL|field|putImage
@@ -1984,6 +1993,23 @@ name|latency
 parameter_list|)
 block|{
 name|getImage
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addGetAliasMap (long latency)
+specifier|public
+name|void
+name|addGetAliasMap
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|getAliasMap
 operator|.
 name|add
 argument_list|(

@@ -2298,42 +2298,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testNonExistentFile ()
-specifier|public
-name|void
-name|testNonExistentFile
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// delete alias map location
-name|FileUtils
-operator|.
-name|deleteDirectory
-argument_list|(
-name|tempDir
-argument_list|)
-expr_stmt|;
-comment|// expect a RuntimeException when the aliasmap is started.
-name|exception
-operator|.
-name|expect
-argument_list|(
-name|RuntimeException
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|levelDBAliasMapServer
-operator|.
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testNonExistentBlock ()
 specifier|public
 name|void
