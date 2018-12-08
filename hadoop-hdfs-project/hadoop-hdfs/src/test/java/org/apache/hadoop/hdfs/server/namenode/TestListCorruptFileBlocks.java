@@ -513,6 +513,14 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// Files are corrupted with 2 bytes before the end of the file,
+comment|// so that's the minimum length.
+specifier|final
+name|int
+name|corruptionLength
+init|=
+literal|2
+decl_stmt|;
 comment|// create two files with one block each
 name|DFSTestUtil
 name|util
@@ -536,6 +544,11 @@ operator|.
 name|setMaxLevels
 argument_list|(
 literal|1
+argument_list|)
+operator|.
+name|setMinSize
+argument_list|(
+name|corruptionLength
 argument_list|)
 operator|.
 name|setMaxSize
@@ -717,12 +730,7 @@ operator|.
 name|size
 argument_list|()
 operator|-
-literal|2
-decl_stmt|;
-name|int
-name|length
-init|=
-literal|2
+name|corruptionLength
 decl_stmt|;
 name|byte
 index|[]
@@ -731,7 +739,7 @@ init|=
 operator|new
 name|byte
 index|[
-name|length
+name|corruptionLength
 index|]
 decl_stmt|;
 operator|new
@@ -781,7 +789,7 @@ name|position
 operator|+
 literal|" length "
 operator|+
-name|length
+name|corruptionLength
 argument_list|)
 expr_stmt|;
 comment|// read all files to trigger detection of corrupted replica
@@ -1040,6 +1048,14 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// Files are corrupted with 2 bytes before the end of the file,
+comment|// so that's the minimum length.
+specifier|final
+name|int
+name|corruptionLength
+init|=
+literal|2
+decl_stmt|;
 comment|// create two files with one block each
 name|DFSTestUtil
 name|util
@@ -1063,6 +1079,11 @@ operator|.
 name|setMaxLevels
 argument_list|(
 literal|1
+argument_list|)
+operator|.
+name|setMinSize
+argument_list|(
+name|corruptionLength
 argument_list|)
 operator|.
 name|setMaxSize
@@ -1233,12 +1254,7 @@ operator|.
 name|size
 argument_list|()
 operator|-
-literal|2
-decl_stmt|;
-name|int
-name|length
-init|=
-literal|2
+name|corruptionLength
 decl_stmt|;
 name|byte
 index|[]
@@ -1247,7 +1263,7 @@ init|=
 operator|new
 name|byte
 index|[
-name|length
+name|corruptionLength
 index|]
 decl_stmt|;
 operator|new
@@ -1297,7 +1313,7 @@ name|position
 operator|+
 literal|" length "
 operator|+
-name|length
+name|corruptionLength
 argument_list|)
 expr_stmt|;
 comment|// read all files to trigger detection of corrupted replica
