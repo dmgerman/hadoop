@@ -131,6 +131,7 @@ name|ACLType
 name|aclRights
 decl_stmt|;
 DECL|method|RequestContext (String host, InetAddress ip, UserGroupInformation clientUgi, String serviceId, ACLIdentityType aclType, ACLType aclRights)
+specifier|public
 name|RequestContext
 parameter_list|(
 name|String
@@ -368,6 +369,19 @@ name|aclRights
 argument_list|)
 return|;
 block|}
+block|}
+DECL|method|newBuilder ()
+specifier|public
+specifier|static
+name|Builder
+name|newBuilder
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Builder
+argument_list|()
+return|;
 block|}
 DECL|method|getHost ()
 specifier|public

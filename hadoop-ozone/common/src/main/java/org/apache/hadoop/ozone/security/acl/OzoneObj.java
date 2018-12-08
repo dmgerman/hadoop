@@ -73,14 +73,7 @@ specifier|final
 name|StoreType
 name|storeType
 decl_stmt|;
-comment|// Full path of resource.
-DECL|field|path
-specifier|private
-specifier|final
-name|String
-name|path
-decl_stmt|;
-DECL|method|OzoneObj (ResourceType resType, StoreType storeType, String path)
+DECL|method|OzoneObj (ResourceType resType, StoreType storeType)
 name|OzoneObj
 parameter_list|(
 name|ResourceType
@@ -88,22 +81,12 @@ name|resType
 parameter_list|,
 name|StoreType
 name|storeType
-parameter_list|,
-name|String
-name|path
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|path
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
 name|resType
 argument_list|)
 expr_stmt|;
@@ -125,12 +108,6 @@ operator|.
 name|storeType
 operator|=
 name|storeType
-expr_stmt|;
-name|this
-operator|.
-name|path
-operator|=
-name|path
 expr_stmt|;
 block|}
 DECL|method|getResourceType ()
@@ -141,6 +118,35 @@ parameter_list|()
 block|{
 return|return
 name|resType
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"OzoneObj{"
+operator|+
+literal|"resType="
+operator|+
+name|resType
+operator|+
+literal|", storeType="
+operator|+
+name|storeType
+operator|+
+literal|", path='"
+operator|+
+name|getPath
+argument_list|()
+operator|+
+literal|'\''
+operator|+
+literal|'}'
 return|;
 block|}
 DECL|method|getStoreType ()
@@ -176,16 +182,14 @@ parameter_list|()
 function_decl|;
 DECL|method|getPath ()
 specifier|public
+specifier|abstract
 name|String
 name|getPath
 parameter_list|()
-block|{
-return|return
-name|path
-return|;
-block|}
+function_decl|;
 comment|/**    * Ozone Objects supported for ACL.    */
 DECL|enum|ResourceType
+specifier|public
 enum|enum
 name|ResourceType
 block|{
@@ -249,6 +253,7 @@ end_comment
 
 begin_enum
 DECL|enum|StoreType
+specifier|public
 enum|enum
 name|StoreType
 block|{

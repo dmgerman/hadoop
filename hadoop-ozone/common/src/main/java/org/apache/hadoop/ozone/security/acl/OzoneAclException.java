@@ -20,6 +20,16 @@ name|acl
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Timeout exception thrown by Ozone. Ex: When checking ACLs for an Object if  * security manager is not able to process the request in configured time than  * {@link OzoneAclException} should be thrown.  */
 end_comment
@@ -30,7 +40,7 @@ specifier|public
 class|class
 name|OzoneAclException
 extends|extends
-name|Exception
+name|IOException
 block|{
 DECL|field|errorCode
 specifier|private
@@ -78,12 +88,41 @@ operator|=
 name|code
 expr_stmt|;
 block|}
+comment|/**    * Constructs a new exception with {@code null} as its detail message. The    * cause is not initialized, and may subsequently be initialized by a call to    * {@link #initCause}.    */
+DECL|method|OzoneAclException (String errorMsg, ErrorCode code)
+specifier|public
+name|OzoneAclException
+parameter_list|(
+name|String
+name|errorMsg
+parameter_list|,
+name|ErrorCode
+name|code
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|errorMsg
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|code
+expr_stmt|;
+block|}
+comment|/**    * Error codes for OzoneAclException.    */
 DECL|enum|ErrorCode
+specifier|public
 enum|enum
 name|ErrorCode
 block|{
 DECL|enumConstant|TIMEOUT
 name|TIMEOUT
+block|,
+DECL|enumConstant|PERMISSION_DENIED
+name|PERMISSION_DENIED
 block|,
 DECL|enumConstant|OTHER
 name|OTHER
