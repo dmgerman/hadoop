@@ -1519,7 +1519,7 @@ annotation|@
 name|Override
 DECL|method|watchForCommit (long index, long timeout)
 specifier|public
-name|void
+name|long
 name|watchForCommit
 parameter_list|(
 name|long
@@ -1538,8 +1538,21 @@ throws|,
 name|IOException
 block|{
 comment|// there is no notion of watch for commit index in standalone pipeline
+return|return
+literal|0
+return|;
 block|}
 empty_stmt|;
+DECL|method|getReplicatedMinCommitIndex ()
+specifier|public
+name|long
+name|getReplicatedMinCommitIndex
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Returns pipeline Type.    *    * @return - Stand Alone as the type.    */
 annotation|@
 name|Override

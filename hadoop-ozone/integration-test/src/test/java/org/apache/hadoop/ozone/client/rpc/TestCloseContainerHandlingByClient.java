@@ -893,6 +893,22 @@ name|bucketName
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getKeyName ()
+specifier|private
+name|String
+name|getKeyName
+parameter_list|()
+block|{
+return|return
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 comment|/**    * Shutdown MiniDFSCluster.    */
 annotation|@
 name|AfterClass
@@ -930,7 +946,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"standalone"
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|OzoneOutputStream
 name|key
@@ -1136,7 +1153,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"standalone2"
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|OzoneOutputStream
 name|key
@@ -1302,7 +1320,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"standalone3"
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|OzoneOutputStream
 name|key
@@ -1582,10 +1601,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"ratis2"
-decl_stmt|;
-name|long
-name|dataLength
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|OzoneOutputStream
 name|key
@@ -1857,7 +1874,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"standalone5"
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|int
 name|keyLen
@@ -2588,7 +2606,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"discardpreallocatedblocks"
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|OzoneOutputStream
 name|key
@@ -2975,7 +2994,8 @@ block|{
 name|String
 name|keyName
 init|=
-literal|"ratis"
+name|getKeyName
+argument_list|()
 decl_stmt|;
 name|OzoneOutputStream
 name|key

@@ -1106,13 +1106,6 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|xceiverClient
-operator|.
-name|sendCommand
-argument_list|(
-name|request
-argument_list|)
-expr_stmt|;
 return|return
 name|xceiverClient
 operator|.

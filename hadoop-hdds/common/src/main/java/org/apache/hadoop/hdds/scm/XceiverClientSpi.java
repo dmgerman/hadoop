@@ -412,10 +412,11 @@ name|ReplicationType
 name|getPipelineType
 parameter_list|()
 function_decl|;
+comment|/**    * Check if an specfic commitIndex is replicated to majority/all servers.    * @param index index to watch for    * @param timeout timeout provided for the watch ipeartion to complete    * @return the min commit index replicated to all or majority servers    *         in case of a failure    * @throws InterruptedException    * @throws ExecutionException    * @throws TimeoutException    * @throws IOException    */
 DECL|method|watchForCommit (long index, long timeout)
 specifier|public
 specifier|abstract
-name|void
+name|long
 name|watchForCommit
 parameter_list|(
 name|long
@@ -432,6 +433,14 @@ throws|,
 name|TimeoutException
 throws|,
 name|IOException
+function_decl|;
+comment|/**    * returns the min commit index replicated to all servers.    * @return min commit index replicated to all servers.    */
+DECL|method|getReplicatedMinCommitIndex ()
+specifier|public
+specifier|abstract
+name|long
+name|getReplicatedMinCommitIndex
+parameter_list|()
 function_decl|;
 block|}
 end_class

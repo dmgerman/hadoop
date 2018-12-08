@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DispatcherContext class holds transport protocol specfic context info  * required for execution of container commands over the container dispatcher.  */
+comment|/**  * DispatcherContext class holds transport protocol specific context info  * required for execution of container commands over the container dispatcher.  */
 end_comment
 
 begin_class
@@ -311,7 +311,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Builds and returns DatanodeDetails instance.      *      * @return DispatcherContext      */
+comment|/**      * Builds and returns DispatcherContext instance.      *      * @return DispatcherContext      */
 DECL|method|build ()
 specifier|public
 name|DispatcherContext
