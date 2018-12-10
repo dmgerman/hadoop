@@ -728,7 +728,7 @@ name|Configuration
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|assertThatDynamoMetadataStoreImpl
+name|assumeThatDynamoMetadataStoreImpl
 argument_list|(
 name|conf
 argument_list|)
@@ -868,7 +868,7 @@ name|Configuration
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|assertThatDynamoMetadataStoreImpl
+name|assumeThatDynamoMetadataStoreImpl
 argument_list|(
 name|conf
 argument_list|)
@@ -882,11 +882,15 @@ argument_list|(
 name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
 argument_list|)
 expr_stmt|;
-name|Assume
-operator|.
-name|assumeTrue
+comment|// We should assert that the table name is configured, so the test should
+comment|// fail if it's not configured.
+name|assertTrue
 argument_list|(
-literal|"Test DynamoDB table name should be set to run "
+literal|"Test DynamoDB table name '"
+operator|+
+name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+operator|+
+literal|"' should be set to run "
 operator|+
 literal|"integration tests."
 argument_list|,
@@ -895,6 +899,36 @@ operator|!=
 literal|null
 argument_list|)
 expr_stmt|;
+comment|// We should assert that the test table is not the same as the production
+comment|// table, as the test table could be modified and destroyed multiple
+comment|// times during the test.
+name|assertTrue
+argument_list|(
+literal|"Test DynamoDB table name: '"
+operator|+
+name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+operator|+
+literal|"' and production table name: '"
+operator|+
+name|S3GUARD_DDB_TABLE_NAME_KEY
+operator|+
+literal|"' can not be the same."
+argument_list|,
+operator|!
+name|conf
+operator|.
+name|get
+argument_list|(
+name|S3GUARD_DDB_TABLE_NAME_KEY
+argument_list|)
+operator|.
+name|equals
+argument_list|(
+name|testDynamoDBTableName
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// We can use that table in the test if these assertions are valid
 name|conf
 operator|.
 name|set
@@ -985,11 +1019,11 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-DECL|method|assertThatDynamoMetadataStoreImpl (Configuration conf)
+DECL|method|assumeThatDynamoMetadataStoreImpl (Configuration conf)
 specifier|private
 specifier|static
 name|void
-name|assertThatDynamoMetadataStoreImpl
+name|assumeThatDynamoMetadataStoreImpl
 parameter_list|(
 name|Configuration
 name|conf
