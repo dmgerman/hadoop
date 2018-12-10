@@ -492,6 +492,24 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Value of CGroupsHandler is: "
+operator|+
+name|cGroupsHandler
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -1352,10 +1370,21 @@ decl_stmt|;
 if|if
 condition|(
 name|pluginManager
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Plugin manager was null while trying to add "
+operator|+
+literal|"ResourceHandlers from configuration!"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Map
 argument_list|<
 name|String
@@ -1372,10 +1401,54 @@ decl_stmt|;
 if|if
 condition|(
 name|pluginMap
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"List of plugins of ResourcePluginManager was empty "
+operator|+
+literal|"while trying to add ResourceHandlers from configuration!"
+argument_list|)
+expr_stmt|;
+block|}
+return|return;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"List of plugins of ResourcePluginManager: "
+operator|+
+name|pluginManager
+operator|.
+name|getNameToPlugins
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 for|for
 control|(
 name|ResourcePlugin
@@ -1411,8 +1484,6 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 block|}
 DECL|method|getConfiguredResourceHandlerChain ( Configuration conf, Context nmContext)

@@ -374,6 +374,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collections
 import|;
 end_import
@@ -566,6 +576,41 @@ decl_stmt|;
 if|if
 condition|(
 name|plugins
+operator|==
+literal|null
+operator|||
+name|plugins
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"No Resource plugins found from configuration!"
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found Resource plugins from configuration: "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|plugins
+argument_list|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|plugins
 operator|!=
 literal|null
 condition|)
@@ -640,7 +685,15 @@ name|resourceName
 argument_list|)
 condition|)
 block|{
-comment|// Duplicated items, ignore ...
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Ignoring duplicate Resource plugin definition: "
+operator|+
+name|resourceName
+argument_list|)
+expr_stmt|;
 continue|continue;
 block|}
 name|ResourcePlugin
@@ -665,6 +718,7 @@ name|GpuResourcePlugin
 argument_list|()
 expr_stmt|;
 block|}
+elseif|else
 if|if
 condition|(
 name|resourceName
@@ -706,6 +760,15 @@ operator|.
 name|initialize
 argument_list|(
 name|context
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized plugin {}"
+argument_list|,
+name|plugin
 argument_list|)
 expr_stmt|;
 name|pluginMap

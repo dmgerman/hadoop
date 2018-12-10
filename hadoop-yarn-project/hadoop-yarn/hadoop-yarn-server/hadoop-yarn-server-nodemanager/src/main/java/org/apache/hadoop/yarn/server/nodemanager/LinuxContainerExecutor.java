@@ -1844,17 +1844,21 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+specifier|final
+name|boolean
+name|enabled
+init|=
+name|resourceHandlerChain
+operator|!=
+literal|null
+decl_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Resource handler chain enabled = "
 operator|+
-operator|(
-name|resourceHandlerChain
-operator|!=
-literal|null
-operator|)
+name|enabled
 argument_list|)
 expr_stmt|;
 block|}
@@ -1869,7 +1873,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Bootstrapping resource handler chain"
+literal|"Bootstrapping resource handler chain: "
+operator|+
+name|resourceHandlerChain
 argument_list|)
 expr_stmt|;
 name|resourceHandlerChain

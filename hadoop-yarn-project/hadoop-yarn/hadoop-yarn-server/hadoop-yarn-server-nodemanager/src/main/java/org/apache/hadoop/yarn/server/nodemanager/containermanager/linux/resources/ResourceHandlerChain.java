@@ -658,6 +658,31 @@ name|resourceHandlers
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|ResourceHandlerChain
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"{"
+operator|+
+literal|"resourceHandlers="
+operator|+
+name|resourceHandlers
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 

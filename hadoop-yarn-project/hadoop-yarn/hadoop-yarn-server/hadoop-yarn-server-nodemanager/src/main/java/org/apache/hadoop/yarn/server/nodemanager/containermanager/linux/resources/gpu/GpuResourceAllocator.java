@@ -1545,6 +1545,23 @@ return|return
 name|assigns
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|GpuResourceAllocator
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
