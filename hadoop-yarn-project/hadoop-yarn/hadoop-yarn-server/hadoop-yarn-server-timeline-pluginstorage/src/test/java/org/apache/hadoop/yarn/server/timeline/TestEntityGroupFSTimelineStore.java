@@ -1557,6 +1557,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|pathAfter
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
