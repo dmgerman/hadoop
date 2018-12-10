@@ -118,6 +118,24 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmMultipartInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OpenKeySession
 import|;
 end_import
@@ -331,6 +349,17 @@ DECL|method|getDeletingService ()
 name|BackgroundService
 name|getDeletingService
 parameter_list|()
+function_decl|;
+comment|/**    * Initiate multipart upload for the specified key.    * @param keyArgs    * @return MultipartInfo    * @throws IOException    */
+DECL|method|initiateMultipartUpload (OmKeyArgs keyArgs)
+name|OmMultipartInfo
+name|initiateMultipartUpload
+parameter_list|(
+name|OmKeyArgs
+name|keyArgs
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

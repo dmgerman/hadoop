@@ -229,7 +229,10 @@ name|S3_BUCKET_ALREADY_EXISTS
 block|,
 DECL|enumConstant|S3_BUCKET_NOT_FOUND
 name|S3_BUCKET_NOT_FOUND
-block|}
+block|,
+DECL|enumConstant|INITIATE_MULTIPART_UPLOAD_FAILED
+name|INITIATE_MULTIPART_UPLOAD_FAILED
+block|;   }
 block|}
 end_class
 

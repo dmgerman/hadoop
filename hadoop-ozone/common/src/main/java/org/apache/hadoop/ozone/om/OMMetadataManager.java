@@ -120,6 +120,24 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmMultipartKeyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OmVolumeArgs
 import|;
 end_import
@@ -495,6 +513,35 @@ name|byte
 index|[]
 argument_list|>
 name|getS3Table
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the DB key name of a multipart upload key in OM metadata store.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param uploadId - the upload id for this key    * @return bytes of DB key.    */
+DECL|method|getMultipartKey (String volume, String bucket, String key, String uploadId)
+name|String
+name|getMultipartKey
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|bucket
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|String
+name|uploadId
+parameter_list|)
+function_decl|;
+comment|/**    * Gets the multipart info table which holds the information about    * multipart upload information of the keys.    * @return Table    */
+DECL|method|getMultipartInfoTable ()
+name|Table
+argument_list|<
+name|String
+argument_list|,
+name|OmMultipartKeyInfo
+argument_list|>
+name|getMultipartInfoTable
 parameter_list|()
 function_decl|;
 comment|/**    * Returns number of rows in a table.  This should not be used for very    * large tables.    * @param table    * @return long    * @throws IOException    */

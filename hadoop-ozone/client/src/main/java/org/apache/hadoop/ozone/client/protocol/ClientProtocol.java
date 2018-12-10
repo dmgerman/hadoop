@@ -152,6 +152,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmMultipartInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -691,6 +709,29 @@ DECL|method|close ()
 name|void
 name|close
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Initiate Multipart upload.    * @param volumeName    * @param bucketName    * @param keyName    * @param type    * @param factor    * @return {@link OmMultipartInfo}    * @throws IOException    */
+DECL|method|initiateMultipartUpload (String volumeName, String bucketName, String keyName, ReplicationType type, ReplicationFactor factor)
+name|OmMultipartInfo
+name|initiateMultipartUpload
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

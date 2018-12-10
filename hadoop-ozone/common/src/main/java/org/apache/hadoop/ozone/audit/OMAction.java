@@ -100,6 +100,9 @@ name|READ_KEY
 block|,
 DECL|enumConstant|LIST_S3BUCKETS
 name|LIST_S3BUCKETS
+block|,
+DECL|enumConstant|INITIATE_MULTIPART_UPLOAD
+name|INITIATE_MULTIPART_UPLOAD
 block|;
 annotation|@
 name|Override

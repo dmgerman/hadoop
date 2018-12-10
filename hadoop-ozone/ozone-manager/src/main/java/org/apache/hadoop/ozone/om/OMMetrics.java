@@ -326,6 +326,13 @@ name|Metric
 name|MutableCounterLong
 name|numListS3Buckets
 decl_stmt|;
+DECL|field|numInitiateMultipartUploads
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numInitiateMultipartUploads
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -466,6 +473,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numListS3BucketsFails
+decl_stmt|;
+DECL|field|numInitiateMultipartUploadFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numInitiateMultipartUploadFails
 decl_stmt|;
 comment|// Metrics for total number of volumes, buckets and keys
 DECL|field|numVolumes
@@ -937,6 +951,35 @@ name|incr
 argument_list|()
 expr_stmt|;
 name|numListS3BucketsFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumInitiateMultipartUploads ()
+specifier|public
+name|void
+name|incNumInitiateMultipartUploads
+parameter_list|()
+block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numInitiateMultipartUploads
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumInitiateMultipartUploadFails ()
+specifier|public
+name|void
+name|incNumInitiateMultipartUploadFails
+parameter_list|()
+block|{
+name|numInitiateMultipartUploadFails
 operator|.
 name|incr
 argument_list|()
@@ -1879,6 +1922,32 @@ parameter_list|()
 block|{
 return|return
 name|numListS3BucketsFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getNumInitiateMultipartUploads ()
+specifier|public
+name|long
+name|getNumInitiateMultipartUploads
+parameter_list|()
+block|{
+return|return
+name|numInitiateMultipartUploads
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getNumInitiateMultipartUploadFails ()
+specifier|public
+name|long
+name|getNumInitiateMultipartUploadFails
+parameter_list|()
+block|{
+return|return
+name|numInitiateMultipartUploadFails
 operator|.
 name|value
 argument_list|()

@@ -86,7 +86,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets an existing TableStore with implicit key/value conversion.    *    * @param name - Name of the TableStore to get    * @return - TableStore.    * @throws IOException on Failure    */
+comment|/**    * Gets an existing TableStore with implicit key/value conversion.    *    * @param name - Name of the TableStore to get    * @param keyType    * @param valueType    * @return - TableStore.    * @throws IOException on Failure    */
 DECL|method|getTable (String name, Class<KEY> keyType, Class<VALUE> valueType)
 parameter_list|<
 name|KEY

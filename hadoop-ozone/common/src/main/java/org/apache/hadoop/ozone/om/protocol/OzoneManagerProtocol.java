@@ -34,6 +34,24 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmMultipartInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OmBucketArgs
 import|;
 end_import
@@ -573,6 +591,17 @@ name|bucketPrefix
 parameter_list|,
 name|int
 name|maxNumOfBuckets
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Initiate multipart upload for the specified key.    * @param keyArgs    * @return MultipartInfo    * @throws IOException    */
+DECL|method|initiateMultipartUpload (OmKeyArgs keyArgs)
+name|OmMultipartInfo
+name|initiateMultipartUpload
+parameter_list|(
+name|OmKeyArgs
+name|keyArgs
 parameter_list|)
 throws|throws
 name|IOException
