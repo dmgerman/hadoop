@@ -220,7 +220,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ServiceConfigurationError
 import|;
 end_import
 
@@ -795,11 +815,15 @@ operator|.
 name|newHashMap
 argument_list|()
 expr_stmt|;
-for|for
-control|(
+comment|// start the service load process; it's only in the "next()" calls
+comment|// where implementations are loaded.
+specifier|final
+name|Iterator
+argument_list|<
 name|TokenIdentifier
-name|id
-range|:
+argument_list|>
+name|tokenIdentifiers
+init|=
 name|ServiceLoader
 operator|.
 name|load
@@ -808,8 +832,28 @@ name|TokenIdentifier
 operator|.
 name|class
 argument_list|)
-control|)
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|tokenIdentifiers
+operator|.
+name|hasNext
+argument_list|()
+condition|)
 block|{
+try|try
+block|{
+name|TokenIdentifier
+name|id
+init|=
+name|tokenIdentifiers
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
 name|tokenKindMap
 operator|.
 name|put
@@ -825,6 +869,25 @@ name|getClass
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ServiceConfigurationError
+name|e
+parameter_list|)
+block|{
+comment|// failure to load a token implementation
+comment|// log at debug and continue.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to load token identifier implementation"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 name|cls
@@ -848,8 +911,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cannot find class for token kind "
-operator|+
+literal|"Cannot find class for token kind {}"
+argument_list|,
 name|kind
 argument_list|)
 expr_stmt|;
@@ -861,7 +924,7 @@ return|return
 name|cls
 return|;
 block|}
-comment|/**    * Get the token identifier object, or null if it could not be constructed    * (because the class could not be loaded, for example).    * @return the token identifier, or null    * @throws IOException    */
+comment|/**    * Get the token identifier object, or null if it could not be constructed    * (because the class could not be loaded, for example).    * @return the token identifier, or null if there was no class found for it    * @throws IOException failure to unmarshall the data    * @throws RuntimeException if the token class could not be instantiated.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1149,12 +1212,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cloned private token "
-operator|+
+literal|"Cloned private token {} from {}"
+argument_list|,
 name|this
-operator|+
-literal|" from "
-operator|+
+argument_list|,
 name|publicToken
 argument_list|)
 expr_stmt|;
@@ -2107,17 +2168,38 @@ init|(
 name|renewers
 init|)
 block|{
-for|for
-control|(
+name|Iterator
+argument_list|<
 name|TokenRenewer
-name|canidate
-range|:
+argument_list|>
+name|it
+init|=
 name|renewers
-control|)
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|)
 block|{
+try|try
+block|{
+name|TokenRenewer
+name|candidate
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|canidate
+name|candidate
 operator|.
 name|handleKind
 argument_list|(
@@ -2129,11 +2211,30 @@ condition|)
 block|{
 name|renewer
 operator|=
-name|canidate
+name|candidate
 expr_stmt|;
 return|return
 name|renewer
 return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|ServiceConfigurationError
+name|e
+parameter_list|)
+block|{
+comment|// failure to load a token implementation
+comment|// log at debug and continue.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to load token renewer implementation"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -2141,10 +2242,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"No TokenRenewer defined for token kind "
-operator|+
-name|this
-operator|.
+literal|"No TokenRenewer defined for token kind {}"
+argument_list|,
 name|kind
 argument_list|)
 expr_stmt|;

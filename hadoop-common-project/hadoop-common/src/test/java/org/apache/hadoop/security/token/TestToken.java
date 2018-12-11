@@ -136,6 +136,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
+operator|.
+name|intercept
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -526,9 +542,7 @@ name|copy
 init|=
 operator|new
 name|Token
-argument_list|<
-name|AbstractDelegationTokenIdentifier
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// ensure that for each string the input and output values match
@@ -557,14 +571,14 @@ index|[
 name|i
 index|]
 decl_stmt|;
-name|System
+name|Token
 operator|.
-name|out
+name|LOG
 operator|.
-name|println
+name|info
 argument_list|(
-literal|"Input = "
-operator|+
+literal|"Input = {}"
+argument_list|,
 name|val
 argument_list|)
 expr_stmt|;
@@ -572,9 +586,7 @@ name|orig
 operator|=
 operator|new
 name|Token
-argument_list|<
-name|AbstractDelegationTokenIdentifier
-argument_list|>
+argument_list|<>
 argument_list|(
 name|val
 operator|.
@@ -647,42 +659,25 @@ name|token
 init|=
 operator|new
 name|Token
-argument_list|<
-name|AbstractDelegationTokenIdentifier
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|HadoopIllegalArgumentException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
 name|token
 operator|.
 name|decodeFromUrlString
 argument_list|(
 literal|null
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should have thrown HadoopIllegalArgumentException"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|HadoopIllegalArgumentException
-name|e
-parameter_list|)
-block|{
-name|Token
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Test decodeWritable() sanity check success."
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -747,9 +742,7 @@ name|token
 init|=
 operator|new
 name|Token
-argument_list|<
-name|TestDelegationTokenIdentifier
-argument_list|>
+argument_list|<>
 argument_list|(
 name|id
 argument_list|,

@@ -6143,10 +6143,21 @@ name|matches
 argument_list|()
 condition|)
 block|{
-name|fail
-argument_list|()
-expr_stmt|;
 comment|// it failed
+name|fail
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"\"%s\" did not match pattern %s"
+argument_list|,
+name|actual
+argument_list|,
+name|expect
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_function
