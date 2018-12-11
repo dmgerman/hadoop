@@ -822,6 +822,12 @@ name|tagMapToStringParams
 argument_list|(
 name|tagMap
 argument_list|)
+block|,
+name|getFileSystem
+argument_list|()
+operator|.
+name|getBucket
+argument_list|()
 block|}
 decl_stmt|;
 comment|// run
