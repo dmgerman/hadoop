@@ -211,6 +211,16 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
+DECL|enumConstant|GETECPOLICY
+name|GETECPOLICY
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
 DECL|enumConstant|NULL
 name|NULL
 argument_list|(

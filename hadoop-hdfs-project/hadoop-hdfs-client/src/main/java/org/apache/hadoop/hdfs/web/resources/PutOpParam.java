@@ -251,6 +251,16 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
+DECL|enumConstant|SETECPOLICY
+name|SETECPOLICY
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
 DECL|enumConstant|ALLOWSNAPSHOT
 name|ALLOWSNAPSHOT
 argument_list|(
