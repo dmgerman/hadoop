@@ -288,7 +288,7 @@ name|util
 operator|.
 name|resource
 operator|.
-name|ResourceUtils
+name|CustomResourceTypesConfigurationProvider
 import|;
 end_import
 
@@ -307,24 +307,6 @@ operator|.
 name|resource
 operator|.
 name|Resources
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|TestResourceUtils
 import|;
 end_import
 
@@ -427,16 +409,6 @@ operator|.
 name|charset
 operator|.
 name|StandardCharsets
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
 import|;
 end_import
 
@@ -1574,9 +1546,9 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-name|TestResourceUtils
+name|CustomResourceTypesConfigurationProvider
 operator|.
-name|addNewTypesToResources
+name|initResourceTypes
 argument_list|(
 name|A_CUSTOM_RESOURCE
 argument_list|)

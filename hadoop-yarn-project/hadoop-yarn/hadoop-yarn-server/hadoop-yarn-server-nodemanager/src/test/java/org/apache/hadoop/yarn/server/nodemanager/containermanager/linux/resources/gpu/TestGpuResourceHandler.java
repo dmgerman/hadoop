@@ -486,7 +486,7 @@ name|util
 operator|.
 name|resource
 operator|.
-name|TestResourceUtils
+name|CustomResourceTypesConfigurationProvider
 import|;
 end_import
 
@@ -766,9 +766,9 @@ name|void
 name|setup
 parameter_list|()
 block|{
-name|TestResourceUtils
+name|CustomResourceTypesConfigurationProvider
 operator|.
-name|addNewTypesToResources
+name|initResourceTypes
 argument_list|(
 name|ResourceInformation
 operator|.

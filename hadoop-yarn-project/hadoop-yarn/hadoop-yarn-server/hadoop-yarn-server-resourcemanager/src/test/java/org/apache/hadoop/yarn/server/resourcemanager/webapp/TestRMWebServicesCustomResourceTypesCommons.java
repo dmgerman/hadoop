@@ -130,13 +130,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|resourcemanager
-operator|.
-name|webapp
-operator|.
-name|fairscheduler
+name|resource
 operator|.
 name|CustomResourceTypesConfigurationProvider
 import|;
