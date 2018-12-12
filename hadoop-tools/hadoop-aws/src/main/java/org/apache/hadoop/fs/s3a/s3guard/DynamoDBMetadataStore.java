@@ -2617,10 +2617,34 @@ name|hasNext
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// When this class has support for authoritative
-comment|// (fully-cached) directory listings, we may also be able to answer
-comment|// TRUE here.  Until then, we don't know if we have full listing or
-comment|// not, thus the UNKNOWN here:
+comment|// If directory is authoritative, we can set the empty directory flag
+comment|// to TRUE or FALSE. Otherwise FALSE, or UNKNOWN.
+if|if
+condition|(
+name|meta
+operator|.
+name|isAuthoritativeDir
+argument_list|()
+condition|)
+block|{
+name|meta
+operator|.
+name|setIsEmptyDirectory
+argument_list|(
+name|hasChildren
+condition|?
+name|Tristate
+operator|.
+name|FALSE
+else|:
+name|Tristate
+operator|.
+name|TRUE
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|meta
 operator|.
 name|setIsEmptyDirectory
@@ -2636,6 +2660,7 @@ operator|.
 name|UNKNOWN
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
