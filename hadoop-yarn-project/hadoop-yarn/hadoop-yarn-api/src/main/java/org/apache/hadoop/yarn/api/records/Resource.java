@@ -298,18 +298,6 @@ name|resources
 init|=
 literal|null
 decl_stmt|;
-comment|// Number of mandatory resources, this is added to avoid invoke
-comment|// MandatoryResources.values().length, since values() internally will
-comment|// copy array, etc.
-DECL|field|NUM_MANDATORY_RESOURCES
-specifier|protected
-specifier|static
-specifier|final
-name|int
-name|NUM_MANDATORY_RESOURCES
-init|=
-literal|2
-decl_stmt|;
 annotation|@
 name|Private
 DECL|field|MEMORY_INDEX
