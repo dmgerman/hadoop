@@ -218,6 +218,28 @@ name|api
 operator|.
 name|deviceplugin
 operator|.
+name|DevicePluginScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|api
+operator|.
+name|deviceplugin
+operator|.
 name|DeviceRegisterRequest
 import|;
 end_import
@@ -873,6 +895,20 @@ operator|+
 literal|"trying to load the vendor plugins"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|deviceMappingManager
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DeviceMappingManager initialized."
+argument_list|)
+expr_stmt|;
 name|deviceMappingManager
 operator|=
 operator|new
@@ -881,6 +917,7 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 index|[]
 name|pluginClassNames
@@ -1173,6 +1210,50 @@ argument_list|,
 name|pluginAdapter
 argument_list|)
 expr_stmt|;
+comment|// If the device plugin implements DevicePluginScheduler interface
+if|if
+condition|(
+name|dpInstance
+operator|instanceof
+name|DevicePluginScheduler
+condition|)
+block|{
+comment|// check DevicePluginScheduler interface compatibility
+name|checkInterfaceCompatibility
+argument_list|(
+name|DevicePluginScheduler
+operator|.
+name|class
+argument_list|,
+name|pluginClazz
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"{} can schedule {} devices."
+operator|+
+literal|"Added as preferred device plugin scheduler"
+argument_list|,
+name|pluginClassName
+argument_list|,
+name|resourceName
+argument_list|)
+expr_stmt|;
+name|deviceMappingManager
+operator|.
+name|addDevicePluginScheduler
+argument_list|(
+name|resourceName
+argument_list|,
+operator|(
+name|DevicePluginScheduler
+operator|)
+name|dpInstance
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// end for
 block|}
@@ -1395,6 +1476,24 @@ block|}
 return|return
 literal|true
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setDeviceMappingManager ( DeviceMappingManager deviceMappingManager)
+specifier|public
+name|void
+name|setDeviceMappingManager
+parameter_list|(
+name|DeviceMappingManager
+name|deviceMappingManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deviceMappingManager
+operator|=
+name|deviceMappingManager
+expr_stmt|;
 block|}
 DECL|method|getDeviceMappingManager ()
 specifier|public

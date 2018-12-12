@@ -315,15 +315,15 @@ specifier|private
 name|DeviceMappingManager
 name|deviceMappingManager
 decl_stmt|;
-DECL|field|deviceResourceUpdater
-specifier|private
-name|DeviceResourceUpdaterImpl
-name|deviceResourceUpdater
-decl_stmt|;
 DECL|field|deviceResourceHandler
 specifier|private
 name|DeviceResourceHandlerImpl
 name|deviceResourceHandler
+decl_stmt|;
+DECL|field|deviceResourceUpdater
+specifier|private
+name|DeviceResourceUpdaterImpl
+name|deviceResourceUpdater
 decl_stmt|;
 DECL|method|DevicePluginAdapter (String name, DevicePlugin dp, DeviceMappingManager dmm)
 specifier|public
