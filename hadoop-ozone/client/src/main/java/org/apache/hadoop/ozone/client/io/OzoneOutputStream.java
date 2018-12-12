@@ -22,6 +22,24 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmMultipartCommitUploadPartInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -161,6 +179,36 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getCommitUploadPartInfo ()
+specifier|public
+name|OmMultipartCommitUploadPartInfo
+name|getCommitUploadPartInfo
+parameter_list|()
+block|{
+if|if
+condition|(
+name|outputStream
+operator|instanceof
+name|ChunkGroupOutputStream
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|ChunkGroupOutputStream
+operator|)
+name|outputStream
+operator|)
+operator|.
+name|getCommitUploadPartInfo
+argument_list|()
+return|;
+block|}
+comment|// Otherwise return null.
+return|return
+literal|null
+return|;
 block|}
 DECL|method|getOutputStream ()
 specifier|public

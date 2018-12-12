@@ -735,6 +735,31 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|createMultipartKey (String volumeName, String bucketName, String keyName, long size, int partNumber, String uploadID)
+name|OzoneOutputStream
+name|createMultipartKey
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|long
+name|size
+parameter_list|,
+name|int
+name|partNumber
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

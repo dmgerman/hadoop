@@ -151,6 +151,63 @@ return|return
 name|uploadID
 return|;
 block|}
+DECL|method|getPartKeyInfoList ()
+specifier|public
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|PartKeyInfo
+argument_list|>
+name|getPartKeyInfoList
+parameter_list|()
+block|{
+return|return
+name|partKeyInfoList
+return|;
+block|}
+DECL|method|addPartKeyInfo (int partNumber, PartKeyInfo partKeyInfo)
+specifier|public
+name|void
+name|addPartKeyInfo
+parameter_list|(
+name|int
+name|partNumber
+parameter_list|,
+name|PartKeyInfo
+name|partKeyInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|partKeyInfoList
+operator|.
+name|put
+argument_list|(
+name|partNumber
+argument_list|,
+name|partKeyInfo
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getPartKeyInfo (int partNumber)
+specifier|public
+name|PartKeyInfo
+name|getPartKeyInfo
+parameter_list|(
+name|int
+name|partNumber
+parameter_list|)
+block|{
+return|return
+name|partKeyInfoList
+operator|.
+name|get
+argument_list|(
+name|partNumber
+argument_list|)
+return|;
+block|}
 comment|/**    * Construct OmMultipartInfo from MultipartKeyInfo proto object.    * @param multipartKeyInfo    * @return OmMultipartKeyInfo    */
 DECL|method|getFromProto (MultipartKeyInfo multipartKeyInfo)
 specifier|public

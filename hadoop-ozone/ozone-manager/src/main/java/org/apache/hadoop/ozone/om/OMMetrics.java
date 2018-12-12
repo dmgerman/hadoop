@@ -481,6 +481,20 @@ name|Metric
 name|MutableCounterLong
 name|numInitiateMultipartUploadFails
 decl_stmt|;
+DECL|field|numCommitMultipartUploadParts
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numCommitMultipartUploadParts
+decl_stmt|;
+DECL|field|getNumCommitMultipartUploadPartFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|getNumCommitMultipartUploadPartFails
+decl_stmt|;
 comment|// Metrics for total number of volumes, buckets and keys
 DECL|field|numVolumes
 specifier|private
@@ -977,6 +991,35 @@ DECL|method|incNumInitiateMultipartUploadFails ()
 specifier|public
 name|void
 name|incNumInitiateMultipartUploadFails
+parameter_list|()
+block|{
+name|numInitiateMultipartUploadFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumCommitMultipartUploadParts ()
+specifier|public
+name|void
+name|incNumCommitMultipartUploadParts
+parameter_list|()
+block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numCommitMultipartUploadParts
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumCommitMultipartUploadPartFails ()
+specifier|public
+name|void
+name|incNumCommitMultipartUploadPartFails
 parameter_list|()
 block|{
 name|numInitiateMultipartUploadFails

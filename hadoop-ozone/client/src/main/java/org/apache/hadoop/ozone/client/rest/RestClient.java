@@ -5634,6 +5634,44 @@ literal|"support this operation."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|createMultipartKey (String volumeName, String bucketName, String keyName, long size, int partNumber, String uploadID)
+specifier|public
+name|OzoneOutputStream
+name|createMultipartKey
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|long
+name|size
+parameter_list|,
+name|int
+name|partNumber
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
