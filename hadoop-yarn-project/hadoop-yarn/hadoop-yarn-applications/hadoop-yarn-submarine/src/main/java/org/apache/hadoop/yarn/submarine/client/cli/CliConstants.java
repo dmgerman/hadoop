@@ -311,6 +311,15 @@ name|TENSORBOARD_DOCKER_IMAGE
 init|=
 literal|"tensorboard_docker_image"
 decl_stmt|;
+DECL|field|LOCALIZATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCALIZATION
+init|=
+literal|"localization"
+decl_stmt|;
 DECL|field|KEYTAB
 specifier|public
 specifier|static

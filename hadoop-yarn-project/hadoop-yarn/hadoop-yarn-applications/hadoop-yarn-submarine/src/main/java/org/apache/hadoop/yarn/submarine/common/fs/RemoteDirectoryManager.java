@@ -32,6 +32,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -105,10 +119,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|getFileSystem ()
+DECL|method|getDefaultFileSystem ()
 name|FileSystem
-name|getFileSystem
+name|getDefaultFileSystem
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getFileSystemByUri (String uri)
+name|FileSystem
+name|getFileSystemByUri
+parameter_list|(
+name|String
+name|uri
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
@@ -116,6 +140,69 @@ DECL|method|getUserRootFolder ()
 name|Path
 name|getUserRootFolder
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|isDir (String uri)
+name|boolean
+name|isDir
+parameter_list|(
+name|String
+name|uri
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|isRemote (String uri)
+name|boolean
+name|isRemote
+parameter_list|(
+name|String
+name|uri
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|copyRemoteToLocal (String remoteUri, String localUri)
+name|boolean
+name|copyRemoteToLocal
+parameter_list|(
+name|String
+name|remoteUri
+parameter_list|,
+name|String
+name|localUri
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|existsRemoteFile (Path uri)
+name|boolean
+name|existsRemoteFile
+parameter_list|(
+name|Path
+name|uri
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getRemoteFileStatus (Path uri)
+name|FileStatus
+name|getRemoteFileStatus
+parameter_list|(
+name|Path
+name|uri
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getRemoteFileSize (String uri)
+name|long
+name|getRemoteFileSize
+parameter_list|(
+name|String
+name|uri
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

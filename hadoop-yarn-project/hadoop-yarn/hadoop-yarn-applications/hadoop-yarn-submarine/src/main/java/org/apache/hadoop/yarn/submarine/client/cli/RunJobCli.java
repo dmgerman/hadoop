@@ -797,6 +797,53 @@ name|addOption
 argument_list|(
 name|CliConstants
 operator|.
+name|LOCALIZATION
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify"
+operator|+
+literal|" localization to make remote/local file/directory available to"
+operator|+
+literal|" all container(Docker)."
+operator|+
+literal|" Argument format is \"RemoteUri:LocalFilePath[:rw] \" (ro"
+operator|+
+literal|" permission is not supported yet)"
+operator|+
+literal|" The RemoteUri can be a file or directory in local or"
+operator|+
+literal|" HDFS or s3 or abfs or http .etc."
+operator|+
+literal|" The LocalFilePath can be absolute or relative."
+operator|+
+literal|" If it's a relative path, it'll be"
+operator|+
+literal|" under container's implied working directory"
+operator|+
+literal|" but sub directory is not supported yet."
+operator|+
+literal|" This option can be set mutiple times."
+operator|+
+literal|" Examples are \n"
+operator|+
+literal|"-localization \"hdfs:///user/yarn/mydir2:/opt/data\"\n"
+operator|+
+literal|"-localization \"s3a:///a/b/myfile1:./\"\n"
+operator|+
+literal|"-localization \"https:///a/b/myfile2:./myfile\"\n"
+operator|+
+literal|"-localization \"/user/yarn/mydir3:/opt/mydir3\"\n"
+operator|+
+literal|"-localization \"./mydir1:.\"\n"
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
 name|KEYTAB
 argument_list|,
 literal|true

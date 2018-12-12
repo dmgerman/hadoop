@@ -230,7 +230,7 @@ name|fos
 init|=
 name|rdm
 operator|.
-name|getFileSystem
+name|getDefaultFileSystem
 argument_list|()
 operator|.
 name|create
@@ -279,7 +279,7 @@ name|fis
 init|=
 name|rdm
 operator|.
-name|getFileSystem
+name|getDefaultFileSystem
 argument_list|()
 operator|.
 name|open
@@ -335,7 +335,7 @@ name|fos
 init|=
 name|rdm
 operator|.
-name|getFileSystem
+name|getDefaultFileSystem
 argument_list|()
 operator|.
 name|create
@@ -389,7 +389,7 @@ name|fis
 init|=
 name|rdm
 operator|.
-name|getFileSystem
+name|getDefaultFileSystem
 argument_list|()
 operator|.
 name|open

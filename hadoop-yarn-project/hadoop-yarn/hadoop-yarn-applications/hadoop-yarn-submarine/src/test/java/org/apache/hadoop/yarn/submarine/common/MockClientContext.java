@@ -168,7 +168,7 @@ name|ClientContext
 block|{
 DECL|field|remoteDirectoryMgr
 specifier|private
-name|MockRemoteDirectoryManager
+name|RemoteDirectoryManager
 name|remoteDirectoryMgr
 init|=
 operator|new
@@ -186,6 +186,22 @@ block|{
 return|return
 name|remoteDirectoryMgr
 return|;
+block|}
+DECL|method|setRemoteDirectoryMgr ( RemoteDirectoryManager remoteDirectoryMgr)
+specifier|public
+name|void
+name|setRemoteDirectoryMgr
+parameter_list|(
+name|RemoteDirectoryManager
+name|remoteDirectoryMgr
+parameter_list|)
+block|{
+name|this
+operator|.
+name|remoteDirectoryMgr
+operator|=
+name|remoteDirectoryMgr
+expr_stmt|;
 block|}
 annotation|@
 name|Override
