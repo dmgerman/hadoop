@@ -114,6 +114,21 @@ name|UNEXPECTED_GS_REPLICA
 init|=
 literal|"Cannot append to a replica with unexpected generation stamp "
 decl_stmt|;
+DECL|field|POSSIBLE_ROOT_CAUSE_MSG
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|POSSIBLE_ROOT_CAUSE_MSG
+init|=
+literal|". The block may have been removed recently by the balancer "
+operator|+
+literal|"or by intentionally reducing the replication factor. "
+operator|+
+literal|"This condition is usually harmless. To be certain, please check the "
+operator|+
+literal|"preceding datanode log messages for signs of a more serious issue."
+decl_stmt|;
 DECL|method|ReplicaNotFoundException ()
 specifier|public
 name|ReplicaNotFoundException
@@ -136,6 +151,8 @@ argument_list|(
 literal|"Replica not found for "
 operator|+
 name|b
+operator|+
+name|POSSIBLE_ROOT_CAUSE_MSG
 argument_list|)
 expr_stmt|;
 block|}
