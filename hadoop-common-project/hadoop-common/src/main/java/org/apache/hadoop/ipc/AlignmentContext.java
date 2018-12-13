@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -129,14 +139,19 @@ name|Builder
 name|header
 parameter_list|)
 function_decl|;
-comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    *    * @param header The RPC request header.    * @return state id of in the request header.    */
-DECL|method|receiveRequestState (RpcRequestHeaderProto header)
+comment|/**    * This is the intended server method call to implement to receive    * client state info during RPC response header processing.    *    * @param header The RPC request header.    * @param threshold a parameter to verify a condition when server    *        should reject client request due to its state being too far    *        misaligned with the client state.    *        See implementation for more details.    * @return state id required for the server to execute the call.    * @throws IOException    */
+DECL|method|receiveRequestState (RpcRequestHeaderProto header, long threshold)
 name|long
 name|receiveRequestState
 parameter_list|(
 name|RpcRequestHeaderProto
 name|header
+parameter_list|,
+name|long
+name|threshold
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Returns the last seen state id of the alignment context instance.    *    * @return the value of the last seen state id.    */
 DECL|method|getLastSeenStateId ()

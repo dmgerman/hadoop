@@ -44,6 +44,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -81,6 +93,8 @@ operator|.
 name|ha
 operator|.
 name|HAServiceProtocol
+operator|.
+name|HAServiceState
 import|;
 end_import
 
@@ -144,6 +158,20 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|RetriableException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|protobuf
 operator|.
 name|RpcHeaderProtos
@@ -189,6 +217,26 @@ name|GlobalStateIdContext
 implements|implements
 name|AlignmentContext
 block|{
+comment|/**    * Estimated number of journal transactions a typical NameNode can execute    * per second. The number is used to estimate how long a client's    * RPC request will wait in the call queue before the Observer catches up    * with its state id.    */
+DECL|field|ESTIMATED_TRANSACTIONS_PER_SECOND
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|ESTIMATED_TRANSACTIONS_PER_SECOND
+init|=
+literal|10000L
+decl_stmt|;
+comment|/**    * The client wait time on an RPC request is composed of    * the server execution time plus the communication time.    * This is an expected fraction of the total wait time spent on    * server execution.    */
+DECL|field|ESTIMATED_SERVER_TIME_MULTIPLIER
+specifier|private
+specifier|static
+specifier|final
+name|float
+name|ESTIMATED_SERVER_TIME_MULTIPLIER
+init|=
+literal|0.8f
+decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
@@ -339,17 +387,22 @@ parameter_list|)
 block|{
 comment|// Do nothing.
 block|}
-comment|/**    * Server side implementation for processing state alignment info in requests.    */
+comment|/**    * Server-side implementation for processing state alignment info in    * requests.    * For Observer it compares the client and the server states and determines    * if it makes sense to wait until the server catches up with the client    * state. If not the server throws RetriableException so that the client    * could retry the call according to the retry policy with another Observer    * or the Active NameNode.    *    * @param header The RPC request header.    * @param clientWaitTime time in milliseconds indicating how long client    *    waits for the server response. It is used to verify if the client's    *    state is too far ahead of the server's    * @return the minimum of the state ids of the client or the server.    * @throws RetriableException if Observer is too far behind.    */
 annotation|@
 name|Override
-DECL|method|receiveRequestState (RpcRequestHeaderProto header)
+DECL|method|receiveRequestState (RpcRequestHeaderProto header, long clientWaitTime)
 specifier|public
 name|long
 name|receiveRequestState
 parameter_list|(
 name|RpcRequestHeaderProto
 name|header
+parameter_list|,
+name|long
+name|clientWaitTime
 parameter_list|)
+throws|throws
+name|RetriableException
 block|{
 name|long
 name|serverStateId
@@ -376,8 +429,6 @@ name|clientStateId
 operator|>
 name|serverStateId
 operator|&&
-name|HAServiceProtocol
-operator|.
 name|HAServiceState
 operator|.
 name|ACTIVE
@@ -406,6 +457,55 @@ operator|+
 name|serverStateId
 argument_list|)
 expr_stmt|;
+return|return
+name|serverStateId
+return|;
+block|}
+if|if
+condition|(
+name|HAServiceState
+operator|.
+name|OBSERVER
+operator|.
+name|equals
+argument_list|(
+name|namesystem
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+operator|&&
+name|clientStateId
+operator|-
+name|serverStateId
+operator|>
+name|ESTIMATED_TRANSACTIONS_PER_SECOND
+operator|*
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toSeconds
+argument_list|(
+name|clientWaitTime
+argument_list|)
+operator|*
+name|ESTIMATED_SERVER_TIME_MULTIPLIER
+condition|)
+block|{
+throw|throw
+operator|new
+name|RetriableException
+argument_list|(
+literal|"Observer Node is too far behind: serverStateId = "
+operator|+
+name|serverStateId
+operator|+
+literal|" clientStateId = "
+operator|+
+name|clientStateId
+argument_list|)
+throw|;
 block|}
 return|return
 name|clientStateId

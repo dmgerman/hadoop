@@ -98,6 +98,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -199,7 +209,7 @@ parameter_list|)
 block|{
 comment|// Do nothing.
 block|}
-comment|/**    * Client side implementation for receiving state alignment info in responses.    */
+comment|/**    * Client side implementation for receiving state alignment info    * in responses.    */
 annotation|@
 name|Override
 DECL|method|receiveResponseState (RpcResponseHeaderProto header)
@@ -250,14 +260,19 @@ block|}
 comment|/**    * Client side implementation only provides state alignment info in requests.    * Client does not receive RPC requests therefore this does nothing.    */
 annotation|@
 name|Override
-DECL|method|receiveRequestState (RpcRequestHeaderProto header)
+DECL|method|receiveRequestState (RpcRequestHeaderProto header, long threshold)
 specifier|public
 name|long
 name|receiveRequestState
 parameter_list|(
 name|RpcRequestHeaderProto
 name|header
+parameter_list|,
+name|long
+name|threshold
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Do nothing.
 return|return
