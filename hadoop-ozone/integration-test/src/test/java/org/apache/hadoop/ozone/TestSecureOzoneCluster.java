@@ -874,6 +874,18 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|HEAD
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test class to for security enabled Ozone cluster.  */
 end_comment
@@ -2161,6 +2173,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 comment|// Start OM
 name|om
 operator|.
@@ -2183,15 +2197,6 @@ operator|.
 name|getUserName
 argument_list|()
 decl_stmt|;
-name|ugi
-operator|.
-name|setAuthenticationMethod
-argument_list|(
-name|AuthenticationMethod
-operator|.
-name|KERBEROS
-argument_list|)
-expr_stmt|;
 comment|// Get first OM client which will authenticate via Kerberos
 name|omClient
 operator|=
@@ -2728,6 +2733,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|om
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|om
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|generateKeyPair (OzoneConfiguration config)
 specifier|private
 name|void
@@ -2850,6 +2869,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Start OM
+try|try
+block|{
 name|om
 operator|.
 name|start
@@ -3137,6 +3158,20 @@ name|token
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|om
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|om
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|setupOm (OzoneConfiguration config)
 specifier|private

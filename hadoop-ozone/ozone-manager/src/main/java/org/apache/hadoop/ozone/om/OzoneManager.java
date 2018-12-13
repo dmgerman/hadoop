@@ -4784,6 +4784,13 @@ block|{
 try|try
 block|{
 comment|// Cancel the metrics timer and set to null.
+if|if
+condition|(
+name|metricsTimer
+operator|!=
+literal|null
+condition|)
+block|{
 name|metricsTimer
 operator|.
 name|cancel
@@ -4797,6 +4804,7 @@ name|scheduleOMMetricsWriteTask
 operator|=
 literal|null
 expr_stmt|;
+block|}
 name|omRpcServer
 operator|.
 name|stop
