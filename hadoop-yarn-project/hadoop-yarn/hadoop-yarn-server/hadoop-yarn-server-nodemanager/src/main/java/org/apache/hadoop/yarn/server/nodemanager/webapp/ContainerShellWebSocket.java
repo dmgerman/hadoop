@@ -743,6 +743,14 @@ argument_list|(
 name|container
 argument_list|)
 operator|.
+name|setNMLocalPath
+argument_list|(
+name|nmContext
+operator|.
+name|getLocalDirsHandler
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;

@@ -64,6 +64,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|LocalDirsHandlerService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|containermanager
 operator|.
 name|container
@@ -109,6 +127,12 @@ specifier|final
 name|Container
 name|container
 decl_stmt|;
+DECL|field|localDirsHandler
+specifier|private
+specifier|final
+name|LocalDirsHandlerService
+name|localDirsHandler
+decl_stmt|;
 comment|/**    *  Builder for ContainerExecContext.    */
 DECL|class|Builder
 specifier|public
@@ -131,6 +155,11 @@ DECL|field|container
 specifier|private
 name|Container
 name|container
+decl_stmt|;
+DECL|field|localDirsHandler
+specifier|private
+name|LocalDirsHandlerService
+name|localDirsHandler
 decl_stmt|;
 DECL|method|Builder ()
 specifier|public
@@ -208,6 +237,25 @@ name|this
 argument_list|)
 return|;
 block|}
+DECL|method|setNMLocalPath ( LocalDirsHandlerService ldhs)
+specifier|public
+name|Builder
+name|setNMLocalPath
+parameter_list|(
+name|LocalDirsHandlerService
+name|ldhs
+parameter_list|)
+block|{
+name|this
+operator|.
+name|localDirsHandler
+operator|=
+name|ldhs
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 block|}
 DECL|method|ContainerExecContext (Builder builder)
 specifier|private
@@ -240,6 +288,14 @@ operator|=
 name|builder
 operator|.
 name|appId
+expr_stmt|;
+name|this
+operator|.
+name|localDirsHandler
+operator|=
+name|builder
+operator|.
+name|localDirsHandler
 expr_stmt|;
 block|}
 DECL|method|getUser ()
@@ -276,6 +332,18 @@ return|return
 name|this
 operator|.
 name|container
+return|;
+block|}
+DECL|method|getLocalDirsHandlerService ()
+specifier|public
+name|LocalDirsHandlerService
+name|getLocalDirsHandlerService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|localDirsHandler
 return|;
 block|}
 block|}

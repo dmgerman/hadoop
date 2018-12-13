@@ -152,7 +152,7 @@ comment|//no CLI switch supported yet
 DECL|enumConstant|EXEC_CONTAINER
 name|EXEC_CONTAINER
 argument_list|(
-literal|"--run-docker"
+literal|"--exec-container"
 argument_list|)
 block|,
 comment|//no CLI switch supported yet
