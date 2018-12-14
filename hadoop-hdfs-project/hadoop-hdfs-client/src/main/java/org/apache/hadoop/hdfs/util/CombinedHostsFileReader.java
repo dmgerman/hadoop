@@ -80,6 +80,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileInputStream
 import|;
 end_import
@@ -253,17 +263,32 @@ specifier|private
 name|CombinedHostsFileReader
 parameter_list|()
 block|{   }
-comment|/**    * Deserialize a set of DatanodeAdminProperties from a json file.    * @param hostsFile the input json file to read from    * @return the set of DatanodeAdminProperties    * @throws IOException    */
+DECL|field|REFER_TO_DOC_MSG
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|REFER_TO_DOC_MSG
+init|=
+literal|" For the correct JSON"
+operator|+
+literal|" format please refer to the documentation (https://hadoop.apache"
+operator|+
+literal|".org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDataNodeAd"
+operator|+
+literal|"minGuide.html#JSON-based_configuration)"
+decl_stmt|;
+comment|/**    * Deserialize a set of DatanodeAdminProperties from a json file.    * @param hostsFilePath the input json file to read from    * @return the set of DatanodeAdminProperties    * @throws IOException    */
 specifier|public
 specifier|static
 name|DatanodeAdminProperties
 index|[]
-DECL|method|readFile (final String hostsFile)
+DECL|method|readFile (final String hostsFilePath)
 name|readFile
 parameter_list|(
 specifier|final
 name|String
-name|hostsFile
+name|hostsFilePath
 parameter_list|)
 throws|throws
 name|IOException
@@ -285,11 +310,30 @@ operator|new
 name|ObjectMapper
 argument_list|()
 decl_stmt|;
+name|File
+name|hostFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|hostsFilePath
+argument_list|)
+decl_stmt|;
 name|boolean
 name|tryOldFormat
 init|=
 literal|false
 decl_stmt|;
+if|if
+condition|(
+name|hostFile
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 try|try
 init|(
 name|Reader
@@ -301,7 +345,7 @@ argument_list|(
 operator|new
 name|FileInputStream
 argument_list|(
-name|hostsFile
+name|hostFile
 argument_list|)
 argument_list|,
 literal|"UTF-8"
@@ -329,21 +373,26 @@ name|JsonMappingException
 name|jme
 parameter_list|)
 block|{
-comment|// The old format doesn't have json top-level token to enclose the array.
+comment|// The old format doesn't have json top-level token to enclose
+comment|// the array.
 comment|// For backward compatibility, try parsing the old format.
 name|tryOldFormat
 operator|=
 literal|true
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"{} has invalid JSON format."
+name|hostsFilePath
 operator|+
-literal|"Try the old format without top-level token defined."
-argument_list|,
-name|hostsFile
+literal|" is empty."
+operator|+
+name|REFER_TO_DOC_MSG
 argument_list|)
 expr_stmt|;
 block|}
@@ -393,7 +442,7 @@ argument_list|(
 operator|new
 name|FileInputStream
 argument_list|(
-name|hostsFile
+name|hostsFilePath
 argument_list|)
 argument_list|,
 literal|"UTF-8"
@@ -442,6 +491,37 @@ name|properties
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|hostsFilePath
+operator|+
+literal|" has legacy JSON format."
+operator|+
+name|REFER_TO_DOC_MSG
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|hostsFilePath
+operator|+
+literal|" has invalid JSON format."
+operator|+
+name|REFER_TO_DOC_MSG
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
 block|}
 name|allDNs
 operator|=
