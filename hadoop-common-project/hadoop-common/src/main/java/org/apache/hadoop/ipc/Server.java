@@ -12814,7 +12814,7 @@ name|getLastSeenStateId
 argument_list|()
 condition|)
 block|{
-comment|/*              * The call processing should be postponed until the client call's              * state id is aligned (>=) with the server state id.               * NOTE:              * Inserting the call back to the queue can change the order of call              * execution comparing to their original placement into the queue.              * This is not a problem, because Hadoop RPC does not have any              * constraints on ordering the incoming rpc requests.              * In case of Observer, it handles only reads, which are              * commutative.              */
+comment|/*              * The call processing should be postponed until the client call's              * state id is aligned (<=) with the server state id.               * NOTE:              * Inserting the call back to the queue can change the order of call              * execution comparing to their original placement into the queue.              * This is not a problem, because Hadoop RPC does not have any              * constraints on ordering the incoming rpc requests.              * In case of Observer, it handles only reads, which are              * commutative.              */
 comment|//Re-queue the call and continue
 name|internalQueueCall
 argument_list|(
