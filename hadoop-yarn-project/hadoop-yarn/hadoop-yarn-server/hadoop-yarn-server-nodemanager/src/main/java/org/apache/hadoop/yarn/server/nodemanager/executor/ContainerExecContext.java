@@ -127,6 +127,11 @@ specifier|final
 name|Container
 name|container
 decl_stmt|;
+DECL|field|command
+specifier|private
+name|String
+name|command
+decl_stmt|;
 DECL|field|localDirsHandler
 specifier|private
 specifier|final
@@ -155,6 +160,11 @@ DECL|field|container
 specifier|private
 name|Container
 name|container
+decl_stmt|;
+DECL|field|command
+specifier|private
+name|String
+name|command
 decl_stmt|;
 DECL|field|localDirsHandler
 specifier|private
@@ -256,6 +266,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setShell (String command)
+specifier|public
+name|Builder
+name|setShell
+parameter_list|(
+name|String
+name|command
+parameter_list|)
+block|{
+name|this
+operator|.
+name|command
+operator|=
+name|command
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 block|}
 DECL|method|ContainerExecContext (Builder builder)
 specifier|private
@@ -267,14 +296,6 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|container
-operator|=
-name|builder
-operator|.
-name|container
-expr_stmt|;
-name|this
-operator|.
 name|user
 operator|=
 name|builder
@@ -288,6 +309,22 @@ operator|=
 name|builder
 operator|.
 name|appId
+expr_stmt|;
+name|this
+operator|.
+name|container
+operator|=
+name|builder
+operator|.
+name|container
+expr_stmt|;
+name|this
+operator|.
+name|command
+operator|=
+name|builder
+operator|.
+name|command
 expr_stmt|;
 name|this
 operator|.
@@ -332,6 +369,18 @@ return|return
 name|this
 operator|.
 name|container
+return|;
+block|}
+DECL|method|getShell ()
+specifier|public
+name|String
+name|getShell
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|command
 return|;
 block|}
 DECL|method|getLocalDirsHandlerService ()

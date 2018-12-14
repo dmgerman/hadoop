@@ -18348,7 +18348,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -shell<Container ID> Run a shell in the container."
+literal|" -shell<Container ID [bash|sh]> Run a shell in the container."
 argument_list|)
 expr_stmt|;
 name|pw

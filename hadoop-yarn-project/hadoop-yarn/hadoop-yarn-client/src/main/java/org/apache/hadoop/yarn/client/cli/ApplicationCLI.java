@@ -2453,7 +2453,19 @@ argument_list|)
 operator|.
 name|setArgName
 argument_list|(
-literal|"Container ID"
+literal|"Container ID [bash|sh]"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|getOption
+argument_list|(
+name|SHELL_CMD
+argument_list|)
+operator|.
+name|setArgs
+argument_list|(
+literal|3
 argument_list|)
 expr_stmt|;
 name|opts
@@ -4074,6 +4086,9 @@ name|shellArgs
 index|[
 literal|1
 index|]
+operator|.
+name|toUpperCase
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

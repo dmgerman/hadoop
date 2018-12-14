@@ -6619,6 +6619,10 @@ operator|+
 literal|"/container/"
 operator|+
 name|containerId
+operator|+
+literal|"/"
+operator|+
+name|command
 argument_list|)
 decl_stmt|;
 if|if
@@ -6647,6 +6651,10 @@ operator|+
 literal|"/container/"
 operator|+
 name|containerId
+operator|+
+literal|"/"
+operator|+
+name|command
 operator|+
 literal|"?user.name="
 operator|+
