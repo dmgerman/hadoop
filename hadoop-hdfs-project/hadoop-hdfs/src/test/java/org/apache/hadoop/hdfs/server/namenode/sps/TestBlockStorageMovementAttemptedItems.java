@@ -698,12 +698,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|bsmAttemptedItems
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-comment|// start block movement report monitor thread
 name|Long
 name|item
 init|=
