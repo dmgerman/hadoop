@@ -4214,6 +4214,29 @@ name|t
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|doResponse
+argument_list|(
+name|t
+argument_list|,
+name|RpcStatusProto
+operator|.
+name|FATAL
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|doResponse (Throwable t, RpcStatusProto proto)
+name|void
+name|doResponse
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|,
+name|RpcStatusProto
+name|proto
+parameter_list|)
+throws|throws
+name|IOException
 block|{}
 comment|// For Schedulable
 annotation|@
@@ -4944,12 +4967,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|doResponse (Throwable t)
+DECL|method|doResponse (Throwable t, RpcStatusProto status)
 name|void
 name|doResponse
 parameter_list|(
 name|Throwable
 name|t
+parameter_list|,
+name|RpcStatusProto
+name|status
 parameter_list|)
 throws|throws
 name|IOException
@@ -4966,6 +4992,20 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|status
+operator|==
+literal|null
+condition|)
+block|{
+name|status
+operator|=
+name|RpcStatusProto
+operator|.
+name|FATAL
+expr_stmt|;
+block|}
 comment|// clone the call to prevent a race with another thread stomping
 comment|// on the response while being sent.  the original call is
 comment|// effectively discarded since the wait count won't hit zero
@@ -4981,9 +5021,7 @@ name|setupResponse
 argument_list|(
 name|call
 argument_list|,
-name|RpcStatusProto
-operator|.
-name|FATAL
+name|status
 argument_list|,
 name|RpcErrorCodeProto
 operator|.
@@ -12664,7 +12702,37 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|internalQueueCall
+argument_list|(
+name|call
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|internalQueueCall (Call call, boolean blocking)
+specifier|private
+name|void
+name|internalQueueCall
+parameter_list|(
+name|Call
+name|call
+parameter_list|,
+name|boolean
+name|blocking
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
 try|try
+block|{
+comment|// queue the call, may be blocked if blocking is true.
+if|if
+condition|(
+name|blocking
+condition|)
 block|{
 name|callQueue
 operator|.
@@ -12673,7 +12741,17 @@ argument_list|(
 name|call
 argument_list|)
 expr_stmt|;
-comment|// queue the call; maybe blocked here
+block|}
+else|else
+block|{
+name|callQueue
+operator|.
+name|add
+argument_list|(
+name|call
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -12815,8 +12893,8 @@ argument_list|()
 condition|)
 block|{
 comment|/*              * The call processing should be postponed until the client call's              * state id is aligned (<=) with the server state id.               * NOTE:              * Inserting the call back to the queue can change the order of call              * execution comparing to their original placement into the queue.              * This is not a problem, because Hadoop RPC does not have any              * constraints on ordering the incoming rpc requests.              * In case of Observer, it handles only reads, which are              * commutative.              */
-comment|//Re-queue the call and continue
-name|internalQueueCall
+comment|// Re-queue the call and continue
+name|requeueCall
 argument_list|(
 name|call
 argument_list|)
@@ -13077,6 +13155,52 @@ operator|+
 literal|": exiting"
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|requeueCall (Call call)
+specifier|private
+name|void
+name|requeueCall
+parameter_list|(
+name|Call
+name|call
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+try|try
+block|{
+name|internalQueueCall
+argument_list|(
+name|call
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RpcServerException
+name|rse
+parameter_list|)
+block|{
+name|call
+operator|.
+name|doResponse
+argument_list|(
+name|rse
+operator|.
+name|getCause
+argument_list|()
+argument_list|,
+name|rse
+operator|.
+name|getRpcStatusProto
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
