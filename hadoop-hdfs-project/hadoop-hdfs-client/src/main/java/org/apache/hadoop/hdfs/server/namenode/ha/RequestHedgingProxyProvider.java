@@ -325,6 +325,18 @@ argument_list|>
 argument_list|>
 name|targetProxies
 decl_stmt|;
+comment|// Proxy of the active nn
+DECL|field|currentUsedProxy
+specifier|private
+specifier|volatile
+name|ProxyInfo
+argument_list|<
+name|T
+argument_list|>
+name|currentUsedProxy
+init|=
+literal|null
+decl_stmt|;
 DECL|method|RequestHedgingInvocationHandler ( Map<String, ProxyInfo<T>> targetProxies)
 specifier|public
 name|RequestHedgingInvocationHandler
@@ -376,83 +388,27 @@ parameter_list|)
 throws|throws
 name|Throwable
 block|{
+comment|// Need double check locking to guarantee thread-safe since
+comment|// currentUsedProxy is lazily initialized.
 if|if
 condition|(
 name|currentUsedProxy
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
-try|try
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
-name|Object
-name|retVal
-init|=
-name|method
-operator|.
-name|invoke
-argument_list|(
+if|if
+condition|(
 name|currentUsedProxy
-operator|.
-name|proxy
-argument_list|,
-name|args
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Invocation successful on [{}]"
-argument_list|,
-name|currentUsedProxy
-operator|.
-name|proxyInfo
-argument_list|)
-expr_stmt|;
-return|return
-name|retVal
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|InvocationTargetException
-name|ex
-parameter_list|)
+operator|==
+literal|null
+condition|)
 block|{
-name|Exception
-name|unwrappedException
-init|=
-name|unwrapInvocationTargetException
-argument_list|(
-name|ex
-argument_list|)
-decl_stmt|;
-name|logProxyException
-argument_list|(
-name|unwrappedException
-argument_list|,
-name|currentUsedProxy
-operator|.
-name|proxyInfo
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Unsuccessful invocation on [{}]"
-argument_list|,
-name|currentUsedProxy
-operator|.
-name|proxyInfo
-argument_list|)
-expr_stmt|;
-throw|throw
-name|unwrappedException
-throw|;
-block|}
-block|}
 name|Map
 argument_list|<
 name|Future
@@ -490,7 +446,8 @@ name|completionService
 decl_stmt|;
 try|try
 block|{
-comment|// Optimization : if only 2 proxies are configured and one had failed
+comment|// Optimization : if only 2 proxies are configured and one had
+comment|// failed
 comment|// over, then we dont need to create a threadpool etc.
 name|targetProxies
 operator|.
@@ -527,7 +484,9 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-literal|"No valid proxies left. All NameNode proxies have failed over."
+literal|"No valid proxies left. "
+operator|+
+literal|"All NameNode proxies have failed over."
 argument_list|)
 throw|;
 block|}
@@ -943,14 +902,89 @@ block|}
 block|}
 block|}
 block|}
-DECL|field|currentUsedProxy
+block|}
+comment|// Because the above synchronized block will return or throw an exception,
+comment|// so we don't need to do any check to prevent the first initialized
+comment|// thread from stepping to following codes.
+try|try
+block|{
+name|Object
+name|retVal
+init|=
+name|method
+operator|.
+name|invoke
+argument_list|(
+name|currentUsedProxy
+operator|.
+name|proxy
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Invocation successful on [{}]"
+argument_list|,
+name|currentUsedProxy
+operator|.
+name|proxyInfo
+argument_list|)
+expr_stmt|;
+return|return
+name|retVal
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|InvocationTargetException
+name|ex
+parameter_list|)
+block|{
+name|Exception
+name|unwrappedException
+init|=
+name|unwrapInvocationTargetException
+argument_list|(
+name|ex
+argument_list|)
+decl_stmt|;
+name|logProxyException
+argument_list|(
+name|unwrappedException
+argument_list|,
+name|currentUsedProxy
+operator|.
+name|proxyInfo
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Unsuccessful invocation on [{}]"
+argument_list|,
+name|currentUsedProxy
+operator|.
+name|proxyInfo
+argument_list|)
+expr_stmt|;
+throw|throw
+name|unwrappedException
+throw|;
+block|}
+block|}
+block|}
+comment|/** A proxy wrapping {@link RequestHedgingInvocationHandler}. */
+DECL|field|currentUsedHandler
 specifier|private
-specifier|volatile
 name|ProxyInfo
 argument_list|<
 name|T
 argument_list|>
-name|currentUsedProxy
+name|currentUsedHandler
 init|=
 literal|null
 decl_stmt|;
@@ -1016,13 +1050,13 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|currentUsedProxy
+name|currentUsedHandler
 operator|!=
 literal|null
 condition|)
 block|{
 return|return
-name|currentUsedProxy
+name|currentUsedHandler
 return|;
 block|}
 name|Map
@@ -1149,7 +1183,8 @@ name|targetProxyInfos
 argument_list|)
 block|)
 function|;
-return|return
+name|currentUsedHandler
+operator|=
 operator|new
 name|ProxyInfo
 argument_list|<
@@ -1163,6 +1198,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+expr_stmt|;
+return|return
+name|currentUsedHandler
 return|;
 block|}
 end_class
@@ -1182,7 +1220,19 @@ parameter_list|)
 block|{
 name|toIgnore
 operator|=
-name|this
+operator|(
+operator|(
+name|RequestHedgingInvocationHandler
+operator|)
+name|Proxy
+operator|.
+name|getInvocationHandler
+argument_list|(
+name|currentUsedHandler
+operator|.
+name|proxy
+argument_list|)
+operator|)
 operator|.
 name|currentUsedProxy
 operator|.
@@ -1190,7 +1240,7 @@ name|proxyInfo
 expr_stmt|;
 name|this
 operator|.
-name|currentUsedProxy
+name|currentUsedHandler
 operator|=
 literal|null
 expr_stmt|;
