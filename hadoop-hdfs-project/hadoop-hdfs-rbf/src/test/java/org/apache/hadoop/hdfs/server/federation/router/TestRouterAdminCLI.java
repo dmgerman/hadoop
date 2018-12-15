@@ -3848,7 +3848,7 @@ expr_stmt|;
 name|String
 name|expected
 init|=
-literal|"Usage: hdfs routeradmin :\n"
+literal|"Usage: hdfs dfsrouteradmin :\n"
 operator|+
 literal|"\t[-add<source><nameservice1, nameservice2, ...><destination> "
 operator|+

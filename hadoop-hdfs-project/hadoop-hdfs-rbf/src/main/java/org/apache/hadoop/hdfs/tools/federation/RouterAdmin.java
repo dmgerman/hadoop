@@ -1105,7 +1105,7 @@ name|usage
 operator|.
 name|append
 argument_list|(
-literal|"Usage: hdfs routeradmin :\n"
+literal|"Usage: hdfs dfsrouteradmin :\n"
 argument_list|)
 expr_stmt|;
 for|for
