@@ -2091,16 +2091,26 @@ specifier|public
 name|NamenodeBeanMetrics
 name|getNamenodeMetrics
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
 name|this
 operator|.
 name|metrics
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Namenode metrics is not initialized"
+argument_list|)
+throw|;
+block|}
 return|return
 name|this
 operator|.
@@ -2108,10 +2118,6 @@ name|metrics
 operator|.
 name|getNamenodeMetrics
 argument_list|()
-return|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 comment|/**    * Get the subcluster resolver for files.    *    * @return Subcluster resolver for files.    */
