@@ -114,7 +114,7 @@ specifier|final
 name|int
 name|LIST_MAX_RESULTS
 init|=
-literal|5000
+literal|500
 decl_stmt|;
 DECL|method|ITestAbfsClient ()
 specifier|public
