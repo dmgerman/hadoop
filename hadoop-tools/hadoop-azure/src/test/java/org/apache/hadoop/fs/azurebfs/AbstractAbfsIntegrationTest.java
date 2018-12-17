@@ -1385,6 +1385,18 @@ operator|.
 name|authType
 return|;
 block|}
+DECL|method|getAbfsScheme ()
+specifier|public
+name|String
+name|getAbfsScheme
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|abfsScheme
+return|;
+block|}
 DECL|method|isIPAddress ()
 specifier|protected
 name|boolean

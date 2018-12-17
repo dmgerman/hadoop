@@ -67,6 +67,15 @@ name|FS_AZURE_CONTRACT_TEST_URI
 init|=
 literal|"fs.contract.test.fs.abfs"
 decl_stmt|;
+DECL|field|FS_AZURE_TEST_NAMESPACE_ENABLED_ACCOUNT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_TEST_NAMESPACE_ENABLED_ACCOUNT
+init|=
+literal|"fs.azure.test.namespace.enabled"
+decl_stmt|;
 DECL|field|FS_AZURE_BLOB_DATA_CONTRIBUTOR_CLIENT_ID
 specifier|public
 specifier|static
