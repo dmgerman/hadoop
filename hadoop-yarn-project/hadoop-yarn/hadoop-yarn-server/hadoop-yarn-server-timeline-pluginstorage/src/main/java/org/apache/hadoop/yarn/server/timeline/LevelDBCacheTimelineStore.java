@@ -272,16 +272,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -1081,7 +1071,7 @@ annotation|@
 name|Override
 DECL|method|valueSetIterator ()
 specifier|public
-name|Iterator
+name|CloseableIterator
 argument_list|<
 name|V
 argument_list|>
@@ -1103,7 +1093,7 @@ annotation|@
 name|Override
 DECL|method|valueSetIterator (V minV)
 specifier|public
-name|Iterator
+name|CloseableIterator
 argument_list|<
 name|V
 argument_list|>
@@ -1139,7 +1129,7 @@ return|;
 block|}
 DECL|method|getIterator ( EntityIdentifier startId, long startTimeMax)
 specifier|private
-name|Iterator
+name|CloseableIterator
 argument_list|<
 name|V
 argument_list|>
@@ -1253,7 +1243,7 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|new
-name|Iterator
+name|CloseableIterator
 argument_list|<
 name|V
 argument_list|>
@@ -1422,6 +1412,21 @@ literal|"LevelDB map adapter does not support iterate-and-remove"
 operator|+
 literal|" use cases. "
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|internalDbIterator
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 block|}

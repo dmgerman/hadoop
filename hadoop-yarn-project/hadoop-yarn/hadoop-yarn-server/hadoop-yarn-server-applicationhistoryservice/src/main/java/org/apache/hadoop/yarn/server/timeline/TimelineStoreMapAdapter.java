@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Iterator
@@ -76,7 +86,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * @return the iterator of the value set of the map    */
 DECL|method|valueSetIterator ()
-name|Iterator
+name|CloseableIterator
 argument_list|<
 name|V
 argument_list|>
@@ -85,7 +95,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Return the iterator of the value set of the map, starting from minV if type    * V is comparable.    * @param minV    * @return    */
 DECL|method|valueSetIterator (V minV)
-name|Iterator
+name|CloseableIterator
 argument_list|<
 name|V
 argument_list|>
@@ -95,6 +105,20 @@ name|V
 name|minV
 parameter_list|)
 function_decl|;
+DECL|interface|CloseableIterator
+interface|interface
+name|CloseableIterator
+parameter_list|<
+name|V
+parameter_list|>
+extends|extends
+name|Iterator
+argument_list|<
+name|V
+argument_list|>
+extends|,
+name|Closeable
+block|{}
 block|}
 end_interface
 
