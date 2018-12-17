@@ -2329,6 +2329,30 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|satisfyStoragePolicy (Path src)
+specifier|public
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+name|fullPath
+argument_list|(
+name|src
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|setStoragePolicy (Path src, String policyName)
 specifier|public
 name|void

@@ -7920,6 +7920,33 @@ literal|" doesn't support removeXAttr"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Set the source path to satisfy storage policy.    * @param path The source path referring to either a directory or a file.    * @throws IOException    */
+DECL|method|satisfyStoragePolicy (final Path path)
+specifier|public
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support setStoragePolicy"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Set the storage policy for a given file or directory.    *    * @param src file or directory path.    * @param policyName the name of the target storage policy. The list    *                   of supported Storage policies can be retrieved    *                   via {@link #getAllStoragePolicies}.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|setStoragePolicy (final Path src, final String policyName)
 specifier|public

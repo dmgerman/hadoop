@@ -2659,6 +2659,30 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|satisfyStoragePolicy (Path path)
+specifier|public
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+name|getUriPath
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|setStoragePolicy (Path path, String policyName)
 specifier|public
 name|void

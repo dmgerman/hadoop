@@ -1635,6 +1635,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|satisfyStoragePolicy (Path src)
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|setStoragePolicy (Path src, String policyName)
 specifier|public
 name|void
