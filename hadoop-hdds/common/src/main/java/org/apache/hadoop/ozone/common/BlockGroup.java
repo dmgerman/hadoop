@@ -310,6 +310,30 @@ name|Builder
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"BlockGroup["
+operator|+
+literal|"groupID='"
+operator|+
+name|groupID
+operator|+
+literal|'\''
+operator|+
+literal|", blockIDs="
+operator|+
+name|blockIDs
+operator|+
+literal|']'
+return|;
+block|}
 comment|/**    * BlockGroup instance builder.    */
 DECL|class|Builder
 specifier|public
