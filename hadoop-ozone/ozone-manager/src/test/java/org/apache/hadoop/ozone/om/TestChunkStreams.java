@@ -157,7 +157,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests ChunkGroupInputStream and ChunkGroupOutStream.  */
+comment|/**  * This class tests ChunkGroupInputStream and KeyOutputStream.  */
 end_comment
 
 begin_class

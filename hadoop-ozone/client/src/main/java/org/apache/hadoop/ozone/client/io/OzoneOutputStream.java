@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OzoneOutputStream is used to write data into Ozone.  * It uses SCM's {@link ChunkGroupOutputStream} for writing the data.  */
+comment|/**  * OzoneOutputStream is used to write data into Ozone.  * It uses SCM's {@link KeyOutputStream} for writing the data.  */
 end_comment
 
 begin_class
@@ -76,7 +76,7 @@ specifier|final
 name|OutputStream
 name|outputStream
 decl_stmt|;
-comment|/**    * Constructs OzoneOutputStream with ChunkGroupOutputStream.    *    * @param outputStream    */
+comment|/**    * Constructs OzoneOutputStream with KeyOutputStream.    *    * @param outputStream    */
 DECL|method|OzoneOutputStream (OutputStream outputStream)
 specifier|public
 name|OzoneOutputStream
@@ -190,13 +190,13 @@ if|if
 condition|(
 name|outputStream
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 condition|)
 block|{
 return|return
 operator|(
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|outputStream
 operator|)

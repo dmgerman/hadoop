@@ -152,6 +152,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|storage
+operator|.
+name|BlockOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|common
@@ -314,24 +332,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|storage
-operator|.
-name|ChunkOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|ratis
 operator|.
 name|protocol
@@ -447,10 +447,10 @@ comment|/**  * Maintaining a list of ChunkInputStream. Write based on offset.  *
 end_comment
 
 begin_class
-DECL|class|ChunkGroupOutputStream
+DECL|class|KeyOutputStream
 specifier|public
 class|class
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 extends|extends
 name|OutputStream
 block|{
@@ -465,7 +465,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|.
 name|class
 argument_list|)
@@ -476,7 +476,7 @@ specifier|private
 specifier|final
 name|ArrayList
 argument_list|<
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 argument_list|>
 name|streamEntries
 decl_stmt|;
@@ -578,9 +578,9 @@ decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|ChunkGroupOutputStream ()
+DECL|method|KeyOutputStream ()
 specifier|public
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 parameter_list|()
 block|{
 name|streamEntries
@@ -694,7 +694,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 argument_list|(
 name|outputStream
 argument_list|,
@@ -711,7 +711,7 @@ DECL|method|getStreamEntries ()
 specifier|public
 name|List
 argument_list|<
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 argument_list|>
 name|getStreamEntries
 parameter_list|()
@@ -756,7 +756,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 name|streamEntry
 range|:
 name|streamEntries
@@ -831,9 +831,9 @@ return|return
 name|locationInfoList
 return|;
 block|}
-DECL|method|ChunkGroupOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, Checksum checksum, String uploadID, int partNumber, boolean isMultipart)
+DECL|method|KeyOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, Checksum checksum, String uploadID, int partNumber, boolean isMultipart)
 specifier|public
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 parameter_list|(
 name|OpenKeySession
 name|handler
@@ -1214,7 +1214,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 argument_list|(
 name|subKeyInfo
 operator|.
@@ -1532,7 +1532,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 name|current
 init|=
 name|streamEntries
@@ -1720,7 +1720,7 @@ condition|)
 block|{
 name|ListIterator
 argument_list|<
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 argument_list|>
 name|streamEntryIterator
 init|=
@@ -1782,7 +1782,7 @@ condition|)
 block|{
 name|ListIterator
 argument_list|<
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 argument_list|>
 name|streamEntryIterator
 init|=
@@ -1823,12 +1823,12 @@ block|}
 block|}
 block|}
 comment|/**    * It performs following actions :    * a. Updates the committed length at datanode for the current stream in    *    datanode.    * b. Reads the data from the underlying buffer and writes it the next stream.    *    * @param streamEntry StreamEntry    * @param streamIndex Index of the entry    * @throws IOException Throws IOException if Write fails    */
-DECL|method|handleException (ChunkOutputStreamEntry streamEntry, int streamIndex)
+DECL|method|handleException (BlockOutputStreamEntry streamEntry, int streamIndex)
 specifier|private
 name|void
 name|handleException
 parameter_list|(
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 name|streamEntry
 parameter_list|,
 name|int
@@ -2123,7 +2123,7 @@ name|sum
 argument_list|()
 return|;
 block|}
-comment|/**    * Contact OM to get a new block. Set the new block with the index (e.g.    * first block has index = 0, second has index = 1 etc.)    *    * The returned block is made to new ChunkOutputStreamEntry to write.    *    * @param index the index of the block.    * @throws IOException    */
+comment|/**    * Contact OM to get a new block. Set the new block with the index (e.g.    * first block has index = 0, second has index = 1 etc.)    *    * The returned block is made to new BlockOutputStreamEntry to write.    *    * @param index the index of the block.    * @throws IOException    */
 DECL|method|allocateNewBlock (int index)
 specifier|private
 name|void
@@ -2217,7 +2217,7 @@ literal|1
 else|:
 name|currentStreamIndex
 decl_stmt|;
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 name|entry
 init|=
 name|streamEntries
@@ -2398,7 +2398,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Closing ChunkGroupOutputStream, but key args is null"
+literal|"Closing KeyOutputStream, but key args is null"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2454,7 +2454,7 @@ return|return
 name|commitUploadPartInfo
 return|;
 block|}
-comment|/**    * Builder class of ChunkGroupOutputStream.    */
+comment|/**    * Builder class of KeyOutputStream.    */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -2847,7 +2847,7 @@ return|;
 block|}
 DECL|method|build ()
 specifier|public
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 name|build
 parameter_list|()
 throws|throws
@@ -2855,7 +2855,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|(
 name|openHandler
 argument_list|,
@@ -2892,11 +2892,11 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|class|ChunkOutputStreamEntry
+DECL|class|BlockOutputStreamEntry
 specifier|private
 specifier|static
 class|class
-name|ChunkOutputStreamEntry
+name|BlockOutputStreamEntry
 extends|extends
 name|OutputStream
 block|{
@@ -2985,8 +2985,8 @@ name|ByteBuffer
 argument_list|>
 name|bufferList
 decl_stmt|;
-DECL|method|ChunkOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
-name|ChunkOutputStreamEntry
+DECL|method|BlockOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
+name|BlockOutputStreamEntry
 parameter_list|(
 name|BlockID
 name|blockID
@@ -3114,8 +3114,8 @@ name|bufferList
 expr_stmt|;
 block|}
 comment|/**      * For testing purpose, taking a some random created stream instance.      * @param  outputStream a existing writable output stream      * @param  length the length of data to write to the stream      */
-DECL|method|ChunkOutputStreamEntry (OutputStream outputStream, long length, Checksum checksum)
-name|ChunkOutputStreamEntry
+DECL|method|BlockOutputStreamEntry (OutputStream outputStream, long length, Checksum checksum)
+name|BlockOutputStreamEntry
 parameter_list|(
 name|OutputStream
 name|outputStream
@@ -3245,7 +3245,7 @@ operator|.
 name|outputStream
 operator|=
 operator|new
-name|ChunkOutputStream
+name|BlockOutputStream
 argument_list|(
 name|blockID
 argument_list|,
@@ -3405,7 +3405,7 @@ name|this
 operator|.
 name|outputStream
 operator|instanceof
-name|ChunkOutputStream
+name|BlockOutputStream
 condition|)
 block|{
 name|this
@@ -3414,7 +3414,7 @@ name|blockID
 operator|=
 operator|(
 operator|(
-name|ChunkOutputStream
+name|BlockOutputStream
 operator|)
 name|outputStream
 operator|)
@@ -3438,14 +3438,14 @@ name|this
 operator|.
 name|outputStream
 operator|instanceof
-name|ChunkOutputStream
+name|BlockOutputStream
 condition|)
 block|{
-name|ChunkOutputStream
+name|BlockOutputStream
 name|out
 init|=
 operator|(
-name|ChunkOutputStream
+name|BlockOutputStream
 operator|)
 name|this
 operator|.
@@ -3503,14 +3503,14 @@ name|this
 operator|.
 name|outputStream
 operator|instanceof
-name|ChunkOutputStream
+name|BlockOutputStream
 condition|)
 block|{
-name|ChunkOutputStream
+name|BlockOutputStream
 name|out
 init|=
 operator|(
-name|ChunkOutputStream
+name|BlockOutputStream
 operator|)
 name|this
 operator|.
@@ -3562,14 +3562,14 @@ name|this
 operator|.
 name|outputStream
 operator|instanceof
-name|ChunkOutputStream
+name|BlockOutputStream
 condition|)
 block|{
-name|ChunkOutputStream
+name|BlockOutputStream
 name|out
 init|=
 operator|(
-name|ChunkOutputStream
+name|BlockOutputStream
 operator|)
 name|this
 operator|.
@@ -3601,14 +3601,14 @@ name|this
 operator|.
 name|outputStream
 operator|instanceof
-name|ChunkOutputStream
+name|BlockOutputStream
 condition|)
 block|{
-name|ChunkOutputStream
+name|BlockOutputStream
 name|out
 init|=
 operator|(
-name|ChunkOutputStream
+name|BlockOutputStream
 operator|)
 name|this
 operator|.

@@ -437,10 +437,10 @@ comment|/**  * An {@link OutputStream} used by the REST service in combination w
 end_comment
 
 begin_class
-DECL|class|ChunkOutputStream
+DECL|class|BlockOutputStream
 specifier|public
 class|class
-name|ChunkOutputStream
+name|BlockOutputStream
 extends|extends
 name|OutputStream
 block|{
@@ -455,7 +455,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ChunkOutputStream
+name|BlockOutputStream
 operator|.
 name|class
 argument_list|)
@@ -605,10 +605,10 @@ specifier|private
 name|int
 name|currentBufferIndex
 decl_stmt|;
-comment|/**    * Creates a new ChunkOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient        client to perform container calls    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksum              checksum    */
-DECL|method|ChunkOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
+comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient        client to perform container calls    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksum              checksum    */
+DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
 specifier|public
-name|ChunkOutputStream
+name|BlockOutputStream
 parameter_list|(
 name|BlockID
 name|blockID
@@ -2629,7 +2629,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"ChunkOutputStream has been closed."
+literal|"BlockOutputStream has been closed."
 argument_list|)
 throw|;
 block|}

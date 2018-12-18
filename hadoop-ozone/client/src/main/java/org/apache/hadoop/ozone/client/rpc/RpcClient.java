@@ -344,7 +344,7 @@ name|client
 operator|.
 name|io
 operator|.
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 import|;
 end_import
 
@@ -3321,11 +3321,11 @@ argument_list|(
 name|keyArgs
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 name|groupOutputStream
 init|=
 operator|new
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|.
 name|Builder
 argument_list|()
@@ -4600,11 +4600,11 @@ argument_list|(
 name|keyArgs
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 name|groupOutputStream
 init|=
 operator|new
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|.
 name|Builder
 argument_list|()

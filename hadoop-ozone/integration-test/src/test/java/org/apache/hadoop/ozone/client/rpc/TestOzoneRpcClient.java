@@ -354,7 +354,7 @@ name|client
 operator|.
 name|io
 operator|.
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 import|;
 end_import
 
@@ -4838,11 +4838,11 @@ operator|.
 name|THREE
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 name|groupOutputStream
 init|=
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|out
 operator|.

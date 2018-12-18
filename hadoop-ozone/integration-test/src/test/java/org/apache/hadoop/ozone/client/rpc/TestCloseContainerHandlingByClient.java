@@ -344,7 +344,7 @@ name|client
 operator|.
 name|io
 operator|.
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 import|;
 end_import
 
@@ -1002,7 +1002,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 comment|//get the name of a valid container
@@ -1209,7 +1209,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 comment|//get the name of a valid container
@@ -1341,11 +1341,11 @@ name|blockSize
 operator|)
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
-name|groupOutputStream
+name|KeyOutputStream
+name|keyOutputStream
 init|=
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|key
 operator|.
@@ -1359,7 +1359,7 @@ name|assertEquals
 argument_list|(
 literal|4
 argument_list|,
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getStreamEntries
 argument_list|()
@@ -1420,7 +1420,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 comment|//get the name of a valid container
@@ -1620,11 +1620,11 @@ operator|*
 name|blockSize
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
-name|groupOutputStream
+name|KeyOutputStream
+name|keyOutputStream
 init|=
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|key
 operator|.
@@ -1640,7 +1640,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 comment|// With the initial size provided, it should have pre allocated 4 blocks
@@ -1650,7 +1650,7 @@ name|assertEquals
 argument_list|(
 literal|4
 argument_list|,
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getStreamEntries
 argument_list|()
@@ -1898,11 +1898,11 @@ argument_list|,
 name|keyLen
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
-name|groupOutputStream
+name|KeyOutputStream
+name|keyOutputStream
 init|=
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|key
 operator|.
@@ -1916,7 +1916,7 @@ name|assertEquals
 argument_list|(
 literal|4
 argument_list|,
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getStreamEntries
 argument_list|()
@@ -1994,7 +1994,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 comment|//get the name of a valid container
@@ -2221,11 +2221,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ChunkGroupOutputStream
-name|groupOutputStream
+name|KeyOutputStream
+name|keyOutputStream
 init|=
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|outputStream
 operator|.
@@ -2238,7 +2238,7 @@ name|OmKeyLocationInfo
 argument_list|>
 name|locationInfoList
 init|=
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getLocationInfoList
 argument_list|()
@@ -2625,11 +2625,11 @@ operator|*
 name|blockSize
 argument_list|)
 decl_stmt|;
-name|ChunkGroupOutputStream
-name|groupOutputStream
+name|KeyOutputStream
+name|keyOutputStream
 init|=
 operator|(
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 operator|)
 name|key
 operator|.
@@ -2645,7 +2645,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 comment|// With the initial size provided, it should have pre allocated 4 blocks
@@ -2655,7 +2655,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getStreamEntries
 argument_list|()
@@ -2708,7 +2708,7 @@ operator|new
 name|ArrayList
 argument_list|<>
 argument_list|(
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getLocationInfoList
 argument_list|()
@@ -2834,7 +2834,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getStreamEntries
 argument_list|()
@@ -2850,7 +2850,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getLocationInfoList
 argument_list|()
@@ -2881,7 +2881,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|getLocationInfoList
 argument_list|()
@@ -3095,7 +3095,7 @@ operator|.
 name|getOutputStream
 argument_list|()
 operator|instanceof
-name|ChunkGroupOutputStream
+name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 name|waitForContainerClose
