@@ -286,35 +286,6 @@ name|equals
 argument_list|(
 name|currentDef
 operator|.
-name|getQuicklinks
-argument_list|()
-argument_list|,
-name|targetDef
-operator|.
-name|getQuicklinks
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"changes to quick links "
-operator|+
-literal|"not supported by upgrade"
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|Objects
-operator|.
-name|equals
-argument_list|(
-name|currentDef
-operator|.
 name|getLaunchTime
 argument_list|()
 argument_list|,
