@@ -212,6 +212,26 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|AuxServices
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|ContainerManager
 import|;
 end_import
@@ -659,6 +679,19 @@ comment|/**    * Get the {@code DeletionService} associated with the NM.    *   
 DECL|method|getDeletionService ()
 name|DeletionService
 name|getDeletionService
+parameter_list|()
+function_decl|;
+DECL|method|setAuxServices (AuxServices auxServices)
+name|void
+name|setAuxServices
+parameter_list|(
+name|AuxServices
+name|auxServices
+parameter_list|)
+function_decl|;
+DECL|method|getAuxServices ()
+name|AuxServices
+name|getAuxServices
 parameter_list|()
 function_decl|;
 block|}

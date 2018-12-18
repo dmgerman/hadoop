@@ -3238,6 +3238,13 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setAuxServices
+argument_list|(
+name|auxiliaryServices
+argument_list|)
+expr_stmt|;
 name|addService
 argument_list|(
 name|auxiliaryServices

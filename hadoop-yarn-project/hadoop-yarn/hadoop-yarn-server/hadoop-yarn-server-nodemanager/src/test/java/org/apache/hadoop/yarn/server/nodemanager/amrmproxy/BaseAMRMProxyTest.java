@@ -654,6 +654,26 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|AuxServices
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|ContainerManager
 import|;
 end_import
@@ -4085,6 +4105,29 @@ DECL|method|getNMLogAggregationStatusTracker ()
 specifier|public
 name|NMLogAggregationStatusTracker
 name|getNMLogAggregationStatusTracker
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setAuxServices (AuxServices auxServices)
+specifier|public
+name|void
+name|setAuxServices
+parameter_list|(
+name|AuxServices
+name|auxServices
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|getAuxServices ()
+specifier|public
+name|AuxServices
+name|getAuxServices
 parameter_list|()
 block|{
 return|return
