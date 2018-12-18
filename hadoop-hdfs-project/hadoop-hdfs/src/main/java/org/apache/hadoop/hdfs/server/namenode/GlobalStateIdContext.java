@@ -210,7 +210,7 @@ name|Private
 annotation|@
 name|InterfaceStability
 operator|.
-name|Stable
+name|Evolving
 DECL|class|GlobalStateIdContext
 class|class
 name|GlobalStateIdContext
