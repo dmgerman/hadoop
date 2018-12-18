@@ -231,6 +231,17 @@ specifier|private
 name|HddsDatanodeService
 name|service
 decl_stmt|;
+DECL|field|args
+specifier|private
+name|String
+index|[]
+name|args
+init|=
+operator|new
+name|String
+index|[]
+block|{}
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -343,6 +354,8 @@ name|HddsDatanodeService
 operator|.
 name|createHddsDatanodeService
 argument_list|(
+name|args
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
