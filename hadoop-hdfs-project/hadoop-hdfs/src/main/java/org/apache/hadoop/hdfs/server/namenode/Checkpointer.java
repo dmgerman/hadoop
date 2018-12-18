@@ -130,6 +130,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|math
+operator|.
+name|LongMath
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -349,7 +363,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The Checkpointer is responsible for supporting periodic checkpoints   * of the HDFS metadata.  *  * The Checkpointer is a daemon that periodically wakes up  * up (determined by the schedule specified in the configuration),  * triggers a periodic checkpoint and then goes back to sleep.  *   * The start of a checkpoint is triggered by one of the two factors:  * (1) time or (2) the size of the edits file.  */
+comment|/**  * The Checkpointer is responsible for supporting periodic checkpoints   * of the HDFS metadata.  *  * The Checkpointer is a daemon that periodically wakes up  * up (determined by the schedule specified in the configuration),  * triggers a periodic checkpoint and then goes back to sleep.  *  * The start of a checkpoint is triggered by one of the two factors:  * (1) time or (2) the size of the edits file.  */
 end_comment
 
 begin_class
@@ -611,39 +625,35 @@ name|void
 name|run
 parameter_list|()
 block|{
-comment|// Check the size of the edit log once every 5 minutes.
+comment|// How often to check the size of the edit log (min of checkpointCheckPeriod and checkpointPeriod)
 name|long
 name|periodMSec
 init|=
-literal|5
+name|checkpointConf
+operator|.
+name|getCheckPeriod
+argument_list|()
 operator|*
-literal|60
-decl_stmt|;
-comment|// 5 minutes
-if|if
-condition|(
-name|checkpointConf
-operator|.
-name|getPeriod
-argument_list|()
-operator|<
-name|periodMSec
-condition|)
-block|{
-name|periodMSec
-operator|=
-name|checkpointConf
-operator|.
-name|getPeriod
-argument_list|()
-expr_stmt|;
-block|}
-name|periodMSec
-operator|*=
 literal|1000
-expr_stmt|;
+decl_stmt|;
+comment|// How often to checkpoint regardless of number of txns
+name|long
+name|checkpointPeriodMSec
+init|=
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
+operator|*
+literal|1000
+decl_stmt|;
 name|long
 name|lastCheckpointTime
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|lastEditLogCheckTime
 init|=
 literal|0
 decl_stmt|;
@@ -686,7 +696,7 @@ name|now
 operator|>=
 name|lastCheckpointTime
 operator|+
-name|periodMSec
+name|checkpointPeriodMSec
 condition|)
 block|{
 name|shouldCheckpoint
@@ -694,7 +704,15 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|now
+operator|>=
+name|lastEditLogCheckTime
+operator|+
+name|periodMSec
+condition|)
 block|{
 name|long
 name|txns
@@ -702,6 +720,10 @@ init|=
 name|countUncheckpointedTxns
 argument_list|()
 decl_stmt|;
+name|lastEditLogCheckTime
+operator|=
+name|now
+expr_stmt|;
 if|if
 condition|(
 name|txns
@@ -725,6 +747,10 @@ name|doCheckpoint
 argument_list|()
 expr_stmt|;
 name|lastCheckpointTime
+operator|=
+name|now
+expr_stmt|;
+name|lastEditLogCheckTime
 operator|=
 name|now
 expr_stmt|;
@@ -772,7 +798,14 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
+name|LongMath
+operator|.
+name|gcd
+argument_list|(
 name|periodMSec
+argument_list|,
+name|checkpointPeriodMSec
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
