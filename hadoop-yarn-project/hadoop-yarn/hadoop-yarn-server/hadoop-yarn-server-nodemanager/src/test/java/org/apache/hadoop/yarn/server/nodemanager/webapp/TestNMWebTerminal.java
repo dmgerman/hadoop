@@ -347,6 +347,7 @@ decl_stmt|;
 DECL|field|TESTLOGDIR
 specifier|private
 specifier|static
+specifier|final
 name|File
 name|TESTLOGDIR
 init|=
