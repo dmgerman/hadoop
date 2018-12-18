@@ -764,7 +764,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
+name|After
 import|;
 end_import
 
@@ -784,7 +784,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -1058,7 +1058,6 @@ name|TestOzoneManager
 block|{
 DECL|field|cluster
 specifier|private
-specifier|static
 name|MiniOzoneCluster
 name|cluster
 init|=
@@ -1066,43 +1065,36 @@ literal|null
 decl_stmt|;
 DECL|field|storageHandler
 specifier|private
-specifier|static
 name|StorageHandler
 name|storageHandler
 decl_stmt|;
 DECL|field|userArgs
 specifier|private
-specifier|static
 name|UserArgs
 name|userArgs
 decl_stmt|;
 DECL|field|omMetrics
 specifier|private
-specifier|static
 name|OMMetrics
 name|omMetrics
 decl_stmt|;
 DECL|field|conf
 specifier|private
-specifier|static
 name|OzoneConfiguration
 name|conf
 decl_stmt|;
 DECL|field|clusterId
 specifier|private
-specifier|static
 name|String
 name|clusterId
 decl_stmt|;
 DECL|field|scmId
 specifier|private
-specifier|static
 name|String
 name|scmId
 decl_stmt|;
 DECL|field|omId
 specifier|private
-specifier|static
 name|String
 name|omId
 decl_stmt|;
@@ -1120,10 +1112,9 @@ argument_list|()
 decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|init ()
 specifier|public
-specifier|static
 name|void
 name|init
 parameter_list|()
@@ -1261,10 +1252,9 @@ expr_stmt|;
 block|}
 comment|/**    * Shutdown MiniDFSCluster.    */
 annotation|@
-name|AfterClass
+name|After
 DECL|method|shutdown ()
 specifier|public
-specifier|static
 name|void
 name|shutdown
 parameter_list|()
