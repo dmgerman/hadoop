@@ -596,20 +596,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicBoolean
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -12859,10 +12845,10 @@ name|getProxy
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the RefreshUserMappingsProtocol RPC proxy for the NN associated with    * this DFSClient object    *    * @param nameNodeUri the URI of the NN to get a proxy for.    *    * @return the RefreshUserMappingsProtocol RPC proxy associated with this    * DFSClient object    */
+comment|/**    * Get the RefreshUserMappingsProtocol RPC proxy for the NN associated with    * this DFSClient object    *    * @param nnAddr the address of the NN to get a proxy for.    *    * @return the RefreshUserMappingsProtocol RPC proxy associated with this    * DFSClient object    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getRefreshUserMappingsProtocolProxy ( Configuration conf, URI nameNodeUri)
+DECL|method|getRefreshUserMappingsProtocolProxy ( Configuration conf, InetSocketAddress nnAddr)
 specifier|public
 specifier|static
 name|RefreshUserMappingsProtocol
@@ -12871,36 +12857,31 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|URI
-name|nameNodeUri
+name|InetSocketAddress
+name|nnAddr
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|AtomicBoolean
-name|nnFallbackToSimpleAuth
-init|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|false
-argument_list|)
-decl_stmt|;
 return|return
 name|NameNodeProxies
 operator|.
-name|createProxy
+name|createNonHAProxy
 argument_list|(
 name|conf
 argument_list|,
-name|nameNodeUri
+name|nnAddr
 argument_list|,
 name|RefreshUserMappingsProtocol
 operator|.
 name|class
 argument_list|,
-name|nnFallbackToSimpleAuth
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 operator|.
 name|getProxy
