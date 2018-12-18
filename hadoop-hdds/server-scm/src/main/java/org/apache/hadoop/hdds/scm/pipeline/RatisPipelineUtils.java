@@ -186,6 +186,8 @@ name|ratis
 operator|.
 name|util
 operator|.
+name|function
+operator|.
 name|CheckedBiConsumer
 import|;
 end_import

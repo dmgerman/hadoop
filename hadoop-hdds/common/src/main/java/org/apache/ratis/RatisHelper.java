@@ -1099,7 +1099,7 @@ name|OzoneConfigKeys
 operator|.
 name|DFS_RATIS_CLIENT_REQUEST_RETRY_INTERVAL_DEFAULT
 operator|.
-name|toInt
+name|toIntExact
 argument_list|(
 name|TimeUnit
 operator|.

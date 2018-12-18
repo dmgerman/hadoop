@@ -132,6 +132,8 @@ name|ratis
 operator|.
 name|util
 operator|.
+name|function
+operator|.
 name|CheckedConsumer
 import|;
 end_import
