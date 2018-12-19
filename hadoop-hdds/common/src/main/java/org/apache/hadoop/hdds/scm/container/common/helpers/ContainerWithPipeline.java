@@ -120,6 +120,24 @@ name|Pipeline
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|UnknownPipelineStateException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class wraps ozone container info.  */
 end_comment
@@ -207,6 +225,8 @@ operator|.
 name|ContainerWithPipeline
 name|allocatedContainer
 parameter_list|)
+throws|throws
+name|UnknownPipelineStateException
 block|{
 return|return
 operator|new
@@ -241,6 +261,8 @@ operator|.
 name|ContainerWithPipeline
 name|getProtobuf
 parameter_list|()
+throws|throws
+name|UnknownPipelineStateException
 block|{
 name|HddsProtos
 operator|.
