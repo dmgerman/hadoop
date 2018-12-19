@@ -3183,14 +3183,6 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
-name|long
-name|now
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 comment|// TODO: Fix the getExpiredOpenKeys, Not part of this patch.
 return|return
 name|keyBlocksList
