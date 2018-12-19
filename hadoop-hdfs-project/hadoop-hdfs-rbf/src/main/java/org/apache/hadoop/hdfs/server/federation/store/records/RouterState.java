@@ -381,6 +381,23 @@ name|long
 name|getDateStarted
 parameter_list|()
 function_decl|;
+DECL|method|setAdminAddress (String adminAddress)
+specifier|public
+specifier|abstract
+name|void
+name|setAdminAddress
+parameter_list|(
+name|String
+name|adminAddress
+parameter_list|)
+function_decl|;
+DECL|method|getAdminAddress ()
+specifier|public
+specifier|abstract
+name|String
+name|getAdminAddress
+parameter_list|()
+function_decl|;
 comment|/**    * Get the identifier for the Router. It uses the address.    *    * @return Identifier for the Router.    */
 DECL|method|getRouterId ()
 specifier|public

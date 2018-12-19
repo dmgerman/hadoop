@@ -174,6 +174,11 @@ name|enableSafemode
 init|=
 literal|false
 decl_stmt|;
+DECL|field|enableCacheRefresh
+specifier|private
+name|boolean
+name|enableCacheRefresh
+decl_stmt|;
 DECL|method|RouterConfigBuilder (Configuration configuration)
 specifier|public
 name|RouterConfigBuilder
@@ -434,6 +439,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|refreshCache (boolean enable)
+specifier|public
+name|RouterConfigBuilder
+name|refreshCache
+parameter_list|(
+name|boolean
+name|enable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|enableCacheRefresh
+operator|=
+name|enable
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|rpc ()
 specifier|public
 name|RouterConfigBuilder
@@ -573,6 +597,21 @@ literal|true
 argument_list|)
 return|;
 block|}
+DECL|method|refreshCache ()
+specifier|public
+name|RouterConfigBuilder
+name|refreshCache
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|refreshCache
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|Configuration
@@ -694,6 +733,19 @@ argument_list|,
 name|this
 operator|.
 name|enableSafemode
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|MOUNT_TABLE_CACHE_UPDATE
+argument_list|,
+name|this
+operator|.
+name|enableCacheRefresh
 argument_list|)
 expr_stmt|;
 return|return
