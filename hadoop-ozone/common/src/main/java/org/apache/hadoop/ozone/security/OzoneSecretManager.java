@@ -357,11 +357,6 @@ specifier|private
 name|OzoneSecretKey
 name|currentKey
 decl_stmt|;
-DECL|field|maxKeyLength
-specifier|private
-name|int
-name|maxKeyLength
-decl_stmt|;
 DECL|field|currentKeyId
 specifier|private
 name|AtomicInteger
@@ -450,15 +445,6 @@ operator|.
 name|service
 operator|=
 name|service
-expr_stmt|;
-name|this
-operator|.
-name|maxKeyLength
-operator|=
-name|securityConfig
-operator|.
-name|getMaxKeyLength
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -807,8 +793,6 @@ operator|-
 literal|1
 argument_list|,
 name|keyPair
-argument_list|,
-name|maxKeyLength
 argument_list|)
 decl_stmt|;
 name|currentKey

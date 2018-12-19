@@ -312,17 +312,12 @@ specifier|private
 name|PublicKey
 name|publicKey
 decl_stmt|;
-DECL|field|maxKeyLen
-specifier|private
-name|int
-name|maxKeyLen
-decl_stmt|;
 DECL|field|securityConfig
 specifier|private
 name|SecurityConfig
 name|securityConfig
 decl_stmt|;
-DECL|method|OzoneSecretKey (int keyId, long expiryDate, KeyPair keyPair, int maxKeyLen)
+DECL|method|OzoneSecretKey (int keyId, long expiryDate, KeyPair keyPair)
 specifier|public
 name|OzoneSecretKey
 parameter_list|(
@@ -334,9 +329,6 @@ name|expiryDate
 parameter_list|,
 name|KeyPair
 name|keyPair
-parameter_list|,
-name|int
-name|maxKeyLen
 parameter_list|)
 block|{
 name|Preconditions
@@ -358,47 +350,6 @@ name|expiryDate
 operator|=
 name|expiryDate
 expr_stmt|;
-name|byte
-index|[]
-name|encodedKey
-init|=
-name|keyPair
-operator|.
-name|getPrivate
-argument_list|()
-operator|.
-name|getEncoded
-argument_list|()
-decl_stmt|;
-name|this
-operator|.
-name|maxKeyLen
-operator|=
-name|maxKeyLen
-expr_stmt|;
-if|if
-condition|(
-name|encodedKey
-operator|.
-name|length
-operator|>
-name|maxKeyLen
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"can't create "
-operator|+
-name|encodedKey
-operator|.
-name|length
-operator|+
-literal|" byte long DelegationKey."
-argument_list|)
-throw|;
-block|}
 name|this
 operator|.
 name|privateKey
@@ -419,7 +370,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/*    * Create new instance using default signature algorithm and provider.    * */
-DECL|method|OzoneSecretKey (int keyId, long expiryDate, byte[] pvtKey, byte[] publicKey, int maxKeyLen)
+DECL|method|OzoneSecretKey (int keyId, long expiryDate, byte[] pvtKey, byte[] publicKey)
 specifier|public
 name|OzoneSecretKey
 parameter_list|(
@@ -436,9 +387,6 @@ parameter_list|,
 name|byte
 index|[]
 name|publicKey
-parameter_list|,
-name|int
-name|maxKeyLen
 parameter_list|)
 block|{
 name|Preconditions
@@ -479,37 +427,6 @@ name|expiryDate
 operator|=
 name|expiryDate
 expr_stmt|;
-name|this
-operator|.
-name|maxKeyLen
-operator|=
-name|maxKeyLen
-expr_stmt|;
-if|if
-condition|(
-name|pvtKey
-operator|.
-name|length
-operator|>
-name|maxKeyLen
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"can't create "
-operator|+
-name|pvtKey
-operator|.
-name|length
-operator|+
-literal|" byte long DelegationKey. Max allowed length is "
-operator|+
-name|maxKeyLen
-argument_list|)
-throw|;
-block|}
 name|this
 operator|.
 name|privateKey
@@ -575,16 +492,6 @@ parameter_list|()
 block|{
 return|return
 name|publicKey
-return|;
-block|}
-DECL|method|getMaxKeyLen ()
-specifier|public
-name|int
-name|getMaxKeyLen
-parameter_list|()
-block|{
-return|return
-name|maxKeyLen
 return|;
 block|}
 DECL|method|getEncodedPrivateKey ()
@@ -686,12 +593,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|setMaxKeyLen
-argument_list|(
-name|getMaxKeyLen
-argument_list|()
-argument_list|)
-operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -779,13 +680,6 @@ argument_list|()
 argument_list|,
 name|securityConfig
 argument_list|)
-expr_stmt|;
-name|maxKeyLen
-operator|=
-name|secretKey
-operator|.
-name|getMaxKeyLen
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -994,11 +888,6 @@ name|getPublicKeyBytes
 argument_list|()
 operator|.
 name|toByteArray
-argument_list|()
-argument_list|,
-name|key
-operator|.
-name|getMaxKeyLen
 argument_list|()
 argument_list|)
 return|;
