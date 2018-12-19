@@ -1643,6 +1643,7 @@ literal|"line.separator"
 argument_list|)
 decl_stmt|;
 DECL|method|runFsck (Configuration conf, int expectedErrCode, boolean checkErrorCode, String... path)
+specifier|public
 specifier|static
 name|String
 name|runFsck
