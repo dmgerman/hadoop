@@ -1305,6 +1305,15 @@ name|FINAL_CONTAINER_TOKENS_FILE
 init|=
 literal|"container_tokens"
 decl_stmt|;
+DECL|field|SYSFS_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SYSFS_DIR
+init|=
+literal|"sysfs"
+decl_stmt|;
 DECL|field|KEYSTORE_FILE
 specifier|public
 specifier|static
@@ -9644,6 +9653,18 @@ argument_list|(
 name|containerWorkDir
 argument_list|,
 name|FINAL_CONTAINER_TOKENS_FILE
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// delete sysfs dir
+name|deleteAsUser
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|containerWorkDir
+argument_list|,
+name|SYSFS_DIR
 argument_list|)
 argument_list|)
 expr_stmt|;
