@@ -722,6 +722,8 @@ argument_list|,
 name|conf
 argument_list|,
 literal|"om1"
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|setupMocks

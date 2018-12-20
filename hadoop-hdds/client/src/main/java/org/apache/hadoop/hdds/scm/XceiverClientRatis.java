@@ -891,6 +891,32 @@ end_function
 begin_function
 annotation|@
 name|Override
+DECL|method|connect (String encodedToken)
+specifier|public
+name|void
+name|connect
+parameter_list|(
+name|String
+name|encodedToken
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Block tokens are not "
+operator|+
+literal|"implemented for Ratis clients."
+argument_list|)
+throw|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

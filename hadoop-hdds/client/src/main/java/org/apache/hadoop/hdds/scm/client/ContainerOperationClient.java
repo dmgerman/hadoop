@@ -554,6 +554,8 @@ argument_list|,
 name|containerId
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Let us log this info after we let SCM know that we have completed the
@@ -986,6 +988,8 @@ argument_list|,
 name|force
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|storageContainerLocationClient
@@ -1162,6 +1166,8 @@ argument_list|,
 name|containerID
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -1382,6 +1388,8 @@ argument_list|,
 name|containerId
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Notify SCM to close the container

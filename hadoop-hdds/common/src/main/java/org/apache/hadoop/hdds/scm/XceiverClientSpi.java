@@ -308,6 +308,19 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+comment|/**    * Connects to the leader in the pipeline using encoded token. To be used    * in a secure cluster.    */
+DECL|method|connect (String encodedToken)
+specifier|public
+specifier|abstract
+name|void
+name|connect
+parameter_list|(
+name|String
+name|encodedToken
+parameter_list|)
+throws|throws
+name|Exception
+function_decl|;
 annotation|@
 name|Override
 DECL|method|close ()

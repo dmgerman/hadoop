@@ -202,6 +202,14 @@ specifier|final
 name|SecurityConfig
 name|conf
 decl_stmt|;
+DECL|field|testStub
+specifier|private
+specifier|static
+name|boolean
+name|testStub
+init|=
+literal|false
+decl_stmt|;
 DECL|method|BlockTokenVerifier (SecurityConfig conf, CertificateClient caClient)
 specifier|public
 name|BlockTokenVerifier
@@ -276,6 +284,9 @@ name|isNullOrEmpty
 argument_list|(
 name|tokenStr
 argument_list|)
+operator|||
+name|isTestStub
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -536,6 +547,35 @@ name|user
 argument_list|)
 return|;
 block|}
+block|}
+DECL|method|isTestStub ()
+specifier|public
+specifier|static
+name|boolean
+name|isTestStub
+parameter_list|()
+block|{
+return|return
+name|testStub
+return|;
+block|}
+comment|// For testing purpose only.
+DECL|method|setTestStub (boolean isTestStub)
+specifier|public
+specifier|static
+name|void
+name|setTestStub
+parameter_list|(
+name|boolean
+name|isTestStub
+parameter_list|)
+block|{
+name|BlockTokenVerifier
+operator|.
+name|testStub
+operator|=
+name|isTestStub
+expr_stmt|;
 block|}
 block|}
 end_class

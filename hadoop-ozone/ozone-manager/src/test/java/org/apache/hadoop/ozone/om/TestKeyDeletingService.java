@@ -490,6 +490,8 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -636,6 +638,8 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -810,6 +814,8 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 specifier|final

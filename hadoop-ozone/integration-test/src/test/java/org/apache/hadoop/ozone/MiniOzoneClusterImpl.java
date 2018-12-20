@@ -1878,6 +1878,13 @@ operator|=
 name|createOM
 argument_list|()
 expr_stmt|;
+name|om
+operator|.
+name|setCertClient
+argument_list|(
+name|certClient
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

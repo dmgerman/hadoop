@@ -56,22 +56,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|conf
-operator|.
-name|OzoneConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|security
 operator|.
 name|token
@@ -99,6 +83,24 @@ operator|.
 name|BlockTokenSecretProto
 operator|.
 name|AccessModeProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|SecurityConfig
 import|;
 end_import
 
@@ -290,11 +292,11 @@ name|String
 name|omCertSerialId
 decl_stmt|;
 comment|/**    * Create a secret manager.    *    * @param conf    * @param blockTokenExpirytime token expiry time for expired tokens in    * milliseconds    */
-DECL|method|OzoneBlockTokenSecretManager (OzoneConfiguration conf, long blockTokenExpirytime, String omCertSerialId)
+DECL|method|OzoneBlockTokenSecretManager (SecurityConfig conf, long blockTokenExpirytime, String omCertSerialId)
 specifier|public
 name|OzoneBlockTokenSecretManager
 parameter_list|(
-name|OzoneConfiguration
+name|SecurityConfig
 name|conf
 parameter_list|,
 name|long
@@ -382,7 +384,7 @@ name|maxLength
 argument_list|)
 return|;
 block|}
-comment|/**    * Generate an block token for specified user, blockId.    *    * @param user    * @param blockId    * @param modes    * @param maxLength    * @return token    */
+comment|/**    * Generate an block token for specified user, blockId. Service field for    * token is set to blockId.    *    * @param user    * @param blockId    * @param modes    * @param maxLength    * @return token    */
 DECL|method|generateToken (String user, String blockId, EnumSet<AccessModeProto> modes, long maxLength)
 specifier|public
 name|Token
@@ -457,6 +459,7 @@ name|tokenId
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Pass blockId as service.
 return|return
 operator|new
 name|Token
@@ -477,7 +480,11 @@ operator|.
 name|getKind
 argument_list|()
 argument_list|,
-name|SERVICE
+operator|new
+name|Text
+argument_list|(
+name|blockId
+argument_list|)
 argument_list|)
 return|;
 block|}

@@ -457,6 +457,24 @@ name|HDDS_PUBLIC_KEY_FILE_NAME_DEFAULT
 init|=
 literal|"public.pem"
 decl_stmt|;
+DECL|field|HDDS_BLOCK_TOKEN_EXPIRY_TIME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_BLOCK_TOKEN_EXPIRY_TIME
+init|=
+literal|"hdds.block.token.expiry.time"
+decl_stmt|;
+DECL|field|HDDS_BLOCK_TOKEN_EXPIRY_TIME_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_BLOCK_TOKEN_EXPIRY_TIME_DEFAULT
+init|=
+literal|"1d"
+decl_stmt|;
 comment|/**    * Maximum duration of certificates issued by SCM including Self-Signed Roots.    * The formats accepted are based on the ISO-8601 duration format PnDTnHnMn.nS    * Default value is 5 years and written as P1865D.    */
 DECL|field|HDDS_X509_MAX_DURATION
 specifier|public

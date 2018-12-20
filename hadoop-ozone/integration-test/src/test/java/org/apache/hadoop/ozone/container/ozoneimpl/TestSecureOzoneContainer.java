@@ -1230,7 +1230,12 @@ decl_stmt|;
 name|client
 operator|.
 name|connect
+argument_list|(
+name|token
+operator|.
+name|encodeToUrlString
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|createContainerForTesting
 argument_list|(

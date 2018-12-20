@@ -776,6 +776,56 @@ name|OZONE_METADATA_DIRS
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+operator|.
+name|HDDS_DATANODE_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_SECURITY_ENABLED_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_SECURITY_ENABLED_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that deals with all Security related configs in HDDS.  *<p>  * This class allows security configs to be read and used consistently across  * all of security related code base.  */
 end_comment
@@ -913,6 +963,12 @@ specifier|private
 name|String
 name|clientCertChainFileName
 decl_stmt|;
+DECL|field|isSecurityEnabled
+specifier|private
+specifier|final
+name|boolean
+name|isSecurityEnabled
+decl_stmt|;
 comment|/**    * Constructs a SecurityConfig.    *    * @param configuration - HDDS Configuration    */
 DECL|method|SecurityConfig (Configuration configuration)
 specifier|public
@@ -1002,6 +1058,13 @@ operator|.
 name|get
 argument_list|(
 name|OZONE_METADATA_DIRS
+argument_list|,
+name|configuration
+operator|.
+name|get
+argument_list|(
+name|HDDS_DATANODE_DIR_KEY
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1229,6 +1292,21 @@ name|HDDS_GRPC_TLS_TEST_CERT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|isSecurityEnabled
+operator|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|getBoolean
+argument_list|(
+name|OZONE_SECURITY_ENABLED_KEY
+argument_list|,
+name|OZONE_SECURITY_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// First Startup -- if the provider is null, check for the provider.
 if|if
 condition|(
@@ -1280,6 +1358,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+comment|/**    * Returns true if security is enabled for OzoneCluster. This is determined    * by value of OZONE_SECURITY_ENABLED_KEY.    *    * @return true if security is enabled for OzoneCluster.    */
+DECL|method|isSecurityEnabled ()
+specifier|public
+name|boolean
+name|isSecurityEnabled
+parameter_list|()
+block|{
+return|return
+name|isSecurityEnabled
+return|;
 block|}
 comment|/**    * Returns the Standard Certificate file name.    *    * @return String - Name of the Certificate File.    */
 DECL|method|getCertificateFileName ()

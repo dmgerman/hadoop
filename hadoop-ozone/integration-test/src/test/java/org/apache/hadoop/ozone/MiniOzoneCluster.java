@@ -88,6 +88,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|client
@@ -642,6 +664,11 @@ name|startDataNodes
 init|=
 literal|true
 decl_stmt|;
+DECL|field|certClient
+specifier|protected
+name|CertificateClient
+name|certClient
+decl_stmt|;
 DECL|method|Builder (OzoneConfiguration conf)
 specifier|protected
 name|Builder
@@ -721,6 +748,26 @@ operator|.
 name|startDataNodes
 operator|=
 name|nodes
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets the certificate client.      *      * @param client      *      * @return MiniOzoneCluster.Builder      */
+DECL|method|setCertificateClient (CertificateClient client)
+specifier|public
+name|Builder
+name|setCertificateClient
+parameter_list|(
+name|CertificateClient
+name|client
+parameter_list|)
+block|{
+name|this
+operator|.
+name|certClient
+operator|=
+name|client
 expr_stmt|;
 return|return
 name|this

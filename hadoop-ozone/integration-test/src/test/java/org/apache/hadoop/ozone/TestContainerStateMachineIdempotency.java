@@ -602,6 +602,8 @@ argument_list|,
 name|containerID
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// call create Container again
@@ -718,6 +720,8 @@ argument_list|,
 name|containerID
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ContainerProtocolCalls
@@ -729,6 +733,8 @@ argument_list|,
 name|containerID
 argument_list|,
 name|traceID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

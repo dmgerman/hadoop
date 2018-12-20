@@ -70,22 +70,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|conf
-operator|.
-name|OzoneConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|security
 operator|.
 name|x509
@@ -378,13 +362,13 @@ name|OzoneSecretKey
 argument_list|>
 name|allKeys
 decl_stmt|;
-comment|/**    * Create a secret manager.    *    * @param conf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param service name of service    */
-DECL|method|OzoneSecretManager (OzoneConfiguration conf, long tokenMaxLifetime, long tokenRenewInterval, Text service, Logger logger)
+comment|/**    * Create a secret manager.    *    * @param secureConf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param service name of service    */
+DECL|method|OzoneSecretManager (SecurityConfig secureConf, long tokenMaxLifetime, long tokenRenewInterval, Text service, Logger logger)
 specifier|public
 name|OzoneSecretManager
 parameter_list|(
-name|OzoneConfiguration
-name|conf
+name|SecurityConfig
+name|secureConf
 parameter_list|,
 name|long
 name|tokenMaxLifetime
@@ -403,11 +387,7 @@ name|this
 operator|.
 name|securityConfig
 operator|=
-operator|new
-name|SecurityConfig
-argument_list|(
-name|conf
-argument_list|)
+name|secureConf
 expr_stmt|;
 name|this
 operator|.

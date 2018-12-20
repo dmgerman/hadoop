@@ -927,6 +927,8 @@ name|getContainerID
 argument_list|()
 argument_list|,
 name|traceID1
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// After releasing the client, this connection should be closed
@@ -960,6 +962,8 @@ name|getContainerID
 argument_list|()
 argument_list|,
 name|traceID1
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1286,6 +1290,8 @@ name|getContainerID
 argument_list|()
 argument_list|,
 name|traceID2
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
