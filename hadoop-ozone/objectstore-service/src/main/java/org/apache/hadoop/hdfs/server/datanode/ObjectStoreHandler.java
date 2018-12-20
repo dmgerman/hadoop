@@ -366,6 +366,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
+name|ClientId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -607,6 +621,16 @@ specifier|final
 name|StorageHandler
 name|storageHandler
 decl_stmt|;
+DECL|field|clientId
+specifier|private
+name|ClientId
+name|clientId
+init|=
+name|ClientId
+operator|.
+name|randomId
+argument_list|()
+decl_stmt|;
 comment|/**    * Creates a new ObjectStoreHandler.    *    * @param conf configuration    * @throws IOException if there is an I/O error    */
 DECL|method|ObjectStoreHandler (Configuration conf)
 specifier|public
@@ -833,6 +857,11 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|)
+argument_list|,
+name|clientId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|storageHandler

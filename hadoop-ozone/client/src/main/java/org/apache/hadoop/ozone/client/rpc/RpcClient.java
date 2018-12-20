@@ -816,6 +816,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
+name|ClientId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -996,6 +1010,16 @@ specifier|final
 name|long
 name|watchTimeout
 decl_stmt|;
+DECL|field|clientId
+specifier|private
+name|ClientId
+name|clientId
+init|=
+name|ClientId
+operator|.
+name|randomId
+argument_list|()
+decl_stmt|;
 comment|/**     * Creates RpcClient instance with the given configuration.     * @param conf     * @throws IOException     */
 DECL|method|RpcClient (Configuration conf)
 specifier|public
@@ -1144,6 +1168,11 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|)
+argument_list|,
+name|clientId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|long

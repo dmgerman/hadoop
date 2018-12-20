@@ -1351,6 +1351,7 @@ name|getLifeCycleState
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the local directory where ratis logs will be stored.    */
 DECL|method|getOMRatisDirectory (Configuration conf)
 specifier|public
 specifier|static
