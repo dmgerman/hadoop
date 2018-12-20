@@ -1559,14 +1559,30 @@ name|completed
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+name|exception
+condition|)
+block|{
+name|progressbar
+operator|.
+name|terminate
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|progressbar
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
-name|validateWrites
+name|validator
+operator|!=
+literal|null
 condition|)
 block|{
 name|validator
@@ -1583,31 +1599,6 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-block|}
-DECL|method|parseOptions (CommandLine cmdLine)
-specifier|private
-name|void
-name|parseOptions
-parameter_list|(
-name|CommandLine
-name|cmdLine
-parameter_list|)
-block|{
-if|if
-condition|(
-name|keySize
-operator|<
-literal|1024
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"keySize can not be less than 1024 bytes"
-argument_list|)
-throw|;
-block|}
 block|}
 comment|/**    * Adds ShutdownHook to print statistics.    */
 DECL|method|addShutdownHook ()
