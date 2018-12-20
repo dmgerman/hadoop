@@ -80,6 +80,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -791,9 +805,7 @@ expr_stmt|;
 block|}
 comment|/**    * Should display only paths of files and directories.    * @return true display paths only, false display all fields    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isPathOnly ()
 name|boolean
 name|isPathOnly
@@ -807,9 +819,7 @@ return|;
 block|}
 comment|/**    * Should the contents of the directory be shown or just the directory?    * @return true if directory contents, false if just directory    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isDirRecurse ()
 name|boolean
 name|isDirRecurse
@@ -823,9 +833,7 @@ return|;
 block|}
 comment|/**    * Should file sizes be returned in human readable format rather than bytes?    * @return true is human readable, false if bytes    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isHumanReadable ()
 name|boolean
 name|isHumanReadable
@@ -838,9 +846,7 @@ name|humanReadable
 return|;
 block|}
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isHideNonPrintable ()
 specifier|private
 name|boolean
@@ -853,9 +859,7 @@ return|;
 block|}
 comment|/**    * Should directory contents be displayed in reverse order    * @return true reverse order, false default order    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isOrderReverse ()
 name|boolean
 name|isOrderReverse
@@ -869,9 +873,7 @@ return|;
 block|}
 comment|/**    * Should directory contents be displayed in mtime order.    * @return true mtime order, false default order    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isOrderTime ()
 name|boolean
 name|isOrderTime
@@ -885,9 +887,7 @@ return|;
 block|}
 comment|/**    * Should directory contents be displayed in size order.    * @return true size order, false default order    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isOrderSize ()
 name|boolean
 name|isOrderSize
@@ -901,9 +901,7 @@ return|;
 block|}
 comment|/**    * Should access time be used rather than modification time.    * @return true use access time, false use modification time    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|isUseAtime ()
 name|boolean
 name|isUseAtime
@@ -913,6 +911,20 @@ return|return
 name|this
 operator|.
 name|useAtime
+return|;
+block|}
+comment|/**    * Should EC policies be displayed.    * @return true display EC policies, false doesn't display EC policies    */
+annotation|@
+name|VisibleForTesting
+DECL|method|isDisplayECPolicy ()
+name|boolean
+name|isDisplayECPolicy
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|displayECPolicy
 return|;
 block|}
 annotation|@
@@ -928,6 +940,45 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|isDisplayECPolicy
+argument_list|()
+operator|&&
+name|item
+operator|.
+name|fs
+operator|.
+name|getContentSummary
+argument_list|(
+name|item
+operator|.
+name|path
+argument_list|)
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"FileSystem "
+operator|+
+name|item
+operator|.
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|+
+literal|" does not support Erasure Coding"
+argument_list|)
+throw|;
+block|}
 comment|// implicitly recurse once for cmdline directories
 if|if
 condition|(
@@ -1487,6 +1538,44 @@ operator|+
 literal|"s "
 argument_list|)
 expr_stmt|;
+name|fmt
+operator|.
+name|append
+argument_list|(
+operator|(
+name|maxOwner
+operator|>
+literal|0
+operator|)
+condition|?
+literal|"%-"
+operator|+
+name|maxOwner
+operator|+
+literal|"s "
+else|:
+literal|"%s"
+argument_list|)
+expr_stmt|;
+name|fmt
+operator|.
+name|append
+argument_list|(
+operator|(
+name|maxGroup
+operator|>
+literal|0
+operator|)
+condition|?
+literal|"%-"
+operator|+
+name|maxGroup
+operator|+
+literal|"s "
+else|:
+literal|"%s"
+argument_list|)
+expr_stmt|;
 comment|// Do not use '%-0s' as a formatting conversion, since it will throw a
 comment|// a MissingFormatWidthException if it is used in String.format().
 comment|// http://docs.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html#intFlags
@@ -1542,52 +1631,22 @@ name|fmt
 operator|.
 name|append
 argument_list|(
-literal|" %"
+operator|(
+name|maxEC
+operator|>
+literal|0
+operator|)
+condition|?
+literal|"%-"
 operator|+
 name|maxEC
 operator|+
 literal|"s "
+else|:
+literal|"%s"
 argument_list|)
 expr_stmt|;
 block|}
-name|fmt
-operator|.
-name|append
-argument_list|(
-operator|(
-name|maxOwner
-operator|>
-literal|0
-operator|)
-condition|?
-literal|"%-"
-operator|+
-name|maxOwner
-operator|+
-literal|"s "
-else|:
-literal|"%s"
-argument_list|)
-expr_stmt|;
-name|fmt
-operator|.
-name|append
-argument_list|(
-operator|(
-name|maxGroup
-operator|>
-literal|0
-operator|)
-condition|?
-literal|"%-"
-operator|+
-name|maxGroup
-operator|+
-literal|"s "
-else|:
-literal|"%s"
-argument_list|)
-expr_stmt|;
 name|fmt
 operator|.
 name|append
