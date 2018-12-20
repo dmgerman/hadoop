@@ -6737,7 +6737,6 @@ argument_list|,
 name|upgradeRequest
 argument_list|)
 decl_stmt|;
-comment|// Wait for Connect
 name|Session
 name|session
 init|=
@@ -6746,40 +6745,20 @@ operator|.
 name|get
 argument_list|()
 decl_stmt|;
-comment|// Send a message
+if|if
+condition|(
 name|session
 operator|.
-name|getRemote
+name|isOpen
 argument_list|()
-operator|.
-name|sendString
-argument_list|(
-literal|"stty -echo"
-argument_list|)
-expr_stmt|;
-name|session
-operator|.
-name|getRemote
-argument_list|()
-operator|.
-name|sendString
-argument_list|(
-literal|"\r"
-argument_list|)
-expr_stmt|;
-name|session
-operator|.
-name|getRemote
-argument_list|()
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
+condition|)
+block|{
 name|socket
 operator|.
 name|run
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
