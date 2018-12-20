@@ -235,7 +235,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ProxyServer will sit in between the end user and AppMaster  * web interfaces.   */
+comment|/**  * ProxyServer will sit in between the end user and AppMaster  * web interfaces.  */
 end_comment
 
 begin_class
@@ -477,6 +477,10 @@ name|conf
 operator|.
 name|getSocketAddr
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|PROXY_BIND_HOST
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|PROXY_ADDRESS

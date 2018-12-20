@@ -7554,6 +7554,18 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_PROXY_PORT
 decl_stmt|;
+comment|/** Binding address for the web proxy. */
+DECL|field|PROXY_BIND_HOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PROXY_BIND_HOST
+init|=
+name|PROXY_PREFIX
+operator|+
+literal|"bind-host"
+decl_stmt|;
 comment|/**    * YARN Service Level Authorization    */
 specifier|public
 specifier|static
