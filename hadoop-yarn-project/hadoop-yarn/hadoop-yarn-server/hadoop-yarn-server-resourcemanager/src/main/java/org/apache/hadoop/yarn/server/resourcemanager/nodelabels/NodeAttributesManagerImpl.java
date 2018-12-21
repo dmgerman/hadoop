@@ -1383,27 +1383,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Updated NodeAttribute event to RM:"
 operator|+
 name|newNodeToAttributesMap
-operator|.
-name|values
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|rmContext
 operator|.
 name|getDispatcher
@@ -1841,7 +1829,7 @@ argument_list|()
 decl_stmt|;
 name|NodeLabelUtil
 operator|.
-name|checkAndThrowLabelName
+name|checkAndThrowAttributeName
 argument_list|(
 name|attributeName
 argument_list|)
@@ -1853,6 +1841,16 @@ argument_list|(
 name|attributeKey
 operator|.
 name|getAttributePrefix
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|NodeLabelUtil
+operator|.
+name|checkAndThrowAttributeValue
+argument_list|(
+name|attribute
+operator|.
+name|getAttributeValue
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4068,9 +4066,6 @@ argument_list|(
 literal|"Updated NodeAttribute event to RM:"
 operator|+
 name|newNodeToAttributesMap
-operator|.
-name|values
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|rmContext

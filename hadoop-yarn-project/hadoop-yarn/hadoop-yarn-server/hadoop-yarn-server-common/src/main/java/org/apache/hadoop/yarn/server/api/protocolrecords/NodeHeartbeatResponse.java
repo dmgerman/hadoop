@@ -594,6 +594,23 @@ argument_list|>
 name|containersToDecrease
 parameter_list|)
 function_decl|;
+DECL|method|getAreNodeAttributesAcceptedByRM ()
+specifier|public
+specifier|abstract
+name|boolean
+name|getAreNodeAttributesAcceptedByRM
+parameter_list|()
+function_decl|;
+DECL|method|setAreNodeAttributesAcceptedByRM ( boolean areNodeAttributesAcceptedByRM)
+specifier|public
+specifier|abstract
+name|void
+name|setAreNodeAttributesAcceptedByRM
+parameter_list|(
+name|boolean
+name|areNodeAttributesAcceptedByRM
+parameter_list|)
+function_decl|;
 block|}
 end_class
 
