@@ -210,7 +210,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -233,18 +255,6 @@ operator|.
 name|jgss
 operator|.
 name|Oid
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|security
-operator|.
-name|auth
-operator|.
-name|Subject
 import|;
 end_import
 
@@ -322,26 +332,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Properties
 import|;
 end_import
@@ -368,6 +358,10 @@ name|Callable
 import|;
 end_import
 
+begin_comment
+comment|/**  * Tests for Kerberos Authentication Handler.  */
+end_comment
+
 begin_class
 DECL|class|TestKerberosAuthenticationHandler
 specifier|public
@@ -376,6 +370,20 @@ name|TestKerberosAuthenticationHandler
 extends|extends
 name|KerberosSecurityTestcase
 block|{
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+name|Timeout
+operator|.
+name|millis
+argument_list|(
+literal|60000
+argument_list|)
+decl_stmt|;
 DECL|field|handler
 specifier|protected
 name|KerberosAuthenticationHandler
@@ -590,11 +598,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testNameRules ()
 specifier|public
 name|void
@@ -727,22 +730,15 @@ parameter_list|(
 name|Exception
 name|ex
 parameter_list|)
-block|{           }
+block|{     }
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testInit ()
 specifier|public
 name|void
 name|testInit
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|Assert
 operator|.
@@ -807,14 +803,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// dynamic configuration of HTTP principals
+comment|/**    * Tests dynamic configuration of HTTP principals.     * @throws Exception    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testDynamicPrincipalDiscovery ()
 specifier|public
 name|void
@@ -989,14 +980,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// dynamic configuration of HTTP principals
+comment|/**    * Tests dynamic principal discovery for missing principals.    * @throws Exception    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testDynamicPrincipalDiscoveryMissingPrincipals ()
 specifier|public
 name|void
@@ -1136,18 +1122,11 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testType ()
 specifier|public
 name|void
 name|testType
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|Assert
 operator|.
@@ -1163,6 +1142,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRequestWithoutAuthorization ()
 specifier|public
 name|void
@@ -1242,6 +1223,8 @@ name|SC_UNAUTHORIZED
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRequestWithInvalidAuthorization ()
 specifier|public
 name|void
@@ -1342,18 +1325,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testRequestWithIncompleteAuthorization ()
 specifier|public
 name|void
 name|testRequestWithIncompleteAuthorization
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|HttpServletRequest
 name|request
@@ -1438,6 +1414,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRequestWithAuthorization ()
 specifier|public
 name|void
@@ -1841,13 +1819,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRequestWithInvalidKerberosAuthorization ()
 specifier|public
 name|void
 name|testRequestWithInvalidKerberosAuthorization
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|String
 name|token
