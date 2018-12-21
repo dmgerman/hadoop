@@ -340,6 +340,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BalancerProtocols
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|JournalProtocol
 import|;
 end_import
@@ -434,7 +452,35 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|AlignmentContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|ProtobufRpcEngine
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|ProxyCombiner
 import|;
 end_import
 
@@ -844,6 +890,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -913,6 +961,8 @@ argument_list|,
 name|withRetries
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -922,7 +972,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createNonHAProxy ( Configuration conf, InetSocketAddress nnAddr, Class<T> xface, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth)
+DECL|method|createNonHAProxy ( Configuration conf, InetSocketAddress nnAddr, Class<T> xface, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|public
 specifier|static
 parameter_list|<
@@ -954,6 +1004,9 @@ name|withRetries
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -987,7 +1040,7 @@ name|T
 operator|)
 name|NameNodeProxiesClient
 operator|.
-name|createNonHAProxyWithClientProtocol
+name|createProxyWithAlignmentContext
 argument_list|(
 name|nnAddr
 argument_list|,
@@ -998,6 +1051,8 @@ argument_list|,
 name|withRetries
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1023,6 +1078,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1050,6 +1107,8 @@ argument_list|,
 name|ugi
 argument_list|,
 name|withRetries
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1075,6 +1134,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1100,6 +1161,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1125,6 +1188,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1150,6 +1215,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1175,6 +1242,39 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|alignmentContext
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|xface
+operator|==
+name|BalancerProtocols
+operator|.
+name|class
+condition|)
+block|{
+name|proxy
+operator|=
+operator|(
+name|T
+operator|)
+name|createNNProxyWithBalancerProtocol
+argument_list|(
+name|nnAddr
+argument_list|,
+name|conf
+argument_list|,
+name|ugi
+argument_list|,
+name|withRetries
+argument_list|,
+name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1235,7 +1335,7 @@ name|nnAddr
 argument_list|)
 return|;
 block|}
-DECL|method|createNNProxyWithInMemoryAliasMapProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi)
+DECL|method|createNNProxyWithInMemoryAliasMapProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, AlignmentContext alignmentContext)
 specifier|private
 specifier|static
 name|InMemoryAliasMapProtocol
@@ -1249,6 +1349,9 @@ name|conf
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1256,9 +1359,6 @@ block|{
 name|AliasMapProtocolPB
 name|proxy
 init|=
-operator|(
-name|AliasMapProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1272,6 +1372,8 @@ operator|.
 name|class
 argument_list|,
 literal|30000
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -1282,7 +1384,7 @@ name|proxy
 argument_list|)
 return|;
 block|}
-DECL|method|createNNProxyWithJournalProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi)
+DECL|method|createNNProxyWithJournalProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, AlignmentContext alignmentContext)
 specifier|private
 specifier|static
 name|JournalProtocol
@@ -1296,6 +1398,9 @@ name|conf
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1303,9 +1408,6 @@ block|{
 name|JournalProtocolPB
 name|proxy
 init|=
-operator|(
-name|JournalProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1319,6 +1421,8 @@ operator|.
 name|class
 argument_list|,
 literal|30000
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -1332,7 +1436,7 @@ block|}
 specifier|private
 specifier|static
 name|RefreshAuthorizationPolicyProtocol
-DECL|method|createNNProxyWithRefreshAuthorizationPolicyProtocol (InetSocketAddress address, Configuration conf, UserGroupInformation ugi)
+DECL|method|createNNProxyWithRefreshAuthorizationPolicyProtocol (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, AlignmentContext alignmentContext)
 name|createNNProxyWithRefreshAuthorizationPolicyProtocol
 parameter_list|(
 name|InetSocketAddress
@@ -1343,6 +1447,9 @@ name|conf
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1350,9 +1457,6 @@ block|{
 name|RefreshAuthorizationPolicyProtocolPB
 name|proxy
 init|=
-operator|(
-name|RefreshAuthorizationPolicyProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1366,6 +1470,8 @@ operator|.
 name|class
 argument_list|,
 literal|0
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -1379,7 +1485,7 @@ block|}
 specifier|private
 specifier|static
 name|RefreshUserMappingsProtocol
-DECL|method|createNNProxyWithRefreshUserMappingsProtocol (InetSocketAddress address, Configuration conf, UserGroupInformation ugi)
+DECL|method|createNNProxyWithRefreshUserMappingsProtocol (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, AlignmentContext alignmentContext)
 name|createNNProxyWithRefreshUserMappingsProtocol
 parameter_list|(
 name|InetSocketAddress
@@ -1390,6 +1496,9 @@ name|conf
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1397,9 +1506,6 @@ block|{
 name|RefreshUserMappingsProtocolPB
 name|proxy
 init|=
-operator|(
-name|RefreshUserMappingsProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1413,6 +1519,8 @@ operator|.
 name|class
 argument_list|,
 literal|0
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -1426,7 +1534,7 @@ block|}
 specifier|private
 specifier|static
 name|RefreshCallQueueProtocol
-DECL|method|createNNProxyWithRefreshCallQueueProtocol (InetSocketAddress address, Configuration conf, UserGroupInformation ugi)
+DECL|method|createNNProxyWithRefreshCallQueueProtocol (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, AlignmentContext alignmentContext)
 name|createNNProxyWithRefreshCallQueueProtocol
 parameter_list|(
 name|InetSocketAddress
@@ -1437,6 +1545,9 @@ name|conf
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1444,9 +1555,6 @@ block|{
 name|RefreshCallQueueProtocolPB
 name|proxy
 init|=
-operator|(
-name|RefreshCallQueueProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1460,6 +1568,8 @@ operator|.
 name|class
 argument_list|,
 literal|0
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -1470,7 +1580,7 @@ name|proxy
 argument_list|)
 return|;
 block|}
-DECL|method|createNNProxyWithGetUserMappingsProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi)
+DECL|method|createNNProxyWithGetUserMappingsProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, AlignmentContext alignmentContext)
 specifier|private
 specifier|static
 name|GetUserMappingsProtocol
@@ -1484,6 +1594,9 @@ name|conf
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1491,9 +1604,6 @@ block|{
 name|GetUserMappingsProtocolPB
 name|proxy
 init|=
-operator|(
-name|GetUserMappingsProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1507,6 +1617,8 @@ operator|.
 name|class
 argument_list|,
 literal|0
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 return|return
@@ -1517,7 +1629,7 @@ name|proxy
 argument_list|)
 return|;
 block|}
-DECL|method|createNNProxyWithNamenodeProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, boolean withRetries)
+DECL|method|createNNProxyWithNamenodeProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, boolean withRetries, AlignmentContext alignmentContext)
 specifier|private
 specifier|static
 name|NamenodeProtocol
@@ -1534,6 +1646,9 @@ name|ugi
 parameter_list|,
 name|boolean
 name|withRetries
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1541,9 +1656,6 @@ block|{
 name|NamenodeProtocolPB
 name|proxy
 init|=
-operator|(
-name|NamenodeProtocolPB
-operator|)
 name|createNameNodeProxy
 argument_list|(
 name|address
@@ -1557,6 +1669,8 @@ operator|.
 name|class
 argument_list|,
 literal|0
+argument_list|,
+name|alignmentContext
 argument_list|)
 decl_stmt|;
 if|if
@@ -1654,10 +1768,91 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|createNameNodeProxy (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, Class<?> xface, int rpcTimeout)
+DECL|method|createNNProxyWithBalancerProtocol ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|private
 specifier|static
-name|Object
+name|BalancerProtocols
+name|createNNProxyWithBalancerProtocol
+parameter_list|(
+name|InetSocketAddress
+name|address
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|UserGroupInformation
+name|ugi
+parameter_list|,
+name|boolean
+name|withRetries
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|NamenodeProtocol
+name|namenodeProtocol
+init|=
+name|createNNProxyWithNamenodeProtocol
+argument_list|(
+name|address
+argument_list|,
+name|conf
+argument_list|,
+name|ugi
+argument_list|,
+name|withRetries
+argument_list|,
+name|alignmentContext
+argument_list|)
+decl_stmt|;
+name|ClientProtocol
+name|clientProtocol
+init|=
+name|NameNodeProxiesClient
+operator|.
+name|createProxyWithAlignmentContext
+argument_list|(
+name|address
+argument_list|,
+name|conf
+argument_list|,
+name|ugi
+argument_list|,
+name|withRetries
+argument_list|,
+name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
+argument_list|)
+decl_stmt|;
+return|return
+name|ProxyCombiner
+operator|.
+name|combine
+argument_list|(
+name|BalancerProtocols
+operator|.
+name|class
+argument_list|,
+name|namenodeProtocol
+argument_list|,
+name|clientProtocol
+argument_list|)
+return|;
+block|}
+DECL|method|createNameNodeProxy (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, Class<T> xface, int rpcTimeout, AlignmentContext alignmentContext)
+specifier|private
+specifier|static
+parameter_list|<
+name|T
+parameter_list|>
+name|T
 name|createNameNodeProxy
 parameter_list|(
 name|InetSocketAddress
@@ -1671,12 +1866,15 @@ name|ugi
 parameter_list|,
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|xface
 parameter_list|,
 name|int
 name|rpcTimeout
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1694,12 +1892,10 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|Object
-name|proxy
-init|=
+return|return
 name|RPC
 operator|.
-name|getProxy
+name|getProtocolProxy
 argument_list|(
 name|xface
 argument_list|,
@@ -1724,10 +1920,16 @@ name|conf
 argument_list|)
 argument_list|,
 name|rpcTimeout
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|alignmentContext
 argument_list|)
-decl_stmt|;
-return|return
-name|proxy
+operator|.
+name|getProxy
+argument_list|()
 return|;
 block|}
 block|}

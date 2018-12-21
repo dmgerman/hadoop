@@ -640,15 +640,7 @@ operator|new
 name|ClientGSIContext
 argument_list|()
 expr_stmt|;
-operator|(
-operator|(
-name|ClientHAProxyFactory
-argument_list|<
-name|T
-argument_list|>
-operator|)
 name|factory
-operator|)
 operator|.
 name|setAlignmentContext
 argument_list|(

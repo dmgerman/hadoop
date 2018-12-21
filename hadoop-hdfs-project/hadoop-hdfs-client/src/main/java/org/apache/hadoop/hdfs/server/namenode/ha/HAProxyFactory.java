@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|AlignmentContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -168,6 +182,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Set the alignment context to be used when creating new proxies using    * this factory. Not all implementations will use this alignment context.    */
+DECL|method|setAlignmentContext (AlignmentContext alignmentContext)
+specifier|default
+name|void
+name|setAlignmentContext
+parameter_list|(
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+block|{
+comment|// noop
+block|}
 block|}
 end_interface
 

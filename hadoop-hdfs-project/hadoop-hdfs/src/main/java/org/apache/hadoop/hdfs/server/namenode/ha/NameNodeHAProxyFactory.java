@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|AlignmentContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -112,6 +126,11 @@ argument_list|<
 name|T
 argument_list|>
 block|{
+DECL|field|alignmentContext
+specifier|private
+name|AlignmentContext
+name|alignmentContext
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|createProxy (Configuration conf, InetSocketAddress nnAddr, Class<T> xface, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth)
@@ -159,6 +178,8 @@ argument_list|,
 name|withRetries
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 operator|.
 name|getProxy
@@ -212,6 +233,22 @@ operator|.
 name|getProxy
 argument_list|()
 return|;
+block|}
+DECL|method|setAlignmentContext (AlignmentContext alignmentContext)
+specifier|public
+name|void
+name|setAlignmentContext
+parameter_list|(
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+block|{
+name|this
+operator|.
+name|alignmentContext
+operator|=
+name|alignmentContext
+expr_stmt|;
 block|}
 block|}
 end_class
