@@ -632,6 +632,18 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|HEAD
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone metadata manager interface.  */
 end_comment
@@ -660,7 +672,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |-------------------------------------------------------------------|    * |  Column Family     |        VALUE                                 |    * |-------------------------------------------------------------------|    * | userTable          |     user->VolumeList                         |    * |-------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                      |    * |-------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo              |    * |-------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo   |    * |-------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName       |    * |-------------------------------------------------------------------|    */
+comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |-------------------------------------------------------------------|    * |  Column Family     |        VALUE                                 |    * |-------------------------------------------------------------------|    * | userTable          |     user->VolumeList                         |    * |-------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                      |    * |-------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo              |    * |-------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo   |    * |-------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName       |    * |-------------------------------------------------------------------|    * | s3SecretTable      | s3g_access_key_id -> s3Secret                |    * |-------------------------------------------------------------------|    */
 DECL|field|USER_TABLE
 specifier|private
 specifier|static
@@ -733,6 +745,15 @@ name|MULTIPARTINFO_TABLE
 init|=
 literal|"multipartInfoTable"
 decl_stmt|;
+DECL|field|S3_SECRET_TABLE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|S3_SECRET_TABLE
+init|=
+literal|"s3SecretTable"
+decl_stmt|;
 DECL|field|store
 specifier|private
 name|DBStore
@@ -794,6 +815,11 @@ argument_list|,
 name|OmMultipartKeyInfo
 argument_list|>
 name|multipartInfoTable
+decl_stmt|;
+DECL|field|s3SecretTable
+specifier|private
+name|Table
+name|s3SecretTable
 decl_stmt|;
 DECL|method|OmMetadataManagerImpl (OzoneConfiguration conf)
 specifier|public
@@ -1141,6 +1167,11 @@ argument_list|(
 name|MULTIPARTINFO_TABLE
 argument_list|)
 operator|.
+name|addTable
+argument_list|(
+name|S3_SECRET_TABLE
+argument_list|)
+operator|.
 name|addCodec
 argument_list|(
 name|OmKeyInfo
@@ -1414,6 +1445,24 @@ argument_list|(
 name|multipartInfoTable
 argument_list|,
 name|MULTIPARTINFO_TABLE
+argument_list|)
+expr_stmt|;
+name|s3SecretTable
+operator|=
+name|this
+operator|.
+name|store
+operator|.
+name|getTable
+argument_list|(
+name|S3_SECRET_TABLE
+argument_list|)
+expr_stmt|;
+name|checkTableStatus
+argument_list|(
+name|s3SecretTable
+argument_list|,
+name|S3_SECRET_TABLE
 argument_list|)
 expr_stmt|;
 block|}
@@ -3253,6 +3302,25 @@ block|}
 block|}
 return|return
 name|count
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getS3SecretTable ()
+specifier|public
+name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+name|getS3SecretTable
+parameter_list|()
+block|{
+return|return
+name|s3SecretTable
 return|;
 block|}
 block|}

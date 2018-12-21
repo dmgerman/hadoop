@@ -515,7 +515,7 @@ argument_list|>
 name|getS3Table
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the DB key name of a multipart upload key in OM metadata store.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param uploadId - the upload id for this key    * @return bytes of DB key.    */
+comment|/**<<<<<<< HEAD    * Returns the DB key name of a multipart upload key in OM metadata store.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param uploadId - the upload id for this key    * @return bytes of DB key.    */
 DECL|method|getMultipartKey (String volume, String bucket, String key, String uploadId)
 name|String
 name|getMultipartKey
@@ -542,6 +542,19 @@ argument_list|,
 name|OmMultipartKeyInfo
 argument_list|>
 name|getMultipartInfoTable
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the S3 Secrets table.    * @return Table    */
+DECL|method|getS3SecretTable ()
+name|Table
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+name|getS3SecretTable
 parameter_list|()
 function_decl|;
 comment|/**    * Returns number of rows in a table.  This should not be used for very    * large tables.    * @param table    * @return long    * @throws IOException    */
