@@ -6616,8 +6616,10 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|mergeAllocateResponse (AllocateResponse homeResponse, AllocateResponse otherResponse, SubClusterId otherRMAddress)
-specifier|private
+specifier|protected
 name|void
 name|mergeAllocateResponse
 parameter_list|(
@@ -6957,7 +6959,7 @@ name|getResourceRequest
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|par2
+name|par1
 operator|.
 name|getContainers
 argument_list|()
