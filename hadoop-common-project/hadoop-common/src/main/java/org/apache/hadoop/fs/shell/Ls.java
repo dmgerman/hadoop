@@ -1621,9 +1621,6 @@ name|contentSummary
 operator|.
 name|getErasureCodingPolicy
 argument_list|()
-operator|.
-name|length
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
