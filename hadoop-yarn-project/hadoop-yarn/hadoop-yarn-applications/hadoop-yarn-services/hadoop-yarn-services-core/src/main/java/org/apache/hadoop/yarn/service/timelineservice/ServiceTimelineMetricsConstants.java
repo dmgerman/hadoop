@@ -196,6 +196,15 @@ name|IP
 init|=
 literal|"IP"
 decl_stmt|;
+DECL|field|EXPOSED_PORTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXPOSED_PORTS
+init|=
+literal|"EXPOSED_PORTS"
+decl_stmt|;
 DECL|field|HOSTNAME
 specifier|public
 specifier|static

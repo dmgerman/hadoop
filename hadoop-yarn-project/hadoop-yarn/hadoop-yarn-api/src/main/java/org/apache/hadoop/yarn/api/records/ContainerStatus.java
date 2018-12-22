@@ -569,6 +569,46 @@ literal|"subclass must implement this method"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Get exposed ports of the container.    * @return List of exposed ports    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getExposedPorts ()
+specifier|public
+name|String
+name|getExposedPorts
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setExposedPorts (String ports)
+specifier|public
+name|void
+name|setExposedPorts
+parameter_list|(
+name|String
+name|ports
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 

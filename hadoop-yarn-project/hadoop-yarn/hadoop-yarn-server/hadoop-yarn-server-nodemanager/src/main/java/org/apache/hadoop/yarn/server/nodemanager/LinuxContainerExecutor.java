@@ -5494,6 +5494,28 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|getExposedPorts (Container container)
+specifier|public
+name|String
+name|getExposedPorts
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+block|{
+return|return
+name|linuxContainerRuntime
+operator|.
+name|getExposedPorts
+argument_list|(
+name|container
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

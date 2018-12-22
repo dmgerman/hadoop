@@ -6607,6 +6607,32 @@ name|containerReportStr
 operator|.
 name|print
 argument_list|(
+literal|"\tExposedPorts : "
+argument_list|)
+expr_stmt|;
+name|containerReportStr
+operator|.
+name|println
+argument_list|(
+name|containerReport
+operator|.
+name|getExposedPorts
+argument_list|()
+operator|==
+literal|null
+condition|?
+literal|"N/A"
+else|:
+name|containerReport
+operator|.
+name|getExposedPorts
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|containerReportStr
+operator|.
+name|print
+argument_list|(
 literal|"\tDiagnostics : "
 argument_list|)
 expr_stmt|;

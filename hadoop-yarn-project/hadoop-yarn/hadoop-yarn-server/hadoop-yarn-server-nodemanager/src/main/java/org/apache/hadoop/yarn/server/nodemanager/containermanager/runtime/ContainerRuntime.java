@@ -208,6 +208,17 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
+comment|/**    * Return the exposed ports of the container.    * @param container the {@link Container}    * @return List of exposed ports    * @throws ContainerExecutionException if an error occurs while getting    * the exposed ports    */
+DECL|method|getExposedPorts (Container container)
+name|String
+name|getExposedPorts
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+function_decl|;
 block|}
 end_interface
 

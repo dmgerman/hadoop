@@ -327,6 +327,31 @@ name|STOPSIGNAL_TEMPLATE
 init|=
 literal|"{{.Config.StopSignal}}"
 decl_stmt|;
+DECL|method|getExposedPorts ()
+specifier|public
+name|DockerInspectCommand
+name|getExposedPorts
+parameter_list|()
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"format"
+argument_list|,
+literal|"{{json .NetworkSettings.Ports}}"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|commandArguments
+operator|=
+literal|"--format={{json .NetworkSettings.Ports}}"
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 block|}
 end_class
 

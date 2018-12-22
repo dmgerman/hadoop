@@ -318,6 +318,11 @@ name|Long
 argument_list|>
 name|allocatedResources
 decl_stmt|;
+DECL|field|exposedPorts
+specifier|private
+name|String
+name|exposedPorts
+decl_stmt|;
 DECL|method|ContainerInfo ()
 specifier|public
 name|ContainerInfo
@@ -442,6 +447,13 @@ name|getAssignedNode
 argument_list|()
 operator|.
 name|toString
+argument_list|()
+expr_stmt|;
+name|exposedPorts
+operator|=
+name|container
+operator|.
+name|getExposedPorts
 argument_list|()
 expr_stmt|;
 name|Resource
@@ -671,6 +683,16 @@ name|unmodifiableMap
 argument_list|(
 name|allocatedResources
 argument_list|)
+return|;
+block|}
+DECL|method|getExposedPorts ()
+specifier|public
+name|String
+name|getExposedPorts
+parameter_list|()
+block|{
+return|return
+name|exposedPorts
 return|;
 block|}
 block|}

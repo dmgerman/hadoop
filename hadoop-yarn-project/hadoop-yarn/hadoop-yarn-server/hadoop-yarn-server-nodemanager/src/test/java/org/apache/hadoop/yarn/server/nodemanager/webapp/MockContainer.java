@@ -991,6 +991,17 @@ parameter_list|)
 block|{    }
 annotation|@
 name|Override
+DECL|method|setExposedPorts (String ports)
+specifier|public
+name|void
+name|setExposedPorts
+parameter_list|(
+name|String
+name|ports
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
 DECL|method|isRunning ()
 specifier|public
 name|boolean

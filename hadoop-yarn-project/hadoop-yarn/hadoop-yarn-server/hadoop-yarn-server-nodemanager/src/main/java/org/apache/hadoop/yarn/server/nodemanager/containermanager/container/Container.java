@@ -373,6 +373,14 @@ index|[]
 name|ipAndHost
 parameter_list|)
 function_decl|;
+DECL|method|setExposedPorts (String ports)
+name|void
+name|setExposedPorts
+parameter_list|(
+name|String
+name|ports
+parameter_list|)
+function_decl|;
 DECL|method|toString ()
 name|String
 name|toString

@@ -84,6 +84,26 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@code ContainerReport} is a report of an container.  *<p>  * It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>Allocated Resources to the container.</li>  *<li>Assigned Node id.</li>  *<li>Assigned Priority.</li>  *<li>Creation Time.</li>  *<li>Finish Time.</li>  *<li>Container Exit Status.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Log URL.</li>  *<li>nodeHttpAddress</li>  *</ul>  */
 end_comment
@@ -581,7 +601,46 @@ name|int
 name|containerExitStatus
 parameter_list|)
 function_decl|;
-comment|/**    * Get the Node Http address of the container    *     * @return the node http address of the container    */
+comment|/**    * Get exposed ports of the container.    *     * @return the node exposed ports of the container    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getExposedPorts ()
+specifier|public
+specifier|abstract
+name|String
+name|getExposedPorts
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setExposedPorts ( Map<String, List<Map<String, String>>> ports)
+specifier|public
+specifier|abstract
+name|void
+name|setExposedPorts
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|>
+argument_list|>
+name|ports
+parameter_list|)
+function_decl|;
+comment|/**    * Get the Node Http address of the container.    *    * @return the node http address of the container    */
 annotation|@
 name|Public
 annotation|@

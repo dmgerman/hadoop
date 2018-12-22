@@ -34,6 +34,34 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -72,12 +100,27 @@ name|ContainerStatus
 argument_list|>
 name|completedContainers
 decl_stmt|;
+DECL|field|updateContainers
+specifier|private
+name|List
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|ContainerStatus
+argument_list|>
+argument_list|>
+name|updateContainers
+decl_stmt|;
 DECL|method|UpdatedContainerInfo ()
 specifier|public
 name|UpdatedContainerInfo
 parameter_list|()
 block|{   }
-DECL|method|UpdatedContainerInfo (List<ContainerStatus> newlyLaunchedContainers , List<ContainerStatus> completedContainers)
+DECL|method|UpdatedContainerInfo (List<ContainerStatus> newlyLaunchedContainers, List<ContainerStatus> completedContainers, List<Map.Entry<ApplicationId, ContainerStatus>> updateContainers)
 specifier|public
 name|UpdatedContainerInfo
 parameter_list|(
@@ -92,6 +135,19 @@ argument_list|<
 name|ContainerStatus
 argument_list|>
 name|completedContainers
+parameter_list|,
+name|List
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|ContainerStatus
+argument_list|>
+argument_list|>
+name|updateContainers
 parameter_list|)
 block|{
 name|this
@@ -105,6 +161,12 @@ operator|.
 name|completedContainers
 operator|=
 name|completedContainers
+expr_stmt|;
+name|this
+operator|.
+name|updateContainers
+operator|=
+name|updateContainers
 expr_stmt|;
 block|}
 DECL|method|getNewlyLaunchedContainers ()
@@ -135,6 +197,28 @@ return|return
 name|this
 operator|.
 name|completedContainers
+return|;
+block|}
+DECL|method|getUpdateContainers ()
+specifier|public
+name|List
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|ContainerStatus
+argument_list|>
+argument_list|>
+name|getUpdateContainers
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|updateContainers
 return|;
 block|}
 block|}

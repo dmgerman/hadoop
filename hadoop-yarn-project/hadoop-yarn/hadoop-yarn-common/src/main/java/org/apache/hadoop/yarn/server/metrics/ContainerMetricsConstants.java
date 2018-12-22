@@ -210,6 +210,15 @@ name|ALLOCATED_HOST_HTTP_ADDRESS_INFO
 init|=
 literal|"YARN_CONTAINER_ALLOCATED_HOST_HTTP_ADDRESS"
 decl_stmt|;
+DECL|field|ALLOCATED_EXPOSED_PORTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ALLOCATED_EXPOSED_PORTS
+init|=
+literal|"YARN_CONTAINER_ALLOCATED_EXPOSED_PORTS"
+decl_stmt|;
 comment|// Event of this type will be emitted by NM.
 DECL|field|LOCALIZATION_START_EVENT_TYPE
 specifier|public

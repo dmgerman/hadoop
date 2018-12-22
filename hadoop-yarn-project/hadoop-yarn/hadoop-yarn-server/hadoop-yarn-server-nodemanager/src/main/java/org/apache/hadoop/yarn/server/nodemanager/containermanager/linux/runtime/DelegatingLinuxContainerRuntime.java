@@ -1071,6 +1071,36 @@ name|container
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getExposedPorts (Container container)
+specifier|public
+name|String
+name|getExposedPorts
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+block|{
+name|LinuxContainerRuntime
+name|runtime
+init|=
+name|pickContainerRuntime
+argument_list|(
+name|container
+argument_list|)
+decl_stmt|;
+return|return
+name|runtime
+operator|.
+name|getExposedPorts
+argument_list|(
+name|container
+argument_list|)
+return|;
+block|}
 DECL|method|isPluggableRuntime (String runtimeType)
 specifier|private
 name|boolean

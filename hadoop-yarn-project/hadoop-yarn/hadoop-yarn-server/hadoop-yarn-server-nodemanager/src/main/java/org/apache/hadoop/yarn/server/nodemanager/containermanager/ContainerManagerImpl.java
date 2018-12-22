@@ -9735,6 +9735,28 @@ name|sb
 operator|.
 name|append
 argument_list|(
+literal|"ExposedPorts: "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+name|status
+operator|.
+name|getExposedPorts
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 literal|"ContainerSubState: "
 argument_list|)
 expr_stmt|;

@@ -2687,6 +2687,15 @@ literal|"logsLink"
 argument_list|)
 argument_list|,
 name|user
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"exportPorts"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2712,7 +2721,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|10
+literal|11
 argument_list|,
 name|info
 operator|.
@@ -2767,10 +2776,17 @@ literal|"logsLink"
 argument_list|)
 argument_list|,
 name|user
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"exportPorts"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppAttemptInfoGeneric (RMAppAttempt appAttempt, int id, long startTime, String containerId, String nodeHttpAddress, String nodeId, String logsLink, String user)
+DECL|method|verifyAppAttemptInfoGeneric (RMAppAttempt appAttempt, int id, long startTime, String containerId, String nodeHttpAddress, String nodeId, String logsLink, String user, String exportPorts)
 specifier|private
 name|void
 name|verifyAppAttemptInfoGeneric
@@ -2798,6 +2814,9 @@ name|logsLink
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|String
+name|exportPorts
 parameter_list|)
 block|{
 name|assertEquals

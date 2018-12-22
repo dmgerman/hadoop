@@ -345,6 +345,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getExposedPorts (Container container)
+specifier|public
+name|String
+name|getExposedPorts
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+return|return
+literal|""
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|execContainer (ContainerExecContext ctx)
 specifier|public
 name|IOStreamPair

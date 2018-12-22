@@ -3624,6 +3624,21 @@ return|return
 name|symLinks
 return|;
 block|}
+DECL|method|getExposedPorts (Container container)
+specifier|public
+name|String
+name|getExposedPorts
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
