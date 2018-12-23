@@ -644,6 +644,38 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
+name|HDDS_X509_DEFAULT_DURATION_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_X509_DEFAULT_DURATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
 name|HDDS_X509_DIR_NAME
 import|;
 end_import
@@ -962,6 +994,12 @@ DECL|field|clientCertChainFileName
 specifier|private
 name|String
 name|clientCertChainFileName
+decl_stmt|;
+DECL|field|defaultCertDuration
+specifier|private
+specifier|final
+name|Duration
+name|defaultCertDuration
 decl_stmt|;
 DECL|field|isSecurityEnabled
 specifier|private
@@ -1307,6 +1345,29 @@ argument_list|,
 name|OZONE_SECURITY_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
+name|String
+name|certDurationString
+init|=
+name|this
+operator|.
+name|configuration
+operator|.
+name|get
+argument_list|(
+name|HDDS_X509_DEFAULT_DURATION
+argument_list|,
+name|HDDS_X509_DEFAULT_DURATION_DEFAULT
+argument_list|)
+decl_stmt|;
+name|defaultCertDuration
+operator|=
+name|Duration
+operator|.
+name|parse
+argument_list|(
+name|certDurationString
+argument_list|)
+expr_stmt|;
 comment|// First Startup -- if the provider is null, check for the provider.
 if|if
 condition|(
@@ -1368,6 +1429,17 @@ parameter_list|()
 block|{
 return|return
 name|isSecurityEnabled
+return|;
+block|}
+comment|/**    * Returns the Default Certificate Duration.    *    * @return Duration for the default certificate issue.    */
+DECL|method|getDefaultCertDuration ()
+specifier|public
+name|Duration
+name|getDefaultCertDuration
+parameter_list|()
+block|{
+return|return
+name|defaultCertDuration
 return|;
 block|}
 comment|/**    * Returns the Standard Certificate file name.    *    * @return String - Name of the Certificate File.    */

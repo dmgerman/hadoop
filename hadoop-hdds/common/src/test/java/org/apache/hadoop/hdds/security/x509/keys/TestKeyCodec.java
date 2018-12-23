@@ -39,6 +39,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -725,8 +737,6 @@ argument_list|(
 name|spec
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 literal|"Private Key should not be null"
@@ -786,8 +796,6 @@ argument_list|(
 name|pubKeyspec
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 literal|"Public Key should not be null"
@@ -1112,6 +1120,60 @@ name|writeKey
 argument_list|(
 name|kp
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testReadWritePublicKeywithoutArgs ()
+specifier|public
+name|void
+name|testReadWritePublicKeywithoutArgs
+parameter_list|()
+throws|throws
+name|NoSuchProviderException
+throws|,
+name|NoSuchAlgorithmException
+throws|,
+name|IOException
+throws|,
+name|InvalidKeySpecException
+block|{
+name|KeyPair
+name|kp
+init|=
+name|keyGenerator
+operator|.
+name|generateKey
+argument_list|()
+decl_stmt|;
+name|KeyCodec
+name|keycodec
+init|=
+operator|new
+name|KeyCodec
+argument_list|(
+name|configuration
+argument_list|)
+decl_stmt|;
+name|keycodec
+operator|.
+name|writeKey
+argument_list|(
+name|kp
+argument_list|)
+expr_stmt|;
+name|PublicKey
+name|pubKey
+init|=
+name|keycodec
+operator|.
+name|readPublicKey
+argument_list|()
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+name|pubKey
 argument_list|)
 expr_stmt|;
 block|}

@@ -179,7 +179,7 @@ name|HDDS_DATANODE_VOLUME_CHOOSING_POLICY
 init|=
 literal|"hdds.datanode.volume.choosing.policy"
 decl_stmt|;
-comment|// DB Profiles used by ROCKDB instances.
+comment|// DB PKIProfile used by ROCKDB instances.
 DECL|field|HDDS_DB_PROFILE
 specifier|public
 specifier|static
@@ -566,6 +566,28 @@ name|String
 name|HDDS_X509_FILE_NAME_DEFAULT
 init|=
 literal|"certificate.crt"
+decl_stmt|;
+comment|/**    * Default duration of certificates issued by SCM CA.    * The formats accepted are based on the ISO-8601 duration format PnDTnHnMn.nS    * Default value is 5 years and written as P1865D.    */
+DECL|field|HDDS_X509_DEFAULT_DURATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_X509_DEFAULT_DURATION
+init|=
+literal|"hdds.x509.default"
+operator|+
+literal|".duration"
+decl_stmt|;
+comment|// Default Certificate duration to one year.
+DECL|field|HDDS_X509_DEFAULT_DURATION_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_X509_DEFAULT_DURATION_DEFAULT
+init|=
+literal|"P365D"
 decl_stmt|;
 comment|/**    * Do not instantiate.    */
 DECL|method|HddsConfigKeys ()

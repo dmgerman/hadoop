@@ -656,31 +656,6 @@ argument_list|(
 name|csr
 argument_list|)
 decl_stmt|;
-comment|// Verify basic constraints extension
-name|Extension
-name|basicExt
-init|=
-name|extensions
-operator|.
-name|getExtension
-argument_list|(
-name|Extension
-operator|.
-name|basicConstraints
-argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|true
-argument_list|,
-name|basicExt
-operator|.
-name|isCritical
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Verify key usage extension
 name|Extension
 name|keyUsageExt
@@ -883,13 +858,6 @@ operator|.
 name|addDnsName
 argument_list|(
 literal|"dn1.abc.com"
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|addRfc822Name
-argument_list|(
-literal|"test@abc.com"
 argument_list|)
 expr_stmt|;
 name|PKCS10CertificationRequest

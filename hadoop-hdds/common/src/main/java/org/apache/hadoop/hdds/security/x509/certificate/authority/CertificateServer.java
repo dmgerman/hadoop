@@ -64,21 +64,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|bouncycastle
 operator|.
-name|hadoop
+name|cert
 operator|.
-name|hdds
-operator|.
-name|security
-operator|.
-name|x509
-operator|.
-name|certificates
-operator|.
-name|utils
-operator|.
-name|CertificateSignRequest
+name|X509CertificateHolder
 import|;
 end_import
 
@@ -88,9 +78,9 @@ name|org
 operator|.
 name|bouncycastle
 operator|.
-name|cert
+name|pkcs
 operator|.
-name|X509CertificateHolder
+name|PKCS10CertificationRequest
 import|;
 end_import
 
@@ -164,7 +154,7 @@ parameter_list|)
 throws|throws
 name|SCMSecurityException
 function_decl|;
-comment|/**    * Returns the CA Certificate for this CA.    *    * @return X509CertificateHolder - Certificate for this CA.    * @throws CertificateException - usually thrown if this CA is not    *                              initialized.    * @throws IOException - on Error.    */
+comment|/**    * Returns the CA Certificate for this CA.    *    * @return X509CertificateHolder - Certificate for this CA.    * @throws CertificateException - usually thrown if this CA is not    *                              initialized.    * @throws IOException          - on Error.    */
 DECL|method|getCACertificate ()
 name|X509CertificateHolder
 name|getCACertificate
@@ -174,25 +164,46 @@ name|CertificateException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr - Certificate Signing Request.    * @param approver - An Enum which says what kind of approval process to    * follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
-DECL|method|requestCertificate (CertificateSignRequest csr, CertificateApprover approver)
+comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr  - Certificate Signing Request.    * @param type - An Enum which says what kind of approval process to follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
 name|Future
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
+DECL|method|requestCertificate (PKCS10CertificationRequest csr, CertificateApprover.ApprovalType type)
 name|requestCertificate
 parameter_list|(
-name|CertificateSignRequest
+name|PKCS10CertificationRequest
 name|csr
 parameter_list|,
 name|CertificateApprover
-name|approver
+operator|.
+name|ApprovalType
+name|type
 parameter_list|)
 throws|throws
 name|SCMSecurityException
 function_decl|;
+comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr - Certificate Signing Request as a PEM encoded String.    * @param type - An Enum which says what kind of approval process to follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
+name|Future
+argument_list|<
+name|X509CertificateHolder
+argument_list|>
+DECL|method|requestCertificate (String csr, CertificateApprover.ApprovalType type)
+name|requestCertificate
+parameter_list|(
+name|String
+name|csr
+parameter_list|,
+name|CertificateApprover
+operator|.
+name|ApprovalType
+name|type
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Revokes a Certificate issued by this CertificateServer.    *    * @param certificate - Certificate to revoke    * @param approver - Approval process to follow.    * @return Future that tells us what happened.    * @throws SCMSecurityException - on Error.    */
-DECL|method|revokeCertificate (X509Certificate certificate, CertificateApprover approver)
+DECL|method|revokeCertificate (X509Certificate certificate, CertificateApprover.ApprovalType approver)
 name|Future
 argument_list|<
 name|Boolean
@@ -203,29 +214,14 @@ name|X509Certificate
 name|certificate
 parameter_list|,
 name|CertificateApprover
+operator|.
+name|ApprovalType
 name|approver
 parameter_list|)
 throws|throws
 name|SCMSecurityException
 function_decl|;
 comment|/**    * TODO : CRL, OCSP etc. Later. This is the start of a CertificateServer    * framework.    */
-comment|/**    * Approval Types for a certificate request.    */
-DECL|enum|CertificateApprover
-enum|enum
-name|CertificateApprover
-block|{
-DECL|enumConstant|KERBEROS_TRUSTED
-name|KERBEROS_TRUSTED
-block|,
-comment|/* The Request came from a DN using Kerberos Identity*/
-DECL|enumConstant|MANUAL
-name|MANUAL
-block|,
-comment|/* Wait for a Human being to approve this certificate */
-DECL|enumConstant|TESTING_AUTOMATIC
-name|TESTING_AUTOMATIC
-comment|/* For testing purpose, Automatic Approval. */
-block|}
 comment|/**    * Make it explicit what type of CertificateServer we are creating here.    */
 DECL|enum|CAType
 enum|enum
