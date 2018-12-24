@@ -138,6 +138,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -167,6 +181,20 @@ operator|.
 name|ha
 operator|.
 name|HAProxyFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|AlignmentContext
 import|;
 end_import
 
@@ -585,7 +613,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Create proxy objects with {@link ClientProtocol} to communicate with a remote  * NN. Generally use {@link NameNodeProxiesClient#createProxyWithClientProtocol(  * Configuration, URI, AtomicBoolean)}, which will create either an HA- or  * non-HA-enabled client proxy as appropriate.  *  * For creating proxy objects with other protocols, please see  * NameNodeProxies#createProxy(Configuration, URI, Class).  */
+comment|/**  * Create proxy objects with {@link ClientProtocol} and  * {@link HAServiceProtocol} to communicate with a remote NN. For the former,  * generally use {@link NameNodeProxiesClient#createProxyWithClientProtocol(  * Configuration, URI, AtomicBoolean)}, which will create either an HA- or  * non-HA-enabled client proxy as appropriate.  *  * For creating proxy objects with other protocols, please see  * NameNodeProxies#createProxy(Configuration, URI, Class).  */
 end_comment
 
 begin_class
@@ -613,6 +641,26 @@ name|NameNodeProxiesClient
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+comment|/** Maximum # of retries for HAProxy with HAServiceProtocol. */
+DECL|field|MAX_RETRIES
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|MAX_RETRIES
+init|=
+literal|3
+decl_stmt|;
+comment|/** Initial retry delay for HAProxy with HAServiceProtocol. */
+DECL|field|DELAY_MILLISECONDS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|DELAY_MILLISECONDS
+init|=
+literal|200
 decl_stmt|;
 comment|/**    * Wrapper for a client proxy as well as its associated service ID.    * This is simply used as a tuple-like return type for created NN proxy.    */
 DECL|class|ProxyAndInfo
@@ -1802,6 +1850,50 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|createProxyWithAlignmentContext
+argument_list|(
+name|address
+argument_list|,
+name|conf
+argument_list|,
+name|ugi
+argument_list|,
+name|withRetries
+argument_list|,
+name|fallbackToSimpleAuth
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|createProxyWithAlignmentContext ( InetSocketAddress address, Configuration conf, UserGroupInformation ugi, boolean withRetries, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
+specifier|public
+specifier|static
+name|ClientProtocol
+name|createProxyWithAlignmentContext
+parameter_list|(
+name|InetSocketAddress
+name|address
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|UserGroupInformation
+name|ugi
+parameter_list|,
+name|boolean
+name|withRetries
+parameter_list|,
+name|AtomicBoolean
+name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|RPC
 operator|.
 name|setProtocolEngine
@@ -1916,6 +2008,8 @@ argument_list|,
 name|defaultPolicy
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 operator|.
 name|getProxy

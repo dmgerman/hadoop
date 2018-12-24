@@ -126,6 +126,22 @@ name|MutableQuantiles
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableStat
+import|;
+end_import
+
 begin_comment
 comment|/**  * The server-side metrics for a journal from the JournalNode's  * perspective.  */
 end_comment
@@ -183,6 +199,55 @@ argument_list|)
 DECL|field|bytesWritten
 name|MutableCounterLong
 name|bytesWritten
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of txns served via RPC"
+argument_list|)
+DECL|field|txnsServedViaRpc
+name|MutableCounterLong
+name|txnsServedViaRpc
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of bytes served via RPC"
+argument_list|)
+DECL|field|bytesServedViaRpc
+name|MutableCounterLong
+name|bytesServedViaRpc
+decl_stmt|;
+annotation|@
+name|Metric
+DECL|field|rpcRequestCacheMissAmount
+name|MutableStat
+name|rpcRequestCacheMissAmount
+init|=
+operator|new
+name|MutableStat
+argument_list|(
+literal|"RpcRequestCacheMissAmount"
+argument_list|,
+literal|"Number of RPC requests unable to be "
+operator|+
+literal|"served due to lack of availability in cache, and how many "
+operator|+
+literal|"transactions away the request was from being in the cache."
+argument_list|,
+literal|"Misses"
+argument_list|,
+literal|"Txns"
+argument_list|)
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of RPC requests with zero edits returned"
+argument_list|)
+DECL|field|rpcEmptyResponses
+name|MutableCounterLong
+name|rpcEmptyResponses
 decl_stmt|;
 annotation|@
 name|Metric

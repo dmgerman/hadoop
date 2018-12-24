@@ -602,6 +602,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|AddBlockFlag
@@ -6777,6 +6791,29 @@ begin_function
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|getHAServiceState ()
+specifier|public
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|clientProto
+operator|.
+name|getHAServiceState
+argument_list|()
+return|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes, String path)
 specifier|public
 name|BatchedEntries
@@ -6812,6 +6849,26 @@ argument_list|,
 name|path
 argument_list|)
 return|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
+comment|// ClientProtocol
+DECL|method|msync ()
+specifier|public
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|clientProto
+operator|.
+name|msync
+argument_list|()
+expr_stmt|;
 block|}
 end_function
 

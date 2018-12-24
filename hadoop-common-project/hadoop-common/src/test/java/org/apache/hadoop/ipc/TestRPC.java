@@ -1874,6 +1874,8 @@ argument_list|,
 name|connectionRetryPolicy
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1884,7 +1886,7 @@ literal|"unchecked"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getProxy ( Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth)
+DECL|method|getProxy ( Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|public
 parameter_list|<
 name|T
@@ -1924,6 +1926,9 @@ name|connectionRetryPolicy
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1972,7 +1977,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getServer ( Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
+DECL|method|getServer ( Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig, AlignmentContext alignmentContext)
 specifier|public
 name|org
 operator|.
@@ -2027,6 +2032,9 @@ name|secretManager
 parameter_list|,
 name|String
 name|portRangeConfig
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException

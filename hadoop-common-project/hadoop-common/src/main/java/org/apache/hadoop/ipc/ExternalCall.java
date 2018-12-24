@@ -86,6 +86,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
+name|RpcResponseHeaderProto
+operator|.
+name|RpcStatusProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -299,13 +319,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|doResponse (Throwable t)
+DECL|method|doResponse (Throwable t, RpcStatusProto status)
 specifier|final
 name|void
 name|doResponse
 parameter_list|(
 name|Throwable
 name|t
+parameter_list|,
+name|RpcStatusProto
+name|status
 parameter_list|)
 block|{
 synchronized|synchronized

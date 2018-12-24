@@ -138,6 +138,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|AddBlockFlag
@@ -476,6 +490,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|ReadOnly
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|DatanodeStorageReport
@@ -665,6 +699,17 @@ comment|///////////////////////////////////////
 comment|/**    * Get locations of the blocks of the specified file    * within the specified range.    * DataNode locations for each block are sorted by    * the proximity to the client.    *<p>    * Return {@link LocatedBlocks} which contains    * file length, blocks and their locations.    * DataNode locations for each block are sorted by    * the distance to the client's address.    *<p>    * The client will then have to contact    * one of the indicated DataNodes to obtain the actual data.    *    * @param src file name    * @param offset range start offset    * @param length range length    *    * @return file length and array of blocks with their locations    *    * @throws org.apache.hadoop.security.AccessControlException If access is    *           denied    * @throws java.io.FileNotFoundException If file<code>src</code> does not    *           exist    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|atimeAffected
+operator|=
+literal|true
+argument_list|,
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getBlockLocations (String src, long offset, long length)
 name|LocatedBlocks
 name|getBlockLocations
@@ -684,6 +729,13 @@ function_decl|;
 comment|/**    * Get server default values for a number of configuration params.    * @return a set of server default configuration values    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getServerDefaults ()
 name|FsServerDefaults
 name|getServerDefaults
@@ -773,6 +825,13 @@ function_decl|;
 comment|/**    * Get all the available block storage policies.    * @return All the in-use block storage policies currently.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getStoragePolicies ()
 name|BlockStoragePolicy
 index|[]
@@ -813,6 +872,13 @@ function_decl|;
 comment|/**    * Get the storage policy for a file/directory.    * @param path    *          Path of an existing file/directory.    * @throws AccessControlException    *           If access is denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException    *           if<code>src</code> contains a symlink    * @throws java.io.FileNotFoundException    *           If file/dir<code>src</code> is not found    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getStoragePolicy (String path)
 name|BlockStoragePolicy
 name|getStoragePolicy
@@ -1112,6 +1178,13 @@ function_decl|;
 comment|/**    * Get a partial listing of the indicated directory.    *    * @param src the directory name    * @param startAfter the name to start listing after encoded in java UTF8    * @param needLocation if the FileStatus should contain block locations    *    * @return a partial listing starting after startAfter    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException If<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getListing (String src, byte[] startAfter, boolean needLocation)
 name|DirectoryListing
 name|getListing
@@ -1132,6 +1205,13 @@ function_decl|;
 comment|/**    * Get listing of all the snapshottable directories.    *    * @return Information about all the current snapshottable directory    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getSnapshottableDirListing ()
 name|SnapshottableDirectoryStatus
 index|[]
@@ -1245,6 +1325,8 @@ decl_stmt|;
 comment|/**    * Get an array of aggregated statistics combining blocks of both type    * {@link BlockType#CONTIGUOUS} and {@link BlockType#STRIPED} in the    * filesystem. Use public constants like {@link #GET_STATS_CAPACITY_IDX} in    * place of actual numbers to index into the array.    *<ul>    *<li> [0] contains the total storage capacity of the system, in bytes.</li>    *<li> [1] contains the total used space of the system, in bytes.</li>    *<li> [2] contains the available storage of the system, in bytes.</li>    *<li> [3] contains number of low redundancy blocks in the system.</li>    *<li> [4] contains number of corrupt blocks.</li>    *<li> [5] contains number of blocks without any good replicas left.</li>    *<li> [6] contains number of blocks which have replication factor    *          1 and have lost the only replica.</li>    *<li> [7] contains number of bytes that are at risk for deletion.</li>    *<li> [8] contains number of pending deletion blocks.</li>    *</ul>    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
 DECL|method|getStats ()
 name|long
 index|[]
@@ -1256,6 +1338,8 @@ function_decl|;
 comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
 DECL|method|getReplicatedBlockStats ()
 name|ReplicatedBlockStats
 name|getReplicatedBlockStats
@@ -1266,6 +1350,8 @@ function_decl|;
 comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
 DECL|method|getECBlockGroupStats ()
 name|ECBlockGroupStats
 name|getECBlockGroupStats
@@ -1276,6 +1362,8 @@ function_decl|;
 comment|/**    * Get a report on the system's current datanodes.    * One DatanodeInfo object is returned for each DataNode.    * Return live datanodes if type is LIVE; dead datanodes if type is DEAD;    * otherwise all datanodes if type is ALL.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
 DECL|method|getDatanodeReport (HdfsConstants.DatanodeReportType type)
 name|DatanodeInfo
 index|[]
@@ -1292,6 +1380,8 @@ function_decl|;
 comment|/**    * Get a report on the current datanode storages.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
 DECL|method|getDatanodeStorageReport ( HdfsConstants.DatanodeReportType type)
 name|DatanodeStorageReport
 index|[]
@@ -1308,6 +1398,13 @@ function_decl|;
 comment|/**    * Get the block size for the given file.    * @param filename The name of the file    * @return The number of bytes in each block    * @throws IOException    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the path contains    *           a symlink.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getPreferredBlockSize (String filename)
 name|long
 name|getPreferredBlockSize
@@ -1421,6 +1518,13 @@ function_decl|;
 comment|/**    * @return CorruptFileBlocks, containing a list of corrupt files (with    *         duplicates if there is more than one corrupt block in a file)    *         and a cookie    * @throws IOException    *    * Each call returns a subset of the corrupt files in the system. To obtain    * all corrupt files, call this method repeatedly and each time pass in the    * cookie returned from the previous call.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listCorruptFileBlocks (String path, String cookie)
 name|CorruptFileBlocks
 name|listCorruptFileBlocks
@@ -1463,6 +1567,13 @@ function_decl|;
 comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the path contains    *           a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getFileInfo (String src)
 name|HdfsFileStatus
 name|getFileInfo
@@ -1476,6 +1587,13 @@ function_decl|;
 comment|/**    * Get the close status of a file.    * @param src The string representation of the path to the file    *    * @return return true if file is closed    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if the path contains    *           a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|isFileClosed (String src)
 name|boolean
 name|isFileClosed
@@ -1489,6 +1607,13 @@ function_decl|;
 comment|/**    * Get the file info for a specific file or directory. If the path    * refers to a symlink then the FileStatus of the symlink is returned.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>src</code>    *           contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getFileLinkInfo (String src)
 name|HdfsFileStatus
 name|getFileLinkInfo
@@ -1502,6 +1627,13 @@ function_decl|;
 comment|/**    * Get the file info for a specific file or directory with    * {@link LocatedBlocks}.    * @param src The string representation of the path to the file    * @param needBlockToken Generate block tokens for {@link LocatedBlocks}    * @return object containing information regarding the file    *         or null if file not found    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getLocatedFileInfo (String src, boolean needBlockToken)
 name|HdfsLocatedFileStatus
 name|getLocatedFileInfo
@@ -1518,6 +1650,13 @@ function_decl|;
 comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *           contains a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getContentSummary (String path)
 name|ContentSummary
 name|getContentSummary
@@ -1616,6 +1755,13 @@ function_decl|;
 comment|/**    * Return the target of the given symlink. If there is an intermediate    * symlink in the path (ie a symlink leading up to the final path component)    * then the given path is returned with this symlink resolved.    *    * @param path The path with a link that needs resolution.    * @return The path after resolving the first symbolic link in the path.    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException If<code>path</code> does not exist    * @throws IOException If the given path does not refer to a symlink    *           or an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getLinkTarget (String path)
 name|String
 name|getLinkTarget
@@ -1720,6 +1866,13 @@ function_decl|;
 comment|/**    * @return encryption key so a client can encrypt data sent via the    *         DataTransferProtocol to/from DataNodes.    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getDataEncryptionKey ()
 name|DataEncryptionKey
 name|getDataEncryptionKey
@@ -1807,6 +1960,13 @@ function_decl|;
 comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    *    * @param snapshotRoot    *          full path of the directory where snapshots are taken    * @param fromSnapshot    *          snapshot name of the from point. Null indicates the current    *          tree    * @param toSnapshot    *          snapshot name of the to point. Null indicates the current    *          tree.    * @return The difference report represented as a {@link SnapshotDiffReport}.    * @throws IOException on error    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getSnapshotDiffReport (String snapshotRoot, String fromSnapshot, String toSnapshot)
 name|SnapshotDiffReport
 name|getSnapshotDiffReport
@@ -1826,6 +1986,13 @@ function_decl|;
 comment|/**    * Get the difference between two snapshots of a directory iteratively.    *    * @param snapshotRoot    *          full path of the directory where snapshots are taken    * @param fromSnapshot    *          snapshot name of the from point. Null indicates the current    *          tree    * @param toSnapshot    *          snapshot name of the to point. Null indicates the current    *          tree.    * @param startPath    *          path relative to the snapshottable root directory from where the    *          snapshotdiff computation needs to start across multiple rpc calls    * @param index    *           index in the created or deleted list of the directory at which    *           the snapshotdiff computation stopped during the last rpc call    *           as the no of entries exceeded the snapshotdiffentry limit. -1    *           indicates, the snapshotdiff compuatation needs to start right    *           from the startPath provided.    * @return The difference report represented as a {@link SnapshotDiffReport}.    * @throws IOException on error    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getSnapshotDiffReportListing (String snapshotRoot, String fromSnapshot, String toSnapshot, byte[] startPath, int index)
 name|SnapshotDiffReportListing
 name|getSnapshotDiffReportListing
@@ -1903,6 +2070,13 @@ function_decl|;
 comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *    * @param prevId The last listed entry ID, or -1 if this is the first call to    *               listCacheDirectives.    * @param filter Parameters to use to filter the list results,    *               or null to display all directives visible to us.    * @return A batch of CacheDirectiveEntry objects.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listCacheDirectives ( long prevId, CacheDirectiveInfo filter)
 name|BatchedEntries
 argument_list|<
@@ -1961,6 +2135,13 @@ function_decl|;
 comment|/**    * List the set of cache pools. Incrementally fetches results from the server.    *    * @param prevPool name of the last pool listed, or the empty string if this    *          is the first invocation of listCachePools    * @return A batch of CachePoolEntry objects.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listCachePools (String prevPool)
 name|BatchedEntries
 argument_list|<
@@ -2060,6 +2241,13 @@ function_decl|;
 comment|/**    * Gets the ACLs of files and directories.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getAclStatus (String src)
 name|AclStatus
 name|getAclStatus
@@ -2089,6 +2277,13 @@ function_decl|;
 comment|/**    * Get the encryption zone for a path.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getEZForPath (String src)
 name|EncryptionZone
 name|getEZForPath
@@ -2102,6 +2297,13 @@ function_decl|;
 comment|/**    * Used to implement cursor-based batched listing of {@link EncryptionZone}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listEncryptionZones ( long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2134,6 +2336,13 @@ function_decl|;
 comment|/**    * Used to implement cursor-based batched listing of    * {@link ZoneReencryptionStatus}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listReencryptionStatus (long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2172,6 +2381,13 @@ function_decl|;
 comment|/**    * Get xattrs of a file or directory. Values in xAttrs parameter are ignored.    * If xAttrs is null or empty, this is the same as getting all xattrs of the    * file or directory.  Only those xattrs for which the logged-in user has    * permissions to view are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @param xAttrs xAttrs to get    * @return<code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getXAttrs (String src, List<XAttr> xAttrs)
 name|List
 argument_list|<
@@ -2194,6 +2410,13 @@ function_decl|;
 comment|/**    * List the xattrs names for a file or directory.    * Only the xattr names for which the logged in user has the permissions to    * access will be returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param src file or directory    * @return<code>XAttr</code> list    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listXAttrs (String src)
 name|List
 argument_list|<
@@ -2226,6 +2449,13 @@ function_decl|;
 comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link org.apache.hadoop.security.AccessControlException}.    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.    *    * @param path Path to check    * @param mode type of access to check    * @throws org.apache.hadoop.security.AccessControlException if access is    *           denied    * @throws java.io.FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|checkAccess (String path, FsAction mode)
 name|void
 name|checkAccess
@@ -2242,6 +2472,13 @@ function_decl|;
 comment|/**    * Get the highest txid the NameNode knows has been written to the edit    * log, or -1 if the NameNode's edit log is not yet open for write. Used as    * the starting point for the inotify event stream.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getCurrentEditLogTxid ()
 name|long
 name|getCurrentEditLogTxid
@@ -2252,6 +2489,13 @@ function_decl|;
 comment|/**    * Get an ordered list of batches of events corresponding to the edit log    * transactions for txids equal to or greater than txid.    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getEditsFromTxid (long txid)
 name|EventBatchList
 name|getEditsFromTxid
@@ -2335,6 +2579,13 @@ function_decl|;
 comment|/**    * Get the erasure coding policies loaded in Namenode, excluding REPLICATION    * policy.    *    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getErasureCodingPolicies ()
 name|ErasureCodingPolicyInfo
 index|[]
@@ -2346,6 +2597,13 @@ function_decl|;
 comment|/**    * Get the erasure coding codecs loaded in Namenode.    *    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getErasureCodingCodecs ()
 name|Map
 argument_list|<
@@ -2361,6 +2619,13 @@ function_decl|;
 comment|/**    * Get the information about the EC policy for the path. Null will be returned    * if directory or file has REPLICATION policy.    *    * @param src path to get the info for    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|getErasureCodingPolicy (String src)
 name|ErasureCodingPolicy
 name|getErasureCodingPolicy
@@ -2384,9 +2649,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get {@link QuotaUsage} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *         contains a symlink.    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get {@link QuotaUsage} rooted at the specified directory.    *    * Note: due to HDFS-6763, standby/observer doesn't keep up-to-date info    * about quota usage, and thus even though this is ReadOnly, it can only be    * directed to the active namenode.    *    * @param path The string representation of the path    *    * @throws AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *         contains a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|activeOnly
+operator|=
+literal|true
+argument_list|)
 DECL|method|getQuotaUsage (String path)
 name|QuotaUsage
 name|getQuotaUsage
@@ -2402,6 +2674,13 @@ annotation|@
 name|Idempotent
 annotation|@
 name|Deprecated
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listOpenFiles (long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2418,6 +2697,13 @@ function_decl|;
 comment|/**    * List open files in the system in batches. INode id is the cursor and the    * open files returned in a batch will have their INode ids greater than    * the cursor INode id. Open files can only be requested by super user and    * the the list across batches are not atomic.    *    * @param prevId the cursor INode id.    * @param openFilesTypes types to filter the open files.    * @param path path to filter the open files.    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
 DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes, String path)
 name|BatchedEntries
 argument_list|<
@@ -2437,6 +2723,37 @@ parameter_list|,
 name|String
 name|path
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get HA service state of the server.    *    * @return server HA state    * @throws IOException    */
+annotation|@
+name|Idempotent
+annotation|@
+name|ReadOnly
+DECL|method|getHAServiceState ()
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Called by client to wait until the server has reached the state id of the    * client. The client and server state id are given by client side and server    * side alignment context respectively. This can be a blocking call.    *    * @throws IOException    */
+annotation|@
+name|Idempotent
+annotation|@
+name|ReadOnly
+argument_list|(
+name|isCoordinated
+operator|=
+literal|true
+argument_list|)
+DECL|method|msync ()
+name|void
+name|msync
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

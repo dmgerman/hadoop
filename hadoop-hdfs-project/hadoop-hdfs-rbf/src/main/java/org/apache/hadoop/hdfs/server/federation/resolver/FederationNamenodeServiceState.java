@@ -94,6 +94,11 @@ return|;
 case|case
 name|STANDBY
 case|:
+comment|// TODO: we should probably have a separate state OBSERVER for RBF and
+comment|// treat it differently.
+case|case
+name|OBSERVER
+case|:
 return|return
 name|FederationNamenodeServiceState
 operator|.

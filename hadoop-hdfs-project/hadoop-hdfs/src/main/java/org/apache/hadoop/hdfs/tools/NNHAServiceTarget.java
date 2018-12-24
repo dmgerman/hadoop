@@ -855,6 +855,18 @@ return|return
 name|autoFailoverEnabled
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|supportObserver ()
+specifier|public
+name|boolean
+name|supportObserver
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

@@ -710,6 +710,13 @@ name|HOTSWAP
 argument_list|(
 literal|"-hotswap"
 argument_list|)
+block|,
+comment|// Startup the namenode in observer mode.
+DECL|enumConstant|OBSERVER
+name|OBSERVER
+argument_list|(
+literal|"-observer"
+argument_list|)
 block|;
 DECL|field|ENUM_WITH_ROLLING_UPGRADE_OPTION
 specifier|private

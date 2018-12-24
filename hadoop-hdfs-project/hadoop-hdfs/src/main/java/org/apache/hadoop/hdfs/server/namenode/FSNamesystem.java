@@ -1233,6 +1233,42 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+operator|.
+name|ACTIVE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+operator|.
+name|OBSERVER
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -4210,6 +4246,20 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|ObserverRetryOnActiveException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|RetriableException
 import|;
 end_import
@@ -5303,7 +5353,6 @@ name|dir
 decl_stmt|;
 DECL|field|blockManager
 specifier|private
-specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
@@ -5509,7 +5558,7 @@ specifier|final
 name|ReentrantLock
 name|cpLock
 decl_stmt|;
-comment|/**    * Used when this NN is in standby state to read from the shared edit log.    */
+comment|/**    * Used when this NN is in standby or observer state to read from the    * shared edit log.    */
 DECL|field|editLogTailer
 specifier|private
 name|EditLogTailer
@@ -9061,14 +9110,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Start services required in standby state     *     * @throws IOException    */
-DECL|method|startStandbyServices (final Configuration conf)
+comment|/**    * Start services required in standby or observer state    *     * @throws IOException    */
+DECL|method|startStandbyServices (final Configuration conf, boolean isObserver)
 name|void
 name|startStandbyServices
 parameter_list|(
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|isObserver
 parameter_list|)
 throws|throws
 name|IOException
@@ -9077,7 +9129,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting services required for standby state"
+literal|"Starting services required for "
+operator|+
+operator|(
+name|isObserver
+condition|?
+literal|"observer"
+else|:
+literal|"standby"
+operator|)
+operator|+
+literal|" state"
 argument_list|)
 expr_stmt|;
 if|if
@@ -9132,6 +9194,9 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|isObserver
+operator|&&
 name|standbyShouldCheckpoint
 condition|)
 block|{
@@ -10366,6 +10431,18 @@ argument_list|()
 operator|.
 name|getServiceState
 argument_list|()
+operator|||
+name|HAServiceState
+operator|.
+name|OBSERVER
+operator|==
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getServiceState
+argument_list|()
 return|;
 block|}
 comment|/**    * return a list of blocks&amp; their locations on {@code datanode} whose    * total size is {@code size}    *    * @param datanode on which blocks are located    * @param size total size of blocks    * @param minimumBlockSize    */
@@ -11440,6 +11517,7 @@ name|haContext
 operator|!=
 literal|null
 operator|&&
+operator|(
 name|haContext
 operator|.
 name|getState
@@ -11448,9 +11526,18 @@ operator|.
 name|getServiceState
 argument_list|()
 operator|==
-name|HAServiceState
-operator|.
 name|ACTIVE
+operator|||
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getServiceState
+argument_list|()
+operator|==
+name|OBSERVER
+operator|)
 condition|)
 block|{
 throw|throw
@@ -11467,6 +11554,70 @@ throw|throw
 name|se
 throw|;
 block|}
+block|}
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|haEnabled
+operator|&&
+name|haContext
+operator|!=
+literal|null
+operator|&&
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getServiceState
+argument_list|()
+operator|==
+name|OBSERVER
+condition|)
+block|{
+for|for
+control|(
+name|LocatedBlock
+name|b
+range|:
+name|res
+operator|.
+name|blocks
+operator|.
+name|getLocatedBlocks
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|b
+operator|.
+name|getLocations
+argument_list|()
+operator|==
+literal|null
+operator|||
+name|b
+operator|.
+name|getLocations
+argument_list|()
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|ObserverRetryOnActiveException
+argument_list|(
+literal|"Zero blocklocations for "
+operator|+
+name|srcArg
+argument_list|)
+throw|;
 block|}
 block|}
 block|}
@@ -30128,6 +30279,24 @@ block|{
 return|return
 name|blockManager
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockManagerForTesting (BlockManager bm)
+specifier|public
+name|void
+name|setBlockManagerForTesting
+parameter_list|(
+name|BlockManager
+name|bm
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockManager
+operator|=
+name|bm
+expr_stmt|;
 block|}
 comment|/** @return the FSDirectory. */
 annotation|@

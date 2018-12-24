@@ -1030,6 +1030,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|NameNodeProxiesClient
@@ -14892,6 +14906,41 @@ name|openFilesTypes
 argument_list|,
 name|path
 argument_list|)
+return|;
+block|}
+comment|/**    * A blocking call to wait for Observer NameNode state ID to reach to the    * current client state ID. Current client state ID is given by the client    * alignment context.    * An assumption is that client alignment context has the state ID set at this    * point. This is become ObserverReadProxyProvider sets up the initial state    * ID when it is being created.    *    * @throws IOException    */
+DECL|method|msync ()
+specifier|public
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|namenode
+operator|.
+name|msync
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * An unblocking call to get the HA service state of NameNode.    *    * @return HA state of NameNode    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getHAServiceState ()
+specifier|public
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|namenode
+operator|.
+name|getHAServiceState
+argument_list|()
 return|;
 block|}
 block|}

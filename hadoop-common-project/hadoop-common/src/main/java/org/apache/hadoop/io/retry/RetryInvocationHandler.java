@@ -2329,6 +2329,23 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getProxyProvider ()
+specifier|public
+name|FailoverProxyProvider
+argument_list|<
+name|T
+argument_list|>
+name|getProxyProvider
+parameter_list|()
+block|{
+return|return
+name|proxyDescriptor
+operator|.
+name|fpp
+return|;
+block|}
 block|}
 end_class
 

@@ -743,7 +743,7 @@ specifier|private
 name|int
 name|maxRetries
 decl_stmt|;
-comment|/**    * Whether the tailer should tail the in-progress edit log segments.    */
+comment|/**    * Whether the tailer should tail the in-progress edit log segments. If true,    * this will also attempt to optimize for latency when tailing the edit logs    * (if using the    * {@link org.apache.hadoop.hdfs.qjournal.client.QuorumJournalManager}, this    * implies using the RPC-based mechanism to tail edits).    */
 DECL|field|inProgressOk
 specifier|private
 specifier|final
@@ -1298,6 +1298,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|doTailEdits ()
+specifier|public
 name|void
 name|doTailEdits
 parameter_list|()

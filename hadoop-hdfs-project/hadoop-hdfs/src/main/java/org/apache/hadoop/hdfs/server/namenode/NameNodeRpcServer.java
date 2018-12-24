@@ -4352,6 +4352,15 @@ name|getDelegationTokenSecretManager
 argument_list|()
 argument_list|)
 operator|.
+name|setAlignmentContext
+argument_list|(
+operator|new
+name|GlobalStateIdContext
+argument_list|(
+name|namesystem
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -8650,6 +8659,43 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|msync ()
+specifier|public
+name|void
+name|msync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// TODO : need to be filled up if needed. May be a no-op here.
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
+DECL|method|getHAServiceState ()
+specifier|public
+name|HAServiceState
+name|getHAServiceState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+return|return
+name|nn
+operator|.
+name|getServiceStatus
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|listCorruptFileBlocks (String path, String cookie)
 specifier|public
 name|CorruptFileBlocks
@@ -9619,10 +9665,9 @@ operator|.
 name|isRollingUpgrade
 argument_list|()
 operator|&&
-operator|!
 name|nn
 operator|.
-name|isStandbyState
+name|isActiveState
 argument_list|()
 operator|&&
 name|noStaleStorages
@@ -10553,6 +10598,41 @@ expr_stmt|;
 name|nn
 operator|.
 name|transitionToStandby
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
+DECL|method|transitionToObserver (StateChangeRequestInfo req)
+specifier|public
+specifier|synchronized
+name|void
+name|transitionToObserver
+parameter_list|(
+name|StateChangeRequestInfo
+name|req
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+throws|,
+name|AccessControlException
+throws|,
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|nn
+operator|.
+name|checkHaStateChange
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
+name|nn
+operator|.
+name|transitionToObserver
 argument_list|()
 expr_stmt|;
 block|}

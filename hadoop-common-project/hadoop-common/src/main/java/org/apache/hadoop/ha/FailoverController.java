@@ -503,7 +503,14 @@ throw|throw
 operator|new
 name|FailoverFailedException
 argument_list|(
-literal|"Can't failover to an active service"
+literal|"Can't failover to an "
+operator|+
+name|toSvcStatus
+operator|.
+name|getState
+argument_list|()
+operator|+
+literal|" service"
 argument_list|)
 throw|;
 block|}

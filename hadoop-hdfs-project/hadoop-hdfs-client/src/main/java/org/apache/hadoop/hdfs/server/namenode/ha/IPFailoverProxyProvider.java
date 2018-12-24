@@ -161,9 +161,7 @@ name|nnProxyInfo
 operator|=
 operator|new
 name|NNProxyInfo
-argument_list|<
-name|T
-argument_list|>
+argument_list|<>
 argument_list|(
 name|DFSUtilClient
 operator|.

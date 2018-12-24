@@ -1114,7 +1114,13 @@ specifier|final
 name|AtomicBoolean
 name|fallbackToSimpleAuth
 decl_stmt|;
-DECL|method|Invoker (Class<?> protocol, InetSocketAddress address, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, AtomicBoolean fallbackToSimpleAuth)
+DECL|field|alignmentContext
+specifier|private
+specifier|final
+name|AlignmentContext
+name|alignmentContext
+decl_stmt|;
+DECL|method|Invoker (Class<?> protocol, InetSocketAddress address, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|public
 name|Invoker
 parameter_list|(
@@ -1141,6 +1147,9 @@ name|rpcTimeout
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1186,6 +1195,12 @@ operator|.
 name|fallbackToSimpleAuth
 operator|=
 name|fallbackToSimpleAuth
+expr_stmt|;
+name|this
+operator|.
+name|alignmentContext
+operator|=
+name|alignmentContext
 expr_stmt|;
 block|}
 annotation|@
@@ -1298,6 +1313,8 @@ argument_list|,
 name|remoteId
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -1490,6 +1507,8 @@ argument_list|,
 name|connectionRetryPolicy
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1501,7 +1520,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth)
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy, AtomicBoolean fallbackToSimpleAuth, AlignmentContext alignmentContext)
 specifier|public
 parameter_list|<
 name|T
@@ -1541,6 +1560,9 @@ name|connectionRetryPolicy
 parameter_list|,
 name|AtomicBoolean
 name|fallbackToSimpleAuth
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1600,6 +1622,8 @@ argument_list|,
 name|rpcTimeout
 argument_list|,
 name|fallbackToSimpleAuth
+argument_list|,
+name|alignmentContext
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1621,7 +1645,7 @@ block|}
 comment|/* Construct a server for a protocol implementation instance listening on a    * port and address. */
 annotation|@
 name|Override
-DECL|method|getServer (Class<?> protocolClass, Object protocolImpl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
+DECL|method|getServer (Class<?> protocolClass, Object protocolImpl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig, AlignmentContext alignmentContext)
 specifier|public
 name|RPC
 operator|.
@@ -1668,6 +1692,9 @@ name|secretManager
 parameter_list|,
 name|String
 name|portRangeConfig
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
 parameter_list|)
 throws|throws
 name|IOException
@@ -1697,6 +1724,8 @@ argument_list|,
 name|secretManager
 argument_list|,
 name|portRangeConfig
+argument_list|,
+name|alignmentContext
 argument_list|)
 return|;
 block|}
@@ -1871,7 +1900,9 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**       * Construct an RPC server.      * @param protocolClass - the protocol being registered      *     can be null for compatibility with old usage (see below for details)      * @param protocolImpl the protocol impl that will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      */
+comment|/**       * Construct an RPC server.      * @param protocolClass - the protocol being registered      *     can be null for compatibility with old usage (see below for details)      * @param protocolImpl the protocol impl that will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      *      * @deprecated use Server#Server(Class, Object,      *      Configuration, String, int, int, int, int, boolean, SecretManager)      */
+annotation|@
+name|Deprecated
 DECL|method|Server (Class<?> protocolClass, Object protocolImpl, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 name|Server
@@ -1920,6 +1951,86 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+argument_list|(
+literal|null
+argument_list|,
+name|protocolImpl
+argument_list|,
+name|conf
+argument_list|,
+name|bindAddress
+argument_list|,
+name|port
+argument_list|,
+name|numHandlers
+argument_list|,
+name|numReaders
+argument_list|,
+name|queueSizePerHandler
+argument_list|,
+name|verbose
+argument_list|,
+name|secretManager
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Construct an RPC server.      * @param protocolClass - the protocol being registered      *     can be null for compatibility with old usage (see below for details)      * @param protocolImpl the protocol impl that will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      * @param alignmentContext provides server state info on client responses      */
+DECL|method|Server (Class<?> protocolClass, Object protocolImpl, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig, AlignmentContext alignmentContext)
+specifier|public
+name|Server
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocolClass
+parameter_list|,
+name|Object
+name|protocolImpl
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|bindAddress
+parameter_list|,
+name|int
+name|port
+parameter_list|,
+name|int
+name|numHandlers
+parameter_list|,
+name|int
+name|numReaders
+parameter_list|,
+name|int
+name|queueSizePerHandler
+parameter_list|,
+name|boolean
+name|verbose
+parameter_list|,
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
+parameter_list|,
+name|String
+name|portRangeConfig
+parameter_list|,
+name|AlignmentContext
+name|alignmentContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|super
 argument_list|(
 name|bindAddress
@@ -1947,6 +2058,11 @@ argument_list|,
 name|secretManager
 argument_list|,
 name|portRangeConfig
+argument_list|)
+expr_stmt|;
+name|setAlignmentContext
+argument_list|(
+name|alignmentContext
 argument_list|)
 expr_stmt|;
 name|this

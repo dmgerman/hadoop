@@ -972,6 +972,30 @@ operator|=
 name|unreachable
 expr_stmt|;
 block|}
+DECL|method|setFailToBecomeObserver (int idx, boolean doFail)
+specifier|public
+name|void
+name|setFailToBecomeObserver
+parameter_list|(
+name|int
+name|idx
+parameter_list|,
+name|boolean
+name|doFail
+parameter_list|)
+block|{
+name|svcs
+operator|.
+name|get
+argument_list|(
+name|idx
+argument_list|)
+operator|.
+name|failToBecomeObserver
+operator|=
+name|doFail
+expr_stmt|;
+block|}
 comment|/**    * Wait for the given HA service to enter the given HA state.    * This is based on the state of ZKFC, not the state of HA service.    * There could be difference between the two. For example,    * When the service becomes unhealthy, ZKFC will quit ZK election and    * transition to HAServiceState.INITIALIZING and remain in that state    * until the service becomes healthy.    */
 DECL|method|waitForHAState (int idx, HAServiceState state)
 specifier|public
