@@ -1114,7 +1114,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * An InvocationHandler to handle incoming requests. This class's invoke    * method contains the primary logic for redirecting to observers.    *     * If observer reads are enabled, attempt to send read operations to the    * current proxy. If it is not an observer, or the observer fails, adjust    * the current proxy and retry on the next one. If all proxies are tried    * without success, the request is forwarded to the active.    *    * Write requests are always forwarded to the active.    */
+comment|/**    * An InvocationHandler to handle incoming requests. This class's invoke    * method contains the primary logic for redirecting to observers.    *    * If observer reads are enabled, attempt to send read operations to the    * current proxy. If it is not an observer, or the observer fails, adjust    * the current proxy and retry on the next one. If all proxies are tried    * without success, the request is forwarded to the active.    *    * Write requests are always forwarded to the active.    */
 end_comment
 
 begin_class
