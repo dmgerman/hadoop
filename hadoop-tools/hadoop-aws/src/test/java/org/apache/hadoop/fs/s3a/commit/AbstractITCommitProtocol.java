@@ -963,24 +963,6 @@ name|getMethodName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|S3AFileSystem
-name|fileSystem
-init|=
-name|getFileSystem
-argument_list|()
-decl_stmt|;
-name|bindFileSystem
-argument_list|(
-name|fileSystem
-argument_list|,
-name|outDir
-argument_list|,
-name|fileSystem
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|abortMultipartUploadsUnderPath
 argument_list|(
 name|outDir
@@ -1146,39 +1128,6 @@ expr_stmt|;
 return|return
 name|conf
 return|;
-block|}
-comment|/**    * Bind a path to the FS in the cache.    * @param fs filesystem    * @param path s3 path    * @param conf configuration    * @throws IOException any problem    */
-DECL|method|bindFileSystem (FileSystem fs, Path path, Configuration conf)
-specifier|private
-name|void
-name|bindFileSystem
-parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
-name|Path
-name|path
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|FileSystemTestHelper
-operator|.
-name|addFileSystemForTesting
-argument_list|(
-name|path
-operator|.
-name|toUri
-argument_list|()
-argument_list|,
-name|conf
-argument_list|,
-name|fs
-argument_list|)
-expr_stmt|;
 block|}
 comment|/***    * Bind to the committer from the methods of    * {@link #getCommitterFactoryName()} and {@link #getCommitterName()}.    * @param conf configuration to set up    */
 DECL|method|bindCommitter (Configuration conf)
