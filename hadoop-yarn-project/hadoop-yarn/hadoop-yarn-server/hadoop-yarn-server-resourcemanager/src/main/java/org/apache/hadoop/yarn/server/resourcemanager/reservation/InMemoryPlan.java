@@ -4544,11 +4544,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|StringBuffer
+name|StringBuilder
 name|planStr
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 literal|"In-memory Plan: "
 argument_list|)
@@ -4567,7 +4567,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"Total Capacity: "
+literal|" Total Capacity: "
 argument_list|)
 operator|.
 name|append
@@ -4577,7 +4577,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"Step: "
+literal|" Step: "
 argument_list|)
 operator|.
 name|append
