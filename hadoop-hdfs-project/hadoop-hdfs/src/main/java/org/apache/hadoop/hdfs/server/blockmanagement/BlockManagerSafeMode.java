@@ -2372,9 +2372,22 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
+comment|// Calculating the number of live datanodes is time-consuming
+comment|// in large clusters. Skip it when datanodeThreshold is zero.
 name|int
 name|datanodeNum
 init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|datanodeThreshold
+operator|>
+literal|0
+condition|)
+block|{
+name|datanodeNum
+operator|=
 name|blockManager
 operator|.
 name|getDatanodeManager
@@ -2382,7 +2395,8 @@ argument_list|()
 operator|.
 name|getNumLiveDataNodes
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|this
