@@ -1392,7 +1392,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" [-w] -path<path>]\n"
+literal|" -path<path>]\n"
 return|;
 block|}
 annotation|@
@@ -1420,33 +1420,6 @@ argument_list|,
 literal|"The path of the file/directory to satisfy"
 operator|+
 literal|" storage policy"
-argument_list|)
-expr_stmt|;
-name|listing
-operator|.
-name|addRow
-argument_list|(
-literal|"-w"
-argument_list|,
-literal|"It requests that the command wait till all the files satisfy"
-operator|+
-literal|" the policy in given path. This will print the current"
-operator|+
-literal|"status of the path in each 10 sec and status are:\n"
-operator|+
-literal|"PENDING : Path is in queue and not processed for satisfying"
-operator|+
-literal|" the policy.\n"
-operator|+
-literal|"IN_PROGRESS : Satisfying the storage policy for"
-operator|+
-literal|" path.\n"
-operator|+
-literal|"SUCCESS : Storage policy satisfied for the path.\n"
-operator|+
-literal|"FAILURE : Few blocks failed to move.\n"
-operator|+
-literal|"NOT_AVAILABLE : Status not available."
 argument_list|)
 expr_stmt|;
 return|return
