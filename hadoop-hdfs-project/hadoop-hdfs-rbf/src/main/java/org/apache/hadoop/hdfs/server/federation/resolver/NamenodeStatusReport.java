@@ -157,6 +157,14 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|staleDatanodes
+specifier|private
+name|int
+name|staleDatanodes
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** Decommissioning datanodes. */
 DECL|field|decomDatanodes
 specifier|private
@@ -611,8 +619,8 @@ operator|.
 name|safeMode
 return|;
 block|}
-comment|/**    * Set the datanode information.    *    * @param numLive Number of live nodes.    * @param numDead Number of dead nodes.    * @param numDecom Number of decommissioning nodes.    * @param numLiveDecom Number of decommissioned live nodes.    * @param numDeadDecom Number of decommissioned dead nodes.    */
-DECL|method|setDatanodeInfo (int numLive, int numDead, int numDecom, int numLiveDecom, int numDeadDecom)
+comment|/**    * Set the datanode information.    *    * @param numLive Number of live nodes.    * @param numDead Number of dead nodes.    * @param numStale Number of stale nodes.    * @param numDecom Number of decommissioning nodes.    * @param numLiveDecom Number of decommissioned live nodes.    * @param numDeadDecom Number of decommissioned dead nodes.    */
+DECL|method|setDatanodeInfo (int numLive, int numDead, int numStale, int numDecom, int numLiveDecom, int numDeadDecom)
 specifier|public
 name|void
 name|setDatanodeInfo
@@ -622,6 +630,9 @@ name|numLive
 parameter_list|,
 name|int
 name|numDead
+parameter_list|,
+name|int
+name|numStale
 parameter_list|,
 name|int
 name|numDecom
@@ -644,6 +655,12 @@ operator|.
 name|deadDatanodes
 operator|=
 name|numDead
+expr_stmt|;
+name|this
+operator|.
+name|staleDatanodes
+operator|=
+name|numStale
 expr_stmt|;
 name|this
 operator|.
@@ -683,7 +700,7 @@ operator|.
 name|liveDatanodes
 return|;
 block|}
-comment|/**    * Get the number of dead blocks.    *    * @return The number of dead nodes.    */
+comment|/**    * Get the number of dead nodes.    *    * @return The number of dead nodes.    */
 DECL|method|getNumDeadDatanodes ()
 specifier|public
 name|int
@@ -694,6 +711,19 @@ return|return
 name|this
 operator|.
 name|deadDatanodes
+return|;
+block|}
+comment|/**    * Get the number of stale nodes.    *    * @return The number of stale nodes.    */
+DECL|method|getNumStaleDatanodes ()
+specifier|public
+name|int
+name|getNumStaleDatanodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|staleDatanodes
 return|;
 block|}
 comment|/**    * Get the number of decommissionining nodes.    *    * @return The number of decommissionining nodes.    */

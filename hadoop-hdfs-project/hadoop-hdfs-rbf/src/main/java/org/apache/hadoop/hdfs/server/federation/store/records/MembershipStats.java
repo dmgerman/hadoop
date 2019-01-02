@@ -306,6 +306,23 @@ name|int
 name|getNumOfDeadDatanodes
 parameter_list|()
 function_decl|;
+DECL|method|setNumOfStaleDatanodes (int nodes)
+specifier|public
+specifier|abstract
+name|void
+name|setNumOfStaleDatanodes
+parameter_list|(
+name|int
+name|nodes
+parameter_list|)
+function_decl|;
+DECL|method|getNumOfStaleDatanodes ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumOfStaleDatanodes
+parameter_list|()
+function_decl|;
 DECL|method|setNumOfDecommissioningDatanodes (int nodes)
 specifier|public
 specifier|abstract

@@ -2690,6 +2690,23 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNumStaleNodes ()
+specifier|public
+name|int
+name|getNumStaleNodes
+parameter_list|()
+block|{
+return|return
+name|getNameserviceAggregatedInt
+argument_list|(
+name|MembershipStats
+operator|::
+name|getNumOfStaleDatanodes
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getNumDecommissioningNodes ()
 specifier|public
 name|int

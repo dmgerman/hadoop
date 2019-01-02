@@ -1636,6 +1636,13 @@ name|jsonObject
 operator|.
 name|getInt
 argument_list|(
+literal|"NumStaleDataNodes"
+argument_list|)
+argument_list|,
+name|jsonObject
+operator|.
+name|getInt
+argument_list|(
 literal|"NumDecommissioningDataNodes"
 argument_list|)
 argument_list|,

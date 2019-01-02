@@ -1682,6 +1682,16 @@ argument_list|)
 expr_stmt|;
 name|stats
 operator|.
+name|setNumOfStaleDatanodes
+argument_list|(
+name|report
+operator|.
+name|getNumStaleDatanodes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|stats
+operator|.
 name|setNumOfDecomActiveDatanodes
 argument_list|(
 name|report

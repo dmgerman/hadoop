@@ -146,6 +146,12 @@ name|int
 name|getNumDeadNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Get the number of stale datanodes.    * @return Number of stale datanodes.    */
+DECL|method|getNumStaleNodes ()
+name|int
+name|getNumStaleNodes
+parameter_list|()
+function_decl|;
 comment|/**    * Get the number of decommissioning datanodes.    * @return Number of decommissioning datanodes.    */
 DECL|method|getNumDecommissioningNodes ()
 name|int
