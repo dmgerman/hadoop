@@ -241,6 +241,15 @@ name|ex
 operator|.
 name|getCause
 argument_list|()
+operator|==
+literal|null
+condition|?
+name|ex
+else|:
+name|ex
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|System
