@@ -3964,6 +3964,9 @@ name|event
 argument_list|)
 expr_stmt|;
 block|}
+name|SchedulerNode
+name|node
+init|=
 name|getSchedulerNode
 argument_list|(
 name|rmContainer
@@ -3971,6 +3974,15 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|node
+operator|!=
+literal|null
+condition|)
+block|{
+name|node
 operator|.
 name|releaseContainer
 argument_list|(
@@ -3982,6 +3994,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// If the container is getting killed in ACQUIRED state, the requester (AM
 comment|// for regular containers and RM itself for AM container) will not know what
@@ -6633,6 +6646,13 @@ argument_list|,
 name|rmContainer
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|demotedRMContainer
+operator|!=
+literal|null
+condition|)
+block|{
 name|appAttempt
 operator|.
 name|addToNewlyDemotedContainers
@@ -6645,6 +6665,7 @@ argument_list|,
 name|demotedRMContainer
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{

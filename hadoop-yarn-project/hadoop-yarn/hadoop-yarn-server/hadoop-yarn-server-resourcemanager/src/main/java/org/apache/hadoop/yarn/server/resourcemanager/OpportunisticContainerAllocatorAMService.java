@@ -2166,6 +2166,13 @@ argument_list|,
 name|isRemotelyAllocated
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|rmContainer
+operator|!=
+literal|null
+condition|)
+block|{
 name|rmContainer
 operator|.
 name|handle
@@ -2184,6 +2191,7 @@ name|ACQUIRED
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
