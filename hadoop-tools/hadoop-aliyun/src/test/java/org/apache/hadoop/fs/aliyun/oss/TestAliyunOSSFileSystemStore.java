@@ -415,8 +415,6 @@ name|IOException
 throws|,
 name|NoSuchAlgorithmException
 block|{
-comment|// If len> fs.oss.multipart.upload.threshold,
-comment|// we'll use a multipart upload copy
 name|MessageDigest
 name|digest
 init|=
@@ -504,6 +502,14 @@ argument_list|(
 literal|".copy"
 argument_list|)
 decl_stmt|;
+name|long
+name|start
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 name|fs
 operator|.
 name|rename
@@ -523,6 +529,19 @@ name|exists
 argument_list|(
 name|copyPath
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// should less than 1 second
+name|assertTrue
+argument_list|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|start
+operator|<
+literal|1000
 argument_list|)
 expr_stmt|;
 comment|// Download file from Aliyun OSS and compare the digest against the original
@@ -643,7 +662,7 @@ name|IOException
 throws|,
 name|NoSuchAlgorithmException
 block|{
-comment|// Multipart upload, multipart copy
+comment|// Multipart upload, shallow copy
 name|writeRenameReadCompare
 argument_list|(
 operator|new
@@ -652,10 +671,10 @@ argument_list|(
 literal|"/test/xlarge"
 argument_list|)
 argument_list|,
-literal|52428800L
+literal|2147483648L
 argument_list|)
 expr_stmt|;
-comment|// 50MB byte
+comment|// 2GB
 block|}
 block|}
 end_class

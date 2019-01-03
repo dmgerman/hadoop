@@ -3404,6 +3404,11 @@ name|copyFile
 argument_list|(
 name|srcPath
 argument_list|,
+name|srcStatus
+operator|.
+name|getLen
+argument_list|()
+argument_list|,
 name|dstPath
 argument_list|)
 expr_stmt|;
@@ -3424,14 +3429,17 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Copy file from source path to destination path.    * (the caller should make sure srcPath is a file and dstPath is valid)    *    * @param srcPath source path.    * @param dstPath destination path.    * @return true if file is successfully copied.    */
-DECL|method|copyFile (Path srcPath, Path dstPath)
+comment|/**    * Copy file from source path to destination path.    * (the caller should make sure srcPath is a file and dstPath is valid)    *    * @param srcPath source path.    * @param srcLen source path length if it is a file.    * @param dstPath destination path.    * @return true if file is successfully copied.    */
+DECL|method|copyFile (Path srcPath, long srcLen, Path dstPath)
 specifier|private
 name|boolean
 name|copyFile
 parameter_list|(
 name|Path
 name|srcPath
+parameter_list|,
+name|long
+name|srcLen
 parameter_list|,
 name|Path
 name|dstPath
@@ -3459,6 +3467,8 @@ operator|.
 name|copyFile
 argument_list|(
 name|srcKey
+argument_list|,
+name|srcLen
 argument_list|,
 name|dstKey
 argument_list|)
@@ -3639,6 +3649,11 @@ argument_list|,
 name|objectSummary
 operator|.
 name|getKey
+argument_list|()
+argument_list|,
+name|objectSummary
+operator|.
+name|getSize
 argument_list|()
 argument_list|,
 name|newKey

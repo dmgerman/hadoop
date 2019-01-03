@@ -118,15 +118,6 @@ name|newConf
 operator|.
 name|setLong
 argument_list|(
-name|MIN_MULTIPART_UPLOAD_THRESHOLD_KEY
-argument_list|,
-name|MULTIPART_SETTING
-argument_list|)
-expr_stmt|;
-name|newConf
-operator|.
-name|setLong
-argument_list|(
 name|MULTIPART_UPLOAD_PART_SIZE_KEY
 argument_list|,
 name|MULTIPART_SETTING

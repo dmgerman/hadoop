@@ -1047,6 +1047,10 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
+name|data
+operator|.
+name|length
+argument_list|,
 name|dstOne
 operator|.
 name|toUri
@@ -1096,6 +1100,10 @@ name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|,
+name|data
+operator|.
+name|length
 argument_list|,
 name|dstTwo
 operator|.
@@ -1267,6 +1275,10 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
+name|data
+operator|.
+name|length
+argument_list|,
 name|dstOne
 operator|.
 name|toUri
@@ -1316,6 +1328,10 @@ name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|,
+name|data
+operator|.
+name|length
 argument_list|,
 name|dstTwo
 operator|.
@@ -1496,6 +1512,10 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
+name|data
+operator|.
+name|length
+argument_list|,
 name|dstOne
 operator|.
 name|toUri
@@ -1546,6 +1566,10 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
+name|data
+operator|.
+name|length
+argument_list|,
 name|dstTwo
 operator|.
 name|toUri
@@ -1595,6 +1619,10 @@ name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|,
+name|data
+operator|.
+name|length
 argument_list|,
 name|dstThree
 operator|.

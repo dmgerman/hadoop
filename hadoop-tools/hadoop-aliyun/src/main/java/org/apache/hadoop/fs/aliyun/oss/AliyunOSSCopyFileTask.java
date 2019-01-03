@@ -78,6 +78,11 @@ specifier|private
 name|String
 name|srcKey
 decl_stmt|;
+DECL|field|srcLen
+specifier|private
+name|long
+name|srcLen
+decl_stmt|;
 DECL|field|dstKey
 specifier|private
 name|String
@@ -88,7 +93,7 @@ specifier|private
 name|AliyunOSSCopyFileContext
 name|copyFileContext
 decl_stmt|;
-DECL|method|AliyunOSSCopyFileTask (AliyunOSSFileSystemStore store, String srcKey, String dstKey, AliyunOSSCopyFileContext copyFileContext)
+DECL|method|AliyunOSSCopyFileTask (AliyunOSSFileSystemStore store, String srcKey, long srcLen, String dstKey, AliyunOSSCopyFileContext copyFileContext)
 specifier|public
 name|AliyunOSSCopyFileTask
 parameter_list|(
@@ -97,6 +102,9 @@ name|store
 parameter_list|,
 name|String
 name|srcKey
+parameter_list|,
+name|long
+name|srcLen
 parameter_list|,
 name|String
 name|dstKey
@@ -116,6 +124,12 @@ operator|.
 name|srcKey
 operator|=
 name|srcKey
+expr_stmt|;
+name|this
+operator|.
+name|srcLen
+operator|=
+name|srcLen
 expr_stmt|;
 name|this
 operator|.
@@ -150,6 +164,8 @@ operator|.
 name|copyFile
 argument_list|(
 name|srcKey
+argument_list|,
+name|srcLen
 argument_list|,
 name|dstKey
 argument_list|)
