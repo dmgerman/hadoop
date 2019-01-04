@@ -194,24 +194,8 @@ operator|.
 name|closeContainerCommand
 return|;
 block|}
-comment|/**    * Gets the protobuf message of this object.    *    * @return A protobuf message.    */
 annotation|@
 name|Override
-DECL|method|getProtoBufMessage ()
-specifier|public
-name|byte
-index|[]
-name|getProtoBufMessage
-parameter_list|()
-block|{
-return|return
-name|getProto
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-return|;
-block|}
 DECL|method|getProto ()
 specifier|public
 name|CloseContainerCommandProto
@@ -305,6 +289,16 @@ block|{
 return|return
 name|getId
 argument_list|()
+return|;
+block|}
+DECL|method|getPipelineID ()
+specifier|public
+name|PipelineID
+name|getPipelineID
+parameter_list|()
+block|{
+return|return
+name|pipelineID
 return|;
 block|}
 block|}

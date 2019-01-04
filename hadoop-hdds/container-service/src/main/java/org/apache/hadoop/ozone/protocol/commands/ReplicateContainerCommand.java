@@ -270,21 +270,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getProtoBufMessage ()
-specifier|public
-name|byte
-index|[]
-name|getProtoBufMessage
-parameter_list|()
-block|{
-return|return
-name|getProto
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-return|;
-block|}
 DECL|method|getProto ()
 specifier|public
 name|ReplicateContainerCommandProto

@@ -146,12 +146,11 @@ name|getType
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the protobuf message of this object.    * @return A protobuf message.    */
-DECL|method|getProtoBufMessage ()
+DECL|method|getProto ()
 specifier|public
 specifier|abstract
-name|byte
-index|[]
-name|getProtoBufMessage
+name|T
+name|getProto
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the commandId of this object.    * @return uuid.    */

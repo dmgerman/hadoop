@@ -370,7 +370,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Closes a container given its id.    *    * @param containerId Id of the container to close    * @throws IOException in case of exception    */
+comment|/**    * Closes a container given its Id.    *    * @param containerId Id of the container to close    * @throws IOException in case of exception    */
 DECL|method|closeContainer (final long containerId)
 specifier|public
 name|void
@@ -464,6 +464,41 @@ argument_list|,
 name|packer
 argument_list|)
 return|;
+block|}
+comment|/**    * Deletes a container given its Id.    * @param containerId Id of the container to be deleted    * @throws IOException    */
+DECL|method|deleteContainer (final long containerId)
+specifier|public
+name|void
+name|deleteContainer
+parameter_list|(
+specifier|final
+name|long
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|Container
+name|container
+init|=
+name|containerSet
+operator|.
+name|getContainer
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+name|getHandler
+argument_list|(
+name|container
+argument_list|)
+operator|.
+name|deleteContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Given a container, returns its handler instance.    *    * @param container Container    * @return handler of the container    */
 DECL|method|getHandler (final Container container)

@@ -645,6 +645,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes the given container.    *    * @param container container to be deleted    * @throws IOException    */
+DECL|method|deleteContainer (Container container)
+specifier|public
+specifier|abstract
+name|void
+name|deleteContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|setScmID (String scmId)
 specifier|public
 name|void

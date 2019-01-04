@@ -194,23 +194,6 @@ operator|.
 name|deleteBlocksCommand
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|getProtoBufMessage ()
-specifier|public
-name|byte
-index|[]
-name|getProtoBufMessage
-parameter_list|()
-block|{
-return|return
-name|getProto
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-return|;
-block|}
 DECL|method|getFromProtobuf ( DeleteBlocksCommandProto deleteBlocksProto)
 specifier|public
 specifier|static
@@ -237,6 +220,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProto ()
 specifier|public
 name|DeleteBlocksCommandProto

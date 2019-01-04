@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -41,7 +55,7 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
@@ -56,26 +70,46 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ReregisterCommandProto
+name|DeleteContainerCommandProto
 import|;
 end_import
 
 begin_comment
-comment|/**  * Informs a datanode to register itself with SCM again.  */
+comment|/**  * SCM command which tells the datanode to delete a container.  */
 end_comment
 
 begin_class
-DECL|class|ReregisterCommand
+DECL|class|DeleteContainerCommand
 specifier|public
 class|class
-name|ReregisterCommand
+name|DeleteContainerCommand
 extends|extends
 name|SCMCommand
 argument_list|<
-name|ReregisterCommandProto
+name|DeleteContainerCommandProto
 argument_list|>
 block|{
-comment|/**    * Returns the type of this command.    *    * @return Type    */
+DECL|field|containerId
+specifier|private
+specifier|final
+name|long
+name|containerId
+decl_stmt|;
+DECL|method|DeleteContainerCommand (long containerId)
+specifier|public
+name|DeleteContainerCommand
+parameter_list|(
+name|long
+name|containerId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containerId
+operator|=
+name|containerId
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getType ()
@@ -91,38 +125,84 @@ name|SCMCommandProto
 operator|.
 name|Type
 operator|.
-name|reregisterCommand
-return|;
-block|}
-comment|/**    * Not implemented for ReregisterCommand.    *    * @return cmdId.    */
-annotation|@
-name|Override
-DECL|method|getId ()
-specifier|public
-name|long
-name|getId
-parameter_list|()
-block|{
-return|return
-literal|0
+name|deleteContainerCommand
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|getProto ()
 specifier|public
-name|ReregisterCommandProto
+name|DeleteContainerCommandProto
 name|getProto
 parameter_list|()
 block|{
-return|return
-name|ReregisterCommandProto
+name|DeleteContainerCommandProto
+operator|.
+name|Builder
+name|builder
+init|=
+name|DeleteContainerCommandProto
 operator|.
 name|newBuilder
 argument_list|()
+decl_stmt|;
+name|builder
+operator|.
+name|setCmdId
+argument_list|(
+name|getId
+argument_list|()
+argument_list|)
+operator|.
+name|setContainerID
+argument_list|(
+name|getContainerID
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|builder
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|getContainerID ()
+specifier|public
+name|long
+name|getContainerID
+parameter_list|()
+block|{
+return|return
+name|containerId
+return|;
+block|}
+DECL|method|getFromProtobuf ( DeleteContainerCommandProto protoMessage)
+specifier|public
+specifier|static
+name|DeleteContainerCommand
+name|getFromProtobuf
+parameter_list|(
+name|DeleteContainerCommandProto
+name|protoMessage
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|protoMessage
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|DeleteContainerCommand
+argument_list|(
+name|protoMessage
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}
