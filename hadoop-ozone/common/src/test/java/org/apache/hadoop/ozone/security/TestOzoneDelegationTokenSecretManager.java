@@ -272,12 +272,9 @@ specifier|public
 class|class
 name|TestOzoneDelegationTokenSecretManager
 block|{
+DECL|field|secretManager
 specifier|private
 name|OzoneDelegationTokenSecretManager
-argument_list|<
-name|OzoneTokenIdentifier
-argument_list|>
-DECL|field|secretManager
 name|secretManager
 decl_stmt|;
 DECL|field|securityConfig
@@ -1192,9 +1189,6 @@ block|}
 comment|/**    * Create instance of {@link OzoneDelegationTokenSecretManager}.    */
 specifier|private
 name|OzoneDelegationTokenSecretManager
-argument_list|<
-name|OzoneTokenIdentifier
-argument_list|>
 DECL|method|createSecretManager (OzoneConfiguration config, long tokenMaxLife, long expiry, long tokenRemoverScanTime)
 name|createSecretManager
 parameter_list|(
@@ -1216,7 +1210,6 @@ block|{
 return|return
 operator|new
 name|OzoneDelegationTokenSecretManager
-argument_list|<>
 argument_list|(
 name|config
 argument_list|,

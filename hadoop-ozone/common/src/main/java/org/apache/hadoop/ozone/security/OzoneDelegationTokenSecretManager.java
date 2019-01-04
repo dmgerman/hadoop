@@ -321,15 +321,10 @@ DECL|class|OzoneDelegationTokenSecretManager
 specifier|public
 class|class
 name|OzoneDelegationTokenSecretManager
-parameter_list|<
-name|T
-extends|extends
-name|OzoneTokenIdentifier
-parameter_list|>
 extends|extends
 name|OzoneSecretManager
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|>
 block|{
 DECL|field|LOG
@@ -353,7 +348,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|,
 name|TokenInfo
 argument_list|>
@@ -461,15 +456,12 @@ annotation|@
 name|Override
 DECL|method|createIdentifier ()
 specifier|public
-name|T
+name|OzoneTokenIdentifier
 name|createIdentifier
 parameter_list|()
 block|{
 return|return
-operator|(
-name|T
-operator|)
-name|T
+name|OzoneTokenIdentifier
 operator|.
 name|newInstance
 argument_list|()
@@ -478,7 +470,7 @@ block|}
 comment|/**    * Create new Identifier with given,owner,renwer and realUser.    *    * @return T    */
 DECL|method|createIdentifier (Text owner, Text renewer, Text realUser)
 specifier|public
-name|T
+name|OzoneTokenIdentifier
 name|createIdentifier
 parameter_list|(
 name|Text
@@ -492,10 +484,7 @@ name|realUser
 parameter_list|)
 block|{
 return|return
-operator|(
-name|T
-operator|)
-name|T
+name|OzoneTokenIdentifier
 operator|.
 name|newInstance
 argument_list|(
@@ -507,12 +496,12 @@ name|realUser
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns {@link Token} for given identifier.    *    * @param owner    * @param renewer    * @param realUser    * @return Token    * @throws IOException to allow future exceptions to be added without breaking    *                     compatibility    */
+comment|/**    * Returns {@link Token} for given identifier.    *    * @param owner    * @param renewer    * @param realUser    * @return Token    * @throws IOException to allow future exceptions to be added without breaking    * compatibility    */
 DECL|method|createToken (Text owner, Text renewer, Text realUser)
 specifier|public
 name|Token
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|>
 name|createToken
 parameter_list|(
@@ -528,7 +517,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|T
+name|OzoneTokenIdentifier
 name|identifier
 init|=
 name|createIdentifier
@@ -572,7 +561,7 @@ argument_list|)
 expr_stmt|;
 name|Token
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|>
 name|token
 init|=
@@ -640,12 +629,12 @@ name|token
 return|;
 block|}
 comment|/**    * Stores given identifier in token store.    *    * @param identifier    * @param password    * @throws IOException    */
-DECL|method|addToTokenStore (T identifier, byte[] password)
+DECL|method|addToTokenStore (OzoneTokenIdentifier identifier, byte[] password)
 specifier|private
 name|void
 name|addToTokenStore
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|identifier
 parameter_list|,
 name|byte
@@ -700,12 +689,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Updates issue date, master key id and sequence number for identifier.    *    * @param identifier the identifier to validate    */
-DECL|method|updateIdentifierDetails (T identifier)
+DECL|method|updateIdentifierDetails (OzoneTokenIdentifier identifier)
 specifier|private
 name|void
 name|updateIdentifierDetails
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|identifier
 parameter_list|)
 block|{
@@ -764,10 +753,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Renew a delegation token.    *    * @param token the token to renew    * @param renewer the full principal name of the user doing the renewal    * @return the new expiration time    * @throws InvalidToken           if the token is invalid    * @throws AccessControlException if the user can't renew token    */
+comment|/**    * Renew a delegation token.    *    * @param token the token to renew    * @param renewer the full principal name of the user doing the renewal    * @return the new expiration time    * @throws InvalidToken if the token is invalid    * @throws AccessControlException if the user can't renew token    */
 annotation|@
 name|Override
-DECL|method|renewToken (Token<T> token, String renewer)
+DECL|method|renewToken (Token<OzoneTokenIdentifier> token, String renewer)
 specifier|public
 specifier|synchronized
 name|long
@@ -775,7 +764,7 @@ name|renewToken
 parameter_list|(
 name|Token
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|>
 name|token
 parameter_list|,
@@ -806,13 +795,10 @@ argument_list|(
 name|buf
 argument_list|)
 decl_stmt|;
-name|T
+name|OzoneTokenIdentifier
 name|id
 init|=
-operator|(
-name|T
-operator|)
-name|T
+name|OzoneTokenIdentifier
 operator|.
 name|readProtoBuf
 argument_list|(
@@ -1102,15 +1088,15 @@ return|return
 name|renewTime
 return|;
 block|}
-comment|/**    * Cancel a token by removing it from store and cache.    *    * @return Identifier of the canceled token    * @throws InvalidToken           for invalid token    * @throws AccessControlException if the user isn't allowed to cancel    */
-DECL|method|cancelToken (Token<T> token, String canceller)
+comment|/**    * Cancel a token by removing it from store and cache.    *    * @return Identifier of the canceled token    * @throws InvalidToken for invalid token    * @throws AccessControlException if the user isn't allowed to cancel    */
+DECL|method|cancelToken (Token<OzoneTokenIdentifier> token, String canceller)
 specifier|public
-name|T
+name|OzoneTokenIdentifier
 name|cancelToken
 parameter_list|(
 name|Token
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|>
 name|token
 parameter_list|,
@@ -1120,13 +1106,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|T
+name|OzoneTokenIdentifier
 name|id
 init|=
-operator|(
-name|T
-operator|)
-name|T
+name|OzoneTokenIdentifier
 operator|.
 name|readProtoBuf
 argument_list|(
@@ -1325,13 +1308,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|retrievePassword (T identifier)
+DECL|method|retrievePassword (OzoneTokenIdentifier identifier)
 specifier|public
 name|byte
 index|[]
 name|retrievePassword
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|identifier
 parameter_list|)
 throws|throws
@@ -1348,12 +1331,12 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Checks if TokenInfo for the given identifier exists in database and if the    * token is expired.    */
-DECL|method|validateToken (T identifier)
+DECL|method|validateToken (OzoneTokenIdentifier identifier)
 specifier|public
 name|TokenInfo
 name|validateToken
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|identifier
 parameter_list|)
 throws|throws
@@ -1463,7 +1446,7 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"Tampared/Inavalid token."
+literal|"Tampered/Invalid token."
 argument_list|)
 throw|;
 block|}
@@ -1610,14 +1593,14 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|loadTokenSecretState (OzoneManagerSecretState<T> state)
+DECL|method|loadTokenSecretState ( OzoneManagerSecretState<OzoneTokenIdentifier> state)
 specifier|private
 name|void
 name|loadTokenSecretState
 parameter_list|(
 name|OzoneManagerSecretState
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|>
 name|state
 parameter_list|)
@@ -1664,7 +1647,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|,
 name|Long
 argument_list|>
@@ -1694,12 +1677,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addPersistedDelegationToken ( T identifier, long renewDate)
+DECL|method|addPersistedDelegationToken ( OzoneTokenIdentifier identifier, long renewDate)
 specifier|private
 name|void
 name|addPersistedDelegationToken
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|identifier
 parameter_list|,
 name|long
@@ -2080,7 +2063,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|,
 name|TokenInfo
 argument_list|>
@@ -2107,7 +2090,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|T
+name|OzoneTokenIdentifier
 argument_list|,
 name|TokenInfo
 argument_list|>

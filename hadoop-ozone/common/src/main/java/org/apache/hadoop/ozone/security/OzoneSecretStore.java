@@ -337,11 +337,6 @@ DECL|class|OzoneSecretStore
 specifier|public
 class|class
 name|OzoneSecretStore
-parameter_list|<
-name|T
-extends|extends
-name|OzoneTokenIdentifier
-parameter_list|>
 implements|implements
 name|Closeable
 block|{
@@ -813,12 +808,12 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|storeToken (T tokenId, Long renewDate)
+DECL|method|storeToken (OzoneTokenIdentifier tokenId, Long renewDate)
 specifier|public
 name|void
 name|storeToken
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|tokenId
 parameter_list|,
 name|Long
@@ -951,12 +946,12 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|updateToken (T tokenId, Long renewDate)
+DECL|method|updateToken (OzoneTokenIdentifier tokenId, Long renewDate)
 specifier|public
 name|void
 name|updateToken
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|tokenId
 parameter_list|,
 name|Long
@@ -973,12 +968,12 @@ name|renewDate
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeToken (T tokenId)
+DECL|method|removeToken (OzoneTokenIdentifier tokenId)
 specifier|public
 name|void
 name|removeToken
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|tokenId
 parameter_list|)
 throws|throws
@@ -1334,13 +1329,10 @@ name|data
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|T
+name|OzoneTokenIdentifier
 name|tokenId
 init|=
-operator|(
-name|T
-operator|)
-name|T
+name|OzoneTokenIdentifier
 operator|.
 name|readProtoBuf
 argument_list|(
@@ -1412,13 +1404,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getTokenDBKey (T tokenId)
+DECL|method|getTokenDBKey (OzoneTokenIdentifier tokenId)
 specifier|private
 name|byte
 index|[]
 name|getTokenDBKey
 parameter_list|(
-name|T
+name|OzoneTokenIdentifier
 name|tokenId
 parameter_list|)
 block|{
