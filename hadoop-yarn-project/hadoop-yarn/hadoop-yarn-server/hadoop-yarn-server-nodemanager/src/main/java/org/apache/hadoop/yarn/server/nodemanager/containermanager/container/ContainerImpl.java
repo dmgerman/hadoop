@@ -1725,6 +1725,11 @@ specifier|private
 name|SlidingWindowRetryPolicy
 name|retryPolicy
 decl_stmt|;
+DECL|field|csiVolumesRootDir
+specifier|private
+name|String
+name|csiVolumesRootDir
+decl_stmt|;
 DECL|field|workDir
 specifier|private
 name|String
@@ -5499,6 +5504,36 @@ operator|.
 name|workDir
 operator|=
 name|workDir
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCsiVolumesRootDir ()
+specifier|public
+name|String
+name|getCsiVolumesRootDir
+parameter_list|()
+block|{
+return|return
+name|csiVolumesRootDir
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setCsiVolumesRootDir (String volumesRootDir)
+specifier|public
+name|void
+name|setCsiVolumesRootDir
+parameter_list|(
+name|String
+name|volumesRootDir
+parameter_list|)
+block|{
+name|this
+operator|.
+name|csiVolumesRootDir
+operator|=
+name|volumesRootDir
 expr_stmt|;
 block|}
 DECL|method|clearIpAndHost ()

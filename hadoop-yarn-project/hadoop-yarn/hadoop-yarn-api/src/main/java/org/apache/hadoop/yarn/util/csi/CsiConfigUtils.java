@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.csi.utils
+DECL|package|org.apache.hadoop.yarn.util.csi
 package|package
 name|org
 operator|.
@@ -14,11 +14,25 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|csi
+name|util
 operator|.
-name|utils
+name|csi
 package|;
 end_package
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Strings
+import|;
+end_import
 
 begin_import
 import|import
@@ -77,22 +91,110 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utility class to load configurations.  */
+comment|/**  * Utility class for CSI in the API level.  */
 end_comment
 
 begin_class
-DECL|class|ConfigUtils
+DECL|class|CsiConfigUtils
 specifier|public
 specifier|final
 class|class
-name|ConfigUtils
+name|CsiConfigUtils
 block|{
-DECL|method|ConfigUtils ()
+DECL|method|CsiConfigUtils ()
 specifier|private
-name|ConfigUtils
+name|CsiConfigUtils
 parameter_list|()
 block|{
 comment|// Hide constructor for utility class.
+block|}
+DECL|method|getCsiDriverNames (Configuration conf)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getCsiDriverNames
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getStrings
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CSI_DRIVER_NAMES
+argument_list|)
+return|;
+block|}
+DECL|method|getCsiDriverEndpoint (String driverName, Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getCsiDriverEndpoint
+parameter_list|(
+name|String
+name|driverName
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+name|String
+name|driverEndpointProperty
+init|=
+name|YarnConfiguration
+operator|.
+name|NM_CSI_DRIVER_PREFIX
+operator|+
+name|driverName
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_CSI_DRIVER_ENDPOINT_SUFFIX
+decl_stmt|;
+name|String
+name|driverEndpoint
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|driverEndpointProperty
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|Strings
+operator|.
+name|isNullOrEmpty
+argument_list|(
+name|driverEndpoint
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"CSI driver's endpoint is not specified or"
+operator|+
+literal|" invalid, property "
+operator|+
+name|driverEndpointProperty
+operator|+
+literal|" is not defined"
+argument_list|)
+throw|;
+block|}
+return|return
+name|driverEndpoint
+return|;
 block|}
 comment|/**    * Resolve the CSI adaptor address for a CSI driver from configuration.    * Expected configuration property name is    * yarn.nodemanager.csi-driver-adaptor.${driverName}.address.    * @param driverName    * @param conf    * @return adaptor service address    * @throws YarnException    */
 DECL|method|getCsiAdaptorAddressForDriver ( String driverName, Configuration conf)
@@ -119,7 +221,9 @@ name|NM_CSI_ADAPTOR_PREFIX
 operator|+
 name|driverName
 operator|+
-literal|".address"
+name|YarnConfiguration
+operator|.
+name|NM_CSI_ADAPTOR_ADDRESS_SUFFIX
 decl_stmt|;
 name|String
 name|errorMessage

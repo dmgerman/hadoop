@@ -284,7 +284,7 @@ name|csi
 operator|.
 name|client
 operator|.
-name|CsiClient
+name|ICsiClientTest
 import|;
 end_import
 
@@ -603,6 +603,19 @@ argument_list|,
 name|address
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CSI_DRIVER_PREFIX
+operator|+
+literal|"test-driver.endpoint"
+argument_list|,
+literal|"unix:///tmp/test-driver.scok"
+argument_list|)
+expr_stmt|;
 name|CsiAdaptorProtocolService
 name|service
 init|=
@@ -614,6 +627,18 @@ argument_list|,
 name|domainSocket
 argument_list|)
 decl_stmt|;
+name|service
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|service
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 comment|// inject a fake CSI client
 comment|// this client validates if the ValidateVolumeCapabilitiesRequest
 comment|// is integrity, and then reply a fake response
@@ -622,7 +647,7 @@ operator|.
 name|setCsiClient
 argument_list|(
 operator|new
-name|CsiClient
+name|ICsiClientTest
 argument_list|()
 block|{
 annotation|@
@@ -879,18 +904,6 @@ return|;
 block|}
 block|}
 argument_list|)
-expr_stmt|;
-name|service
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|service
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 try|try
 init|(
@@ -1057,6 +1070,19 @@ argument_list|,
 name|address
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CSI_DRIVER_PREFIX
+operator|+
+literal|"test-driver.endpoint"
+argument_list|,
+literal|"unix:///tmp/test-driver.scok"
+argument_list|)
+expr_stmt|;
 name|CsiAdaptorProtocolService
 name|service
 init|=
@@ -1068,6 +1094,18 @@ argument_list|,
 name|domainSocket
 argument_list|)
 decl_stmt|;
+name|service
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|service
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 comment|// inject a fake CSI client
 comment|// this client validates if the ValidateVolumeCapabilitiesRequest
 comment|// is integrity, and then reply a fake response
@@ -1076,7 +1114,7 @@ operator|.
 name|setCsiClient
 argument_list|(
 operator|new
-name|CsiClient
+name|ICsiClientTest
 argument_list|()
 block|{
 annotation|@
@@ -1333,18 +1371,6 @@ return|;
 block|}
 block|}
 argument_list|)
-expr_stmt|;
-name|service
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|service
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 name|YarnRPC
 name|rpc

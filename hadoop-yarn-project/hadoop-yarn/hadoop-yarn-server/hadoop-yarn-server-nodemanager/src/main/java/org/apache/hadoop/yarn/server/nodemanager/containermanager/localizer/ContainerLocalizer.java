@@ -1046,6 +1046,15 @@ operator|)
 literal|0755
 argument_list|)
 decl_stmt|;
+DECL|field|CSI_VOLIUME_MOUNTS_ROOT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CSI_VOLIUME_MOUNTS_ROOT
+init|=
+literal|"csivolumes"
+decl_stmt|;
 DECL|field|user
 specifier|private
 specifier|final

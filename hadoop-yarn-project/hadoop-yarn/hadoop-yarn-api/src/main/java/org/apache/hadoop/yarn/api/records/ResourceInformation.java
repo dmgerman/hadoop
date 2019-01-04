@@ -909,7 +909,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-DECL|method|newInstance (String name, String units, long value, Map<String, String> attributes)
+DECL|method|newInstance (String name, String units, long value, Set<String> tags, Map<String, String> attributes)
 specifier|public
 specifier|static
 name|ResourceInformation
@@ -923,6 +923,12 @@ name|units
 parameter_list|,
 name|long
 name|value
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|tags
 parameter_list|,
 name|Map
 argument_list|<
@@ -954,7 +960,7 @@ name|Long
 operator|.
 name|MAX_VALUE
 argument_list|,
-literal|null
+name|tags
 argument_list|,
 name|attributes
 argument_list|)

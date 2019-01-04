@@ -32,18 +32,6 @@ end_import
 
 begin_import
 import|import
-name|csi
-operator|.
-name|v0
-operator|.
-name|Csi
-operator|.
-name|GetPluginInfoResponse
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -53,24 +41,37 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * General interface for a CSI client. This interface defines all APIs  * that CSI spec supports, including both identity/controller/node service  * APIs.  */
+comment|/**  * This interface is used only in testing. It gives default implementation  * of all methods.  */
 end_comment
 
 begin_interface
-DECL|interface|CsiClient
+DECL|interface|ICsiClientTest
 specifier|public
 interface|interface
+name|ICsiClientTest
+extends|extends
 name|CsiClient
 block|{
-comment|/**    * Gets some basic info about the CSI plugin, including the driver name,    * version and optionally some manifest info.    * @return {@link GetPluginInfoResponse}    * @throws IOException when unable to get plugin info from the driver.    */
+annotation|@
+name|Override
 DECL|method|getPluginInfo ()
+specifier|default
+name|Csi
+operator|.
 name|GetPluginInfoResponse
 name|getPluginInfo
 parameter_list|()
 throws|throws
 name|IOException
-function_decl|;
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|validateVolumeCapabilities ( Csi.ValidateVolumeCapabilitiesRequest request)
+specifier|default
 name|Csi
 operator|.
 name|ValidateVolumeCapabilitiesResponse
@@ -83,8 +84,15 @@ name|request
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|nodePublishVolume ( Csi.NodePublishVolumeRequest request)
+specifier|default
 name|Csi
 operator|.
 name|NodePublishVolumeResponse
@@ -97,8 +105,15 @@ name|request
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|nodeUnpublishVolume ( Csi.NodeUnpublishVolumeRequest request)
+specifier|default
 name|Csi
 operator|.
 name|NodeUnpublishVolumeResponse
@@ -111,7 +126,11 @@ name|request
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_interface
 

@@ -889,6 +889,8 @@ name|VolumeEvent
 name|volumeEvent
 parameter_list|)
 block|{
+comment|// Some of CSI driver implementation does't provide the capability
+comment|// to validate volumes. Skip this for now.
 try|try
 block|{
 comment|// this call could cross node, we should keep the message tight

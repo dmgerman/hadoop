@@ -11164,7 +11164,7 @@ decl_stmt|;
 comment|////////////////////////////////
 comment|// CSI Volume configs
 comment|////////////////////////////////
-comment|/**    * One or more socket addresses for csi-adaptor.    * Multiple addresses are delimited by ",".    */
+comment|/**    * TERMS:    * csi-driver: a 3rd party CSI driver which implements the CSI protocol.    *   It is provided by the storage system.    * csi-driver-adaptor: this is an internal RPC service working    *   as a bridge between YARN and a csi-driver.    */
 DECL|field|NM_CSI_ADAPTOR_PREFIX
 specifier|public
 specifier|static
@@ -11176,6 +11176,36 @@ name|NM_PREFIX
 operator|+
 literal|"csi-driver-adaptor."
 decl_stmt|;
+DECL|field|NM_CSI_DRIVER_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_DRIVER_PREFIX
+init|=
+name|NM_PREFIX
+operator|+
+literal|"csi-driver."
+decl_stmt|;
+DECL|field|NM_CSI_DRIVER_ENDPOINT_SUFFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_DRIVER_ENDPOINT_SUFFIX
+init|=
+literal|".endpoint"
+decl_stmt|;
+DECL|field|NM_CSI_ADAPTOR_ADDRESS_SUFFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_ADAPTOR_ADDRESS_SUFFIX
+init|=
+literal|".address"
+decl_stmt|;
+comment|/**    * One or more socket addresses for csi-adaptor.    * Multiple addresses are delimited by ",".    */
 DECL|field|NM_CSI_ADAPTOR_ADDRESSES
 specifier|public
 specifier|static
@@ -11186,6 +11216,17 @@ init|=
 name|NM_CSI_ADAPTOR_PREFIX
 operator|+
 literal|"addresses"
+decl_stmt|;
+DECL|field|NM_CSI_DRIVER_NAMES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_DRIVER_NAMES
+init|=
+name|NM_CSI_DRIVER_PREFIX
+operator|+
+literal|"names"
 decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs

@@ -5151,6 +5151,11 @@ argument_list|()
 argument_list|,
 name|specInfo
 operator|.
+name|getTags
+argument_list|()
+argument_list|,
+name|specInfo
+operator|.
 name|getAttributes
 argument_list|()
 argument_list|)

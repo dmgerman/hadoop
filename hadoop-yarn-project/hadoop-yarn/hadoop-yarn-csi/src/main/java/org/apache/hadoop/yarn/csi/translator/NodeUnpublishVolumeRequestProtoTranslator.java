@@ -44,7 +44,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 import|;
 end_import
 
@@ -65,14 +65,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Protobuf message translator for GetPluginInfoResponse and  * Csi.GetPluginInfoResponse.  */
+comment|/**  * This class helps to transform a YARN side NodeUnpublishVolumeRequest  * to corresponding CSI protocol message.  * @param<A> YARN NodeUnpublishVolumeRequest  * @param<B> CSI NodeUnpublishVolumeRequest  */
 end_comment
 
 begin_class
-DECL|class|GetPluginInfoResponseProtoTranslator
+DECL|class|NodeUnpublishVolumeRequestProtoTranslator
 specifier|public
 class|class
-name|GetPluginInfoResponseProtoTranslator
+name|NodeUnpublishVolumeRequestProtoTranslator
 parameter_list|<
 name|A
 parameter_list|,
@@ -81,23 +81,23 @@ parameter_list|>
 implements|implements
 name|ProtoTranslator
 argument_list|<
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 argument_list|,
 name|Csi
 operator|.
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 argument_list|>
 block|{
-DECL|method|convertTo ( GetPluginInfoResponse messageA)
 annotation|@
 name|Override
+DECL|method|convertTo ( NodeUnpublishVolumeRequest messageA)
 specifier|public
 name|Csi
 operator|.
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 name|convertTo
 parameter_list|(
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 name|messageA
 parameter_list|)
 throws|throws
@@ -106,24 +106,24 @@ block|{
 return|return
 name|Csi
 operator|.
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setName
+name|setVolumeId
 argument_list|(
 name|messageA
 operator|.
-name|getDriverName
+name|getVolumeId
 argument_list|()
 argument_list|)
 operator|.
-name|setVendorVersion
+name|setTargetPath
 argument_list|(
 name|messageA
 operator|.
-name|getVersion
+name|getTargetPath
 argument_list|()
 argument_list|)
 operator|.
@@ -131,34 +131,34 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertFrom ( Csi.GetPluginInfoResponse messageB)
 annotation|@
 name|Override
+DECL|method|convertFrom ( Csi.NodeUnpublishVolumeRequest messageB)
 specifier|public
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 name|convertFrom
 parameter_list|(
 name|Csi
 operator|.
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 name|messageB
 parameter_list|)
 throws|throws
 name|YarnException
 block|{
 return|return
-name|GetPluginInfoResponse
+name|NodeUnpublishVolumeRequest
 operator|.
 name|newInstance
 argument_list|(
 name|messageB
 operator|.
-name|getName
+name|getVolumeId
 argument_list|()
 argument_list|,
 name|messageB
 operator|.
-name|getVendorVersion
+name|getTargetPath
 argument_list|()
 argument_list|)
 return|;

@@ -197,6 +197,12 @@ specifier|final
 name|Path
 name|containerWorkDir
 decl_stmt|;
+DECL|field|csiVolumesRootDir
+specifier|private
+specifier|final
+name|Path
+name|csiVolumesRootDir
+decl_stmt|;
 DECL|field|localDirs
 specifier|private
 specifier|final
@@ -328,6 +334,11 @@ DECL|field|containerWorkDir
 specifier|private
 name|Path
 name|containerWorkDir
+decl_stmt|;
+DECL|field|csiVolumesRoot
+specifier|private
+name|Path
+name|csiVolumesRoot
 decl_stmt|;
 DECL|field|localDirs
 specifier|private
@@ -553,6 +564,25 @@ operator|.
 name|appId
 operator|=
 name|appId
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setContainerCsiVolumesRootDir (Path csiVolumesRootDir)
+specifier|public
+name|Builder
+name|setContainerCsiVolumesRootDir
+parameter_list|(
+name|Path
+name|csiVolumesRootDir
+parameter_list|)
+block|{
+name|this
+operator|.
+name|csiVolumesRoot
+operator|=
+name|csiVolumesRootDir
 expr_stmt|;
 return|return
 name|this
@@ -922,6 +952,14 @@ name|builder
 operator|.
 name|applicationLocalDirs
 expr_stmt|;
+name|this
+operator|.
+name|csiVolumesRootDir
+operator|=
+name|builder
+operator|.
+name|csiVolumesRoot
+expr_stmt|;
 block|}
 DECL|method|getContainer ()
 specifier|public
@@ -1218,6 +1256,18 @@ name|this
 operator|.
 name|applicationLocalDirs
 argument_list|)
+return|;
+block|}
+DECL|method|getCsiVolumesRootDir ()
+specifier|public
+name|Path
+name|getCsiVolumesRootDir
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|csiVolumesRootDir
 return|;
 block|}
 block|}

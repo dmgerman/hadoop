@@ -351,6 +351,19 @@ name|String
 name|workDir
 parameter_list|)
 function_decl|;
+DECL|method|getCsiVolumesRootDir ()
+name|String
+name|getCsiVolumesRootDir
+parameter_list|()
+function_decl|;
+DECL|method|setCsiVolumesRootDir (String volumesRootDir)
+name|void
+name|setCsiVolumesRootDir
+parameter_list|(
+name|String
+name|volumesRootDir
+parameter_list|)
+function_decl|;
 DECL|method|getLogDir ()
 name|String
 name|getLogDir

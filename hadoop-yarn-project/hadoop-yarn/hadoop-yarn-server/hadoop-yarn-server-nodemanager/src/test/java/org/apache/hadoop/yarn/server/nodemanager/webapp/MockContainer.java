@@ -942,6 +942,29 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
+DECL|method|getCsiVolumesRootDir ()
+specifier|public
+name|String
+name|getCsiVolumesRootDir
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setCsiVolumesRootDir (String volumesRootDir)
+specifier|public
+name|void
+name|setCsiVolumesRootDir
+parameter_list|(
+name|String
+name|volumesRootDir
+parameter_list|)
+block|{    }
+annotation|@
+name|Override
 DECL|method|getLogDir ()
 specifier|public
 name|String
