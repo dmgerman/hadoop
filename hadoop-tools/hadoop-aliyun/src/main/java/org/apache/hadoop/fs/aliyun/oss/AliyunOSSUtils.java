@@ -42,16 +42,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|aliyun
@@ -383,16 +373,13 @@ name|tmpPartSize
 argument_list|)
 return|;
 block|}
-comment|/**    * Create credential provider specified by configuration, or create default    * credential provider if not specified.    *    * @param uri uri passed by caller    * @param conf configuration    * @return a credential provider    * @throws IOException on any problem. Class construction issues may be    * nested inside the IOE.    */
-DECL|method|getCredentialsProvider ( URI uri, Configuration conf)
+comment|/**    * Create credential provider specified by configuration, or create default    * credential provider if not specified.    *    * @param conf configuration    * @return a credential provider    * @throws IOException on any problem. Class construction issues may be    * nested inside the IOE.    */
+DECL|method|getCredentialsProvider (Configuration conf)
 specifier|public
 specifier|static
 name|CredentialsProvider
 name|getCredentialsProvider
 parameter_list|(
-name|URI
-name|uri
-parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -482,10 +469,6 @@ name|credClass
 operator|.
 name|getDeclaredConstructor
 argument_list|(
-name|URI
-operator|.
-name|class
-argument_list|,
 name|Configuration
 operator|.
 name|class
@@ -493,8 +476,6 @@ argument_list|)
 operator|.
 name|newInstance
 argument_list|(
-name|uri
-argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;

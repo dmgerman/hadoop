@@ -1182,8 +1182,6 @@ name|AliyunOSSUtils
 operator|.
 name|getCredentialsProvider
 argument_list|(
-name|uri
-argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
@@ -1222,13 +1220,6 @@ name|SERVER_SIDE_ENCRYPTION_ALGORITHM_KEY
 argument_list|,
 literal|""
 argument_list|)
-expr_stmt|;
-name|bucketName
-operator|=
-name|uri
-operator|.
-name|getHost
-argument_list|()
 expr_stmt|;
 name|String
 name|cannedACLName
@@ -1289,6 +1280,13 @@ name|MAX_PAGING_KEYS_KEY
 argument_list|,
 name|MAX_PAGING_KEYS_DEFAULT
 argument_list|)
+expr_stmt|;
+name|bucketName
+operator|=
+name|uri
+operator|.
+name|getHost
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Delete an object, and update write operation statistics.    *    * @param key key to blob to delete.    */

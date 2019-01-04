@@ -675,12 +675,7 @@ name|key
 argument_list|,
 name|uploadId
 argument_list|,
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
 name|partETags
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -700,7 +695,6 @@ annotation|@
 name|Override
 DECL|method|write (int b)
 specifier|public
-specifier|synchronized
 name|void
 name|write
 parameter_list|(
