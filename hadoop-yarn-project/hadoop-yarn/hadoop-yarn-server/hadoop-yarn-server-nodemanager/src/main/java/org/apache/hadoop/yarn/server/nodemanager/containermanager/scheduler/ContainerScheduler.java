@@ -2460,7 +2460,7 @@ literal|true
 condition|?
 literal|"paused"
 else|:
-literal|"resumed"
+literal|"killed"
 decl_stmt|;
 name|LOG
 operator|.
