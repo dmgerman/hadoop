@@ -523,6 +523,15 @@ name|FILE_HASH
 init|=
 literal|"SHA-256"
 decl_stmt|;
+DECL|field|MD5_HASH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MD5_HASH
+init|=
+literal|"MD5"
+decl_stmt|;
 DECL|field|CHUNK_OVERWRITE
 specifier|public
 specifier|final

@@ -1357,6 +1357,19 @@ operator|=
 name|store
 expr_stmt|;
 block|}
+DECL|method|getStore ()
+specifier|public
+specifier|static
+name|ObjectStore
+name|getStore
+parameter_list|()
+block|{
+return|return
+name|TestOzoneRpcClientAbstract
+operator|.
+name|store
+return|;
+block|}
 DECL|method|setScmId (String scmId)
 specifier|public
 specifier|static

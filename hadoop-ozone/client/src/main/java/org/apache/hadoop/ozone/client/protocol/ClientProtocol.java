@@ -256,6 +256,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|S3SecretValue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|security
 operator|.
 name|OzoneTokenIdentifier
@@ -960,6 +978,17 @@ argument_list|<
 name|OzoneTokenIdentifier
 argument_list|>
 name|token
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * returns S3 Secret given kerberos user.    * @param kerberosID    * @return S3SecretValue    * @throws IOException    */
+DECL|method|getS3Secret (String kerberosID)
+name|S3SecretValue
+name|getS3Secret
+parameter_list|(
+name|String
+name|kerberosID
 parameter_list|)
 throws|throws
 name|IOException

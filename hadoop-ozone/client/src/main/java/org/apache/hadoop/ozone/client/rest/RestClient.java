@@ -478,6 +478,24 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|S3SecretValue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|ServiceInfo
 import|;
 end_import
@@ -4301,6 +4319,29 @@ operator|new
 name|IOException
 argument_list|(
 literal|"Method not supported"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getS3Secret (String kerberosID)
+specifier|public
+name|S3SecretValue
+name|getS3Secret
+parameter_list|(
+name|String
+name|kerberosID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
 argument_list|)
 throw|;
 block|}

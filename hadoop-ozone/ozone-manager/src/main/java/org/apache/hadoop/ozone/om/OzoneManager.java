@@ -122,18 +122,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -454,20 +442,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|OmUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|Client
@@ -526,9 +500,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|security
+name|om
 operator|.
-name|OzoneSecretManager
+name|helpers
+operator|.
+name|S3SecretValue
 import|;
 end_import
 
@@ -621,6 +597,20 @@ operator|.
 name|net
 operator|.
 name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OmUtils
 import|;
 end_import
 
@@ -1602,18 +1592,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1773,6 +1751,18 @@ operator|.
 name|util
 operator|.
 name|TimerTask
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
 import|;
 end_import
 
@@ -2474,6 +2464,12 @@ specifier|final
 name|SecurityConfig
 name|secConfig
 decl_stmt|;
+DECL|field|s3SecretManager
+specifier|private
+specifier|final
+name|S3SecretManager
+name|s3SecretManager
+decl_stmt|;
 DECL|method|OzoneManager (OzoneConfiguration conf)
 specifier|private
 name|OzoneManager
@@ -2914,6 +2910,16 @@ name|getOmId
 argument_list|()
 argument_list|,
 name|blockTokenMgr
+argument_list|)
+expr_stmt|;
+name|s3SecretManager
+operator|=
+operator|new
+name|S3SecretManagerImpl
+argument_list|(
+name|configuration
+argument_list|,
+name|metadataManager
 argument_list|)
 expr_stmt|;
 name|shutdownHook
@@ -10067,6 +10073,29 @@ name|incNumBucketDeleteFails
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+comment|/**    * {@inheritDoc}    */
+DECL|method|getS3Secret (String kerberosID)
+specifier|public
+name|S3SecretValue
+name|getS3Secret
+parameter_list|(
+name|String
+name|kerberosID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|s3SecretManager
+operator|.
+name|getS3Secret
+argument_list|(
+name|kerberosID
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
