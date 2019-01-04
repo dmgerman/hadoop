@@ -6959,47 +6959,21 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Searching for token that matches service: {}"
+literal|"Searching for KMS delegation token in user {}'s credentials"
 argument_list|,
-name|dtService
+name|ugi
 argument_list|)
 expr_stmt|;
-name|org
+return|return
+name|clientTokenProvider
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-name|dToken
-init|=
-name|creds
-operator|.
-name|getToken
+name|selectDelegationToken
 argument_list|(
-name|dtService
+name|creds
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|dToken
 operator|!=
 literal|null
-condition|)
-block|{
-return|return
-literal|true
 return|;
-block|}
 block|}
 return|return
 literal|false
@@ -7008,8 +6982,9 @@ block|}
 end_function
 
 begin_function
+annotation|@
+name|VisibleForTesting
 DECL|method|getActualUgi ()
-specifier|private
 name|UserGroupInformation
 name|getActualUgi
 parameter_list|()
