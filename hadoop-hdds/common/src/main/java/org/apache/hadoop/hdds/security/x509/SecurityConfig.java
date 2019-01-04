@@ -1106,19 +1106,6 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|this
-operator|.
-name|metadatDir
-argument_list|,
-literal|"Metadata directory can't be"
-operator|+
-literal|" null. Please check configs."
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|keyDir
@@ -1482,6 +1469,19 @@ name|Path
 name|getKeyLocation
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|this
+operator|.
+name|metadatDir
+argument_list|,
+literal|"Metadata directory can't be"
+operator|+
+literal|" null. Please check configs."
+argument_list|)
+expr_stmt|;
 return|return
 name|Paths
 operator|.
@@ -1503,6 +1503,19 @@ name|String
 name|component
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|this
+operator|.
+name|metadatDir
+argument_list|,
+literal|"Metadata directory can't be"
+operator|+
+literal|" null. Please check configs."
+argument_list|)
+expr_stmt|;
 return|return
 name|Paths
 operator|.
@@ -1523,6 +1536,19 @@ name|Path
 name|getCertificateLocation
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|this
+operator|.
+name|metadatDir
+argument_list|,
+literal|"Metadata directory can't be"
+operator|+
+literal|" null. Please check configs."
+argument_list|)
+expr_stmt|;
 return|return
 name|Paths
 operator|.
@@ -1544,6 +1570,19 @@ name|String
 name|component
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|this
+operator|.
+name|metadatDir
+argument_list|,
+literal|"Metadata directory can't be"
+operator|+
+literal|" null. Please check configs."
+argument_list|)
+expr_stmt|;
 return|return
 name|Paths
 operator|.
