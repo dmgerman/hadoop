@@ -192,6 +192,36 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Constant that defines auth_to_local legacy hadoop evaluation    */
+DECL|field|MECHANISM_HADOOP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MECHANISM_HADOOP
+init|=
+literal|"hadoop"
+decl_stmt|;
+comment|/**    * Constant that defines auth_to_local MIT evaluation    */
+DECL|field|MECHANISM_MIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MECHANISM_MIT
+init|=
+literal|"mit"
+decl_stmt|;
+comment|/** Constant that defines the default behavior of the rule mechanism */
+DECL|field|DEFAULT_MECHANISM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_MECHANISM
+init|=
+name|MECHANISM_HADOOP
+decl_stmt|;
 comment|/** The first component of the name */
 DECL|field|serviceName
 specifier|private
@@ -283,6 +313,15 @@ argument_list|<
 name|Rule
 argument_list|>
 name|rules
+decl_stmt|;
+comment|/**    * How to evaluate auth_to_local rules    */
+DECL|field|ruleMechanism
+specifier|private
+specifier|static
+name|String
+name|ruleMechanism
+init|=
+literal|null
 decl_stmt|;
 DECL|field|defaultRealm
 specifier|private
@@ -1171,14 +1210,17 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**      * Try to apply this rule to the given name represented as a parameter      * array.      * @param params first element is the realm, second and later elements are      *        are the components of the name "a/b@FOO" -> {"FOO", "a", "b"}      * @return the short name if this rule applies or null      * @throws IOException throws if something is wrong with the rules      */
-DECL|method|apply (String[] params)
+comment|/**      * Try to apply this rule to the given name represented as a parameter      * array.      * @param params first element is the realm, second and later elements are      *        are the components of the name "a/b@FOO" -> {"FOO", "a", "b"}      * @param ruleMechanism defines the rule evaluation mechanism      * @return the short name if this rule applies or null      * @throws IOException throws if something is wrong with the rules      */
+DECL|method|apply (String[] params, String ruleMechanism)
 name|String
 name|apply
 parameter_list|(
 name|String
 index|[]
 name|params
+parameter_list|,
+name|String
+name|ruleMechanism
 parameter_list|)
 throws|throws
 name|IOException
@@ -1300,6 +1342,13 @@ argument_list|)
 operator|.
 name|find
 argument_list|()
+operator|&&
+name|ruleMechanism
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|MECHANISM_HADOOP
+argument_list|)
 condition|)
 block|{
 throw|throw
@@ -1661,6 +1710,40 @@ name|hostName
 block|}
 expr_stmt|;
 block|}
+name|String
+name|ruleMechanism
+init|=
+name|this
+operator|.
+name|ruleMechanism
+decl_stmt|;
+if|if
+condition|(
+name|ruleMechanism
+operator|==
+literal|null
+operator|&&
+name|rules
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"auth_to_local rule mechanism not set."
+operator|+
+literal|"Using default of "
+operator|+
+name|DEFAULT_MECHANISM
+argument_list|)
+expr_stmt|;
+name|ruleMechanism
+operator|=
+name|DEFAULT_MECHANISM
+expr_stmt|;
+block|}
 for|for
 control|(
 name|Rule
@@ -1677,6 +1760,8 @@ operator|.
 name|apply
 argument_list|(
 name|params
+argument_list|,
+name|ruleMechanism
 argument_list|)
 decl_stmt|;
 if|if
@@ -1691,6 +1776,16 @@ name|result
 return|;
 block|}
 block|}
+if|if
+condition|(
+name|ruleMechanism
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|MECHANISM_HADOOP
+argument_list|)
+condition|)
+block|{
 throw|throw
 operator|new
 name|NoMatchingRule
@@ -1702,32 +1797,10 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Set the rules.    * @param ruleString the rules string.    */
-DECL|method|setRules (String ruleString)
-specifier|public
-specifier|static
-name|void
-name|setRules
-parameter_list|(
-name|String
-name|ruleString
-parameter_list|)
-block|{
-name|rules
-operator|=
-operator|(
-name|ruleString
-operator|!=
-literal|null
-operator|)
-condition|?
-name|parseRules
-argument_list|(
-name|ruleString
-argument_list|)
-else|:
-literal|null
-expr_stmt|;
+return|return
+name|toString
+argument_list|()
+return|;
 block|}
 comment|/**    * Get the rules.    * @return String of configured rules, or null if not yet configured    */
 DECL|method|getRules ()
@@ -1807,6 +1880,110 @@ return|return
 name|rules
 operator|!=
 literal|null
+return|;
+block|}
+comment|/**    * Indicates of the rule mechanism has been set    *    * @return if the rule mechanism has been set.    */
+DECL|method|hasRuleMechanismBeenSet ()
+specifier|public
+specifier|static
+name|boolean
+name|hasRuleMechanismBeenSet
+parameter_list|()
+block|{
+return|return
+name|ruleMechanism
+operator|!=
+literal|null
+return|;
+block|}
+comment|/**    * Set the rules.    * @param ruleString the rules string.    */
+DECL|method|setRules (String ruleString)
+specifier|public
+specifier|static
+name|void
+name|setRules
+parameter_list|(
+name|String
+name|ruleString
+parameter_list|)
+block|{
+name|rules
+operator|=
+operator|(
+name|ruleString
+operator|!=
+literal|null
+operator|)
+condition|?
+name|parseRules
+argument_list|(
+name|ruleString
+argument_list|)
+else|:
+literal|null
+expr_stmt|;
+block|}
+comment|/**    *    * @param ruleMech the evaluation type: hadoop, mit    *                 'hadoop' indicates '@' or '/' are not allowed the result    *                 evaluation. 'MIT' indicates that auth_to_local    *                 rules follow MIT Kerberos evaluation.    */
+DECL|method|setRuleMechanism (String ruleMech)
+specifier|public
+specifier|static
+name|void
+name|setRuleMechanism
+parameter_list|(
+name|String
+name|ruleMech
+parameter_list|)
+block|{
+if|if
+condition|(
+name|ruleMech
+operator|!=
+literal|null
+operator|&&
+operator|(
+operator|!
+name|ruleMech
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|MECHANISM_HADOOP
+argument_list|)
+operator|&&
+operator|!
+name|ruleMech
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|MECHANISM_MIT
+argument_list|)
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid rule mechanism: "
+operator|+
+name|ruleMech
+argument_list|)
+throw|;
+block|}
+name|ruleMechanism
+operator|=
+name|ruleMech
+expr_stmt|;
+block|}
+comment|/**    * Get the rule evaluation mechanism    * @return the rule evaluation mechanism    */
+DECL|method|getRuleMechanism ()
+specifier|public
+specifier|static
+name|String
+name|getRuleMechanism
+parameter_list|()
+block|{
+return|return
+name|ruleMechanism
 return|;
 block|}
 DECL|method|printRules ()

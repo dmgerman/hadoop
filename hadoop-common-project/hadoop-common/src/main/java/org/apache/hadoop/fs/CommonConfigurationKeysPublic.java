@@ -1247,6 +1247,16 @@ init|=
 literal|"hadoop.security.auth_to_local"
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_SECURITY_AUTH_TO_LOCAL_MECHANISM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_AUTH_TO_LOCAL_MECHANISM
+init|=
+literal|"hadoop.security.auth_to_local.mechanism"
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_DNS_INTERFACE_KEY
 specifier|public
 specifier|static

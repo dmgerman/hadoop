@@ -33,6 +33,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL_MECHANISM
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -120,6 +136,26 @@ name|KerberosUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class implements parsing and handling of Kerberos principal names. In   * particular, it splits them apart and translates them down into local  * operating system names.  */
 end_comment
@@ -152,6 +188,22 @@ name|HadoopKerberosName
 extends|extends
 name|KerberosName
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|HadoopKerberosName
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a name from the full Kerberos principal name.    * @param name    */
 DECL|method|HadoopKerberosName (String name)
 specifier|public
@@ -167,7 +219,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the static configuration to get the rules.    *<p>    * IMPORTANT: This method does a NOP if the rules have been set already.    * If there is a need to reset the rules, the {@link KerberosName#setRules(String)}    * method should be invoked directly.    *     * @param conf the new configuration    * @throws IOException    */
+comment|/**    * Set the static configuration to get and evaluate the rules.    *<p>    * IMPORTANT: This method does a NOP if the rules have been set already.    * If there is a need to reset the rules, the {@link KerberosName#setRules(String)}    * method should be invoked directly.    *     * @param conf the new configuration    * @throws IOException    */
 DECL|method|setConfiguration (Configuration conf)
 specifier|public
 specifier|static
@@ -252,6 +304,23 @@ decl_stmt|;
 name|setRules
 argument_list|(
 name|ruleString
+argument_list|)
+expr_stmt|;
+name|String
+name|ruleMechanism
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|HADOOP_SECURITY_AUTH_TO_LOCAL_MECHANISM
+argument_list|,
+name|DEFAULT_MECHANISM
+argument_list|)
+decl_stmt|;
+name|setRuleMechanism
+argument_list|(
+name|ruleMechanism
 argument_list|)
 expr_stmt|;
 block|}

@@ -82,6 +82,24 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authentication
+operator|.
+name|util
+operator|.
+name|KerberosName
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -443,6 +461,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -788,6 +818,28 @@ name|jaas
 init|=
 literal|false
 decl_stmt|;
+DECL|field|checkShortName
+specifier|private
+name|boolean
+name|checkShortName
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * A pattern that recognizes simple/non-simple names. Per KerberosName    */
+DECL|field|nonSimplePattern
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|nonSimplePattern
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"[/@]"
+argument_list|)
+decl_stmt|;
 comment|/**    * Flag set to true if a {@link #verify(boolean, String, String, Object...)}    * probe failed.    */
 DECL|field|probeHasFailed
 specifier|private
@@ -957,6 +1009,15 @@ name|String
 name|ARG_SECURE
 init|=
 literal|"--secure"
+decl_stmt|;
+DECL|field|ARG_VERIFYSHORTNAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ARG_VERIFYSHORTNAME
+init|=
+literal|"--verifyshortname"
 decl_stmt|;
 annotation|@
 name|SuppressWarnings
@@ -1190,6 +1251,15 @@ operator|=
 name|popOption
 argument_list|(
 name|ARG_NOLOGIN
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
+name|checkShortName
+operator|=
+name|popOption
+argument_list|(
+name|ARG_VERIFYSHORTNAME
 argument_list|,
 name|args
 argument_list|)
@@ -1451,6 +1521,17 @@ literal|""
 argument_list|,
 literal|"Require the hadoop configuration to be secure"
 argument_list|)
+operator|+
+name|arg
+argument_list|(
+name|ARG_VERIFYSHORTNAME
+argument_list|,
+name|ARG_PRINCIPAL
+operator|+
+literal|"<principal>"
+argument_list|,
+literal|"Verify the short name of the specific principal does not contain '@' or '/'"
+argument_list|)
 return|;
 block|}
 DECL|method|arg (String name, String params, String meaning)
@@ -1564,6 +1645,15 @@ argument_list|,
 name|ARG_PRINCIPAL
 argument_list|,
 name|principal
+argument_list|)
+expr_stmt|;
+name|println
+argument_list|(
+literal|"%s = %s"
+argument_list|,
+name|ARG_VERIFYSHORTNAME
+argument_list|,
+name|checkShortName
 argument_list|)
 expr_stmt|;
 comment|// Fail fast on a JVM without JCE installed.
@@ -1912,6 +2002,15 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
+name|checkShortName
+condition|)
+block|{
+name|validateShortName
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 operator|!
 name|nologin
 condition|)
@@ -2083,6 +2182,121 @@ argument_list|,
 name|minKeyLength
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Verify whether auth_to_local rules transform a principal name    *<p>    * Having a local user name "bar@foo.com" may be harmless, so it is noted at    * info. However if what was intended is a transformation to "bar"    * it can be difficult to debug, hence this check.    */
+DECL|method|validateShortName ()
+specifier|protected
+name|void
+name|validateShortName
+parameter_list|()
+block|{
+name|failif
+argument_list|(
+name|principal
+operator|==
+literal|null
+argument_list|,
+name|CAT_KERBEROS
+argument_list|,
+literal|"No principal defined"
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|KerberosName
+name|kn
+init|=
+operator|new
+name|KerberosName
+argument_list|(
+name|principal
+argument_list|)
+decl_stmt|;
+name|String
+name|result
+init|=
+name|kn
+operator|.
+name|getShortName
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|nonSimplePattern
+operator|.
+name|matcher
+argument_list|(
+name|result
+argument_list|)
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+name|warn
+argument_list|(
+name|CAT_KERBEROS
+argument_list|,
+name|principal
+operator|+
+literal|" short name: "
+operator|+
+name|result
+operator|+
+literal|" still contains @ or /"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|KerberosDiagsFailure
+argument_list|(
+name|CAT_KERBEROS
+argument_list|,
+name|e
+argument_list|,
+literal|"Failed to get short name for "
+operator|+
+name|principal
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|error
+argument_list|(
+name|CAT_KERBEROS
+argument_list|,
+literal|"KerberosName("
+operator|+
+name|principal
+operator|+
+literal|") failed: %s\n%s"
+argument_list|,
+name|e
+argument_list|,
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get the default realm.    *<p>    * Not having a default realm may be harmless, so is noted at info.    * All other invocation failures are downgraded to warn, as    * follow-on actions may still work.    * Failure to invoke the method via introspection is considered a failure,    * as it's a sign of JVM compatibility issues that may have other     * consequences    */
 DECL|method|printDefaultRealm ()

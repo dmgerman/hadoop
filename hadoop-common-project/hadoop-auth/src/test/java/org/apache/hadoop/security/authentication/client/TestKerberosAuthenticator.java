@@ -529,6 +529,17 @@ operator|+
 literal|")s/@.*//\n"
 argument_list|)
 expr_stmt|;
+name|props
+operator|.
+name|setProperty
+argument_list|(
+name|KerberosAuthenticationHandler
+operator|.
+name|RULE_MECHANISM
+argument_list|,
+literal|"hadoop"
+argument_list|)
+expr_stmt|;
 return|return
 name|props
 return|;
