@@ -238,6 +238,9 @@ name|NO_SUCH_MULTIPART_UPLOAD
 block|,
 DECL|enumConstant|UPLOAD_PART_FAILED
 name|UPLOAD_PART_FAILED
+block|,
+DECL|enumConstant|INVALID_REQUEST
+name|INVALID_REQUEST
 block|;   }
 block|}
 end_class
