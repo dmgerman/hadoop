@@ -1054,9 +1054,7 @@ name|GeneralName
 operator|.
 name|rfc822Name
 argument_list|,
-literal|"bilbo"
-operator|+
-literal|"@apache.org"
+literal|"bilbo@apache.org"
 argument_list|,
 literal|false
 argument_list|)
@@ -1429,14 +1427,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Generates an CSR with the extension specified.    * This function is used to get an Invalid CSR and test that PKI profile    * rejects these invalid extensions, Hence the function name, by itself it    * is a well formed CSR, but our PKI profile will treat it as invalid CSR.    *    * @param keyPair - Key Pair.    * @return CSR  - PKCS10CertificationRequest    * @throws OperatorCreationException - on Error.    */
-DECL|method|getInvalidCSR (KeyPair keyPair, Extensions extensions)
+comment|/**    * Generates an CSR with the extension specified.    * This function is used to get an Invalid CSR and test that PKI profile    * rejects these invalid extensions, Hence the function name, by itself it    * is a well formed CSR, but our PKI profile will treat it as invalid CSR.    *    * @param kPair - Key Pair.    * @return CSR  - PKCS10CertificationRequest    * @throws OperatorCreationException - on Error.    */
+DECL|method|getInvalidCSR (KeyPair kPair, Extensions extensions)
 specifier|private
 name|PKCS10CertificationRequest
 name|getInvalidCSR
 parameter_list|(
 name|KeyPair
-name|keyPair
+name|kPair
 parameter_list|,
 name|Extensions
 name|extensions

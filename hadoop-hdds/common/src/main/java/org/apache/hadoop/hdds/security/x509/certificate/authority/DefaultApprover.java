@@ -543,13 +543,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|approve (String csr)
+DECL|method|inspectCSR (String csr)
 specifier|public
 name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-name|approve
+name|inspectCSR
 parameter_list|(
 name|String
 name|csr
@@ -560,7 +560,7 @@ block|{
 return|return
 name|super
 operator|.
-name|approve
+name|inspectCSR
 argument_list|(
 name|csr
 argument_list|)
@@ -573,8 +573,8 @@ name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|approve (PKCS10CertificationRequest csr)
-name|approve
+DECL|method|inspectCSR (PKCS10CertificationRequest csr)
+name|inspectCSR
 parameter_list|(
 name|PKCS10CertificationRequest
 name|csr
@@ -583,7 +583,7 @@ block|{
 return|return
 name|super
 operator|.
-name|approve
+name|inspectCSR
 argument_list|(
 name|csr
 argument_list|)

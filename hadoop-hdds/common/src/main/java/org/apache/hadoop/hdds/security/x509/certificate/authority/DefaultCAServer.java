@@ -886,7 +886,7 @@ name|xcertHolder
 init|=
 name|approver
 operator|.
-name|approve
+name|inspectCSR
 argument_list|(
 name|csr
 argument_list|)

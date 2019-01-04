@@ -121,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Certificate Approver interface is used to approve a certificate.  */
+comment|/**  * Certificate Approver interface is used to inspectCSR a certificate.  */
 end_comment
 
 begin_interface
@@ -134,8 +134,8 @@ name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|approve (PKCS10CertificationRequest csr)
-name|approve
+DECL|method|inspectCSR (PKCS10CertificationRequest csr)
+name|inspectCSR
 parameter_list|(
 name|PKCS10CertificationRequest
 name|csr
@@ -146,8 +146,8 @@ name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|approve (String csr)
-name|approve
+DECL|method|inspectCSR (String csr)
+name|inspectCSR
 parameter_list|(
 name|String
 name|csr
@@ -155,7 +155,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Sign function signs a Certificate.    * @param config - Security Config.    * @param caPrivate - CAs private Key.    * @param caCertificate - CA Certificate.    * @param validFrom - Begin Da te    * @param validTill - End Date    * @param certificationRequest - Certification Request.    * @return Signed Certificate.    * @throws IOException - On Error    * @throws OperatorCreationException - on Error.    */
+comment|/**    * Sign function signs a Certificate.    * @param config - Security Config.    * @param caPrivate - CAs private Key.    * @param caCertificate - CA Certificate.    * @param validFrom - Begin Date    * @param validTill - End Date    * @param certificationRequest - Certification Request.    * @return Signed Certificate.    * @throws IOException - On Error    * @throws OperatorCreationException - on Error.    */
 DECL|method|sign ( SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest certificationRequest)
 name|X509CertificateHolder
 name|sign
@@ -195,7 +195,7 @@ comment|/* The Request came from a DN using Kerberos Identity*/
 DECL|enumConstant|MANUAL
 name|MANUAL
 block|,
-comment|/* Wait for a Human being to approve this certificate */
+comment|/* Wait for a Human being to inspect CSR of this certificate */
 DECL|enumConstant|TESTING_AUTOMATIC
 name|TESTING_AUTOMATIC
 comment|/* For testing purpose, Automatic Approval. */

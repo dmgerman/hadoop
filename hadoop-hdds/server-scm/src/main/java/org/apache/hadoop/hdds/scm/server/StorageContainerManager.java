@@ -210,7 +210,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|ScmConfigKeys
+name|HddsServerUtil
 import|;
 end_import
 
@@ -226,7 +226,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|HddsServerUtil
+name|ScmConfigKeys
 import|;
 end_import
 
@@ -806,24 +806,6 @@ name|scm
 operator|.
 name|pipeline
 operator|.
-name|SCMPipelineManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|pipeline
-operator|.
 name|PipelineManager
 import|;
 end_import
@@ -843,6 +825,86 @@ operator|.
 name|pipeline
 operator|.
 name|PipelineReportHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|SCMPipelineManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|SecurityConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|authority
+operator|.
+name|CertificateServer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|authority
+operator|.
+name|DefaultCAServer
 import|;
 end_import
 
@@ -895,38 +957,6 @@ operator|.
 name|events
 operator|.
 name|EventQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneSecurityUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|commands
-operator|.
-name|RetriableDatanodeEventWatcher
 import|;
 end_import
 
@@ -1028,6 +1058,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneSecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|common
 operator|.
 name|Storage
@@ -1076,6 +1120,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|commands
+operator|.
+name|RetriableDatanodeEventWatcher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -1095,20 +1171,6 @@ operator|.
 name|UserGroupInformation
 operator|.
 name|AuthenticationMethod
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|SecurityUtil
 import|;
 end_import
 
@@ -1173,24 +1235,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|ScmConfigKeys
-operator|.
-name|HDDS_SCM_WATCHER_TIMEOUT_DEFAULT
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -1237,6 +1281,16 @@ operator|.
 name|io
 operator|.
 name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetAddress
 import|;
 end_import
 
@@ -1301,6 +1355,24 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+operator|.
+name|HDDS_SCM_WATCHER_TIMEOUT_DEFAULT
 import|;
 end_import
 
@@ -1605,6 +1677,12 @@ specifier|final
 name|SCMChillModeManager
 name|scmChillModeManager
 decl_stmt|;
+DECL|field|certificateServer
+specifier|private
+specifier|final
+name|CertificateServer
+name|certificateServer
+decl_stmt|;
 DECL|field|jvmPauseMonitor
 specifier|private
 name|JvmPauseMonitor
@@ -1616,7 +1694,7 @@ specifier|final
 name|OzoneConfiguration
 name|configuration
 decl_stmt|;
-comment|/**    * Creates a new StorageContainerManager. Configuration will be updated    * with information on the    * actual listening addresses used for RPC servers.    *    * @param conf configuration    */
+comment|/**    * Creates a new StorageContainerManager. Configuration will be    * updated with information on the actual listening addresses used    * for RPC servers.    *    * @param conf configuration    */
 DECL|method|StorageContainerManager (OzoneConfiguration conf)
 specifier|private
 name|StorageContainerManager
@@ -1643,23 +1721,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Authenticate SCM if security is enabled
-if|if
-condition|(
-name|OzoneSecurityUtil
-operator|.
-name|isSecurityEnabled
-argument_list|(
-name|conf
-argument_list|)
-condition|)
-block|{
-name|loginAsSCMUser
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 name|scmStorage
 operator|=
 operator|new
@@ -1691,6 +1752,68 @@ operator|.
 name|SCM_NOT_INITIALIZED
 argument_list|)
 throw|;
+block|}
+comment|// Authenticate SCM if security is enabled
+if|if
+condition|(
+name|OzoneSecurityUtil
+operator|.
+name|isSecurityEnabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|loginAsSCMUser
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|certificateServer
+operator|=
+name|initializeCertificateServer
+argument_list|(
+name|getScmStorage
+argument_list|()
+operator|.
+name|getClusterID
+argument_list|()
+argument_list|,
+name|getScmStorage
+argument_list|()
+operator|.
+name|getScmId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// TODO: Support Intermediary CAs in future.
+name|certificateServer
+operator|.
+name|init
+argument_list|(
+operator|new
+name|SecurityConfig
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|CertificateServer
+operator|.
+name|CAType
+operator|.
+name|SELF_SIGNED_CA
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// if no Security, we do not create a Certificate Server at all.
+comment|// This allows user to boot SCM without security temporarily
+comment|// and then come back and enable it without any impact.
+name|certificateServer
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|eventQueue
 operator|=
@@ -2447,7 +2570,49 @@ literal|"SCM login successful."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Builds a message for logging startup information about an RPC server.    *    * @param description RPC server description    * @param addr RPC server listening address    * @return server startup message    */
+comment|/**    * This function creates/initializes a certificate server as needed.    * This function is idempotent, so calling this again and again after the    * server is initialized is not a problem.    *    * @param clusterID - Cluster ID    * @param scmID     - SCM ID    */
+DECL|method|initializeCertificateServer (String clusterID, String scmID)
+specifier|private
+name|CertificateServer
+name|initializeCertificateServer
+parameter_list|(
+name|String
+name|clusterID
+parameter_list|,
+name|String
+name|scmID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO: Support Certificate Server loading via Class Name loader.
+comment|// So it is easy to use different Certificate Servers if needed.
+name|String
+name|subject
+init|=
+literal|"scm@"
+operator|+
+name|InetAddress
+operator|.
+name|getLocalHost
+argument_list|()
+operator|.
+name|getHostName
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|DefaultCAServer
+argument_list|(
+name|subject
+argument_list|,
+name|clusterID
+argument_list|,
+name|scmID
+argument_list|)
+return|;
+block|}
+comment|/**    * Builds a message for logging startup information about an RPC server.    *    * @param description RPC server description    * @param addr        RPC server listening address    * @return server startup message    */
 DECL|method|buildRpcServerStartMessage (String description, InetSocketAddress addr)
 specifier|public
 specifier|static
@@ -2771,7 +2936,7 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * This method is intended for unit tests only. It suppresses the    * startup/shutdown message and skips registering Unix signal    * handlers.    *    * @param args command line arguments.    * @param conf HDDS configuration    * @return SCM instance    * @throws IOException, AuthenticationException    */
+comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *<p>    * This method is intended for unit tests only. It suppresses the    * startup/shutdown message and skips registering Unix signal    * handlers.    *    * @param args command line arguments.    * @param conf HDDS configuration    * @return SCM instance    * @throws IOException, AuthenticationException    */
 annotation|@
 name|VisibleForTesting
 DECL|method|createSCM ( String[] args, OzoneConfiguration conf)
@@ -2803,7 +2968,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * @param args command-line arguments.    * @param conf HDDS configuration    * @param printBanner if true, then log a verbose startup message.    * @return SCM instance    * @throws IOException, AuthenticationException    */
+comment|/**    * Create an SCM instance based on the supplied command-line arguments.    *    * @param args        command-line arguments.    * @param conf        HDDS configuration    * @param printBanner if true, then log a verbose startup message.    * @return SCM instance    * @throws IOException, AuthenticationException    */
 DECL|method|createSCM ( String[] args, OzoneConfiguration conf, boolean printBanner)
 specifier|private
 specifier|static

@@ -747,13 +747,13 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|approve (String csr)
+DECL|method|inspectCSR (String csr)
 specifier|public
 name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-name|approve
+name|inspectCSR
 parameter_list|(
 name|String
 name|csr
@@ -762,7 +762,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|approve
+name|inspectCSR
 argument_list|(
 name|CertificateSignRequest
 operator|.
@@ -781,8 +781,8 @@ name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|approve (PKCS10CertificationRequest csr)
-name|approve
+DECL|method|inspectCSR (PKCS10CertificationRequest csr)
+name|inspectCSR
 parameter_list|(
 name|PKCS10CertificationRequest
 name|csr

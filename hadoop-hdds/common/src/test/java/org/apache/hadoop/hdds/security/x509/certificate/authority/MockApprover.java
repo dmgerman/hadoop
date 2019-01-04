@@ -182,8 +182,8 @@ name|CompletableFuture
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|approve (PKCS10CertificationRequest csr)
-name|approve
+DECL|method|inspectCSR (PKCS10CertificationRequest csr)
+name|inspectCSR
 parameter_list|(
 name|PKCS10CertificationRequest
 name|csr
@@ -192,7 +192,7 @@ block|{
 return|return
 name|super
 operator|.
-name|approve
+name|inspectCSR
 argument_list|(
 name|csr
 argument_list|)
@@ -200,7 +200,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sign (SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest certificationRequest)
+DECL|method|sign (SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest request)
 specifier|public
 name|X509CertificateHolder
 name|sign
@@ -221,7 +221,7 @@ name|Date
 name|validTill
 parameter_list|,
 name|PKCS10CertificationRequest
-name|certificationRequest
+name|request
 parameter_list|)
 throws|throws
 name|IOException

@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.security.x509.certificate.utils
+DECL|package|org.apache.hadoop.hdds.security.x509.certificates
 package|package
 name|org
 operator|.
@@ -18,9 +18,7 @@ name|security
 operator|.
 name|x509
 operator|.
-name|certificate
-operator|.
-name|utils
+name|certificates
 package|;
 end_package
 
