@@ -1306,7 +1306,7 @@ argument_list|()
 expr_stmt|;
 name|ozoneManager
 operator|.
-name|start
+name|restart
 argument_list|()
 expr_stmt|;
 block|}
