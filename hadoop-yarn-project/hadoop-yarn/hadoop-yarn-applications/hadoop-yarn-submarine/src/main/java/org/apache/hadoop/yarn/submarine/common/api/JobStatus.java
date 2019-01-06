@@ -38,7 +38,7 @@ name|java
 operator|.
 name|time
 operator|.
-name|Instant
+name|LocalDateTime
 import|;
 end_import
 
@@ -115,7 +115,7 @@ argument_list|()
 operator|+
 literal|" time="
 operator|+
-name|Instant
+name|LocalDateTime
 operator|.
 name|now
 argument_list|()
