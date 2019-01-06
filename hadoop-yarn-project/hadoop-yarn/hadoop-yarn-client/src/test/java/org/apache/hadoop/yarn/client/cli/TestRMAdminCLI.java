@@ -5140,6 +5140,8 @@ literal|"[-transitionToActive [--forceactive]<serviceId>] "
 operator|+
 literal|"[-transitionToStandby<serviceId>] "
 operator|+
+literal|"[-transitionToObserver<serviceId>] "
+operator|+
 literal|"[-getServiceState<serviceId>] [-getAllServiceState] "
 operator|+
 literal|"[-checkHealth<serviceId>] [-help [cmd]]"
