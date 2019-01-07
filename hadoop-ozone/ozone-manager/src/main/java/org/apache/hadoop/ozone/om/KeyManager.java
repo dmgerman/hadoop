@@ -443,6 +443,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Abort multipart upload request.    * @param omKeyArgs    * @throws IOException    */
+DECL|method|abortMultipartUpload (OmKeyArgs omKeyArgs)
+name|void
+name|abortMultipartUpload
+parameter_list|(
+name|OmKeyArgs
+name|omKeyArgs
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

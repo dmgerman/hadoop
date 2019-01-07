@@ -1171,6 +1171,35 @@ name|partsMap
 argument_list|)
 return|;
 block|}
+comment|/**    * Abort multipart upload request.    * @param keyName    * @param uploadID    * @throws IOException    */
+DECL|method|abortMultipartUpload (String keyName, String uploadID)
+specifier|public
+name|void
+name|abortMultipartUpload
+parameter_list|(
+name|String
+name|keyName
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|proxy
+operator|.
+name|abortMultipartUpload
+argument_list|(
+name|volumeName
+argument_list|,
+name|name
+argument_list|,
+name|keyName
+argument_list|,
+name|uploadID
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * An Iterator to iterate over {@link OzoneKey} list.    */
 DECL|class|KeyIterator
 specifier|private

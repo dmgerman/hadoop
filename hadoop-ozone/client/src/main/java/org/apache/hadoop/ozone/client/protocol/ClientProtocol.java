@@ -817,6 +817,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Abort Multipart upload request for the given key with given uploadID.    * @param volumeName    * @param bucketName    * @param keyName    * @param uploadID    * @throws IOException    */
+DECL|method|abortMultipartUpload (String volumeName, String bucketName, String keyName, String uploadID)
+name|void
+name|abortMultipartUpload
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

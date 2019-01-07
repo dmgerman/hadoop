@@ -5740,6 +5740,38 @@ literal|"support this operation."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|abortMultipartUpload (String volumeName, String bucketName, String keyName, String uploadID)
+specifier|public
+name|void
+name|abortMultipartUpload
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
