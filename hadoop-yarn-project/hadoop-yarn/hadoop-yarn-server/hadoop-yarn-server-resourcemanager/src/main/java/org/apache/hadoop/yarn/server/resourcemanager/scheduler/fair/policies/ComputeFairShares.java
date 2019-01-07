@@ -108,6 +108,18 @@ name|Schedulable
 import|;
 end_import
 
+begin_import
+import|import static
+name|java
+operator|.
+name|lang
+operator|.
+name|Math
+operator|.
+name|addExact
+import|;
+end_import
+
 begin_comment
 comment|/**  * Contains logic for computing the fair shares. A {@link Schedulable}'s fair  * share is {@link Resource} it is entitled to, independent of the current  * demands and allocations on the cluster. A {@link Schedulable} whose resource  * consumption lies at or below its fair share will never have its containers  * preempted.  */
 end_comment
@@ -115,6 +127,7 @@ end_comment
 begin_class
 DECL|class|ComputeFairShares
 specifier|public
+specifier|final
 class|class
 name|ComputeFairShares
 block|{
@@ -127,6 +140,11 @@ name|COMPUTE_FAIR_SHARES_ITERATIONS
 init|=
 literal|25
 decl_stmt|;
+DECL|method|ComputeFairShares ()
+specifier|private
+name|ComputeFairShares
+parameter_list|()
+block|{   }
 comment|/**    * Compute fair share of the given schedulables.Fair share is an allocation of    * shares considering only active schedulables ie schedulables which have    * running apps.    *     * @param schedulables    * @param totalResources    * @param type    */
 DECL|method|computeShares ( Collection<? extends Schedulable> schedulables, Resource totalResources, String type)
 specifier|public
@@ -195,7 +213,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Given a set of Schedulables and a number of slots, compute their weighted    * fair shares. The min and max shares and of the Schedulables are assumed to    * be set beforehand. We compute the fairest possible allocation of shares to    * the Schedulables that respects their min and max shares.    *<p>    * To understand what this method does, we must first define what weighted    * fair sharing means in the presence of min and max shares. If there    * were no minimum or maximum shares, then weighted fair sharing would be    * achieved if the ratio of slotsAssigned / weight was equal for each    * Schedulable and all slots were assigned. Minimum and maximum shares add a    * further twist - Some Schedulables may have a min share higher than their    * assigned share or a max share lower than their assigned share.    *<p>    * To deal with these possibilities, we define an assignment of slots as being    * fair if there exists a ratio R such that: Schedulables S where S.minShare    * {@literal>} R * S.weight are given share S.minShare - Schedulables S    * where S.maxShare {@literal<} R * S.weight are given S.maxShare -    * All other Schedulables S are assigned share R * S.weight -    * The sum of all the shares is totalSlots.    *<p>    * We call R the weight-to-slots ratio because it converts a Schedulable's    * weight to the number of slots it is assigned.    *<p>    * We compute a fair allocation by finding a suitable weight-to-slot ratio R.    * To do this, we use binary search. Given a ratio R, we compute the number of    * slots that would be used in total with this ratio (the sum of the shares    * computed using the conditions above). If this number of slots is less than    * totalSlots, then R is too small and more slots could be assigned. If the    * number of slots is more than totalSlots, then R is too large.    *<p>    * We begin the binary search with a lower bound on R of 0 (which means that    * all Schedulables are only given their minShare) and an upper bound computed    * to be large enough that too many slots are given (by doubling R until we    * use more than totalResources resources). The helper method    * resourceUsedWithWeightToResourceRatio computes the total resources used with a    * given value of R.    *<p>    * The running time of this algorithm is linear in the number of Schedulables,    * because resourceUsedWithWeightToResourceRatio is linear-time and the number of    * iterations of binary search is a constant (dependent on desired precision).    */
+comment|/**    * Given a set of Schedulables and a number of slots, compute their weighted    * fair shares. The min and max shares and of the Schedulables are assumed to    * be set beforehand. We compute the fairest possible allocation of shares to    * the Schedulables that respects their min and max shares.    *<p>    * To understand what this method does, we must first define what weighted    * fair sharing means in the presence of min and max shares. If there    * were no minimum or maximum shares, then weighted fair sharing would be    * achieved if the ratio of slotsAssigned / weight was equal for each    * Schedulable and all slots were assigned. Minimum and maximum shares add a    * further twist - Some Schedulables may have a min share higher than their    * assigned share or a max share lower than their assigned share.    *<p>    * To deal with these possibilities, we define an assignment of slots as being    * fair if there exists a ratio R such that: Schedulables S where S.minShare    * {@literal>} R * S.weight are given share S.minShare - Schedulables S    * where S.maxShare {@literal<} R * S.weight are given S.maxShare -    * All other Schedulables S are assigned share R * S.weight -    * The sum of all the shares is totalSlots.    *<p>    * We call R the weight-to-slots ratio because it converts a Schedulable's    * weight to the number of slots it is assigned.    *<p>    * We compute a fair allocation by finding a suitable weight-to-slot ratio R.    * To do this, we use binary search. Given a ratio R, we compute the number of    * slots that would be used in total with this ratio (the sum of the shares    * computed using the conditions above). If this number of slots is less than    * totalSlots, then R is too small and more slots could be assigned. If the    * number of slots is more than totalSlots, then R is too large.    *<p>    * We begin the binary search with a lower bound on R of 0 (which means that    * all Schedulables are only given their minShare) and an upper bound computed    * to be large enough that too many slots are given (by doubling R until we    * use more than totalResources resources). The helper method    * resourceUsedWithWeightToResourceRatio computes the total resources used    * with a given value of R.    *<p>    * The running time of this algorithm is linear in the number of Schedulables,    * because resourceUsedWithWeightToResourceRatio is linear-time and the    * number of iterations of binary search is a constant (dependent on desired    * precision).    */
 DECL|method|computeSharesInternal ( Collection<? extends Schedulable> allSchedulables, Resource totalResources, String type, boolean isSteadyShare)
 specifier|private
 specifier|static
@@ -231,7 +249,7 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|takenResources
 init|=
 name|handleFixedFairShares
@@ -258,7 +276,7 @@ block|}
 comment|// Find an upper bound on R that we can use in our binary search. We start
 comment|// at R = 1 and double it until we have either used all the resources or we
 comment|// have met all Schedulables' max shares.
-name|int
+name|long
 name|totalMaxShare
 init|=
 literal|0
@@ -286,30 +304,18 @@ argument_list|)
 decl_stmt|;
 name|totalMaxShare
 operator|=
-operator|(
-name|int
-operator|)
-name|Math
-operator|.
-name|min
+name|safeAdd
 argument_list|(
 name|maxShare
-operator|+
-operator|(
-name|long
-operator|)
-name|totalMaxShare
 argument_list|,
-name|Integer
-operator|.
-name|MAX_VALUE
+name|totalMaxShare
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
 name|totalMaxShare
 operator|==
-name|Integer
+name|Long
 operator|.
 name|MAX_VALUE
 condition|)
@@ -502,9 +508,6 @@ name|setResourceValue
 argument_list|(
 name|type
 argument_list|,
-operator|(
-name|long
-operator|)
 name|computeShare
 argument_list|(
 name|sched
@@ -517,7 +520,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Compute the resources that would be used given a weight-to-resource ratio    * w2rRatio, for use in the computeFairShares algorithm as described in #    */
+comment|/**    * Compute the resources that would be used given a weight-to-resource ratio    * w2rRatio, for use in the computeFairShares algorithm as described in    * {@link #computeSharesInternal}.    */
 DECL|method|resourceUsedWithWeightToResourceRatio (double w2rRatio, Collection<? extends Schedulable> schedulables, String type)
 specifier|private
 specifier|static
@@ -564,27 +567,26 @@ argument_list|,
 name|type
 argument_list|)
 decl_stmt|;
+name|resourcesTaken
+operator|=
+name|safeAdd
+argument_list|(
+name|resourcesTaken
+argument_list|,
+name|share
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
+name|resourcesTaken
+operator|==
 name|Long
 operator|.
 name|MAX_VALUE
-operator|-
-name|resourcesTaken
-operator|<
-name|share
 condition|)
 block|{
-return|return
-name|Long
-operator|.
-name|MAX_VALUE
-return|;
+break|break;
 block|}
-name|resourcesTaken
-operator|+=
-name|share
-expr_stmt|;
 block|}
 return|return
 name|resourcesTaken
@@ -666,7 +668,7 @@ comment|/**    * Helper method to handle Schedulabes with fixed fairshares.    *
 DECL|method|handleFixedFairShares ( Collection<? extends Schedulable> schedulables, Collection<Schedulable> nonFixedSchedulables, boolean isSteadyShare, String type)
 specifier|private
 specifier|static
-name|int
+name|long
 name|handleFixedFairShares
 parameter_list|(
 name|Collection
@@ -690,7 +692,7 @@ name|String
 name|type
 parameter_list|)
 block|{
-name|int
+name|long
 name|totalResource
 init|=
 literal|0
@@ -774,26 +776,11 @@ argument_list|)
 expr_stmt|;
 name|totalResource
 operator|=
-operator|(
-name|int
-operator|)
-name|Math
-operator|.
-name|min
+name|safeAdd
 argument_list|(
-operator|(
-name|long
-operator|)
 name|totalResource
-operator|+
-operator|(
-name|long
-operator|)
-name|fixedShare
 argument_list|,
-name|Integer
-operator|.
-name|MAX_VALUE
+name|fixedShare
 argument_list|)
 expr_stmt|;
 block|}
@@ -802,7 +789,7 @@ return|return
 name|totalResource
 return|;
 block|}
-comment|/**    * Get the fairshare for the {@link Schedulable} if it is fixed, -1 otherwise.    *    * The fairshare is fixed if either the maxShare is 0, weight is 0,    * or the Schedulable is not active for instantaneous fairshare.    */
+comment|/**    * Get the fairshare for the {@link Schedulable} if it is fixed,    * -1 otherwise.    *    * The fairshare is fixed if either the maxShare is 0, weight is 0,    * or the Schedulable is not active for instantaneous fairshare.    */
 DECL|method|getFairShareIfFixed (Schedulable sched, boolean isSteadyShare, String type)
 specifier|private
 specifier|static
@@ -907,6 +894,44 @@ return|return
 operator|-
 literal|1
 return|;
+block|}
+comment|/**    * Safely add two long values. The result will always be a valid long value.    * If the addition caused an overflow the return value will be set to    *<code>Long.MAX_VALUE</code>.    * @param a first long to add    * @param b second long to add    * @return result of the addition    */
+DECL|method|safeAdd (long a, long b)
+specifier|private
+specifier|static
+name|long
+name|safeAdd
+parameter_list|(
+name|long
+name|a
+parameter_list|,
+name|long
+name|b
+parameter_list|)
+block|{
+try|try
+block|{
+return|return
+name|addExact
+argument_list|(
+name|a
+argument_list|,
+name|b
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ArithmeticException
+name|ae
+parameter_list|)
+block|{
+return|return
+name|Long
+operator|.
+name|MAX_VALUE
+return|;
+block|}
 block|}
 block|}
 end_class
