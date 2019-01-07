@@ -154,6 +154,42 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmMultipartUploadCompleteInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmMultipartUploadList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OpenKeySession
 import|;
 end_import
@@ -379,15 +415,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|commitMultipartUploadPart ( OmKeyArgs keyArgs, long clientID)
+comment|/**    * Commit Multipart upload part file.    * @param omKeyArgs    * @param clientID    * @return OmMultipartCommitUploadPartInfo    * @throws IOException    */
+DECL|method|commitMultipartUploadPart ( OmKeyArgs omKeyArgs, long clientID)
 name|OmMultipartCommitUploadPartInfo
 name|commitMultipartUploadPart
 parameter_list|(
 name|OmKeyArgs
-name|keyArgs
+name|omKeyArgs
 parameter_list|,
 name|long
 name|clientID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Complete Multipart upload Request.    * @param omKeyArgs    * @param multipartUploadList    * @return OmMultipartUploadCompleteInfo    * @throws IOException    */
+DECL|method|completeMultipartUpload (OmKeyArgs omKeyArgs, OmMultipartUploadList multipartUploadList)
+name|OmMultipartUploadCompleteInfo
+name|completeMultipartUpload
+parameter_list|(
+name|OmKeyArgs
+name|omKeyArgs
+parameter_list|,
+name|OmMultipartUploadList
+name|multipartUploadList
 parameter_list|)
 throws|throws
 name|IOException

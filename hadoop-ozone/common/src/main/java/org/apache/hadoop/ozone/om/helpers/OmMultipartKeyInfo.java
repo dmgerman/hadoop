@@ -80,6 +80,16 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeMap
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class represents multipart upload information for a key, which holds  * upload part information of the key.  */
 end_comment
@@ -97,7 +107,7 @@ name|uploadID
 decl_stmt|;
 DECL|field|partKeyInfoList
 specifier|private
-name|Map
+name|TreeMap
 argument_list|<
 name|Integer
 argument_list|,
@@ -133,7 +143,7 @@ operator|.
 name|partKeyInfoList
 operator|=
 operator|new
-name|HashMap
+name|TreeMap
 argument_list|<>
 argument_list|(
 name|list
@@ -153,7 +163,7 @@ return|;
 block|}
 DECL|method|getPartKeyInfoList ()
 specifier|public
-name|Map
+name|TreeMap
 argument_list|<
 name|Integer
 argument_list|,

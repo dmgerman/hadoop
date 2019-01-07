@@ -1153,6 +1153,15 @@ name|KEY_LOCATION_INFO
 init|=
 literal|"keyLocationInfo"
 decl_stmt|;
+DECL|field|MULTIPART_LIST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MULTIPART_LIST
+init|=
+literal|"multipartList"
+decl_stmt|;
 comment|// For OM metrics saving to a file
 DECL|field|OM_METRICS_FILE
 specifier|public
@@ -1173,6 +1182,20 @@ init|=
 name|OM_METRICS_FILE
 operator|+
 literal|".tmp"
+decl_stmt|;
+comment|// For Multipart upload
+DECL|field|OM_MULTIPART_MIN_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OM_MULTIPART_MIN_SIZE
+init|=
+literal|5
+operator|*
+literal|1024
+operator|*
+literal|1024
 decl_stmt|;
 block|}
 end_class

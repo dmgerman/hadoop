@@ -228,6 +228,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmMultipartUploadCompleteInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -253,6 +271,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -1063,6 +1091,7 @@ name|defaultReplication
 argument_list|)
 return|;
 block|}
+comment|/**    * Create a part key for a multipart upload key.    * @param key    * @param size    * @param partNumber    * @param uploadID    * @return OzoneOutputStream    * @throws IOException    */
 DECL|method|createMultipartKey (String key, long size, int partNumber, String uploadID)
 specifier|public
 name|OzoneOutputStream
@@ -1099,6 +1128,46 @@ argument_list|,
 name|partNumber
 argument_list|,
 name|uploadID
+argument_list|)
+return|;
+block|}
+comment|/**    * Complete Multipart upload. This will combine all the parts and make the    * key visible in ozone.    * @param key    * @param uploadID    * @param partsMap    * @return OmMultipartUploadCompleteInfo    * @throws IOException    */
+DECL|method|completeMultipartUpload (String key, String uploadID, Map<Integer, String> partsMap)
+specifier|public
+name|OmMultipartUploadCompleteInfo
+name|completeMultipartUpload
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|,
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|String
+argument_list|>
+name|partsMap
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|proxy
+operator|.
+name|completeMultipartUpload
+argument_list|(
+name|volumeName
+argument_list|,
+name|name
+argument_list|,
+name|key
+argument_list|,
+name|uploadID
+argument_list|,
+name|partsMap
 argument_list|)
 return|;
 block|}

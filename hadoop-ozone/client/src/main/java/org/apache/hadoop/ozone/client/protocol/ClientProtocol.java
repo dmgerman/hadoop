@@ -170,6 +170,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmMultipartUploadCompleteInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -185,6 +203,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -735,6 +763,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create a part key for a multipart upload key.    * @param volumeName    * @param bucketName    * @param keyName    * @param size    * @param partNumber    * @param uploadID    * @return OzoneOutputStream    * @throws IOException    */
 DECL|method|createMultipartKey (String volumeName, String bucketName, String keyName, long size, int partNumber, String uploadID)
 name|OzoneOutputStream
 name|createMultipartKey
@@ -756,6 +785,34 @@ name|partNumber
 parameter_list|,
 name|String
 name|uploadID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Complete Multipart upload. This will combine all the parts and make the    * key visible in ozone.    * @param volumeName    * @param bucketName    * @param keyName    * @param uploadID    * @param partsMap    * @return OmMultipartUploadCompleteInfo    * @throws IOException    */
+DECL|method|completeMultipartUpload (String volumeName, String bucketName, String keyName, String uploadID, Map<Integer, String> partsMap)
+name|OmMultipartUploadCompleteInfo
+name|completeMultipartUpload
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|,
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|String
+argument_list|>
+name|partsMap
 parameter_list|)
 throws|throws
 name|IOException
