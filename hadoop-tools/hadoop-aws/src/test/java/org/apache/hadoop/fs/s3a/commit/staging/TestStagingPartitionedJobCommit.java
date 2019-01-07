@@ -382,7 +382,9 @@ name|IOException
 block|{
 name|super
 argument_list|(
-name|OUTPUT_PATH
+name|StagingTestBase
+operator|.
+name|outputPath
 argument_list|,
 name|context
 argument_list|)
@@ -1051,7 +1053,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|OUTPUT_PATH
+name|outputPath
 argument_list|,
 literal|"dateint=20161116/hour=14"
 argument_list|)

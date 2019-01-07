@@ -469,6 +469,16 @@ name|CONF_LABEL_COPY_BUFFER_SIZE
 init|=
 literal|"distcp.copy.buffer.size"
 decl_stmt|;
+comment|/* DistCp Blocks Per Chunk */
+DECL|field|CONF_LABEL_BLOCKS_PER_CHUNK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_BLOCKS_PER_CHUNK
+init|=
+literal|"distcp.blocks.per.chunk"
+decl_stmt|;
 comment|/**    * Constants for DistCp return code to shell / consumer of ToolRunner's run    */
 DECL|field|SUCCESS
 specifier|public

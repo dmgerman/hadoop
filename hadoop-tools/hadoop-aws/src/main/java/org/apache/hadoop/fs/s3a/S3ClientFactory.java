@@ -110,8 +110,8 @@ specifier|public
 interface|interface
 name|S3ClientFactory
 block|{
-comment|/**    * Creates a new {@link AmazonS3} client.    *    * @param name raw input S3A file system URI    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @param credentialSet credentials to use    * @return S3 client    * @throws IOException IO problem    */
-DECL|method|createS3Client (URI name, final String bucket, final AWSCredentialsProvider credentialSet)
+comment|/**    * Creates a new {@link AmazonS3} client.    *    * @param name raw input S3A file system URI    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @param credentialSet credentials to use    * @param userAgentSuffix optional suffix for the UA field.    * @return S3 client    * @throws IOException IO problem    */
+DECL|method|createS3Client (URI name, final String bucket, final AWSCredentialsProvider credentialSet, final String userAgentSuffix)
 name|AmazonS3
 name|createS3Client
 parameter_list|(
@@ -125,6 +125,10 @@ parameter_list|,
 specifier|final
 name|AWSCredentialsProvider
 name|credentialSet
+parameter_list|,
+specifier|final
+name|String
+name|userAgentSuffix
 parameter_list|)
 throws|throws
 name|IOException

@@ -329,7 +329,7 @@ literal|true
 argument_list|,
 name|S3_ALL_BUCKETS
 argument_list|,
-name|S3_ROOT_READ_OPERATIONS
+name|S3_BUCKET_READ_OPERATIONS
 argument_list|)
 argument_list|,
 operator|new

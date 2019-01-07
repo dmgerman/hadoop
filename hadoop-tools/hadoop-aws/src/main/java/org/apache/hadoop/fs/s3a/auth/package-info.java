@@ -4,14 +4,17 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Authentication and permissions support.  */
+comment|/**  * Authentication and permissions support.  *  * Some of the classes in here are expected to be referred to in configuration  * files, so must not change their name. These will be explicitly identified.  */
 end_comment
 
 begin_annotation
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+literal|"Authentication services"
+argument_list|)
 end_annotation
 
 begin_annotation

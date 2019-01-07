@@ -719,6 +719,8 @@ name|INVOCATION_DELETE
 block|,
 name|INVOCATION_EXISTS
 block|,
+name|INVOCATION_GET_DELEGATION_TOKEN
+block|,
 name|INVOCATION_GET_FILE_CHECKSUM
 block|,
 name|INVOCATION_GET_FILE_STATUS
@@ -804,6 +806,8 @@ block|,
 name|S3GUARD_METADATASTORE_THROTTLED
 block|,
 name|STORE_IO_THROTTLED
+block|,
+name|DELEGATION_TOKENS_ISSUED
 block|}
 decl_stmt|;
 DECL|field|GAUGES_TO_CREATE
@@ -3959,6 +3963,55 @@ condition|?
 name|COMMITTER_JOBS_SUCCEEDED
 else|:
 name|COMMITTER_JOBS_FAILED
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Create a delegation token statistics instance.    * @return an instance of delegation token statistics    */
+DECL|method|newDelegationTokenStatistics ()
+specifier|public
+name|DelegationTokenStatistics
+name|newDelegationTokenStatistics
+parameter_list|()
+block|{
+return|return
+operator|new
+name|DelegationTokenStatistics
+argument_list|()
+return|;
+block|}
+comment|/**    * Instrumentation exported to S3A Delegation Token support.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|class|DelegationTokenStatistics
+specifier|public
+specifier|final
+class|class
+name|DelegationTokenStatistics
+block|{
+DECL|method|DelegationTokenStatistics ()
+specifier|private
+name|DelegationTokenStatistics
+parameter_list|()
+block|{     }
+comment|/** A token has been issued. */
+DECL|method|tokenIssued ()
+specifier|public
+name|void
+name|tokenIssued
+parameter_list|()
+block|{
+name|incrementCounter
+argument_list|(
+name|DELEGATION_TOKENS_ISSUED
 argument_list|,
 literal|1
 argument_list|)

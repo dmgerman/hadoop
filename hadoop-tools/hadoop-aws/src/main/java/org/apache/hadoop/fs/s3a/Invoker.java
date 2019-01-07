@@ -1255,7 +1255,7 @@ parameter_list|)
 block|{     }
 block|}
 decl_stmt|;
-comment|/**    * Log summary at info, full stack at debug.    */
+comment|/**    * Log retries at debug.    */
 DECL|field|LOG_EVENT
 specifier|public
 specifier|static

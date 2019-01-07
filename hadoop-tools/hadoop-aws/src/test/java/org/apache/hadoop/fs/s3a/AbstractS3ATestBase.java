@@ -511,20 +511,20 @@ name|data
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that an exception failed with a specific status code.    * @param e exception    * @param code expected status code    * @throws AWSS3IOException rethrown if the status code does not match.    */
-DECL|method|assertStatusCode (AWSS3IOException e, int code)
+comment|/**    * Assert that an exception failed with a specific status code.    * @param e exception    * @param code expected status code    * @throws AWSServiceIOException rethrown if the status code does not match.    */
+DECL|method|assertStatusCode (AWSServiceIOException e, int code)
 specifier|protected
 name|void
 name|assertStatusCode
 parameter_list|(
-name|AWSS3IOException
+name|AWSServiceIOException
 name|e
 parameter_list|,
 name|int
 name|code
 parameter_list|)
 throws|throws
-name|AWSS3IOException
+name|AWSServiceIOException
 block|{
 if|if
 condition|(
