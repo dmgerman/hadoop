@@ -713,6 +713,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|addRuntime (String runtime)
+specifier|public
+name|DockerRunCommand
+name|addRuntime
+parameter_list|(
+name|String
+name|runtime
+parameter_list|)
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"runtime"
+argument_list|,
+name|runtime
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|groupAdd (String[] groups)
 specifier|public
 name|DockerRunCommand

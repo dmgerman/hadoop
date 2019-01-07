@@ -5731,6 +5731,17 @@ literal|"nvidia-docker-v1"
 decl_stmt|;
 annotation|@
 name|Private
+DECL|field|NVIDIA_DOCKER_V2
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NVIDIA_DOCKER_V2
+init|=
+literal|"nvidia-docker-v2"
+decl_stmt|;
+annotation|@
+name|Private
 DECL|field|DEFAULT_NM_GPU_DOCKER_PLUGIN_IMPL
 specifier|public
 specifier|static

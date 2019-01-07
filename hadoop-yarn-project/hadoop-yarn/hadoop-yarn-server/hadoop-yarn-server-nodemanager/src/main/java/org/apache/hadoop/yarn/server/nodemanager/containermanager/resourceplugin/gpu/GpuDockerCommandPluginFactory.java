@@ -152,6 +152,25 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|// nvidia-docker2
+if|if
+condition|(
+name|impl
+operator|.
+name|equals
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NVIDIA_DOCKER_V2
+argument_list|)
+condition|)
+block|{
+return|return
+operator|new
+name|NvidiaDockerV2CommandPlugin
+argument_list|()
+return|;
+block|}
 throw|throw
 operator|new
 name|YarnException
