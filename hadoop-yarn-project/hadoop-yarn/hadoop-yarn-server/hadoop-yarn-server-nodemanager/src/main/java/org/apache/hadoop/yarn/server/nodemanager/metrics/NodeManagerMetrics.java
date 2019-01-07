@@ -335,6 +335,24 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Containers queued (Guaranteed)"
+argument_list|)
+DECL|field|containersGuaranteedQueued
+name|MutableGaugeInt
+name|containersGuaranteedQueued
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Containers queued (Opportunistic)"
+argument_list|)
+DECL|field|containersOpportunisticQueued
+name|MutableGaugeInt
+name|containersOpportunisticQueued
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"# of bad local dirs"
 argument_list|)
 DECL|field|badLocalDirs
@@ -1093,6 +1111,33 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setQueuedContainers (int opportunisticCount, int guaranteedCount)
+specifier|public
+name|void
+name|setQueuedContainers
+parameter_list|(
+name|int
+name|opportunisticCount
+parameter_list|,
+name|int
+name|guaranteedCount
+parameter_list|)
+block|{
+name|containersOpportunisticQueued
+operator|.
+name|set
+argument_list|(
+name|opportunisticCount
+argument_list|)
+expr_stmt|;
+name|containersGuaranteedQueued
+operator|.
+name|set
+argument_list|(
+name|guaranteedCount
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|addResource (Resource res)
 specifier|public
 name|void
@@ -1490,6 +1535,36 @@ parameter_list|()
 block|{
 return|return
 name|runningOpportunisticContainers
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getQueuedOpportunisticContainers ()
+specifier|public
+name|int
+name|getQueuedOpportunisticContainers
+parameter_list|()
+block|{
+return|return
+name|containersOpportunisticQueued
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getQueuedGuaranteedContainers ()
+specifier|public
+name|int
+name|getQueuedGuaranteedContainers
+parameter_list|()
+block|{
+return|return
+name|containersGuaranteedQueued
 operator|.
 name|value
 argument_list|()
