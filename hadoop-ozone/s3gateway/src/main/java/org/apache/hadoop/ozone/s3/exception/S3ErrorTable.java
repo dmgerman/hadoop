@@ -249,6 +249,27 @@ argument_list|,
 name|RANGE_NOT_SATISFIABLE
 argument_list|)
 decl_stmt|;
+DECL|field|NO_SUCH_UPLOAD
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|NO_SUCH_UPLOAD
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"NoSuchUpload"
+argument_list|,
+literal|"The specified multipart upload does not exist. The "
+operator|+
+literal|"upload ID might be invalid, or the multipart upload might have "
+operator|+
+literal|"been aborted or completed."
+argument_list|,
+name|HTTP_NOT_FOUND
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
 DECL|method|newError (OS3Exception e, String resource)
 specifier|public
