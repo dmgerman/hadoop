@@ -437,7 +437,9 @@ literal|"SSL_RSA_EXPORT_WITH_RC4_40_MD5,\t \n"
 operator|+
 literal|"SSL_RSA_EXPORT_WITH_DES40_CBC_SHA,"
 operator|+
-literal|"SSL_RSA_WITH_RC4_128_MD5"
+literal|"SSL_RSA_WITH_RC4_128_MD5,"
+operator|+
+literal|"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"
 decl_stmt|;
 annotation|@
 name|BeforeClass
