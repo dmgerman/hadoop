@@ -26,16 +26,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Collection
@@ -149,6 +139,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerCommonServiceProtos
+operator|.
+name|SystemCredentialsForAppsProto
 import|;
 end_import
 
@@ -468,35 +476,6 @@ name|String
 name|diagnosticsMessage
 parameter_list|)
 function_decl|;
-comment|// Credentials (i.e. hdfs tokens) needed by NodeManagers for application
-comment|// localizations and logAggreations.
-DECL|method|getSystemCredentialsForApps ()
-specifier|public
-specifier|abstract
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|ByteBuffer
-argument_list|>
-name|getSystemCredentialsForApps
-parameter_list|()
-function_decl|;
-DECL|method|setSystemCredentialsForApps ( Map<ApplicationId, ByteBuffer> systemCredentials)
-specifier|public
-specifier|abstract
-name|void
-name|setSystemCredentialsForApps
-parameter_list|(
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|ByteBuffer
-argument_list|>
-name|systemCredentials
-parameter_list|)
-function_decl|;
 DECL|method|getAreNodeLabelsAcceptedByRM ()
 specifier|public
 specifier|abstract
@@ -610,6 +589,48 @@ parameter_list|(
 name|boolean
 name|areNodeAttributesAcceptedByRM
 parameter_list|)
+function_decl|;
+DECL|method|setTokenSequenceNo (long tokenSequenceNo)
+specifier|public
+specifier|abstract
+name|void
+name|setTokenSequenceNo
+parameter_list|(
+name|long
+name|tokenSequenceNo
+parameter_list|)
+function_decl|;
+DECL|method|getTokenSequenceNo ()
+specifier|public
+specifier|abstract
+name|long
+name|getTokenSequenceNo
+parameter_list|()
+function_decl|;
+comment|// Credentials (i.e. hdfs tokens) needed by NodeManagers for application
+comment|// localizations and logAggregations.
+DECL|method|setSystemCredentialsForApps ( Collection<SystemCredentialsForAppsProto> systemCredentials)
+specifier|public
+specifier|abstract
+name|void
+name|setSystemCredentialsForApps
+parameter_list|(
+name|Collection
+argument_list|<
+name|SystemCredentialsForAppsProto
+argument_list|>
+name|systemCredentials
+parameter_list|)
+function_decl|;
+specifier|public
+specifier|abstract
+name|Collection
+argument_list|<
+name|SystemCredentialsForAppsProto
+argument_list|>
+DECL|method|getSystemCredentialsForApps ()
+name|getSystemCredentialsForApps
+parameter_list|()
 function_decl|;
 block|}
 end_class

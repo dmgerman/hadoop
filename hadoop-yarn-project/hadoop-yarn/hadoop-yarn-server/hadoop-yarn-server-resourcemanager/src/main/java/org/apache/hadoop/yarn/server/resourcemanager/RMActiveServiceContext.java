@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -51,6 +41,20 @@ operator|.
 name|concurrent
 operator|.
 name|ConcurrentMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
 import|;
 end_import
 
@@ -195,6 +199,24 @@ operator|.
 name|nodelabels
 operator|.
 name|NodeAttributesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerCommonServiceProtos
+operator|.
+name|SystemCredentialsForAppsProto
 import|;
 end_import
 
@@ -861,7 +883,7 @@ name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ByteBuffer
+name|SystemCredentialsForAppsProto
 argument_list|>
 name|systemCredentials
 init|=
@@ -870,7 +892,7 @@ name|ConcurrentHashMap
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ByteBuffer
+name|SystemCredentialsForAppsProto
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1068,6 +1090,17 @@ DECL|field|volumeManager
 specifier|private
 name|VolumeManager
 name|volumeManager
+decl_stmt|;
+DECL|field|tokenSequenceNo
+specifier|private
+name|AtomicLong
+name|tokenSequenceNo
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|1
+argument_list|)
 decl_stmt|;
 DECL|method|RMActiveServiceContext ()
 specifier|public
@@ -2239,14 +2272,14 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|getSystemCredentialsForApps ()
 specifier|public
 name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ByteBuffer
+name|SystemCredentialsForAppsProto
 argument_list|>
+DECL|method|getSystemCredentialsForApps ()
 name|getSystemCredentialsForApps
 parameter_list|()
 block|{
@@ -2454,6 +2487,35 @@ operator|.
 name|volumeManager
 operator|=
 name|volumeManager
+expr_stmt|;
+block|}
+comment|/**    * Get token sequence no.    *    * @return the tokenSequenceNo    */
+DECL|method|getTokenSequenceNo ()
+specifier|public
+name|Long
+name|getTokenSequenceNo
+parameter_list|()
+block|{
+return|return
+name|tokenSequenceNo
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Increment token sequence no.    *    */
+DECL|method|incrTokenSequenceNo ()
+specifier|public
+name|void
+name|incrTokenSequenceNo
+parameter_list|()
+block|{
+name|this
+operator|.
+name|tokenSequenceNo
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}

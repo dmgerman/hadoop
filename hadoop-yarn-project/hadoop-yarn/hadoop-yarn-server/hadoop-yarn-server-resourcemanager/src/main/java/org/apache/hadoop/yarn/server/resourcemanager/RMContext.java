@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -169,6 +159,24 @@ operator|.
 name|nodelabels
 operator|.
 name|NodeAttributesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnServerCommonServiceProtos
+operator|.
+name|SystemCredentialsForAppsProto
 import|;
 end_import
 
@@ -788,13 +796,13 @@ argument_list|>
 name|getRMApps
 parameter_list|()
 function_decl|;
-DECL|method|getSystemCredentialsForApps ()
 name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|ByteBuffer
+name|SystemCredentialsForAppsProto
 argument_list|>
+DECL|method|getSystemCredentialsForApps ()
 name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
@@ -1166,6 +1174,16 @@ parameter_list|(
 name|VolumeManager
 name|volumeManager
 parameter_list|)
+function_decl|;
+DECL|method|getTokenSequenceNo ()
+name|long
+name|getTokenSequenceNo
+parameter_list|()
+function_decl|;
+DECL|method|incrTokenSequenceNo ()
+name|void
+name|incrTokenSequenceNo
+parameter_list|()
 function_decl|;
 block|}
 end_interface

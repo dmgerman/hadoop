@@ -654,6 +654,11 @@ name|NodeLabel
 argument_list|>
 name|nodeLabels
 decl_stmt|;
+DECL|field|tokenSequenceNo
+specifier|private
+name|long
+name|tokenSequenceNo
+decl_stmt|;
 DECL|method|MockNM (String nodeIdStr, int memory, ResourceTrackerService resourceTracker)
 specifier|public
 name|MockNM
@@ -1954,6 +1959,15 @@ operator|.
 name|registeringCollectors
 argument_list|)
 expr_stmt|;
+name|req
+operator|.
+name|setTokenSequenceNo
+argument_list|(
+name|this
+operator|.
+name|tokenSequenceNo
+argument_list|)
+expr_stmt|;
 name|NodeHeartbeatResponse
 name|heartbeatResponse
 init|=
@@ -2063,6 +2077,15 @@ name|newResource
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|tokenSequenceNo
+operator|=
+name|heartbeatResponse
+operator|.
+name|getTokenSequenceNo
+argument_list|()
+expr_stmt|;
 return|return
 name|heartbeatResponse
 return|;

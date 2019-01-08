@@ -549,6 +549,23 @@ argument_list|>
 name|nodeAttributes
 parameter_list|)
 function_decl|;
+DECL|method|setTokenSequenceNo (long tokenSequenceNo)
+specifier|public
+specifier|abstract
+name|void
+name|setTokenSequenceNo
+parameter_list|(
+name|long
+name|tokenSequenceNo
+parameter_list|)
+function_decl|;
+DECL|method|getTokenSequenceNo ()
+specifier|public
+specifier|abstract
+name|long
+name|getTokenSequenceNo
+parameter_list|()
+function_decl|;
 block|}
 end_class
 
