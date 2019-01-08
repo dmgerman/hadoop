@@ -832,6 +832,18 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1110,6 +1122,19 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|timeout
+specifier|public
+name|Timeout
+name|timeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|60000
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
 annotation|@
 name|Before
@@ -1276,11 +1301,6 @@ block|}
 comment|// Create a volume and test its attribute after creating them
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testCreateVolume ()
 specifier|public
 name|void
@@ -1437,11 +1457,6 @@ block|}
 comment|// Create a volume and modify the volume owner and then test its attributes
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testChangeVolumeOwner ()
 specifier|public
 name|void
@@ -1662,11 +1677,6 @@ block|}
 comment|// Create a volume and modify the volume owner and then test its attributes
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testChangeVolumeQuota ()
 specifier|public
 name|void
@@ -1983,11 +1993,6 @@ block|}
 comment|// Create a volume and then delete it and then check for deletion
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testDeleteVolume ()
 specifier|public
 name|void
@@ -2345,11 +2350,6 @@ comment|// Create a volume and a bucket inside the volume,
 comment|// then delete it and then check for deletion failure
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testFailedDeleteVolume ()
 specifier|public
 name|void
@@ -2618,11 +2618,6 @@ block|}
 comment|// Create a volume and test Volume access for a different user
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testAccessVolume ()
 specifier|public
 name|void
@@ -2943,11 +2938,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testCreateBucket ()
 specifier|public
 name|void
@@ -3174,11 +3164,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testDeleteBucket ()
 specifier|public
 name|void
@@ -3375,11 +3360,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testDeleteNonExistingBucket ()
 specifier|public
 name|void
@@ -3584,11 +3564,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testDeleteNonEmptyBucket ()
 specifier|public
 name|void
@@ -5594,11 +5569,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testListBuckets ()
 specifier|public
 name|void
