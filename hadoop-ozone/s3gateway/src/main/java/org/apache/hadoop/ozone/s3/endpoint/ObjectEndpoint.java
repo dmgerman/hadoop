@@ -1035,6 +1035,10 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
+name|uploadID
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|uploadID
 operator|.
