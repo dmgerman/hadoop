@@ -758,6 +758,12 @@ case|:
 case|case
 name|CommitMultiPartUpload
 case|:
+case|case
+name|CompleteMultiPartUpload
+case|:
+case|case
+name|AbortMultiPartUpload
+case|:
 return|return
 literal|false
 return|;

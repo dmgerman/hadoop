@@ -660,17 +660,6 @@ name|class
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|String
-name|clientId
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
 name|Type
