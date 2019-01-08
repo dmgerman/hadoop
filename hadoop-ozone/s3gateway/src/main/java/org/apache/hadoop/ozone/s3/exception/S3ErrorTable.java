@@ -270,6 +270,67 @@ argument_list|,
 name|HTTP_NOT_FOUND
 argument_list|)
 decl_stmt|;
+DECL|field|INVALID_PART
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|INVALID_PART
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"InvalidPart"
+argument_list|,
+literal|"One or more of the specified parts could not be found."
+operator|+
+literal|" The part might not have been uploaded, or the specified entity "
+operator|+
+literal|"tag might not have matched the part's entity tag."
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
+DECL|field|INVALID_PART_ORDER
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|INVALID_PART_ORDER
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"InvalidPartOrder"
+argument_list|,
+literal|"The list of parts was not in ascending order. The "
+operator|+
+literal|"parts list must be specified in order by part number."
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
+DECL|field|ENTITY_TOO_SMALL
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|ENTITY_TOO_SMALL
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"EntityTooSmall"
+argument_list|,
+literal|"Your proposed upload is smaller than the minimum "
+operator|+
+literal|"allowed object size. Each part must be at least 5 MB in size, except "
+operator|+
+literal|"the last part."
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
 comment|/**    * Create a new instance of Error.    * @param e Error Template    * @param resource Resource associated with this exception    * @return creates a new instance of error based on the template    */
 DECL|method|newError (OS3Exception e, String resource)
 specifier|public

@@ -280,6 +280,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|common
 operator|.
 name|BlockGroup
@@ -4845,6 +4859,35 @@ operator|<
 name|OM_MULTIPART_MIN_SIZE
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"MultipartUpload: "
+operator|+
+name|ozoneKey
+operator|+
+literal|"Part number: "
+operator|+
+name|partKeyInfo
+operator|.
+name|getPartNumber
+argument_list|()
+operator|+
+literal|"size "
+operator|+
+name|currentPartKeyInfo
+operator|.
+name|getDataSize
+argument_list|()
+operator|+
+literal|" is less than minimum part size "
+operator|+
+name|OzoneConsts
+operator|.
+name|OM_MULTIPART_MIN_SIZE
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|OMException
