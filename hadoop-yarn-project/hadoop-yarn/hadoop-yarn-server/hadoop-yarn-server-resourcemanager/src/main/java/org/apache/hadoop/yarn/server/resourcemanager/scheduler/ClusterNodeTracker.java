@@ -546,7 +546,7 @@ name|long
 index|[
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 index|]
 expr_stmt|;

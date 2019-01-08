@@ -5522,7 +5522,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -5681,7 +5681,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for

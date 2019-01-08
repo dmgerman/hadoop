@@ -1018,7 +1018,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 if|if

@@ -231,7 +231,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -415,7 +415,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 comment|// If array creation shows up as a time sink, these arrays could be cached
@@ -722,7 +722,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -1103,7 +1103,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -1328,7 +1328,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -1440,7 +1440,7 @@ name|nKnownResourceTypes
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 name|ResourceInformation
@@ -1583,7 +1583,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -1706,7 +1706,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -1830,7 +1830,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2059,7 +2059,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2208,7 +2208,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2393,7 +2393,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2572,7 +2572,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2661,7 +2661,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2775,7 +2775,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for
@@ -2838,7 +2838,7 @@ name|maxLength
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 for|for

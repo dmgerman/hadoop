@@ -332,7 +332,7 @@ name|NUM_RESOURCES
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 DECL|field|COMPARATORN

@@ -273,7 +273,7 @@ name|double
 index|[
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 index|]
 decl_stmt|;

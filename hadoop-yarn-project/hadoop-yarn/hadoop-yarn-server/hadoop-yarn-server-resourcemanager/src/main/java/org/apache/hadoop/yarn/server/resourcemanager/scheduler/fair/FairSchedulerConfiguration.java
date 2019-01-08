@@ -2397,7 +2397,7 @@ name|numberOfKnownResourceTypes
 init|=
 name|ResourceUtils
 operator|.
-name|getNumberOfKnownResourceTypes
+name|getNumberOfCountableResourceTypes
 argument_list|()
 decl_stmt|;
 name|double
