@@ -292,6 +292,10 @@ name|THREE
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test for the Node2Pipeline map.  */
+end_comment
+
 begin_class
 DECL|class|TestNode2PipelineMap
 specifier|public

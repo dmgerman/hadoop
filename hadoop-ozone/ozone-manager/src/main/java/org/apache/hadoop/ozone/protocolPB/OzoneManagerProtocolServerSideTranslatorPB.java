@@ -1763,6 +1763,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Submits request directly to OM.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"methodlength"
+argument_list|)
 DECL|method|submitRequestToOM (OMRequest request)
 specifier|private
 name|OMResponse

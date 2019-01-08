@@ -494,7 +494,8 @@ operator|+
 literal|"cannot be null"
 argument_list|)
 expr_stmt|;
-comment|// If version file does not exist create version file and also set scmId
+comment|// If version file does not exist
+comment|// create version file and also set scmId
 for|for
 control|(
 name|Map

@@ -1330,7 +1330,7 @@ argument_list|()
 expr_stmt|;
 comment|// ensure same ports are used across restarts.
 name|Configuration
-name|conf
+name|config
 init|=
 name|datanodeService
 operator|.
@@ -1359,7 +1359,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|conf
+name|config
 operator|.
 name|setInt
 argument_list|(
@@ -1368,7 +1368,7 @@ argument_list|,
 name|currentPort
 argument_list|)
 expr_stmt|;
-name|conf
+name|config
 operator|.
 name|setBoolean
 argument_list|(
@@ -1399,7 +1399,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|conf
+name|config
 operator|.
 name|setInt
 argument_list|(
@@ -1408,7 +1408,7 @@ argument_list|,
 name|ratisPort
 argument_list|)
 expr_stmt|;
-name|conf
+name|config
 operator|.
 name|setBoolean
 argument_list|(
@@ -1452,7 +1452,7 @@ name|createHddsDatanodeService
 argument_list|(
 name|args
 argument_list|,
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 name|hddsDatanodes

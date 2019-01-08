@@ -66,6 +66,11 @@ argument_list|>
 name|ozoneKeyLocations
 decl_stmt|;
 comment|/**    * Constructs OzoneKeyDetails from OmKeyInfo.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type)
 specifier|public
 name|OzoneKeyDetails

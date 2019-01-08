@@ -229,6 +229,11 @@ name|int
 name|listCacheSize
 decl_stmt|;
 comment|/**    * Constructs OzoneVolume instance.    * @param conf Configuration object.    * @param proxy ClientProtocol proxy.    * @param name Name of the volume.    * @param admin Volume admin.    * @param owner Volume owner.    * @param quotaInBytes Volume quota in bytes.    * @param creationTime creation time of the volume    * @param acls ACLs associated with the volume.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|OzoneVolume (Configuration conf, ClientProtocol proxy, String name, String admin, String owner, long quotaInBytes, long creationTime, List<OzoneAcl> acls)
 specifier|public
 name|OzoneVolume
@@ -705,9 +710,8 @@ specifier|private
 name|OzoneBucket
 name|currentValue
 decl_stmt|;
-comment|/**      * Creates an Iterator to iterate over all buckets after prevBucket in the volume.      * If prevBucket is null it iterates from the first bucket in the volume.      * The returned buckets match bucket prefix.      * @param bucketPrefix      */
+comment|/**      * Creates an Iterator to iterate over all buckets after prevBucket in      * the volume.      * If prevBucket is null it iterates from the first bucket in the volume.      * The returned buckets match bucket prefix.      * @param bucketPrefix      */
 DECL|method|BucketIterator (String bucketPrefix, String prevBucket)
-specifier|public
 name|BucketIterator
 parameter_list|(
 name|String

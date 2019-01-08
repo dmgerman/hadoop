@@ -325,6 +325,11 @@ comment|/**  * Dispatcher sends ContainerCommandRequests to Handler. Each Contai
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|Handler
 specifier|public
 specifier|abstract

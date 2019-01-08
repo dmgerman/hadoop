@@ -549,6 +549,11 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
+annotation|@
 name|Parameterized
 operator|.
 name|Parameter
@@ -716,13 +721,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestCreateVolume (ClientProtocol client)
+DECL|method|runTestCreateVolume (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestCreateVolume
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -776,7 +781,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -788,7 +793,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -879,7 +884,7 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -929,13 +934,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestCreateDuplicateVolume (ClientProtocol client)
+DECL|method|runTestCreateDuplicateVolume (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestCreateDuplicateVolume
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -944,14 +949,14 @@ name|IOException
 block|{
 try|try
 block|{
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
 literal|"testvol"
 argument_list|)
 expr_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1005,13 +1010,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestDeleteVolume (ClientProtocol client)
+DECL|method|runTestDeleteVolume (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestDeleteVolume
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1029,14 +1034,14 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|deleteVolume
 argument_list|(
@@ -1060,13 +1065,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestChangeOwnerOnVolume (ClientProtocol client)
+DECL|method|runTestChangeOwnerOnVolume (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestChangeOwnerOnVolume
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1086,21 +1091,21 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|getVolumeDetails
 argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|setVolumeOwner
 argument_list|(
@@ -1112,7 +1117,7 @@ expr_stmt|;
 name|OzoneVolume
 name|newVol
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1157,13 +1162,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestChangeQuotaOnVolume (ClientProtocol client)
+DECL|method|runTestChangeQuotaOnVolume (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestChangeQuotaOnVolume
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1183,14 +1188,14 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|setVolumeQuota
 argument_list|(
@@ -1207,7 +1212,7 @@ expr_stmt|;
 name|OzoneVolume
 name|newVol
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1266,13 +1271,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestListVolume (ClientProtocol client)
+DECL|method|runTestListVolume (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestListVolume
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1305,7 +1310,7 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1319,7 +1324,7 @@ name|OzoneVolume
 argument_list|>
 name|ovols
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -1365,13 +1370,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestListVolumePagination (ClientProtocol client)
+DECL|method|runTestListVolumePagination (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestListVolumePagination
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1416,7 +1421,7 @@ operator|.
 name|toLowerCase
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1452,7 +1457,7 @@ name|OzoneVolume
 argument_list|>
 name|ovols
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -1522,13 +1527,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestListAllVolumes (ClientProtocol client)
+DECL|method|runTestListAllVolumes (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestListAllVolumes
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1618,7 +1623,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1630,7 +1635,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1671,7 +1676,7 @@ name|OzoneVolume
 argument_list|>
 name|ovols
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -1753,13 +1758,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestListVolumes (ClientProtocol client)
+DECL|method|runTestListVolumes (ClientProtocol clientProtocol)
 specifier|static
 name|void
 name|runTestListVolumes
 parameter_list|(
 name|ClientProtocol
-name|client
+name|clientProtocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1877,7 +1882,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1889,7 +1894,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1909,7 +1914,7 @@ name|OzoneVolume
 argument_list|>
 name|volumeList
 init|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -1976,7 +1981,7 @@ block|}
 comment|// test max key parameter of listing volumes
 name|volumeList
 operator|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -2002,7 +2007,7 @@ expr_stmt|;
 comment|// test prefix parameter of listing volumes
 name|volumeList
 operator|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -2042,7 +2047,7 @@ argument_list|)
 expr_stmt|;
 name|volumeList
 operator|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -2068,7 +2073,7 @@ expr_stmt|;
 comment|// test start key parameter of listing volumes
 name|volumeList
 operator|=
-name|client
+name|clientProtocol
 operator|.
 name|listVolumes
 argument_list|(
@@ -2115,7 +2120,7 @@ literal|"test-vol"
 operator|+
 name|x
 expr_stmt|;
-name|client
+name|clientProtocol
 operator|.
 name|deleteVolume
 argument_list|(

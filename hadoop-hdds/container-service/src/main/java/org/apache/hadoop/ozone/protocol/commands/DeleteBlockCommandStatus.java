@@ -80,6 +80,10 @@ name|ContainerBlocksDeletionACKProto
 import|;
 end_import
 
+begin_comment
+comment|/**  * Command status to report about block deletion.  */
+end_comment
+
 begin_class
 DECL|class|DeleteBlockCommandStatus
 specifier|public
@@ -216,11 +220,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getProtoBufMessage ()
 specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|CommandStatus
+DECL|method|getProtoBufMessage ()
 name|getProtoBufMessage
 parameter_list|()
 block|{
@@ -305,6 +309,7 @@ name|build
 argument_list|()
 return|;
 block|}
+comment|/**    * Builder for DeleteBlockCommandStatus.    */
 DECL|class|DeleteBlockCommandStatusBuilder
 specifier|public
 specifier|static

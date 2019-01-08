@@ -125,6 +125,7 @@ end_comment
 begin_class
 DECL|class|VolumeInfo
 specifier|public
+specifier|final
 class|class
 name|VolumeInfo
 block|{

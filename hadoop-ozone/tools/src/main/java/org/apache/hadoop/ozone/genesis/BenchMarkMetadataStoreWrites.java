@@ -192,6 +192,10 @@ name|DEFAULT_TYPE
 import|;
 end_import
 
+begin_comment
+comment|/**  * Measure default metadatastore put performance.  */
+end_comment
+
 begin_class
 annotation|@
 name|State

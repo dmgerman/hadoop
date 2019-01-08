@@ -684,18 +684,6 @@ name|List
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class is the client-side translator to translate the requests made on  * the {@link StorageContainerLocationProtocol} interface to the RPC server  * implementing {@link StorageContainerLocationProtocolPB}.  */
 end_comment

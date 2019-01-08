@@ -581,6 +581,11 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
+annotation|@
 name|Parameterized
 operator|.
 name|Parameter
@@ -722,13 +727,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestCreateBucket (ClientProtocol client)
+DECL|method|runTestCreateBucket (ClientProtocol protocol)
 specifier|static
 name|void
 name|runTestCreateBucket
 parameter_list|(
 name|ClientProtocol
-name|client
+name|protocol
 parameter_list|)
 throws|throws
 name|IOException
@@ -770,7 +775,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|protocol
 operator|.
 name|createVolume
 argument_list|(
@@ -782,7 +787,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|protocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -932,7 +937,7 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-name|client
+name|protocol
 operator|.
 name|close
 argument_list|()
@@ -1054,13 +1059,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestAddBucketAcls (ClientProtocol client)
+DECL|method|runTestAddBucketAcls (ClientProtocol protocol)
 specifier|static
 name|void
 name|runTestAddBucketAcls
 parameter_list|(
 name|ClientProtocol
-name|client
+name|protocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1106,7 +1111,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|protocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1118,7 +1123,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|protocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1254,7 +1259,7 @@ operator|>=
 literal|0
 argument_list|)
 expr_stmt|;
-name|client
+name|protocol
 operator|.
 name|close
 argument_list|()
@@ -1276,13 +1281,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestRemoveBucketAcls (ClientProtocol client)
+DECL|method|runTestRemoveBucketAcls (ClientProtocol protocol)
 specifier|static
 name|void
 name|runTestRemoveBucketAcls
 parameter_list|(
 name|ClientProtocol
-name|client
+name|protocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1328,7 +1333,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|protocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1340,7 +1345,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|protocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1497,7 +1502,7 @@ operator|>=
 literal|0
 argument_list|)
 expr_stmt|;
-name|client
+name|protocol
 operator|.
 name|close
 argument_list|()
@@ -1521,13 +1526,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestDeleteBucket (ClientProtocol client)
+DECL|method|runTestDeleteBucket (ClientProtocol protocol)
 specifier|static
 name|void
 name|runTestDeleteBucket
 parameter_list|(
 name|ClientProtocol
-name|client
+name|protocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1571,7 +1576,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|protocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1583,7 +1588,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|protocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1707,7 +1712,7 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
-name|client
+name|protocol
 operator|.
 name|close
 argument_list|()
@@ -1729,13 +1734,13 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestListBucket (ClientProtocol client)
+DECL|method|runTestListBucket (ClientProtocol protocol)
 specifier|static
 name|void
 name|runTestListBucket
 parameter_list|(
 name|ClientProtocol
-name|client
+name|protocol
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1781,7 +1786,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|client
+name|protocol
 operator|.
 name|createVolume
 argument_list|(
@@ -1793,7 +1798,7 @@ expr_stmt|;
 name|OzoneVolume
 name|vol
 init|=
-name|client
+name|protocol
 operator|.
 name|getVolumeDetails
 argument_list|(
@@ -1825,14 +1830,9 @@ argument_list|)
 operator|.
 name|map
 argument_list|(
-name|acl
-lambda|->
 name|OzoneAcl
-operator|.
+operator|::
 name|parseAcl
-argument_list|(
-name|acl
-argument_list|)
 argument_list|)
 operator|.
 name|collect
@@ -2001,7 +2001,7 @@ argument_list|,
 literal|6
 argument_list|)
 expr_stmt|;
-name|client
+name|protocol
 operator|.
 name|close
 argument_list|()

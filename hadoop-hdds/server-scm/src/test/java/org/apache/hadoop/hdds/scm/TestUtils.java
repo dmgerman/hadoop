@@ -1615,6 +1615,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates ContainerInfo with the given details.    *    * @param containerId id of the container    * @param size        size of container    * @param keyCount    number of keys    * @param bytesUsed   bytes used by the container    * @param readCount   number of reads    * @param readBytes   bytes read    * @param writeCount  number of writes    * @param writeBytes  bytes written    *    * @return ContainerInfo    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|createContainerInfo ( long containerId, long size, long keyCount, long bytesUsed, long readCount, long readBytes, long writeCount, long writeBytes)
 specifier|public
 specifier|static

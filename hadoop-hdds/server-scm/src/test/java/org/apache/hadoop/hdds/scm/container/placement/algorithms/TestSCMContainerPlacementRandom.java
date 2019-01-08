@@ -238,6 +238,10 @@ name|when
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test for the random container placement.  */
+end_comment
+
 begin_class
 DECL|class|TestSCMContainerPlacementRandom
 specifier|public

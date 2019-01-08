@@ -175,6 +175,11 @@ parameter_list|<
 name|T
 parameter_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|field|dn2ObjectMap
 specifier|protected
 specifier|final

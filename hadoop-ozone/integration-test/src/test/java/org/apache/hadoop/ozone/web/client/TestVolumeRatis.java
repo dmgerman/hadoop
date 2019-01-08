@@ -396,6 +396,11 @@ annotation|@
 name|Parameterized
 operator|.
 name|Parameter
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|field|clientProtocol
 specifier|public
 name|Class

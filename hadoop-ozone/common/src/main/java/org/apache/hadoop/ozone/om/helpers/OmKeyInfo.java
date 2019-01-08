@@ -195,6 +195,11 @@ operator|.
 name|ReplicationFactor
 name|factor
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|OmKeyInfo (String volumeName, String bucketName, String keyName, List<OmKeyLocationInfoGroup> versions, long dataSize, long creationTime, long modificationTime, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor)
 specifier|private
 name|OmKeyInfo

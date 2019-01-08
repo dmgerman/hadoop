@@ -1914,13 +1914,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|registerReplicas (ContainerManager containerManager, ContainerInfo container, DatanodeDetails... datanodes)
+DECL|method|registerReplicas (ContainerManager contManager, ContainerInfo container, DatanodeDetails... datanodes)
 specifier|private
 name|void
 name|registerReplicas
 parameter_list|(
 name|ContainerManager
-name|containerManager
+name|contManager
 parameter_list|,
 name|ContainerInfo
 name|container
@@ -1940,7 +1940,7 @@ range|:
 name|datanodes
 control|)
 block|{
-name|containerManager
+name|contManager
 operator|.
 name|updateContainerReplica
 argument_list|(

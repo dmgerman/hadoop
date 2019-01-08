@@ -285,10 +285,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|_getVersion ()
+DECL|method|getVersion ()
 specifier|protected
 name|String
-name|_getVersion
+name|getVersion
 parameter_list|()
 block|{
 return|return
@@ -302,10 +302,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getRelease ()
+DECL|method|getRelease ()
 specifier|protected
 name|String
-name|_getRelease
+name|getRelease
 parameter_list|()
 block|{
 return|return
@@ -319,10 +319,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getRevision ()
+DECL|method|getRevision ()
 specifier|protected
 name|String
-name|_getRevision
+name|getRevision
 parameter_list|()
 block|{
 return|return
@@ -336,10 +336,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getBranch ()
+DECL|method|getBranch ()
 specifier|protected
 name|String
-name|_getBranch
+name|getBranch
 parameter_list|()
 block|{
 return|return
@@ -353,10 +353,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getDate ()
+DECL|method|getDate ()
 specifier|protected
 name|String
-name|_getDate
+name|getDate
 parameter_list|()
 block|{
 return|return
@@ -370,10 +370,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getUser ()
+DECL|method|getUser ()
 specifier|protected
 name|String
-name|_getUser
+name|getUser
 parameter_list|()
 block|{
 return|return
@@ -387,10 +387,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getUrl ()
+DECL|method|getUrl ()
 specifier|protected
 name|String
-name|_getUrl
+name|getUrl
 parameter_list|()
 block|{
 return|return
@@ -404,10 +404,10 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getSrcChecksum ()
+DECL|method|getSrcChecksum ()
 specifier|protected
 name|String
-name|_getSrcChecksum
+name|getSrcChecksum
 parameter_list|()
 block|{
 return|return
@@ -421,36 +421,36 @@ literal|"Unknown"
 argument_list|)
 return|;
 block|}
-DECL|method|_getBuildVersion ()
+DECL|method|getBuildVersion ()
 specifier|protected
 name|String
-name|_getBuildVersion
+name|getBuildVersion
 parameter_list|()
 block|{
 return|return
-name|_getVersion
+name|getVersion
 argument_list|()
 operator|+
 literal|" from "
 operator|+
-name|_getRevision
+name|getRevision
 argument_list|()
 operator|+
 literal|" by "
 operator|+
-name|_getUser
+name|getUser
 argument_list|()
 operator|+
 literal|" source checksum "
 operator|+
-name|_getSrcChecksum
+name|getSrcChecksum
 argument_list|()
 return|;
 block|}
-DECL|method|_getProtocVersion ()
+DECL|method|getProtocVersion ()
 specifier|protected
 name|String
-name|_getProtocVersion
+name|getProtocVersion
 parameter_list|()
 block|{
 return|return
@@ -467,6 +467,7 @@ block|}
 DECL|field|OZONE_VERSION_INFO
 specifier|private
 specifier|static
+specifier|final
 name|OzoneVersionInfo
 name|OZONE_VERSION_INFO
 init|=
@@ -476,156 +477,6 @@ argument_list|(
 literal|"ozone"
 argument_list|)
 decl_stmt|;
-comment|/**    * Get the Ozone version.    * @return the Ozone version string, eg. "0.6.3-dev"    */
-DECL|method|getVersion ()
-specifier|public
-specifier|static
-name|String
-name|getVersion
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getVersion
-argument_list|()
-return|;
-block|}
-comment|/**    * Get the Ozone release name.    * @return the Ozone release string, eg. "Acadia"    */
-DECL|method|getRelease ()
-specifier|public
-specifier|static
-name|String
-name|getRelease
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getRelease
-argument_list|()
-return|;
-block|}
-comment|/**    * Get the Git commit hash of the repository when compiled.    * @return the commit hash, eg. "18f64065d5db6208daf50b02c1b5ed4ee3ce547a"    */
-DECL|method|getRevision ()
-specifier|public
-specifier|static
-name|String
-name|getRevision
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getRevision
-argument_list|()
-return|;
-block|}
-comment|/**    * Get the branch on which this originated.    * @return The branch name, e.g. "trunk" or "branches/branch-0.20"    */
-DECL|method|getBranch ()
-specifier|public
-specifier|static
-name|String
-name|getBranch
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getBranch
-argument_list|()
-return|;
-block|}
-comment|/**    * The date that Ozone was compiled.    * @return the compilation date in unix date format    */
-DECL|method|getDate ()
-specifier|public
-specifier|static
-name|String
-name|getDate
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getDate
-argument_list|()
-return|;
-block|}
-comment|/**    * The user that compiled Ozone.    * @return the username of the user    */
-DECL|method|getUser ()
-specifier|public
-specifier|static
-name|String
-name|getUser
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getUser
-argument_list|()
-return|;
-block|}
-comment|/**    * Get the URL for the Ozone repository.    * @return the URL of the Ozone repository    */
-DECL|method|getUrl ()
-specifier|public
-specifier|static
-name|String
-name|getUrl
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getUrl
-argument_list|()
-return|;
-block|}
-comment|/**    * Get the checksum of the source files from which Ozone was built.    * @return the checksum of the source files    */
-DECL|method|getSrcChecksum ()
-specifier|public
-specifier|static
-name|String
-name|getSrcChecksum
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getSrcChecksum
-argument_list|()
-return|;
-block|}
-comment|/**    * Returns the buildVersion which includes version,    * revision, user and date.    * @return the buildVersion    */
-DECL|method|getBuildVersion ()
-specifier|public
-specifier|static
-name|String
-name|getBuildVersion
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getBuildVersion
-argument_list|()
-return|;
-block|}
-comment|/**    * Returns the protoc version used for the build.    * @return the protoc version    */
-DECL|method|getProtocVersion ()
-specifier|public
-specifier|static
-name|String
-name|getProtocVersion
-parameter_list|()
-block|{
-return|return
-name|OZONE_VERSION_INFO
-operator|.
-name|_getProtocVersion
-argument_list|()
-return|;
-block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -677,11 +528,15 @@ literal|"               ///   //////////                  \n"
 operator|+
 literal|"              /    "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getVersion
 argument_list|()
 operator|+
 literal|"("
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getRelease
 argument_list|()
 operator|+
@@ -696,11 +551,15 @@ name|println
 argument_list|(
 literal|"Source code repository "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getUrl
 argument_list|()
 operator|+
 literal|" -r "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getRevision
 argument_list|()
 argument_list|)
@@ -713,11 +572,15 @@ name|println
 argument_list|(
 literal|"Compiled by "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getUser
 argument_list|()
 operator|+
 literal|" on "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getDate
 argument_list|()
 argument_list|)
@@ -730,6 +593,8 @@ name|println
 argument_list|(
 literal|"Compiled with protoc "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getProtocVersion
 argument_list|()
 argument_list|)
@@ -742,6 +607,8 @@ name|println
 argument_list|(
 literal|"From source with checksum "
 operator|+
+name|OZONE_VERSION_INFO
+operator|.
 name|getSrcChecksum
 argument_list|()
 operator|+

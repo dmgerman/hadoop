@@ -578,6 +578,11 @@ decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|KeyOutputStream ()
 specifier|public
 name|KeyOutputStream
@@ -831,6 +836,11 @@ return|return
 name|locationInfoList
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|KeyOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, Checksum checksum, String uploadID, int partNumber, boolean isMultipart)
 specifier|public
 name|KeyOutputStream
@@ -2985,6 +2995,11 @@ name|ByteBuffer
 argument_list|>
 name|bufferList
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|BlockOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
 name|BlockOutputStreamEntry
 parameter_list|(

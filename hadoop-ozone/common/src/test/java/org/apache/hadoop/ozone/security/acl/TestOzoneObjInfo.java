@@ -205,7 +205,7 @@ name|volume
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getBuilder (String volume, String bucket, String key)
+DECL|method|getBuilder (String withVolume, String withBucket, String withKey)
 specifier|private
 name|OzoneObjInfo
 operator|.
@@ -213,13 +213,13 @@ name|Builder
 name|getBuilder
 parameter_list|(
 name|String
-name|volume
+name|withVolume
 parameter_list|,
 name|String
-name|bucket
+name|withBucket
 parameter_list|,
 name|String
-name|key
+name|withKey
 parameter_list|)
 block|{
 return|return
@@ -244,17 +244,17 @@ argument_list|)
 operator|.
 name|setVolumeName
 argument_list|(
-name|volume
+name|withVolume
 argument_list|)
 operator|.
 name|setBucketName
 argument_list|(
-name|bucket
+name|withBucket
 argument_list|)
 operator|.
 name|setKeyName
 argument_list|(
-name|key
+name|withKey
 argument_list|)
 return|;
 block|}

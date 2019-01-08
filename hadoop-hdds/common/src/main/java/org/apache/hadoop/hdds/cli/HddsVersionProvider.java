@@ -75,6 +75,8 @@ index|[]
 block|{
 name|HddsVersionInfo
 operator|.
+name|HDDS_VERSION_INFO
+operator|.
 name|getBuildVersion
 argument_list|()
 block|}

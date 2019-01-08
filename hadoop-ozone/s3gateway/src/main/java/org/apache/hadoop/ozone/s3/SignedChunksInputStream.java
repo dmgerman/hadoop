@@ -191,14 +191,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|read (byte b[], int off, int len)
+DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
 name|read
 parameter_list|(
 name|byte
-name|b
 index|[]
+name|b
 parameter_list|,
 name|int
 name|off

@@ -69,6 +69,7 @@ operator|.
 name|Evolving
 DECL|class|DispatcherContext
 specifier|public
+specifier|final
 class|class
 name|DispatcherContext
 block|{
@@ -232,80 +233,80 @@ name|long
 name|logIndex
 decl_stmt|;
 comment|/**      * Sets the WriteChunkStage.      *      * @param stage WriteChunk Stage      * @return DispatcherContext.Builder      */
-DECL|method|setStage (WriteChunkStage stage)
+DECL|method|setStage (WriteChunkStage writeChunkStage)
 specifier|public
 name|Builder
 name|setStage
 parameter_list|(
 name|WriteChunkStage
-name|stage
+name|writeChunkStage
 parameter_list|)
 block|{
 name|this
 operator|.
 name|stage
 operator|=
-name|stage
+name|writeChunkStage
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
 comment|/**      * Sets the flag for reading from tmp chunk files.      *      * @param readFromTmpFile whether to read from tmp chunk file or not      * @return DispatcherContext.Builder      */
-DECL|method|setReadFromTmpFile (boolean readFromTmpFile)
+DECL|method|setReadFromTmpFile (boolean setReadFromTmpFile)
 specifier|public
 name|Builder
 name|setReadFromTmpFile
 parameter_list|(
 name|boolean
-name|readFromTmpFile
+name|setReadFromTmpFile
 parameter_list|)
 block|{
 name|this
 operator|.
 name|readFromTmpFile
 operator|=
-name|readFromTmpFile
+name|setReadFromTmpFile
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
 comment|/**      * Sets the current term for the container request from Ratis.      *      * @param term current term      * @return DispatcherContext.Builder      */
-DECL|method|setTerm (long term)
+DECL|method|setTerm (long currentTerm)
 specifier|public
 name|Builder
 name|setTerm
 parameter_list|(
 name|long
-name|term
+name|currentTerm
 parameter_list|)
 block|{
 name|this
 operator|.
 name|term
 operator|=
-name|term
+name|currentTerm
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
 comment|/**      * Sets the logIndex for the container request from Ratis.      *      * @param logIndex log index      * @return DispatcherContext.Builder      */
-DECL|method|setLogIndex (long logIndex)
+DECL|method|setLogIndex (long index)
 specifier|public
 name|Builder
 name|setLogIndex
 parameter_list|(
 name|long
-name|logIndex
+name|index
 parameter_list|)
 block|{
 name|this
 operator|.
 name|logIndex
 operator|=
-name|logIndex
+name|index
 expr_stmt|;
 return|return
 name|this

@@ -418,7 +418,7 @@ comment|/**    * Builder class for MiniOzoneCluster.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"CheckStyle"
+literal|"visibilitymodifier"
 argument_list|)
 DECL|class|Builder
 specifier|abstract
@@ -687,20 +687,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setStartDataNodes (boolean startDataNodes)
+DECL|method|setStartDataNodes (boolean nodes)
 specifier|public
 name|Builder
 name|setStartDataNodes
 parameter_list|(
 name|boolean
-name|startDataNodes
+name|nodes
 parameter_list|)
 block|{
 name|this
 operator|.
 name|startDataNodes
 operator|=
-name|startDataNodes
+name|nodes
 expr_stmt|;
 return|return
 name|this

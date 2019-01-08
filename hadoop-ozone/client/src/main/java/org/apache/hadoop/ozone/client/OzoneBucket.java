@@ -373,6 +373,11 @@ name|long
 name|creationTime
 decl_stmt|;
 comment|/**    * Constructs OzoneBucket instance.    * @param conf Configuration object.    * @param proxy ClientProtocol proxy.    * @param volumeName Name of the volume the bucket belongs to.    * @param bucketName Name of the bucket.    * @param acls ACLs associated with the bucket.    * @param storageType StorageType of the bucket.    * @param versioning versioning status of the bucket.    * @param creationTime creation time of the bucket.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|OzoneBucket (Configuration conf, ClientProtocol proxy, String volumeName, String bucketName, List<OzoneAcl> acls, StorageType storageType, Boolean versioning, long creationTime)
 specifier|public
 name|OzoneBucket
@@ -514,6 +519,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|OzoneBucket (String volumeName, String name, ReplicationFactor defaultReplication, ReplicationType defaultReplicationType, List<OzoneAcl> acls, StorageType storageType, Boolean versioning, long creationTime)
 name|OzoneBucket
 parameter_list|(

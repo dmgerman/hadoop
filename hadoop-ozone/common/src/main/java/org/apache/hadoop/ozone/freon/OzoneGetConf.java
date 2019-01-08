@@ -607,6 +607,11 @@ specifier|static
 class|class
 name|CommandHandler
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|field|key
 specifier|protected
 name|String

@@ -448,6 +448,10 @@ name|TimeoutException
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test container closing.  */
+end_comment
+
 begin_class
 DECL|class|TestCloseContainerByPipeline
 specifier|public
@@ -1554,13 +1558,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|isContainerClosed (MiniOzoneCluster cluster, long containerID, DatanodeDetails datanode)
+DECL|method|isContainerClosed (MiniOzoneCluster ozoneCluster, long containerID, DatanodeDetails datanode)
 specifier|private
 name|Boolean
 name|isContainerClosed
 parameter_list|(
 name|MiniOzoneCluster
-name|cluster
+name|ozoneCluster
 parameter_list|,
 name|long
 name|containerID
@@ -1577,7 +1581,7 @@ control|(
 name|HddsDatanodeService
 name|datanodeService
 range|:
-name|cluster
+name|ozoneCluster
 operator|.
 name|getHddsDatanodes
 argument_list|()

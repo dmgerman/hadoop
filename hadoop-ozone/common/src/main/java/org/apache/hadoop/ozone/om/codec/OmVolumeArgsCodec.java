@@ -162,6 +162,8 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
+name|rawData
+argument_list|,
 literal|"Null byte array can't converted to real object."
 argument_list|)
 expr_stmt|;

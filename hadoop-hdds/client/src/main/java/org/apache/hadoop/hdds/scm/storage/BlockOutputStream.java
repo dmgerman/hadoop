@@ -606,6 +606,11 @@ name|int
 name|currentBufferIndex
 decl_stmt|;
 comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient        client to perform container calls    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksum              checksum    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
 specifier|public
 name|BlockOutputStream

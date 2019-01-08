@@ -218,6 +218,11 @@ specifier|final
 name|int
 name|multipartUploadPartNumber
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber)
 specifier|private
 name|OmKeyArgs

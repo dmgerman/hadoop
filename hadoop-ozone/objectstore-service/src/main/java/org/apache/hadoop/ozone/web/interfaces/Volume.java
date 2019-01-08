@@ -824,6 +824,11 @@ literal|"header"
 argument_list|)
 block|}
 argument_list|)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|getVolumeInfo (@athParamR) String volume, @DefaultValue(Header.OZONE_INFO_QUERY_BUCKET) @QueryParam(Header.OZONE_INFO_QUERY_TAG) String info, @QueryParam(Header.OZONE_LIST_QUERY_PREFIX) String prefix, @DefaultValue(Header.OZONE_DEFAULT_LIST_SIZE) @QueryParam(Header.OZONE_LIST_QUERY_MAXKEYS) int keys, @QueryParam(Header.OZONE_LIST_QUERY_PREVKEY) String prevKey, @QueryParam(Header.OZONE_LIST_QUERY_ROOTSCAN) boolean rootScan, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|getVolumeInfo

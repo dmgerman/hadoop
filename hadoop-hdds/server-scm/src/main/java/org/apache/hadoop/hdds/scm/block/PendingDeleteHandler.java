@@ -56,6 +56,10 @@ name|EventPublisher
 import|;
 end_import
 
+begin_comment
+comment|/**  * Event handler for PedingDeleteStatuList events.  */
+end_comment
+
 begin_class
 DECL|class|PendingDeleteHandler
 specifier|public

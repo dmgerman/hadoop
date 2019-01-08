@@ -74,9 +74,13 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|server
+name|protocol
 operator|.
-name|ServerUtils
+name|proto
+operator|.
+name|HddsProtos
+operator|.
+name|NodeType
 import|;
 end_import
 
@@ -107,26 +111,6 @@ operator|.
 name|common
 operator|.
 name|Storage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|NodeType
 import|;
 end_import
 

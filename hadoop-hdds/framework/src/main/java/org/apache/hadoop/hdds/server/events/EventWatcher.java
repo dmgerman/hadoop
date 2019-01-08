@@ -351,7 +351,7 @@ name|String
 name|name
 decl_stmt|;
 DECL|field|trackedEventsByID
-specifier|protected
+specifier|private
 specifier|final
 name|Map
 argument_list|<
@@ -367,7 +367,7 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|trackedEvents
-specifier|protected
+specifier|private
 specifier|final
 name|Set
 argument_list|<
@@ -1049,6 +1049,34 @@ name|get
 argument_list|(
 name|id
 argument_list|)
+return|;
+block|}
+DECL|method|getTrackedEventsByID ()
+specifier|public
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|TIMEOUT_PAYLOAD
+argument_list|>
+name|getTrackedEventsByID
+parameter_list|()
+block|{
+return|return
+name|trackedEventsByID
+return|;
+block|}
+DECL|method|getTrackedEvents ()
+specifier|public
+name|Set
+argument_list|<
+name|TIMEOUT_PAYLOAD
+argument_list|>
+name|getTrackedEvents
+parameter_list|()
+block|{
+return|return
+name|trackedEvents
 return|;
 block|}
 block|}

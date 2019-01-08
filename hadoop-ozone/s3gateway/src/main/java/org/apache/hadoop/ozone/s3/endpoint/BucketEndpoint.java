@@ -570,6 +570,11 @@ annotation|@
 name|GET
 annotation|@
 name|SuppressFBWarnings
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|list ( @athParamR) String bucketName, @QueryParam(R) String delimiter, @QueryParam(R) String encodingType, @QueryParam(R) String marker, @DefaultValue(R) @QueryParam(R) int maxKeys, @QueryParam(R) String prefix, @QueryParam(R) String browser, @QueryParam(R) String continueToken, @QueryParam(R) String startAfter, @Context HttpHeaders hh)
 specifier|public
 name|Response

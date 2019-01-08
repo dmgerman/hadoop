@@ -149,6 +149,11 @@ name|volumeName
 return|;
 block|}
 comment|/**    * Constructs  volume Args.    *    * @param userName - User name    * @param volumeName - volume Name    * @param requestID _ Request ID    * @param hostName - Host Name    * @param request  - Http Request    * @param info - URI info    * @param headers - http headers    * @param groups - list of groups allowed to access the volume    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|VolumeArgs (String userName, String volumeName, String requestID, String hostName, Request request, UriInfo info, HttpHeaders headers, String[] groups)
 specifier|public
 name|VolumeArgs

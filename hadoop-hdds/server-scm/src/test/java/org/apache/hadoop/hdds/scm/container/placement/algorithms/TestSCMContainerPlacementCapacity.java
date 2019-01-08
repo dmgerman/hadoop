@@ -258,6 +258,10 @@ name|when
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test for the scm container placement.  */
+end_comment
+
 begin_class
 DECL|class|TestSCMContainerPlacementCapacity
 specifier|public

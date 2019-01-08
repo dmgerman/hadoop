@@ -310,6 +310,10 @@ name|assertFalse
 import|;
 end_import
 
+begin_comment
+comment|/**  * Unit test for command status report handler.  */
+end_comment
+
 begin_class
 DECL|class|TestCommandStatusReportHandler
 specifier|public
@@ -550,7 +554,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|fireEvent (EVENT_TYPE event, PAYLOAD payload)
 specifier|public
 parameter_list|<
 name|PAYLOAD
@@ -563,6 +566,7 @@ name|PAYLOAD
 argument_list|>
 parameter_list|>
 name|void
+DECL|method|fireEvent (EVENT_TYPE event, PAYLOAD payload)
 name|fireEvent
 parameter_list|(
 name|EVENT_TYPE

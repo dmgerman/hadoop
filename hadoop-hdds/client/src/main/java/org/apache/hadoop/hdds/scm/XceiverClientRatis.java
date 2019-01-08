@@ -1114,34 +1114,6 @@ block|}
 end_function
 
 begin_function
-DECL|method|getFailedServer ( Collection<RaftProtos.CommitInfoProto> commitInfos)
-specifier|private
-name|void
-name|getFailedServer
-parameter_list|(
-name|Collection
-argument_list|<
-name|RaftProtos
-operator|.
-name|CommitInfoProto
-argument_list|>
-name|commitInfos
-parameter_list|)
-block|{
-for|for
-control|(
-name|RaftProtos
-operator|.
-name|CommitInfoProto
-name|proto
-range|:
-name|commitInfos
-control|)
-block|{      }
-block|}
-end_function
-
-begin_function
 annotation|@
 name|Override
 DECL|method|watchForCommit (long index, long timeout)
@@ -1241,8 +1213,6 @@ name|reply
 decl_stmt|;
 try|try
 block|{
-name|reply
-operator|=
 name|replyFuture
 operator|.
 name|get

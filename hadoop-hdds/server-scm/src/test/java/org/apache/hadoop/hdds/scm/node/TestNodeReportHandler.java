@@ -288,6 +288,10 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test for the Node Report Handler.  */
+end_comment
+
 begin_class
 DECL|class|TestNodeReportHandler
 specifier|public

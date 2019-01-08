@@ -759,6 +759,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Exception for signal bad content type.    */
 DECL|class|BadFormatException
 specifier|public
 specifier|static

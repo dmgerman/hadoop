@@ -784,6 +784,8 @@ operator|new
 name|InputStreamReader
 argument_list|(
 name|fis
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 init|;
 name|BufferedReader
