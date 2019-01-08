@@ -3383,6 +3383,13 @@ expr_stmt|;
 name|verifyAggregatedMetricsTally
 argument_list|()
 expr_stmt|;
+name|BlockManagerTestUtil
+operator|.
+name|stopRedundancyThread
+argument_list|(
+name|bm
+argument_list|)
+expr_stmt|;
 comment|// Corrupt first replica of the block
 name|LocatedBlock
 name|block
@@ -3864,6 +3871,13 @@ argument_list|()
 expr_stmt|;
 name|verifyAggregatedMetricsTally
 argument_list|()
+expr_stmt|;
+name|BlockManagerTestUtil
+operator|.
+name|stopRedundancyThread
+argument_list|(
+name|bm
+argument_list|)
 expr_stmt|;
 comment|// Corrupt first replica of the block
 name|LocatedBlocks
