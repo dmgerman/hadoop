@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a.auth.delegation
+DECL|package|org.apache.hadoop.fs.s3a
 package|package
 name|org
 operator|.
@@ -15,69 +15,91 @@ operator|.
 name|fs
 operator|.
 name|s3a
-operator|.
-name|auth
-operator|.
-name|delegation
 package|;
 end_package
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|conf
 operator|.
-name|s3a
-operator|.
-name|auth
-operator|.
-name|delegation
-operator|.
-name|DelegationConstants
-operator|.
-name|DELEGATION_TOKEN_ROLE_BINDING
+name|Configuration
 import|;
 end_import
 
 begin_comment
-comment|/**  * This looks at the cost of assume role, to see if it is more expensive  * than creating simple session credentials.  */
+comment|/**  * Run the encryption tests against the Fast output stream.  * This verifies that both file writing paths can encrypt their data.  */
 end_comment
 
 begin_class
-DECL|class|ILoadTestRoleCredentials
+DECL|class|ITestS3AEncryptionSSECBlockOutputStream
 specifier|public
 class|class
-name|ILoadTestRoleCredentials
+name|ITestS3AEncryptionSSECBlockOutputStream
 extends|extends
-name|ILoadTestSessionCredentials
+name|AbstractTestS3AEncryption
 block|{
 annotation|@
 name|Override
-DECL|method|getDelegationBinding ()
+DECL|method|createConfiguration ()
 specifier|protected
-name|String
-name|getDelegationBinding
+name|Configuration
+name|createConfiguration
 parameter_list|()
 block|{
+name|Configuration
+name|conf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|Constants
+operator|.
+name|FAST_UPLOAD_BUFFER
+argument_list|,
+name|Constants
+operator|.
+name|FAST_UPLOAD_BYTEBUFFER
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|Constants
+operator|.
+name|SERVER_SIDE_ENCRYPTION_KEY
+argument_list|,
+literal|"4niV/jPK5VFRHY+KNb6wtqYd4xXyMgdJ9XQJpcQUVbs="
+argument_list|)
+expr_stmt|;
 return|return
-name|DELEGATION_TOKEN_ROLE_BINDING
+name|conf
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFilePrefix ()
+DECL|method|getSSEAlgorithm ()
 specifier|protected
-name|String
-name|getFilePrefix
+name|S3AEncryptionMethods
+name|getSSEAlgorithm
 parameter_list|()
 block|{
 return|return
-literal|"role"
+name|S3AEncryptionMethods
+operator|.
+name|SSE_C
 return|;
 block|}
 block|}

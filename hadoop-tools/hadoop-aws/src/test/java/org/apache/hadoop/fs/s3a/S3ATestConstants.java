@@ -18,16 +18,6 @@ name|s3a
 package|;
 end_package
 
-begin_import
-import|import
-name|java
-operator|.
-name|time
-operator|.
-name|Duration
-import|;
-end_import
-
 begin_comment
 comment|/**  * Constants for S3A Testing.  */
 end_comment
@@ -217,9 +207,6 @@ name|TEST_STS_ENABLED
 init|=
 literal|"test.fs.s3a.sts.enabled"
 decl_stmt|;
-comment|/**    * Endpoint for STS testing.    * @deprecated : Use {@link Constants#ASSUMED_ROLE_STS_ENDPOIN}    */
-annotation|@
-name|Deprecated
 DECL|field|TEST_STS_ENDPOINT
 name|String
 name|TEST_STS_ENDPOINT
@@ -316,25 +303,6 @@ name|String
 name|FS_S3A_IMPL_DISABLE_CACHE
 init|=
 literal|"fs.s3a.impl.disable.cache"
-decl_stmt|;
-comment|/**    * Duration in seconds for role/session token requests: {@value}.    */
-DECL|field|TEST_SESSION_TOKEN_DURATION_SECONDS
-name|int
-name|TEST_SESSION_TOKEN_DURATION_SECONDS
-init|=
-literal|900
-decl_stmt|;
-comment|/**    * Test session duration as a java 8 Duration.    */
-DECL|field|TEST_SESSION_TOKEN_DURATION
-name|Duration
-name|TEST_SESSION_TOKEN_DURATION
-init|=
-name|Duration
-operator|.
-name|ofSeconds
-argument_list|(
-name|TEST_SESSION_TOKEN_DURATION_SECONDS
-argument_list|)
 decl_stmt|;
 block|}
 end_interface

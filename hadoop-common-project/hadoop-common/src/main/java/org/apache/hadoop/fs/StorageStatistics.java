@@ -32,20 +32,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -69,11 +55,7 @@ specifier|abstract
 class|class
 name|StorageStatistics
 block|{
-comment|/**    * These are common statistic names.    *    * The following names are considered general and preserved across different    * StorageStatistics classes. When implementing a new StorageStatistics, it is    * highly recommended to use the common statistic names.    *    * When adding new common statistic name constants, please make them unique.    * By convention, they are implicitly unique:    *<ul>    *<li>the name of the constants are uppercase, words separated by    *   underscores.</li>    *<li>the value of the constants are lowercase of the constant names.</li>    *</ul>    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
+comment|/**    * These are common statistic names.    *    * The following names are considered general and preserved across different    * StorageStatistics classes. When implementing a new StorageStatistics, it is    * highly recommended to use the common statistic names.    *    * When adding new common statistic name constants, please make them unique.    * By convention, they are implicitly unique:    *  - the name of the constants are uppercase, words separated by underscores.    *  - the value of the constants are lowercase of the constant names.    */
 DECL|interface|CommonStatisticNames
 specifier|public
 interface|interface
@@ -121,12 +103,6 @@ name|String
 name|OP_GET_CONTENT_SUMMARY
 init|=
 literal|"op_get_content_summary"
-decl_stmt|;
-DECL|field|OP_GET_DELEGATION_TOKEN
-name|String
-name|OP_GET_DELEGATION_TOKEN
-init|=
-literal|"op_get_delegation_token"
 decl_stmt|;
 DECL|field|OP_GET_FILE_CHECKSUM
 name|String

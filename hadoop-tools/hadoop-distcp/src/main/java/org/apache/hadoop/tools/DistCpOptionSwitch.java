@@ -508,9 +508,7 @@ block|,
 DECL|enumConstant|BLOCKS_PER_CHUNK
 name|BLOCKS_PER_CHUNK
 argument_list|(
-name|DistCpConstants
-operator|.
-name|CONF_LABEL_BLOCKS_PER_CHUNK
+literal|""
 argument_list|,
 operator|new
 name|Option

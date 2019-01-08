@@ -310,7 +310,7 @@ return|return
 operator|new
 name|PartitionedStagingCommitter
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|createTaskAttemptForJob
 argument_list|()
@@ -330,7 +330,7 @@ return|return
 operator|new
 name|PartitionedStagingCommitter
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|getTAC
 argument_list|()
@@ -546,13 +546,14 @@ argument_list|(
 name|mockS3
 argument_list|)
 expr_stmt|;
-name|Path
-name|exists
-init|=
+name|pathExists
+argument_list|(
+name|mockS3
+argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|relativeFiles
 operator|.
@@ -564,12 +565,6 @@ argument_list|)
 operator|.
 name|getParent
 argument_list|()
-decl_stmt|;
-name|pathExists
-argument_list|(
-name|mockS3
-argument_list|,
-name|exists
 argument_list|)
 expr_stmt|;
 name|intercept
@@ -582,15 +577,10 @@ name|InternalCommitterConstants
 operator|.
 name|E_DEST_EXISTS
 argument_list|,
-literal|"Expected a PathExistsException as a partition"
-operator|+
-literal|" already exists:"
-operator|+
-name|exists
+literal|"Expected a PathExistsException as a partition already exists"
 argument_list|,
 parameter_list|()
 lambda|->
-block|{
 name|committer
 operator|.
 name|commitTask
@@ -598,15 +588,6 @@ argument_list|(
 name|getTAC
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|mockS3
-operator|.
-name|getFileStatus
-argument_list|(
-name|exists
-argument_list|)
-expr_stmt|;
-block|}
 argument_list|)
 expr_stmt|;
 comment|// test success
@@ -775,13 +756,14 @@ argument_list|(
 name|mockS3
 argument_list|)
 expr_stmt|;
-name|Path
-name|existsPath
-init|=
+name|pathExists
+argument_list|(
+name|mockS3
+argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|relativeFiles
 operator|.
@@ -793,12 +775,6 @@ argument_list|)
 operator|.
 name|getParent
 argument_list|()
-decl_stmt|;
-name|pathExists
-argument_list|(
-name|mockS3
-argument_list|,
-name|existsPath
 argument_list|)
 expr_stmt|;
 name|intercept
@@ -809,9 +785,7 @@ name|class
 argument_list|,
 literal|""
 argument_list|,
-literal|"Should complain because a partition already exists: "
-operator|+
-name|existsPath
+literal|"Should complain because a partition already exists"
 argument_list|,
 parameter_list|()
 lambda|->
@@ -996,7 +970,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|relativeFiles
 operator|.
@@ -1178,7 +1152,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|relativeFiles
 operator|.

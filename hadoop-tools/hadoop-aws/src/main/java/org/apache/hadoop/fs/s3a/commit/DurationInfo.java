@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A duration with logging of final state at info or debug  * in the {@code close()} call.  * This allows it to be used in a try-with-resources clause, and have the  * duration automatically logged.  */
+comment|/**  * A duration with logging of final state at info in the {@code close()} call.  * This allows it to be used in a try-with-resources clause, and have the  * duration automatically logged.  */
 end_comment
 
 begin_class
@@ -74,14 +74,7 @@ specifier|final
 name|Logger
 name|log
 decl_stmt|;
-comment|/**    * Should the log be at INFO rather than DEBUG.    */
-DECL|field|logAtInfo
-specifier|private
-specifier|final
-name|boolean
-name|logAtInfo
-decl_stmt|;
-comment|/**    * Create the duration text from a {@code String.format()} code call;    * log output at info level.    * @param log log to write to    * @param format format string    * @param args list of arguments    */
+comment|/**    * Create the duration text from a {@code String.format()} code call.    * @param log log to write to    * @param format format string    * @param args list of arguments    */
 DECL|method|DurationInfo (Logger log, String format, Object... args)
 specifier|public
 name|DurationInfo
@@ -98,37 +91,6 @@ name|args
 parameter_list|)
 block|{
 name|this
-argument_list|(
-name|log
-argument_list|,
-literal|true
-argument_list|,
-name|format
-argument_list|,
-name|args
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Create the duration text from a {@code String.format()} code call    * and log either at info or debug.    * @param log log to write to    * @param logAtInfo should the log be at info, rather than debug    * @param format format string    * @param args list of arguments    */
-DECL|method|DurationInfo (Logger log, boolean logAtInfo, String format, Object... args)
-specifier|public
-name|DurationInfo
-parameter_list|(
-name|Logger
-name|log
-parameter_list|,
-name|boolean
-name|logAtInfo
-parameter_list|,
-name|String
-name|format
-parameter_list|,
-name|Object
-modifier|...
-name|args
-parameter_list|)
-block|{
-name|this
 operator|.
 name|text
 operator|=
@@ -147,17 +109,6 @@ name|log
 operator|=
 name|log
 expr_stmt|;
-name|this
-operator|.
-name|logAtInfo
-operator|=
-name|logAtInfo
-expr_stmt|;
-if|if
-condition|(
-name|logAtInfo
-condition|)
-block|{
 name|log
 operator|.
 name|info
@@ -167,19 +118,6 @@ argument_list|,
 name|text
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"Starting: {}"
-argument_list|,
-name|text
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -211,33 +149,16 @@ block|{
 name|finished
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|logAtInfo
-condition|)
-block|{
 name|log
 operator|.
 name|info
 argument_list|(
-literal|"{}"
-argument_list|,
 name|this
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|log
 operator|.
-name|debug
-argument_list|(
-literal|"{}"
-argument_list|,
-name|this
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 end_class

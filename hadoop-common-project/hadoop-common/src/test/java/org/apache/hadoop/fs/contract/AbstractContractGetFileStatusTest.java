@@ -44,16 +44,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -2638,14 +2628,7 @@ literal|", "
 operator|+
 name|filter
 operator|+
-literal|" ) "
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|result
-argument_list|)
+literal|" )"
 argument_list|,
 name|expected
 argument_list|,

@@ -1781,20 +1781,12 @@ literal|"Wrong FS: "
 operator|+
 name|path
 operator|+
-literal|" and port="
-operator|+
-name|thatPort
-operator|+
 literal|", expected: "
 operator|+
 name|this
 operator|.
 name|getUri
 argument_list|()
-operator|+
-literal|" with port="
-operator|+
-name|thisPort
 argument_list|)
 throw|;
 block|}

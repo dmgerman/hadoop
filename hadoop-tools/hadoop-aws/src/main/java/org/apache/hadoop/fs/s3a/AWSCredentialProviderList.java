@@ -54,16 +54,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -270,24 +260,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|auth
-operator|.
-name|NoAwsCredentialsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|IOUtils
@@ -295,7 +267,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A list of providers.  *  * This is similar to the AWS SDK {@code AWSCredentialsProviderChain},  * except that:  *<ol>  *<li>Allows extra providers to be added dynamically.</li>  *<li>If any provider in the chain throws an exception other than  *   an {@link AmazonClientException}, that is rethrown, rather than  *   swallowed.</li>  *<li>Has some more diagnostics.</li>  *<li>On failure, the last "relevant" AmazonClientException raised is  *   rethrown; exceptions other than 'no credentials' have priority.</li>  *<li>Special handling of {@link AnonymousAWSCredentials}.</li>  *</ol>  */
+comment|/**  * A list of providers.  *  * This is similar to the AWS SDK {@code AWSCredentialsProviderChain},  * except that:  *<ol>  *<li>Allows extra providers to be added dynamically.</li>  *<li>If any provider in the chain throws an exception other than  *   an {@link AmazonClientException}, that is rethrown, rather than  *   swallowed.</li>  *<li>Has some more diagnostics.</li>  *<li>On failure, the last AmazonClientException raised is rethrown.</li>  *<li>Special handling of {@link AnonymousAWSCredentials}.</li>  *</ol>  */
 end_comment
 
 begin_class
@@ -401,14 +373,6 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-comment|/**    * The name, which is empty by default.    * Uses in the code assume if non empty there's a trailing space.    */
-DECL|field|name
-specifier|private
-name|String
-name|name
-init|=
-literal|""
-decl_stmt|;
 comment|/**    * Empty instance. This is not ready to be used.    */
 DECL|method|AWSCredentialProviderList ()
 specifier|public
@@ -437,83 +401,6 @@ name|providers
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create with an initial list of providers.    * @param name name for error messages, may be ""    * @param providerArgs provider list.    */
-DECL|method|AWSCredentialProviderList (final String name, final AWSCredentialsProvider... providerArgs)
-specifier|public
-name|AWSCredentialProviderList
-parameter_list|(
-specifier|final
-name|String
-name|name
-parameter_list|,
-specifier|final
-name|AWSCredentialsProvider
-modifier|...
-name|providerArgs
-parameter_list|)
-block|{
-name|setName
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-name|Collections
-operator|.
-name|addAll
-argument_list|(
-name|providers
-argument_list|,
-name|providerArgs
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Set the name; adds a ": " if needed.    * @param name name to add, or "" for no name.    */
-DECL|method|setName (final String name)
-specifier|public
-name|void
-name|setName
-parameter_list|(
-specifier|final
-name|String
-name|name
-parameter_list|)
-block|{
-if|if
-condition|(
-operator|!
-name|name
-operator|.
-name|isEmpty
-argument_list|()
-operator|&&
-operator|!
-name|name
-operator|.
-name|endsWith
-argument_list|(
-literal|": "
-argument_list|)
-condition|)
-block|{
-name|this
-operator|.
-name|name
-operator|=
-name|name
-operator|+
-literal|": "
-expr_stmt|;
-block|}
-else|else
-block|{
-name|this
-operator|.
-name|name
-operator|=
-name|name
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Add a new provider.    * @param p provider    */
 DECL|method|add (AWSCredentialsProvider p)
 specifier|public
@@ -529,26 +416,6 @@ operator|.
 name|add
 argument_list|(
 name|p
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Add all providers from another list to this one.    * @param other the other list.    */
-DECL|method|addAll (AWSCredentialProviderList other)
-specifier|public
-name|void
-name|addAll
-parameter_list|(
-name|AWSCredentialProviderList
-name|other
-parameter_list|)
-block|{
-name|providers
-operator|.
-name|addAll
-argument_list|(
-name|other
-operator|.
-name|providers
 argument_list|)
 expr_stmt|;
 block|}
@@ -610,8 +477,6 @@ throw|throw
 operator|new
 name|NoAuthWithAWSException
 argument_list|(
-name|name
-operator|+
 name|CREDENTIALS_REQUESTED_WHEN_CLOSED
 argument_list|)
 throw|;
@@ -658,17 +523,6 @@ operator|.
 name|getCredentials
 argument_list|()
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|credentials
-argument_list|,
-literal|"Null credentials returned by %s"
-argument_list|,
-name|provider
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|(
@@ -714,44 +568,6 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|NoAwsCredentialsException
-name|e
-parameter_list|)
-block|{
-comment|// don't bother with the stack trace here as it is usually a
-comment|// minor detail.
-comment|// only update the last exception if it isn't set.
-comment|// Why so? Stops delegation token issues being lost on the fallback
-comment|// values.
-if|if
-condition|(
-name|lastException
-operator|==
-literal|null
-condition|)
-block|{
-name|lastException
-operator|=
-name|e
-expr_stmt|;
-block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"No credentials from {}: {}"
-argument_list|,
-name|provider
-argument_list|,
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
 name|AmazonClientException
 name|e
 parameter_list|)
@@ -783,8 +599,6 @@ comment|// or create a new one.
 name|String
 name|message
 init|=
-name|name
-operator|+
 literal|"No AWS Credentials provided by "
 operator|+
 name|listProviderNames
@@ -804,19 +618,6 @@ operator|+
 name|lastException
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|lastException
-operator|instanceof
-name|CredentialInitializationException
-condition|)
-block|{
-throw|throw
-name|lastException
-throw|;
-block|}
-else|else
-block|{
 throw|throw
 operator|new
 name|NoAuthWithAWSException
@@ -826,7 +627,6 @@ argument_list|,
 name|lastException
 argument_list|)
 throw|;
-block|}
 block|}
 comment|/**    * Returns the underlying list of providers.    *    * @return providers    */
 annotation|@
@@ -862,8 +662,6 @@ throw|throw
 operator|new
 name|NoAuthWithAWSException
 argument_list|(
-name|name
-operator|+
 name|NO_AWS_CREDENTIAL_PROVIDERS
 argument_list|)
 throw|;
@@ -918,8 +716,6 @@ block|{
 return|return
 literal|"AWSCredentialProviderList["
 operator|+
-name|name
-operator|+
 literal|"refcount= "
 operator|+
 name|refCount
@@ -939,20 +735,6 @@ literal|", "
 argument_list|)
 operator|+
 literal|']'
-operator|+
-operator|(
-name|lastProvider
-operator|!=
-literal|null
-condition|?
-operator|(
-literal|" last provider: "
-operator|+
-name|lastProvider
-operator|)
-else|:
-literal|""
-operator|)
 return|;
 block|}
 comment|/**    * Get a reference to this object with an updated reference count.    *    * @return a reference to this    */
@@ -1137,20 +919,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * Get the size of this list.    * @return the number of providers in the list.    */
-DECL|method|size ()
-specifier|public
-name|int
-name|size
-parameter_list|()
-block|{
-return|return
-name|providers
-operator|.
-name|size
-argument_list|()
-return|;
 block|}
 block|}
 end_class

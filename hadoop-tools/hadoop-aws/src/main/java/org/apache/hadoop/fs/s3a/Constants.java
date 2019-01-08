@@ -126,7 +126,7 @@ name|SECRET_KEY
 init|=
 literal|"fs.s3a.secret.key"
 decl_stmt|;
-comment|// aws credentials providers
+comment|// aws credentials provider
 DECL|field|AWS_CREDENTIALS_PROVIDER
 specifier|public
 specifier|static
@@ -146,7 +146,7 @@ name|S3A_SECURITY_CREDENTIAL_PROVIDER_PATH
 init|=
 literal|"fs.s3a.security.credential.provider.path"
 decl_stmt|;
-comment|/**    * session token for when using TemporaryAWSCredentialsProvider: : {@value}.    */
+comment|// session token for when using TemporaryAWSCredentialsProvider
 DECL|field|SESSION_TOKEN
 specifier|public
 specifier|static
@@ -156,7 +156,7 @@ name|SESSION_TOKEN
 init|=
 literal|"fs.s3a.session.token"
 decl_stmt|;
-comment|/**    * ARN of AWS Role to request: {@value}.    */
+comment|/**    * AWS Role to request.    */
 DECL|field|ASSUMED_ROLE_ARN
 specifier|public
 specifier|static
@@ -166,7 +166,7 @@ name|ASSUMED_ROLE_ARN
 init|=
 literal|"fs.s3a.assumed.role.arn"
 decl_stmt|;
-comment|/**    * Session name for the assumed role, must be valid characters according    * to the AWS APIs: {@value}.    * If not set, one is generated from the current Hadoop/Kerberos username.    */
+comment|/**    * Session name for the assumed role, must be valid characters according    * to the AWS APIs.    * If not set, one is generated from the current Hadoop/Kerberos username.    */
 DECL|field|ASSUMED_ROLE_SESSION_NAME
 specifier|public
 specifier|static
@@ -186,7 +186,7 @@ name|ASSUMED_ROLE_SESSION_DURATION
 init|=
 literal|"fs.s3a.assumed.role.session.duration"
 decl_stmt|;
-comment|/**    * Security Token Service Endpoint: {@value}.    * If unset, uses the default endpoint.    */
+comment|/** Security Token Service Endpoint. If unset, uses the default endpoint. */
 DECL|field|ASSUMED_ROLE_STS_ENDPOINT
 specifier|public
 specifier|static
@@ -196,17 +196,7 @@ name|ASSUMED_ROLE_STS_ENDPOINT
 init|=
 literal|"fs.s3a.assumed.role.sts.endpoint"
 decl_stmt|;
-comment|/**    * Default endpoint for session tokens: {@value}.    * This is the central STS endpoint which, for v3 signing, can    * issue STS tokens for any region.    */
-DECL|field|DEFAULT_ASSUMED_ROLE_STS_ENDPOINT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_ASSUMED_ROLE_STS_ENDPOINT
-init|=
-literal|""
-decl_stmt|;
-comment|/**    * Region for the STS endpoint; needed if the endpoint    * is set to anything other then the central one.: {@value}.    */
+comment|/**    * Region for the STS endpoint; only relevant if the endpoint    * is set.    */
 DECL|field|ASSUMED_ROLE_STS_ENDPOINT_REGION
 specifier|public
 specifier|static
@@ -216,7 +206,7 @@ name|ASSUMED_ROLE_STS_ENDPOINT_REGION
 init|=
 literal|"fs.s3a.assumed.role.sts.endpoint.region"
 decl_stmt|;
-comment|/**    * Default value for the STS endpoint region; needed for    * v4 signing: {@value}.    */
+comment|/**    * Default value for the STS endpoint region; needed for    * v4 signing.    */
 DECL|field|ASSUMED_ROLE_STS_ENDPOINT_REGION_DEFAULT
 specifier|public
 specifier|static
@@ -224,9 +214,9 @@ specifier|final
 name|String
 name|ASSUMED_ROLE_STS_ENDPOINT_REGION_DEFAULT
 init|=
-literal|""
+literal|"us-west-1"
 decl_stmt|;
-comment|/**    * Default duration of an assumed role: {@value}.    */
+comment|/**    * Default duration of an assumed role.    */
 DECL|field|ASSUMED_ROLE_SESSION_DURATION_DEFAULT
 specifier|public
 specifier|static
@@ -234,9 +224,9 @@ specifier|final
 name|String
 name|ASSUMED_ROLE_SESSION_DURATION_DEFAULT
 init|=
-literal|"1h"
+literal|"30m"
 decl_stmt|;
-comment|/**    * List of providers to authenticate for the assumed role: {@value}.    */
+comment|/** list of providers to authenticate for the assumed role. */
 DECL|field|ASSUMED_ROLE_CREDENTIALS_PROVIDER
 specifier|public
 specifier|static
@@ -246,7 +236,7 @@ name|ASSUMED_ROLE_CREDENTIALS_PROVIDER
 init|=
 literal|"fs.s3a.assumed.role.credentials.provider"
 decl_stmt|;
-comment|/**    * JSON policy containing the policy to apply to the role: {@value}.    * This is not used for delegation tokens, which generate the policy    * automatically, and restrict it to the S3, KMS and S3Guard services    * needed.    */
+comment|/** JSON policy containing the policy to apply to the role. */
 DECL|field|ASSUMED_ROLE_POLICY
 specifier|public
 specifier|static
@@ -907,7 +897,6 @@ name|FS_S3A_BUCKET_PREFIX
 init|=
 literal|"fs.s3a.bucket."
 decl_stmt|;
-comment|/**    * Default port for this is 443: HTTPS.    */
 DECL|field|S3A_DEFAULT_PORT
 specifier|public
 specifier|static
@@ -915,7 +904,8 @@ specifier|final
 name|int
 name|S3A_DEFAULT_PORT
 init|=
-literal|443
+operator|-
+literal|1
 decl_stmt|;
 DECL|field|USER_AGENT_PREFIX
 specifier|public

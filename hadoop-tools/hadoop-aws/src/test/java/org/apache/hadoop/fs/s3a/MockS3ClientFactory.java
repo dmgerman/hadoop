@@ -122,7 +122,7 @@ name|S3ClientFactory
 block|{
 annotation|@
 name|Override
-DECL|method|createS3Client (URI name, final String bucket, final AWSCredentialsProvider credentialSet, final String userAgentSuffix)
+DECL|method|createS3Client (URI name, final String bucket, final AWSCredentialsProvider credentialSet)
 specifier|public
 name|AmazonS3
 name|createS3Client
@@ -137,10 +137,6 @@ parameter_list|,
 specifier|final
 name|AWSCredentialsProvider
 name|credentialSet
-parameter_list|,
-specifier|final
-name|String
-name|userAgentSuffix
 parameter_list|)
 block|{
 name|AmazonS3

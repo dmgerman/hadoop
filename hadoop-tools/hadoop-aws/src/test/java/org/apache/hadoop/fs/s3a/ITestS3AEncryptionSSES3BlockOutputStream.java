@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a.auth
+DECL|package|org.apache.hadoop.fs.s3a
 package|package
 name|org
 operator|.
@@ -15,68 +15,94 @@ operator|.
 name|fs
 operator|.
 name|s3a
-operator|.
-name|auth
 package|;
 end_package
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|amazonaws
+name|apache
 operator|.
-name|AmazonClientException
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
 begin_comment
-comment|/**  * A specific subclass of {@code AmazonClientException} which can  * be used in the retry logic to fail fast when there is any  * authentication problem.  */
+comment|/**  * Run the encryption tests against the block output stream.  */
 end_comment
 
 begin_class
-DECL|class|NoAuthWithAWSException
+DECL|class|ITestS3AEncryptionSSES3BlockOutputStream
 specifier|public
 class|class
-name|NoAuthWithAWSException
+name|ITestS3AEncryptionSSES3BlockOutputStream
 extends|extends
-name|AmazonClientException
+name|AbstractTestS3AEncryption
 block|{
-DECL|method|NoAuthWithAWSException (final String message, final Throwable t)
-specifier|public
-name|NoAuthWithAWSException
-parameter_list|(
-specifier|final
-name|String
-name|message
-parameter_list|,
-specifier|final
-name|Throwable
-name|t
-parameter_list|)
+annotation|@
+name|Override
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
 block|{
+name|Configuration
+name|conf
+init|=
 name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
 argument_list|(
-name|message
+name|Constants
+operator|.
+name|FAST_UPLOAD_BUFFER
 argument_list|,
-name|t
+name|Constants
+operator|.
+name|FAST_UPLOAD_BYTEBUFFER
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|NoAuthWithAWSException (final String message)
-specifier|public
-name|NoAuthWithAWSException
-parameter_list|(
-specifier|final
-name|String
-name|message
-parameter_list|)
-block|{
-name|super
+comment|//must specify encryption key as empty because SSE-S3 does not allow it,
+comment|//nor can it be null.
+name|conf
+operator|.
+name|set
 argument_list|(
-name|message
+name|Constants
+operator|.
+name|SERVER_SIDE_ENCRYPTION_KEY
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSSEAlgorithm ()
+specifier|protected
+name|S3AEncryptionMethods
+name|getSSEAlgorithm
+parameter_list|()
+block|{
+return|return
+name|S3AEncryptionMethods
+operator|.
+name|SSE_S3
+return|;
 block|}
 block|}
 end_class

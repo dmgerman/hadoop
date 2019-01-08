@@ -43,7 +43,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This enum is to centralize the encryption methods and  * the value required in the configuration.  *  * There's two enum values for the two client encryption mechanisms the AWS  * S3 SDK supports, even though these are not currently supported in S3A.  * This is to aid supporting CSE in some form in future, fundamental  * issues about file length of encrypted data notwithstanding.  *  */
+comment|/**  * This enum is to centralize the encryption methods and  * the value required in the configuration.  */
 end_comment
 
 begin_enum
@@ -52,52 +52,28 @@ specifier|public
 enum|enum
 name|S3AEncryptionMethods
 block|{
-DECL|enumConstant|NONE
-name|NONE
-argument_list|(
-literal|""
-argument_list|,
-literal|false
-argument_list|)
-block|,
 DECL|enumConstant|SSE_S3
 name|SSE_S3
 argument_list|(
 literal|"AES256"
-argument_list|,
-literal|true
 argument_list|)
 block|,
 DECL|enumConstant|SSE_KMS
 name|SSE_KMS
 argument_list|(
 literal|"SSE-KMS"
-argument_list|,
-literal|true
 argument_list|)
 block|,
 DECL|enumConstant|SSE_C
 name|SSE_C
 argument_list|(
 literal|"SSE-C"
-argument_list|,
-literal|true
 argument_list|)
 block|,
-DECL|enumConstant|CSE_KMS
-name|CSE_KMS
+DECL|enumConstant|NONE
+name|NONE
 argument_list|(
-literal|"CSE-KMS"
-argument_list|,
-literal|false
-argument_list|)
-block|,
-DECL|enumConstant|CSE_CUSTOM
-name|CSE_CUSTOM
-argument_list|(
-literal|"CSE-CUSTOM"
-argument_list|,
-literal|false
+literal|""
 argument_list|)
 block|;
 DECL|field|UNKNOWN_ALGORITHM
@@ -106,27 +82,18 @@ specifier|final
 name|String
 name|UNKNOWN_ALGORITHM
 init|=
-literal|"Unknown encryption algorithm "
+literal|"Unknown Server Side Encryption algorithm "
 decl_stmt|;
 DECL|field|method
 specifier|private
 name|String
 name|method
 decl_stmt|;
-DECL|field|serverSide
-specifier|private
-name|boolean
-name|serverSide
-decl_stmt|;
-DECL|method|S3AEncryptionMethods (String method, final boolean serverSide)
+DECL|method|S3AEncryptionMethods (String method)
 name|S3AEncryptionMethods
 parameter_list|(
 name|String
 name|method
-parameter_list|,
-specifier|final
-name|boolean
-name|serverSide
 parameter_list|)
 block|{
 name|this
@@ -134,12 +101,6 @@ operator|.
 name|method
 operator|=
 name|method
-expr_stmt|;
-name|this
-operator|.
-name|serverSide
-operator|=
-name|serverSide
 expr_stmt|;
 block|}
 DECL|method|getMethod ()
@@ -150,17 +111,6 @@ parameter_list|()
 block|{
 return|return
 name|method
-return|;
-block|}
-comment|/**    * Flag to indicate this is a server-side encryption option.    * @return true if this is server side.    */
-DECL|method|isServerSide ()
-specifier|public
-name|boolean
-name|isServerSide
-parameter_list|()
-block|{
-return|return
-name|serverSide
 return|;
 block|}
 comment|/**    * Get the encryption mechanism from the value provided.    * @param name algorithm name    * @return the method    * @throws IOException if the algorithm is unknown    */
@@ -190,33 +140,30 @@ return|return
 name|NONE
 return|;
 block|}
-for|for
-control|(
-name|S3AEncryptionMethods
-name|v
-range|:
-name|values
-argument_list|()
-control|)
-block|{
-if|if
+switch|switch
 condition|(
-name|v
-operator|.
-name|getMethod
-argument_list|()
-operator|.
-name|equals
-argument_list|(
 name|name
-argument_list|)
 condition|)
 block|{
+case|case
+literal|"AES256"
+case|:
 return|return
-name|v
+name|SSE_S3
 return|;
-block|}
-block|}
+case|case
+literal|"SSE-KMS"
+case|:
+return|return
+name|SSE_KMS
+return|;
+case|case
+literal|"SSE-C"
+case|:
+return|return
+name|SSE_C
+return|;
+default|default:
 throw|throw
 operator|new
 name|IOException
@@ -226,6 +173,7 @@ operator|+
 name|name
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 end_enum

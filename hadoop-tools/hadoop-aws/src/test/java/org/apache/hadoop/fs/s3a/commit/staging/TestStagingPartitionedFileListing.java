@@ -300,7 +300,7 @@ return|return
 operator|new
 name|PartitionedStagingCommitter
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|createTaskAttemptForJob
 argument_list|()
@@ -320,7 +320,7 @@ return|return
 operator|new
 name|PartitionedStagingCommitter
 argument_list|(
-name|outputPath
+name|OUTPUT_PATH
 argument_list|,
 name|getTAC
 argument_list|()
