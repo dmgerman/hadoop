@@ -185,6 +185,21 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+name|block
+operator|.
+name|isStriped
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

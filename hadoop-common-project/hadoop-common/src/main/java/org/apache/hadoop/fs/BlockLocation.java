@@ -834,6 +834,17 @@ return|return
 name|corrupt
 return|;
 block|}
+comment|/**    * Return true if the block is striped (erasure coded).    */
+DECL|method|isStriped ()
+specifier|public
+name|boolean
+name|isStriped
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Set the start offset of file associated with this block    */
 DECL|method|setOffset (long offset)
 specifier|public
