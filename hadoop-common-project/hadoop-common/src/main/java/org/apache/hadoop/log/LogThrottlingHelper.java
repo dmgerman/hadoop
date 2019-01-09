@@ -490,7 +490,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Helper function to create a message about how many log statements were    * suppressed in the provided log action. If no statements were suppressed,    * this returns an empty string. The message has the format (without quotes):    *    *<p/>' (suppressed logging<i>{suppression_count}</i> times)'    *    * @param action The log action to produce a message about.    * @return A message about suppression within this action.    */
+comment|/**    * Helper function to create a message about how many log statements were    * suppressed in the provided log action. If no statements were suppressed,    * this returns an empty string. The message has the format (without quotes):    *    *<p>' (suppressed logging<i>{suppression_count}</i> times)'</p>    *    * @param action The log action to produce a message about.    * @return A message about suppression within this action.    */
 DECL|method|getLogSupressionMessage (LogAction action)
 specifier|public
 specifier|static
