@@ -220,24 +220,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|om
-operator|.
-name|protocol
-operator|.
-name|OzoneManagerProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|ratis
 operator|.
 name|RaftConfigKeys
@@ -553,12 +535,6 @@ specifier|final
 name|RaftPeerId
 name|raftPeerId
 decl_stmt|;
-DECL|field|ozoneManager
-specifier|private
-specifier|final
-name|OzoneManagerProtocol
-name|ozoneManager
-decl_stmt|;
 DECL|field|CALL_ID_COUNTER
 specifier|private
 specifier|static
@@ -588,13 +564,10 @@ operator|.
 name|MAX_VALUE
 return|;
 block|}
-DECL|method|OzoneManagerRatisServer (OzoneManagerProtocol om, String omId, InetAddress addr, int port, Configuration conf)
+DECL|method|OzoneManagerRatisServer (String omId, InetAddress addr, int port, Configuration conf)
 specifier|private
 name|OzoneManagerRatisServer
 parameter_list|(
-name|OzoneManagerProtocol
-name|om
-parameter_list|,
 name|String
 name|omId
 parameter_list|,
@@ -616,14 +589,8 @@ name|requireNonNull
 argument_list|(
 name|omId
 argument_list|,
-literal|"omId is null"
+literal|"omId == null"
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|ozoneManager
-operator|=
-name|om
 expr_stmt|;
 name|this
 operator|.
@@ -743,15 +710,12 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|newOMRatisServer ( OzoneManagerProtocol om, String omId, InetAddress omAddress, Configuration ozoneConf)
+DECL|method|newOMRatisServer (String omId, InetAddress omAddress, Configuration ozoneConf)
 specifier|public
 specifier|static
 name|OzoneManagerRatisServer
 name|newOMRatisServer
 parameter_list|(
-name|OzoneManagerProtocol
-name|om
-parameter_list|,
 name|String
 name|omId
 parameter_list|,
@@ -873,8 +837,6 @@ return|return
 operator|new
 name|OzoneManagerRatisServer
 argument_list|(
-name|om
-argument_list|,
 name|omId
 argument_list|,
 name|omAddress
@@ -897,7 +859,7 @@ operator|.
 name|raftGroup
 return|;
 block|}
-comment|/**    * Returns OzoneManager StateMachine.    */
+comment|/**    * Return a dummy StateMachine.    * TODO: Implement a state machine on OM.    */
 DECL|method|getStateMachine (RaftGroupId gid)
 specifier|private
 name|BaseStateMachine
@@ -911,7 +873,7 @@ return|return
 operator|new
 name|OzoneManagerStateMachine
 argument_list|(
-name|ozoneManager
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1260,7 +1222,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// For grpc set the maximum message size
-comment|// TODO: calculate the optimal max message size
+comment|// TODO: calculate the max message size based on the max size of a
+comment|// PutSmallFileRequest's file size limit
 name|GrpcConfigKeys
 operator|.
 name|setMessageSizeMax
@@ -1550,6 +1513,7 @@ name|clientRequestTimeout
 argument_list|)
 expr_stmt|;
 comment|// TODO: set max write buffer size
+comment|/**      * TODO: when state machine is implemented, enable StateMachineData sync      * and set sync timeout and number of sync retries.      */
 comment|/**      * TODO: set following ratis leader election related configs when      * replicated ratis server is implemented.      * 1. node failure timeout      */
 comment|// Set the ratis leader election timeout
 name|TimeUnit

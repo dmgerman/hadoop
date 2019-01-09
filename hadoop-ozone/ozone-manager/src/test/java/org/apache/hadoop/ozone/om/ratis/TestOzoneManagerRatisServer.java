@@ -420,8 +420,6 @@ name|OzoneManagerRatisServer
 operator|.
 name|newOMRatisServer
 argument_list|(
-literal|null
-argument_list|,
 name|omID
 argument_list|,
 name|InetAddress
@@ -580,22 +578,8 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|OzoneManagerProtocolProtos
-operator|.
-name|Type
-operator|.
-name|CreateVolume
-argument_list|,
-name|response
-operator|.
-name|getCmdType
-argument_list|()
-argument_list|)
-expr_stmt|;
+comment|// Since the state machine is not implemented yet, we should get the
+comment|// configured dummy message from Ratis.
 name|Assert
 operator|.
 name|assertEquals
@@ -606,6 +590,29 @@ name|response
 operator|.
 name|getSuccess
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|response
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Dummy response from "
+operator|+
+literal|"Ratis server for command type: "
+operator|+
+name|OzoneManagerProtocolProtos
+operator|.
+name|Type
+operator|.
+name|CreateVolume
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Assert
