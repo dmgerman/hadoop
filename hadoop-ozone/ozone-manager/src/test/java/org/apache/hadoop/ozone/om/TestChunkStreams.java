@@ -40,13 +40,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|client
+name|scm
 operator|.
-name|io
+name|storage
 operator|.
-name|ChunkGroupInputStream
+name|BlockInputStream
 import|;
 end_import
 
@@ -58,13 +58,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
-name|scm
+name|client
 operator|.
-name|storage
+name|io
 operator|.
-name|ChunkInputStream
+name|KeyInputStream
 import|;
 end_import
 
@@ -157,7 +157,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests ChunkGroupInputStream and KeyOutputStream.  */
+comment|/**  * This class tests KeyInputStream and KeyOutputStream.  */
 end_comment
 
 begin_class
@@ -190,11 +190,11 @@ name|Exception
 block|{
 try|try
 init|(
-name|ChunkGroupInputStream
+name|KeyInputStream
 name|groupInputStream
 init|=
 operator|new
-name|ChunkGroupInputStream
+name|KeyInputStream
 argument_list|()
 init|)
 block|{
@@ -244,11 +244,11 @@ name|tempOffset
 init|=
 name|offset
 decl_stmt|;
-name|ChunkInputStream
+name|BlockInputStream
 name|in
 init|=
 operator|new
-name|ChunkInputStream
+name|BlockInputStream
 argument_list|(
 literal|null
 argument_list|,
@@ -468,11 +468,11 @@ name|Exception
 block|{
 try|try
 init|(
-name|ChunkGroupInputStream
+name|KeyInputStream
 name|groupInputStream
 init|=
 operator|new
-name|ChunkGroupInputStream
+name|KeyInputStream
 argument_list|()
 init|)
 block|{
@@ -522,11 +522,11 @@ name|tempOffset
 init|=
 name|offset
 decl_stmt|;
-name|ChunkInputStream
+name|BlockInputStream
 name|in
 init|=
 operator|new
-name|ChunkInputStream
+name|BlockInputStream
 argument_list|(
 literal|null
 argument_list|,

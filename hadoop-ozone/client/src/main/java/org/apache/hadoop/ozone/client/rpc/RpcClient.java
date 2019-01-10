@@ -326,7 +326,7 @@ name|client
 operator|.
 name|io
 operator|.
-name|ChunkGroupInputStream
+name|KeyInputStream
 import|;
 end_import
 
@@ -3595,7 +3595,7 @@ decl_stmt|;
 name|LengthInputStream
 name|lengthInputStream
 init|=
-name|ChunkGroupInputStream
+name|KeyInputStream
 operator|.
 name|getFromOmKeyInfo
 argument_list|(

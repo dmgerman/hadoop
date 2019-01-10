@@ -48,7 +48,7 @@ name|client
 operator|.
 name|io
 operator|.
-name|ChunkGroupInputStream
+name|KeyInputStream
 import|;
 end_import
 
@@ -73,7 +73,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * S3Wrapper Input Stream which encapsulates ChunkGroupInputStream from ozone.  */
+comment|/**  * S3Wrapper Input Stream which encapsulates KeyInputStream from ozone.  */
 end_comment
 
 begin_class
@@ -87,10 +87,10 @@ block|{
 DECL|field|inputStream
 specifier|private
 specifier|final
-name|ChunkGroupInputStream
+name|KeyInputStream
 name|inputStream
 decl_stmt|;
-comment|/**    * Constructs S3WrapperInputStream with ChunkInputStream.    *    * @param inputStream    */
+comment|/**    * Constructs S3WrapperInputStream with KeyInputStream.    *    * @param inputStream    */
 DECL|method|S3WrapperInputStream (InputStream inputStream)
 specifier|public
 name|S3WrapperInputStream
@@ -104,7 +104,7 @@ operator|.
 name|inputStream
 operator|=
 operator|(
-name|ChunkGroupInputStream
+name|KeyInputStream
 operator|)
 name|inputStream
 expr_stmt|;

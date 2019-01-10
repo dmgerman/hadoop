@@ -443,7 +443,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Maintaining a list of ChunkInputStream. Write based on offset.  *  * Note that this may write to multiple containers in one write call. In case  * that first container succeeded but later ones failed, the succeeded writes  * are not rolled back.  *  * TODO : currently not support multi-thread access.  */
+comment|/**  * Maintaining a list of BlockInputStream. Write based on offset.  *  * Note that this may write to multiple containers in one write call. In case  * that first container succeeded but later ones failed, the succeeded writes  * are not rolled back.  *  * TODO : currently not support multi-thread access.  */
 end_comment
 
 begin_class

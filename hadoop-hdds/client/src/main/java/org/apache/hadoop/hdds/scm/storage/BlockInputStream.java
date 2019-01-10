@@ -265,10 +265,10 @@ comment|/**  * An {@link InputStream} used by the REST service in combination wi
 end_comment
 
 begin_class
-DECL|class|ChunkInputStream
+DECL|class|BlockInputStream
 specifier|public
 class|class
-name|ChunkInputStream
+name|BlockInputStream
 extends|extends
 name|InputStream
 implements|implements
@@ -338,10 +338,10 @@ specifier|private
 name|int
 name|bufferIndex
 decl_stmt|;
-comment|/**    * Creates a new ChunkInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
-DECL|method|ChunkInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
+comment|/**    * Creates a new BlockInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
+DECL|method|BlockInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
 specifier|public
-name|ChunkInputStream
+name|BlockInputStream
 parameter_list|(
 name|BlockID
 name|blockID
@@ -400,7 +400,7 @@ operator|-
 literal|1
 expr_stmt|;
 comment|// chunkOffset[i] stores offset at which chunk i stores data in
-comment|// ChunkInputStream
+comment|// BlockInputStream
 name|this
 operator|.
 name|chunkOffset
@@ -736,7 +736,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"ChunkInputStream has been closed."
+literal|"BlockInputStream has been closed."
 argument_list|)
 throw|;
 block|}

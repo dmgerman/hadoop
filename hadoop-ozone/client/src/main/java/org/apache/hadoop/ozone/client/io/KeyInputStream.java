@@ -256,7 +256,7 @@ name|scm
 operator|.
 name|storage
 operator|.
-name|ChunkInputStream
+name|BlockInputStream
 import|;
 end_import
 
@@ -373,14 +373,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Maintaining a list of ChunkInputStream. Read based on offset.  */
+comment|/**  * Maintaining a list of BlockInputStream. Read based on offset.  */
 end_comment
 
 begin_class
-DECL|class|ChunkGroupInputStream
+DECL|class|KeyInputStream
 specifier|public
 class|class
-name|ChunkGroupInputStream
+name|KeyInputStream
 extends|extends
 name|InputStream
 implements|implements
@@ -397,7 +397,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ChunkGroupInputStream
+name|KeyInputStream
 operator|.
 name|class
 argument_list|)
@@ -421,7 +421,7 @@ name|ChunkInputStreamEntry
 argument_list|>
 name|streamEntries
 decl_stmt|;
-comment|// streamOffset[i] stores the offset at which chunkInputStream i stores
+comment|// streamOffset[i] stores the offset at which blockInputStream i stores
 comment|// data in the key
 DECL|field|streamOffset
 specifier|private
@@ -455,9 +455,9 @@ specifier|private
 name|String
 name|key
 decl_stmt|;
-DECL|method|ChunkGroupInputStream ()
+DECL|method|KeyInputStream ()
 specifier|public
-name|ChunkGroupInputStream
+name|KeyInputStream
 parameter_list|()
 block|{
 name|streamEntries
@@ -511,13 +511,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Append another stream to the end of the list.    *    * @param stream       the stream instance.    * @param streamLength the max number of bytes that should be written to this    *                     stream.    */
-DECL|method|addStream (ChunkInputStream stream, long streamLength)
+DECL|method|addStream (BlockInputStream stream, long streamLength)
 specifier|public
 specifier|synchronized
 name|void
 name|addStream
 parameter_list|(
-name|ChunkInputStream
+name|BlockInputStream
 name|stream
 parameter_list|,
 name|long
@@ -782,7 +782,7 @@ literal|"Inconsistent read for blockID=%s length=%d numBytesRead=%d"
 argument_list|,
 name|current
 operator|.
-name|chunkInputStream
+name|blockInputStream
 operator|.
 name|getBlockID
 argument_list|()
@@ -1011,7 +1011,7 @@ operator|-
 literal|2
 expr_stmt|;
 block|}
-comment|// seek to the proper offset in the ChunkInputStream
+comment|// seek to the proper offset in the BlockInputStream
 name|streamEntries
 operator|.
 name|get
@@ -1162,7 +1162,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Encapsulates ChunkInputStream.    */
+comment|/**    * Encapsulates BlockInputStream.    */
 DECL|class|ChunkInputStreamEntry
 specifier|public
 specifier|static
@@ -1173,11 +1173,11 @@ name|InputStream
 implements|implements
 name|Seekable
 block|{
-DECL|field|chunkInputStream
+DECL|field|blockInputStream
 specifier|private
 specifier|final
-name|ChunkInputStream
-name|chunkInputStream
+name|BlockInputStream
+name|blockInputStream
 decl_stmt|;
 DECL|field|length
 specifier|private
@@ -1185,12 +1185,12 @@ specifier|final
 name|long
 name|length
 decl_stmt|;
-DECL|method|ChunkInputStreamEntry (ChunkInputStream chunkInputStream, long length)
+DECL|method|ChunkInputStreamEntry (BlockInputStream blockInputStream, long length)
 specifier|public
 name|ChunkInputStreamEntry
 parameter_list|(
-name|ChunkInputStream
-name|chunkInputStream
+name|BlockInputStream
+name|blockInputStream
 parameter_list|,
 name|long
 name|length
@@ -1198,9 +1198,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|chunkInputStream
+name|blockInputStream
 operator|=
-name|chunkInputStream
+name|blockInputStream
 expr_stmt|;
 name|this
 operator|.
@@ -1248,7 +1248,7 @@ block|{
 name|int
 name|readLen
 init|=
-name|chunkInputStream
+name|blockInputStream
 operator|.
 name|read
 argument_list|(
@@ -1277,7 +1277,7 @@ block|{
 name|int
 name|data
 init|=
-name|chunkInputStream
+name|blockInputStream
 operator|.
 name|read
 argument_list|()
@@ -1297,7 +1297,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|chunkInputStream
+name|blockInputStream
 operator|.
 name|close
 argument_list|()
@@ -1316,7 +1316,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|chunkInputStream
+name|blockInputStream
 operator|.
 name|seek
 argument_list|(
@@ -1335,7 +1335,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|chunkInputStream
+name|blockInputStream
 operator|.
 name|getPos
 argument_list|()
@@ -1388,11 +1388,11 @@ decl_stmt|;
 name|long
 name|containerKey
 decl_stmt|;
-name|ChunkGroupInputStream
+name|KeyInputStream
 name|groupInputStream
 init|=
 operator|new
-name|ChunkGroupInputStream
+name|KeyInputStream
 argument_list|()
 decl_stmt|;
 name|groupInputStream
@@ -1639,11 +1639,11 @@ name|success
 operator|=
 literal|true
 expr_stmt|;
-name|ChunkInputStream
+name|BlockInputStream
 name|inputStream
 init|=
 operator|new
-name|ChunkInputStream
+name|BlockInputStream
 argument_list|(
 name|omKeyLocationInfo
 operator|.

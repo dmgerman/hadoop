@@ -34,7 +34,7 @@ name|scm
 operator|.
 name|storage
 operator|.
-name|ChunkInputStream
+name|BlockInputStream
 import|;
 end_import
 
@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OzoneInputStream is used to read data from Ozone.  * It uses SCM's {@link ChunkInputStream} for reading the data.  */
+comment|/**  * OzoneInputStream is used to read data from Ozone.  * It uses {@link KeyInputStream} for reading the data.  */
 end_comment
 
 begin_class
@@ -76,7 +76,7 @@ specifier|final
 name|InputStream
 name|inputStream
 decl_stmt|;
-comment|/**    * Constructs OzoneInputStream with ChunkInputStream.    *    * @param inputStream    */
+comment|/**    * Constructs OzoneInputStream with KeyInputStream.    *    * @param inputStream    */
 DECL|method|OzoneInputStream (InputStream inputStream)
 specifier|public
 name|OzoneInputStream

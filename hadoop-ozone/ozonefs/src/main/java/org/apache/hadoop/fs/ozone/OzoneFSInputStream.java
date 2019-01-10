@@ -74,7 +74,7 @@ name|client
 operator|.
 name|io
 operator|.
-name|ChunkGroupInputStream
+name|KeyInputStream
 import|;
 end_import
 
@@ -122,7 +122,7 @@ block|{
 DECL|field|inputStream
 specifier|private
 specifier|final
-name|ChunkGroupInputStream
+name|KeyInputStream
 name|inputStream
 decl_stmt|;
 DECL|method|OzoneFSInputStream (InputStream inputStream)
@@ -138,7 +138,7 @@ operator|.
 name|inputStream
 operator|=
 operator|(
-name|ChunkGroupInputStream
+name|KeyInputStream
 operator|)
 name|inputStream
 expr_stmt|;
