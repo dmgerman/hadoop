@@ -114,11 +114,7 @@ parameter_list|()
 block|{
 name|xmlFilename
 operator|=
-operator|new
-name|String
-argument_list|(
 literal|"ozone-default.xml"
-argument_list|)
 expr_stmt|;
 name|configurationClasses
 operator|=
@@ -188,6 +184,15 @@ argument_list|(
 name|HddsConfigKeys
 operator|.
 name|HDDS_SECURITY_PROVIDER
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_GRPC_TLS_TEST_CERT
 argument_list|)
 expr_stmt|;
 block|}
