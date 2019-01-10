@@ -2174,6 +2174,27 @@ operator|.
 name|state
 return|;
 block|}
+comment|/**    * Compare router state.    */
+DECL|method|isRouterState (RouterServiceState routerState)
+specifier|public
+name|boolean
+name|isRouterState
+parameter_list|(
+name|RouterServiceState
+name|routerState
+parameter_list|)
+block|{
+return|return
+name|routerState
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|state
+argument_list|)
+return|;
+block|}
 comment|/////////////////////////////////////////////////////////
 comment|// Submodule getters
 comment|/////////////////////////////////////////////////////////

@@ -3497,7 +3497,15 @@ name|getRouterStatus
 parameter_list|()
 block|{
 return|return
-literal|"RUNNING"
+name|this
+operator|.
+name|router
+operator|.
+name|getRouterState
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 comment|/**    * Build a set of unique values found in all namespaces.    *    * @param f Method reference of the appropriate FederationNamespaceInfo    *          getter function    * @return Set of unique string values found in all discovered namespaces.    * @throws IOException if the query could not be executed.    */
