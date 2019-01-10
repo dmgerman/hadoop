@@ -2581,6 +2581,11 @@ operator|.
 name|getReadAheadQueueDepth
 argument_list|()
 argument_list|,
+name|abfsConfiguration
+operator|.
+name|getTolerateOobAppends
+argument_list|()
+argument_list|,
 name|eTag
 argument_list|)
 return|;

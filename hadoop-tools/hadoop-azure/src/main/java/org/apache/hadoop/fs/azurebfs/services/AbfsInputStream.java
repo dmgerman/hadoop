@@ -278,7 +278,7 @@ name|closed
 init|=
 literal|false
 decl_stmt|;
-DECL|method|AbfsInputStream ( final AbfsClient client, final Statistics statistics, final String path, final long contentLength, final int bufferSize, final int readAheadQueueDepth, final String eTag)
+DECL|method|AbfsInputStream ( final AbfsClient client, final Statistics statistics, final String path, final long contentLength, final int bufferSize, final int readAheadQueueDepth, final boolean tolerateOobAppends, final String eTag)
 specifier|public
 name|AbfsInputStream
 parameter_list|(
@@ -305,6 +305,10 @@ parameter_list|,
 specifier|final
 name|int
 name|readAheadQueueDepth
+parameter_list|,
+specifier|final
+name|boolean
+name|tolerateOobAppends
 parameter_list|,
 specifier|final
 name|String
@@ -363,15 +367,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|eTag
+name|tolerateOobAppends
 operator|=
-name|eTag
+name|tolerateOobAppends
 expr_stmt|;
 name|this
 operator|.
-name|tolerateOobAppends
+name|eTag
 operator|=
-literal|false
+name|eTag
 expr_stmt|;
 name|this
 operator|.
