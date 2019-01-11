@@ -865,12 +865,10 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|SecurityConfig
+name|secConfig
 operator|.
 name|isGrpcTlsEnabled
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 condition|)
 block|{
 name|File

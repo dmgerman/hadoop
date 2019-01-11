@@ -72,6 +72,38 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|SecurityConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|grpc
+operator|.
+name|GrpcTlsConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|ratis
 operator|.
 name|proto
@@ -546,6 +578,21 @@ argument_list|(
 name|ozoneConf
 argument_list|)
 decl_stmt|;
+specifier|final
+name|GrpcTlsConfig
+name|tlsConfig
+init|=
+name|RatisHelper
+operator|.
+name|createTlsClientConfig
+argument_list|(
+operator|new
+name|SecurityConfig
+argument_list|(
+name|ozoneConf
+argument_list|)
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|XceiverClientRatis
@@ -562,6 +609,8 @@ argument_list|,
 name|maxOutstandingRequests
 argument_list|,
 name|retryPolicy
+argument_list|,
+name|tlsConfig
 argument_list|)
 return|;
 block|}
@@ -603,6 +652,12 @@ specifier|final
 name|RetryPolicy
 name|retryPolicy
 decl_stmt|;
+DECL|field|tlsConfig
+specifier|private
+specifier|final
+name|GrpcTlsConfig
+name|tlsConfig
+decl_stmt|;
 comment|// Map to track commit index at every server
 DECL|field|commitInfoMap
 specifier|private
@@ -622,7 +677,7 @@ name|RaftClient
 name|watchClient
 decl_stmt|;
 comment|/**    * Constructs a client.    */
-DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks, RetryPolicy retryPolicy)
+DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks, RetryPolicy retryPolicy, GrpcTlsConfig tlsConfig)
 specifier|private
 name|XceiverClientRatis
 parameter_list|(
@@ -637,6 +692,9 @@ name|maxOutStandingChunks
 parameter_list|,
 name|RetryPolicy
 name|retryPolicy
+parameter_list|,
+name|GrpcTlsConfig
+name|tlsConfig
 parameter_list|)
 block|{
 name|super
@@ -676,6 +734,12 @@ expr_stmt|;
 name|watchClient
 operator|=
 literal|null
+expr_stmt|;
+name|this
+operator|.
+name|tlsConfig
+operator|=
+name|tlsConfig
 expr_stmt|;
 block|}
 DECL|method|updateCommitInfosMap ( Collection<RaftProtos.CommitInfoProto> commitInfoProtos)
@@ -873,6 +937,10 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|retryPolicy
+argument_list|,
+name|maxOutstandingRequests
+argument_list|,
+name|tlsConfig
 argument_list|)
 argument_list|)
 condition|)
@@ -1212,6 +1280,10 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|retryPolicy
+argument_list|,
+name|maxOutstandingRequests
+argument_list|,
+name|tlsConfig
 argument_list|)
 expr_stmt|;
 block|}
@@ -1288,6 +1360,10 @@ name|getPipeline
 argument_list|()
 argument_list|,
 name|retryPolicy
+argument_list|,
+name|maxOutstandingRequests
+argument_list|,
+name|tlsConfig
 argument_list|)
 expr_stmt|;
 name|reply

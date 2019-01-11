@@ -1571,6 +1571,12 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 specifier|final
+name|int
+name|maxOutstandingRequests
+init|=
+literal|100
+decl_stmt|;
+specifier|final
 name|RaftClient
 name|client
 init|=
@@ -1585,6 +1591,10 @@ argument_list|,
 name|peer
 argument_list|,
 name|retryPolicy
+argument_list|,
+name|maxOutstandingRequests
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert

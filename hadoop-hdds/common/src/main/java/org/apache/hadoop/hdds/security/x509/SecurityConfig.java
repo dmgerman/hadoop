@@ -954,7 +954,7 @@ decl_stmt|;
 DECL|field|grpcBlockTokenEnabled
 specifier|private
 specifier|final
-name|Boolean
+name|boolean
 name|grpcBlockTokenEnabled
 decl_stmt|;
 DECL|field|certificateDir
@@ -972,12 +972,12 @@ decl_stmt|;
 DECL|field|grpcTlsEnabled
 specifier|private
 specifier|final
-name|Boolean
+name|boolean
 name|grpcTlsEnabled
 decl_stmt|;
 DECL|field|grpcTlsUseTestCert
 specifier|private
-name|Boolean
+name|boolean
 name|grpcTlsUseTestCert
 decl_stmt|;
 DECL|field|trustStoreFileName
@@ -1006,6 +1006,11 @@ specifier|private
 specifier|final
 name|boolean
 name|isSecurityEnabled
+decl_stmt|;
+DECL|field|grpcMutualTlsRequired
+specifier|private
+name|boolean
+name|grpcMutualTlsRequired
 decl_stmt|;
 comment|/**    * Constructs a SecurityConfig.    *    * @param configuration - HDDS Configuration    */
 DECL|method|SecurityConfig (Configuration configuration)
@@ -1256,6 +1261,19 @@ condition|(
 name|grpcTlsEnabled
 condition|)
 block|{
+name|this
+operator|.
+name|grpcMutualTlsRequired
+operator|=
+name|configuration
+operator|.
+name|getBoolean
+argument_list|(
+name|HDDS_GRPC_MUTUAL_TLS_REQUIRED
+argument_list|,
+name|HDDS_GRPC_MUTUAL_TLS_REQUIRED_DEFAULT
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|trustStoreFileName
@@ -1666,7 +1684,7 @@ return|;
 block|}
 DECL|method|isGrpcBlockTokenEnabled ()
 specifier|public
-name|Boolean
+name|boolean
 name|isGrpcBlockTokenEnabled
 parameter_list|()
 block|{
@@ -1676,44 +1694,30 @@ operator|.
 name|grpcBlockTokenEnabled
 return|;
 block|}
-comment|/**    * Returns true if TLS is enabled for gRPC services.    * @param conf configuration    * @return true if TLS is enabled for gRPC services.    */
-DECL|method|isGrpcTlsEnabled (Configuration conf)
+comment|/**    * Returns true if TLS is enabled for gRPC services.    * @return true if TLS is enabled for gRPC services.    */
+DECL|method|isGrpcTlsEnabled ()
 specifier|public
-specifier|static
-name|Boolean
+name|boolean
 name|isGrpcTlsEnabled
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 block|{
 return|return
-name|conf
+name|this
 operator|.
-name|getBoolean
-argument_list|(
-name|HDDS_GRPC_TLS_ENABLED
-argument_list|,
-name|HDDS_GRPC_TLS_ENABLED_DEFAULT
-argument_list|)
+name|grpcTlsEnabled
 return|;
 block|}
 comment|/**    * Returns true if TLS mutual authentication is enabled for gRPC services.    * @return true if TLS is enabled for gRPC services.    */
 DECL|method|isGrpcMutualTlsRequired ()
 specifier|public
-name|Boolean
+name|boolean
 name|isGrpcMutualTlsRequired
 parameter_list|()
 block|{
 return|return
-name|configuration
+name|this
 operator|.
-name|getBoolean
-argument_list|(
-name|HDDS_GRPC_MUTUAL_TLS_REQUIRED
-argument_list|,
-name|HDDS_GRPC_MUTUAL_TLS_REQUIRED_DEFAULT
-argument_list|)
+name|grpcMutualTlsRequired
 return|;
 block|}
 comment|/**    * Returns the TLS-enabled gRPC client private key file(Only needed for mutual    * authentication).    * @return the TLS-enabled gRPC client private key file.    */
