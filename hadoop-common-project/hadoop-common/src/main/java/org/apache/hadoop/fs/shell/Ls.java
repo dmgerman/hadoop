@@ -1525,9 +1525,7 @@ name|append
 argument_list|(
 literal|"%s%s"
 argument_list|)
-expr_stmt|;
 comment|// permission string
-name|fmt
 operator|.
 name|append
 argument_list|(
@@ -1537,8 +1535,6 @@ name|maxRepl
 operator|+
 literal|"s "
 argument_list|)
-expr_stmt|;
-name|fmt
 operator|.
 name|append
 argument_list|(
@@ -1556,8 +1552,6 @@ literal|"s "
 else|:
 literal|"%s"
 argument_list|)
-expr_stmt|;
-name|fmt
 operator|.
 name|append
 argument_list|(

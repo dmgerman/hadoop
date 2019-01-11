@@ -1559,15 +1559,11 @@ operator|.
 name|getSimpleName
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 literal|"{"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1575,8 +1571,6 @@ literal|"path="
 operator|+
 name|path
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1600,8 +1594,6 @@ literal|"; length="
 operator|+
 name|length
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1609,8 +1601,6 @@ literal|"; replication="
 operator|+
 name|block_replication
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1628,8 +1618,6 @@ literal|"; modification_time="
 operator|+
 name|modification_time
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1637,8 +1625,6 @@ literal|"; access_time="
 operator|+
 name|access_time
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1646,8 +1632,6 @@ literal|"; owner="
 operator|+
 name|owner
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1655,8 +1639,6 @@ literal|"; group="
 operator|+
 name|group
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1664,8 +1646,6 @@ literal|"; permission="
 operator|+
 name|permission
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1720,8 +1700,6 @@ operator|+
 name|hasAcl
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1730,8 +1708,6 @@ operator|+
 name|isEncrypted
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1740,8 +1716,6 @@ operator|+
 name|isErasureCoded
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

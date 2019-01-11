@@ -1063,8 +1063,6 @@ operator|&
 literal|0xf
 index|]
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(

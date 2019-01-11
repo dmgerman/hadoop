@@ -1483,8 +1483,6 @@ name|append
 argument_list|(
 name|out
 argument_list|)
-expr_stmt|;
-name|localNNThreadDumpContent
 operator|.
 name|append
 argument_list|(

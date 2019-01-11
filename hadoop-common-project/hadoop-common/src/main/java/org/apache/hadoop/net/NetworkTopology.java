@@ -2899,15 +2899,11 @@ name|append
 argument_list|(
 literal|"Number of racks: "
 argument_list|)
-expr_stmt|;
-name|tree
 operator|.
 name|append
 argument_list|(
 name|numOfRacks
 argument_list|)
-expr_stmt|;
-name|tree
 operator|.
 name|append
 argument_list|(
@@ -2927,15 +2923,11 @@ name|append
 argument_list|(
 literal|"Expected number of leaves:"
 argument_list|)
-expr_stmt|;
-name|tree
 operator|.
 name|append
 argument_list|(
 name|numOfLeaves
 argument_list|)
-expr_stmt|;
-name|tree
 operator|.
 name|append
 argument_list|(
@@ -2976,8 +2968,6 @@ literal|null
 argument_list|)
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|tree
 operator|.
 name|append
 argument_list|(

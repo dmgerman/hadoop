@@ -658,8 +658,6 @@ name|codecName
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -671,8 +669,6 @@ name|numDataUnits
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -682,8 +678,6 @@ literal|"="
 operator|+
 name|numParityUnits
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

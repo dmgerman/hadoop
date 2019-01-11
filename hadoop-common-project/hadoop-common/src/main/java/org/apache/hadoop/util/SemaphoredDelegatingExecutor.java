@@ -737,8 +737,6 @@ argument_list|(
 name|getPermitCount
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -750,8 +748,6 @@ argument_list|(
 name|getAvailablePermits
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -763,8 +759,6 @@ argument_list|(
 name|getWaitingCount
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

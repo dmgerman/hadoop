@@ -3019,15 +3019,11 @@ operator|.
 name|getScheme
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 literal|"://"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -3036,8 +3032,6 @@ operator|.
 name|getHost
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

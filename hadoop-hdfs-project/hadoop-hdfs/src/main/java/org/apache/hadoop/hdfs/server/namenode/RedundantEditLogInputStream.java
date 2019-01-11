@@ -565,8 +565,6 @@ name|append
 argument_list|(
 name|prefix
 argument_list|)
-expr_stmt|;
-name|bld
 operator|.
 name|append
 argument_list|(

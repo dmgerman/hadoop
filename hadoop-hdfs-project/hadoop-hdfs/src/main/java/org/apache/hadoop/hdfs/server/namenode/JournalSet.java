@@ -2956,8 +2956,6 @@ operator|.
 name|getTotalSyncTime
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(

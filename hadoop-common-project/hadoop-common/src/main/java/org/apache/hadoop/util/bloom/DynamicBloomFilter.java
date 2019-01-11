@@ -766,8 +766,6 @@ index|[
 name|i
 index|]
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(

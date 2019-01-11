@@ -2305,29 +2305,21 @@ name|append
 argument_list|(
 literal|" can't be moved from encryption zone "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 name|srcEZPath
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 literal|" to encryption zone "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 name|dstEZPath
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

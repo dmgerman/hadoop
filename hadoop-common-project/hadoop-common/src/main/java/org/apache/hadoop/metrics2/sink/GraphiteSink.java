@@ -452,8 +452,6 @@ name|append
 argument_list|(
 literal|"."
 argument_list|)
-expr_stmt|;
-name|metricsPathPrefix
 operator|.
 name|append
 argument_list|(
@@ -462,15 +460,11 @@ operator|.
 name|name
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|metricsPathPrefix
 operator|.
 name|append
 argument_list|(
 literal|"="
 argument_list|)
-expr_stmt|;
-name|metricsPathPrefix
 operator|.
 name|append
 argument_list|(

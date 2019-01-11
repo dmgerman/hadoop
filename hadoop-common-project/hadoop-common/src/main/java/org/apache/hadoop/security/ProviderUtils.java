@@ -349,8 +349,6 @@ index|[
 literal|0
 index|]
 argument_list|)
-expr_stmt|;
-name|result
 operator|.
 name|append
 argument_list|(

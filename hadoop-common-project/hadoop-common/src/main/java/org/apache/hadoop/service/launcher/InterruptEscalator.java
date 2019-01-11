@@ -413,8 +413,6 @@ name|append
 argument_list|(
 name|shutdownTimeMillis
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -425,8 +423,6 @@ name|append
 argument_list|(
 name|forcedShutdownTimedOut
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

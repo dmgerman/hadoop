@@ -11840,8 +11840,6 @@ index|[
 name|i
 index|]
 argument_list|)
-expr_stmt|;
-name|xfersBuilder
 operator|.
 name|append
 argument_list|(

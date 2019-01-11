@@ -3097,8 +3097,6 @@ name|append
 argument_list|(
 literal|"; "
 argument_list|)
-expr_stmt|;
-name|hostDetails
 operator|.
 name|append
 argument_list|(

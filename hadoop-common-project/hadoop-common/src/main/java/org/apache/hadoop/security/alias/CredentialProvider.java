@@ -195,15 +195,11 @@ name|append
 argument_list|(
 literal|"alias("
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 name|alias
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(

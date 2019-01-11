@@ -556,8 +556,6 @@ name|append
 argument_list|(
 literal|'\''
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -570,8 +568,6 @@ argument_list|,
 literal|"'\\''"
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -3522,8 +3518,6 @@ name|append
 argument_list|(
 name|line
 argument_list|)
-expr_stmt|;
-name|errMsg
 operator|.
 name|append
 argument_list|(
@@ -4058,8 +4052,6 @@ name|append
 argument_list|(
 literal|": "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

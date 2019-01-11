@@ -1065,8 +1065,6 @@ operator|.
 name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|outputString
 operator|.
 name|append
 argument_list|(

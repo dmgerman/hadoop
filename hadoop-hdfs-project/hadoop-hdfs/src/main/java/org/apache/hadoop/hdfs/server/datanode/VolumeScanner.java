@@ -984,8 +984,6 @@ operator|.
 name|bytesScannedInPastHour
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|p
 operator|.
 name|append
 argument_list|(
@@ -1000,8 +998,6 @@ operator|.
 name|blocksScannedInCurrentPeriod
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|p
 operator|.
 name|append
 argument_list|(
@@ -1016,8 +1012,6 @@ operator|.
 name|blocksScannedSinceRestart
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|p
 operator|.
 name|append
 argument_list|(
@@ -1032,8 +1026,6 @@ operator|.
 name|scansSinceRestart
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|p
 operator|.
 name|append
 argument_list|(

@@ -432,12 +432,12 @@ name|append
 argument_list|(
 literal|"\nBlocks satisfying the specified storage policy:"
 argument_list|)
-expr_stmt|;
-name|compliantBlocksSB
 operator|.
 name|append
 argument_list|(
-literal|"\nStorage Policy                  # of blocks       % of blocks\n"
+literal|"\nStorage Policy"
+operator|+
+literal|"                  # of blocks       % of blocks\n"
 argument_list|)
 expr_stmt|;
 name|StringBuilder
@@ -580,15 +580,11 @@ name|append
 argument_list|(
 literal|"\nBlocks NOT satisfying the specified storage policy:"
 argument_list|)
-expr_stmt|;
-name|nonCompliantBlocksSB
 operator|.
 name|append
 argument_list|(
 literal|"\nStorage Policy                  "
 argument_list|)
-expr_stmt|;
-name|nonCompliantBlocksSB
 operator|.
 name|append
 argument_list|(

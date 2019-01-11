@@ -631,8 +631,6 @@ name|banner
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sbuf
 operator|.
 name|append
 argument_list|(
@@ -648,8 +646,6 @@ name|DESC
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sbuf
 operator|.
 name|append
 argument_list|(
@@ -657,8 +653,6 @@ name|banner
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sbuf
 operator|.
 name|append
 argument_list|(
@@ -674,8 +668,6 @@ name|DESC
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sbuf
 operator|.
 name|append
 argument_list|(
@@ -683,8 +675,6 @@ name|banner
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sbuf
 operator|.
 name|append
 argument_list|(

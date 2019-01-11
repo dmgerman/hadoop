@@ -955,8 +955,6 @@ name|appendln
 argument_list|(
 name|errMsg
 argument_list|)
-expr_stmt|;
-name|result
 operator|.
 name|appendln
 argument_list|(

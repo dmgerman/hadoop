@@ -340,8 +340,6 @@ name|this
 operator|.
 name|sampleTime
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -351,8 +349,6 @@ name|this
 operator|.
 name|cumulativeCpuTime
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -362,8 +358,6 @@ name|this
 operator|.
 name|lastSampleTime
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -373,8 +367,6 @@ name|this
 operator|.
 name|lastCumulativeCpuTime
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -384,8 +376,6 @@ name|this
 operator|.
 name|cpuUsage
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

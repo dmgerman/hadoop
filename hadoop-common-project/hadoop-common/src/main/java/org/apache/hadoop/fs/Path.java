@@ -1678,8 +1678,6 @@ operator|.
 name|getScheme
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1703,8 +1701,6 @@ name|append
 argument_list|(
 literal|"//"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1800,8 +1796,6 @@ name|append
 argument_list|(
 literal|"#"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(

@@ -714,8 +714,6 @@ name|append
 argument_list|(
 name|PERIOD
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
@@ -726,8 +724,6 @@ name|append
 argument_list|(
 name|PERIOD
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(

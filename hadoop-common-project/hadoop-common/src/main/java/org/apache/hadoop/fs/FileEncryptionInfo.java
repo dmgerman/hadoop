@@ -376,8 +376,6 @@ name|StringBuilder
 argument_list|(
 literal|"{"
 argument_list|)
-decl_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -385,8 +383,6 @@ literal|"cipherSuite: "
 operator|+
 name|cipherSuite
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -394,8 +390,6 @@ literal|", cryptoProtocolVersion: "
 operator|+
 name|version
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -408,8 +402,6 @@ argument_list|(
 name|edek
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -422,8 +414,6 @@ argument_list|(
 name|iv
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -431,8 +421,6 @@ literal|", keyName: "
 operator|+
 name|keyName
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -440,14 +428,12 @@ literal|", ezKeyVersionName: "
 operator|+
 name|ezKeyVersionName
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 literal|"}"
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 return|return
 name|builder
 operator|.
@@ -470,8 +456,6 @@ name|StringBuilder
 argument_list|(
 literal|"{"
 argument_list|)
-decl_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -479,8 +463,6 @@ literal|"cipherSuite: "
 operator|+
 name|cipherSuite
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -488,8 +470,6 @@ literal|", cryptoProtocolVersion: "
 operator|+
 name|version
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -502,8 +482,6 @@ argument_list|(
 name|edek
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -516,8 +494,6 @@ argument_list|(
 name|iv
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -525,8 +501,6 @@ literal|", keyName: "
 operator|+
 name|keyName
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -534,14 +508,12 @@ literal|", ezKeyVersionName: "
 operator|+
 name|ezKeyVersionName
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 literal|"}"
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 return|return
 name|builder
 operator|.

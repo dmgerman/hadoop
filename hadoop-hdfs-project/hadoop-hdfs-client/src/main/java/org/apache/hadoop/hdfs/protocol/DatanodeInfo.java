@@ -1613,8 +1613,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1800,8 +1798,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1837,8 +1833,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1874,8 +1868,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1911,8 +1903,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1931,8 +1921,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1951,8 +1939,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1988,8 +1974,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2025,8 +2009,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2062,8 +2044,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2082,8 +2062,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2102,8 +2080,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2120,8 +2096,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2141,8 +2115,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2168,8 +2140,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2409,8 +2379,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2441,8 +2409,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2456,8 +2422,6 @@ argument_list|(
 name|usedPercent
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2488,8 +2452,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2520,8 +2482,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2552,8 +2512,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2567,8 +2525,6 @@ argument_list|(
 name|cacheUsedPercent
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -2599,8 +2555,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(

@@ -438,15 +438,11 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 literal|": "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
@@ -483,8 +479,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
@@ -493,15 +487,11 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 literal|": "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
@@ -820,8 +810,6 @@ name|append
 argument_list|(
 literal|','
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(

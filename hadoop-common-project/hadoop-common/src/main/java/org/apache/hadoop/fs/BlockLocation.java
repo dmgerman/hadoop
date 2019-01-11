@@ -1156,15 +1156,11 @@ name|append
 argument_list|(
 name|offset
 argument_list|)
-expr_stmt|;
-name|result
 operator|.
 name|append
 argument_list|(
 literal|','
 argument_list|)
-expr_stmt|;
-name|result
 operator|.
 name|append
 argument_list|(

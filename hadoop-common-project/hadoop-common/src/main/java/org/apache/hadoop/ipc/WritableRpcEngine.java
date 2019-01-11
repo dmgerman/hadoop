@@ -948,8 +948,6 @@ name|append
 argument_list|(
 name|methodName
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1003,8 +1001,6 @@ name|append
 argument_list|(
 literal|")"
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1012,8 +1008,6 @@ literal|", rpc version="
 operator|+
 name|rpcVersion
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(
@@ -1021,8 +1015,6 @@ literal|", client version="
 operator|+
 name|clientVersion
 argument_list|)
-expr_stmt|;
-name|buffer
 operator|.
 name|append
 argument_list|(

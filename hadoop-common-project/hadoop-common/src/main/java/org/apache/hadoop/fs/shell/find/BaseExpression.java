@@ -462,8 +462,6 @@ operator|.
 name|getSimpleName
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

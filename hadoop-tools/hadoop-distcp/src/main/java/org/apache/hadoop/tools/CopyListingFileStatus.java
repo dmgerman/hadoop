@@ -2208,8 +2208,6 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -2223,8 +2221,6 @@ operator|.
 name|getLen
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -2235,8 +2231,6 @@ name|append
 argument_list|(
 name|aclEntries
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -2247,8 +2241,6 @@ name|append
 argument_list|(
 name|xAttrs
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -2280,8 +2272,6 @@ operator|.
 name|getChunkOffset
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

@@ -303,8 +303,6 @@ name|append
 argument_list|(
 name|separator
 argument_list|)
-expr_stmt|;
-name|bld
 operator|.
 name|append
 argument_list|(

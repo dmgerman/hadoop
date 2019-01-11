@@ -697,8 +697,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

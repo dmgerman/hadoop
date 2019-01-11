@@ -3732,36 +3732,26 @@ name|append
 argument_list|(
 literal|"Number of transactions: "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 name|numTransactions
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 literal|" Total time for transactions(ms): "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 name|totalTimeTransactions
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 literal|" Number of transactions batched in Syncs: "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
@@ -3770,15 +3760,11 @@ operator|.
 name|get
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 literal|" Number of syncs: "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
@@ -3787,15 +3773,11 @@ operator|.
 name|getNumSync
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(
 literal|" SyncTimes(ms): "
 argument_list|)
-expr_stmt|;
-name|buf
 operator|.
 name|append
 argument_list|(

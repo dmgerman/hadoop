@@ -475,8 +475,6 @@ name|append
 argument_list|(
 name|nsCount
 argument_list|)
-expr_stmt|;
-name|str
 operator|.
 name|append
 argument_list|(

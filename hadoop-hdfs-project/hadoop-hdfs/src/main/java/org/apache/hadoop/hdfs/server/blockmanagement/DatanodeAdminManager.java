@@ -1598,8 +1598,6 @@ name|append
 argument_list|(
 name|node
 argument_list|)
-expr_stmt|;
-name|nodeList
 operator|.
 name|append
 argument_list|(

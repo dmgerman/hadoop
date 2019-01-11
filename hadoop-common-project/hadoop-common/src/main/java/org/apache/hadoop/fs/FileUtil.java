@@ -1664,8 +1664,6 @@ operator|.
 name|getMessage
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|exceptions
 operator|.
 name|append
 argument_list|(
@@ -4001,8 +3999,6 @@ name|append
 argument_list|(
 literal|"cd '"
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
@@ -4013,15 +4009,11 @@ argument_list|(
 name|untarDir
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
 literal|"'&& "
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
@@ -4088,8 +4080,6 @@ name|append
 argument_list|(
 literal|" gzip -dc '"
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
@@ -4100,8 +4090,6 @@ argument_list|(
 name|inFile
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
@@ -4115,8 +4103,6 @@ name|append
 argument_list|(
 literal|"cd '"
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
@@ -4127,15 +4113,11 @@ argument_list|(
 name|untarDir
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
 literal|"'&& "
 argument_list|)
-expr_stmt|;
-name|untarCommand
 operator|.
 name|append
 argument_list|(
@@ -6785,8 +6767,6 @@ name|File
 operator|.
 name|pathSeparator
 argument_list|)
-expr_stmt|;
-name|unexpandedWildcardClasspath
 operator|.
 name|append
 argument_list|(

@@ -1067,8 +1067,6 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1082,8 +1080,6 @@ operator|.
 name|getState
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1097,8 +1093,6 @@ operator|.
 name|getLastCheckpointFile
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1112,8 +1106,6 @@ operator|.
 name|getFilesReencrypted
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

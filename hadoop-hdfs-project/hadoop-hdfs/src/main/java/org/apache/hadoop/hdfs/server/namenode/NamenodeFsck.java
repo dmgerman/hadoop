@@ -5334,15 +5334,11 @@ name|append
 argument_list|(
 literal|'\n'
 argument_list|)
-expr_stmt|;
-name|report
 operator|.
 name|append
 argument_list|(
 literal|"Under Construction Block:\n"
 argument_list|)
-expr_stmt|;
-name|report
 operator|.
 name|append
 argument_list|(
@@ -5358,8 +5354,6 @@ name|append
 argument_list|(
 name|blkName
 argument_list|)
-expr_stmt|;
-name|report
 operator|.
 name|append
 argument_list|(
@@ -5373,8 +5367,6 @@ operator|.
 name|getNumBytes
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|report
 operator|.
 name|append
 argument_list|(
