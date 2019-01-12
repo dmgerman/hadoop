@@ -20,6 +20,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -55,6 +69,18 @@ operator|.
 name|Assert
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeFalse
 import|;
 end_import
 
@@ -172,6 +198,13 @@ name|void
 name|setUp
 parameter_list|()
 block|{
+name|assumeFalse
+argument_list|(
+name|Shell
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|FileUtil
 operator|.
 name|fullyDelete
