@@ -44,6 +44,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -280,15 +290,22 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|Ignore
+argument_list|(
+literal|"Enable this to verify the log warning message format for HostNotFoundException"
+argument_list|)
+annotation|@
 name|Test
-DECL|method|verifyUnknownHost ()
+DECL|method|testUnknownHost ()
 specifier|public
 name|void
-name|verifyUnknownHost
+name|testUnknownHost
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// When hitting hostName not found exception, the retry will take about 14 mins until failed.
+comment|// This test is to verify that the "Unknown host name: %s. Retrying to resolve the host name..." is logged as warning during the retry.
 name|AbfsConfiguration
 name|conf
 init|=
@@ -375,7 +392,7 @@ name|AbfsRestOperationException
 operator|.
 name|class
 argument_list|,
-literal|"Can not reach endpoint: "
+literal|"UnknownHostException: "
 operator|+
 name|fakeAccountName
 argument_list|,
