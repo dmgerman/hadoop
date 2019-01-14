@@ -288,6 +288,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|fs
@@ -873,6 +887,8 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// S3GUARD_DDB_TEST_TABLE_NAME_KEY and S3GUARD_DDB_TABLE_NAME_KEY should
+comment|// be configured to use this test.
 name|testDynamoDBTableName
 operator|=
 name|conf
@@ -880,6 +896,31 @@ operator|.
 name|get
 argument_list|(
 name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+argument_list|)
+expr_stmt|;
+name|String
+name|dynamoDbTableName
+init|=
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|S3GUARD_DDB_TABLE_NAME_KEY
+argument_list|)
+decl_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"No DynamoDB table name configured"
+argument_list|,
+operator|!
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|dynamoDbTableName
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// We should assert that the table name is configured, so the test should
