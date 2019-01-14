@@ -56,6 +56,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -120,9 +134,11 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|s3native
+name|s3a
 operator|.
-name|S3xLoginHelper
+name|auth
+operator|.
+name|NoAwsCredentialsException
 import|;
 end_import
 
@@ -134,9 +150,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|ProviderUtils
+name|s3native
+operator|.
+name|S3xLoginHelper
 import|;
 end_import
 
@@ -157,42 +175,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|Constants
-operator|.
-name|ACCESS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|Constants
-operator|.
-name|SECRET_KEY
 import|;
 end_import
 
@@ -245,39 +227,58 @@ literal|"org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider"
 decl_stmt|;
 DECL|field|accessKey
 specifier|private
+specifier|final
 name|String
 name|accessKey
 decl_stmt|;
 DECL|field|secretKey
 specifier|private
+specifier|final
 name|String
 name|secretKey
 decl_stmt|;
-DECL|method|SimpleAWSCredentialsProvider (URI uri, Configuration conf)
+comment|/**    * Build the credentials from a filesystem URI and configuration.    * @param uri FS URI    * @param conf configuration containing secrets/references to.    * @throws IOException failure    */
+DECL|method|SimpleAWSCredentialsProvider (final URI uri, final Configuration conf)
 specifier|public
 name|SimpleAWSCredentialsProvider
 parameter_list|(
+specifier|final
 name|URI
 name|uri
 parameter_list|,
+specifier|final
 name|Configuration
 name|conf
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|S3xLoginHelper
-operator|.
-name|Login
-name|login
-init|=
+name|this
+argument_list|(
 name|getAWSAccessKeys
 argument_list|(
 name|uri
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Instantiate from a login tuple.    * For testing, hence package-scoped.    * @param login login secrets    * @throws IOException failure    */
+annotation|@
+name|VisibleForTesting
+DECL|method|SimpleAWSCredentialsProvider (final S3xLoginHelper.Login login)
+name|SimpleAWSCredentialsProvider
+parameter_list|(
+specifier|final
+name|S3xLoginHelper
+operator|.
+name|Login
+name|login
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|this
 operator|.
 name|accessKey
@@ -336,9 +337,11 @@ return|;
 block|}
 throw|throw
 operator|new
-name|CredentialInitializationException
+name|NoAwsCredentialsException
 argument_list|(
-literal|"Access key or secret key is unset"
+literal|"SimpleAWSCredentialsProvider"
+argument_list|,
+literal|"No AWS credentials in the Hadoop configuration"
 argument_list|)
 throw|;
 block|}

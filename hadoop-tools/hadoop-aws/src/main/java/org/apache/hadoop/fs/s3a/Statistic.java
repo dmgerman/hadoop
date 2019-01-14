@@ -186,6 +186,16 @@ argument_list|,
 literal|"Calls of exists()"
 argument_list|)
 block|,
+DECL|enumConstant|INVOCATION_GET_DELEGATION_TOKEN
+name|INVOCATION_GET_DELEGATION_TOKEN
+argument_list|(
+name|CommonStatisticNames
+operator|.
+name|OP_GET_DELEGATION_TOKEN
+argument_list|,
+literal|"Calls of getDelegationToken()"
+argument_list|)
+block|,
 DECL|enumConstant|INVOCATION_GET_FILE_CHECKSUM
 name|INVOCATION_GET_FILE_CHECKSUM
 argument_list|(
@@ -752,6 +762,14 @@ argument_list|(
 literal|"store_io_throttled"
 argument_list|,
 literal|"Requests throttled and retried"
+argument_list|)
+block|,
+DECL|enumConstant|DELEGATION_TOKENS_ISSUED
+name|DELEGATION_TOKENS_ISSUED
+argument_list|(
+literal|"delegation_tokens_issued"
+argument_list|,
+literal|"Number of delegation tokens issued"
 argument_list|)
 block|;
 DECL|field|SYMBOL_MAP

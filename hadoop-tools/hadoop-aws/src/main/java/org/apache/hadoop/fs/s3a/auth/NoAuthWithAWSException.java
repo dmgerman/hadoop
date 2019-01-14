@@ -22,16 +22,22 @@ end_package
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|amazonaws
+name|apache
 operator|.
-name|AmazonClientException
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|CredentialInitializationException
 import|;
 end_import
 
 begin_comment
-comment|/**  * A specific subclass of {@code AmazonClientException} which can  * be used in the retry logic to fail fast when there is any  * authentication problem.  */
+comment|/**  * A specific subclass of {@code AmazonClientException} which is  * used in the S3A retry policy to fail fast when there is any  * authentication problem.  */
 end_comment
 
 begin_class
@@ -40,7 +46,7 @@ specifier|public
 class|class
 name|NoAuthWithAWSException
 extends|extends
-name|AmazonClientException
+name|CredentialInitializationException
 block|{
 DECL|method|NoAuthWithAWSException (final String message, final Throwable t)
 specifier|public

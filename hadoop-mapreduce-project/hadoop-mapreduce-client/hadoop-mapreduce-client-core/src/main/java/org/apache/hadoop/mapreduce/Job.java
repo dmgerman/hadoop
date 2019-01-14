@@ -330,6 +330,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -4988,8 +5002,12 @@ literal|false
 argument_list|)
 return|;
 block|}
+comment|/** Only for mocking via unit tests. */
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|connect ()
-specifier|private
 specifier|synchronized
 name|void
 name|connect
@@ -5060,8 +5078,9 @@ block|}
 comment|/** Only for mocking via unit tests. */
 annotation|@
 name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|getJobSubmitter (FileSystem fs, ClientProtocol submitClient)
-specifier|public
 name|JobSubmitter
 name|getJobSubmitter
 parameter_list|(

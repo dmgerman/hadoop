@@ -188,7 +188,7 @@ return|return
 operator|new
 name|DirectoryStagingCommitter
 argument_list|(
-name|OUTPUT_PATH
+name|outputPath
 argument_list|,
 name|createTaskAttemptForJob
 argument_list|()
@@ -304,7 +304,7 @@ name|pathExists
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -356,7 +356,7 @@ name|pathDoesNotExist
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|committer
@@ -371,7 +371,7 @@ name|verifyExistenceChecked
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|verifyNoMoreInteractions
@@ -388,7 +388,7 @@ name|pathDoesNotExist
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|committer
@@ -425,7 +425,7 @@ name|pathExists
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|getJob
@@ -472,7 +472,7 @@ name|pathExists
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|committer
@@ -509,7 +509,7 @@ name|pathExists
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|getJob
@@ -556,14 +556,14 @@ name|pathExists
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|canDelete
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|committer
@@ -578,7 +578,7 @@ name|verifyDeleted
 argument_list|(
 name|mockS3
 argument_list|,
-name|OUTPUT_PATH
+name|outputPath
 argument_list|)
 expr_stmt|;
 name|verifyCompletion

@@ -574,7 +574,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Canonicalize the given URI.    *    * This strips out login information.    *    * @param uri the URI to canonicalize    * @param defaultPort default port to use in canonicalized URI if the input    *     URI has no port and this value is greater than 0    * @return a new, canonicalized URI.    */
+comment|/**    * Canonicalize the given URI.    *    * @param uri the URI to canonicalize    * @param defaultPort default port to use in canonicalized URI if the input    *     URI has no port and this value is greater than 0    * @return a new, canonicalized URI.    */
 DECL|method|canonicalizeUri (URI uri, int defaultPort)
 specifier|public
 specifier|static

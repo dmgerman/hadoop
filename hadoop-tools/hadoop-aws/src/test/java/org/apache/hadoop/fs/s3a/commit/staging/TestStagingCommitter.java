@@ -1193,7 +1193,7 @@ operator|=
 operator|new
 name|MockedStagingCommitter
 argument_list|(
-name|OUTPUT_PATH
+name|outputPath
 argument_list|,
 name|tac
 argument_list|)
@@ -1282,7 +1282,7 @@ operator|=
 operator|new
 name|MockedStagingCommitter
 argument_list|(
-name|OUTPUT_PATH
+name|outputPath
 argument_list|,
 name|tac
 argument_list|)
@@ -3708,7 +3708,7 @@ init|=
 operator|new
 name|MockedStagingCommitter
 argument_list|(
-name|OUTPUT_PATH
+name|outputPath
 argument_list|,
 name|attempt
 argument_list|)
