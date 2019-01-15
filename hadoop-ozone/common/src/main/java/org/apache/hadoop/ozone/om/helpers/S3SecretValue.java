@@ -296,21 +296,13 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"S3SecretValue{"
+literal|"awsAccessKey="
 operator|+
-literal|"kerberosID='"
+name|awsAccessKey
 operator|+
-name|kerberosID
-operator|+
-literal|'\''
-operator|+
-literal|", awsSecret='"
+literal|"\nawsSecret="
 operator|+
 name|awsSecret
-operator|+
-literal|'\''
-operator|+
-literal|'}'
 return|;
 block|}
 block|}
