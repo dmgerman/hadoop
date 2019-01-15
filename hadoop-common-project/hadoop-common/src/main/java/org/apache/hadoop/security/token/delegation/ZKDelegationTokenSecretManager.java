@@ -1350,7 +1350,11 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Could not Load ZK acls or auth"
+literal|"Could not Load ZK acls or auth: "
+operator|+
+name|ex
+argument_list|,
+name|ex
 argument_list|)
 throw|;
 block|}
