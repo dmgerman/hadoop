@@ -358,7 +358,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Get children paths (can including itself) under specified federation path.    * @param parentPath Federated path.    * @return Set of children paths.    */
+comment|/**    * Get children paths (can include itself) under specified federation path.    * @param parentPath Federated path.    * @return Set of children paths.    */
 DECL|method|getPaths (String parentPath)
 specifier|public
 name|Set

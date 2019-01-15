@@ -83,6 +83,8 @@ operator|.
 name|fs
 operator|.
 name|BatchedRemoteIterator
+operator|.
+name|BatchedEntries
 import|;
 end_import
 
@@ -8136,8 +8138,6 @@ annotation|@
 name|Override
 DECL|method|listCacheDirectives ( long prevId, CacheDirectiveInfo filter)
 specifier|public
-name|BatchedRemoteIterator
-operator|.
 name|BatchedEntries
 argument_list|<
 name|CacheDirectiveEntry
@@ -8267,8 +8267,6 @@ annotation|@
 name|Override
 DECL|method|listCachePools (String prevKey)
 specifier|public
-name|BatchedRemoteIterator
-operator|.
 name|BatchedEntries
 argument_list|<
 name|CachePoolEntry
@@ -9020,8 +9018,6 @@ unit|}    @
 name|Override
 DECL|method|listEncryptionZones (long prevId)
 specifier|public
-name|BatchedRemoteIterator
-operator|.
 name|BatchedEntries
 argument_list|<
 name|EncryptionZone
@@ -9093,8 +9089,6 @@ annotation|@
 name|Override
 DECL|method|listReencryptionStatus ( long prevId)
 specifier|public
-name|BatchedRemoteIterator
-operator|.
 name|BatchedEntries
 argument_list|<
 name|ZoneReencryptionStatus
@@ -10525,8 +10519,6 @@ annotation|@
 name|Override
 DECL|method|listOpenFiles (long prevId)
 specifier|public
-name|BatchedRemoteIterator
-operator|.
 name|BatchedEntries
 argument_list|<
 name|OpenFileEntry
@@ -10568,8 +10560,6 @@ annotation|@
 name|Override
 DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesIterator.OpenFilesType> openFilesTypes, String path)
 specifier|public
-name|BatchedRemoteIterator
-operator|.
 name|BatchedEntries
 argument_list|<
 name|OpenFileEntry

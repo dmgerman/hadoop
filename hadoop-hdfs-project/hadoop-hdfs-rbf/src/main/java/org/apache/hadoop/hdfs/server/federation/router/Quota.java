@@ -803,7 +803,7 @@ operator|.
 name|QUOTA_RESET
 decl_stmt|;
 name|boolean
-name|hasQuotaUnSet
+name|hasQuotaUnset
 init|=
 literal|false
 decl_stmt|;
@@ -869,7 +869,7 @@ operator|-
 literal|1
 condition|)
 block|{
-name|hasQuotaUnSet
+name|hasQuotaUnset
 operator|=
 literal|true
 expr_stmt|;
@@ -956,7 +956,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|hasQuotaUnSet
+name|hasQuotaUnset
 condition|)
 block|{
 name|builder
