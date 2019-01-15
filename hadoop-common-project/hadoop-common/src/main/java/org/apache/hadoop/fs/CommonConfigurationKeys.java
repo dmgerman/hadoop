@@ -686,6 +686,15 @@ name|SECURITY_CLIENT_DATANODE_PROTOCOL_ACL
 init|=
 literal|"security.client.datanode.protocol.acl"
 decl_stmt|;
+DECL|field|SECURITY_ROUTER_ADMIN_PROTOCOL_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SECURITY_ROUTER_ADMIN_PROTOCOL_ACL
+init|=
+literal|"security.router.admin.protocol.acl"
+decl_stmt|;
 specifier|public
 specifier|static
 specifier|final

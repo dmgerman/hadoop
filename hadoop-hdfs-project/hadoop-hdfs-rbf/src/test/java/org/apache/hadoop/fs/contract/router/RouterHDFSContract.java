@@ -389,6 +389,17 @@ name|getCluster
 argument_list|()
 return|;
 block|}
+DECL|method|getRouterCluster ()
+specifier|public
+specifier|static
+name|MiniRouterDFSCluster
+name|getRouterCluster
+parameter_list|()
+block|{
+return|return
+name|cluster
+return|;
+block|}
 DECL|method|getFileSystem ()
 specifier|public
 specifier|static

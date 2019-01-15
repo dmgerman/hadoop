@@ -404,6 +404,16 @@ name|CLIENT_NAMENODE_PROTOCOL_NAME
 init|=
 literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol"
 decl_stmt|;
+comment|/**    * Router admin Protocol Names.    */
+DECL|field|ROUTER_ADMIN_PROTOCOL_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ROUTER_ADMIN_PROTOCOL_NAME
+init|=
+literal|"org.apache.hadoop.hdfs.protocolPB.RouterAdminProtocol"
+decl_stmt|;
 comment|// Timeouts for communicating with DataNode for streaming writes/reads
 DECL|field|READ_TIMEOUT
 specifier|public
