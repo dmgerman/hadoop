@@ -335,7 +335,7 @@ literal|" "
 argument_list|)
 expr_stmt|;
 comment|// now create all tables
-name|TimelineSchemaCreator
+name|HBaseTimelineSchemaCreator
 operator|.
 name|createAllTables
 argument_list|(
