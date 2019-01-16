@@ -318,7 +318,7 @@ name|protocol
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add an RPC processing time sample    * @param metName of the RPC call    * @param processingTime  the processing time    */
+comment|/**    * Add an RPC processing time sample    * @param name of the RPC call    * @param processingTime  the processing time    */
 comment|//@Override // some instrumentation interface
 DECL|method|addProcessingTime (String name, int processingTime)
 specifier|public
