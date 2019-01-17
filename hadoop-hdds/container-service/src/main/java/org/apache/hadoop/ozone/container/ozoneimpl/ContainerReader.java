@@ -562,13 +562,15 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
-literal|"Caught an Run time exception during reading container files"
+literal|"Caught a Run time exception during reading container files"
 operator|+
-literal|" from Volume {}"
+literal|" from Volume {} {}"
 argument_list|,
 name|hddsVolumeDir
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
