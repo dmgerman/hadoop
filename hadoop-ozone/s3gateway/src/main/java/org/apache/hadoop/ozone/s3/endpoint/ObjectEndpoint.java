@@ -618,7 +618,7 @@ name|s3
 operator|.
 name|util
 operator|.
-name|S3StorageType
+name|RangeHeaderParserUtil
 import|;
 end_import
 
@@ -636,7 +636,7 @@ name|s3
 operator|.
 name|util
 operator|.
-name|S3utils
+name|S3StorageType
 import|;
 end_import
 
@@ -1513,7 +1513,7 @@ condition|)
 block|{
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(

@@ -75,17 +75,17 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|S3utils
+DECL|class|RangeHeaderParserUtil
 specifier|public
 specifier|final
 class|class
-name|S3utils
+name|RangeHeaderParserUtil
 block|{
-DECL|method|S3utils ()
+DECL|method|RangeHeaderParserUtil ()
 specifier|private
-name|S3utils
+name|RangeHeaderParserUtil
 parameter_list|()
-block|{    }
+block|{   }
 comment|/**    * Parse the rangeHeader and set the start and end offset.    * @param rangeHeaderVal    * @param length    *    * @return RangeHeader    */
 DECL|method|parseRangeHeader (String rangeHeaderVal, long length)
 specifier|public

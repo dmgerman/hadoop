@@ -43,14 +43,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test class to test S3utils.  */
+comment|/**  * Test class to test RangeHeaderParserUtil.  */
 end_comment
 
 begin_class
-DECL|class|TestS3utils
+DECL|class|TestRangeHeaderParserUtil
 specifier|public
 class|class
-name|TestS3utils
+name|TestRangeHeaderParserUtil
 block|{
 annotation|@
 name|Test
@@ -66,7 +66,7 @@ decl_stmt|;
 comment|//range is with in file length
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -118,7 +118,7 @@ expr_stmt|;
 comment|//range is with in file length, both start and end offset are same
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -171,7 +171,7 @@ comment|//range is not with in file length, both start and end offset are greate
 comment|// than length
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -194,7 +194,7 @@ comment|// range is satisfying, one of the range is with in the length. So, read
 comment|// full file
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -246,7 +246,7 @@ expr_stmt|;
 comment|// bytes spec is wrong
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -298,7 +298,7 @@ expr_stmt|;
 comment|// range specified is invalid
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -350,7 +350,7 @@ expr_stmt|;
 comment|//Last n bytes
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
@@ -401,7 +401,7 @@ argument_list|)
 expr_stmt|;
 name|rangeHeader
 operator|=
-name|S3utils
+name|RangeHeaderParserUtil
 operator|.
 name|parseRangeHeader
 argument_list|(
