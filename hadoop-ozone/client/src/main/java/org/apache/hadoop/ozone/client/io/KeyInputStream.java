@@ -1685,6 +1685,8 @@ operator|.
 name|releaseClient
 argument_list|(
 name|xceiverClient
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
