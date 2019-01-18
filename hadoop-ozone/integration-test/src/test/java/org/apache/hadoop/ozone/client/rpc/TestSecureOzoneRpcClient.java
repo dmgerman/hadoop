@@ -675,7 +675,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+name|HDDS_BLOCK_TOKEN_ENABLED
 argument_list|,
 literal|true
 argument_list|)

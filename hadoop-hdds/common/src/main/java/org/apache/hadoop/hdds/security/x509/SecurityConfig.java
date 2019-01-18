@@ -228,7 +228,7 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+name|HDDS_BLOCK_TOKEN_ENABLED
 import|;
 end_import
 
@@ -244,7 +244,7 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+name|HDDS_BLOCK_TOKEN_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -951,11 +951,11 @@ specifier|final
 name|String
 name|x509SignatureAlgo
 decl_stmt|;
-DECL|field|grpcBlockTokenEnabled
+DECL|field|blockTokenEnabled
 specifier|private
 specifier|final
 name|boolean
-name|grpcBlockTokenEnabled
+name|blockTokenEnabled
 decl_stmt|;
 DECL|field|certificateDir
 specifier|private
@@ -1228,7 +1228,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|grpcBlockTokenEnabled
+name|blockTokenEnabled
 operator|=
 name|this
 operator|.
@@ -1236,9 +1236,9 @@ name|configuration
 operator|.
 name|getBoolean
 argument_list|(
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+name|HDDS_BLOCK_TOKEN_ENABLED
 argument_list|,
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+name|HDDS_BLOCK_TOKEN_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -1682,16 +1682,16 @@ operator|.
 name|certDuration
 return|;
 block|}
-DECL|method|isGrpcBlockTokenEnabled ()
+DECL|method|isBlockTokenEnabled ()
 specifier|public
 name|boolean
-name|isGrpcBlockTokenEnabled
+name|isBlockTokenEnabled
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|grpcBlockTokenEnabled
+name|blockTokenEnabled
 return|;
 block|}
 comment|/**    * Returns true if TLS is enabled for gRPC services.    * @return true if TLS is enabled for gRPC services.    */

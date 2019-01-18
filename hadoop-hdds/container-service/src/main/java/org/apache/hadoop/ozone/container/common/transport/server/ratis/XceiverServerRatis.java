@@ -322,7 +322,7 @@ name|transport
 operator|.
 name|server
 operator|.
-name|XceiverServerSpi
+name|XceiverServer
 import|;
 end_import
 
@@ -712,18 +712,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -906,8 +894,8 @@ specifier|public
 specifier|final
 class|class
 name|XceiverServerRatis
-implements|implements
-name|XceiverServerSpi
+extends|extends
+name|XceiverServer
 block|{
 DECL|field|LOG
 specifier|private
@@ -1044,6 +1032,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|Objects
 operator|.
 name|requireNonNull
@@ -1304,6 +1297,15 @@ name|executors
 argument_list|)
 argument_list|,
 name|cacheEntryExpiryInteval
+argument_list|,
+name|getSecurityConfig
+argument_list|()
+operator|.
+name|isBlockTokenEnabled
+argument_list|()
+argument_list|,
+name|getBlockTokenVerifier
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -2777,6 +2779,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|super
+operator|.
+name|submitRequest
+argument_list|(
+name|request
+argument_list|,
+name|pipelineID
+argument_list|)
+expr_stmt|;
 name|RaftClientReply
 name|reply
 decl_stmt|;

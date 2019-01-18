@@ -871,7 +871,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+name|HDDS_BLOCK_TOKEN_ENABLED
 argument_list|,
 name|requireBlockToken
 argument_list|)
@@ -1167,7 +1167,7 @@ argument_list|,
 operator|new
 name|byte
 index|[
-literal|2
+literal|50
 index|]
 argument_list|,
 name|tokenId
@@ -1237,13 +1237,33 @@ name|encodeToUrlString
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|hasBlockToken
+condition|)
+block|{
 name|createContainerForTesting
 argument_list|(
 name|client
 argument_list|,
 name|containerID
+argument_list|,
+name|token
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|createContainerForTesting
+argument_list|(
+name|client
+argument_list|,
+name|containerID
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1261,6 +1281,15 @@ operator|!
 name|blockTokeExpired
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unexpected error. "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|fail
 argument_list|(
 literal|"Client with BlockToken should succeed when block token is"
@@ -1302,7 +1331,7 @@ literal|"Receive expected exception"
 argument_list|,
 name|e
 operator|instanceof
-name|SCMSecurityException
+name|IOException
 argument_list|)
 expr_stmt|;
 block|}
@@ -1332,7 +1361,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|createContainerForTesting (XceiverClientSpi client, long containerID)
+DECL|method|createContainerForTesting (XceiverClientSpi client, long containerID, Token token)
 specifier|public
 specifier|static
 name|void
@@ -1343,6 +1372,9 @@ name|client
 parameter_list|,
 name|long
 name|containerID
+parameter_list|,
+name|Token
+name|token
 parameter_list|)
 throws|throws
 name|Exception
@@ -1355,7 +1387,7 @@ name|request
 init|=
 name|ContainerTestHelper
 operator|.
-name|getCreateContainerRequest
+name|getCreateContainerSecureRequest
 argument_list|(
 name|containerID
 argument_list|,
@@ -1363,6 +1395,8 @@ name|client
 operator|.
 name|getPipeline
 argument_list|()
+argument_list|,
+name|token
 argument_list|)
 decl_stmt|;
 name|ContainerProtos

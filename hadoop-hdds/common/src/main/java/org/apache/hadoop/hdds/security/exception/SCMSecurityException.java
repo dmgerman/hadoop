@@ -42,6 +42,12 @@ name|SCMSecurityException
 extends|extends
 name|IOException
 block|{
+DECL|field|errorCode
+specifier|private
+specifier|final
+name|ErrorCode
+name|errorCode
+decl_stmt|;
 comment|/**    * Ctor.    * @param message - Error Message.    */
 DECL|method|SCMSecurityException (String message)
 specifier|public
@@ -55,6 +61,14 @@ name|super
 argument_list|(
 name|message
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|ErrorCode
+operator|.
+name|DEFAULT
 expr_stmt|;
 block|}
 comment|/**    * Ctor.    * @param message - Message.    * @param cause  - Actual cause.    */
@@ -76,6 +90,38 @@ argument_list|,
 name|cause
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|ErrorCode
+operator|.
+name|DEFAULT
+expr_stmt|;
+block|}
+comment|/**    * Ctor.    * @param message - Message.    * @param error   - error code.    */
+DECL|method|SCMSecurityException (String message, ErrorCode error)
+specifier|public
+name|SCMSecurityException
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|ErrorCode
+name|error
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|error
+expr_stmt|;
 block|}
 comment|/**    * Ctor.    * @param cause - Base Exception.    */
 DECL|method|SCMSecurityException (Throwable cause)
@@ -91,6 +137,36 @@ argument_list|(
 name|cause
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|ErrorCode
+operator|.
+name|DEFAULT
+expr_stmt|;
+block|}
+DECL|method|getErrorCode ()
+specifier|public
+name|ErrorCode
+name|getErrorCode
+parameter_list|()
+block|{
+return|return
+name|errorCode
+return|;
+block|}
+comment|/**    * Error codes to make it easy to decode these exceptions.    */
+DECL|enum|ErrorCode
+specifier|public
+enum|enum
+name|ErrorCode
+block|{
+DECL|enumConstant|DEFAULT
+name|DEFAULT
+block|,
+DECL|enumConstant|MISSING_BLOCK_TOKEN
+name|MISSING_BLOCK_TOKEN
 block|}
 block|}
 end_class

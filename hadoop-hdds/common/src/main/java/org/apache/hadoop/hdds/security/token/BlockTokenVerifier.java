@@ -138,6 +138,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -210,6 +230,22 @@ name|testStub
 init|=
 literal|false
 decl_stmt|;
+DECL|field|LOGGER
+specifier|private
+specifier|final
+specifier|static
+name|Logger
+name|LOGGER
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|BlockTokenVerifier
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|method|BlockTokenVerifier (SecurityConfig conf, CertificateClient caClient)
 specifier|public
 name|BlockTokenVerifier
@@ -272,10 +308,11 @@ if|if
 condition|(
 name|conf
 operator|.
-name|isGrpcBlockTokenEnabled
+name|isBlockTokenEnabled
 argument_list|()
 condition|)
 block|{
+comment|// TODO: add audit logs.
 if|if
 condition|(
 name|Strings
@@ -324,6 +361,17 @@ operator|.
 name|decodeFromUrlString
 argument_list|(
 name|tokenStr
+argument_list|)
+expr_stmt|;
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Verifying token:{} for user:{} "
+argument_list|,
+name|token
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|ByteArrayInputStream

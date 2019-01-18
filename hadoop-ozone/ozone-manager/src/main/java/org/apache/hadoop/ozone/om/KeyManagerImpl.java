@@ -700,7 +700,7 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+name|HDDS_BLOCK_TOKEN_ENABLED
 import|;
 end_import
 
@@ -716,7 +716,7 @@ name|hdds
 operator|.
 name|HddsConfigKeys
 operator|.
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+name|HDDS_BLOCK_TOKEN_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -1101,9 +1101,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED
+name|HDDS_BLOCK_TOKEN_ENABLED
 argument_list|,
-name|HDDS_GRPC_BLOCK_TOKEN_ENABLED_DEFAULT
+name|HDDS_BLOCK_TOKEN_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}

@@ -2665,7 +2665,7 @@ if|if
 condition|(
 name|secConfig
 operator|.
-name|isGrpcBlockTokenEnabled
+name|isBlockTokenEnabled
 argument_list|()
 condition|)
 block|{
@@ -3207,7 +3207,7 @@ return|;
 block|}
 name|Objects
 operator|.
-name|nonNull
+name|requireNonNull
 argument_list|(
 name|certClient
 argument_list|)
@@ -3361,7 +3361,7 @@ if|if
 condition|(
 name|secConfig
 operator|.
-name|isGrpcBlockTokenEnabled
+name|isBlockTokenEnabled
 argument_list|()
 operator|&&
 name|blockTokenMgr
@@ -5566,19 +5566,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
-DECL|method|shouldUseDelegationTokens ()
-specifier|private
-name|boolean
-name|shouldUseDelegationTokens
-parameter_list|()
-block|{
-return|return
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-return|;
 block|}
 comment|/**    *    * @return true if delegation token operation is allowed    */
 DECL|method|isAllowedDelegationTokenOp ()
