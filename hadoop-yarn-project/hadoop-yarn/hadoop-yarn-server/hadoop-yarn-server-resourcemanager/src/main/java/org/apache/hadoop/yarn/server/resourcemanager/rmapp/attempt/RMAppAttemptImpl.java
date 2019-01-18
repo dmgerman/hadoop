@@ -3317,6 +3317,10 @@ name|LAUNCHED
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
+name|LAUNCH_FAILED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
 name|EXPIRE
 argument_list|,
 name|RMAppAttemptEventType
@@ -3326,6 +3330,10 @@ argument_list|,
 name|RMAppAttemptEventType
 operator|.
 name|FAIL
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|REGISTERED
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
@@ -6720,10 +6728,9 @@ name|SCHEDULED
 return|;
 block|}
 comment|// Set the masterContainer
-name|appAttempt
-operator|.
-name|setMasterContainer
-argument_list|(
+name|Container
+name|amContainer
+init|=
 name|amContainerAllocation
 operator|.
 name|getContainers
@@ -6733,8 +6740,7 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|RMContainerImpl
 name|rmMasterContainer
 init|=
@@ -6747,15 +6753,35 @@ name|scheduler
 operator|.
 name|getRMContainer
 argument_list|(
-name|appAttempt
-operator|.
-name|getMasterContainer
-argument_list|()
+name|amContainer
 operator|.
 name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|//while one NM is removed, the scheduler will clean the container,the
+comment|//following CONTAINER_FINISHED event will handle the cleaned container.
+comment|//so just return RMAppAttemptState.SCHEDULED
+if|if
+condition|(
+name|rmMasterContainer
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|RMAppAttemptState
+operator|.
+name|SCHEDULED
+return|;
+block|}
+name|appAttempt
+operator|.
+name|setMasterContainer
+argument_list|(
+name|amContainer
+argument_list|)
+expr_stmt|;
 name|rmMasterContainer
 operator|.
 name|setAMContainer

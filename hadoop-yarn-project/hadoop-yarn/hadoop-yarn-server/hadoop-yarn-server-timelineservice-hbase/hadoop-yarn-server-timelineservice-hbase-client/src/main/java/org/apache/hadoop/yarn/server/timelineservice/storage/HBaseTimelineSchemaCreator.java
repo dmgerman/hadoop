@@ -507,15 +507,17 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|TimelineSchemaCreator
+DECL|class|HBaseTimelineSchemaCreator
 specifier|public
 specifier|final
 class|class
-name|TimelineSchemaCreator
+name|HBaseTimelineSchemaCreator
+implements|implements
+name|SchemaCreator
 block|{
-DECL|method|TimelineSchemaCreator ()
-specifier|private
-name|TimelineSchemaCreator
+DECL|method|HBaseTimelineSchemaCreator ()
+specifier|public
+name|HBaseTimelineSchemaCreator
 parameter_list|()
 block|{   }
 DECL|field|NAME
@@ -524,7 +526,7 @@ specifier|static
 name|String
 name|NAME
 init|=
-name|TimelineSchemaCreator
+name|HBaseTimelineSchemaCreator
 operator|.
 name|class
 operator|.
@@ -542,7 +544,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TimelineSchemaCreator
+name|HBaseTimelineSchemaCreator
 operator|.
 name|class
 argument_list|)
@@ -637,11 +639,10 @@ name|CREATE_TABLES_SHORT
 init|=
 literal|"c"
 decl_stmt|;
-DECL|method|main (String[] args)
+DECL|method|createTimelineSchema (String[] args)
 specifier|public
-specifier|static
 name|void
-name|main
+name|createTimelineSchema
 parameter_list|(
 name|String
 index|[]

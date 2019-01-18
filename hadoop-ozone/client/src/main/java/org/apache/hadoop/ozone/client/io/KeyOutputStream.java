@@ -94,9 +94,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|client
+name|scm
 operator|.
-name|BlockID
+name|XceiverClientSpi
 import|;
 end_import
 
@@ -141,24 +141,6 @@ operator|.
 name|helpers
 operator|.
 name|ContainerWithPipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|storage
-operator|.
-name|BlockOutputStream
 import|;
 end_import
 
@@ -282,22 +264,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|XceiverClientSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|container
 operator|.
 name|common
@@ -337,6 +303,20 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
+name|AlreadyClosedException
 import|;
 end_import
 
@@ -691,37 +671,6 @@ operator|=
 operator|new
 name|Checksum
 argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * For testing purpose only. Not building output stream from blocks, but    * taking from externally.    *    * @param outputStream    * @param length    */
-annotation|@
-name|VisibleForTesting
-DECL|method|addStream (OutputStream outputStream, long length)
-specifier|public
-name|void
-name|addStream
-parameter_list|(
-name|OutputStream
-name|outputStream
-parameter_list|,
-name|long
-name|length
-parameter_list|)
-block|{
-name|streamEntries
-operator|.
-name|add
-argument_list|(
-operator|new
-name|BlockOutputStreamEntry
-argument_list|(
-name|outputStream
-argument_list|,
-name|length
-argument_list|,
-name|checksum
-argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1291,9 +1240,12 @@ argument_list|(
 name|xceiverClientManager
 argument_list|)
 operator|.
-name|setXceiverClient
+name|setPipeline
 argument_list|(
-name|xceiverClient
+name|containerWithPipeline
+operator|.
+name|getPipeline
+argument_list|()
 argument_list|)
 operator|.
 name|setRequestId
@@ -1716,6 +1668,14 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|boolean
+name|retryFailure
+init|=
+name|checkForRetryFailure
+argument_list|(
+name|ioe
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|checkIfContainerIsClosed
@@ -1727,6 +1687,8 @@ name|checkIfTimeoutException
 argument_list|(
 name|ioe
 argument_list|)
+operator|||
+name|retryFailure
 condition|)
 block|{
 comment|// for the current iteration, totalDataWritten - currentPos gives the
@@ -1761,6 +1723,8 @@ argument_list|(
 name|current
 argument_list|,
 name|currentStreamIndex
+argument_list|,
+name|retryFailure
 argument_list|)
 expr_stmt|;
 block|}
@@ -1930,8 +1894,8 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * It performs following actions :    * a. Updates the committed length at datanode for the current stream in    *    datanode.    * b. Reads the data from the underlying buffer and writes it the next stream.    *    * @param streamEntry StreamEntry    * @param streamIndex Index of the entry    * @throws IOException Throws IOException if Write fails    */
-DECL|method|handleException (BlockOutputStreamEntry streamEntry, int streamIndex)
+comment|/**    * It performs following actions :    * a. Updates the committed length at datanode for the current stream in    *    datanode.    * b. Reads the data from the underlying buffer and writes it the next stream.    *    * @param streamEntry StreamEntry    * @param streamIndex Index of the entry    * @param retryFailure if true the xceiverClient needs to be invalidated in    *                     the client cache.    * @throws IOException Throws IOException if Write fails    */
+DECL|method|handleException (BlockOutputStreamEntry streamEntry, int streamIndex, boolean retryFailure)
 specifier|private
 name|void
 name|handleException
@@ -1941,6 +1905,9 @@ name|streamEntry
 parameter_list|,
 name|int
 name|streamIndex
+parameter_list|,
+name|boolean
+name|retryFailure
 parameter_list|)
 throws|throws
 name|IOException
@@ -1971,7 +1938,9 @@ comment|// just clean up the current stream.
 name|streamEntry
 operator|.
 name|cleanup
-argument_list|()
+argument_list|(
+name|retryFailure
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -2051,9 +2020,13 @@ literal|null
 condition|)
 block|{
 return|return
-name|checkIfContainerNotOpenOrRaftRetryFailureException
+name|checkForException
 argument_list|(
 name|ioe
+argument_list|,
+name|ContainerNotOpenException
+operator|.
+name|class
 argument_list|)
 operator|||
 name|Optional
@@ -2107,13 +2080,42 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|checkIfContainerNotOpenOrRaftRetryFailureException ( IOException ioe)
+comment|/**    * Checks if the provided exception signifies retry failure in ratis client.    * In case of retry failure, ratis client throws RaftRetryFailureException    * and all succeeding operations are failed with AlreadyClosedException.    */
+DECL|method|checkForRetryFailure (IOException ioe)
 specifier|private
 name|boolean
-name|checkIfContainerNotOpenOrRaftRetryFailureException
+name|checkForRetryFailure
 parameter_list|(
 name|IOException
 name|ioe
+parameter_list|)
+block|{
+return|return
+name|checkForException
+argument_list|(
+name|ioe
+argument_list|,
+name|RaftRetryFailureException
+operator|.
+name|class
+argument_list|,
+name|AlreadyClosedException
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
+DECL|method|checkForException (IOException ioe, Class... classes)
+specifier|private
+name|boolean
+name|checkForException
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|,
+name|Class
+modifier|...
+name|classes
 parameter_list|)
 block|{
 name|Throwable
@@ -2131,20 +2133,28 @@ operator|!=
 literal|null
 condition|)
 block|{
+for|for
+control|(
+name|Class
+name|cls
+range|:
+name|classes
+control|)
+block|{
 if|if
 condition|(
+name|cls
+operator|.
+name|isInstance
+argument_list|(
 name|t
-operator|instanceof
-name|ContainerNotOpenException
-operator|||
-name|t
-operator|instanceof
-name|RaftRetryFailureException
+argument_list|)
 condition|)
 block|{
 return|return
 literal|true
 return|;
+block|}
 block|}
 name|t
 operator|=
@@ -2373,6 +2383,14 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|boolean
+name|retryFailure
+init|=
+name|checkForRetryFailure
+argument_list|(
+name|ioe
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|checkIfContainerIsClosed
@@ -2384,6 +2402,8 @@ name|checkIfTimeoutException
 argument_list|(
 name|ioe
 argument_list|)
+operator|||
+name|retryFailure
 condition|)
 block|{
 comment|// This call will allocate a new streamEntry and write the Data.
@@ -2394,6 +2414,8 @@ argument_list|(
 name|entry
 argument_list|,
 name|streamIndex
+argument_list|,
+name|retryFailure
 argument_list|)
 expr_stmt|;
 name|handleFlushOrClose

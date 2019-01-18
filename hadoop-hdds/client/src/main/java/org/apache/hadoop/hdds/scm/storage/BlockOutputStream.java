@@ -100,6 +100,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|common
@@ -605,13 +623,13 @@ specifier|private
 name|int
 name|currentBufferIndex
 decl_stmt|;
-comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient        client to perform container calls    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksum              checksum    */
+comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param pipeline             pipeline where block will be written    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksum              checksum    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
+DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
 specifier|public
 name|BlockOutputStream
 parameter_list|(
@@ -624,8 +642,8 @@ parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
 parameter_list|,
-name|XceiverClientSpi
-name|xceiverClient
+name|Pipeline
+name|pipeline
 parameter_list|,
 name|String
 name|traceID
@@ -651,6 +669,8 @@ parameter_list|,
 name|Checksum
 name|checksum
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -729,7 +749,12 @@ name|this
 operator|.
 name|xceiverClient
 operator|=
-name|xceiverClient
+name|xceiverClientManager
+operator|.
+name|acquireClient
+argument_list|(
+name|pipeline
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -2389,7 +2414,9 @@ block|}
 finally|finally
 block|{
 name|cleanup
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2545,11 +2572,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|cleanup ()
+DECL|method|cleanup (boolean invalidateClient)
 specifier|public
 name|void
 name|cleanup
-parameter_list|()
+parameter_list|(
+name|boolean
+name|invalidateClient
+parameter_list|)
 block|{
 if|if
 condition|(
@@ -2563,6 +2593,8 @@ operator|.
 name|releaseClient
 argument_list|(
 name|xceiverClient
+argument_list|,
+name|invalidateClient
 argument_list|)
 expr_stmt|;
 block|}
