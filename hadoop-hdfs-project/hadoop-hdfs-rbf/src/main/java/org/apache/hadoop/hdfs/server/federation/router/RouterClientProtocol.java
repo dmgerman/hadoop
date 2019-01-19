@@ -6301,11 +6301,11 @@ name|?
 argument_list|>
 index|[]
 block|{
-name|Long
+name|long
 operator|.
 name|class
 operator|,
-name|Long
+name|long
 operator|.
 name|class
 block|}
