@@ -212,6 +212,12 @@ name|UPGRADE_DIR
 init|=
 literal|"upgrade"
 decl_stmt|;
+DECL|field|CONTAINER_STATE_REPORT_AS_SERVICE_STATE
+name|String
+name|CONTAINER_STATE_REPORT_AS_SERVICE_STATE
+init|=
+literal|"yarn.service.container-state-report-as-service-state"
+decl_stmt|;
 block|}
 end_interface
 

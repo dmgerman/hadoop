@@ -2709,8 +2709,10 @@ operator|.
 name|getScheduler
 argument_list|()
 operator|.
-name|terminateServiceIfAllComponentsFinished
-argument_list|()
+name|terminateServiceIfNeeded
+argument_list|(
+name|comp
+argument_list|)
 expr_stmt|;
 block|}
 block|}
