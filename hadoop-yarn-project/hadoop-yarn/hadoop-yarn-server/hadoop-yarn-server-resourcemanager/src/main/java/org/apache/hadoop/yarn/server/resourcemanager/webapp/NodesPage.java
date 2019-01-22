@@ -1269,10 +1269,15 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|StringEscapeUtils
+operator|.
+name|escapeJava
+argument_list|(
 name|info
 operator|.
 name|getHealthReport
 argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|append
@@ -1589,19 +1594,6 @@ argument_list|(
 literal|"]"
 argument_list|)
 expr_stmt|;
-name|String
-name|nodeTableDataEscaped
-init|=
-name|StringEscapeUtils
-operator|.
-name|escapeJava
-argument_list|(
-name|nodeTableData
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|html
 operator|.
 name|script
@@ -1616,7 +1608,7 @@ name|__
 argument_list|(
 literal|"var nodeTableData="
 operator|+
-name|nodeTableDataEscaped
+name|nodeTableData
 argument_list|)
 operator|.
 name|__
