@@ -1182,6 +1182,8 @@ argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|DFSZKFailoverController
 name|zkfc
 init|=
@@ -1195,8 +1197,6 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|System
 operator|.
 name|exit
