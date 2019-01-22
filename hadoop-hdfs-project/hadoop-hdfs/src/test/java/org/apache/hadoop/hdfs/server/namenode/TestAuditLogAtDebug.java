@@ -36,20 +36,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Optional
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|slf4j
@@ -215,6 +201,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
 import|;
 end_import
 
@@ -732,13 +728,7 @@ name|INFO
 argument_list|,
 name|Optional
 operator|.
-expr|<
-name|List
-argument_list|<
-name|String
-argument_list|>
-operator|>
-name|absent
+name|empty
 argument_list|()
 argument_list|)
 decl_stmt|;
