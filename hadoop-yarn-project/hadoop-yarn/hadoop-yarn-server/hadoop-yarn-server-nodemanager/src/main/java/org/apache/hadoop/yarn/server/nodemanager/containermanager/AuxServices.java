@@ -2851,6 +2851,65 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Reloads auxiliary services. Must be called after service init.    *    * @param services a list of auxiliary services    * @throws IOException if aux services have not been started yet    */
+DECL|method|reload (AuxServiceRecords services)
+specifier|public
+name|void
+name|reload
+parameter_list|(
+name|AuxServiceRecords
+name|services
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|getServiceState
+argument_list|()
+operator|!=
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STARTED
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Auxiliary services have not been started yet, "
+operator|+
+literal|"please retry later"
+argument_list|)
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Received list of auxiliary services: "
+operator|+
+name|mapper
+operator|.
+name|writeValueAsString
+argument_list|(
+name|services
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|loadServices
+argument_list|(
+name|services
+argument_list|,
+name|getConfig
+argument_list|()
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|checkManifestPermissions (FileStatus status)
 specifier|private
 name|boolean
@@ -3285,6 +3344,35 @@ init|=
 name|maybeReadManifestFile
 argument_list|()
 decl_stmt|;
+name|loadServices
+argument_list|(
+name|services
+argument_list|,
+name|conf
+argument_list|,
+name|startServices
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Updates current aux services based on changes found in the service list.    *    * @param services list of auxiliary services    * @param conf configuration    * @param startServices if true starts services, otherwise only inits services    * @throws IOException    */
+DECL|method|loadServices (AuxServiceRecords services, Configuration conf, boolean startServices)
+specifier|private
+specifier|synchronized
+name|void
+name|loadServices
+parameter_list|(
+name|AuxServiceRecords
+name|services
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|startServices
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 if|if
 condition|(
 name|services
@@ -3474,7 +3562,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// remove aux services that do not appear in the manifest
+comment|// remove aux services that do not appear in the new list
 name|Set
 argument_list|<
 name|String
@@ -3526,7 +3614,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"No auxiliary services changes detected in manifest"
+literal|"No auxiliary services changes detected"
 argument_list|)
 expr_stmt|;
 block|}
