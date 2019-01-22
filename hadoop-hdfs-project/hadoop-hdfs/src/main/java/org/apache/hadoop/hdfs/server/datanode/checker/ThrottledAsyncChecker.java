@@ -393,6 +393,7 @@ argument_list|>
 name|completedChecks
 decl_stmt|;
 DECL|method|ThrottledAsyncChecker (final Timer timer, final long minMsBetweenChecks, final long diskCheckTimeout, final ExecutorService executorService)
+specifier|public
 name|ThrottledAsyncChecker
 parameter_list|(
 specifier|final
