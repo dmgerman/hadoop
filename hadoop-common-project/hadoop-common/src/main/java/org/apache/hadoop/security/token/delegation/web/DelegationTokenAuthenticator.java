@@ -1354,14 +1354,7 @@ name|DelegationTokenAuthenticatedURL
 operator|.
 name|DO_AS
 argument_list|,
-name|URLEncoder
-operator|.
-name|encode
-argument_list|(
 name|doAsUser
-argument_list|,
-literal|"UTF-8"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
