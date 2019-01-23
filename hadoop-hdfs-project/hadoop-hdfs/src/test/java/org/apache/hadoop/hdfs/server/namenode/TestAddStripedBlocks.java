@@ -610,16 +610,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Before
 import|;
 end_import
@@ -745,6 +735,18 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertArrayEquals
 import|;
 end_import
 
@@ -1049,8 +1051,6 @@ range|:
 name|dnList
 control|)
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -1121,8 +1121,6 @@ range|:
 name|dnList
 control|)
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -1259,8 +1257,6 @@ operator|.
 name|getBlockId
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|firstId
@@ -1423,8 +1419,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|blocks
@@ -1498,8 +1492,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|blocks
@@ -1607,8 +1599,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|blocks
@@ -1669,8 +1659,6 @@ name|numNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|block
@@ -1679,8 +1667,6 @@ name|isComplete
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|dataBlocks
@@ -1691,8 +1677,6 @@ name|getDataBlockNum
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|parityBlocks
@@ -1703,8 +1687,6 @@ name|getParityBlockNum
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -1719,8 +1701,6 @@ operator|.
 name|BLOCK_GROUP_INDEX_MASK
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|HdfsServerConstants
@@ -1740,8 +1720,6 @@ condition|(
 name|checkReplica
 condition|)
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -1778,8 +1756,6 @@ name|getDataNodes
 argument_list|()
 control|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|includeDataNode
@@ -1979,8 +1955,6 @@ argument_list|,
 literal|0L
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -2001,8 +1975,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|lblk
@@ -2033,8 +2005,6 @@ operator|.
 name|getBlockIndices
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2044,8 +2014,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2055,8 +2023,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertArrayEquals
 argument_list|(
 name|indices
@@ -2064,8 +2030,6 @@ argument_list|,
 name|blockIndices
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertArrayEquals
 argument_list|(
 name|expectedDNs
@@ -2236,8 +2200,6 @@ operator|.
 name|getBlockIndices
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2247,8 +2209,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2387,8 +2347,6 @@ operator|.
 name|getBlockIndices
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2398,8 +2356,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2417,8 +2373,6 @@ range|:
 name|locs
 control|)
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|storageIDs
@@ -2675,8 +2629,6 @@ operator|.
 name|getBlockIndices
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2686,8 +2638,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2711,8 +2661,6 @@ name|i
 operator|++
 control|)
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|storageIDs
@@ -2735,8 +2683,6 @@ name|getStorageID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|groupSize
@@ -2842,8 +2788,6 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|fileNode
@@ -2873,8 +2817,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -2972,8 +2914,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -3058,8 +2998,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3142,8 +3080,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3229,8 +3165,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// the total number of corrupted block info is still 1
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3241,8 +3175,6 @@ name|getCorruptECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3253,8 +3185,6 @@ name|getCorruptReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -3266,8 +3196,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// 2 internal blocks corrupted
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|2
@@ -3370,8 +3298,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3382,8 +3308,6 @@ name|getCorruptReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -3487,8 +3411,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3499,8 +3421,6 @@ name|getCorruptReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -3589,8 +3509,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3601,8 +3519,6 @@ name|getCorruptReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
@@ -3693,8 +3609,6 @@ name|getBlockManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -3705,8 +3619,6 @@ name|getCorruptReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|3
