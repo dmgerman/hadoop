@@ -895,7 +895,7 @@ operator|.
 name|getErasureCodingPolicyManager
 argument_list|()
 operator|.
-name|getEnabledPolicyByName
+name|getByName
 argument_list|(
 name|ecPolicyName
 argument_list|)
