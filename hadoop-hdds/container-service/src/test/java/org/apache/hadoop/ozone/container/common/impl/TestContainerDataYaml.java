@@ -809,7 +809,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IllegalStateException
+name|IllegalArgumentException
 name|ex
 parameter_list|)
 block|{
@@ -817,9 +817,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Unexpected "
-operator|+
-literal|"ContainerLifeCycleState"
+literal|"No enum constant"
 argument_list|,
 name|ex
 argument_list|)
@@ -828,10 +826,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testCheckBackWardCompatabilityOfContainerFile ()
+DECL|method|testCheckBackWardCompatibilityOfContainerFile ()
 specifier|public
 name|void
-name|testCheckBackWardCompatabilityOfContainerFile
+name|testCheckBackWardCompatibilityOfContainerFile
 parameter_list|()
 throws|throws
 name|IOException
@@ -1002,7 +1000,7 @@ argument_list|()
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"testCheckBackWardCompatabilityOfContainerFile failed"
+literal|"testCheckBackWardCompatibilityOfContainerFile failed"
 argument_list|)
 expr_stmt|;
 block|}
