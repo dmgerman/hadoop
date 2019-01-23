@@ -2101,6 +2101,9 @@ case|:
 case|case
 name|DISABLEECPOLICY
 case|:
+case|case
+name|SATISFYSTORAGEPOLICY
+case|:
 block|{
 comment|// Whitelist operations that can handled by NamenodeWebHdfsMethods
 return|return

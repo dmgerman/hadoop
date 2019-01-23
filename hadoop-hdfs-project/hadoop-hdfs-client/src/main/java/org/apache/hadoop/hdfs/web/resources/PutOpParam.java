@@ -201,6 +201,16 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
+DECL|enumConstant|SATISFYSTORAGEPOLICY
+name|SATISFYSTORAGEPOLICY
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
 DECL|enumConstant|SETACL
 name|SETACL
 argument_list|(
