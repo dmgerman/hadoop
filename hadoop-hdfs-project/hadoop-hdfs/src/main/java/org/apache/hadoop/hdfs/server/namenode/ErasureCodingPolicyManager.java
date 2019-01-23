@@ -793,14 +793,14 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|getCopyOfPolicies ()
+DECL|method|getCopyOfEnabledPolicies ()
 specifier|public
-name|ErasureCodingPolicyInfo
+name|ErasureCodingPolicy
 index|[]
-name|getCopyOfPolicies
+name|getCopyOfEnabledPolicies
 parameter_list|()
 block|{
-name|ErasureCodingPolicyInfo
+name|ErasureCodingPolicy
 index|[]
 name|copy
 decl_stmt|;
@@ -815,9 +815,9 @@ name|Arrays
 operator|.
 name|copyOf
 argument_list|(
-name|allPolicies
+name|enabledPolicies
 argument_list|,
-name|allPolicies
+name|enabledPolicies
 operator|.
 name|length
 argument_list|)

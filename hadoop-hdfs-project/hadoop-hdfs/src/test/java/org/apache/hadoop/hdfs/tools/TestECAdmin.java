@@ -200,6 +200,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -265,6 +277,16 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
+DECL|field|err
+specifier|private
+specifier|final
+name|ByteArrayOutputStream
+name|err
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
 DECL|field|OLD_OUT
 specifier|private
 specifier|static
@@ -275,6 +297,17 @@ init|=
 name|System
 operator|.
 name|out
+decl_stmt|;
+DECL|field|OLD_ERR
+specifier|private
+specifier|static
+specifier|final
+name|PrintStream
+name|OLD_ERR
+init|=
+name|System
+operator|.
+name|err
 decl_stmt|;
 annotation|@
 name|Rule
@@ -314,6 +347,17 @@ name|out
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|System
+operator|.
+name|setErr
+argument_list|(
+operator|new
+name|PrintStream
+argument_list|(
+name|err
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -346,6 +390,11 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
+name|err
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -354,6 +403,13 @@ operator|.
 name|setOut
 argument_list|(
 name|OLD_OUT
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|setErr
+argument_list|(
+name|OLD_ERR
 argument_list|)
 expr_stmt|;
 block|}
@@ -423,7 +479,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Commend stdout: {}"
+literal|"Command stdout: {}"
 argument_list|,
 name|out
 operator|.
@@ -431,8 +487,22 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Return value of the command is not successful"
+argument_list|,
 literal|2
 argument_list|,
 name|ret
@@ -440,6 +510,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Result of cluster topology verify "
+operator|+
+literal|"should be logged correctly"
+argument_list|,
 name|out
 operator|.
 name|toString
@@ -449,6 +523,19 @@ name|contains
 argument_list|(
 literal|"less than the minimum required number of DataNodes"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -520,7 +607,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Commend stdout: {}"
+literal|"Command stdout: {}"
 argument_list|,
 name|out
 operator|.
@@ -528,8 +615,22 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Return value of the command is not successful"
+argument_list|,
 literal|2
 argument_list|,
 name|ret
@@ -537,6 +638,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Result of cluster topology verify "
+operator|+
+literal|"should be logged correctly"
+argument_list|,
 name|out
 operator|.
 name|toString
@@ -546,6 +651,19 @@ name|contains
 argument_list|(
 literal|"less than the minimum required number of racks"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -637,7 +755,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Commend stdout: {}"
+literal|"Command stdout: {}"
 argument_list|,
 name|out
 operator|.
@@ -645,8 +763,22 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Return value of the command is not successful"
+argument_list|,
 literal|2
 argument_list|,
 name|ret
@@ -654,6 +786,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Result of cluster topology verify "
+operator|+
+literal|"should be logged correctly"
+argument_list|,
 name|out
 operator|.
 name|toString
@@ -663,6 +799,19 @@ name|contains
 argument_list|(
 literal|"less than the minimum required number of racks"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -754,7 +903,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Commend stdout: {}"
+literal|"Command stdout: {}"
 argument_list|,
 name|out
 operator|.
@@ -762,8 +911,22 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Return value of the command is not successful"
+argument_list|,
 literal|2
 argument_list|,
 name|ret
@@ -771,6 +934,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Result of cluster topology verify "
+operator|+
+literal|"should be logged correctly"
+argument_list|,
 name|out
 operator|.
 name|toString
@@ -780,6 +947,19 @@ name|contains
 argument_list|(
 literal|"less than the minimum required number of racks"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -831,7 +1011,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Commend stdout: {}"
+literal|"Command stdout: {}"
 argument_list|,
 name|out
 operator|.
@@ -839,11 +1019,55 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Return value of the command is successful"
+argument_list|,
 literal|0
 argument_list|,
 name|ret
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Result of cluster topology verify "
+operator|+
+literal|"should be logged correctly"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"The cluster setup can support EC policies: RS-6-3-1024k"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -915,9 +1139,21 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Commend stdout: {}"
+literal|"Command stdout: {}"
 argument_list|,
 name|out
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
 operator|.
 name|toString
 argument_list|()
@@ -925,6 +1161,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Return value of the command is successful"
+argument_list|,
 literal|0
 argument_list|,
 name|ret
@@ -932,6 +1170,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Result of cluster topology verify "
+operator|+
+literal|"should be logged correctly"
+argument_list|,
 name|out
 operator|.
 name|toString
@@ -939,7 +1181,450 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"No erasure coding policy is enabled"
+literal|"No erasure coding policy is given"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testUnsuccessfulEnablePolicyMessage ()
+specifier|public
+name|void
+name|testUnsuccessfulEnablePolicyMessage
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|cluster
+operator|=
+name|DFSTestUtil
+operator|.
+name|setupCluster
+argument_list|(
+name|conf
+argument_list|,
+literal|5
+argument_list|,
+literal|2
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|disableErasureCodingPolicy
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|getByID
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|RS_6_3_POLICY_ID
+argument_list|)
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|args
+init|=
+block|{
+literal|"-enablePolicy"
+block|,
+literal|"-policy"
+block|,
+literal|"RS-3-2-1024k"
+block|}
+decl_stmt|;
+specifier|final
+name|int
+name|ret
+init|=
+name|admin
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stdout: {}"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Return value of the command is successful"
+argument_list|,
+literal|0
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Enabling policy should be logged"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Erasure coding policy RS-3-2-1024k is enabled"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Warning about cluster topology should be printed"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Warning: The cluster setup does not support "
+operator|+
+literal|"EC policy RS-3-2-1024k. Reason:"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Warning about cluster topology should be printed"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"less than the minimum required number of racks"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testSuccessfulEnablePolicyMessage ()
+specifier|public
+name|void
+name|testSuccessfulEnablePolicyMessage
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|cluster
+operator|=
+name|DFSTestUtil
+operator|.
+name|setupCluster
+argument_list|(
+name|conf
+argument_list|,
+literal|5
+argument_list|,
+literal|3
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|disableErasureCodingPolicy
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|getByID
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|RS_6_3_POLICY_ID
+argument_list|)
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|args
+init|=
+block|{
+literal|"-enablePolicy"
+block|,
+literal|"-policy"
+block|,
+literal|"RS-3-2-1024k"
+block|}
+decl_stmt|;
+specifier|final
+name|int
+name|ret
+init|=
+name|admin
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stdout: {}"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Return value of the command is successful"
+argument_list|,
+literal|0
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Enabling policy should be logged"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Erasure coding policy RS-3-2-1024k is enabled"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"Warning about cluster topology should not be printed"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Warning: The cluster setup does not support"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error output should be empty"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testEnableNonExistentPolicyMessage ()
+specifier|public
+name|void
+name|testEnableNonExistentPolicyMessage
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|cluster
+operator|=
+name|DFSTestUtil
+operator|.
+name|setupCluster
+argument_list|(
+name|conf
+argument_list|,
+literal|5
+argument_list|,
+literal|3
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|disableErasureCodingPolicy
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|getByID
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|RS_6_3_POLICY_ID
+argument_list|)
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|args
+init|=
+block|{
+literal|"-enablePolicy"
+block|,
+literal|"-policy"
+block|,
+literal|"NonExistentPolicy"
+block|}
+decl_stmt|;
+specifier|final
+name|int
+name|ret
+init|=
+name|admin
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stdout: {}"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Command stderr: {}"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Return value of the command is unsuccessful"
+argument_list|,
+literal|2
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"Enabling policy should not be logged when "
+operator|+
+literal|"it was unsuccessful"
+argument_list|,
+name|out
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"is enabled"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Error message should be printed"
+argument_list|,
+name|err
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"RemoteException: The policy name "
+operator|+
+literal|"NonExistentPolicy does not exist"
 argument_list|)
 argument_list|)
 expr_stmt|;

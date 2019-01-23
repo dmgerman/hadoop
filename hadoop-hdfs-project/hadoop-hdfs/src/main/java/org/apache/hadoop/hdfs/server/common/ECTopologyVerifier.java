@@ -62,7 +62,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingPolicyInfo
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -110,6 +110,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -121,6 +131,18 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
 import|;
 end_import
 
@@ -160,8 +182,8 @@ specifier|private
 name|ECTopologyVerifier
 parameter_list|()
 block|{}
-comment|/**    * Verifies whether the cluster setup can support all enabled EC policies.    *    * @param report list of data node descriptors for all data nodes    * @param policies all system and user defined erasure coding policies    * @return the status of the verification    */
-DECL|method|getECTopologyVerifierResult ( final DatanodeInfo[] report, final ErasureCodingPolicyInfo[] policies)
+comment|/**    * Verifies whether the cluster setup can support the given EC policies.    *    * @param report list of data node descriptors for all data nodes    * @param policies erasure coding policies to verify    * @return the status of the verification    */
+DECL|method|getECTopologyVerifierResult ( final DatanodeInfo[] report, final ErasureCodingPolicy... policies)
 specifier|public
 specifier|static
 name|ECTopologyVerifierResult
@@ -173,8 +195,8 @@ index|[]
 name|report
 parameter_list|,
 specifier|final
-name|ErasureCodingPolicyInfo
-index|[]
+name|ErasureCodingPolicy
+modifier|...
 name|policies
 parameter_list|)
 block|{
@@ -190,28 +212,23 @@ decl_stmt|;
 return|return
 name|getECTopologyVerifierResult
 argument_list|(
-name|policies
-argument_list|,
 name|numOfRacks
 argument_list|,
 name|report
 operator|.
 name|length
+argument_list|,
+name|policies
 argument_list|)
 return|;
 block|}
-comment|/**    * Verifies whether the cluster setup can support all enabled EC policies.    *    * @param policies all system and user defined erasure coding policies    * @param numOfRacks number of racks    * @param numOfDataNodes number of data nodes    * @return the status of the verification    */
-DECL|method|getECTopologyVerifierResult ( final ErasureCodingPolicyInfo[] policies, final int numOfRacks, final int numOfDataNodes)
+comment|/**    * Verifies whether the cluster setup can support all enabled EC policies.    *    * @param policies erasure coding policies to verify    * @param numOfRacks number of racks    * @param numOfDataNodes number of data nodes    * @return the status of the verification    */
+DECL|method|getECTopologyVerifierResult ( final int numOfRacks, final int numOfDataNodes, final ErasureCodingPolicy... policies)
 specifier|public
 specifier|static
 name|ECTopologyVerifierResult
 name|getECTopologyVerifierResult
 parameter_list|(
-specifier|final
-name|ErasureCodingPolicyInfo
-index|[]
-name|policies
-parameter_list|,
 specifier|final
 name|int
 name|numOfRacks
@@ -219,6 +236,11 @@ parameter_list|,
 specifier|final
 name|int
 name|numOfDataNodes
+parameter_list|,
+specifier|final
+name|ErasureCodingPolicy
+modifier|...
+name|policies
 parameter_list|)
 block|{
 name|int
@@ -233,19 +255,11 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|ErasureCodingPolicyInfo
+name|ErasureCodingPolicy
 name|policy
 range|:
 name|policies
 control|)
-block|{
-if|if
-condition|(
-name|policy
-operator|.
-name|isEnabled
-argument_list|()
-condition|)
 block|{
 specifier|final
 name|int
@@ -253,16 +267,10 @@ name|policyDN
 init|=
 name|policy
 operator|.
-name|getPolicy
-argument_list|()
-operator|.
 name|getNumDataUnits
 argument_list|()
 operator|+
 name|policy
-operator|.
-name|getPolicy
-argument_list|()
 operator|.
 name|getNumParityUnits
 argument_list|()
@@ -296,9 +304,6 @@ name|double
 operator|)
 name|policy
 operator|.
-name|getPolicy
-argument_list|()
-operator|.
 name|getNumParityUnits
 argument_list|()
 argument_list|)
@@ -315,7 +320,6 @@ name|policyRack
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 if|if
 condition|(
 name|minDN
@@ -330,7 +334,7 @@ block|{
 name|String
 name|resultMessage
 init|=
-literal|"No erasure coding policy is enabled."
+literal|"No erasure coding policy is given."
 decl_stmt|;
 name|LOG
 operator|.
@@ -359,10 +363,15 @@ argument_list|,
 name|numOfRacks
 argument_list|,
 name|numOfDataNodes
+argument_list|,
+name|getReadablePolicies
+argument_list|(
+name|policies
+argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|verifyECWithTopology ( final int minDN, final int minRack, final int numOfRacks, final int numOfDataNodes)
+DECL|method|verifyECWithTopology ( final int minDN, final int minRack, final int numOfRacks, final int numOfDataNodes, String readablePolicies)
 specifier|private
 specifier|static
 name|ECTopologyVerifierResult
@@ -383,6 +392,9 @@ parameter_list|,
 specifier|final
 name|int
 name|numOfDataNodes
+parameter_list|,
+name|String
+name|readablePolicies
 parameter_list|)
 block|{
 name|String
@@ -405,7 +417,9 @@ literal|") is less than the minimum required number of DataNodes ("
 operator|+
 name|minDN
 operator|+
-literal|") for enabled erasure coding policy."
+literal|") for the erasure coding policies: "
+operator|+
+name|readablePolicies
 expr_stmt|;
 name|LOG
 operator|.
@@ -441,7 +455,9 @@ literal|") is less than the minimum required number of racks ("
 operator|+
 name|minRack
 operator|+
-literal|") for enabled erasure coding policy."
+literal|") for the erasure coding policies: "
+operator|+
+name|readablePolicies
 expr_stmt|;
 name|LOG
 operator|.
@@ -466,7 +482,9 @@ name|ECTopologyVerifierResult
 argument_list|(
 literal|true
 argument_list|,
-literal|"The cluster setup can support all enabled EC policies"
+literal|"The cluster setup can support EC policies: "
+operator|+
+name|readablePolicies
 argument_list|)
 return|;
 block|}
@@ -548,6 +566,50 @@ name|racks
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+DECL|method|getReadablePolicies ( final ErasureCodingPolicy... policies)
+specifier|private
+specifier|static
+name|String
+name|getReadablePolicies
+parameter_list|(
+specifier|final
+name|ErasureCodingPolicy
+modifier|...
+name|policies
+parameter_list|)
+block|{
+return|return
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|policies
+argument_list|)
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|policyInfo
+lambda|->
+name|policyInfo
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|joining
+argument_list|(
+literal|", "
+argument_list|)
+argument_list|)
 return|;
 block|}
 block|}
