@@ -475,6 +475,13 @@ argument_list|(
 name|YARN_SITE_CONFIGURATION_FILE
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+name|RESOURCE_TYPES_CONFIGURATION_FILE
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|addDeprecatedKeys ()
 specifier|private
