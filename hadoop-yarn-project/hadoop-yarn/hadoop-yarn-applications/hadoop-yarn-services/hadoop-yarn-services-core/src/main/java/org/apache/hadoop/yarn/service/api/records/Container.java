@@ -308,6 +308,16 @@ name|exposedPorts
 init|=
 literal|null
 decl_stmt|;
+DECL|field|localizationStatuses
+specifier|private
+name|List
+argument_list|<
+name|LocalizationStatus
+argument_list|>
+name|localizationStatuses
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Unique container id of a running service, e.g.    * container_e3751_1458061340047_0008_01_000002.    **/
 DECL|method|id (String id)
 specifier|public
@@ -1052,6 +1062,86 @@ name|exposedPorts
 operator|=
 name|ports
 expr_stmt|;
+block|}
+comment|/**    * Localization statuses.    */
+annotation|@
+name|ApiModelProperty
+argument_list|(
+name|example
+operator|=
+literal|"null"
+argument_list|,
+name|value
+operator|=
+literal|"Localization statuses of a container."
+argument_list|)
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"localization_statuses"
+argument_list|)
+DECL|method|getLocalizationStatuses ()
+specifier|public
+name|List
+argument_list|<
+name|LocalizationStatus
+argument_list|>
+name|getLocalizationStatuses
+parameter_list|()
+block|{
+return|return
+name|localizationStatuses
+return|;
+block|}
+comment|/**    * Sets the localization statuses.    * @param statuses localization statuses.    */
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"localization_statuses"
+argument_list|)
+DECL|method|setLocalizationStatuses (List<LocalizationStatus> statuses)
+specifier|public
+name|void
+name|setLocalizationStatuses
+parameter_list|(
+name|List
+argument_list|<
+name|LocalizationStatus
+argument_list|>
+name|statuses
+parameter_list|)
+block|{
+name|this
+operator|.
+name|localizationStatuses
+operator|=
+name|statuses
+expr_stmt|;
+block|}
+comment|/**    * Sets the localization statuses and returns the container.    * @param statuses    * @return    */
+DECL|method|localizationStatuses (List<LocalizationStatus> statuses)
+specifier|public
+name|Container
+name|localizationStatuses
+parameter_list|(
+name|List
+argument_list|<
+name|LocalizationStatus
+argument_list|>
+name|statuses
+parameter_list|)
+block|{
+name|this
+operator|.
+name|localizationStatuses
+operator|=
+name|statuses
+expr_stmt|;
+return|return
+name|this
+return|;
 block|}
 annotation|@
 name|Override

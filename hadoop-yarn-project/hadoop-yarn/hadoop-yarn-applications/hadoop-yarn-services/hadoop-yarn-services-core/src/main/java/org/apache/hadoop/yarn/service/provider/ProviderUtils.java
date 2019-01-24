@@ -1043,7 +1043,7 @@ return|;
 block|}
 comment|// 1. Create all config files for a component on hdfs for localization
 comment|// 2. Add the config file to localResource
-DECL|method|createConfigFileAndAddLocalResource ( AbstractLauncher launcher, SliderFileSystem fs, ContainerLaunchService.ComponentLaunchContext compLaunchContext, Map<String, String> tokensForSubstitution, ComponentInstance instance, ServiceContext context)
+DECL|method|createConfigFileAndAddLocalResource ( AbstractLauncher launcher, SliderFileSystem fs, ContainerLaunchService.ComponentLaunchContext compLaunchContext, Map<String, String> tokensForSubstitution, ComponentInstance instance, ServiceContext context, ProviderService.ResolvedLaunchParams resolvedParams)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -1074,6 +1074,11 @@ name|instance
 parameter_list|,
 name|ServiceContext
 name|context
+parameter_list|,
+name|ProviderService
+operator|.
+name|ResolvedLaunchParams
+name|resolvedParams
 parameter_list|)
 throws|throws
 name|IOException
@@ -1466,11 +1471,13 @@ argument_list|,
 name|configResource
 argument_list|,
 name|destFile
+argument_list|,
+name|resolvedParams
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|handleStaticFilesForLocalization ( AbstractLauncher launcher, SliderFileSystem fs, ContainerLaunchService .ComponentLaunchContext componentLaunchCtx)
+DECL|method|handleStaticFilesForLocalization ( AbstractLauncher launcher, SliderFileSystem fs, ContainerLaunchService .ComponentLaunchContext componentLaunchCtx, ProviderService.ResolvedLaunchParams resolvedParams)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -1487,6 +1494,11 @@ name|ContainerLaunchService
 operator|.
 name|ComponentLaunchContext
 name|componentLaunchCtx
+parameter_list|,
+name|ProviderService
+operator|.
+name|ResolvedLaunchParams
+name|resolvedParams
 parameter_list|)
 throws|throws
 name|IOException
@@ -1696,11 +1708,13 @@ argument_list|,
 name|localResource
 argument_list|,
 name|destFile
+argument_list|,
+name|resolvedParams
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addLocalResource (AbstractLauncher launcher, String symlink, LocalResource localResource, Path destFile)
+DECL|method|addLocalResource (AbstractLauncher launcher, String symlink, LocalResource localResource, Path destFile, ProviderService.ResolvedLaunchParams resolvedParams)
 specifier|private
 specifier|static
 name|void
@@ -1717,6 +1731,11 @@ name|localResource
 parameter_list|,
 name|Path
 name|destFile
+parameter_list|,
+name|ProviderService
+operator|.
+name|ResolvedLaunchParams
+name|resolvedParams
 parameter_list|)
 block|{
 if|if
@@ -1796,6 +1815,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|resolvedParams
+operator|.
+name|addResolvedRsrcPath
+argument_list|(
+name|symlink
+argument_list|,
+name|destFile
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Static file is files uploaded by users before launch the service. Which
 comment|// should be localized to container local disk without any changes.

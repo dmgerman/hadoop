@@ -1001,9 +1001,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|buildContainerLaunchContext (AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf, Container container, ContainerLaunchService.ComponentLaunchContext compLaunchContext)
+DECL|method|buildContainerLaunchContext ( AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf, Container container, ContainerLaunchService.ComponentLaunchContext compLaunchContext)
 specifier|public
-name|void
+name|ResolvedLaunchParams
 name|buildContainerLaunchContext
 parameter_list|(
 name|AbstractLauncher
@@ -1034,6 +1034,13 @@ name|IOException
 throws|,
 name|SliderException
 block|{
+name|ResolvedLaunchParams
+name|resolved
+init|=
+operator|new
+name|ResolvedLaunchParams
+argument_list|()
+decl_stmt|;
 name|processArtifact
 argument_list|(
 name|launcher
@@ -1099,7 +1106,7 @@ argument_list|,
 name|tokensForSubstitution
 argument_list|)
 expr_stmt|;
-comment|// create config file on hdfs and add local resource
+comment|// create config file on hdfs and addResolvedRsrcPath local resource
 name|ProviderUtils
 operator|.
 name|createConfigFileAndAddLocalResource
@@ -1115,6 +1122,8 @@ argument_list|,
 name|instance
 argument_list|,
 name|context
+argument_list|,
+name|resolved
 argument_list|)
 expr_stmt|;
 comment|// handles static files (like normal file / archive file) for localization.
@@ -1127,6 +1136,8 @@ argument_list|,
 name|fileSystem
 argument_list|,
 name|compLaunchContext
+argument_list|,
+name|resolved
 argument_list|)
 expr_stmt|;
 comment|// replace launch command with token specific information
@@ -1161,6 +1172,9 @@ argument_list|,
 name|instance
 argument_list|)
 expr_stmt|;
+return|return
+name|resolved
+return|;
 block|}
 block|}
 end_class

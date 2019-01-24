@@ -120,6 +120,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|LocalizationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -481,6 +499,15 @@ comment|/**    * Verify container is in final states.    * @return true/false ba
 DECL|method|isContainerInFinalStates ()
 name|boolean
 name|isContainerInFinalStates
+parameter_list|()
+function_decl|;
+comment|/**    * Get the localization statuses.    * @return localization statuses.    */
+DECL|method|getLocalizationStatuses ()
+name|List
+argument_list|<
+name|LocalizationStatus
+argument_list|>
+name|getLocalizationStatuses
 parameter_list|()
 function_decl|;
 block|}
