@@ -1601,7 +1601,7 @@ name|currentStreamIndex
 argument_list|)
 decl_stmt|;
 comment|// length(len) will be in int range if the call is happening through
-comment|// write API of chunkOutputStream. Length can be in long range if it comes
+comment|// write API of blockOutputStream. Length can be in long range if it comes
 comment|// via Exception path.
 name|int
 name|writeLen
@@ -1693,8 +1693,31 @@ condition|)
 block|{
 comment|// for the current iteration, totalDataWritten - currentPos gives the
 comment|// amount of data already written to the buffer
+comment|// In the retryPath, the total data to be written will always be equal
+comment|// to or less than the max length of the buffer allocated.
+comment|// The len specified here is the combined sum of the data length of
+comment|// the buffers
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|retry
+operator|||
+name|len
+operator|<=
+name|streamBufferMaxSize
+argument_list|)
+expr_stmt|;
 name|writeLen
 operator|=
+name|retry
+condition|?
+operator|(
+name|int
+operator|)
+name|len
+else|:
 call|(
 name|int
 call|)
