@@ -72,6 +72,26 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
+name|OzoneManagerDetailsProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -115,13 +135,27 @@ specifier|public
 interface|interface
 name|SCMSecurityProtocol
 block|{
-comment|/**    * Get SCM signed certificate for DataNode.    *    * @param dataNodeDetails - DataNode Details.    * @param certSignReq             - Certificate signing request.    * @return byte[]         - SCM signed certificate.    */
+comment|/**    * Get SCM signed certificate for DataNode.    *    * @param dataNodeDetails - DataNode Details.    * @param certSignReq     - Certificate signing request.    * @return byte[]         - SCM signed certificate.    */
 DECL|method|getDataNodeCertificate ( DatanodeDetailsProto dataNodeDetails, String certSignReq)
 name|String
 name|getDataNodeCertificate
 parameter_list|(
 name|DatanodeDetailsProto
 name|dataNodeDetails
+parameter_list|,
+name|String
+name|certSignReq
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get SCM signed certificate for OM.    *    * @param omDetails - DataNode Details.    * @param certSignReq     - Certificate signing request.    * @return byte[]         - SCM signed certificate.    */
+DECL|method|getOMCertificate (OzoneManagerDetailsProto omDetails, String certSignReq)
+name|String
+name|getOMCertificate
+parameter_list|(
+name|OzoneManagerDetailsProto
+name|omDetails
 parameter_list|,
 name|String
 name|certSignReq

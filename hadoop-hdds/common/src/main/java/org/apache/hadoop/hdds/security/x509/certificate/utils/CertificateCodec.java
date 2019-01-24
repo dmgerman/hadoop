@@ -614,6 +614,7 @@ block|}
 comment|/**    * Returns the Certificate as a PEM encoded String.    *    * @param x509CertHolder - X.509 Certificate Holder.    * @return PEM Encoded Certificate String.    * @throws SCMSecurityException - On failure to create a PEM String.    */
 DECL|method|getPEMEncodedString (X509CertificateHolder x509CertHolder)
 specifier|public
+specifier|static
 name|String
 name|getPEMEncodedString
 parameter_list|(

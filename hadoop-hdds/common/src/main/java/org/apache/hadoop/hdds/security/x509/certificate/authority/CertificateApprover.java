@@ -126,6 +126,7 @@ end_comment
 
 begin_interface
 DECL|interface|CertificateApprover
+specifier|public
 interface|interface
 name|CertificateApprover
 block|{
