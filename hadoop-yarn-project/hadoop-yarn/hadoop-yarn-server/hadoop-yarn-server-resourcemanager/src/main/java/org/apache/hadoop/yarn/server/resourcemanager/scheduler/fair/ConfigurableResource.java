@@ -136,24 +136,6 @@ name|ResourceUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
 begin_comment
 comment|/**  * A {@code ConfigurableResource} object represents an entity that is used to  * configure resources, such as maximum resources of a queue. It can be  * percentage of cluster resources or an absolute value.  */
 end_comment
@@ -226,7 +208,7 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
-name|Resources
+name|ResourceUtils
 operator|.
 name|createResourceWithSameValue
 argument_list|(

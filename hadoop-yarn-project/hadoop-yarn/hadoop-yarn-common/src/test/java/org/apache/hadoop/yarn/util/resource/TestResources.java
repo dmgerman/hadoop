@@ -2475,7 +2475,7 @@ expr_stmt|;
 name|Resource
 name|res
 init|=
-name|Resources
+name|ResourceUtils
 operator|.
 name|createResourceWithSameValue
 argument_list|(
@@ -2537,7 +2537,7 @@ expr_stmt|;
 name|Resource
 name|res
 init|=
-name|Resources
+name|ResourceUtils
 operator|.
 name|createResourceWithSameValue
 argument_list|(
@@ -2591,7 +2591,7 @@ block|{
 name|Resource
 name|res
 init|=
-name|Resources
+name|ResourceUtils
 operator|.
 name|createResourceWithSameValue
 argument_list|(
@@ -2630,7 +2630,7 @@ block|{
 name|Resource
 name|res
 init|=
-name|Resources
+name|ResourceUtils
 operator|.
 name|createResourceWithSameValue
 argument_list|(

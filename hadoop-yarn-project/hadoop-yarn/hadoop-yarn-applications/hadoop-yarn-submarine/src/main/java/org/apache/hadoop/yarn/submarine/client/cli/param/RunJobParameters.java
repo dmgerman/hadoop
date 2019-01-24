@@ -160,6 +160,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|resource
+operator|.
+name|ResourceUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -592,7 +610,7 @@ throw|;
 block|}
 name|workerResource
 operator|=
-name|CliUtils
+name|ResourceUtils
 operator|.
 name|createResourceFromString
 argument_list|(
@@ -655,7 +673,7 @@ throw|;
 block|}
 name|psResource
 operator|=
-name|CliUtils
+name|ResourceUtils
 operator|.
 name|createResourceFromString
 argument_list|(
@@ -725,7 +743,7 @@ expr_stmt|;
 block|}
 name|tensorboardResource
 operator|=
-name|CliUtils
+name|ResourceUtils
 operator|.
 name|createResourceFromString
 argument_list|(

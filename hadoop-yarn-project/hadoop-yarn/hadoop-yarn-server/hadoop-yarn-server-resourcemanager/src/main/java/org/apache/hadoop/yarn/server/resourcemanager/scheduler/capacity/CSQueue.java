@@ -636,6 +636,16 @@ name|PrivilegedEntity
 name|getPrivilegedEntity
 parameter_list|()
 function_decl|;
+DECL|method|getMaximumAllocation ()
+name|Resource
+name|getMaximumAllocation
+parameter_list|()
+function_decl|;
+DECL|method|getMinimumAllocation ()
+name|Resource
+name|getMinimumAllocation
+parameter_list|()
+function_decl|;
 comment|/**    * Get the configured<em>capacity</em> of the queue.    * @return configured queue capacity    */
 DECL|method|getCapacity ()
 specifier|public
