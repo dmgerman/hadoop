@@ -5948,7 +5948,7 @@ argument_list|()
 argument_list|,
 name|ResultCodes
 operator|.
-name|COMPLETE_MULTIPART_UPLOAD_FAILED
+name|ABORT_MULTIPART_UPLOAD_FAILED
 argument_list|)
 throw|;
 block|}

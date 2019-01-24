@@ -223,6 +223,8 @@ argument_list|(
 literal|"b1"
 argument_list|,
 literal|"key1"
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//THEN
