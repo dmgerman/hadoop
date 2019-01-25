@@ -264,6 +264,22 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|metrics
+operator|.
+name|RpcDetailedMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|RPC
 operator|.
 name|RpcKind
@@ -824,6 +840,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|rpcDetailedMetrics
+specifier|private
+specifier|final
+name|RpcDetailedMetrics
+name|rpcDetailedMetrics
+decl_stmt|;
 comment|/** A counter for generating call IDs. */
 DECL|field|callIdCounter
 specifier|private
@@ -1326,7 +1348,41 @@ return|;
 block|}
 block|}
 empty_stmt|;
-comment|/**    * set the ping interval value in configuration    *     * @param conf Configuration    * @param pingInterval the ping interval    */
+comment|/**    * Update a particular metric by recording the processing    * time of the metric.    *    * @param name Metric name    * @param processingTime time spent in processing the metric.    */
+DECL|method|updateMetrics (String name, long processingTime)
+specifier|public
+name|void
+name|updateMetrics
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|long
+name|processingTime
+parameter_list|)
+block|{
+name|rpcDetailedMetrics
+operator|.
+name|addProcessingTime
+argument_list|(
+name|name
+argument_list|,
+name|processingTime
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the RpcDetailedMetrics associated with the Client.    */
+DECL|method|getRpcDetailedMetrics ()
+specifier|public
+name|RpcDetailedMetrics
+name|getRpcDetailedMetrics
+parameter_list|()
+block|{
+return|return
+name|rpcDetailedMetrics
+return|;
+block|}
+comment|/**    * set the ping interval value in configuration    *    * @param conf Configuration    * @param pingInterval the ping interval    */
 DECL|method|setPingInterval (Configuration conf, int pingInterval)
 specifier|public
 specifier|static
@@ -5835,6 +5891,25 @@ argument_list|,
 name|CommonConfigurationKeys
 operator|.
 name|IPC_CLIENT_ASYNC_CALLS_MAX_DEFAULT
+argument_list|)
+expr_stmt|;
+comment|/**      * Create with client id as argument, this differs from server      * which takes port as an argument.      */
+name|this
+operator|.
+name|rpcDetailedMetrics
+operator|=
+name|RpcDetailedMetrics
+operator|.
+name|create
+argument_list|(
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|this
+operator|.
+name|clientId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
