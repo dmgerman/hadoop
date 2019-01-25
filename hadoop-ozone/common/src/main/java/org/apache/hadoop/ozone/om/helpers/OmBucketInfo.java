@@ -809,6 +809,13 @@ argument_list|>
 name|additionalMetadata
 parameter_list|)
 block|{
+if|if
+condition|(
+name|additionalMetadata
+operator|!=
+literal|null
+condition|)
+block|{
 name|metadata
 operator|.
 name|putAll
@@ -816,6 +823,7 @@ argument_list|(
 name|additionalMetadata
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|this
 return|;
