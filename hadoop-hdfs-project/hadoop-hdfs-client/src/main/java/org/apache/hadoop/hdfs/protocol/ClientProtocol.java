@@ -1202,7 +1202,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get listing of all the snapshottable directories.    *    * @return Information about all the current snapshottable directory    * @throws IOException If an I/O error occurred    */
+comment|/**    * Get the list of snapshottable directories that are owned    * by the current user. Return all the snapshottable directories if the    * current user is a super user.    * @return The list of all the current snapshottable directories.    * @throws IOException If an I/O error occurred.    */
 annotation|@
 name|Idempotent
 annotation|@
