@@ -439,12 +439,17 @@ argument_list|,
 name|ReplicationFactor
 operator|.
 name|ONE
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createKey (String key, long size, ReplicationType type, ReplicationFactor factor)
+DECL|method|createKey (String key, long size, ReplicationType type, ReplicationFactor factor, Map<String, String> metadata)
 specifier|public
 name|OzoneOutputStream
 name|createKey
@@ -460,6 +465,14 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 throws|throws
 name|IOException
@@ -530,6 +543,8 @@ argument_list|<>
 argument_list|()
 argument_list|,
 name|type
+argument_list|,
+name|metadata
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -390,6 +390,16 @@ name|InputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
 begin_comment
 comment|/**  * End-to-end testing of Ozone REST operations.  */
 end_comment
@@ -658,6 +668,11 @@ argument_list|,
 name|replicationType
 argument_list|,
 name|replicationFactor
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 init|;
 name|InputStream

@@ -48,7 +48,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -90,8 +110,18 @@ name|OzoneAcl
 argument_list|>
 name|acls
 decl_stmt|;
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+decl_stmt|;
 comment|/**    * Private constructor, constructed via builder.    * @param admin Administrator's name.    * @param owner Volume owner's name    * @param quota Volume Quota.    * @param acls User to access rights map.    */
-DECL|method|VolumeArgs (String admin, String owner, String quota, List<OzoneAcl> acls)
+DECL|method|VolumeArgs (String admin, String owner, String quota, List<OzoneAcl> acls, Map<String, String> metadata)
 specifier|private
 name|VolumeArgs
 parameter_list|(
@@ -109,6 +139,14 @@ argument_list|<
 name|OzoneAcl
 argument_list|>
 name|acls
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 block|{
 name|this
@@ -134,6 +172,12 @@ operator|.
 name|acls
 operator|=
 name|acls
+expr_stmt|;
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadata
 expr_stmt|;
 block|}
 comment|/**    * Returns the Admin Name.    * @return String.    */
@@ -167,6 +211,22 @@ parameter_list|()
 block|{
 return|return
 name|quota
+return|;
+block|}
+comment|/**    * Return custom key value map.    *    * @return metadata    */
+DECL|method|getMetadata ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getMetadata
+parameter_list|()
+block|{
+return|return
+name|metadata
 return|;
 block|}
 DECL|method|getAcls ()
@@ -229,6 +289,21 @@ argument_list|<
 name|OzoneAcl
 argument_list|>
 name|listOfAcls
+decl_stmt|;
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 decl_stmt|;
 DECL|method|setAdmin (String admin)
 specifier|public
@@ -293,6 +368,33 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|addMetadata (String key, String value)
+specifier|public
+name|VolumeArgs
+operator|.
+name|Builder
+name|addMetadata
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+block|{
+name|metadata
+operator|.
+name|put
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setAcls (List<OzoneAcl> acls)
 specifier|public
 name|VolumeArgs
@@ -337,6 +439,8 @@ argument_list|,
 name|volumeQuota
 argument_list|,
 name|listOfAcls
+argument_list|,
+name|metadata
 argument_list|)
 return|;
 block|}

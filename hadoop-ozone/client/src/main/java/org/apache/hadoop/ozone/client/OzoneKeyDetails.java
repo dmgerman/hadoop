@@ -44,6 +44,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that encapsulates OzoneKeyLocation.  */
 end_comment
@@ -65,13 +75,23 @@ name|OzoneKeyLocation
 argument_list|>
 name|ozoneKeyLocations
 decl_stmt|;
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+decl_stmt|;
 comment|/**    * Constructs OzoneKeyDetails from OmKeyInfo.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type)
+DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type, Map<String, String> metadata)
 specifier|public
 name|OzoneKeyDetails
 parameter_list|(
@@ -101,6 +121,14 @@ name|ozoneKeyLocations
 parameter_list|,
 name|ReplicationType
 name|type
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 block|{
 name|super
@@ -126,6 +154,12 @@ name|ozoneKeyLocations
 operator|=
 name|ozoneKeyLocations
 expr_stmt|;
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadata
+expr_stmt|;
 block|}
 comment|/**    * Returns the location detail information of the specific Key.    */
 DECL|method|getOzoneKeyLocations ()
@@ -139,6 +173,21 @@ parameter_list|()
 block|{
 return|return
 name|ozoneKeyLocations
+return|;
+block|}
+DECL|method|getMetadata ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getMetadata
+parameter_list|()
+block|{
+return|return
+name|metadata
 return|;
 block|}
 comment|/**    * Set details of key location.    * @param ozoneKeyLocations - details of key location    */

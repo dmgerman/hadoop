@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedHashMap
 import|;
 end_import
@@ -182,6 +192,8 @@ specifier|public
 specifier|final
 class|class
 name|OmBucketArgs
+extends|extends
+name|WithMetadata
 implements|implements
 name|Auditable
 block|{
@@ -230,7 +242,7 @@ name|StorageType
 name|storageType
 decl_stmt|;
 comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param addAcls - ACL's to be added.    * @param removeAcls - ACL's to be removed.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    */
-DECL|method|OmBucketArgs (String volumeName, String bucketName, List<OzoneAcl> addAcls, List<OzoneAcl> removeAcls, Boolean isVersionEnabled, StorageType storageType)
+DECL|method|OmBucketArgs (String volumeName, String bucketName, List<OzoneAcl> addAcls, List<OzoneAcl> removeAcls, Boolean isVersionEnabled, StorageType storageType, Map<String, String> metadata)
 specifier|private
 name|OmBucketArgs
 parameter_list|(
@@ -257,6 +269,14 @@ name|isVersionEnabled
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 block|{
 name|this
@@ -294,6 +314,12 @@ operator|.
 name|storageType
 operator|=
 name|storageType
+expr_stmt|;
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadata
 expr_stmt|;
 block|}
 comment|/**    * Returns the Volume Name.    * @return String.    */
@@ -577,6 +603,16 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+decl_stmt|;
 DECL|method|setVolumeName (String volume)
 specifier|public
 name|Builder
@@ -678,6 +714,30 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|addMetadata (Map<String, String> metadataMap)
+specifier|public
+name|Builder
+name|addMetadata
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadataMap
+parameter_list|)
+block|{
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadataMap
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setStorageType (StorageType storage)
 specifier|public
 name|Builder
@@ -733,6 +793,8 @@ argument_list|,
 name|isVersionEnabled
 argument_list|,
 name|storageType
+argument_list|,
+name|metadata
 argument_list|)
 return|;
 block|}
@@ -983,6 +1045,16 @@ argument_list|()
 argument_list|)
 else|:
 literal|null
+argument_list|,
+name|KeyValueUtil
+operator|.
+name|getFromProtobuf
+argument_list|(
+name|bucketArgs
+operator|.
+name|getMetadataList
+argument_list|()
+argument_list|)
 argument_list|)
 return|;
 block|}

@@ -631,8 +631,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Writes a key in an existing bucket.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Name of the Key    * @param size Size of the data    * @return {@link OzoneOutputStream}    *    */
-DECL|method|createKey (String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor)
+comment|/**    * Writes a key in an existing bucket.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Name of the Key    * @param size Size of the data    * @param metadata custom key value metadata    * @return {@link OzoneOutputStream}    *    */
+DECL|method|createKey (String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor, Map<String, String> metadata)
 name|OzoneOutputStream
 name|createKey
 parameter_list|(
@@ -653,6 +653,14 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 throws|throws
 name|IOException

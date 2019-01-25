@@ -984,6 +984,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -3706,6 +3716,11 @@ operator|.
 name|getCreatedOn
 argument_list|()
 argument_list|)
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|EntityUtils
@@ -3970,6 +3985,11 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|creationTime
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -4002,7 +4022,7 @@ block|}
 comment|/**    * Writes a key in an existing bucket.    *    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Name of the Key    * @param size Size of the data    * @param type    * @param factor @return {@link OzoneOutputStream}    */
 annotation|@
 name|Override
-DECL|method|createKey ( String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor)
+DECL|method|createKey ( String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor, Map<String, String> metadata)
 specifier|public
 name|OzoneOutputStream
 name|createKey
@@ -4024,6 +4044,14 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 throws|throws
 name|IOException
@@ -5295,6 +5323,11 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|EntityUtils

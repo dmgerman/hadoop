@@ -340,6 +340,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests container report with DN container state info.  */
 end_comment
@@ -585,6 +595,11 @@ argument_list|,
 name|ReplicationFactor
 operator|.
 name|ONE
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|String

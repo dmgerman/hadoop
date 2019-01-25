@@ -54,7 +54,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -90,8 +110,19 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
+comment|/**    * Custom key/value metadata.    */
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+decl_stmt|;
 comment|/**    * Private constructor, constructed via builder.    * @param versioning Bucket version flag.    * @param storageType Storage type to be used.    * @param acls list of ACLs.    */
-DECL|method|BucketArgs (Boolean versioning, StorageType storageType, List<OzoneAcl> acls)
+DECL|method|BucketArgs (Boolean versioning, StorageType storageType, List<OzoneAcl> acls, Map<String, String> metadata)
 specifier|private
 name|BucketArgs
 parameter_list|(
@@ -106,6 +137,14 @@ argument_list|<
 name|OzoneAcl
 argument_list|>
 name|acls
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 block|{
 name|this
@@ -125,6 +164,12 @@ operator|.
 name|storageType
 operator|=
 name|storageType
+expr_stmt|;
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadata
 expr_stmt|;
 block|}
 comment|/**    * Returns true if bucket version is enabled, else false.    * @return isVersionEnabled    */
@@ -161,6 +206,22 @@ parameter_list|()
 block|{
 return|return
 name|acls
+return|;
+block|}
+comment|/**    * Custom metadata for the buckets.    *    * @return key value map    */
+DECL|method|getMetadata ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getMetadata
+parameter_list|()
+block|{
+return|return
+name|metadata
 return|;
 block|}
 comment|/**    * Returns new builder class that builds a OmBucketInfo.    *    * @return Builder    */
@@ -206,6 +267,29 @@ name|OzoneAcl
 argument_list|>
 name|acls
 decl_stmt|;
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+decl_stmt|;
+DECL|method|Builder ()
+specifier|public
+name|Builder
+parameter_list|()
+block|{
+name|metadata
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|setVersioning (Boolean versionFlag)
 specifier|public
 name|BucketArgs
@@ -272,6 +356,35 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|addMetadata (String key, String value)
+specifier|public
+name|BucketArgs
+operator|.
+name|Builder
+name|addMetadata
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+block|{
+name|this
+operator|.
+name|metadata
+operator|.
+name|put
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Constructs the BucketArgs.      * @return instance of BucketArgs.      */
 DECL|method|build ()
 specifier|public
@@ -288,6 +401,8 @@ argument_list|,
 name|storageType
 argument_list|,
 name|acls
+argument_list|,
+name|metadata
 argument_list|)
 return|;
 block|}

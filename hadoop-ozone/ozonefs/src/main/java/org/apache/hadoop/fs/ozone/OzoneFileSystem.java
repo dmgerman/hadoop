@@ -1407,6 +1407,11 @@ argument_list|,
 name|replicationType
 argument_list|,
 name|replicationFactor
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// We pass null to FSDataOutputStream so it won't count writes that
@@ -3713,6 +3718,11 @@ argument_list|,
 name|replicationType
 argument_list|,
 name|replicationFactor
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 operator|.
 name|close

@@ -246,11 +246,39 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|WithMetadata
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
 import|;
 end_import
 
@@ -303,6 +331,8 @@ DECL|class|OzoneBucket
 specifier|public
 class|class
 name|OzoneBucket
+extends|extends
+name|WithMetadata
 block|{
 comment|/**    * The proxy used for connecting to the cluster and perform    * client operations.    */
 DECL|field|proxy
@@ -378,7 +408,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OzoneBucket (Configuration conf, ClientProtocol proxy, String volumeName, String bucketName, List<OzoneAcl> acls, StorageType storageType, Boolean versioning, long creationTime)
+DECL|method|OzoneBucket (Configuration conf, ClientProtocol proxy, String volumeName, String bucketName, List<OzoneAcl> acls, StorageType storageType, Boolean versioning, long creationTime, Map<String, String> metadata)
 specifier|public
 name|OzoneBucket
 parameter_list|(
@@ -408,6 +438,14 @@ name|versioning
 parameter_list|,
 name|long
 name|creationTime
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
 parameter_list|)
 block|{
 name|Preconditions
@@ -515,6 +553,12 @@ operator|.
 name|OZONE_REPLICATION_TYPE_DEFAULT
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadata
 expr_stmt|;
 block|}
 annotation|@
@@ -846,11 +890,16 @@ argument_list|,
 name|defaultReplicationType
 argument_list|,
 name|defaultReplication
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 return|;
 block|}
 comment|/**    * Creates a new key in the bucket.    * @param key Name of the key to be created.    * @param size Size of the data the key will point to.    * @param type Replication type to be used.    * @param factor Replication factor of the key.    * @return OzoneOutputStream to which the data has to be written.    * @throws IOException    */
-DECL|method|createKey (String key, long size, ReplicationType type, ReplicationFactor factor)
+DECL|method|createKey (String key, long size, ReplicationType type, ReplicationFactor factor, Map<String, String> keyMetadata)
 specifier|public
 name|OzoneOutputStream
 name|createKey
@@ -866,6 +915,14 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|keyMetadata
 parameter_list|)
 throws|throws
 name|IOException
@@ -886,6 +943,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|keyMetadata
 argument_list|)
 return|;
 block|}
