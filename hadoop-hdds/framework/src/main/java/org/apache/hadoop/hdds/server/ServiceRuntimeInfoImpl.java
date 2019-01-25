@@ -26,7 +26,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|utils
 operator|.
 name|VersionInfo
 import|;
@@ -49,6 +49,27 @@ specifier|private
 name|long
 name|startedTimeInMillis
 decl_stmt|;
+DECL|field|versionInfo
+specifier|private
+specifier|final
+name|VersionInfo
+name|versionInfo
+decl_stmt|;
+DECL|method|ServiceRuntimeInfoImpl (VersionInfo versionInfo)
+specifier|protected
+name|ServiceRuntimeInfoImpl
+parameter_list|(
+name|VersionInfo
+name|versionInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|versionInfo
+operator|=
+name|versionInfo
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getVersion ()
@@ -58,14 +79,14 @@ name|getVersion
 parameter_list|()
 block|{
 return|return
-name|VersionInfo
+name|versionInfo
 operator|.
 name|getVersion
 argument_list|()
 operator|+
 literal|", r"
 operator|+
-name|VersionInfo
+name|versionInfo
 operator|.
 name|getRevision
 argument_list|()
@@ -80,7 +101,7 @@ name|getSoftwareVersion
 parameter_list|()
 block|{
 return|return
-name|VersionInfo
+name|versionInfo
 operator|.
 name|getVersion
 argument_list|()
@@ -95,21 +116,21 @@ name|getCompileInfo
 parameter_list|()
 block|{
 return|return
-name|VersionInfo
+name|versionInfo
 operator|.
 name|getDate
 argument_list|()
 operator|+
 literal|" by "
 operator|+
-name|VersionInfo
+name|versionInfo
 operator|.
 name|getUser
 argument_list|()
 operator|+
 literal|" from "
 operator|+
-name|VersionInfo
+name|versionInfo
 operator|.
 name|getBranch
 argument_list|()
