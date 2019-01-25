@@ -84,6 +84,72 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|INVALID_AUTH_METHOD
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|TOKEN_ERROR_OTHER
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|TOKEN_EXPIRED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|slf4j
 operator|.
 name|event
@@ -482,20 +548,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|Server
 import|;
 end_import
@@ -604,6 +656,24 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|protocolPB
 operator|.
 name|OzoneManagerProtocolClientSideTranslatorPB
@@ -685,22 +755,6 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
-operator|.
-name|AuthenticationMethod
 import|;
 end_import
 
@@ -871,18 +925,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
 import|;
 end_import
 
@@ -2136,6 +2178,19 @@ operator|.
 name|AUDITLOG
 argument_list|)
 decl_stmt|;
+name|LogCapturer
+name|omLogs
+init|=
+name|LogCapturer
+operator|.
+name|captureLogs
+argument_list|(
+name|OzoneManager
+operator|.
+name|getLogger
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|GenericTestUtils
 operator|.
 name|setLogLevel
@@ -2511,26 +2566,62 @@ expr_stmt|;
 comment|// Case 4: Test failure of token renewal.
 comment|// Call to renewDelegationToken will fail but it will confirm that
 comment|// initial connection via DT succeeded
+name|omLogs
+operator|.
+name|clearOutput
+argument_list|()
+expr_stmt|;
 name|LambdaTestUtils
 operator|.
 name|intercept
 argument_list|(
-name|RemoteException
+name|OMException
 operator|.
 name|class
 argument_list|,
-literal|"Delegation "
+literal|"Renew delegation token "
 operator|+
-literal|"Token can be renewed only with kerberos or web authentication"
+literal|"failed"
 argument_list|,
 parameter_list|()
 lambda|->
+block|{
+try|try
+block|{
 name|omClient
 operator|.
 name|renewDelegationToken
 argument_list|(
 name|token
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|OMException
+name|ex
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ex
+operator|.
+name|getResult
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|INVALID_AUTH_METHOD
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2551,6 +2642,11 @@ operator|+
 literal|" (auth:TOKEN)"
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|omLogs
+operator|.
+name|clearOutput
+argument_list|()
 expr_stmt|;
 comment|//testUser.setAuthenticationMethod(AuthMethod.KERBEROS);
 name|UserGroupInformation
@@ -2647,7 +2743,7 @@ argument_list|)
 expr_stmt|;
 comment|// Case 6: Test failure of token cancellation.
 comment|// Get Om client, this time authentication using Token will fail as
-comment|// token is expired
+comment|// token is not in cache anymore.
 name|omClient
 operator|=
 operator|new
@@ -2701,20 +2797,53 @@ name|LambdaTestUtils
 operator|.
 name|intercept
 argument_list|(
-name|RemoteException
+name|OMException
 operator|.
 name|class
 argument_list|,
-literal|"can't be found in cache"
+literal|"Cancel delegation "
+operator|+
+literal|"token failed"
 argument_list|,
 parameter_list|()
 lambda|->
+block|{
+try|try
+block|{
 name|omClient
 operator|.
 name|cancelDelegationToken
 argument_list|(
 name|token
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|OMException
+name|ex
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ex
+operator|.
+name|getResult
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|TOKEN_ERROR_OTHER
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2823,6 +2952,19 @@ argument_list|,
 name|INFO
 argument_list|)
 expr_stmt|;
+name|LogCapturer
+name|omLogs
+init|=
+name|LogCapturer
+operator|.
+name|captureLogs
+argument_list|(
+name|OzoneManager
+operator|.
+name|getLogger
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|// Setup secure OM for start.
 name|OzoneConfiguration
 name|newConf
@@ -3003,8 +3145,77 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|omLogs
+operator|.
+name|clearOutput
+argument_list|()
+expr_stmt|;
 comment|// Test failure of delegation renewal
-comment|// 1. When renewer doesn't match (implicitly covers when renewer is
+comment|// 1. When token maxExpiryTime exceeds
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|500
+argument_list|)
+expr_stmt|;
+name|LambdaTestUtils
+operator|.
+name|intercept
+argument_list|(
+name|OMException
+operator|.
+name|class
+argument_list|,
+literal|"Renew delegation token failed"
+argument_list|,
+parameter_list|()
+lambda|->
+block|{
+try|try
+block|{
+name|omClient
+operator|.
+name|renewDelegationToken
+argument_list|(
+name|token
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|OMException
+name|ex
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ex
+operator|.
+name|getResult
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|TOKEN_EXPIRED
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+name|omLogs
+operator|.
+name|clearOutput
+argument_list|()
+expr_stmt|;
+comment|// 2. When renewer doesn't match (implicitly covers when renewer is
 comment|// null or empty )
 name|Token
 name|token2
@@ -3024,11 +3235,11 @@ name|LambdaTestUtils
 operator|.
 name|intercept
 argument_list|(
-name|RemoteException
+name|OMException
 operator|.
 name|class
 argument_list|,
-literal|" with non-matching renewer randomService"
+literal|"Renew delegation token failed"
 argument_list|,
 parameter_list|()
 lambda|->
@@ -3040,7 +3251,29 @@ name|token2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// 2. Test tampered token
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|omLogs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|" with non-matching "
+operator|+
+literal|"renewer randomService"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|omLogs
+operator|.
+name|clearOutput
+argument_list|()
+expr_stmt|;
+comment|// 3. Test tampered token
 name|OzoneTokenIdentifier
 name|tokenId
 init|=
@@ -3112,11 +3345,11 @@ name|LambdaTestUtils
 operator|.
 name|intercept
 argument_list|(
-name|RemoteException
+name|OMException
 operator|.
 name|class
 argument_list|,
-literal|"can't be found in cache"
+literal|"Renew delegation token failed"
 argument_list|,
 parameter_list|()
 lambda|->
@@ -3128,35 +3361,27 @@ name|tamperedToken
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// 3. When token maxExpiryTime exceeds
-name|Thread
+name|Assert
 operator|.
-name|sleep
+name|assertTrue
 argument_list|(
-literal|500
+name|omLogs
+operator|.
+name|getOutput
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"can't be found in "
+operator|+
+literal|"cache"
+argument_list|)
 argument_list|)
 expr_stmt|;
-name|LambdaTestUtils
+name|omLogs
 operator|.
-name|intercept
-argument_list|(
-name|RemoteException
-operator|.
-name|class
-argument_list|,
-literal|"om tried to renew an expired"
-operator|+
-literal|" token"
-argument_list|,
-parameter_list|()
-lambda|->
-name|omClient
-operator|.
-name|renewDelegationToken
-argument_list|(
-name|token
-argument_list|)
-argument_list|)
+name|clearOutput
+argument_list|()
 expr_stmt|;
 block|}
 finally|finally

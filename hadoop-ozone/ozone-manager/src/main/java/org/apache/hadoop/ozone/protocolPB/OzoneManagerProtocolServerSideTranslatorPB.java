@@ -238,7 +238,7 @@ operator|=
 name|enableRatis
 expr_stmt|;
 block|}
-comment|/**    * Submit requests to Ratis server for OM HA implmentation.    * TODO: Once HA is implemented fully, we should have only one server side    * translator for OM protocol.    */
+comment|/**    * Submit requests to Ratis server for OM HA implementation.    * TODO: Once HA is implemented fully, we should have only one server side    * translator for OM protocol.    */
 annotation|@
 name|Override
 DECL|method|submitRequest (RpcController controller, OMRequest request)

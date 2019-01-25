@@ -259,7 +259,22 @@ name|ABORT_MULTIPART_UPLOAD_FAILED
 block|,
 DECL|enumConstant|INVALID_REQUEST
 name|INVALID_REQUEST
-block|;   }
+block|,
+DECL|enumConstant|INVALID_AUTH_METHOD
+name|INVALID_AUTH_METHOD
+block|,
+DECL|enumConstant|INVALID_TOKEN
+name|INVALID_TOKEN
+block|,
+DECL|enumConstant|TOKEN_EXPIRED
+name|TOKEN_EXPIRED
+block|,
+DECL|enumConstant|TOKEN_ERROR_OTHER
+name|TOKEN_ERROR_OTHER
+block|,
+DECL|enumConstant|UNKNOWN
+name|UNKNOWN
+block|}
 block|}
 end_class
 

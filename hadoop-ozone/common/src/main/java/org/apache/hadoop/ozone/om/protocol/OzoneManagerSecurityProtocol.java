@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -122,6 +112,24 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Security protocol for a secure OzoneManager.  */
 end_comment
@@ -141,7 +149,7 @@ specifier|public
 interface|interface
 name|OzoneManagerSecurityProtocol
 block|{
-comment|/**    * Get a valid Delegation Token.    *    * @param renewer the designated renewer for the token    * @return Token<OzoneDelegationTokenSelector>    * @throws IOException    */
+comment|/**    * Get a valid Delegation Token.    *    * @param renewer the designated renewer for the token    * @return Token<OzoneDelegationTokenSelector>    * @throws OMException    */
 annotation|@
 name|Idempotent
 DECL|method|getDelegationToken (Text renewer)
@@ -155,9 +163,9 @@ name|Text
 name|renewer
 parameter_list|)
 throws|throws
-name|IOException
+name|OMException
 function_decl|;
-comment|/**    * Renew an existing delegation token.    *    * @param token delegation token obtained earlier    * @return the new expiration time    * @throws IOException    */
+comment|/**    * Renew an existing delegation token.    *    * @param token delegation token obtained earlier    * @return the new expiration time    * @throws OMException    */
 annotation|@
 name|Idempotent
 DECL|method|renewDelegationToken (Token<OzoneTokenIdentifier> token)
@@ -171,9 +179,9 @@ argument_list|>
 name|token
 parameter_list|)
 throws|throws
-name|IOException
+name|OMException
 function_decl|;
-comment|/**    * Cancel an existing delegation token.    *    * @param token delegation token    * @throws IOException    */
+comment|/**    * Cancel an existing delegation token.    *    * @param token delegation token    * @throws OMException    */
 annotation|@
 name|Idempotent
 DECL|method|cancelDelegationToken (Token<OzoneTokenIdentifier> token)
@@ -187,7 +195,7 @@ argument_list|>
 name|token
 parameter_list|)
 throws|throws
-name|IOException
+name|OMException
 function_decl|;
 block|}
 end_interface
