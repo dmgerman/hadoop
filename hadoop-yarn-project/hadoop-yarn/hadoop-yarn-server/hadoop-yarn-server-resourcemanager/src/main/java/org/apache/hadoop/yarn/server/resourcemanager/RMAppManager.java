@@ -1563,6 +1563,16 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
+literal|"launchTime"
+argument_list|,
+name|app
+operator|.
+name|getLaunchTime
+argument_list|()
+argument_list|)
+operator|.
+name|add
+argument_list|(
 literal|"finishTime"
 argument_list|,
 name|app
