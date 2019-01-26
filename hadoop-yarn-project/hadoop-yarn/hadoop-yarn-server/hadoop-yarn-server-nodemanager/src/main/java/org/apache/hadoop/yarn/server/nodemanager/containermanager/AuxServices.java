@@ -1079,13 +1079,23 @@ name|stateStoreFs
 init|=
 literal|null
 decl_stmt|;
+DECL|field|manifestEnabled
+specifier|private
+specifier|volatile
+name|boolean
+name|manifestEnabled
+init|=
+literal|false
+decl_stmt|;
 DECL|field|manifest
 specifier|private
+specifier|volatile
 name|Path
 name|manifest
 decl_stmt|;
 DECL|field|manifestFS
 specifier|private
+specifier|volatile
 name|FileSystem
 name|manifestFS
 decl_stmt|;
@@ -1250,6 +1260,17 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// Obtain services from configuration in init()
+block|}
+comment|/**    * Returns whether aux services manifest / dynamic loading is enabled.    */
+DECL|method|isManifestEnabled ()
+specifier|public
+name|boolean
+name|isManifestEnabled
+parameter_list|()
+block|{
+return|return
+name|manifestEnabled
+return|;
 block|}
 comment|/**    * Adds a service to the service map.    *    * @param name aux service name    * @param service aux service    * @param serviceRecord aux service record    */
 DECL|method|addService (String name, AuxiliaryService service, AuxServiceRecord serviceRecord)
@@ -2834,8 +2855,10 @@ name|s
 return|;
 block|}
 comment|/**    * Reloads auxiliary services manifest. Must be called after service init.    *    * @throws IOException if manifest can't be loaded    */
+annotation|@
+name|VisibleForTesting
 DECL|method|reloadManifest ()
-specifier|private
+specifier|protected
 name|void
 name|reloadManifest
 parameter_list|()
@@ -2851,9 +2874,10 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Reloads auxiliary services. Must be called after service init.    *    * @param services a list of auxiliary services    * @throws IOException if aux services have not been started yet    */
+comment|/**    * Reloads auxiliary services. Must be called after service init.    *    * @param services a list of auxiliary services    * @throws IOException if aux services have not been started yet or dynamic    * reloading is not enabled    */
 DECL|method|reload (AuxServiceRecords services)
 specifier|public
+specifier|synchronized
 name|void
 name|reload
 parameter_list|(
@@ -2863,6 +2887,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|manifestEnabled
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Dynamic reloading is not enabled via "
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_AUX_SERVICES_MANIFEST_ENABLED
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|getServiceState
@@ -3263,6 +3305,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|manifestEnabled
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Dynamic reloading is not enabled via "
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_AUX_SERVICES_MANIFEST_ENABLED
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|manifest
@@ -4039,23 +4099,25 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|manifestStr
-init|=
+name|manifestEnabled
+operator|=
 name|conf
 operator|.
-name|get
+name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_AUX_SERVICES_MANIFEST
+name|NM_AUX_SERVICES_MANIFEST_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_AUX_SERVICES_MANIFEST_ENABLED
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
-name|manifestStr
-operator|==
-literal|null
+operator|!
+name|manifestEnabled
 condition|)
 block|{
 name|Collection
@@ -4122,6 +4184,25 @@ block|}
 block|}
 else|else
 block|{
+name|String
+name|manifestStr
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_AUX_SERVICES_MANIFEST
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|manifestStr
+operator|!=
+literal|null
+condition|)
+block|{
 name|manifest
 operator|=
 operator|new
@@ -4152,7 +4233,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
 name|manifestReloadInterval
 operator|=
 name|conf
@@ -4174,6 +4254,20 @@ operator|new
 name|ManifestReloadTask
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Auxiliary services manifest is enabled, but no manifest "
+operator|+
+literal|"file is specified in the configuration."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|super
 operator|.
 name|serviceInit
@@ -4345,6 +4439,8 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|manifestEnabled
+operator|&&
 name|manifest
 operator|!=
 literal|null
@@ -4354,12 +4450,25 @@ operator|>
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Scheduling reloading auxiliary services manifest file at "
+operator|+
+literal|"interval "
+operator|+
+name|manifestReloadInterval
+operator|+
+literal|" ms"
+argument_list|)
+expr_stmt|;
 name|manifestReloadTimer
 operator|=
 operator|new
 name|Timer
 argument_list|(
-literal|"AuxServicesManifestRelaod-Timer"
+literal|"AuxServicesManifestReload-Timer"
 argument_list|,
 literal|true
 argument_list|)

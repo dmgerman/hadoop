@@ -7238,6 +7238,28 @@ name|NM_PREFIX
 operator|+
 literal|"aux-services"
 decl_stmt|;
+comment|/**    * Boolean indicating whether loading aux services from a manifest is    * enabled. If enabled, aux services may be dynamically modified through    * reloading the manifest via filesystem changes or a REST API. When    * enabled, aux services configuration properties unrelated to the manifest    * will be ignored.    */
+DECL|field|NM_AUX_SERVICES_MANIFEST_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_AUX_SERVICES_MANIFEST_ENABLED
+init|=
+name|NM_AUX_SERVICES
+operator|+
+literal|".manifest.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_NM_AUX_SERVICES_MANIFEST_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_AUX_SERVICES_MANIFEST_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * File containing auxiliary service specifications.    */
 DECL|field|NM_AUX_SERVICES_MANIFEST
 specifier|public
 specifier|static
@@ -7249,6 +7271,7 @@ name|NM_AUX_SERVICES
 operator|+
 literal|".manifest"
 decl_stmt|;
+comment|/**    * Interval at which manifest file will be reloaded when modifications are    * found (0 or less means that the file will not be checked for modifications    * and reloaded).    */
 DECL|field|NM_AUX_SERVICES_MANIFEST_RELOAD_MS
 specifier|public
 specifier|static
@@ -7267,7 +7290,7 @@ specifier|final
 name|long
 name|DEFAULT_NM_AUX_SERVICES_MANIFEST_RELOAD_MS
 init|=
-literal|120000
+literal|0
 decl_stmt|;
 DECL|field|NM_AUX_SERVICE_FMT
 specifier|public
