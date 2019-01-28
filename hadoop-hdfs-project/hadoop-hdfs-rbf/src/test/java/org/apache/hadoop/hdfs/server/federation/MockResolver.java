@@ -450,6 +450,13 @@ name|defaultNamespace
 init|=
 literal|null
 decl_stmt|;
+DECL|field|disableDefaultNamespace
+specifier|private
+name|boolean
+name|disableDefaultNamespace
+init|=
+literal|false
+decl_stmt|;
 DECL|method|MockResolver ()
 specifier|public
 name|MockResolver
@@ -1736,6 +1743,23 @@ name|String
 name|router
 parameter_list|)
 block|{   }
+comment|/**    * Mocks the availability of default namespace.    * @param b if true default namespace is unset.    */
+DECL|method|setDisableNamespace (boolean b)
+specifier|public
+name|void
+name|setDisableNamespace
+parameter_list|(
+name|boolean
+name|b
+parameter_list|)
+block|{
+name|this
+operator|.
+name|disableDefaultNamespace
+operator|=
+name|b
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getDefaultNamespace ()
@@ -1744,6 +1768,15 @@ name|String
 name|getDefaultNamespace
 parameter_list|()
 block|{
+if|if
+condition|(
+name|disableDefaultNamespace
+condition|)
+block|{
+return|return
+literal|""
+return|;
+block|}
 return|return
 name|defaultNamespace
 return|;
