@@ -200,7 +200,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|isReadyForDownStream (Component component)
+DECL|method|isReadyForDownStream (Component dependentComponent)
 annotation|@
 name|Override
 specifier|public
@@ -208,23 +208,38 @@ name|boolean
 name|isReadyForDownStream
 parameter_list|(
 name|Component
-name|component
+name|dependentComponent
 parameter_list|)
 block|{
 if|if
 condition|(
-name|hasCompletedSuccessfully
-argument_list|(
-name|component
-argument_list|)
+name|dependentComponent
+operator|.
+name|getNumReadyInstances
+argument_list|()
+operator|+
+name|dependentComponent
+operator|.
+name|getNumSucceededInstances
+argument_list|()
+operator|+
+name|dependentComponent
+operator|.
+name|getNumFailedInstances
+argument_list|()
+operator|<
+name|dependentComponent
+operator|.
+name|getNumDesiredInstances
+argument_list|()
 condition|)
 block|{
 return|return
-literal|true
+literal|false
 return|;
 block|}
 return|return
-literal|false
+literal|true
 return|;
 block|}
 DECL|method|allowUpgrades ()

@@ -493,6 +493,7 @@ literal|"sleep 1000"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Let compb depends on compa;
 name|Component
 name|compb
 init|=
@@ -503,13 +504,13 @@ argument_list|,
 literal|1
 argument_list|,
 literal|"sleep 1000"
-argument_list|)
-decl_stmt|;
-comment|// Let compb depends on compa;
-name|compb
+argument_list|,
+name|Component
 operator|.
-name|setDependencies
-argument_list|(
+name|RestartPolicyEnum
+operator|.
+name|ON_FAILURE
+argument_list|,
 name|Collections
 operator|.
 name|singletonList
@@ -517,12 +518,45 @@ argument_list|(
 literal|"compa"
 argument_list|)
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+comment|// Let compb depends on compb;
+name|Component
+name|compc
+init|=
+name|createComponent
+argument_list|(
+literal|"compc"
+argument_list|,
+literal|1
+argument_list|,
+literal|"sleep 1000"
+argument_list|,
+name|Component
+operator|.
+name|RestartPolicyEnum
+operator|.
+name|NEVER
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+literal|"compb"
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|exampleApp
 operator|.
 name|addComponent
 argument_list|(
 name|compb
+argument_list|)
+expr_stmt|;
+name|exampleApp
+operator|.
+name|addComponent
+argument_list|(
+name|compc
 argument_list|)
 expr_stmt|;
 name|MockServiceAM
@@ -596,6 +630,26 @@ operator|.
 name|waitForDependenciesSatisfied
 argument_list|(
 literal|"compb"
+argument_list|)
+expr_stmt|;
+comment|// feed 1 container to compb,
+name|am
+operator|.
+name|feedContainerToComp
+argument_list|(
+name|exampleApp
+argument_list|,
+literal|2
+argument_list|,
+literal|"compb"
+argument_list|)
+expr_stmt|;
+comment|// waiting for compc's dependencies are satisfied
+name|am
+operator|.
+name|waitForDependenciesSatisfied
+argument_list|(
+literal|"compc"
 argument_list|)
 expr_stmt|;
 comment|// feed 1 container to compb
