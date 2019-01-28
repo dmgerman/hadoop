@@ -10940,6 +10940,11 @@ name|spaceQuota
 init|=
 literal|0
 decl_stmt|;
+name|String
+name|ecPolicy
+init|=
+literal|""
+decl_stmt|;
 for|for
 control|(
 name|ContentSummary
@@ -10990,6 +10995,24 @@ operator|.
 name|getSpaceQuota
 argument_list|()
 expr_stmt|;
+comment|// We return from the first response as we assume that the EC policy
+comment|// of each sub-cluster is same.
+if|if
+condition|(
+name|ecPolicy
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|ecPolicy
+operator|=
+name|summary
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 name|ContentSummary
 name|ret
@@ -11028,6 +11051,11 @@ operator|.
 name|spaceQuota
 argument_list|(
 name|spaceQuota
+argument_list|)
+operator|.
+name|erasureCodingPolicy
+argument_list|(
+name|ecPolicy
 argument_list|)
 operator|.
 name|build
