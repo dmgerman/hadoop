@@ -422,7 +422,7 @@ return|return
 name|ports
 return|;
 block|}
-comment|/**    * Returns the port for given type, null if the service doesn't support    * the type.    *    * @param type the type of port.    *             ex: RPC, HTTP, HTTPS, etc..    */
+comment|/**    * Returns the port for given type.    *    * @param type the type of port.    *             ex: RPC, HTTP, HTTPS, etc..    * @throws NullPointerException if the service doesn't support the given type    */
 annotation|@
 name|JsonIgnore
 DECL|method|getPort (ServicePort.Type type)
@@ -442,6 +442,31 @@ operator|.
 name|get
 argument_list|(
 name|type
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the address of the service (hostname with port of the given type).    * @param portType the type of port, eg. RPC, HTTP, etc.    * @return service address (hostname with port of the given type)    */
+annotation|@
+name|JsonIgnore
+DECL|method|getServiceAddress (ServicePort.Type portType)
+specifier|public
+name|String
+name|getServiceAddress
+parameter_list|(
+name|ServicePort
+operator|.
+name|Type
+name|portType
+parameter_list|)
+block|{
+return|return
+name|hostname
+operator|+
+literal|":"
+operator|+
+name|getPort
+argument_list|(
+name|portType
 argument_list|)
 return|;
 block|}

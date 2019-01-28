@@ -948,18 +948,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1683,14 +1671,7 @@ name|createSocketAddr
 argument_list|(
 name|scmInfo
 operator|.
-name|getHostname
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|scmInfo
-operator|.
-name|getPort
+name|getServiceAddress
 argument_list|(
 name|ServicePort
 operator|.
