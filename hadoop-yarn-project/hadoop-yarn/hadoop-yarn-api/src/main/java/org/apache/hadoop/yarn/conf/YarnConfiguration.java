@@ -11268,6 +11268,15 @@ name|NM_CSI_ADAPTOR_ADDRESS_SUFFIX
 init|=
 literal|".address"
 decl_stmt|;
+DECL|field|NM_CSI_ADAPTOR_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CSI_ADAPTOR_CLASS
+init|=
+literal|".class"
+decl_stmt|;
 comment|/**    * One or more socket addresses for csi-adaptor.    * Multiple addresses are delimited by ",".    */
 DECL|field|NM_CSI_ADAPTOR_ADDRESSES
 specifier|public
