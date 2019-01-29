@@ -2027,7 +2027,17 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Not implemented"
+literal|"Scm command "
+operator|+
+name|cmd
+operator|.
+name|getType
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" is not implemented"
 argument_list|)
 throw|;
 block|}
