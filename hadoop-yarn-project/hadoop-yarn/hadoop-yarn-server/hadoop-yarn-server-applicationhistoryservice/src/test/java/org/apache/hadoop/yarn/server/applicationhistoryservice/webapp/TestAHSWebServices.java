@@ -3283,6 +3283,22 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+operator|+
+literal|1L
+argument_list|,
+name|app
+operator|.
+name|get
+argument_list|(
+literal|"submittedTime"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"test queue"
 argument_list|,
 name|app

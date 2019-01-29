@@ -284,7 +284,7 @@ name|FinalApplicationStatus
 name|finalAppStatus
 decl_stmt|;
 DECL|field|submittedTime
-specifier|protected
+specifier|private
 name|long
 name|submittedTime
 decl_stmt|;
@@ -473,7 +473,7 @@ name|submittedTime
 operator|=
 name|app
 operator|.
-name|getStartTime
+name|getSubmitTime
 argument_list|()
 expr_stmt|;
 name|startedTime
