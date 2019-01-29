@@ -243,50 +243,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RpcDetailedMetrics (String clientId)
-name|RpcDetailedMetrics
-parameter_list|(
-name|String
-name|clientId
-parameter_list|)
-block|{
-name|name
-operator|=
-literal|"RpcDetailedActivityForClient"
-operator|+
-name|clientId
-expr_stmt|;
-name|registry
-operator|=
-operator|new
-name|MetricsRegistry
-argument_list|(
-literal|"rpcdetailed"
-argument_list|)
-operator|.
-name|tag
-argument_list|(
-literal|"client"
-argument_list|,
-literal|"RPC client"
-argument_list|,
-name|clientId
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|registry
-operator|.
-name|info
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|name ()
 specifier|public
 name|String
@@ -295,43 +251,6 @@ parameter_list|()
 block|{
 return|return
 name|name
-return|;
-block|}
-DECL|method|create (String clientId)
-specifier|public
-specifier|static
-name|RpcDetailedMetrics
-name|create
-parameter_list|(
-name|String
-name|clientId
-parameter_list|)
-block|{
-name|RpcDetailedMetrics
-name|m
-init|=
-operator|new
-name|RpcDetailedMetrics
-argument_list|(
-name|clientId
-argument_list|)
-decl_stmt|;
-return|return
-name|DefaultMetricsSystem
-operator|.
-name|instance
-argument_list|()
-operator|.
-name|register
-argument_list|(
-name|m
-operator|.
-name|name
-argument_list|,
-literal|null
-argument_list|,
-name|m
-argument_list|)
 return|;
 block|}
 DECL|method|create (int port)
@@ -401,15 +320,15 @@ expr_stmt|;
 block|}
 comment|/**    * Add an RPC processing time sample    * @param name of the RPC call    * @param processingTime  the processing time    */
 comment|//@Override // some instrumentation interface
-DECL|method|addProcessingTime (String metName, long processingTime)
+DECL|method|addProcessingTime (String name, int processingTime)
 specifier|public
 name|void
 name|addProcessingTime
 parameter_list|(
 name|String
-name|metName
+name|name
 parameter_list|,
-name|long
+name|int
 name|processingTime
 parameter_list|)
 block|{
@@ -417,19 +336,19 @@ name|rates
 operator|.
 name|add
 argument_list|(
-name|metName
+name|name
 argument_list|,
 name|processingTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addDeferredProcessingTime (String metName, long processingTime)
+DECL|method|addDeferredProcessingTime (String name, long processingTime)
 specifier|public
 name|void
 name|addDeferredProcessingTime
 parameter_list|(
 name|String
-name|metName
+name|name
 parameter_list|,
 name|long
 name|processingTime
@@ -439,21 +358,11 @@ name|deferredRpcRates
 operator|.
 name|add
 argument_list|(
-name|metName
+name|name
 argument_list|,
 name|processingTime
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getMutableRates ()
-specifier|public
-name|MutableRatesWithAggregation
-name|getMutableRates
-parameter_list|()
-block|{
-return|return
-name|rates
-return|;
 block|}
 comment|/**    * Shutdown the instrumentation for the process    */
 comment|//@Override // some instrumentation interface
