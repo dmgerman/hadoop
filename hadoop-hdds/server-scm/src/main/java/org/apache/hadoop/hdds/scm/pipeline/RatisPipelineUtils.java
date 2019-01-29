@@ -572,7 +572,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"destroying pipeline:{} with {}"
 argument_list|,

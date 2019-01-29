@@ -1680,46 +1680,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Refactor the below code for better clarity.
-switch|switch
-condition|(
-name|event
-condition|)
-block|{
-case|case
-name|FINALIZE
-case|:
-comment|// TODO: we don't need a lease manager here for closing as the
-comment|// container report will include the container state after HDFS-13008
-comment|// If a client failed to update the container close state, DN container
-comment|// report from 3 DNs will be used to close the container eventually.
-break|break;
-case|case
-name|CLOSE
-case|:
-break|break;
-case|case
-name|DELETE
-case|:
-break|break;
-case|case
-name|CLEANUP
-case|:
-break|break;
-default|default:
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"Unsupported container LifeCycleEvent."
-argument_list|,
-name|FAILED_TO_CHANGE_CONTAINER_STATE
-argument_list|)
-throw|;
-block|}
-comment|// If the below updateContainerState call fails, we should revert the
-comment|// changes made in switch case.
-comment|// Like releasing the lease in case of BEGIN_CREATE.
 return|return
 name|containerStateManager
 operator|.

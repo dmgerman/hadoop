@@ -711,9 +711,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot remove container replica, container {} not found"
+literal|"Cannot remove container replica, container {} not found {}"
 argument_list|,
 name|id
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -771,9 +773,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Received container report from unknown datanode {}"
+literal|"Received container report from unknown datanode {} {}"
 argument_list|,
 name|datanodeDetails
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
@@ -910,7 +914,7 @@ name|error
 argument_list|(
 literal|"Received container report for an unknown container {} from"
 operator|+
-literal|" datanode {}"
+literal|" datanode {} {}"
 argument_list|,
 name|replicaProto
 operator|.
@@ -918,6 +922,8 @@ name|getContainerID
 argument_list|()
 argument_list|,
 name|datanodeDetails
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -933,7 +939,7 @@ name|error
 argument_list|(
 literal|"Exception while processing container report for container"
 operator|+
-literal|" {} from datanode {}"
+literal|" {} from datanode {} {}"
 argument_list|,
 name|replicaProto
 operator|.
@@ -941,6 +947,8 @@ name|getContainerID
 argument_list|()
 argument_list|,
 name|datanodeDetails
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1015,9 +1023,11 @@ name|warn
 argument_list|(
 literal|"Container is missing from containerStateManager. Can't request "
 operator|+
-literal|"replication. {}"
+literal|"replication. {} {}"
 argument_list|,
 name|containerID
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
