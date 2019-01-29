@@ -48,6 +48,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|VersionInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Responsible to keep all constant keys used in abfs rest client here.  */
 end_comment
@@ -192,7 +206,12 @@ specifier|final
 name|String
 name|CLIENT_VERSION
 init|=
-literal|"Azure Blob FS/1.0"
+literal|"Azure Blob FS/"
+operator|+
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
 decl_stmt|;
 comment|// Abfs Http Verb
 DECL|field|HTTP_METHOD_DELETE

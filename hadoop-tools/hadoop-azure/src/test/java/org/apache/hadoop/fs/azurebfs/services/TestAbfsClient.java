@@ -128,6 +128,20 @@ name|ConfigurationKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|VersionInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test useragent of abfs client.  *  */
 end_comment
@@ -229,6 +243,8 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
+literal|"Incorrect User Agent String"
+argument_list|,
 name|pattern
 operator|.
 name|matcher
@@ -252,9 +268,28 @@ throws|throws
 name|Exception
 block|{
 name|String
+name|clientVersion
+init|=
+literal|"Azure Blob FS/"
+operator|+
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+decl_stmt|;
+name|String
 name|expectedUserAgentPattern
 init|=
-literal|"Azure Blob FS\\/1.0 \\(JavaJRE ([^\\)]+)\\)"
+name|String
+operator|.
+name|format
+argument_list|(
+name|clientVersion
+operator|+
+literal|" %s"
+argument_list|,
+literal|"\\(JavaJRE ([^\\)]+)\\)"
+argument_list|)
 decl_stmt|;
 specifier|final
 name|Configuration
@@ -311,9 +346,28 @@ throws|throws
 name|Exception
 block|{
 name|String
+name|clientVersion
+init|=
+literal|"Azure Blob FS/"
+operator|+
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+decl_stmt|;
+name|String
 name|expectedUserAgentPattern
 init|=
-literal|"Azure Blob FS\\/1.0 \\(JavaJRE ([^\\)]+)\\) Partner Service"
+name|String
+operator|.
+name|format
+argument_list|(
+name|clientVersion
+operator|+
+literal|" %s"
+argument_list|,
+literal|"\\(JavaJRE ([^\\)]+)\\) Partner Service"
+argument_list|)
 decl_stmt|;
 specifier|final
 name|Configuration
@@ -372,9 +426,28 @@ throws|throws
 name|Exception
 block|{
 name|String
+name|clientVersion
+init|=
+literal|"Azure Blob FS/"
+operator|+
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+decl_stmt|;
+name|String
 name|expectedUserAgentPattern
 init|=
-literal|"Azure Blob FS\\/1.0 \\(JavaJRE ([^\\)]+) SunJSSE-1.8\\) Partner Service"
+name|String
+operator|.
+name|format
+argument_list|(
+name|clientVersion
+operator|+
+literal|" %s"
+argument_list|,
+literal|"\\(JavaJRE ([^\\)]+)\\) Partner Service"
+argument_list|)
 decl_stmt|;
 specifier|final
 name|Configuration
