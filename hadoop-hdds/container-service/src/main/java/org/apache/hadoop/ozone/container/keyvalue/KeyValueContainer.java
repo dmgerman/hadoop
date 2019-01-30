@@ -650,6 +650,30 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
+name|CONTAINER_NOT_OPEN
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
 name|DISK_OUT_OF_SPACE
 import|;
 end_import
@@ -900,11 +924,6 @@ init|=
 literal|null
 decl_stmt|;
 comment|//acquiring volumeset read lock
-name|volumeSet
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
 name|long
 name|maxSize
 init|=
@@ -913,6 +932,11 @@ operator|.
 name|getMaxSize
 argument_list|()
 decl_stmt|;
+name|volumeSet
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|HddsVolume
@@ -1591,6 +1615,38 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|getContainerState
+argument_list|()
+operator|!=
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|OPEN
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Attempting to close a "
+operator|+
+name|getContainerState
+argument_list|()
+operator|+
+literal|" container."
+argument_list|,
+name|CONTAINER_NOT_OPEN
+argument_list|)
+throw|;
+block|}
 name|updateContainerData
 argument_list|(
 parameter_list|()
@@ -1608,6 +1664,52 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|markContainerUnhealthy ()
+specifier|public
+name|void
+name|markContainerUnhealthy
+parameter_list|()
+throws|throws
+name|StorageContainerException
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|updateContainerData
+argument_list|(
+parameter_list|()
+lambda|->
+name|containerData
+operator|.
+name|setState
+argument_list|(
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|UNHEALTHY
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|quasiClose ()
@@ -1618,6 +1720,11 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|updateContainerData
 argument_list|(
 name|containerData
@@ -1625,6 +1732,13 @@ operator|::
 name|quasiCloseContainer
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1636,6 +1750,11 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|updateContainerData
 argument_list|(
 name|containerData
@@ -1643,12 +1762,20 @@ operator|::
 name|closeContainer
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 comment|// It is ok if this operation takes a bit of time.
 comment|// Close container is not expected to be instantaneous.
 name|compactDB
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    *    * Must be invoked with the writeLock held.    *    * @param update    * @throws StorageContainerException    */
 DECL|method|updateContainerData (Runnable update)
 specifier|private
 name|void
@@ -1660,6 +1787,14 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ContainerDataProto
 operator|.
 name|State
@@ -1669,9 +1804,6 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-name|writeLock
-argument_list|()
-expr_stmt|;
 name|oldState
 operator|=
 name|containerData
@@ -1723,15 +1855,8 @@ throw|throw
 name|ex
 throw|;
 block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|compactDB ()
-specifier|private
 name|void
 name|compactDB
 parameter_list|()
@@ -1858,7 +1983,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|update (Map<String, String> metadata, boolean forceUpdate)
+DECL|method|update ( Map<String, String> metadata, boolean forceUpdate)
 specifier|public
 name|void
 name|update

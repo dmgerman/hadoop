@@ -278,6 +278,14 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 function_decl|;
+comment|/**    * Marks the container replica as unhealthy.    */
+DECL|method|markContainerUnhealthy ()
+name|void
+name|markContainerUnhealthy
+parameter_list|()
+throws|throws
+name|StorageContainerException
+function_decl|;
 comment|/**    * Quasi Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    *    * @throws StorageContainerException    */
 DECL|method|quasiClose ()
 name|void
