@@ -62,7 +62,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -74,7 +74,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyBoolean
 import|;
@@ -86,7 +86,19 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
+operator|.
+name|anyList
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;
@@ -161,18 +173,6 @@ operator|.
 name|Mockito
 operator|.
 name|verify
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|*
 import|;
 end_import
 
@@ -6414,12 +6414,8 @@ argument_list|)
 operator|.
 name|getMatchedLogTypesForRunningApp
 argument_list|(
-name|anyListOf
-argument_list|(
-name|ContainerLogsRequest
-operator|.
-name|class
-argument_list|)
+name|anyList
+argument_list|()
 argument_list|,
 name|anyBoolean
 argument_list|()

@@ -584,6 +584,18 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
 begin_class
 DECL|class|TestStandbyCheckpoints
 specifier|public
@@ -1712,12 +1724,7 @@ argument_list|)
 operator|.
 name|saveNamespace
 argument_list|(
-operator|(
-name|FSNamesystem
-operator|)
-name|Mockito
-operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1761,12 +1768,7 @@ argument_list|)
 operator|.
 name|saveNamespace
 argument_list|(
-operator|(
-name|FSNamesystem
-operator|)
-name|Mockito
-operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
 name|Mockito
@@ -1778,12 +1780,7 @@ operator|.
 name|IMAGE
 argument_list|)
 argument_list|,
-operator|(
-name|Canceler
-operator|)
-name|Mockito
-operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2402,8 +2399,6 @@ argument_list|)
 operator|.
 name|saveNamespace
 argument_list|(
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|FSNamesystem
@@ -2420,8 +2415,6 @@ operator|.
 name|IMAGE
 argument_list|)
 argument_list|,
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|Canceler
@@ -2665,8 +2658,6 @@ argument_list|)
 operator|.
 name|saveNamespace
 argument_list|(
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|FSNamesystem
@@ -2674,8 +2665,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|NameNodeFile
@@ -2683,8 +2672,6 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|Canceler

@@ -64,6 +64,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|mock
@@ -153,24 +165,6 @@ operator|.
 name|security
 operator|.
 name|AccessControlException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationAttemptId
 import|;
 end_import
 
@@ -602,7 +596,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 import|;
 end_import
 
@@ -743,11 +737,6 @@ name|rmApp
 operator|.
 name|getRMAppAttempt
 argument_list|(
-operator|(
-name|ApplicationAttemptId
-operator|)
-name|Matchers
-operator|.
 name|any
 argument_list|()
 argument_list|)
@@ -785,11 +774,11 @@ argument_list|)
 operator|.
 name|get
 argument_list|(
-operator|(
-name|ApplicationId
-operator|)
-name|Matchers
+name|ArgumentMatchers
 operator|.
+expr|<
+name|ApplicationId
+operator|>
 name|any
 argument_list|()
 argument_list|)
@@ -808,11 +797,11 @@ argument_list|)
 operator|.
 name|containsKey
 argument_list|(
-operator|(
-name|ApplicationId
-operator|)
-name|Matchers
+name|ArgumentMatchers
 operator|.
+expr|<
+name|ApplicationId
+operator|>
 name|any
 argument_list|()
 argument_list|)

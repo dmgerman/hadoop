@@ -198,17 +198,31 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|Mockito
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|anyInt
 import|;
 end_import
 
@@ -585,8 +599,6 @@ argument_list|)
 operator|.
 name|writeInt
 argument_list|(
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -607,8 +619,6 @@ argument_list|)
 operator|.
 name|write
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|byte
@@ -617,13 +627,9 @@ operator|.
 expr|class
 argument_list|)
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -695,8 +701,6 @@ name|dataOut
 operator|.
 name|shortOfSpace
 argument_list|(
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -756,8 +760,6 @@ argument_list|)
 operator|.
 name|writeInt
 argument_list|(
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -778,8 +780,6 @@ argument_list|)
 operator|.
 name|write
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|byte
@@ -788,13 +788,9 @@ operator|.
 expr|class
 argument_list|)
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -939,8 +935,6 @@ argument_list|)
 operator|.
 name|writeInt
 argument_list|(
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -961,8 +955,6 @@ argument_list|)
 operator|.
 name|write
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|byte
@@ -971,13 +963,9 @@ operator|.
 expr|class
 argument_list|)
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)
@@ -1152,8 +1140,6 @@ argument_list|)
 operator|.
 name|readFully
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|byte
@@ -1162,13 +1148,9 @@ operator|.
 expr|class
 argument_list|)
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|,
-name|Matchers
-operator|.
 name|anyInt
 argument_list|()
 argument_list|)

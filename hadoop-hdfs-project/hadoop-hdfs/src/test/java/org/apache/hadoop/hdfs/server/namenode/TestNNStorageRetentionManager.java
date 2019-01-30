@@ -81,6 +81,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -2942,12 +2954,7 @@ argument_list|)
 operator|.
 name|inspectStorageDirs
 argument_list|(
-name|Mockito
-operator|.
-expr|<
-name|FSImageStorageInspector
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

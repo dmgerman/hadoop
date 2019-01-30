@@ -320,9 +320,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
-name|anyObject
+name|any
 import|;
 end_import
 
@@ -796,10 +796,7 @@ name|mockProducer
 operator|.
 name|send
 argument_list|(
-operator|(
-name|ProducerRecord
-operator|)
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

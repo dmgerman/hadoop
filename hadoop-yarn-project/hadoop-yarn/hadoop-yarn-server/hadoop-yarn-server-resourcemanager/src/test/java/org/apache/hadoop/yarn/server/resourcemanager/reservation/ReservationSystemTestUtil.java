@@ -28,7 +28,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -40,9 +40,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
-name|anySetOf
+name|anySet
 import|;
 end_import
 
@@ -2073,12 +2073,8 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anySetOf
-argument_list|(
-name|String
-operator|.
-name|class
-argument_list|)
+name|anySet
+argument_list|()
 argument_list|,
 name|any
 argument_list|(
@@ -2139,11 +2135,7 @@ operator|.
 name|getResourceByLabel
 argument_list|(
 name|any
-argument_list|(
-name|String
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|,
 name|any
 argument_list|(

@@ -118,9 +118,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
-name|anyObject
+name|any
 import|;
 end_import
 
@@ -4140,7 +4140,7 @@ argument_list|)
 operator|.
 name|postComplete
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -116,14 +116,14 @@ specifier|public
 class|class
 name|TestRandomSignerSecretProvider
 block|{
-comment|// rollover every 50 msec
+comment|// rollover every 250 msec
 DECL|field|timeout
 specifier|private
 specifier|final
 name|int
 name|timeout
 init|=
-literal|100
+literal|500
 decl_stmt|;
 DECL|field|rolloverFrequency
 specifier|private

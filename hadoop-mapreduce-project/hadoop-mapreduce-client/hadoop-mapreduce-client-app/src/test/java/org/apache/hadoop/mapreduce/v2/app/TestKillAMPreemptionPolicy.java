@@ -26,7 +26,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -793,7 +793,7 @@ argument_list|()
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -816,7 +816,7 @@ argument_list|()
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -872,7 +872,7 @@ argument_list|()
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -895,7 +895,7 @@ argument_list|()
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -951,7 +951,7 @@ argument_list|()
 argument_list|,
 name|times
 argument_list|(
-literal|4
+literal|2
 argument_list|)
 argument_list|)
 operator|.
@@ -974,7 +974,7 @@ argument_list|()
 argument_list|,
 name|times
 argument_list|(
-literal|4
+literal|2
 argument_list|)
 argument_list|)
 operator|.

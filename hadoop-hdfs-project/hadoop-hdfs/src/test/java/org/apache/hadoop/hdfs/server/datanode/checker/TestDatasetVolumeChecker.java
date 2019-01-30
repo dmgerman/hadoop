@@ -763,7 +763,7 @@ argument_list|)
 operator|.
 name|check
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -948,7 +948,7 @@ argument_list|)
 operator|.
 name|check
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1257,7 +1257,7 @@ name|volume
 operator|.
 name|check
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1286,7 +1286,7 @@ name|volume
 operator|.
 name|check
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

@@ -108,7 +108,19 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;
@@ -1050,7 +1062,7 @@ argument_list|)
 operator|.
 name|getDelegationToken
 argument_list|(
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1238,7 +1250,7 @@ argument_list|)
 operator|.
 name|getDelegationToken
 argument_list|(
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2018,7 +2030,7 @@ argument_list|)
 operator|.
 name|getDelegationToken
 argument_list|(
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

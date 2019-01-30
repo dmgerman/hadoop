@@ -28,7 +28,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|argThat
 import|;
@@ -1554,9 +1554,7 @@ name|Dispatcher
 name|getDispatcher
 parameter_list|()
 block|{
-name|Dispatcher
-name|dispatcher
-init|=
+return|return
 operator|new
 name|DrainDispatcher
 argument_list|()
@@ -1564,11 +1562,7 @@ block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
-block|{
-literal|"rawtypes"
-block|,
 literal|"unchecked"
-block|}
 argument_list|)
 annotation|@
 name|Override
@@ -1582,7 +1576,7 @@ parameter_list|()
 block|{
 class|class
 name|EventArgMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|AbstractEvent
@@ -1594,7 +1588,7 @@ specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|AbstractEvent
 name|argument
 parameter_list|)
 block|{
@@ -1665,9 +1659,6 @@ name|handler
 return|;
 block|}
 block|}
-decl_stmt|;
-return|return
-name|dispatcher
 return|;
 block|}
 block|}

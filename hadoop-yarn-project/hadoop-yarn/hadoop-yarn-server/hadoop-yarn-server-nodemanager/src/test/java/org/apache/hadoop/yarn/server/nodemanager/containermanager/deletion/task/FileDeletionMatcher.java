@@ -87,7 +87,7 @@ DECL|class|FileDeletionMatcher
 specifier|public
 class|class
 name|FileDeletionMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|FileDeletionTask
@@ -167,23 +167,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|matches (Object o)
+DECL|method|matches (FileDeletionTask fd)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
-name|o
-parameter_list|)
-block|{
 name|FileDeletionTask
 name|fd
-init|=
-operator|(
-name|FileDeletionTask
-operator|)
-name|o
-decl_stmt|;
+parameter_list|)
+block|{
 if|if
 condition|(
 name|fd

@@ -84,7 +84,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|anyObject
+name|any
 import|;
 end_import
 
@@ -1897,7 +1897,7 @@ argument_list|(
 name|anyInt
 argument_list|()
 argument_list|,
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2030,7 +2030,7 @@ argument_list|(
 name|anyInt
 argument_list|()
 argument_list|,
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

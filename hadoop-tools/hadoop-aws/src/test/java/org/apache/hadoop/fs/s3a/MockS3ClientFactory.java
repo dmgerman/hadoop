@@ -195,7 +195,7 @@ name|s3
 operator|.
 name|listMultipartUploads
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

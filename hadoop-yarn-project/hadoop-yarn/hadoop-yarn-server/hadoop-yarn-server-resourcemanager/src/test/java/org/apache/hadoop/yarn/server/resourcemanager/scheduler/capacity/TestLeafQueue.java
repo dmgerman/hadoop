@@ -156,7 +156,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -168,7 +168,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyBoolean
 import|;
@@ -1470,7 +1470,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 import|;
 end_import
 
@@ -1732,11 +1732,6 @@ name|rmApp
 operator|.
 name|getRMAppAttempt
 argument_list|(
-operator|(
-name|ApplicationAttemptId
-operator|)
-name|Matchers
-operator|.
 name|any
 argument_list|()
 argument_list|)
@@ -1808,11 +1803,11 @@ argument_list|)
 operator|.
 name|get
 argument_list|(
-operator|(
-name|ApplicationId
-operator|)
-name|Matchers
+name|ArgumentMatchers
 operator|.
+expr|<
+name|ApplicationId
+operator|>
 name|any
 argument_list|()
 argument_list|)

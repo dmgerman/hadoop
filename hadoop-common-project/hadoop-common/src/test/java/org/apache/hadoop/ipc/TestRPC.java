@@ -520,16 +520,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|mockito
-operator|.
-name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -989,6 +979,18 @@ operator|.
 name|Assert
 operator|.
 name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|any
 import|;
 end_import
 
@@ -6277,12 +6279,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-name|Mockito
-operator|.
-expr|<
-name|Call
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6693,12 +6690,7 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
-name|Mockito
-operator|.
-expr|<
-name|Call
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -40,7 +40,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyInt
 import|;
@@ -52,7 +52,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyLong
 import|;
@@ -64,19 +64,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|anyObject
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;

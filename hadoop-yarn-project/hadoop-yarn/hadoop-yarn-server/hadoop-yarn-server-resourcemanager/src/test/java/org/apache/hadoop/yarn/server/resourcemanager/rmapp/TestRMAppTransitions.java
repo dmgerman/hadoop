@@ -1264,16 +1264,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1412,7 +1402,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -1424,7 +1414,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyLong
 import|;
@@ -1436,7 +1426,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|eq
 import|;
@@ -2223,8 +2213,6 @@ argument_list|)
 operator|.
 name|getAppResourceUsageReport
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|()
 argument_list|)

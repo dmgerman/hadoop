@@ -36,16 +36,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|hamcrest
-operator|.
-name|Description
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -609,7 +599,7 @@ specifier|private
 specifier|static
 class|class
 name|InfoWithSameName
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|MetricsInfo
@@ -641,14 +631,14 @@ literal|"info name"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|matches (Object info)
 annotation|@
 name|Override
+DECL|method|matches (MetricsInfo info)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|MetricsInfo
 name|info
 parameter_list|)
 block|{
@@ -657,38 +647,26 @@ name|expected
 operator|.
 name|equals
 argument_list|(
-operator|(
-operator|(
-name|MetricsInfo
-operator|)
 name|info
-operator|)
 operator|.
 name|name
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|describeTo (Description desc)
 annotation|@
 name|Override
+DECL|method|toString ()
 specifier|public
-name|void
-name|describeTo
-parameter_list|(
-name|Description
-name|desc
-parameter_list|)
+name|String
+name|toString
+parameter_list|()
 block|{
-name|desc
-operator|.
-name|appendText
-argument_list|(
+return|return
 literal|"Info with name="
 operator|+
 name|expected
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 comment|/**    * MetricInfo with the same name    * @param info to match    * @return<code>null</code>    */
@@ -718,29 +696,28 @@ specifier|private
 specifier|static
 class|class
 name|AnyInfo
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|MetricsInfo
 argument_list|>
 block|{
-DECL|method|matches (Object info)
 annotation|@
 name|Override
+DECL|method|matches (MetricsInfo info)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|MetricsInfo
 name|info
 parameter_list|)
 block|{
 return|return
 name|info
-operator|instanceof
-name|MetricsInfo
+operator|!=
+literal|null
 return|;
-comment|// not null as well
 block|}
 block|}
 DECL|method|anyInfo ()

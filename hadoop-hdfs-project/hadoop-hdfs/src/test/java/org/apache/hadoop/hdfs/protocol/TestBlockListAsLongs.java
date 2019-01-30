@@ -84,7 +84,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -547,18 +547,6 @@ operator|.
 name|protobuf
 operator|.
 name|ByteString
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|RpcController
 import|;
 end_import
 
@@ -1582,11 +1570,7 @@ operator|.
 name|blockReport
 argument_list|(
 name|any
-argument_list|(
-name|RpcController
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|,
 name|any
 argument_list|(

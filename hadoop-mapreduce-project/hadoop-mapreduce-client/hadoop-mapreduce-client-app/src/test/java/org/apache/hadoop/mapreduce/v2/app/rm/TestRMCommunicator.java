@@ -130,18 +130,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|invocation
-operator|.
-name|InvocationOnMock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
 name|stubbing
 operator|.
 name|Answer
@@ -511,24 +499,14 @@ argument_list|)
 operator|.
 name|thenAnswer
 argument_list|(
-operator|new
+operator|(
 name|Answer
 argument_list|<
-name|Integer
+name|Long
 argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Integer
-name|answer
-parameter_list|(
-name|InvocationOnMock
+operator|)
 name|invocation
-parameter_list|)
-throws|throws
-name|Throwable
+lambda|->
 block|{
 name|communicator
 operator|.
@@ -536,9 +514,8 @@ name|stop
 argument_list|()
 expr_stmt|;
 return|return
-literal|2
+literal|2L
 return|;
-block|}
 block|}
 argument_list|)
 operator|.
@@ -547,9 +524,9 @@ argument_list|(
 operator|new
 name|AssertionError
 argument_list|(
-literal|"GetClock called second time, when it should not have since the thread "
+literal|"GetClock called second time, when it should not "
 operator|+
-literal|"should have quit"
+literal|"have since the thread should have quit"
 argument_list|)
 argument_list|)
 expr_stmt|;

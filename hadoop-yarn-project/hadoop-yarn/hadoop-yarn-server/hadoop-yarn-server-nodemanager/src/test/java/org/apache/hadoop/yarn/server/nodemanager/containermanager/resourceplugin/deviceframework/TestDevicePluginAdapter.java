@@ -746,7 +746,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -758,7 +758,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyInt
 import|;
@@ -770,7 +770,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|isA
 import|;
@@ -3278,7 +3278,7 @@ name|allocateDevices
 argument_list|(
 name|any
 argument_list|(
-name|TreeSet
+name|Set
 operator|.
 name|class
 argument_list|)

@@ -100,7 +100,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|argThat
 import|;
@@ -3962,7 +3962,7 @@ parameter_list|()
 block|{
 class|class
 name|EventArgMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|AbstractEvent
@@ -3974,7 +3974,7 @@ specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|AbstractEvent
 name|argument
 parameter_list|)
 block|{
@@ -4414,7 +4414,7 @@ parameter_list|()
 block|{
 class|class
 name|EventArgMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|AbstractEvent
@@ -4426,7 +4426,7 @@ specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|AbstractEvent
 name|argument
 parameter_list|)
 block|{
@@ -4705,7 +4705,7 @@ parameter_list|()
 block|{
 class|class
 name|EventArgMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|AbstractEvent
@@ -4717,7 +4717,7 @@ specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|AbstractEvent
 name|argument
 parameter_list|)
 block|{

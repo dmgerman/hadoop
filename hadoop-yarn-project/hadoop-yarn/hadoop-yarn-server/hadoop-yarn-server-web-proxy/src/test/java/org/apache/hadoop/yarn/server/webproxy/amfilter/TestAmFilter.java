@@ -1778,7 +1778,7 @@ name|doFilterRequest
 operator|.
 name|contains
 argument_list|(
-literal|"javax.servlet.http.HttpServletRequest"
+literal|"HttpServletRequest"
 argument_list|)
 argument_list|)
 expr_stmt|;

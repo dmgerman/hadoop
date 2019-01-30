@@ -488,26 +488,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|hamcrest
-operator|.
-name|BaseMatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|hamcrest
-operator|.
-name|Description
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|After
@@ -541,6 +521,16 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatcher
 import|;
 end_import
 
@@ -1054,20 +1044,20 @@ DECL|class|MatchesPort
 specifier|private
 class|class
 name|MatchesPort
-extends|extends
-name|BaseMatcher
+implements|implements
+name|ArgumentMatcher
 argument_list|<
 name|SocketAddress
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|matches (Object arg0)
+DECL|method|matches (SocketAddress arg0)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|SocketAddress
 name|arg0
 parameter_list|)
 block|{
@@ -1087,24 +1077,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|describeTo (Description desc)
+DECL|method|toString ()
 specifier|public
-name|void
-name|describeTo
-parameter_list|(
-name|Description
-name|desc
-parameter_list|)
+name|String
+name|toString
+parameter_list|()
 block|{
-name|desc
-operator|.
-name|appendText
-argument_list|(
+return|return
 literal|"matches port "
 operator|+
 name|portToInjectOn
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 block|}

@@ -42,18 +42,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|*
@@ -3464,7 +3452,7 @@ DECL|class|ContainerKillMatcher
 specifier|private
 class|class
 name|ContainerKillMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|ContainerEvent
@@ -3492,12 +3480,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|matches (Object argument)
+DECL|method|matches (ContainerEvent argument)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|ContainerEvent
 name|argument
 parameter_list|)
 block|{
@@ -3537,7 +3525,7 @@ DECL|class|ContainerInitMatcher
 specifier|private
 class|class
 name|ContainerInitMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|ContainerEvent
@@ -3565,12 +3553,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|matches (Object argument)
+DECL|method|matches (ContainerEvent argument)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|ContainerEvent
 name|argument
 parameter_list|)
 block|{

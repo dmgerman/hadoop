@@ -1060,7 +1060,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -1072,7 +1072,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;
@@ -1084,7 +1084,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|eq
 import|;
@@ -1096,7 +1096,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|isA
 import|;
@@ -6941,7 +6941,7 @@ DECL|class|IsPreemptionRequestForQueueAndNode
 specifier|static
 class|class
 name|IsPreemptionRequestForQueueAndNode
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|ContainerPreemptEvent
@@ -6999,23 +6999,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|matches (Object o)
+DECL|method|matches (ContainerPreemptEvent cpe)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
-name|o
-parameter_list|)
-block|{
 name|ContainerPreemptEvent
 name|cpe
-init|=
-operator|(
-name|ContainerPreemptEvent
-operator|)
-name|o
-decl_stmt|;
+parameter_list|)
+block|{
 return|return
 name|appAttId
 operator|.

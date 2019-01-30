@@ -322,22 +322,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -1998,7 +1982,7 @@ argument_list|)
 argument_list|,
 name|Mockito
 operator|.
-name|anyInt
+name|anyLong
 argument_list|()
 argument_list|,
 comment|// new genstamp
@@ -2024,23 +2008,15 @@ literal|false
 argument_list|)
 argument_list|,
 comment|// delete block
-operator|(
-name|DatanodeID
-index|[]
-operator|)
 name|Mockito
 operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
 comment|// new targets
-operator|(
-name|String
-index|[]
-operator|)
 name|Mockito
 operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

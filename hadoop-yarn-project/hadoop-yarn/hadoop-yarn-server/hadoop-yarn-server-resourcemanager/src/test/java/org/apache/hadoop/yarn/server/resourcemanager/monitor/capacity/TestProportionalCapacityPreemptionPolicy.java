@@ -1100,7 +1100,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -1112,7 +1112,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;
@@ -1124,7 +1124,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|argThat
 import|;
@@ -1136,7 +1136,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|eq
 import|;
@@ -1148,7 +1148,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|isA
 import|;
@@ -8908,7 +8908,7 @@ DECL|class|IsPreemptionRequestFor
 specifier|static
 class|class
 name|IsPreemptionRequestFor
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|ContainerPreemptEvent
@@ -8966,13 +8966,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|matches (Object o)
+DECL|method|matches (ContainerPreemptEvent evt)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
-name|o
+name|ContainerPreemptEvent
+name|evt
 parameter_list|)
 block|{
 return|return
@@ -8980,12 +8980,7 @@ name|appAttId
 operator|.
 name|equals
 argument_list|(
-operator|(
-operator|(
-name|ContainerPreemptEvent
-operator|)
-name|o
-operator|)
+name|evt
 operator|.
 name|getAppId
 argument_list|()
@@ -8995,12 +8990,7 @@ name|type
 operator|.
 name|equals
 argument_list|(
-operator|(
-operator|(
-name|ContainerPreemptEvent
-operator|)
-name|o
-operator|)
+name|evt
 operator|.
 name|getType
 argument_list|()
@@ -9274,11 +9264,7 @@ operator|.
 name|getSchedulerNode
 argument_list|(
 name|any
-argument_list|(
-name|NodeId
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.

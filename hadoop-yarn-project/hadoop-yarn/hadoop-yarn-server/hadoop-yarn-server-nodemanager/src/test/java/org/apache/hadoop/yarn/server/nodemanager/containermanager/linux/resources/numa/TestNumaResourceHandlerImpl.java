@@ -58,6 +58,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|mock
@@ -341,16 +353,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
 import|;
 end_import
 
@@ -866,8 +868,6 @@ name|mockContainers
 operator|.
 name|get
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|()
 argument_list|)
@@ -1117,8 +1117,6 @@ name|mockContainers
 operator|.
 name|get
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|()
 argument_list|)

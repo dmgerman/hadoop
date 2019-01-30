@@ -114,7 +114,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -126,19 +126,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|anyObject
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;
@@ -9639,7 +9627,7 @@ name|fsd
 operator|.
 name|resolvePath
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
 name|anyString

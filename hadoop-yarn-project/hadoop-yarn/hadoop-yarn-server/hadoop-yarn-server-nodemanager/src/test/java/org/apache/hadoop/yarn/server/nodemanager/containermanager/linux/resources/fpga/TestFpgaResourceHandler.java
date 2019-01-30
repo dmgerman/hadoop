@@ -3197,7 +3197,7 @@ name|initPlugin
 argument_list|(
 name|Mockito
 operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)
@@ -3261,7 +3261,7 @@ argument_list|()
 argument_list|,
 name|Mockito
 operator|.
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

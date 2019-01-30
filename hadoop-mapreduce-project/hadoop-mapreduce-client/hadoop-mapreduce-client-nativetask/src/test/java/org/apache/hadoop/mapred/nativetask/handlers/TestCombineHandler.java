@@ -150,17 +150,19 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|Mockito
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|ArgumentMatchers
+operator|.
+name|eq
 import|;
 end_import
 
@@ -334,8 +336,6 @@ argument_list|)
 operator|.
 name|setCommandDispatcher
 argument_list|(
-name|Matchers
-operator|.
 name|eq
 argument_list|(
 name|handler
@@ -358,8 +358,6 @@ argument_list|)
 operator|.
 name|setDataReceiver
 argument_list|(
-name|Matchers
-operator|.
 name|eq
 argument_list|(
 name|puller
@@ -441,15 +439,11 @@ argument_list|)
 operator|.
 name|combine
 argument_list|(
-name|Matchers
-operator|.
 name|eq
 argument_list|(
 name|puller
 argument_list|)
 argument_list|,
-name|Matchers
-operator|.
 name|eq
 argument_list|(
 name|pusher

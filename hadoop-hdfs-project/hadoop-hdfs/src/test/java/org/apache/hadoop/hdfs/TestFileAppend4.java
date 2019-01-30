@@ -74,7 +74,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyLong
 import|;
@@ -86,9 +86,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
-name|anyObject
+name|any
 import|;
 end_import
 
@@ -98,7 +98,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyString
 import|;
@@ -277,22 +277,6 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|ExtendedBlock
 import|;
 end_import
 
@@ -896,10 +880,7 @@ argument_list|,
 name|anyString
 argument_list|()
 argument_list|,
-operator|(
-name|ExtendedBlock
-operator|)
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
 name|anyLong
@@ -1235,10 +1216,7 @@ argument_list|,
 name|anyString
 argument_list|()
 argument_list|,
-operator|(
-name|ExtendedBlock
-operator|)
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
 name|anyLong

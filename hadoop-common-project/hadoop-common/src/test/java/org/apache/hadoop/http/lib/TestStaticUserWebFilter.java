@@ -36,6 +36,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|mock
@@ -314,12 +326,7 @@ operator|.
 name|capture
 argument_list|()
 argument_list|,
-name|Mockito
-operator|.
-expr|<
-name|ServletResponse
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

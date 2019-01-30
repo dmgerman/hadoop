@@ -54,7 +54,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -66,7 +66,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyLong
 import|;
@@ -78,7 +78,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|argThat
 import|;
@@ -90,7 +90,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|eq
 import|;
@@ -102,7 +102,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|isA
 import|;
@@ -3313,13 +3313,13 @@ DECL|class|DeletePathsMatcher
 specifier|static
 class|class
 name|DeletePathsMatcher
-extends|extends
+implements|implements
 name|ArgumentMatcher
 argument_list|<
 name|Path
 index|[]
 argument_list|>
-implements|implements
+implements|,
 name|VarargMatcher
 block|{
 comment|// to get rid of serialization warning
@@ -3355,12 +3355,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|matches (Object varargs)
+DECL|method|matches (Path[] varargs)
 specifier|public
 name|boolean
 name|matches
 parameter_list|(
-name|Object
+name|Path
+index|[]
 name|varargs
 parameter_list|)
 block|{

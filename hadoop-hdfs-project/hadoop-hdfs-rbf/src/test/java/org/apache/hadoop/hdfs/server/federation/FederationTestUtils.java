@@ -62,7 +62,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -560,13 +560,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mockito
+name|apache
 operator|.
-name|internal
+name|hadoop
 operator|.
-name|util
-operator|.
-name|reflection
+name|test
 operator|.
 name|Whitebox
 import|;

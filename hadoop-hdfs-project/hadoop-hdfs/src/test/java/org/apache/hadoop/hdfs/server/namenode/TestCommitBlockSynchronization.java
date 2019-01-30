@@ -206,7 +206,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -540,11 +540,7 @@ operator|.
 name|closeFileCommitBlocks
 argument_list|(
 name|any
-argument_list|(
-name|String
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|,
 name|any
 argument_list|(

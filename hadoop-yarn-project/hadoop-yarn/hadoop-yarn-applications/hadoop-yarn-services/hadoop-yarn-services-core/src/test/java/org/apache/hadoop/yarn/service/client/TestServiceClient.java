@@ -606,16 +606,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
 name|stubbing
 operator|.
 name|Answer
@@ -669,6 +659,18 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|any
 import|;
 end_import
 
@@ -1599,8 +1601,6 @@ name|yarnClient
 operator|.
 name|getApplicationAttemptReport
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|()
 argument_list|)
@@ -1636,8 +1636,6 @@ name|amProxy
 operator|.
 name|upgrade
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|UpgradeServiceRequestProto
@@ -1689,8 +1687,6 @@ name|amProxy
 operator|.
 name|upgrade
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|CompInstancesUpgradeRequestProto
@@ -1742,8 +1738,6 @@ name|amProxy
 operator|.
 name|getCompInstances
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|GetCompInstancesRequestProto
@@ -2052,8 +2046,6 @@ name|yarnClient
 operator|.
 name|getApplications
 argument_list|(
-name|Matchers
-operator|.
 name|any
 argument_list|(
 name|GetApplicationsRequest

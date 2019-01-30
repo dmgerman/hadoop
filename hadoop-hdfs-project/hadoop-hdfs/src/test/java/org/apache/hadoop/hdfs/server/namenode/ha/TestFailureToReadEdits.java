@@ -64,7 +64,19 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
 operator|.
 name|anyBoolean
 import|;
@@ -76,21 +88,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyLong
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyObject
 import|;
 end_import
 
@@ -395,24 +395,6 @@ operator|.
 name|namenode
 operator|.
 name|FSEditLogOp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|MetaRecoveryContext
 import|;
 end_import
 
@@ -1908,10 +1890,7 @@ argument_list|,
 name|anyLong
 argument_list|()
 argument_list|,
-operator|(
-name|MetaRecoveryContext
-operator|)
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
 name|anyBoolean

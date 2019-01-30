@@ -82,6 +82,30 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|anyInt
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doAnswer
@@ -4928,12 +4952,7 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
-name|Mockito
-operator|.
-expr|<
-name|Call
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8805,8 +8824,6 @@ argument_list|)
 operator|.
 name|bind
 argument_list|(
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|SocketAddress
@@ -8839,8 +8856,6 @@ argument_list|)
 operator|.
 name|bind
 argument_list|(
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|SocketAddress
@@ -9068,8 +9083,6 @@ argument_list|)
 operator|.
 name|connect
 argument_list|(
-name|Mockito
-operator|.
 name|any
 argument_list|(
 name|SocketAddress

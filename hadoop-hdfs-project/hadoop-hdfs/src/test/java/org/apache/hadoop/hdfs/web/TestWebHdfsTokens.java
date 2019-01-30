@@ -84,18 +84,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|*
@@ -2225,7 +2213,7 @@ argument_list|)
 operator|.
 name|getDelegationToken
 argument_list|(
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

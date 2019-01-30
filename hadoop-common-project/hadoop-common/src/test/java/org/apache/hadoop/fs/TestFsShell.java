@@ -542,7 +542,7 @@ name|run
 argument_list|(
 name|Mockito
 operator|.
-name|anyVararg
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

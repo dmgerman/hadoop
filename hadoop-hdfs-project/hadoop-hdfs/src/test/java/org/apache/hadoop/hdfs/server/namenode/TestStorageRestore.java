@@ -122,6 +122,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doThrow
@@ -425,16 +437,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
 import|;
 end_import
 
@@ -1029,12 +1031,7 @@ argument_list|)
 operator|.
 name|write
 argument_list|(
-name|Mockito
-operator|.
-expr|<
-name|FSEditLogOp
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

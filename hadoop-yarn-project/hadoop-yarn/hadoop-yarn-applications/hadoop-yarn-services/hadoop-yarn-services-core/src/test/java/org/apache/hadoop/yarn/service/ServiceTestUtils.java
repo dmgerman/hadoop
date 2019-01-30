@@ -880,9 +880,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
-name|anyObject
+name|any
 import|;
 end_import
 
@@ -1510,7 +1510,7 @@ name|sfs
 operator|.
 name|buildClusterDirPath
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1537,10 +1537,10 @@ name|jsonSerDeser
 operator|.
 name|load
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|,
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

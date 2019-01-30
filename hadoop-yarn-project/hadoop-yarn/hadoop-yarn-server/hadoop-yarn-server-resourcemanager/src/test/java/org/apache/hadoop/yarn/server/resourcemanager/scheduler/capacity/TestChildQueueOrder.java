@@ -42,7 +42,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -54,7 +54,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|anyBoolean
 import|;
@@ -66,7 +66,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|eq
 import|;
@@ -243,24 +243,6 @@ operator|.
 name|records
 operator|.
 name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerStatus
 import|;
 end_import
 
@@ -2051,11 +2033,7 @@ name|class
 argument_list|)
 argument_list|,
 name|any
-argument_list|(
-name|ContainerStatus
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|,
 name|any
 argument_list|(

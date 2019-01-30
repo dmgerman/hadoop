@@ -28,7 +28,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
 name|any
 import|;
@@ -1969,11 +1969,7 @@ name|class
 argument_list|)
 argument_list|,
 name|any
-argument_list|(
-name|String
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -2000,11 +1996,7 @@ name|class
 argument_list|)
 argument_list|,
 name|any
-argument_list|(
-name|String
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|when

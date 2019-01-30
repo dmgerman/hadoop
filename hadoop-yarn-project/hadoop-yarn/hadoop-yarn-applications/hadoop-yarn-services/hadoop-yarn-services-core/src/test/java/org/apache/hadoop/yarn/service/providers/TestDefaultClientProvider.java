@@ -26,9 +26,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|ArgumentMatchers
 operator|.
-name|anyObject
+name|any
 import|;
 end_import
 
@@ -219,7 +219,7 @@ name|mockFs
 operator|.
 name|exists
 argument_list|(
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 argument_list|)

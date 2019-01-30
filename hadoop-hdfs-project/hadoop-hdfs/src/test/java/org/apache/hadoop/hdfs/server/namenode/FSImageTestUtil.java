@@ -62,6 +62,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|ArgumentMatchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doReturn
@@ -527,16 +539,6 @@ operator|.
 name|io
 operator|.
 name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
 import|;
 end_import
 
@@ -1297,12 +1299,7 @@ argument_list|)
 operator|.
 name|getStorageDirectory
 argument_list|(
-name|Matchers
-operator|.
-expr|<
-name|URI
-operator|>
-name|anyObject
+name|any
 argument_list|()
 argument_list|)
 expr_stmt|;

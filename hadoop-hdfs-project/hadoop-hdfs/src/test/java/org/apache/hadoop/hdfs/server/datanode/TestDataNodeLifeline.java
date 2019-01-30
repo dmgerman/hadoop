@@ -542,24 +542,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|VolumeFailureSummary
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|test
 operator|.
 name|GenericTestUtils
@@ -1169,11 +1151,7 @@ name|anyInt
 argument_list|()
 argument_list|,
 name|any
-argument_list|(
-name|VolumeFailureSummary
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|,
 name|anyBoolean
 argument_list|()
@@ -1244,11 +1222,7 @@ name|anyInt
 argument_list|()
 argument_list|,
 name|any
-argument_list|(
-name|VolumeFailureSummary
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// While waiting on the latch for the expected number of lifeline messages,
@@ -1372,11 +1346,7 @@ name|anyInt
 argument_list|()
 argument_list|,
 name|any
-argument_list|(
-name|VolumeFailureSummary
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Also verify lifeline call through metrics.  We expect at least
@@ -1484,11 +1454,7 @@ name|anyInt
 argument_list|()
 argument_list|,
 name|any
-argument_list|(
-name|VolumeFailureSummary
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|,
 name|anyBoolean
 argument_list|()
@@ -1603,11 +1569,7 @@ name|anyInt
 argument_list|()
 argument_list|,
 name|any
-argument_list|(
-name|VolumeFailureSummary
-operator|.
-name|class
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Also verify no lifeline calls through metrics.

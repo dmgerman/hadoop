@@ -140,9 +140,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
+name|Mockito
 operator|.
-name|*
+name|any
 import|;
 end_import
 
@@ -154,7 +154,19 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
