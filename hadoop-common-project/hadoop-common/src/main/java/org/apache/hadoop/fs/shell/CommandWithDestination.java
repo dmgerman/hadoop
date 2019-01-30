@@ -340,6 +340,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|viewfs
+operator|.
+name|NotInMountpointException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -2438,6 +2454,37 @@ condition|(
 name|lazyPersist
 condition|)
 block|{
+name|long
+name|defaultBlockSize
+decl_stmt|;
+try|try
+block|{
+name|defaultBlockSize
+operator|=
+name|getDefaultBlockSize
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NotInMountpointException
+name|ex
+parameter_list|)
+block|{
+comment|// ViewFileSystem#getDefaultBlockSize() throws an exception as it
+comment|// needs a target FS to retrive the default block size from.
+comment|// Hence, for ViewFs, we should call getDefaultBlockSize with the
+comment|// target path.
+name|defaultBlockSize
+operator|=
+name|getDefaultBlockSize
+argument_list|(
+name|item
+operator|.
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 name|EnumSet
 argument_list|<
 name|CreateFlag
@@ -2493,8 +2540,7 @@ name|short
 operator|)
 literal|1
 argument_list|,
-name|getDefaultBlockSize
-argument_list|()
+name|defaultBlockSize
 argument_list|,
 literal|null
 argument_list|,
