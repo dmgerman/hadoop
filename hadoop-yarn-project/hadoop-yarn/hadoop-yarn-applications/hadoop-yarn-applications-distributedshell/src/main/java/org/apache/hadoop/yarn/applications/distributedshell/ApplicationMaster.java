@@ -1971,6 +1971,14 @@ name|autoPromoteContainers
 init|=
 literal|false
 decl_stmt|;
+comment|// Whether to enforce execution type of the containers.
+DECL|field|enforceExecType
+specifier|private
+name|boolean
+name|enforceExecType
+init|=
+literal|false
+decl_stmt|;
 comment|// Resource profile for the container
 DECL|field|containerResourceProfile
 specifier|private
@@ -2862,6 +2870,17 @@ argument_list|,
 literal|"Flag to indicate whether to automatically promote opportunistic"
 operator|+
 literal|" containers to guaranteed."
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"enforce_execution_type"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Flag to indicate whether to enforce execution type of containers"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -3944,6 +3963,21 @@ argument_list|)
 condition|)
 block|{
 name|autoPromoteContainers
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"enforce_execution_type"
+argument_list|)
+condition|)
+block|{
+name|enforceExecType
 operator|=
 literal|true
 expr_stmt|;
@@ -8162,6 +8196,8 @@ operator|.
 name|newInstance
 argument_list|(
 name|containerType
+argument_list|,
+name|enforceExecType
 argument_list|)
 argument_list|,
 name|containerResourceProfile

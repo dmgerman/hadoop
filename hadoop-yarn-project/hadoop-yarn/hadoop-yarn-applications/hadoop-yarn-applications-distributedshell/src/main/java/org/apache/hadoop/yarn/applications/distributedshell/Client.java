@@ -1494,6 +1494,14 @@ name|autoPromoteContainers
 init|=
 literal|false
 decl_stmt|;
+comment|// Whether to enforce execution type of containers
+DECL|field|enforceExecType
+specifier|private
+name|boolean
+name|enforceExecType
+init|=
+literal|false
+decl_stmt|;
 comment|// Placement specification
 DECL|field|placementSpec
 specifier|private
@@ -2220,6 +2228,17 @@ argument_list|,
 literal|"Flag to indicate whether to automatically promote opportunistic"
 operator|+
 literal|" containers to guaranteed."
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"enforce_execution_type"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Flag to indicate whether to enforce execution type of containers"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -3285,6 +3304,21 @@ argument_list|)
 condition|)
 block|{
 name|autoPromoteContainers
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"enforce_execution_type"
+argument_list|)
+condition|)
+block|{
+name|enforceExecType
 operator|=
 literal|true
 expr_stmt|;
@@ -5405,6 +5439,19 @@ operator|.
 name|add
 argument_list|(
 literal|"--promote_opportunistic_after_start"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|enforceExecType
+condition|)
+block|{
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"--enforce_execution_type"
 argument_list|)
 expr_stmt|;
 block|}
