@@ -9430,7 +9430,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**     * Get the value of the<code>name</code> property as a<code>Class</code>.      * If no such property is specified, then<code>defaultValue</code> is     * returned.    *     * @param name the class name.    * @param defaultValue default value.    * @return property value as a<code>Class</code>,     *         or<code>defaultValue</code>.     */
+comment|/**     * Get the value of the<code>name</code> property as a<code>Class</code>.      * If no such property is specified, then<code>defaultValue</code> is     * returned.    *     * @param name the conf key name.    * @param defaultValue default value.    * @return property value as a<code>Class</code>,     *         or<code>defaultValue</code>.     */
 DECL|method|getClass (String name, Class<?> defaultValue)
 specifier|public
 name|Class
@@ -9490,7 +9490,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**     * Get the value of the<code>name</code> property as a<code>Class</code>    * implementing the interface specified by<code>xface</code>.    *       * If no such property is specified, then<code>defaultValue</code> is     * returned.    *     * An exception is thrown if the returned class does not implement the named    * interface.     *     * @param name the class name.    * @param defaultValue default value.    * @param xface the interface implemented by the named class.    * @return property value as a<code>Class</code>,     *         or<code>defaultValue</code>.    */
+comment|/**     * Get the value of the<code>name</code> property as a<code>Class</code>    * implementing the interface specified by<code>xface</code>.    *       * If no such property is specified, then<code>defaultValue</code> is     * returned.    *     * An exception is thrown if the returned class does not implement the named    * interface.     *     * @param name the conf key name.    * @param defaultValue default value.    * @param xface the interface implemented by the named class.    * @return property value as a<code>Class</code>,     *         or<code>defaultValue</code>.    */
 DECL|method|getClass (String name, Class<? extends U> defaultValue, Class<U> xface)
 specifier|public
 parameter_list|<
