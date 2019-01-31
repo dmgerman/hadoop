@@ -71,20 +71,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|RandomStringUtils
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -222,7 +208,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// List operation should success even there is no bucket.
+comment|// List operation should succeed even there is no bucket.
 name|ListBucketResponse
 name|response
 init|=
@@ -245,6 +231,12 @@ name|String
 name|bucketBaseName
 init|=
 literal|"bucket-"
+operator|+
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 decl_stmt|;
 for|for
 control|(
@@ -269,12 +261,7 @@ name|userName
 argument_list|,
 name|bucketBaseName
 operator|+
-name|RandomStringUtils
-operator|.
-name|randomNumeric
-argument_list|(
-literal|3
-argument_list|)
+name|i
 argument_list|)
 expr_stmt|;
 block|}
