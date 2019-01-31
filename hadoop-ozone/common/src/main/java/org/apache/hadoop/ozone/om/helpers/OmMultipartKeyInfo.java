@@ -161,7 +161,7 @@ return|return
 name|uploadID
 return|;
 block|}
-DECL|method|getPartKeyInfoList ()
+DECL|method|getPartKeyInfoMap ()
 specifier|public
 name|TreeMap
 argument_list|<
@@ -169,7 +169,7 @@ name|Integer
 argument_list|,
 name|PartKeyInfo
 argument_list|>
-name|getPartKeyInfoList
+name|getPartKeyInfoMap
 parameter_list|()
 block|{
 return|return

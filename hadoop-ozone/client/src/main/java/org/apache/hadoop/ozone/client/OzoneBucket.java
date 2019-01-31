@@ -1269,6 +1269,50 @@ name|uploadID
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Returns list of parts of a multipart upload key.    * @param keyName    * @param uploadID    * @param partNumberMarker    * @param maxParts    * @return OzoneMultipartUploadPartListParts    */
+DECL|method|listParts (String keyName, String uploadID, int partNumberMarker, int maxParts)
+specifier|public
+name|OzoneMultipartUploadPartListParts
+name|listParts
+parameter_list|(
+name|String
+name|keyName
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|,
+name|int
+name|partNumberMarker
+parameter_list|,
+name|int
+name|maxParts
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// As at most we  can have 10000 parts for a key, not using iterator. If
+comment|// needed, it can be done later. So, if we send 10000 as max parts at
+comment|// most in a single rpc call, we return 0.6 mb, by assuming each part
+comment|// size as 60 bytes (ignored the replication type size during calculation)
+return|return
+name|proxy
+operator|.
+name|listParts
+argument_list|(
+name|volumeName
+argument_list|,
+name|name
+argument_list|,
+name|keyName
+argument_list|,
+name|uploadID
+argument_list|,
+name|partNumberMarker
+argument_list|,
+name|maxParts
+argument_list|)
+return|;
+block|}
 comment|/**    * An Iterator to iterate over {@link OzoneKey} list.    */
 DECL|class|KeyIterator
 specifier|private

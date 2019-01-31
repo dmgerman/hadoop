@@ -948,6 +948,32 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns list of parts of a multipart upload key.    * @param volumeName    * @param bucketName    * @param keyName    * @param uploadID    * @param partNumberMarker - returns parts with part number which are greater    * than this partNumberMarker.    * @param maxParts    * @return OmMultipartUploadListParts    */
+DECL|method|listParts (String volumeName, String bucketName, String keyName, String uploadID, int partNumberMarker, int maxParts)
+name|OzoneMultipartUploadPartListParts
+name|listParts
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|String
+name|uploadID
+parameter_list|,
+name|int
+name|partNumberMarker
+parameter_list|,
+name|int
+name|maxParts
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get a valid Delegation Token.    *    * @param renewer the designated renewer for the token    * @return Token<OzoneDelegationTokenSelector>    * @throws IOException    */
 DECL|method|getDelegationToken (Text renewer)
 name|Token

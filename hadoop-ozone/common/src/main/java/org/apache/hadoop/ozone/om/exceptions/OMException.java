@@ -274,7 +274,10 @@ name|TOKEN_ERROR_OTHER
 block|,
 DECL|enumConstant|UNKNOWN
 name|UNKNOWN
-block|}
+block|,
+DECL|enumConstant|LIST_MULTIPART_UPLOAD_PARTS_FAILED
+name|LIST_MULTIPART_UPLOAD_PARTS_FAILED
+block|;   }
 block|}
 end_class
 

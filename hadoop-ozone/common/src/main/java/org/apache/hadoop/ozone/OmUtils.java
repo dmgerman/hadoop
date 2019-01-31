@@ -774,6 +774,9 @@ case|:
 case|case
 name|ServiceList
 case|:
+case|case
+name|ListMultiPartUploadParts
+case|:
 return|return
 literal|true
 return|;

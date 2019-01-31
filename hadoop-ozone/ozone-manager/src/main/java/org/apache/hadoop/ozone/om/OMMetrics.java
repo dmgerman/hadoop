@@ -523,6 +523,20 @@ name|Metric
 name|MutableCounterLong
 name|numAbortMultipartUploadFails
 decl_stmt|;
+DECL|field|numListMultipartUploadParts
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListMultipartUploadParts
+decl_stmt|;
+DECL|field|numListMultipartUploadPartFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListMultipartUploadPartFails
+decl_stmt|;
 comment|// Metrics for total number of volumes, buckets and keys
 DECL|field|numVolumes
 specifier|private
@@ -1109,6 +1123,35 @@ name|incNumAbortMultipartUploadFails
 parameter_list|()
 block|{
 name|numAbortMultipartUploadFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListMultipartUploadParts ()
+specifier|public
+name|void
+name|incNumListMultipartUploadParts
+parameter_list|()
+block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numListMultipartUploadParts
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListMultipartUploadPartFails ()
+specifier|public
+name|void
+name|incNumListMultipartUploadPartFails
+parameter_list|()
+block|{
+name|numListMultipartUploadPartFails
 operator|.
 name|incr
 argument_list|()
