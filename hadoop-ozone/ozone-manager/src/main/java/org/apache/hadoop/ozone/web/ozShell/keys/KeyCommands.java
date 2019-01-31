@@ -171,6 +171,10 @@ name|PutKeyHandler
 operator|.
 name|class
 block|,
+name|RenameKeyHandler
+operator|.
+name|class
+block|,
 name|DeleteKeyHandler
 operator|.
 name|class
