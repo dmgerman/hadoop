@@ -2982,7 +2982,13 @@ name|warn
 argument_list|(
 literal|"Cannot allocate parity block(index={}, policy={}). "
 operator|+
-literal|"Not enough datanodes? Exclude nodes={}"
+literal|"Exclude nodes={}. There may not be enough datanodes or "
+operator|+
+literal|"racks. You can check if the cluster topology supports "
+operator|+
+literal|"the enabled erasure coding policies by running the command "
+operator|+
+literal|"'hdfs ec -verifyClusterSetup'."
 argument_list|,
 name|i
 argument_list|,
