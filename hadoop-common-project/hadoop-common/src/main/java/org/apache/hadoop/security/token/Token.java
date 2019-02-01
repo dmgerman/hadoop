@@ -873,6 +873,8 @@ block|}
 catch|catch
 parameter_list|(
 name|ServiceConfigurationError
+decl||
+name|LinkageError
 name|e
 parameter_list|)
 block|{
