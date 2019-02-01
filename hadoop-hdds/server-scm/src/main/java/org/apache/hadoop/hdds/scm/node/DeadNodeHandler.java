@@ -56,6 +56,24 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|scm
 operator|.
 name|container
@@ -458,8 +476,6 @@ name|id
 argument_list|)
 decl_stmt|;
 comment|// TODO: For open containers, trigger close on other nodes
-comment|// TODO: Check replica count and call replication manager
-comment|// on these containers.
 if|if
 condition|(
 operator|!
@@ -519,6 +535,23 @@ argument_list|(
 name|id
 argument_list|,
 name|replica
+argument_list|)
+expr_stmt|;
+name|ContainerInfo
+name|containerInfo
+init|=
+name|containerManager
+operator|.
+name|getContainer
+argument_list|(
+name|id
+argument_list|)
+decl_stmt|;
+name|replicateIfNeeded
+argument_list|(
+name|containerInfo
+argument_list|,
+name|publisher
 argument_list|)
 expr_stmt|;
 block|}
@@ -588,6 +621,32 @@ parameter_list|)
 throws|throws
 name|ContainerNotFoundException
 block|{
+comment|// Replicate only closed and Quasi closed containers
+if|if
+condition|(
+name|container
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|CLOSED
+operator|||
+name|container
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|QUASI_CLOSED
+condition|)
+block|{
 specifier|final
 name|int
 name|existingReplicas
@@ -624,6 +683,24 @@ operator|!=
 name|expectedReplicas
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Replicate Request fired for container {}, exisiting "
+operator|+
+literal|"replica count {}, expected replica count {}"
+argument_list|,
+name|container
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|existingReplicas
+argument_list|,
+name|expectedReplicas
+argument_list|)
+expr_stmt|;
 name|publisher
 operator|.
 name|fireEvent
@@ -646,6 +723,7 @@ name|expectedReplicas
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_function
