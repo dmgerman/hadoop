@@ -515,7 +515,7 @@ name|parseAttributes
 argument_list|(
 name|Mockito
 operator|.
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 argument_list|)
@@ -592,7 +592,7 @@ name|parseAttributes
 argument_list|(
 name|Mockito
 operator|.
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 argument_list|)
@@ -834,7 +834,7 @@ name|parseAttributes
 argument_list|(
 name|Mockito
 operator|.
-name|anyString
+name|any
 argument_list|()
 argument_list|)
 argument_list|)
