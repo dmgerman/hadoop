@@ -518,6 +518,8 @@ argument_list|(
 name|ReplicationType
 operator|.
 name|RATIS
+argument_list|,
+name|factor
 argument_list|)
 operator|.
 name|forEach
