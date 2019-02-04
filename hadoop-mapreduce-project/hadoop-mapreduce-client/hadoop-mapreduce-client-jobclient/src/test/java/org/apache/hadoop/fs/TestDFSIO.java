@@ -2813,6 +2813,13 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+name|job
+operator|.
+name|setSpeculativeExecution
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|JobClient
 operator|.
 name|runJob
