@@ -751,6 +751,25 @@ argument_list|(
 name|target
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|isSupported
+argument_list|(
+name|CREATE_VISIBILITY_DELAYED
+argument_list|)
+condition|)
+block|{
+comment|// Some filesystems like WebHDFS doesn't assure sequential consistency.
+comment|// In such a case, delay is needed. Given that we can not check the lease
+comment|// because here is closed in client side package, simply add a sleep.
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|10
+argument_list|)
+expr_stmt|;
+block|}
 name|outputStream
 operator|.
 name|write
