@@ -409,17 +409,22 @@ condition|)
 block|{
 name|resultMessage
 operator|=
-literal|"The number of DataNodes ("
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The number of DataNodes (%d) is less "
 operator|+
+literal|"than the minimum required number of DataNodes (%d) for the "
+operator|+
+literal|"erasure coding policies: %s"
+argument_list|,
 name|numOfDataNodes
-operator|+
-literal|") is less than the minimum required number of DataNodes ("
-operator|+
+argument_list|,
 name|minDN
-operator|+
-literal|") for the erasure coding policies: "
-operator|+
+argument_list|,
 name|readablePolicies
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -447,17 +452,22 @@ condition|)
 block|{
 name|resultMessage
 operator|=
-literal|"The number of racks ("
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The number of racks (%d) is less than "
 operator|+
+literal|"the minimum required number of racks (%d) for the erasure "
+operator|+
+literal|"coding policies: %s"
+argument_list|,
 name|numOfRacks
-operator|+
-literal|") is less than the minimum required number of racks ("
-operator|+
+argument_list|,
 name|minRack
-operator|+
-literal|") for the erasure coding policies: "
-operator|+
+argument_list|,
 name|readablePolicies
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -482,9 +492,14 @@ name|ECTopologyVerifierResult
 argument_list|(
 literal|true
 argument_list|,
-literal|"The cluster setup can support EC policies: "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"The cluster setup can support EC policies: %s"
+argument_list|,
 name|readablePolicies
+argument_list|)
 argument_list|)
 return|;
 block|}
