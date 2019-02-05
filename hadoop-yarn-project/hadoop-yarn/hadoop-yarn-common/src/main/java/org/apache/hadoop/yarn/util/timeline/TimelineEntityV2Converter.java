@@ -492,6 +492,24 @@ name|Set
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|PATH_JOINER
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utility class to generate reports from timeline entities.  */
 end_comment
@@ -508,7 +526,7 @@ specifier|private
 name|TimelineEntityV2Converter
 parameter_list|()
 block|{   }
-DECL|method|convertToContainerReport ( TimelineEntity entity)
+DECL|method|convertToContainerReport ( TimelineEntity entity, String serverAddress, String user)
 specifier|public
 specifier|static
 name|ContainerReport
@@ -516,6 +534,12 @@ name|convertToContainerReport
 parameter_list|(
 name|TimelineEntity
 name|entity
+parameter_list|,
+name|String
+name|serverAddress
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|int
@@ -993,6 +1017,14 @@ name|allocatedNode
 init|=
 literal|null
 decl_stmt|;
+name|String
+name|containerId
+init|=
+name|entity
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|allocatedHost
@@ -1011,6 +1043,37 @@ argument_list|,
 name|allocatedPort
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|serverAddress
+operator|!=
+literal|null
+operator|&&
+name|user
+operator|!=
+literal|null
+condition|)
+block|{
+name|logUrl
+operator|=
+name|PATH_JOINER
+operator|.
+name|join
+argument_list|(
+name|serverAddress
+argument_list|,
+literal|"logs"
+argument_list|,
+name|allocatedNode
+argument_list|,
+name|containerId
+argument_list|,
+name|containerId
+argument_list|,
+name|user
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|ContainerReport
 name|container
