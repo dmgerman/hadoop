@@ -84,6 +84,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|util
@@ -833,6 +849,13 @@ name|TimelineV2Client
 argument_list|>
 name|appToClientMap
 decl_stmt|;
+DECL|field|publishNMContainerEvents
+specifier|private
+name|boolean
+name|publishNMContainerEvents
+init|=
+literal|true
+decl_stmt|;
 DECL|method|NMTimelinePublisher (Context context)
 specifier|public
 name|NMTimelinePublisher
@@ -962,6 +985,21 @@ literal|1
 index|]
 expr_stmt|;
 block|}
+name|publishNMContainerEvents
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -1161,6 +1199,11 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|publishNMContainerEvents
+condition|)
+block|{
+if|if
+condition|(
 name|pmemUsage
 operator|!=
 name|ResourceCalculatorProcessTree
@@ -1338,8 +1381,8 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-comment|// no need to put it as part of publisher as timeline client already has
-comment|// Queuing concept
+comment|// no need to put it as part of publisher as timeline client
+comment|// already has Queuing concept
 name|TimelineV2Client
 name|timelineClient
 init|=
@@ -1472,6 +1515,7 @@ block|}
 block|}
 block|}
 block|}
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1485,6 +1529,11 @@ parameter_list|(
 name|ContainerEvent
 name|event
 parameter_list|)
+block|{
+if|if
+condition|(
+name|publishNMContainerEvents
+condition|)
 block|{
 name|ContainerId
 name|containerId
@@ -1714,6 +1763,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1733,6 +1783,11 @@ parameter_list|,
 name|long
 name|containerStartTime
 parameter_list|)
+block|{
+if|if
+condition|(
+name|publishNMContainerEvents
+condition|)
 block|{
 name|ContainerId
 name|containerId
@@ -1894,6 +1949,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 DECL|method|publishContainerLocalizationEvent ( ContainerLocalizationEvent event, String eventType)
 specifier|private
 name|void
@@ -1905,6 +1961,11 @@ parameter_list|,
 name|String
 name|eventType
 parameter_list|)
+block|{
+if|if
+condition|(
+name|publishNMContainerEvents
+condition|)
 block|{
 name|Container
 name|container
@@ -2023,9 +2084,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Seems like client has been removed before the event could be"
+literal|"Seems like client has been removed before the event"
 operator|+
-literal|" published for "
+literal|" could be published for "
 operator|+
 name|container
 operator|.
@@ -2122,6 +2183,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

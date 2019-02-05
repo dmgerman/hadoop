@@ -4380,6 +4380,27 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_NM_COLLECTOR_SERVICE_PORT
 decl_stmt|;
+comment|/**    * The setting that controls whether yarn container events are published to    * the timeline service or not by NM. This configuration setting is for ATS    * V2    */
+DECL|field|NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"emit-container-events"
+decl_stmt|;
+DECL|field|DEFAULT_NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+init|=
+literal|true
+decl_stmt|;
 comment|/** Interval in between cache cleanups.*/
 DECL|field|NM_LOCALIZER_CACHE_CLEANUP_INTERVAL_MS
 specifier|public

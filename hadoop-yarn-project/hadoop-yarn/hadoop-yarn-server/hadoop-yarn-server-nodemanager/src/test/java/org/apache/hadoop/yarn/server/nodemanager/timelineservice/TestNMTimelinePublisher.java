@@ -579,6 +579,17 @@ argument_list|,
 literal|3000L
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_PUBLISH_CONTAINER_EVENTS_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|timelineClient
 operator|=
 operator|new
