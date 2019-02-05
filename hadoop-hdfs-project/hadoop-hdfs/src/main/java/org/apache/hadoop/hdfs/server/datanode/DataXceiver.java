@@ -2291,6 +2291,13 @@ condition|(
 name|t
 operator|instanceof
 name|InvalidToken
+operator|||
+name|t
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|InvalidToken
 condition|)
 block|{
 comment|// The InvalidToken exception has already been logged in
