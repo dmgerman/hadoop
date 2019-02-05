@@ -332,6 +332,17 @@ name|void
 name|stop
 parameter_list|()
 block|{
+comment|// this.client may be null when it is called before
+comment|// invoking `createAndStartYarnClient`
+if|if
+condition|(
+name|this
+operator|.
+name|client
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|client
@@ -339,6 +350,7 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
