@@ -1520,14 +1520,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|delete (boolean forceDelete)
+DECL|method|delete ()
 specifier|public
 name|void
 name|delete
-parameter_list|(
-name|boolean
-name|forceDelete
-parameter_list|)
+parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
@@ -1548,8 +1545,6 @@ argument_list|(
 name|containerData
 argument_list|,
 name|config
-argument_list|,
-name|forceDelete
 argument_list|)
 expr_stmt|;
 block|}

@@ -1367,9 +1367,7 @@ comment|//delete the original one
 name|keyValueContainer
 operator|.
 name|delete
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|//create a new one
 name|KeyValueContainerData
@@ -1821,9 +1819,7 @@ expr_stmt|;
 name|keyValueContainer
 operator|.
 name|delete
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|String
 name|containerMetaDataPath

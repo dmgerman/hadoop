@@ -650,8 +650,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes the given container.    *    * @param container container to be deleted    * @throws IOException    */
-DECL|method|deleteContainer (Container container)
+comment|/**    * Deletes the given container.    *    * @param container container to be deleted    * @param force if this is set to true, we delete container without checking    * state of the container.    * @throws IOException    */
+DECL|method|deleteContainer (Container container, boolean force)
 specifier|public
 specifier|abstract
 name|void
@@ -659,6 +659,9 @@ name|deleteContainer
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException

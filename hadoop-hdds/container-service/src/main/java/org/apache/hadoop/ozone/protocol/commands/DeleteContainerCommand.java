@@ -95,6 +95,13 @@ specifier|final
 name|long
 name|containerId
 decl_stmt|;
+DECL|field|force
+specifier|private
+specifier|final
+name|boolean
+name|force
+decl_stmt|;
+comment|/**    * DeleteContainerCommand, to send a command for datanode to delete a    * container.    * @param containerId    */
 DECL|method|DeleteContainerCommand (long containerId)
 specifier|public
 name|DeleteContainerCommand
@@ -104,10 +111,36 @@ name|containerId
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|containerId
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * DeleteContainerCommand, to send a command for datanode to delete a    * container.    * @param containerId    * @param forceFlag if this is set to true, we delete container without    * checking state of the container.    */
+DECL|method|DeleteContainerCommand (long containerId, boolean forceFlag)
+specifier|public
+name|DeleteContainerCommand
+parameter_list|(
+name|long
+name|containerId
+parameter_list|,
+name|boolean
+name|forceFlag
+parameter_list|)
+block|{
+name|this
 operator|.
 name|containerId
 operator|=
 name|containerId
+expr_stmt|;
+name|this
+operator|.
+name|force
+operator|=
+name|forceFlag
 expr_stmt|;
 block|}
 annotation|@
@@ -159,6 +192,11 @@ argument_list|(
 name|getContainerID
 argument_list|()
 argument_list|)
+operator|.
+name|setForce
+argument_list|(
+name|force
+argument_list|)
 expr_stmt|;
 return|return
 name|builder
@@ -175,6 +213,16 @@ parameter_list|()
 block|{
 return|return
 name|containerId
+return|;
+block|}
+DECL|method|isForce ()
+specifier|public
+name|boolean
+name|isForce
+parameter_list|()
+block|{
+return|return
+name|force
 return|;
 block|}
 DECL|method|getFromProtobuf ( DeleteContainerCommandProto protoMessage)
@@ -201,6 +249,11 @@ argument_list|(
 name|protoMessage
 operator|.
 name|getContainerID
+argument_list|()
+argument_list|,
+name|protoMessage
+operator|.
+name|getForce
 argument_list|()
 argument_list|)
 return|;

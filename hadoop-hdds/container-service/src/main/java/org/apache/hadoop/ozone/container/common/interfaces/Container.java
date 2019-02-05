@@ -224,14 +224,11 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Deletes the container.    *    * @param forceDelete   - whether this container should be deleted forcibly.    * @throws StorageContainerException    */
-DECL|method|delete (boolean forceDelete)
+comment|/**    * Deletes the container.    *    * @throws StorageContainerException    */
+DECL|method|delete ()
 name|void
 name|delete
-parameter_list|(
-name|boolean
-name|forceDelete
-parameter_list|)
+parameter_list|()
 throws|throws
 name|StorageContainerException
 function_decl|;

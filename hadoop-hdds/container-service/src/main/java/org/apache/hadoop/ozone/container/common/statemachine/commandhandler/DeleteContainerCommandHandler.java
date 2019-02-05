@@ -302,6 +302,11 @@ name|deleteContainerCommand
 operator|.
 name|getContainerID
 argument_list|()
+argument_list|,
+name|deleteContainerCommand
+operator|.
+name|isForce
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|updateCommandStatus

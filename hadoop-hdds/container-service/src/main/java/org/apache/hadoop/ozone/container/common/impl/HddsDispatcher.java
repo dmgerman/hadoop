@@ -896,9 +896,6 @@ case|:
 case|case
 name|DELETE_ON_OPEN_CONTAINER
 case|:
-case|case
-name|ERROR_CONTAINER_NOT_EMPTY
-case|:
 return|return
 literal|true
 return|;

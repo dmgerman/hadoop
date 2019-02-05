@@ -465,8 +465,8 @@ name|packer
 argument_list|)
 return|;
 block|}
-comment|/**    * Deletes a container given its Id.    * @param containerId Id of the container to be deleted    * @throws IOException    */
-DECL|method|deleteContainer (final long containerId)
+comment|/**    * Deletes a container given its Id.    * @param containerId Id of the container to be deleted    * @param force if this is set to true, we delete container without checking    * state of the container.    * @throws IOException    */
+DECL|method|deleteContainer (final long containerId, boolean force)
 specifier|public
 name|void
 name|deleteContainer
@@ -474,6 +474,9 @@ parameter_list|(
 specifier|final
 name|long
 name|containerId
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -497,6 +500,8 @@ operator|.
 name|deleteContainer
 argument_list|(
 name|container
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 block|}

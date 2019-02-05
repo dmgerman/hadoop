@@ -4785,13 +4785,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteContainer (Container container)
+DECL|method|deleteContainer (Container container, boolean force)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -4800,7 +4803,7 @@ name|deleteInternal
 argument_list|(
 name|container
 argument_list|,
-literal|true
+name|force
 argument_list|)
 expr_stmt|;
 block|}
@@ -4825,6 +4828,13 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|// If force is false, we check container state.
+if|if
+condition|(
+operator|!
+name|force
+condition|)
+block|{
 comment|// Check if container is open
 if|if
 condition|(
@@ -4847,37 +4857,6 @@ name|DELETE_ON_OPEN_CONTAINER
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-operator|!
-name|force
-operator|&&
-name|container
-operator|.
-name|getContainerData
-argument_list|()
-operator|.
-name|getKeyCount
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-comment|// If the container is not empty and cannot be deleted forcibly,
-comment|// then throw a SCE to stop deleting.
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Container cannot be deleted because it is not empty."
-argument_list|,
-name|ContainerProtos
-operator|.
-name|Result
-operator|.
-name|ERROR_CONTAINER_NOT_EMPTY
-argument_list|)
-throw|;
 block|}
 name|long
 name|containerId
@@ -4910,9 +4889,7 @@ comment|// Avoid holding write locks for disk operations
 name|container
 operator|.
 name|delete
-argument_list|(
-name|force
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}

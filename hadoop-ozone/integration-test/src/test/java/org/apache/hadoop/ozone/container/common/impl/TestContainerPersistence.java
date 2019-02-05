@@ -1808,9 +1808,7 @@ expr_stmt|;
 name|container1
 operator|.
 name|delete
-argument_list|(
-literal|false
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|containerSet
 operator|.
@@ -1955,9 +1953,7 @@ expr_stmt|;
 name|container2
 operator|.
 name|delete
-argument_list|(
-literal|false
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
