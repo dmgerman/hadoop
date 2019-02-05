@@ -605,12 +605,6 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Create a container outside of the WASB FileSystem
-name|container
-operator|.
-name|create
-argument_list|()
-expr_stmt|;
 comment|// Write should succeed
 name|assertTrue
 argument_list|(
@@ -824,12 +818,6 @@ operator|.
 name|exists
 argument_list|()
 argument_list|)
-expr_stmt|;
-comment|// Create a container outside of the WASB FileSystem
-name|container
-operator|.
-name|create
-argument_list|()
 expr_stmt|;
 comment|// But a write should.
 name|assertTrue

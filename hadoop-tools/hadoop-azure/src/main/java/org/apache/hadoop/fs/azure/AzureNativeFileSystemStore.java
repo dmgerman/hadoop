@@ -686,7 +686,7 @@ name|azure
 operator|.
 name|storage
 operator|.
-name|StorageErrorCode
+name|StorageErrorCodeStrings
 import|;
 end_import
 
@@ -5123,9 +5123,9 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|StorageErrorCode
+name|StorageErrorCodeStrings
 operator|.
-name|RESOURCE_NOT_FOUND
+name|CONTAINER_NOT_FOUND
 operator|.
 name|toString
 argument_list|()
