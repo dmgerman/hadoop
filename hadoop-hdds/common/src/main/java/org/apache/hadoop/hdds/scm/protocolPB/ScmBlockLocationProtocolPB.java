@@ -108,7 +108,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.ozone.protocol.ScmBlockLocationProtocol"
+literal|"org.apache.hadoop.hdds.scm.protocol.ScmBlockLocationProtocol"
 argument_list|,
 name|protocolVersion
 operator|=
