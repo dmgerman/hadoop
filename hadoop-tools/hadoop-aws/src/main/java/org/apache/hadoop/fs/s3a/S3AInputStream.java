@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|amazonaws
@@ -282,6 +292,15 @@ name|FSInputStream
 implements|implements
 name|CanSetReadahead
 block|{
+DECL|field|E_NEGATIVE_READAHEAD_VALUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|E_NEGATIVE_READAHEAD_VALUE
+init|=
+literal|"Negative readahead value"
+decl_stmt|;
 comment|/**    * This is the public position; the one set in {@link #seek(long)}    * and returned in {@link #getPos()}.    */
 DECL|field|pos
 specifier|private
@@ -408,8 +427,8 @@ specifier|private
 name|long
 name|contentRangeStart
 decl_stmt|;
-comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param ctx operation context    * @param s3Attributes object attributes from a HEAD request    * @param contentLength length of content    * @param client S3 client to use    * @param readahead readahead bytes    * @param inputPolicy IO policy    */
-DECL|method|S3AInputStream (S3AReadOpContext ctx, S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client, long readahead, S3AInputPolicy inputPolicy)
+comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param ctx operation context    * @param s3Attributes object attributes from a HEAD request    * @param contentLength length of content    * @param client S3 client to use    */
+DECL|method|S3AInputStream (S3AReadOpContext ctx, S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client)
 specifier|public
 name|S3AInputStream
 parameter_list|(
@@ -424,12 +443,6 @@ name|contentLength
 parameter_list|,
 name|AmazonS3
 name|client
-parameter_list|,
-name|long
-name|readahead
-parameter_list|,
-name|S3AInputPolicy
-name|inputPolicy
 parameter_list|)
 block|{
 name|Preconditions
@@ -570,12 +583,18 @@ argument_list|()
 expr_stmt|;
 name|setInputPolicy
 argument_list|(
-name|inputPolicy
+name|ctx
+operator|.
+name|getInputPolicy
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|setReadahead
 argument_list|(
-name|readahead
+name|ctx
+operator|.
+name|getReadahead
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -779,10 +798,7 @@ decl_stmt|;
 name|S3Object
 name|object
 init|=
-name|context
-operator|.
-name|getReadInvoker
-argument_list|()
+name|Invoker
 operator|.
 name|once
 argument_list|(
@@ -2704,42 +2720,15 @@ name|Long
 name|readahead
 parameter_list|)
 block|{
-if|if
-condition|(
-name|readahead
-operator|==
-literal|null
-condition|)
-block|{
 name|this
 operator|.
 name|readahead
 operator|=
-name|Constants
-operator|.
-name|DEFAULT_READAHEAD_RANGE
-expr_stmt|;
-block|}
-else|else
-block|{
-name|Preconditions
-operator|.
-name|checkArgument
+name|validateReadahead
 argument_list|(
 name|readahead
-operator|>=
-literal|0
-argument_list|,
-literal|"Negative readahead value"
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|readahead
-operator|=
-name|readahead
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Get the current readahead value.    * @return a non-negative readahead value    */
 DECL|method|getReadahead ()
@@ -2845,6 +2834,50 @@ expr_stmt|;
 return|return
 name|rangeLimit
 return|;
+block|}
+comment|/**    * from a possibly null Long value, return a valid    * readahead.    * @param readahead new readahead    * @return a natural number.    * @throws IllegalArgumentException if the range is invalid.    */
+DECL|method|validateReadahead (@ullable Long readahead)
+specifier|public
+specifier|static
+name|long
+name|validateReadahead
+parameter_list|(
+annotation|@
+name|Nullable
+name|Long
+name|readahead
+parameter_list|)
+block|{
+if|if
+condition|(
+name|readahead
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|Constants
+operator|.
+name|DEFAULT_READAHEAD_RANGE
+return|;
+block|}
+else|else
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|readahead
+operator|>=
+literal|0
+argument_list|,
+name|E_NEGATIVE_READAHEAD_VALUE
+argument_list|)
+expr_stmt|;
+return|return
+name|readahead
+return|;
+block|}
 block|}
 block|}
 end_class

@@ -816,7 +816,8 @@ block|}
 block|}
 comment|/**    * Create a random Job ID using the fork ID as part of the number.    * @return fork ID string in a format parseable by Jobs    * @throws Exception failure    */
 DECL|method|randomJobId ()
-specifier|protected
+specifier|public
+specifier|static
 name|String
 name|randomJobId
 parameter_list|()

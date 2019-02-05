@@ -97,7 +97,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test dir operations on a the local FS.  */
+comment|/**  * Test Open operations on HDFS.  */
 end_comment
 
 begin_class

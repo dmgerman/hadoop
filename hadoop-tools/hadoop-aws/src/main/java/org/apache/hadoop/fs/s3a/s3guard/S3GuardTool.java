@@ -450,6 +450,24 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|s3a
+operator|.
+name|select
+operator|.
+name|SelectTool
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|shell
 operator|.
 name|CommandFormat
@@ -763,6 +781,20 @@ operator|.
 name|PURPOSE
 operator|+
 literal|"\n"
+operator|+
+literal|"\t"
+operator|+
+name|SelectTool
+operator|.
+name|NAME
+operator|+
+literal|" - "
+operator|+
+name|SelectTool
+operator|.
+name|PURPOSE
+operator|+
+literal|"\n"
 decl_stmt|;
 DECL|field|DATA_IN_S3_IS_PRESERVED
 specifier|private
@@ -783,8 +815,8 @@ init|=
 literal|"No metastore or filesystem specified"
 decl_stmt|;
 DECL|method|getUsage ()
-specifier|abstract
 specifier|public
+specifier|abstract
 name|String
 name|getUsage
 parameter_list|()
@@ -998,13 +1030,15 @@ expr_stmt|;
 block|}
 comment|/**    * Return sub-command name.    */
 DECL|method|getName ()
+specifier|public
 specifier|abstract
 name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/**    * Parse DynamoDB region from either -m option or a S3 path.    *    * This function should only be called from {@link Init} or    * {@link Destroy}.    *    * @param paths remaining parameters from CLI.    * @throws IOException on I/O errors.    * @throws ExitUtil.ExitException on validation errors    */
+comment|/**    * Parse DynamoDB region from either -m option or a S3 path.    *    * This function should only be called from {@link S3GuardTool.Init} or    * {@link S3GuardTool.Destroy}.    *    * @param paths remaining parameters from CLI.    * @throws IOException on I/O errors.    * @throws ExitUtil.ExitException on validation errors    */
 DECL|method|parseDynamoDBRegion (List<String> paths)
+specifier|protected
 name|void
 name|parseDynamoDBRegion
 parameter_list|(
@@ -1514,6 +1548,7 @@ block|}
 block|}
 comment|/**    * Parse metadata store from command line option or HDFS configuration.    *    * @param forceCreate override the auto-creation setting to true.    * @return a initialized metadata store.    */
 DECL|method|initMetadataStore (boolean forceCreate)
+specifier|protected
 name|MetadataStore
 name|initMetadataStore
 parameter_list|(
@@ -1779,6 +1814,7 @@ return|;
 block|}
 comment|/**    * Create and initialize a new S3A FileSystem instance.    * This instance is always created without S3Guard, so allowing    * a previously created metastore to be patched in.    *    * Note: this is a bit convoluted as it needs to also handle the situation    * of a per-bucket option in core-site.xml, which isn't easily overridden.    * The new config and the setting of the values before any    * {@code Configuration.get()} calls are critical.    *    * @param path s3a URI    * @throws IOException failure to init filesystem    * @throws ExitUtil.ExitException if the FS is not an S3A FS    */
 DECL|method|initS3AFileSystem (String path)
+specifier|protected
 name|void
 name|initS3AFileSystem
 parameter_list|(
@@ -1938,6 +1974,7 @@ expr_stmt|;
 block|}
 comment|/**    * Parse CLI arguments and returns the position arguments.    * The options are stored in {@link #commandFormat}.    *    * @param args command line arguments.    * @return the position arguments from CLI.    */
 DECL|method|parseArgs (String[] args)
+specifier|protected
 name|List
 argument_list|<
 name|String
@@ -2060,7 +2097,7 @@ name|out
 argument_list|)
 return|;
 block|}
-comment|/**    * Run the tool, capturing the output (if the tool supports that).    *    * As well as returning an exit code, the implementations can choose to    * throw an instance of {@link ExitUtil.ExitException} with their exit    * code set to the desired exit value. The exit code of auch an exception    * is used for the tool's exit code, and the stack trace only logged at    * debug.    * @param args argument list    * @param out output stream    * @return the exit code to return.    * @throws Exception on any failure    * @throws ExitUtil.ExitException for an alternative clean exit    */
+comment|/**    * Run the tool, capturing the output (if the tool supports that).    *    * As well as returning an exit code, the implementations can choose to    * throw an instance of {@link ExitUtil.ExitException} with their exit    * code set to the desired exit value. The exit code of such an exception    * is used for the tool's exit code, and the stack trace only logged at    * debug.    * @param args argument list    * @param out output stream    * @return the exit code to return.    * @throws Exception on any failure    */
 DECL|method|run (String[] args, PrintStream out)
 specifier|public
 specifier|abstract
@@ -2076,6 +2113,10 @@ name|out
 parameter_list|)
 throws|throws
 name|Exception
+throws|,
+name|ExitUtil
+operator|.
+name|ExitException
 function_decl|;
 comment|/**    * Create the metadata store.    */
 DECL|class|Init
@@ -2213,6 +2254,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -2698,6 +2740,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -3026,6 +3069,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -3279,6 +3323,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -3860,6 +3905,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -4843,6 +4889,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -5247,6 +5294,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -6157,6 +6205,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -6927,7 +6976,7 @@ name|uri
 return|;
 block|}
 DECL|method|printHelp (S3GuardTool tool)
-specifier|private
+specifier|protected
 specifier|static
 name|void
 name|printHelp
@@ -6981,7 +7030,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|errorln ()
-specifier|private
+specifier|protected
 specifier|static
 name|void
 name|errorln
@@ -6996,7 +7045,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|errorln (String x)
-specifier|private
+specifier|protected
 specifier|static
 name|void
 name|errorln
@@ -7017,7 +7066,7 @@ expr_stmt|;
 block|}
 comment|/**    * Print a formatted string followed by a newline to the output stream.    * @param out destination    * @param format format string    * @param args optional arguments    */
 DECL|method|println (PrintStream out, String format, Object... args)
-specifier|private
+specifier|protected
 specifier|static
 name|void
 name|println
@@ -7169,21 +7218,13 @@ name|args
 parameter_list|)
 block|{
 return|return
-operator|new
-name|ExitUtil
-operator|.
-name|ExitException
+name|exitException
 argument_list|(
 name|INVALID_ARGUMENT
 argument_list|,
-name|String
-operator|.
-name|format
-argument_list|(
 name|format
 argument_list|,
 name|args
-argument_list|)
 argument_list|)
 return|;
 block|}
@@ -7204,22 +7245,19 @@ modifier|...
 name|args
 parameter_list|)
 block|{
-return|return
-operator|new
-name|ExitUtil
-operator|.
-name|ExitException
-argument_list|(
+name|int
+name|exitCode
+init|=
 name|E_BAD_STATE
-argument_list|,
-name|String
-operator|.
-name|format
+decl_stmt|;
+return|return
+name|exitException
 argument_list|(
+name|exitCode
+argument_list|,
 name|format
 argument_list|,
 name|args
-argument_list|)
 argument_list|)
 return|;
 block|}
@@ -7241,12 +7279,46 @@ name|args
 parameter_list|)
 block|{
 return|return
+name|exitException
+argument_list|(
+name|ERROR
+argument_list|,
+name|format
+argument_list|,
+name|args
+argument_list|)
+return|;
+block|}
+comment|/**    * Build a exception to throw with a formatted message.    * @param exitCode exit code to use    * @param format string format    * @param args optional arguments for the string    * @return a new exception to throw    */
+DECL|method|exitException ( final int exitCode, final String format, final Object... args)
+specifier|protected
+specifier|static
+name|ExitUtil
+operator|.
+name|ExitException
+name|exitException
+parameter_list|(
+specifier|final
+name|int
+name|exitCode
+parameter_list|,
+specifier|final
+name|String
+name|format
+parameter_list|,
+specifier|final
+name|Object
+modifier|...
+name|args
+parameter_list|)
+block|{
+return|return
 operator|new
 name|ExitUtil
 operator|.
 name|ExitException
 argument_list|(
-name|ERROR
+name|exitCode
 argument_list|,
 name|String
 operator|.
@@ -7479,6 +7551,22 @@ name|command
 operator|=
 operator|new
 name|Uploads
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|SelectTool
+operator|.
+name|NAME
+case|:
+comment|// the select tool is not technically a S3Guard tool, but it's on the CLI
+comment|// because this is the defacto S3 CLI.
+name|command
+operator|=
+operator|new
+name|SelectTool
 argument_list|(
 name|conf
 argument_list|)

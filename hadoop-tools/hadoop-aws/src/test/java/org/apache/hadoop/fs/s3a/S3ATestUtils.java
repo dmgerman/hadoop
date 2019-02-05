@@ -412,18 +412,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|internal
-operator|.
-name|AssumptionViolatedException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -555,6 +543,22 @@ operator|.
 name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SECURITY_CREDENTIAL_PROVIDER_PATH
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+operator|.
+name|isNotEmpty
 import|;
 end_import
 
@@ -860,7 +864,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the test filesystem with or without multipart purging    *    * If the test.fs.s3a.name property is not set, this will    * trigger a JUnit failure.    * @param conf configuration    * @param purge flag to enable Multipart purging    * @return the FS    * @throws IOException IO Problems    * @throws AssumptionViolatedException if the FS is not named    */
+comment|/**    * Create the test filesystem with or without multipart purging    *    * If the test.fs.s3a.name property is not set, this will    * trigger a JUnit failure.    * @param conf configuration    * @param purge flag to enable Multipart purging    * @return the FS    * @throws IOException IO Problems    */
 DECL|method|createTestFileSystem (Configuration conf, boolean purge)
 specifier|public
 specifier|static
@@ -933,24 +937,19 @@ name|FS_S3A
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-operator|!
-name|liveTest
-condition|)
-block|{
 comment|// This doesn't work with our JUnit 3 style test cases, so instead we'll
 comment|// make this whole class not run by default
-throw|throw
-operator|new
-name|AssumptionViolatedException
+name|Assume
+operator|.
+name|assumeTrue
 argument_list|(
 literal|"No test filesystem in "
 operator|+
 name|TEST_FS_S3A_NAME
+argument_list|,
+name|liveTest
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 comment|// patch in S3Guard options
 name|maybeEnableS3Guard
 argument_list|(
@@ -1025,7 +1024,7 @@ name|seconds
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a file context for tests.    *    * If the test.fs.s3a.name property is not set, this will    * trigger a JUnit failure.    *    * Multipart purging is enabled.    * @param conf configuration    * @return the FS    * @throws IOException IO Problems    * @throws AssumptionViolatedException if the FS is not named    */
+comment|/**    * Create a file context for tests.    *    * If the test.fs.s3a.name property is not set, this will    * trigger a JUnit failure.    *    * Multipart purging is enabled.    * @param conf configuration    * @return the FS    * @throws IOException IO Problems    */
 DECL|method|createTestFileContext (Configuration conf)
 specifier|public
 specifier|static
@@ -1095,24 +1094,19 @@ name|FS_S3A
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-operator|!
-name|liveTest
-condition|)
-block|{
 comment|// This doesn't work with our JUnit 3 style test cases, so instead we'll
 comment|// make this whole class not run by default
-throw|throw
-operator|new
-name|AssumptionViolatedException
+name|Assume
+operator|.
+name|assumeTrue
 argument_list|(
 literal|"No test filesystem in "
 operator|+
 name|TEST_FS_S3A_NAME
+argument_list|,
+name|liveTest
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 comment|// patch in S3Guard options
 name|maybeEnableS3Guard
 argument_list|(
@@ -1331,8 +1325,6 @@ name|key
 argument_list|)
 decl_stmt|;
 return|return
-name|StringUtils
-operator|.
 name|isNotEmpty
 argument_list|(
 name|propval
@@ -1349,6 +1341,126 @@ condition|?
 name|propval
 else|:
 name|confVal
+return|;
+block|}
+comment|/**    * Get the test CSV file; assume() that it is not empty.    * @param conf test configuration    * @return test file.    */
+DECL|method|getCSVTestFile (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getCSVTestFile
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|csvFile
+init|=
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|KEY_CSVTEST_FILE
+argument_list|,
+name|DEFAULT_CSVTEST_FILE
+argument_list|)
+decl_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"CSV test file is not the default"
+argument_list|,
+name|isNotEmpty
+argument_list|(
+name|csvFile
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|csvFile
+return|;
+block|}
+comment|/**    * Get the test CSV path; assume() that it is not empty.    * @param conf test configuration    * @return test file as a path.    */
+DECL|method|getCSVTestPath (Configuration conf)
+specifier|public
+specifier|static
+name|Path
+name|getCSVTestPath
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|getCSVTestFile
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the test CSV file; assume() that it is not modified (i.e. we haven't    * switched to a new storage infrastructure where the bucket is no longer    * read only).    * @return test file.    * @param conf test configuration    */
+DECL|method|getLandsatCSVFile (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getLandsatCSVFile
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|csvFile
+init|=
+name|getCSVTestFile
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"CSV test file is not the default"
+argument_list|,
+name|DEFAULT_CSVTEST_FILE
+operator|.
+name|equals
+argument_list|(
+name|csvFile
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|csvFile
+return|;
+block|}
+comment|/**    * Get the test CSV file; assume() that it is not modified (i.e. we haven't    * switched to a new storage infrastructure where the bucket is no longer    * read only).    * @param conf test configuration    * @return test file as a path.    */
+DECL|method|getLandsatCSVPath (Configuration conf)
+specifier|public
+specifier|static
+name|Path
+name|getLandsatCSVPath
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|getLandsatCSVFile
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Verify the class of an exception. If it is not as expected, rethrow it.    * Comparison is on the exact class, not subclass-of inference as    * offered by {@code instanceof}.    * @param clazz the expected exception class    * @param ex the exception caught    * @return the exception, if it is of the expected class    * @throws Exception the exception passed in.    */

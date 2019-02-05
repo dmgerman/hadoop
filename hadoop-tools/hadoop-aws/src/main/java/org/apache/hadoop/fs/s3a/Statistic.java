@@ -402,6 +402,14 @@ argument_list|,
 literal|"number of bytes queued for upload/being actively uploaded"
 argument_list|)
 block|,
+DECL|enumConstant|OBJECT_SELECT_REQUESTS
+name|OBJECT_SELECT_REQUESTS
+argument_list|(
+literal|"object_select_requests"
+argument_list|,
+literal|"Count of S3 Select requests issued"
+argument_list|)
+block|,
 DECL|enumConstant|STREAM_ABORTED
 name|STREAM_ABORTED
 argument_list|(

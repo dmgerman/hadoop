@@ -15669,7 +15669,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getThisBuilder ()
-specifier|protected
+specifier|public
 name|HdfsDataOutputStreamBuilder
 name|getThisBuilder
 parameter_list|()

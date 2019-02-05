@@ -766,6 +766,22 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+operator|.
+name|isEmpty
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|fs
@@ -1355,6 +1371,22 @@ operator|.
 name|initCause
 argument_list|(
 name|ase
+argument_list|)
+expr_stmt|;
+break|break;
+comment|// method not allowed; seen on S3 Select.
+comment|// treated as a bad request
+case|case
+literal|405
+case|:
+name|ioe
+operator|=
+operator|new
+name|AWSBadRequestException
+argument_list|(
+name|message
+argument_list|,
+name|s3Exception
 argument_list|)
 expr_stmt|;
 break|break;
@@ -3726,8 +3758,6 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|StringUtils
-operator|.
 name|isEmpty
 argument_list|(
 name|val

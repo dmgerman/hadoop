@@ -761,6 +761,8 @@ name|OBJECT_PUT_REQUESTS
 block|,
 name|OBJECT_PUT_REQUESTS_COMPLETED
 block|,
+name|OBJECT_SELECT_REQUESTS
+block|,
 name|STREAM_WRITE_FAILURES
 block|,
 name|STREAM_WRITE_BLOCK_UPLOADS
@@ -1941,6 +1943,7 @@ block|}
 block|}
 comment|/**    * Create a stream input statistics instance.    * @return the new instance    */
 DECL|method|newInputStreamStatistics ()
+specifier|public
 name|InputStreamStatistics
 name|newInputStreamStatistics
 parameter_list|()

@@ -271,6 +271,72 @@ name|dstFileStatus
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|isS3GuardEnabled ()
+specifier|public
+name|boolean
+name|isS3GuardEnabled
+parameter_list|()
+block|{
+return|return
+name|isS3GuardEnabled
+return|;
+block|}
+DECL|method|getInvoker ()
+specifier|public
+name|Invoker
+name|getInvoker
+parameter_list|()
+block|{
+return|return
+name|invoker
+return|;
+block|}
+annotation|@
+name|Nullable
+DECL|method|getStats ()
+specifier|public
+name|FileSystem
+operator|.
+name|Statistics
+name|getStats
+parameter_list|()
+block|{
+return|return
+name|stats
+return|;
+block|}
+DECL|method|getInstrumentation ()
+specifier|public
+name|S3AInstrumentation
+name|getInstrumentation
+parameter_list|()
+block|{
+return|return
+name|instrumentation
+return|;
+block|}
+annotation|@
+name|Nullable
+DECL|method|getS3guardInvoker ()
+specifier|public
+name|Invoker
+name|getS3guardInvoker
+parameter_list|()
+block|{
+return|return
+name|s3guardInvoker
+return|;
+block|}
+DECL|method|getDstFileStatus ()
+specifier|public
+name|FileStatus
+name|getDstFileStatus
+parameter_list|()
+block|{
+return|return
+name|dstFileStatus
+return|;
+block|}
 block|}
 end_class
 

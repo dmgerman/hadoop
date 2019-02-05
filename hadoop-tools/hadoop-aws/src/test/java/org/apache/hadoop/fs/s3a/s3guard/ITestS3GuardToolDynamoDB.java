@@ -430,11 +430,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|test
+name|fs
 operator|.
-name|LambdaTestUtils
+name|s3a
 operator|.
-name|intercept
+name|s3guard
+operator|.
+name|S3GuardToolTestHelper
+operator|.
+name|exec
 import|;
 end_import
 

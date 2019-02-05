@@ -3964,6 +3964,24 @@ name|DEFAULT_MR_AM_STAGING_ERASURECODING_ENABLED
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Prefix for options which are passed in to the filesystem    * after converting the subsequent dotted element to the schema.    */
+annotation|@
+name|Unstable
+DECL|field|INPUT_FILE_OPTION_PREFIX
+name|String
+name|INPUT_FILE_OPTION_PREFIX
+init|=
+literal|"mapreduce.job.input.file.option."
+decl_stmt|;
+comment|/**    * Prefix for mandatory options which are passed in to the filesystem    * after converting the subsequent dotted element to the schema.    */
+annotation|@
+name|Unstable
+DECL|field|INPUT_FILE_MANDATORY_PREFIX
+name|String
+name|INPUT_FILE_MANDATORY_PREFIX
+init|=
+literal|"mapreduce.job.input.file.must."
+decl_stmt|;
 block|}
 end_interface
 

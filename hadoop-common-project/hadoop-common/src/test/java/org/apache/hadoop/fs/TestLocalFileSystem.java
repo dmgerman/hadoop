@@ -4568,7 +4568,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getThisBuilder ()
-specifier|protected
+specifier|public
 name|BuilderWithSupportedKeys
 name|getThisBuilder
 parameter_list|()

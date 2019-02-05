@@ -18,36 +18,78 @@ name|s3a
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
-comment|/**  * This class is only a holder for bucket, key, SSE Algorithm and SSE key  * attributes. It is only used in {@link S3AInputStream}  * as a way to reduce parameters being passed  * to the constructor of such class.  */
+comment|/**  * This class is only a holder for bucket, key, SSE Algorithm and SSE key  * attributes. It is used in {@link S3AInputStream} and the select equivalent.  * as a way to reduce parameters being passed  * to the constructor of such class.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|S3ObjectAttributes
+specifier|public
 class|class
 name|S3ObjectAttributes
 block|{
 DECL|field|bucket
 specifier|private
+specifier|final
 name|String
 name|bucket
 decl_stmt|;
 DECL|field|key
 specifier|private
+specifier|final
 name|String
 name|key
 decl_stmt|;
 DECL|field|serverSideEncryptionAlgorithm
 specifier|private
+specifier|final
 name|S3AEncryptionMethods
 name|serverSideEncryptionAlgorithm
 decl_stmt|;
 DECL|field|serverSideEncryptionKey
 specifier|private
+specifier|final
 name|String
 name|serverSideEncryptionKey
 decl_stmt|;
 DECL|method|S3ObjectAttributes ( String bucket, String key, S3AEncryptionMethods serverSideEncryptionAlgorithm, String serverSideEncryptionKey)
+specifier|public
 name|S3ObjectAttributes
 parameter_list|(
 name|String
@@ -89,6 +131,7 @@ name|serverSideEncryptionKey
 expr_stmt|;
 block|}
 DECL|method|getBucket ()
+specifier|public
 name|String
 name|getBucket
 parameter_list|()
@@ -98,6 +141,7 @@ name|bucket
 return|;
 block|}
 DECL|method|getKey ()
+specifier|public
 name|String
 name|getKey
 parameter_list|()
@@ -107,6 +151,7 @@ name|key
 return|;
 block|}
 DECL|method|getServerSideEncryptionAlgorithm ()
+specifier|public
 name|S3AEncryptionMethods
 name|getServerSideEncryptionAlgorithm
 parameter_list|()
@@ -116,6 +161,7 @@ name|serverSideEncryptionAlgorithm
 return|;
 block|}
 DECL|method|getServerSideEncryptionKey ()
+specifier|public
 name|String
 name|getServerSideEncryptionKey
 parameter_list|()
