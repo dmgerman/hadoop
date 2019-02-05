@@ -132,6 +132,26 @@ operator|=
 name|truncate
 expr_stmt|;
 block|}
+DECL|method|addAllParts (List<PartInfo> partInfos)
+specifier|public
+name|void
+name|addAllParts
+parameter_list|(
+name|List
+argument_list|<
+name|PartInfo
+argument_list|>
+name|partInfos
+parameter_list|)
+block|{
+name|partInfoList
+operator|.
+name|addAll
+argument_list|(
+name|partInfos
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|addPart (PartInfo partInfo)
 specifier|public
 name|void
