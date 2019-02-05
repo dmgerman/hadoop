@@ -4079,6 +4079,8 @@ argument_list|(
 name|ns
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|Class
 argument_list|<
 name|?
@@ -4130,6 +4132,23 @@ operator|)
 name|result
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// Localize the exception
+throw|throw
+name|processException
+argument_list|(
+name|ioe
+argument_list|,
+name|location
+argument_list|)
+throw|;
+block|}
 block|}
 name|List
 argument_list|<
