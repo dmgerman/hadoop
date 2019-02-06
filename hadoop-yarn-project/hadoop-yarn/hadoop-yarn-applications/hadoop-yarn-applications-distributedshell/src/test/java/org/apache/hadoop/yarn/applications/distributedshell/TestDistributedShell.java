@@ -1736,6 +1736,19 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_PLACEMENT_CONSTRAINTS_HANDLER
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|PROCESSOR_RM_PLACEMENT_CONSTRAINTS_HANDLER
+argument_list|)
+expr_stmt|;
 comment|// ATS version specific settings
 if|if
 condition|(
@@ -4882,7 +4895,7 @@ operator|)
 return|;
 block|}
 DECL|method|getSleepCommand (int sec)
-specifier|private
+specifier|protected
 name|String
 name|getSleepCommand
 parameter_list|(
