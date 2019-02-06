@@ -1733,7 +1733,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"createdTime start/end or limit or flowrunid"
+literal|"Either limit or createdtime start/end or metricslimit or metricstime"
+operator|+
+literal|" start/end or fromid"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2461,7 +2463,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"createdTime start/end or limit or flowrunid"
+literal|"Either flowrunid or limit or createdtime start/end or metricslimit"
+operator|+
+literal|" or metricstime start/end or fromid"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2780,7 +2784,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"flowrunid"
+literal|"Either metricslimit or metricstime"
+operator|+
+literal|" start/end"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3351,7 +3357,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"flowrunid"
+literal|"Either flowrunid or metricslimit or"
+operator|+
+literal|" metricstime start/end"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5777,7 +5785,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"flowrunid"
+literal|"Either metricslimit or metricstime"
+operator|+
+literal|" start/end"
 argument_list|)
 expr_stmt|;
 block|}
@@ -6299,7 +6309,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"flowrunid"
+literal|"Either flowrunid or metricslimit or"
+operator|+
+literal|" metricstime start/end"
 argument_list|)
 expr_stmt|;
 block|}
@@ -6775,7 +6787,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"createdTime start/end or limit or flowrunid"
+literal|"Either limit or createdtime start/end or metricslimit or"
+operator|+
+literal|" metricstime start/end"
 argument_list|)
 expr_stmt|;
 block|}
@@ -10555,7 +10569,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|"createdTime start/end or limit"
+literal|"Either limit or createdtime start/end or metricslimit or metricstime"
+operator|+
+literal|" start/end or fromid"
 argument_list|)
 expr_stmt|;
 block|}
@@ -11067,7 +11083,9 @@ name|url
 argument_list|,
 name|startTime
 argument_list|,
-literal|""
+literal|"Either metricslimit or metricstime"
+operator|+
+literal|" start/end"
 argument_list|)
 expr_stmt|;
 block|}
