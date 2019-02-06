@@ -89,6 +89,15 @@ name|FINISHED_EVENT_TYPE
 init|=
 literal|"YARN_APPLICATION_FINISHED"
 decl_stmt|;
+DECL|field|LAUNCHED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LAUNCHED_EVENT_TYPE
+init|=
+literal|"YARN_APPLICATION_LAUNCHED"
+decl_stmt|;
 DECL|field|ACLS_UPDATED_EVENT_TYPE
 specifier|public
 specifier|static

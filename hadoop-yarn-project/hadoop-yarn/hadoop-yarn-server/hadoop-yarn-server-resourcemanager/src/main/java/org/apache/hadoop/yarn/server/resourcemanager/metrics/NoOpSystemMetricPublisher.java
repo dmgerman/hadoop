@@ -297,6 +297,20 @@ name|long
 name|updatedTime
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|appLaunched (RMApp app, long launchTime)
+specifier|public
+name|void
+name|appLaunched
+parameter_list|(
+name|RMApp
+name|app
+parameter_list|,
+name|long
+name|launchTime
+parameter_list|)
+block|{   }
 block|}
 end_class
 

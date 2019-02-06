@@ -2752,7 +2752,7 @@ operator|new
 name|AppRunningOnNodeTransition
 argument_list|()
 argument_list|)
-comment|// Handle AppAttemptLaunch to upate the launchTime and publish to ATS
+comment|// Handle AppAttemptLaunch to update the launchTime and publish to ATS
 operator|.
 name|addTransition
 argument_list|(
@@ -6550,6 +6550,22 @@ name|event
 operator|.
 name|getTimestamp
 argument_list|()
+expr_stmt|;
+name|app
+operator|.
+name|rmContext
+operator|.
+name|getSystemMetricsPublisher
+argument_list|()
+operator|.
+name|appLaunched
+argument_list|(
+name|app
+argument_list|,
+name|app
+operator|.
+name|launchTime
+argument_list|)
 expr_stmt|;
 block|}
 block|}

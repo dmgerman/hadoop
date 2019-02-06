@@ -184,6 +184,26 @@ name|EventHandler
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|RMApp
+import|;
+end_import
+
 begin_comment
 comment|/**  * Abstract implementation of SystemMetricsPublisher which is then extended by  * metrics publisher implementations depending on timeline service version.  */
 end_comment
@@ -531,6 +551,20 @@ name|PUBLISH_ENTITY
 block|,
 name|PUBLISH_APPLICATION_FINISHED_ENTITY
 block|}
+annotation|@
+name|Override
+DECL|method|appLaunched (RMApp app, long launchTime)
+specifier|public
+name|void
+name|appLaunched
+parameter_list|(
+name|RMApp
+name|app
+parameter_list|,
+name|long
+name|launchTime
+parameter_list|)
+block|{   }
 comment|/**    * TimelinePublishEvent's hash code should be based on application's id this    * will ensure all the events related to a particular app goes to particular    * thread of MultiThreaded dispatcher.    */
 DECL|class|TimelinePublishEvent
 specifier|protected

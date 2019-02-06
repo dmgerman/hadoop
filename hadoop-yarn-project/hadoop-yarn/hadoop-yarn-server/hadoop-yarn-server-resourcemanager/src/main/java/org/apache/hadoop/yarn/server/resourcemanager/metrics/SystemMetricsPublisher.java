@@ -165,6 +165,17 @@ name|long
 name|createdTime
 parameter_list|)
 function_decl|;
+DECL|method|appLaunched (RMApp app, long launchTime)
+name|void
+name|appLaunched
+parameter_list|(
+name|RMApp
+name|app
+parameter_list|,
+name|long
+name|launchTime
+parameter_list|)
+function_decl|;
 DECL|method|appACLsUpdated (RMApp app, String appViewACLs, long updatedTime)
 name|void
 name|appACLsUpdated
