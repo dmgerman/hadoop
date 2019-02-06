@@ -2746,7 +2746,7 @@ name|Idempotent
 annotation|@
 name|ReadOnly
 argument_list|(
-name|isCoordinated
+name|activeOnly
 operator|=
 literal|true
 argument_list|)
