@@ -724,6 +724,15 @@ name|getUri
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// check path. throw exception if path doesn't start with WEBHDFS_PREFIX
+name|String
+name|path
+init|=
+name|getPath
+argument_list|(
+name|decoder
+argument_list|)
+decl_stmt|;
 specifier|final
 name|String
 name|op
@@ -733,17 +742,25 @@ argument_list|(
 name|decoder
 argument_list|)
 decl_stmt|;
+comment|// check null op
+if|if
+condition|(
+name|op
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Param op must be specified."
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|String
 name|content
-decl_stmt|;
-name|String
-name|path
-init|=
-name|getPath
-argument_list|(
-name|decoder
-argument_list|)
 decl_stmt|;
 switch|switch
 condition|(
