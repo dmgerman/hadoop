@@ -285,56 +285,6 @@ name|FS_AZURE_USE_UPN
 init|=
 literal|"fs.azure.use.upn"
 decl_stmt|;
-comment|/** User principal names (UPNs) have the format â{alias}@{domain}â. If true,    *  only {alias} is included when a UPN would otherwise appear in the output    *  of APIs like getFileStatus, getOwner, getAclStatus, etc. Default is false. **/
-DECL|field|FS_AZURE_FILE_OWNER_ENABLE_SHORTNAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_AZURE_FILE_OWNER_ENABLE_SHORTNAME
-init|=
-literal|"fs.azure.identity.transformer.enable.short.name"
-decl_stmt|;
-comment|/** If the domain name is specified and âfs.azure.identity.transformer.enable.short.nameâ    *  is true, then the {alias} part of a UPN can be specified as input to APIs like setOwner and    *  setAcl and it will be transformed to a UPN by appending @ and the domain specified by    *  this configuration property. **/
-DECL|field|FS_AZURE_FILE_OWNER_DOMAINNAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_AZURE_FILE_OWNER_DOMAINNAME
-init|=
-literal|"fs.azure.identity.transformer.domain.name"
-decl_stmt|;
-comment|/** An Azure Active Directory object ID (oid) used as the replacement for names contained in the    * list specified by âfs.azure.identity.transformer.service.principal.substitution.list.    * Notice that instead of setting oid, you can also set $superuser.**/
-DECL|field|FS_AZURE_OVERRIDE_OWNER_SP
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_AZURE_OVERRIDE_OWNER_SP
-init|=
-literal|"fs.azure.identity.transformer.service.principal.id"
-decl_stmt|;
-comment|/** A comma separated list of names to be replaced with the service principal ID specified by    * âfs.default.identity.transformer.service.principal.idâ. This substitution occurs    * when setOwner, setAcl, modifyAclEntries, or removeAclEntries are invoked with identities    * contained in the substitution list. Notice that when in non-secure cluster, asterisk symbol "*"    * can be used to match all user/group. **/
-DECL|field|FS_AZURE_OVERRIDE_OWNER_SP_LIST
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_AZURE_OVERRIDE_OWNER_SP_LIST
-init|=
-literal|"fs.azure.identity.transformer.service.principal.substitution.list"
-decl_stmt|;
-comment|/** By default this is set as false, so â$superuserâ is replaced with the current user when it appears as the owner    * or owning group of a file or directory. To disable it, set it as true. **/
-DECL|field|FS_AZURE_SKIP_SUPER_USER_REPLACEMENT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_AZURE_SKIP_SUPER_USER_REPLACEMENT
-init|=
-literal|"fs.azure.identity.transformer.skip.superuser.replacement"
-decl_stmt|;
 DECL|field|AZURE_KEY_ACCOUNT_KEYPROVIDER
 specifier|public
 specifier|static
