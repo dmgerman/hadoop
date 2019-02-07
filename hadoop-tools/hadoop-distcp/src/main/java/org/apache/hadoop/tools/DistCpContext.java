@@ -603,6 +603,19 @@ name|getCopyBufferSize
 argument_list|()
 return|;
 block|}
+DECL|method|shouldDirectWrite ()
+specifier|public
+name|boolean
+name|shouldDirectWrite
+parameter_list|()
+block|{
+return|return
+name|options
+operator|.
+name|shouldDirectWrite
+argument_list|()
+return|;
+block|}
 DECL|method|setTargetPathExists (boolean targetPathExists)
 specifier|public
 name|void

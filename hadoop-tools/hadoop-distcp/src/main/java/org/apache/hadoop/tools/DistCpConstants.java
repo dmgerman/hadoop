@@ -369,6 +369,15 @@ name|CONF_LABEL_SPLIT_RATIO
 init|=
 literal|"distcp.dynamic.split.ratio"
 decl_stmt|;
+DECL|field|CONF_LABEL_DIRECT_WRITE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_DIRECT_WRITE
+init|=
+literal|"distcp.direct.write"
+decl_stmt|;
 comment|/* Total bytes to be copied. Updated by copylisting. Unfiltered count */
 DECL|field|CONF_LABEL_TOTAL_BYTES_TO_BE_COPIED
 specifier|public

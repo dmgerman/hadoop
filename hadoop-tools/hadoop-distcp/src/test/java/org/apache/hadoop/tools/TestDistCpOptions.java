@@ -1621,9 +1621,11 @@ literal|"mapBandwidth=0.0, copyStrategy='uniformsize', preserveStatus=[], "
 operator|+
 literal|"atomicWorkPath=null, logPath=null, sourceFileListing=abc, "
 operator|+
-literal|"sourcePaths=null, targetPath=xyz, filtersFile='null',"
+literal|"sourcePaths=null, targetPath=xyz, filtersFile='null', "
 operator|+
-literal|" blocksPerChunk=0, copyBufferSize=8192, verboseLog=false}"
+literal|"blocksPerChunk=0, copyBufferSize=8192, verboseLog=false, "
+operator|+
+literal|"directWrite=false}"
 decl_stmt|;
 name|String
 name|optionString

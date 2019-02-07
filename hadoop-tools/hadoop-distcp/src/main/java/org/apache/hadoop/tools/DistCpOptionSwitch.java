@@ -605,6 +605,27 @@ operator|+
 literal|" strings for paths to be excluded from the copy."
 argument_list|)
 argument_list|)
+block|,
+comment|/**    * Write directly to the final location, avoiding the creation and rename    * of temporary files.    * This is typically useful in cases where the target filesystem    * implementation does not support atomic rename operations, such as with    * the S3AFileSystem which translates file renames to potentially very    * expensive copy-then-delete operations.    */
+DECL|enumConstant|DIRECT_WRITE
+name|DIRECT_WRITE
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_DIRECT_WRITE
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"direct"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Write files directly to the"
+operator|+
+literal|" target location, avoiding temporary file rename."
+argument_list|)
+argument_list|)
 block|;
 DECL|field|PRESERVE_STATUS_DEFAULT
 specifier|public

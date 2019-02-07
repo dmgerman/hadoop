@@ -452,6 +452,13 @@ specifier|final
 name|int
 name|copyBufferSize
 decl_stmt|;
+comment|/** Whether data should be written directly to the target paths. */
+DECL|field|directWrite
+specifier|private
+specifier|final
+name|boolean
+name|directWrite
+decl_stmt|;
 comment|/**    * File attributes for preserve.    *    * Each enum entry uses the first char as its symbol.    */
 DECL|enum|FileAttribute
 specifier|public
@@ -772,6 +779,14 @@ operator|=
 name|builder
 operator|.
 name|trackPath
+expr_stmt|;
+name|this
+operator|.
+name|directWrite
+operator|=
+name|builder
+operator|.
+name|directWrite
 expr_stmt|;
 block|}
 DECL|method|getSourceFileListing ()
@@ -1113,6 +1128,16 @@ parameter_list|()
 block|{
 return|return
 name|trackPath
+return|;
+block|}
+DECL|method|shouldDirectWrite ()
+specifier|public
+name|boolean
+name|shouldDirectWrite
+parameter_list|()
+block|{
+return|return
+name|directWrite
 return|;
 block|}
 comment|/**    * Add options to configuration. These will be used in the Mapper/committer    *    * @param conf - Configuration object to which the options need to be added    */
@@ -1458,6 +1483,24 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
+name|DIRECT_WRITE
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|directWrite
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Utility to easily string-ify Options, for logging.    *    * @return String representation of the Options.    */
 annotation|@
@@ -1578,6 +1621,10 @@ operator|+
 literal|", verboseLog="
 operator|+
 name|verboseLog
+operator|+
+literal|", directWrite="
+operator|+
+name|directWrite
 operator|+
 literal|'}'
 return|;
@@ -1780,6 +1827,13 @@ init|=
 name|DistCpConstants
 operator|.
 name|COPY_BUFFER_SIZE_DEFAULT
+decl_stmt|;
+DECL|field|directWrite
+specifier|private
+name|boolean
+name|directWrite
+init|=
+literal|false
 decl_stmt|;
 DECL|method|Builder (List<Path> sourcePaths, Path targetPath)
 specifier|public
@@ -2800,6 +2854,25 @@ operator|.
 name|verboseLog
 operator|=
 name|newVerboseLog
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|withDirectWrite (boolean newDirectWrite)
+specifier|public
+name|Builder
+name|withDirectWrite
+parameter_list|(
+name|boolean
+name|newDirectWrite
+parameter_list|)
+block|{
+name|this
+operator|.
+name|directWrite
+operator|=
+name|newDirectWrite
 expr_stmt|;
 return|return
 name|this
