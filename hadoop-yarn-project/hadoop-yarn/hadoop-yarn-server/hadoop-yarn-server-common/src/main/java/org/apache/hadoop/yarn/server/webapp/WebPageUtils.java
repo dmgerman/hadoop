@@ -179,12 +179,17 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [6, 7, 8]"
+literal|"\n, {'sType':'num-ignore-str', 'aTargets': [6, 7, 8]"
 argument_list|)
 operator|.
 name|append
 argument_list|(
 literal|", 'mRender': renderHadoopDate }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'num-ignore-str', 'aTargets': [11, 12, 13, 14, 15] }"
 argument_list|)
 operator|.
 name|append
