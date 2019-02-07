@@ -523,7 +523,7 @@ name|assertTrue
 argument_list|(
 name|containerSet
 operator|.
-name|getContainerMap
+name|getContainerMapCopy
 argument_list|()
 operator|.
 name|containsKey
@@ -896,7 +896,7 @@ name|assertTrue
 argument_list|(
 name|containerSet
 operator|.
-name|getContainerMap
+name|getContainerMapCopy
 argument_list|()
 operator|.
 name|containsKey

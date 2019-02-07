@@ -556,7 +556,9 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Return a copy of the containerMap.    * @return containerMap    */
-DECL|method|getContainerMap ()
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainerMapCopy ()
 specifier|public
 name|Map
 argument_list|<
@@ -564,7 +566,7 @@ name|Long
 argument_list|,
 name|Container
 argument_list|>
-name|getContainerMap
+name|getContainerMapCopy
 parameter_list|()
 block|{
 return|return

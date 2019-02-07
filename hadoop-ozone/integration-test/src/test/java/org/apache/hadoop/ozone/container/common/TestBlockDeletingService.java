@@ -1541,7 +1541,7 @@ name|containerMap
 init|=
 name|containerSet
 operator|.
-name|getContainerMap
+name|getContainerMapCopy
 argument_list|()
 decl_stmt|;
 comment|// NOTE: this test assumes that all the container is KetValueContainer and
