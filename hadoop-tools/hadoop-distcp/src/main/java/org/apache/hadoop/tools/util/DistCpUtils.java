@@ -994,6 +994,13 @@ condition|)
 block|{
 name|targetFS
 operator|.
+name|removeAcl
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|targetFS
+operator|.
 name|setAcl
 argument_list|(
 name|path
