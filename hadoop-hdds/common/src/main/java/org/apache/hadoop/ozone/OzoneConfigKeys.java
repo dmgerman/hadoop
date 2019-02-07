@@ -1391,6 +1391,17 @@ name|OZONE_ACL_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|//For technical reasons this is unused and hardcoded to the
+comment|// OzoneFileSystem.initialize.
+DECL|field|OZONE_FS_ISOLATED_CLASSLOADER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_FS_ISOLATED_CLASSLOADER
+init|=
+literal|"ozone.fs.isolated-classloader"
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

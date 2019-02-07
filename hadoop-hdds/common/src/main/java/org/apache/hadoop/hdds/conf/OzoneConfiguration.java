@@ -214,6 +214,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|//load the configuration from the classloader of the original conf.
+name|setClassLoader
+argument_list|(
+name|conf
+operator|.
+name|getClassLoader
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|readPropertyFromXml (URL url)
 specifier|public

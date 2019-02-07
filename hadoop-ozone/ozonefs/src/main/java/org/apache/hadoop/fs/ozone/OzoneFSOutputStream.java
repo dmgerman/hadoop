@@ -38,24 +38,6 @@ name|OutputStream
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|io
-operator|.
-name|KeyOutputStream
-import|;
-end_import
-
 begin_comment
 comment|/**  * The output stream for Ozone file system.  *  * TODO: Make outputStream generic for both rest and rpc clients  * This class is not thread safe.  */
 end_comment
@@ -71,7 +53,7 @@ block|{
 DECL|field|outputStream
 specifier|private
 specifier|final
-name|KeyOutputStream
+name|OutputStream
 name|outputStream
 decl_stmt|;
 DECL|method|OzoneFSOutputStream (OutputStream outputStream)
@@ -86,9 +68,6 @@ name|this
 operator|.
 name|outputStream
 operator|=
-operator|(
-name|KeyOutputStream
-operator|)
 name|outputStream
 expr_stmt|;
 block|}
