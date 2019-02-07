@@ -1075,11 +1075,71 @@ condition|)
 block|{
 comment|// If container does not exist, create one for WriteChunk and
 comment|// PutSmallFile request
+name|responseProto
+operator|=
 name|createContainer
 argument_list|(
 name|msg
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|responseProto
+operator|.
+name|getResult
+argument_list|()
+operator|!=
+name|Result
+operator|.
+name|SUCCESS
+condition|)
+block|{
+name|StorageContainerException
+name|sce
+init|=
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"ContainerID "
+operator|+
+name|containerID
+operator|+
+literal|" creation failed"
+argument_list|,
+name|responseProto
+operator|.
+name|getResult
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|audit
+argument_list|(
+name|action
+argument_list|,
+name|eventType
+argument_list|,
+name|params
+argument_list|,
+name|AuditEventStatus
+operator|.
+name|FAILURE
+argument_list|,
+name|sce
+argument_list|)
+expr_stmt|;
+return|return
+name|ContainerUtils
+operator|.
+name|logAndReturnError
+argument_list|(
+name|LOG
+argument_list|,
+name|sce
+argument_list|,
+name|msg
+argument_list|)
+return|;
+block|}
 name|container
 operator|=
 name|getContainer
@@ -1494,10 +1554,11 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Create a container using the input container request.    * @param containerRequest - the container request which requires container    *                         to be created.    */
-DECL|method|createContainer (ContainerCommandRequestProto containerRequest)
-specifier|private
-name|void
+comment|/**    * Create a container using the input container request.    * @param containerRequest - the container request which requires container    *                         to be created.    * @return ContainerCommandResponseProto container command response.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|createContainer ( ContainerCommandRequestProto containerRequest)
+name|ContainerCommandResponseProto
 name|createContainer
 parameter_list|(
 name|ContainerCommandRequestProto
@@ -1603,6 +1664,7 @@ argument_list|(
 name|containerType
 argument_list|)
 decl_stmt|;
+return|return
 name|handler
 operator|.
 name|handle
@@ -1616,7 +1678,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * This will be called as a part of creating the log entry during    * startTransaction in Ratis on the leader node. In such cases, if the    * container is not in open state for writing we should just fail.    * Leader will propagate the exception to client.    * @param msg  container command proto    * @throws StorageContainerException In case container state is open for write    *         requests and in invalid state for read requests.    */
 annotation|@
