@@ -1430,6 +1430,40 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the account-specific value if it exists, then looks for an    * account-agnostic value.    * @param key Account-agnostic configuration key    * @return value if one exists, else the default value    */
+DECL|method|getString (String key, String defaultValue)
+specifier|public
+name|String
+name|getString
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|defaultValue
+parameter_list|)
+block|{
+return|return
+name|rawConfig
+operator|.
+name|get
+argument_list|(
+name|accountConf
+argument_list|(
+name|key
+argument_list|)
+argument_list|,
+name|rawConfig
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|,
+name|defaultValue
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns the account-specific value if it exists, then looks for an    * account-agnostic value, and finally tries the default value.    * @param key Account-agnostic configuration key    * @param defaultValue Value returned if none is configured    * @return value if one exists, else the default value    */
 DECL|method|getBoolean (String key, boolean defaultValue)
 specifier|public
