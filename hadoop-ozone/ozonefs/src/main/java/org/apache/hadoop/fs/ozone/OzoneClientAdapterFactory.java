@@ -129,7 +129,7 @@ specifier|private
 name|OzoneClientAdapterFactory
 parameter_list|()
 block|{   }
-DECL|method|createAdapter ( String volumeStr, String bucketStr)
+DECL|method|createAdapter ( String volumeStr, String bucketStr, OzoneFSStorageStatistics storageStatistics)
 specifier|public
 specifier|static
 name|OzoneClientAdapter
@@ -140,6 +140,9 @@ name|volumeStr
 parameter_list|,
 name|String
 name|bucketStr
+parameter_list|,
+name|OzoneFSStorageStatistics
+name|storageStatistics
 parameter_list|)
 throws|throws
 name|IOException
@@ -279,6 +282,10 @@ argument_list|,
 name|String
 operator|.
 name|class
+argument_list|,
+name|OzoneFSStorageStatistics
+operator|.
+name|class
 argument_list|)
 operator|.
 name|newInstance
@@ -286,6 +293,8 @@ argument_list|(
 name|volumeStr
 argument_list|,
 name|bucketStr
+argument_list|,
+name|storageStatistics
 argument_list|)
 decl_stmt|;
 name|Thread
