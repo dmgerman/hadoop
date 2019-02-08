@@ -342,6 +342,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -2396,6 +2410,33 @@ name|getEndTxId
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|SecurityUtil
+operator|.
+name|doAsLoginUser
+argument_list|(
+parameter_list|()
+lambda|->
+block|{
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|checkTGTAndReloginFromKeytab
+argument_list|()
+expr_stmt|;
+block|}
 try|try
 block|{
 name|Util
@@ -2436,6 +2477,8 @@ operator|+
 literal|"file: "
 operator|+
 name|tmpEditsFile
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 if|if
@@ -2463,6 +2506,23 @@ return|return
 literal|false
 return|;
 block|}
+return|return
+literal|true
+return|;
+block|}
+block|)
+end_class
+
+begin_block
+unit|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+end_block
+
+begin_expr_stmt
 name|LOG
 operator|.
 name|info
@@ -2484,11 +2544,17 @@ operator|+
 literal|" bytes."
 argument_list|)
 expr_stmt|;
+end_expr_stmt
+
+begin_decl_stmt
 name|boolean
 name|moveSuccess
 init|=
 literal|false
 decl_stmt|;
+end_decl_stmt
+
+begin_try
 try|try
 block|{
 name|moveSuccess
@@ -2553,6 +2619,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_try
+
+begin_if
 if|if
 condition|(
 name|moveSuccess
@@ -2573,9 +2642,11 @@ return|return
 literal|false
 return|;
 block|}
-block|}
+end_if
+
+begin_function
+unit|}    private
 DECL|method|getThrottler (Configuration conf)
-specifier|private
 specifier|static
 name|DataTransferThrottler
 name|getThrottler
@@ -2625,6 +2696,9 @@ return|return
 name|throttler
 return|;
 block|}
+end_function
+
+begin_class
 DECL|class|JournalNodeProxy
 specifier|private
 class|class
@@ -2764,8 +2838,8 @@ argument_list|()
 return|;
 block|}
 block|}
-block|}
 end_class
 
+unit|}
 end_unit
 
