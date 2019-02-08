@@ -35,8 +35,6 @@ operator|.
 name|proto
 operator|.
 name|HddsProtos
-operator|.
-name|LifeCycleState
 import|;
 end_import
 
@@ -50,51 +48,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|proto
+name|pipeline
 operator|.
-name|HddsProtos
-operator|.
-name|ReplicationFactor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
-operator|.
-name|ReplicationType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HddsProtos
+name|Pipeline
 import|;
 end_import
 
@@ -327,8 +285,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the ContainerInfo.    * @return NodeManager    */
-DECL|method|getMatchingContainer (long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
+comment|/**    * Returns ContainerInfo which matches the requirements.    * @param size - the amount of space required in the container    * @param owner - the user which requires space in its owned container    * @param pipeline - pipeline to which the container should belong    * @return ContainerInfo for the matching container.    */
+DECL|method|getMatchingContainer (long size, String owner, Pipeline pipeline)
 name|ContainerInfo
 name|getMatchingContainer
 parameter_list|(
@@ -338,17 +296,9 @@ parameter_list|,
 name|String
 name|owner
 parameter_list|,
-name|ReplicationType
-name|type
-parameter_list|,
-name|ReplicationFactor
-name|factor
-parameter_list|,
-name|LifeCycleState
-name|state
+name|Pipeline
+name|pipeline
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 block|}
 end_interface

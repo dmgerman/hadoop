@@ -823,6 +823,19 @@ operator|.
 name|DEAD_NODE
 argument_list|)
 expr_stmt|;
+name|state2EventMap
+operator|.
+name|put
+argument_list|(
+name|NodeState
+operator|.
+name|HEALTHY
+argument_list|,
+name|SCMEvents
+operator|.
+name|NON_HEALTHY_TO_HEALTHY_NODE
+argument_list|)
+expr_stmt|;
 block|}
 comment|/*    *    * Node and State Transition Mapping:    *    * State: HEALTHY         -------------------> STALE    * Event:                       TIMEOUT    *    * State: STALE           -------------------> DEAD    * Event:                       TIMEOUT    *    * State: STALE           -------------------> HEALTHY    * Event:                       RESTORE    *    * State: DEAD            -------------------> HEALTHY    * Event:                       RESURRECT    *    * State: HEALTHY         -------------------> DECOMMISSIONING    * Event:                     DECOMMISSION    *    * State: STALE           -------------------> DECOMMISSIONING    * Event:                     DECOMMISSION    *    * State: DEAD            -------------------> DECOMMISSIONING    * Event:                     DECOMMISSION    *    * State: DECOMMISSIONING -------------------> DECOMMISSIONED    * Event:                     DECOMMISSIONED    *    *  Node State Flow    *    *  +--------------------------------------------------------+    *  |                                     (RESURRECT)        |    *  |   +--------------------------+                         |    *  |   |      (RESTORE)           |                         |    *  |   |                          |                         |    *  V   V                          |                         |    * [HEALTHY]------------------->[STALE]------------------->[DEAD]    *    |         (TIMEOUT)          |         (TIMEOUT)       |    *    |                            |                         |    *    |                            |                         |    *    |                            |                         |    *    |                            |                         |    *    | (DECOMMISSION)             | (DECOMMISSION)          | (DECOMMISSION)    *    |                            V                         |    *    +------------------->[DECOMMISSIONING]<----------------+    *                                 |    *                                 | (DECOMMISSIONED)    *                                 |    *                                 V    *                          [DECOMMISSIONED]    *    */
 comment|/**    * Initializes the lifecycle of node state machine.    */

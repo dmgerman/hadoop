@@ -44,6 +44,22 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|protocol
 operator|.
 name|DatanodeDetails
@@ -123,14 +139,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Handles New Node event.  */
+comment|/**  * Handles Stale node event.  */
 end_comment
 
 begin_class
-DECL|class|NewNodeHandler
+DECL|class|NonHealthyToHealthyNodeHandler
 specifier|public
 class|class
-name|NewNodeHandler
+name|NonHealthyToHealthyNodeHandler
 implements|implements
 name|EventHandler
 argument_list|<
@@ -149,14 +165,14 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|NewNodeHandler (PipelineManager pipelineManager, Configuration conf)
+DECL|method|NonHealthyToHealthyNodeHandler ( PipelineManager pipelineManager, OzoneConfiguration conf)
 specifier|public
-name|NewNodeHandler
+name|NonHealthyToHealthyNodeHandler
 parameter_list|(
 name|PipelineManager
 name|pipelineManager
 parameter_list|,
-name|Configuration
+name|OzoneConfiguration
 name|conf
 parameter_list|)
 block|{

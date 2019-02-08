@@ -862,7 +862,7 @@ block|{
 comment|// Assert that the pipeline has been removed from Node2PipelineMap as well
 name|Assert
 operator|.
-name|assertEquals
+name|assertFalse
 argument_list|(
 name|scm
 operator|.
@@ -874,10 +874,16 @@ argument_list|(
 name|dn
 argument_list|)
 operator|.
-name|size
+name|contains
+argument_list|(
+name|ratisContainer
+operator|.
+name|getPipeline
 argument_list|()
-argument_list|,
-literal|0
+operator|.
+name|getId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -172,6 +172,24 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|pipeline
+operator|.
+name|RatisPipelineUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|server
 operator|.
 name|SCMDatanodeProtocolServer
@@ -356,6 +374,12 @@ specifier|final
 name|EventQueue
 name|eventPublisher
 decl_stmt|;
+DECL|field|pipelineManager
+specifier|private
+specifier|final
+name|PipelineManager
+name|pipelineManager
+decl_stmt|;
 DECL|method|SCMChillModeManager (Configuration conf, List<ContainerInfo> allContainers, PipelineManager pipelineManager, EventQueue eventQueue)
 specifier|public
 name|SCMChillModeManager
@@ -381,6 +405,12 @@ operator|.
 name|config
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|pipelineManager
+operator|=
+name|pipelineManager
 expr_stmt|;
 name|this
 operator|.
@@ -612,6 +642,17 @@ expr_stmt|;
 block|}
 name|emitChillModeStatus
 argument_list|()
+expr_stmt|;
+comment|// TODO: #CLUTIL if we reenter chill mode the fixed interval pipeline
+comment|// creation job needs to stop
+name|RatisPipelineUtils
+operator|.
+name|scheduleFixedIntervalPipelineCreator
+argument_list|(
+name|pipelineManager
+argument_list|,
+name|config
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

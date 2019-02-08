@@ -516,7 +516,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE
+name|OZONE_SCM_PIPELINE_OWNER_CONTAINER_COUNT
 argument_list|,
 literal|"1"
 argument_list|)
@@ -532,7 +532,7 @@ argument_list|)
 operator|.
 name|setNumDatanodes
 argument_list|(
-literal|9
+literal|10
 argument_list|)
 operator|.
 name|build

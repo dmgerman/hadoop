@@ -509,7 +509,7 @@ name|setInt
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE
+name|OZONE_SCM_PIPELINE_OWNER_CONTAINER_COUNT
 argument_list|,
 literal|5
 argument_list|)

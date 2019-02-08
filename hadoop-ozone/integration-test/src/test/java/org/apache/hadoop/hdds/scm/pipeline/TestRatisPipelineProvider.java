@@ -538,8 +538,6 @@ specifier|public
 name|void
 name|testCreatePipelineWithNodes
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|HddsProtos
 operator|.

@@ -301,7 +301,7 @@ argument_list|)
 operator|.
 name|setNumDatanodes
 argument_list|(
-literal|6
+literal|7
 argument_list|)
 operator|.
 name|setHbInterval

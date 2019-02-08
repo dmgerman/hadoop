@@ -332,6 +332,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|NavigableSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -1247,9 +1257,9 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getContainersInPipeline (PipelineID pipelineID)
+DECL|method|getContainersInPipeline ( PipelineID pipelineID)
 specifier|public
-name|Set
+name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>

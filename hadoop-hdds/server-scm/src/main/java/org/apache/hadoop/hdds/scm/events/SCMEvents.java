@@ -726,6 +726,28 @@ argument_list|,
 literal|"Dead_Node"
 argument_list|)
 decl_stmt|;
+comment|/**    * This event will be triggered whenever a datanode is moved from non-healthy    * state to healthy state.    */
+DECL|field|NON_HEALTHY_TO_HEALTHY_NODE
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|NON_HEALTHY_TO_HEALTHY_NODE
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|DatanodeDetails
+operator|.
+name|class
+argument_list|,
+literal|"NON_HEALTHY_TO_HEALTHY_NODE"
+argument_list|)
+decl_stmt|;
 comment|/**    * This event will be triggered by CommandStatusReportHandler whenever a    * status for Replication SCMCommand is received.    */
 DECL|field|REPLICATION_STATUS
 specifier|public

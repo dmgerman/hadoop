@@ -130,7 +130,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|NavigableSet
 import|;
 end_import
 
@@ -265,7 +265,7 @@ throws|throws
 name|IOException
 function_decl|;
 DECL|method|getContainersInPipeline (PipelineID pipelineID)
-name|Set
+name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>

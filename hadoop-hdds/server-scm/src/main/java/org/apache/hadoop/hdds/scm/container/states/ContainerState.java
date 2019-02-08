@@ -64,11 +64,11 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|proto
+name|pipeline
 operator|.
-name|HddsProtos
+name|PipelineID
 import|;
 end_import
 
@@ -82,52 +82,35 @@ specifier|public
 class|class
 name|ContainerState
 block|{
-DECL|field|type
-specifier|private
-specifier|final
-name|HddsProtos
-operator|.
-name|ReplicationType
-name|type
-decl_stmt|;
 DECL|field|owner
 specifier|private
 specifier|final
 name|String
 name|owner
 decl_stmt|;
-DECL|field|replicationFactor
+DECL|field|pipelineID
 specifier|private
 specifier|final
-name|HddsProtos
-operator|.
-name|ReplicationFactor
-name|replicationFactor
+name|PipelineID
+name|pipelineID
 decl_stmt|;
-comment|/**    * Constructs a Container Key.    *    * @param owner - Container Owners    * @param type - Replication Type.    * @param factor - Replication Factors    */
-DECL|method|ContainerState (String owner, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor)
+comment|/**    * Constructs a Container Key.    *    * @param owner - Container Owners    * @param pipelineID - ID of the pipeline    */
+DECL|method|ContainerState (String owner, PipelineID pipelineID)
 specifier|public
 name|ContainerState
 parameter_list|(
 name|String
 name|owner
 parameter_list|,
-name|HddsProtos
-operator|.
-name|ReplicationType
-name|type
-parameter_list|,
-name|HddsProtos
-operator|.
-name|ReplicationFactor
-name|factor
+name|PipelineID
+name|pipelineID
 parameter_list|)
 block|{
 name|this
 operator|.
-name|type
+name|pipelineID
 operator|=
-name|type
+name|pipelineID
 expr_stmt|;
 name|this
 operator|.
@@ -135,24 +118,6 @@ name|owner
 operator|=
 name|owner
 expr_stmt|;
-name|this
-operator|.
-name|replicationFactor
-operator|=
-name|factor
-expr_stmt|;
-block|}
-DECL|method|getType ()
-specifier|public
-name|HddsProtos
-operator|.
-name|ReplicationType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|type
-return|;
 block|}
 DECL|method|getOwner ()
 specifier|public
@@ -162,18 +127,6 @@ parameter_list|()
 block|{
 return|return
 name|owner
-return|;
-block|}
-DECL|method|getFactor ()
-specifier|public
-name|HddsProtos
-operator|.
-name|ReplicationFactor
-name|getFactor
-parameter_list|()
-block|{
-return|return
-name|replicationFactor
 return|;
 block|}
 annotation|@
@@ -232,15 +185,6 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-name|type
-argument_list|,
-name|that
-operator|.
-name|type
-argument_list|)
-operator|.
-name|append
-argument_list|(
 name|owner
 argument_list|,
 name|that
@@ -250,11 +194,11 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|replicationFactor
+name|pipelineID
 argument_list|,
 name|that
 operator|.
-name|replicationFactor
+name|pipelineID
 argument_list|)
 operator|.
 name|isEquals
@@ -280,17 +224,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|type
-argument_list|)
-operator|.
-name|append
-argument_list|(
 name|owner
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|replicationFactor
+name|pipelineID
 argument_list|)
 operator|.
 name|toHashCode
@@ -308,17 +247,13 @@ block|{
 return|return
 literal|"ContainerKey{"
 operator|+
-literal|", type="
-operator|+
-name|type
-operator|+
 literal|", owner="
 operator|+
 name|owner
 operator|+
-literal|", replicationFactor="
+literal|", pipelineID="
 operator|+
-name|replicationFactor
+name|pipelineID
 operator|+
 literal|'}'
 return|;

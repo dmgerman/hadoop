@@ -766,7 +766,7 @@ name|setInt
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE
+name|OZONE_SCM_PIPELINE_OWNER_CONTAINER_COUNT
 argument_list|,
 literal|2
 argument_list|)
@@ -1002,7 +1002,7 @@ argument_list|)
 expr_stmt|;
 comment|// blockManager.allocateBlock() will create containers if there is none
 comment|// stored in levelDB. The number of containers to create is the value of
-comment|// OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE which we set to 2.
+comment|// OZONE_SCM_PIPELINE_OWNER_CONTAINER_COUNT which we set to 2.
 comment|// so the first allocateBlock() will create two containers. A random one
 comment|// is assigned for the block.
 comment|// loop until both the two datanodes are up, try up to about 4 seconds.

@@ -207,7 +207,7 @@ name|Map
 argument_list|<
 name|PipelineID
 argument_list|,
-name|Set
+name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
@@ -831,7 +831,7 @@ return|;
 block|}
 comment|/**    * Get set of containerIDs corresponding to a pipeline.    *    * @param pipelineID - PipelineID    * @return Set of containerIDs belonging to the pipeline    * @throws IOException if pipeline is not found    */
 DECL|method|getContainers (PipelineID pipelineID)
-name|Set
+name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
@@ -852,7 +852,7 @@ argument_list|,
 literal|"Pipeline Id cannot be null"
 argument_list|)
 expr_stmt|;
-name|Set
+name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
@@ -889,7 +889,7 @@ throw|;
 block|}
 return|return
 operator|new
-name|HashSet
+name|TreeSet
 argument_list|<>
 argument_list|(
 name|containerIDs
