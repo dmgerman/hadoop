@@ -372,11 +372,10 @@ name|getStats
 parameter_list|()
 function_decl|;
 comment|/**    * Return a map of node stats.    * @return a map of individual node stats (live/stale but not dead).    */
-comment|// TODO: try to change the return type to Map<DatanodeDetails, SCMNodeStat>
 DECL|method|getNodeStats ()
 name|Map
 argument_list|<
-name|UUID
+name|DatanodeDetails
 argument_list|,
 name|SCMNodeStat
 argument_list|>
@@ -474,25 +473,16 @@ name|SCMCommand
 name|command
 parameter_list|)
 function_decl|;
-comment|/**    * Process node report.    *    * @param dnUuid    * @param nodeReport    */
-DECL|method|processNodeReport (DatanodeDetails dnUuid, NodeReportProto nodeReport)
+comment|/**    * Process node report.    *    * @param datanodeDetails    * @param nodeReport    */
+DECL|method|processNodeReport (DatanodeDetails datanodeDetails, NodeReportProto nodeReport)
 name|void
 name|processNodeReport
 parameter_list|(
 name|DatanodeDetails
-name|dnUuid
+name|datanodeDetails
 parameter_list|,
 name|NodeReportProto
 name|nodeReport
-parameter_list|)
-function_decl|;
-comment|/**    * Process a dead node event in this Node Manager.    *    * @param dnUuid datanode uuid.    */
-DECL|method|processDeadNode (UUID dnUuid)
-name|void
-name|processDeadNode
-parameter_list|(
-name|UUID
-name|dnUuid
 parameter_list|)
 function_decl|;
 comment|/**    * Get list of SCMCommands in the Command Queue for a particular Datanode.    * @param dnID - Datanode uuid.    * @return list of commands    */

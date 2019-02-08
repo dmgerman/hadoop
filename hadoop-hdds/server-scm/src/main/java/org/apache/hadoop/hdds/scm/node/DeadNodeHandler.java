@@ -367,16 +367,6 @@ name|EventPublisher
 name|publisher
 parameter_list|)
 block|{
-name|nodeManager
-operator|.
-name|processDeadNode
-argument_list|(
-name|datanodeDetails
-operator|.
-name|getUuid
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// TODO: check if there are any pipeline on this node and fire close
 comment|// pipeline event
 name|Set

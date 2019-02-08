@@ -88,28 +88,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|placement
-operator|.
-name|metrics
-operator|.
-name|SCMNodeStat
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|node
 operator|.
 name|DatanodeInfo
@@ -203,18 +181,6 @@ argument_list|>
 argument_list|>
 name|stateMap
 decl_stmt|;
-comment|/**    * Represents the current stats of node.    */
-DECL|field|nodeStats
-specifier|private
-specifier|final
-name|ConcurrentHashMap
-argument_list|<
-name|UUID
-argument_list|,
-name|SCMNodeStat
-argument_list|>
-name|nodeStats
-decl_stmt|;
 comment|/**    * Node to set of containers on the node.    */
 DECL|field|nodeToContainer
 specifier|private
@@ -256,13 +222,6 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 name|stateMap
-operator|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<>
-argument_list|()
-expr_stmt|;
-name|nodeStats
 operator|=
 operator|new
 name|ConcurrentHashMap
@@ -376,17 +335,6 @@ name|DatanodeInfo
 argument_list|(
 name|datanodeDetails
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|nodeStats
-operator|.
-name|put
-argument_list|(
-name|id
-argument_list|,
-operator|new
-name|SCMNodeStat
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|nodeToContainer
@@ -510,25 +458,6 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Returns DatanodeDetails for the given node id.    *    * @param uuid Node Id    *    * @return DatanodeDetails of the node    *    * @throws NodeNotFoundException if the node is not present    */
-DECL|method|getNodeDetails (UUID uuid)
-specifier|public
-name|DatanodeDetails
-name|getNodeDetails
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-return|return
-name|getNodeInfo
-argument_list|(
-name|uuid
-argument_list|)
-return|;
 block|}
 comment|/**    * Returns DatanodeInfo for the given node id.    *    * @param uuid Node Id    *    * @return DatanodeInfo of the node    *    * @throws NodeNotFoundException if the node is not present    */
 DECL|method|getNodeInfo (UUID uuid)
@@ -851,93 +780,6 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Returns the current stats of the node.    *    * @param uuid node id    *    * @return SCMNodeStat of the specify node.    *    * @throws NodeNotFoundException if the node is not found    */
-DECL|method|getNodeStat (UUID uuid)
-specifier|public
-name|SCMNodeStat
-name|getNodeStat
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-name|SCMNodeStat
-name|stat
-init|=
-name|nodeStats
-operator|.
-name|get
-argument_list|(
-name|uuid
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|stat
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|NodeNotFoundException
-argument_list|(
-literal|"Node UUID: "
-operator|+
-name|uuid
-argument_list|)
-throw|;
-block|}
-return|return
-name|stat
-return|;
-block|}
-comment|/**    * Returns a unmodifiable copy of nodeStats.    *    * @return map with node stats.    */
-DECL|method|getNodeStats ()
-specifier|public
-name|Map
-argument_list|<
-name|UUID
-argument_list|,
-name|SCMNodeStat
-argument_list|>
-name|getNodeStats
-parameter_list|()
-block|{
-return|return
-name|Collections
-operator|.
-name|unmodifiableMap
-argument_list|(
-name|nodeStats
-argument_list|)
-return|;
-block|}
-comment|/**    * Set the current stats of the node.    *    * @param uuid node id    *    * @param newstat stat that will set to the specify node.    */
-DECL|method|setNodeStat (UUID uuid, SCMNodeStat newstat)
-specifier|public
-name|void
-name|setNodeStat
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|SCMNodeStat
-name|newstat
-parameter_list|)
-block|{
-name|nodeStats
-operator|.
-name|put
-argument_list|(
-name|uuid
-argument_list|,
-name|newstat
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|setContainers (UUID uuid, Set<ContainerID> containers)
 specifier|public

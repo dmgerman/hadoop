@@ -182,28 +182,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|placement
-operator|.
-name|metrics
-operator|.
-name|SCMNodeStat
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|events
 operator|.
 name|SCMEvents
@@ -1060,27 +1038,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get information about the node.    *    * @param datanodeUUID datanode UUID    *    * @return DatanodeInfo    *    * @throws NodeNotFoundException if the node is not present    */
-DECL|method|getNode (UUID datanodeUUID)
-specifier|public
-name|DatanodeInfo
-name|getNode
-parameter_list|(
-name|UUID
-name|datanodeUUID
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-return|return
-name|nodeStateMap
-operator|.
-name|getNodeInfo
-argument_list|(
-name|datanodeUUID
-argument_list|)
-return|;
-block|}
 comment|/**    * Updates the last heartbeat time of the node.    *    * @throws NodeNotFoundException if the node is not present    */
 DECL|method|updateLastHeartbeatTime (DatanodeDetails datanodeDetails)
 specifier|public
@@ -1136,7 +1093,7 @@ DECL|method|getHealthyNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|getHealthyNodes
 parameter_list|()
@@ -1155,7 +1112,7 @@ DECL|method|getStaleNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|getStaleNodes
 parameter_list|()
@@ -1174,7 +1131,7 @@ DECL|method|getDeadNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|getDeadNodes
 parameter_list|()
@@ -1193,7 +1150,7 @@ DECL|method|getNodes (NodeState state)
 specifier|public
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|getNodes
 parameter_list|(
@@ -1203,7 +1160,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|nodes
 init|=
@@ -1232,7 +1189,7 @@ name|add
 argument_list|(
 name|nodeStateMap
 operator|.
-name|getNodeDetails
+name|getNodeInfo
 argument_list|(
 name|uuid
 argument_list|)
@@ -1270,14 +1227,14 @@ DECL|method|getAllNodes ()
 specifier|public
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|getAllNodes
 parameter_list|()
 block|{
 name|List
 argument_list|<
-name|DatanodeDetails
+name|DatanodeInfo
 argument_list|>
 name|nodes
 init|=
@@ -1304,7 +1261,7 @@ name|add
 argument_list|(
 name|nodeStateMap
 operator|.
-name|getNodeDetails
+name|getNodeInfo
 argument_list|(
 name|uuid
 argument_list|)
@@ -1439,69 +1396,6 @@ operator|.
 name|getTotalNodeCount
 argument_list|()
 return|;
-block|}
-comment|/**    * Returns the current stats of the node.    *    * @param uuid node id    *    * @return SCMNodeStat    *    * @throws NodeNotFoundException if the node is not present    */
-DECL|method|getNodeStat (UUID uuid)
-specifier|public
-name|SCMNodeStat
-name|getNodeStat
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|)
-throws|throws
-name|NodeNotFoundException
-block|{
-return|return
-name|nodeStateMap
-operator|.
-name|getNodeStat
-argument_list|(
-name|uuid
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns a unmodifiable copy of nodeStats.    * @return map with node stats.    */
-DECL|method|getNodeStatsMap ()
-specifier|public
-name|Map
-argument_list|<
-name|UUID
-argument_list|,
-name|SCMNodeStat
-argument_list|>
-name|getNodeStatsMap
-parameter_list|()
-block|{
-return|return
-name|nodeStateMap
-operator|.
-name|getNodeStats
-argument_list|()
-return|;
-block|}
-comment|/**    * Set the stat for the node.    *    * @param uuid node id.    *    * @param newstat new stat that will set to the specify node.    */
-DECL|method|setNodeStat (UUID uuid, SCMNodeStat newstat)
-specifier|public
-name|void
-name|setNodeStat
-parameter_list|(
-name|UUID
-name|uuid
-parameter_list|,
-name|SCMNodeStat
-name|newstat
-parameter_list|)
-block|{
-name|nodeStateMap
-operator|.
-name|setNodeStat
-argument_list|(
-name|uuid
-argument_list|,
-name|newstat
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Removes a pipeline from the node2PipelineMap.    * @param pipeline - Pipeline to be removed    */
 DECL|method|removePipeline (Pipeline pipeline)
