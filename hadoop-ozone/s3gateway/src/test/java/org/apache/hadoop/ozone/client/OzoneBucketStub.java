@@ -967,9 +967,13 @@ name|multipartUploadID
 operator|==
 literal|null
 operator|||
+operator|!
 name|multipartUploadID
-operator|!=
+operator|.
+name|equals
+argument_list|(
 name|uploadID
+argument_list|)
 condition|)
 block|{
 throw|throw
