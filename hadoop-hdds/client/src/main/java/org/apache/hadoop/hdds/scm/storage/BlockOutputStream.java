@@ -66,7 +66,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 import|;
 end_import
 
@@ -1797,7 +1797,7 @@ name|flushFuture
 decl_stmt|;
 try|try
 block|{
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 name|asyncReply
 init|=
 name|putBlockAsync
@@ -2795,7 +2795,7 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 name|asyncReply
 init|=
 name|writeChunkAsync

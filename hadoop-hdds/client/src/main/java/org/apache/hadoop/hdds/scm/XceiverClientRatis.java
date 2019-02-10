@@ -1466,9 +1466,9 @@ literal|" to all the nodes. Server "
 operator|+
 name|address
 operator|+
-literal|" has failed"
+literal|" has failed."
 operator|+
-literal|"Committed by majority."
+literal|" Committed by majority."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1487,18 +1487,18 @@ annotation|@
 name|Override
 DECL|method|sendCommandAsync ( ContainerCommandRequestProto request)
 specifier|public
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 name|sendCommandAsync
 parameter_list|(
 name|ContainerCommandRequestProto
 name|request
 parameter_list|)
 block|{
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 name|asyncReply
 init|=
 operator|new
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 argument_list|(
 literal|null
 argument_list|)
@@ -1641,6 +1641,21 @@ name|reply
 operator|.
 name|getLogIndex
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|asyncReply
+operator|.
+name|setDatanode
+argument_list|(
+name|RatisHelper
+operator|.
+name|toDatanodeId
+argument_list|(
+name|reply
+operator|.
+name|getReplierId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

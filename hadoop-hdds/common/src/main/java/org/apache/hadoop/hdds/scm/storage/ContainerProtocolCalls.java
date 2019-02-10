@@ -32,7 +32,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 import|;
 end_import
 
@@ -552,28 +552,6 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
-name|ReadChunkResponseProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
-name|datanode
-operator|.
-name|proto
-operator|.
-name|ContainerProtos
-operator|.
 name|ReadContainerRequestProto
 import|;
 end_import
@@ -711,6 +689,26 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
 import|;
 end_import
 
@@ -1203,7 +1201,7 @@ comment|/**    * Calls the container protocol to put a container block.    *    
 DECL|method|putBlockAsync ( XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
 specifier|public
 specifier|static
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 name|putBlockAsync
 parameter_list|(
 name|XceiverClientSpi
@@ -1331,13 +1329,6 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|xceiverClient
-operator|.
-name|sendCommand
-argument_list|(
-name|request
-argument_list|)
-expr_stmt|;
 return|return
 name|xceiverClient
 operator|.
@@ -1347,11 +1338,11 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param blockID ID of the block    * @param traceID container protocol call args    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|readChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, String traceID)
+comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param blockID ID of the block    * @param traceID container protocol call args    * @param excludeDns datamode to exclude while executing the command    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|readChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, String traceID, List<UUID> excludeDns)
 specifier|public
 specifier|static
-name|ReadChunkResponseProto
+name|XceiverClientReply
 name|readChunk
 parameter_list|(
 name|XceiverClientSpi
@@ -1365,6 +1356,12 @@ name|blockID
 parameter_list|,
 name|String
 name|traceID
+parameter_list|,
+name|List
+argument_list|<
+name|UUID
+argument_list|>
+name|excludeDns
 parameter_list|)
 throws|throws
 name|IOException
@@ -1487,26 +1484,20 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|ContainerCommandResponseProto
-name|response
+name|XceiverClientReply
+name|reply
 init|=
 name|xceiverClient
 operator|.
 name|sendCommand
 argument_list|(
 name|request
+argument_list|,
+name|excludeDns
 argument_list|)
 decl_stmt|;
-name|validateContainerResponse
-argument_list|(
-name|response
-argument_list|)
-expr_stmt|;
 return|return
-name|response
-operator|.
-name|getReadChunk
-argument_list|()
+name|reply
 return|;
 block|}
 comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an error while performing the call    */
@@ -1677,7 +1668,7 @@ comment|/**    * Calls the container protocol to write a chunk.    *    * @param
 DECL|method|writeChunkAsync ( XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, ByteString data, String traceID)
 specifier|public
 specifier|static
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 name|writeChunkAsync
 parameter_list|(
 name|XceiverClientSpi

@@ -46,6 +46,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|CompletableFuture
@@ -57,10 +67,10 @@ comment|/**  * This class represents the Async reply from XceiverClient.  */
 end_comment
 
 begin_class
-DECL|class|XceiverClientAsyncReply
+DECL|class|XceiverClientReply
 specifier|public
 class|class
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 block|{
 DECL|field|response
 specifier|private
@@ -75,15 +85,42 @@ specifier|private
 name|Long
 name|logIndex
 decl_stmt|;
-DECL|method|XceiverClientAsyncReply ( CompletableFuture<ContainerCommandResponseProto> response)
+DECL|field|dnId
+specifier|private
+name|UUID
+name|dnId
+decl_stmt|;
+DECL|method|XceiverClientReply ( CompletableFuture<ContainerCommandResponseProto> response)
 specifier|public
-name|XceiverClientAsyncReply
+name|XceiverClientReply
 parameter_list|(
 name|CompletableFuture
 argument_list|<
 name|ContainerCommandResponseProto
 argument_list|>
 name|response
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|response
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|XceiverClientReply ( CompletableFuture<ContainerCommandResponseProto> response, UUID dnId)
+specifier|public
+name|XceiverClientReply
+parameter_list|(
+name|CompletableFuture
+argument_list|<
+name|ContainerCommandResponseProto
+argument_list|>
+name|response
+parameter_list|,
+name|UUID
+name|dnId
 parameter_list|)
 block|{
 name|this
@@ -100,6 +137,12 @@ operator|.
 name|response
 operator|=
 name|response
+expr_stmt|;
+name|this
+operator|.
+name|dnId
+operator|=
+name|dnId
 expr_stmt|;
 block|}
 DECL|method|getResponse ()
@@ -139,6 +182,32 @@ operator|.
 name|logIndex
 operator|=
 name|logIndex
+expr_stmt|;
+block|}
+DECL|method|getDatanode ()
+specifier|public
+name|UUID
+name|getDatanode
+parameter_list|()
+block|{
+return|return
+name|dnId
+return|;
+block|}
+DECL|method|setDatanode (UUID datanodeId)
+specifier|public
+name|void
+name|setDatanode
+parameter_list|(
+name|UUID
+name|datanodeId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dnId
+operator|=
+name|datanodeId
 expr_stmt|;
 block|}
 DECL|method|setResponse ( CompletableFuture<ContainerCommandResponseProto> response)
