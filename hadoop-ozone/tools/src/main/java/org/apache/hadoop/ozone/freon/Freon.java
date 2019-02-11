@@ -52,6 +52,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|tracing
+operator|.
+name|TracingUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|picocli
 operator|.
 name|CommandLine
@@ -99,6 +115,33 @@ name|Freon
 extends|extends
 name|GenericCli
 block|{
+annotation|@
+name|Override
+DECL|method|execute (String[] argv)
+specifier|public
+name|void
+name|execute
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|)
+block|{
+name|TracingUtil
+operator|.
+name|initTracing
+argument_list|(
+literal|"freon"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|execute
+argument_list|(
+name|argv
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
