@@ -166,6 +166,20 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|zip
 operator|.
 name|Checksum
@@ -971,8 +985,15 @@ name|pinning
 decl_stmt|;
 DECL|field|lastSentTime
 specifier|private
-name|long
+specifier|final
+name|AtomicLong
 name|lastSentTime
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0L
+argument_list|)
 decl_stmt|;
 DECL|field|maxSendIdleTime
 specifier|private
@@ -1198,11 +1219,14 @@ expr_stmt|;
 name|this
 operator|.
 name|lastSentTime
-operator|=
+operator|.
+name|set
+argument_list|(
 name|Time
 operator|.
 name|monotonicNow
 argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// Downstream will timeout in readTimeout on receiving the next packet.
 comment|// If there is no data traffic, a heartbeat packet is sent at
@@ -2191,27 +2215,13 @@ name|ioe
 throw|;
 block|}
 block|}
-DECL|method|setLastSentTime (long sentTime)
-specifier|synchronized
-name|void
-name|setLastSentTime
-parameter_list|(
-name|long
-name|sentTime
-parameter_list|)
-block|{
-name|lastSentTime
-operator|=
-name|sentTime
-expr_stmt|;
-block|}
-comment|/**    * It can return false if    * - upstream did not send packet for a long time    * - a packet was received but got stuck in local disk I/O.    * - a packet was received but got stuck on send to mirror.    */
+comment|/**    * Check if a packet was sent within an acceptable period of time.    *    * Some example of when this method may return false:    *<ul>    *<li>Upstream did not send packet for a long time</li>    *<li>Packet was received but got stuck in local disk I/O</li>    *<li>Packet was received but got stuck on send to mirror</li>    *</ul>    *    * @return true if packet was sent within an acceptable period of time;    *         otherwise false.    */
 DECL|method|packetSentInTime ()
-specifier|synchronized
 name|boolean
 name|packetSentInTime
 parameter_list|()
 block|{
+specifier|final
 name|long
 name|diff
 init|=
@@ -2220,32 +2230,56 @@ operator|.
 name|monotonicNow
 argument_list|()
 operator|-
+name|this
+operator|.
 name|lastSentTime
+operator|.
+name|get
+argument_list|()
 decl_stmt|;
+specifier|final
+name|boolean
+name|allowedIdleTime
+init|=
+operator|(
+name|diff
+operator|<=
+name|this
+operator|.
+name|maxSendIdleTime
+operator|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"A packet was last sent {}ms ago."
+argument_list|,
+name|diff
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
-name|diff
-operator|>
-name|maxSendIdleTime
+operator|!
+name|allowedIdleTime
 condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
-literal|"A packet was last sent "
-operator|+
+literal|"A packet was last sent {}ms ago. Maximum idle time: {}ms."
+argument_list|,
 name|diff
-operator|+
-literal|" milliseconds ago."
+argument_list|,
+name|this
+operator|.
+name|maxSendIdleTime
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
 block|}
 return|return
-literal|true
+name|allowedIdleTime
 return|;
 block|}
 comment|/**    * Flush block data and metadata files to disk.    * @throws IOException    */
@@ -3123,7 +3157,11 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|setLastSentTime
+name|this
+operator|.
+name|lastSentTime
+operator|.
+name|set
 argument_list|(
 name|now
 argument_list|)
