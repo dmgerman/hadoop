@@ -151,6 +151,16 @@ name|NODES_NODEID
 init|=
 literal|"/nodes/{nodeId}"
 decl_stmt|;
+comment|/** Path for {@code RMWebServiceProtocol#updateNodeResource}. */
+DECL|field|NODE_RESOURCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NODE_RESOURCE
+init|=
+literal|"/nodes/{nodeId}/resource"
+decl_stmt|;
 comment|/**    * Path for {@code RMWebServiceProtocol#getApps} and    * {@code RMWebServiceProtocol#getApp}.    */
 DECL|field|APPS
 specifier|public

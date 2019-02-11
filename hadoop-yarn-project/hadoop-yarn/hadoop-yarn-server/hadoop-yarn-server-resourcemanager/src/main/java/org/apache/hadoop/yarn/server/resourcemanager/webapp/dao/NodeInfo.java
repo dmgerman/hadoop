@@ -399,6 +399,11 @@ specifier|protected
 name|NodeAttributesInfo
 name|nodeAttributesInfo
 decl_stmt|;
+DECL|field|totalResource
+specifier|private
+name|ResourceInfo
+name|totalResource
+decl_stmt|;
 DECL|method|NodeInfo ()
 specifier|public
 name|NodeInfo
@@ -619,6 +624,19 @@ name|ni
 operator|.
 name|getNodeManagerVersion
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|totalResource
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|ni
+operator|.
+name|getTotalCapability
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// Status of opportunistic containers.
 name|this
@@ -1182,6 +1200,34 @@ name|lastHealthUpdate
 operator|=
 name|lastHealthUpdate
 expr_stmt|;
+block|}
+DECL|method|setTotalResource (ResourceInfo total)
+specifier|public
+name|void
+name|setTotalResource
+parameter_list|(
+name|ResourceInfo
+name|total
+parameter_list|)
+block|{
+name|this
+operator|.
+name|totalResource
+operator|=
+name|total
+expr_stmt|;
+block|}
+DECL|method|getTotalResource ()
+specifier|public
+name|ResourceInfo
+name|getTotalResource
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|totalResource
+return|;
 block|}
 block|}
 end_class

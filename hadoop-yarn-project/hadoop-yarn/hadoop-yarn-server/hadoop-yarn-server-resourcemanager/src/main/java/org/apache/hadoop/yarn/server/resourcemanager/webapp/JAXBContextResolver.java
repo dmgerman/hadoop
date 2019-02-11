@@ -361,6 +361,10 @@ block|,
 name|AppPriority
 operator|.
 name|class
+block|,
+name|ResourceOptionInfo
+operator|.
+name|class
 block|}
 decl_stmt|;
 name|this
