@@ -391,10 +391,11 @@ argument_list|(
 name|pipeline1
 argument_list|)
 expr_stmt|;
-comment|// New pipeline should not overlap with the previous created pipeline
+comment|// New pipeline should overlap with the previous created pipeline,
+comment|// and one datanode should overlap between the two types.
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|CollectionUtils
 operator|.
@@ -411,8 +412,10 @@ name|getNodes
 argument_list|()
 argument_list|)
 operator|.
-name|isEmpty
+name|size
 argument_list|()
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|Assert
