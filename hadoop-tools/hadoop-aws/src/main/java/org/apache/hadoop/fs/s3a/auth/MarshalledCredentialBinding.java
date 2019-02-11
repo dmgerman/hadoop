@@ -362,7 +362,7 @@ name|NO_AWS_CREDENTIALS
 init|=
 literal|"No AWS credentials"
 decl_stmt|;
-comment|/**    * Create a set of marshalled credentials from a set of credentials    * issued by an STS call.    * @param credentials AWS-provided session credentials    */
+comment|/**    * Create a set of marshalled credentials from a set of credentials    * issued by an STS call.    * @param credentials AWS-provided session credentials    * @return a set of marshalled credentials.    */
 DECL|method|fromSTSCredentials ( final Credentials credentials)
 specifier|public
 specifier|static
@@ -532,7 +532,7 @@ else|:
 name|src
 return|;
 block|}
-comment|/**    * Loads the credentials from the owning S3A FS, including    * from Hadoop credential providers.    * There is no validation.    * @param conf configuration to load from    * @return the component    * @throws IOException on any load failure    */
+comment|/**    * Loads the credentials from the owning S3A FS, including    * from Hadoop credential providers.    * There is no validation.    * @param uri binding URI    * @param conf configuration to load from    * @return the component    * @throws IOException on any load failure    */
 DECL|method|fromFileSystem ( final URI uri, final Configuration conf)
 specifier|public
 specifier|static
@@ -742,7 +742,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Request a set of credentials from an STS endpoint.    * @param parentCredentials the parent credentials needed to talk to STS    * @param stsEndpoint an endpoint, use "" for none    * @param stsRegion region; use if the endpoint isn't the AWS default.    * @param duration duration of the credentials in seconds. Minimum value: 900.    * @param invoker invoker to use for retrying the call.    * @return the credentials    * @throws IOException on a failure of the request    */
+comment|/**    * Request a set of credentials from an STS endpoint.    * @param parentCredentials the parent credentials needed to talk to STS    * @param awsConf AWS client configuration    * @param stsEndpoint an endpoint, use "" for none    * @param stsRegion region; use if the endpoint isn't the AWS default.    * @param duration duration of the credentials in seconds. Minimum value: 900.    * @param invoker invoker to use for retrying the call.    * @return the credentials    * @throws IOException on a failure of the request    */
 annotation|@
 name|Retries
 operator|.

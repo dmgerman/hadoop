@@ -216,7 +216,7 @@ operator|=
 name|marshalledCredentials
 expr_stmt|;
 block|}
-comment|/**    * Constructor.    * @param kind token kind.    * @param owner token owner    * @param uri filesystem URI.    */
+comment|/**    * Constructor.    * @param kind token kind.    * @param owner token owner    * @param renewer token renewer    * @param realUser real user running over proxy user    * @param uri filesystem URI.    */
 DECL|method|SessionTokenIdentifier (final Text kind, final Text owner, final Text renewer, final Text realUser, final URI uri)
 specifier|public
 name|SessionTokenIdentifier

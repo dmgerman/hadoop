@@ -270,7 +270,7 @@ return|return
 name|inputPolicy
 return|;
 block|}
-comment|/**    * Get the readahead for this operation.    * @return a value>= 0    */
+comment|/**    * Get the readahead for this operation.    * @return a value {@literal>=} 0    */
 DECL|method|getReadahead ()
 specifier|public
 name|long

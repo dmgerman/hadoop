@@ -730,7 +730,7 @@ name|scope
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a statement.    * If {@code isDirectory} is true, a "/" is added to the path.    * This is critical when adding wildcard permissions under    * a directory, and also needed when locking down dir-as-file    * and dir-as-directory-marker access.    * @param allow allow or deny    * @param path path    * @param isDirectory is this a directory?    * @param actions action    * @return the formatted json statement    */
+comment|/**    * Create a statement.    * If {@code isDirectory} is true, a "/" is added to the path.    * This is critical when adding wildcard permissions under    * a directory, and also needed when locking down dir-as-file    * and dir-as-directory-marker access.    * @param allow allow or deny    * @param path path    * @param isDirectory is this a directory?    * @param wildcards add a * to the tail of the key?    * @param actions action    * @return the formatted json statement    */
 DECL|method|statement ( final boolean allow, final Path path, final boolean isDirectory, final boolean wildcards, final String... actions)
 specifier|public
 specifier|static
@@ -789,7 +789,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a statement.    * If {@code isDirectory} is true, a "/" is added to the path.    * This is critical when adding wildcard permissions under    * a directory, and also needed when locking down dir-as-file    * and dir-as-directory-marker access.    * @param allow allow or deny    * @param path path    * @param isDirectory is this a directory?    * @param actions action    * @return the formatted json statement    */
+comment|/**    * Create a statement.    * If {@code isDirectory} is true, a "/" is added to the path.    * This is critical when adding wildcard permissions under    * a directory, and also needed when locking down dir-as-file    * and dir-as-directory-marker access.    * @param allow allow or deny    * @param path path    * @param isDirectory is this a directory?    * @param wildcards add a * to the tail of the key?    * @param actions action    * @return the formatted json statement    */
 DECL|method|statement ( final boolean allow, final Path path, final boolean isDirectory, final boolean wildcards, final Collection<String> actions)
 specifier|public
 specifier|static

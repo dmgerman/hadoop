@@ -230,7 +230,7 @@ operator|=
 name|dstFileStatus
 expr_stmt|;
 block|}
-comment|/**    * Constructor using common invoker and retry policy.    * @param isS3GuardEnabled true if s3Guard is active    * @param invoker invoker, which contains retry policy    * @param stats optional stats object    * @param instrumentation instrumentation to use    * @param dstFileStatus    */
+comment|/**    * Constructor using common invoker and retry policy.    * @param isS3GuardEnabled true if s3Guard is active    * @param invoker invoker, which contains retry policy    * @param stats optional stats object    * @param instrumentation instrumentation to use    * @param dstFileStatus file status from existence check    */
 DECL|method|S3AOpContext (boolean isS3GuardEnabled, Invoker invoker, @Nullable FileSystem.Statistics stats, S3AInstrumentation instrumentation, FileStatus dstFileStatus)
 specifier|public
 name|S3AOpContext

@@ -230,7 +230,7 @@ name|COMPONENT
 init|=
 literal|"Session credentials in Hadoop configuration"
 decl_stmt|;
-comment|/**    * Construct from just a configuration.    * @param conf configuration.    */
+comment|/**    * Construct from just a configuration.    * @param conf configuration.    * @throws IOException on any failure to load the credentials.    */
 DECL|method|TemporaryAWSCredentialsProvider (final Configuration conf)
 specifier|public
 name|TemporaryAWSCredentialsProvider
@@ -250,7 +250,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor: the URI will be null if the provider is inited unbonded    * to a filesystem.    * @param uri binding to a filesystem URI.    * @param conf configuration.    */
+comment|/**    * Constructor: the URI will be null if the provider is inited unbonded    * to a filesystem.    * @param uri binding to a filesystem URI.    * @param conf configuration.    * @throws IOException on any failure to load the credentials.    */
 DECL|method|TemporaryAWSCredentialsProvider ( @ullable final URI uri, final Configuration conf)
 specifier|public
 name|TemporaryAWSCredentialsProvider

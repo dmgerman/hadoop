@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Constants for internal use in the org.apache.hadoop.fs.s3a module itself.  * Please don't refer to these outside of this module& its tests.  * If you find you need to then either the code is doing something it  * should not, or these constants need to be uprated to being  * public and stable entries.  */
+comment|/**  * Constants for internal use in the org.apache.hadoop.fs.s3a module itself.  * Please don't refer to these outside of this module&amp; its tests.  * If you find you need to then either the code is doing something it  * should not, or these constants need to be uprated to being  * public and stable entries.  */
 end_comment
 
 begin_class

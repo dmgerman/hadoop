@@ -806,7 +806,7 @@ name|clearInconsistency
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * A way for tests to patch in a different fault injection policy at runtime.    * @param fs filesystem under test    *    */
+comment|/**    * A way for tests to patch in a different fault injection policy at runtime.    * @param fs filesystem under test    * @param policy failure injection settings to set    * @throws Exception on failure    */
 DECL|method|setFailureInjectionPolicy (S3AFileSystem fs, FailureInjectionPolicy policy)
 specifier|public
 specifier|static

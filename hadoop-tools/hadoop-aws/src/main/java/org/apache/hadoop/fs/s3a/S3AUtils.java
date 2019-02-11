@@ -4692,7 +4692,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a new AWS {@code ClientConfiguration}.    * All clients to AWS services<i>MUST</i> use this for consistent setup    * of connectivity, UA, proxy settings.    * @param conf The Hadoop configuration    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @return new AWS client configuration    */
+comment|/**    * Create a new AWS {@code ClientConfiguration}.    * All clients to AWS services<i>MUST</i> use this for consistent setup    * of connectivity, UA, proxy settings.    * @param conf The Hadoop configuration    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @return new AWS client configuration    * @throws IOException problem creating AWS client configuration    */
 DECL|method|createAwsConf (Configuration conf, String bucket)
 specifier|public
 specifier|static

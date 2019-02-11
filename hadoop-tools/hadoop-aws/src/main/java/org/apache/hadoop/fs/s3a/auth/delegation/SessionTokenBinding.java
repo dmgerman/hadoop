@@ -1270,7 +1270,7 @@ expr_stmt|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * Get the client to AWS STS.    * @return the STS client, when successfully inited.    */
+comment|/**    * Get the client to AWS STS.    * @return the STS client, when successfully inited.    * @throws IOException any failure to bind to STS.    */
 DECL|method|prepareSTSClient ()
 specifier|protected
 name|Optional
@@ -1490,7 +1490,7 @@ name|SessionTokenIdentifier
 argument_list|()
 return|;
 block|}
-comment|/**    * Expiration date time as passed in from source.    * If unset, either we are unbound, or the token which came in does not    * know its expiry.    */
+comment|/**    * Expiration date time as passed in from source.    * If unset, either we are unbound, or the token which came in does not    * know its expiry.    * @return expiration data time.    */
 DECL|method|getExpirationDateTime ()
 specifier|protected
 name|Optional
@@ -1523,7 +1523,7 @@ operator|=
 name|expirationDateTime
 expr_stmt|;
 block|}
-comment|/**    * Token identifier bound to.    */
+comment|/**    * Token identifier bound to.    * @return token identifier.    */
 DECL|method|getTokenIdentifier ()
 specifier|protected
 name|Optional

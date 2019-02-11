@@ -359,7 +359,7 @@ name|uri
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Build from a token.    * This has been written for refresh operations;    * if someone implements refresh it will be relevant.    * @param token to to build from    * @throws IOException failure to build the identifier.    */
+comment|/**    * Build from a token.    * This has been written for refresh operations;    * if someone implements refresh it will be relevant.    * @param kind token kind.    * @param token to to build from    * @throws IOException failure to build the identifier.    */
 DECL|method|AbstractS3ATokenIdentifier ( final Text kind, final Token<AbstractS3ATokenIdentifier> token)
 specifier|protected
 name|AbstractS3ATokenIdentifier
@@ -405,7 +405,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * For subclasses to use in their own empty-constructors.    */
+comment|/**    * For subclasses to use in their own empty-constructors.    * @param kind token kind.    */
 DECL|method|AbstractS3ATokenIdentifier (final Text kind)
 specifier|protected
 name|AbstractS3ATokenIdentifier

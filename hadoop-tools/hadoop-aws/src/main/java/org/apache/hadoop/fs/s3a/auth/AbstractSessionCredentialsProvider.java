@@ -242,7 +242,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize the credentials by calling    * {@link #createCredentials(Configuration)} with the current config.    */
+comment|/**    * Initialize the credentials by calling    * {@link #createCredentials(Configuration)} with the current config.    * @throws IOException on any failure.    */
 annotation|@
 name|Retries
 operator|.

@@ -261,7 +261,7 @@ specifier|private
 name|boolean
 name|isAuthoritative
 decl_stmt|;
-comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(FileStatus)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    */
+comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(FileStatus)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    * @param lastUpdated last updated time on which expiration is based.    */
 DECL|method|DirListingMetadata (Path path, Collection<PathMetadata> listing, boolean isAuthoritative, long lastUpdated)
 specifier|public
 name|DirListingMetadata

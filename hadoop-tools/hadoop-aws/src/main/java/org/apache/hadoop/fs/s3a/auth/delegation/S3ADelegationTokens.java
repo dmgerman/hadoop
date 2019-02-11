@@ -600,7 +600,7 @@ name|tokenBindingName
 init|=
 literal|""
 decl_stmt|;
-comment|/**    * Instantiate.    */
+comment|/**    * Instantiate.    * @throws IOException if login fails.    */
 DECL|method|S3ADelegationTokens ()
 specifier|public
 name|S3ADelegationTokens

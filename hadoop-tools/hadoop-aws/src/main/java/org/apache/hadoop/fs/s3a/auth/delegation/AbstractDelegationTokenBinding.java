@@ -478,7 +478,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Verify that a token identifier is of a specific class.    * This will reject subclasses (i.e. it is stricter than    * {@code instanceof}, then cast it to that type.    * @param identifier identifier to validate    * @param expectedClass class of the expected token identifier.    * @throws DelegationTokenIOException If the wrong class was found.    */
+comment|/**    * Verify that a token identifier is of a specific class.    * This will reject subclasses (i.e. it is stricter than    * {@code instanceof}, then cast it to that type.    * @param<T> type of S3A delegation ttoken identifier.    * @param identifier identifier to validate    * @param expectedClass class of the expected token identifier.    * @return token identifier.    * @throws DelegationTokenIOException If the wrong class was found.    */
 DECL|method|convertTokenIdentifier ( final AbstractS3ATokenIdentifier identifier, final Class<T> expectedClass)
 specifier|protected
 parameter_list|<

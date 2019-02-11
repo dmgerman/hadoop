@@ -1028,7 +1028,7 @@ name|REGION_FLAG
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return sub-command name.    */
+comment|/**    * Return sub-command name.    * @return sub-dommand name.    */
 DECL|method|getName ()
 specifier|public
 specifier|abstract
@@ -1472,7 +1472,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Check if bucket or DDB table name is set.    */
+comment|/**    * Check if bucket or DDB table name is set.    * @param paths position arguments in which S3 path is provided.    */
 DECL|method|checkBucketNameOrDDBTableNameProvided (List<String> paths)
 specifier|protected
 name|void
@@ -1546,7 +1546,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Parse metadata store from command line option or HDFS configuration.    *    * @param forceCreate override the auto-creation setting to true.    * @return a initialized metadata store.    */
+comment|/**    * Parse metadata store from command line option or HDFS configuration.    *    * @param forceCreate override the auto-creation setting to true.    * @return a initialized metadata store.    * @throws IOException on unsupported metadata store.    */
 DECL|method|initMetadataStore (boolean forceCreate)
 specifier|protected
 name|MetadataStore
