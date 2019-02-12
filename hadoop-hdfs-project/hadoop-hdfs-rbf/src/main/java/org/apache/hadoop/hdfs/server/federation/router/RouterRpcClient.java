@@ -574,6 +574,20 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|RetriableException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|StandbyException
 import|;
 end_import
@@ -1302,7 +1316,7 @@ name|e
 argument_list|)
 return|;
 block|}
-comment|/**    * If we should retry the RPC call.    *    * @param ioe IOException reported.    * @param retryCount Number of retries.    * @param nsId Nameservice ID.    * @return Retry decision.    * @throws IOException Original exception if the retry policy generates one    *                     or IOException for no available namenodes.    */
+comment|/**    * If we should retry the RPC call.    *    * @param ioe IOException reported.    * @param retryCount Number of retries.    * @param nsId Nameservice ID.    * @return Retry decision.    * @throws NoNamenodesAvailableException Exception that the retry policy    *         generates for no available namenodes.    */
 DECL|method|shouldRetry (final IOException ioe, final int retryCount, final String nsId)
 specifier|private
 name|RetryDecision
@@ -1350,10 +1364,8 @@ else|else
 block|{
 throw|throw
 operator|new
-name|IOException
+name|NoNamenodesAvailableException
 argument_list|(
-literal|"No namenode available under nameservice "
-operator|+
 name|nsId
 argument_list|,
 name|ioe
@@ -1799,6 +1811,56 @@ argument_list|)
 expr_stmt|;
 throw|throw
 name|se
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|ioe
+operator|instanceof
+name|NoNamenodesAvailableException
+condition|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpNoNamenodes
+argument_list|()
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Can not get available namenode for {} {} error: {}"
+argument_list|,
+name|nsId
+argument_list|,
+name|rpcAddress
+argument_list|,
+name|ioe
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Throw RetriableException so that client can retry
+throw|throw
+operator|new
+name|RetriableException
+argument_list|(
+name|ioe
+argument_list|)
 throw|;
 block|}
 else|else

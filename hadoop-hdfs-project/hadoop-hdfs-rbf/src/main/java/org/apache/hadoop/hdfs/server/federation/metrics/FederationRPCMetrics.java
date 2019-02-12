@@ -339,6 +339,16 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Number of operations to hit no namenodes available"
+argument_list|)
+DECL|field|proxyOpNoNamenodes
+specifier|private
+name|MutableCounterLong
+name|proxyOpNoNamenodes
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"Failed requests due to State Store unavailable"
 argument_list|)
 DECL|field|routerFailureStateStore
@@ -616,6 +626,33 @@ parameter_list|()
 block|{
 return|return
 name|proxyOpRetries
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|incrProxyOpNoNamenodes ()
+specifier|public
+name|void
+name|incrProxyOpNoNamenodes
+parameter_list|()
+block|{
+name|proxyOpNoNamenodes
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProxyOpNoNamenodes ()
+specifier|public
+name|long
+name|getProxyOpNoNamenodes
+parameter_list|()
+block|{
+return|return
+name|proxyOpNoNamenodes
 operator|.
 name|value
 argument_list|()

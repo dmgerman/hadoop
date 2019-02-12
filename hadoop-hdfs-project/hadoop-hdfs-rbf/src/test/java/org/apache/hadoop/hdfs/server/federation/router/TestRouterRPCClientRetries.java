@@ -885,7 +885,7 @@ argument_list|)
 decl_stmt|;
 name|assertExceptionContains
 argument_list|(
-literal|"No namenode available under nameservice "
+literal|"No namenodes available under nameservice "
 operator|+
 name|ns0
 argument_list|,

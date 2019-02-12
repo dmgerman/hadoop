@@ -734,6 +734,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|proxyOpNoNamenodes ()
+specifier|public
+name|void
+name|proxyOpNoNamenodes
+parameter_list|()
+block|{
+name|metrics
+operator|.
+name|incrProxyOpNoNamenodes
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|routerFailureStateStore ()
 specifier|public
 name|void

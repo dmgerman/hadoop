@@ -164,6 +164,12 @@ name|void
 name|proxyOpRetries
 parameter_list|()
 function_decl|;
+comment|/**    * Failed to proxy an operation because of no namenodes available.    */
+DECL|method|proxyOpNoNamenodes ()
+name|void
+name|proxyOpNoNamenodes
+parameter_list|()
+function_decl|;
 comment|/**    * If the Router cannot contact the State Store in an operation.    */
 DECL|method|routerFailureStateStore ()
 name|void
