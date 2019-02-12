@@ -167,6 +167,9 @@ name|DEFAULT
 block|,
 DECL|enumConstant|MISSING_BLOCK_TOKEN
 name|MISSING_BLOCK_TOKEN
+block|,
+DECL|enumConstant|BLOCK_TOKEN_VERIFICATION_FAILED
+name|BLOCK_TOKEN_VERIFICATION_FAILED
 block|}
 block|}
 end_class

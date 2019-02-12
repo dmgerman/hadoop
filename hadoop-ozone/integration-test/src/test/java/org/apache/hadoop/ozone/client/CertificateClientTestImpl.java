@@ -432,14 +432,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getPrivateKey (String component)
+DECL|method|getPrivateKey ()
 specifier|public
 name|PrivateKey
 name|getPrivateKey
-parameter_list|(
-name|String
-name|component
-parameter_list|)
+parameter_list|()
 block|{
 return|return
 name|keyPair
@@ -450,14 +447,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getPublicKey (String component)
+DECL|method|getPublicKey ()
 specifier|public
 name|PublicKey
 name|getPublicKey
-parameter_list|(
-name|String
-name|component
-parameter_list|)
+parameter_list|()
 block|{
 return|return
 name|keyPair
@@ -468,14 +462,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCertificate (String component)
+DECL|method|getCertificate ()
 specifier|public
 name|X509Certificate
 name|getCertificate
-parameter_list|(
-name|String
-name|component
-parameter_list|)
+parameter_list|()
 block|{
 return|return
 name|cert
@@ -498,7 +489,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|signDataStream (InputStream stream, String component)
+DECL|method|signDataStream (InputStream stream)
 specifier|public
 name|byte
 index|[]
@@ -506,9 +497,29 @@ name|signDataStream
 parameter_list|(
 name|InputStream
 name|stream
-parameter_list|,
-name|String
-name|component
+parameter_list|)
+throws|throws
+name|CertificateException
+block|{
+return|return
+operator|new
+name|byte
+index|[
+literal|0
+index|]
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|signData (byte[] data)
+specifier|public
+name|byte
+index|[]
+name|signData
+parameter_list|(
+name|byte
+index|[]
+name|data
 parameter_list|)
 throws|throws
 name|CertificateException
@@ -538,6 +549,8 @@ parameter_list|,
 name|X509Certificate
 name|x509Certificate
 parameter_list|)
+throws|throws
+name|CertificateException
 block|{
 return|return
 literal|true
@@ -561,6 +574,8 @@ parameter_list|,
 name|X509Certificate
 name|x509Certificate
 parameter_list|)
+throws|throws
+name|CertificateException
 block|{
 return|return
 literal|true
@@ -597,71 +612,34 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|storePrivateKey (PrivateKey key, String component)
-specifier|public
-name|void
-name|storePrivateKey
-parameter_list|(
-name|PrivateKey
-name|key
-parameter_list|,
-name|String
-name|component
-parameter_list|)
-throws|throws
-name|CertificateException
-block|{    }
-annotation|@
-name|Override
-DECL|method|storePublicKey (PublicKey key, String component)
-specifier|public
-name|void
-name|storePublicKey
-parameter_list|(
-name|PublicKey
-name|key
-parameter_list|,
-name|String
-name|component
-parameter_list|)
-throws|throws
-name|CertificateException
-block|{    }
-annotation|@
-name|Override
-DECL|method|storeCertificate (X509Certificate certificate, String component)
+DECL|method|storeCertificate (X509Certificate certificate)
 specifier|public
 name|void
 name|storeCertificate
 parameter_list|(
 name|X509Certificate
 name|certificate
-parameter_list|,
-name|String
-name|component
 parameter_list|)
 throws|throws
 name|CertificateException
 block|{    }
+comment|/**    * Stores the trusted chain of certificates for a specific component.    *    * @param keyStore - Cert Store.    * @throws CertificateException - on Error.    */
 annotation|@
 name|Override
-DECL|method|storeTrustChain (CertStore certStore, String component)
+DECL|method|storeTrustChain (CertStore keyStore)
 specifier|public
 name|void
 name|storeTrustChain
 parameter_list|(
 name|CertStore
-name|certStore
-parameter_list|,
-name|String
-name|component
+name|keyStore
 parameter_list|)
 throws|throws
 name|CertificateException
 block|{    }
 annotation|@
 name|Override
-DECL|method|storeTrustChain (List<X509Certificate> certificates, String component)
+DECL|method|storeTrustChain (List<X509Certificate> certificates)
 specifier|public
 name|void
 name|storeTrustChain
@@ -671,13 +649,24 @@ argument_list|<
 name|X509Certificate
 argument_list|>
 name|certificates
-parameter_list|,
-name|String
-name|component
 parameter_list|)
 throws|throws
 name|CertificateException
 block|{    }
+annotation|@
+name|Override
+DECL|method|init ()
+specifier|public
+name|InitResponse
+name|init
+parameter_list|()
+throws|throws
+name|CertificateException
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

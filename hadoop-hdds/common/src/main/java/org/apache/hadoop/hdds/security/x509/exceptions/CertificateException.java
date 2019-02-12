@@ -52,6 +52,11 @@ name|CertificateException
 extends|extends
 name|SCMSecurityException
 block|{
+DECL|field|errorCode
+specifier|private
+name|ErrorCode
+name|errorCode
+decl_stmt|;
 comment|/**    * Ctor.    * @param message - Error Message.    */
 DECL|method|CertificateException (String message)
 specifier|public
@@ -87,6 +92,59 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Ctor.    * @param message - Message.    * @param cause  - Actual cause.    * @param errorCode    */
+DECL|method|CertificateException (String message, Throwable cause, ErrorCode errorCode)
+specifier|public
+name|CertificateException
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|,
+name|ErrorCode
+name|errorCode
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|errorCode
+expr_stmt|;
+block|}
+comment|/**    * Ctor.    * @param message - Message.    * @param errorCode    */
+DECL|method|CertificateException (String message, ErrorCode errorCode)
+specifier|public
+name|CertificateException
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|ErrorCode
+name|errorCode
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|errorCode
+operator|=
+name|errorCode
+expr_stmt|;
+block|}
 comment|/**    * Ctor.    * @param cause - Base Exception.    */
 DECL|method|CertificateException (Throwable cause)
 specifier|public
@@ -101,6 +159,27 @@ argument_list|(
 name|cause
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Error codes to make it easy to decode these exceptions.    */
+DECL|enum|ErrorCode
+specifier|public
+enum|enum
+name|ErrorCode
+block|{
+DECL|enumConstant|KEYSTORE_ERROR
+name|KEYSTORE_ERROR
+block|,
+DECL|enumConstant|CRYPTO_SIGN_ERROR
+name|CRYPTO_SIGN_ERROR
+block|,
+DECL|enumConstant|CERTIFICATE_ERROR
+name|CERTIFICATE_ERROR
+block|,
+DECL|enumConstant|BOOTSTRAP_ERROR
+name|BOOTSTRAP_ERROR
+block|,
+DECL|enumConstant|CRYPTO_SIGNATURE_VERIFICATION_ERROR
+name|CRYPTO_SIGNATURE_VERIFICATION_ERROR
 block|}
 block|}
 end_class
