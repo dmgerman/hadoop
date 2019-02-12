@@ -81,6 +81,18 @@ name|KEY
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Returns the key value at the current position.    * @return KEY    */
+DECL|method|key ()
+name|KEY
+name|key
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the VALUE at the current position.    * @return VALUE    */
+DECL|method|value ()
+name|T
+name|value
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

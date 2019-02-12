@@ -946,13 +946,10 @@ name|BlockManagerImpl
 argument_list|(
 name|conf
 argument_list|,
-name|nodeManager
-argument_list|,
-name|pipelineManager
-argument_list|,
-name|containerManager
-argument_list|,
-name|eventQueue
+name|cluster
+operator|.
+name|getStorageContainerManager
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|eventQueue

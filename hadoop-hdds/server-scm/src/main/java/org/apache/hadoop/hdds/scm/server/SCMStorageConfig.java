@@ -151,21 +151,21 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * SCMStorage is responsible for management of the StorageDirectories used by  * the SCM.  */
+comment|/**  * SCMStorageConfig is responsible for management of the  * StorageDirectories used by the SCM.  */
 end_comment
 
 begin_class
-DECL|class|SCMStorage
+DECL|class|SCMStorageConfig
 specifier|public
 class|class
-name|SCMStorage
+name|SCMStorageConfig
 extends|extends
 name|Storage
 block|{
-comment|/**    * Construct SCMStorage.    * @throws IOException if any directories are inaccessible.    */
-DECL|method|SCMStorage (OzoneConfiguration conf)
+comment|/**    * Construct SCMStorageConfig.    * @throws IOException if any directories are inaccessible.    */
+DECL|method|SCMStorageConfig (OzoneConfiguration conf)
 specifier|public
-name|SCMStorage
+name|SCMStorageConfig
 parameter_list|(
 name|OzoneConfiguration
 name|conf

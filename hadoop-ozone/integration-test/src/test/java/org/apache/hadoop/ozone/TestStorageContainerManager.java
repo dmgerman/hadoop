@@ -528,7 +528,7 @@ name|scm
 operator|.
 name|server
 operator|.
-name|SCMStorage
+name|SCMStorageConfig
 import|;
 end_import
 
@@ -2500,11 +2500,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|SCMStorage
+name|SCMStorageConfig
 name|scmStore
 init|=
 operator|new
-name|SCMStorage
+name|SCMStorageConfig
 argument_list|(
 name|conf
 argument_list|)
@@ -2679,11 +2679,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|SCMStorage
+name|SCMStorageConfig
 name|scmStore
 init|=
 operator|new
-name|SCMStorage
+name|SCMStorageConfig
 argument_list|(
 name|conf
 argument_list|)
@@ -2806,7 +2806,7 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"SCM not initialized."
+literal|"SCM not initialized due to storage config failure"
 argument_list|)
 expr_stmt|;
 name|StorageContainerManager
@@ -2962,11 +2962,11 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|SCMStorage
+name|SCMStorageConfig
 name|scmStore
 init|=
 operator|new
-name|SCMStorage
+name|SCMStorageConfig
 argument_list|(
 name|conf
 argument_list|)

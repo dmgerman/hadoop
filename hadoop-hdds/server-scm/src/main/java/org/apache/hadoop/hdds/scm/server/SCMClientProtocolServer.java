@@ -2543,7 +2543,7 @@ name|setClusterId
 argument_list|(
 name|scm
 operator|.
-name|getScmStorage
+name|getScmStorageConfig
 argument_list|()
 operator|.
 name|getClusterID
@@ -2554,7 +2554,7 @@ name|setScmId
 argument_list|(
 name|scm
 operator|.
-name|getScmStorage
+name|getScmStorageConfig
 argument_list|()
 operator|.
 name|getScmId

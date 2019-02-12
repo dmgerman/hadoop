@@ -158,7 +158,7 @@ name|scm
 operator|.
 name|server
 operator|.
-name|SCMStorage
+name|SCMStorageConfig
 import|;
 end_import
 
@@ -368,11 +368,11 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|SCMStorage
+name|SCMStorageConfig
 name|scmStore
 init|=
 operator|new
-name|SCMStorage
+name|SCMStorageConfig
 argument_list|(
 name|conf
 argument_list|)
