@@ -794,8 +794,12 @@ if|if
 condition|(
 name|container
 operator|.
-name|isOpen
+name|getState
 argument_list|()
+operator|==
+name|LifeCycleState
+operator|.
+name|OPEN
 condition|)
 block|{
 name|pipelineManager
