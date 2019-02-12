@@ -6538,6 +6538,18 @@ name|DOCKER_CONTAINER_RUNTIME_PREFIX
 operator|+
 literal|"image-name"
 decl_stmt|;
+comment|/** Default option to decide whether to pull the latest image or not. **/
+DECL|field|NM_DOCKER_IMAGE_UPDATE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_IMAGE_UPDATE
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"image-update"
+decl_stmt|;
 comment|/** Capabilities allowed (and added by default) for docker containers. **/
 DECL|field|NM_DOCKER_CONTAINER_CAPABILITIES
 specifier|public
