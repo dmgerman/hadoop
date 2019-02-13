@@ -1396,6 +1396,16 @@ argument_list|,
 name|ASCII_STRING_MARSHALLER
 argument_list|)
 decl_stmt|;
+comment|// Default OMServiceID for OM Ratis servers to use as RaftGroupId
+DECL|field|OM_SERVICE_ID_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_SERVICE_ID_DEFAULT
+init|=
+literal|"om-service-value"
+decl_stmt|;
 block|}
 end_class
 

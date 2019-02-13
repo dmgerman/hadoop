@@ -266,6 +266,26 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the Builder to construct MiniOzoneHACluster.    *    * @param conf OzoneConfiguration    *    * @return MiniOzoneCluster builder    */
+DECL|method|newHABuilder (OzoneConfiguration conf)
+specifier|static
+name|Builder
+name|newHABuilder
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|new
+name|MiniOzoneHAClusterImpl
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns the configuration object associated with the MiniOzoneCluster.    *    * @return Configuration    */
 DECL|method|getConf ()
 name|Configuration
@@ -501,6 +521,16 @@ DECL|field|clusterId
 specifier|protected
 name|String
 name|clusterId
+decl_stmt|;
+DECL|field|omServiceId
+specifier|protected
+name|String
+name|omServiceId
+decl_stmt|;
+DECL|field|numOfOMs
+specifier|protected
+name|int
+name|numOfOMs
 decl_stmt|;
 DECL|field|enableTrace
 specifier|protected
@@ -1026,6 +1056,44 @@ name|of
 argument_list|(
 name|size
 argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setNumOfOzoneManagers (int numOMs)
+specifier|public
+name|Builder
+name|setNumOfOzoneManagers
+parameter_list|(
+name|int
+name|numOMs
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numOfOMs
+operator|=
+name|numOMs
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setOMServiceId (String serviceId)
+specifier|public
+name|Builder
+name|setOMServiceId
+parameter_list|(
+name|String
+name|serviceId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|omServiceId
+operator|=
+name|serviceId
 expr_stmt|;
 return|return
 name|this

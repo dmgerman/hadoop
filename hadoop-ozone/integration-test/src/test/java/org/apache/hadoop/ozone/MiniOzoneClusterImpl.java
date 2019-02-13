@@ -751,7 +751,6 @@ operator|.
 name|Private
 DECL|class|MiniOzoneClusterImpl
 specifier|public
-specifier|final
 class|class
 name|MiniOzoneClusterImpl
 implements|implements
@@ -786,7 +785,6 @@ name|scm
 decl_stmt|;
 DECL|field|ozoneManager
 specifier|private
-specifier|final
 name|OzoneManager
 name|ozoneManager
 decl_stmt|;
@@ -810,7 +808,6 @@ decl_stmt|;
 comment|// 1 min
 comment|/**    * Creates a new MiniOzoneCluster.    *    * @throws IOException if there is an I/O error    */
 DECL|method|MiniOzoneClusterImpl (OzoneConfiguration conf, OzoneManager ozoneManager, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
-specifier|private
 name|MiniOzoneClusterImpl
 parameter_list|(
 name|OzoneConfiguration
@@ -840,6 +837,42 @@ operator|.
 name|ozoneManager
 operator|=
 name|ozoneManager
+expr_stmt|;
+name|this
+operator|.
+name|scm
+operator|=
+name|scm
+expr_stmt|;
+name|this
+operator|.
+name|hddsDatanodes
+operator|=
+name|hddsDatanodes
+expr_stmt|;
+block|}
+comment|/**    * Creates a new MiniOzoneCluster without the OzoneManager. This is used by    * {@link MiniOzoneHAClusterImpl} for starting multiple OzoneManagers.    * @param conf    * @param scm    * @param hddsDatanodes    */
+DECL|method|MiniOzoneClusterImpl (OzoneConfiguration conf, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
+name|MiniOzoneClusterImpl
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|,
+name|StorageContainerManager
+name|scm
+parameter_list|,
+name|List
+argument_list|<
+name|HddsDatanodeService
+argument_list|>
+name|hddsDatanodes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 name|this
 operator|.
@@ -1949,9 +1982,8 @@ return|return
 name|cluster
 return|;
 block|}
-comment|/**      * Initializes the configureation required for starting MiniOzoneCluster.      *      * @throws IOException      */
+comment|/**      * Initializes the configuration required for starting MiniOzoneCluster.      *      * @throws IOException      */
 DECL|method|initializeConfiguration ()
-specifier|private
 name|void
 name|initializeConfiguration
 parameter_list|()
@@ -2173,7 +2205,6 @@ expr_stmt|;
 block|}
 comment|/**      * Creates a new StorageContainerManager instance.      *      * @return {@link StorageContainerManager}      *      * @throws IOException      */
 DECL|method|createSCM ()
-specifier|private
 name|StorageContainerManager
 name|createSCM
 parameter_list|()
@@ -2284,7 +2315,6 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|initializeOmStorage (OMStorage omStorage)
-specifier|private
 name|void
 name|initializeOmStorage
 parameter_list|(
@@ -2390,7 +2420,6 @@ return|;
 block|}
 comment|/**      * Creates HddsDatanodeService(s) instance.      *      * @return List of HddsDatanodeService      *      * @throws IOException      */
 DECL|method|createHddsDatanodes ( StorageContainerManager scm)
-specifier|private
 name|List
 argument_list|<
 name|HddsDatanodeService

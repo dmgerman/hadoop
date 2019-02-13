@@ -9474,10 +9474,10 @@ block|}
 comment|/**    * Test that OM Ratis server is started only when OZONE_OM_RATIS_ENABLE_KEY is    * set to true.    */
 annotation|@
 name|Test
-DECL|method|testRatsiServerOnOmInitialization ()
+DECL|method|testRatisServerOnOMInitialization ()
 specifier|public
 name|void
-name|testRatsiServerOnOmInitialization
+name|testRatisServerOnOMInitialization
 parameter_list|()
 throws|throws
 name|IOException

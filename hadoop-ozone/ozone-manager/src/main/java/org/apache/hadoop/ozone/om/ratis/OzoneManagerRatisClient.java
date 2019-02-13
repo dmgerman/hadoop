@@ -46,16 +46,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Objects
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|CompletableFuture
@@ -95,20 +85,6 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicReference
 import|;
 end_import
 
@@ -434,19 +410,10 @@ specifier|final
 name|RpcType
 name|rpcType
 decl_stmt|;
-DECL|field|client
+DECL|field|raftClient
 specifier|private
-specifier|final
-name|AtomicReference
-argument_list|<
 name|RaftClient
-argument_list|>
-name|client
-init|=
-operator|new
-name|AtomicReference
-argument_list|<>
-argument_list|()
+name|raftClient
 decl_stmt|;
 DECL|field|retryPolicy
 specifier|private
@@ -667,15 +634,8 @@ expr_stmt|;
 comment|// TODO : XceiverClient ratis should pass the config value of
 comment|// maxOutstandingRequests so as to set the upper bound on max no of async
 comment|// requests to be handled by raft client
-if|if
-condition|(
-operator|!
-name|client
-operator|.
-name|compareAndSet
-argument_list|(
-literal|null
-argument_list|,
+name|raftClient
+operator|=
 name|OMRatisHelper
 operator|.
 name|newRaftClient
@@ -690,17 +650,7 @@ name|retryPolicy
 argument_list|,
 name|conf
 argument_list|)
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Client is already connected."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -710,39 +660,12 @@ name|void
 name|close
 parameter_list|()
 block|{
-specifier|final
-name|RaftClient
-name|c
-init|=
-name|client
-operator|.
-name|getAndSet
-argument_list|(
-literal|null
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|c
+name|raftClient
 operator|!=
 literal|null
 condition|)
-block|{
-name|closeRaftClient
-argument_list|(
-name|c
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|closeRaftClient (RaftClient raftClient)
-specifier|private
-name|void
-name|closeRaftClient
-parameter_list|(
-name|RaftClient
-name|raftClient
-parameter_list|)
 block|{
 try|try
 block|{
@@ -767,25 +690,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|getClient ()
-specifier|private
-name|RaftClient
-name|getClient
-parameter_list|()
-block|{
-return|return
-name|Objects
-operator|.
-name|requireNonNull
-argument_list|(
-name|client
-operator|.
-name|get
-argument_list|()
-argument_list|,
-literal|"client is null"
-argument_list|)
-return|;
 block|}
 comment|/**    * Sends a given request to server and gets the reply back.    * @param request Request    * @return Response to the command    */
 DECL|method|sendCommand (OMRequest request)
@@ -1043,8 +947,7 @@ expr_stmt|;
 return|return
 name|isReadOnlyRequest
 condition|?
-name|getClient
-argument_list|()
+name|raftClient
 operator|.
 name|sendReadOnlyAsync
 argument_list|(
@@ -1053,8 +956,7 @@ lambda|->
 name|byteString
 argument_list|)
 else|:
-name|getClient
-argument_list|()
+name|raftClient
 operator|.
 name|sendAsync
 argument_list|(
