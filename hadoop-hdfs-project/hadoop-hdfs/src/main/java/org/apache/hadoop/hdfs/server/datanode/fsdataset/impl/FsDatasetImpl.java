@@ -4705,11 +4705,6 @@ condition|(
 name|info
 operator|!=
 literal|null
-operator|&&
-name|info
-operator|.
-name|blockDataExists
-argument_list|()
 condition|)
 block|{
 return|return
