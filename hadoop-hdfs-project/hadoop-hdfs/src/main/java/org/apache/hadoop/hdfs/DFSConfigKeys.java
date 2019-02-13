@@ -7829,6 +7829,24 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_RPC_ADDRESS_AUXILIARY_KEY
 decl_stmt|;
+DECL|field|DFS_NAMENODE_SEND_QOP_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_SEND_QOP_ENABLED
+init|=
+literal|"dfs.namenode.send.qop.enabled"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_SEND_QOP_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_SEND_QOP_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@
 name|Deprecated

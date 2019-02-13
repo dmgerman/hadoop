@@ -8319,6 +8319,11 @@ DECL|field|saslServer
 name|SaslServer
 name|saslServer
 decl_stmt|;
+DECL|field|establishedQOP
+specifier|private
+name|String
+name|establishedQOP
+decl_stmt|;
 DECL|field|authMethod
 specifier|private
 name|AuthMethod
@@ -8651,39 +8656,8 @@ name|String
 name|getEstablishedQOP
 parameter_list|()
 block|{
-comment|// In practice, saslServer should not be null when this is
-comment|// called. If it is null, it must be either some
-comment|// configuration mistake or it is called from unit test.
-if|if
-condition|(
-name|saslServer
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"SASL server should not be null!"
-argument_list|)
-expr_stmt|;
 return|return
-literal|null
-return|;
-block|}
-return|return
-operator|(
-name|String
-operator|)
-name|saslServer
-operator|.
-name|getNegotiatedProperty
-argument_list|(
-name|Sasl
-operator|.
-name|QOP
-argument_list|)
+name|establishedQOP
 return|;
 block|}
 DECL|method|setLastContact (long lastContact)
@@ -9313,6 +9287,10 @@ operator|.
 name|QOP
 argument_list|)
 decl_stmt|;
+name|establishedQOP
+operator|=
+name|qop
+expr_stmt|;
 comment|// SASL wrapping is only used if the connection has a QOP, and
 comment|// the value is not auth.  ex. auth-int& auth-priv
 name|useWrap

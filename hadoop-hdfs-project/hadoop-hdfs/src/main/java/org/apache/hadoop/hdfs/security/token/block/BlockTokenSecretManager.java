@@ -2613,6 +2613,42 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Encrypt the given message with the current block key, using the current    * block key.    *    * @param message the message to be encrypted.    * @return the secret created by encrypting the given message.    */
+DECL|method|secretGen (byte[] message)
+specifier|public
+name|byte
+index|[]
+name|secretGen
+parameter_list|(
+name|byte
+index|[]
+name|message
+parameter_list|)
+block|{
+return|return
+name|createPassword
+argument_list|(
+name|message
+argument_list|,
+name|currentKey
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCurrentKey ()
+specifier|public
+name|BlockKey
+name|getCurrentKey
+parameter_list|()
+block|{
+return|return
+name|currentKey
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setKeyUpdateIntervalForTesting (long millis)
