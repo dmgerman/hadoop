@@ -118,6 +118,20 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Get a listing of all files in that match the file patterns.  */
 end_comment
@@ -175,7 +189,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-f]<file>"
+literal|"[-f] [-s<sleep interval>]<file>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -187,6 +201,10 @@ init|=
 literal|"Show the last 1KB of the file.\n"
 operator|+
 literal|"-f: Shows appended data as the file grows.\n"
+operator|+
+literal|"-s: With -f , "
+operator|+
+literal|"defines the sleep interval between iterations in milliseconds.\n"
 decl_stmt|;
 DECL|field|startingOffset
 specifier|private
@@ -211,6 +229,18 @@ init|=
 literal|5000
 decl_stmt|;
 comment|// milliseconds
+annotation|@
+name|VisibleForTesting
+DECL|method|getFollowDelay ()
+specifier|public
+name|long
+name|getFollowDelay
+parameter_list|()
+block|{
+return|return
+name|followDelay
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|processOptions (LinkedList<String> args)
@@ -242,6 +272,13 @@ argument_list|)
 decl_stmt|;
 name|cf
 operator|.
+name|addOptionWithValue
+argument_list|(
+literal|"s"
+argument_list|)
+expr_stmt|;
+name|cf
+operator|.
 name|parse
 argument_list|(
 name|args
@@ -256,6 +293,58 @@ argument_list|(
 literal|"f"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|follow
+condition|)
+block|{
+name|String
+name|sleep
+init|=
+name|cf
+operator|.
+name|getOptValue
+argument_list|(
+literal|"s"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|sleep
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|sleep
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|long
+name|sleepInterval
+init|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|sleep
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|sleepInterval
+operator|>
+literal|0
+condition|)
+block|{
+name|followDelay
+operator|=
+name|sleepInterval
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 comment|// TODO: HADOOP-7234 will add glob support; for now, be backwards compat
 annotation|@
