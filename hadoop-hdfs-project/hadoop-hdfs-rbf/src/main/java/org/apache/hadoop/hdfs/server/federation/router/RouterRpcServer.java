@@ -1560,6 +1560,28 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|security
+operator|.
+name|RouterSecurityManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|CheckpointSignature
@@ -2129,6 +2151,14 @@ specifier|final
 name|RouterClientProtocol
 name|clientProto
 decl_stmt|;
+comment|/** Router security manager to handle token operations. */
+DECL|field|securityManager
+specifier|private
+name|RouterSecurityManager
+name|securityManager
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Construct a router RPC server.    *    * @param configuration HDFS Configuration.    * @param router A router using this RPC server.    * @param nnResolver The NN resolver instance to determine active NNs in HA.    * @param fileResolver File resolver to resolve file paths to subclusters.    * @throws IOException If the RPC server could not be created.    */
 DECL|method|RouterRpcServer (Configuration configuration, Router router, ActiveNamenodeResolver nnResolver, FileSubclusterResolver fileResolver)
 specifier|public
@@ -2351,6 +2381,19 @@ name|getRouterId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Create security manager
+name|this
+operator|.
+name|securityManager
+operator|=
+operator|new
+name|RouterSecurityManager
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|rpcServer
@@ -2411,6 +2454,16 @@ operator|.
 name|setVerbose
 argument_list|(
 literal|false
+argument_list|)
+operator|.
+name|setSecretManager
+argument_list|(
+name|this
+operator|.
+name|securityManager
+operator|.
+name|getSecretManager
+argument_list|()
 argument_list|)
 operator|.
 name|build
@@ -2805,11 +2858,39 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|securityManager
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|securityManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Get the RPC security manager.    *    * @return RPC security manager.    */
+DECL|method|getRouterSecurityManager ()
+specifier|public
+name|RouterSecurityManager
+name|getRouterSecurityManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|securityManager
+return|;
 block|}
 comment|/**    * Get the RPC client to the Namenode.    *    * @return RPC clients to the Namenodes.    */
 DECL|method|getRPCClient ()
@@ -7937,6 +8018,7 @@ end_comment
 
 begin_function
 DECL|method|getRemoteUser ()
+specifier|public
 specifier|static
 name|UserGroupInformation
 name|getRemoteUser
