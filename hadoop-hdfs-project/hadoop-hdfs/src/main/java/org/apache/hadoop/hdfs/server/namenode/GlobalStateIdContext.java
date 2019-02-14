@@ -448,12 +448,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"A client sent stateId: "
+literal|"The client stateId: {} is greater than "
 operator|+
+literal|"the server stateId: {} This is unexpected. "
+operator|+
+literal|"Resetting client stateId to server stateId"
+argument_list|,
 name|clientStateId
-operator|+
-literal|", but server state is: "
-operator|+
+argument_list|,
 name|serverStateId
 argument_list|)
 expr_stmt|;
