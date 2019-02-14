@@ -982,6 +982,16 @@ specifier|private
 name|ReservationSubmissionRequest
 name|reservationRequest
 decl_stmt|;
+DECL|field|appIdToAMSim
+specifier|private
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|AMSimulator
+argument_list|>
+name|appIdToAMSim
+decl_stmt|;
 DECL|method|AMSimulator ()
 specifier|public
 name|AMSimulator
@@ -1002,7 +1012,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource, String nodeLabelExpr, Map<String, String> params)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager resourceManager, SLSRunner slsRunnner, long startTime, long finishTime, String simUser, String simQueue, boolean tracked, String oldApp, long baseTimeMS, Resource amResource, String nodeLabelExpr, Map<String, String> params, Map<ApplicationId, AMSimulator> appIdAMSim)
 specifier|public
 name|void
 name|init
@@ -1056,6 +1066,14 @@ argument_list|,
 name|String
 argument_list|>
 name|params
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|AMSimulator
+argument_list|>
+name|appIdAMSim
 parameter_list|)
 block|{
 name|super
@@ -1139,6 +1157,12 @@ name|nodeLabelExpression
 operator|=
 name|nodeLabelExpr
 expr_stmt|;
+name|this
+operator|.
+name|appIdToAMSim
+operator|=
+name|appIdAMSim
+expr_stmt|;
 block|}
 comment|/**    * register with RM    */
 annotation|@
@@ -1199,6 +1223,16 @@ comment|// submit application, waiting until ACCEPTED
 name|submitApp
 argument_list|(
 name|reservationId
+argument_list|)
+expr_stmt|;
+comment|// add submitted app to mapping
+name|appIdToAMSim
+operator|.
+name|put
+argument_list|(
+name|appId
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 comment|// track app metrics

@@ -132,6 +132,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -546,7 +564,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, long baselineStartTimeMS, Resource amContainerResource, String nodeLabelExpr, Map<String, String> params)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, long baselineStartTimeMS, Resource amContainerResource, String nodeLabelExpr, Map<String, String> params, Map<ApplicationId, AMSimulator> appIdAMSim)
 specifier|public
 name|void
 name|init
@@ -600,6 +618,14 @@ argument_list|,
 name|String
 argument_list|>
 name|params
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|AMSimulator
+argument_list|>
+name|appIdAMSim
 parameter_list|)
 block|{
 name|super
@@ -633,6 +659,8 @@ argument_list|,
 name|nodeLabelExpr
 argument_list|,
 name|params
+argument_list|,
+name|appIdAMSim
 argument_list|)
 expr_stmt|;
 name|amtype

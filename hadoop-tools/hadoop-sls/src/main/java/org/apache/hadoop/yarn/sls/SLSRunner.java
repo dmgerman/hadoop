@@ -552,6 +552,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ExecutionType
 import|;
 end_import
@@ -1232,6 +1250,16 @@ name|AMSimulator
 argument_list|>
 name|amMap
 decl_stmt|;
+DECL|field|appIdAMSim
+specifier|private
+name|Map
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|AMSimulator
+argument_list|>
+name|appIdAMSim
+decl_stmt|;
 DECL|field|trackedApps
 specifier|private
 name|Set
@@ -1488,6 +1516,13 @@ name|amClassMap
 operator|=
 operator|new
 name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|appIdAMSim
+operator|=
+operator|new
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -2103,7 +2138,7 @@ name|this
 operator|.
 name|rmContext
 argument_list|,
-name|amMap
+name|appIdAMSim
 argument_list|)
 return|;
 block|}
@@ -3824,12 +3859,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to create an AM: {}"
+literal|"Failed to create an AM"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5154,6 +5186,8 @@ argument_list|,
 name|labelExpr
 argument_list|,
 name|params
+argument_list|,
+name|appIdAMSim
 argument_list|)
 expr_stmt|;
 if|if
