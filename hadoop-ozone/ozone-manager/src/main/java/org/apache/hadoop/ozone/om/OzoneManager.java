@@ -3295,10 +3295,12 @@ decl_stmt|;
 name|String
 name|rpcAddrStr
 init|=
-name|conf
+name|OmUtils
 operator|.
-name|get
+name|getOmRpcAddress
 argument_list|(
+name|conf
+argument_list|,
 name|rpcAddrKey
 argument_list|)
 decl_stmt|;
@@ -12580,6 +12582,21 @@ name|omNodeDetails
 operator|.
 name|getOMServiceId
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPeerNodes ()
+specifier|public
+name|List
+argument_list|<
+name|OMNodeDetails
+argument_list|>
+name|getPeerNodes
+parameter_list|()
+block|{
+return|return
+name|peerNodes
 return|;
 block|}
 block|}
