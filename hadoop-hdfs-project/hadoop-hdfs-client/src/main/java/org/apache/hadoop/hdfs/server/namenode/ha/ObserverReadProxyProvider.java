@@ -510,10 +510,9 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/**    * The proxy being used currently; this will match with currentIndex above.    * This field is volatile to allow reads without synchronization; updates    * should still be performed synchronously to maintain consistency between    * currentIndex and this field.    */
+comment|/**    * The proxy being used currently. Should only be accessed in synchronized    * methods.    */
 DECL|field|currentProxy
 specifier|private
-specifier|volatile
 name|NNProxyInfo
 argument_list|<
 name|T
@@ -953,34 +952,27 @@ argument_list|>
 name|getCurrentProxy
 parameter_list|()
 block|{
-if|if
-condition|(
-name|currentProxy
-operator|==
-literal|null
-condition|)
-block|{
+return|return
 name|changeProxy
 argument_list|(
 literal|null
 argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|currentProxy
 return|;
 block|}
 end_function
 
 begin_comment
-comment|/**    * Move to the next proxy in the proxy list. If the NNProxyInfo supplied by    * the caller does not match the current proxy, the call is ignored; this is    * to handle concurrent calls (to avoid changing the proxy multiple times).    * The service state of the newly selected proxy will be updated before    * returning.    *    * @param initial The expected current proxy    */
+comment|/**    * Move to the next proxy in the proxy list. If the NNProxyInfo supplied by    * the caller does not match the current proxy, the call is ignored; this is    * to handle concurrent calls (to avoid changing the proxy multiple times).    * The service state of the newly selected proxy will be updated before    * returning.    *    * @param initial The expected current proxy    * @return The new proxy that should be used.    */
 end_comment
 
 begin_function
 DECL|method|changeProxy (NNProxyInfo<T> initial)
 specifier|private
 specifier|synchronized
-name|void
+name|NNProxyInfo
+argument_list|<
+name|T
+argument_list|>
 name|changeProxy
 parameter_list|(
 name|NNProxyInfo
@@ -998,14 +990,10 @@ name|initial
 condition|)
 block|{
 comment|// Must have been a concurrent modification; ignore the move request
-return|return;
-block|}
-comment|// Attempt to force concurrent callers of getCurrentProxy to wait for the
-comment|// new proxy; best-effort by setting currentProxy to null
+return|return
 name|currentProxy
-operator|=
-literal|null
-expr_stmt|;
+return|;
+block|}
 name|currentIndex
 operator|=
 operator|(
@@ -1102,6 +1090,9 @@ operator|.
 name|proxyInfo
 argument_list|)
 expr_stmt|;
+return|return
+name|currentProxy
+return|;
 block|}
 end_function
 
