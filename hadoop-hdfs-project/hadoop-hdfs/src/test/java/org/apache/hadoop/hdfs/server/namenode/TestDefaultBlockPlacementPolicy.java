@@ -826,6 +826,8 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -1115,6 +1117,8 @@ argument_list|,
 name|REPLICATION_FACTOR
 argument_list|,
 name|DEFAULT_BLOCK_SIZE
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

@@ -1669,7 +1669,7 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName)
+DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName, String storagePolicy)
 specifier|public
 name|HdfsFileStatus
 name|create
@@ -1704,6 +1704,9 @@ name|supportedVersions
 parameter_list|,
 name|String
 name|ecPolicyName
+parameter_list|,
+name|String
+name|storagePolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -1863,6 +1866,10 @@ operator|,
 name|String
 operator|.
 name|class
+operator|,
+name|String
+operator|.
+name|class
 block|}
 operator|,
 name|createLocation
@@ -1885,6 +1892,8 @@ operator|,
 name|supportedVersions
 operator|,
 name|ecPolicyName
+operator|,
+name|storagePolicy
 block|)
 function|;
 end_function

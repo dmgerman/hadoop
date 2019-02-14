@@ -5256,6 +5256,8 @@ name|supported
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Add a block via router (requires client to have same lease)

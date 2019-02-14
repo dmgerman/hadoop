@@ -6003,6 +6003,11 @@ name|req
 operator|.
 name|getEcPolicyName
 argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getStoragePolicy
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

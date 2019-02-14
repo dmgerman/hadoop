@@ -13460,7 +13460,7 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Create a new file entry in the namespace.    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}, except it returns valid file status upon    * success    */
-DECL|method|startFile (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName, boolean logRetryCache)
+DECL|method|startFile (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName, String storagePolicy, boolean logRetryCache)
 name|HdfsFileStatus
 name|startFile
 parameter_list|(
@@ -13498,6 +13498,9 @@ parameter_list|,
 name|String
 name|ecPolicyName
 parameter_list|,
+name|String
+name|storagePolicy
+parameter_list|,
 name|boolean
 name|logRetryCache
 parameter_list|)
@@ -13532,6 +13535,8 @@ argument_list|,
 name|supportedVersions
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicy
 argument_list|,
 name|logRetryCache
 argument_list|)
@@ -13571,7 +13576,7 @@ return|return
 name|status
 return|;
 block|}
-DECL|method|startFileInt (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName, boolean logRetryCache)
+DECL|method|startFileInt (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName, String storagePolicy, boolean logRetryCache)
 specifier|private
 name|HdfsFileStatus
 name|startFileInt
@@ -13609,6 +13614,9 @@ name|supportedVersions
 parameter_list|,
 name|String
 name|ecPolicyName
+parameter_list|,
+name|String
+name|storagePolicy
 parameter_list|,
 name|boolean
 name|logRetryCache
@@ -14160,6 +14168,8 @@ argument_list|,
 name|shouldReplicate
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicy
 argument_list|,
 name|logRetryCache
 argument_list|)

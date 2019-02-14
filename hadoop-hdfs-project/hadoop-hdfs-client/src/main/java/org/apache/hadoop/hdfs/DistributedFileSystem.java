@@ -3506,8 +3506,8 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as    * {@link #create(Path, FsPermission, EnumSet<CreateFlag>, int, short, long,    * Progressable, ChecksumOpt)} with a few additions. First, addition of    * favoredNodes that is a hint to where the namenode should place the file    * blocks. The favored nodes hint is not persisted in HDFS. Hence it may be    * honored at the creation time only. And with favored nodes, blocks will be    * pinned on the datanodes to prevent balancing move the block. HDFS could    * move the blocks during replication, to move the blocks from favored nodes.    * A value of null means no favored nodes for this create.    * The second addition is ecPolicyName. A non-null ecPolicyName specifies an    * explicit erasure coding policy for this file, overriding the inherited    * policy. A null ecPolicyName means the file will inherit its EC policy or    * replication policy from its ancestor (the default).    * ecPolicyName and SHOULD_REPLICATE CreateFlag are mutually exclusive. It's    * invalid to set both SHOULD_REPLICATE and a non-null ecPolicyName.    *    */
-DECL|method|create (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes, final String ecPolicyName)
+comment|/**    * Same as    * {@link #create(Path, FsPermission, EnumSet<CreateFlag>, int, short, long,    * Progressable, ChecksumOpt)} with a few additions. First, addition of    * favoredNodes that is a hint to where the namenode should place the file    * blocks. The favored nodes hint is not persisted in HDFS. Hence it may be    * honored at the creation time only. And with favored nodes, blocks will be    * pinned on the datanodes to prevent balancing move the block. HDFS could    * move the blocks during replication, to move the blocks from favored nodes.    * A value of null means no favored nodes for this create.    * The second addition is ecPolicyName. A non-null ecPolicyName specifies an    * explicit erasure coding policy for this file, overriding the inherited    * policy. A null ecPolicyName means the file will inherit its EC policy or    * replication policy from its ancestor (the default).    * ecPolicyName and SHOULD_REPLICATE CreateFlag are mutually exclusive. It's    * invalid to set both SHOULD_REPLICATE and a non-null ecPolicyName.    * The third addition is storagePolicyName. A non-null storage Policy    * specifies an explicit storage policy for this file, overriding the    * inherited policy.    *    */
+DECL|method|create (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes, final String ecPolicyName, final String storagePolicy)
 specifier|private
 name|HdfsDataOutputStream
 name|create
@@ -3555,6 +3555,10 @@ parameter_list|,
 specifier|final
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|String
+name|storagePolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -3636,6 +3640,8 @@ argument_list|,
 name|favoredNodes
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicy
 argument_list|)
 decl_stmt|;
 return|return
@@ -3705,6 +3711,8 @@ argument_list|,
 name|favoredNodes
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicy
 argument_list|)
 return|;
 block|}
@@ -3831,8 +3839,8 @@ name|statistics
 argument_list|)
 return|;
 block|}
-comment|/**    * Similar to {@link #create(Path, FsPermission, EnumSet, int, short, long,    * Progressable, ChecksumOpt, InetSocketAddress[], String)}, it provides a    * HDFS-specific version of {@link #createNonRecursive(Path, FsPermission,    * EnumSet, int, short, long, Progressable)} with a few additions.    *    * @see #create(Path, FsPermission, EnumSet, int, short, long, Progressable,    * ChecksumOpt, InetSocketAddress[], String) for the descriptions of    * additional parameters, i.e., favoredNodes and ecPolicyName.    */
-DECL|method|createNonRecursive (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes, final String ecPolicyName)
+comment|/**    * Similar to {@link #create(Path, FsPermission, EnumSet, int, short, long,    * Progressable, ChecksumOpt, InetSocketAddress[], String)}, it provides a    * HDFS-specific version of {@link #createNonRecursive(Path, FsPermission,    * EnumSet, int, short, long, Progressable)} with a few additions.    *    * @see #create(Path, FsPermission, EnumSet, int, short, long, Progressable,    * ChecksumOpt, InetSocketAddress[], String) for the descriptions of    * additional parameters, i.e., favoredNodes, ecPolicyName and    * storagePolicyName.    */
+DECL|method|createNonRecursive (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes, final String ecPolicyName, final String storagePolicyName)
 specifier|private
 name|HdfsDataOutputStream
 name|createNonRecursive
@@ -3880,6 +3888,10 @@ parameter_list|,
 specifier|final
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|String
+name|storagePolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -3961,6 +3973,8 @@ argument_list|,
 name|favoredNodes
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicyName
 argument_list|)
 decl_stmt|;
 return|return
@@ -4030,6 +4044,8 @@ argument_list|,
 name|favoredNodes
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicyName
 argument_list|)
 return|;
 block|}
@@ -15640,6 +15656,13 @@ name|ecPolicyName
 init|=
 literal|null
 decl_stmt|;
+DECL|field|storagePolicyName
+specifier|private
+name|String
+name|storagePolicyName
+init|=
+literal|null
+decl_stmt|;
 comment|/**      * Construct a HdfsDataOutputStream builder for a file.      * @param dfs the {@link DistributedFileSystem} instance.      * @param path the path of the file to create / append.      */
 DECL|method|HdfsDataOutputStreamBuilder (DistributedFileSystem dfs, Path path)
 specifier|private
@@ -15800,6 +15823,45 @@ name|CreateFlag
 operator|.
 name|NO_LOCAL_WRITE
 argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStoragePolicyName ()
+name|String
+name|getStoragePolicyName
+parameter_list|()
+block|{
+return|return
+name|storagePolicyName
+return|;
+block|}
+comment|/**      * Enforce a file to follow the specified storage policy irrespective of the      * storage policy of its parent directory.      */
+DECL|method|storagePolicyName ( @onnull final String policyName)
+specifier|public
+name|HdfsDataOutputStreamBuilder
+name|storagePolicyName
+parameter_list|(
+annotation|@
+name|Nonnull
+specifier|final
+name|String
+name|policyName
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|policyName
+argument_list|)
+expr_stmt|;
+name|storagePolicyName
+operator|=
+name|policyName
 expr_stmt|;
 return|return
 name|this
@@ -15999,6 +16061,9 @@ argument_list|()
 argument_list|,
 name|getEcPolicyName
 argument_list|()
+argument_list|,
+name|getStoragePolicyName
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -16037,6 +16102,9 @@ name|getFavoredNodes
 argument_list|()
 argument_list|,
 name|getEcPolicyName
+argument_list|()
+argument_list|,
+name|getStoragePolicyName
 argument_list|()
 argument_list|)
 return|;

@@ -3164,7 +3164,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName)
+DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName, String storagePolicy)
 specifier|public
 name|HdfsFileStatus
 name|create
@@ -3199,6 +3199,9 @@ name|supportedVersions
 parameter_list|,
 name|String
 name|ecPolicyName
+parameter_list|,
+name|String
+name|storagePolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -3225,6 +3228,8 @@ argument_list|,
 name|supportedVersions
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|storagePolicy
 argument_list|)
 return|;
 block|}

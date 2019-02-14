@@ -482,6 +482,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// start first addBlock()
@@ -941,6 +943,8 @@ operator|)
 literal|3
 argument_list|,
 literal|1024
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

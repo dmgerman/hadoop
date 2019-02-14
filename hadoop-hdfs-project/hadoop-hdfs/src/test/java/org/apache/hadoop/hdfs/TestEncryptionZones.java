@@ -6746,6 +6746,9 @@ argument_list|()
 argument_list|,
 name|any
 argument_list|()
+argument_list|,
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
