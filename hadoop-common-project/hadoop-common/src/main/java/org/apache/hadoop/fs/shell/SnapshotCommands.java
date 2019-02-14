@@ -615,6 +615,21 @@ argument_list|,
 name|snapshotName
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Deleted snapshot "
+operator|+
+name|snapshotName
+operator|+
+literal|" under "
+operator|+
+name|sroot
+operator|.
+name|path
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Rename a snapshot    */
@@ -814,6 +829,25 @@ argument_list|,
 name|oldName
 argument_list|,
 name|newName
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Renamed snapshot "
+operator|+
+name|oldName
+operator|+
+literal|" to "
+operator|+
+name|newName
+operator|+
+literal|" under "
+operator|+
+name|sroot
+operator|.
+name|path
 argument_list|)
 expr_stmt|;
 block|}
