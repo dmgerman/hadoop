@@ -1665,7 +1665,7 @@ name|defaultPath
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a niceness level to the process that will be executed.  Adds    * {@code -n<nice>} to the given command. The niceness level will be    * taken from the    * {@code yarn.nodemanager.container-executer.os.sched.prioity} property.    *    * @param command the command to which to add the niceness setting.    */
+comment|/**    * Add a niceness level to the process that will be executed.  Adds    * {@code -n<nice>} to the given command. The niceness level will be    * taken from the    * {@link YarnConfiguration#NM_CONTAINER_EXECUTOR_SCHED_PRIORITY} property.    *    * @param command the command to which to add the niceness setting.    */
 DECL|method|addSchedPriorityCommand (List<String> command)
 specifier|protected
 name|void
