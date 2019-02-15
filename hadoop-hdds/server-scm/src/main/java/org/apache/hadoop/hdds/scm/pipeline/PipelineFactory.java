@@ -286,6 +286,30 @@ name|nodes
 argument_list|)
 return|;
 block|}
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+for|for
+control|(
+name|PipelineProvider
+name|p
+range|:
+name|providers
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|p
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

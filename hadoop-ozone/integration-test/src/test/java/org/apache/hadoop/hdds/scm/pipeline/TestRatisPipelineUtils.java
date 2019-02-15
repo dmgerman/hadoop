@@ -120,6 +120,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -263,6 +273,20 @@ operator|=
 name|scm
 operator|.
 name|getPipelineManager
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|cleanup ()
+specifier|public
+name|void
+name|cleanup
+parameter_list|()
+block|{
+name|cluster
+operator|.
+name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
@@ -478,7 +502,7 @@ name|numPipelines
 argument_list|,
 literal|100
 argument_list|,
-literal|10000
+literal|20000
 argument_list|)
 expr_stmt|;
 block|}
