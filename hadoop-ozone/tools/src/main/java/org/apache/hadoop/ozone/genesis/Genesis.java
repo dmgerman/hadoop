@@ -147,6 +147,16 @@ operator|.
 name|getSimpleName
 argument_list|()
 argument_list|)
+operator|.
+name|include
+argument_list|(
+name|BenchMarkBlockManager
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|)
 comment|//        .include(BenchMarkMetadataStoreReads.class.getSimpleName())
 comment|//        .include(BenchMarkMetadataStoreWrites.class.getSimpleName())
 comment|//        .include(BenchMarkDatanodeDispatcher.class.getSimpleName())
