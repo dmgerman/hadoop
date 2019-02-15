@@ -336,6 +336,15 @@ name|HDDS_PROMETHEUS_ENABLED
 init|=
 literal|"hdds.prometheus.endpoint.enabled"
 decl_stmt|;
+DECL|field|HDDS_PROFILER_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_PROFILER_ENABLED
+init|=
+literal|"hdds.profiler.endpoint.enabled"
+decl_stmt|;
 DECL|field|HDDS_KEY_LEN
 specifier|public
 specifier|static
