@@ -1048,7 +1048,29 @@ block|)
 function|;
 end_function
 
-begin_expr_stmt
+begin_if
+if|if
+condition|(
+name|rpcServer
+operator|.
+name|isInvokeConcurrent
+argument_list|(
+name|src
+argument_list|)
+condition|)
+block|{
+name|rpcClient
+operator|.
+name|invokeConcurrent
+argument_list|(
+name|locations
+argument_list|,
+name|remoteMethod
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|rpcClient
 operator|.
 name|invokeSequential
@@ -1056,13 +1078,10 @@ argument_list|(
 name|locations
 argument_list|,
 name|remoteMethod
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
-end_expr_stmt
+block|}
+end_if
 
 begin_function
 unit|}    public
@@ -1128,7 +1147,29 @@ block|)
 function|;
 end_function
 
-begin_expr_stmt
+begin_if
+if|if
+condition|(
+name|rpcServer
+operator|.
+name|isInvokeConcurrent
+argument_list|(
+name|src
+argument_list|)
+condition|)
+block|{
+name|rpcClient
+operator|.
+name|invokeConcurrent
+argument_list|(
+name|locations
+argument_list|,
+name|remoteMethod
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|rpcClient
 operator|.
 name|invokeSequential
@@ -1136,13 +1177,10 @@ argument_list|(
 name|locations
 argument_list|,
 name|remoteMethod
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
-end_expr_stmt
+block|}
+end_if
 
 begin_function
 unit|}    public
