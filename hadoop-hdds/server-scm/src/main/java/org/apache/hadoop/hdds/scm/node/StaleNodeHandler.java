@@ -323,6 +323,17 @@ argument_list|(
 name|datanodeDetails
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Datanode {} moved to stale state. Finalizing its pipelines {}"
+argument_list|,
+name|datanodeDetails
+argument_list|,
+name|pipelineIds
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|PipelineID

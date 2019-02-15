@@ -439,6 +439,20 @@ operator|.
 name|ALLOCATED
 condition|)
 block|{
+name|LOGGER
+operator|.
+name|info
+argument_list|(
+literal|"Pipeline {} reported by {}"
+argument_list|,
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|dn
+argument_list|)
+expr_stmt|;
 name|pipeline
 operator|.
 name|reportDatanode
@@ -492,6 +506,15 @@ condition|)
 block|{
 comment|// since all the containers have been closed the pipeline can be
 comment|// destroyed
+name|LOGGER
+operator|.
+name|info
+argument_list|(
+literal|"Destroying pipeline {} as all containers are closed"
+argument_list|,
+name|pipeline
+argument_list|)
+expr_stmt|;
 name|RatisPipelineUtils
 operator|.
 name|destroyPipeline

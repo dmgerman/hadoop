@@ -297,6 +297,25 @@ argument_list|(
 name|pipelineID
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Received pipeline action {} for {} from datanode [}"
+argument_list|,
+name|action
+operator|.
+name|getAction
+argument_list|()
+argument_list|,
+name|pipeline
+argument_list|,
+name|report
+operator|.
+name|getDatanodeDetails
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|RatisPipelineUtils
 operator|.
 name|finalizeAndDestroyPipeline
