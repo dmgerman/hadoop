@@ -2790,18 +2790,6 @@ argument_list|(
 name|configuration
 argument_list|)
 expr_stmt|;
-comment|// Authenticate KSM if security is enabled
-if|if
-condition|(
-name|securityEnabled
-condition|)
-block|{
-name|loginOMUser
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -4454,6 +4442,7 @@ block|}
 comment|/**    * Login OM service user if security and Kerberos are enabled.    *    * @param  conf    * @throws IOException, AuthenticationException    */
 DECL|method|loginOMUser (OzoneConfiguration conf)
 specifier|private
+specifier|static
 name|void
 name|loginOMUser
 parameter_list|(
@@ -5175,6 +5164,17 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|securityEnabled
+condition|)
+block|{
+name|loginOMUser
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 switch|switch
 condition|(
 name|startOpt
