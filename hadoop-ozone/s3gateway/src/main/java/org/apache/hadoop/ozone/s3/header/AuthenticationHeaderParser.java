@@ -187,6 +187,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|doesAuthenticationInfoExists ()
+specifier|public
+name|boolean
+name|doesAuthenticationInfoExists
+parameter_list|()
+block|{
+return|return
+name|authHeader
+operator|!=
+literal|null
+return|;
+block|}
 DECL|method|getAccessKeyID ()
 specifier|public
 name|String
