@@ -993,6 +993,12 @@ throw|throw
 operator|new
 name|OMException
 argument_list|(
+literal|"Volume "
+operator|+
+name|volume
+operator|+
+literal|" is not found"
+argument_list|,
 name|ResultCodes
 operator|.
 name|VOLUME_NOT_FOUND
@@ -1495,6 +1501,12 @@ throw|throw
 operator|new
 name|OMException
 argument_list|(
+literal|"Volume "
+operator|+
+name|volume
+operator|+
+literal|" is not found"
+argument_list|,
 name|ResultCodes
 operator|.
 name|VOLUME_NOT_FOUND
@@ -1676,6 +1688,12 @@ throw|throw
 operator|new
 name|OMException
 argument_list|(
+literal|"Volume "
+operator|+
+name|volume
+operator|+
+literal|" is not found"
+argument_list|,
 name|ResultCodes
 operator|.
 name|VOLUME_NOT_FOUND
@@ -1950,6 +1968,12 @@ throw|throw
 operator|new
 name|OMException
 argument_list|(
+literal|"Volume "
+operator|+
+name|volume
+operator|+
+literal|" is not found"
+argument_list|,
 name|ResultCodes
 operator|.
 name|VOLUME_NOT_FOUND
