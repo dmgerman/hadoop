@@ -621,9 +621,7 @@ name|void
 name|testCreateDuplicateVolume
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestVolume
 operator|.

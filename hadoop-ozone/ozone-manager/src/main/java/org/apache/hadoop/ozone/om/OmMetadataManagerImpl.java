@@ -632,18 +632,6 @@ name|LoggerFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
-import|;
-end_import
-
 begin_comment
 comment|/**  * Ozone metadata manager interface.  */
 end_comment
@@ -2125,7 +2113,7 @@ literal|"Volume name is required."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2161,7 +2149,7 @@ literal|" not found."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2435,7 +2423,7 @@ literal|"Volume name is required."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2457,7 +2445,7 @@ literal|"Bucket name is required."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2496,7 +2484,7 @@ literal|" not found."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2774,7 +2762,7 @@ literal|"User name is required to list Volumes."
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_USER_NOT_FOUND
+name|USER_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2917,7 +2905,7 @@ name|volumeName
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -3001,7 +2989,7 @@ name|e
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_METADATA_ERROR
+name|METADATA_ERROR
 argument_list|)
 throw|;
 block|}

@@ -538,6 +538,44 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|helpers
 operator|.
 name|ServiceInfo
@@ -775,6 +813,94 @@ operator|.
 name|OMConfigKeys
 operator|.
 name|OZONE_OM_ADDRESS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|BUCKET_NOT_FOUND
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|KEY_NOT_FOUND
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|S3_BUCKET_NOT_FOUND
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|VOLUME_NOT_FOUND
 import|;
 end_import
 
@@ -1172,12 +1298,6 @@ index|[]
 block|{
 block|{
 name|RpcClient
-operator|.
-name|class
-block|}
-block|,
-block|{
-name|RestClient
 operator|.
 name|class
 block|}
@@ -2042,17 +2162,20 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|OMException
 name|e
 parameter_list|)
 block|{
-name|GenericTestUtils
+name|Assert
 operator|.
-name|assertExceptionContains
+name|assertEquals
 argument_list|(
-literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
+name|VOLUME_NOT_FOUND
 argument_list|,
 name|e
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2181,17 +2304,20 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|OMException
 name|e
 parameter_list|)
 block|{
-name|GenericTestUtils
+name|Assert
 operator|.
-name|assertExceptionContains
+name|assertEquals
 argument_list|(
-literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
+name|VOLUME_NOT_FOUND
 argument_list|,
 name|e
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2440,7 +2566,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"VOLUME_NOT_FOUND"
+name|VOLUME_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -2860,7 +2986,9 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
+name|ResultCodes
+operator|.
+name|VOLUME_NOT_FOUND
 argument_list|)
 expr_stmt|;
 name|err
@@ -2893,11 +3021,99 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
+name|ResultCodes
+operator|.
+name|VOLUME_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Execute command, assert exeception message and returns true if error    * was thrown.    */
+comment|/**    * Execute command, assert exception message and returns true if error    * was thrown.    */
+DECL|method|executeWithError (Shell ozoneShell, String[] args, OMException.ResultCodes code)
+specifier|private
+name|void
+name|executeWithError
+parameter_list|(
+name|Shell
+name|ozoneShell
+parameter_list|,
+name|String
+index|[]
+name|args
+parameter_list|,
+name|OMException
+operator|.
+name|ResultCodes
+name|code
+parameter_list|)
+block|{
+try|try
+block|{
+name|execute
+argument_list|(
+name|ozoneShell
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception is expected from command execution "
+operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|OMException
+operator|.
+name|class
+argument_list|,
+name|ex
+operator|.
+name|getCause
+argument_list|()
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|code
+argument_list|,
+operator|(
+operator|(
+name|OMException
+operator|)
+name|ex
+operator|.
+name|getCause
+argument_list|()
+operator|)
+operator|.
+name|getResult
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Execute command, assert exception message and returns true if error    * was thrown.    */
 DECL|method|executeWithError (Shell ozoneShell, String[] args, String expectedError)
 specifier|private
 name|void
@@ -4178,7 +4394,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
+name|VOLUME_NOT_FOUND
 argument_list|)
 expr_stmt|;
 comment|// test createBucket with invalid bucket name
@@ -4326,17 +4542,20 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|OMException
 name|e
 parameter_list|)
 block|{
-name|GenericTestUtils
+name|Assert
 operator|.
-name|assertExceptionContains
+name|assertEquals
 argument_list|(
-literal|"Info Bucket failed, error: BUCKET_NOT_FOUND"
+name|BUCKET_NOT_FOUND
 argument_list|,
 name|e
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4366,7 +4585,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Volume failed, error:VOLUME_NOT_FOUND"
+name|VOLUME_NOT_FOUND
 argument_list|)
 expr_stmt|;
 name|err
@@ -4403,7 +4622,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Delete Bucket failed, error:BUCKET_NOT_FOUND"
+name|BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -4586,7 +4805,9 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Bucket failed, error: BUCKET_NOT_FOUND"
+name|ResultCodes
+operator|.
+name|BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -4920,7 +5141,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Bucket failed, error: BUCKET_NOT_FOUND"
+name|BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -5729,7 +5950,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Bucket failed, error: BUCKET_NOT_FOUND"
+name|BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -6196,7 +6417,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Info Bucket failed, error: BUCKET_NOT_FOUND"
+name|BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 name|err
@@ -6234,7 +6455,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Delete key failed, error:KEY_NOT_FOUND"
+name|KEY_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -6610,7 +6831,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Lookup key failed, error:KEY_NOT_FOUND"
+name|KEY_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -6808,7 +7029,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"Lookup key failed, error:KEY_NOT_FOUND"
+name|KEY_NOT_FOUND
 argument_list|)
 expr_stmt|;
 name|out
@@ -7655,7 +7876,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"S3_BUCKET_NOT_FOUND"
+name|S3_BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 comment|// No bucket name
@@ -7703,7 +7924,7 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"S3_BUCKET_NOT_FOUND"
+name|S3_BUCKET_NOT_FOUND
 argument_list|)
 expr_stmt|;
 block|}
@@ -8769,6 +8990,8 @@ parameter_list|,
 name|String
 name|keyName
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -8794,17 +9017,20 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|OMException
 name|e
 parameter_list|)
 block|{
-name|GenericTestUtils
+name|Assert
 operator|.
-name|assertExceptionContains
+name|assertEquals
 argument_list|(
-literal|"Lookup key failed, error:KEY_NOT_FOUND"
+name|KEY_NOT_FOUND
 argument_list|,
 name|e
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

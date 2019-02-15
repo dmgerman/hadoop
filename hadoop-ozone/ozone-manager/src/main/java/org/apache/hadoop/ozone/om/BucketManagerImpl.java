@@ -352,7 +352,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -391,7 +391,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_ALREADY_EXISTS
+name|BUCKET_ALREADY_EXISTS
 argument_list|)
 throw|;
 block|}
@@ -646,7 +646,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -807,7 +807,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1273,7 +1273,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1310,7 +1310,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_EMPTY
+name|BUCKET_NOT_EMPTY
 argument_list|)
 throw|;
 block|}

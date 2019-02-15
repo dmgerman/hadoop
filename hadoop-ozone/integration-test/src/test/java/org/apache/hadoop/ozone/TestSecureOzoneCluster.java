@@ -150,6 +150,28 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|VOLUME_NOT_FOUND
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|slf4j
 operator|.
 name|event
@@ -2557,17 +2579,11 @@ literal|" (auth:TOKEN)"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|LambdaTestUtils
+name|OzoneTestUtils
 operator|.
-name|intercept
+name|expectOmException
 argument_list|(
-name|IOException
-operator|.
-name|class
-argument_list|,
-literal|"Delete Volume failed,"
-operator|+
-literal|" error:VOLUME_NOT_FOUND"
+name|VOLUME_NOT_FOUND
 argument_list|,
 parameter_list|()
 lambda|->

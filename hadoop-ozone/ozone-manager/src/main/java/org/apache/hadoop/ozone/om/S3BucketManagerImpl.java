@@ -133,6 +133,28 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|VOLUME_ALREADY_EXISTS
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -213,28 +235,6 @@ operator|.
 name|OzoneConsts
 operator|.
 name|OM_S3_VOLUME_PREFIX
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|om
-operator|.
-name|exceptions
-operator|.
-name|OMException
-operator|.
-name|ResultCodes
-operator|.
-name|FAILED_VOLUME_ALREADY_EXISTS
 import|;
 end_import
 
@@ -813,7 +813,7 @@ argument_list|()
 operator|.
 name|compareTo
 argument_list|(
-name|FAILED_VOLUME_ALREADY_EXISTS
+name|VOLUME_ALREADY_EXISTS
 argument_list|)
 operator|==
 literal|0

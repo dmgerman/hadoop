@@ -608,7 +608,7 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|,
 name|omEx
 operator|.
@@ -790,7 +790,7 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_ALREADY_EXISTS
+name|BUCKET_ALREADY_EXISTS
 argument_list|,
 name|omEx
 operator|.
@@ -870,7 +870,7 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|,
 name|omEx
 operator|.
@@ -2063,7 +2063,7 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|,
 name|omEx
 operator|.
@@ -2265,7 +2265,7 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_EMPTY
+name|BUCKET_NOT_EMPTY
 argument_list|,
 name|omEx
 operator|.

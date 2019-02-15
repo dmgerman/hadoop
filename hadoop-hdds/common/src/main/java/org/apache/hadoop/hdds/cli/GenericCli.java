@@ -287,7 +287,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|printError (Throwable error)
-specifier|private
+specifier|protected
 name|void
 name|printError
 parameter_list|(
@@ -307,6 +307,16 @@ name|getMessage
 argument_list|()
 operator|==
 literal|null
+operator|||
+name|error
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
 condition|)
 block|{
 name|error

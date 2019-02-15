@@ -441,7 +441,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_TOO_MANY_USER_VOLUMES
+name|USER_TOO_MANY_VOLUMES
 argument_list|)
 throw|;
 block|}
@@ -571,7 +571,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_USER_NOT_FOUND
+name|USER_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -741,7 +741,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_ALREADY_EXISTS
+name|VOLUME_ALREADY_EXISTS
 argument_list|)
 throw|;
 block|}
@@ -995,7 +995,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1291,7 +1291,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1497,7 +1497,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1678,7 +1678,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1708,7 +1708,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_EMPTY
+name|VOLUME_NOT_EMPTY
 argument_list|)
 throw|;
 block|}
@@ -1952,7 +1952,7 @@ name|OMException
 argument_list|(
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}

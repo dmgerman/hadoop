@@ -1343,7 +1343,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_VOLUME_NOT_FOUND
+name|VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1384,7 +1384,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1449,11 +1449,9 @@ name|OMException
 argument_list|(
 literal|"Bucket not found"
 argument_list|,
-name|OMException
-operator|.
 name|ResultCodes
 operator|.
-name|FAILED_BUCKET_NOT_FOUND
+name|BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -1575,7 +1573,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_NOT_FOUND
+name|KEY_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2002,7 +2000,7 @@ name|uploadID
 argument_list|,
 name|ResultCodes
 operator|.
-name|NO_SUCH_MULTIPART_UPLOAD
+name|NO_SUCH_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
@@ -2487,11 +2485,9 @@ literal|"Cannot allocate key. Not able to get a valid"
 operator|+
 literal|"open key id."
 argument_list|,
-name|OMException
-operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_ALLOCATION
+name|KEY_ALLOCATION_ERROR
 argument_list|)
 throw|;
 block|}
@@ -2572,11 +2568,9 @@ operator|.
 name|getMessage
 argument_list|()
 argument_list|,
-name|OMException
-operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_ALLOCATION
+name|KEY_ALLOCATION_ERROR
 argument_list|)
 throw|;
 block|}
@@ -2831,7 +2825,7 @@ name|objectKey
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_KEY_NOT_FOUND
+name|KEY_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2946,11 +2940,9 @@ operator|.
 name|getMessage
 argument_list|()
 argument_list|,
-name|OMException
-operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_ALLOCATION
+name|KEY_ALLOCATION_ERROR
 argument_list|)
 throw|;
 block|}
@@ -3085,7 +3077,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_NOT_FOUND
+name|KEY_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -3200,7 +3192,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_NOT_FOUND
+name|KEY_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -3314,7 +3306,7 @@ literal|"Key name is empty"
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_INVALID_KEY_NAME
+name|INVALID_KEY_NAME
 argument_list|)
 throw|;
 block|}
@@ -3397,7 +3389,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_NOT_FOUND
+name|KEY_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -3479,7 +3471,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_ALREADY_EXISTS
+name|KEY_ALREADY_EXISTS
 argument_list|)
 throw|;
 block|}
@@ -3555,6 +3547,17 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|ex
+operator|instanceof
+name|OMException
+condition|)
+block|{
+throw|throw
+name|ex
+throw|;
+block|}
 name|LOG
 operator|.
 name|error
@@ -3583,7 +3586,7 @@ argument_list|()
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_KEY_RENAME
+name|KEY_RENAME_ERROR
 argument_list|)
 throw|;
 block|}
@@ -3705,7 +3708,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_KEY_NOT_FOUND
+name|KEY_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -3815,7 +3818,7 @@ name|ex
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_KEY_DELETION
+name|KEY_DELETION_ERROR
 argument_list|)
 throw|;
 block|}
@@ -4376,11 +4379,9 @@ operator|.
 name|getMessage
 argument_list|()
 argument_list|,
-name|OMException
-operator|.
 name|ResultCodes
 operator|.
-name|INITIATE_MULTIPART_UPLOAD_FAILED
+name|INITIATE_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
@@ -4618,7 +4619,7 @@ name|uploadID
 argument_list|,
 name|ResultCodes
 operator|.
-name|NO_SUCH_MULTIPART_UPLOAD
+name|NO_SUCH_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
@@ -4866,7 +4867,7 @@ argument_list|()
 argument_list|,
 name|ResultCodes
 operator|.
-name|UPLOAD_PART_FAILED
+name|MULTIPART_UPLOAD_PARTFILE_ERROR
 argument_list|)
 throw|;
 block|}
@@ -5057,7 +5058,7 @@ name|keyName
 argument_list|,
 name|ResultCodes
 operator|.
-name|NO_SUCH_MULTIPART_UPLOAD
+name|NO_SUCH_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
@@ -5738,7 +5739,7 @@ argument_list|()
 argument_list|,
 name|ResultCodes
 operator|.
-name|COMPLETE_MULTIPART_UPLOAD_FAILED
+name|COMPLETE_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
@@ -5932,7 +5933,7 @@ name|keyName
 argument_list|,
 name|ResultCodes
 operator|.
-name|NO_SUCH_MULTIPART_UPLOAD
+name|NO_SUCH_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
@@ -6254,7 +6255,7 @@ literal|"No Such Multipart upload exists for this key."
 argument_list|,
 name|ResultCodes
 operator|.
-name|NO_SUCH_MULTIPART_UPLOAD
+name|NO_SUCH_MULTIPART_UPLOAD_ERROR
 argument_list|)
 throw|;
 block|}
