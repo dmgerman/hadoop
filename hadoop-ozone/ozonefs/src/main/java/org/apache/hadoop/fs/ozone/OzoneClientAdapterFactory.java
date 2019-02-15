@@ -80,6 +80,22 @@ end_import
 
 begin_import
 import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -129,6 +145,11 @@ specifier|private
 name|OzoneClientAdapterFactory
 parameter_list|()
 block|{   }
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+literal|"DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"
+argument_list|)
 DECL|method|createAdapter ( String volumeStr, String bucketStr, OzoneFSStorageStatistics storageStatistics)
 specifier|public
 specifier|static

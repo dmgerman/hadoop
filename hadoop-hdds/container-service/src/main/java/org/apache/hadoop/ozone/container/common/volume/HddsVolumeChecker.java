@@ -245,6 +245,26 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DataNode
+operator|.
+name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -751,8 +771,6 @@ if|if
 condition|(
 name|maxVolumeFailuresTolerated
 operator|<
-name|DataNode
-operator|.
 name|MAX_VOLUME_FAILURE_TOLERATED_LIMIT
 condition|)
 block|{

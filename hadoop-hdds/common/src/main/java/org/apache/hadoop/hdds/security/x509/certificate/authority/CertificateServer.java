@@ -165,11 +165,11 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr  - Certificate Signing Request.    * @param type - An Enum which says what kind of approval process to follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
+DECL|method|requestCertificate ( PKCS10CertificationRequest csr, CertificateApprover.ApprovalType type)
 name|Future
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|requestCertificate (PKCS10CertificationRequest csr, CertificateApprover.ApprovalType type)
 name|requestCertificate
 parameter_list|(
 name|PKCS10CertificationRequest

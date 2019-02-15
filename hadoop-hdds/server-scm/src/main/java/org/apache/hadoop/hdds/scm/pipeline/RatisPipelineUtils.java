@@ -1361,11 +1361,6 @@ name|values
 argument_list|()
 control|)
 block|{
-while|while
-condition|(
-literal|true
-condition|)
-block|{
 try|try
 block|{
 name|pipelineManager
@@ -1402,7 +1397,6 @@ name|t
 argument_list|)
 expr_stmt|;
 break|break;
-block|}
 block|}
 block|}
 name|isPipelineCreatorRunning

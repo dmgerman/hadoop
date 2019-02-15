@@ -351,6 +351,11 @@ specifier|private
 name|AtomicInteger
 name|tokenSequenceNumber
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|field|allKeys
 specifier|protected
 specifier|final

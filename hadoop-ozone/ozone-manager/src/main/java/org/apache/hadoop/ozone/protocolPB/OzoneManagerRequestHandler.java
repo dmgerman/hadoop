@@ -1894,7 +1894,7 @@ operator|=
 name|om
 expr_stmt|;
 block|}
-comment|//TODO: use map to make shorted methods
+comment|//TODO simplify it to make it shorter
 annotation|@
 name|SuppressWarnings
 argument_list|(

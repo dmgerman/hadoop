@@ -893,11 +893,6 @@ operator|.
 name|ReplicationFactor
 name|factor
 decl_stmt|;
-DECL|field|isMultipartKey
-specifier|private
-name|boolean
-name|isMultipartKey
-decl_stmt|;
 DECL|field|metadata
 specifier|private
 name|Map
@@ -1103,25 +1098,6 @@ operator|.
 name|type
 operator|=
 name|replType
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|setIsMultipartKey (boolean isMultipart)
-specifier|public
-name|Builder
-name|setIsMultipartKey
-parameter_list|(
-name|boolean
-name|isMultipart
-parameter_list|)
-block|{
-name|this
-operator|.
-name|isMultipartKey
-operator|=
-name|isMultipart
 expr_stmt|;
 return|return
 name|this

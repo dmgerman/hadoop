@@ -222,6 +222,22 @@ end_import
 
 begin_import
 import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
+import|import
 name|io
 operator|.
 name|opentracing
@@ -2767,6 +2783,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+literal|"REC_CATCH_EXCEPTION"
+argument_list|)
 DECL|method|run ()
 specifier|public
 name|void

@@ -320,6 +320,7 @@ block|{
 annotation|@
 name|Nullable
 DECL|field|timeoutFutureRef
+specifier|private
 name|TimeoutFuture
 argument_list|<
 name|V

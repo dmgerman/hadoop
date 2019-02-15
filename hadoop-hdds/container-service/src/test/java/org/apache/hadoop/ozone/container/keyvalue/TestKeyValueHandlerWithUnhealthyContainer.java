@@ -80,6 +80,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerCommandRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -865,8 +887,6 @@ block|}
 comment|/**    * Construct fake protobuf messages for various types of requests.    * This is tedious, however necessary to test. Protobuf classes are final    * and cannot be mocked by Mockito.    *    * @param cmdType type of the container command.    * @return    */
 DECL|method|getDummyCommandRequestProto ( ContainerProtos.Type cmdType)
 specifier|private
-name|ContainerProtos
-operator|.
 name|ContainerCommandRequestProto
 name|getDummyCommandRequestProto
 parameter_list|(
@@ -877,15 +897,11 @@ name|cmdType
 parameter_list|)
 block|{
 specifier|final
-name|ContainerProtos
-operator|.
 name|ContainerCommandRequestProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|ContainerProtos
-operator|.
 name|ContainerCommandRequestProto
 operator|.
 name|newBuilder

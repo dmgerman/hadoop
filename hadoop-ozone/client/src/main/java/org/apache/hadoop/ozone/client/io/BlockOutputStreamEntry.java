@@ -22,6 +22,46 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -49,22 +89,6 @@ operator|.
 name|scm
 operator|.
 name|XceiverClientManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|XceiverClientSpi
 import|;
 end_import
 
@@ -168,46 +192,6 @@ name|Token
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|OutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
 begin_comment
 comment|/**  * Helper class used inside {@link BlockOutputStream}.  * */
 end_comment
@@ -215,6 +199,7 @@ end_comment
 begin_class
 DECL|class|BlockOutputStreamEntry
 specifier|public
+specifier|final
 class|class
 name|BlockOutputStreamEntry
 extends|extends
@@ -313,6 +298,11 @@ name|ByteBuffer
 argument_list|>
 name|bufferList
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
 DECL|method|BlockOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum, Token<OzoneBlockTokenIdentifier> token)
 specifier|private
 name|BlockOutputStreamEntry
@@ -683,15 +673,6 @@ argument_list|()
 expr_stmt|;
 comment|// after closing the chunkOutPutStream, blockId would have been
 comment|// reconstructed with updated bcsId
-if|if
-condition|(
-name|this
-operator|.
-name|outputStream
-operator|instanceof
-name|BlockOutputStream
-condition|)
-block|{
 name|this
 operator|.
 name|blockID
@@ -706,7 +687,6 @@ operator|.
 name|getBlockID
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|getTotalSuccessfulFlushedData ()
@@ -718,11 +698,9 @@ name|IOException
 block|{
 if|if
 condition|(
-name|this
-operator|.
 name|outputStream
-operator|instanceof
-name|BlockOutputStream
+operator|!=
+literal|null
 condition|)
 block|{
 name|BlockOutputStream
@@ -749,13 +727,7 @@ name|getTotalSuccessfulFlushedData
 argument_list|()
 return|;
 block|}
-elseif|else
-if|if
-condition|(
-name|outputStream
-operator|==
-literal|null
-condition|)
+else|else
 block|{
 comment|// For a pre allocated block for which no write has been initiated,
 comment|// the OutputStream will be null here.
@@ -764,15 +736,6 @@ return|return
 literal|0
 return|;
 block|}
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid Output Stream for Key: "
-operator|+
-name|key
-argument_list|)
-throw|;
 block|}
 DECL|method|getWrittenDataLength ()
 name|long
@@ -783,11 +746,9 @@ name|IOException
 block|{
 if|if
 condition|(
-name|this
-operator|.
 name|outputStream
-operator|instanceof
-name|BlockOutputStream
+operator|!=
+literal|null
 condition|)
 block|{
 name|BlockOutputStream
@@ -807,13 +768,7 @@ name|getWrittenDataLength
 argument_list|()
 return|;
 block|}
-elseif|else
-if|if
-condition|(
-name|outputStream
-operator|==
-literal|null
-condition|)
+else|else
 block|{
 comment|// For a pre allocated block for which no write has been initiated,
 comment|// the OutputStream will be null here.
@@ -822,15 +777,6 @@ return|return
 literal|0
 return|;
 block|}
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid Output Stream for Key: "
-operator|+
-name|key
-argument_list|)
-throw|;
 block|}
 DECL|method|cleanup (boolean invalidateClient)
 name|void
@@ -845,15 +791,6 @@ block|{
 name|checkStream
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|outputStream
-operator|instanceof
-name|BlockOutputStream
-condition|)
-block|{
 name|BlockOutputStream
 name|out
 init|=
@@ -872,7 +809,6 @@ name|invalidateClient
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 DECL|method|writeOnRetry (long len)
 name|void
 name|writeOnRetry
@@ -886,15 +822,6 @@ block|{
 name|checkStream
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|outputStream
-operator|instanceof
-name|BlockOutputStream
-condition|)
-block|{
 name|BlockOutputStream
 name|out
 init|=
@@ -918,19 +845,6 @@ name|currentPosition
 operator|+=
 name|len
 expr_stmt|;
-block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid Output Stream for Key: "
-operator|+
-name|key
-argument_list|)
-throw|;
-block|}
 block|}
 comment|/**    * Builder class for ChunkGroupOutputStreamEntry.    * */
 DECL|class|Builder
@@ -1086,20 +1000,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setPipeline (Pipeline pipeline)
+DECL|method|setPipeline (Pipeline ppln)
 specifier|public
 name|Builder
 name|setPipeline
 parameter_list|(
 name|Pipeline
-name|pipeline
+name|ppln
 parameter_list|)
 block|{
 name|this
 operator|.
 name|pipeline
 operator|=
-name|pipeline
+name|ppln
 expr_stmt|;
 return|return
 name|this
@@ -1219,7 +1133,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setBufferList (List<ByteBuffer> bufferList)
+DECL|method|setBufferList (List<ByteBuffer> bffrLst)
 specifier|public
 name|Builder
 name|setBufferList
@@ -1228,14 +1142,14 @@ name|List
 argument_list|<
 name|ByteBuffer
 argument_list|>
-name|bufferList
+name|bffrLst
 parameter_list|)
 block|{
 name|this
 operator|.
 name|bufferList
 operator|=
-name|bufferList
+name|bffrLst
 expr_stmt|;
 return|return
 name|this

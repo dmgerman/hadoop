@@ -410,7 +410,6 @@ argument_list|>
 name|checksInProgress
 decl_stmt|;
 comment|/**    * Maps Checkable objects to a future that can be used to retrieve    * the results of the operation.    * Protected by the object lock.    */
-DECL|field|completedChecks
 specifier|private
 specifier|final
 name|Map
@@ -424,6 +423,7 @@ argument_list|<
 name|V
 argument_list|>
 argument_list|>
+DECL|field|completedChecks
 name|completedChecks
 decl_stmt|;
 DECL|method|ThrottledAsyncChecker (final Timer timer, final long minMsBetweenChecks, final long diskCheckTimeout, final ExecutorService executorService)

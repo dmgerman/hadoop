@@ -165,6 +165,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
 import|import static
 name|java
 operator|.
@@ -554,12 +570,12 @@ return|;
 block|}
 block|}
 comment|// Logger to log exceptions caught when running listeners.
-DECL|field|log
+DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
 name|Logger
-name|log
+name|LOG
 init|=
 name|Logger
 operator|.
@@ -701,7 +717,7 @@ comment|// that cause getDeclaredField to throw a NoSuchFieldException when
 comment|// the field is definitely there.
 comment|// For these users fallback to a suboptimal implementation, based on
 comment|// synchronized. This will be a definite performance hit to those users.
-name|log
+name|LOG
 operator|.
 name|log
 argument_list|(
@@ -714,7 +730,7 @@ argument_list|,
 name|unsafeFailure
 argument_list|)
 expr_stmt|;
-name|log
+name|LOG
 operator|.
 name|log
 argument_list|(
@@ -746,6 +762,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"unused"
 argument_list|)
+annotation|@
+name|SuppressFBWarnings
 name|Class
 argument_list|<
 name|?
@@ -758,6 +776,11 @@ name|class
 decl_stmt|;
 block|}
 comment|/**    * Waiter links form a Treiber stack, in the {@link #waiters} field.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|Waiter
 specifier|private
 specifier|static
@@ -1015,6 +1038,11 @@ break|break;
 block|}
 block|}
 comment|/**    * Listeners also form a stack through the {@link #listeners} field.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|Listener
 specifier|private
 specifier|static
@@ -1091,6 +1119,11 @@ name|Object
 argument_list|()
 decl_stmt|;
 comment|/**    * A special value to represent failure, when {@link #setException} is    * called successfully.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|Failure
 specifier|private
 specifier|static
@@ -1155,6 +1188,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * A special value to represent cancellation and the 'wasInterrupted' bit.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|Cancellation
 specifier|private
 specifier|static
@@ -1201,6 +1239,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * A special value that encodes the 'setFuture' state.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|SetFuture
 specifier|private
 specifier|static
@@ -2395,7 +2438,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the result of this {@code Future} unless this {@code Future} has    * already been cancelled or set (including    * {@linkplain #setFuture set asynchronously}). When a call to this method    * returns, the {@code Future} is guaranteed to be    * {@linkplain #isDone done}<b>only if</b> the call was accepted (in which    * case it returns {@code true}). If it returns {@code false}, the {@code    * Future} may have previously been set asynchronously, in which case its    * result may not be known yet. That result, though not yet known, cannot    * be overridden by a call to a {@code set*} method, only by a call to    * {@link #cancel}.    *    * @param value the value to be used as the result    * @return true if the attempt was accepted, completing the {@code Future}    */
-DECL|method|set (@ullable V value)
+DECL|method|set (@ullable V val)
 specifier|protected
 name|boolean
 name|set
@@ -2403,7 +2446,7 @@ parameter_list|(
 annotation|@
 name|Nullable
 name|V
-name|value
+name|val
 parameter_list|)
 block|{
 name|Object
@@ -2415,7 +2458,7 @@ literal|null
 condition|?
 name|NULL
 else|:
-name|value
+name|val
 decl_stmt|;
 if|if
 condition|(
@@ -2496,6 +2539,11 @@ block|}
 comment|/**    * Sets the result of this {@code Future} to match the supplied input    * {@code Future} once the supplied {@code Future} is done, unless this    * {@code Future} has already been cancelled or set (including "set    * asynchronously," defined below).    *<p>    *<p>If the supplied future is {@linkplain #isDone done} when this method    * is called and the call is accepted, then this future is guaranteed to    * have been completed with the supplied future by the time this method    * returns. If the supplied future is not done and the call is accepted, then    * the future will be<i>set asynchronously</i>. Note that such a result,    * though not yet known, cannot be overridden by a call to a {@code set*}    * method, only by a call to {@link #cancel}.    *<p>    *<p>If the call {@code setFuture(delegate)} is accepted and this {@code    * Future} is later cancelled, cancellation will be propagated to {@code    * delegate}. Additionally, any call to {@code setFuture} after any    * cancellation will propagate cancellation to the supplied {@code Future}.    *    * @param future the future to delegate to    * @return true if the attempt was accepted, indicating that the {@code    * Future} was not previously cancelled or set.    * @since 19.0    */
 annotation|@
 name|Beta
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deadstore"
+argument_list|)
 DECL|method|setFuture (ListenableFuture<? extends V> future)
 specifier|protected
 name|boolean
@@ -2536,7 +2584,7 @@ argument_list|()
 condition|)
 block|{
 name|Object
-name|value
+name|val
 init|=
 name|getFutureValue
 argument_list|(
@@ -2553,7 +2601,7 @@ name|this
 argument_list|,
 literal|null
 argument_list|,
-name|value
+name|val
 argument_list|)
 condition|)
 block|{
@@ -3260,7 +3308,7 @@ block|{
 comment|// Log it and keep going -- bad runnable and/or executor. Don't punish
 comment|// the other runnables if we're given a bad one. We only catch
 comment|// RuntimeException because we want Errors to propagate up.
-name|log
+name|LOG
 operator|.
 name|log
 argument_list|(
@@ -3903,6 +3951,11 @@ return|;
 block|}
 block|}
 comment|/**    * {@link AtomicHelper} based on {@link AtomicReferenceFieldUpdater}.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|SafeAtomicHelper
 specifier|private
 specifier|static

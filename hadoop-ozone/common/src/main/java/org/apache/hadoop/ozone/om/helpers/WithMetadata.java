@@ -50,6 +50,11 @@ specifier|public
 class|class
 name|WithMetadata
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|field|metadata
 specifier|protected
 name|Map

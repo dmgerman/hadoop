@@ -333,6 +333,16 @@ return|return
 name|ratisPort
 return|;
 block|}
+DECL|method|getRpcPort ()
+specifier|public
+name|int
+name|getRpcPort
+parameter_list|()
+block|{
+return|return
+name|rpcPort
+return|;
+block|}
 DECL|method|getRpcAddressString ()
 specifier|public
 name|String

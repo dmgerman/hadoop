@@ -514,6 +514,11 @@ name|Parameterized
 operator|.
 name|class
 argument_list|)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"visibilitymodifier"
+argument_list|)
 DECL|class|TestCertificateClientInit
 specifier|public
 class|class

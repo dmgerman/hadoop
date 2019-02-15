@@ -385,6 +385,11 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"finalclass"
+argument_list|)
 DECL|class|HddsVolume
 specifier|public
 class|class

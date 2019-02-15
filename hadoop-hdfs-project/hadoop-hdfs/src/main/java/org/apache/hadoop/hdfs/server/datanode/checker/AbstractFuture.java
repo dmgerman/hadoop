@@ -165,6 +165,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
 import|import static
 name|java
 operator|.

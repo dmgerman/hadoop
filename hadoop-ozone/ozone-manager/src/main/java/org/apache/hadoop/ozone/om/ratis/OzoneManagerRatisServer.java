@@ -1022,6 +1022,12 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|//TODO simplify it to make it shorter
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"methodlength"
+argument_list|)
 DECL|method|newRaftProperties (Configuration conf)
 specifier|private
 name|RaftProperties

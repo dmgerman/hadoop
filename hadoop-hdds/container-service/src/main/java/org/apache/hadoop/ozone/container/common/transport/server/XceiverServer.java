@@ -26,15 +26,11 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
+name|IOException
 import|;
 end_import
 
@@ -188,21 +184,29 @@ end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|IOException
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|util
+name|google
 operator|.
-name|Objects
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -239,9 +243,9 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|Objects
+name|Preconditions
 operator|.
-name|nonNull
+name|checkNotNull
 argument_list|(
 name|conf
 argument_list|)

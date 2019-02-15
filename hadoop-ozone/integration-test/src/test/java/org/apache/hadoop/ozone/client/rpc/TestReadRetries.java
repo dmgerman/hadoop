@@ -661,6 +661,7 @@ decl_stmt|;
 DECL|field|SCM_ID
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|SCM_ID
 init|=
