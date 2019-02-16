@@ -102,6 +102,20 @@ name|HashCodeBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * KeyInfoDetails class is used for parsing json response  * when KeyInfoDetails Call is made.  */
 end_comment
@@ -141,6 +155,11 @@ name|KeyLocation
 argument_list|>
 name|keyLocations
 decl_stmt|;
+DECL|field|feInfo
+specifier|private
+name|FileEncryptionInfo
+name|feInfo
+decl_stmt|;
 comment|/**    * Constructor needed for json serialization.    */
 DECL|method|KeyInfoDetails ()
 specifier|public
@@ -179,6 +198,32 @@ parameter_list|()
 block|{
 return|return
 name|keyLocations
+return|;
+block|}
+DECL|method|setFileEncryptionInfo (FileEncryptionInfo info)
+specifier|public
+name|void
+name|setFileEncryptionInfo
+parameter_list|(
+name|FileEncryptionInfo
+name|info
+parameter_list|)
+block|{
+name|this
+operator|.
+name|feInfo
+operator|=
+name|info
+expr_stmt|;
+block|}
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|feInfo
 return|;
 block|}
 comment|/**    * Parse a string to return KeyInfoDetails Object.    *    * @param jsonString Json String    * @return KeyInfoDetails    * @throws IOException    */

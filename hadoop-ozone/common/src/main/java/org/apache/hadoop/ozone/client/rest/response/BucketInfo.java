@@ -206,6 +206,11 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
+DECL|field|bekName
+specifier|private
+name|String
+name|bekName
+decl_stmt|;
 comment|/**    * Constructor for BucketInfo.    *    * @param volumeName    * @param bucketName    */
 DECL|method|BucketInfo (String volumeName, String bucketName)
 specifier|public
@@ -443,6 +448,34 @@ operator|.
 name|volumeName
 operator|=
 name|volumeName
+expr_stmt|;
+block|}
+comment|/**    * Return bucket encryption key name.    * @return bucket encryption key name    */
+DECL|method|getEncryptionKeyName ()
+specifier|public
+name|String
+name|getEncryptionKeyName
+parameter_list|()
+block|{
+return|return
+name|bekName
+return|;
+block|}
+comment|/**    * Sets the bucket encryption key name.    * @param name bucket encryption key name    */
+DECL|method|setEncryptionKeyName (String name)
+specifier|public
+name|void
+name|setEncryptionKeyName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bekName
+operator|=
+name|name
 expr_stmt|;
 block|}
 comment|/**    * Compares this object with the specified object for order.  Returns a    * negative integer, zero, or a positive integer as this object is less    * than, equal to, or greater than the specified object.    *    * Please note : BucketInfo compare functions are used only within the    * context of a volume, hence volume name is purposefully ignored in    * compareTo, equal and hashcode functions of this class.    */

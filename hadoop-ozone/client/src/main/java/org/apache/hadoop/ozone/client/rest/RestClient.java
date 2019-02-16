@@ -3990,6 +3990,11 @@ operator|new
 name|HashMap
 argument_list|<>
 argument_list|()
+argument_list|,
+name|bucketInfo
+operator|.
+name|getEncryptionKeyName
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -5327,6 +5332,11 @@ argument_list|,
 operator|new
 name|HashMap
 argument_list|<>
+argument_list|()
+argument_list|,
+name|keyInfo
+operator|.
+name|getFileEncryptionInfo
 argument_list|()
 argument_list|)
 decl_stmt|;

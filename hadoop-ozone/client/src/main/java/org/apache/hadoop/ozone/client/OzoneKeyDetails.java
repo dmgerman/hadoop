@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|client
@@ -85,13 +99,18 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
+DECL|field|feInfo
+specifier|private
+name|FileEncryptionInfo
+name|feInfo
+decl_stmt|;
 comment|/**    * Constructs OzoneKeyDetails from OmKeyInfo.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type, Map<String, String> metadata)
+DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type, Map<String, String> metadata, FileEncryptionInfo feInfo)
 specifier|public
 name|OzoneKeyDetails
 parameter_list|(
@@ -129,6 +148,9 @@ argument_list|,
 name|String
 argument_list|>
 name|metadata
+parameter_list|,
+name|FileEncryptionInfo
+name|feInfo
 parameter_list|)
 block|{
 name|super
@@ -160,6 +182,12 @@ name|metadata
 operator|=
 name|metadata
 expr_stmt|;
+name|this
+operator|.
+name|feInfo
+operator|=
+name|feInfo
+expr_stmt|;
 block|}
 comment|/**    * Returns the location detail information of the specific Key.    */
 DECL|method|getOzoneKeyLocations ()
@@ -188,6 +216,16 @@ parameter_list|()
 block|{
 return|return
 name|metadata
+return|;
+block|}
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|feInfo
 return|;
 block|}
 comment|/**    * Set details of key location.    * @param ozoneKeyLocations - details of key location    */

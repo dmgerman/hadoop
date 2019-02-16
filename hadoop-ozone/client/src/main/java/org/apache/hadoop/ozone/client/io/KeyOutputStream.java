@@ -70,6 +70,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|protocol
@@ -553,6 +567,11 @@ specifier|private
 name|OmMultipartCommitUploadPartInfo
 name|commitUploadPartInfo
 decl_stmt|;
+DECL|field|feInfo
+specifier|private
+name|FileEncryptionInfo
+name|feInfo
+decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
@@ -889,6 +908,17 @@ operator|.
 name|getKeyInfo
 argument_list|()
 decl_stmt|;
+comment|// Retrieve the file encryption key info, null if file is not in
+comment|// encrypted bucket.
+name|this
+operator|.
+name|feInfo
+operator|=
+name|info
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|keyArgs
@@ -2591,6 +2621,16 @@ parameter_list|()
 block|{
 return|return
 name|commitUploadPartInfo
+return|;
+block|}
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|feInfo
 return|;
 block|}
 comment|/**    * Builder class of KeyOutputStream.    */

@@ -100,6 +100,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileEncryptionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|protocol
@@ -127,6 +141,22 @@ operator|.
 name|OzoneManagerProtocolProtos
 operator|.
 name|KeyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocolPB
+operator|.
+name|OMPBHelper
 import|;
 end_import
 
@@ -227,12 +257,17 @@ operator|.
 name|ReplicationFactor
 name|factor
 decl_stmt|;
+DECL|field|encInfo
+specifier|private
+name|FileEncryptionInfo
+name|encInfo
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OmKeyInfo (String volumeName, String bucketName, String keyName, List<OmKeyLocationInfoGroup> versions, long dataSize, long creationTime, long modificationTime, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, Map<String, String> metadata)
+DECL|method|OmKeyInfo (String volumeName, String bucketName, String keyName, List<OmKeyLocationInfoGroup> versions, long dataSize, long creationTime, long modificationTime, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, Map<String, String> metadata, FileEncryptionInfo encInfo)
 name|OmKeyInfo
 parameter_list|(
 name|String
@@ -276,6 +311,9 @@ argument_list|,
 name|String
 argument_list|>
 name|metadata
+parameter_list|,
+name|FileEncryptionInfo
+name|encInfo
 parameter_list|)
 block|{
 name|this
@@ -378,6 +416,12 @@ operator|.
 name|metadata
 operator|=
 name|metadata
+expr_stmt|;
+name|this
+operator|.
+name|encInfo
+operator|=
+name|encInfo
 expr_stmt|;
 block|}
 DECL|method|getVolumeName ()
@@ -829,6 +873,16 @@ operator|=
 name|modificationTime
 expr_stmt|;
 block|}
+DECL|method|getFileEncryptionInfo ()
+specifier|public
+name|FileEncryptionInfo
+name|getFileEncryptionInfo
+parameter_list|()
+block|{
+return|return
+name|encInfo
+return|;
+block|}
 comment|/**    * Builder of OmKeyInfo.    */
 DECL|class|Builder
 specifier|public
@@ -902,6 +956,11 @@ argument_list|,
 name|String
 argument_list|>
 name|metadata
+decl_stmt|;
+DECL|field|encInfo
+specifier|private
+name|FileEncryptionInfo
+name|encInfo
 decl_stmt|;
 DECL|method|Builder ()
 specifier|public
@@ -1153,6 +1212,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setFileEncryptionInfo (FileEncryptionInfo feInfo)
+specifier|public
+name|Builder
+name|setFileEncryptionInfo
+parameter_list|(
+name|FileEncryptionInfo
+name|feInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|encInfo
+operator|=
+name|feInfo
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|OmKeyInfo
@@ -1182,6 +1260,8 @@ argument_list|,
 name|factor
 argument_list|,
 name|metadata
+argument_list|,
+name|encInfo
 argument_list|)
 return|;
 block|}
@@ -1220,7 +1300,11 @@ operator|.
 name|getVersion
 argument_list|()
 decl_stmt|;
-return|return
+name|KeyInfo
+operator|.
+name|Builder
+name|kb
+init|=
 name|KeyInfo
 operator|.
 name|newBuilder
@@ -1303,6 +1387,29 @@ argument_list|(
 name|metadata
 argument_list|)
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|encInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|kb
+operator|.
+name|setFileEncryptionInfo
+argument_list|(
+name|OMPBHelper
+operator|.
+name|convert
+argument_list|(
+name|encInfo
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|kb
 operator|.
 name|build
 argument_list|()
@@ -1394,6 +1501,23 @@ operator|.
 name|getMetadataList
 argument_list|()
 argument_list|)
+argument_list|,
+name|keyInfo
+operator|.
+name|hasFileEncryptionInfo
+argument_list|()
+condition|?
+name|OMPBHelper
+operator|.
+name|convert
+argument_list|(
+name|keyInfo
+operator|.
+name|getFileEncryptionInfo
+argument_list|()
+argument_list|)
+else|:
+literal|null
 argument_list|)
 return|;
 block|}

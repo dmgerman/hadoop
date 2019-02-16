@@ -305,7 +305,16 @@ name|SCM_IN_CHILL_MODE
 block|,
 DECL|enumConstant|INVALID_REQUEST
 name|INVALID_REQUEST
-block|}
+block|,
+DECL|enumConstant|BUCKET_ENCRYPTION_KEY_NOT_FOUND
+name|BUCKET_ENCRYPTION_KEY_NOT_FOUND
+block|,
+DECL|enumConstant|UNKNOWN_CIPHER_SUITE
+name|UNKNOWN_CIPHER_SUITE
+block|,
+DECL|enumConstant|INVALID_KMS_PROVIDER
+name|INVALID_KMS_PROVIDER
+block|,    }
 block|}
 end_class
 

@@ -121,8 +121,14 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
-comment|/**    * Private constructor, constructed via builder.    * @param versioning Bucket version flag.    * @param storageType Storage type to be used.    * @param acls list of ACLs.    */
-DECL|method|BucketArgs (Boolean versioning, StorageType storageType, List<OzoneAcl> acls, Map<String, String> metadata)
+comment|/**    * Bucket encryption key name.    */
+DECL|field|bucketEncryptionKey
+specifier|private
+name|String
+name|bucketEncryptionKey
+decl_stmt|;
+comment|/**    * Private constructor, constructed via builder.    * @param versioning Bucket version flag.    * @param storageType Storage type to be used.    * @param acls list of ACLs.    * @param metadata map of bucket metadata    * @param bucketEncryptionKey bucket encryption key name    */
+DECL|method|BucketArgs (Boolean versioning, StorageType storageType, List<OzoneAcl> acls, Map<String, String> metadata, String bucketEncryptionKey)
 specifier|private
 name|BucketArgs
 parameter_list|(
@@ -145,6 +151,9 @@ argument_list|,
 name|String
 argument_list|>
 name|metadata
+parameter_list|,
+name|String
+name|bucketEncryptionKey
 parameter_list|)
 block|{
 name|this
@@ -170,6 +179,12 @@ operator|.
 name|metadata
 operator|=
 name|metadata
+expr_stmt|;
+name|this
+operator|.
+name|bucketEncryptionKey
+operator|=
+name|bucketEncryptionKey
 expr_stmt|;
 block|}
 comment|/**    * Returns true if bucket version is enabled, else false.    * @return isVersionEnabled    */
@@ -224,6 +239,17 @@ return|return
 name|metadata
 return|;
 block|}
+comment|/**    * Returns the bucket encryption key name.    * @return bucket encryption key    */
+DECL|method|getEncryptionKey ()
+specifier|public
+name|String
+name|getEncryptionKey
+parameter_list|()
+block|{
+return|return
+name|bucketEncryptionKey
+return|;
+block|}
 comment|/**    * Returns new builder class that builds a OmBucketInfo.    *    * @return Builder    */
 DECL|method|newBuilder ()
 specifier|public
@@ -276,6 +302,11 @@ argument_list|,
 name|String
 argument_list|>
 name|metadata
+decl_stmt|;
+DECL|field|bucketEncryptionKey
+specifier|private
+name|String
+name|bucketEncryptionKey
 decl_stmt|;
 DECL|method|Builder ()
 specifier|public
@@ -385,6 +416,27 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setBucketEncryptionKey (String bek)
+specifier|public
+name|BucketArgs
+operator|.
+name|Builder
+name|setBucketEncryptionKey
+parameter_list|(
+name|String
+name|bek
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bucketEncryptionKey
+operator|=
+name|bek
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Constructs the BucketArgs.      * @return instance of BucketArgs.      */
 DECL|method|build ()
 specifier|public
@@ -403,6 +455,8 @@ argument_list|,
 name|acls
 argument_list|,
 name|metadata
+argument_list|,
+name|bucketEncryptionKey
 argument_list|)
 return|;
 block|}

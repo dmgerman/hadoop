@@ -436,6 +436,11 @@ specifier|private
 name|long
 name|keyCount
 decl_stmt|;
+DECL|field|encryptionKeyName
+specifier|private
+name|String
+name|encryptionKeyName
+decl_stmt|;
 comment|/**    * Constructor for BucketInfo.    *    * @param volumeName    * @param bucketName    */
 DECL|method|BucketInfo (String volumeName, String bucketName)
 specifier|public
@@ -645,6 +650,32 @@ parameter_list|()
 block|{
 return|return
 name|createdOn
+return|;
+block|}
+DECL|method|setEncryptionKeyName (String encryptionKeyName)
+specifier|public
+name|void
+name|setEncryptionKeyName
+parameter_list|(
+name|String
+name|encryptionKeyName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|encryptionKeyName
+operator|=
+name|encryptionKeyName
+expr_stmt|;
+block|}
+DECL|method|getEncryptionKeyName ()
+specifier|public
+name|String
+name|getEncryptionKeyName
+parameter_list|()
+block|{
+return|return
+name|encryptionKeyName
 return|;
 block|}
 comment|/**    * Returns a JSON string of this object.    * After stripping out bytesUsed and keyCount    *    * @return String    */
