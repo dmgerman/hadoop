@@ -695,6 +695,21 @@ return|return
 name|exposedPorts
 return|;
 block|}
+DECL|method|hasCustomResources ()
+specifier|public
+name|boolean
+name|hasCustomResources
+parameter_list|()
+block|{
+return|return
+name|allocatedResources
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|2
+return|;
+block|}
 block|}
 end_class
 
