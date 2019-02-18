@@ -28,6 +28,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -417,6 +431,29 @@ specifier|private
 name|DeviceResourceUpdaterImpl
 name|deviceResourceUpdater
 decl_stmt|;
+DECL|field|deviceDockerCommandPlugin
+specifier|private
+name|DeviceResourceDockerRuntimePluginImpl
+name|deviceDockerCommandPlugin
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|setDeviceResourceHandler ( DeviceResourceHandlerImpl deviceResourceHandler)
+specifier|public
+name|void
+name|setDeviceResourceHandler
+parameter_list|(
+name|DeviceResourceHandlerImpl
+name|deviceResourceHandler
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deviceResourceHandler
+operator|=
+name|deviceResourceHandler
+expr_stmt|;
+block|}
 DECL|method|DevicePluginAdapter (String name, DevicePlugin dp, DeviceMappingManager dmm)
 specifier|public
 name|DevicePluginAdapter
@@ -454,6 +491,16 @@ return|return
 name|deviceMappingManager
 return|;
 block|}
+DECL|method|getDevicePlugin ()
+specifier|public
+name|DevicePlugin
+name|getDevicePlugin
+parameter_list|()
+block|{
+return|return
+name|devicePlugin
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (Context context)
@@ -467,6 +514,18 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+name|deviceDockerCommandPlugin
+operator|=
+operator|new
+name|DeviceResourceDockerRuntimePluginImpl
+argument_list|(
+name|resourceName
+argument_list|,
+name|devicePlugin
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
 name|deviceResourceUpdater
 operator|=
 operator|new
@@ -514,8 +573,6 @@ name|DeviceResourceHandlerImpl
 argument_list|(
 name|resourceName
 argument_list|,
-name|devicePlugin
-argument_list|,
 name|this
 argument_list|,
 name|deviceMappingManager
@@ -523,6 +580,8 @@ argument_list|,
 name|cGroupsHandler
 argument_list|,
 name|privilegedOperationExecutor
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 return|return
@@ -558,7 +617,7 @@ name|getDockerCommandPluginInstance
 parameter_list|()
 block|{
 return|return
-literal|null
+name|deviceDockerCommandPlugin
 return|;
 block|}
 annotation|@

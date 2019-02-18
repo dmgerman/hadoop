@@ -602,11 +602,17 @@ DECL|field|majorNumber
 specifier|private
 name|int
 name|majorNumber
+init|=
+operator|-
+literal|1
 decl_stmt|;
 DECL|field|minorNumber
 specifier|private
 name|int
 name|minorNumber
+init|=
+operator|-
+literal|1
 decl_stmt|;
 DECL|field|busID
 specifier|private

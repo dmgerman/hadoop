@@ -213,6 +213,12 @@ argument_list|(
 literal|"--module-fpga"
 argument_list|)
 block|,
+DECL|enumConstant|DEVICE
+name|DEVICE
+argument_list|(
+literal|"--module-devices"
+argument_list|)
+block|,
 DECL|enumConstant|LIST_AS_USER
 name|LIST_AS_USER
 argument_list|(
