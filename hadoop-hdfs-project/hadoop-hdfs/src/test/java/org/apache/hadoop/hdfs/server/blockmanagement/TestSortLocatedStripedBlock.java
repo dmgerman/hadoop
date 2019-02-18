@@ -2233,7 +2233,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Removing it from the list to ensure that all the given nodes are
-comment|// successfully marked as decomissioned.
+comment|// successfully marked as decommissioned.
 name|decommnNodeIndices
 operator|.
 name|remove
@@ -2367,7 +2367,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Removing it from the list to ensure that all the given nodes are
-comment|// successfully marked as decomissioned.
+comment|// successfully marked as decommissioned.
 name|decommnNodeIndices
 operator|.
 name|remove
@@ -2520,7 +2520,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Removing it from the list to ensure that all the given nodes are
-comment|// successfully marked as decomissioned.
+comment|// successfully marked as decommissioned.
 name|decommnNodeIndices
 operator|.
 name|remove

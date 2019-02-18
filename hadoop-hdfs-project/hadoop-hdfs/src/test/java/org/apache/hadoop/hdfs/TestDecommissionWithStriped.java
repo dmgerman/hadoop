@@ -1706,7 +1706,7 @@ empty_stmt|;
 block|}
 decl_stmt|;
 name|int
-name|deadDecomissioned
+name|deadDecommissioned
 init|=
 name|fsn
 operator|.
@@ -1714,7 +1714,7 @@ name|getNumDecomDeadDataNodes
 argument_list|()
 decl_stmt|;
 name|int
-name|liveDecomissioned
+name|liveDecommissioned
 init|=
 name|fsn
 operator|.
@@ -1806,7 +1806,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|deadDecomissioned
+name|deadDecommissioned
 argument_list|,
 name|fsn
 operator|.
@@ -1816,7 +1816,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|liveDecomissioned
+name|liveDecommissioned
 operator|+
 name|decommisionNodes
 operator|.
@@ -2215,7 +2215,7 @@ name|decomNodeCount
 argument_list|)
 decl_stmt|;
 name|int
-name|deadDecomissioned
+name|deadDecommissioned
 init|=
 name|fsn
 operator|.
@@ -2223,7 +2223,7 @@ name|getNumDecomDeadDataNodes
 argument_list|()
 decl_stmt|;
 name|int
-name|liveDecomissioned
+name|liveDecommissioned
 init|=
 name|fsn
 operator|.
@@ -2310,7 +2310,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|deadDecomissioned
+name|deadDecommissioned
 argument_list|,
 name|fsn
 operator|.
@@ -2320,7 +2320,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|liveDecomissioned
+name|liveDecommissioned
 operator|+
 name|decommisionNodes
 operator|.

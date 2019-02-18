@@ -13571,10 +13571,10 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
-DECL|method|testDecomissionedNMsMetricsOnRMRestart ()
+DECL|method|testDecommissionedNMsMetricsOnRMRestart ()
 specifier|public
 name|void
-name|testDecomissionedNMsMetricsOnRMRestart
+name|testDecommissionedNMsMetricsOnRMRestart
 parameter_list|()
 throws|throws
 name|Exception

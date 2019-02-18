@@ -1342,7 +1342,7 @@ name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertAdded (LowRedundancyBlocks queues, BlockInfo block, int curReplicas, int decomissionedReplicas, int expectedReplicas)
+DECL|method|assertAdded (LowRedundancyBlocks queues, BlockInfo block, int curReplicas, int decommissionedReplicas, int expectedReplicas)
 specifier|private
 name|void
 name|assertAdded
@@ -1357,7 +1357,7 @@ name|int
 name|curReplicas
 parameter_list|,
 name|int
-name|decomissionedReplicas
+name|decommissionedReplicas
 parameter_list|,
 name|int
 name|expectedReplicas
@@ -1379,7 +1379,7 @@ name|curReplicas
 argument_list|,
 literal|0
 argument_list|,
-name|decomissionedReplicas
+name|decommissionedReplicas
 argument_list|,
 name|expectedReplicas
 argument_list|)

@@ -2429,7 +2429,7 @@ operator|+
 name|i
 expr_stmt|;
 block|}
-comment|// set first 2 locations as decomissioned
+comment|// set first 2 locations as decommissioned
 name|locs
 index|[
 literal|0

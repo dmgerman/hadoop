@@ -4492,7 +4492,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Node should not have been decomissioned."
+literal|"Node should not have been decommissioned."
 argument_list|,
 name|NodeAction
 operator|.
@@ -4517,7 +4517,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Node should have been decomissioned but is in state"
+literal|"Node should have been decommissioned but is in state"
 operator|+
 name|nodeHeartbeat
 operator|.

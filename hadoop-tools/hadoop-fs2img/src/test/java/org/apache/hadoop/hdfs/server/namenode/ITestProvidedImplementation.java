@@ -7497,7 +7497,7 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-comment|// stop the 1st DN while being decomissioned.
+comment|// stop the 1st DN while being decommissioned.
 name|MiniDFSCluster
 operator|.
 name|DataNodeProperties

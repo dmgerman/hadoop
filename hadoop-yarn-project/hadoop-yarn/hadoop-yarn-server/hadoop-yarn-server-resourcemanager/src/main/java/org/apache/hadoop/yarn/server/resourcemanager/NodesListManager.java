@@ -859,7 +859,7 @@ operator|.
 name|excludesFile
 argument_list|)
 expr_stmt|;
-name|setDecomissionedNMs
+name|setDecommissionedNMs
 argument_list|()
 expr_stmt|;
 name|printConfiguredHosts
@@ -1490,10 +1490,10 @@ name|timeout
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setDecomissionedNMs ()
+DECL|method|setDecommissionedNMs ()
 specifier|private
 name|void
-name|setDecomissionedNMs
+name|setDecommissionedNMs
 parameter_list|()
 block|{
 name|Set
@@ -2994,7 +2994,7 @@ operator|.
 name|excludesFile
 argument_list|)
 expr_stmt|;
-name|setDecomissionedNMs
+name|setDecommissionedNMs
 argument_list|()
 expr_stmt|;
 block|}

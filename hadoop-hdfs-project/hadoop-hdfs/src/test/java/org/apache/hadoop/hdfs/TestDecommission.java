@@ -1503,7 +1503,7 @@ name|replicas
 argument_list|)
 expr_stmt|;
 name|int
-name|deadDecomissioned
+name|deadDecommissioned
 init|=
 name|ns
 operator|.
@@ -1511,7 +1511,7 @@ name|getNumDecomDeadDataNodes
 argument_list|()
 decl_stmt|;
 name|int
-name|liveDecomissioned
+name|liveDecommissioned
 init|=
 name|ns
 operator|.
@@ -1546,7 +1546,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|deadDecomissioned
+name|deadDecommissioned
 argument_list|,
 name|ns
 operator|.
@@ -1556,7 +1556,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|liveDecomissioned
+name|liveDecommissioned
 operator|+
 literal|1
 argument_list|,
@@ -2289,7 +2289,7 @@ name|replicas
 argument_list|)
 expr_stmt|;
 name|int
-name|deadDecomissioned
+name|deadDecommissioned
 init|=
 name|ns
 operator|.
@@ -2297,7 +2297,7 @@ name|getNumDecomDeadDataNodes
 argument_list|()
 decl_stmt|;
 name|int
-name|liveDecomissioned
+name|liveDecommissioned
 init|=
 name|ns
 operator|.
@@ -2332,7 +2332,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|deadDecomissioned
+name|deadDecommissioned
 argument_list|,
 name|ns
 operator|.
@@ -2342,7 +2342,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|liveDecomissioned
+name|liveDecommissioned
 operator|+
 literal|1
 argument_list|,
