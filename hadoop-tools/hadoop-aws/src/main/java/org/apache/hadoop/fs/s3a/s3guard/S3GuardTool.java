@@ -805,15 +805,6 @@ name|DATA_IN_S3_IS_PRESERVED
 init|=
 literal|"(all data in S3 is preserved)"
 decl_stmt|;
-DECL|field|E_NO_METASTORE_OR_FILESYSTEM
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|E_NO_METASTORE_OR_FILESYSTEM
-init|=
-literal|"No metastore or filesystem specified"
-decl_stmt|;
 DECL|method|getUsage ()
 specifier|public
 specifier|abstract
@@ -1571,28 +1562,32 @@ name|getStore
 argument_list|()
 return|;
 block|}
-specifier|final
-name|boolean
-name|hasFileSystem
-init|=
-name|filesystem
-operator|!=
-literal|null
-decl_stmt|;
-specifier|final
 name|Configuration
 name|conf
-init|=
-name|hasFileSystem
-condition|?
+decl_stmt|;
+if|if
+condition|(
+name|filesystem
+operator|==
+literal|null
+condition|)
+block|{
+name|conf
+operator|=
+name|getConf
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|conf
+operator|=
 name|filesystem
 operator|.
 name|getConf
 argument_list|()
-else|:
-name|getConf
-argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 name|String
 name|metaURI
 init|=
@@ -1726,27 +1721,6 @@ block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-operator|!
-name|hasFileSystem
-condition|)
-block|{
-comment|// command didn't declare a metadata store URI or a bucket.
-comment|// to avoid problems related to picking up a shared table for actions
-comment|// line init and destroy (HADOOP-15843), this is rejected
-name|printHelp
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-throw|throw
-name|usageError
-argument_list|(
-name|E_NO_METASTORE_OR_FILESYSTEM
-argument_list|)
-throw|;
-block|}
 comment|// CLI does not specify metadata store URI, it uses default metadata store
 comment|// DynamoDB instead.
 name|setStore
@@ -1774,7 +1748,9 @@ block|}
 block|}
 if|if
 condition|(
-name|hasFileSystem
+name|filesystem
+operator|==
+literal|null
 condition|)
 block|{
 name|getStore
@@ -1782,7 +1758,7 @@ argument_list|()
 operator|.
 name|initialize
 argument_list|(
-name|filesystem
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1793,7 +1769,7 @@ argument_list|()
 operator|.
 name|initialize
 argument_list|(
-name|conf
+name|filesystem
 argument_list|)
 expr_stmt|;
 block|}
@@ -6975,19 +6951,16 @@ return|return
 name|uri
 return|;
 block|}
-DECL|method|printHelp (S3GuardTool tool)
-specifier|protected
+DECL|method|printHelp ()
+specifier|private
 specifier|static
 name|void
 name|printHelp
-parameter_list|(
-name|S3GuardTool
-name|tool
-parameter_list|)
+parameter_list|()
 block|{
 if|if
 condition|(
-name|tool
+name|command
 operator|==
 literal|null
 condition|)
@@ -7013,7 +6986,7 @@ name|errorln
 argument_list|(
 literal|"Usage: hadoop "
 operator|+
-name|tool
+name|command
 operator|.
 name|getUsage
 argument_list|()
@@ -7331,42 +7304,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Build the exception to raise on a usage error    * @param format string format    * @param args optional arguments for the string    * @return a new exception to throw    */
-DECL|method|usageError ( String format, Object...args)
-specifier|protected
-specifier|static
-name|ExitUtil
-operator|.
-name|ExitException
-name|usageError
-parameter_list|(
-name|String
-name|format
-parameter_list|,
-name|Object
-modifier|...
-name|args
-parameter_list|)
-block|{
-return|return
-operator|new
-name|ExitUtil
-operator|.
-name|ExitException
-argument_list|(
-name|E_USAGE
-argument_list|,
-name|String
-operator|.
-name|format
-argument_list|(
-name|format
-argument_list|,
-name|args
-argument_list|)
-argument_list|)
-return|;
-block|}
 comment|/**    * Execute the command with the given arguments.    *    * @param conf Hadoop configuration.    * @param args command specific arguments.    * @return exit code.    * @throws Exception on I/O errors.    */
 DECL|method|run (Configuration conf, String...args)
 specifier|public
@@ -7410,13 +7347,16 @@ literal|0
 condition|)
 block|{
 name|printHelp
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 throw|throw
-name|usageError
+operator|new
+name|ExitUtil
+operator|.
+name|ExitException
 argument_list|(
+name|E_USAGE
+argument_list|,
 literal|"No arguments provided"
 argument_list|)
 throw|;
@@ -7574,9 +7514,7 @@ expr_stmt|;
 break|break;
 default|default:
 name|printHelp
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 throw|throw
 operator|new
@@ -7656,9 +7594,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|printHelp
-argument_list|(
-name|command
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|exit
 argument_list|(
@@ -7686,42 +7622,6 @@ name|e
 operator|.
 name|getExitCode
 argument_list|()
-argument_list|,
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-comment|// bucket doesn't exist or similar.
-comment|// skip the stack trace and choose the return code of 44, "404"
-name|errorln
-argument_list|(
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Not found:"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|exit
-argument_list|(
-name|EXIT_NOT_FOUND
 argument_list|,
 name|e
 operator|.
