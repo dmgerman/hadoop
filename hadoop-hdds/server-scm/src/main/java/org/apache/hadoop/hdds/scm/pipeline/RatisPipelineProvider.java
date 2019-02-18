@@ -298,6 +298,22 @@ name|Collectors
 import|;
 end_import
 
+begin_import
+import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implements Api for creating ratis pipelines.  */
 end_comment
@@ -334,6 +350,12 @@ specifier|static
 name|Scheduler
 name|scheduler
 decl_stmt|;
+comment|//TODO static Scheduler should be removed!!!! HDDS-1128
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+literal|"ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"
+argument_list|)
 DECL|method|RatisPipelineProvider (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf)
 name|RatisPipelineProvider
 parameter_list|(

@@ -834,7 +834,7 @@ return|return
 name|total
 return|;
 block|}
-comment|/**    * Determines if all data in the stream has been consumed    *    * @return true if EOF, false if more data is available    */
+comment|/**    * Determines if all data in the stream has been consumed.    *    * @return true if EOF, false if more data is available    */
 DECL|method|blockStreamEOF ()
 specifier|private
 name|boolean

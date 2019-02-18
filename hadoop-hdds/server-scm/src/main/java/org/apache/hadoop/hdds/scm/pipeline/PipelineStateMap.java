@@ -36,6 +36,22 @@ end_import
 
 begin_import
 import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1399,6 +1415,7 @@ return|;
 block|}
 DECL|class|PipelineQuery
 specifier|private
+specifier|static
 class|class
 name|PipelineQuery
 block|{
@@ -1426,13 +1443,23 @@ name|this
 operator|.
 name|type
 operator|=
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
 name|type
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|factor
 operator|=
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
 name|factor
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|PipelineQuery (Pipeline pipeline)
@@ -1459,6 +1486,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+literal|"NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT"
+argument_list|)
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
