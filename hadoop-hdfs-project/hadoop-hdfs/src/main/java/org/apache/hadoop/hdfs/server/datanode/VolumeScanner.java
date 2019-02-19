@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -67,16 +77,6 @@ operator|.
 name|util
 operator|.
 name|LinkedHashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|LinkedList
 import|;
 end_import
 
@@ -526,7 +526,7 @@ argument_list|>
 name|blockIters
 init|=
 operator|new
-name|LinkedList
+name|ArrayList
 argument_list|<
 name|BlockIterator
 argument_list|>
