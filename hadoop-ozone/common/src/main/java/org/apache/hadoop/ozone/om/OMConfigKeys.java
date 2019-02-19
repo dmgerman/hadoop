@@ -824,6 +824,25 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+DECL|field|OZONE_DB_SNAPSHOT_TRANSFER_RATE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_DB_SNAPSHOT_TRANSFER_RATE_KEY
+init|=
+literal|"ozone.manager.db.snapshot.transfer.bandwidthPerSec"
+decl_stmt|;
+DECL|field|OZONE_DB_SNAPSHOT_TRANSFER_RATE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|OZONE_DB_SNAPSHOT_TRANSFER_RATE_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+comment|//no throttling
 block|}
 end_class
 

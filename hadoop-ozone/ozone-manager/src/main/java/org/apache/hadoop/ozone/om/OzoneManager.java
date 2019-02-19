@@ -12712,6 +12712,16 @@ return|return
 name|LOG
 return|;
 block|}
+DECL|method|getConfiguration ()
+specifier|public
+name|OzoneConfiguration
+name|getConfiguration
+parameter_list|()
+block|{
+return|return
+name|configuration
+return|;
+block|}
 DECL|method|setTestSecureOmFlag (boolean testSecureOmFlag)
 specifier|public
 specifier|static

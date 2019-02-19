@@ -667,6 +667,15 @@ name|OM_DB_NAME
 init|=
 literal|"om.db"
 decl_stmt|;
+DECL|field|OM_DB_CHECKPOINTS_DIR_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_DB_CHECKPOINTS_DIR_NAME
+init|=
+literal|"om.db.checkpoints"
+decl_stmt|;
 DECL|field|OZONE_MANAGER_TOKEN_DB_NAME
 specifier|public
 specifier|static
@@ -693,6 +702,15 @@ name|String
 name|STORAGE_DIR_CHUNKS
 init|=
 literal|"chunks"
+decl_stmt|;
+DECL|field|OZONE_DB_CHECKPOINT_REQUEST_FLUSH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_DB_CHECKPOINT_REQUEST_FLUSH
+init|=
+literal|"flushBeforeCheckpoint"
 decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning

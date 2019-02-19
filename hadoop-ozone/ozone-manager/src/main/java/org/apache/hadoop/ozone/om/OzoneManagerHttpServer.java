@@ -115,6 +115,17 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|addServlet
+argument_list|(
+literal|"dbSnapshot"
+argument_list|,
+literal|"/dbSnapshot"
+argument_list|,
+name|OMDbSnapshotServlet
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 name|getWebAppContext
 argument_list|()
 operator|.
