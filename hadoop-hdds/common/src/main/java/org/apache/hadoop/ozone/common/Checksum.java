@@ -239,7 +239,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class to compute and verify checksums for chunks.  */
+comment|/**  * Class to compute and verify checksums for chunks.  *  * This class is not thread safe.  */
 end_comment
 
 begin_class

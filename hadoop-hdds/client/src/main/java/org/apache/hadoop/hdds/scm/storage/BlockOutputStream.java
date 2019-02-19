@@ -244,6 +244,28 @@ name|proto
 operator|.
 name|ContainerProtos
 operator|.
+name|ChecksumType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
 name|ChunkInfo
 import|;
 end_import
@@ -513,11 +535,19 @@ specifier|private
 name|XceiverClientSpi
 name|xceiverClient
 decl_stmt|;
-DECL|field|checksum
+DECL|field|checksumType
 specifier|private
 specifier|final
-name|Checksum
-name|checksum
+name|ContainerProtos
+operator|.
+name|ChecksumType
+name|checksumType
+decl_stmt|;
+DECL|field|bytesPerChecksum
+specifier|private
+specifier|final
+name|int
+name|bytesPerChecksum
 decl_stmt|;
 DECL|field|streamId
 specifier|private
@@ -623,13 +653,13 @@ specifier|private
 name|int
 name|currentBufferIndex
 decl_stmt|;
-comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param pipeline             pipeline where block will be written    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksum              checksum    */
+comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param pipeline             pipeline where block will be written    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferList           list of byte buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksumType          checksum type    * @param bytesPerChecksum      Bytes per checksum    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, Checksum checksum)
+DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, ChecksumType checksumType, int bytesPerChecksum)
 specifier|public
 name|BlockOutputStream
 parameter_list|(
@@ -666,8 +696,11 @@ name|ByteBuffer
 argument_list|>
 name|bufferList
 parameter_list|,
-name|Checksum
-name|checksum
+name|ChecksumType
+name|checksumType
+parameter_list|,
+name|int
+name|bytesPerChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -800,9 +833,15 @@ name|bufferList
 expr_stmt|;
 name|this
 operator|.
-name|checksum
+name|checksumType
 operator|=
-name|checksum
+name|checksumType
+expr_stmt|;
+name|this
+operator|.
+name|bytesPerChecksum
+operator|=
+name|bytesPerChecksum
 expr_stmt|;
 comment|// A single thread executor handle the responses of async requests
 name|responseExecutor
@@ -2714,6 +2753,17 @@ operator|.
 name|copyFrom
 argument_list|(
 name|chunk
+argument_list|)
+decl_stmt|;
+name|Checksum
+name|checksum
+init|=
+operator|new
+name|Checksum
+argument_list|(
+name|checksumType
+argument_list|,
+name|bytesPerChecksum
 argument_list|)
 decl_stmt|;
 name|ChecksumData
