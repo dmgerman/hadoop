@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -120,6 +130,8 @@ name|T
 argument_list|>
 name|format
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -185,6 +197,8 @@ parameter_list|(
 name|T
 name|object
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|Preconditions
 operator|.

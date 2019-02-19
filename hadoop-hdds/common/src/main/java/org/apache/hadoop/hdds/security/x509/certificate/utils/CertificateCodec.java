@@ -600,17 +600,6 @@ name|holder
 argument_list|)
 return|;
 block|}
-comment|/**    * Get Certificate location.    *    * @return Path    */
-DECL|method|getLocation ()
-specifier|public
-name|Path
-name|getLocation
-parameter_list|()
-block|{
-return|return
-name|location
-return|;
-block|}
 comment|/**    * Returns the Certificate as a PEM encoded String.    *    * @param x509CertHolder - X.509 Certificate Holder.    * @return PEM Encoded Certificate String.    * @throws SCMSecurityException - On failure to create a PEM String.    */
 DECL|method|getPEMEncodedString (X509CertificateHolder x509CertHolder)
 specifier|public
@@ -620,6 +609,46 @@ name|getPEMEncodedString
 parameter_list|(
 name|X509CertificateHolder
 name|x509CertHolder
+parameter_list|)
+throws|throws
+name|SCMSecurityException
+block|{
+try|try
+block|{
+return|return
+name|getPEMEncodedString
+argument_list|(
+name|getX509Certificate
+argument_list|(
+name|x509CertHolder
+argument_list|)
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|CertificateException
+name|exp
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|SCMSecurityException
+argument_list|(
+name|exp
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Returns the Certificate as a PEM encoded String.    *    * @param certificate - X.509 Certificate.    * @return PEM Encoded Certificate String.    * @throws SCMSecurityException - On failure to create a PEM String.    */
+DECL|method|getPEMEncodedString (X509Certificate certificate)
+specifier|public
+specifier|static
+name|String
+name|getPEMEncodedString
+parameter_list|(
+name|X509Certificate
+name|certificate
 parameter_list|)
 throws|throws
 name|SCMSecurityException
@@ -649,10 +678,7 @@ name|pemWriter
 operator|.
 name|writeObject
 argument_list|(
-name|getX509Certificate
-argument_list|(
-name|x509CertHolder
-argument_list|)
+name|certificate
 argument_list|)
 expr_stmt|;
 block|}
@@ -665,8 +691,6 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|CertificateException
-decl||
 name|IOException
 name|e
 parameter_list|)
@@ -677,9 +701,9 @@ name|error
 argument_list|(
 literal|"Error in encoding certificate."
 operator|+
-name|x509CertHolder
+name|certificate
 operator|.
-name|getSubject
+name|getSubjectDN
 argument_list|()
 operator|.
 name|toString
@@ -694,9 +718,9 @@ name|SCMSecurityException
 argument_list|(
 literal|"PEM Encoding failed for certificate."
 operator|+
-name|x509CertHolder
+name|certificate
 operator|.
-name|getSubject
+name|getSubjectDN
 argument_list|()
 operator|.
 name|toString
@@ -710,6 +734,7 @@ block|}
 comment|/**    * Gets the X.509 Certificate from PEM encoded String.    *    * @param pemEncodedString - PEM encoded String.    * @return X509Certificate  - Certificate.    * @throws CertificateException - Thrown on Failure.    * @throws IOException          - Thrown on Failure.    */
 DECL|method|getX509Certificate (String pemEncodedString)
 specifier|public
+specifier|static
 name|X509Certificate
 name|getX509Certificate
 parameter_list|(
@@ -758,6 +783,17 @@ name|input
 argument_list|)
 return|;
 block|}
+block|}
+comment|/**    * Get Certificate location.    *    * @return Path    */
+DECL|method|getLocation ()
+specifier|public
+name|Path
+name|getLocation
+parameter_list|()
+block|{
+return|return
+name|location
+return|;
 block|}
 comment|/**    * Write the Certificate pointed to the location by the configs.    *    * @param xCertificate - Certificate to write.    * @throws SCMSecurityException - on Error.    * @throws IOException - on Error.    */
 DECL|method|writeCertificate (X509CertificateHolder xCertificate)

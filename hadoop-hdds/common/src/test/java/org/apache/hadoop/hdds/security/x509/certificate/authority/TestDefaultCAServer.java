@@ -345,6 +345,11 @@ operator|new
 name|TemporaryFolder
 argument_list|()
 decl_stmt|;
+DECL|field|caStore
+specifier|private
+name|MockCAStore
+name|caStore
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|init ()
@@ -369,6 +374,12 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|caStore
+operator|=
+operator|new
+name|MockCAStore
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -415,6 +426,8 @@ name|randomAlphabetic
 argument_list|(
 literal|4
 argument_list|)
+argument_list|,
+name|caStore
 argument_list|)
 decl_stmt|;
 name|testCA
@@ -555,6 +568,8 @@ name|randomAlphabetic
 argument_list|(
 literal|4
 argument_list|)
+argument_list|,
+name|caStore
 argument_list|)
 decl_stmt|;
 name|Consumer
@@ -655,6 +670,8 @@ name|randomAlphabetic
 argument_list|(
 literal|4
 argument_list|)
+argument_list|,
+name|caStore
 argument_list|)
 decl_stmt|;
 name|Consumer
@@ -832,6 +849,8 @@ name|randomAlphabetic
 argument_list|(
 literal|4
 argument_list|)
+argument_list|,
+name|caStore
 argument_list|)
 decl_stmt|;
 name|testCA

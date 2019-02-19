@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.metadata
+DECL|package|org.apache.hadoop.hdds.security.x509.certificate.authority
 package|package
 name|org
 operator|.
@@ -14,25 +14,15 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
+name|security
 operator|.
-name|metadata
+name|x509
+operator|.
+name|certificate
+operator|.
+name|authority
 package|;
 end_package
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|primitives
-operator|.
-name|Longs
-import|;
-end_import
 
 begin_import
 import|import
@@ -46,79 +36,98 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|math
 operator|.
-name|hadoop
+name|BigInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|utils
+name|security
 operator|.
-name|db
+name|cert
 operator|.
-name|Codec
+name|X509Certificate
 import|;
 end_import
 
 begin_comment
-comment|/**  * Codec for Persisting the DeletedBlocks.  */
+comment|/**  *  */
 end_comment
 
 begin_class
-DECL|class|LongCodec
+DECL|class|MockCAStore
 specifier|public
 class|class
-name|LongCodec
+name|MockCAStore
 implements|implements
-name|Codec
-argument_list|<
-name|Long
-argument_list|>
+name|CertificateStore
 block|{
 annotation|@
 name|Override
-DECL|method|toPersistedFormat (Long object)
+DECL|method|storeValidCertificate (BigInteger serialID, X509Certificate certificate)
 specifier|public
-name|byte
-index|[]
-name|toPersistedFormat
+name|void
+name|storeValidCertificate
 parameter_list|(
-name|Long
-name|object
+name|BigInteger
+name|serialID
+parameter_list|,
+name|X509Certificate
+name|certificate
+parameter_list|)
+throws|throws
+name|IOException
+block|{    }
+annotation|@
+name|Override
+DECL|method|revokeCertificate (BigInteger serialID)
+specifier|public
+name|void
+name|revokeCertificate
+parameter_list|(
+name|BigInteger
+name|serialID
+parameter_list|)
+throws|throws
+name|IOException
+block|{    }
+annotation|@
+name|Override
+DECL|method|removeExpiredCertificate (BigInteger serialID)
+specifier|public
+name|void
+name|removeExpiredCertificate
+parameter_list|(
+name|BigInteger
+name|serialID
+parameter_list|)
+throws|throws
+name|IOException
+block|{    }
+annotation|@
+name|Override
+DECL|method|getCertificateByID (BigInteger serialID, CertType certType)
+specifier|public
+name|X509Certificate
+name|getCertificateByID
+parameter_list|(
+name|BigInteger
+name|serialID
+parameter_list|,
+name|CertType
+name|certType
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|Longs
-operator|.
-name|toByteArray
-argument_list|(
-name|object
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|fromPersistedFormat (byte[] rawData)
-specifier|public
-name|Long
-name|fromPersistedFormat
-parameter_list|(
-name|byte
-index|[]
-name|rawData
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|Longs
-operator|.
-name|fromByteArray
-argument_list|(
-name|rawData
-argument_list|)
+literal|null
 return|;
 block|}
 block|}

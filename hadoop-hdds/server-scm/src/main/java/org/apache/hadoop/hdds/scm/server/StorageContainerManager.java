@@ -1909,7 +1909,33 @@ argument_list|)
 throw|;
 block|}
 comment|/**      * Important : This initialization sequence is assumed by some of our tests.      * The testSecureOzoneCluster assumes that security checks have to be      * passed before any artifacts like SCM DB is created. So please don't      * add any other initialization above the Security checks please.      */
-comment|// Authenticate SCM if security is enabled
+if|if
+condition|(
+name|OzoneSecurityUtil
+operator|.
+name|isSecurityEnabled
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|loginAsSCMUser
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Creates the SCM DBs or opens them if it exists.
+comment|// A valid pointer to the store is required by all the other services below.
+name|initalizeMetadataStore
+argument_list|(
+name|conf
+argument_list|,
+name|configurator
+argument_list|)
+expr_stmt|;
+comment|// Authenticate SCM if security is enabled, this initialization can only
+comment|// be done after the metadata store is initialized.
 if|if
 condition|(
 name|OzoneSecurityUtil
@@ -1942,14 +1968,6 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|// Creates the SCM DBs or opens them if it exists.
-name|initalizeMetadataStore
-argument_list|(
-name|conf
-argument_list|,
-name|configurator
-argument_list|)
-expr_stmt|;
 name|eventQueue
 operator|=
 operator|new
@@ -2745,14 +2763,7 @@ name|configurator
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|AuthenticationException
 block|{
-name|loginAsSCMUser
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|configurator
@@ -2775,6 +2786,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// This assumes that SCM init has run, and DB metadata stores are created.
 name|certificateServer
 operator|=
 name|initializeCertificateServer
@@ -3031,6 +3043,49 @@ operator|.
 name|getHostName
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|scmMetadataStore
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cannot initialize Certificate Server without a valid meta "
+operator|+
+literal|"data layer."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|SCMException
+argument_list|(
+literal|"Cannot initialize CA without a valid metadata "
+operator|+
+literal|"store"
+argument_list|,
+name|ResultCodes
+operator|.
+name|SCM_NOT_INITIALIZED
+argument_list|)
+throw|;
+block|}
+name|SCMCertStore
+name|certStore
+init|=
+operator|new
+name|SCMCertStore
+argument_list|(
+name|this
+operator|.
+name|scmMetadataStore
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|DefaultCAServer
@@ -3040,6 +3095,8 @@ argument_list|,
 name|clusterID
 argument_list|,
 name|scmID
+argument_list|,
+name|certStore
 argument_list|)
 return|;
 block|}

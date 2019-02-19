@@ -22,6 +22,28 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|math
+operator|.
+name|BigInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|cert
+operator|.
+name|X509Certificate
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -57,6 +79,28 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|authority
+operator|.
+name|CertificateStore
 import|;
 end_import
 
@@ -112,6 +156,22 @@ name|DeletedBlocksTransaction
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|TableIterator
+import|;
+end_import
+
 begin_comment
 comment|/**  * Generic interface for data stores for SCM.  * This is similar to the OMMetadataStore class,  * where we write classes into some underlying storage system.  */
 end_comment
@@ -149,7 +209,7 @@ name|DBStore
 name|getStore
 parameter_list|()
 function_decl|;
-comment|/**    *  A Table that keeps the deleted blocks lists and transactions.     * @return Table    */
+comment|/**    * A Table that keeps the deleted blocks lists and transactions.    *    * @return Table    */
 DECL|method|getDeletedBlocksTXTable ()
 name|Table
 argument_list|<
@@ -160,17 +220,50 @@ argument_list|>
 name|getDeletedBlocksTXTable
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the current TXID for the deleted blocks.    * @return Long    */
+comment|/**    * Returns the current TXID for the deleted blocks.    *    * @return Long    */
 DECL|method|getCurrentTXID ()
 name|Long
 name|getCurrentTXID
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the next TXID for the Deleted Blocks.    * @return Long.   */
+comment|/**    * Returns the next TXID for the Deleted Blocks.    *    * @return Long.    */
 DECL|method|getNextDeleteBlockTXID ()
 name|Long
 name|getNextDeleteBlockTXID
 parameter_list|()
+function_decl|;
+comment|/**    * A table that maintains all the valid certificates issued by the SCM CA.    *    * @return Table    */
+DECL|method|getValidCertsTable ()
+name|Table
+argument_list|<
+name|BigInteger
+argument_list|,
+name|X509Certificate
+argument_list|>
+name|getValidCertsTable
+parameter_list|()
+function_decl|;
+comment|/**    * A Table that maintains all revoked certificates until they expire.    *    * @return Table.    */
+DECL|method|getRevokedCertsTable ()
+name|Table
+argument_list|<
+name|BigInteger
+argument_list|,
+name|X509Certificate
+argument_list|>
+name|getRevokedCertsTable
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the list of Certificates of a specific type.    *    * @param certType - CertType.    * @return Iterator<X509Certificate>    */
+DECL|method|getAllCerts (CertificateStore.CertType certType)
+name|TableIterator
+name|getAllCerts
+parameter_list|(
+name|CertificateStore
+operator|.
+name|CertType
+name|certType
+parameter_list|)
 function_decl|;
 block|}
 end_interface

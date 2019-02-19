@@ -528,6 +528,8 @@ specifier|public
 name|KEY
 name|getKey
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
 name|codecRegistry
@@ -550,6 +552,8 @@ specifier|public
 name|VALUE
 name|getValue
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
 name|codecRegistry
@@ -705,6 +709,8 @@ parameter_list|(
 name|KEY
 name|key
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|byte
 index|[]
@@ -760,6 +766,8 @@ specifier|public
 name|KEY
 name|key
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|byte
 index|[]

@@ -30,20 +30,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|RandomUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|hdds
@@ -95,6 +81,20 @@ operator|.
 name|PKIProfiles
 operator|.
 name|PKIProfile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -491,17 +491,15 @@ operator|.
 name|getSubject
 argument_list|()
 argument_list|,
-comment|// When we do persistence we will check if the certificate number
-comment|// is a duplicate.
-operator|new
+comment|// Serial is not sequential but it is monotonically increasing.
 name|BigInteger
-argument_list|(
-name|RandomUtils
 operator|.
-name|nextBytes
+name|valueOf
 argument_list|(
-literal|8
-argument_list|)
+name|Time
+operator|.
+name|monotonicNowNanos
+argument_list|()
 argument_list|)
 argument_list|,
 name|validFrom

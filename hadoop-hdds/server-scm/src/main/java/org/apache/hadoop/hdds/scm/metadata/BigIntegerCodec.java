@@ -22,15 +22,11 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
-operator|.
-name|primitives
-operator|.
-name|Longs
+name|IOException
 import|;
 end_import
 
@@ -38,9 +34,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|math
 operator|.
-name|IOException
+name|BigInteger
 import|;
 end_import
 
@@ -61,48 +57,46 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Codec for Persisting the DeletedBlocks.  */
+comment|/**  * Encode and decode BigInteger.  */
 end_comment
 
 begin_class
-DECL|class|LongCodec
+DECL|class|BigIntegerCodec
 specifier|public
 class|class
-name|LongCodec
+name|BigIntegerCodec
 implements|implements
 name|Codec
 argument_list|<
-name|Long
+name|BigInteger
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|toPersistedFormat (Long object)
+DECL|method|toPersistedFormat (BigInteger object)
 specifier|public
 name|byte
 index|[]
 name|toPersistedFormat
 parameter_list|(
-name|Long
+name|BigInteger
 name|object
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|Longs
+name|object
 operator|.
 name|toByteArray
-argument_list|(
-name|object
-argument_list|)
+argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|fromPersistedFormat (byte[] rawData)
 specifier|public
-name|Long
+name|BigInteger
 name|fromPersistedFormat
 parameter_list|(
 name|byte
@@ -113,9 +107,8 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|Longs
-operator|.
-name|fromByteArray
+operator|new
+name|BigInteger
 argument_list|(
 name|rawData
 argument_list|)

@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Iterator
@@ -80,12 +90,16 @@ parameter_list|(
 name|KEY
 name|key
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Returns the key value at the current position.    * @return KEY    */
 DECL|method|key ()
 name|KEY
 name|key
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Returns the VALUE at the current position.    * @return VALUE    */
 DECL|method|value ()

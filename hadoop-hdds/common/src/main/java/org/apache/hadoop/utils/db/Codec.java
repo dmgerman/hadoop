@@ -18,6 +18,16 @@ name|db
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Codec interface to marshall/unmarshall data to/from a byte[] based  * key/value store.  *  * @param<T> Unserialized type  */
 end_comment
@@ -40,6 +50,8 @@ parameter_list|(
 name|T
 name|object
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Convert object from raw persisted format.    *    * @param rawData Byte array from the key/value store. Should not be null.    */
 DECL|method|fromPersistedFormat (byte[] rawData)
@@ -50,6 +62,8 @@ name|byte
 index|[]
 name|rawData
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

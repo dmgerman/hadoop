@@ -178,11 +178,15 @@ DECL|method|getKey ()
 name|KEY
 name|getKey
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|getValue ()
 name|VALUE
 name|getValue
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 block|}
