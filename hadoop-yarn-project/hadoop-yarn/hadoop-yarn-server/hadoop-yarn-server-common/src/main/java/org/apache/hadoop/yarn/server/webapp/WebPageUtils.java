@@ -230,7 +230,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[9]"
+literal|"[10]"
 argument_list|)
 expr_stmt|;
 block|}
