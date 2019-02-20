@@ -193,7 +193,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/**    * Default Constructor    */
+comment|/**    * Default Constructor.    */
 DECL|method|BlockLocation ()
 specifier|public
 name|BlockLocation
@@ -211,7 +211,7 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor    */
+comment|/**    * Copy constructor.    */
 DECL|method|BlockLocation (BlockLocation that)
 specifier|public
 name|BlockLocation
@@ -293,7 +293,7 @@ operator|.
 name|storageTypes
 expr_stmt|;
 block|}
-comment|/**    * Constructor with host, name, offset and length    */
+comment|/**    * Constructor with host, name, offset and length.    */
 DECL|method|BlockLocation (String[] names, String[] hosts, long offset, long length)
 specifier|public
 name|BlockLocation
@@ -327,7 +327,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor with host, name, offset, length and corrupt flag    */
+comment|/**    * Constructor with host, name, offset, length and corrupt flag.    */
 DECL|method|BlockLocation (String[] names, String[] hosts, long offset, long length, boolean corrupt)
 specifier|public
 name|BlockLocation
@@ -366,7 +366,7 @@ name|corrupt
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor with host, name, network topology, offset and length    */
+comment|/**    * Constructor with host, name, network topology, offset and length.    */
 DECL|method|BlockLocation (String[] names, String[] hosts, String[] topologyPaths, long offset, long length)
 specifier|public
 name|BlockLocation
@@ -406,7 +406,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor with host, name, network topology, offset, length     * and corrupt flag    */
+comment|/**    * Constructor with host, name, network topology, offset, length     * and corrupt flag.    */
 DECL|method|BlockLocation (String[] names, String[] hosts, String[] topologyPaths, long offset, long length, boolean corrupt)
 specifier|public
 name|BlockLocation
@@ -723,7 +723,7 @@ operator|=
 name|corrupt
 expr_stmt|;
 block|}
-comment|/**    * Get the list of hosts (hostname) hosting this block    */
+comment|/**    * Get the list of hosts (hostname) hosting this block.    */
 DECL|method|getHosts ()
 specifier|public
 name|String
@@ -737,7 +737,7 @@ return|return
 name|hosts
 return|;
 block|}
-comment|/**    * Get the list of hosts (hostname) hosting a cached replica of the block    */
+comment|/**    * Get the list of hosts (hostname) hosting a cached replica of the block.    */
 DECL|method|getCachedHosts ()
 specifier|public
 name|String
@@ -749,7 +749,7 @@ return|return
 name|cachedHosts
 return|;
 block|}
-comment|/**    * Get the list of names (IP:xferPort) hosting this block    */
+comment|/**    * Get the list of names (IP:xferPort) hosting this block.    */
 DECL|method|getNames ()
 specifier|public
 name|String
@@ -801,7 +801,7 @@ return|return
 name|storageTypes
 return|;
 block|}
-comment|/**    * Get the start offset of file associated with this block    */
+comment|/**    * Get the start offset of file associated with this block.    */
 DECL|method|getOffset ()
 specifier|public
 name|long
@@ -812,7 +812,7 @@ return|return
 name|offset
 return|;
 block|}
-comment|/**    * Get the length of the block    */
+comment|/**    * Get the length of the block.    */
 DECL|method|getLength ()
 specifier|public
 name|long
@@ -845,7 +845,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Set the start offset of file associated with this block    */
+comment|/**    * Set the start offset of file associated with this block.    */
 DECL|method|setOffset (long offset)
 specifier|public
 name|void
@@ -862,7 +862,7 @@ operator|=
 name|offset
 expr_stmt|;
 block|}
-comment|/**    * Set the length of block    */
+comment|/**    * Set the length of block.    */
 DECL|method|setLength (long length)
 specifier|public
 name|void
@@ -896,7 +896,7 @@ operator|=
 name|corrupt
 expr_stmt|;
 block|}
-comment|/**    * Set the hosts hosting this block    */
+comment|/**    * Set the hosts hosting this block.    */
 DECL|method|setHosts (String[] hosts)
 specifier|public
 name|void
@@ -938,7 +938,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the hosts hosting a cached replica of this block    */
+comment|/**    * Set the hosts hosting a cached replica of this block.    */
 DECL|method|setCachedHosts (String[] cachedHosts)
 specifier|public
 name|void
@@ -978,7 +978,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the names (host:port) hosting this block    */
+comment|/**    * Set the names (host:port) hosting this block.    */
 DECL|method|setNames (String[] names)
 specifier|public
 name|void
@@ -1020,7 +1020,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the network topology paths of the hosts    */
+comment|/**    * Set the network topology paths of the hosts.    */
 DECL|method|setTopologyPaths (String[] topologyPaths)
 specifier|public
 name|void
