@@ -4412,13 +4412,38 @@ operator|new
 name|NumberReplicas
 argument_list|()
 decl_stmt|;
-comment|// source node returned is not used
-name|chooseSourceDatanodes
-argument_list|(
+name|BlockInfo
+name|blockInfo
+init|=
 name|getStoredBlock
 argument_list|(
 name|block
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|blockInfo
+operator|==
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Block "
+operator|+
+name|block
+operator|+
+literal|" is Null"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+comment|// source node returned is not used
+name|chooseSourceDatanodes
+argument_list|(
+name|blockInfo
 argument_list|,
 name|containingNodes
 argument_list|,
@@ -8945,8 +8970,9 @@ operator|=
 name|postpone
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|postponeBlock (Block blk)
-specifier|private
 name|void
 name|postponeBlock
 parameter_list|(

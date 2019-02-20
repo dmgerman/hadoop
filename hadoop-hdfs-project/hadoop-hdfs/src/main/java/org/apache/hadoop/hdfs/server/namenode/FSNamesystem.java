@@ -10530,7 +10530,7 @@ name|checkOperation
 argument_list|(
 name|OperationCategory
 operator|.
-name|UNCHECKED
+name|READ
 argument_list|)
 expr_stmt|;
 name|writeLock
@@ -10542,7 +10542,7 @@ name|checkOperation
 argument_list|(
 name|OperationCategory
 operator|.
-name|UNCHECKED
+name|READ
 argument_list|)
 expr_stmt|;
 name|File

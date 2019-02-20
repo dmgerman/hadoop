@@ -2997,6 +2997,16 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|cluster
+operator|.
+name|getDfsCluster
+argument_list|()
+operator|.
+name|transitionToActive
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 name|int
 name|exitCode
 init|=
@@ -3030,19 +3040,26 @@ name|exitCode
 argument_list|)
 expr_stmt|;
 name|String
-name|message
+name|messageFromActiveNN
 init|=
-literal|"Created metasave file dfs.meta in the log directory"
+literal|"Created metasave file dfs.meta "
 operator|+
-literal|" of namenode.*"
+literal|"in the log directory of namenode.*"
+decl_stmt|;
+name|String
+name|messageFromStandbyNN
+init|=
+literal|"Skip Standby NameNode, since it "
+operator|+
+literal|"cannot perform metasave operation"
 decl_stmt|;
 name|assertOutputMatches
 argument_list|(
-name|message
+name|messageFromActiveNN
 operator|+
 name|newLine
 operator|+
-name|message
+name|messageFromStandbyNN
 operator|+
 name|newLine
 argument_list|)
@@ -3066,6 +3083,16 @@ block|{
 name|setUpHaCluster
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getDfsCluster
+argument_list|()
+operator|.
+name|transitionToActive
+argument_list|(
+literal|0
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -3149,6 +3176,16 @@ block|{
 name|setUpHaCluster
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|getDfsCluster
+argument_list|()
+operator|.
+name|transitionToActive
+argument_list|(
+literal|1
 argument_list|)
 expr_stmt|;
 name|cluster
