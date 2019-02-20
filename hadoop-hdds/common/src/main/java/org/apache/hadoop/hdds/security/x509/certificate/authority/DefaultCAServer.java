@@ -290,6 +290,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|math
+operator|.
+name|BigInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|file
@@ -774,6 +784,39 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Returns the Certificate corresponding to given certificate serial id if    * exist. Return null if it doesn't exist.    *    * @param certSerialId         - Certificate for this CA.    * @return X509CertificateHolder    * @throws CertificateException - usually thrown if this CA is not    * initialized.    * @throws IOException - on Error.    */
+annotation|@
+name|Override
+DECL|method|getCertificate (String certSerialId)
+specifier|public
+name|X509Certificate
+name|getCertificate
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|store
+operator|.
+name|getCertificateByID
+argument_list|(
+operator|new
+name|BigInteger
+argument_list|(
+name|certSerialId
+argument_list|)
+argument_list|,
+name|CertificateStore
+operator|.
+name|CertType
+operator|.
+name|VALID_CERTS
+argument_list|)
+return|;
 block|}
 DECL|method|getCAKeys ()
 specifier|private

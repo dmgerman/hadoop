@@ -149,7 +149,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get SCM signed certificate for OM.    *    * @param omDetails - DataNode Details.    * @param certSignReq     - Certificate signing request.    * @return byte[]         - SCM signed certificate.    */
+comment|/**    * Get SCM signed certificate for OM.    *    * @param omDetails       - DataNode Details.    * @param certSignReq     - Certificate signing request.    * @return String         - pem encoded SCM signed    *                          certificate.    */
 DECL|method|getOMCertificate (OzoneManagerDetailsProto omDetails, String certSignReq)
 name|String
 name|getOMCertificate
@@ -160,6 +160,25 @@ parameter_list|,
 name|String
 name|certSignReq
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get SCM signed certificate for given certificate serial id if it exists.    * Throws exception if it's not found.    *    * @param certSerialId    - Certificate serial id.    * @return String         - pem encoded SCM signed    *                          certificate with given cert id if it    *                          exists.    */
+DECL|method|getCertificate (String certSerialId)
+name|String
+name|getCertificate
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get CA certificate.    *    * @return String         - pem encoded CA certificate.    */
+DECL|method|getCACertificate ()
+name|String
+name|getCACertificate
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

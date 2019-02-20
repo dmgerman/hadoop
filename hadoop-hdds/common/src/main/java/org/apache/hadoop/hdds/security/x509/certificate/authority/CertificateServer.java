@@ -64,6 +64,30 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|authority
+operator|.
+name|CertificateApprover
+operator|.
+name|ApprovalType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|bouncycastle
 operator|.
 name|cert
@@ -131,7 +155,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface for Certificate Authority. This can be extended to talk to external  * CAs later or HSMs later.  */
+comment|/**  * Interface for Certificate Authority. This can be extended to talk to  * external CAs later or HSMs later.  */
 end_comment
 
 begin_interface
@@ -164,6 +188,19 @@ name|CertificateException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Returns the Certificate corresponding to given certificate serial id if    * exist. Return null if it doesn't exist.    *    * @return certSerialId         - Certificate serial id.    * @throws CertificateException - usually thrown if this CA is not    *                              initialized.    * @throws IOException          - on Error.    */
+DECL|method|getCertificate (String certSerialId)
+name|X509Certificate
+name|getCertificate
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+throws|throws
+name|CertificateException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr  - Certificate Signing Request.    * @param type - An Enum which says what kind of approval process to follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
 DECL|method|requestCertificate ( PKCS10CertificationRequest csr, CertificateApprover.ApprovalType type)
 name|Future
@@ -184,18 +221,16 @@ throws|throws
 name|SCMSecurityException
 function_decl|;
 comment|/**    * Request a Certificate based on Certificate Signing Request.    *    * @param csr - Certificate Signing Request as a PEM encoded String.    * @param type - An Enum which says what kind of approval process to follow.    * @return A future that will have this certificate when this request is    * approved.    * @throws SCMSecurityException - on Error.    */
+DECL|method|requestCertificate (String csr, ApprovalType type)
 name|Future
 argument_list|<
 name|X509CertificateHolder
 argument_list|>
-DECL|method|requestCertificate (String csr, CertificateApprover.ApprovalType type)
 name|requestCertificate
 parameter_list|(
 name|String
 name|csr
 parameter_list|,
-name|CertificateApprover
-operator|.
 name|ApprovalType
 name|type
 parameter_list|)
@@ -203,7 +238,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Revokes a Certificate issued by this CertificateServer.    *    * @param certificate - Certificate to revoke    * @param approver - Approval process to follow.    * @return Future that tells us what happened.    * @throws SCMSecurityException - on Error.    */
-DECL|method|revokeCertificate (X509Certificate certificate, CertificateApprover.ApprovalType approver)
+DECL|method|revokeCertificate (X509Certificate certificate, ApprovalType approver)
 name|Future
 argument_list|<
 name|Boolean
@@ -213,8 +248,6 @@ parameter_list|(
 name|X509Certificate
 name|certificate
 parameter_list|,
-name|CertificateApprover
-operator|.
 name|ApprovalType
 name|approver
 parameter_list|)
