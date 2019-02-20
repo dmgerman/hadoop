@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -177,6 +191,26 @@ operator|.
 name|io
 operator|.
 name|OzoneOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|rpc
+operator|.
+name|ha
+operator|.
+name|OMProxyProvider
 import|;
 end_import
 
@@ -1026,6 +1060,13 @@ name|kerberosID
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+annotation|@
+name|VisibleForTesting
+DECL|method|getOMProxyProvider ()
+name|OMProxyProvider
+name|getOMProxyProvider
+parameter_list|()
 function_decl|;
 block|}
 end_interface

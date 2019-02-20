@@ -362,6 +362,18 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getClientProxy ()
+specifier|public
+name|ClientProtocol
+name|getClientProxy
+parameter_list|()
+block|{
+return|return
+name|proxy
+return|;
+block|}
 comment|/**    * Creates the volume with default values.    * @param volumeName Name of the volume to be created.    * @throws IOException    */
 DECL|method|createVolume (String volumeName)
 specifier|public

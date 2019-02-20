@@ -422,6 +422,26 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|client
+operator|.
+name|rpc
+operator|.
+name|ha
+operator|.
+name|OMProxyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|om
 operator|.
 name|OMConfigKeys
@@ -4377,6 +4397,18 @@ operator|+
 literal|"support this operation."
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOMProxyProvider ()
+specifier|public
+name|OMProxyProvider
+name|getOMProxyProvider
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
 block|}
 annotation|@
 name|Override
