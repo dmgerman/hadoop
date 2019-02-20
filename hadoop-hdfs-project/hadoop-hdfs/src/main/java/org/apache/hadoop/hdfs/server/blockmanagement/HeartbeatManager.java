@@ -1559,6 +1559,30 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Stale datanode {}."
+operator|+
+literal|" No heartbeat received since last {} milliseconds"
+argument_list|)
+argument_list|,
+name|d
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|dm
+operator|.
+name|getStaleInterval
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|numOfStaleNodes
 operator|++
 expr_stmt|;
