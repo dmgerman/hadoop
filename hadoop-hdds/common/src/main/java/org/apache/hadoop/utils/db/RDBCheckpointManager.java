@@ -366,6 +366,7 @@ literal|null
 return|;
 block|}
 DECL|class|RocksDBCheckpointSnapshot
+specifier|static
 class|class
 name|RocksDBCheckpointSnapshot
 implements|implements

@@ -739,11 +739,28 @@ name|exists
 argument_list|()
 condition|)
 block|{
+name|boolean
+name|success
+init|=
 name|checkpointsDir
 operator|.
 name|mkdir
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to create RocksDB checkpoint directory"
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|//Initialize checkpoint manager
 name|checkPointManager

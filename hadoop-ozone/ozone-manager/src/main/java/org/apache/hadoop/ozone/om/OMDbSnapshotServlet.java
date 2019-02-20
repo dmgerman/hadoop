@@ -310,6 +310,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
 DECL|field|omDbStore
 specifier|private
 specifier|transient
@@ -318,6 +327,7 @@ name|omDbStore
 decl_stmt|;
 DECL|field|throttler
 specifier|private
+specifier|transient
 name|DataTransferThrottler
 name|throttler
 init|=
@@ -547,18 +557,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Tar location = "
-operator|+
-name|checkPointTarFile
-operator|.
-name|getAbsolutePath
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|checkPointTarFile
 operator|=
 name|OmUtils
