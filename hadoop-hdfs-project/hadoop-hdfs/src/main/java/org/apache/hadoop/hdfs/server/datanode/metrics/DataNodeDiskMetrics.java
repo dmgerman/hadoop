@@ -362,6 +362,15 @@ operator|.
 name|newHashMap
 argument_list|()
 decl_stmt|;
+comment|// Adding for test purpose. When addSlowDiskForTesting() called from test
+comment|// code, status should not be overridden by daemon thread.
+DECL|field|overrideStatus
+specifier|private
+name|boolean
+name|overrideStatus
+init|=
+literal|true
+decl_stmt|;
 DECL|method|DataNodeDiskMetrics (DataNode dn, long diskOutlierDetectionIntervalMs)
 specifier|public
 name|DataNodeDiskMetrics
@@ -428,6 +437,16 @@ block|{
 while|while
 condition|(
 name|shouldRun
+condition|)
+block|{
+if|if
+condition|(
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
 name|Map
@@ -518,10 +537,7 @@ decl_stmt|;
 name|DataNodeVolumeMetrics
 name|metrics
 init|=
-name|volumeIterator
-operator|.
-name|next
-argument_list|()
+name|volume
 operator|.
 name|getMetrics
 argument_list|()
@@ -635,7 +651,7 @@ argument_list|(
 literal|"No disk stats available for detecting outliers."
 argument_list|)
 expr_stmt|;
-return|return;
+continue|continue;
 block|}
 name|detectAndUpdateDiskOutliers
 argument_list|(
@@ -646,6 +662,7 @@ argument_list|,
 name|writeIoStats
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|Thread
@@ -901,6 +918,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|overrideStatus
+condition|)
+block|{
 name|diskOutliersStats
 operator|=
 name|diskStats
@@ -912,6 +934,7 @@ argument_list|(
 literal|"Updated disk outliers."
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|addDiskStat (Map<String, Map<DiskOp, Double>> diskStats, String disk, DiskOp diskOp, double latency)
 specifier|private
@@ -1060,6 +1083,10 @@ argument_list|>
 name|latencies
 parameter_list|)
 block|{
+name|overrideStatus
+operator|=
+literal|false
+expr_stmt|;
 if|if
 condition|(
 name|latencies
