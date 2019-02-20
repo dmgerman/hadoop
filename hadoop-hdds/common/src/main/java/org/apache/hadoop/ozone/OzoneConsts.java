@@ -1422,7 +1422,7 @@ specifier|final
 name|String
 name|OM_SERVICE_ID_DEFAULT
 init|=
-literal|"om-service-value"
+literal|"omServiceIdDefault"
 decl_stmt|;
 block|}
 end_class
