@@ -348,6 +348,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|azurebfs
+operator|.
+name|constants
+operator|.
+name|TestConfigurationKeys
+operator|.
+name|FS_AZURE_TEST_NAMESPACE_ENABLED_ACCOUNT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|test
 operator|.
 name|MetricsAsserts
@@ -1812,6 +1832,34 @@ argument_list|,
 name|count
 argument_list|)
 return|;
+block|}
+comment|/**    * Assume hierarchical namespace is disabled for test account.    */
+DECL|method|assumeNamespaceDisabled (Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|assumeNamespaceDisabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|Assume
+operator|.
+name|assumeFalse
+argument_list|(
+literal|"Hierarchical namespace is enabled for test account."
+argument_list|,
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FS_AZURE_TEST_NAMESPACE_ENABLED_ACCOUNT
+argument_list|,
+literal|false
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

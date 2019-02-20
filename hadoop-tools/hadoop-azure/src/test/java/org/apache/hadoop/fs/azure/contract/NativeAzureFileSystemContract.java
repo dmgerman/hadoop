@@ -122,6 +122,13 @@ argument_list|(
 name|CONTRACT_XML
 argument_list|)
 expr_stmt|;
+name|AzureTestUtils
+operator|.
+name|assumeNamespaceDisabled
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
