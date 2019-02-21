@@ -3499,8 +3499,12 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
+name|FinalApplicationStatus
+operator|.
+name|KILLED
+argument_list|,
 name|applicationAttempt
 operator|.
 name|getFinalApplicationStatus
