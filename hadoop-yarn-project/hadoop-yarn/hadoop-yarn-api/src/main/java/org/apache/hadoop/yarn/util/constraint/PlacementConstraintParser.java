@@ -1195,7 +1195,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Tokenizer used to parse allocation tags expression, which should be    * in tag=numOfAllocations syntax.    */
+comment|/**    * Tokenizer used to parse allocation tags expression, which should be    * in tag(numOfAllocations) syntax.    */
 DECL|class|SourceTagsTokenizer
 specifier|public
 specifier|static
@@ -1248,7 +1248,7 @@ name|String
 operator|.
 name|valueOf
 argument_list|(
-name|KV_SPLIT_DELIM
+name|BRACKET_START
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1282,6 +1282,21 @@ name|countTokens
 argument_list|()
 operator|!=
 literal|2
+operator|||
+operator|!
+name|this
+operator|.
+name|expression
+operator|.
+name|endsWith
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|BRACKET_END
+argument_list|)
+argument_list|)
 condition|)
 block|{
 throw|throw
@@ -1290,7 +1305,7 @@ name|PlacementConstraintParseException
 argument_list|(
 literal|"Expecting source allocation tag to be specified"
 operator|+
-literal|" sourceTag=numOfAllocations syntax,"
+literal|" sourceTag(numOfAllocations) syntax,"
 operator|+
 literal|" but met "
 operator|+
@@ -1314,12 +1329,29 @@ name|sourceTag
 argument_list|)
 expr_stmt|;
 name|String
-name|num
+name|str
 init|=
 name|st
 operator|.
 name|nextToken
 argument_list|()
+decl_stmt|;
+name|String
+name|num
+init|=
+name|str
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|str
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|1
+argument_list|)
 decl_stmt|;
 try|try
 block|{
@@ -2794,7 +2826,7 @@ operator|.
 name|num
 return|;
 block|}
-comment|/**      * Parses source tags from expression "sourceTags=numOfAllocations".      * @param expr      * @return source tags, see {@link SourceTags}      * @throws PlacementConstraintParseException      */
+comment|/**      * Parses source tags from expression "sourceTags(numOfAllocations)".      * @param expr      * @return source tags, see {@link SourceTags}      * @throws PlacementConstraintParseException      */
 DECL|method|parseFrom (String expr)
 specifier|public
 specifier|static
@@ -3013,7 +3045,7 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Parses a placement constraint specification. A placement constraint spec    * is a composite expression which is composed by multiple sub constraint    * expressions delimited by ":". With following syntax:    *    *<p>Tag1=N1,P1:Tag2=N2,P2:...:TagN=Nn,Pn</p>    *    * where<b>TagN=Nn</b> is a key value pair to determine the source    * allocation tag and the number of allocations, such as:    *    *<p>foo=3</p>    *    * and where<b>Pn</b> can be any form of a valid constraint expression,    * such as:    *    *<ul>    *<li>in,node,foo,bar</li>    *<li>notin,node,foo,bar,1,2</li>    *<li>and(notin,node,foo:notin,node,bar)</li>    *</ul>    * @param expression expression string.    * @return a map of source tags to placement constraint mapping.    * @throws PlacementConstraintParseException    */
+comment|/**    * Parses a placement constraint specification. A placement constraint spec    * is a composite expression which is composed by multiple sub constraint    * expressions delimited by ":". With following syntax:    *    *<p>Tag1(N1),P1:Tag2(N2),P2:...:TagN(Nn),Pn</p>    *    * where<b>TagN(Nn)</b> is a key value pair to determine the source    * allocation tag and the number of allocations, such as:    *    *<p>foo(3)</p>    *    * Optional when using NodeAttribute Constraint.    *    * and where<b>Pn</b> can be any form of a valid constraint expression,    * such as:    *    *<ul>    *<li>in,node,foo,bar</li>    *<li>notin,node,foo,bar,1,2</li>    *<li>and(notin,node,foo:notin,node,bar)</li>    *</ul>    *    * and NodeAttribute Constraint such as    *    *<ul>    *<li>yarn.rm.io/foo=true</li>    *<li>java=1.7,1.8</li>    *</ul>    * @param expression expression string.    * @return a map of source tags to placement constraint mapping.    * @throws PlacementConstraintParseException    */
 DECL|method|parsePlacementSpec ( String expression)
 specifier|public
 specifier|static
@@ -3080,9 +3112,36 @@ operator|.
 name|nextElement
 argument_list|()
 decl_stmt|;
-comment|// each spec starts with sourceAllocationTag=numOfContainers and
+comment|// each spec starts with sourceAllocationTag(numOfContainers) and
 comment|// followed by a constraint expression.
-comment|// foo=4,Pn
+comment|// foo(4),Pn
+specifier|final
+name|SourceTags
+name|st
+decl_stmt|;
+name|PlacementConstraint
+name|constraint
+decl_stmt|;
+name|String
+name|delimiter
+init|=
+operator|new
+name|String
+argument_list|(
+operator|new
+name|char
+index|[]
+block|{
+literal|'['
+block|,
+name|BRACKET_END
+block|,
+literal|']'
+block|,
+name|EXPRESSION_VAL_DELIM
+block|}
+argument_list|)
+decl_stmt|;
 name|String
 index|[]
 name|splitted
@@ -3091,23 +3150,10 @@ name|specStr
 operator|.
 name|split
 argument_list|(
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|EXPRESSION_VAL_DELIM
-argument_list|)
+name|delimiter
 argument_list|,
 literal|2
 argument_list|)
-decl_stmt|;
-specifier|final
-name|SourceTags
-name|st
-decl_stmt|;
-specifier|final
-name|String
-name|exprs
 decl_stmt|;
 if|if
 condition|(
@@ -3115,22 +3161,41 @@ name|splitted
 operator|.
 name|length
 operator|==
-literal|1
+literal|2
 condition|)
 block|{
-comment|// source tags not specified
-name|exprs
-operator|=
-name|splitted
-index|[
-literal|0
-index|]
-expr_stmt|;
 name|st
 operator|=
 name|SourceTags
 operator|.
-name|emptySourceTags
+name|parseFrom
+argument_list|(
+name|splitted
+index|[
+literal|0
+index|]
+operator|+
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|BRACKET_END
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|constraint
+operator|=
+name|PlacementConstraintParser
+operator|.
+name|parseExpression
+argument_list|(
+name|splitted
+index|[
+literal|1
+index|]
+argument_list|)
+operator|.
+name|build
 argument_list|()
 expr_stmt|;
 block|}
@@ -3141,33 +3206,77 @@ name|splitted
 operator|.
 name|length
 operator|==
-literal|2
+literal|1
 condition|)
 block|{
-name|exprs
-operator|=
-name|splitted
-index|[
-literal|1
-index|]
-expr_stmt|;
-name|String
-name|tagAlloc
+comment|// Either Node Attribute Constraint or Source Allocation Tag alone
+name|NodeConstraintParser
+name|np
 init|=
-name|splitted
-index|[
-literal|0
-index|]
+operator|new
+name|NodeConstraintParser
+argument_list|(
+name|specStr
+argument_list|)
 decl_stmt|;
+name|Optional
+argument_list|<
+name|AbstractConstraint
+argument_list|>
+name|constraintOptional
+init|=
+name|Optional
+operator|.
+name|ofNullable
+argument_list|(
+name|np
+operator|.
+name|tryParse
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|constraintOptional
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+name|st
+operator|=
+name|SourceTags
+operator|.
+name|emptySourceTags
+argument_list|()
+expr_stmt|;
+name|constraint
+operator|=
+name|constraintOptional
+operator|.
+name|get
+argument_list|()
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|st
 operator|=
 name|SourceTags
 operator|.
 name|parseFrom
 argument_list|(
-name|tagAlloc
+name|specStr
 argument_list|)
 expr_stmt|;
+name|constraint
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -3181,16 +3290,6 @@ name|specStr
 argument_list|)
 throw|;
 block|}
-name|AbstractConstraint
-name|constraint
-init|=
-name|PlacementConstraintParser
-operator|.
-name|parseExpression
-argument_list|(
-name|exprs
-argument_list|)
-decl_stmt|;
 name|result
 operator|.
 name|put
@@ -3198,9 +3297,6 @@ argument_list|(
 name|st
 argument_list|,
 name|constraint
-operator|.
-name|build
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3240,7 +3336,7 @@ name|isPresent
 argument_list|()
 condition|)
 block|{
-comment|// Source tags, e.g foo=3, is optional for a node-attribute constraint,
+comment|// Source tags, e.g foo(3), is optional for a node-attribute constraint,
 comment|// but when source tags is absent, the parser only accept single
 comment|// constraint expression to avoid ambiguous semantic. This is because
 comment|// DS AM is requesting number of containers per the number specified

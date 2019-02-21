@@ -889,7 +889,7 @@ argument_list|)
 block|,
 literal|"--placement_spec"
 block|,
-literal|"zk=1,NOTIN,NODE,zk:spark=1,NOTIN,NODE,zk"
+literal|"zk(1),NOTIN,NODE,zk:spark(1),NOTIN,NODE,zk"
 block|}
 decl_stmt|;
 name|LOG
@@ -1167,7 +1167,7 @@ argument_list|)
 block|,
 literal|"--placement_spec"
 block|,
-literal|"bar=1,notin,node,bar"
+literal|"bar(1),notin,node,bar"
 block|}
 decl_stmt|;
 specifier|final
@@ -1553,7 +1553,7 @@ literal|"ls"
 block|,
 literal|"--placement_spec"
 block|,
-literal|"foo=3,notin,node,all/bar"
+literal|"foo(3),notin,node,all/bar"
 block|}
 decl_stmt|;
 specifier|final

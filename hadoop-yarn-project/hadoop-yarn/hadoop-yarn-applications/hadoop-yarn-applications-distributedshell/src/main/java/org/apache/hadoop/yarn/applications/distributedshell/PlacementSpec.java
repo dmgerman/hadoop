@@ -351,6 +351,16 @@ name|getNumOfAllocations
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -372,6 +382,17 @@ name|getSimpleName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Parsed constraint Empty"
+argument_list|)
+expr_stmt|;
+block|}
 name|pSpecs
 operator|.
 name|put
