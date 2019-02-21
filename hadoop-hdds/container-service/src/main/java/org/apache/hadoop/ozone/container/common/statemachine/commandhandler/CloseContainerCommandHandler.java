@@ -483,6 +483,25 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+if|if
+condition|(
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+operator|==
+name|ContainerProtos
+operator|.
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|CLOSED
+condition|)
+block|{
+comment|// Closing a container is an idempotent operation.
+return|return;
+block|}
 comment|// Move the container to CLOSING state
 name|controller
 operator|.
