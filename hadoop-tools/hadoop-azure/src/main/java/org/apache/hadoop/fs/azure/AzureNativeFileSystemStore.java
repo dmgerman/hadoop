@@ -3664,6 +3664,13 @@ name|StorageException
 throws|,
 name|URISyntaxException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to Azure storage in Secure Mode"
+argument_list|)
+expr_stmt|;
 comment|// Assertion: storageInteractionLayer instance has to be a SecureStorageInterfaceImpl
 if|if
 condition|(
@@ -3681,7 +3688,7 @@ throw|throw
 operator|new
 name|AssertionError
 argument_list|(
-literal|"connectToAzureStorageInSASKeyMode() should be called only"
+literal|"connectToAzureStorageInSecureMode() should be called only"
 operator|+
 literal|" for SecureStorageInterfaceImpl instances"
 argument_list|)
@@ -3700,6 +3707,10 @@ name|setStorageAccountName
 argument_list|(
 name|accountName
 argument_list|)
+expr_stmt|;
+name|connectingUsingSAS
+operator|=
+literal|true
 expr_stmt|;
 name|container
 operator|=

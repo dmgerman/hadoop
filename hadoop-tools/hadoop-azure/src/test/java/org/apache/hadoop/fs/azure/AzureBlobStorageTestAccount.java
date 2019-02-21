@@ -2714,6 +2714,22 @@ expr_stmt|;
 block|}
 comment|// Remove the account key from the configuration to make sure we don't
 comment|// cheat and use that.
+comment|// but only if not in secure mode, which requires that login
+if|if
+condition|(
+operator|!
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_USE_SECURE_MODE
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
 name|conf
 operator|.
 name|set
@@ -2725,6 +2741,7 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Set the SAS key.
 name|conf
 operator|.

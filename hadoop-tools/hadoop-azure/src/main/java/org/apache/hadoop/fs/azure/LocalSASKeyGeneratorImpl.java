@@ -302,6 +302,26 @@ name|CloudBlockBlob
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/***  * Local SAS Key Generation implementation. This class resides in  * the same address space as the WASB driver.  *  * This class gets typically used for testing purposes.  *  */
 end_comment
@@ -314,6 +334,22 @@ name|LocalSASKeyGeneratorImpl
 extends|extends
 name|SASKeyGeneratorImpl
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|LocalSASKeyGeneratorImpl
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Map to cache CloudStorageAccount instances.    */
 DECL|field|storageAccountMap
 specifier|private
@@ -405,6 +441,17 @@ parameter_list|)
 throws|throws
 name|SASKeyGenerationException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Retrieving Container SAS URI For {}@{}"
+argument_list|,
+name|container
+argument_list|,
+name|accountName
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|CachedSASKeyEntry
@@ -556,6 +603,15 @@ parameter_list|)
 throws|throws
 name|SASKeyGenerationException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Creating SAS key from account instance {}"
+argument_list|,
+name|accountName
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|String
@@ -1018,6 +1074,28 @@ name|accountName
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|accountKey
+operator|==
+literal|null
+operator|||
+name|accountKey
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SASKeyGenerationException
+argument_list|(
+literal|"No key for Storage account "
+operator|+
+name|accountName
+argument_list|)
+throw|;
+block|}
 name|CloudStorageAccount
 name|account
 init|=

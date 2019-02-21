@@ -578,6 +578,13 @@ condition|(
 name|useLocalSASKeyMode
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Authenticating with SecureStorage and local SAS key"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|sasKeyGenerator
@@ -591,6 +598,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Authenticating with SecureStorage and remote SAS key generation"
+argument_list|)
+expr_stmt|;
 name|RemoteSASKeyGeneratorImpl
 name|remoteSasKeyGenerator
 init|=
@@ -646,6 +660,19 @@ argument_list|(
 name|KEY_USE_CONTAINER_SASKEY_FOR_ALL_ACCESS
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Container SAS key {} be used for all access"
+argument_list|,
+name|useContainerSasKeyForAllAccess
+condition|?
+literal|"will"
+else|:
+literal|"will not"
 argument_list|)
 expr_stmt|;
 block|}
