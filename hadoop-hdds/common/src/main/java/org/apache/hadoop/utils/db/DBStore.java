@@ -269,9 +269,9 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get current snapshot of OM DB store as an artifact stored on    * the local filesystem.    * @return An object that encapsulates the checkpoint information along with    * location.    */
-DECL|method|getCheckpointSnapshot (boolean flush)
-name|DBCheckpointSnapshot
-name|getCheckpointSnapshot
+DECL|method|getCheckpoint (boolean flush)
+name|DBCheckpoint
+name|getCheckpoint
 parameter_list|(
 name|boolean
 name|flush

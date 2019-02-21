@@ -117,11 +117,11 @@ argument_list|)
 expr_stmt|;
 name|addServlet
 argument_list|(
-literal|"dbSnapshot"
+literal|"dbCheckpoint"
 argument_list|,
-literal|"/dbSnapshot"
+literal|"/dbCheckpoint"
 argument_list|,
-name|OMDbSnapshotServlet
+name|OMDBCheckpointServlet
 operator|.
 name|class
 argument_list|)

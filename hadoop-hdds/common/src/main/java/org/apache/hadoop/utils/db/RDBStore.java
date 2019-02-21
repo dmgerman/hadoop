@@ -1524,21 +1524,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCheckpointSnapshot (boolean flush)
+DECL|method|getCheckpoint (boolean flush)
 specifier|public
-name|DBCheckpointSnapshot
-name|getCheckpointSnapshot
+name|DBCheckpoint
+name|getCheckpoint
 parameter_list|(
 name|boolean
 name|flush
 parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|flush
-condition|)
 block|{
 specifier|final
 name|FlushOptions
@@ -1550,7 +1543,7 @@ argument_list|()
 operator|.
 name|setWaitForFlush
 argument_list|(
-literal|true
+name|flush
 argument_list|)
 decl_stmt|;
 try|try
@@ -1579,11 +1572,10 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 return|return
 name|checkPointManager
 operator|.
-name|createCheckpointSnapshot
+name|createCheckpoint
 argument_list|(
 name|checkpointsParentDir
 argument_list|)

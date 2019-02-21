@@ -258,7 +258,7 @@ name|utils
 operator|.
 name|db
 operator|.
-name|DBCheckpointSnapshot
+name|DBCheckpoint
 import|;
 end_import
 
@@ -287,10 +287,10 @@ comment|/**  * Provides the current checkpoint Snapshot of the OM DB. (tar.gz)  
 end_comment
 
 begin_class
-DECL|class|OMDbSnapshotServlet
+DECL|class|OMDBCheckpointServlet
 specifier|public
 class|class
-name|OMDbSnapshotServlet
+name|OMDBCheckpointServlet
 extends|extends
 name|HttpServlet
 block|{
@@ -305,7 +305,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|OMDbSnapshotServlet
+name|OMDBCheckpointServlet
 operator|.
 name|class
 argument_list|)
@@ -370,7 +370,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to initialize OMDbSnapshotServlet. OM is null"
+literal|"Unable to initialize OMDBCheckpointServlet. OM is null"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -402,11 +402,11 @@ name|getLongBytes
 argument_list|(
 name|OMConfigKeys
 operator|.
-name|OZONE_DB_SNAPSHOT_TRANSFER_RATE_KEY
+name|OZONE_DB_CHECKPOINT_TRANSFER_RATE_KEY
 argument_list|,
 name|OMConfigKeys
 operator|.
-name|OZONE_DB_SNAPSHOT_TRANSFER_RATE_DEFAULT
+name|OZONE_DB_CHECKPOINT_TRANSFER_RATE_DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
@@ -520,12 +520,12 @@ name|flushParam
 argument_list|)
 expr_stmt|;
 block|}
-name|DBCheckpointSnapshot
+name|DBCheckpoint
 name|checkpoint
 init|=
 name|omDbStore
 operator|.
-name|getCheckpointSnapshot
+name|getCheckpoint
 argument_list|(
 name|flush
 argument_list|)

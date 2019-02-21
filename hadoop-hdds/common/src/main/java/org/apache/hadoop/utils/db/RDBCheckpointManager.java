@@ -256,16 +256,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create RocksDB snapshot by saving a checkpoint to a directory.    *    * @param parentDir The directory where the checkpoint needs to be created.    * @return RocksDB specific Checkpoint information object.    */
-DECL|method|createCheckpointSnapshot (String parentDir)
+DECL|method|createCheckpoint (String parentDir)
 specifier|public
-name|RocksDBCheckpointSnapshot
-name|createCheckpointSnapshot
+name|RocksDBCheckpoint
+name|createCheckpoint
 parameter_list|(
 name|String
 name|parentDir
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 try|try
 block|{
@@ -331,7 +329,7 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|new
-name|RocksDBCheckpointSnapshot
+name|RocksDBCheckpoint
 argument_list|(
 name|checkpointPath
 argument_list|,
@@ -365,12 +363,12 @@ return|return
 literal|null
 return|;
 block|}
-DECL|class|RocksDBCheckpointSnapshot
+DECL|class|RocksDBCheckpoint
 specifier|static
 class|class
-name|RocksDBCheckpointSnapshot
+name|RocksDBCheckpoint
 implements|implements
-name|DBCheckpointSnapshot
+name|DBCheckpoint
 block|{
 DECL|field|checkpointLocation
 specifier|private
@@ -387,8 +385,8 @@ specifier|private
 name|long
 name|latestSequenceNumber
 decl_stmt|;
-DECL|method|RocksDBCheckpointSnapshot (Path checkpointLocation, long snapshotTimestamp, long latestSequenceNumber)
-name|RocksDBCheckpointSnapshot
+DECL|method|RocksDBCheckpoint (Path checkpointLocation, long snapshotTimestamp, long latestSequenceNumber)
+name|RocksDBCheckpoint
 parameter_list|(
 name|Path
 name|checkpointLocation

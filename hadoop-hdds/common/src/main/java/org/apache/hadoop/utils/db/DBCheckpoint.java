@@ -45,10 +45,10 @@ comment|/**  * Generic DB Checkpoint interface.  */
 end_comment
 
 begin_interface
-DECL|interface|DBCheckpointSnapshot
+DECL|interface|DBCheckpoint
 specifier|public
 interface|interface
-name|DBCheckpointSnapshot
+name|DBCheckpoint
 block|{
 comment|/**    * Get Snapshot location.    */
 DECL|method|getCheckpointLocation ()
