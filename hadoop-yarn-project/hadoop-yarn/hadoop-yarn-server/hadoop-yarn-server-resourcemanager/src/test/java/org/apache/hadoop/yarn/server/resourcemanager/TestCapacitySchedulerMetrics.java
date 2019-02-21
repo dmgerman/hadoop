@@ -545,9 +545,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// Verify HB metrics updated
 try|try
 block|{
+comment|// Verify HB metrics updated
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -560,6 +560,38 @@ name|getNumOfNodeUpdate
 argument_list|()
 operator|==
 literal|4
+argument_list|,
+literal|100
+argument_list|,
+literal|3000
+argument_list|)
+expr_stmt|;
+comment|// For async mode, the number of alloc might be bigger than 1
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|csMetrics
+operator|.
+name|getNumOfAllocates
+argument_list|()
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// But there will be only 2 successful commit (1 AM + 1 task)
+name|GenericTestUtils
+operator|.
+name|waitFor
+argument_list|(
+parameter_list|()
+lambda|->
+name|csMetrics
+operator|.
+name|getNumOfCommitSuccess
+argument_list|()
+operator|==
+literal|2
 argument_list|,
 literal|100
 argument_list|,
@@ -581,32 +613,6 @@ literal|"CS metrics not updated on node-update events."
 argument_list|)
 expr_stmt|;
 block|}
-comment|// For async mode, the number of alloc might be bigger than 1
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|csMetrics
-operator|.
-name|getNumOfAllocates
-argument_list|()
-operator|>
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// But there will be only 2 successful commit (1 AM + 1 task)
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|2
-argument_list|,
-name|csMetrics
-operator|.
-name|getNumOfCommitSuccess
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|After
