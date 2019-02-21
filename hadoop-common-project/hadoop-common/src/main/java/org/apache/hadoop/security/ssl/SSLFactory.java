@@ -565,6 +565,14 @@ specifier|private
 name|SSLContext
 name|context
 decl_stmt|;
+comment|// the java keep-alive cache relies on instance equivalence of the SSL socket
+comment|// factory.  in many java versions, SSLContext#getSocketFactory always
+comment|// returns a new instance which completely breaks the cache...
+DECL|field|socketFactory
+specifier|private
+name|SSLSocketFactory
+name|socketFactory
+decl_stmt|;
 DECL|field|hostnameVerifier
 specifier|private
 name|HostnameVerifier
@@ -877,6 +885,23 @@ argument_list|(
 name|enabledProtocols
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|mode
+operator|==
+name|Mode
+operator|.
+name|CLIENT
+condition|)
+block|{
+name|socketFactory
+operator|=
+name|context
+operator|.
+name|getSocketFactory
+argument_list|()
+expr_stmt|;
+block|}
 name|hostnameVerifier
 operator|=
 name|getHostnameVerifier
@@ -1326,10 +1351,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|context
-operator|.
-name|getSocketFactory
-argument_list|()
+name|socketFactory
 return|;
 block|}
 comment|/**    * Returns the hostname verifier it should be used in HttpsURLConnections.    *    * @return the hostname verifier.    */
