@@ -564,6 +564,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -838,6 +848,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1155"
+argument_list|)
 DECL|method|testOnMessage ()
 specifier|public
 name|void
@@ -1893,6 +1908,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1155"
+argument_list|)
 DECL|method|testOnMessageReplicaFailure ()
 specifier|public
 name|void

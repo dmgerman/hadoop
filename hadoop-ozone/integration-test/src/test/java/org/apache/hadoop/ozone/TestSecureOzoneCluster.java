@@ -199,6 +199,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -2517,6 +2527,11 @@ block|}
 comment|/**    * Performs following tests for delegation token.    * 1. Get valid delegation token    * 2. Test successful token renewal.    * 3. Client can authenticate using token.    * 4. Delegation token renewal without Kerberos auth fails.    * 5. Test success of token cancellation.    * 5. Test failure of token cancellation.    *    * @throws Exception    */
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1156"
+argument_list|)
 DECL|method|testDelegationToken ()
 specifier|public
 name|void
@@ -3279,6 +3294,11 @@ block|}
 comment|/**    * Tests delegation token renewal.    *    * @throws Exception    */
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1156"
+argument_list|)
 DECL|method|testDelegationTokenRenewal ()
 specifier|public
 name|void

@@ -2672,6 +2672,11 @@ block|}
 comment|// Create a volume and test Volume access for a different user
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1147"
+argument_list|)
 DECL|method|testAccessVolume ()
 specifier|public
 name|void
@@ -4919,6 +4924,11 @@ block|}
 comment|/**    * Test rename key for om.    *    * @throws IOException    * @throws OzoneException    */
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1147"
+argument_list|)
 DECL|method|testRenameKey ()
 specifier|public
 name|void
@@ -9013,6 +9023,11 @@ block|}
 comment|/**    * Tests the OM Initialization Failure.    * @throws IOException    */
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1147"
+argument_list|)
 DECL|method|testOmInitializationFailure ()
 specifier|public
 name|void

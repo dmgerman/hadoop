@@ -276,6 +276,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -680,6 +690,11 @@ block|}
 comment|/**    * Test client request fails when 2 OMs are down.    */
 annotation|@
 name|Test
+annotation|@
+name|Ignore
+argument_list|(
+literal|"TODO:HDDS-1158"
+argument_list|)
 DECL|method|testTwoOMNodesDown ()
 specifier|public
 name|void
