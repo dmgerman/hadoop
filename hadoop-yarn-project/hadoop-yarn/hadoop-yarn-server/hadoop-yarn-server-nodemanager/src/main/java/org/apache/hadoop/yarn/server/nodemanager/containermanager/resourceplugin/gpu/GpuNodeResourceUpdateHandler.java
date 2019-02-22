@@ -254,9 +254,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-literal|null
-operator|==
 name|usableGpus
+operator|==
+literal|null
 operator|||
 name|usableGpus
 operator|.
@@ -267,9 +267,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"GPU is enabled, but couldn't find any usable GPUs on the "
+literal|"GPU is enabled, "
 operator|+
-literal|"NodeManager."
+literal|"but couldn't find any usable GPUs on the NodeManager!"
 decl_stmt|;
 name|LOG
 operator|.

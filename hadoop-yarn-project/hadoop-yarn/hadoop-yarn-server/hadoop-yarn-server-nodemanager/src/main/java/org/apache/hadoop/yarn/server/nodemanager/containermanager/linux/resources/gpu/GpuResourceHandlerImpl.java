@@ -562,7 +562,7 @@ name|message
 init|=
 literal|"GPU is enabled on the NodeManager, but couldn't find "
 operator|+
-literal|"any usable GPU devices, please double check configuration."
+literal|"any usable GPU devices, please double check configuration!"
 decl_stmt|;
 name|LOG
 operator|.
