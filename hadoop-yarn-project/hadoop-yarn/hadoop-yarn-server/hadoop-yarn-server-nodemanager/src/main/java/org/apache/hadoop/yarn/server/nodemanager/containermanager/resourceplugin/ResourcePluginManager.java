@@ -1362,14 +1362,14 @@ name|debug
 argument_list|(
 literal|"Method {} found in class {}"
 argument_list|,
-name|actualClass
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|,
 name|m
 operator|.
 name|getName
+argument_list|()
+argument_list|,
+name|actualClass
+operator|.
+name|getSimpleName
 argument_list|()
 argument_list|)
 expr_stmt|;
