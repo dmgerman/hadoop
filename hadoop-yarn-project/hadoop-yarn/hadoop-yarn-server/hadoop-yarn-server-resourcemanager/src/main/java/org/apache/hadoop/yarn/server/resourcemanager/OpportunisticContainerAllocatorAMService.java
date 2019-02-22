@@ -1330,6 +1330,33 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|appAttempt
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|appAttemptId
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Calling allocate on previous or removed or non "
+operator|+
+literal|"existent application attempt "
+operator|+
+name|appAttemptId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|OpportunisticContainerContext
 name|oppCtx
 init|=
