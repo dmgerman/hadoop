@@ -413,17 +413,17 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"The number of DataNodes (%d) is less "
+literal|"%d DataNodes are required for "
 operator|+
-literal|"than the minimum required number of DataNodes (%d) for the "
+literal|"the erasure coding policies: %s. "
 operator|+
-literal|"erasure coding policies: %s"
-argument_list|,
-name|numOfDataNodes
+literal|"The number of DataNodes is only %d."
 argument_list|,
 name|minDN
 argument_list|,
 name|readablePolicies
+argument_list|,
+name|numOfDataNodes
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -456,17 +456,17 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"The number of racks (%d) is less than "
+literal|"%d racks are required for "
 operator|+
-literal|"the minimum required number of racks (%d) for the erasure "
+literal|"the erasure coding policies: %s. "
 operator|+
-literal|"coding policies: %s"
-argument_list|,
-name|numOfRacks
+literal|"The number of racks is only %d."
 argument_list|,
 name|minRack
 argument_list|,
 name|readablePolicies
+argument_list|,
+name|numOfRacks
 argument_list|)
 expr_stmt|;
 name|LOG

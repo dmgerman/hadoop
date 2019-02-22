@@ -7143,19 +7143,11 @@ name|resultMessage
 operator|.
 name|contains
 argument_list|(
-literal|"The number of racks"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|resultMessage
-operator|.
-name|contains
-argument_list|(
-literal|"is less than the minimum required "
+literal|"3 racks are required for "
 operator|+
-literal|"number of racks"
+literal|"the erasure coding policies: RS-6-3-1024k. "
+operator|+
+literal|"The number of racks is only 1."
 argument_list|)
 argument_list|)
 expr_stmt|;
