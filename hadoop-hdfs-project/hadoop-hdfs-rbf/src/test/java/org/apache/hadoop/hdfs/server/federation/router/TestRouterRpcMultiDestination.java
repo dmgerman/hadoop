@@ -138,13 +138,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|mockito
+name|apache
 operator|.
-name|internal
+name|hadoop
 operator|.
-name|util
-operator|.
-name|reflection
+name|test
 operator|.
 name|Whitebox
 operator|.
@@ -156,13 +154,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|mockito
+name|apache
 operator|.
-name|internal
+name|hadoop
 operator|.
-name|util
-operator|.
-name|reflection
+name|test
 operator|.
 name|Whitebox
 operator|.
