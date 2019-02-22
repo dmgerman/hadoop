@@ -1600,6 +1600,11 @@ specifier|private
 name|long
 name|tokenSequenceNo
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
 name|NodeStatusUpdaterImpl
@@ -2045,6 +2050,17 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_LOG_AGGREGATION_ENABLED
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -7085,15 +7101,7 @@ block|}
 block|}
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|context
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
 condition|)
 block|{
 name|updateTimelineCollectorData

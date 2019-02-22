@@ -1431,6 +1431,11 @@ specifier|private
 name|boolean
 name|checkIpHostnameInRegistration
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 DECL|method|ResourceTrackerService (RMContext rmContext, NodesListManager nodesListManager, NMLivelinessMonitor nmLivelinessMonitor, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager)
 specifier|public
 name|ResourceTrackerService
@@ -1664,6 +1669,15 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_NODEMANAGER_MINIMUM_VERSION
+argument_list|)
+expr_stmt|;
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 if|if
@@ -3862,20 +3876,9 @@ name|message
 argument_list|)
 return|;
 block|}
-name|boolean
-name|timelineV2Enabled
-init|=
-name|YarnConfiguration
-operator|.
-name|timelineServiceV2Enabled
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|timelineV2Enabled
+name|timelineServiceV2Enabled
 condition|)
 block|{
 comment|// Check& update collectors info from request.
@@ -3939,7 +3942,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|timelineV2Enabled
+name|timelineServiceV2Enabled
 condition|)
 block|{
 comment|// Return collectors' map that NM needs to know

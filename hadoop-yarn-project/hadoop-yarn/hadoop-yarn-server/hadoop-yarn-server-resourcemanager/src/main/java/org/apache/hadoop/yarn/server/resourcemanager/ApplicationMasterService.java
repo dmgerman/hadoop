@@ -1095,6 +1095,11 @@ specifier|final
 name|AMSProcessingChain
 name|amsProcessingChain
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 DECL|method|ApplicationMasterService (RMContext rmContext, YarnScheduler scheduler)
 specifier|public
 name|ApplicationMasterService
@@ -1668,6 +1673,17 @@ name|getListenerAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceStart
@@ -2073,13 +2089,7 @@ decl_stmt|;
 comment|// Remove collector address when app get finished.
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
 condition|)
 block|{
 operator|(

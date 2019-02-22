@@ -1043,6 +1043,11 @@ specifier|private
 name|YarnAuthorizationProvider
 name|authorizer
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 DECL|method|RMAppManager (RMContext context, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationACLsManager applicationACLsManager, Configuration conf)
 specifier|public
 name|RMAppManager
@@ -1154,6 +1159,17 @@ operator|=
 name|YarnAuthorizationProvider
 operator|.
 name|getInstance
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
 argument_list|(
 name|conf
 argument_list|)
@@ -3085,12 +3101,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|conf
-argument_list|)
 condition|)
 block|{
 comment|// Start timeline collector for the submitted app

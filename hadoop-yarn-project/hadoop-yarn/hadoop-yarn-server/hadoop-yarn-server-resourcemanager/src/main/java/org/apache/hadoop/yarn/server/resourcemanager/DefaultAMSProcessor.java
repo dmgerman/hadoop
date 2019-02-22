@@ -1262,6 +1262,11 @@ specifier|private
 name|ResourceProfilesManager
 name|resourceProfilesManager
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|init (ApplicationMasterServiceContext amsContext, ApplicationMasterServiceProcessor nextProcessor)
@@ -1293,6 +1298,20 @@ name|rmContext
 operator|.
 name|getResourceProfilesManager
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|rmContext
+operator|.
+name|getYarnConfiguration
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -2342,16 +2361,7 @@ expr_stmt|;
 comment|// add collector address for this application
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|getRmContext
-argument_list|()
-operator|.
-name|getYarnConfiguration
-argument_list|()
-argument_list|)
 condition|)
 block|{
 name|CollectorInfo

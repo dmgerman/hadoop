@@ -3240,6 +3240,11 @@ specifier|private
 name|ResourceProfilesManager
 name|resourceProfilesManager
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 DECL|method|ClientRMService (RMContext rmContext, YarnScheduler scheduler, RMAppManager rmAppManager, ApplicationACLsManager applicationACLsManager, QueueACLsManager queueACLsManager, RMDelegationTokenSecretManager rmDTSecretManager)
 specifier|public
 name|ClientRMService
@@ -3603,6 +3608,17 @@ name|server
 operator|.
 name|getListenerAddress
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|super
@@ -4922,13 +4938,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
 condition|)
 block|{
 comment|// Sanity check for flow run

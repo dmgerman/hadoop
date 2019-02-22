@@ -869,6 +869,11 @@ specifier|final
 name|Container
 name|masterContainer
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -941,6 +946,17 @@ name|application
 operator|.
 name|getMasterContainer
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|connect ()
@@ -1841,12 +1857,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|conf
-argument_list|)
 condition|)
 block|{
 name|Map

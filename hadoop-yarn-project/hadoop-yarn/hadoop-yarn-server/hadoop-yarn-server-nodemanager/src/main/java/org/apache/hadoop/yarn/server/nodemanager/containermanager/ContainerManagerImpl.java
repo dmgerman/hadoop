@@ -3141,6 +3141,11 @@ specifier|private
 name|NMTimelinePublisher
 name|nmMetricsPublisher
 decl_stmt|;
+DECL|field|timelineServiceV2Enabled
+specifier|private
+name|boolean
+name|timelineServiceV2Enabled
+decl_stmt|;
 DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|ContainerManagerImpl
@@ -3322,7 +3327,10 @@ name|timelineServiceV2Enabled
 argument_list|(
 name|conf
 argument_list|)
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|YarnConfiguration
 operator|.
 name|systemMetricsPublisherEnabled
@@ -3351,6 +3359,13 @@ name|setNMTimelinePublisher
 argument_list|(
 name|nmMetricsPublisher
 argument_list|)
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|timelineServiceV2Enabled
+operator|=
+literal|true
 expr_stmt|;
 block|}
 name|this
@@ -8013,13 +8028,7 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|YarnConfiguration
-operator|.
 name|timelineServiceV2Enabled
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
 condition|)
 block|{
 name|String
