@@ -172,6 +172,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|protocol
+operator|.
+name|StorageContainerLocationProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
@@ -248,9 +266,9 @@ name|ozone
 operator|.
 name|om
 operator|.
-name|protocolPB
+name|protocol
 operator|.
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 import|;
 end_import
 
@@ -289,24 +307,6 @@ operator|.
 name|helpers
 operator|.
 name|StorageContainerException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|protocolPB
-operator|.
-name|StorageContainerLocationProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -500,13 +500,13 @@ decl_stmt|;
 DECL|field|omClient
 specifier|private
 specifier|final
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 name|omClient
 decl_stmt|;
+DECL|field|scmClient
 specifier|private
 specifier|final
-DECL|field|scmClient
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|scmClient
 decl_stmt|;
 DECL|field|keyArgs
@@ -860,7 +860,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|KeyOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, OzoneManagerProtocolClientSideTranslatorPB omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, ChecksumType checksumType, int bytesPerChecksum, String uploadID, int partNumber, boolean isMultipart)
+DECL|method|KeyOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocol scmClient, OzoneManagerProtocol omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, ChecksumType checksumType, int bytesPerChecksum, String uploadID, int partNumber, boolean isMultipart)
 specifier|public
 name|KeyOutputStream
 parameter_list|(
@@ -870,10 +870,10 @@ parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
 parameter_list|,
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|scmClient
 parameter_list|,
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 name|omClient
 parameter_list|,
 name|int
@@ -2706,12 +2706,12 @@ name|xceiverManager
 decl_stmt|;
 DECL|field|scmClient
 specifier|private
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|scmClient
 decl_stmt|;
 DECL|field|omClient
 specifier|private
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 name|omClient
 decl_stmt|;
 DECL|field|chunkSize
@@ -2855,12 +2855,12 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setScmClient ( StorageContainerLocationProtocolClientSideTranslatorPB client)
+DECL|method|setScmClient (StorageContainerLocationProtocol client)
 specifier|public
 name|Builder
 name|setScmClient
 parameter_list|(
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|client
 parameter_list|)
 block|{
@@ -2874,12 +2874,12 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setOmClient ( OzoneManagerProtocolClientSideTranslatorPB client)
+DECL|method|setOmClient ( OzoneManagerProtocol client)
 specifier|public
 name|Builder
 name|setOmClient
 parameter_list|(
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 name|client
 parameter_list|)
 block|{

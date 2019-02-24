@@ -154,6 +154,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -200,6 +210,8 @@ DECL|interface|StorageContainerLocationProtocol
 specifier|public
 interface|interface
 name|StorageContainerLocationProtocol
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
 DECL|method|allocateContainer ( HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)

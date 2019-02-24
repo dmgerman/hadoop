@@ -90,6 +90,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|protocol
+operator|.
+name|StorageContainerLocationProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -306,9 +324,9 @@ name|ozone
 operator|.
 name|om
 operator|.
-name|protocolPB
+name|protocol
 operator|.
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 import|;
 end_import
 
@@ -487,24 +505,6 @@ operator|.
 name|scm
 operator|.
 name|XceiverClientManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|protocolPB
-operator|.
-name|StorageContainerLocationProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -755,13 +755,13 @@ argument_list|)
 decl_stmt|;
 specifier|private
 specifier|final
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 DECL|field|storageContainerLocationClient
 name|storageContainerLocationClient
 decl_stmt|;
 specifier|private
 specifier|final
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 DECL|field|ozoneManagerClient
 name|ozoneManagerClient
 decl_stmt|;
@@ -835,17 +835,17 @@ name|boolean
 name|verifyChecksum
 decl_stmt|;
 comment|/**    * Creates a new DistributedStorageHandler.    *    * @param conf configuration    * @param storageContainerLocation StorageContainerLocationProtocol proxy    * @param ozoneManagerClient OzoneManager proxy    */
-DECL|method|DistributedStorageHandler (OzoneConfiguration conf, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocation, OzoneManagerProtocolClientSideTranslatorPB ozoneManagerClient)
+DECL|method|DistributedStorageHandler (OzoneConfiguration conf, StorageContainerLocationProtocol storageContainerLocation, OzoneManagerProtocol ozoneManagerClient)
 specifier|public
 name|DistributedStorageHandler
 parameter_list|(
 name|OzoneConfiguration
 name|conf
 parameter_list|,
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|storageContainerLocation
 parameter_list|,
-name|OzoneManagerProtocolClientSideTranslatorPB
+name|OzoneManagerProtocol
 name|ozoneManagerClient
 parameter_list|)
 block|{

@@ -3050,6 +3050,20 @@ name|build
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

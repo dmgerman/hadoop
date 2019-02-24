@@ -136,9 +136,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|protocolPB
+name|protocol
 operator|.
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 import|;
 end_import
 
@@ -331,7 +331,7 @@ literal|1
 decl_stmt|;
 specifier|private
 specifier|final
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 DECL|field|storageContainerLocationClient
 name|storageContainerLocationClient
 decl_stmt|;
@@ -341,11 +341,11 @@ specifier|final
 name|XceiverClientManager
 name|xceiverClientManager
 decl_stmt|;
-DECL|method|ContainerOperationClient ( StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocationClient, XceiverClientManager xceiverClientManager)
+DECL|method|ContainerOperationClient ( StorageContainerLocationProtocol storageContainerLocationClient, XceiverClientManager xceiverClientManager)
 specifier|public
 name|ContainerOperationClient
 parameter_list|(
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|storageContainerLocationClient
 parameter_list|,
 name|XceiverClientManager

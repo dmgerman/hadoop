@@ -164,6 +164,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|protocol
+operator|.
+name|StorageContainerLocationProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|om
@@ -221,24 +239,6 @@ operator|.
 name|scm
 operator|.
 name|XceiverClientSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|protocolPB
-operator|.
-name|StorageContainerLocationProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -1373,7 +1373,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|getFromOmKeyInfo ( OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocationClient, String requestId, boolean verifyChecksum)
+DECL|method|getFromOmKeyInfo ( OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocol storageContainerLocationClient, String requestId, boolean verifyChecksum)
 specifier|public
 specifier|static
 name|LengthInputStream
@@ -1385,7 +1385,7 @@ parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
 parameter_list|,
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|storageContainerLocationClient
 parameter_list|,
 name|String

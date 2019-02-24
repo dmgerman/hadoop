@@ -3959,6 +3959,20 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Class which schedule saving metrics to a file.    */
 DECL|class|ScheduleOMMetricsWriteTask
 specifier|private
@@ -4856,9 +4870,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|StorageContainerLocationProtocol
 name|scmContainerClient
 init|=
+name|TracingUtil
+operator|.
+name|createProxy
+argument_list|(
 operator|new
 name|StorageContainerLocationProtocolClientSideTranslatorPB
 argument_list|(
@@ -4895,6 +4913,11 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|)
+argument_list|)
+argument_list|,
+name|StorageContainerLocationProtocol
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
 return|return

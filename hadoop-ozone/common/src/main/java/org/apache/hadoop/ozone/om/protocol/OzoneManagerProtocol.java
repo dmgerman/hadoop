@@ -314,6 +314,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -362,6 +372,8 @@ interface|interface
 name|OzoneManagerProtocol
 extends|extends
 name|OzoneManagerSecurityProtocol
+extends|,
+name|Closeable
 block|{
 comment|/**    * Creates a volume.    * @param args - Arguments to create Volume.    * @throws IOException    */
 DECL|method|createVolume (OmVolumeArgs args)
