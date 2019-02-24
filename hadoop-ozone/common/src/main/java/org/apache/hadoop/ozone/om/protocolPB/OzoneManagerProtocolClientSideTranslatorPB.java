@@ -2320,12 +2320,9 @@ decl_stmt|;
 name|OMResponse
 name|omResponse
 init|=
-name|handleError
-argument_list|(
 name|submitRequest
 argument_list|(
 name|omRequest
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if

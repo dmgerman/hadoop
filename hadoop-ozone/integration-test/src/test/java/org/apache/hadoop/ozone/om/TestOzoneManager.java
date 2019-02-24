@@ -2672,11 +2672,6 @@ block|}
 comment|// Create a volume and test Volume access for a different user
 annotation|@
 name|Test
-annotation|@
-name|Ignore
-argument_list|(
-literal|"TODO:HDDS-1147"
-argument_list|)
 DECL|method|testAccessVolume ()
 specifier|public
 name|void
@@ -4924,11 +4919,6 @@ block|}
 comment|/**    * Test rename key for om.    *    * @throws IOException    * @throws OzoneException    */
 annotation|@
 name|Test
-annotation|@
-name|Ignore
-argument_list|(
-literal|"TODO:HDDS-1147"
-argument_list|)
 DECL|method|testRenameKey ()
 specifier|public
 name|void
@@ -5417,9 +5407,12 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|KEY_RENAME_ERROR
+name|KEY_ALREADY_EXISTS
 argument_list|,
 name|omException
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Rename to empty string should fail
@@ -5462,9 +5455,12 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|KEY_RENAME_ERROR
+name|INVALID_KEY_NAME
 argument_list|,
 name|omException
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Rename from empty string should fail
@@ -5524,9 +5520,12 @@ name|assertEquals
 argument_list|(
 name|ResultCodes
 operator|.
-name|KEY_RENAME_ERROR
+name|INVALID_KEY_NAME
 argument_list|,
 name|omException
+operator|.
+name|getResult
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -9023,11 +9022,6 @@ block|}
 comment|/**    * Tests the OM Initialization Failure.    * @throws IOException    */
 annotation|@
 name|Test
-annotation|@
-name|Ignore
-argument_list|(
-literal|"TODO:HDDS-1147"
-argument_list|)
 DECL|method|testOmInitializationFailure ()
 specifier|public
 name|void
@@ -9095,6 +9089,15 @@ operator|.
 name|OZONE_ENABLED
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|config
+operator|.
+name|set
+argument_list|(
+name|OZONE_OM_ADDRESS_KEY
+argument_list|,
+literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
 name|config
@@ -9195,7 +9198,7 @@ name|createOm
 argument_list|(
 literal|null
 argument_list|,
-name|conf
+name|config
 argument_list|)
 expr_stmt|;
 block|}

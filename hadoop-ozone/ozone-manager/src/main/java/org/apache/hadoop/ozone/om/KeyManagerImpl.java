@@ -3948,7 +3948,7 @@ throw|throw
 operator|new
 name|OMException
 argument_list|(
-literal|"Key not found"
+literal|"Key already exists"
 argument_list|,
 name|OMException
 operator|.
