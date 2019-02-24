@@ -145,6 +145,8 @@ interface|interface
 name|PipelineManager
 extends|extends
 name|Closeable
+extends|,
+name|PipelineManagerMXBean
 block|{
 DECL|method|createPipeline (ReplicationType type, ReplicationFactor factor)
 name|Pipeline

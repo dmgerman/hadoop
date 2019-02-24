@@ -699,13 +699,18 @@ specifier|final
 name|CommandQueue
 name|commandQueue
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+specifier|final
+name|SCMNodeMetrics
+name|metrics
+decl_stmt|;
 comment|// Node manager MXBean
 DECL|field|nmInfoBean
 specifier|private
 name|ObjectName
 name|nmInfoBean
 decl_stmt|;
-comment|// Node pool manager.
 DECL|field|scmManager
 specifier|private
 specifier|final
@@ -732,6 +737,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+operator|.
+name|metrics
+operator|=
+name|SCMNodeMetrics
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|nodeStateManager
@@ -993,6 +1007,11 @@ block|{
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;
+name|metrics
+operator|.
+name|unRegister
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Gets the version info from SCM.    *    * @param versionRequest - version Request.    * @return - returns SCM version info and other required information needed by    * datanode.    */
 annotation|@
@@ -1244,6 +1263,11 @@ argument_list|(
 name|datanodeDetails
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|incNumHBProcessed
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1251,6 +1275,11 @@ name|NodeNotFoundException
 name|e
 parameter_list|)
 block|{
+name|metrics
+operator|.
+name|incNumHBProcessingFailed
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error
@@ -1354,6 +1383,11 @@ name|getStorageReportList
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|incNumNodeReportProcessed
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 catch|catch
@@ -1362,6 +1396,11 @@ name|NodeNotFoundException
 name|e
 parameter_list|)
 block|{
+name|metrics
+operator|.
+name|incNumNodeReportProcessingFailed
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|warn
