@@ -685,7 +685,7 @@ name|ChillModePrecheck
 name|chillModePrecheck
 decl_stmt|;
 comment|/**    * Constructor.    *    * @param conf - configuration.    * @param scm    * @throws IOException    */
-DECL|method|BlockManagerImpl (final Configuration conf, StorageContainerManager scm)
+DECL|method|BlockManagerImpl (final Configuration conf, final StorageContainerManager scm)
 specifier|public
 name|BlockManagerImpl
 parameter_list|(
@@ -693,11 +693,10 @@ specifier|final
 name|Configuration
 name|conf
 parameter_list|,
+specifier|final
 name|StorageContainerManager
 name|scm
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Objects
 operator|.

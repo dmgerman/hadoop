@@ -858,9 +858,9 @@ decl_stmt|;
 name|String
 name|errMsg
 init|=
-literal|"Inconsistent DB state, Table - %s. Please check the logs"
+literal|"Inconsistent DB state, Table - %s. Please check the"
 operator|+
-literal|"for more info."
+literal|" logs for more info."
 decl_stmt|;
 if|if
 condition|(

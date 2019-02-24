@@ -1516,9 +1516,11 @@ name|getContainerState
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// The container is closed, now we send close command with pipeline id which doesn't exist.
-comment|// This should cause the datanode to trigger quasi close, since the container is already
-comment|// closed, this should do nothing. The command should not fail either.
+comment|// The container is closed, now we send close command with
+comment|// pipeline id which doesn't exist.
+comment|// This should cause the datanode to trigger quasi close, since the
+comment|// container is already closed, this should do nothing.
+comment|// The command should not fail either.
 specifier|final
 name|PipelineID
 name|randomPipeline
