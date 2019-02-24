@@ -50,6 +50,20 @@ name|common
 operator|.
 name|collect
 operator|.
+name|ImmutableMap
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
 name|ImmutableSet
 import|;
 end_import
@@ -1048,7 +1062,7 @@ name|usedDevices
 argument_list|,
 name|assignedDevices
 argument_list|,
-name|containerId
+name|container
 argument_list|,
 name|requestedDeviceCount
 argument_list|,
@@ -1627,7 +1641,7 @@ name|releasingDevices
 return|;
 block|}
 comment|/**    * If device plugin has own scheduler, then use it.    * Otherwise, pick our default scheduler to do scheduling.    * */
-DECL|method|pickAndDoSchedule (Set<Device> allowed, Map<Device, ContainerId> used, Set<Device> assigned, ContainerId containerId, int count, String resourceName, DevicePluginScheduler dps)
+DECL|method|pickAndDoSchedule (Set<Device> allowed, Map<Device, ContainerId> used, Set<Device> assigned, Container c, int count, String resourceName, DevicePluginScheduler dps)
 specifier|private
 name|void
 name|pickAndDoSchedule
@@ -1652,8 +1666,8 @@ name|Device
 argument_list|>
 name|assigned
 parameter_list|,
-name|ContainerId
-name|containerId
+name|Container
+name|c
 parameter_list|,
 name|int
 name|count
@@ -1667,6 +1681,30 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 block|{
+name|ContainerId
+name|containerId
+init|=
+name|c
+operator|.
+name|getContainerId
+argument_list|()
+decl_stmt|;
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+init|=
+name|c
+operator|.
+name|getLaunchContext
+argument_list|()
+operator|.
+name|getEnvironment
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 literal|null
@@ -1771,6 +1809,13 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|count
+argument_list|,
+name|ImmutableMap
+operator|.
+name|copyOf
+argument_list|(
+name|env
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if

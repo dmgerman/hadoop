@@ -30,6 +30,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -44,8 +54,8 @@ specifier|public
 interface|interface
 name|DevicePluginScheduler
 block|{
-comment|/**    * Called when allocating devices. The framework will do all device book    * keeping and fail recovery. So this hook could be stateless and only do    * scheduling based on available devices passed in. It could be    * invoked multiple times by the framework.    * @param availableDevices Devices allowed to be chosen from.    * @param count Number of device to be allocated.    * @return A set of {@link Device} allocated    * */
-DECL|method|allocateDevices (Set<Device> availableDevices, int count)
+comment|/**    * Called when allocating devices. The framework will do all device book    * keeping and fail recovery. So this hook could be stateless and only do    * scheduling based on available devices passed in. It could be    * invoked multiple times by the framework. The hint in environment variables    * passed in could be potentially used in making better scheduling decision.    * For instance, GPU scheduling might support different kind of policy. The    * container can set it through environment variables.    * @param availableDevices Devices allowed to be chosen from.    * @param count Number of device to be allocated.    * @param env Environment variables of the container.    * @return A set of {@link Device} allocated    * */
+DECL|method|allocateDevices (Set<Device> availableDevices, int count, Map<String, String> env)
 name|Set
 argument_list|<
 name|Device
@@ -60,6 +70,14 @@ name|availableDevices
 parameter_list|,
 name|int
 name|count
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
 parameter_list|)
 function_decl|;
 block|}

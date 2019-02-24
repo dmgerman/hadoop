@@ -978,6 +978,30 @@ name|mockito
 operator|.
 name|ArgumentMatchers
 operator|.
+name|anyMap
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|anySet
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
 name|anyString
 import|;
 end_import
@@ -4189,14 +4213,13 @@ argument_list|)
 operator|.
 name|allocateDevices
 argument_list|(
-name|any
-argument_list|(
-name|Set
-operator|.
-name|class
-argument_list|)
+name|anySet
+argument_list|()
 argument_list|,
 name|anyInt
+argument_list|()
+argument_list|,
+name|anyMap
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6644,7 +6667,7 @@ comment|// nothing to do
 block|}
 annotation|@
 name|Override
-DECL|method|allocateDevices (Set<Device> availableDevices, int count)
+DECL|method|allocateDevices (Set<Device> availableDevices, int count, Map<String, String> env)
 specifier|public
 name|Set
 argument_list|<
@@ -6660,6 +6683,14 @@ name|availableDevices
 parameter_list|,
 name|int
 name|count
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
 parameter_list|)
 block|{
 name|Set

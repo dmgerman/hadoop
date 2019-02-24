@@ -54,6 +54,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -217,7 +227,7 @@ parameter_list|)
 block|{    }
 annotation|@
 name|Override
-DECL|method|allocateDevices (Set<Device> availableDevices, int count)
+DECL|method|allocateDevices (Set<Device> availableDevices, int count, Map<String, String> env)
 specifier|public
 name|Set
 argument_list|<
@@ -233,6 +243,14 @@ name|availableDevices
 parameter_list|,
 name|int
 name|count
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
 parameter_list|)
 block|{
 name|Set
