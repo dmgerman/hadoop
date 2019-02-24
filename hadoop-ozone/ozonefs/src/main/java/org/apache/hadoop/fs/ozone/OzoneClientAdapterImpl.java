@@ -332,6 +332,7 @@ specifier|private
 name|OzoneFSStorageStatistics
 name|storageStatistics
 decl_stmt|;
+comment|/**    * Create new OzoneClientAdapter implementation.    *    * @param volumeStr         Name of the volume to use.    * @param bucketStr         Name of the bucket to use    * @param storageStatistics Storage statistic (optional, can be null)    * @throws IOException In case of a problem.    */
 DECL|method|OzoneClientAdapterImpl (String volumeStr, String bucketStr, OzoneFSStorageStatistics storageStatistics)
 specifier|public
 name|OzoneClientAdapterImpl
@@ -358,6 +359,33 @@ argument_list|,
 name|bucketStr
 argument_list|,
 name|storageStatistics
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create new OzoneClientAdapter implementation.    *    * @param volumeStr         Name of the volume to use.    * @param bucketStr         Name of the bucket to use    * @throws IOException In case of a problem.    */
+DECL|method|OzoneClientAdapterImpl (String volumeStr, String bucketStr)
+specifier|public
+name|OzoneClientAdapterImpl
+parameter_list|(
+name|String
+name|volumeStr
+parameter_list|,
+name|String
+name|bucketStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|createConf
+argument_list|()
+argument_list|,
+name|volumeStr
+argument_list|,
+name|bucketStr
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -596,6 +624,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -607,6 +642,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|bucket
 operator|.
@@ -632,6 +668,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -643,6 +686,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|OzoneOutputStream
 name|ozoneOutputStream
 init|=
@@ -691,6 +735,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -702,6 +753,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|bucket
 operator|.
 name|renameKey
@@ -726,6 +778,13 @@ parameter_list|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -737,6 +796,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|OzoneKey
 name|key
 init|=
@@ -858,6 +918,13 @@ argument_list|,
 name|keyName
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -869,6 +936,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|bucket
 operator|.
 name|createKey
@@ -939,6 +1007,13 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -950,6 +1025,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|bucket
 operator|.
 name|deleteKey
@@ -1010,6 +1086,13 @@ name|String
 name|key
 parameter_list|)
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -1021,6 +1104,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|bucket
 operator|.
@@ -1047,6 +1131,13 @@ name|String
 name|pathKey
 parameter_list|)
 block|{
+if|if
+condition|(
+name|storageStatistics
+operator|!=
+literal|null
+condition|)
+block|{
 name|storageStatistics
 operator|.
 name|incrementCounter
@@ -1058,6 +1149,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|IteratorAdapter
