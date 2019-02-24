@@ -436,8 +436,14 @@ specifier|private
 name|int
 name|bufferIndex
 decl_stmt|;
-comment|/**    * Creates a new BlockInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
-DECL|method|BlockInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
+DECL|field|verifyChecksum
+specifier|private
+specifier|final
+name|boolean
+name|verifyChecksum
+decl_stmt|;
+comment|/**    * Creates a new BlockInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    * @param verifyChecksum verify checksum    */
+DECL|method|BlockInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID, boolean verifyChecksum)
 specifier|public
 name|BlockInputStream
 parameter_list|(
@@ -458,6 +464,9 @@ name|chunks
 parameter_list|,
 name|String
 name|traceID
+parameter_list|,
+name|boolean
+name|verifyChecksum
 parameter_list|)
 block|{
 name|this
@@ -528,6 +537,12 @@ operator|.
 name|bufferIndex
 operator|=
 literal|0
+expr_stmt|;
+name|this
+operator|.
+name|verifyChecksum
+operator|=
+name|verifyChecksum
 expr_stmt|;
 block|}
 DECL|method|initializeChunkOffset ()
@@ -1435,6 +1450,11 @@ name|getChecksumData
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|verifyChecksum
+condition|)
+block|{
 name|Checksum
 operator|.
 name|verifyChecksum
@@ -1444,6 +1464,7 @@ argument_list|,
 name|checksumData
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 catch|catch

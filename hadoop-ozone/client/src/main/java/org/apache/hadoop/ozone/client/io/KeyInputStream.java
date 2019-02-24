@@ -1373,7 +1373,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|getFromOmKeyInfo ( OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocationClient, String requestId)
+DECL|method|getFromOmKeyInfo ( OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocationClient, String requestId, boolean verifyChecksum)
 specifier|public
 specifier|static
 name|LengthInputStream
@@ -1390,6 +1390,9 @@ name|storageContainerLocationClient
 parameter_list|,
 name|String
 name|requestId
+parameter_list|,
+name|boolean
+name|verifyChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -1695,6 +1698,8 @@ argument_list|,
 name|chunks
 argument_list|,
 name|requestId
+argument_list|,
+name|verifyChecksum
 argument_list|)
 decl_stmt|;
 name|groupInputStream

@@ -828,6 +828,12 @@ specifier|final
 name|int
 name|bytesPerChecksum
 decl_stmt|;
+DECL|field|verifyChecksum
+specifier|private
+specifier|final
+name|boolean
+name|verifyChecksum
+decl_stmt|;
 comment|/**    * Creates a new DistributedStorageHandler.    *    * @param conf configuration    * @param storageContainerLocation StorageContainerLocationProtocol proxy    * @param ozoneManagerClient OzoneManager proxy    */
 DECL|method|DistributedStorageHandler (OzoneConfiguration conf, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocation, OzoneManagerProtocolClientSideTranslatorPB ozoneManagerClient)
 specifier|public
@@ -1121,6 +1127,23 @@ operator|.
 name|valueOf
 argument_list|(
 name|checksumTypeStr
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|verifyChecksum
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_VERIFY_CHECKSUM
+argument_list|,
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_VERIFY_CHECKSUM_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -2953,6 +2976,8 @@ name|args
 operator|.
 name|getRequestID
 argument_list|()
+argument_list|,
+name|verifyChecksum
 argument_list|)
 return|;
 block|}
