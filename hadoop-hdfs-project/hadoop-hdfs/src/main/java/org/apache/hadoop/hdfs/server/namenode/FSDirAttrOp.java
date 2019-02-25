@@ -2016,31 +2016,6 @@ name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|dirNode
-operator|.
-name|isRoot
-argument_list|()
-operator|&&
-name|nsQuota
-operator|==
-name|HdfsConstants
-operator|.
-name|QUOTA_RESET
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Cannot clear namespace quota on root."
-argument_list|)
-throw|;
-block|}
-else|else
-block|{
-comment|// a directory inode
 specifier|final
 name|QuotaCounts
 name|oldQuota
@@ -2070,6 +2045,28 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|dirNode
+operator|.
+name|isRoot
+argument_list|()
+operator|&&
+name|nsQuota
+operator|==
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
+condition|)
+block|{
+name|nsQuota
+operator|=
+name|HdfsConstants
+operator|.
+name|QUOTA_DONT_SET
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 name|nsQuota
 operator|==
 name|HdfsConstants
@@ -2082,6 +2079,7 @@ operator|=
 name|oldNsQuota
 expr_stmt|;
 block|}
+comment|// a directory inode
 if|if
 condition|(
 name|ssQuota
@@ -2191,7 +2189,6 @@ expr_stmt|;
 return|return
 name|dirNode
 return|;
-block|}
 block|}
 DECL|method|unprotectedSetReplication ( FSDirectory fsd, INodesInPath iip, short replication)
 specifier|static
