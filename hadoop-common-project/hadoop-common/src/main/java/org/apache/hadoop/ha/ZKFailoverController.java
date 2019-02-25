@@ -3141,7 +3141,7 @@ return|return
 name|oldZkfc
 return|;
 block|}
-comment|/**    * Ensure that the local node is in a healthy state, and thus    * eligible for graceful failover.    * @throws ServiceFailedException if the node is unhealthy    */
+comment|/**    * If the local node is an observer or is unhealthy it    * is not eligible for graceful failover.    * @throws ServiceFailedException if the node is an observer or unhealthy    */
 DECL|method|checkEligibleForFailover ()
 specifier|private
 specifier|synchronized
@@ -3171,6 +3171,27 @@ argument_list|(
 name|localTarget
 operator|+
 literal|" is not currently healthy. "
+operator|+
+literal|"Cannot be failover target"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|serviceState
+operator|==
+name|HAServiceState
+operator|.
+name|OBSERVER
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+name|localTarget
+operator|+
+literal|" is in observer state. "
 operator|+
 literal|"Cannot be failover target"
 argument_list|)
@@ -3558,6 +3579,30 @@ name|recheckElectability
 argument_list|()
 expr_stmt|;
 block|}
+return|return;
+block|}
+if|if
+condition|(
+name|changedState
+operator|==
+name|HAServiceState
+operator|.
+name|OBSERVER
+condition|)
+block|{
+name|elector
+operator|.
+name|quitElection
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|serviceState
+operator|=
+name|HAServiceState
+operator|.
+name|OBSERVER
+expr_stmt|;
 return|return;
 block|}
 if|if
