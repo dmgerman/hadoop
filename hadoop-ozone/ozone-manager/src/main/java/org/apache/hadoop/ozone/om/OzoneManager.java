@@ -4819,7 +4819,16 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
+name|TracingUtil
+operator|.
+name|createProxy
+argument_list|(
 name|scmBlockLocationClient
+argument_list|,
+name|ScmBlockLocationProtocol
+operator|.
+name|class
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns a scm container client.    *    * @return {@link StorageContainerLocationProtocol}    * @throws IOException    */

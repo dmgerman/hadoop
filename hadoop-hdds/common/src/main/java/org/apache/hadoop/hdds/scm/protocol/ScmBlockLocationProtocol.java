@@ -166,6 +166,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -198,6 +208,8 @@ DECL|interface|ScmBlockLocationProtocol
 specifier|public
 interface|interface
 name|ScmBlockLocationProtocol
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner)
