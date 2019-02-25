@@ -213,6 +213,11 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+literal|"DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"
+argument_list|)
 DECL|method|createAdapter ( String volumeStr, String bucketStr, OzoneFSStorageStatistics storageStatistics)
 specifier|public
 specifier|static
@@ -273,6 +278,11 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+literal|"DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"
+argument_list|)
 DECL|method|createAdapter ( String volumeStr, String bucketStr, OzoneClientAdapterCreator creator)
 specifier|public
 specifier|static
