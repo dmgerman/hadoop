@@ -470,7 +470,13 @@ specifier|final
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
 decl_stmt|;
-DECL|method|GpuResourceHandlerImpl (Context nmContext, CGroupsHandler cGroupsHandler, PrivilegedOperationExecutor privilegedOperationExecutor)
+DECL|field|gpuDiscoverer
+specifier|private
+specifier|final
+name|GpuDiscoverer
+name|gpuDiscoverer
+decl_stmt|;
+DECL|method|GpuResourceHandlerImpl (Context nmContext, CGroupsHandler cGroupsHandler, PrivilegedOperationExecutor privilegedOperationExecutor, GpuDiscoverer gpuDiscoverer)
 specifier|public
 name|GpuResourceHandlerImpl
 parameter_list|(
@@ -482,6 +488,9 @@ name|cGroupsHandler
 parameter_list|,
 name|PrivilegedOperationExecutor
 name|privilegedOperationExecutor
+parameter_list|,
+name|GpuDiscoverer
+name|gpuDiscoverer
 parameter_list|)
 block|{
 name|this
@@ -502,6 +511,8 @@ name|privilegedOperationExecutor
 operator|=
 name|privilegedOperationExecutor
 expr_stmt|;
+name|this
+operator|.
 name|gpuAllocator
 operator|=
 operator|new
@@ -509,6 +520,12 @@ name|GpuResourceAllocator
 argument_list|(
 name|nmContext
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|gpuDiscoverer
+operator|=
+name|gpuDiscoverer
 expr_stmt|;
 block|}
 annotation|@
@@ -537,10 +554,7 @@ try|try
 block|{
 name|usableGpus
 operator|=
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|getGpusUsableByYarn
 argument_list|()

@@ -758,6 +758,11 @@ name|Container
 argument_list|>
 name|runningContainersMap
 decl_stmt|;
+DECL|field|gpuDiscoverer
+specifier|private
+name|GpuDiscoverer
+name|gpuDiscoverer
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -865,6 +870,12 @@ argument_list|(
 name|runningContainersMap
 argument_list|)
 expr_stmt|;
+name|gpuDiscoverer
+operator|=
+operator|new
+name|GpuDiscoverer
+argument_list|()
+expr_stmt|;
 name|gpuResourceHandler
 operator|=
 operator|new
@@ -875,6 +886,8 @@ argument_list|,
 name|mockCGroupsHandler
 argument_list|,
 name|mockPrivilegedExecutor
+argument_list|,
+name|gpuDiscoverer
 argument_list|)
 expr_stmt|;
 block|}
@@ -906,10 +919,7 @@ argument_list|,
 literal|"0:0"
 argument_list|)
 expr_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(
@@ -1341,10 +1351,7 @@ argument_list|,
 literal|"0:0,1:1,2:3,3:4"
 argument_list|)
 expr_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(
@@ -1805,10 +1812,7 @@ argument_list|,
 literal|"0:0,1:1,2:3,3:4"
 argument_list|)
 expr_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(
@@ -1953,10 +1957,7 @@ argument_list|,
 literal|" "
 argument_list|)
 expr_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(
@@ -2135,10 +2136,7 @@ argument_list|,
 literal|"0:0,1:1,2:3,3:4"
 argument_list|)
 expr_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(
@@ -2447,12 +2445,11 @@ argument_list|,
 name|mockCGroupsHandler
 argument_list|,
 name|mockPrivilegedExecutor
+argument_list|,
+name|gpuDiscoverer
 argument_list|)
 decl_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(
@@ -2574,10 +2571,7 @@ argument_list|,
 literal|"0:0,1:1,2:3,3:4"
 argument_list|)
 expr_stmt|;
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|initialize
 argument_list|(

@@ -218,6 +218,27 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|gpuDiscoverer
+specifier|private
+specifier|final
+name|GpuDiscoverer
+name|gpuDiscoverer
+decl_stmt|;
+DECL|method|GpuNodeResourceUpdateHandler (GpuDiscoverer gpuDiscoverer)
+specifier|public
+name|GpuNodeResourceUpdateHandler
+parameter_list|(
+name|GpuDiscoverer
+name|gpuDiscoverer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|gpuDiscoverer
+operator|=
+name|gpuDiscoverer
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|updateConfiguredResource (Resource res)
@@ -244,10 +265,7 @@ name|GpuDevice
 argument_list|>
 name|usableGpus
 init|=
-name|GpuDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|gpuDiscoverer
 operator|.
 name|getGpusUsableByYarn
 argument_list|()
@@ -269,7 +287,7 @@ name|message
 init|=
 literal|"GPU is enabled, "
 operator|+
-literal|"but couldn't find any usable GPUs on the NodeManager!"
+literal|"but could not find any usable GPUs on the NodeManager!"
 decl_stmt|;
 name|LOG
 operator|.
