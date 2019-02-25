@@ -1857,8 +1857,6 @@ name|append
 argument_list|(
 name|s
 argument_list|)
-expr_stmt|;
-name|labelStrBuilder
 operator|.
 name|append
 argument_list|(

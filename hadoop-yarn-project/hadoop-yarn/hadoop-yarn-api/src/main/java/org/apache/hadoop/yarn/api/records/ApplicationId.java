@@ -371,16 +371,12 @@ name|append
 argument_list|(
 name|APPLICATION_ID_PREFIX
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 name|getClusterTimestamp
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

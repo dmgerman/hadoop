@@ -1548,15 +1548,11 @@ name|this
 operator|.
 name|maxServiceRetries
 argument_list|)
-expr_stmt|;
-name|msg
 operator|.
 name|append
 argument_list|(
 literal|" for service address: "
 argument_list|)
-expr_stmt|;
-name|msg
 operator|.
 name|append
 argument_list|(

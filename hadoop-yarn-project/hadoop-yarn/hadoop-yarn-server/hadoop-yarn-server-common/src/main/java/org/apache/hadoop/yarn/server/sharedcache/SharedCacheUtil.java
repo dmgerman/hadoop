@@ -297,8 +297,6 @@ name|Path
 operator|.
 name|SEPARATOR_CHAR
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

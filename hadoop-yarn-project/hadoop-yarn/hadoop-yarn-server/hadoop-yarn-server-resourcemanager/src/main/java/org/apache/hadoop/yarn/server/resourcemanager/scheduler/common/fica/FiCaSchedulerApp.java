@@ -5368,8 +5368,6 @@ name|append
 argument_list|(
 literal|" Details : AM Partition = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5384,22 +5382,16 @@ name|DEFAULT_NODE_LABEL_PARTITION
 else|:
 name|appAMNodePartitionName
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"AM Resource Request = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5408,22 +5400,16 @@ argument_list|(
 name|appAMNodePartitionName
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue Resource Limit for AM = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5434,22 +5420,16 @@ argument_list|(
 name|appAMNodePartitionName
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"User AM Resource Limit of the queue = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5463,22 +5443,16 @@ name|getUser
 argument_list|()
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue AM Resource Usage = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5492,8 +5466,6 @@ argument_list|(
 name|appAMNodePartitionName
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5538,8 +5510,6 @@ name|append
 argument_list|(
 literal|" Details : AM Partition = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5554,22 +5524,16 @@ name|DEFAULT_NODE_LABEL_PARTITION
 else|:
 name|appAMNodePartitionName
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Partition Resource = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5588,22 +5552,16 @@ name|none
 argument_list|()
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue's Absolute capacity = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5616,22 +5574,16 @@ argument_list|)
 operator|*
 literal|100
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" % ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue's Absolute used capacity = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5644,22 +5596,16 @@ argument_list|)
 operator|*
 literal|100
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" % ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue's Absolute max capacity = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5672,22 +5618,16 @@ argument_list|)
 operator|*
 literal|100
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" % ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue's capacity (absolute resource) = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5698,22 +5638,16 @@ argument_list|(
 name|appAMNodePartitionName
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue's used capacity (absolute resource) = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5727,22 +5661,16 @@ argument_list|(
 name|appAMNodePartitionName
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|" ; "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
 literal|"Queue's max capacity (absolute resource) = "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5753,8 +5681,6 @@ argument_list|(
 name|appAMNodePartitionName
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessage
 operator|.
 name|append
 argument_list|(
@@ -5838,8 +5764,6 @@ name|CSAMContainerLaunchDiagnosticsConstants
 operator|.
 name|LAST_NODE_PROCESSED_MSG
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
@@ -5848,15 +5772,11 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
 literal|" ( Partition : "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
@@ -5865,15 +5785,11 @@ operator|.
 name|getLabels
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
 literal|", Total resource : "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
@@ -5882,15 +5798,11 @@ operator|.
 name|getTotalResource
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
 literal|", Available resource : "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
@@ -5899,8 +5811,6 @@ operator|.
 name|getUnallocatedResource
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(

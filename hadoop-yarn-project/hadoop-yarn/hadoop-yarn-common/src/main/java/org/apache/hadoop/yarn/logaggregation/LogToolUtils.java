@@ -417,8 +417,6 @@ name|containerStr
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -428,8 +426,6 @@ name|logType
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -447,8 +443,6 @@ argument_list|)
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -458,8 +452,6 @@ name|fileName
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -469,8 +461,6 @@ name|lastModifiedTime
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -485,8 +475,6 @@ argument_list|)
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -755,8 +743,6 @@ name|containerStr
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -766,8 +752,6 @@ name|logType
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -785,8 +769,6 @@ argument_list|)
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -796,8 +778,6 @@ name|fileName
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -807,8 +787,6 @@ name|lastModifiedTime
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -823,8 +801,6 @@ argument_list|)
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

@@ -6190,15 +6190,11 @@ name|append
 argument_list|(
 literal|" (Resource request: "
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
 name|resource
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(

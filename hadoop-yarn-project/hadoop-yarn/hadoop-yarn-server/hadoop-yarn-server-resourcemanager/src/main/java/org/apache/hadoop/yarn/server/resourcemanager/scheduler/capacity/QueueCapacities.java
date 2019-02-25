@@ -399,8 +399,6 @@ index|]
 operator|+
 literal|"%, "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -413,8 +411,6 @@ index|]
 operator|+
 literal|"%, "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -427,8 +423,6 @@ index|]
 operator|+
 literal|"%, "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -441,8 +435,6 @@ index|]
 operator|+
 literal|"%, "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -455,8 +447,6 @@ index|]
 operator|+
 literal|"%, "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -469,8 +459,6 @@ index|]
 operator|+
 literal|"%}"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -483,8 +471,6 @@ index|]
 operator|+
 literal|"%}"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -497,8 +483,6 @@ index|]
 operator|+
 literal|"%}"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

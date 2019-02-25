@@ -196,29 +196,21 @@ name|append
 argument_list|(
 literal|"{'sType': 'string', 'aTargets': [ 0 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|", {'sType': 'string', 'bSearchable': true, 'aTargets': [ 1 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|", {'sType': 'numeric', 'bSearchable': false, 'aTargets': [ 2 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|", {'sType': 'date', 'aTargets': [ 3 ] }]"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(

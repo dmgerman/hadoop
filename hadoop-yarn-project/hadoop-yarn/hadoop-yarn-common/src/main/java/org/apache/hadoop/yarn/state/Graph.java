@@ -751,8 +751,6 @@ name|name
 operator|+
 literal|" {\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -768,15 +766,11 @@ name|name
 argument_list|)
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 literal|"node [fontsize=12, fontname=Helvetica];\n"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -828,8 +822,6 @@ name|append
 argument_list|(
 name|ginfo
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

@@ -1122,8 +1122,6 @@ name|append
 argument_list|(
 name|o
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(

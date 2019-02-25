@@ -2047,8 +2047,6 @@ name|append
 argument_list|(
 literal|" [-help [cmd]]"
 argument_list|)
-expr_stmt|;
-name|summary
 operator|.
 name|append
 argument_list|(
@@ -3150,8 +3148,6 @@ name|append
 argument_list|(
 literal|" "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

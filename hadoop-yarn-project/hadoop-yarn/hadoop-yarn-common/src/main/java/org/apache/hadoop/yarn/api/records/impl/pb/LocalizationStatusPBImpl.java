@@ -364,8 +364,6 @@ name|append
 argument_list|(
 literal|"LocalizationStatus: ["
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -382,8 +380,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -400,8 +396,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -418,8 +412,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

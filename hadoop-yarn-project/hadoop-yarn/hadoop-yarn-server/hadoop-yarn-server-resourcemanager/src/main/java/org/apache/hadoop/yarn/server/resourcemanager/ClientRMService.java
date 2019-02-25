@@ -5966,8 +5966,6 @@ name|append
 argument_list|(
 literal|" with diagnostic message: "
 argument_list|)
-expr_stmt|;
-name|message
 operator|.
 name|append
 argument_list|(

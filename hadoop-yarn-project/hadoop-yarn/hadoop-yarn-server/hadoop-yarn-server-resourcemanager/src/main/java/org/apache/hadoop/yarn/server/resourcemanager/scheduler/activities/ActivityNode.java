@@ -341,8 +341,6 @@ name|activityNodeName
 operator|+
 literal|" "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -352,8 +350,6 @@ name|appPriority
 operator|+
 literal|" "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

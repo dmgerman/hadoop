@@ -918,15 +918,11 @@ name|append
 argument_list|(
 name|scheme
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 name|host
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -958,8 +954,6 @@ name|append
 argument_list|(
 literal|"?user.name="
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -1172,8 +1166,6 @@ name|append
 argument_list|(
 name|url
 argument_list|)
-expr_stmt|;
-name|api
 operator|.
 name|append
 argument_list|(
@@ -1193,8 +1185,6 @@ name|append
 argument_list|(
 literal|"/"
 argument_list|)
-expr_stmt|;
-name|api
 operator|.
 name|append
 argument_list|(
@@ -1251,8 +1241,6 @@ name|append
 argument_list|(
 name|url
 argument_list|)
-expr_stmt|;
-name|api
 operator|.
 name|append
 argument_list|(
@@ -1461,8 +1449,6 @@ name|append
 argument_list|(
 name|url
 argument_list|)
-expr_stmt|;
-name|api
 operator|.
 name|append
 argument_list|(
@@ -3059,15 +3045,11 @@ name|append
 argument_list|(
 literal|" Service "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 name|appName
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -3104,15 +3086,11 @@ name|append
 argument_list|(
 name|appName
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 literal|" Failed : HTTP error code : "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -3847,8 +3825,6 @@ name|append
 argument_list|(
 literal|"Failed: HTTP error code: "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -3857,8 +3833,6 @@ operator|.
 name|getStatus
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

@@ -6574,8 +6574,6 @@ name|append
 argument_list|(
 literal|"["
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(
@@ -6589,8 +6587,6 @@ name|currentTimeMillis
 argument_list|()
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|diagnosticMessageBldr
 operator|.
 name|append
 argument_list|(

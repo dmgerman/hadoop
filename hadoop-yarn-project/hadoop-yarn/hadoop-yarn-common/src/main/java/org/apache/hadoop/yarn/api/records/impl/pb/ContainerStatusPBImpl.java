@@ -597,8 +597,6 @@ name|append
 argument_list|(
 literal|"ContainerStatus: ["
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -615,8 +613,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -633,8 +629,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -651,8 +645,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -669,8 +661,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -687,8 +677,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -705,8 +693,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -723,8 +709,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -741,8 +725,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -759,8 +741,6 @@ name|append
 argument_list|(
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -772,8 +752,6 @@ argument_list|(
 name|getContainerSubState
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

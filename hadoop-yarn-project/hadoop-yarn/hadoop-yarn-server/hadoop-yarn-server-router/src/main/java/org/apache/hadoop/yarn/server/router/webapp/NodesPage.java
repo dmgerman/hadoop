@@ -280,8 +280,6 @@ name|append
 argument_list|(
 literal|"{'bSearchable': false, 'aTargets': [ 7 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
@@ -289,15 +287,11 @@ literal|", {'sType': 'title-numeric', 'bSearchable': false, "
 operator|+
 literal|"'aTargets': [ 2, 3, 4, 5, 6 ] }"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|", {'sType': 'title-numeric', 'aTargets': [ 5 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(

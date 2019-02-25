@@ -1211,8 +1211,6 @@ name|append
 argument_list|(
 literal|" NM = "
 argument_list|)
-expr_stmt|;
-name|logMsg
 operator|.
 name|append
 argument_list|(
@@ -1221,15 +1219,11 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|logMsg
 operator|.
 name|append
 argument_list|(
 literal|", attributes=[ "
 argument_list|)
-expr_stmt|;
-name|logMsg
 operator|.
 name|append
 argument_list|(
@@ -1248,8 +1242,6 @@ argument_list|,
 literal|","
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|logMsg
 operator|.
 name|append
 argument_list|(

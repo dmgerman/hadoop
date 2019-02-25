@@ -3254,8 +3254,6 @@ name|append
 argument_list|(
 literal|"Exception from container-launch.\n"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -3265,8 +3263,6 @@ name|containerId
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -3276,8 +3272,6 @@ name|exitCode
 operator|+
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(

@@ -138,15 +138,11 @@ name|append
 argument_list|(
 literal|"BaseResource [uri="
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 name|uri
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(

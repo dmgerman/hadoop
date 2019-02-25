@@ -8000,8 +8000,6 @@ literal|"The valid application state can be"
 operator|+
 literal|" one of the following: "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

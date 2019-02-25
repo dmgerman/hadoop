@@ -2455,8 +2455,6 @@ name|append
 argument_list|(
 name|validContainerId
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -2509,8 +2507,6 @@ name|StringBuilder
 argument_list|(
 literal|"Container "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -2519,8 +2515,6 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -4247,8 +4241,6 @@ name|append
 argument_list|(
 name|cId2
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(

@@ -1769,15 +1769,11 @@ name|append
 argument_list|(
 literal|", aoColumnDefs: ["
 argument_list|)
-decl_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|"{'bSearchable': false, 'aTargets': [ 7 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
@@ -1785,21 +1781,17 @@ literal|", {'sType': 'title-numeric', 'bSearchable': false, "
 operator|+
 literal|"'aTargets': [ 9, 10 ] }"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|", {'sType': 'title-numeric', 'aTargets': [ 5 ]}"
 argument_list|)
-expr_stmt|;
-name|b
 operator|.
 name|append
 argument_list|(
 literal|"]}"
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 return|return
 name|b
 operator|.

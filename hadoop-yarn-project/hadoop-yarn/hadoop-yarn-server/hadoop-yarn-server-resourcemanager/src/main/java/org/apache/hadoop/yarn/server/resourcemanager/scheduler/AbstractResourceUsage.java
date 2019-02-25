@@ -274,7 +274,7 @@ name|noLabelUsages
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Use enum here to make implementation more cleaner and readable.    * Indicates array index for each resource usage type.    */
+comment|/**    * Use enum here to make implementation more cleaner and readable. Indicates    * array index for each resource usage type.    */
 DECL|enum|ResourceType
 specifier|public
 enum|enum
@@ -318,7 +318,6 @@ argument_list|(
 DECL|enumConstant|AMLIMIT
 DECL|enumConstant|MIN_RESOURCE
 DECL|enumConstant|MAX_RESOURCE
-DECL|enumConstant|EFF_MIN_RESOURCE
 literal|5
 argument_list|)
 block|,
@@ -334,13 +333,14 @@ argument_list|)
 block|,
 name|MAX_RESOURCE
 argument_list|(
+DECL|enumConstant|EFF_MIN_RESOURCE
+DECL|enumConstant|EFF_MAX_RESOURCE
+DECL|enumConstant|USERAMLIMIT
 literal|8
 argument_list|)
 block|,
 name|EFF_MIN_RESOURCE
 argument_list|(
-DECL|enumConstant|EFF_MAX_RESOURCE
-DECL|enumConstant|USERAMLIMIT
 literal|9
 argument_list|)
 block|,
@@ -499,8 +499,6 @@ argument_list|)
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -519,8 +517,6 @@ argument_list|)
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -539,8 +535,6 @@ argument_list|)
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -559,8 +553,6 @@ argument_list|)
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -579,8 +571,6 @@ argument_list|)
 operator|+
 literal|", "
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
@@ -780,7 +770,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-comment|//all usages types are initialized
+comment|// all usages types are initialized
 name|Resources
 operator|.
 name|addTo

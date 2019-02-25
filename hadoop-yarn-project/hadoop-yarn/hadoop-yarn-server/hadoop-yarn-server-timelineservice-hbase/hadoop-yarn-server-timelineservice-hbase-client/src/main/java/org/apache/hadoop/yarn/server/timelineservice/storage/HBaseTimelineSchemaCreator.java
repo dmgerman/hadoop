@@ -1467,8 +1467,6 @@ literal|"TimelineSchemaCreator [-help] Display help info"
 operator|+
 literal|" for all commands. Or\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1476,15 +1474,11 @@ literal|"TimelineSchemaCreator -create [OPTIONAL_OPTIONS]"
 operator|+
 literal|" Create hbase tables.\n\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
 literal|"The Optional options for creating tables include: \n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1492,8 +1486,6 @@ literal|"[-entityTableName<Entity Table Name>] "
 operator|+
 literal|"The name of the Entity table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1501,8 +1493,6 @@ literal|"[-entityMetricsTTL<Entity Table Metrics TTL>]"
 operator|+
 literal|" TTL for metrics in the Entity table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1510,8 +1500,6 @@ literal|"[-appToflowTableName<AppToflow Table Name>]"
 operator|+
 literal|" The name of the AppToFlow table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1519,8 +1507,6 @@ literal|"[-applicationTableName<Application Table Name>]"
 operator|+
 literal|" The name of the Application table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1528,8 +1514,6 @@ literal|"[-applicationMetricsTTL<Application Table Metrics TTL>]"
 operator|+
 literal|" TTL for metrics in the Application table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1537,8 +1521,6 @@ literal|"[-subApplicationTableName<SubApplication Table Name>]"
 operator|+
 literal|" The name of the SubApplication table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(
@@ -1548,8 +1530,6 @@ literal|"<SubApplication Table Metrics TTL>]"
 operator|+
 literal|" TTL for metrics in the SubApplication table\n"
 argument_list|)
-expr_stmt|;
-name|usage
 operator|.
 name|append
 argument_list|(

@@ -1901,8 +1901,6 @@ name|append
 argument_list|(
 literal|"Exception from container-launch.\n"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -1918,8 +1916,6 @@ name|append
 argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -1964,8 +1960,6 @@ name|append
 argument_list|(
 literal|"Exception message: "
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -1999,8 +1993,6 @@ name|append
 argument_list|(
 literal|"Shell output: "
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(

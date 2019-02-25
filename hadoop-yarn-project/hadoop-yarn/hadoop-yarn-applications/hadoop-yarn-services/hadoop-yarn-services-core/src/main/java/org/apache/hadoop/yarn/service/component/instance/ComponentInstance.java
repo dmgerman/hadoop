@@ -2611,8 +2611,6 @@ name|append
 argument_list|(
 literal|": "
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -2626,8 +2624,6 @@ name|append
 argument_list|(
 literal|" completed. Reinsert back to pending list and requested "
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -2641,8 +2637,6 @@ operator|.
 name|lineSeparator
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
@@ -2670,15 +2664,11 @@ operator|.
 name|getExitStatus
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 literal|", diagnostics="
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(

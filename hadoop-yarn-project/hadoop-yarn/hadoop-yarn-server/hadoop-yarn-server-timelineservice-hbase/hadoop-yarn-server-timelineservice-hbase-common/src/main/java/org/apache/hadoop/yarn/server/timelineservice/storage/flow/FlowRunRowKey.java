@@ -386,8 +386,6 @@ literal|"{clusterId="
 operator|+
 name|clusterId
 argument_list|)
-expr_stmt|;
-name|flowKeyStr
 operator|.
 name|append
 argument_list|(
@@ -395,8 +393,6 @@ literal|" userId="
 operator|+
 name|userId
 argument_list|)
-expr_stmt|;
-name|flowKeyStr
 operator|.
 name|append
 argument_list|(
@@ -404,22 +400,16 @@ literal|" flowName="
 operator|+
 name|flowName
 argument_list|)
-expr_stmt|;
-name|flowKeyStr
 operator|.
 name|append
 argument_list|(
 literal|" flowRunId="
 argument_list|)
-expr_stmt|;
-name|flowKeyStr
 operator|.
 name|append
 argument_list|(
 name|flowRunId
 argument_list|)
-expr_stmt|;
-name|flowKeyStr
 operator|.
 name|append
 argument_list|(

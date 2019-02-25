@@ -5553,8 +5553,6 @@ name|append
 argument_list|(
 name|CLEAR_LINE
 argument_list|)
-expr_stmt|;
-name|ret
 operator|.
 name|append
 argument_list|(
@@ -5589,8 +5587,6 @@ name|append
 argument_list|(
 name|CLEAR_LINE
 argument_list|)
-expr_stmt|;
-name|ret
 operator|.
 name|append
 argument_list|(
@@ -5600,7 +5596,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"NodeManager(s): %d total, %d active, %d unhealthy, %d decommissioned,"
+literal|"NodeManager(s)"
+operator|+
+literal|": %d total, %d active, %d unhealthy, %d decommissioned,"
 operator|+
 literal|" %d lost, %d rebooted%n"
 argument_list|,
@@ -5641,8 +5639,6 @@ name|append
 argument_list|(
 name|CLEAR_LINE
 argument_list|)
-expr_stmt|;
-name|ret
 operator|.
 name|append
 argument_list|(
@@ -5693,8 +5689,6 @@ name|append
 argument_list|(
 name|CLEAR_LINE
 argument_list|)
-expr_stmt|;
-name|ret
 operator|.
 name|append
 argument_list|(
@@ -5737,8 +5731,6 @@ name|append
 argument_list|(
 name|CLEAR_LINE
 argument_list|)
-expr_stmt|;
-name|ret
 operator|.
 name|append
 argument_list|(
@@ -5781,8 +5773,6 @@ name|append
 argument_list|(
 name|CLEAR_LINE
 argument_list|)
-expr_stmt|;
-name|ret
 operator|.
 name|append
 argument_list|(

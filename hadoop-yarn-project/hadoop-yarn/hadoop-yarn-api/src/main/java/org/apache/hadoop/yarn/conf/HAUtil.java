@@ -492,8 +492,6 @@ name|append
 argument_list|(
 name|id
 argument_list|)
-expr_stmt|;
-name|setValue
 operator|.
 name|append
 argument_list|(

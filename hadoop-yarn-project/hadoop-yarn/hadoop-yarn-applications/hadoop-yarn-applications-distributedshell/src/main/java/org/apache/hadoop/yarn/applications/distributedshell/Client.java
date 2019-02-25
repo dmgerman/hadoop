@@ -5295,8 +5295,6 @@ name|ApplicationConstants
 operator|.
 name|CLASS_PATH_SEPARATOR
 argument_list|)
-expr_stmt|;
-name|classPathEnv
 operator|.
 name|append
 argument_list|(
@@ -5342,8 +5340,6 @@ name|append
 argument_list|(
 literal|':'
 argument_list|)
-expr_stmt|;
-name|classPathEnv
 operator|.
 name|append
 argument_list|(
