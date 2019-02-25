@@ -824,6 +824,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|STOP_SLEEP_TIME_MS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|STOP_SLEEP_TIME_MS
+init|=
+literal|10
+decl_stmt|;
 comment|/** A counter for generating call IDs. */
 DECL|field|callIdCounter
 specifier|private
@@ -5957,7 +5966,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|100
+name|STOP_SLEEP_TIME_MS
 argument_list|)
 expr_stmt|;
 block|}
