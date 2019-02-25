@@ -6445,8 +6445,13 @@ return|return
 literal|false
 return|;
 block|}
+comment|// The value equal or less than 0 means no timeout
 if|if
 condition|(
+name|clientTimeout
+operator|>
+literal|0
+operator|&&
 name|System
 operator|.
 name|currentTimeMillis
@@ -6463,7 +6468,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reached client specified timeout for application. Killing application"
+literal|"Reached client specified timeout for application. "
+operator|+
+literal|"Killing application"
 argument_list|)
 expr_stmt|;
 name|forceKillApplication
