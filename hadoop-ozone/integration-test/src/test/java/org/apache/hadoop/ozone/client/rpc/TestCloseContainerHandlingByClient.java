@@ -681,6 +681,10 @@ specifier|private
 specifier|static
 name|OzoneConfiguration
 name|conf
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|()
 decl_stmt|;
 DECL|field|client
 specifier|private
@@ -736,12 +740,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|conf
-operator|=
-operator|new
-name|OzoneConfiguration
-argument_list|()
-expr_stmt|;
 name|chunkSize
 operator|=
 operator|(

@@ -375,6 +375,18 @@ name|OzoneManagerSecurityProtocol
 extends|,
 name|Closeable
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:ConstantName"
+argument_list|)
+comment|/**    * Version 1: Initial version.    */
+DECL|field|versionID
+name|long
+name|versionID
+init|=
+literal|1L
+decl_stmt|;
 comment|/**    * Creates a volume.    * @param args - Arguments to create Volume.    * @throws IOException    */
 DECL|method|createVolume (OmVolumeArgs args)
 name|void

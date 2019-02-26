@@ -213,6 +213,18 @@ name|StorageContainerLocationProtocol
 extends|extends
 name|Closeable
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:ConstantName"
+argument_list|)
+comment|/**    * Version 1: Initial version.    */
+DECL|field|versionID
+name|long
+name|versionID
+init|=
+literal|1L
+decl_stmt|;
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
 DECL|method|allocateContainer ( HddsProtos.ReplicationType replicationType, HddsProtos.ReplicationFactor factor, String owner)
 name|ContainerWithPipeline

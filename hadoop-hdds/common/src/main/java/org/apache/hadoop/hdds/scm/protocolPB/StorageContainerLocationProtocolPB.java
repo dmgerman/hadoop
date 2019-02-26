@@ -108,7 +108,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.ozone.protocol.StorageContainerLocationProtocol"
+literal|"org.apache.hadoop.hdds.scm.protocol.StorageContainerLocationProtocol"
 argument_list|,
 name|protocolVersion
 operator|=

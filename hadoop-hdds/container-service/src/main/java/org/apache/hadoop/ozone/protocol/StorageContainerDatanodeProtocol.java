@@ -275,6 +275,18 @@ specifier|public
 interface|interface
 name|StorageContainerDatanodeProtocol
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:ConstantName"
+argument_list|)
+comment|/**    * Version 1: Initial version.    */
+DECL|field|versionID
+name|long
+name|versionID
+init|=
+literal|1L
+decl_stmt|;
 comment|/**    * Returns SCM version.    * @return Version info.    */
 DECL|method|getVersion (SCMVersionRequestProto versionRequest)
 name|SCMVersionResponseProto

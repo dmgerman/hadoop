@@ -732,6 +732,58 @@ name|HDDS_GRPC_TLS_TEST_CERT_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|// Comma separated acls (users, groups) allowing clients accessing
+comment|// datanode container protocol
+comment|// when hadoop.security.authorization is true, this needs to be set in
+comment|// hadoop-policy.xml, "*" allows all users/groups to access.
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|HDDS_SECURITY_CLIENT_DATANODE_CONTAINER_PROTOCOL_ACL
+name|HDDS_SECURITY_CLIENT_DATANODE_CONTAINER_PROTOCOL_ACL
+init|=
+literal|"hdds.security.client.datanode.container.protocol.acl"
+decl_stmt|;
+comment|// Comma separated acls (users, groups) allowing clients accessing
+comment|// scm container protocol
+comment|// when hadoop.security.authorization is true, this needs to be set in
+comment|// hadoop-policy.xml, "*" allows all users/groups to access.
+DECL|field|HDDS_SECURITY_CLIENT_SCM_CONTAINER_PROTOCOL_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SECURITY_CLIENT_SCM_CONTAINER_PROTOCOL_ACL
+init|=
+literal|"hdds.security.client.scm.container.protocol.acl"
+decl_stmt|;
+comment|// Comma separated acls (users, groups) allowing clients accessing
+comment|// scm block protocol
+comment|// when hadoop.security.authorization is true, this needs to be set in
+comment|// hadoop-policy.xml, "*" allows all users/groups to access.
+DECL|field|HDDS_SECURITY_CLIENT_SCM_BLOCK_PROTOCOL_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SECURITY_CLIENT_SCM_BLOCK_PROTOCOL_ACL
+init|=
+literal|"hdds.security.client.scm.block.protocol.acl"
+decl_stmt|;
+comment|// Comma separated acls (users, groups) allowing clients accessing
+comment|// scm certificate protocol
+comment|// when hadoop.security.authorization is true, this needs to be set in
+comment|// hadoop-policy.xml, "*" allows all users/groups to access.
+DECL|field|HDDS_SECURITY_CLIENT_SCM_CERTIFICATE_PROTOCOL_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SECURITY_CLIENT_SCM_CERTIFICATE_PROTOCOL_ACL
+init|=
+literal|"hdds.security.client.scm.certificate.protocol.acl"
+decl_stmt|;
 block|}
 end_class
 

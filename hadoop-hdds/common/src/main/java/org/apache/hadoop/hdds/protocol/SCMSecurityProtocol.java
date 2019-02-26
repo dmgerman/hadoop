@@ -135,6 +135,18 @@ specifier|public
 interface|interface
 name|SCMSecurityProtocol
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:ConstantName"
+argument_list|)
+comment|/**    * Version 1: Initial version.    */
+DECL|field|versionID
+name|long
+name|versionID
+init|=
+literal|1L
+decl_stmt|;
 comment|/**    * Get SCM signed certificate for DataNode.    *    * @param dataNodeDetails - DataNode Details.    * @param certSignReq     - Certificate signing request.    * @return byte[]         - SCM signed certificate.    */
 DECL|method|getDataNodeCertificate ( DatanodeDetailsProto dataNodeDetails, String certSignReq)
 name|String

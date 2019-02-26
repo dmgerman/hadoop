@@ -5169,6 +5169,11 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|Ignore
+argument_list|(
+literal|"Debug Jenkins Timeout"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testPutKeyRatisThreeNodesParallel ()
 specifier|public

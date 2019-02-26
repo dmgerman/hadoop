@@ -140,7 +140,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.ozone.protocol.OzoneManagerProtocol"
+literal|"org.apache.hadoop.ozone.om.protocol.OzoneManagerProtocol"
 argument_list|,
 name|protocolVersion
 operator|=

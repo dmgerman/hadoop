@@ -92,7 +92,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.ozone.protocol.SCMSecurityProtocol"
+literal|"org.apache.hadoop.hdds.protocol.SCMSecurityProtocol"
 argument_list|,
 name|protocolVersion
 operator|=

@@ -211,6 +211,18 @@ name|ScmBlockLocationProtocol
 extends|extends
 name|Closeable
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:ConstantName"
+argument_list|)
+comment|/**    * Version 1: Initial version.    */
+DECL|field|versionID
+name|long
+name|versionID
+init|=
+literal|1L
+decl_stmt|;
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner)
 name|AllocatedBlock

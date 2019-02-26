@@ -843,6 +843,19 @@ init|=
 literal|0
 decl_stmt|;
 comment|//no throttling
+comment|// Comma separated acls (users, groups) allowing clients accessing
+comment|// OM client protocol
+comment|// when hadoop.security.authorization is true, this needs to be set in
+comment|// hadoop-policy.xml, "*" allows all users/groups to access.
+DECL|field|OZONE_OM_SECURITY_CLIENT_PROTOCOL_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_SECURITY_CLIENT_PROTOCOL_ACL
+init|=
+literal|"ozone.om.security.client.protocol.acl"
+decl_stmt|;
 block|}
 end_class
 
