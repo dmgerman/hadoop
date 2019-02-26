@@ -317,15 +317,28 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-try|try
-block|{
-name|HdfsConfiguration
-name|conf
-init|=
+name|createCluster
+argument_list|(
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|createCluster (Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|createCluster
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
 name|conf
 operator|.
 name|addResource
@@ -348,13 +361,24 @@ argument_list|(
 literal|true
 argument_list|,
 literal|2
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Start NNs and DNs and wait until ready
 name|cluster
 operator|.
 name|startCluster
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|addRouterOverrides
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 comment|// Start routers with only an RPC service
 name|cluster
@@ -445,9 +469,10 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot start federated cluster"
-argument_list|,
 name|e
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 throw|;
 block|}
