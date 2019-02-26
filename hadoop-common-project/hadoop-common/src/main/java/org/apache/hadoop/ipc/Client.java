@@ -759,6 +759,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|function
+operator|.
+name|Consumer
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -823,15 +835,6 @@ name|Client
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|STOP_SLEEP_TIME_MS
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|STOP_SLEEP_TIME_MS
-init|=
-literal|10
 decl_stmt|;
 comment|/** A counter for generating call IDs. */
 DECL|field|callIdCounter
@@ -1060,6 +1063,7 @@ expr_stmt|;
 block|}
 DECL|field|connections
 specifier|private
+specifier|final
 name|ConcurrentMap
 argument_list|<
 name|ConnectionId
@@ -1073,6 +1077,38 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|putLock
+specifier|private
+specifier|final
+name|Object
+name|putLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
+DECL|field|emptyCondition
+specifier|private
+specifier|final
+name|Object
+name|emptyCondition
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
+DECL|field|running
+specifier|private
+specifier|final
+name|AtomicBoolean
+name|running
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|true
+argument_list|)
+decl_stmt|;
 DECL|field|valueClass
 specifier|private
 name|Class
@@ -1084,18 +1120,6 @@ argument_list|>
 name|valueClass
 decl_stmt|;
 comment|// class of call values
-DECL|field|running
-specifier|private
-name|AtomicBoolean
-name|running
-init|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|true
-argument_list|)
-decl_stmt|;
-comment|// if client runs
 DECL|field|conf
 specifier|final
 specifier|private
@@ -1110,10 +1134,15 @@ decl_stmt|;
 comment|// how to create sockets
 DECL|field|refCount
 specifier|private
-name|int
+specifier|final
+name|AtomicInteger
 name|refCount
 init|=
+operator|new
+name|AtomicInteger
+argument_list|(
 literal|1
+argument_list|)
 decl_stmt|;
 DECL|field|connectionTimeout
 specifier|private
@@ -1334,7 +1363,6 @@ name|clientExecutor
 return|;
 block|}
 block|}
-empty_stmt|;
 comment|/**    * set the ping interval value in configuration    *     * @param conf Configuration    * @param pingInterval the ping interval    */
 DECL|method|setPingInterval (Configuration conf, int pingInterval)
 specifier|public
@@ -1536,39 +1564,29 @@ operator|.
 name|clientExecutor
 return|;
 block|}
-comment|/**    * Increment this client's reference count    *    */
+comment|/**    * Increment this client's reference count    */
 DECL|method|incCount ()
-specifier|synchronized
 name|void
 name|incCount
 parameter_list|()
 block|{
 name|refCount
-operator|++
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Decrement this client's reference count    *    */
-DECL|method|decCount ()
-specifier|synchronized
-name|void
-name|decCount
-parameter_list|()
-block|{
-name|refCount
-operator|--
-expr_stmt|;
-block|}
-comment|/**    * Return if this client has no reference    *     * @return true if this client has no reference; false otherwise    */
-DECL|method|isZeroReference ()
-specifier|synchronized
-name|boolean
-name|isZeroReference
+comment|/**    * Decrement this client's reference count    */
+DECL|method|decAndGetCount ()
+name|int
+name|decAndGetCount
 parameter_list|()
 block|{
 return|return
 name|refCount
-operator|==
-literal|0
+operator|.
+name|decrementAndGet
+argument_list|()
 return|;
 block|}
 comment|/** Check the rpc response header. */
@@ -2198,8 +2216,16 @@ name|AtomicReference
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|Connection (ConnectionId remoteId, int serviceClass)
-specifier|public
+DECL|field|removeMethod
+specifier|private
+specifier|final
+name|Consumer
+argument_list|<
+name|Connection
+argument_list|>
+name|removeMethod
+decl_stmt|;
+DECL|method|Connection (ConnectionId remoteId, int serviceClass, Consumer<Connection> removeMethod)
 name|Connection
 parameter_list|(
 name|ConnectionId
@@ -2207,9 +2233,13 @@ name|remoteId
 parameter_list|,
 name|int
 name|serviceClass
+parameter_list|,
+name|Consumer
+argument_list|<
+name|Connection
+argument_list|>
+name|removeMethod
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 operator|.
@@ -2226,39 +2256,6 @@ operator|.
 name|getAddress
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|server
-operator|.
-name|isUnresolved
-argument_list|()
-condition|)
-block|{
-throw|throw
-name|NetUtils
-operator|.
-name|wrapException
-argument_list|(
-name|server
-operator|.
-name|getHostName
-argument_list|()
-argument_list|,
-name|server
-operator|.
-name|getPort
-argument_list|()
-argument_list|,
-literal|null
-argument_list|,
-literal|0
-argument_list|,
-operator|new
-name|UnknownHostException
-argument_list|()
-argument_list|)
-throw|;
-block|}
 name|this
 operator|.
 name|maxResponseLength
@@ -2386,6 +2383,8 @@ argument_list|,
 name|clientId
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|pingHeader
 operator|.
 name|writeDelimitedTo
@@ -2393,6 +2392,35 @@ argument_list|(
 name|buf
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Failed to write to buf for "
+operator|+
+name|remoteId
+operator|+
+literal|" in "
+operator|+
+name|Client
+operator|.
+name|this
+operator|+
+literal|" due to "
+operator|+
+name|e
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 name|pingRequest
 operator|=
 name|buf
@@ -2450,6 +2478,12 @@ operator|.
 name|serviceClass
 operator|=
 name|serviceClass
+expr_stmt|;
+name|this
+operator|.
+name|removeMethod
+operator|=
+name|removeMethod
 expr_stmt|;
 if|if
 condition|(
@@ -5547,12 +5581,10 @@ block|}
 comment|// We have marked this connection as closed. Other thread could have
 comment|// already known it and replace this closedConnection with a new one.
 comment|// We should only remove this closedConnection.
-name|connections
+name|removeMethod
 operator|.
-name|remove
+name|accept
 argument_list|(
-name|remoteId
-argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
@@ -5879,6 +5911,31 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|"-"
+operator|+
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|clientId
+argument_list|)
+return|;
+block|}
 comment|/** Return the socket factory of this client    *    * @return this client's socket factory    */
 DECL|method|getSocketFactory ()
 name|SocketFactory
@@ -5912,6 +5969,12 @@ literal|"Stopping client"
 argument_list|)
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|putLock
+init|)
+block|{
+comment|// synchronized to avoid put after stop
 if|if
 condition|(
 operator|!
@@ -5926,6 +5989,7 @@ argument_list|)
 condition|)
 block|{
 return|return;
+block|}
 block|}
 comment|// wake up all connections
 for|for
@@ -5951,6 +6015,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// wait until all connections are closed
+synchronized|synchronized
+init|(
+name|emptyCondition
+init|)
+block|{
+comment|// synchronized the loop to guarantee wait must be notified.
 while|while
 condition|(
 operator|!
@@ -5962,12 +6032,10 @@ condition|)
 block|{
 try|try
 block|{
-name|Thread
+name|emptyCondition
 operator|.
-name|sleep
-argument_list|(
-name|STOP_SLEEP_TIME_MS
-argument_list|)
+name|wait
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -5975,7 +6043,8 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{       }
+block|{         }
+block|}
 block|}
 name|clientExcecutorFactory
 operator|.
@@ -6752,24 +6821,95 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|InetSocketAddress
+name|address
+init|=
+name|remoteId
+operator|.
+name|getAddress
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-operator|!
-name|running
+name|address
 operator|.
-name|get
+name|isUnresolved
 argument_list|()
 condition|)
 block|{
-comment|// the client is stopped
 throw|throw
-operator|new
-name|IOException
+name|NetUtils
+operator|.
+name|wrapException
 argument_list|(
-literal|"The client is stopped"
+name|address
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|address
+operator|.
+name|getPort
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|0
+argument_list|,
+operator|new
+name|UnknownHostException
+argument_list|()
 argument_list|)
 throw|;
 block|}
+specifier|final
+name|Consumer
+argument_list|<
+name|Connection
+argument_list|>
+name|removeMethod
+init|=
+name|c
+lambda|->
+block|{
+specifier|final
+name|boolean
+name|removed
+init|=
+name|connections
+operator|.
+name|remove
+argument_list|(
+name|remoteId
+argument_list|,
+name|c
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|removed
+operator|&&
+name|connections
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|emptyCondition
+init|)
+block|{
+name|emptyCondition
+operator|.
+name|notify
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+decl_stmt|;
 name|Connection
 name|connection
 decl_stmt|;
@@ -6779,57 +6919,62 @@ condition|(
 literal|true
 condition|)
 block|{
-comment|// These lines below can be shorten with computeIfAbsent in Java8
+synchronized|synchronized
+init|(
+name|putLock
+init|)
+block|{
+comment|// synchronized to avoid put after stop
+if|if
+condition|(
+operator|!
+name|running
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to get connection for "
+operator|+
+name|remoteId
+operator|+
+literal|", "
+operator|+
+name|call
+operator|+
+literal|": "
+operator|+
+name|this
+operator|+
+literal|" is already stopped"
+argument_list|)
+throw|;
+block|}
 name|connection
 operator|=
 name|connections
 operator|.
-name|get
+name|computeIfAbsent
 argument_list|(
 name|remoteId
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|connection
-operator|==
-literal|null
-condition|)
-block|{
-name|connection
-operator|=
+argument_list|,
+name|id
+lambda|->
 operator|new
 name|Connection
 argument_list|(
-name|remoteId
+name|id
 argument_list|,
 name|serviceClass
-argument_list|)
-expr_stmt|;
-name|Connection
-name|existing
-init|=
-name|connections
-operator|.
-name|putIfAbsent
-argument_list|(
-name|remoteId
 argument_list|,
-name|connection
+name|removeMethod
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|existing
-operator|!=
-literal|null
-condition|)
-block|{
-name|connection
-operator|=
-name|existing
+argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -6849,12 +6994,10 @@ comment|// This connection is closed, should be removed. But other thread could
 comment|// have already known this closedConnection, and replace it with a new
 comment|// connection. So we should call conditional remove to make sure we only
 comment|// remove this closedConnection.
-name|connections
+name|removeMethod
 operator|.
-name|remove
+name|accept
 argument_list|(
-name|remoteId
-argument_list|,
 name|connection
 argument_list|)
 expr_stmt|;
