@@ -294,6 +294,26 @@ name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT_DEFAULT
 init|=
 literal|0.99
 decl_stmt|;
+comment|// percentage of healthy pipelines, where all 3 datanodes are reported in the
+comment|// pipeline.
+DECL|field|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
+init|=
+literal|"hdds.scm.chillmode.healthy.pipelie.pct"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|double
+DECL|field|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT_DEFAULT
+name|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT_DEFAULT
+init|=
+literal|0.10
+decl_stmt|;
 DECL|field|HDDS_LOCK_MAX_CONCURRENCY
 specifier|public
 specifier|static

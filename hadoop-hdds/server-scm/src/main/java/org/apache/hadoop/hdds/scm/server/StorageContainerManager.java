@@ -2042,6 +2042,8 @@ init|=
 operator|new
 name|PipelineReportHandler
 argument_list|(
+name|scmChillModeManager
+argument_list|,
 name|pipelineManager
 argument_list|,
 name|conf

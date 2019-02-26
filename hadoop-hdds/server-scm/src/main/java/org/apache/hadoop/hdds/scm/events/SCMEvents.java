@@ -551,6 +551,28 @@ argument_list|,
 literal|"Pipeline_Report"
 argument_list|)
 decl_stmt|;
+comment|/**    * PipelineReport processed by pipeline report handler. This event is    * received by HealthyPipelineChillModeRule.    */
+specifier|public
+specifier|static
+specifier|final
+name|TypedEvent
+argument_list|<
+name|PipelineReportFromDatanode
+argument_list|>
+DECL|field|PROCESSED_PIPELINE_REPORT
+name|PROCESSED_PIPELINE_REPORT
+init|=
+operator|new
+name|TypedEvent
+argument_list|<>
+argument_list|(
+name|PipelineReportFromDatanode
+operator|.
+name|class
+argument_list|,
+literal|"Processed_Pipeline_Report"
+argument_list|)
+decl_stmt|;
 comment|/**    * PipelineActions are sent by Datanode. This event is received by    * SCMDatanodeHeartbeatDispatcher and PIPELINE_ACTIONS event is generated.    */
 specifier|public
 specifier|static

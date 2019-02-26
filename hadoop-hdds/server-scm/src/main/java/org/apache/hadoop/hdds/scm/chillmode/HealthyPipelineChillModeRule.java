@@ -22,15 +22,47 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|concurrent
+name|hadoop
 operator|.
-name|atomic
+name|conf
 operator|.
-name|AtomicBoolean
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
 import|;
 end_import
 
@@ -216,15 +248,35 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
-comment|/**  * Class defining Chill mode exit criteria for Pipelines.  */
+comment|/**  * Class defining Chill mode exit criteria for Pipelines.  *  * This rule defines percentage of healthy pipelines need to be reported.  * Once chill mode exit happens, this rules take care of writes can go  * through in a cluster.  */
 end_comment
 
 begin_class
-DECL|class|PipelineChillModeRule
+DECL|class|HealthyPipelineChillModeRule
 specifier|public
 class|class
-name|PipelineChillModeRule
+name|HealthyPipelineChillModeRule
 implements|implements
 name|ChillModeExitRule
 argument_list|<
@@ -236,16 +288,20 @@ argument_list|<
 name|PipelineReportFromDatanode
 argument_list|>
 block|{
-comment|/** Pipeline availability.*/
-DECL|field|isPipelineAvailable
+DECL|field|LOG
 specifier|private
-name|AtomicBoolean
-name|isPipelineAvailable
+specifier|static
+specifier|final
+name|Logger
+name|LOG
 init|=
-operator|new
-name|AtomicBoolean
+name|LoggerFactory
+operator|.
+name|getLogger
 argument_list|(
-literal|false
+name|HealthyPipelineChillModeRule
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
 DECL|field|pipelineManager
@@ -260,14 +316,30 @@ specifier|final
 name|SCMChillModeManager
 name|chillModeManager
 decl_stmt|;
-DECL|method|PipelineChillModeRule (PipelineManager pipelineManager, SCMChillModeManager manager)
-name|PipelineChillModeRule
+DECL|field|healthyPipelineThresholdCount
+specifier|private
+specifier|final
+name|int
+name|healthyPipelineThresholdCount
+decl_stmt|;
+DECL|field|currentHealthyPipelineCount
+specifier|private
+name|int
+name|currentHealthyPipelineCount
+init|=
+literal|0
+decl_stmt|;
+DECL|method|HealthyPipelineChillModeRule (PipelineManager pipelineManager, SCMChillModeManager manager, Configuration configuration)
+name|HealthyPipelineChillModeRule
 parameter_list|(
 name|PipelineManager
 name|pipelineManager
 parameter_list|,
 name|SCMChillModeManager
 name|manager
+parameter_list|,
+name|Configuration
+name|configuration
 parameter_list|)
 block|{
 name|this
@@ -281,6 +353,80 @@ operator|.
 name|chillModeManager
 operator|=
 name|manager
+expr_stmt|;
+name|double
+name|healthyPipelinesPercent
+init|=
+name|configuration
+operator|.
+name|getDouble
+argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
+argument_list|,
+name|HddsConfigKeys
+operator|.
+name|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT_DEFAULT
+argument_list|)
+decl_stmt|;
+comment|// As we want to wait for 3 node pipelines
+name|int
+name|pipelineCount
+init|=
+name|pipelineManager
+operator|.
+name|getPipelines
+argument_list|(
+name|HddsProtos
+operator|.
+name|ReplicationType
+operator|.
+name|RATIS
+argument_list|,
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+operator|.
+name|THREE
+argument_list|)
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+comment|// This value will be zero when pipeline count is 0.
+comment|// On a fresh installed cluster, there will be zero pipelines in the SCM
+comment|// pipeline DB.
+name|healthyPipelineThresholdCount
+operator|=
+operator|(
+name|int
+operator|)
+name|Math
+operator|.
+name|ceil
+argument_list|(
+operator|(
+name|healthyPipelinesPercent
+operator|/
+literal|100
+operator|)
+operator|*
+name|pipelineCount
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|" Total pipeline count is {}, healthy pipeline "
+operator|+
+literal|"threshold count is {}"
+argument_list|,
+name|pipelineCount
+argument_list|,
+name|healthyPipelineThresholdCount
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -291,67 +437,32 @@ name|boolean
 name|validate
 parameter_list|()
 block|{
+if|if
+condition|(
+name|currentHealthyPipelineCount
+operator|>=
+name|healthyPipelineThresholdCount
+condition|)
+block|{
 return|return
-name|isPipelineAvailable
-operator|.
-name|get
-argument_list|()
+literal|true
+return|;
+block|}
+return|return
+literal|false
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|process (PipelineReportFromDatanode report)
+DECL|method|process (PipelineReportFromDatanode pipelineReportFromDatanode)
 specifier|public
 name|void
 name|process
 parameter_list|(
 name|PipelineReportFromDatanode
-name|report
-parameter_list|)
-block|{
-comment|// No need to deal with
-block|}
-annotation|@
-name|Override
-DECL|method|cleanup ()
-specifier|public
-name|void
-name|cleanup
-parameter_list|()
-block|{
-comment|// No need to deal with
-block|}
-annotation|@
-name|Override
-DECL|method|onMessage (PipelineReportFromDatanode pipelineReportFromDatanode, EventPublisher publisher)
-specifier|public
-name|void
-name|onMessage
-parameter_list|(
-name|PipelineReportFromDatanode
 name|pipelineReportFromDatanode
-parameter_list|,
-name|EventPublisher
-name|publisher
 parameter_list|)
 block|{
-comment|// If we are already in pipeline available state,
-comment|// skipping following check.
-if|if
-condition|(
-name|validate
-argument_list|()
-condition|)
-block|{
-name|chillModeManager
-operator|.
-name|validateChillModeExitRules
-argument_list|(
-name|publisher
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|Pipeline
 name|pipeline
 decl_stmt|;
@@ -428,13 +539,59 @@ operator|.
 name|OPEN
 condition|)
 block|{
-comment|// ensure there is an OPEN state pipeline and then allowed
-comment|// to exit chill mode
-name|isPipelineAvailable
+comment|// If the pipeline is open state mean, all 3 datanodes are reported
+comment|// for this pipeline.
+name|currentHealthyPipelineCount
+operator|++
+expr_stmt|;
+block|}
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|cleanup ()
+specifier|public
+name|void
+name|cleanup
+parameter_list|()
+block|{
+comment|// No need to deal with
+block|}
+annotation|@
+name|Override
+DECL|method|onMessage (PipelineReportFromDatanode pipelineReportFromDatanode, EventPublisher publisher)
+specifier|public
+name|void
+name|onMessage
+parameter_list|(
+name|PipelineReportFromDatanode
+name|pipelineReportFromDatanode
+parameter_list|,
+name|EventPublisher
+name|publisher
+parameter_list|)
+block|{
+comment|// If we have already reached healthy pipeline threshold, skip processing
+comment|// pipeline report from datanode.
+if|if
+condition|(
+name|validate
+argument_list|()
+condition|)
+block|{
+name|chillModeManager
 operator|.
-name|set
+name|validateChillModeExitRules
 argument_list|(
-literal|true
+name|publisher
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+comment|// Process pipeline report from datanode
+name|process
+argument_list|(
+name|pipelineReportFromDatanode
 argument_list|)
 expr_stmt|;
 if|if
@@ -452,12 +609,15 @@ argument_list|()
 operator|.
 name|info
 argument_list|(
-literal|"SCM in chill mode. 1 Pipeline reported, 1 required."
+literal|"SCM in chill mode. Healthy pipelines reported count is {}, "
+operator|+
+literal|"required healthy pipeline reported count is {}"
+argument_list|,
+name|currentHealthyPipelineCount
+argument_list|,
+name|healthyPipelineThresholdCount
 argument_list|)
 expr_stmt|;
-block|}
-break|break;
-block|}
 block|}
 if|if
 condition|(
