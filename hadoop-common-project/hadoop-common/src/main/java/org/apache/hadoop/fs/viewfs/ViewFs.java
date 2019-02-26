@@ -739,13 +739,15 @@ return|return
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"InternalDir of ViewFileSystem is readonly; operation="
+literal|"InternalDir of ViewFileSystem is readonly, operation "
 operator|+
 name|operation
 operator|+
-literal|"Path="
+literal|" not permitted on path "
 operator|+
 name|p
+operator|+
+literal|"."
 argument_list|)
 return|;
 block|}
