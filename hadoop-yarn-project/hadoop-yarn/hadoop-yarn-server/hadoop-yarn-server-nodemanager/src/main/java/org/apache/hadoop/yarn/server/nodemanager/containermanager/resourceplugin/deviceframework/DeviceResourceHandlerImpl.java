@@ -807,7 +807,20 @@ argument_list|,
 name|availableDevices
 argument_list|)
 expr_stmt|;
-comment|// TODO: Init cgroups
+comment|// Init cgroups
+name|this
+operator|.
+name|cGroupsHandler
+operator|.
+name|initializeCGroupController
+argument_list|(
+name|CGroupsHandler
+operator|.
+name|CGroupController
+operator|.
+name|DEVICES
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
