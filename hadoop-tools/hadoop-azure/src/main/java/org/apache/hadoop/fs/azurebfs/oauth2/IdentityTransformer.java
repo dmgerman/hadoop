@@ -515,31 +515,34 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Perform identity transformation for the Get request results in AzureBlobFileSystemStore:    * getFileStatus(), listStatus(), getAclStatus().    * Input originalUserOrGroup can be one of the following:    * 1. $superuser:    *     by default it will be transformed to local user/group, this can be disabled by setting    *     "fs.azure.identity.transformer.skip.superuser.replacement" to true.    *    * 2. User principal id:    *     can be transformed to localUserOrGroup, if this principal id matches the principal id set in    *     "fs.azure.identity.transformer.service.principal.id" and localUserOrGroup is stated in    *     "fs.azure.identity.transformer.service.principal.substitution.list"    *    * 3. User principal name (UPN):    *     can be transformed to a short name(localUserOrGroup) if "fs.azure.identity.transformer.enable.short.name"    *     is enabled.    *    * @param originalUserOrGroup the original user or group in the get request results: FileStatus, AclStatus.    * @param localUserOrGroup the local user or group, should be parsed from UserGroupInformation.    * @return owner or group after transformation.    * */
-DECL|method|transformIdentityForGetRequest (String originalUserOrGroup, String localUserOrGroup)
+comment|/**    * Perform identity transformation for the Get request results in AzureBlobFileSystemStore:    * getFileStatus(), listStatus(), getAclStatus().    * Input originalIdentity can be one of the following:    * 1. $superuser:    *     by default it will be transformed to local user/group, this can be disabled by setting    *     "fs.azure.identity.transformer.skip.superuser.replacement" to true.    *    * 2. User principal id:    *     can be transformed to localIdentity, if this principal id matches the principal id set in    *     "fs.azure.identity.transformer.service.principal.id" and localIdentity is stated in    *     "fs.azure.identity.transformer.service.principal.substitution.list"    *    * 3. User principal name (UPN):    *     can be transformed to a short name(localIdentity) if originalIdentity is owner name, and    *     "fs.azure.identity.transformer.enable.short.name" is enabled.    *    * @param originalIdentity the original user or group in the get request results: FileStatus, AclStatus.    * @param isUserName indicate whether the input originalIdentity is an owner name or owning group name.    * @param localIdentity the local user or group, should be parsed from UserGroupInformation.    * @return owner or group after transformation.    * */
+DECL|method|transformIdentityForGetRequest (String originalIdentity, boolean isUserName, String localIdentity)
 specifier|public
 name|String
 name|transformIdentityForGetRequest
 parameter_list|(
 name|String
-name|originalUserOrGroup
+name|originalIdentity
+parameter_list|,
+name|boolean
+name|isUserName
 parameter_list|,
 name|String
-name|localUserOrGroup
+name|localIdentity
 parameter_list|)
 block|{
 if|if
 condition|(
-name|originalUserOrGroup
+name|originalIdentity
 operator|==
 literal|null
 condition|)
 block|{
-name|originalUserOrGroup
+name|originalIdentity
 operator|=
-name|localUserOrGroup
+name|localIdentity
 expr_stmt|;
-comment|// localUserOrGroup might be a full name, so continue the transformation.
+comment|// localIdentity might be a full name, so continue the transformation.
 block|}
 comment|// case 1: it is $superuser and replace $superuser config is enabled
 if|if
@@ -551,12 +554,12 @@ name|SUPER_USER
 operator|.
 name|equals
 argument_list|(
-name|originalUserOrGroup
+name|originalIdentity
 argument_list|)
 condition|)
 block|{
 return|return
-name|localUserOrGroup
+name|localIdentity
 return|;
 block|}
 if|if
@@ -565,7 +568,7 @@ name|skipUserIdentityReplacement
 condition|)
 block|{
 return|return
-name|originalUserOrGroup
+name|originalIdentity
 return|;
 block|}
 comment|// case 2: original owner is principalId set in config, and localUser
@@ -574,7 +577,7 @@ comment|//         To avoid ownership check failure in job task, replace it
 comment|//         to local daemon user/group
 if|if
 condition|(
-name|originalUserOrGroup
+name|originalIdentity
 operator|.
 name|equals
 argument_list|(
@@ -583,33 +586,35 @@ argument_list|)
 operator|&&
 name|isInSubstitutionList
 argument_list|(
-name|localUserOrGroup
+name|localIdentity
 argument_list|)
 condition|)
 block|{
 return|return
-name|localUserOrGroup
+name|localIdentity
 return|;
 block|}
 comment|// case 3: If original owner is a fully qualified name, and
 comment|//         short name is enabled, replace with shortName.
 if|if
 condition|(
+name|isUserName
+operator|&&
 name|shouldUseShortUserName
 argument_list|(
-name|originalUserOrGroup
+name|originalIdentity
 argument_list|)
 condition|)
 block|{
 return|return
 name|getShortName
 argument_list|(
-name|originalUserOrGroup
+name|originalIdentity
 argument_list|)
 return|;
 block|}
 return|return
-name|originalUserOrGroup
+name|originalIdentity
 return|;
 block|}
 comment|/**    * Perform Identity transformation when setting owner on a path.    * There are four possible input:    * 1.short name; 2.$superuser; 3.Fully qualified name; 4. principal id.    *    * short name could be transformed to:    *    - A service principal id or $superuser, if short name belongs a daemon service    *      stated in substitution list AND "fs.azure.identity.transformer.service.principal.id"    *      is set with $superuser or a principal id.    *    - Fully qualified name, if "fs.azure.identity.transformer.domain.name" is set in configuration.    *    * $superuser, fully qualified name and principalId should not be transformed.    *    * @param userOrGroup the user or group to be set as owner.    * @return user or group after transformation.    * */

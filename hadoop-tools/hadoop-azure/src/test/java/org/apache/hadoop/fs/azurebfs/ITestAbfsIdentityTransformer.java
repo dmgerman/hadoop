@@ -974,6 +974,8 @@ name|transformIdentityForGetRequest
 argument_list|(
 name|SUPER_USER
 argument_list|,
+literal|true
+argument_list|,
 name|localUser
 argument_list|)
 argument_list|)
@@ -1006,6 +1008,8 @@ operator|.
 name|transformIdentityForGetRequest
 argument_list|(
 name|SUPER_USER
+argument_list|,
+literal|true
 argument_list|,
 name|localUser
 argument_list|)
@@ -1056,6 +1060,8 @@ name|transformIdentityForGetRequest
 argument_list|(
 name|SERVICE_PRINCIPAL_ID
 argument_list|,
+literal|true
+argument_list|,
 name|localUser
 argument_list|)
 argument_list|)
@@ -1093,6 +1099,8 @@ operator|.
 name|transformIdentityForGetRequest
 argument_list|(
 name|SERVICE_PRINCIPAL_ID
+argument_list|,
+literal|true
 argument_list|,
 name|localUser
 argument_list|)
@@ -1149,6 +1157,8 @@ name|transformIdentityForGetRequest
 argument_list|(
 name|SERVICE_PRINCIPAL_ID
 argument_list|,
+literal|true
+argument_list|,
 name|localUser
 argument_list|)
 argument_list|)
@@ -1197,6 +1207,8 @@ operator|.
 name|transformIdentityForGetRequest
 argument_list|(
 name|SERVICE_PRINCIPAL_ID
+argument_list|,
+literal|true
 argument_list|,
 name|localUser
 argument_list|)
@@ -1251,6 +1263,8 @@ name|transformIdentityForGetRequest
 argument_list|(
 name|SERVICE_PRINCIPAL_ID
 argument_list|,
+literal|true
+argument_list|,
 name|localUser
 argument_list|)
 argument_list|)
@@ -1297,6 +1311,8 @@ operator|.
 name|transformIdentityForGetRequest
 argument_list|(
 name|SERVICE_PRINCIPAL_ID
+argument_list|,
+literal|true
 argument_list|,
 name|localUser
 argument_list|)
@@ -1347,6 +1363,8 @@ name|transformIdentityForGetRequest
 argument_list|(
 name|FULLY_QUALIFIED_NAME
 argument_list|,
+literal|true
+argument_list|,
 name|localUser
 argument_list|)
 argument_list|)
@@ -1370,7 +1388,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"should convert the full name to shortname "
+literal|"should convert the full owner name to shortname "
 argument_list|,
 name|SHORT_NAME
 argument_list|,
@@ -1380,7 +1398,27 @@ name|transformIdentityForGetRequest
 argument_list|(
 name|FULLY_QUALIFIED_NAME
 argument_list|,
+literal|true
+argument_list|,
 name|localUser
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"group name should not be converted to shortname "
+argument_list|,
+name|FULLY_QUALIFIED_NAME
+argument_list|,
+name|identityTransformer
+operator|.
+name|transformIdentityForGetRequest
+argument_list|(
+name|FULLY_QUALIFIED_NAME
+argument_list|,
+literal|false
+argument_list|,
+name|localGroup
 argument_list|)
 argument_list|)
 expr_stmt|;

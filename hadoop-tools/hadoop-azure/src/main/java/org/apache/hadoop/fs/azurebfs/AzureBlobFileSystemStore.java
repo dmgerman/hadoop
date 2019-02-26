@@ -3191,6 +3191,8 @@ operator|.
 name|X_MS_OWNER
 argument_list|)
 argument_list|,
+literal|true
+argument_list|,
 name|userName
 argument_list|)
 decl_stmt|;
@@ -3210,6 +3212,8 @@ name|HttpHeaderConfigurations
 operator|.
 name|X_MS_GROUP
 argument_list|)
+argument_list|,
+literal|false
 argument_list|,
 name|primaryUserGroup
 argument_list|)
@@ -3441,6 +3445,8 @@ operator|.
 name|owner
 argument_list|()
 argument_list|,
+literal|true
+argument_list|,
 name|userName
 argument_list|)
 decl_stmt|;
@@ -3456,6 +3462,8 @@ name|entry
 operator|.
 name|group
 argument_list|()
+argument_list|,
+literal|false
 argument_list|,
 name|primaryUserGroup
 argument_list|)
@@ -4959,6 +4967,8 @@ operator|.
 name|X_MS_OWNER
 argument_list|)
 argument_list|,
+literal|true
+argument_list|,
 name|userName
 argument_list|)
 decl_stmt|;
@@ -4978,6 +4988,8 @@ name|HttpHeaderConfigurations
 operator|.
 name|X_MS_GROUP
 argument_list|)
+argument_list|,
+literal|false
 argument_list|,
 name|primaryUserGroup
 argument_list|)
