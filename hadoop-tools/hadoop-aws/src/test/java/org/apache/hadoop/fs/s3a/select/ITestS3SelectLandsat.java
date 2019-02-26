@@ -240,13 +240,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapred
 operator|.
-name|s3a
-operator|.
-name|commit
-operator|.
-name|DurationInfo
+name|JobConf
 import|;
 end_import
 
@@ -258,9 +254,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|util
 operator|.
-name|JobConf
+name|DurationInfo
 import|;
 end_import
 

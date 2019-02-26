@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  *  or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a.commit
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,23 +12,55 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|commit
+name|util
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
 
 begin_comment
 comment|/**  * Little duration counter.  */
 end_comment
 
 begin_class
-DECL|class|Duration
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|class|OperationDuration
 specifier|public
 class|class
-name|Duration
+name|OperationDuration
 block|{
 DECL|field|started
 specifier|private
@@ -41,9 +73,9 @@ specifier|private
 name|long
 name|finished
 decl_stmt|;
-DECL|method|Duration ()
+DECL|method|OperationDuration ()
 specifier|public
-name|Duration
+name|OperationDuration
 parameter_list|()
 block|{
 name|started

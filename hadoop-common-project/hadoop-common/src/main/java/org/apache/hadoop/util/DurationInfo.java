@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a.commit
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,11 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|commit
+name|util
 package|;
 end_package
 
@@ -44,6 +40,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A duration with logging of final state at info or debug  * in the {@code close()} call.  * This allows it to be used in a try-with-resources clause, and have the  * duration automatically logged.  */
 end_comment
@@ -53,12 +63,16 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|DurationInfo
 specifier|public
 class|class
 name|DurationInfo
 extends|extends
-name|Duration
+name|OperationDuration
 implements|implements
 name|AutoCloseable
 block|{

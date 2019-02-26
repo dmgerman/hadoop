@@ -420,9 +420,9 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|commit
+name|select
 operator|.
-name|DurationInfo
+name|SelectBinding
 import|;
 end_import
 
@@ -434,13 +434,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|util
 operator|.
-name|s3a
-operator|.
-name|select
-operator|.
-name|SelectBinding
+name|DurationInfo
 import|;
 end_import
 
