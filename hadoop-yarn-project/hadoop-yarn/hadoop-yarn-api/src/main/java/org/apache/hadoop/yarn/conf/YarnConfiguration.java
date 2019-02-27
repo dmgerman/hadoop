@@ -8950,6 +8950,28 @@ name|DEFAULT_HDFS_LOCATION_FLOW_RUN_COPROCESSOR_JAR
 init|=
 literal|"/hbase/coprocessor/hadoop-yarn-server-timelineservice.jar"
 decl_stmt|;
+comment|/**    * This setting controls the max size of the flow name getting generated    * in ATSv2 after removing UUID if present.    * */
+DECL|field|FLOW_NAME_MAX_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FLOW_NAME_MAX_SIZE
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"flowname.max-size"
+decl_stmt|;
+comment|/**    * Default setting for flow name size has no size restriction    * after removing UUID if present.    */
+DECL|field|FLOW_NAME_DEFAULT_MAX_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|FLOW_NAME_DEFAULT_MAX_SIZE
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * The name for setting that points to an optional HBase configuration    * (hbase-site.xml file) with settings that will override the ones found on    * the classpath.    */
 DECL|field|TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE
 specifier|public
