@@ -120,6 +120,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1427,6 +1441,10 @@ name|KILL
 argument_list|,
 name|RMContainerEventType
 operator|.
+name|ACQUIRED
+argument_list|,
+name|RMContainerEventType
+operator|.
 name|FINISHED
 argument_list|)
 argument_list|)
@@ -2729,23 +2747,14 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|error
+name|onInvalidStateTransition
 argument_list|(
-literal|"Invalid event "
-operator|+
 name|event
 operator|.
 name|getType
 argument_list|()
-operator|+
-literal|" on container "
-operator|+
-name|this
-operator|.
-name|getContainerId
-argument_list|()
+argument_list|,
+name|oldState
 argument_list|)
 expr_stmt|;
 block|}
@@ -4637,6 +4646,38 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * catch the InvalidStateTransition.    * @param state    * @param rmContainerEventType    */
+annotation|@
+name|VisibleForTesting
+DECL|method|onInvalidStateTransition ( RMContainerEventType rmContainerEventType, RMContainerState state)
+specifier|protected
+name|void
+name|onInvalidStateTransition
+parameter_list|(
+name|RMContainerEventType
+name|rmContainerEventType
+parameter_list|,
+name|RMContainerState
+name|state
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Invalid event "
+operator|+
+name|rmContainerEventType
+operator|+
+literal|" on container "
+operator|+
+name|this
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
