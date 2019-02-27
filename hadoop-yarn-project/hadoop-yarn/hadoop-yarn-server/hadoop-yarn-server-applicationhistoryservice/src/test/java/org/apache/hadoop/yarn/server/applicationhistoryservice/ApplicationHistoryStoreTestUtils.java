@@ -380,6 +380,48 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|writeApplicationStartData (ApplicationId appId, long startTime)
+specifier|protected
+name|void
+name|writeApplicationStartData
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|long
+name|startTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|store
+operator|.
+name|applicationStarted
+argument_list|(
+name|ApplicationStartData
+operator|.
+name|newInstance
+argument_list|(
+name|appId
+argument_list|,
+name|appId
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"test type"
+argument_list|,
+literal|"test queue"
+argument_list|,
+literal|"test user"
+argument_list|,
+literal|0
+argument_list|,
+name|startTime
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|writeApplicationFinishData (ApplicationId appId)
 specifier|protected
 name|void
