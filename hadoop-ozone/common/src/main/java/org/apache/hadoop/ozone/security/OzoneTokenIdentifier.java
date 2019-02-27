@@ -276,34 +276,6 @@ return|return
 name|KIND_NAME
 return|;
 block|}
-comment|/**    * Default TrivialRenewer.    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|class|Renewer
-specifier|public
-specifier|static
-class|class
-name|Renewer
-extends|extends
-name|Token
-operator|.
-name|TrivialRenewer
-block|{
-annotation|@
-name|Override
-DECL|method|getKind ()
-specifier|protected
-name|Text
-name|getKind
-parameter_list|()
-block|{
-return|return
-name|KIND_NAME
-return|;
-block|}
-block|}
 comment|/**    * Overrides default implementation to write using Protobuf.    *    * @param out output stream    * @throws IOException    */
 annotation|@
 name|Override
