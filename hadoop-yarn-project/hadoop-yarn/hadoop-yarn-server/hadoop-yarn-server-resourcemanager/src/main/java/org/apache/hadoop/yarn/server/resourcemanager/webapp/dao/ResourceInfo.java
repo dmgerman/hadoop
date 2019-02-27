@@ -171,7 +171,6 @@ name|Resource
 name|res
 parameter_list|)
 block|{
-comment|// Make sure no NPE.
 if|if
 condition|(
 name|res
