@@ -11965,6 +11965,41 @@ operator|.
 name|INSTANCE
 return|;
 block|}
+comment|/**    * Create instance of the standard FSDataOutputStreamBuilder for the    * given filesystem and path.    * @param fileSystem owner    * @param path path to create    * @return a builder.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|createDataOutputStreamBuilder ( @onnull final FileSystem fileSystem, @Nonnull final Path path)
+specifier|protected
+specifier|static
+name|FSDataOutputStreamBuilder
+name|createDataOutputStreamBuilder
+parameter_list|(
+annotation|@
+name|Nonnull
+specifier|final
+name|FileSystem
+name|fileSystem
+parameter_list|,
+annotation|@
+name|Nonnull
+specifier|final
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+operator|new
+name|FileSystemDataOutputStreamBuilder
+argument_list|(
+name|fileSystem
+argument_list|,
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * Standard implementation of the FSDataOutputStreamBuilder; invokes    * create/createNonRecursive or Append depending upon the options.    */
 DECL|class|FileSystemDataOutputStreamBuilder
 specifier|private
 specifier|static
@@ -11979,9 +12014,9 @@ argument_list|,
 name|FileSystemDataOutputStreamBuilder
 argument_list|>
 block|{
-comment|/**      * Constructor.      */
+comment|/**      * Constructor.      * @param fileSystem owner      * @param p path to create      */
 DECL|method|FileSystemDataOutputStreamBuilder (FileSystem fileSystem, Path p)
-specifier|protected
+specifier|private
 name|FileSystemDataOutputStreamBuilder
 parameter_list|(
 name|FileSystem
@@ -12184,8 +12219,7 @@ name|path
 parameter_list|)
 block|{
 return|return
-operator|new
-name|FileSystemDataOutputStreamBuilder
+name|createDataOutputStreamBuilder
 argument_list|(
 name|this
 argument_list|,
@@ -12212,8 +12246,7 @@ name|path
 parameter_list|)
 block|{
 return|return
-operator|new
-name|FileSystemDataOutputStreamBuilder
+name|createDataOutputStreamBuilder
 argument_list|(
 name|this
 argument_list|,
@@ -12243,8 +12276,7 @@ throws|,
 name|UnsupportedOperationException
 block|{
 return|return
-operator|new
-name|FSDataInputStreamBuilder
+name|createDataInputStreamBuilder
 argument_list|(
 name|this
 argument_list|,
@@ -12274,8 +12306,7 @@ throws|,
 name|UnsupportedOperationException
 block|{
 return|return
-operator|new
-name|FSDataInputStreamBuilder
+name|createDataInputStreamBuilder
 argument_list|(
 name|this
 argument_list|,
@@ -12454,6 +12485,88 @@ expr_stmt|;
 block|}
 return|return
 name|result
+return|;
+block|}
+comment|/**    * Create instance of the standard {@link FSDataInputStreamBuilder} for the    * given filesystem and path.    * @param fileSystem owner    * @param path path to read    * @return a builder.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+literal|"Filesystems"
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|createDataInputStreamBuilder ( @onnull final FileSystem fileSystem, @Nonnull final Path path)
+specifier|protected
+specifier|static
+name|FSDataInputStreamBuilder
+name|createDataInputStreamBuilder
+parameter_list|(
+annotation|@
+name|Nonnull
+specifier|final
+name|FileSystem
+name|fileSystem
+parameter_list|,
+annotation|@
+name|Nonnull
+specifier|final
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+operator|new
+name|FSDataInputStreamBuilder
+argument_list|(
+name|fileSystem
+argument_list|,
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * Create instance of the standard {@link FSDataInputStreamBuilder} for the    * given filesystem and path handle.    * @param fileSystem owner    * @param pathHandle path handle of file to open.    * @return a builder.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+literal|"Filesystems"
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|createDataInputStreamBuilder ( @onnull final FileSystem fileSystem, @Nonnull final PathHandle pathHandle)
+specifier|protected
+specifier|static
+name|FSDataInputStreamBuilder
+name|createDataInputStreamBuilder
+parameter_list|(
+annotation|@
+name|Nonnull
+specifier|final
+name|FileSystem
+name|fileSystem
+parameter_list|,
+annotation|@
+name|Nonnull
+specifier|final
+name|PathHandle
+name|pathHandle
+parameter_list|)
+block|{
+return|return
+operator|new
+name|FSDataInputStreamBuilder
+argument_list|(
+name|fileSystem
+argument_list|,
+name|pathHandle
+argument_list|)
 return|;
 block|}
 comment|/**    * Builder returned for {@code #openFile(Path)}    * and {@code #openFile(PathHandle)}.    */
