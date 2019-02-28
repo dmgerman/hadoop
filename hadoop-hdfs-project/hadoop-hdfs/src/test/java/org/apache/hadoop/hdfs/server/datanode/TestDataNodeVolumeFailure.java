@@ -2121,6 +2121,11 @@ argument_list|)
 expr_stmt|;
 comment|// DN0 should stop after the number of failure disks exceed tolerated
 comment|// value (1).
+name|dn0
+operator|.
+name|checkDiskError
+argument_list|()
+expr_stmt|;
 name|assertFalse
 argument_list|(
 name|dn0
