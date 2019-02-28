@@ -399,6 +399,16 @@ return|return
 name|aggregatePreemptedSeconds
 return|;
 block|}
+DECL|method|getAvailable ()
+specifier|public
+name|QueueMetricsCustomResource
+name|getAvailable
+parameter_list|()
+block|{
+return|return
+name|available
+return|;
+block|}
 block|}
 end_class
 

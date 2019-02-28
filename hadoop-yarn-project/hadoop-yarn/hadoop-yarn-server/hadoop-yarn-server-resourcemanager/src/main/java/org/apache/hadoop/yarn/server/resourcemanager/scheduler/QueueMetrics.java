@@ -4435,6 +4435,16 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|method|getQueueMetricsForCustomResources ()
+specifier|public
+name|QueueMetricsForCustomResources
+name|getQueueMetricsForCustomResources
+parameter_list|()
+block|{
+return|return
+name|queueMetricsForCustomResources
+return|;
+block|}
 block|}
 end_class
 

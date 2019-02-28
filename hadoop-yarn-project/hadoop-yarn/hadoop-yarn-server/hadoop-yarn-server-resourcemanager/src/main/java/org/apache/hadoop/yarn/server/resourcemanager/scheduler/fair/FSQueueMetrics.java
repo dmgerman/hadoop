@@ -1434,6 +1434,15 @@ operator|)
 name|metrics
 return|;
 block|}
+DECL|method|getCustomResources ()
+name|FSQueueMetricsForCustomResources
+name|getCustomResources
+parameter_list|()
+block|{
+return|return
+name|customResources
+return|;
+block|}
 block|}
 end_class
 
