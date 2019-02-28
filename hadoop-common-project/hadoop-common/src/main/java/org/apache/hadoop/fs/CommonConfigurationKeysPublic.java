@@ -1286,6 +1286,15 @@ name|HADOOP_TOKEN_FILES
 init|=
 literal|"hadoop.token.files"
 decl_stmt|;
+DECL|field|HADOOP_TOKENS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_TOKENS
+init|=
+literal|"hadoop.tokens"
+decl_stmt|;
 DECL|field|HADOOP_HTTP_AUTHENTICATION_TYPE
 specifier|public
 specifier|static
