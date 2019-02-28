@@ -1823,7 +1823,7 @@ operator|.
 name|debug
 argument_list|(
 literal|"Checking user [{}] for: {}: {}"
-operator|+
+argument_list|,
 name|ugi
 operator|.
 name|getShortUserName
