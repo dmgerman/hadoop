@@ -174,22 +174,6 @@ name|AbstractDelegationTokenIdentifier
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-import|;
-end_import
-
 begin_comment
 comment|/**  * The token identifier for Ozone Master.  */
 end_comment
