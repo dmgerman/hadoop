@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Delegation token Identifier for ABFS delegation tokens.  */
+comment|/**  * Delegation token Identifier for ABFS delegation tokens.  * The token kind from {@link #getKind()} is {@link #TOKEN_KIND}, always.  *  * Subclasses have to very careful when looking up tokens (which will of  * course be registered in the credentials as of this kind), in case the  * incoming credentials are actually of a different subtype.  */
 end_comment
 
 begin_class
@@ -66,6 +66,7 @@ name|AbfsDelegationTokenIdentifier
 extends|extends
 name|DelegationTokenIdentifier
 block|{
+comment|/**    * The token kind of these tokens: ""ABFS delegation".    */
 DECL|field|TOKEN_KIND
 specifier|public
 specifier|static
@@ -133,6 +134,7 @@ name|realUser
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get the token kind.    * Returns {@link #TOKEN_KIND} always.    * If a subclass does not want its renew/cancel process to be managed    * by {@link AbfsDelegationTokenManager}, this must be overridden.    * @return the kind of the token.    */
 annotation|@
 name|Override
 DECL|method|getKind ()

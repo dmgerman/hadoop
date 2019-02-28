@@ -1182,6 +1182,19 @@ operator|.
 name|EMPTY_STRING
 expr_stmt|;
 block|}
+comment|// dump the headers
+name|AbfsIoUtils
+operator|.
+name|dumpHeadersToDebugLog
+argument_list|(
+literal|"Response Headers"
+argument_list|,
+name|connection
+operator|.
+name|getHeaderFields
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|AbfsHttpConstants

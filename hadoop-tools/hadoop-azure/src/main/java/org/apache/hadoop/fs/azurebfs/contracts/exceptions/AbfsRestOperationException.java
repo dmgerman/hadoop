@@ -243,6 +243,8 @@ name|formatMessage
 argument_list|(
 name|abfsHttpOperation
 argument_list|)
+argument_list|,
+name|innerException
 argument_list|)
 expr_stmt|;
 name|this
@@ -288,6 +290,8 @@ name|innerException
 operator|.
 name|getMessage
 argument_list|()
+argument_list|,
+name|innerException
 argument_list|)
 expr_stmt|;
 name|this

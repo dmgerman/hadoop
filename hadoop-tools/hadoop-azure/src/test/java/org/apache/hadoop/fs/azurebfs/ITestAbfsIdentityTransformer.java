@@ -504,6 +504,11 @@ block|{
 name|super
 argument_list|()
 expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 name|userGroupInfo
 operator|=
 name|UserGroupInformation

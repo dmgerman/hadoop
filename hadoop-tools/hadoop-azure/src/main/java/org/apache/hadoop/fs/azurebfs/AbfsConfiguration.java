@@ -2613,7 +2613,9 @@ throw|throw
 operator|new
 name|TokenAccessProviderException
 argument_list|(
-literal|"Unable to load custom token provider class."
+literal|"Unable to load custom token provider class: "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)

@@ -82,6 +82,11 @@ argument_list|(
 name|message
 argument_list|)
 expr_stmt|;
+name|initCause
+argument_list|(
+name|cause
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Token Renewer for renewing ABFS delegation tokens with remote service.  */
+comment|/**  * Token Renewer for renewing ABFS delegation tokens with remote service.  *  * Handles tokens of kind  {@link AbfsDelegationTokenIdentifier#TOKEN_KIND}.  */
 end_comment
 
 begin_class

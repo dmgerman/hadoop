@@ -7,7 +7,10 @@ begin_annotation
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+literal|"authorization-subsystems"
+argument_list|)
 end_annotation
 
 begin_annotation

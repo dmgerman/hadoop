@@ -598,6 +598,13 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Signing request with shared key"
+argument_list|)
+expr_stmt|;
 comment|// sign the HTTP request
 name|client
 operator|.
@@ -621,6 +628,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Authenticating request with OAuth2 access token"
+argument_list|)
+expr_stmt|;
 name|httpOperation
 operator|.
 name|getConnection
@@ -639,6 +653,22 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// dump the headers
+name|AbfsIoUtils
+operator|.
+name|dumpHeadersToDebugLog
+argument_list|(
+literal|"Request Headers"
+argument_list|,
+name|httpOperation
+operator|.
+name|getConnection
+argument_list|()
+operator|.
+name|getRequestProperties
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|AbfsClientThrottlingIntercept
 operator|.
 name|sendingRequest
