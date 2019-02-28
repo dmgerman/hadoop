@@ -215,6 +215,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|method|OMCertificateClient (SecurityConfig securityConfig, String component)
+specifier|public
 name|OMCertificateClient
 parameter_list|(
 name|SecurityConfig

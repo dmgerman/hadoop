@@ -4463,7 +4463,7 @@ name|blockTokenMgr
 operator|.
 name|start
 argument_list|(
-name|keyPair
+name|certClient
 argument_list|)
 expr_stmt|;
 block|}
@@ -4512,7 +4512,7 @@ name|delegationTokenMgr
 operator|.
 name|start
 argument_list|(
-name|keyPair
+name|certClient
 argument_list|)
 expr_stmt|;
 block|}

@@ -112,6 +112,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -189,16 +211,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|KeyPair
 import|;
 end_import
 
@@ -712,7 +724,7 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"Tampared/Inavalid token."
+literal|"Tampered/Invalid token."
 argument_list|)
 throw|;
 block|}
@@ -720,17 +732,41 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Should be called before this object is used.    */
+comment|/**    * Validates if given hash is valid.    *    * @param identifier    * @param password    */
+DECL|method|verifySignature (OzoneBlockTokenIdentifier identifier, byte[] password)
+specifier|public
+name|boolean
+name|verifySignature
+parameter_list|(
+name|OzoneBlockTokenIdentifier
+name|identifier
+parameter_list|,
+name|byte
+index|[]
+name|password
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"This operation is not "
+operator|+
+literal|"supported for block tokens."
+argument_list|)
+throw|;
+block|}
+comment|/**    * Should be called before this object is used.    * @param client    */
 annotation|@
 name|Override
-DECL|method|start (KeyPair keyPair)
+DECL|method|start (CertificateClient client)
 specifier|public
 specifier|synchronized
 name|void
 name|start
 parameter_list|(
-name|KeyPair
-name|keyPair
+name|CertificateClient
+name|client
 parameter_list|)
 throws|throws
 name|IOException
@@ -739,7 +775,7 @@ name|super
 operator|.
 name|start
 argument_list|(
-name|keyPair
+name|client
 argument_list|)
 expr_stmt|;
 name|removeExpiredKeys
