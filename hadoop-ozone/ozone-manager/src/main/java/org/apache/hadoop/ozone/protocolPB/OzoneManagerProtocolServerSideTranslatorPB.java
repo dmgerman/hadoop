@@ -344,6 +344,8 @@ parameter_list|(
 name|OMRequest
 name|request
 parameter_list|)
+throws|throws
+name|ServiceException
 block|{
 return|return
 name|omRatisClient
