@@ -4989,13 +4989,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|networktopology
-operator|.
-name|add
-argument_list|(
-name|nodeDescr
-argument_list|)
-expr_stmt|;
 name|nodeDescr
 operator|.
 name|setSoftwareVersion
