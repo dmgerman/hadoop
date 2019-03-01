@@ -539,8 +539,6 @@ operator|new
 name|OMCertificateClient
 argument_list|(
 name|secConf
-argument_list|,
-literal|"om"
 argument_list|)
 block|{
 annotation|@

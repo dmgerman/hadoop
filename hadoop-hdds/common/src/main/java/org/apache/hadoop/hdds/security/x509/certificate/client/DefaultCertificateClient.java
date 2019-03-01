@@ -58,6 +58,22 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|validator
+operator|.
+name|routines
+operator|.
+name|DomainValidator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|hdds
@@ -551,12 +567,6 @@ specifier|final
 name|SecurityConfig
 name|securityConfig
 decl_stmt|;
-DECL|field|component
-specifier|private
-specifier|final
-name|String
-name|component
-decl_stmt|;
 DECL|field|keyCodec
 specifier|private
 specifier|final
@@ -578,14 +588,11 @@ specifier|private
 name|X509Certificate
 name|x509Certificate
 decl_stmt|;
-DECL|method|DefaultCertificateClient (SecurityConfig securityConfig, String component, Logger log)
+DECL|method|DefaultCertificateClient (SecurityConfig securityConfig, Logger log)
 name|DefaultCertificateClient
 parameter_list|(
 name|SecurityConfig
 name|securityConfig
-parameter_list|,
-name|String
-name|component
 parameter_list|,
 name|Logger
 name|log
@@ -597,19 +604,6 @@ name|requireNonNull
 argument_list|(
 name|securityConfig
 argument_list|)
-expr_stmt|;
-name|Objects
-operator|.
-name|requireNonNull
-argument_list|(
-name|component
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|component
-operator|=
-name|component
 expr_stmt|;
 name|this
 operator|.
@@ -623,8 +617,6 @@ operator|new
 name|KeyCodec
 argument_list|(
 name|securityConfig
-argument_list|,
-name|component
 argument_list|)
 expr_stmt|;
 name|this
@@ -660,9 +652,7 @@ init|=
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|(
-name|component
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -704,9 +694,7 @@ argument_list|()
 operator|.
 name|error
 argument_list|(
-literal|"Error while getting private key for {}"
-argument_list|,
-name|component
+literal|"Error while getting private key."
 argument_list|,
 name|e
 argument_list|)
@@ -743,9 +731,7 @@ init|=
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|(
-name|component
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -787,9 +773,7 @@ argument_list|()
 operator|.
 name|error
 argument_list|(
-literal|"Error while getting private key for {}"
-argument_list|,
-name|component
+literal|"Error while getting public key."
 argument_list|,
 name|e
 argument_list|)
@@ -826,9 +810,7 @@ init|=
 name|securityConfig
 operator|.
 name|getCertificateLocation
-argument_list|(
-name|component
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -852,8 +834,6 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|securityConfig
-argument_list|,
-name|component
 argument_list|)
 decl_stmt|;
 try|try
@@ -895,9 +875,7 @@ argument_list|()
 operator|.
 name|error
 argument_list|(
-literal|"Error reading certificate for {}"
-argument_list|,
-name|component
+literal|"Error reading certificate."
 argument_list|,
 name|e
 argument_list|)
@@ -1498,13 +1476,107 @@ operator|.
 name|Builder
 name|getCSRBuilder
 parameter_list|()
+throws|throws
+name|CertificateException
 block|{
-return|return
+name|CertificateSignRequest
+operator|.
+name|Builder
+name|builder
+init|=
 operator|new
 name|CertificateSignRequest
 operator|.
 name|Builder
 argument_list|()
+operator|.
+name|setConfiguration
+argument_list|(
+name|securityConfig
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|DomainValidator
+name|validator
+init|=
+name|DomainValidator
+operator|.
+name|getInstance
+argument_list|()
+decl_stmt|;
+comment|// Add all valid ips.
+name|OzoneSecurityUtil
+operator|.
+name|getValidInetsForCurrentHost
+argument_list|()
+operator|.
+name|forEach
+argument_list|(
+name|ip
+lambda|->
+block|{
+name|builder
+operator|.
+name|addIpAddress
+argument_list|(
+name|ip
+operator|.
+name|getHostAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|validator
+operator|.
+name|isValid
+argument_list|(
+name|ip
+operator|.
+name|getCanonicalHostName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|builder
+operator|.
+name|addDnsName
+argument_list|(
+name|ip
+operator|.
+name|getCanonicalHostName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|CertificateException
+argument_list|(
+literal|"Error while adding ip to CSR builder"
+argument_list|,
+name|e
+argument_list|,
+name|CSR_ERROR
+argument_list|)
+throw|;
+block|}
+return|return
+name|builder
 return|;
 block|}
 comment|/**    * Get the certificate of well-known entity from SCM.    *    * @param query - String Query, please see the implementation for the    * discussion on the query formats.    * @return X509Certificate or null if not found.    */
@@ -1549,8 +1621,6 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|securityConfig
-argument_list|,
-name|component
 argument_list|)
 decl_stmt|;
 try|try
@@ -2257,9 +2327,7 @@ init|=
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|(
-name|component
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2388,9 +2456,7 @@ argument_list|()
 operator|.
 name|error
 argument_list|(
-literal|"Error while bootstrapping certificate client for {}"
-argument_list|,
-name|component
+literal|"Error while bootstrapping certificate client."
 argument_list|,
 name|e
 argument_list|)
@@ -2399,11 +2465,7 @@ throw|throw
 operator|new
 name|CertificateException
 argument_list|(
-literal|"Error while bootstrapping certificate "
-operator|+
-literal|"client for"
-operator|+
-name|component
+literal|"Error while bootstrapping certificate."
 argument_list|,
 name|BOOTSTRAP_ERROR
 argument_list|)

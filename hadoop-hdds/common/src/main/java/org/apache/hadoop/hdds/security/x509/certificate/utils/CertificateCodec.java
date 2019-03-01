@@ -540,6 +540,31 @@ name|component
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Creates an CertificateCodec.    *    * @param config - Security Config.    */
+DECL|method|CertificateCodec (SecurityConfig config)
+specifier|public
+name|CertificateCodec
+parameter_list|(
+name|SecurityConfig
+name|config
+parameter_list|)
+block|{
+name|this
+operator|.
+name|securityConfig
+operator|=
+name|config
+expr_stmt|;
+name|this
+operator|.
+name|location
+operator|=
+name|securityConfig
+operator|.
+name|getCertificateLocation
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Creates an CertificateCodec.    *    * @param configuration - Configuration    */
 DECL|method|CertificateCodec (Configuration configuration)
 specifier|public
@@ -794,6 +819,59 @@ block|{
 return|return
 name|location
 return|;
+block|}
+comment|/**    * Gets the X.509 Certificate from PEM encoded String.    *    * @param pemEncodedString - PEM encoded String.    * @return X509Certificate  - Certificate.    * @throws CertificateException - Thrown on Failure.    * @throws IOException          - Thrown on Failure.    */
+DECL|method|getX509Cert (String pemEncodedString)
+specifier|public
+specifier|static
+name|X509Certificate
+name|getX509Cert
+parameter_list|(
+name|String
+name|pemEncodedString
+parameter_list|)
+throws|throws
+name|CertificateException
+throws|,
+name|IOException
+block|{
+name|CertificateFactory
+name|fact
+init|=
+name|CertificateFactory
+operator|.
+name|getInstance
+argument_list|(
+literal|"X.509"
+argument_list|)
+decl_stmt|;
+try|try
+init|(
+name|InputStream
+name|input
+init|=
+name|IOUtils
+operator|.
+name|toInputStream
+argument_list|(
+name|pemEncodedString
+argument_list|,
+name|UTF_8
+argument_list|)
+init|)
+block|{
+return|return
+operator|(
+name|X509Certificate
+operator|)
+name|fact
+operator|.
+name|generateCertificate
+argument_list|(
+name|input
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Write the Certificate pointed to the location by the configs.    *    * @param xCertificate - Certificate to write.    * @throws SCMSecurityException - on Error.    * @throws IOException - on Error.    */
 DECL|method|writeCertificate (X509CertificateHolder xCertificate)

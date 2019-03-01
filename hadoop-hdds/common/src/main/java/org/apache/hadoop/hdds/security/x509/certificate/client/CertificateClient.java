@@ -235,6 +235,8 @@ operator|.
 name|Builder
 name|getCSRBuilder
 parameter_list|()
+throws|throws
+name|CertificateException
 function_decl|;
 comment|/**    * Get the certificate of well-known entity from SCM.    *    * @param query - String Query, please see the implementation for the    * discussion on the query formats.    * @return X509Certificate or null if not found.    */
 DECL|method|queryCertificate (String query)

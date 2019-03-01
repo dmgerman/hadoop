@@ -535,8 +535,6 @@ operator|new
 name|OMCertificateClient
 argument_list|(
 name|securityConfig
-argument_list|,
-literal|"test"
 argument_list|)
 block|{
 annotation|@

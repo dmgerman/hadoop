@@ -614,6 +614,37 @@ name|component
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Creates an KeyCodec.    *    * @param config - Security Config.    */
+DECL|method|KeyCodec (SecurityConfig config)
+specifier|public
+name|KeyCodec
+parameter_list|(
+name|SecurityConfig
+name|config
+parameter_list|)
+block|{
+name|this
+operator|.
+name|securityConfig
+operator|=
+name|config
+expr_stmt|;
+name|isPosixFileSystem
+operator|=
+name|KeyCodec
+operator|::
+name|isPosix
+expr_stmt|;
+name|this
+operator|.
+name|location
+operator|=
+name|securityConfig
+operator|.
+name|getKeyLocation
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Creates an HDDS Key Writer.    *    * @param configuration - Configuration    */
 DECL|method|KeyCodec (Configuration configuration)
 specifier|public
