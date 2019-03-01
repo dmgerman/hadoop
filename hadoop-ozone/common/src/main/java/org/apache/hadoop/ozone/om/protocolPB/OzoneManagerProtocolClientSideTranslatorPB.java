@@ -126,6 +126,28 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|tracing
 operator|.
 name|TracingUtil
@@ -3944,7 +3966,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateBlock (OmKeyArgs args, long clientId)
+DECL|method|allocateBlock (OmKeyArgs args, long clientId, ExcludeList excludeList)
 specifier|public
 name|OmKeyLocationInfo
 name|allocateBlock
@@ -3954,6 +3976,9 @@ name|args
 parameter_list|,
 name|long
 name|clientId
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException
@@ -4023,6 +4048,16 @@ operator|.
 name|setClientID
 argument_list|(
 name|clientId
+argument_list|)
+expr_stmt|;
+name|req
+operator|.
+name|setExcludeList
+argument_list|(
+name|excludeList
+operator|.
+name|getProtoBuf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|OMRequest

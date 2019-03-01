@@ -1346,7 +1346,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|sendCommand ( ContainerCommandRequestProto request, List<UUID> excludeDns)
+DECL|method|sendCommand ( ContainerCommandRequestProto request, List<DatanodeDetails> excludeDns)
 specifier|public
 name|XceiverClientReply
 name|sendCommand
@@ -1356,7 +1356,7 @@ name|request
 parameter_list|,
 name|List
 argument_list|<
-name|UUID
+name|DatanodeDetails
 argument_list|>
 name|excludeDns
 parameter_list|)
@@ -1384,7 +1384,7 @@ name|excludeDns
 argument_list|)
 return|;
 block|}
-DECL|method|sendCommandWithRetry ( ContainerCommandRequestProto request, List<UUID> excludeDns)
+DECL|method|sendCommandWithRetry ( ContainerCommandRequestProto request, List<DatanodeDetails> excludeDns)
 specifier|private
 name|XceiverClientReply
 name|sendCommandWithRetry
@@ -1394,7 +1394,7 @@ name|request
 parameter_list|,
 name|List
 argument_list|<
-name|UUID
+name|DatanodeDetails
 argument_list|>
 name|excludeDns
 parameter_list|)
@@ -1421,11 +1421,6 @@ operator|.
 name|getNodes
 argument_list|()
 decl_stmt|;
-name|DatanodeDetails
-name|datanode
-init|=
-literal|null
-decl_stmt|;
 name|List
 argument_list|<
 name|DatanodeDetails
@@ -1448,7 +1443,7 @@ lambda|->
 block|{
 for|for
 control|(
-name|UUID
+name|DatanodeDetails
 name|excludeId
 range|:
 name|excludeDns
@@ -1457,9 +1452,6 @@ block|{
 if|if
 condition|(
 name|dnId
-operator|.
-name|getUuid
-argument_list|()
 operator|.
 name|equals
 argument_list|(
@@ -1488,6 +1480,15 @@ argument_list|)
 else|:
 name|dns
 decl_stmt|;
+name|XceiverClientReply
+name|reply
+init|=
+operator|new
+name|XceiverClientReply
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|DatanodeDetails
@@ -1514,6 +1515,13 @@ expr_stmt|;
 comment|// In case the command gets retried on a 2nd datanode,
 comment|// sendCommandAsyncCall will create a new channel and async stub
 comment|// in case these don't exist for the specific datanode.
+name|reply
+operator|.
+name|addDatanode
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
 name|responseProto
 operator|=
 name|sendCommandAsync
@@ -1528,10 +1536,6 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
-expr_stmt|;
-name|datanode
-operator|=
-name|dn
 expr_stmt|;
 if|if
 condition|(
@@ -1618,9 +1622,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-return|return
-operator|new
-name|XceiverClientReply
+name|reply
+operator|.
+name|setResponse
 argument_list|(
 name|CompletableFuture
 operator|.
@@ -1628,12 +1632,10 @@ name|completedFuture
 argument_list|(
 name|responseProto
 argument_list|)
-argument_list|,
-name|datanode
-operator|.
-name|getUuid
-argument_list|()
 argument_list|)
+expr_stmt|;
+return|return
+name|reply
 return|;
 block|}
 else|else
@@ -2129,7 +2131,7 @@ annotation|@
 name|Override
 DECL|method|watchForCommit (long index, long timeout)
 specifier|public
-name|long
+name|XceiverClientReply
 name|watchForCommit
 parameter_list|(
 name|long
@@ -2149,7 +2151,7 @@ name|IOException
 block|{
 comment|// there is no notion of watch for commit index in standalone pipeline
 return|return
-literal|0
+literal|null
 return|;
 block|}
 empty_stmt|;

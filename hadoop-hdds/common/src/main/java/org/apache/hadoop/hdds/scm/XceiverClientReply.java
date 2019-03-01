@@ -30,6 +30,22 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
 name|datanode
 operator|.
 name|proto
@@ -46,7 +62,17 @@ name|java
 operator|.
 name|util
 operator|.
-name|UUID
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -63,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class represents the Async reply from XceiverClient.  */
+comment|/**  * This class represents the reply from XceiverClient.  */
 end_comment
 
 begin_class
@@ -85,10 +111,14 @@ specifier|private
 name|Long
 name|logIndex
 decl_stmt|;
-DECL|field|dnId
+comment|/**    * List of datanodes where the command got executed and reply is received.    * If there is an exception in the reply, these datanodes will inform    * about the servers where there is a failure.    */
+DECL|field|datanodes
 specifier|private
-name|UUID
-name|dnId
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|datanodes
 decl_stmt|;
 DECL|method|XceiverClientReply ( CompletableFuture<ContainerCommandResponseProto> response)
 specifier|public
@@ -109,7 +139,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|XceiverClientReply ( CompletableFuture<ContainerCommandResponseProto> response, UUID dnId)
+DECL|method|XceiverClientReply ( CompletableFuture<ContainerCommandResponseProto> response, List<DatanodeDetails> datanodes)
 specifier|public
 name|XceiverClientReply
 parameter_list|(
@@ -119,8 +149,11 @@ name|ContainerCommandResponseProto
 argument_list|>
 name|response
 parameter_list|,
-name|UUID
-name|dnId
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|datanodes
 parameter_list|)
 block|{
 name|this
@@ -140,9 +173,18 @@ name|response
 expr_stmt|;
 name|this
 operator|.
-name|dnId
+name|datanodes
 operator|=
-name|dnId
+name|datanodes
+operator|==
+literal|null
+condition|?
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+else|:
+name|datanodes
 expr_stmt|;
 block|}
 DECL|method|getResponse ()
@@ -184,30 +226,34 @@ operator|=
 name|logIndex
 expr_stmt|;
 block|}
-DECL|method|getDatanode ()
+DECL|method|getDatanodes ()
 specifier|public
-name|UUID
-name|getDatanode
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|getDatanodes
 parameter_list|()
 block|{
 return|return
-name|dnId
+name|datanodes
 return|;
 block|}
-DECL|method|setDatanode (UUID datanodeId)
+DECL|method|addDatanode (DatanodeDetails dn)
 specifier|public
 name|void
-name|setDatanode
+name|addDatanode
 parameter_list|(
-name|UUID
-name|datanodeId
+name|DatanodeDetails
+name|dn
 parameter_list|)
 block|{
-name|this
+name|datanodes
 operator|.
-name|dnId
-operator|=
-name|datanodeId
+name|add
+argument_list|(
+name|dn
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setResponse ( CompletableFuture<ContainerCommandResponseProto> response)

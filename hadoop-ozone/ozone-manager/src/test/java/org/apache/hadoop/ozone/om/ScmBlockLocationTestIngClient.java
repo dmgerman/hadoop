@@ -186,6 +186,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|pipeline
 operator|.
 name|Pipeline
@@ -574,10 +596,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns Fake blocks to the BlockManager so we get blocks in the Database.    * @param size - size of the block.    * @param type Replication Type    * @param factor - Replication factor    * @param owner - String owner.    * @return    * @throws IOException    */
+comment|/**    * Returns Fake blocks to the BlockManager so we get blocks in the Database.    * @param size - size of the block.    * @param type Replication Type    * @param factor - Replication factor    * @param owner - String owner.    * @param excludeList list of dns/pipelines to exclude    * @return    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
+DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner, ExcludeList excludeList)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
@@ -597,6 +619,9 @@ name|factor
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException

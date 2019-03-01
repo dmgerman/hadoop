@@ -54,16 +54,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|UUID
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|ExecutionException
@@ -93,6 +83,22 @@ operator|.
 name|atomic
 operator|.
 name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -419,7 +425,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Sends a given command to server and gets the reply back along with    * the server associated info.    * @param request Request    * @param excludeDns list of servers on which the command won't be sent to.    * @return Response to the command    * @throws IOException    */
-DECL|method|sendCommand ( ContainerCommandRequestProto request, List<UUID> excludeDns)
+DECL|method|sendCommand ( ContainerCommandRequestProto request, List<DatanodeDetails> excludeDns)
 specifier|public
 name|XceiverClientReply
 name|sendCommand
@@ -429,7 +435,7 @@ name|request
 parameter_list|,
 name|List
 argument_list|<
-name|UUID
+name|DatanodeDetails
 argument_list|>
 name|excludeDns
 parameter_list|)
@@ -508,11 +514,11 @@ name|ReplicationType
 name|getPipelineType
 parameter_list|()
 function_decl|;
-comment|/**    * Check if an specfic commitIndex is replicated to majority/all servers.    * @param index index to watch for    * @param timeout timeout provided for the watch ipeartion to complete    * @return the min commit index replicated to all or majority servers    *         in case of a failure    * @throws InterruptedException    * @throws ExecutionException    * @throws TimeoutException    * @throws IOException    */
+comment|/**    * Check if an specfic commitIndex is replicated to majority/all servers.    * @param index index to watch for    * @param timeout timeout provided for the watch ipeartion to complete    * @return reply containing the min commit index replicated to all or majority    *         servers in case of a failure    * @throws InterruptedException    * @throws ExecutionException    * @throws TimeoutException    * @throws IOException    */
 DECL|method|watchForCommit (long index, long timeout)
 specifier|public
 specifier|abstract
-name|long
+name|XceiverClientReply
 name|watchForCommit
 parameter_list|(
 name|long

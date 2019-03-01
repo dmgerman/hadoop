@@ -78,6 +78,28 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -118,8 +140,8 @@ name|BlockManager
 extends|extends
 name|Closeable
 block|{
-comment|/**    * Allocates a new block for a given size.    * @param size - Block Size    * @param type Replication Type    * @param factor - Replication Factor    * @return AllocatedBlock    * @throws IOException    */
-DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
+comment|/**    * Allocates a new block for a given size.    * @param size - Block Size    * @param type Replication Type    * @param factor - Replication Factor    * @param excludeList List of datanodes/containers to exclude during block    *                    allocation.    * @return AllocatedBlock    * @throws IOException    */
+DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner, ExcludeList excludeList)
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
@@ -138,6 +160,9 @@ name|factor
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException

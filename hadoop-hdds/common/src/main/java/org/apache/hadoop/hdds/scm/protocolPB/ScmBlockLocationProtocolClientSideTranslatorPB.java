@@ -270,6 +270,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|pipeline
 operator|.
 name|Pipeline
@@ -464,7 +486,7 @@ block|}
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
+DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner, ExcludeList excludeList)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
@@ -484,6 +506,9 @@ name|factor
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException
@@ -532,6 +557,14 @@ argument_list|(
 name|TracingUtil
 operator|.
 name|exportCurrentSpan
+argument_list|()
+argument_list|)
+operator|.
+name|setExcludeList
+argument_list|(
+name|excludeList
+operator|.
+name|getProtoBuf
 argument_list|()
 argument_list|)
 operator|.

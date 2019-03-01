@@ -20,15 +20,15 @@ end_package
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|base
+name|hdds
 operator|.
-name|Preconditions
+name|HddsUtils
 import|;
 end_import
 
@@ -42,7 +42,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|HddsUtils
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -524,6 +526,18 @@ name|ConcurrentHashMap
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract implementation of {@link XceiverClientSpi} using Ratis.  * The underlying RPC mechanism can be chosen via the constructor.  */
 end_comment
@@ -702,7 +716,7 @@ specifier|private
 specifier|final
 name|ConcurrentHashMap
 argument_list|<
-name|String
+name|UUID
 argument_list|,
 name|Long
 argument_list|>
@@ -814,13 +828,15 @@ name|commitInfoMap
 operator|.
 name|put
 argument_list|(
+name|RatisHelper
+operator|.
+name|toDatanodeId
+argument_list|(
 name|proto
 operator|.
 name|getServer
 argument_list|()
-operator|.
-name|getAddress
-argument_list|()
+argument_list|)
 argument_list|,
 name|proto
 operator|.
@@ -847,13 +863,15 @@ name|commitInfoMap
 operator|.
 name|computeIfPresent
 argument_list|(
+name|RatisHelper
+operator|.
+name|toDatanodeId
+argument_list|(
 name|proto
 operator|.
 name|getServer
 argument_list|()
-operator|.
-name|getAddress
-argument_list|()
+argument_list|)
 argument_list|,
 parameter_list|(
 name|address
@@ -1297,11 +1315,57 @@ block|}
 end_function
 
 begin_function
+DECL|method|addDatanodetoReply (UUID address, XceiverClientReply reply)
+specifier|private
+name|void
+name|addDatanodetoReply
+parameter_list|(
+name|UUID
+name|address
+parameter_list|,
+name|XceiverClientReply
+name|reply
+parameter_list|)
+block|{
+name|DatanodeDetails
+operator|.
+name|Builder
+name|builder
+init|=
+name|DatanodeDetails
+operator|.
+name|newBuilder
+argument_list|()
+decl_stmt|;
+name|builder
+operator|.
+name|setUuid
+argument_list|(
+name|address
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|reply
+operator|.
+name|addDatanode
+argument_list|(
+name|builder
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|watchForCommit (long index, long timeout)
 specifier|public
-name|long
+name|XceiverClientReply
 name|watchForCommit
 parameter_list|(
 name|long
@@ -1325,6 +1389,15 @@ init|=
 name|getReplicatedMinCommitIndex
 argument_list|()
 decl_stmt|;
+name|XceiverClientReply
+name|clientReply
+init|=
+operator|new
+name|XceiverClientReply
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|commitIndex
@@ -1334,8 +1407,15 @@ condition|)
 block|{
 comment|// return the min commit index till which the log has been replicated to
 comment|// all servers
-return|return
+name|clientReply
+operator|.
+name|setLogIndex
+argument_list|(
 name|commitIndex
+argument_list|)
+expr_stmt|;
+return|return
+name|clientReply
 return|;
 block|}
 name|LOG
@@ -1479,13 +1559,13 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
-name|Optional
+name|List
 argument_list|<
 name|RaftProtos
 operator|.
 name|CommitInfoProto
 argument_list|>
-name|proto
+name|commitInfoProtoList
 init|=
 name|reply
 operator|.
@@ -1495,44 +1575,56 @@ operator|.
 name|stream
 argument_list|()
 operator|.
-name|min
+name|filter
 argument_list|(
-name|Comparator
+name|i
+lambda|->
+name|i
 operator|.
-name|comparing
-argument_list|(
-name|RaftProtos
-operator|.
-name|CommitInfoProto
-operator|::
 name|getCommitIndex
+argument_list|()
+operator|<
+name|index
 argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
 argument_list|)
 decl_stmt|;
-name|Preconditions
+name|commitInfoProtoList
 operator|.
-name|checkState
+name|parallelStream
+argument_list|()
+operator|.
+name|forEach
 argument_list|(
 name|proto
-operator|.
-name|isPresent
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|String
+lambda|->
+block|{
+name|UUID
 name|address
 init|=
-name|proto
+name|RatisHelper
 operator|.
-name|get
-argument_list|()
+name|toDatanodeId
+argument_list|(
+name|proto
 operator|.
 name|getServer
 argument_list|()
-operator|.
-name|getAddress
-argument_list|()
+argument_list|)
 decl_stmt|;
+name|addDatanodetoReply
+argument_list|(
+name|address
+argument_list|,
+name|clientReply
+argument_list|)
+expr_stmt|;
 comment|// since 3 way commit has failed, the updated map from now on  will
 comment|// only store entries for those datanodes which have had successful
 comment|// replication.
@@ -1561,8 +1653,18 @@ literal|" Committed by majority."
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+argument_list|)
+expr_stmt|;
+block|}
+name|clientReply
+operator|.
+name|setLogIndex
+argument_list|(
 name|index
+argument_list|)
+expr_stmt|;
+return|return
+name|clientReply
 return|;
 block|}
 end_function
@@ -1676,6 +1778,16 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// in case of raft retry failure, the raft client is
+comment|// not able to connect to the leader hence the pipeline
+comment|// can not be used but this instance of RaftClient will close
+comment|// and refreshed again. In case the client cannot connect to
+comment|// leader, getClient call will fail.
+comment|// No need to set the failed Server ID here. Ozone client
+comment|// will directly exclude this pipeline in next allocate block
+comment|// to SCM as in this case, it is the raft client which is not
+comment|// able to connect to leader in the pipeline, though the
+comment|// pipeline can still be functional.
 throw|throw
 operator|new
 name|CompletionException
@@ -1697,6 +1809,19 @@ name|getMessage
 argument_list|()
 operator|.
 name|getContent
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|UUID
+name|serverId
+init|=
+name|RatisHelper
+operator|.
+name|toDatanodeId
+argument_list|(
+name|reply
+operator|.
+name|getReplierId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1722,6 +1847,7 @@ name|getCommitInfos
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|asyncReply
 operator|.
 name|setLogIndex
@@ -1732,22 +1858,13 @@ name|getLogIndex
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|addDatanodetoReply
+argument_list|(
+name|serverId
+argument_list|,
 name|asyncReply
-operator|.
-name|setDatanode
-argument_list|(
-name|RatisHelper
-operator|.
-name|toDatanodeId
-argument_list|(
-name|reply
-operator|.
-name|getReplierId
-argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|response
 return|;

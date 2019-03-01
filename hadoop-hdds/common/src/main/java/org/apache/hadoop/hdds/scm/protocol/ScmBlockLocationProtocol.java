@@ -44,6 +44,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -223,8 +245,8 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
-DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner)
+comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @param excludeList List of datanodes/containers to exclude during block    *                    allocation.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
+DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner, ExcludeList excludeList)
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
@@ -239,6 +261,9 @@ name|factor
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException

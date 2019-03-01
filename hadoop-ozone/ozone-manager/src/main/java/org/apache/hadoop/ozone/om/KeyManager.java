@@ -42,6 +42,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|common
@@ -287,8 +309,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * A client calls this on an open key, to request to allocate a new block,    * and appended to the tail of current block list of the open client.    *    * @param args the key to append    * @param clientID the client requesting block.    * @return the reference to the new block.    * @throws IOException    */
-DECL|method|allocateBlock (OmKeyArgs args, long clientID)
+comment|/**    * A client calls this on an open key, to request to allocate a new block,    * and appended to the tail of current block list of the open client.    *    * @param args the key to append    * @param clientID the client requesting block.    * @param excludeList List of datanodes/containers to exclude during block    *                    allocation.    * @return the reference to the new block.    * @throws IOException    */
+DECL|method|allocateBlock (OmKeyArgs args, long clientID, ExcludeList excludeList)
 name|OmKeyLocationInfo
 name|allocateBlock
 parameter_list|(
@@ -297,6 +319,9 @@ name|args
 parameter_list|,
 name|long
 name|clientID
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException

@@ -200,6 +200,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|exceptions
 operator|.
 name|SCMException
@@ -972,7 +994,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner)
+DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner, ExcludeList excludeList)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
@@ -992,6 +1014,9 @@ name|factor
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException
@@ -1078,6 +1103,8 @@ argument_list|,
 name|factor
 argument_list|,
 name|owner
+argument_list|,
+name|excludeList
 argument_list|)
 return|;
 block|}

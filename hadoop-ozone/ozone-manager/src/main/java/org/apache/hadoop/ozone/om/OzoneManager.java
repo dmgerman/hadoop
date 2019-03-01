@@ -324,6 +324,28 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|ExcludeList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|protocol
 operator|.
 name|ScmBlockLocationProtocol
@@ -9695,7 +9717,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|allocateBlock (OmKeyArgs args, long clientID)
+DECL|method|allocateBlock (OmKeyArgs args, long clientID, ExcludeList excludeList)
 specifier|public
 name|OmKeyLocationInfo
 name|allocateBlock
@@ -9705,6 +9727,9 @@ name|args
 parameter_list|,
 name|long
 name|clientID
+parameter_list|,
+name|ExcludeList
+name|excludeList
 parameter_list|)
 throws|throws
 name|IOException
@@ -9805,6 +9830,8 @@ argument_list|(
 name|args
 argument_list|,
 name|clientID
+argument_list|,
+name|excludeList
 argument_list|)
 return|;
 block|}
