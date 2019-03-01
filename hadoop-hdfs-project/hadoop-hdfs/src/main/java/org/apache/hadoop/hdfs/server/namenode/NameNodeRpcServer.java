@@ -8858,7 +8858,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// TODO : need to be filled up if needed. May be a no-op here.
+comment|// Check for write access to ensure that msync only happens on active
+name|namesystem
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override

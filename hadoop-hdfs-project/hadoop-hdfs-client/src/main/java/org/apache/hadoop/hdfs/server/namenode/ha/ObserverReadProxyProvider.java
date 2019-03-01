@@ -501,6 +501,15 @@ specifier|private
 name|boolean
 name|observerReadEnabled
 decl_stmt|;
+comment|/**    * A client using an ObserverReadProxyProvider should first sync with the    * active NameNode on startup. This ensures that the client reads data which    * is consistent with the state of the world as of the time of its    * instantiation. This variable will be true after this initial sync has    * been performed.    */
+DECL|field|msynced
+specifier|private
+specifier|volatile
+name|boolean
+name|msynced
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * The index into the nameNodeProxies list currently being used. Should only    * be accessed in synchronized methods.    */
 DECL|field|currentIndex
 specifier|private
@@ -1097,6 +1106,45 @@ block|}
 end_function
 
 begin_comment
+comment|/**    * This will call {@link ClientProtocol#msync()} on the active NameNode    * (via the {@link #failoverProxy}) to initialize the state of this client.    * Calling it multiple times is a no-op; only the first will perform an    * msync.    *    * @see #msynced    */
+end_comment
+
+begin_function
+DECL|method|initializeMsync ()
+specifier|private
+specifier|synchronized
+name|void
+name|initializeMsync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|msynced
+condition|)
+block|{
+return|return;
+comment|// No need for an msync
+block|}
+name|failoverProxy
+operator|.
+name|getProxy
+argument_list|()
+operator|.
+name|proxy
+operator|.
+name|msync
+argument_list|()
+expr_stmt|;
+name|msynced
+operator|=
+literal|true
+expr_stmt|;
+block|}
+end_function
+
+begin_comment
 comment|/**    * An InvocationHandler to handle incoming requests. This class's invoke    * method contains the primary logic for redirecting to observers.    *    * If observer reads are enabled, attempt to send read operations to the    * current proxy. If it is not an observer, or the observer fails, adjust    * the current proxy and retry on the next one. If all proxies are tried    * without success, the request is forwarded to the active.    *    * Write requests are always forwarded to the active.    */
 end_comment
 
@@ -1147,6 +1195,18 @@ name|method
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|msynced
+condition|)
+block|{
+comment|// An msync() must first be performed to ensure that this client is
+comment|// up-to-date with the active's state. This will only be done once.
+name|initializeMsync
+argument_list|()
+expr_stmt|;
+block|}
 name|int
 name|failedObserverCount
 init|=
@@ -1554,6 +1614,12 @@ name|getCause
 argument_list|()
 throw|;
 block|}
+comment|// If this was reached, the request reached the active, so the
+comment|// state is up-to-date with active and no further msync is needed.
+name|msynced
+operator|=
+literal|true
+expr_stmt|;
 name|lastProxy
 operator|=
 name|activeProxy
