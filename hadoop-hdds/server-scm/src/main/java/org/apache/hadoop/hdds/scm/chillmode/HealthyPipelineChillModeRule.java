@@ -60,6 +60,22 @@ name|hdds
 operator|.
 name|protocol
 operator|.
+name|DatanodeDetails
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|HddsProtos
@@ -268,6 +284,26 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class defining Chill mode exit criteria for Pipelines.  *  * This rule defines percentage of healthy pipelines need to be reported.  * Once chill mode exit happens, this rules take care of writes can go  * through in a cluster.  */
 end_comment
@@ -289,7 +325,7 @@ name|PipelineReportFromDatanode
 argument_list|>
 block|{
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -328,6 +364,20 @@ name|int
 name|currentHealthyPipelineCount
 init|=
 literal|0
+decl_stmt|;
+DECL|field|processedDatanodeDetails
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|processedDatanodeDetails
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
 decl_stmt|;
 DECL|method|HealthyPipelineChillModeRule (PipelineManager pipelineManager, SCMChillModeManager manager, Configuration configuration)
 name|HealthyPipelineChillModeRule
@@ -406,11 +456,7 @@ name|Math
 operator|.
 name|ceil
 argument_list|(
-operator|(
 name|healthyPipelinesPercent
-operator|/
-literal|100
-operator|)
 operator|*
 name|pipelineCount
 argument_list|)
@@ -529,6 +575,17 @@ if|if
 condition|(
 name|pipeline
 operator|.
+name|getFactor
+argument_list|()
+operator|==
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+operator|.
+name|THREE
+operator|&&
+name|pipeline
+operator|.
 name|getPipelineState
 argument_list|()
 operator|==
@@ -588,6 +645,32 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// When SCM is in chill mode for long time, already registered
+comment|// datanode can send pipeline report again, then pipeline handler fires
+comment|// processed report event, we should not consider this pipeline report
+comment|// from datanode again during threshold calculation.
+name|DatanodeDetails
+name|dnDetails
+init|=
+name|pipelineReportFromDatanode
+operator|.
+name|getDatanodeDetails
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|processedDatanodeDetails
+operator|.
+name|contains
+argument_list|(
+name|pipelineReportFromDatanode
+operator|.
+name|getDatanodeDetails
+argument_list|()
+argument_list|)
+condition|)
+block|{
 comment|// Process pipeline report from datanode
 name|process
 argument_list|(
@@ -616,6 +699,14 @@ argument_list|,
 name|currentHealthyPipelineCount
 argument_list|,
 name|healthyPipelineThresholdCount
+argument_list|)
+expr_stmt|;
+block|}
+name|processedDatanodeDetails
+operator|.
+name|add
+argument_list|(
+name|dnDetails
 argument_list|)
 expr_stmt|;
 block|}
