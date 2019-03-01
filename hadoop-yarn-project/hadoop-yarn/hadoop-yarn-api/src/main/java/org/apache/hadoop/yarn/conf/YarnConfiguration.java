@@ -5721,17 +5721,6 @@ name|NM_GPU_RESOURCE_PREFIX
 operator|+
 literal|"path-to-discovery-executables"
 decl_stmt|;
-annotation|@
-name|Private
-DECL|field|DEFAULT_NM_GPU_PATH_TO_EXEC
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_NM_GPU_PATH_TO_EXEC
-init|=
-literal|""
-decl_stmt|;
 comment|/**    * Settings to control which implementation of docker plugin for GPU will be    * used.    *    * By default uses NVIDIA docker v1.    */
 annotation|@
 name|Private
