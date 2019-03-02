@@ -202,27 +202,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -293,16 +273,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|ozoneManagerMap
-specifier|private
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|OzoneManager
-argument_list|>
-name|ozoneManagerMap
-decl_stmt|;
 DECL|field|ozoneManagers
 specifier|private
 name|List
@@ -343,20 +313,18 @@ literal|2000
 decl_stmt|;
 comment|// 2 seconds
 comment|/**    * Creates a new MiniOzoneCluster with OM HA.    *    * @throws IOException if there is an I/O error    */
-DECL|method|MiniOzoneHAClusterImpl ( OzoneConfiguration conf, Map<String, OzoneManager> omMap, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
+DECL|method|MiniOzoneHAClusterImpl ( OzoneConfiguration conf, List<OzoneManager> omList, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
 specifier|private
 name|MiniOzoneHAClusterImpl
 parameter_list|(
 name|OzoneConfiguration
 name|conf
 parameter_list|,
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|OzoneManager
 argument_list|>
-name|omMap
+name|omList
 parameter_list|,
 name|StorageContainerManager
 name|scm
@@ -379,23 +347,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|ozoneManagerMap
-operator|=
-name|omMap
-expr_stmt|;
-name|this
-operator|.
 name|ozoneManagers
 operator|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-name|omMap
-operator|.
-name|values
-argument_list|()
-argument_list|)
+name|omList
 expr_stmt|;
 block|}
 comment|/**    * Returns the first OzoneManager from the list.    * @return    */
@@ -541,26 +495,6 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|stopOzoneManager (String omNodeId)
-specifier|public
-name|void
-name|stopOzoneManager
-parameter_list|(
-name|String
-name|omNodeId
-parameter_list|)
-block|{
-name|ozoneManagerMap
-operator|.
-name|get
-argument_list|(
-name|omNodeId
-argument_list|)
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
 comment|/**    * Builder for configuring the MiniOzoneCluster to run.    */
 DECL|class|Builder
 specifier|public
@@ -618,13 +552,11 @@ expr_stmt|;
 name|StorageContainerManager
 name|scm
 decl_stmt|;
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|OzoneManager
 argument_list|>
-name|omMap
+name|omList
 decl_stmt|;
 try|try
 block|{
@@ -638,7 +570,7 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|omMap
+name|omList
 operator|=
 name|createOMService
 argument_list|()
@@ -680,7 +612,7 @@ name|MiniOzoneHAClusterImpl
 argument_list|(
 name|conf
 argument_list|,
-name|omMap
+name|omList
 argument_list|,
 name|scm
 argument_list|,
@@ -784,10 +716,8 @@ block|}
 comment|/**      * Start OM service with multiple OMs.      * @return list of OzoneManagers      * @throws IOException      * @throws AuthenticationException      */
 DECL|method|createOMService ()
 specifier|private
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|OzoneManager
 argument_list|>
 name|createOMService
@@ -797,18 +727,18 @@ name|IOException
 throws|,
 name|AuthenticationException
 block|{
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|OzoneManager
 argument_list|>
-name|omMap
+name|omList
 init|=
 operator|new
-name|HashMap
+name|ArrayList
 argument_list|<>
-argument_list|()
+argument_list|(
+name|numOfOMs
+argument_list|)
 decl_stmt|;
 name|int
 name|retryCount
@@ -861,13 +791,6 @@ operator|++
 control|)
 block|{
 comment|// Set nodeId
-name|String
-name|nodeId
-init|=
-name|nodeIdBaseStr
-operator|+
-name|i
-decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -876,7 +799,9 @@ name|OMConfigKeys
 operator|.
 name|OZONE_OM_NODE_ID_KEY
 argument_list|,
-name|nodeId
+name|nodeIdBaseStr
+operator|+
+name|i
 argument_list|)
 expr_stmt|;
 comment|// Set metadata/DB dir base path
@@ -887,7 +812,9 @@ name|path
 operator|+
 literal|"/"
 operator|+
-name|nodeId
+name|nodeIdBaseStr
+operator|+
+name|i
 decl_stmt|;
 name|conf
 operator|.
@@ -958,12 +885,10 @@ argument_list|(
 name|certClient
 argument_list|)
 expr_stmt|;
-name|omMap
+name|omList
 operator|.
-name|put
+name|add
 argument_list|(
-name|nodeId
-argument_list|,
 name|om
 argument_list|)
 expr_stmt|;
@@ -999,13 +924,11 @@ name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
-name|omMap
+name|omList
 operator|.
 name|get
 argument_list|(
-name|nodeIdBaseStr
-operator|+
-literal|1
+literal|0
 argument_list|)
 operator|.
 name|getOmRpcServerAddr
@@ -1026,10 +949,7 @@ control|(
 name|OzoneManager
 name|om
 range|:
-name|omMap
-operator|.
-name|values
-argument_list|()
+name|omList
 control|)
 block|{
 name|om
@@ -1055,7 +975,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|omMap
+name|omList
 operator|.
 name|clear
 argument_list|()
@@ -1077,7 +997,7 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|omMap
+name|omList
 return|;
 block|}
 comment|/**      * Initialize HA related configurations.      */
