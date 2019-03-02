@@ -174,6 +174,22 @@ name|AbstractDelegationTokenIdentifier
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+import|;
+end_import
+
 begin_comment
 comment|/**  * The token identifier for Ozone Master.  */
 end_comment
@@ -259,6 +275,34 @@ block|{
 return|return
 name|KIND_NAME
 return|;
+block|}
+comment|/**    * Default TrivialRenewer.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|Renewer
+specifier|public
+specifier|static
+class|class
+name|Renewer
+extends|extends
+name|Token
+operator|.
+name|TrivialRenewer
+block|{
+annotation|@
+name|Override
+DECL|method|getKind ()
+specifier|protected
+name|Text
+name|getKind
+parameter_list|()
+block|{
+return|return
+name|KIND_NAME
+return|;
+block|}
 block|}
 comment|/**    * Overrides default implementation to write using Protobuf.    *    * @param out output stream    * @throws IOException    */
 annotation|@
