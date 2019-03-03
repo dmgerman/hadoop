@@ -1437,7 +1437,6 @@ try|try
 block|{
 if|if
 condition|(
-operator|!
 name|getRouter
 argument_list|()
 operator|.

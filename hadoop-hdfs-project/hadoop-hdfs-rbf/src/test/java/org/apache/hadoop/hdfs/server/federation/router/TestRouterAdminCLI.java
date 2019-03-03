@@ -5288,6 +5288,31 @@ operator|.
 name|getRouterStatus
 argument_list|()
 decl_stmt|;
+name|String
+name|result
+init|=
+name|router
+operator|.
+name|getNamenodeMetrics
+argument_list|()
+operator|.
+name|getSafemode
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Wrong safe mode message: "
+operator|+
+name|result
+argument_list|,
+name|result
+operator|.
+name|startsWith
+argument_list|(
+literal|"Safe mode is ON."
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// verify state using FederationMetrics
 name|assertEquals
 argument_list|(
@@ -5353,6 +5378,27 @@ name|metrics
 operator|.
 name|getRouterStatus
 argument_list|()
+expr_stmt|;
+name|result
+operator|=
+name|router
+operator|.
+name|getNamenodeMetrics
+argument_list|()
+operator|.
+name|getSafemode
+argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Wrong safe mode message: "
+operator|+
+name|result
+argument_list|,
+literal|""
+argument_list|,
+name|result
+argument_list|)
 expr_stmt|;
 comment|// verify state
 name|assertEquals
