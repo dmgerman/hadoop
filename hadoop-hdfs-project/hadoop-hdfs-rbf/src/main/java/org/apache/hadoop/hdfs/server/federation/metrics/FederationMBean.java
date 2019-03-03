@@ -170,6 +170,24 @@ name|int
 name|getNumDecomDeadNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Get the number of live datanodes which are under maintenance.    * @return Number of live datanodes which are under maintenance.    */
+DECL|method|getNumInMaintenanceLiveDataNodes ()
+name|int
+name|getNumInMaintenanceLiveDataNodes
+parameter_list|()
+function_decl|;
+comment|/**    * Get the number of dead datanodes which are under maintenance.    * @return Number of dead datanodes which are under maintenance.    */
+DECL|method|getNumInMaintenanceDeadDataNodes ()
+name|int
+name|getNumInMaintenanceDeadDataNodes
+parameter_list|()
+function_decl|;
+comment|/**    * Get the number of datanodes which are entering maintenance.    * @return Number of datanodes which are entering maintenance.    */
+DECL|method|getNumEnteringMaintenanceDataNodes ()
+name|int
+name|getNumEnteringMaintenanceDataNodes
+parameter_list|()
+function_decl|;
 comment|/**    * Get Max, Median, Min and Standard Deviation of DataNodes usage.    * @return the DataNode usage information, as a JSON string.    */
 DECL|method|getNodeUsage ()
 name|String

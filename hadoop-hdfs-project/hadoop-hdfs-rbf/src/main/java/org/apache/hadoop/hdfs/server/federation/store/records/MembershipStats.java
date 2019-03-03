@@ -374,6 +374,57 @@ name|int
 name|getNumOfDecomDeadDatanodes
 parameter_list|()
 function_decl|;
+DECL|method|setNumOfInMaintenanceLiveDataNodes (int nodes)
+specifier|public
+specifier|abstract
+name|void
+name|setNumOfInMaintenanceLiveDataNodes
+parameter_list|(
+name|int
+name|nodes
+parameter_list|)
+function_decl|;
+DECL|method|getNumOfInMaintenanceLiveDataNodes ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumOfInMaintenanceLiveDataNodes
+parameter_list|()
+function_decl|;
+DECL|method|setNumOfInMaintenanceDeadDataNodes (int nodes)
+specifier|public
+specifier|abstract
+name|void
+name|setNumOfInMaintenanceDeadDataNodes
+parameter_list|(
+name|int
+name|nodes
+parameter_list|)
+function_decl|;
+DECL|method|getNumOfInMaintenanceDeadDataNodes ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumOfInMaintenanceDeadDataNodes
+parameter_list|()
+function_decl|;
+DECL|method|setNumOfEnteringMaintenanceDataNodes (int nodes)
+specifier|public
+specifier|abstract
+name|void
+name|setNumOfEnteringMaintenanceDataNodes
+parameter_list|(
+name|int
+name|nodes
+parameter_list|)
+function_decl|;
+DECL|method|getNumOfEnteringMaintenanceDataNodes ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumOfEnteringMaintenanceDataNodes
+parameter_list|()
+function_decl|;
 annotation|@
 name|Override
 DECL|method|getPrimaryKeys ()

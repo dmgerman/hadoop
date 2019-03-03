@@ -192,6 +192,33 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/** Live in maintenance datanodes. */
+DECL|field|inMaintenanceLiveDataNodes
+specifier|private
+name|int
+name|inMaintenanceLiveDataNodes
+init|=
+operator|-
+literal|1
+decl_stmt|;
+comment|/** Dead in maintenance datanodes. */
+DECL|field|inMaintenanceDeadDataNodes
+specifier|private
+name|int
+name|inMaintenanceDeadDataNodes
+init|=
+operator|-
+literal|1
+decl_stmt|;
+comment|/** Entering maintenance datanodes. */
+DECL|field|enteringMaintenanceDataNodes
+specifier|private
+name|int
+name|enteringMaintenanceDataNodes
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** Space stats. */
 DECL|field|availableSpace
 specifier|private
@@ -619,8 +646,8 @@ operator|.
 name|safeMode
 return|;
 block|}
-comment|/**    * Set the datanode information.    *    * @param numLive Number of live nodes.    * @param numDead Number of dead nodes.    * @param numStale Number of stale nodes.    * @param numDecom Number of decommissioning nodes.    * @param numLiveDecom Number of decommissioned live nodes.    * @param numDeadDecom Number of decommissioned dead nodes.    */
-DECL|method|setDatanodeInfo (int numLive, int numDead, int numStale, int numDecom, int numLiveDecom, int numDeadDecom)
+comment|/**    * Set the datanode information.    *    * @param numLive Number of live nodes.    * @param numDead Number of dead nodes.    * @param numStale Number of stale nodes.    * @param numDecom Number of decommissioning nodes.    * @param numLiveDecom Number of decommissioned live nodes.    * @param numDeadDecom Number of decommissioned dead nodes.    * @param numInMaintenanceLive Number of in maintenance live nodes.    * @param numInMaintenanceDead Number of in maintenance dead nodes.    * @param numEnteringMaintenance Number of entering maintenance nodes.    */
+DECL|method|setDatanodeInfo (int numLive, int numDead, int numStale, int numDecom, int numLiveDecom, int numDeadDecom, int numInMaintenanceLive, int numInMaintenanceDead, int numEnteringMaintenance)
 specifier|public
 name|void
 name|setDatanodeInfo
@@ -642,6 +669,15 @@ name|numLiveDecom
 parameter_list|,
 name|int
 name|numDeadDecom
+parameter_list|,
+name|int
+name|numInMaintenanceLive
+parameter_list|,
+name|int
+name|numInMaintenanceDead
+parameter_list|,
+name|int
+name|numEnteringMaintenance
 parameter_list|)
 block|{
 name|this
@@ -679,6 +715,24 @@ operator|.
 name|deadDecomDatanodes
 operator|=
 name|numDeadDecom
+expr_stmt|;
+name|this
+operator|.
+name|inMaintenanceLiveDataNodes
+operator|=
+name|numInMaintenanceLive
+expr_stmt|;
+name|this
+operator|.
+name|inMaintenanceDeadDataNodes
+operator|=
+name|numInMaintenanceDead
+expr_stmt|;
+name|this
+operator|.
+name|enteringMaintenanceDataNodes
+operator|=
+name|numEnteringMaintenance
 expr_stmt|;
 name|this
 operator|.
@@ -763,6 +817,45 @@ return|return
 name|this
 operator|.
 name|deadDecomDatanodes
+return|;
+block|}
+comment|/**    * Get the number of live in maintenance nodes.    *    * @return The number of live in maintenance nodes.    */
+DECL|method|getNumInMaintenanceLiveDataNodes ()
+specifier|public
+name|int
+name|getNumInMaintenanceLiveDataNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|inMaintenanceLiveDataNodes
+return|;
+block|}
+comment|/**    * Get the number of dead in maintenance nodes.    *    * @return The number of dead in maintenance nodes.    */
+DECL|method|getNumInMaintenanceDeadDataNodes ()
+specifier|public
+name|int
+name|getNumInMaintenanceDeadDataNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|inMaintenanceDeadDataNodes
+return|;
+block|}
+comment|/**    * Get the number of entering maintenance nodes.    *    * @return The number of entering maintenance nodes.    */
+DECL|method|getNumEnteringMaintenanceDataNodes ()
+specifier|public
+name|int
+name|getNumEnteringMaintenanceDataNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|enteringMaintenanceDataNodes
 return|;
 block|}
 comment|/**    * Set the filesystem information.    *    * @param available Available capacity.    * @param total Total capacity.    * @param numFiles Number of files.    * @param numBlocks Total number of blocks.    * @param numBlocksMissing Number of missing blocks.    * @param numBlocksPendingReplication Number of blocks pending replication.    * @param numBlocksUnderReplicated Number of blocks under replication.    * @param numBlocksPendingDeletion Number of blocks pending deletion.    * @param providedSpace Space in provided storage.    */

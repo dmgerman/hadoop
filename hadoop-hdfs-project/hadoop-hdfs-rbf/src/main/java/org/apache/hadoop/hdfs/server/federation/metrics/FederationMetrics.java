@@ -2758,6 +2758,57 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNumInMaintenanceLiveDataNodes ()
+specifier|public
+name|int
+name|getNumInMaintenanceLiveDataNodes
+parameter_list|()
+block|{
+return|return
+name|getNameserviceAggregatedInt
+argument_list|(
+name|MembershipStats
+operator|::
+name|getNumOfInMaintenanceLiveDataNodes
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumInMaintenanceDeadDataNodes ()
+specifier|public
+name|int
+name|getNumInMaintenanceDeadDataNodes
+parameter_list|()
+block|{
+return|return
+name|getNameserviceAggregatedInt
+argument_list|(
+name|MembershipStats
+operator|::
+name|getNumOfInMaintenanceDeadDataNodes
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumEnteringMaintenanceDataNodes ()
+specifier|public
+name|int
+name|getNumEnteringMaintenanceDataNodes
+parameter_list|()
+block|{
+return|return
+name|getNameserviceAggregatedInt
+argument_list|(
+name|MembershipStats
+operator|::
+name|getNumOfEnteringMaintenanceDataNodes
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 comment|// NameNodeMXBean
 DECL|method|getNodeUsage ()
 specifier|public
