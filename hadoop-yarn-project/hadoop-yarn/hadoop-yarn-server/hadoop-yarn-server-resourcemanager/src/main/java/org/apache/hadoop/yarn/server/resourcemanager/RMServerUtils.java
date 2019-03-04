@@ -148,13 +148,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -162,13 +158,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -998,12 +990,12 @@ DECL|field|LOG_HANDLE
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG_HANDLE
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|RMServerUtils
 operator|.
@@ -2288,7 +2280,7 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|verifyAdminAccess ( YarnAuthorizationProvider authorizer, String method, final Log LOG)
+DECL|method|verifyAdminAccess ( YarnAuthorizationProvider authorizer, String method, final Logger LOG)
 specifier|public
 specifier|static
 name|UserGroupInformation
@@ -2301,7 +2293,7 @@ name|String
 name|method
 parameter_list|,
 specifier|final
-name|Log
+name|Logger
 name|LOG
 parameter_list|)
 throws|throws
@@ -2322,7 +2314,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Utility method to verify if the current user has access based on the    * passed {@link AccessControlList}    *    * @param authorizer the {@link AccessControlList} to check against    * @param method     the method name to be logged    * @param module     like AdminService or NodeLabelManager    * @param LOG        the logger to use    * @return {@link UserGroupInformation} of the current user    * @throws IOException    */
-DECL|method|verifyAdminAccess ( YarnAuthorizationProvider authorizer, String method, String module, final Log LOG)
+DECL|method|verifyAdminAccess ( YarnAuthorizationProvider authorizer, String method, String module, final Logger LOG)
 specifier|public
 specifier|static
 name|UserGroupInformation
@@ -2338,7 +2330,7 @@ name|String
 name|module
 parameter_list|,
 specifier|final
-name|Log
+name|Logger
 name|LOG
 parameter_list|)
 throws|throws

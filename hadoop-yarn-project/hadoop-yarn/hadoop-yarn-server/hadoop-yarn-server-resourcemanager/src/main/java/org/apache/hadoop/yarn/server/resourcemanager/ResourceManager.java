@@ -56,13 +56,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -70,13 +66,29 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|logging
+name|slf4j
 operator|.
-name|LogFactory
+name|Marker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|MarkerFactory
 import|;
 end_import
 
@@ -2175,16 +2187,30 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|ResourceManager
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+DECL|field|FATAL
+specifier|private
+specifier|static
+specifier|final
+name|Marker
+name|FATAL
+init|=
+name|MarkerFactory
+operator|.
+name|getMarker
+argument_list|(
+literal|"FATAL"
 argument_list|)
 decl_stmt|;
 DECL|field|clusterTimeStamp
@@ -5494,13 +5520,17 @@ name|STATE_STORE_FENCED
 case|:
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
-literal|"State store fenced even though the resource manager "
+name|FATAL
+argument_list|,
+literal|"State store fenced even though the resource "
 operator|+
-literal|"is not configured for high availability. Shutting down this "
+literal|"manager is not configured for high availability. Shutting "
 operator|+
-literal|"resource manager to protect the integrity of the state store."
+literal|"down this resource manager to protect the integrity of the "
+operator|+
+literal|"state store."
 argument_list|)
 expr_stmt|;
 name|ExitUtil
@@ -5532,11 +5562,13 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
-literal|"Shutting down the resource manager because a state "
+name|FATAL
+argument_list|,
+literal|"Shutting down the resource manager because a "
 operator|+
-literal|"store operation failed, and the resource manager is "
+literal|"state store operation failed, and the resource manager is "
 operator|+
 literal|"configured to fail fast. See the yarn.fail-fast and "
 operator|+
@@ -5576,8 +5608,10 @@ break|break;
 default|default:
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
+name|FATAL
+argument_list|,
 literal|"Shutting down the resource manager."
 argument_list|)
 expr_stmt|;
@@ -5737,8 +5771,10 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
+name|FATAL
+argument_list|,
 literal|"Failed to transition RM to Standby mode."
 argument_list|,
 name|e
@@ -8267,8 +8303,10 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
+name|FATAL
+argument_list|,
 literal|"Error starting ResourceManager"
 argument_list|,
 name|t
