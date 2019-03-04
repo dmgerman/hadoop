@@ -656,7 +656,7 @@ operator|.
 name|getRouter
 argument_list|()
 operator|.
-name|getNamenodeHearbeatServices
+name|getNamenodeHeartbeatServices
 argument_list|()
 decl_stmt|;
 comment|// manually trigger the heartbeat

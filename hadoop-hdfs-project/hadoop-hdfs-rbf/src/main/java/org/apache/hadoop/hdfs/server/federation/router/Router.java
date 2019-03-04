@@ -997,7 +997,7 @@ expr_stmt|;
 for|for
 control|(
 name|NamenodeHeartbeatService
-name|hearbeatService
+name|heartbeatService
 range|:
 name|this
 operator|.
@@ -1006,7 +1006,7 @@ control|)
 block|{
 name|addService
 argument_list|(
-name|hearbeatService
+name|heartbeatService
 argument_list|)
 expr_stmt|;
 block|}
@@ -1823,11 +1823,11 @@ name|DFS_ROUTER_MONITOR_LOCAL_NAMENODE_DEFAULT
 argument_list|)
 condition|)
 block|{
-comment|// Create a local heartbet service
+comment|// Create a local heartbeat service
 name|NamenodeHeartbeatService
 name|localHeartbeatService
 init|=
-name|createLocalNamenodeHearbeatService
+name|createLocalNamenodeHeartbeatService
 argument_list|()
 decl_stmt|;
 if|if
@@ -1973,7 +1973,7 @@ block|{
 name|NamenodeHeartbeatService
 name|heartbeatService
 init|=
-name|createNamenodeHearbeatService
+name|createNamenodeHeartbeatService
 argument_list|(
 name|nsId
 argument_list|,
@@ -2011,10 +2011,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Create a new status updater for the local Namenode.    *    * @return Updater of the status for the local Namenode.    */
-DECL|method|createLocalNamenodeHearbeatService ()
+DECL|method|createLocalNamenodeHeartbeatService ()
 specifier|protected
 name|NamenodeHeartbeatService
-name|createLocalNamenodeHearbeatService
+name|createLocalNamenodeHeartbeatService
 parameter_list|()
 block|{
 comment|// Detect NN running in this machine
@@ -2075,7 +2075,7 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|createNamenodeHearbeatService
+name|createNamenodeHeartbeatService
 argument_list|(
 name|nsId
 argument_list|,
@@ -2084,10 +2084,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create a heartbeat monitor for a particular Namenode.    *    * @param nsId Identifier of the nameservice to monitor.    * @param nnId Identifier of the namenode (HA) to monitor.    * @return Updater of the status for the specified Namenode.    */
-DECL|method|createNamenodeHearbeatService ( String nsId, String nnId)
+DECL|method|createNamenodeHeartbeatService ( String nsId, String nnId)
 specifier|protected
 name|NamenodeHeartbeatService
-name|createNamenodeHearbeatService
+name|createNamenodeHeartbeatService
 parameter_list|(
 name|String
 name|nsId
@@ -2507,12 +2507,12 @@ block|}
 comment|/**    * Get the list of namenode heartbeat service.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getNamenodeHearbeatServices ()
+DECL|method|getNamenodeHeartbeatServices ()
 name|Collection
 argument_list|<
 name|NamenodeHeartbeatService
 argument_list|>
-name|getNamenodeHearbeatServices
+name|getNamenodeHeartbeatServices
 parameter_list|()
 block|{
 return|return
