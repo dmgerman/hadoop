@@ -2080,6 +2080,8 @@ throws|throws
 name|IOException
 block|{
 comment|// clear sub-cluster's quota definition
+try|try
+block|{
 name|synchronizeQuota
 argument_list|(
 name|request
@@ -2096,6 +2098,33 @@ operator|.
 name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Ignore exception, if any while reseting quota. Specifically to handle
+comment|// if the actual destination doesn't exist.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to clear quota at the destinations for {}: {}"
+argument_list|,
+name|request
+operator|.
+name|getSrcPath
+argument_list|()
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|getMountTableStore
 argument_list|()
