@@ -54,6 +54,26 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|time
+operator|.
+name|Duration
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|time
+operator|.
+name|Instant
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -176,15 +196,6 @@ name|RDBCheckpointManager
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|JAVA_TMP_DIR
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|JAVA_TMP_DIR
-init|=
-literal|"java.io.tmpdir"
 decl_stmt|;
 DECL|field|checkpointNamePrefix
 specifier|private
@@ -317,6 +328,14 @@ argument_list|,
 name|checkpointDir
 argument_list|)
 decl_stmt|;
+name|Instant
+name|start
+init|=
+name|Instant
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
 name|checkpoint
 operator|.
 name|createCheckpoint
@@ -325,6 +344,47 @@ name|checkpointPath
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|Instant
+name|end
+init|=
+name|Instant
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
+name|long
+name|duration
+init|=
+name|Duration
+operator|.
+name|between
+argument_list|(
+name|start
+argument_list|,
+name|end
+argument_list|)
+operator|.
+name|toMillis
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Created checkpoint at "
+operator|+
+name|checkpointPath
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" in "
+operator|+
+name|duration
+operator|+
+literal|" milliseconds"
 argument_list|)
 expr_stmt|;
 return|return
@@ -339,9 +399,11 @@ name|db
 operator|.
 name|getLatestSequenceNumber
 argument_list|()
+argument_list|,
+comment|//Best guesstimate here. Not accurate.
+name|duration
 argument_list|)
 return|;
-comment|//Best guesstimate here. Not accurate.
 block|}
 catch|catch
 parameter_list|(
@@ -385,7 +447,12 @@ specifier|private
 name|long
 name|latestSequenceNumber
 decl_stmt|;
-DECL|method|RocksDBCheckpoint (Path checkpointLocation, long snapshotTimestamp, long latestSequenceNumber)
+DECL|field|checkpointCreationTimeTaken
+specifier|private
+name|long
+name|checkpointCreationTimeTaken
+decl_stmt|;
+DECL|method|RocksDBCheckpoint (Path checkpointLocation, long snapshotTimestamp, long latestSequenceNumber, long checkpointCreationTimeTaken)
 name|RocksDBCheckpoint
 parameter_list|(
 name|Path
@@ -396,6 +463,9 @@ name|snapshotTimestamp
 parameter_list|,
 name|long
 name|latestSequenceNumber
+parameter_list|,
+name|long
+name|checkpointCreationTimeTaken
 parameter_list|)
 block|{
 name|this
@@ -415,6 +485,12 @@ operator|.
 name|latestSequenceNumber
 operator|=
 name|latestSequenceNumber
+expr_stmt|;
+name|this
+operator|.
+name|checkpointCreationTimeTaken
+operator|=
+name|checkpointCreationTimeTaken
 expr_stmt|;
 block|}
 annotation|@
@@ -461,6 +537,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|checkpointCreationTimeTaken ()
+specifier|public
+name|long
+name|checkpointCreationTimeTaken
+parameter_list|()
+block|{
+return|return
+name|checkpointCreationTimeTaken
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|cleanupCheckpoint ()
 specifier|public
 name|void
@@ -469,6 +557,18 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cleaning up checkpoint at "
+operator|+
+name|checkpointLocation
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|FileUtils
 operator|.
 name|deleteDirectory

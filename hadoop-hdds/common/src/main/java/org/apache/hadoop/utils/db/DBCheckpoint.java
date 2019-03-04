@@ -68,6 +68,12 @@ name|long
 name|getLatestSequenceNumber
 parameter_list|()
 function_decl|;
+comment|/**    * Time taken in milliseconds for the checkpoint to be created.    */
+DECL|method|checkpointCreationTimeTaken ()
+name|long
+name|checkpointCreationTimeTaken
+parameter_list|()
+function_decl|;
 comment|/**    * Destroy the contents of the specified checkpoint to ensure    * proper cleanup of the footprint on disk.    *    * @throws IOException if I/O error happens    */
 DECL|method|cleanupCheckpoint ()
 name|void
