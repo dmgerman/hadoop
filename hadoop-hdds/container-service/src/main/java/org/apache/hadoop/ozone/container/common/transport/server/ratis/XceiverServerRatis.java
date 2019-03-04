@@ -2826,6 +2826,8 @@ name|TracingUtil
 operator|.
 name|importAndCreateScope
 argument_list|(
+literal|"XceiverServerRatis."
+operator|+
 name|request
 operator|.
 name|getCmdType
