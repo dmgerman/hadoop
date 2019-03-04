@@ -880,6 +880,11 @@ specifier|private
 name|long
 name|prevBlockReportId
 decl_stmt|;
+DECL|field|fullBlockReportLeaseId
+specifier|private
+name|long
+name|fullBlockReportLeaseId
+decl_stmt|;
 DECL|field|blockReportSizes
 specifier|private
 specifier|final
@@ -1038,6 +1043,10 @@ argument_list|()
 operator|.
 name|nextLong
 argument_list|()
+expr_stmt|;
+name|fullBlockReportLeaseId
+operator|=
+literal|0
 expr_stmt|;
 name|scheduler
 operator|=
@@ -3366,11 +3375,6 @@ literal|""
 operator|)
 argument_list|)
 expr_stmt|;
-name|long
-name|fullBlockReportLeaseId
-init|=
-literal|0
-decl_stmt|;
 comment|//
 comment|// Now loop for a long time....
 comment|//
@@ -4130,6 +4134,12 @@ name|this
 argument_list|,
 name|bpRegistration
 argument_list|)
+expr_stmt|;
+comment|// reset lease id whenever registered to NN.
+comment|// ask for a new lease id at the next heartbeat.
+name|fullBlockReportLeaseId
+operator|=
+literal|0
 expr_stmt|;
 comment|// random short delay - helps scatter the BR from all DNs
 name|scheduler
