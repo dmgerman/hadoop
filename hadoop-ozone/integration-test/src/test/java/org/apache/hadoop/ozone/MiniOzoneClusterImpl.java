@@ -2895,6 +2895,17 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_DATANODE_HTTP_ADDRESS_KEY
+argument_list|,
+literal|"0.0.0.0:0"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
 name|HDDS_DATANODE_PLUGINS_KEY
 argument_list|,
 literal|"org.apache.hadoop.ozone.web.OzoneHddsDatanodeService"
