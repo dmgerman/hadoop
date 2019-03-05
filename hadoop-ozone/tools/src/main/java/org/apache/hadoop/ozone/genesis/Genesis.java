@@ -130,8 +130,8 @@ specifier|final
 class|class
 name|Genesis
 block|{
-comment|// For adding benchmark to Genesis add the benchmark name in the default value
-comment|// and description for this option.
+comment|// After adding benchmark in genesis package add the benchmark name in the
+comment|// description for this option.
 annotation|@
 name|Option
 argument_list|(
@@ -139,23 +139,9 @@ name|names
 operator|=
 literal|"-benchmark"
 argument_list|,
-name|required
-operator|=
-literal|true
-argument_list|,
 name|split
 operator|=
 literal|","
-argument_list|,
-name|defaultValue
-operator|=
-literal|"BenchMarkContainerStateMap,BenchMarkOMKeyAllocation,"
-operator|+
-literal|"BenchMarkBlockManager,BenchMarkMetadataStoreReads,"
-operator|+
-literal|"BenchMarkMetadataStoreWrites,BenchMarkDatanodeDispatcher"
-operator|+
-literal|"BenchMarkRocksDbStore"
 argument_list|,
 name|description
 operator|=
@@ -169,7 +155,9 @@ literal|"Possible benchmarks which can be used are "
 operator|+
 literal|"{BenchMarkContainerStateMap, BenchMarkOMKeyAllocation, "
 operator|+
-literal|"BenchMarkBlockManager, BenchMarkMetadataStoreReads, "
+literal|"BenchMarkOzoneManager, BenchMarkOMClient, "
+operator|+
+literal|"BenchMarkSCM, BenchMarkMetadataStoreReads, "
 operator|+
 literal|"BenchMarkMetadataStoreWrites, BenchMarkDatanodeDispatcher, "
 operator|+
@@ -267,6 +255,18 @@ operator|new
 name|OptionsBuilder
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|benchmarks
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// The OptionsBuilder#include takes a regular expression as argument.
+comment|// Therefore it is important to keep the benchmark names unique for
+comment|// running a benchmark. For example if there are two benchmarks -
+comment|// BenchMarkOM and BenchMarkOMClient and we include BenchMarkOM then
+comment|// both the benchmarks will be run.
 for|for
 control|(
 name|String
@@ -282,6 +282,7 @@ argument_list|(
 name|benchmark
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|optionsBuilder
 operator|.
