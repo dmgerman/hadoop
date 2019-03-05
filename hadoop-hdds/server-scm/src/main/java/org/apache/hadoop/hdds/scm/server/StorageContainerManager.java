@@ -2498,17 +2498,6 @@ operator|)
 name|scmBlockManager
 argument_list|)
 expr_stmt|;
-name|eventQueue
-operator|.
-name|addHandler
-argument_list|(
-name|SCMEvents
-operator|.
-name|NODE_REGISTRATION_CONT_REPORT
-argument_list|,
-name|scmChillModeManager
-argument_list|)
-expr_stmt|;
 name|registerMXBean
 argument_list|()
 expr_stmt|;
