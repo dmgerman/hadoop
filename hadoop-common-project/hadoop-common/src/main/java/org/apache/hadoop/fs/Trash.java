@@ -405,6 +405,26 @@ name|deleteCheckpoint
 argument_list|()
 expr_stmt|;
 block|}
+comment|/** Delete all trash immediately. */
+DECL|method|expungeImmediately ()
+specifier|public
+name|void
+name|expungeImmediately
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|trashPolicy
+operator|.
+name|createCheckpoint
+argument_list|()
+expr_stmt|;
+name|trashPolicy
+operator|.
+name|deleteCheckpointsImmediately
+argument_list|()
+expr_stmt|;
+block|}
 comment|/** get the current working directory */
 DECL|method|getCurrentTrashDir ()
 name|Path

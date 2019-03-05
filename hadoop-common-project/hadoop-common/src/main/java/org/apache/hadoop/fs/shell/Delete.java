@@ -1165,7 +1165,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|""
+literal|"[-immediate]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -1177,6 +1177,13 @@ init|=
 literal|"Delete files from the trash that are older "
 operator|+
 literal|"than the retention threshold"
+decl_stmt|;
+DECL|field|emptyImmediately
+specifier|private
+name|boolean
+name|emptyImmediately
+init|=
+literal|false
 decl_stmt|;
 comment|// TODO: should probably allow path arguments for the filesystems
 annotation|@
@@ -1203,7 +1210,9 @@ name|CommandFormat
 argument_list|(
 literal|0
 argument_list|,
-literal|0
+literal|1
+argument_list|,
+literal|"immediate"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -1211,6 +1220,15 @@ operator|.
 name|parse
 argument_list|(
 name|args
+argument_list|)
+expr_stmt|;
+name|emptyImmediately
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"immediate"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1272,6 +1290,19 @@ name|getConf
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|emptyImmediately
+condition|)
+block|{
+name|trash
+operator|.
+name|expungeImmediately
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|trash
 operator|.
 name|expunge
@@ -1282,6 +1313,7 @@ operator|.
 name|checkpoint
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 else|else
@@ -1296,6 +1328,19 @@ name|getConf
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|emptyImmediately
+condition|)
+block|{
+name|trash
+operator|.
+name|expungeImmediately
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|trash
 operator|.
 name|expunge
@@ -1306,6 +1351,7 @@ operator|.
 name|checkpoint
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

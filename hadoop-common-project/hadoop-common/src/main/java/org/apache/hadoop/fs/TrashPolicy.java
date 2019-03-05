@@ -214,6 +214,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Delete all checkpoints immediately, ie empty trash.    */
+DECL|method|deleteCheckpointsImmediately ()
+specifier|public
+specifier|abstract
+name|void
+name|deleteCheckpointsImmediately
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the current working directory of the Trash Policy    * This API does not work with files deleted from encryption zone when HDFS    * data encryption at rest feature is enabled as rename file between    * encryption zones or encryption zone and non-encryption zone is not allowed.    *    * The caller is recommend to use the new API    * TrashPolicy#getCurrentTrashDir(Path path).    * It returns the trash location correctly for the path specified no matter    * the path is in encryption zone or not.    */
 DECL|method|getCurrentTrashDir ()
 specifier|public

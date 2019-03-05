@@ -1126,6 +1126,39 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|deleteCheckpoint
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|deleteCheckpointsImmediately ()
+specifier|public
+name|void
+name|deleteCheckpointsImmediately
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|deleteCheckpoint
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|deleteCheckpoint (boolean deleteImmediately)
+specifier|private
+name|void
+name|deleteCheckpoint
+parameter_list|(
+name|boolean
+name|deleteImmediately
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|Collection
 argument_list|<
 name|FileStatus
@@ -1165,6 +1198,8 @@ name|trashRoot
 operator|.
 name|getPath
 argument_list|()
+argument_list|,
+name|deleteImmediately
 argument_list|)
 expr_stmt|;
 block|}
@@ -1485,6 +1520,8 @@ name|trashRoot
 operator|.
 name|getPath
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|trash
@@ -1789,13 +1826,16 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|deleteCheckpoint (Path trashRoot)
+DECL|method|deleteCheckpoint (Path trashRoot, boolean deleteImmediately)
 specifier|private
 name|void
 name|deleteCheckpoint
 parameter_list|(
 name|Path
 name|trashRoot
+parameter_list|,
+name|boolean
+name|deleteImmediately
 parameter_list|)
 throws|throws
 name|IOException
@@ -1942,12 +1982,16 @@ block|}
 if|if
 condition|(
 operator|(
+operator|(
 name|now
 operator|-
 name|deletionInterval
 operator|)
 operator|>
 name|time
+operator|)
+operator|||
+name|deleteImmediately
 condition|)
 block|{
 if|if
