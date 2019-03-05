@@ -6560,8 +6560,9 @@ argument_list|(
 name|configuration
 argument_list|)
 expr_stmt|;
-comment|// TODO: uncomment this with HDDS-134 to avoid NPE
-comment|//startSecretManagerIfNecessary();
+name|startSecretManagerIfNecessary
+argument_list|()
+expr_stmt|;
 comment|// Set metrics and start metrics back ground thread
 name|metrics
 operator|.
