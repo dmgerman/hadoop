@@ -92,268 +92,232 @@ specifier|public
 interface|interface
 name|NameNodeMXBean
 block|{
-comment|/**    * Gets the version of Hadoop.    *     * @return the version    */
+comment|/**    * Gets the version of Hadoop.    *     * @return the version.    */
 DECL|method|getVersion ()
-specifier|public
 name|String
 name|getVersion
 parameter_list|()
 function_decl|;
-comment|/**    * Get the version of software running on the Namenode    * @return a string representing the version    */
+comment|/**    * Get the version of software running on the Namenode.    *    * @return a string representing the version.    */
 DECL|method|getSoftwareVersion ()
-specifier|public
 name|String
 name|getSoftwareVersion
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the used space by data nodes.    *     * @return the used space by data nodes    */
+comment|/**    * Gets the used space by data nodes.    *     * @return the used space by data nodes.    */
 DECL|method|getUsed ()
-specifier|public
 name|long
 name|getUsed
 parameter_list|()
 function_decl|;
-comment|/**    * Gets total non-used raw bytes.    *     * @return total non-used raw bytes    */
+comment|/**    * Gets total non-used raw bytes.    *     * @return total non-used raw bytes.    */
 DECL|method|getFree ()
-specifier|public
 name|long
 name|getFree
 parameter_list|()
 function_decl|;
-comment|/**    * Gets total raw bytes including non-dfs used space.    *     * @return the total raw bytes including non-dfs used space    */
+comment|/**    * Gets total raw bytes including non-dfs used space.    *     * @return the total raw bytes including non-dfs used space.    */
 DECL|method|getTotal ()
-specifier|public
 name|long
 name|getTotal
 parameter_list|()
 function_decl|;
 comment|/**    * Gets capacity of the provided storage mounted, in bytes.    *    * @return the total raw bytes present in the provided storage.    */
 DECL|method|getProvidedCapacity ()
-specifier|public
 name|long
 name|getProvidedCapacity
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the safemode status    *     * @return the safemode status    *     */
+comment|/**    * Gets the safemode status.    *     * @return the safemode status.    */
 DECL|method|getSafemode ()
-specifier|public
 name|String
 name|getSafemode
 parameter_list|()
 function_decl|;
-comment|/**    * Checks if upgrade is finalized.    *     * @return true, if upgrade is finalized    */
+comment|/**    * Checks if upgrade is finalized.    *     * @return true, if upgrade is finalized.    */
 DECL|method|isUpgradeFinalized ()
-specifier|public
 name|boolean
 name|isUpgradeFinalized
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the RollingUpgrade information.    *    * @return Rolling upgrade information if an upgrade is in progress. Else    * (e.g. if there is no upgrade or the upgrade is finalized), returns null.    */
 DECL|method|getRollingUpgradeStatus ()
-specifier|public
 name|RollingUpgradeInfo
 operator|.
 name|Bean
 name|getRollingUpgradeStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Gets total used space by data nodes for non DFS purposes such as storing    * temporary files on the local file system    *     * @return the non dfs space of the cluster    */
+comment|/**    * Gets total used space by data nodes for non DFS purposes such as storing    * temporary files on the local file system.    *     * @return the non dfs space of the cluster.    */
 DECL|method|getNonDfsUsedSpace ()
-specifier|public
 name|long
 name|getNonDfsUsedSpace
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total used space by data nodes as percentage of total capacity    *     * @return the percentage of used space on the cluster.    */
+comment|/**    * Gets the total used space by data nodes as percentage of total capacity.    *     * @return the percentage of used space on the cluster.    */
 DECL|method|getPercentUsed ()
-specifier|public
 name|float
 name|getPercentUsed
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total remaining space by data nodes as percentage of total     * capacity    *     * @return the percentage of the remaining space on the cluster    */
+comment|/**    * Gets the total remaining space by data nodes as percentage of total     * capacity.    *     * @return the percentage of the remaining space on the cluster.    */
 DECL|method|getPercentRemaining ()
-specifier|public
 name|float
 name|getPercentRemaining
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the amount of cache used by the datanode (in bytes).    */
+comment|/**    * Gets the amount of cache used by the datanode (in bytes).    *    * @return the amount of cache used by the datanode (in bytes).    */
 DECL|method|getCacheUsed ()
-specifier|public
 name|long
 name|getCacheUsed
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the total cache capacity of the datanode (in bytes).    */
+comment|/**    * Gets the total cache capacity of the datanode (in bytes).    *    * @return the total cache capacity of the datanode (in bytes).    */
 DECL|method|getCacheCapacity ()
-specifier|public
 name|long
 name|getCacheCapacity
 parameter_list|()
 function_decl|;
-comment|/**    * Get the total space used by the block pools of this namenode    */
+comment|/**    * Get the total space used by the block pools of this namenode.    *    * @return the total space used by the block pools of this namenode.    */
 DECL|method|getBlockPoolUsedSpace ()
-specifier|public
 name|long
 name|getBlockPoolUsedSpace
 parameter_list|()
 function_decl|;
-comment|/**    * Get the total space used by the block pool as percentage of total capacity    */
+comment|/**    * Get the total space used by the block pool as percentage of total capacity.    *    * @return the total space used by the block pool as percentage of total    * capacity.    */
 DECL|method|getPercentBlockPoolUsed ()
-specifier|public
 name|float
 name|getPercentBlockPoolUsed
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total numbers of blocks on the cluster.    *     * @return the total number of blocks of the cluster    */
+comment|/**    * Gets the total numbers of blocks on the cluster.    *     * @return the total number of blocks of the cluster.    */
 DECL|method|getTotalBlocks ()
-specifier|public
 name|long
 name|getTotalBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total number of missing blocks on the cluster    *     * @return the total number of missing blocks on the cluster    */
+comment|/**    * Gets the total number of missing blocks on the cluster.    *     * @return the total number of missing blocks on the cluster.    */
 DECL|method|getNumberOfMissingBlocks ()
-specifier|public
 name|long
 name|getNumberOfMissingBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total number of missing blocks on the cluster with    * replication factor 1    *    * @return the total number of missing blocks on the cluster with    * replication factor 1    */
+comment|/**    * Gets the total number of missing blocks on the cluster with    * replication factor 1.    *    * @return the total number of missing blocks on the cluster with    * replication factor 1.    */
 DECL|method|getNumberOfMissingBlocksWithReplicationFactorOne ()
-specifier|public
 name|long
 name|getNumberOfMissingBlocksWithReplicationFactorOne
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the total number of replicated low redundancy blocks on the cluster    * with the highest risk of loss.    *    * @return the total number of low redundancy blocks on the cluster    * with the highest risk of loss.    */
 DECL|method|getHighestPriorityLowRedundancyReplicatedBlocks ()
-specifier|public
 name|long
 name|getHighestPriorityLowRedundancyReplicatedBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total number of erasure coded low redundancy blocks on the cluster    * with the highest risk of loss    *    * @return the total number of low redundancy blocks on the cluster    * with the highest risk of loss    */
+comment|/**    * Gets the total number of erasure coded low redundancy blocks on the cluster    * with the highest risk of loss.    *    * @return the total number of low redundancy blocks on the cluster    * with the highest risk of loss.    */
 DECL|method|getHighestPriorityLowRedundancyECBlocks ()
-specifier|public
 name|long
 name|getHighestPriorityLowRedundancyECBlocks
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the total number of snapshottable dirs in the system.    *    * @return the total number of snapshottable dirs in the system    */
+comment|/**    * Gets the total number of snapshottable dirs in the system.    *    * @return the total number of snapshottable dirs in the system.    */
 DECL|method|getNumberOfSnapshottableDirs ()
-specifier|public
 name|long
 name|getNumberOfSnapshottableDirs
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the number of threads.    *     * @return the number of threads    */
+comment|/**    * Gets the number of threads.    *     * @return the number of threads.    */
 DECL|method|getThreads ()
-specifier|public
 name|int
 name|getThreads
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the live node information of the cluster.    *     * @return the live node information    */
+comment|/**    * Gets the live node information of the cluster.    *     * @return the live node information.    */
 DECL|method|getLiveNodes ()
-specifier|public
 name|String
 name|getLiveNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the dead node information of the cluster.    *     * @return the dead node information    */
+comment|/**    * Gets the dead node information of the cluster.    *     * @return the dead node information.    */
 DECL|method|getDeadNodes ()
-specifier|public
 name|String
 name|getDeadNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the decommissioning node information of the cluster.    *     * @return the decommissioning node information    */
+comment|/**    * Gets the decommissioning node information of the cluster.    *     * @return the decommissioning node information.    */
 DECL|method|getDecomNodes ()
-specifier|public
 name|String
 name|getDecomNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the information on nodes entering maintenance.    *    * @return the information on nodes entering maintenance    */
+comment|/**    * Gets the information on nodes entering maintenance.    *    * @return the information on nodes entering maintenance.    */
 DECL|method|getEnteringMaintenanceNodes ()
 name|String
 name|getEnteringMaintenanceNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the cluster id.    *     * @return the cluster id    */
+comment|/**    * Gets the cluster id.    *     * @return the cluster id.    */
 DECL|method|getClusterId ()
-specifier|public
 name|String
 name|getClusterId
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the block pool id.    *     * @return the block pool id    */
+comment|/**    * Gets the block pool id.    *     * @return the block pool id.    */
 DECL|method|getBlockPoolId ()
-specifier|public
 name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
 comment|/**    * Get status information about the directories storing image and edits logs    * of the NN.    *     * @return the name dir status information, as a JSON string.    */
 DECL|method|getNameDirStatuses ()
-specifier|public
 name|String
 name|getNameDirStatuses
 parameter_list|()
 function_decl|;
 comment|/**    * Get Max, Median, Min and Standard Deviation of DataNodes usage.    *    * @return the DataNode usage information, as a JSON string.    */
 DECL|method|getNodeUsage ()
-specifier|public
 name|String
 name|getNodeUsage
 parameter_list|()
 function_decl|;
 comment|/**    * Get status information about the journals of the NN.    *    * @return the name journal status information, as a JSON string.    */
 DECL|method|getNameJournalStatus ()
-specifier|public
 name|String
 name|getNameJournalStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Get information about the transaction ID, including the last applied     * transaction ID and the most recent checkpoint's transaction ID    */
+comment|/**    * Get information about the transaction ID, including the last applied     * transaction ID and the most recent checkpoint's transaction ID.    *    * @return information about the transaction ID.    */
 DECL|method|getJournalTransactionInfo ()
-specifier|public
 name|String
 name|getJournalTransactionInfo
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the NN start time in milliseconds.    * @return the NN start time in msec    */
+comment|/**    * Gets the NN start time in milliseconds.    *    * @return the NN start time in msec.    */
 DECL|method|getNNStartedTimeInMillis ()
 name|long
 name|getNNStartedTimeInMillis
 parameter_list|()
 function_decl|;
-comment|/**    * Get the compilation information which contains date, user and branch    *    * @return the compilation information, as a JSON string.    */
+comment|/**    * Get the compilation information which contains date, user and branch.    *    * @return the compilation information, as a JSON string.    */
 DECL|method|getCompileInfo ()
-specifier|public
 name|String
 name|getCompileInfo
 parameter_list|()
 function_decl|;
-comment|/**    * Get the list of corrupt files    *    * @return the list of corrupt files, as a JSON string.    */
+comment|/**    * Get the list of corrupt files.    *    * @return the list of corrupt files, as a JSON string.    */
 DECL|method|getCorruptFiles ()
-specifier|public
 name|String
 name|getCorruptFiles
 parameter_list|()
 function_decl|;
-comment|/**    * Get the number of distinct versions of live datanodes    *     * @return the number of distinct versions of live datanodes    */
+comment|/**    * Get the number of distinct versions of live datanodes.    *     * @return the number of distinct versions of live datanodes.    */
 DECL|method|getDistinctVersionCount ()
-specifier|public
 name|int
 name|getDistinctVersionCount
 parameter_list|()
 function_decl|;
-comment|/**    * Get the number of live datanodes for each distinct versions    *     * @return the number of live datanodes for each distinct versions    */
+comment|/**    * Get the number of live datanodes for each distinct versions.    *     * @return the number of live datanodes for each distinct versions.    */
 DECL|method|getDistinctVersions ()
-specifier|public
 name|Map
 argument_list|<
 name|String
@@ -363,13 +327,13 @@ argument_list|>
 name|getDistinctVersions
 parameter_list|()
 function_decl|;
-comment|/**    * Get namenode directory size.    */
+comment|/**    * Get namenode directory size.    *    * @return namenode directory size.    */
 DECL|method|getNameDirSize ()
 name|String
 name|getNameDirSize
 parameter_list|()
 function_decl|;
-comment|/**    * Verifies whether the cluster setup can support all enabled EC policies.    *    * @return the result of the verification    */
+comment|/**    * Verifies whether the cluster setup can support all enabled EC policies.    *    * @return the result of the verification.    */
 DECL|method|getVerifyECWithTopologyResult ()
 name|String
 name|getVerifyECWithTopologyResult
