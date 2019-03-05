@@ -549,25 +549,6 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-comment|// not support appending file with striped blocks
-if|if
-condition|(
-name|file
-operator|.
-name|isStriped
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Cannot append to files with striped block "
-operator|+
-name|path
-argument_list|)
-throw|;
-block|}
 name|BlockManager
 name|blockManager
 init|=
@@ -952,6 +933,22 @@ operator|!
 name|newBlock
 condition|)
 block|{
+if|if
+condition|(
+name|file
+operator|.
+name|isStriped
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Append on EC file without new block is not supported."
+argument_list|)
+throw|;
+block|}
 name|FSDirectory
 name|fsd
 init|=
