@@ -54,6 +54,16 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  * DispatcherContext class holds transport protocol specific context info  * required for execution of container commands over the container dispatcher.  */
 end_comment
@@ -116,7 +126,16 @@ specifier|final
 name|long
 name|logIndex
 decl_stmt|;
-DECL|method|DispatcherContext (long term, long index, WriteChunkStage stage, boolean readFromTmpFile)
+DECL|field|createContainerSet
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|createContainerSet
+decl_stmt|;
+DECL|method|DispatcherContext (long term, long index, WriteChunkStage stage, boolean readFromTmpFile, Set<Long> containerSet)
 specifier|private
 name|DispatcherContext
 parameter_list|(
@@ -131,6 +150,12 @@ name|stage
 parameter_list|,
 name|boolean
 name|readFromTmpFile
+parameter_list|,
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|containerSet
 parameter_list|)
 block|{
 name|this
@@ -156,6 +181,12 @@ operator|.
 name|readFromTmpFile
 operator|=
 name|readFromTmpFile
+expr_stmt|;
+name|this
+operator|.
+name|createContainerSet
+operator|=
+name|containerSet
 expr_stmt|;
 block|}
 DECL|method|getLogIndex ()
@@ -198,6 +229,19 @@ return|return
 name|stage
 return|;
 block|}
+DECL|method|getCreateContainerSet ()
+specifier|public
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|getCreateContainerSet
+parameter_list|()
+block|{
+return|return
+name|createContainerSet
+return|;
+block|}
 comment|/**    * Builder class for building DispatcherContext.    */
 DECL|class|Builder
 specifier|public
@@ -232,7 +276,15 @@ specifier|private
 name|long
 name|logIndex
 decl_stmt|;
-comment|/**      * Sets the WriteChunkStage.      *      * @param stage WriteChunk Stage      * @return DispatcherContext.Builder      */
+DECL|field|createContainerSet
+specifier|private
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|createContainerSet
+decl_stmt|;
+comment|/**      * Sets the WriteChunkStage.      *      * @param writeChunkStage WriteChunk Stage      * @return DispatcherContext.Builder      */
 DECL|method|setStage (WriteChunkStage writeChunkStage)
 specifier|public
 name|Builder
@@ -252,7 +304,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the flag for reading from tmp chunk files.      *      * @param readFromTmpFile whether to read from tmp chunk file or not      * @return DispatcherContext.Builder      */
+comment|/**      * Sets the flag for reading from tmp chunk files.      *      * @param setReadFromTmpFile whether to read from tmp chunk file or not      * @return DispatcherContext.Builder      */
 DECL|method|setReadFromTmpFile (boolean setReadFromTmpFile)
 specifier|public
 name|Builder
@@ -272,7 +324,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the current term for the container request from Ratis.      *      * @param term current term      * @return DispatcherContext.Builder      */
+comment|/**      * Sets the current term for the container request from Ratis.      *      * @param currentTerm current term      * @return DispatcherContext.Builder      */
 DECL|method|setTerm (long currentTerm)
 specifier|public
 name|Builder
@@ -292,7 +344,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the logIndex for the container request from Ratis.      *      * @param logIndex log index      * @return DispatcherContext.Builder      */
+comment|/**      * Sets the logIndex for the container request from Ratis.      *      * @param index log index      * @return DispatcherContext.Builder      */
 DECL|method|setLogIndex (long index)
 specifier|public
 name|Builder
@@ -307,6 +359,29 @@ operator|.
 name|logIndex
 operator|=
 name|index
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets the createContainerSet to contain all the containerIds per      * RaftGroup.      * @param set createContainerSet      * @return Builder      */
+DECL|method|setCreateContainerSet (Set<Long> set)
+specifier|public
+name|Builder
+name|setCreateContainerSet
+parameter_list|(
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|set
+parameter_list|)
+block|{
+name|this
+operator|.
+name|createContainerSet
+operator|=
+name|set
 expr_stmt|;
 return|return
 name|this
@@ -330,6 +405,8 @@ argument_list|,
 name|stage
 argument_list|,
 name|readFromTmpFile
+argument_list|,
+name|createContainerSet
 argument_list|)
 return|;
 block|}

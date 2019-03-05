@@ -132,6 +132,16 @@ name|DispatcherContext
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  * Dispatcher acts as the bridge between the transport layer and  * the actual container layer. This layer is capable of transforming  * protobuf objects into corresponding class and issue the function call  * into the lower layers.  *  * The reply from the request is dispatched to the client.  */
 end_comment
@@ -170,6 +180,18 @@ DECL|method|init ()
 name|void
 name|init
 parameter_list|()
+function_decl|;
+comment|/**    * finds and builds the missing containers in case of a lost disk etc    * in the ContainerSet.    */
+DECL|method|buildMissingContainerSet (Set<Long> createdContainers)
+name|void
+name|buildMissingContainerSet
+parameter_list|(
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|createdContainers
+parameter_list|)
 function_decl|;
 comment|/**    * Shutdown Dispatcher services.    */
 DECL|method|shutdown ()
