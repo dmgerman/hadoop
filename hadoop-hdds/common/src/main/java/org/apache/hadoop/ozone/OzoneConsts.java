@@ -1433,6 +1433,16 @@ name|OM_SERVICE_ID_DEFAULT
 init|=
 literal|"omServiceIdDefault"
 decl_stmt|;
+comment|// Dummy OMNodeID for OM Clients to use for a non-HA OM setup
+DECL|field|OM_NODE_ID_DUMMY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_NODE_ID_DUMMY
+init|=
+literal|"omNodeIdDummy"
+decl_stmt|;
 block|}
 end_class
 

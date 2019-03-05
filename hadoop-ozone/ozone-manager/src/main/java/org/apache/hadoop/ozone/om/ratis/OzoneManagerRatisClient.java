@@ -102,6 +102,18 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ServiceException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -398,11 +410,11 @@ specifier|final
 name|RaftGroup
 name|raftGroup
 decl_stmt|;
-DECL|field|omID
+DECL|field|omNodeID
 specifier|private
 specifier|final
 name|String
-name|omID
+name|omNodeID
 decl_stmt|;
 DECL|field|rpcType
 specifier|private
@@ -427,12 +439,12 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|OzoneManagerRatisClient (String omId, RaftGroup raftGroup, RpcType rpcType, RetryPolicy retryPolicy, Configuration config)
+DECL|method|OzoneManagerRatisClient (String omNodeId, RaftGroup raftGroup, RpcType rpcType, RetryPolicy retryPolicy, Configuration config)
 specifier|private
 name|OzoneManagerRatisClient
 parameter_list|(
 name|String
-name|omId
+name|omNodeId
 parameter_list|,
 name|RaftGroup
 name|raftGroup
@@ -455,9 +467,9 @@ name|raftGroup
 expr_stmt|;
 name|this
 operator|.
-name|omID
+name|omNodeID
 operator|=
-name|omId
+name|omNodeId
 expr_stmt|;
 name|this
 operator|.
@@ -478,14 +490,14 @@ operator|=
 name|config
 expr_stmt|;
 block|}
-DECL|method|newOzoneManagerRatisClient ( String omId, RaftGroup raftGroup, Configuration conf)
+DECL|method|newOzoneManagerRatisClient ( String omNodeId, RaftGroup raftGroup, Configuration conf)
 specifier|public
 specifier|static
 name|OzoneManagerRatisClient
 name|newOzoneManagerRatisClient
 parameter_list|(
 name|String
-name|omId
+name|omNodeId
 parameter_list|,
 name|RaftGroup
 name|raftGroup
@@ -588,7 +600,7 @@ return|return
 operator|new
 name|OzoneManagerRatisClient
 argument_list|(
-name|omId
+name|omNodeId
 argument_list|,
 name|raftGroup
 argument_list|,
@@ -628,7 +640,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|omID
+name|omNodeID
 argument_list|)
 expr_stmt|;
 comment|// TODO : XceiverClient ratis should pass the config value of
@@ -642,7 +654,7 @@ name|newRaftClient
 argument_list|(
 name|rpcType
 argument_list|,
-name|omID
+name|omNodeID
 argument_list|,
 name|raftGroup
 argument_list|,
@@ -700,6 +712,8 @@ parameter_list|(
 name|OMRequest
 name|request
 parameter_list|)
+throws|throws
+name|ServiceException
 block|{
 try|try
 block|{
@@ -729,30 +743,13 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|error
+throw|throw
+operator|new
+name|ServiceException
 argument_list|(
-literal|"Failed to execute command: "
-operator|+
-name|request
-argument_list|,
 name|e
 argument_list|)
-expr_stmt|;
-return|return
-name|OMRatisHelper
-operator|.
-name|getErrorResponse
-argument_list|(
-name|request
-operator|.
-name|getCmdType
-argument_list|()
-argument_list|,
-name|e
-argument_list|)
-return|;
+throw|;
 block|}
 block|}
 comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    */
@@ -855,15 +852,9 @@ name|response
 init|=
 name|OMRatisHelper
 operator|.
-name|convertByteStringToOMResponse
+name|getOMResponseFromRaftClientReply
 argument_list|(
 name|reply
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|getContent
-argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

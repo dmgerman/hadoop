@@ -54,6 +54,24 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|ha
+operator|.
+name|OMFailoverProxyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|helpers
 operator|.
 name|OmMultipartCommitUploadPartInfo
@@ -861,6 +879,12 @@ name|kerberosID
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Get the OM Client's Retry and Failover Proxy provider.    * @return OMFailoverProxyProvider    */
+DECL|method|getOMFailoverProxyProvider ()
+name|OMFailoverProxyProvider
+name|getOMFailoverProxyProvider
+parameter_list|()
 function_decl|;
 block|}
 end_interface

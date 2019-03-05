@@ -204,13 +204,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|client
-operator|.
-name|rpc
+name|om
 operator|.
 name|ha
 operator|.
-name|OMProxyProvider
+name|OMFailoverProxyProvider
 import|;
 end_import
 
@@ -1064,7 +1062,7 @@ function_decl|;
 annotation|@
 name|VisibleForTesting
 DECL|method|getOMProxyProvider ()
-name|OMProxyProvider
+name|OMFailoverProxyProvider
 name|getOMProxyProvider
 parameter_list|()
 function_decl|;
