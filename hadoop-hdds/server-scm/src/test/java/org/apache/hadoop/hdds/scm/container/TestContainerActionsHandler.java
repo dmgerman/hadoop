@@ -317,6 +317,13 @@ argument_list|,
 name|containerActions
 argument_list|)
 expr_stmt|;
+name|queue
+operator|.
+name|processAll
+argument_list|(
+literal|1000L
+argument_list|)
+expr_stmt|;
 name|verify
 argument_list|(
 name|closeContainerEventHandler
