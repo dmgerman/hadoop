@@ -50,6 +50,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -75,6 +103,14 @@ comment|/**  * Factory class for creating instances of {@link PlacementRule}.  *
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|PlacementFactory
 specifier|public
 specifier|final
@@ -104,6 +140,7 @@ parameter_list|()
 block|{
 comment|// Unused.
 block|}
+comment|/**    * Create a new {@link PlacementRule} based on the rule class from the    * configuration. This is used to instantiate rules by the scheduler which    * does not resolve the class before this call.    * @param ruleStr The name of the class to instantiate    * @param conf The configuration object to set for the rule    * @return Created class instance    */
 DECL|method|getPlacementRule (String ruleStr, Configuration conf)
 specifier|public
 specifier|static
@@ -159,6 +196,57 @@ name|ruleClass
 argument_list|,
 name|conf
 argument_list|)
+return|;
+block|}
+comment|/**    * Create a new {@link PlacementRule} based on the rule class from the    * configuration. This is used to instantiate rules by the scheduler which    * resolve the class before this call.    * @param ruleClass The specific class reference to instantiate    * @param initArg The config to set    * @return Created class instance    */
+DECL|method|getPlacementRule ( Class<? extends PlacementRule> ruleClass, Object initArg)
+specifier|public
+specifier|static
+name|PlacementRule
+name|getPlacementRule
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|PlacementRule
+argument_list|>
+name|ruleClass
+parameter_list|,
+name|Object
+name|initArg
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Creating PlacementRule implementation: "
+operator|+
+name|ruleClass
+argument_list|)
+expr_stmt|;
+name|PlacementRule
+name|rule
+init|=
+name|ReflectionUtils
+operator|.
+name|newInstance
+argument_list|(
+name|ruleClass
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|rule
+operator|.
+name|setConfig
+argument_list|(
+name|initArg
+argument_list|)
+expr_stmt|;
+return|return
+name|rule
 return|;
 block|}
 block|}

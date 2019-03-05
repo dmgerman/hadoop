@@ -24,16 +24,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -88,22 +78,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -114,8 +88,38 @@ name|ResourceScheduler
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
-comment|/**  * Abstract base for all Placement Rules.  */
+comment|/**  * Rejects all placements.  */
 end_comment
 
 begin_class
@@ -127,13 +131,32 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|PlacementRule
+DECL|class|RejectPlacementRule
 specifier|public
-specifier|abstract
 class|class
-name|PlacementRule
+name|RejectPlacementRule
+extends|extends
+name|FSPlacementRule
 block|{
-comment|/**    * Set the config based on the passed in argument. This construct is used to    * not pollute this abstract class with implementation specific references.    */
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|RejectPlacementRule
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|/**    * The Reject rule does not use any configuration. Override and ignore all    * configuration.    * @param initArg the config to be set    */
+annotation|@
+name|Override
 DECL|method|setConfig (Object initArg)
 specifier|public
 name|void
@@ -143,29 +166,19 @@ name|Object
 name|initArg
 parameter_list|)
 block|{
-comment|// Default is a noop
-block|}
-comment|/**    * Return the name of the rule.    * @return The name of the rule, the fully qualified class name.    */
-DECL|method|getName ()
-specifier|public
-name|String
-name|getName
-parameter_list|()
-block|{
-return|return
-name|this
+comment|// This rule ignores all config, just log and return
+name|LOG
 operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-return|;
+name|debug
+argument_list|(
+literal|"RejectPlacementRule instantiated"
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Initialize the rule with the scheduler.    * @param scheduler the scheduler using the rule    * @return<code>true</code> or<code>false</code> The outcome of the    * initialisation, rule dependent response which might not be persisted in    * the rule.    * @throws IOException for any errors    */
+annotation|@
+name|Override
 DECL|method|initialize (ResourceScheduler scheduler)
 specifier|public
-specifier|abstract
 name|boolean
 name|initialize
 parameter_list|(
@@ -174,11 +187,38 @@ name|scheduler
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Return the scheduler queue name the application should be placed in    * wrapped in an {@link ApplicationPlacementContext} object.    *    * A non<code>null</code> return value places the application in a queue,    * a<code>null</code> value means the queue is not yet determined. The    * next {@link PlacementRule} in the list maintained in the    * {@link PlacementManager} will be executed.    *    * @param asc The context of the application created on submission    * @param user The name of the user submitting the application    *     * @throws YarnException for any error while executing the rule    *     * @return The queue name wrapped in {@link ApplicationPlacementContext} or    *<code>null</code> if no queue was resolved    */
+block|{
+name|super
+operator|.
+name|initialize
+argument_list|(
+name|scheduler
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|getParentRule
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Parent rule should not be configured for Reject rule."
+argument_list|)
+throw|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getPlacementForApp ( ApplicationSubmissionContext asc, String user)
 specifier|public
-specifier|abstract
 name|ApplicationPlacementContext
 name|getPlacementForApp
 parameter_list|(
@@ -188,9 +228,11 @@ parameter_list|,
 name|String
 name|user
 parameter_list|)
-throws|throws
-name|YarnException
-function_decl|;
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
