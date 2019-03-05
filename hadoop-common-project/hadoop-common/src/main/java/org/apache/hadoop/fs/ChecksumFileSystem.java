@@ -1773,6 +1773,35 @@ literal|"by ChecksumFileSystem"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|concat (final Path f, final Path[] psrcs)
+specifier|public
+name|void
+name|concat
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|,
+specifier|final
+name|Path
+index|[]
+name|psrcs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Concat is not supported "
+operator|+
+literal|"by ChecksumFileSystem"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Calculated the length of the checksum file in bytes.    * @param size the length of the data file in bytes    * @param bytesPerSum the number of bytes in a checksum block    * @return the number of bytes in the checksum file    */
 DECL|method|getChecksumLength (long size, int bytesPerSum)
 specifier|public

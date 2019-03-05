@@ -24,6 +24,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -78,6 +88,31 @@ name|TestLocalFSContractMultipartUploader
 extends|extends
 name|AbstractContractMultipartUploaderTest
 block|{
+annotation|@
+name|Override
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"Skipping until HDFS-13934"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|setup
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|createContract (Configuration conf)
