@@ -1883,6 +1883,36 @@ argument_list|,
 name|corruptFiles
 argument_list|)
 expr_stmt|;
+comment|// get attribute CorruptFilesCount
+name|int
+name|corruptFilesCount
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanName
+argument_list|,
+literal|"CorruptFilesCount"
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Bad value for CorruptFilesCount"
+argument_list|,
+name|fsn
+operator|.
+name|getCorruptFilesCount
+argument_list|()
+argument_list|,
+name|corruptFilesCount
+argument_list|)
+expr_stmt|;
 comment|// get attribute NameDirStatuses
 name|String
 name|nameDirStatuses

@@ -30388,6 +30388,42 @@ name|String
 name|getCorruptFiles
 parameter_list|()
 block|{
+return|return
+name|JSON
+operator|.
+name|toString
+argument_list|(
+name|getCorruptFilesList
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
+DECL|method|getCorruptFilesCount ()
+specifier|public
+name|int
+name|getCorruptFilesCount
+parameter_list|()
+block|{
+return|return
+name|getCorruptFilesList
+argument_list|()
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+DECL|method|getCorruptFilesList ()
+specifier|private
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getCorruptFilesList
+parameter_list|()
+block|{
 name|List
 argument_list|<
 name|String
@@ -30503,12 +30539,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|JSON
-operator|.
-name|toString
-argument_list|(
 name|list
-argument_list|)
 return|;
 block|}
 annotation|@

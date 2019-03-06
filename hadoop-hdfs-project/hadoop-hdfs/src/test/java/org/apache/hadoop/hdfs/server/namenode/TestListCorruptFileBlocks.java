@@ -617,6 +617,16 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|badFiles
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Now deliberately corrupt one block
 name|String
 name|bpid
@@ -866,7 +876,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -875,14 +885,26 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" bad files. Expecting 1."
+literal|" bad files. "
+operator|+
+literal|"Expecting 1."
+argument_list|,
+literal|1
 argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|1
+argument_list|)
+expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|badFiles
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|util
@@ -1146,6 +1168,16 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|badFiles
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Now deliberately corrupt one block
 name|File
 name|storageDir
@@ -1395,7 +1427,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -1404,14 +1436,26 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" bad files. Expecting 1."
+literal|" bad files. "
+operator|+
+literal|"Expecting 1."
+argument_list|,
+literal|1
 argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|1
+argument_list|)
+expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|badFiles
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// restart namenode
@@ -1550,7 +1594,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -1559,14 +1603,26 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" bad files. Expecting 1."
+literal|" bad files. "
+operator|+
+literal|"Expecting 1."
+argument_list|,
+literal|1
 argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|1
+argument_list|)
+expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|badFiles
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// check that we are still in safe mode
@@ -1811,11 +1867,18 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|numCorrupt
-operator|==
 literal|0
+argument_list|,
+name|numCorrupt
+argument_list|)
+expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|numCorrupt
 argument_list|)
 expr_stmt|;
 comment|// delete the blocks
@@ -2057,6 +2120,13 @@ expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|3
+argument_list|,
+name|numCorrupt
+argument_list|)
+expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
 argument_list|,
 name|numCorrupt
 argument_list|)
@@ -2493,6 +2563,13 @@ argument_list|,
 name|numCorrupt
 argument_list|)
 expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|numCorrupt
+argument_list|)
+expr_stmt|;
 comment|// delete the blocks
 name|String
 name|bpid
@@ -2719,6 +2796,13 @@ argument_list|,
 name|numCorrupt
 argument_list|)
 expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|numCorrupt
+argument_list|)
+expr_stmt|;
 name|util
 operator|.
 name|cleanup
@@ -2940,6 +3024,16 @@ operator|+
 literal|" corrupt files. Expecting none."
 argument_list|,
 literal|0
+argument_list|,
+name|badFiles
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
 argument_list|,
 name|badFiles
 operator|.
@@ -3209,7 +3303,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Namenode has "
 operator|+
@@ -3218,18 +3312,20 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" bad files. Expecting "
+literal|" bad files. "
+operator|+
+literal|"Expecting "
 operator|+
 name|maxCorruptFileBlocks
 operator|+
 literal|"."
 argument_list|,
+name|maxCorruptFileBlocks
+argument_list|,
 name|badFiles
 operator|.
 name|size
 argument_list|()
-operator|==
-name|maxCorruptFileBlocks
 argument_list|)
 expr_stmt|;
 name|CorruptFileBlockIterator
@@ -3499,6 +3595,13 @@ argument_list|,
 name|numCorrupt
 argument_list|)
 expr_stmt|;
+name|assertCorruptFilesCount
+argument_list|(
+name|cluster
+argument_list|,
+name|numCorrupt
+argument_list|)
+expr_stmt|;
 comment|// delete the blocks
 name|String
 name|bpid
@@ -3750,6 +3853,43 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Asserts that the number of correct files is equal to the expected value.    * @param cluster where to get the number of corrupt files from    * @param expectedCorrupt the expected number of corrupt files    */
+DECL|method|assertCorruptFilesCount (MiniDFSCluster cluster, int expectedCorrupt)
+specifier|private
+name|void
+name|assertCorruptFilesCount
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|int
+name|expectedCorrupt
+parameter_list|)
+block|{
+name|FSNamesystem
+name|fs
+init|=
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getNamesystem
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Incorrect number of corrupt files returned"
+argument_list|,
+name|expectedCorrupt
+argument_list|,
+name|fs
+operator|.
+name|getCorruptFilesCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

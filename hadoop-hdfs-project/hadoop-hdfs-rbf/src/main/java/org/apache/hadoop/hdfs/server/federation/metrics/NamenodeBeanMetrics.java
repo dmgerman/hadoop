@@ -1659,6 +1659,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getCorruptFilesCount ()
+specifier|public
+name|int
+name|getCorruptFilesCount
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getThreads ()
 specifier|public
 name|int

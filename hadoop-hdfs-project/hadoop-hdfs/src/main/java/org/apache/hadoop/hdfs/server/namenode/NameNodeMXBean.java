@@ -310,6 +310,12 @@ name|String
 name|getCorruptFiles
 parameter_list|()
 function_decl|;
+comment|/**    * Get the length of the list of corrupt files.    *    * @return the length of the list of corrupt files.    */
+DECL|method|getCorruptFilesCount ()
+name|int
+name|getCorruptFilesCount
+parameter_list|()
+function_decl|;
 comment|/**    * Get the number of distinct versions of live datanodes.    *     * @return the number of distinct versions of live datanodes.    */
 DECL|method|getDistinctVersionCount ()
 name|int
