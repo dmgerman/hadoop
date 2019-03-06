@@ -707,6 +707,38 @@ name|initializePipelineState
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getStateManager ()
+specifier|public
+name|PipelineStateManager
+name|getStateManager
+parameter_list|()
+block|{
+return|return
+name|stateManager
+return|;
+block|}
+DECL|method|setPipelineProvider (ReplicationType replicationType, PipelineProvider provider)
+specifier|public
+name|void
+name|setPipelineProvider
+parameter_list|(
+name|ReplicationType
+name|replicationType
+parameter_list|,
+name|PipelineProvider
+name|provider
+parameter_list|)
+block|{
+name|pipelineFactory
+operator|.
+name|setProvider
+argument_list|(
+name|replicationType
+argument_list|,
+name|provider
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|initializePipelineState ()
 specifier|private
 name|void

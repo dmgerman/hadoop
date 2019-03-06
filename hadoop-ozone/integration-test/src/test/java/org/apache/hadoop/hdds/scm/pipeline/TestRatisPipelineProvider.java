@@ -254,7 +254,7 @@ expr_stmt|;
 name|provider
 operator|=
 operator|new
-name|RatisPipelineProvider
+name|MockRatisPipelineProvider
 argument_list|(
 name|nodeManager
 argument_list|,

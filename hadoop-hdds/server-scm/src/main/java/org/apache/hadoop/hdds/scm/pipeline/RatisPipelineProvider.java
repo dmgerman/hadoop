@@ -802,7 +802,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|initializePipeline (Pipeline pipeline)
-specifier|private
+specifier|protected
 name|void
 name|initializePipeline
 parameter_list|(
