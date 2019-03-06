@@ -97,13 +97,6 @@ name|UNBUFFER
 init|=
 literal|"in:unbuffer"
 decl_stmt|;
-comment|/**    * Stream read(ByteBuffer) capability implemented by    * {@link ByteBufferReadable#read(java.nio.ByteBuffer)}.    */
-DECL|field|READBYTEBUFFER
-name|String
-name|READBYTEBUFFER
-init|=
-literal|"in:readbytebuffer"
-decl_stmt|;
 comment|/**    * Capabilities that a stream can support and be queried for.    */
 annotation|@
 name|Deprecated

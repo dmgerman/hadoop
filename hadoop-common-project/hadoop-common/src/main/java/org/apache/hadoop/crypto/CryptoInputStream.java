@@ -3543,11 +3543,6 @@ name|StreamCapabilities
 operator|.
 name|UNBUFFER
 case|:
-case|case
-name|StreamCapabilities
-operator|.
-name|READBYTEBUFFER
-case|:
 return|return
 literal|true
 return|;
