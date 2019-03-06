@@ -500,6 +500,88 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|getErrorMessageOfScriptExecution (String msg)
+specifier|private
+name|String
+name|getErrorMessageOfScriptExecution
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+return|return
+name|getFailedToExecuteScriptMessage
+argument_list|()
+operator|+
+literal|"! Exception message: "
+operator|+
+name|msg
+return|;
+block|}
+DECL|method|getErrorMessageOfScriptExecutionThresholdReached ()
+specifier|private
+name|String
+name|getErrorMessageOfScriptExecutionThresholdReached
+parameter_list|()
+block|{
+return|return
+name|getFailedToExecuteScriptMessage
+argument_list|()
+operator|+
+literal|" for "
+operator|+
+name|MAX_REPEATED_ERROR_ALLOWED
+operator|+
+literal|" times, "
+operator|+
+literal|"skipping following executions!"
+return|;
+block|}
+DECL|method|getFailedToExecuteScriptMessage ()
+specifier|private
+name|String
+name|getFailedToExecuteScriptMessage
+parameter_list|()
+block|{
+return|return
+literal|"Failed to execute "
+operator|+
+name|GpuDeviceInformationParser
+operator|.
+name|GPU_SCRIPT_REFERENCE
+operator|+
+literal|" ("
+operator|+
+name|pathOfGpuBinary
+operator|+
+literal|")"
+return|;
+block|}
+DECL|method|getFailedToParseErrorMessage (String msg)
+specifier|private
+name|String
+name|getFailedToParseErrorMessage
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+return|return
+literal|"Failed to parse XML output of "
+operator|+
+name|GpuDeviceInformationParser
+operator|.
+name|GPU_SCRIPT_REFERENCE
+operator|+
+literal|"( "
+operator|+
+name|pathOfGpuBinary
+operator|+
+literal|")"
+operator|+
+name|msg
+return|;
+block|}
 comment|/**    * Get GPU device information from system.    * This need to be called after initialize.    *    * Please note that this only works on *NIX platform, so external caller    * need to make sure this.    *    * @return GpuDeviceInformation    * @throws YarnException when any error happens    */
 DECL|method|getGpuDeviceInformation ()
 specifier|synchronized
@@ -522,11 +604,8 @@ block|{
 name|String
 name|msg
 init|=
-literal|"Failed to execute GPU device information detection script for "
-operator|+
-name|MAX_REPEATED_ERROR_ALLOWED
-operator|+
-literal|" times, skip following executions."
+name|getErrorMessageOfScriptExecutionThresholdReached
+argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
@@ -599,18 +678,13 @@ expr_stmt|;
 name|String
 name|msg
 init|=
-literal|"Failed to execute "
-operator|+
-name|pathOfGpuBinary
-operator|+
-literal|" exception message:"
-operator|+
+name|getErrorMessageOfScriptExecution
+argument_list|(
 name|e
 operator|.
 name|getMessage
 argument_list|()
-operator|+
-literal|", continue ..."
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -632,6 +706,8 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
+name|msg
+argument_list|,
 name|e
 argument_list|)
 throw|;
@@ -648,12 +724,13 @@ expr_stmt|;
 name|String
 name|msg
 init|=
-literal|"Failed to parse xml output"
-operator|+
+name|getFailedToParseErrorMessage
+argument_list|(
 name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
 decl_stmt|;
 if|if
 condition|(

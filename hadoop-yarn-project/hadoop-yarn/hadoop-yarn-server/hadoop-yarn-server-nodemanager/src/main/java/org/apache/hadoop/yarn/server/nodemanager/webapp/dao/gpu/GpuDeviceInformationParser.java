@@ -244,6 +244,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|GPU_SCRIPT_REFERENCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GPU_SCRIPT_REFERENCE
+init|=
+literal|"GPU device detection "
+operator|+
+literal|"script"
+decl_stmt|;
 DECL|field|unmarshaller
 specifier|private
 name|Unmarshaller
@@ -367,11 +378,18 @@ name|JAXBException
 name|e
 parameter_list|)
 block|{
+name|String
+name|msg
+init|=
+literal|"Exception while initializing parser for "
+operator|+
+name|GPU_SCRIPT_REFERENCE
+decl_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception while initialize parser"
+name|msg
 argument_list|,
 name|e
 argument_list|)
@@ -429,11 +447,20 @@ name|JAXBException
 name|e
 parameter_list|)
 block|{
+name|String
+name|msg
+init|=
+literal|"Failed to parse XML output of "
+operator|+
+name|GPU_SCRIPT_REFERENCE
+operator|+
+literal|"!"
+decl_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception while parsing xml"
+name|msg
 argument_list|,
 name|e
 argument_list|)
@@ -442,6 +469,8 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
+name|msg
+argument_list|,
 name|e
 argument_list|)
 throw|;
