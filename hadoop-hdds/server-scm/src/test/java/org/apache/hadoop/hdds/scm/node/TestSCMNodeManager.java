@@ -2149,7 +2149,7 @@ argument_list|)
 expr_stmt|;
 comment|// 3.5 seconds have elapsed for stale node, so it moves into Stale.
 comment|// 7 seconds have elapsed for dead node, so it moves into dead.
-comment|// 2 Seconds have elapsed for healthy node, so it stays in healhty state.
+comment|// 2 Seconds have elapsed for healthy node, so it stays in healthy state.
 name|healthyList
 operator|=
 name|nodeManager

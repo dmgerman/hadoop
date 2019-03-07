@@ -893,7 +893,7 @@ return|return
 name|isHealthy
 return|;
 block|}
-comment|/**    * Sets if the node is healhty or not considering disks' health also.    *     * @param isHealthy    *          if or not node is healthy    */
+comment|/**    * Sets if the node is healthy or not considering disks' health also.    *     * @param isHealthy    *          if or not node is healthy    */
 DECL|method|setHealthy (boolean isHealthy)
 specifier|private
 specifier|synchronized
