@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.om.ratis
+DECL|package|org.apache.hadoop.ozone.om.helpers
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|ozone
 operator|.
 name|om
 operator|.
-name|ratis
+name|helpers
 package|;
 end_package
 
@@ -113,46 +113,6 @@ operator|.
 name|OzoneManagerProtocolProtos
 operator|.
 name|OMResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneManagerProtocolProtos
-operator|.
-name|Status
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneManagerProtocolProtos
-operator|.
-name|Type
 import|;
 end_import
 
@@ -380,8 +340,9 @@ specifier|private
 name|OMRatisHelper
 parameter_list|()
 block|{   }
-comment|/**    * Creates a new RaftClient object.    * @param rpcType Replication Type    * @param omId OM id of the client    * @param group RaftGroup    * @param retryPolicy Retry policy    * @return RaftClient object    */
+comment|/**    * Creates a new RaftClient object.    *    * @param rpcType     Replication Type    * @param omId        OM id of the client    * @param group       RaftGroup    * @param retryPolicy Retry policy    * @return RaftClient object    */
 DECL|method|newRaftClient (RpcType rpcType, String omId, RaftGroup group, RetryPolicy retryPolicy, Configuration conf)
+specifier|public
 specifier|static
 name|RaftClient
 name|newRaftClient
@@ -524,6 +485,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convertRequestToByteString (OMRequest request)
+specifier|public
 specifier|static
 name|ByteString
 name|convertRequestToByteString
@@ -551,6 +513,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convertByteStringToOMRequest (ByteString byteString)
+specifier|public
 specifier|static
 name|OMRequest
 name|convertByteStringToOMRequest
@@ -580,6 +543,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|convertResponseToMessage (OMResponse response)
+specifier|public
 specifier|static
 name|Message
 name|convertResponseToMessage
@@ -611,7 +575,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getOMResponseFromRaftClientReply (RaftClientReply reply)
+DECL|method|getOMResponseFromRaftClientReply ( RaftClientReply reply)
+specifier|public
 specifier|static
 name|OMResponse
 name|getOMResponseFromRaftClientReply
@@ -656,53 +621,6 @@ name|reply
 operator|.
 name|getReplierId
 argument_list|()
-argument_list|)
-operator|.
-name|build
-argument_list|()
-return|;
-block|}
-DECL|method|getErrorResponse (Type cmdType, Exception e)
-specifier|static
-name|OMResponse
-name|getErrorResponse
-parameter_list|(
-name|Type
-name|cmdType
-parameter_list|,
-name|Exception
-name|e
-parameter_list|)
-block|{
-return|return
-name|OMResponse
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setCmdType
-argument_list|(
-name|cmdType
-argument_list|)
-operator|.
-name|setSuccess
-argument_list|(
-literal|false
-argument_list|)
-operator|.
-name|setMessage
-argument_list|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-operator|.
-name|setStatus
-argument_list|(
-name|Status
-operator|.
-name|INTERNAL_ERROR
 argument_list|)
 operator|.
 name|build

@@ -1074,6 +1074,30 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|newLeaderOMNodeId
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No suggested leader nodeId. Performing failover to next peer"
+operator|+
+literal|" node"
+argument_list|)
+expr_stmt|;
+name|performFailover
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
 name|updateLeaderOMNodeId
 argument_list|(
 name|newLeaderOMNodeId
@@ -1089,6 +1113,7 @@ argument_list|,
 name|newLeaderOMNodeId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Failover to the OM proxy specified by the new leader OMNodeId.    * @param newLeaderOMNodeId OMNodeId to failover to.    * @return true if failover is successful, false otherwise.    */

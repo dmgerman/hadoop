@@ -62,6 +62,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|CompletableFuture
@@ -105,6 +115,24 @@ operator|.
 name|om
 operator|.
 name|OzoneManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OMRatisHelper
 import|;
 end_import
 
@@ -391,6 +419,18 @@ operator|new
 name|SimpleStateMachineStorage
 argument_list|()
 decl_stmt|;
+DECL|field|omRatisServer
+specifier|private
+specifier|final
+name|OzoneManagerRatisServer
+name|omRatisServer
+decl_stmt|;
+DECL|field|ozoneManager
+specifier|private
+specifier|final
+name|OzoneManagerProtocol
+name|ozoneManager
+decl_stmt|;
 DECL|field|handler
 specifier|private
 specifier|final
@@ -402,14 +442,29 @@ specifier|private
 name|RaftGroupId
 name|raftGroupId
 decl_stmt|;
-DECL|method|OzoneManagerStateMachine (OzoneManagerProtocol om)
+DECL|method|OzoneManagerStateMachine (OzoneManagerRatisServer ratisServer)
 specifier|public
 name|OzoneManagerStateMachine
 parameter_list|(
-name|OzoneManagerProtocol
-name|om
+name|OzoneManagerRatisServer
+name|ratisServer
 parameter_list|)
 block|{
+name|this
+operator|.
+name|omRatisServer
+operator|=
+name|ratisServer
+expr_stmt|;
+name|this
+operator|.
+name|ozoneManager
+operator|=
+name|omRatisServer
+operator|.
+name|getOzoneManager
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|handler
@@ -417,7 +472,7 @@ operator|=
 operator|new
 name|OzoneManagerRequestHandler
 argument_list|(
-name|om
+name|ozoneManager
 argument_list|)
 expr_stmt|;
 block|}
@@ -729,6 +784,29 @@ name|e
 argument_list|)
 return|;
 block|}
+block|}
+comment|/**    * Notifies the state machine that the raft peer is no longer leader.    */
+annotation|@
+name|Override
+DECL|method|notifyNotLeader (Collection<TransactionContext> pendingEntries)
+specifier|public
+name|void
+name|notifyNotLeader
+parameter_list|(
+name|Collection
+argument_list|<
+name|TransactionContext
+argument_list|>
+name|pendingEntries
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|omRatisServer
+operator|.
+name|updateServerRole
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Submits request to OM and returns the response Message.    * @param request OMRequest    * @return response from OM    * @throws ServiceException    */
 DECL|method|runCommand (OMRequest request)

@@ -7042,6 +7042,8 @@ name|OzoneManagerProtocolServerSideTranslatorPB
 argument_list|(
 name|this
 argument_list|,
+name|omRatisServer
+argument_list|,
 name|omRatisClient
 argument_list|,
 name|isRatisEnabled
