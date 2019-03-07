@@ -1434,38 +1434,6 @@ operator|+
 literal|"cannot be blank"
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|Strings
-operator|.
-name|isNotBlank
-argument_list|(
-name|clusterID
-argument_list|)
-argument_list|,
-literal|"Cluster ID "
-operator|+
-literal|"cannot be blank"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|Strings
-operator|.
-name|isNotBlank
-argument_list|(
-name|scmID
-argument_list|)
-argument_list|,
-literal|"SCM ID cannot "
-operator|+
-literal|"be blank"
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|CertificateSignRequest

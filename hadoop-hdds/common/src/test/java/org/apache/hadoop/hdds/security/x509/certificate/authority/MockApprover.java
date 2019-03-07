@@ -200,7 +200,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sign (SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest request)
+DECL|method|sign (SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest request, String scmId, String clusterId)
 specifier|public
 name|X509CertificateHolder
 name|sign
@@ -222,6 +222,12 @@ name|validTill
 parameter_list|,
 name|PKCS10CertificationRequest
 name|request
+parameter_list|,
+name|String
+name|scmId
+parameter_list|,
+name|String
+name|clusterId
 parameter_list|)
 throws|throws
 name|IOException

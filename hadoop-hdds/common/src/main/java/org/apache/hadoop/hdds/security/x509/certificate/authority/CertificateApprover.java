@@ -156,8 +156,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Sign function signs a Certificate.    * @param config - Security Config.    * @param caPrivate - CAs private Key.    * @param caCertificate - CA Certificate.    * @param validFrom - Begin Date    * @param validTill - End Date    * @param certificationRequest - Certification Request.    * @return Signed Certificate.    * @throws IOException - On Error    * @throws OperatorCreationException - on Error.    */
-DECL|method|sign ( SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest certificationRequest)
+comment|/**    * Sign function signs a Certificate.    * @param config - Security Config.    * @param caPrivate - CAs private Key.    * @param caCertificate - CA Certificate.    * @param validFrom - Begin Date    * @param validTill - End Date    * @param certificationRequest - Certification Request.    * @param scmId - SCM id.    * @param clusterId - Cluster id.    * @return Signed Certificate.    * @throws IOException - On Error    * @throws OperatorCreationException - on Error.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"ParameterNumber"
+argument_list|)
+DECL|method|sign ( SecurityConfig config, PrivateKey caPrivate, X509CertificateHolder caCertificate, Date validFrom, Date validTill, PKCS10CertificationRequest certificationRequest, String scmId, String clusterId)
 name|X509CertificateHolder
 name|sign
 parameter_list|(
@@ -178,6 +183,12 @@ name|validTill
 parameter_list|,
 name|PKCS10CertificationRequest
 name|certificationRequest
+parameter_list|,
+name|String
+name|scmId
+parameter_list|,
+name|String
+name|clusterId
 parameter_list|)
 throws|throws
 name|IOException
