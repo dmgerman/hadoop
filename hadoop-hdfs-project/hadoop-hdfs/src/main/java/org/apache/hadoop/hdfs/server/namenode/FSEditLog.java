@@ -3143,7 +3143,10 @@ name|txid
 return|;
 block|}
 comment|/**    * @return the first transaction ID in the current log segment    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getCurSegmentTxId ()
+specifier|public
 specifier|synchronized
 name|long
 name|getCurSegmentTxId

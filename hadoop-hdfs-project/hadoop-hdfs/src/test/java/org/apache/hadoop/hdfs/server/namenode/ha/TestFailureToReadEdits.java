@@ -1459,7 +1459,7 @@ name|of
 argument_list|(
 literal|0
 argument_list|,
-literal|3
+literal|5
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1478,7 +1478,7 @@ name|of
 argument_list|(
 literal|0
 argument_list|,
-literal|3
+literal|5
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1555,9 +1555,9 @@ name|of
 argument_list|(
 literal|0
 argument_list|,
-literal|3
-argument_list|,
 literal|5
+argument_list|,
+literal|7
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1576,9 +1576,9 @@ name|of
 argument_list|(
 literal|0
 argument_list|,
-literal|3
-argument_list|,
 literal|5
+argument_list|,
+literal|7
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1604,9 +1604,9 @@ name|of
 argument_list|(
 literal|0
 argument_list|,
-literal|3
-argument_list|,
 literal|5
+argument_list|,
+literal|7
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1744,7 +1744,7 @@ name|of
 argument_list|(
 literal|0
 argument_list|,
-literal|3
+literal|5
 argument_list|)
 argument_list|)
 expr_stmt|;

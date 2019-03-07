@@ -2068,14 +2068,14 @@ name|DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD
 init|=
 literal|"dfs.namenode.edit.log.autoroll.multiplier.threshold"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|float
+DECL|field|DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD_DEFAULT
 name|DFS_NAMENODE_EDIT_LOG_AUTOROLL_MULTIPLIER_THRESHOLD_DEFAULT
 init|=
-literal|2.0f
+literal|0.5f
 decl_stmt|;
 DECL|field|DFS_NAMENODE_EDIT_LOG_AUTOROLL_CHECK_INTERVAL_MS
 specifier|public

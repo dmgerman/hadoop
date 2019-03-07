@@ -688,6 +688,12 @@ specifier|private
 name|long
 name|lastLoadTimeMs
 decl_stmt|;
+comment|/**    * The last time we triggered a edit log roll on active namenode.    */
+DECL|field|lastRollTimeMs
+specifier|private
+name|long
+name|lastRollTimeMs
+decl_stmt|;
 comment|/**    * How often the Standby should roll edit logs. Since the Standby only reads    * from finalized log segments, the Standby will only be as up-to-date as how    * often the logs are rolled.    */
 DECL|field|logRollPeriodMs
 specifier|private
@@ -737,7 +743,7 @@ name|nnLoopCount
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * maximum number of retries we should give each of the remote namenodes before giving up    */
+comment|/**    * Maximum number of retries we should give each of the remote namenodes    * before giving up.    */
 DECL|field|maxRetries
 specifier|private
 name|int
@@ -798,6 +804,11 @@ name|getEditLog
 argument_list|()
 expr_stmt|;
 name|lastLoadTimeMs
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+name|lastRollTimeMs
 operator|=
 name|monotonicNow
 argument_list|()
@@ -1593,7 +1604,7 @@ operator|(
 name|monotonicNow
 argument_list|()
 operator|-
-name|lastLoadTimeMs
+name|lastRollTimeMs
 operator|)
 operator|>
 name|logRollPeriodMs
@@ -1684,6 +1695,11 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
+expr_stmt|;
+name|lastRollTimeMs
+operator|=
+name|monotonicNow
+argument_list|()
 expr_stmt|;
 name|lastRollTriggerTxId
 operator|=
