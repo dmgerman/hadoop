@@ -3645,8 +3645,6 @@ name|LogAggregationContext
 name|getLogAggregationContext
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -3654,6 +3652,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|this
 operator|.

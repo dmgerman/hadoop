@@ -9994,8 +9994,6 @@ argument_list|>
 name|getLogAggregationReportsForApp
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -10003,6 +10001,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -10142,8 +10142,6 @@ name|LogAggregationReport
 name|report
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -10151,6 +10149,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|this
@@ -10373,8 +10373,6 @@ name|LogAggregationStatus
 name|getLogAggregationStatusForAppReport
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -10382,6 +10380,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -11202,8 +11202,6 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -11211,6 +11209,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|List
 argument_list|<
 name|String

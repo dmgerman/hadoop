@@ -2749,14 +2749,14 @@ operator|.
 name|getReadLock
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 comment|// Acquire a read lock from Parent/LeafQueue.
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|String
 name|queueName
 init|=

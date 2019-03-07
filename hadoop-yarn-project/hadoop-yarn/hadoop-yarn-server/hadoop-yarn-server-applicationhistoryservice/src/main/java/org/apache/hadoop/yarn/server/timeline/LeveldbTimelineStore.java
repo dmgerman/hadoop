@@ -5871,8 +5871,6 @@ name|TimelineEntities
 name|entities
 parameter_list|)
 block|{
-try|try
-block|{
 name|deleteLock
 operator|.
 name|readLock
@@ -5881,6 +5879,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|TimelinePutResponse
 name|response
 init|=
@@ -5938,8 +5938,6 @@ name|TimelineEntities
 name|entities
 parameter_list|)
 block|{
-try|try
-block|{
 name|deleteLock
 operator|.
 name|readLock
@@ -5948,6 +5946,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|TimelinePutResponse
 name|response
 init|=
@@ -8583,8 +8583,6 @@ name|typeCount
 init|=
 literal|0
 decl_stmt|;
-try|try
-block|{
 name|deleteLock
 operator|.
 name|writeLock
@@ -8593,6 +8591,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|iterator
 operator|=
 name|getDbIterator

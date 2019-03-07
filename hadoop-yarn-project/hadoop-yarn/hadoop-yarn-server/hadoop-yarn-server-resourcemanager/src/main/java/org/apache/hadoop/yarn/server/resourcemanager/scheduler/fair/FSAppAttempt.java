@@ -1037,13 +1037,13 @@ name|RMContainerEventType
 name|event
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Container
 name|container
 init|=
@@ -1277,13 +1277,13 @@ name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Map
 argument_list|<
 name|NodeId
@@ -1693,13 +1693,13 @@ operator|.
 name|OFF_SWITCH
 return|;
 block|}
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Default level is NODE_LOCAL
 if|if
 condition|(
@@ -1985,13 +1985,13 @@ operator|.
 name|OFF_SWITCH
 return|;
 block|}
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// default level is NODE_LOCAL
 if|if
 condition|(
@@ -2330,13 +2330,13 @@ decl_stmt|;
 name|Container
 name|container
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Update allowed locality level
 name|NodeType
 name|allowed
@@ -2710,13 +2710,13 @@ block|{
 name|NodeType
 name|old
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|old
 operator|=
 name|allowedLocalityLevel
@@ -3234,13 +3234,13 @@ name|RMContainer
 name|rmContainer
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|super
 operator|.
 name|recoverContainer
@@ -3775,13 +3775,13 @@ operator|.
 name|getRackName
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Set
 argument_list|<
 name|String
@@ -3865,13 +3865,13 @@ operator|.
 name|getRackName
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Set
 argument_list|<
 name|String
@@ -4507,13 +4507,13 @@ decl_stmt|;
 comment|// For each priority, see if we can schedule a node local, rack local
 comment|// or off-switch request. Rack of off-switch requests may be delayed
 comment|// (not scheduled) in order to promote better locality.
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// TODO (wandga): All logics in this method should be added to
 comment|// SchedulerPlacement#canDelayTo which is independent from scheduler.
 comment|// Scheduler can choose to use various/pluggable delay-scheduling

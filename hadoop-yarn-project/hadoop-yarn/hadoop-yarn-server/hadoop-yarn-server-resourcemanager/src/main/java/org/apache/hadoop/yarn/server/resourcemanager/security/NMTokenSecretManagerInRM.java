@@ -928,8 +928,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -937,6 +935,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|HashSet
 argument_list|<
 name|NodeId
@@ -1068,8 +1068,6 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -1077,6 +1075,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|appAttemptToNodeKeyMap
@@ -1118,8 +1118,6 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -1127,6 +1125,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|this
 operator|.
@@ -1165,8 +1165,6 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -1174,6 +1172,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|HashSet
 argument_list|<
 name|NodeId
@@ -1234,8 +1234,6 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -1243,6 +1241,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|appAttemptToNodeKeyMap
@@ -1274,8 +1274,6 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -1283,6 +1281,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Iterator
 argument_list|<
 name|HashSet

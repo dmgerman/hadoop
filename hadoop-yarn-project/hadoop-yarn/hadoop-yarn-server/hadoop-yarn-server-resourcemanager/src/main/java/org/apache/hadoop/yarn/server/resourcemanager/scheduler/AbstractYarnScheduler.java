@@ -2316,13 +2316,13 @@ name|SchedulerNode
 name|node
 parameter_list|)
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Get the application for the finished container
 name|SchedulerApplicationAttempt
 name|application
@@ -2998,13 +2998,13 @@ name|RMNode
 name|nm
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -4308,13 +4308,13 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// check if destination queue is a valid leaf queue
 try|try
 block|{
@@ -4456,13 +4456,13 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// check if queue is a valid
 name|List
 argument_list|<
@@ -4571,13 +4571,13 @@ name|ResourceOption
 name|resourceOption
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|SchedulerNode
 name|node
 init|=

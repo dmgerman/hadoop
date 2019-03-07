@@ -778,8 +778,6 @@ name|CGroupController
 name|controller
 parameter_list|)
 block|{
-try|try
-block|{
 name|rwLock
 operator|.
 name|readLock
@@ -788,6 +786,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|controllerPaths
 operator|.
@@ -922,8 +922,6 @@ argument_list|)
 throw|;
 block|}
 comment|// we want to do a bulk update without the paths changing concurrently
-try|try
-block|{
 name|rwLock
 operator|.
 name|writeLock
@@ -932,6 +930,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|controllerPaths
 operator|=
 name|cPaths
@@ -1509,8 +1509,6 @@ name|existingMountPath
 argument_list|)
 condition|)
 block|{
-try|try
-block|{
 comment|//lock out other readers/writers till we are done
 name|rwLock
 operator|.
@@ -1520,6 +1518,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// If the controller was already mounted we have to mount it
 comment|// with the same options to clone the mount point otherwise
 comment|// the operation will fail

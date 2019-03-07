@@ -214,13 +214,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|validate
 argument_list|(
 name|newlyParsedQueue
@@ -282,13 +282,13 @@ name|SchedulerDynamicEditException
 throws|,
 name|IOException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// TODO:
 comment|// reinitialize only capacities for now since 0 capacity updates
 comment|// can cause

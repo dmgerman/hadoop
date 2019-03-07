@@ -1777,13 +1777,13 @@ name|float
 name|maximumCapacity
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Sanity check
 name|CSQueueUtils
 operator|.
@@ -1863,13 +1863,13 @@ name|float
 name|maximumCapacity
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Sanity check
 name|CSQueueUtils
 operator|.
@@ -1988,13 +1988,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// get labels
 name|this
 operator|.
@@ -4120,13 +4120,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|queueUsage
 operator|.
 name|incUsed
@@ -4179,13 +4179,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|queueUsage
 operator|.
 name|decUsed
@@ -4248,13 +4248,13 @@ argument_list|>
 name|getACLs
 parameter_list|()
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|acls
 return|;
@@ -4690,13 +4690,13 @@ name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Get current limited resource:
 comment|// - When doing RESPECT_PARTITION_EXCLUSIVITY allocation, we will respect
 comment|// queues' max capacity.
@@ -5845,13 +5845,13 @@ name|getTotalReleasedResource
 argument_list|()
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|String
 name|partition
 init|=
@@ -6046,8 +6046,6 @@ parameter_list|()
 throws|throws
 name|YarnException
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -6055,6 +6053,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|getState
@@ -6170,8 +6170,6 @@ name|void
 name|appFinished
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -6179,6 +6177,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|getState
@@ -6255,8 +6255,6 @@ name|void
 name|recoverDrainingState
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -6264,6 +6262,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|getState

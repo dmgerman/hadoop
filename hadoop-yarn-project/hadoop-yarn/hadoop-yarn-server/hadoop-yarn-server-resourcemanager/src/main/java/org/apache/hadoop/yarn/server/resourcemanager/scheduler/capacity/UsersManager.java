@@ -762,13 +762,13 @@ name|float
 name|delta
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|float
 name|usage
 init|=
@@ -826,13 +826,13 @@ name|String
 name|label
 parameter_list|)
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Float
 name|f
 init|=
@@ -879,13 +879,13 @@ name|float
 name|ratio
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|usageRatios
 operator|.
 name|put
@@ -1042,13 +1042,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|userUsageRatios
 operator|.
 name|setUsageRatio
@@ -1093,13 +1093,13 @@ name|String
 name|nodePartition
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|float
 name|delta
 decl_stmt|;
@@ -1583,13 +1583,13 @@ block|{
 comment|// If latestVersionOfUsersState is negative due to overflow, ideally we need
 comment|// to reset it. This method is invoked from UsersManager and LeafQueue and
 comment|// all is happening within write/readLock. Below logic can help to set 0.
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|long
 name|value
 init|=
@@ -1668,13 +1668,13 @@ name|String
 name|userName
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|users
@@ -1729,13 +1729,13 @@ name|String
 name|userName
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|User
 name|u
 init|=
@@ -1850,13 +1850,13 @@ argument_list|>
 name|getUsersInfo
 parameter_list|()
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|ArrayList
 argument_list|<
 name|UserInfo
@@ -2048,13 +2048,13 @@ name|Resource
 argument_list|>
 name|userLimitPerSchedulingMode
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|userLimitPerSchedulingMode
 operator|=
 name|preComputedActiveUserLimit
@@ -2242,13 +2242,13 @@ name|Resource
 argument_list|>
 name|userLimitPerSchedulingMode
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|userLimitPerSchedulingMode
 operator|=
 name|preComputedAllUserLimit
@@ -2444,13 +2444,13 @@ name|boolean
 name|isActive
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Map
 argument_list|<
 name|String
@@ -2553,8 +2553,6 @@ name|boolean
 name|isActive
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -2562,6 +2560,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Map
 argument_list|<
 name|String
@@ -3242,13 +3242,13 @@ name|Resource
 name|clusterResource
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Resource
 name|resourceByLabel
 init|=
@@ -3365,8 +3365,6 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -3374,6 +3372,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|User
 name|userDesc
 init|=
@@ -3522,8 +3522,6 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -3531,6 +3529,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Set
 argument_list|<
 name|ApplicationId
@@ -3669,8 +3669,6 @@ name|count
 init|=
 literal|0.0f
 decl_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -3678,6 +3676,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|String
@@ -3722,8 +3722,6 @@ name|count
 init|=
 literal|0.0f
 decl_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -3731,6 +3729,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|String
@@ -3777,8 +3777,6 @@ name|String
 name|userName
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -3786,6 +3784,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// For UT case: We might need to add the user to users list.
 name|User
 name|user
@@ -3948,8 +3948,6 @@ name|String
 name|userName
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -3957,6 +3955,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// For UT case: We might need to add the user to users list.
 name|User
 name|user
@@ -4194,8 +4194,6 @@ name|boolean
 name|isAllocate
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -4203,6 +4201,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// TODO, should use getUser, use this method just to avoid UT failure
 comment|// which is caused by wrong invoking order, will fix UT separately
 name|User
@@ -4393,8 +4393,6 @@ name|void
 name|updateUserWeights
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -4402,6 +4400,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|Map

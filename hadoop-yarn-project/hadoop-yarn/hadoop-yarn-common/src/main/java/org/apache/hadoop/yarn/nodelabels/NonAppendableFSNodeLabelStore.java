@@ -450,8 +450,6 @@ name|manager
 operator|.
 name|readLock
 decl_stmt|;
-try|try
-block|{
 comment|// Acquire readlock to make sure we get cluster node labels and
 comment|// node-to-labels mapping atomically.
 name|readLock
@@ -459,6 +457,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Write mirror to mirror.new.tmp file
 name|Path
 name|newTmpPath

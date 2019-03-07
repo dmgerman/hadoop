@@ -261,13 +261,13 @@ parameter_list|)
 throws|throws
 name|SchedulerDynamicEditException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|float
 name|capacity
 init|=

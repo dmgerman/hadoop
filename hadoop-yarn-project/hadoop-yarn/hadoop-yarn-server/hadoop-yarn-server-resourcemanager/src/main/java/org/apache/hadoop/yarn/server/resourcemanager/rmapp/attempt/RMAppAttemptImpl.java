@@ -8325,8 +8325,6 @@ return|return
 literal|false
 return|;
 block|}
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -8334,6 +8332,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|int
 name|exitStatus
 init|=
@@ -11157,8 +11157,6 @@ name|long
 name|getFinishTime
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -11166,6 +11164,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|this
 operator|.
@@ -11192,8 +11192,6 @@ name|long
 name|finishTime
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -11201,6 +11199,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|finishTime

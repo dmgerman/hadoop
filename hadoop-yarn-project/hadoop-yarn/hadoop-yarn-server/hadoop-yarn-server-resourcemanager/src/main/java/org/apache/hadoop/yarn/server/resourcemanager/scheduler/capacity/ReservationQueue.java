@@ -241,13 +241,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Sanity check
 if|if
 condition|(

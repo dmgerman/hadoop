@@ -8329,13 +8329,13 @@ operator|.
 name|writeLock
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|wLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Runnable
 name|runnable
 init|=

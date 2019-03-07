@@ -538,8 +538,6 @@ argument_list|,
 name|clusterResource
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|leafQueue
 operator|.
 name|getReadLock
@@ -548,6 +546,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// go through all ignore-partition-exclusivity containers first to make
 comment|// sure such containers will be preemptionCandidates first
 name|Map

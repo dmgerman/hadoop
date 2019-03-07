@@ -5528,8 +5528,6 @@ index|[]
 name|ipAndHost
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -5537,6 +5535,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|ips
@@ -10528,8 +10528,6 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -10537,6 +10535,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|ContainerId
 name|containerID
 init|=

@@ -1819,13 +1819,13 @@ name|String
 name|partition
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|ContainerId
 name|containerId
 init|=
@@ -2005,13 +2005,13 @@ name|Container
 name|container
 parameter_list|)
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|isStopped
@@ -2861,13 +2861,13 @@ name|reReservation
 init|=
 literal|false
 decl_stmt|;
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// First make sure no container in release list in final state
 if|if
 condition|(
@@ -3311,13 +3311,13 @@ name|reReservation
 init|=
 literal|false
 decl_stmt|;
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// If we allocated something
 if|if
 condition|(
@@ -3894,13 +3894,13 @@ name|RMContainer
 name|rmContainer
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Done with the reservation?
 if|if
 condition|(
@@ -4160,13 +4160,13 @@ argument_list|>
 name|getTotalPendingRequestsPerPartition
 parameter_list|()
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Map
 argument_list|<
 name|String
@@ -4316,13 +4316,13 @@ name|ContainerId
 name|cont
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// ignore already completed containers
 if|if
 condition|(
@@ -4368,13 +4368,13 @@ name|Resource
 name|minimumAllocation
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Set
 argument_list|<
 name|ContainerId
@@ -4768,13 +4768,13 @@ name|CapacityHeadroomProvider
 name|headroomProvider
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|headroomProvider
@@ -4799,13 +4799,13 @@ name|Resource
 name|getHeadroom
 parameter_list|()
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|headroomProvider
@@ -4847,13 +4847,13 @@ name|SchedulerApplicationAttempt
 name|appAttempt
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|super
 operator|.
 name|transferStateFromPreviousAttempt
@@ -4981,13 +4981,13 @@ name|Resource
 name|minimumUnreservedResource
 parameter_list|)
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// need to unreserve some other container first
 name|NodeId
 name|idToUnreserve
@@ -5860,16 +5860,16 @@ name|ApplicationResourceUsageReport
 name|getResourceUsageReport
 parameter_list|()
 block|{
-try|try
-block|{
-comment|// Use write lock here because
-comment|// SchedulerApplicationAttempt#getResourceUsageReport updated fields
-comment|// TODO: improve this
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+comment|// Use write lock here because
+comment|// SchedulerApplicationAttempt#getResourceUsageReport updated fields
+comment|// TODO: improve this
 name|ApplicationResourceUsageReport
 name|report
 init|=
@@ -6092,13 +6092,13 @@ name|FiCaSchedulerNode
 name|targetNode
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|!

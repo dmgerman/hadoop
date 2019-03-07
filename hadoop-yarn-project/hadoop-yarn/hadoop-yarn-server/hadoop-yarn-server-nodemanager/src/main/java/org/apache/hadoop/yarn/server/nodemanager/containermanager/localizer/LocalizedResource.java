@@ -928,8 +928,6 @@ argument_list|(
 literal|",["
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -937,6 +935,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|ContainerId
@@ -1220,8 +1220,6 @@ name|ResourceEvent
 name|event
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -1229,6 +1227,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|Path
 name|resourcePath
 init|=

@@ -993,8 +993,6 @@ name|String
 name|getQueueName
 parameter_list|()
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -1002,6 +1000,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|queue
 operator|.
@@ -2165,8 +2165,6 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -2174,6 +2172,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|AppPlacementAllocator
@@ -2235,8 +2235,6 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -2244,6 +2242,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|values
@@ -2300,13 +2300,13 @@ name|PendingAsk
 name|getNextPendingAsk
 parameter_list|()
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|SchedulerRequestKey
 name|firstRequestKey
 init|=
@@ -2367,8 +2367,6 @@ name|String
 name|resourceName
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -2376,6 +2374,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|AppPlacementAllocator
 name|ap
 init|=
@@ -2485,13 +2485,13 @@ name|Container
 name|containerAllocated
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 literal|null
@@ -2570,8 +2570,6 @@ name|Queue
 name|newQueue
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -2579,6 +2577,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|QueueMetrics
 name|oldMetrics
 init|=
@@ -2791,8 +2791,6 @@ name|stop
 parameter_list|()
 block|{
 comment|// clear pending resources metrics for the application
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -2800,6 +2798,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|QueueMetrics
 name|metrics
 init|=
@@ -2927,8 +2927,6 @@ name|Queue
 name|queue
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -2936,6 +2934,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
 name|queue
@@ -3042,8 +3042,6 @@ condition|)
 block|{
 return|return;
 block|}
-try|try
-block|{
 name|this
 operator|.
 name|writeLock
@@ -3051,6 +3049,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|QueueMetrics
 name|metrics
 init|=
@@ -3144,13 +3144,13 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
-try|try
-block|{
 name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|AppPlacementAllocator
 name|ap
 init|=
@@ -3418,8 +3418,6 @@ name|String
 name|resourceName
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -3427,6 +3425,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|AppPlacementAllocator
 name|ap
 init|=
@@ -3479,8 +3479,6 @@ name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
-try|try
-block|{
 name|this
 operator|.
 name|readLock
@@ -3488,6 +3486,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|AppPlacementAllocator
 name|ap
 init|=

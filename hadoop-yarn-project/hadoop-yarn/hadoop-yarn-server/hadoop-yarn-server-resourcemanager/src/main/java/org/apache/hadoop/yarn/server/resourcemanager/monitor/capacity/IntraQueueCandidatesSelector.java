@@ -930,8 +930,6 @@ argument_list|)
 expr_stmt|;
 comment|// 7. Based on the selected resource demand per partition, select
 comment|// containers with known policy from inter-queue preemption.
-try|try
-block|{
 name|leafQueue
 operator|.
 name|getReadLock
@@ -940,6 +938,8 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|FiCaSchedulerApp

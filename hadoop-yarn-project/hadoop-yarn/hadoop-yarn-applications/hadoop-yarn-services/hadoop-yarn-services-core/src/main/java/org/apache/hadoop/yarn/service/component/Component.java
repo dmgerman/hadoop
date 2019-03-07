@@ -6864,13 +6864,13 @@ name|ComponentEvent
 name|event
 parameter_list|)
 block|{
-try|try
-block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|ComponentState
 name|oldState
 init|=
