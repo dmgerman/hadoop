@@ -1303,7 +1303,6 @@ operator|.
 name|getHostName
 argument_list|()
 expr_stmt|;
-comment|// slight race condition, but won't hurt
 name|canonicalizedHostCache
 operator|.
 name|putIfAbsent
@@ -1311,6 +1310,17 @@ argument_list|(
 name|host
 argument_list|,
 name|fqHost
+argument_list|)
+expr_stmt|;
+comment|// ensures that we won't return a canonicalized stale (non-cached)
+comment|// host name for a given host
+name|fqHost
+operator|=
+name|canonicalizedHostCache
+operator|.
+name|get
+argument_list|(
+name|host
 argument_list|)
 expr_stmt|;
 block|}
