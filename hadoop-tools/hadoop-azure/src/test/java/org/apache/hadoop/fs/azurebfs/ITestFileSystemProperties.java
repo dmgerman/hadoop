@@ -394,7 +394,7 @@ operator|.
 name|getAbfsStore
 argument_list|()
 operator|.
-name|getPathProperties
+name|getPathStatus
 argument_list|(
 name|TEST_PATH
 argument_list|)
@@ -565,7 +565,7 @@ operator|.
 name|getAbfsStore
 argument_list|()
 operator|.
-name|getPathProperties
+name|getPathStatus
 argument_list|(
 name|TEST_PATH
 argument_list|)

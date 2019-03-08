@@ -1995,17 +1995,14 @@ return|return
 name|op
 return|;
 block|}
-DECL|method|getPathProperties (final String path, boolean isNameSpaceEnabled)
+DECL|method|getPathStatus (final String path)
 specifier|public
 name|AbfsRestOperation
-name|getPathProperties
+name|getPathStatus
 parameter_list|(
 specifier|final
 name|String
 name|path
-parameter_list|,
-name|boolean
-name|isNameSpaceEnabled
 parameter_list|)
 throws|throws
 name|AzureBlobFileSystemException
@@ -2067,12 +2064,6 @@ init|=
 operator|new
 name|AbfsRestOperation
 argument_list|(
-name|isNameSpaceEnabled
-condition|?
-name|AbfsRestOperationType
-operator|.
-name|GetPathProperties
-else|:
 name|AbfsRestOperationType
 operator|.
 name|GetPathStatus

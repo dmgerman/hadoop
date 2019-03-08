@@ -2048,7 +2048,7 @@ name|commaSeparatedProperties
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getPathProperties (final Path path)
+DECL|method|getPathStatus (final Path path)
 specifier|public
 name|Hashtable
 argument_list|<
@@ -2056,7 +2056,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|getPathProperties
+name|getPathStatus
 parameter_list|(
 specifier|final
 name|Path
@@ -2069,7 +2069,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getPathProperties for filesystem: {} path: {}"
+literal|"getPathStatus for filesystem: {} path: {}"
 argument_list|,
 name|client
 operator|.
@@ -2094,7 +2094,7 @@ name|op
 init|=
 name|client
 operator|.
-name|getPathProperties
+name|getPathStatus
 argument_list|(
 name|AbfsHttpConstants
 operator|.
@@ -2104,8 +2104,6 @@ name|getRelativePath
 argument_list|(
 name|path
 argument_list|)
-argument_list|,
-name|isNamespaceEnabled
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -2513,7 +2511,7 @@ name|op
 init|=
 name|client
 operator|.
-name|getPathProperties
+name|getPathStatus
 argument_list|(
 name|AbfsHttpConstants
 operator|.
@@ -2523,8 +2521,6 @@ name|getRelativePath
 argument_list|(
 name|path
 argument_list|)
-argument_list|,
-name|isNamespaceEnabled
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -2689,7 +2685,7 @@ name|op
 init|=
 name|client
 operator|.
-name|getPathProperties
+name|getPathStatus
 argument_list|(
 name|AbfsHttpConstants
 operator|.
@@ -2699,8 +2695,6 @@ name|getRelativePath
 argument_list|(
 name|path
 argument_list|)
-argument_list|,
-name|isNamespaceEnabled
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -3097,7 +3091,7 @@ name|op
 operator|=
 name|client
 operator|.
-name|getPathProperties
+name|getPathStatus
 argument_list|(
 name|AbfsHttpConstants
 operator|.
@@ -3107,8 +3101,6 @@ name|getRelativePath
 argument_list|(
 name|path
 argument_list|)
-argument_list|,
-name|isNamespaceEnabled
 argument_list|)
 expr_stmt|;
 block|}
