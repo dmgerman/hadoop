@@ -587,8 +587,12 @@ name|SCMEvents
 operator|.
 name|CHILL_MODE_STATUS
 argument_list|,
+operator|new
+name|ChillModeStatus
+argument_list|(
 name|getInChillMode
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -806,6 +810,44 @@ argument_list|(
 name|ATLEAST_ONE_DATANODE_REPORTED_PIPELINE_EXIT_RULE
 argument_list|)
 return|;
+block|}
+comment|/**    * Class used during ChillMode status event.    */
+DECL|class|ChillModeStatus
+specifier|public
+specifier|static
+class|class
+name|ChillModeStatus
+block|{
+DECL|field|chillModeStatus
+specifier|private
+name|boolean
+name|chillModeStatus
+decl_stmt|;
+DECL|method|ChillModeStatus (boolean chillModeState)
+specifier|public
+name|ChillModeStatus
+parameter_list|(
+name|boolean
+name|chillModeState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|chillModeStatus
+operator|=
+name|chillModeState
+expr_stmt|;
+block|}
+DECL|method|getChillModeStatus ()
+specifier|public
+name|boolean
+name|getChillModeStatus
+parameter_list|()
+block|{
+return|return
+name|chillModeStatus
+return|;
+block|}
 block|}
 block|}
 end_class

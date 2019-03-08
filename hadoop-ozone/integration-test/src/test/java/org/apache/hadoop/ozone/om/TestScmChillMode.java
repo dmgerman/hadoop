@@ -613,6 +613,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|sun
+operator|.
+name|rmi
+operator|.
+name|runtime
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -2082,7 +2094,13 @@ name|SCMEvents
 operator|.
 name|CHILL_MODE_STATUS
 argument_list|,
+operator|new
+name|SCMChillModeManager
+operator|.
+name|ChillModeStatus
+argument_list|(
 literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils

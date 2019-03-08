@@ -668,11 +668,6 @@ specifier|public
 class|class
 name|BlockManagerImpl
 implements|implements
-name|EventHandler
-argument_list|<
-name|Boolean
-argument_list|>
-implements|,
 name|BlockManager
 implements|,
 name|BlockmanagerMXBean
@@ -1627,16 +1622,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|onMessage (Boolean inChillMode, EventPublisher publisher)
+DECL|method|setChillModeStatus (boolean chillModeStatus)
 specifier|public
 name|void
-name|onMessage
+name|setChillModeStatus
 parameter_list|(
-name|Boolean
-name|inChillMode
-parameter_list|,
-name|EventPublisher
-name|publisher
+name|boolean
+name|chillModeStatus
 parameter_list|)
 block|{
 name|this
@@ -1645,7 +1637,7 @@ name|chillModePrecheck
 operator|.
 name|setInChillMode
 argument_list|(
-name|inChillMode
+name|chillModeStatus
 argument_list|)
 expr_stmt|;
 block|}
