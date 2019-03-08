@@ -94,6 +94,18 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -374,6 +386,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -448,6 +474,31 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/** Configuration key for {@link #autoMsyncPeriodMs}. */
+DECL|field|AUTO_MSYNC_PERIOD_KEY_PREFIX
+specifier|static
+specifier|final
+name|String
+name|AUTO_MSYNC_PERIOD_KEY_PREFIX
+init|=
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|PREFIX
+operator|+
+literal|"observer.auto-msync-period"
+decl_stmt|;
+comment|/** Auto-msync disabled by default. */
+DECL|field|AUTO_MSYNC_PERIOD_DEFAULT
+specifier|static
+specifier|final
+name|long
+name|AUTO_MSYNC_PERIOD_DEFAULT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** Client-side context for syncing with the NameNode server side. */
 DECL|field|alignmentContext
 specifier|private
@@ -500,6 +551,23 @@ DECL|field|observerReadEnabled
 specifier|private
 name|boolean
 name|observerReadEnabled
+decl_stmt|;
+comment|/**    * This adjusts how frequently this proxy provider should auto-msync to the    * Active NameNode, automatically performing an msync() call to the active    * to fetch the current transaction ID before submitting read requests to    * observer nodes. See HDFS-14211 for more description of this feature.    * If this is below 0, never auto-msync. If this is 0, perform an msync on    * every read operation. If this is above 0, perform an msync after this many    * ms have elapsed since the last msync.    */
+DECL|field|autoMsyncPeriodMs
+specifier|private
+specifier|final
+name|long
+name|autoMsyncPeriodMs
+decl_stmt|;
+comment|/**    * The time, in millisecond epoch, that the last msync operation was    * performed. This includes any implicit msync (any operation which is    * serviced by the Active NameNode).    */
+DECL|field|lastMsyncTimeMs
+specifier|private
+specifier|volatile
+name|long
+name|lastMsyncTimeMs
+init|=
+operator|-
+literal|1
 decl_stmt|;
 comment|/**    * A client using an ObserverReadProxyProvider should first sync with the    * active NameNode on startup. This ensures that the client reads data which    * is consistent with the state of the world as of the time of its    * instantiation. This variable will be true after this initial sync has    * been performed.    */
 DECL|field|msynced
@@ -793,6 +861,29 @@ name|combinedInfo
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|autoMsyncPeriodMs
+operator|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+comment|// The host of the URI is the nameservice ID
+name|AUTO_MSYNC_PERIOD_KEY_PREFIX
+operator|+
+literal|"."
+operator|+
+name|uri
+operator|.
+name|getHost
+argument_list|()
+argument_list|,
+name|AUTO_MSYNC_PERIOD_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 comment|// TODO : make this configurable or remove this variable
@@ -1141,6 +1232,110 @@ name|msynced
 operator|=
 literal|true
 expr_stmt|;
+name|lastMsyncTimeMs
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * This will call {@link ClientProtocol#msync()} on the active NameNode    * (via the {@link #failoverProxy}) to update the state of this client, only    * if at least {@link #autoMsyncPeriodMs} ms has elapsed since the last time    * an msync was performed.    *    * @see #autoMsyncPeriodMs    */
+end_comment
+
+begin_function
+DECL|method|autoMsyncIfNecessary ()
+specifier|private
+name|void
+name|autoMsyncIfNecessary
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|autoMsyncPeriodMs
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Always msync
+name|failoverProxy
+operator|.
+name|getProxy
+argument_list|()
+operator|.
+name|proxy
+operator|.
+name|msync
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|autoMsyncPeriodMs
+operator|>
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|lastMsyncTimeMs
+operator|>
+name|autoMsyncPeriodMs
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// Use a synchronized block so that only one thread will msync
+comment|// if many operations are submitted around the same time.
+comment|// Re-check the entry criterion since the status may have changed
+comment|// while waiting for the lock.
+if|if
+condition|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|lastMsyncTimeMs
+operator|>
+name|autoMsyncPeriodMs
+condition|)
+block|{
+name|failoverProxy
+operator|.
+name|getProxy
+argument_list|()
+operator|.
+name|proxy
+operator|.
+name|msync
+argument_list|()
+expr_stmt|;
+name|lastMsyncTimeMs
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
 block|}
 end_function
 
@@ -1204,6 +1399,12 @@ block|{
 comment|// An msync() must first be performed to ensure that this client is
 comment|// up-to-date with the active's state. This will only be done once.
 name|initializeMsync
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|autoMsyncIfNecessary
 argument_list|()
 expr_stmt|;
 block|}
@@ -1619,6 +1820,13 @@ comment|// state is up-to-date with active and no further msync is needed.
 name|msynced
 operator|=
 literal|true
+expr_stmt|;
+name|lastMsyncTimeMs
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 expr_stmt|;
 name|lastProxy
 operator|=
