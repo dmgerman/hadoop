@@ -403,6 +403,71 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|File
+name|metadataDir
+init|=
+name|getDirWithFallBackToOzoneMetadata
+argument_list|(
+name|conf
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_DB_DIRS
+argument_list|,
+literal|"SCM"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|metadataDir
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|metadataDir
+return|;
+block|}
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"{} is not configured. We recommend adding this setting. "
+operator|+
+literal|"Falling back to {} instead."
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_DB_DIRS
+argument_list|,
+name|HddsConfigKeys
+operator|.
+name|OZONE_METADATA_DIRS
+argument_list|)
+expr_stmt|;
+return|return
+name|getOzoneMetaDirPath
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+DECL|method|getDirWithFallBackToOzoneMetadata (Configuration conf, String key, String componentName)
+specifier|public
+specifier|static
+name|File
+name|getDirWithFallBackToOzoneMetadata
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|String
+name|componentName
+parameter_list|)
+block|{
 specifier|final
 name|Collection
 argument_list|<
@@ -414,9 +479,7 @@ name|conf
 operator|.
 name|getTrimmedStringCollection
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_DB_DIRS
+name|key
 argument_list|)
 decl_stmt|;
 if|if
@@ -435,11 +498,13 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Bad config setting "
 operator|+
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_DB_DIRS
+name|key
 operator|+
-literal|". SCM does not support multiple metadata dirs currently"
+literal|". "
+operator|+
+name|componentName
+operator|+
+literal|" does not support multiple metadata dirs currently"
 argument_list|)
 throw|;
 block|}
@@ -504,28 +569,8 @@ return|return
 name|dbDirPath
 return|;
 block|}
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"{} is not configured. We recommend adding this setting. "
-operator|+
-literal|"Falling back to {} instead."
-argument_list|,
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_DB_DIRS
-argument_list|,
-name|HddsConfigKeys
-operator|.
-name|OZONE_METADATA_DIRS
-argument_list|)
-expr_stmt|;
 return|return
-name|getOzoneMetaDirPath
-argument_list|(
-name|conf
-argument_list|)
+literal|null
 return|;
 block|}
 comment|/**    * Checks and creates Ozone Metadir Path if it does not exist.    *    * @param conf - Configuration    *    * @return File MetaDir    */

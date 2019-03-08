@@ -110,7 +110,7 @@ name|getHttpAddressKey
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTP_ADDRESS_KEY
 return|;
@@ -124,7 +124,7 @@ name|getHttpsAddressKey
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTPS_ADDRESS_KEY
 return|;
@@ -138,7 +138,7 @@ name|getHttpBindHostKey
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTP_BIND_HOST_KEY
 return|;
@@ -152,7 +152,7 @@ name|getHttpsBindHostKey
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTPS_BIND_HOST_KEY
 return|;
@@ -166,7 +166,7 @@ name|getBindHostDefault
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTP_BIND_HOST_DEFAULT
 return|;
@@ -180,7 +180,7 @@ name|getHttpBindPortDefault
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTP_BIND_PORT_DEFAULT
 return|;
@@ -194,7 +194,7 @@ name|getHttpsBindPortDefault
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTPS_BIND_PORT_DEFAULT
 return|;
@@ -208,7 +208,7 @@ name|getKeytabFile
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_KEYTAB_FILE
 return|;
@@ -222,7 +222,7 @@ name|getSpnegoPrincipal
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
 return|;
@@ -236,7 +236,7 @@ name|getEnabledKey
 parameter_list|()
 block|{
 return|return
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 operator|.
 name|OZONE_RECON_HTTP_ENABLED_KEY
 return|;

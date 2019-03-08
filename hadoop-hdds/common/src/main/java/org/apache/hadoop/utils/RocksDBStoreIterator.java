@@ -186,6 +186,26 @@ name|seekToLast
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|prefixSeek (byte[] prefix)
+specifier|public
+name|void
+name|prefixSeek
+parameter_list|(
+name|byte
+index|[]
+name|prefix
+parameter_list|)
+block|{
+name|rocksDBIterator
+operator|.
+name|seek
+argument_list|(
+name|prefix
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

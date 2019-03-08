@@ -59,11 +59,11 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|ReconServerConfiguration
+DECL|class|ReconServerConfigKeys
 specifier|public
 specifier|final
 class|class
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 block|{
 DECL|field|OZONE_RECON_HTTP_ENABLED_KEY
 specifier|public
@@ -155,19 +155,37 @@ name|OZONE_RECON_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL
 init|=
 literal|"ozone.recon.authentication.kerberos.principal"
 decl_stmt|;
-DECL|field|OZONE_RECON_DOMAIN_NAME
+DECL|field|OZONE_RECON_CONTAINER_DB_CACHE_SIZE_MB
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|OZONE_RECON_DOMAIN_NAME
+name|OZONE_RECON_CONTAINER_DB_CACHE_SIZE_MB
 init|=
-literal|"ozone.recon.domain.name"
+literal|"ozone.recon.container.db.cache.size.mb"
+decl_stmt|;
+DECL|field|OZONE_RECON_CONTAINER_DB_CACHE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_RECON_CONTAINER_DB_CACHE_SIZE_DEFAULT
+init|=
+literal|128
+decl_stmt|;
+DECL|field|OZONE_RECON_DB_DIRS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_RECON_DB_DIRS
+init|=
+literal|"ozone.recon.db.dirs"
 decl_stmt|;
 comment|/**    * Private constructor for utility class.    */
-DECL|method|ReconServerConfiguration ()
+DECL|method|ReconServerConfigKeys ()
 specifier|private
-name|ReconServerConfiguration
+name|ReconServerConfigKeys
 parameter_list|()
 block|{   }
 block|}
