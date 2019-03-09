@@ -455,6 +455,15 @@ operator|.
 name|logging
 operator|.
 name|Logger
+name|logger
+init|=
+name|java
+operator|.
+name|util
+operator|.
+name|logging
+operator|.
+name|Logger
 operator|.
 name|getLogger
 argument_list|(
@@ -465,6 +474,8 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|logger
 operator|.
 name|setLevel
 argument_list|(
@@ -491,6 +502,16 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+comment|// Strong reference needs to be kept to logger until initialization of SSLContext finished (see HADOOP-16174):
+name|logger
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|INFO
 argument_list|)
 expr_stmt|;
 name|channelMode
