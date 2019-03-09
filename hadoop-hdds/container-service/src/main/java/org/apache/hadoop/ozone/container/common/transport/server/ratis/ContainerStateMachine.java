@@ -1541,6 +1541,15 @@ condition|(
 name|ti
 operator|!=
 literal|null
+operator|&&
+name|ti
+operator|.
+name|getIndex
+argument_list|()
+operator|!=
+name|RaftServerConstants
+operator|.
+name|INVALID_LOG_INDEX
 condition|)
 block|{
 specifier|final
@@ -1572,31 +1581,6 @@ name|snapshotFile
 argument_list|)
 expr_stmt|;
 try|try
-block|{
-comment|//TODO: For now, just create the file to save the term index,
-name|boolean
-name|created
-init|=
-name|snapshotFile
-operator|.
-name|createNewFile
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|created
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to create ratis snapshot file"
-argument_list|)
-throw|;
-block|}
-try|try
 init|(
 name|FileOutputStream
 name|fos
@@ -1613,7 +1597,6 @@ argument_list|(
 name|fos
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
