@@ -6779,10 +6779,6 @@ decl_stmt|;
 if|if
 condition|(
 name|t
-operator|!=
-literal|null
-operator|&&
-name|t
 operator|instanceof
 name|StorageException
 condition|)
@@ -9581,10 +9577,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|t
-operator|!=
-literal|null
-operator|&&
 name|t
 operator|instanceof
 name|StorageException
