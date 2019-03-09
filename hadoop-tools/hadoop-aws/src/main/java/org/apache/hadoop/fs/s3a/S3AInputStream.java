@@ -1069,7 +1069,7 @@ operator|>
 literal|0
 operator|&&
 name|diff
-operator|<=
+operator|<
 name|forwardSeekLimit
 decl_stmt|;
 if|if
@@ -1132,6 +1132,18 @@ name|targetPos
 condition|)
 block|{
 comment|// all is well
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Now at {}: bytes remaining in current request: {}"
+argument_list|,
+name|pos
+argument_list|,
+name|remainingInCurrentRequest
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 else|else

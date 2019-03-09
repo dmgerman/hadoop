@@ -1378,7 +1378,7 @@ argument_list|()
 argument_list|,
 name|testSeekFile
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|block
 argument_list|)
@@ -1661,7 +1661,7 @@ argument_list|()
 argument_list|,
 name|testSeekFile
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|block
 argument_list|)
