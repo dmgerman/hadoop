@@ -365,12 +365,6 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-if|if
-condition|(
-name|isEnabled
-argument_list|()
-condition|)
-block|{
 name|policy
 operator|=
 name|DFSUtil
@@ -382,9 +376,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|policy
-operator|.
-name|isHttpEnabled
+name|isEnabled
 argument_list|()
 condition|)
 block|{
@@ -395,15 +387,6 @@ operator|=
 name|getHttpBindAddress
 argument_list|()
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|policy
-operator|.
-name|isHttpsEnabled
-argument_list|()
-condition|)
-block|{
 name|this
 operator|.
 name|httpsAddress
@@ -411,7 +394,6 @@ operator|=
 name|getHttpsBindAddress
 argument_list|()
 expr_stmt|;
-block|}
 name|HttpServer2
 operator|.
 name|Builder
