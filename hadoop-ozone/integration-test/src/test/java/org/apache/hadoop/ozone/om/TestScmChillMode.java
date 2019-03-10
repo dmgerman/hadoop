@@ -613,18 +613,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|sun
-operator|.
-name|rmi
-operator|.
-name|runtime
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.

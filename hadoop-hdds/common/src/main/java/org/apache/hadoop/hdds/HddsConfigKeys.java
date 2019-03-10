@@ -32,32 +32,6 @@ name|DBProfile
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|ratis
-operator|.
-name|util
-operator|.
-name|TimeDuration
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeUnit
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class contains constants for configuration keys and default values  * used in hdds.  */
 end_comment
