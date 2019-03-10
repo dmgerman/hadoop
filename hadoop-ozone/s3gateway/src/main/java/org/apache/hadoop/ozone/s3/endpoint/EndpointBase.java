@@ -582,7 +582,7 @@ argument_list|()
 operator|!=
 name|ResultCodes
 operator|.
-name|VOLUME_ALREADY_EXISTS
+name|S3_BUCKET_ALREADY_EXISTS
 condition|)
 block|{
 comment|// S3 does not return error for bucket already exists, it just
