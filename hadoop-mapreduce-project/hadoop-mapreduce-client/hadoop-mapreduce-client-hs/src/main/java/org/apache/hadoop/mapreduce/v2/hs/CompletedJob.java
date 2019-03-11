@@ -2473,13 +2473,27 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|String
+name|errorMsg
+init|=
+literal|"Could not load history file "
+operator|+
+name|historyFileAbsolute
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|errorMsg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"Could not load history file "
-operator|+
-name|historyFileAbsolute
+name|errorMsg
 argument_list|,
 name|e
 argument_list|)
@@ -2500,13 +2514,27 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|String
+name|errorMsg
+init|=
+literal|"Could not parse history file "
+operator|+
+name|historyFileAbsolute
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|errorMsg
+argument_list|,
+name|parseException
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"Could not parse history file "
-operator|+
-name|historyFileAbsolute
+name|errorMsg
 argument_list|,
 name|parseException
 argument_list|)
@@ -2515,11 +2543,23 @@ block|}
 block|}
 else|else
 block|{
+name|String
+name|errorMsg
+init|=
+literal|"History file not found"
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|errorMsg
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"History file not found"
+name|errorMsg
 argument_list|)
 throw|;
 block|}
