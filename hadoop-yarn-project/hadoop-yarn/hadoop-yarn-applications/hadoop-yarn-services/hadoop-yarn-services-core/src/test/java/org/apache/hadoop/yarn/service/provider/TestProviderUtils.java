@@ -1005,6 +1005,51 @@ argument_list|)
 expr_stmt|;
 end_expr_stmt
 
-unit|} }
+begin_function
+unit|}    @
+name|Test
+DECL|method|testReplaceSpacesWithDelimiter ()
+specifier|public
+name|void
+name|testReplaceSpacesWithDelimiter
+parameter_list|()
+block|{
+name|String
+name|command
+init|=
+literal|"ls  -l \" space\""
+decl_stmt|;
+name|String
+name|expected
+init|=
+literal|"ls,-l, space"
+decl_stmt|;
+name|String
+name|actual
+init|=
+name|ProviderUtils
+operator|.
+name|replaceSpacesWithDelimiter
+argument_list|(
+name|command
+argument_list|,
+literal|","
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"replaceSpaceWithDelimiter produces unexpected result."
+argument_list|,
+name|expected
+argument_list|,
+name|actual
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+unit|}
 end_unit
 

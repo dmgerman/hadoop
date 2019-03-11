@@ -514,6 +514,29 @@ name|launchCommand
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|launchCommand
+operator|.
+name|contains
+argument_list|(
+literal|" "
+argument_list|)
+condition|)
+block|{
+comment|// convert space delimiter command to exec format
+name|launchCommand
+operator|=
+name|ProviderUtils
+operator|.
+name|replaceSpacesWithDelimiter
+argument_list|(
+name|launchCommand
+argument_list|,
+literal|","
+argument_list|)
+expr_stmt|;
+block|}
 name|launcher
 operator|.
 name|addCommand
