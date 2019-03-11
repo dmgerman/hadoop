@@ -42,26 +42,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -163,6 +143,24 @@ operator|.
 name|storage
 operator|.
 name|BlockOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|storage
+operator|.
+name|BufferPool
 import|;
 end_import
 
@@ -328,20 +326,17 @@ specifier|final
 name|long
 name|watchTimeout
 decl_stmt|;
-DECL|field|bufferList
+DECL|field|bufferPool
 specifier|private
-name|List
-argument_list|<
-name|ByteBuffer
-argument_list|>
-name|bufferList
+name|BufferPool
+name|bufferPool
 decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|BlockOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, List<ByteBuffer> bufferList, ChecksumType checksumType, int bytesPerChecksum, Token<OzoneBlockTokenIdentifier> token)
+DECL|method|BlockOutputStreamEntry (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String requestId, int chunkSize, long length, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, BufferPool bufferPool, ChecksumType checksumType, int bytesPerChecksum, Token<OzoneBlockTokenIdentifier> token)
 specifier|private
 name|BlockOutputStreamEntry
 parameter_list|(
@@ -375,11 +370,8 @@ parameter_list|,
 name|long
 name|watchTimeout
 parameter_list|,
-name|List
-argument_list|<
-name|ByteBuffer
-argument_list|>
-name|bufferList
+name|BufferPool
+name|bufferPool
 parameter_list|,
 name|ChecksumType
 name|checksumType
@@ -474,9 +466,9 @@ name|watchTimeout
 expr_stmt|;
 name|this
 operator|.
-name|bufferList
+name|bufferPool
 operator|=
-name|bufferList
+name|bufferPool
 expr_stmt|;
 name|this
 operator|.
@@ -586,7 +578,7 @@ name|streamBufferMaxSize
 argument_list|,
 name|watchTimeout
 argument_list|,
-name|bufferList
+name|bufferPool
 argument_list|,
 name|checksumType
 argument_list|,
@@ -990,13 +982,10 @@ specifier|private
 name|long
 name|watchTimeout
 decl_stmt|;
-DECL|field|bufferList
+DECL|field|bufferPool
 specifier|private
-name|List
-argument_list|<
-name|ByteBuffer
-argument_list|>
-name|bufferList
+name|BufferPool
+name|bufferPool
 decl_stmt|;
 DECL|field|token
 specifier|private
@@ -1244,23 +1233,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setBufferList (List<ByteBuffer> bffrLst)
+DECL|method|setbufferPool (BufferPool pool)
 specifier|public
 name|Builder
-name|setBufferList
+name|setbufferPool
 parameter_list|(
-name|List
-argument_list|<
-name|ByteBuffer
-argument_list|>
-name|bffrLst
+name|BufferPool
+name|pool
 parameter_list|)
 block|{
 name|this
 operator|.
-name|bufferList
+name|bufferPool
 operator|=
-name|bffrLst
+name|pool
 expr_stmt|;
 return|return
 name|this
@@ -1318,7 +1304,7 @@ name|streamBufferMaxSize
 argument_list|,
 name|watchTimeout
 argument_list|,
-name|bufferList
+name|bufferPool
 argument_list|,
 name|checksumType
 argument_list|,
@@ -1439,17 +1425,14 @@ return|return
 name|watchTimeout
 return|;
 block|}
-DECL|method|getBufferList ()
+DECL|method|getBufferPool ()
 specifier|public
-name|List
-argument_list|<
-name|ByteBuffer
-argument_list|>
-name|getBufferList
+name|BufferPool
+name|getBufferPool
 parameter_list|()
 block|{
 return|return
-name|bufferList
+name|bufferPool
 return|;
 block|}
 DECL|method|setCurrentPosition (long curPosition)

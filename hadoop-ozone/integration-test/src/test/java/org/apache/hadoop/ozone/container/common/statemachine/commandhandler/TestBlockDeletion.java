@@ -1253,7 +1253,7 @@ name|HddsProtos
 operator|.
 name|ReplicationType
 operator|.
-name|STAND_ALONE
+name|RATIS
 argument_list|)
 operator|.
 name|setFactor
