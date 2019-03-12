@@ -783,7 +783,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 name|sequenceNum
@@ -820,10 +820,7 @@ name|identifier
 operator|.
 name|setMaxDate
 argument_list|(
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
+name|now
 operator|+
 name|getTokenMaxLifetime
 argument_list|()
@@ -954,7 +951,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -1499,7 +1496,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -1658,7 +1655,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 for|for
@@ -2240,7 +2237,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
@@ -2413,7 +2410,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 if|if
