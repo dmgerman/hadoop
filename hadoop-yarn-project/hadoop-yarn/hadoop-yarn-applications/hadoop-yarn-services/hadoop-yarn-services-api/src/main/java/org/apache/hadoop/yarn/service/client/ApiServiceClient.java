@@ -772,27 +772,6 @@ specifier|protected
 name|YarnClient
 name|yarnClient
 decl_stmt|;
-DECL|method|ApiServiceClient ()
-specifier|public
-name|ApiServiceClient
-parameter_list|()
-block|{   }
-DECL|method|ApiServiceClient (Configuration c)
-specifier|public
-name|ApiServiceClient
-parameter_list|(
-name|Configuration
-name|c
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|serviceInit
-argument_list|(
-name|c
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|serviceInit (Configuration configuration)
 annotation|@
 name|Override
@@ -1158,7 +1137,7 @@ return|;
 block|}
 comment|/**    * Compute active resource manager API service location.    *    * @param appName - YARN service name    * @return URI to API Service    * @throws IOException    */
 DECL|method|getServicePath (String appName)
-specifier|public
+specifier|private
 name|String
 name|getServicePath
 parameter_list|(
@@ -1560,7 +1539,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getApiClient ()
-specifier|public
+specifier|private
 name|Builder
 name|getApiClient
 parameter_list|()
@@ -1579,7 +1558,7 @@ return|;
 block|}
 comment|/**    * Setup API service web request.    *    * @param requestPath    * @return    * @throws IOException    */
 DECL|method|getApiClient (String requestPath)
-specifier|public
+specifier|private
 name|Builder
 name|getApiClient
 parameter_list|(
