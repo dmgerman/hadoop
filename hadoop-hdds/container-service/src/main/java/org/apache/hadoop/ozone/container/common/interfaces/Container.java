@@ -381,6 +381,14 @@ name|long
 name|blockCommitSequenceId
 parameter_list|)
 function_decl|;
+comment|/**    * check and report the structural integrity of the container.    */
+DECL|method|check ()
+name|void
+name|check
+parameter_list|()
+throws|throws
+name|StorageContainerException
+function_decl|;
 block|}
 end_interface
 

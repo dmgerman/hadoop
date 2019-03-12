@@ -58,6 +58,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
@@ -559,6 +573,11 @@ specifier|final
 name|ContainerController
 name|controller
 decl_stmt|;
+DECL|field|scrubber
+specifier|private
+name|ContainerScrubber
+name|scrubber
+decl_stmt|;
 comment|/**    * Construct OzoneContainer object.    * @param datanodeDetails    * @param conf    * @throws DiskOutOfSpaceException    * @throws IOException    */
 DECL|method|OzoneContainer (DatanodeDetails datanodeDetails, OzoneConfiguration conf, StateContext context)
 specifier|public
@@ -604,6 +623,12 @@ operator|=
 operator|new
 name|ContainerSet
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|scrubber
+operator|=
+literal|null
 expr_stmt|;
 name|buildContainerSet
 argument_list|()
@@ -883,6 +908,90 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Start background daemon thread for performing container integrity checks.    */
+DECL|method|startContainerScrub ()
+specifier|private
+name|void
+name|startContainerScrub
+parameter_list|()
+block|{
+name|boolean
+name|enabled
+init|=
+name|config
+operator|.
+name|getBoolean
+argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINERSCRUB_ENABLED
+argument_list|,
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINERSCRUB_ENABLED_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|enabled
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Background container scrubber has been disabled by {}"
+argument_list|,
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINERSCRUB_ENABLED
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|scrubber
+operator|=
+operator|new
+name|ContainerScrubber
+argument_list|(
+name|containerSet
+argument_list|,
+name|config
+argument_list|)
+expr_stmt|;
+name|scrubber
+operator|.
+name|up
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Stop the scanner thread and wait for thread to die.    */
+DECL|method|stopContainerScrub ()
+specifier|private
+name|void
+name|stopContainerScrub
+parameter_list|()
+block|{
+if|if
+condition|(
+name|scrubber
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|scrubber
+operator|.
+name|down
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Starts serving requests to ozone container.    *    * @throws IOException    */
 DECL|method|start ()
 specifier|public
@@ -898,6 +1007,9 @@ name|info
 argument_list|(
 literal|"Attempting to start container services."
 argument_list|)
+expr_stmt|;
+name|startContainerScrub
+argument_list|()
 expr_stmt|;
 name|writeChannel
 operator|.
@@ -929,6 +1041,9 @@ name|info
 argument_list|(
 literal|"Attempting to stop container services."
 argument_list|)
+expr_stmt|;
+name|stopContainerScrub
+argument_list|()
 expr_stmt|;
 name|writeChannel
 operator|.
