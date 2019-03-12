@@ -2333,7 +2333,6 @@ block|}
 block|}
 comment|/**    * Class used for tracking datanode level storage utilization similar    * to {@link FSVolumeSet}    */
 DECL|class|SimulatedStorage
-specifier|private
 specifier|static
 class|class
 name|SimulatedStorage
@@ -3093,9 +3092,27 @@ name|StorageLocation
 name|getStorageLocation
 parameter_list|()
 block|{
+try|try
+block|{
+return|return
+name|StorageLocation
+operator|.
+name|parse
+argument_list|(
+literal|"[DISK]file:///simulated"
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
 return|return
 literal|null
 return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -3234,6 +3251,19 @@ specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
+DECL|method|getStorages ()
+specifier|public
+name|List
+argument_list|<
+name|SimulatedStorage
+argument_list|>
+name|getStorages
+parameter_list|()
+block|{
+return|return
+name|storages
+return|;
+block|}
 DECL|method|SimulatedFSDataset (DataStorage storage, Configuration conf)
 specifier|public
 name|SimulatedFSDataset

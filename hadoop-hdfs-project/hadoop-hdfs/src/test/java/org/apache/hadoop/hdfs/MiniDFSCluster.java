@@ -11021,14 +11021,16 @@ literal|false
 argument_list|)
 return|;
 block|}
-DECL|method|waitDataNodeFullyStarted (final DataNode dn)
-specifier|private
+DECL|method|waitDatanodeFullyStarted (DataNode dn, int timeout)
+specifier|public
 name|void
-name|waitDataNodeFullyStarted
+name|waitDatanodeFullyStarted
 parameter_list|(
-specifier|final
 name|DataNode
 name|dn
+parameter_list|,
+name|int
+name|timeout
 parameter_list|)
 throws|throws
 name|TimeoutException
@@ -11063,6 +11065,28 @@ block|}
 block|}
 argument_list|,
 literal|100
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|waitDataNodeFullyStarted (final DataNode dn)
+specifier|private
+name|void
+name|waitDataNodeFullyStarted
+parameter_list|(
+specifier|final
+name|DataNode
+name|dn
+parameter_list|)
+throws|throws
+name|TimeoutException
+throws|,
+name|InterruptedException
+block|{
+name|waitDatanodeFullyStarted
+argument_list|(
+name|dn
 argument_list|,
 literal|60000
 argument_list|)
