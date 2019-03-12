@@ -676,10 +676,8 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|OZONE_KEY_PREALLOCATION_MAXSIZE
+name|OZONE_KEY_PREALLOCATION_BLOCKS_MAX
 argument_list|,
-name|scmBlockSize
-operator|*
 literal|10
 argument_list|)
 expr_stmt|;
@@ -713,6 +711,11 @@ argument_list|(
 name|Mockito
 operator|.
 name|anyLong
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|anyInt
 argument_list|()
 argument_list|,
 name|Mockito

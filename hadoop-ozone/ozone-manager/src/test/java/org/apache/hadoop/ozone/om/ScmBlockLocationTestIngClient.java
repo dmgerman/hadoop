@@ -342,6 +342,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -599,13 +609,19 @@ block|}
 comment|/**    * Returns Fake blocks to the BlockManager so we get blocks in the Database.    * @param size - size of the block.    * @param type Replication Type    * @param factor - Replication factor    * @param owner - String owner.    * @param excludeList list of dns/pipelines to exclude    * @return    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateBlock (long size, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner, ExcludeList excludeList)
+DECL|method|allocateBlock (long size, int num, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, String owner, ExcludeList excludeList)
 specifier|public
+name|List
+argument_list|<
 name|AllocatedBlock
+argument_list|>
 name|allocateBlock
 parameter_list|(
 name|long
 name|size
+parameter_list|,
+name|int
+name|num
 parameter_list|,
 name|HddsProtos
 operator|.
@@ -686,10 +702,15 @@ name|pipeline
 argument_list|)
 decl_stmt|;
 return|return
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
 name|abb
 operator|.
 name|build
 argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|createPipeline (DatanodeDetails datanode)

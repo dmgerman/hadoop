@@ -245,13 +245,19 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @param excludeList List of datanodes/containers to exclude during block    *                    allocation.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
-DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner, ExcludeList excludeList)
+comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @param numBlocks - number of blocks.    * @param type - replication type of the blocks.    * @param factor - replication factor of the blocks.    * @param excludeList List of datanodes/containers to exclude during block    *                    allocation.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
+DECL|method|allocateBlock (long size, int numBlocks, ReplicationType type, ReplicationFactor factor, String owner, ExcludeList excludeList)
+name|List
+argument_list|<
 name|AllocatedBlock
+argument_list|>
 name|allocateBlock
 parameter_list|(
 name|long
 name|size
+parameter_list|,
+name|int
+name|numBlocks
 parameter_list|,
 name|ReplicationType
 name|type
