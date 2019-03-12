@@ -170,9 +170,6 @@ parameter_list|()
 block|{
 return|return
 name|ports
-operator|.
-name|clone
-argument_list|()
 return|;
 block|}
 DECL|method|setPorts (String[] ports2)
@@ -190,9 +187,6 @@ operator|.
 name|ports
 operator|=
 name|ports2
-operator|.
-name|clone
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getVolumes ()
@@ -204,9 +198,6 @@ parameter_list|()
 block|{
 return|return
 name|volumes
-operator|.
-name|clone
-argument_list|()
 return|;
 block|}
 DECL|method|setVolumes (String[] volumes)
@@ -224,9 +215,6 @@ operator|.
 name|volumes
 operator|=
 name|volumes
-operator|.
-name|clone
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getEnv ()
@@ -238,9 +226,6 @@ parameter_list|()
 block|{
 return|return
 name|env
-operator|.
-name|clone
-argument_list|()
 return|;
 block|}
 DECL|method|setEnv (String[] env)
@@ -258,9 +243,6 @@ operator|.
 name|env
 operator|=
 name|env
-operator|.
-name|clone
-argument_list|()
 expr_stmt|;
 block|}
 block|}
