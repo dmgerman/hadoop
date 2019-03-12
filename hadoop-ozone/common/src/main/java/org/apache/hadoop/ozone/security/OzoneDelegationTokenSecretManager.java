@@ -148,6 +148,22 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|S3SecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|exceptions
 operator|.
 name|OMException
@@ -356,6 +372,20 @@ end_import
 
 begin_import
 import|import static
+name|java
+operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|StandardCharsets
+operator|.
+name|UTF_8
+import|;
+end_import
+
+begin_import
+import|import static
 name|org
 operator|.
 name|apache
@@ -373,6 +403,30 @@ operator|.
 name|ResultCodes
 operator|.
 name|TOKEN_EXPIRED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|OMTokenProto
+operator|.
+name|Type
+operator|.
+name|S3TOKEN
 import|;
 end_import
 
@@ -432,6 +486,12 @@ specifier|final
 name|OzoneSecretStore
 name|store
 decl_stmt|;
+DECL|field|s3SecretManager
+specifier|private
+specifier|final
+name|S3SecretManager
+name|s3SecretManager
+decl_stmt|;
 DECL|field|tokenRemoverThread
 specifier|private
 name|Thread
@@ -459,7 +519,7 @@ name|Object
 argument_list|()
 decl_stmt|;
 comment|/**    * Create a secret manager.    *    * @param conf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param dtRemoverScanInterval how often the tokens are scanned for expired    * tokens in milliseconds    */
-DECL|method|OzoneDelegationTokenSecretManager (OzoneConfiguration conf, long tokenMaxLifetime, long tokenRenewInterval, long dtRemoverScanInterval, Text service)
+DECL|method|OzoneDelegationTokenSecretManager (OzoneConfiguration conf, long tokenMaxLifetime, long tokenRenewInterval, long dtRemoverScanInterval, Text service, S3SecretManager s3SecretManager)
 specifier|public
 name|OzoneDelegationTokenSecretManager
 parameter_list|(
@@ -477,6 +537,9 @@ name|dtRemoverScanInterval
 parameter_list|,
 name|Text
 name|service
+parameter_list|,
+name|S3SecretManager
+name|s3SecretManager
 parameter_list|)
 throws|throws
 name|IOException
@@ -519,6 +582,12 @@ name|OzoneSecretStore
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|s3SecretManager
+operator|=
+name|s3SecretManager
 expr_stmt|;
 name|loadTokenSecretState
 argument_list|(
@@ -1437,6 +1506,26 @@ parameter_list|)
 throws|throws
 name|InvalidToken
 block|{
+if|if
+condition|(
+name|identifier
+operator|.
+name|getTokenType
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|S3TOKEN
+argument_list|)
+condition|)
+block|{
+return|return
+name|validateS3Token
+argument_list|(
+name|identifier
+argument_list|)
+return|;
+block|}
 return|return
 name|validateToken
 argument_list|(
@@ -1449,7 +1538,7 @@ return|;
 block|}
 comment|/**    * Checks if TokenInfo for the given identifier exists in database and if the    * token is expired.    */
 DECL|method|validateToken (OzoneTokenIdentifier identifier)
-specifier|public
+specifier|private
 name|TokenInfo
 name|validateToken
 parameter_list|(
@@ -1641,6 +1730,132 @@ return|return
 literal|false
 return|;
 block|}
+block|}
+comment|/**    * Validates if a S3 identifier is valid or not.    * */
+DECL|method|validateS3Token (OzoneTokenIdentifier identifier)
+specifier|private
+name|byte
+index|[]
+name|validateS3Token
+parameter_list|(
+name|OzoneTokenIdentifier
+name|identifier
+parameter_list|)
+throws|throws
+name|InvalidToken
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Validating S3Token for identifier:{}"
+argument_list|,
+name|identifier
+argument_list|)
+expr_stmt|;
+name|String
+name|awsSecret
+decl_stmt|;
+try|try
+block|{
+name|awsSecret
+operator|=
+name|s3SecretManager
+operator|.
+name|getS3UserSecretString
+argument_list|(
+name|identifier
+operator|.
+name|getAwsAccessId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error while validating S3 identifier:{}"
+argument_list|,
+name|identifier
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"No S3 secret found for S3 identifier:"
+operator|+
+name|identifier
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|awsSecret
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"No S3 secret found for S3 identifier:"
+operator|+
+name|identifier
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|AWSV4AuthValidator
+operator|.
+name|validateRequest
+argument_list|(
+name|identifier
+operator|.
+name|getStrToSign
+argument_list|()
+argument_list|,
+name|identifier
+operator|.
+name|getSignature
+argument_list|()
+argument_list|,
+name|awsSecret
+argument_list|)
+condition|)
+block|{
+return|return
+name|identifier
+operator|.
+name|getSignature
+argument_list|()
+operator|.
+name|getBytes
+argument_list|(
+name|UTF_8
+argument_list|)
+return|;
+block|}
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"Invalid S3 identifier:"
+operator|+
+name|identifier
+argument_list|)
+throw|;
 block|}
 comment|// TODO: handle roll private key/certificate
 DECL|method|removeExpiredKeys ()

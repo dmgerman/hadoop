@@ -66,6 +66,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * API to get s3 secret for given awsAccessKey.    * @param awsAccessKey    * */
+DECL|method|getS3UserSecretString (String awsAccessKey)
+name|String
+name|getS3UserSecretString
+parameter_list|(
+name|String
+name|awsAccessKey
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

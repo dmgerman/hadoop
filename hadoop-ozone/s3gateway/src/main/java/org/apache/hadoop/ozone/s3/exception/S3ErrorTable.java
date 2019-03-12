@@ -145,6 +145,42 @@ argument_list|,
 name|HTTP_NOT_FOUND
 argument_list|)
 decl_stmt|;
+DECL|field|AUTH_PROTOCOL_NOT_SUPPORTED
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|AUTH_PROTOCOL_NOT_SUPPORTED
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"AuthProtocolNotSupported"
+argument_list|,
+literal|"Auth protocol used for"
+operator|+
+literal|" this request is not supported."
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
+DECL|field|S3_TOKEN_CREATION_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|OS3Exception
+name|S3_TOKEN_CREATION_ERROR
+init|=
+operator|new
+name|OS3Exception
+argument_list|(
+literal|"InvalidRequest"
+argument_list|,
+literal|"Error creating s3 token creation."
+argument_list|,
+name|HTTP_BAD_REQUEST
+argument_list|)
+decl_stmt|;
 DECL|field|BUCKET_NOT_EMPTY
 specifier|public
 specifier|static

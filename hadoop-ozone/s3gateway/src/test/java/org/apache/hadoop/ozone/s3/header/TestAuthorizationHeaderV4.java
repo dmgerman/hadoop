@@ -108,9 +108,7 @@ name|ozone
 operator|.
 name|s3
 operator|.
-name|header
-operator|.
-name|AWSConstants
+name|AWSV4AuthParser
 operator|.
 name|DATE_FORMATTER
 import|;

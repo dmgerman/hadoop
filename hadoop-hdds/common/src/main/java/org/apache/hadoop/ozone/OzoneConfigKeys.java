@@ -1405,6 +1405,24 @@ name|OZONE_ACL_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|OZONE_S3_TOKEN_MAX_LIFETIME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_S3_TOKEN_MAX_LIFETIME_KEY
+init|=
+literal|"ozone.s3.token.max.lifetime"
+decl_stmt|;
+DECL|field|OZONE_S3_TOKEN_MAX_LIFETIME_KEY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_S3_TOKEN_MAX_LIFETIME_KEY_DEFAULT
+init|=
+literal|"3m"
+decl_stmt|;
 comment|//For technical reasons this is unused and hardcoded to the
 comment|// OzoneFileSystem.initialize.
 DECL|field|OZONE_FS_ISOLATED_CLASSLOADER

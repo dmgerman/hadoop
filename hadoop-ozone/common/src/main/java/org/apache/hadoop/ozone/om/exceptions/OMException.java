@@ -314,7 +314,10 @@ name|UNKNOWN_CIPHER_SUITE
 block|,
 DECL|enumConstant|INVALID_KMS_PROVIDER
 name|INVALID_KMS_PROVIDER
-block|,    }
+block|,
+DECL|enumConstant|TOKEN_CREATION_ERROR
+name|TOKEN_CREATION_ERROR
+block|}
 block|}
 end_class
 

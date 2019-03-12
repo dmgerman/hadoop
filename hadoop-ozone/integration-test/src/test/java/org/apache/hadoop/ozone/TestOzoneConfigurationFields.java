@@ -231,6 +231,15 @@ operator|.
 name|OZONE_OM_NODES_KEY
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_S3_TOKEN_MAX_LIFETIME_KEY
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
