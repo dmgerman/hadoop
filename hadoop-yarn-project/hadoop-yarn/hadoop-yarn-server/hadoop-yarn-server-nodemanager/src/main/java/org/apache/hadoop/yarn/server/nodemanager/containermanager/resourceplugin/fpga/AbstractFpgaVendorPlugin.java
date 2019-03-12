@@ -64,20 +64,6 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|Configurable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
 name|Configuration
 import|;
 end_import
@@ -124,6 +110,34 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|resources
+operator|.
+name|fpga
+operator|.
+name|FpgaResourceAllocator
+operator|.
+name|FpgaDevice
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -159,8 +173,6 @@ DECL|interface|AbstractFpgaVendorPlugin
 specifier|public
 interface|interface
 name|AbstractFpgaVendorPlugin
-extends|extends
-name|Configurable
 block|{
 comment|/**    * Check vendor's toolchain and required environment    * */
 DECL|method|initPlugin (Configuration conf)
@@ -201,9 +213,9 @@ name|getFpgaType
 parameter_list|()
 function_decl|;
 comment|/**    * The vendor plugin download required IP files to a required directory.    * It should check if the IP file has already been downloaded.    * @param id The identifier for IP file. Comes from application, ie. matrix_multi_v1    * @param dstDir The plugin should download IP file to this directory    * @param localizedResources The container localized resource can be searched for IP file. Key is    * localized file path and value is soft link names    * @return The absolute path string of IP file    * */
-DECL|method|downloadIP (String id, String dstDir, Map<Path, List<String>> localizedResources)
+DECL|method|retrieveIPfilePath (String id, String dstDir, Map<Path, List<String>> localizedResources)
 name|String
-name|downloadIP
+name|retrieveIPfilePath
 parameter_list|(
 name|String
 name|id
@@ -223,34 +235,17 @@ argument_list|>
 name|localizedResources
 parameter_list|)
 function_decl|;
-comment|/**    * The vendor plugin configure an IP file to a device    * @param ipPath The absolute path of the IP file    * @param majorMinorNumber The device in format&lt;major:minor&gt;    * @return configure device ok or not    * */
-DECL|method|configureIP (String ipPath, String majorMinorNumber)
+comment|/**    * The vendor plugin configure an IP file to a device    * @param ipPath The absolute path of the IP file    * @param device The FPGA device object    * @return configure device ok or not    * */
+DECL|method|configureIP (String ipPath, FpgaDevice device)
 name|boolean
 name|configureIP
 parameter_list|(
 name|String
 name|ipPath
 parameter_list|,
-name|String
-name|majorMinorNumber
+name|FpgaDevice
+name|device
 parameter_list|)
-function_decl|;
-annotation|@
-name|Override
-DECL|method|setConf (Configuration conf)
-name|void
-name|setConf
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-function_decl|;
-annotation|@
-name|Override
-DECL|method|getConf ()
-name|Configuration
-name|getConf
-parameter_list|()
 function_decl|;
 block|}
 end_interface
