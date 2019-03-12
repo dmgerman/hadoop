@@ -1356,6 +1356,8 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|FSDataInputStream
 name|fsin
 init|=
@@ -1368,7 +1370,8 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|int
 name|bufferSize
 init|=
@@ -1602,6 +1605,7 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
