@@ -305,10 +305,8 @@ name|instance
 operator|=
 name|DefaultMetricsSystem
 operator|.
-name|initialize
-argument_list|(
-literal|"TimelineService"
-argument_list|)
+name|instance
+argument_list|()
 operator|.
 name|register
 argument_list|(
