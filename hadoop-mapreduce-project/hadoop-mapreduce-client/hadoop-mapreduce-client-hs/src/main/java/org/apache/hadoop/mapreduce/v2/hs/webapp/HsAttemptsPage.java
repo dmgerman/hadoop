@@ -114,6 +114,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -357,16 +371,21 @@ name|AttemptsBlock
 block|{
 annotation|@
 name|Inject
-DECL|method|FewAttemptsBlock (App ctx)
+DECL|method|FewAttemptsBlock (App ctx, Configuration conf)
 name|FewAttemptsBlock
 parameter_list|(
 name|App
 name|ctx
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|ctx
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
