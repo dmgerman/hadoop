@@ -300,6 +300,27 @@ name|Pipeline
 name|pipeline
 parameter_list|)
 function_decl|;
+comment|/**    * Returns ContainerInfo which matches the requirements.    * @param size - the amount of space required in the container    * @param owner - the user which requires space in its owned container    * @param pipeline - pipeline to which the container should belong.    * @param excludedContainerIDS - containerIds to be excluded.    * @return ContainerInfo for the matching container.    */
+DECL|method|getMatchingContainer (long size, String owner, Pipeline pipeline, List<ContainerID> excludedContainerIDS)
+name|ContainerInfo
+name|getMatchingContainer
+parameter_list|(
+name|long
+name|size
+parameter_list|,
+name|String
+name|owner
+parameter_list|,
+name|Pipeline
+name|pipeline
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerID
+argument_list|>
+name|excludedContainerIDS
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
