@@ -763,6 +763,8 @@ name|OBJECT_PUT_REQUESTS_COMPLETED
 block|,
 name|OBJECT_SELECT_REQUESTS
 block|,
+name|STREAM_READ_VERSION_MISMATCHES
+block|,
 name|STREAM_WRITE_FAILURES
 block|,
 name|STREAM_WRITE_BLOCK_UPLOADS
@@ -2131,6 +2133,18 @@ operator|.
 name|bytesDiscardedInAbort
 argument_list|)
 expr_stmt|;
+name|incrementCounter
+argument_list|(
+name|STREAM_READ_VERSION_MISMATCHES
+argument_list|,
+name|statistics
+operator|.
+name|versionMismatches
+operator|.
+name|get
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2321,6 +2335,19 @@ DECL|field|inputPolicy
 specifier|public
 name|long
 name|inputPolicy
+decl_stmt|;
+comment|/** This is atomic so that it can be passed as a reference. */
+DECL|field|versionMismatches
+specifier|private
+specifier|final
+name|AtomicLong
+name|versionMismatches
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 DECL|method|InputStreamStatistics ()
 specifier|private
@@ -2563,6 +2590,17 @@ name|inputPolicy
 operator|=
 name|updatedPolicy
 expr_stmt|;
+block|}
+comment|/**      * Get a reference to the version mismatch counter.      * @return a counter which can be incremented.      */
+DECL|method|getVersionMismatchCounter ()
+specifier|public
+name|AtomicLong
+name|getVersionMismatchCounter
+parameter_list|()
+block|{
+return|return
+name|versionMismatches
+return|;
 block|}
 comment|/**      * String operator describes all the current statistics.      *<b>Important: there are no guarantees as to the stability      * of this value.</b>      * @return the current values of the stream statistics.      */
 annotation|@
@@ -2815,6 +2853,21 @@ operator|.
 name|append
 argument_list|(
 name|policySetCount
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", versionMismatches="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|versionMismatches
+operator|.
+name|get
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb

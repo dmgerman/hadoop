@@ -62,6 +62,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|ChangeDetectionPolicy
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|annotation
@@ -126,6 +144,13 @@ specifier|final
 name|S3AInputPolicy
 name|inputPolicy
 decl_stmt|;
+comment|/**    * How to detect and deal with the object being updated during read.    */
+DECL|field|changeDetectionPolicy
+specifier|private
+specifier|final
+name|ChangeDetectionPolicy
+name|changeDetectionPolicy
+decl_stmt|;
 comment|/**    * Readahead for GET operations/skip, etc.    */
 DECL|field|readahead
 specifier|private
@@ -133,8 +158,8 @@ specifier|final
 name|long
 name|readahead
 decl_stmt|;
-comment|/**    * Instantiate.    * @param path path of read    * @param isS3GuardEnabled true iff S3Guard is enabled.    * @param invoker invoker for normal retries.    * @param s3guardInvoker S3Guard-specific retry invoker.    * @param stats statistics (may be null)    * @param instrumentation FS instrumentation    * @param dstFileStatus target file status    * @param inputPolicy the input policy    * @param readahead readahead for GET operations/skip, etc.    */
-DECL|method|S3AReadOpContext ( final Path path, boolean isS3GuardEnabled, Invoker invoker, Invoker s3guardInvoker, @Nullable FileSystem.Statistics stats, S3AInstrumentation instrumentation, FileStatus dstFileStatus, S3AInputPolicy inputPolicy, final long readahead)
+comment|/**    * Instantiate.    * @param path path of read    * @param isS3GuardEnabled true iff S3Guard is enabled.    * @param invoker invoker for normal retries.    * @param s3guardInvoker S3Guard-specific retry invoker.    * @param stats statistics (may be null)    * @param instrumentation FS instrumentation    * @param dstFileStatus target file status    * @param inputPolicy the input policy    * @param readahead readahead for GET operations/skip, etc.    * @param changeDetectionPolicy change detection policy.    */
+DECL|method|S3AReadOpContext ( final Path path, boolean isS3GuardEnabled, Invoker invoker, Invoker s3guardInvoker, @Nullable FileSystem.Statistics stats, S3AInstrumentation instrumentation, FileStatus dstFileStatus, S3AInputPolicy inputPolicy, ChangeDetectionPolicy changeDetectionPolicy, final long readahead)
 specifier|public
 name|S3AReadOpContext
 parameter_list|(
@@ -166,6 +191,9 @@ name|dstFileStatus
 parameter_list|,
 name|S3AInputPolicy
 name|inputPolicy
+parameter_list|,
+name|ChangeDetectionPolicy
+name|changeDetectionPolicy
 parameter_list|,
 specifier|final
 name|long
@@ -220,6 +248,15 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|changeDetectionPolicy
+operator|=
+name|checkNotNull
+argument_list|(
+name|changeDetectionPolicy
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|readahead
 operator|=
 name|readahead
@@ -268,6 +305,16 @@ parameter_list|()
 block|{
 return|return
 name|inputPolicy
+return|;
+block|}
+DECL|method|getChangeDetectionPolicy ()
+specifier|public
+name|ChangeDetectionPolicy
+name|getChangeDetectionPolicy
+parameter_list|()
+block|{
+return|return
+name|changeDetectionPolicy
 return|;
 block|}
 comment|/**    * Get the readahead for this operation.    * @return a value {@literal>=} 0    */
@@ -333,6 +380,18 @@ operator|.
 name|append
 argument_list|(
 name|readahead
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", changeDetectionPolicy="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|changeDetectionPolicy
 argument_list|)
 expr_stmt|;
 name|sb

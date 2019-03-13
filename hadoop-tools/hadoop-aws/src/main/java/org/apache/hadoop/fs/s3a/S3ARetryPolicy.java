@@ -656,6 +656,31 @@ argument_list|,
 name|fail
 argument_list|)
 expr_stmt|;
+comment|// once the file has changed, trying again is not going to help
+name|policyMap
+operator|.
+name|put
+argument_list|(
+name|RemoteFileChangedException
+operator|.
+name|class
+argument_list|,
+name|fail
+argument_list|)
+expr_stmt|;
+comment|// likely only recovered by changing the policy configuration or s3
+comment|// implementation
+name|policyMap
+operator|.
+name|put
+argument_list|(
+name|NoVersionAttributeException
+operator|.
+name|class
+argument_list|,
+name|fail
+argument_list|)
+expr_stmt|;
 comment|// should really be handled by resubmitting to new location;
 comment|// that's beyond the scope of this retry policy
 name|policyMap

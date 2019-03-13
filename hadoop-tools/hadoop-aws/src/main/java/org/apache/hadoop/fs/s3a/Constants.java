@@ -1602,6 +1602,126 @@ name|ETAG_CHECKSUM_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Where to get the value to use in change detection.  E.g. eTag, or    * versionId?    */
+DECL|field|CHANGE_DETECT_SOURCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_SOURCE
+init|=
+literal|"fs.s3a.change.detection.source"
+decl_stmt|;
+comment|/**    * eTag as the change detection mechanism.    */
+DECL|field|CHANGE_DETECT_SOURCE_ETAG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_SOURCE_ETAG
+init|=
+literal|"etag"
+decl_stmt|;
+comment|/**    * Object versionId as the change detection mechanism.    */
+DECL|field|CHANGE_DETECT_SOURCE_VERSION_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_SOURCE_VERSION_ID
+init|=
+literal|"versionid"
+decl_stmt|;
+comment|/**    * Default change detection mechanism: eTag.    */
+DECL|field|CHANGE_DETECT_SOURCE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_SOURCE_DEFAULT
+init|=
+name|CHANGE_DETECT_SOURCE_ETAG
+decl_stmt|;
+comment|/**    * Mode to run change detection in.  Server side comparison?  Client side    * comparison? Client side compare and warn rather than exception?  Don't    * bother at all?    */
+DECL|field|CHANGE_DETECT_MODE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_MODE
+init|=
+literal|"fs.s3a.change.detection.mode"
+decl_stmt|;
+comment|/**    * Change is detected on the client side by comparing the returned id with the    * expected id.  A difference results in {@link RemoteFileChangedException}.    */
+DECL|field|CHANGE_DETECT_MODE_CLIENT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_MODE_CLIENT
+init|=
+literal|"client"
+decl_stmt|;
+comment|/**    * Change is detected by passing the expected value in the GetObject request.    * If the expected value is unavailable, {@link RemoteFileChangedException} is    * thrown.    */
+DECL|field|CHANGE_DETECT_MODE_SERVER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_MODE_SERVER
+init|=
+literal|"server"
+decl_stmt|;
+comment|/**    * Change is detected on the client side by comparing the returned id with the    * expected id.  A difference results in a WARN level message being logged.    */
+DECL|field|CHANGE_DETECT_MODE_WARN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_MODE_WARN
+init|=
+literal|"warn"
+decl_stmt|;
+comment|/**    * Change detection is turned off.  Readers may see inconsistent results due    * to concurrent writes without any exception or warning messages.  May be    * useful with third-party S3 API implementations that don't support one of    * the change detection modes.    */
+DECL|field|CHANGE_DETECT_MODE_NONE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_MODE_NONE
+init|=
+literal|"none"
+decl_stmt|;
+comment|/**    * Default change detection mode: server.    */
+DECL|field|CHANGE_DETECT_MODE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_MODE_DEFAULT
+init|=
+name|CHANGE_DETECT_MODE_SERVER
+decl_stmt|;
+comment|/**    * If true, raises a {@link RemoteFileChangedException} exception when S3    * doesn't provide the attribute defined by fs.s3a.change.detection.source.    * For example, if source is versionId, but object versioning is not enabled    * on the bucket, or alternatively if source is eTag and a third-party S3    * implementation that doesn't return eTag is used.    *<p>    * When false, only a warning message will be logged for this condition.    */
+DECL|field|CHANGE_DETECT_REQUIRE_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_DETECT_REQUIRE_VERSION
+init|=
+literal|"fs.s3a.change.detection.version.required"
+decl_stmt|;
+comment|/**    * Default change detection require version: true.    */
+DECL|field|CHANGE_DETECT_REQUIRE_VERSION_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|CHANGE_DETECT_REQUIRE_VERSION_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_class
 

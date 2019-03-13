@@ -463,7 +463,7 @@ name|STREAM_READ_EXCEPTIONS
 argument_list|(
 literal|"stream_read_exceptions"
 argument_list|,
-literal|"Number of seek operations invoked on input streams"
+literal|"Number of exceptions invoked on input streams"
 argument_list|)
 block|,
 DECL|enumConstant|STREAM_READ_FULLY_OPERATIONS
@@ -488,6 +488,14 @@ argument_list|(
 literal|"stream_read_operations_incomplete"
 argument_list|,
 literal|"Count of incomplete read() operations in streams"
+argument_list|)
+block|,
+DECL|enumConstant|STREAM_READ_VERSION_MISMATCHES
+name|STREAM_READ_VERSION_MISMATCHES
+argument_list|(
+literal|"stream_read_version_mismatches"
+argument_list|,
+literal|"Count of version mismatches encountered while reading streams"
 argument_list|)
 block|,
 DECL|enumConstant|STREAM_SEEK_BYTES_BACKWARDS

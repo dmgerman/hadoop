@@ -532,6 +532,22 @@ end_import
 
 begin_import
 import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkNotNull
+import|;
+end_import
+
+begin_import
+import|import static
 name|org
 operator|.
 name|apache
@@ -2539,6 +2555,45 @@ argument_list|)
 expr_stmt|;
 return|return
 name|after
+return|;
+block|}
+comment|/**    * Get the name of the test bucket.    * @param conf configuration to scan.    * @return the bucket name from the config.    * @throws NullPointerException: no test bucket    */
+DECL|method|getTestBucketName (final Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getTestBucketName
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|bucket
+init|=
+name|checkNotNull
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|TEST_FS_S3A_NAME
+argument_list|)
+argument_list|,
+literal|"No test bucket"
+argument_list|)
+decl_stmt|;
+return|return
+name|URI
+operator|.
+name|create
+argument_list|(
+name|bucket
+argument_list|)
+operator|.
+name|getHost
+argument_list|()
 return|;
 block|}
 comment|/**    * Remove any values from a bucket.    * @param bucket bucket whose overrides are to be removed. Can be null/empty    * @param conf config    * @param options list of fs.s3a options to remove    */

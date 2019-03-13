@@ -922,6 +922,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|impl
+operator|.
+name|ChangeDetectionPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|select
 operator|.
 name|InternalSelectConstants
@@ -2030,6 +2048,11 @@ specifier|private
 name|S3AInputPolicy
 name|inputPolicy
 decl_stmt|;
+DECL|field|changeDetectionPolicy
+specifier|private
+name|ChangeDetectionPolicy
+name|changeDetectionPolicy
+decl_stmt|;
 DECL|field|closed
 specifier|private
 specifier|final
@@ -2678,6 +2701,24 @@ argument_list|(
 literal|"Input fadvise policy = {}"
 argument_list|,
 name|inputPolicy
+argument_list|)
+expr_stmt|;
+name|changeDetectionPolicy
+operator|=
+name|ChangeDetectionPolicy
+operator|.
+name|getPolicy
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Change detection policy = {}"
+argument_list|,
+name|changeDetectionPolicy
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -3742,6 +3783,18 @@ return|return
 name|inputPolicy
 return|;
 block|}
+comment|/**    * Get the change detection policy for this FS instance.    * @return the change detection policy    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getChangeDetectionPolicy ()
+name|ChangeDetectionPolicy
+name|getChangeDetectionPolicy
+parameter_list|()
+block|{
+return|return
+name|changeDetectionPolicy
+return|;
+block|}
 comment|/**    * Get the encryption algorithm of this endpoint.    * @return the encryption algorithm.    */
 DECL|method|getServerSideEncryptionAlgorithm ()
 specifier|public
@@ -4269,6 +4322,7 @@ argument_list|,
 name|readAhead
 argument_list|)
 decl_stmt|;
+comment|// TODO support change detection policy from options?
 name|readContext
 operator|=
 name|createReadContext
@@ -4276,6 +4330,8 @@ argument_list|(
 name|fileStatus
 argument_list|,
 name|policy
+argument_list|,
+name|changeDetectionPolicy
 argument_list|,
 name|readAheadRange2
 argument_list|)
@@ -4290,6 +4346,8 @@ argument_list|(
 name|fileStatus
 argument_list|,
 name|inputPolicy
+argument_list|,
+name|changeDetectionPolicy
 argument_list|,
 name|readAhead
 argument_list|)
@@ -4329,7 +4387,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create the read context for reading from the referenced file,    * using FS state as well as the status.    * @param fileStatus file status.    * @param seekPolicy input policy for this operation    * @param readAheadRange readahead value.    * @return a context for read and select operations.    */
-DECL|method|createReadContext ( final FileStatus fileStatus, final S3AInputPolicy seekPolicy, final long readAheadRange)
+DECL|method|createReadContext ( final FileStatus fileStatus, final S3AInputPolicy seekPolicy, final ChangeDetectionPolicy changePolicy, final long readAheadRange)
 specifier|private
 name|S3AReadOpContext
 name|createReadContext
@@ -4341,6 +4399,10 @@ parameter_list|,
 specifier|final
 name|S3AInputPolicy
 name|seekPolicy
+parameter_list|,
+specifier|final
+name|ChangeDetectionPolicy
+name|changePolicy
 parameter_list|,
 specifier|final
 name|long
@@ -4370,6 +4432,8 @@ argument_list|,
 name|fileStatus
 argument_list|,
 name|seekPolicy
+argument_list|,
+name|changePolicy
 argument_list|,
 name|readAheadRange
 argument_list|)
@@ -14298,6 +14362,8 @@ argument_list|(
 name|fileStatus
 argument_list|,
 name|inputPolicy
+argument_list|,
+name|changeDetectionPolicy
 argument_list|,
 name|ra
 argument_list|)
