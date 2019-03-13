@@ -330,16 +330,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|finalizePipeline (PipelineID pipelineID)
-name|void
-name|finalizePipeline
-parameter_list|(
-name|PipelineID
-name|pipelineID
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 DECL|method|openPipeline (PipelineID pipelineId)
 name|void
 name|openPipeline
@@ -350,15 +340,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|removePipeline (PipelineID pipelineID)
+DECL|method|finalizeAndDestroyPipeline (Pipeline pipeline, boolean onTimeout)
 name|void
-name|removePipeline
+name|finalizeAndDestroyPipeline
 parameter_list|(
-name|PipelineID
-name|pipelineID
+name|Pipeline
+name|pipeline
+parameter_list|,
+name|boolean
+name|onTimeout
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|startPipelineCreator ()
+name|void
+name|startPipelineCreator
+parameter_list|()
+function_decl|;
+DECL|method|triggerPipelineCreation ()
+name|void
+name|triggerPipelineCreation
+parameter_list|()
 function_decl|;
 block|}
 end_interface

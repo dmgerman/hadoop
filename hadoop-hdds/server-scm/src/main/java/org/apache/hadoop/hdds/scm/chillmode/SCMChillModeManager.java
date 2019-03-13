@@ -170,24 +170,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|scm
-operator|.
-name|pipeline
-operator|.
-name|RatisPipelineUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|server
 operator|.
 name|events
@@ -682,14 +664,10 @@ argument_list|()
 expr_stmt|;
 comment|// TODO: #CLUTIL if we reenter chill mode the fixed interval pipeline
 comment|// creation job needs to stop
-name|RatisPipelineUtils
-operator|.
-name|scheduleFixedIntervalPipelineCreator
-argument_list|(
 name|pipelineManager
-argument_list|,
-name|config
-argument_list|)
+operator|.
+name|startPipelineCreator
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getInChillMode ()

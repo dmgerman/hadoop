@@ -316,15 +316,11 @@ name|getDatanodeDetails
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|RatisPipelineUtils
+name|pipelineManager
 operator|.
 name|finalizeAndDestroyPipeline
 argument_list|(
-name|pipelineManager
-argument_list|,
 name|pipeline
-argument_list|,
-name|ozoneConf
 argument_list|,
 literal|true
 argument_list|)

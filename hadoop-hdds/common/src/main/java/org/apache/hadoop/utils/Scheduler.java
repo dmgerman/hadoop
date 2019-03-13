@@ -328,6 +328,7 @@ block|}
 comment|/**    * Closes the scheduler for further task submission. Any pending tasks not    * yet executed are also cancelled. For the executing tasks the scheduler    * waits 60 seconds for completion.    */
 DECL|method|close ()
 specifier|public
+specifier|synchronized
 name|void
 name|close
 parameter_list|()
@@ -336,6 +337,13 @@ name|isClosed
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+name|scheduler
+operator|!=
+literal|null
+condition|)
+block|{
 name|scheduler
 operator|.
 name|shutdownNow
@@ -372,6 +380,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|scheduler
 operator|=

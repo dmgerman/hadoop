@@ -210,20 +210,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|Scheduler
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -298,22 +284,6 @@ name|Collectors
 import|;
 end_import
 
-begin_import
-import|import
-name|edu
-operator|.
-name|umd
-operator|.
-name|cs
-operator|.
-name|findbugs
-operator|.
-name|annotations
-operator|.
-name|SuppressFBWarnings
-import|;
-end_import
-
 begin_comment
 comment|/**  * Implements Api for creating ratis pipelines.  */
 end_comment
@@ -344,18 +314,6 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|scheduler
-specifier|private
-specifier|static
-name|Scheduler
-name|scheduler
-decl_stmt|;
-comment|//TODO static Scheduler should be removed!!!! HDDS-1128
-annotation|@
-name|SuppressFBWarnings
-argument_list|(
-literal|"ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"
-argument_list|)
 DECL|method|RatisPipelineProvider (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf)
 name|RatisPipelineProvider
 parameter_list|(
@@ -387,28 +345,6 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-name|scheduler
-operator|=
-operator|new
-name|Scheduler
-argument_list|(
-literal|"RatisPipelineUtilsThread"
-argument_list|,
-literal|false
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getScheduler ()
-specifier|static
-name|Scheduler
-name|getScheduler
-parameter_list|()
-block|{
-return|return
-name|scheduler
-return|;
 block|}
 comment|/**    * Create pluggable container placement policy implementation instance.    *    * @param nodeManager - SCM node manager.    * @param conf - configuration.    * @return SCM container placement policy implementation instance.    */
 annotation|@
@@ -820,20 +756,6 @@ name|pipeline
 argument_list|,
 name|conf
 argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|close ()
-specifier|public
-name|void
-name|close
-parameter_list|()
-block|{
-name|scheduler
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 block|}

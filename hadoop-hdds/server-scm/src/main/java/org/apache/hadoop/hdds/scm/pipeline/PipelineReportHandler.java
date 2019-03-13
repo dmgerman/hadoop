@@ -605,56 +605,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-elseif|else
-if|if
-condition|(
-name|pipeline
-operator|.
-name|isClosed
-argument_list|()
-condition|)
-block|{
-name|int
-name|numContainers
-init|=
-name|pipelineManager
-operator|.
-name|getNumberOfContainers
-argument_list|(
-name|pipelineID
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|numContainers
-operator|==
-literal|0
-condition|)
-block|{
-comment|// since all the containers have been closed the pipeline can be
-comment|// destroyed
-name|LOGGER
-operator|.
-name|info
-argument_list|(
-literal|"Destroying pipeline {} as all containers are closed"
-argument_list|,
-name|pipeline
-argument_list|)
-expr_stmt|;
-name|RatisPipelineUtils
-operator|.
-name|destroyPipeline
-argument_list|(
-name|pipelineManager
-argument_list|,
-name|pipeline
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 else|else
 block|{
 comment|// In OPEN state case just report the datanode
