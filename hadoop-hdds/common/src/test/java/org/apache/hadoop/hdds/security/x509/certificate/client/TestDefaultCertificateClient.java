@@ -918,6 +918,8 @@ operator|.
 name|random
 argument_list|(
 literal|100
+argument_list|,
+name|UTF
 argument_list|)
 decl_stmt|;
 comment|// Expect error when there is no private key to sign.
