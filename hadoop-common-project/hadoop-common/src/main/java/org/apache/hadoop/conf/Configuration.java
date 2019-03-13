@@ -6673,7 +6673,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d).    * @param name Property name    * @param defaultValue Value returned if no mapping exists.    * @param unit Unit to convert the stored property, if it exists.    * @throws NumberFormatException If the property stripped of its unit is not    *         a number    * @return time duration in given time unit    */
+comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d).    *    * @param name Property name    * @param defaultValue Value returned if no mapping exists.    * @param unit Unit to convert the stored property, if it exists.    * @throws NumberFormatException If the property stripped of its unit is not    *         a number    * @return time duration in given time unit    */
 DECL|method|getTimeDuration (String name, long defaultValue, TimeUnit unit)
 specifier|public
 name|long
@@ -6689,38 +6689,18 @@ name|TimeUnit
 name|unit
 parameter_list|)
 block|{
-name|String
-name|vStr
-init|=
-name|get
-argument_list|(
-name|name
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
-name|vStr
-condition|)
-block|{
 return|return
-name|defaultValue
-return|;
-block|}
-else|else
-block|{
-return|return
-name|getTimeDurationHelper
+name|getTimeDuration
 argument_list|(
 name|name
 argument_list|,
-name|vStr
+name|defaultValue
+argument_list|,
+name|unit
 argument_list|,
 name|unit
 argument_list|)
 return|;
-block|}
 block|}
 DECL|method|getTimeDuration (String name, String defaultValue, TimeUnit unit)
 specifier|public
@@ -6737,6 +6717,91 @@ name|TimeUnit
 name|unit
 parameter_list|)
 block|{
+return|return
+name|getTimeDuration
+argument_list|(
+name|name
+argument_list|,
+name|defaultValue
+argument_list|,
+name|unit
+argument_list|,
+name|unit
+argument_list|)
+return|;
+block|}
+comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d). If no unit is    * provided, the default unit is applied.    *    * @param name Property name    * @param defaultValue Value returned if no mapping exists.    * @param defaultUnit Default time unit if no valid suffix is provided.    * @param returnUnit The unit used for the returned value.    * @throws NumberFormatException If the property stripped of its unit is not    *         a number    * @return time duration in given time unit    */
+DECL|method|getTimeDuration (String name, long defaultValue, TimeUnit defaultUnit, TimeUnit returnUnit)
+specifier|public
+name|long
+name|getTimeDuration
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|long
+name|defaultValue
+parameter_list|,
+name|TimeUnit
+name|defaultUnit
+parameter_list|,
+name|TimeUnit
+name|returnUnit
+parameter_list|)
+block|{
+name|String
+name|vStr
+init|=
+name|get
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|vStr
+condition|)
+block|{
+return|return
+name|defaultValue
+return|;
+block|}
+else|else
+block|{
+return|return
+name|getTimeDurationHelper
+argument_list|(
+name|name
+argument_list|,
+name|vStr
+argument_list|,
+name|defaultUnit
+argument_list|,
+name|returnUnit
+argument_list|)
+return|;
+block|}
+block|}
+DECL|method|getTimeDuration (String name, String defaultValue, TimeUnit defaultUnit, TimeUnit returnUnit)
+specifier|public
+name|long
+name|getTimeDuration
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|String
+name|defaultValue
+parameter_list|,
+name|TimeUnit
+name|defaultUnit
+parameter_list|,
+name|TimeUnit
+name|returnUnit
+parameter_list|)
+block|{
 name|String
 name|vStr
 init|=
@@ -6759,7 +6824,9 @@ name|name
 argument_list|,
 name|defaultValue
 argument_list|,
-name|unit
+name|defaultUnit
+argument_list|,
+name|returnUnit
 argument_list|)
 return|;
 block|}
@@ -6772,12 +6839,14 @@ name|name
 argument_list|,
 name|vStr
 argument_list|,
-name|unit
+name|defaultUnit
+argument_list|,
+name|returnUnit
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d).    * @param name Property name    * @param vStr The string value with time unit suffix to be converted.    * @param unit Unit to convert the stored property, if it exists.    */
+comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d).    *    * @param name Property name    * @param vStr The string value with time unit suffix to be converted.    * @param unit Unit to convert the stored property, if it exists.    */
 DECL|method|getTimeDurationHelper (String name, String vStr, TimeUnit unit)
 specifier|public
 name|long
@@ -6791,6 +6860,38 @@ name|vStr
 parameter_list|,
 name|TimeUnit
 name|unit
+parameter_list|)
+block|{
+return|return
+name|getTimeDurationHelper
+argument_list|(
+name|name
+argument_list|,
+name|vStr
+argument_list|,
+name|unit
+argument_list|,
+name|unit
+argument_list|)
+return|;
+block|}
+comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d).    *    * @param name Property name    * @param vStr The string value with time unit suffix to be converted.    * @param defaultUnit Unit to convert the stored property, if it exists.    * @param returnUnit Unit for the returned value.    */
+DECL|method|getTimeDurationHelper (String name, String vStr, TimeUnit defaultUnit, TimeUnit returnUnit)
+specifier|private
+name|long
+name|getTimeDurationHelper
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|String
+name|vStr
+parameter_list|,
+name|TimeUnit
+name|defaultUnit
+parameter_list|,
+name|TimeUnit
+name|returnUnit
 parameter_list|)
 block|{
 name|vStr
@@ -6838,7 +6939,7 @@ name|vStr
 operator|+
 literal|") assuming "
 operator|+
-name|unit
+name|defaultUnit
 argument_list|)
 expr_stmt|;
 name|vUnit
@@ -6847,7 +6948,7 @@ name|ParsedTimeDuration
 operator|.
 name|unitFor
 argument_list|(
-name|unit
+name|defaultUnit
 argument_list|)
 expr_stmt|;
 block|}
@@ -6886,7 +6987,7 @@ decl_stmt|;
 name|long
 name|converted
 init|=
-name|unit
+name|returnUnit
 operator|.
 name|convert
 argument_list|(
@@ -6909,7 +7010,7 @@ name|convert
 argument_list|(
 name|converted
 argument_list|,
-name|unit
+name|returnUnit
 argument_list|)
 operator|<
 name|raw
@@ -6928,7 +7029,7 @@ argument_list|()
 operator|+
 literal|" to "
 operator|+
-name|unit
+name|returnUnit
 operator|+
 literal|" for "
 operator|+

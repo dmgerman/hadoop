@@ -2010,9 +2010,11 @@ argument_list|,
 name|TimeUnit
 operator|.
 name|SECONDS
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
-operator|*
-literal|1000
 expr_stmt|;
 name|slowIoWarningThresholdMs
 operator|=
