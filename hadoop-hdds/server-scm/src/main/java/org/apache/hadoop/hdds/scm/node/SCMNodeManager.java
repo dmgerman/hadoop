@@ -739,15 +739,6 @@ name|IOException
 block|{
 name|this
 operator|.
-name|metrics
-operator|=
-name|SCMNodeMetrics
-operator|.
-name|create
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
 name|nodeStateManager
 operator|=
 operator|new
@@ -796,6 +787,17 @@ argument_list|)
 expr_stmt|;
 name|registerMXBean
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|metrics
+operator|=
+name|SCMNodeMetrics
+operator|.
+name|create
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|registerMXBean ()
