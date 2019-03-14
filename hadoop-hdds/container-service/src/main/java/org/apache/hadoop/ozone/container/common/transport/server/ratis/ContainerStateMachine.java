@@ -991,11 +991,6 @@ name|Long
 argument_list|>
 name|applyTransactionCompletionMap
 decl_stmt|;
-DECL|field|lastIndex
-specifier|private
-name|long
-name|lastIndex
-decl_stmt|;
 DECL|field|stateMachineDataCache
 specifier|private
 specifier|final
@@ -1135,14 +1130,6 @@ operator|new
 name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|lastIndex
-operator|=
-name|RaftServerConstants
-operator|.
-name|INVALID_LOG_INDEX
 expr_stmt|;
 name|stateMachineDataCache
 operator|=
@@ -1311,12 +1298,6 @@ argument_list|(
 name|empty
 argument_list|)
 expr_stmt|;
-name|lastIndex
-operator|=
-name|RaftServerConstants
-operator|.
-name|INVALID_LOG_INDEX
-expr_stmt|;
 return|return
 name|RaftServerConstants
 operator|.
@@ -1362,13 +1343,6 @@ name|setLastAppliedTermIndex
 argument_list|(
 name|last
 argument_list|)
-expr_stmt|;
-name|lastIndex
-operator|=
-name|last
-operator|.
-name|getIndex
-argument_list|()
 expr_stmt|;
 comment|// initialize the dispatcher with snapshot so that it build the missing
 comment|// container list
@@ -3152,6 +3126,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Notifies the state machine about index updates because of entries    * which do not cause state machine update, i.e. conf entries, metadata    * entries    * @param term term of the log entry    * @param index index of the log entry    */
+annotation|@
+name|Override
+DECL|method|notifyIndexUpdate (long term, long index)
+specifier|public
+name|void
+name|notifyIndexUpdate
+parameter_list|(
+name|long
+name|term
+parameter_list|,
+name|long
+name|index
+parameter_list|)
+block|{
+name|applyTransactionCompletionMap
+operator|.
+name|put
+argument_list|(
+name|index
+argument_list|,
+name|term
+argument_list|)
+expr_stmt|;
+block|}
 comment|/*    * ApplyTransaction calls in Ratis are sequential.    */
 annotation|@
 name|Override
@@ -3205,52 +3204,6 @@ argument_list|(
 name|index
 argument_list|)
 decl_stmt|;
-comment|// ApplyTransaction call can come with an entryIndex much greater than
-comment|// lastIndex updated because in between entries in the raft log can be
-comment|// appended because raft config persistence. Just add a dummy entry
-comment|// for those.
-for|for
-control|(
-name|long
-name|i
-init|=
-name|lastIndex
-operator|+
-literal|1
-init|;
-name|i
-operator|<
-name|index
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Gap in indexes at:{} detected, adding dummy entries "
-argument_list|,
-name|i
-argument_list|)
-expr_stmt|;
-name|applyTransactionCompletionMap
-operator|.
-name|put
-argument_list|(
-name|i
-argument_list|,
-name|trx
-operator|.
-name|getLogEntry
-argument_list|()
-operator|.
-name|getTerm
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
 name|metrics
@@ -3371,10 +3324,6 @@ name|requestProto
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|lastIndex
-operator|=
-name|index
-expr_stmt|;
 name|future
 operator|.
 name|thenAccept
