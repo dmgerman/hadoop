@@ -3624,6 +3624,18 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|callQueue
+operator|.
+name|setClientBackoffEnabled
+argument_list|(
+name|getClientBackoffEnable
+argument_list|(
+name|prefix
+argument_list|,
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Get from config if client backoff is enabled on that port.    */
 DECL|method|getClientBackoffEnable ( String prefix, Configuration conf)
