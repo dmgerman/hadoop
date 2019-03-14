@@ -449,6 +449,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -653,9 +665,11 @@ DECL|field|futureMap
 name|futureMap
 decl_stmt|;
 comment|// map containing mapping for putBlock logIndex to to flushedDataLength Map.
+comment|// The map should maintain the keys (logIndexes) in order so that while
+comment|// removing we always end up updating incremented data flushed length.
 DECL|field|commitIndex2flushedDataMap
 specifier|private
-name|ConcurrentHashMap
+name|ConcurrentSkipListMap
 argument_list|<
 name|Long
 argument_list|,
@@ -869,7 +883,7 @@ expr_stmt|;
 name|commitIndex2flushedDataMap
 operator|=
 operator|new
-name|ConcurrentHashMap
+name|ConcurrentSkipListMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -1096,7 +1110,7 @@ name|int
 name|writeLen
 decl_stmt|;
 comment|// Allocate a buffer if needed. The buffer will be allocated only
-comment|// once as needed and will be reused again for mutiple blockOutputStream
+comment|// once as needed and will be reused again for multiple blockOutputStream
 comment|// entries.
 name|ByteBuffer
 name|currentBuffer
@@ -1343,23 +1357,36 @@ block|}
 block|}
 block|}
 comment|/**    * just update the totalAckDataLength. In case of failure,    * we will read the data starting from totalAckDataLength.    */
-DECL|method|updateFlushIndex (long index)
+DECL|method|updateFlushIndex (List<Long> indexes)
 specifier|private
 name|void
 name|updateFlushIndex
 parameter_list|(
-name|long
-name|index
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|indexes
 parameter_list|)
 block|{
-if|if
-condition|(
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 operator|!
 name|commitIndex2flushedDataMap
 operator|.
 name|isEmpty
 argument_list|()
-condition|)
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|long
+name|index
+range|:
+name|indexes
+control|)
 block|{
 name|Preconditions
 operator|.
@@ -1373,14 +1400,32 @@ name|index
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|totalAckDataLength
-operator|=
+name|long
+name|length
+init|=
 name|commitIndex2flushedDataMap
 operator|.
 name|remove
 argument_list|(
 name|index
 argument_list|)
+decl_stmt|;
+comment|// totalAckDataLength replicated yet should always be less than equal to
+comment|// the current length being returned from commitIndex2flushedDataMap.
+comment|// The below precondition would ensure commitIndex2flushedDataMap entries
+comment|// are removed in order of the insertion to the map.
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|totalAckDataLength
+operator|<
+name|length
+argument_list|)
+expr_stmt|;
+name|totalAckDataLength
+operator|=
+name|length
 expr_stmt|;
 name|LOG
 operator|.
@@ -1536,6 +1581,12 @@ name|long
 name|commitIndex
 parameter_list|)
 block|{
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|keyList
+init|=
 name|commitIndex2flushedDataMap
 operator|.
 name|keySet
@@ -1544,31 +1595,41 @@ operator|.
 name|stream
 argument_list|()
 operator|.
-name|forEach
+name|filter
 argument_list|(
-name|index
+name|p
 lambda|->
-block|{
-if|if
-condition|(
-name|index
+name|p
 operator|<=
 name|commitIndex
-condition|)
-block|{
-name|updateFlushIndex
-argument_list|(
-name|index
 argument_list|)
-expr_stmt|;
-block|}
-else|else
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|keyList
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
 block|{
 return|return;
 block|}
-block|}
+else|else
+block|{
+name|updateFlushIndex
+argument_list|(
+name|keyList
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// It may happen that once the exception is encountered , we still might
 comment|// have successfully flushed up to a certain index. Make sure the buffers
