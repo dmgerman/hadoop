@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|MappedByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -54,19 +64,25 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
 operator|.
 name|io
 operator|.
-name|Closeable
+name|nativeio
+operator|.
+name|NativeIO
 import|;
 end_import
 
 begin_comment
-comment|/**  * Represents an HDFS block that is mapped by the DataNode.  */
+comment|/**  * Represents an HDFS block that is mapped to memory by the DataNode.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -75,21 +91,96 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|MappableBlock
+DECL|class|MemoryMappedBlock
 specifier|public
-interface|interface
+class|class
+name|MemoryMappedBlock
+implements|implements
 name|MappableBlock
-extends|extends
-name|Closeable
 block|{
-comment|/**    * Get the number of bytes that have been cached.    * @return the number of bytes that have been cached.    */
+DECL|field|mmap
+specifier|private
+name|MappedByteBuffer
+name|mmap
+decl_stmt|;
+DECL|field|length
+specifier|private
+specifier|final
+name|long
+name|length
+decl_stmt|;
+DECL|method|MemoryMappedBlock (MappedByteBuffer mmap, long length)
+name|MemoryMappedBlock
+parameter_list|(
+name|MappedByteBuffer
+name|mmap
+parameter_list|,
+name|long
+name|length
+parameter_list|)
+block|{
+name|this
+operator|.
+name|mmap
+operator|=
+name|mmap
+expr_stmt|;
+name|this
+operator|.
+name|length
+operator|=
+name|length
+expr_stmt|;
+assert|assert
+name|length
+operator|>
+literal|0
+assert|;
+block|}
+annotation|@
+name|Override
 DECL|method|getLength ()
+specifier|public
 name|long
 name|getLength
 parameter_list|()
-function_decl|;
+block|{
+return|return
+name|length
+return|;
 block|}
-end_interface
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+if|if
+condition|(
+name|mmap
+operator|!=
+literal|null
+condition|)
+block|{
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|munmap
+argument_list|(
+name|mmap
+argument_list|)
+expr_stmt|;
+name|mmap
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
+block|}
+end_class
 
 end_unit
 

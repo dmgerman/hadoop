@@ -915,6 +915,12 @@ specifier|final
 name|long
 name|maxBytes
 decl_stmt|;
+DECL|field|mappableBlockLoader
+specifier|private
+specifier|final
+name|MappableBlockLoader
+name|mappableBlockLoader
+decl_stmt|;
 comment|/**    * Number of cache commands that could not be completed successfully    */
 DECL|field|numBlocksFailedToCache
 specifier|final
@@ -946,6 +952,8 @@ parameter_list|(
 name|FsDatasetImpl
 name|dataset
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -1126,6 +1134,14 @@ operator|.
 name|revocationPollingMs
 operator|=
 name|confRevocationPollingMs
+expr_stmt|;
+name|this
+operator|.
+name|mappableBlockLoader
+operator|=
+operator|new
+name|MemoryMappableBlockLoader
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * @return List of cached blocks suitable for translation into a    * {@link BlockListAsLongs} for a cache report.    */
@@ -1977,7 +1993,7 @@ try|try
 block|{
 name|mappableBlock
 operator|=
-name|MappableBlock
+name|mappableBlockLoader
 operator|.
 name|load
 argument_list|(
@@ -1988,6 +2004,8 @@ argument_list|,
 name|metaIn
 argument_list|,
 name|blockFileName
+argument_list|,
+name|key
 argument_list|)
 expr_stmt|;
 block|}
@@ -2021,9 +2039,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache "
+literal|"Failed to cache the block [key="
 operator|+
 name|key
+operator|+
+literal|"]!"
 argument_list|,
 name|e
 argument_list|)
@@ -2222,19 +2242,13 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|mappableBlock
-operator|!=
-literal|null
-condition|)
-block|{
-name|mappableBlock
+name|IOUtils
 operator|.
-name|close
-argument_list|()
+name|closeQuietly
+argument_list|(
+name|mappableBlock
+argument_list|)
 expr_stmt|;
-block|}
 name|numBlocksFailedToCache
 operator|.
 name|incrementAndGet
