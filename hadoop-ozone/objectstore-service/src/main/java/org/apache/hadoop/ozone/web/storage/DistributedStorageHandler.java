@@ -834,6 +834,12 @@ specifier|final
 name|boolean
 name|verifyChecksum
 decl_stmt|;
+DECL|field|maxRetryCount
+specifier|private
+specifier|final
+name|int
+name|maxRetryCount
+decl_stmt|;
 comment|/**    * Creates a new DistributedStorageHandler.    *    * @param conf configuration    * @param storageContainerLocation StorageContainerLocationProtocol proxy    * @param ozoneManagerClient OzoneManager proxy    */
 DECL|method|DistributedStorageHandler (OzoneConfiguration conf, StorageContainerLocationProtocol storageContainerLocation, OzoneManagerProtocol ozoneManagerClient)
 specifier|public
@@ -1144,6 +1150,23 @@ argument_list|,
 name|OzoneConfigKeys
 operator|.
 name|OZONE_CLIENT_VERIFY_CHECKSUM_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxRetryCount
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_MAX_RETRIES
+argument_list|,
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_MAX_RETRIES_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -2752,7 +2775,7 @@ name|keyArgs
 argument_list|)
 decl_stmt|;
 name|KeyOutputStream
-name|groupOutputStream
+name|keyOutputStream
 init|=
 operator|new
 name|KeyOutputStream
@@ -2839,10 +2862,15 @@ argument_list|(
 name|bytesPerChecksum
 argument_list|)
 operator|.
+name|setMaxRetryCount
+argument_list|(
+name|maxRetryCount
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|groupOutputStream
+name|keyOutputStream
 operator|.
 name|addPreallocateBlocks
 argument_list|(
@@ -2864,7 +2892,7 @@ return|return
 operator|new
 name|OzoneOutputStream
 argument_list|(
-name|groupOutputStream
+name|keyOutputStream
 argument_list|)
 return|;
 block|}

@@ -404,6 +404,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|util
+operator|.
+name|TimeDuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -609,6 +623,17 @@ name|DFS_CONTAINER_RATIS_RPC_TYPE_DEFAULT
 argument_list|)
 decl_stmt|;
 specifier|final
+name|TimeDuration
+name|clientRequestTimeout
+init|=
+name|RatisHelper
+operator|.
+name|getClientRequestTimeout
+argument_list|(
+name|ozoneConf
+argument_list|)
+decl_stmt|;
+specifier|final
 name|int
 name|maxOutstandingRequests
 init|=
@@ -663,6 +688,8 @@ argument_list|,
 name|retryPolicy
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 return|;
 block|}
@@ -710,6 +737,12 @@ specifier|final
 name|GrpcTlsConfig
 name|tlsConfig
 decl_stmt|;
+DECL|field|clientRequestTimeout
+specifier|private
+specifier|final
+name|TimeDuration
+name|clientRequestTimeout
+decl_stmt|;
 comment|// Map to track commit index at every server
 DECL|field|commitInfoMap
 specifier|private
@@ -729,7 +762,7 @@ name|RaftClient
 name|watchClient
 decl_stmt|;
 comment|/**    * Constructs a client.    */
-DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks, RetryPolicy retryPolicy, GrpcTlsConfig tlsConfig)
+DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks, RetryPolicy retryPolicy, GrpcTlsConfig tlsConfig, TimeDuration timeout)
 specifier|private
 name|XceiverClientRatis
 parameter_list|(
@@ -747,6 +780,9 @@ name|retryPolicy
 parameter_list|,
 name|GrpcTlsConfig
 name|tlsConfig
+parameter_list|,
+name|TimeDuration
+name|timeout
 parameter_list|)
 block|{
 name|super
@@ -792,6 +828,12 @@ operator|.
 name|tlsConfig
 operator|=
 name|tlsConfig
+expr_stmt|;
+name|this
+operator|.
+name|clientRequestTimeout
+operator|=
+name|timeout
 expr_stmt|;
 block|}
 DECL|method|updateCommitInfosMap ( Collection<RaftProtos.CommitInfoProto> commitInfoProtos)
@@ -997,6 +1039,8 @@ argument_list|,
 name|maxOutstandingRequests
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 argument_list|)
 condition|)
@@ -1453,6 +1497,8 @@ argument_list|,
 name|maxOutstandingRequests
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 expr_stmt|;
 block|}
@@ -1533,6 +1579,8 @@ argument_list|,
 name|maxOutstandingRequests
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 expr_stmt|;
 name|reply

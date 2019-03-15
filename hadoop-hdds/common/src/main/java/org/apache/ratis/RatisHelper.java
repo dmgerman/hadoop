@@ -224,6 +224,20 @@ name|apache
 operator|.
 name|ratis
 operator|.
+name|client
+operator|.
+name|RaftClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
 name|conf
 operator|.
 name|RaftProperties
@@ -890,7 +904,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|newRaftClient (RpcType rpcType, Pipeline pipeline, RetryPolicy retryPolicy, int maxOutStandingRequest, GrpcTlsConfig tlsConfig)
+DECL|method|newRaftClient (RpcType rpcType, Pipeline pipeline, RetryPolicy retryPolicy, int maxOutStandingRequest, GrpcTlsConfig tlsConfig, TimeDuration timeout)
 specifier|static
 name|RaftClient
 name|newRaftClient
@@ -909,6 +923,9 @@ name|maxOutStandingRequest
 parameter_list|,
 name|GrpcTlsConfig
 name|tlsConfig
+parameter_list|,
+name|TimeDuration
+name|timeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -952,10 +969,72 @@ argument_list|,
 name|maxOutStandingRequest
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|timeout
 argument_list|)
 return|;
 block|}
-DECL|method|newRaftClient (RpcType rpcType, RaftPeer leader, RetryPolicy retryPolicy, int maxOutstandingRequests, GrpcTlsConfig tlsConfig)
+DECL|method|getClientRequestTimeout (Configuration conf)
+specifier|static
+name|TimeDuration
+name|getClientRequestTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+comment|// Set the client requestTimeout
+specifier|final
+name|TimeUnit
+name|timeUnit
+init|=
+name|OzoneConfigKeys
+operator|.
+name|DFS_RATIS_CLIENT_REQUEST_TIMEOUT_DURATION_DEFAULT
+operator|.
+name|getUnit
+argument_list|()
+decl_stmt|;
+specifier|final
+name|long
+name|duration
+init|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_RATIS_CLIENT_REQUEST_TIMEOUT_DURATION_KEY
+argument_list|,
+name|OzoneConfigKeys
+operator|.
+name|DFS_RATIS_CLIENT_REQUEST_TIMEOUT_DURATION_DEFAULT
+operator|.
+name|getDuration
+argument_list|()
+argument_list|,
+name|timeUnit
+argument_list|)
+decl_stmt|;
+specifier|final
+name|TimeDuration
+name|clientRequestTimeout
+init|=
+name|TimeDuration
+operator|.
+name|valueOf
+argument_list|(
+name|duration
+argument_list|,
+name|timeUnit
+argument_list|)
+decl_stmt|;
+return|return
+name|clientRequestTimeout
+return|;
+block|}
+DECL|method|newRaftClient (RpcType rpcType, RaftPeer leader, RetryPolicy retryPolicy, int maxOutstandingRequests, GrpcTlsConfig tlsConfig, TimeDuration clientRequestTimeout)
 specifier|static
 name|RaftClient
 name|newRaftClient
@@ -974,6 +1053,9 @@ name|maxOutstandingRequests
 parameter_list|,
 name|GrpcTlsConfig
 name|tlsConfig
+parameter_list|,
+name|TimeDuration
+name|clientRequestTimeout
 parameter_list|)
 block|{
 return|return
@@ -1006,10 +1088,12 @@ argument_list|,
 name|maxOutstandingRequests
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 return|;
 block|}
-DECL|method|newRaftClient (RpcType rpcType, RaftPeer leader, RetryPolicy retryPolicy, int maxOutstandingRequests)
+DECL|method|newRaftClient (RpcType rpcType, RaftPeer leader, RetryPolicy retryPolicy, int maxOutstandingRequests, TimeDuration clientRequestTimeout)
 specifier|static
 name|RaftClient
 name|newRaftClient
@@ -1025,6 +1109,9 @@ name|retryPolicy
 parameter_list|,
 name|int
 name|maxOutstandingRequests
+parameter_list|,
+name|TimeDuration
+name|clientRequestTimeout
 parameter_list|)
 block|{
 return|return
@@ -1057,10 +1144,12 @@ argument_list|,
 name|maxOutstandingRequests
 argument_list|,
 literal|null
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 return|;
 block|}
-DECL|method|newRaftClient (RpcType rpcType, RaftPeerId leader, RaftGroup group, RetryPolicy retryPolicy, int maxOutStandingRequest, GrpcTlsConfig tlsConfig)
+DECL|method|newRaftClient (RpcType rpcType, RaftPeerId leader, RaftGroup group, RetryPolicy retryPolicy, int maxOutStandingRequest, GrpcTlsConfig tlsConfig, TimeDuration clientRequestTimeout)
 specifier|static
 name|RaftClient
 name|newRaftClient
@@ -1082,6 +1171,9 @@ name|maxOutStandingRequest
 parameter_list|,
 name|GrpcTlsConfig
 name|tlsConfig
+parameter_list|,
+name|TimeDuration
+name|clientRequestTimeout
 parameter_list|)
 block|{
 name|LOG
@@ -1114,6 +1206,17 @@ argument_list|(
 name|properties
 argument_list|,
 name|rpcType
+argument_list|)
+expr_stmt|;
+name|RaftClientConfigKeys
+operator|.
+name|Rpc
+operator|.
+name|setRequestTimeout
+argument_list|(
+name|properties
+argument_list|,
+name|clientRequestTimeout
 argument_list|)
 expr_stmt|;
 name|GrpcConfigKeys
