@@ -7588,22 +7588,8 @@ block|{
 comment|// Compare against the lesser of the minReplication and number of live DNs.
 specifier|final
 name|int
-name|replication
+name|liveReplicas
 init|=
-name|Math
-operator|.
-name|min
-argument_list|(
-name|minReplication
-argument_list|,
-name|getDatanodeManager
-argument_list|()
-operator|.
-name|getNumLiveDataNodes
-argument_list|()
-argument_list|)
-decl_stmt|;
-return|return
 name|countNodes
 argument_list|(
 name|b
@@ -7611,8 +7597,28 @@ argument_list|)
 operator|.
 name|liveReplicas
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|liveReplicas
 operator|>=
-name|replication
+name|minReplication
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// getNumLiveDataNodes() is very expensive and we minimize its use by
+comment|// comparing with minReplication first.
+return|return
+name|liveReplicas
+operator|>=
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNumLiveDataNodes
+argument_list|()
 return|;
 block|}
 comment|/** Get all blocks with location information from a datanode. */
