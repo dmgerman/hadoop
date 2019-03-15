@@ -1732,7 +1732,7 @@ return|return
 name|msg
 return|;
 block|}
-comment|/**    * Utility method to validate a list resource requests, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
+comment|/**    * Utility method to validate a list resource requests, by ensuring that the    * requested memory/vcore is non-negative and not greater than max    */
 DECL|method|normalizeAndValidateRequests (List<ResourceRequest> ask, Resource maximumAllocation, String queueName, YarnScheduler scheduler, RMContext rmContext)
 specifier|public
 specifier|static

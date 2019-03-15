@@ -1081,7 +1081,7 @@ return|return
 name|containerStatus
 return|;
 block|}
-comment|/**    * Utility method to normalize a resource request, by insuring that the    * requested memory is a multiple of minMemory and is not zero.    */
+comment|/**    * Utility method to normalize a resource request, by ensuring that the    * requested memory is a multiple of minMemory and is not zero.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|normalizeRequest ( ResourceRequest ask, ResourceCalculator resourceCalculator, Resource minimumResource, Resource maximumResource)
@@ -1125,7 +1125,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to normalize a resource request, by insuring that the    * requested memory is a multiple of increment resource and is not zero.    *    * @return normalized resource    */
+comment|/**    * Utility method to normalize a resource request, by ensuring that the    * requested memory is a multiple of increment resource and is not zero.    *    * @return normalized resource    */
 DECL|method|getNormalizedResource ( Resource ask, ResourceCalculator resourceCalculator, Resource minimumResource, Resource maximumResource, Resource incrementResource)
 specifier|public
 specifier|static
@@ -1529,7 +1529,7 @@ name|queueInfo
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    *    * @throws InvalidResourceRequestException when there is invalid request    */
+comment|/**    * Utility method to validate a resource request, by ensuring that the    * requested memory/vcore is non-negative and not greater than max    *    * @throws InvalidResourceRequestException when there is invalid request    */
 DECL|method|validateResourceRequest (ResourceRequest resReq, Resource maximumAllocation, QueueInfo queueInfo, RMContext rmContext)
 specifier|private
 specifier|static
