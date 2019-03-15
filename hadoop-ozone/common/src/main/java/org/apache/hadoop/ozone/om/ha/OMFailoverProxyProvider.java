@@ -74,6 +74,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|Text
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|retry
 operator|.
 name|FailoverProxyProvider
@@ -179,6 +193,20 @@ operator|.
 name|protocolPB
 operator|.
 name|OzoneManagerProtocolPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|SecurityUtil
 import|;
 end_import
 
@@ -488,7 +516,12 @@ specifier|private
 name|InetSocketAddress
 name|address
 decl_stmt|;
-DECL|method|OMProxyInfo (OzoneManagerProtocolPB proxy, String proxyInfoStr, InetSocketAddress addr)
+DECL|field|dtService
+specifier|private
+name|Text
+name|dtService
+decl_stmt|;
+DECL|method|OMProxyInfo (OzoneManagerProtocolPB proxy, String proxyInfoStr, Text dtService, InetSocketAddress addr)
 name|OMProxyInfo
 parameter_list|(
 name|OzoneManagerProtocolPB
@@ -496,6 +529,9 @@ name|proxy
 parameter_list|,
 name|String
 name|proxyInfoStr
+parameter_list|,
+name|Text
+name|dtService
 parameter_list|,
 name|InetSocketAddress
 name|addr
@@ -514,6 +550,12 @@ name|address
 operator|=
 name|addr
 expr_stmt|;
+name|this
+operator|.
+name|dtService
+operator|=
+name|dtService
+expr_stmt|;
 block|}
 DECL|method|getAddress ()
 specifier|public
@@ -523,6 +565,16 @@ parameter_list|()
 block|{
 return|return
 name|address
+return|;
+block|}
+DECL|method|getDelegationTokenService ()
+specifier|public
+name|Text
+name|getDelegationTokenService
+parameter_list|()
+block|{
+return|return
+name|dtService
 return|;
 block|}
 block|}
@@ -684,6 +736,16 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|Text
+name|dtService
+init|=
+name|SecurityUtil
+operator|.
+name|buildTokenService
+argument_list|(
+name|addr
+argument_list|)
+decl_stmt|;
 name|StringBuilder
 name|proxyInfo
 init|=
@@ -728,6 +790,8 @@ name|proxyInfo
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|dtService
 argument_list|,
 name|addr
 argument_list|)

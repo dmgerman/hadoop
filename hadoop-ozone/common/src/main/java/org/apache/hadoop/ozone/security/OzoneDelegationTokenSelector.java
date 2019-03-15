@@ -205,7 +205,9 @@ argument_list|,
 name|service
 argument_list|)
 expr_stmt|;
-return|return
+name|Token
+name|token
+init|=
 name|super
 operator|.
 name|selectToken
@@ -214,6 +216,20 @@ name|service
 argument_list|,
 name|tokens
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Got tokens: {} for service {}"
+argument_list|,
+name|token
+argument_list|,
+name|service
+argument_list|)
+expr_stmt|;
+return|return
+name|token
 return|;
 block|}
 block|}
