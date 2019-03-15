@@ -3099,30 +3099,17 @@ name|request
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updateResourceRequest:"
-operator|+
-literal|" application="
-operator|+
+literal|"updateResourceRequest: application={} request={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" request="
-operator|+
+argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|createCLC ()
 specifier|private

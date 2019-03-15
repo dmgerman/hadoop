@@ -1210,24 +1210,15 @@ argument_list|,
 name|groupName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"createCgroup: "
-operator|+
+literal|"createCgroup: {}"
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -1290,32 +1281,19 @@ literal|"."
 operator|+
 name|param
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updateCgroup: "
-operator|+
+literal|"updateCgroup: {}: {}={}"
+argument_list|,
 name|path
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|param
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-block|}
 name|PrintWriter
 name|pw
 init|=
@@ -1522,12 +1500,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"First line in cgroup tasks file: "
-operator|+
+literal|"First line in cgroup tasks file: {} {}"
+argument_list|,
 name|cgf
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|str
 argument_list|)
 expr_stmt|;
@@ -1671,24 +1647,15 @@ name|deleted
 init|=
 literal|false
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"deleteCgroup: "
-operator|+
+literal|"deleteCgroup: {}"
+argument_list|,
 name|cgroupPath
 argument_list|)
 expr_stmt|;
-block|}
 name|long
 name|start
 init|=

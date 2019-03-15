@@ -208,24 +208,15 @@ literal|"Trying to access process id from a null path"
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Accessing pid from pid file "
-operator|+
+literal|"Accessing pid from pid file {}"
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|processId
 init|=
@@ -411,20 +402,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got pid "
-operator|+
+literal|"Got pid {} from path {}"
+argument_list|,
 operator|(
 name|processId
 operator|!=
@@ -434,13 +417,10 @@ name|processId
 else|:
 literal|"null"
 operator|)
-operator|+
-literal|" from path "
-operator|+
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|processId
 return|;

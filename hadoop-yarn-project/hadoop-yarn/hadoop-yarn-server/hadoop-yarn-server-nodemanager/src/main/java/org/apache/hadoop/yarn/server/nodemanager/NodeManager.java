@@ -1711,32 +1711,20 @@ argument_list|)
 throw|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Distributed Node Attributes is enabled"
+literal|"Distributed Node Attributes is enabled with provider class"
 operator|+
-literal|" with provider class as : "
-operator|+
+literal|" as : {}"
+argument_list|,
 name|attributesProvider
 operator|.
 name|getClass
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|attributesProvider
 return|;
@@ -1897,32 +1885,20 @@ argument_list|)
 throw|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Distributed Node Labels is enabled"
 operator|+
-literal|" with provider class as : "
-operator|+
+literal|" with provider class as : {}"
+argument_list|,
 name|provider
 operator|.
 name|getClass
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|provider
 return|;
@@ -3674,72 +3650,48 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} : {}@<{}, {}>"
+argument_list|,
 name|entry
 operator|.
 name|getKey
 argument_list|()
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|data
 operator|.
 name|getCollectorAddr
 argument_list|()
-operator|+
-literal|"@<"
-operator|+
+argument_list|,
 name|data
 operator|.
 name|getRMIdentifier
 argument_list|()
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|data
 operator|.
 name|getVersion
 argument_list|()
-operator|+
-literal|">"
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Remove collector data for done app "
-operator|+
+literal|"Remove collector data for done app {}"
+argument_list|,
 name|entry
 operator|.
 name|getKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 name|knownCollectors

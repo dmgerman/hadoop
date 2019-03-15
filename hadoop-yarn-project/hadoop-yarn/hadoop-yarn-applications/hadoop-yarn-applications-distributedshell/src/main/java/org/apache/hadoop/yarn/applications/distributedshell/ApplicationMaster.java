@@ -6874,24 +6874,15 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Succeeded to stop Container "
-operator|+
+literal|"Succeeded to stop Container {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|containers
 operator|.
 name|remove
@@ -6914,28 +6905,17 @@ name|ContainerStatus
 name|containerStatus
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container Status: id="
-operator|+
+literal|"Container Status: id={}, status={}"
+argument_list|,
 name|containerId
-operator|+
-literal|", status="
-operator|+
+argument_list|,
 name|containerStatus
 argument_list|)
 expr_stmt|;
-block|}
 comment|// If promote_opportunistic_after_start is set, automatically promote
 comment|// opportunistic containers to guaranteed.
 if|if
@@ -7055,24 +7035,15 @@ argument_list|>
 name|allServiceResponse
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Succeeded to start Container "
-operator|+
+literal|"Succeeded to start Container {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|Container
 name|container
 init|=

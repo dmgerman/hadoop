@@ -549,18 +549,14 @@ argument_list|,
 name|c
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} Marked container={} from queue={} to be preemption"
+operator|+
+literal|" candidates"
+argument_list|,
 name|this
 operator|.
 name|getClass
@@ -568,25 +564,18 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" Marked container="
-operator|+
+argument_list|,
 name|c
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" from queue="
-operator|+
+argument_list|,
 name|c
 operator|.
 name|getQueueName
 argument_list|()
-operator|+
-literal|" to be preemption candidates"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -1039,34 +1028,23 @@ name|isAMContainer
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skip selecting AM container on host="
-operator|+
+literal|"Skip selecting AM container on host={} AM container={}"
+argument_list|,
 name|node
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|" AM container="
-operator|+
+argument_list|,
 name|c
 operator|.
 name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 comment|// Can we preempt container c?

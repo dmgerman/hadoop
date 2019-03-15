@@ -721,10 +721,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Filesystem based provider"
+literal|"Filesystem based provider excluded from provider "
 operator|+
-literal|" excluded from provider path due to recursive dependency: "
-operator|+
+literal|"path due to recursive dependency: {}"
+argument_list|,
 name|provider
 argument_list|)
 expr_stmt|;

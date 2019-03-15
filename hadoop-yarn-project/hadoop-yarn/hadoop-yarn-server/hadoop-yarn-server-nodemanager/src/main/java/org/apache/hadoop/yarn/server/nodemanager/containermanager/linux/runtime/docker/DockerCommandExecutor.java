@@ -353,24 +353,15 @@ name|disableFailureLogging
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Running docker command: "
-operator|+
+literal|"Running docker command: {}"
+argument_list|,
 name|dockerCommand
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|String
@@ -487,31 +478,20 @@ argument_list|(
 name|currentContainerStatus
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container Status: "
-operator|+
+literal|"Container Status: {} ContainerId: {}"
+argument_list|,
 name|dockerContainerStatus
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" ContainerId: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|dockerContainerStatus
 return|;
@@ -522,33 +502,22 @@ name|ContainerExecutionException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container Status: "
-operator|+
+literal|"Container Status: {} ContainerId: {}"
+argument_list|,
 name|DockerContainerStatus
 operator|.
 name|NONEXISTENT
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" ContainerId: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|DockerContainerStatus
 operator|.

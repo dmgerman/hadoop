@@ -3798,28 +3798,19 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} : {}"
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|APP_ATTEMPT_DIAGNOSTICS_LIMIT_KC
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|diagnosticsLimitKC
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|diagnostics
@@ -5240,12 +5231,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing event for "
-operator|+
+literal|"Processing event for {} of type {}"
+argument_list|,
 name|appAttemptID
-operator|+
-literal|" of type "
-operator|+
+argument_list|,
 name|event
 operator|.
 name|getType
@@ -6249,24 +6238,15 @@ operator|.
 name|amReqs
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting node count for blacklist to "
-operator|+
+literal|"Setting node count for blacklist to {}"
+argument_list|,
 name|numNodes
 argument_list|)
 expr_stmt|;
-block|}
 name|appAttempt
 operator|.
 name|getAMBlacklistManager
@@ -6288,36 +6268,23 @@ operator|.
 name|getBlacklistUpdates
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using blacklist for AM: additions("
-operator|+
+literal|"Using blacklist for AM: additions({}) and removals({})"
+argument_list|,
 name|amBlacklist
 operator|.
 name|getBlacklistAdditions
 argument_list|()
-operator|+
-literal|") and removals("
-operator|+
+argument_list|,
 name|amBlacklist
 operator|.
 name|getBlacklistRemovals
 argument_list|()
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 name|QueueInfo
 name|queueInfo
 init|=
@@ -6501,27 +6468,18 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting default node label expression : "
-operator|+
+literal|"Setting default node label expression : {}"
+argument_list|,
 name|queueInfo
 operator|.
 name|getDefaultNodeLabelExpression
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|labelExp
 operator|=
 name|queueInfo

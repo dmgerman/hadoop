@@ -767,20 +767,12 @@ argument_list|)
 throw|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using container runtime: "
-operator|+
+literal|"Using container runtime: {}"
+argument_list|,
 name|runtime
 operator|.
 name|getClass
@@ -790,7 +782,6 @@ name|getSimpleName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|runtime
 return|;

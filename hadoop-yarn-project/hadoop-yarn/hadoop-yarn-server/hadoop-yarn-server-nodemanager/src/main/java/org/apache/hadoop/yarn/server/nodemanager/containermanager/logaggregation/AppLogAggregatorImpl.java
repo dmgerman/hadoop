@@ -2508,35 +2508,24 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding new framework-token for "
+literal|"Adding new framework-token for {} for log-aggregation:"
 operator|+
+literal|" {}; userUgi={}"
+argument_list|,
 name|appId
-operator|+
-literal|" for log-aggregation: "
-operator|+
+argument_list|,
 name|systemCredentials
 operator|.
 name|getAllTokens
 argument_list|()
-operator|+
-literal|"; userUgi="
-operator|+
+argument_list|,
 name|userUgi
 argument_list|)
 expr_stmt|;
-block|}
 comment|// this will replace old token
 name|userUgi
 operator|.

@@ -1045,14 +1045,6 @@ index|[]
 name|oldActiveData
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1062,7 +1054,6 @@ operator|+
 literal|"as embedded leader election doesn't support fencing"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|createActiveNodeInfo (String clusterId, String rmId)
 specifier|private

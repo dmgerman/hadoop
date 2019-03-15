@@ -2619,27 +2619,15 @@ argument_list|(
 name|message
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"All docker volumes in the system, command="
-operator|+
+literal|"All docker volumes in the system, command={}"
+argument_list|,
 name|dockerVolumeInspectCommand
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|ContainerExecutionException
@@ -3058,14 +3046,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3075,7 +3055,6 @@ operator|+
 literal|" do."
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 if|if
@@ -3094,14 +3073,6 @@ name|CGROUP_ARG_NO_TASKS
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3112,16 +3083,7 @@ literal|"cgroup options"
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
 block|{
 name|LOG
 operator|.
@@ -3130,7 +3092,6 @@ argument_list|(
 literal|"using docker's cgroups options"
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|cGroupPath
 init|=
@@ -3143,24 +3104,15 @@ argument_list|(
 name|containerIdStr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"using cgroup parent: "
-operator|+
+literal|"using cgroup parent: {}"
+argument_list|,
 name|cGroupPath
 argument_list|)
 expr_stmt|;
-block|}
 name|runCommand
 operator|.
 name|setCGroupParent
@@ -6712,24 +6664,15 @@ name|tcCommandFile
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Launching container with cmd: "
-operator|+
+literal|"Launching container with cmd: {}"
+argument_list|,
 name|command
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|launchOp
 return|;
@@ -6830,16 +6773,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"now pulling docker image."
-operator|+
-literal|" image name: "
-operator|+
+literal|"now pulling docker image. image name: {}, container: {}"
+argument_list|,
 name|imageName
-operator|+
-literal|","
-operator|+
-literal|" container: "
-operator|+
+argument_list|,
 name|containerIdStr
 argument_list|)
 expr_stmt|;
@@ -6879,25 +6816,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"pull docker image done with "
+literal|"pull docker image done with {}ms specnt. image name: {},"
 operator|+
-name|String
-operator|.
-name|valueOf
-argument_list|(
+literal|" container: {}"
+argument_list|,
 name|pullImageTimeMs
-argument_list|)
-operator|+
-literal|"ms spent."
-operator|+
-literal|" image name: "
-operator|+
+argument_list|,
 name|imageName
-operator|+
-literal|","
-operator|+
-literal|" container: "
-operator|+
+argument_list|,
 name|containerIdStr
 argument_list|)
 expr_stmt|;

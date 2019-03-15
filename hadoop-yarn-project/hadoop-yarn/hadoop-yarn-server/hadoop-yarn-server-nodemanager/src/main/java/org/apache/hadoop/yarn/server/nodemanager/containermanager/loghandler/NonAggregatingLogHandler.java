@@ -968,30 +968,17 @@ argument_list|()
 operator|-
 name|now
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Scheduling deletion of "
-operator|+
+literal|"Scheduling deletion of {} logs in {} msec"
+argument_list|,
 name|appId
-operator|+
-literal|" logs in "
-operator|+
+argument_list|,
 name|deleteDelayMsec
-operator|+
-literal|" msec"
 argument_list|)
 expr_stmt|;
-block|}
 name|LogDeleterRunnable
 name|logDeleter
 init|=

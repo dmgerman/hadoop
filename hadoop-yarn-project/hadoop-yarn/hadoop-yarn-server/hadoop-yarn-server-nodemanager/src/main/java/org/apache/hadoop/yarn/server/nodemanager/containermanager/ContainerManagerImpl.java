@@ -3833,27 +3833,15 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovering application with state: "
-operator|+
+literal|"Recovering application with state: {}"
+argument_list|,
 name|proto
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|recoverApplication
 argument_list|(
 name|proto
@@ -3891,24 +3879,15 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovering container with state: "
-operator|+
+literal|"Recovering container with state: {}"
+argument_list|,
 name|rcs
 argument_list|)
 expr_stmt|;
-block|}
 name|recoverContainer
 argument_list|(
 name|rcs
@@ -4146,28 +4125,17 @@ name|getFlowRunId
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovering Flow context: "
-operator|+
+literal|"Recovering Flow context: {} for an application {}"
+argument_list|,
 name|fc
-operator|+
-literal|" for an application "
-operator|+
+argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -4197,28 +4165,19 @@ name|getClusterTimestamp
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"No prior existing flow context found. Using default Flow context: "
 operator|+
+literal|"{} for an application {}"
+argument_list|,
 name|fc
-operator|+
-literal|" for an application "
-operator|+
+argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|LOG
 operator|.
@@ -8116,28 +8075,17 @@ argument_list|,
 name|flowRunId
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Flow context: "
-operator|+
+literal|"Flow context: {} created for an application {}"
+argument_list|,
 name|flowContext
-operator|+
-literal|" created for an application "
-operator|+
+argument_list|,
 name|applicationID
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|flowContext

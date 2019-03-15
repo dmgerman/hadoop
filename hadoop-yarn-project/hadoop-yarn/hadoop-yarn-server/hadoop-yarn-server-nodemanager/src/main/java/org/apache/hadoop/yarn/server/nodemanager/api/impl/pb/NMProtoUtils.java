@@ -323,14 +323,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -338,7 +330,6 @@ argument_list|(
 literal|"Converting recovered FileDeletionTask"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|convertProtoToFileDeletionTask
 argument_list|(
@@ -369,14 +360,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -384,7 +367,6 @@ argument_list|(
 literal|"Converting recovered DockerContainerDeletionTask"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|convertProtoToDockerContainerDeletionTask
 argument_list|(
@@ -397,14 +379,6 @@ argument_list|)
 return|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -412,7 +386,6 @@ argument_list|(
 literal|"Unable to get task type, trying FileDeletionTask"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|convertProtoToFileDeletionTask
 argument_list|(

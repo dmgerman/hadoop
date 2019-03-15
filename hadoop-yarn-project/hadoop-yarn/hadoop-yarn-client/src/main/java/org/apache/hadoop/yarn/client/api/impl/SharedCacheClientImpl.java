@@ -569,26 +569,17 @@ operator|=
 name|createClientProxy
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to Shared Cache Manager at "
-operator|+
+literal|"Connecting to Shared Cache Manager at {}"
+argument_list|,
 name|this
 operator|.
 name|scmAddress
 argument_list|)
 expr_stmt|;
-block|}
 name|super
 operator|.
 name|serviceStart

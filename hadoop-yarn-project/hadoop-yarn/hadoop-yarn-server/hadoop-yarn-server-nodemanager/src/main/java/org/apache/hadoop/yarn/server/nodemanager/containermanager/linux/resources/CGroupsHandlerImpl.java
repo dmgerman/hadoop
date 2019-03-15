@@ -2154,24 +2154,15 @@ argument_list|,
 name|cGroupId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"createCgroup: "
-operator|+
+literal|"createCgroup: {}"
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -2262,12 +2253,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"First line in cgroup tasks file: "
-operator|+
+literal|"First line in cgroup tasks file: {} {}"
+argument_list|,
 name|cgf
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|str
 argument_list|)
 expr_stmt|;
@@ -2456,24 +2445,15 @@ argument_list|,
 name|cGroupId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"deleteCGroup: "
-operator|+
+literal|"deleteCGroup: {}"
+argument_list|,
 name|cGroupPath
 argument_list|)
 expr_stmt|;
-block|}
 name|long
 name|start
 init|=

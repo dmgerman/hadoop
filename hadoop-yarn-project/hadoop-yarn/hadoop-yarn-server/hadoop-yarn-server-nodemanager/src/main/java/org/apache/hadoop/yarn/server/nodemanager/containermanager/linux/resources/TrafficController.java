@@ -1022,24 +1022,15 @@ name|find
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Matched regex: "
-operator|+
+literal|"Matched regex: {}"
+argument_list|,
 name|regex
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -1148,24 +1139,15 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"TC state: %n"
+literal|"TC state: {}"
 operator|+
 name|output
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|output
 return|;
@@ -1488,24 +1470,15 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"TC stats output:"
-operator|+
+literal|"TC stats output:{}"
+argument_list|,
 name|output
 argument_list|)
 expr_stmt|;
-block|}
 name|Map
 argument_list|<
 name|Integer
@@ -1519,24 +1492,15 @@ argument_list|(
 name|output
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"classId -> bytes sent %n"
-operator|+
+literal|"classId -> bytes sent {}"
+argument_list|,
 name|classIdBytesStats
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|classIdBytesStats
 return|;
@@ -2005,24 +1969,15 @@ name|input
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ClassId hex string : "
-operator|+
+literal|"ClassId hex string : {}"
+argument_list|,
 name|classIdStr
 argument_list|)
 expr_stmt|;
-block|}
 comment|//extract and return 4 digits
 comment|//e.g 00420005 -> 0005
 return|return

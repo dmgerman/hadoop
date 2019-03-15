@@ -2788,27 +2788,15 @@ name|errMsg
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got the information about the specified SubCluster "
-operator|+
+literal|"Got the information about the specified SubCluster {}"
+argument_list|,
 name|subClusterInfo
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4013,31 +4001,22 @@ name|errMsg
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got the information about the specified application  "
+literal|"Got the information about the specified application {}."
 operator|+
+literal|" The AM is running in {}"
+argument_list|,
 name|request
 operator|.
 name|getApplicationId
 argument_list|()
-operator|+
-literal|". The AM is running in "
-operator|+
+argument_list|,
 name|homeRM
 argument_list|)
 expr_stmt|;
-block|}
 name|FederationStateStoreClientMetrics
 operator|.
 name|succeededStateStoreCall
@@ -4718,27 +4697,15 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Selected from StateStore the policy for the queue: "
-operator|+
+literal|"Selected from StateStore the policy for the queue: {}"
+argument_list|,
 name|subClusterPolicyConfiguration
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{

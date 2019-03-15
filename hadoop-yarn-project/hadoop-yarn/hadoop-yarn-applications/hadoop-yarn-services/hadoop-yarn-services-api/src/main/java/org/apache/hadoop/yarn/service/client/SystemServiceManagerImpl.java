@@ -1947,24 +1947,15 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading service definition from FS: "
-operator|+
+literal|"Loading service definition from FS: {}"
+argument_list|,
 name|filePath
 argument_list|)
 expr_stmt|;
-block|}
 name|service
 operator|=
 name|jsonSerDeser

@@ -1836,32 +1836,19 @@ argument_list|,
 name|nmContext
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-specifier|final
-name|boolean
-name|enabled
-init|=
-name|resourceHandlerChain
-operator|!=
-literal|null
-decl_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Resource handler chain enabled = "
-operator|+
-name|enabled
+literal|"Resource handler chain enabled = {}"
+argument_list|,
+operator|(
+name|resourceHandlerChain
+operator|!=
+literal|null
+operator|)
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|resourceHandlerChain
@@ -1873,8 +1860,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Bootstrapping resource handler chain: "
-operator|+
+literal|"Bootstrapping resource handler chain: {}"
+argument_list|,
 name|resourceHandlerChain
 argument_list|)
 expr_stmt|;

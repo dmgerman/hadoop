@@ -2387,26 +2387,15 @@ block|{
 return|return;
 comment|// nothing to add
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Registering tokens for renewal for:"
-operator|+
-literal|" appId = "
-operator|+
+literal|"Registering tokens for renewal for: appId = {}"
+argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-block|}
 name|Collection
 argument_list|<
 name|Token

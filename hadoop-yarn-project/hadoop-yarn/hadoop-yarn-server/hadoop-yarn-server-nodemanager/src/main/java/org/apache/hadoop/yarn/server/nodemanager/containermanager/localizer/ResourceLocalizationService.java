@@ -3157,31 +3157,20 @@ argument_list|(
 name|rsrc
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovering localized resource "
-operator|+
+literal|"Recovering localized resource {} at {}"
+argument_list|,
 name|req
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|proto
 operator|.
 name|getLocalPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|tracker
 operator|.
 name|handle
@@ -4063,34 +4052,23 @@ name|ctxt
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Localizing "
-operator|+
+literal|"Localizing {} for container {}"
+argument_list|,
 name|req
 operator|.
 name|getPath
 argument_list|()
-operator|+
-literal|" for container "
-operator|+
+argument_list|,
 name|c
 operator|.
 name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -6181,33 +6159,22 @@ block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skip downloading resource: "
+literal|"Skip downloading resource: {} since it's in"
 operator|+
+literal|" state: {}"
+argument_list|,
 name|key
-operator|+
-literal|" since it's in"
-operator|+
-literal|" state: "
-operator|+
+argument_list|,
 name|rsrc
 operator|.
 name|getState
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|rsrc
 operator|.
 name|unlock
@@ -6217,28 +6184,17 @@ block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skip downloading resource: "
-operator|+
-name|key
-operator|+
-literal|" since it is locked"
+literal|"Skip downloading resource: {} since it is locked"
 operator|+
 literal|" by other threads"
+argument_list|,
+name|key
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|createParentDirs (Path destDirPath, Path destDirRoot)
@@ -8051,31 +8007,20 @@ return|return
 literal|null
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding new framework-token for "
-operator|+
+literal|"Adding new framework-token for {} for localization: {}"
+argument_list|,
 name|appId
-operator|+
-literal|" for localization: "
-operator|+
+argument_list|,
 name|systemCredentials
 operator|.
 name|getAllTokens
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|systemCredentials
 return|;
@@ -8186,14 +8131,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Credentials list in "
+literal|"Credentials list in {}: "
 operator|+
 name|nmPrivateCTokensPath
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|": "
 argument_list|)
 expr_stmt|;
 for|for
@@ -8216,10 +8156,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} : {}"
+argument_list|,
 name|tk
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|buildTokenFingerprint
 argument_list|(
 name|tk

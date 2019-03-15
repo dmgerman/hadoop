@@ -2900,28 +2900,17 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainer: containerId= "
-operator|+
+literal|"storeContainer: containerId= {}, startRequest= {}"
+argument_list|,
 name|idStr
-operator|+
-literal|", startRequest= "
-operator|+
+argument_list|,
 name|startRequest
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|String
 name|keyVersion
@@ -3130,24 +3119,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerQueued: containerId="
-operator|+
+literal|"storeContainerQueued: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -3206,24 +3186,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"removeContainerQueued: containerId="
-operator|+
+literal|"removeContainerQueued: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -3282,24 +3253,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerPaused: containerId="
-operator|+
+literal|"storeContainerPaused: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -3360,24 +3322,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"removeContainerPaused: containerId="
-operator|+
+literal|"removeContainerPaused: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -3439,28 +3392,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerDiagnostics: containerId="
-operator|+
+literal|"storeContainerDiagnostics: containerId={}, diagnostics="
+argument_list|,
 name|containerId
-operator|+
-literal|", diagnostics="
-operator|+
+argument_list|,
 name|diagnostics
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -3527,24 +3469,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerLaunched: containerId="
-operator|+
+literal|"storeContainerLaunched: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Removing the container if queued for backward compatibility reasons
 name|removeContainerQueued
 argument_list|(
@@ -3614,24 +3547,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerUpdateToken: containerId="
-operator|+
+literal|"storeContainerUpdateToken: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|keyUpdateToken
 init|=
@@ -3760,24 +3684,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerKilled: containerId="
-operator|+
+literal|"storeContainerKilled: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -3841,24 +3756,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeContainerCompleted: containerId="
-operator|+
+literal|"storeContainerCompleted: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -4197,24 +4103,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"removeContainer: containerId="
-operator|+
+literal|"removeContainer: containerId={}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|keyPrefix
 init|=
@@ -4667,28 +4564,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"storeApplication: appId="
-operator|+
+literal|"storeApplication: appId={}, proto={}"
+argument_list|,
 name|appId
-operator|+
-literal|", proto="
-operator|+
+argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|key
 init|=
@@ -4747,24 +4633,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"removeApplication: appId="
-operator|+
+literal|"removeApplication: appId={}"
+argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|WriteBatch
@@ -5292,24 +5169,15 @@ return|return
 literal|null
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading completed resource from "
-operator|+
+literal|"Loading completed resource from {}"
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 name|nextCompletedResource
 operator|=
 name|LocalizedResourceProto
@@ -5491,24 +5359,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading in-progress resource at "
-operator|+
+literal|"Loading in-progress resource at {}"
+argument_list|,
 name|localPath
 argument_list|)
 expr_stmt|;
-block|}
 name|nextStartedResource
 operator|=
 operator|new
@@ -6015,24 +5874,15 @@ argument_list|,
 name|localPath
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing localized resource to "
-operator|+
+literal|"Storing localized resource to {}"
+argument_list|,
 name|completedKey
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|WriteBatch
@@ -6158,24 +6008,15 @@ argument_list|,
 name|localPathStr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing local resource at "
-operator|+
+literal|"Removing local resource at {}"
+argument_list|,
 name|localPathStr
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|WriteBatch
@@ -8313,26 +8154,15 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"cleanup "
-operator|+
+literal|"cleanup {} from leveldb"
+argument_list|,
 name|keyStr
-operator|+
-literal|" from leveldb"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|db
 operator|.

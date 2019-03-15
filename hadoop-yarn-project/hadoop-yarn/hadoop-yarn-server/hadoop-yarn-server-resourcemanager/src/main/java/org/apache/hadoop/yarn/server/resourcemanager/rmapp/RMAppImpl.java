@@ -5647,12 +5647,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing event for "
-operator|+
+literal|"Processing event for {} of type {}"
+argument_list|,
 name|appID
-operator|+
-literal|" of type "
-operator|+
+argument_list|,
 name|event
 operator|.
 name|getType
@@ -6322,16 +6320,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Received node update event:"
-operator|+
+literal|"Received node update event:{} for node:{} with state:"
+argument_list|,
 name|type
-operator|+
-literal|" for node:"
-operator|+
+argument_list|,
 name|node
-operator|+
-literal|" with state:"
-operator|+
+argument_list|,
 name|nodeState
 argument_list|)
 expr_stmt|;

@@ -5485,8 +5485,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"the length of loaded UUID:"
-operator|+
+literal|"the length of loaded UUID:{}"
+argument_list|,
 name|uuidReadLen
 argument_list|)
 expr_stmt|;
@@ -5494,8 +5494,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"the loaded UUID:"
-operator|+
+literal|"the loaded UUID:{}"
+argument_list|,
 operator|new
 name|String
 argument_list|(
@@ -5514,8 +5514,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"the expected UUID:"
-operator|+
+literal|"the expected UUID:{}"
+argument_list|,
 operator|new
 name|String
 argument_list|(

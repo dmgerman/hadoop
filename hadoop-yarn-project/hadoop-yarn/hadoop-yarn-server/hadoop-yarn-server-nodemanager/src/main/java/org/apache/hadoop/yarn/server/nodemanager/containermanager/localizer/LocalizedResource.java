@@ -1240,31 +1240,20 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing "
-operator|+
+literal|"Processing {} of type {}"
+argument_list|,
 name|resourcePath
-operator|+
-literal|" of type "
-operator|+
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|ResourceState
 name|oldState
 init|=
@@ -1326,22 +1315,14 @@ operator|!=
 name|newState
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Resource "
-operator|+
+literal|"Resource {}{} size : {} transitioned from {} to {}"
+argument_list|,
 name|resourcePath
-operator|+
+argument_list|,
 operator|(
 name|localPath
 operator|!=
@@ -1355,22 +1336,15 @@ literal|")"
 else|:
 literal|""
 operator|)
-operator|+
-literal|" size : "
-operator|+
+argument_list|,
 name|getSize
 argument_list|()
-operator|+
-literal|" transitioned from "
-operator|+
+argument_list|,
 name|oldState
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|newState
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 finally|finally

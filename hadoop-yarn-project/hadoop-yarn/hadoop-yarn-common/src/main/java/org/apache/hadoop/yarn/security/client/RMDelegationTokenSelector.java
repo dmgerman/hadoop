@@ -271,12 +271,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Looking for a token with service "
-operator|+
+literal|"Looking for a token with service {}"
+argument_list|,
 name|service
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 for|for
@@ -296,18 +293,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Token kind is "
-operator|+
+literal|"Token kind is {} and the token's service name is {}"
+argument_list|,
 name|token
 operator|.
 name|getKind
 argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" and the token's service name is "
-operator|+
+argument_list|,
 name|token
 operator|.
 name|getService

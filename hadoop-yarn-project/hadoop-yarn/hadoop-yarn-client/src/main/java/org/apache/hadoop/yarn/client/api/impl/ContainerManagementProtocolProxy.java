@@ -540,28 +540,19 @@ literal|") can not be less than 0."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} : {}"
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|NM_CLIENT_MAX_NM_PROXIES
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|maxConnectedNMs
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|maxConnectedNMs
@@ -670,24 +661,15 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Refreshing proxy as NMToken got updated for node : "
-operator|+
+literal|"Refreshing proxy as NMToken got updated for node : {}"
+argument_list|,
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Token is updated. check if anyone has already tried closing it.
 if|if
 condition|(
@@ -827,31 +809,20 @@ operator|>=
 name|maxConnectedNMs
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cleaning up the proxy cache, size="
-operator|+
+literal|"Cleaning up the proxy cache, size={} max={}"
+argument_list|,
 name|cmProxy
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" max="
-operator|+
+argument_list|,
 name|maxConnectedNMs
 argument_list|)
 expr_stmt|;
-block|}
 name|boolean
 name|removedProxy
 init|=
@@ -1011,26 +982,17 @@ operator|<
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Closing proxy : "
-operator|+
+literal|"Closing proxy : {}"
+argument_list|,
 name|proxy
 operator|.
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
-block|}
 name|cmProxy
 operator|.
 name|remove
@@ -1344,24 +1306,15 @@ argument_list|(
 name|containerManagerBindAddr
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Opening proxy : "
-operator|+
+literal|"Opening proxy : {}"
+argument_list|,
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
-block|}
 comment|// the user in createRemoteUser in this context has to be ContainerID
 name|UserGroupInformation
 name|user

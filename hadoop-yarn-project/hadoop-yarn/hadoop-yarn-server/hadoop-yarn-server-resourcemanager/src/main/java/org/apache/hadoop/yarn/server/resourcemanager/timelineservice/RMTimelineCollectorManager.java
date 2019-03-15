@@ -472,27 +472,18 @@ name|TimelineUtils
 operator|.
 name|FLOW_NAME_TAG_PREFIX
 case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the flow name: "
-operator|+
+literal|"Setting the flow name: {}"
+argument_list|,
 name|parts
 index|[
 literal|1
 index|]
 argument_list|)
 expr_stmt|;
-block|}
 name|context
 operator|.
 name|setFlowName
@@ -509,27 +500,18 @@ name|TimelineUtils
 operator|.
 name|FLOW_VERSION_TAG_PREFIX
 case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the flow version: "
-operator|+
+literal|"Setting the flow version: {}"
+argument_list|,
 name|parts
 index|[
 literal|1
 index|]
 argument_list|)
 expr_stmt|;
-block|}
 name|context
 operator|.
 name|setFlowVersion
@@ -546,27 +528,18 @@ name|TimelineUtils
 operator|.
 name|FLOW_RUN_ID_TAG_PREFIX
 case|:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the flow run id: "
-operator|+
+literal|"Setting the flow run id: {}"
+argument_list|,
 name|parts
 index|[
 literal|1
 index|]
 argument_list|)
 expr_stmt|;
-block|}
 name|context
 operator|.
 name|setFlowRunId

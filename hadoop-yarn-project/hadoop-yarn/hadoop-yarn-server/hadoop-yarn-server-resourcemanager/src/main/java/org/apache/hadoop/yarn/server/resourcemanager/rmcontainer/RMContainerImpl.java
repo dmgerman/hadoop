@@ -2668,34 +2668,23 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing "
-operator|+
+literal|"Processing {} of type {}"
+argument_list|,
 name|event
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" of type "
-operator|+
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|writeLock
 operator|.
 name|lock

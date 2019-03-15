@@ -241,8 +241,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Initialized "
-operator|+
+literal|"Initialized {}"
+argument_list|,
 name|registry
 argument_list|)
 expr_stmt|;

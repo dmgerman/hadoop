@@ -2622,24 +2622,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Request for appInfo of unknown attempt "
-operator|+
+literal|"Request for appInfo of unknown attempt {}"
+argument_list|,
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -2678,24 +2669,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Request for appInfo of unknown attempt "
-operator|+
+literal|"Request for appInfo of unknown attempt {}"
+argument_list|,
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -3924,38 +3906,25 @@ name|containerId
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Completed container: "
-operator|+
+literal|"Completed container: {} in state: {} event:{}"
+argument_list|,
 name|rmContainer
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" in state: "
-operator|+
+argument_list|,
 name|rmContainer
 operator|.
 name|getState
 argument_list|()
-operator|+
-literal|" event:"
-operator|+
+argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
-block|}
 name|SchedulerNode
 name|node
 init|=
@@ -5699,8 +5668,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container FINISHED: "
-operator|+
+literal|"Container FINISHED: {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
@@ -5925,29 +5894,18 @@ name|RMNode
 name|nm
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"nodeUpdate: "
-operator|+
+literal|"nodeUpdate: {} cluster capacity: {}"
+argument_list|,
 name|nm
-operator|+
-literal|" cluster capacity: "
-operator|+
+argument_list|,
 name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Process new container information
 comment|// NOTICE: it is possible to not find the NodeID as a node can be
 comment|// decommissioned at the same time. Skip updates if node is null.

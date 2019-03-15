@@ -2181,36 +2181,23 @@ name|userSpecificUserLimit
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"userLimit is fetched. userLimit="
+literal|"userLimit is fetched. userLimit={}, userSpecificUserLimit={},"
 operator|+
+literal|" schedulingMode={}, partition={}"
+argument_list|,
 name|userLimitResource
-operator|+
-literal|", userSpecificUserLimit="
-operator|+
+argument_list|,
 name|userSpecificUserLimit
-operator|+
-literal|", schedulingMode="
-operator|+
+argument_list|,
 name|schedulingMode
-operator|+
-literal|", partition="
-operator|+
+argument_list|,
 name|nodePartition
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|userSpecificUserLimit
 return|;
@@ -2360,36 +2347,23 @@ name|getMinimumAllocation
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"userLimit is fetched. userLimit="
+literal|"userLimit is fetched. userLimit={}, userSpecificUserLimit={},"
 operator|+
+literal|" schedulingMode={}, partition={}"
+argument_list|,
 name|userLimitResource
-operator|+
-literal|", userSpecificUserLimit="
-operator|+
+argument_list|,
 name|userSpecificUserLimit
-operator|+
-literal|", schedulingMode="
-operator|+
+argument_list|,
 name|schedulingMode
-operator|+
-literal|", partition="
-operator|+
+argument_list|,
 name|nodePartition
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|userSpecificUserLimit
 return|;
@@ -3455,28 +3429,17 @@ argument_list|(
 name|user
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} added to activeUsers, currently: {}"
+argument_list|,
 name|user
-operator|+
-literal|" added to activeUsers, currently: "
-operator|+
+argument_list|,
 name|activeUsers
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -3603,28 +3566,17 @@ argument_list|(
 name|user
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} removed from activeUsers, currently: {}"
+argument_list|,
 name|user
-operator|+
-literal|" removed from activeUsers, currently: "
-operator|+
+argument_list|,
 name|activeUsers
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

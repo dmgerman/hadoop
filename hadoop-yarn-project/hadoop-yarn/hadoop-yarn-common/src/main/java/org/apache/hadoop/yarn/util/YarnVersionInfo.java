@@ -272,8 +272,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"version: "
-operator|+
+literal|"version: {}"
+argument_list|,
 name|getVersion
 argument_list|()
 argument_list|)

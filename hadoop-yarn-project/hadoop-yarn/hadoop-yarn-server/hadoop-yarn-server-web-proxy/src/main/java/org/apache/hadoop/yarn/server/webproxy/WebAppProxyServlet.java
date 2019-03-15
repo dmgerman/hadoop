@@ -1448,14 +1448,6 @@ argument_list|(
 name|proxyHost
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1465,7 +1457,6 @@ argument_list|,
 name|localAddress
 argument_list|)
 expr_stmt|;
-block|}
 name|httpClientBuilder
 operator|.
 name|setDefaultRequestConfig
@@ -1671,14 +1662,6 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1690,7 +1673,6 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-block|}
 name|base
 operator|.
 name|setHeader

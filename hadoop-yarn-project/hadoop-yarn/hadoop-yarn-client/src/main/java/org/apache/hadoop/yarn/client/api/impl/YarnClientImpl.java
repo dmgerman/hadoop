@@ -3201,24 +3201,15 @@ argument_list|,
 name|timelineDelegationToken
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Add timeline delegation token into credentials: "
-operator|+
+literal|"Add timeline delegation token into credentials: {}"
+argument_list|,
 name|timelineDelegationToken
 argument_list|)
 expr_stmt|;
-block|}
 name|DataOutputBuffer
 name|dob
 init|=

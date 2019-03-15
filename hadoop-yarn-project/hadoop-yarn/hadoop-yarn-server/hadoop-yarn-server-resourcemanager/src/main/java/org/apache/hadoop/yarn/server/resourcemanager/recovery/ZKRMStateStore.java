@@ -2117,10 +2117,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|builder
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2659,24 +2658,15 @@ range|:
 name|planNodes
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading plan from znode: "
-operator|+
+literal|"Loading plan from znode: {}"
+argument_list|,
 name|planName
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|planNodePath
 init|=
@@ -2716,24 +2706,15 @@ argument_list|,
 name|reservationNodeName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading reservation from znode: "
-operator|+
+literal|"Loading reservation from znode: {}"
+argument_list|,
 name|reservationNodePath
 argument_list|)
 expr_stmt|;
-block|}
 name|byte
 index|[]
 name|reservationData
@@ -3038,34 +3019,23 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded delegation key: keyId="
-operator|+
+literal|"Loaded delegation key: keyId={}, expirationDate={}"
+argument_list|,
 name|key
 operator|.
 name|getKeyId
 argument_list|()
-operator|+
-literal|", expirationDate="
-operator|+
+argument_list|,
 name|key
 operator|.
 name|getExpiryDate
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -3320,12 +3290,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unknown child node with name "
-operator|+
+literal|"Unknown child node with name {} under {}"
+argument_list|,
 name|childNodeName
-operator|+
-literal|" under"
-operator|+
+argument_list|,
 name|tokenRoot
 argument_list|)
 expr_stmt|;
@@ -3459,28 +3427,17 @@ argument_list|,
 name|renewDate
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded RMDelegationTokenIdentifier: "
-operator|+
+literal|"Loaded RMDelegationTokenIdentifier: {} renewDate={}"
+argument_list|,
 name|identifier
-operator|+
-literal|" renewDate="
-operator|+
+argument_list|,
 name|renewDate
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -3510,24 +3467,15 @@ argument_list|(
 name|appNodePath
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading application from znode: "
-operator|+
+literal|"Loading application from znode: {}"
+argument_list|,
 name|appNodePath
 argument_list|)
 expr_stmt|;
-block|}
 name|ApplicationId
 name|appId
 init|=
@@ -3778,12 +3726,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unknown child node with name "
-operator|+
+literal|"Unknown child node with name {} under {}"
+argument_list|,
 name|childNodeName
-operator|+
-literal|" under"
-operator|+
+argument_list|,
 name|appRoot
 argument_list|)
 expr_stmt|;
@@ -4008,26 +3954,15 @@ parameter_list|)
 block|{
 comment|// It should be fine to swallow this exception as the parent znode we
 comment|// intend to delete is already deleted.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unable to remove parent node "
-operator|+
+literal|"Unable to remove parent node {} as it does not exist."
+argument_list|,
 name|parentZnode
-operator|+
-literal|" as it does not exist."
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 comment|// No apps stored under parent path.
@@ -4056,24 +3991,15 @@ argument_list|,
 name|fencingNodePath
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No leaf znode exists. Removing parent node "
-operator|+
+literal|"No leaf znode exists. Removing parent node {}"
+argument_list|,
 name|parentZnode
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4085,26 +4011,15 @@ parameter_list|)
 block|{
 comment|// It should be fine to swallow this exception as the parent znode
 comment|// has to be deleted only if it has no children. And this node has.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unable to remove app parent node "
-operator|+
+literal|"Unable to remove app parent node {} as it has children."
+argument_list|,
 name|parentZnode
-operator|+
-literal|" as it has children."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -4253,28 +4168,17 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing info for app: "
-operator|+
+literal|"Storing info for app: {} at: {}"
+argument_list|,
 name|appId
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|nodeCreatePath
 argument_list|)
 expr_stmt|;
-block|}
 name|byte
 index|[]
 name|appStateData
@@ -4318,30 +4222,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Application state data size for "
-operator|+
+literal|"Application state data size for {} is {}"
+argument_list|,
 name|appId
-operator|+
-literal|" is "
-operator|+
+argument_list|,
 name|appStateData
 operator|.
 name|length
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|StoreLimitException
@@ -4484,28 +4377,17 @@ block|}
 block|}
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing final state info for app: "
-operator|+
+literal|"Storing final state info for app: {} at: {}"
+argument_list|,
 name|appId
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|nodeUpdatePath
 argument_list|)
 expr_stmt|;
-block|}
 name|byte
 index|[]
 name|appStateData
@@ -4561,32 +4443,19 @@ argument_list|,
 name|fencingNodePath
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Path "
+literal|"Path {} for {} didn't exist. Creating a new znode to update"
 operator|+
+literal|" the application state."
+argument_list|,
 name|nodeUpdatePath
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|appId
-operator|+
-literal|" didn't "
-operator|+
-literal|"exist. Creating a new znode to update the application state."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/*    * Handles store, update and remove application attempt state store    * operations.    */
@@ -4726,30 +4595,19 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} info for attempt: {} at: {}"
+argument_list|,
 name|operation
-operator|+
-literal|" info for attempt: "
-operator|+
+argument_list|,
 name|appAttemptId
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 switch|switch
 condition|(
 name|operation
@@ -4804,32 +4662,19 @@ argument_list|,
 name|fencingNodePath
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Path "
+literal|"Path {} for {} didn't exist. Created a new znode to update"
 operator|+
+literal|" the application attempt state."
+argument_list|,
 name|path
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|appAttemptId
-operator|+
-literal|" didn't exist."
-operator|+
-literal|" Created a new znode to update the application attempt state."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 break|break;
 case|case
@@ -5103,30 +4948,17 @@ condition|(
 name|safeRemove
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing info for app: "
-operator|+
+literal|"Removing info for app: {} at: {} and its attempts."
+argument_list|,
 name|removeAppId
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|appIdRemovePath
-operator|+
-literal|" and its attempts."
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|attempts
@@ -5243,29 +5075,20 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing "
-operator|+
+literal|"Storing {}{}"
+argument_list|,
 name|DELEGATION_TOKEN_PREFIX
-operator|+
+argument_list|,
 name|rmDTIdentifier
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|RMDelegationTokenIdentifierData
 name|identifierData
 init|=
@@ -5337,31 +5160,20 @@ name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing "
-operator|+
+literal|"Storing {}. SequenceNumber: {}"
+argument_list|,
 name|dtSequenceNumberPath
-operator|+
-literal|". SequenceNumber: "
-operator|+
+argument_list|,
 name|rmDTIdentifier
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|trx
 operator|.
 name|setData
@@ -5464,27 +5276,18 @@ comment|// Alternate path not found so return.
 return|return;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing RMDelegationToken_"
-operator|+
+literal|"Removing RMDelegationToken_{}"
+argument_list|,
 name|rmDTIdentifier
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|zkManager
 operator|.
 name|safeDelete
@@ -5589,29 +5392,20 @@ condition|(
 name|pathExists
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Updating "
-operator|+
+literal|"Updating {}{}"
+argument_list|,
 name|DELEGATION_TOKEN_PREFIX
-operator|+
+argument_list|,
 name|rmDTIdentifier
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|RMDelegationTokenIdentifierData
 name|identifierData
 init|=
@@ -5683,27 +5477,18 @@ name|getKeyId
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing RMDelegationKey_"
-operator|+
+literal|"Storing RMDelegationKey_{}"
+argument_list|,
 name|delegationKey
 operator|.
 name|getKeyId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|ByteArrayOutputStream
 name|os
 init|=
@@ -5783,27 +5568,18 @@ name|getKeyId
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing RMDelegationKey_"
-operator|+
+literal|"Removing RMDelegationKey_{}"
+argument_list|,
 name|delegationKey
 operator|.
 name|getKeyId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|zkManager
 operator|.
 name|safeDelete
@@ -5972,30 +5748,17 @@ argument_list|,
 name|reservationIdName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing reservationallocation "
-operator|+
+literal|"Removing reservationallocation {} for plan {}"
+argument_list|,
 name|reservationIdName
-operator|+
-literal|" for"
-operator|+
-literal|" plan "
-operator|+
+argument_list|,
 name|planName
 argument_list|)
 expr_stmt|;
-block|}
 name|zkManager
 operator|.
 name|safeDelete
@@ -6151,28 +5914,17 @@ name|planCreatePath
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating plan node: "
-operator|+
+literal|"Creating plan node: {} at: {}"
+argument_list|,
 name|planName
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|planCreatePath
 argument_list|)
 expr_stmt|;
-block|}
 name|trx
 operator|.
 name|create
@@ -6194,32 +5946,19 @@ condition|(
 name|isUpdate
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Updating reservation: "
-operator|+
+literal|"Updating reservation: {} in plan:{} at: {}"
+argument_list|,
 name|reservationIdName
-operator|+
-literal|" in plan:"
-operator|+
+argument_list|,
 name|planName
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|reservationPath
 argument_list|)
 expr_stmt|;
-block|}
 name|trx
 operator|.
 name|setData
@@ -6235,32 +5974,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing reservation: "
-operator|+
+literal|"Storing reservation: {} in plan:{} at: {}"
+argument_list|,
 name|reservationIdName
-operator|+
-literal|" in plan:"
-operator|+
+argument_list|,
 name|planName
-operator|+
-literal|" at: "
-operator|+
+argument_list|,
 name|reservationPath
 argument_list|)
 expr_stmt|;
-block|}
 name|trx
 operator|.
 name|create
@@ -6619,26 +6345,15 @@ name|NodeExistsException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unable to create app parent node "
-operator|+
+literal|"Unable to create app parent node {} as it already exists."
+argument_list|,
 name|rootNodePath
-operator|+
-literal|" as it already exists."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 return|return

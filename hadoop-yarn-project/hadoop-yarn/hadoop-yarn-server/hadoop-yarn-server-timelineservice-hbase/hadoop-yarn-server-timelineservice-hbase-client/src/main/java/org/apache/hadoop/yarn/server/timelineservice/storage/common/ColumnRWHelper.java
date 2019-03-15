@@ -1048,14 +1048,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1063,7 +1055,6 @@ argument_list|(
 literal|"null prefix was specified; returning all columns"
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|converterColumnKey

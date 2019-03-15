@@ -752,24 +752,15 @@ name|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|" batch size="
-operator|+
+literal|" batch size={}"
+argument_list|,
 name|batchSize
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/*    * (non-Javadoc)    *    * @see org.apache.hadoop.hbase.regionserver.RegionScanner#getRegionInfo()    */
 annotation|@
@@ -2217,33 +2208,22 @@ return|return
 name|finalCells
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"In processSummationMajorCompaction,"
+literal|"In processSummationMajorCompaction, will drop cells older"
 operator|+
-literal|" will drop cells older than "
-operator|+
+literal|" than {} CurrentColumnCells size={}"
+argument_list|,
 name|currentTimestamp
-operator|+
-literal|" CurrentColumnCells size="
-operator|+
+argument_list|,
 name|currentColumnCells
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|Cell

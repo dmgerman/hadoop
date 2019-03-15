@@ -1703,42 +1703,25 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"startContainer:"
+literal|"startContainer: node={} application={} container={}"
 operator|+
-literal|" node="
-operator|+
+literal|" available={} used={}"
+argument_list|,
 name|containerManagerAddress
-operator|+
-literal|" application="
-operator|+
+argument_list|,
 name|applicationId
-operator|+
-literal|" container="
-operator|+
+argument_list|,
 name|container
-operator|+
-literal|" available="
-operator|+
+argument_list|,
 name|available
-operator|+
-literal|" used="
-operator|+
+argument_list|,
 name|used
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|StartContainersResponse
 name|response
@@ -2080,42 +2063,25 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stopContainer:"
+literal|"stopContainer: node={} application={} container={}"
 operator|+
-literal|" node="
-operator|+
+literal|" available={} used={}"
+argument_list|,
 name|containerManagerAddress
-operator|+
-literal|" application="
-operator|+
+argument_list|,
 name|applicationId
-operator|+
-literal|" container="
-operator|+
+argument_list|,
 name|containerID
-operator|+
-literal|" available="
-operator|+
+argument_list|,
 name|available
-operator|+
-literal|" used="
-operator|+
+argument_list|,
 name|used
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|StopContainersResponse

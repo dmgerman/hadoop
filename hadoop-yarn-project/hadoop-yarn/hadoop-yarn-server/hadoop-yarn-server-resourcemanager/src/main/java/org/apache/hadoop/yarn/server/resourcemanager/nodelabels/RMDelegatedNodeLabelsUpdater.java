@@ -910,27 +910,17 @@ name|msg
 argument_list|)
 throw|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"RM Node labels mapping provider class is : "
-operator|+
+literal|"RM Node labels mapping provider class is : {}"
+argument_list|,
 name|nodeLabelsMappingProvider
 operator|.
 name|getClass
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

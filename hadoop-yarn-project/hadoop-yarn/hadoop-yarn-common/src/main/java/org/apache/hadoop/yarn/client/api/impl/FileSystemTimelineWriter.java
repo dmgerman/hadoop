@@ -1362,31 +1362,17 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Writing summary log for "
-operator|+
+literal|"Writing summary log for {} to {}"
+argument_list|,
 name|appAttemptId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|summaryLogPath
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|logFDsCache
@@ -1432,31 +1418,17 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Writing entity log for "
-operator|+
+literal|"Writing entity log for {} to {}"
+argument_list|,
 name|groupId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|entityLogPath
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|logFDsCache
@@ -1728,15 +1700,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Writing domains for "
-operator|+
+literal|"Writing domains for {} to {}"
+argument_list|,
 name|appAttemptId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|domainLogPath
 argument_list|)
 expr_stmt|;
@@ -1893,27 +1860,18 @@ name|prepareForWrite
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Writing entity list of size "
-operator|+
+literal|"Writing entity list of size {}"
+argument_list|,
 name|entities
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|TimelineEntity
@@ -3102,25 +3060,15 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|e
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -5174,24 +5122,15 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"New attempt directory created - "
-operator|+
+literal|"New attempt directory created - {}"
+argument_list|,
 name|attemptDir
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|attemptDir
@@ -5251,24 +5190,15 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"New app directory created - "
-operator|+
+literal|"New app directory created - {}"
+argument_list|,
 name|appDir
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|appDir
@@ -5324,24 +5254,15 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"New user directory created - "
-operator|+
+literal|"New user directory created - {}"
+argument_list|,
 name|userDir
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|userDir

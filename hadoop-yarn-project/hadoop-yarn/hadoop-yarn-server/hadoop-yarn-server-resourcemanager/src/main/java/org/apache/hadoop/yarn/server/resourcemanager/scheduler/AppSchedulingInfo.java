@@ -3277,56 +3277,36 @@ name|Queue
 name|queue
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"allocate: applicationId="
+literal|"allocate: applicationId={} container={} host={} user={}"
 operator|+
+literal|" resource={} type={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" container="
-operator|+
+argument_list|,
 name|containerAllocated
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|" host="
-operator|+
+argument_list|,
 name|containerAllocated
 operator|.
 name|getNodeId
 argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" user="
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" resource="
-operator|+
+argument_list|,
 name|containerAllocated
 operator|.
 name|getResource
 argument_list|()
-operator|+
-literal|" type="
-operator|+
+argument_list|,
 name|type
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|node

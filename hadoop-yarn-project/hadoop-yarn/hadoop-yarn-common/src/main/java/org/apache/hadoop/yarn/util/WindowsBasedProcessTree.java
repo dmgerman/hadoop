@@ -667,7 +667,7 @@ operator|.
 name|debug
 argument_list|(
 literal|"Error parsing procInfo."
-operator|+
+argument_list|,
 name|nfe
 argument_list|)
 expr_stmt|;
@@ -679,12 +679,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Expected split length of proc info to be "
-operator|+
+literal|"Expected split length of proc info to be {}. Got {}"
+argument_list|,
 name|procInfoSplitCount
-operator|+
-literal|". Got "
-operator|+
+argument_list|,
 name|procInfo
 operator|.
 name|length

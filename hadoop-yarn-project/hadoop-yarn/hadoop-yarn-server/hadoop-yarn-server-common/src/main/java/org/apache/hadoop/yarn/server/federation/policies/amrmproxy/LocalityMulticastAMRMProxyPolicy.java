@@ -1153,31 +1153,22 @@ name|getAllocationRequestId
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ERROR resolving sub-cluster for resourceName: "
+literal|"ERROR resolving sub-cluster for resourceName: {}, picked a "
 operator|+
+literal|"random subcluster to forward:{}"
+argument_list|,
 name|rr
 operator|.
 name|getResourceName
 argument_list|()
-operator|+
-literal|", picked a random subcluster to forward:"
-operator|+
+argument_list|,
 name|targetId
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|targetIds

@@ -751,12 +751,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Token read from token storage: "
-operator|+
+literal|"Token read from token storage: {}"
+argument_list|,
 name|token
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -908,27 +905,15 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Prepared token for write: "
-operator|+
+literal|"Prepared token for write: {}"
+argument_list|,
 name|tk
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 if|if

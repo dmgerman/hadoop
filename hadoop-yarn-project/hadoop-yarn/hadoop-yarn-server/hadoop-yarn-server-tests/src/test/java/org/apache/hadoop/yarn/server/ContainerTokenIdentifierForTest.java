@@ -1021,8 +1021,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Writing ContainerTokenIdentifierForTest to RPC layer: "
-operator|+
+literal|"Writing ContainerTokenIdentifierForTest to RPC layer: {}"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;

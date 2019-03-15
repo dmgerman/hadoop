@@ -1745,8 +1745,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"From NM Context container "
-operator|+
+literal|"From NM Context container {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -1780,8 +1780,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container type "
-operator|+
+literal|"Container type {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerTokenIdentifier
@@ -3857,27 +3857,18 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"AMRMProxy is ignoring event: "
-operator|+
+literal|"AMRMProxy is ignoring event: {}"
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 block|}

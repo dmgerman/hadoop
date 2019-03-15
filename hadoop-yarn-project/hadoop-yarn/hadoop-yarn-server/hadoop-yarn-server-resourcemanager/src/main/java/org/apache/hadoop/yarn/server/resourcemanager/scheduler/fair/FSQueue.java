@@ -1676,29 +1676,18 @@ argument_list|(
 name|fairShare
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The updated fairShare for "
-operator|+
+literal|"The updated fairShare for {} is {}"
+argument_list|,
 name|getName
 argument_list|()
-operator|+
-literal|" is "
-operator|+
+argument_list|,
 name|fairShare
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/** Get the steady fair share assigned to this Schedulable. */
 DECL|method|getSteadyFairShare ()

@@ -4687,28 +4687,17 @@ name|getPartition
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"completedContainer "
-operator|+
+literal|"completedContainer {}, cluster={}"
+argument_list|,
 name|this
-operator|+
-literal|", cluster="
-operator|+
+argument_list|,
 name|clusterResource
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{

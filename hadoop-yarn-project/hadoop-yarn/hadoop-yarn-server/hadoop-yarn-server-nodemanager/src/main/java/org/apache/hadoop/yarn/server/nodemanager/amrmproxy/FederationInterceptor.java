@@ -2370,11 +2370,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recovered UAM in "
-operator|+
+literal|"Recovered UAM in {} from NMSS"
+argument_list|,
 name|scId
-operator|+
-literal|" from NMSS"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2605,12 +2603,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"  From subcluster "
-operator|+
+literal|"  From subcluster {} running container {}"
+argument_list|,
 name|subClusterId
-operator|+
-literal|" running container "
-operator|+
+argument_list|,
 name|container
 operator|.
 name|getId
@@ -2742,14 +2738,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"  From home RM "
-operator|+
+literal|"  From home RM {} running container {}"
+argument_list|,
 name|this
 operator|.
 name|homeSubClusterId
-operator|+
-literal|" running container "
-operator|+
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -3981,27 +3975,18 @@ operator|.
 name|get
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Received finish application response from RM: "
-operator|+
+literal|"Received finish application response from RM: {}"
+argument_list|,
 name|uamResponse
 operator|.
 name|getSubClusterId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|uamResponse

@@ -2636,14 +2636,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -2655,7 +2647,6 @@ argument_list|,
 name|entityId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -2707,14 +2698,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -2726,7 +2709,6 @@ argument_list|,
 name|entityId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -6974,14 +6956,6 @@ name|TimelineEntities
 name|entities
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -6989,7 +6963,6 @@ argument_list|(
 literal|"Starting put"
 argument_list|)
 expr_stmt|;
-block|}
 name|TimelinePutResponse
 name|response
 init|=
@@ -7140,28 +7113,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Put "
+literal|"Put {} new leveldb entity entries and {} new leveldb index"
 operator|+
+literal|" entries from {} timeline entities"
+argument_list|,
 name|entityCount
-operator|+
-literal|" new leveldb entity entries and "
-operator|+
+argument_list|,
 name|indexCount
-operator|+
-literal|" new leveldb index entries from "
-operator|+
+argument_list|,
 name|entities
 operator|.
 name|getEntities
@@ -7169,11 +7132,8 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" timeline entities"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|response
 return|;
@@ -8484,26 +8444,15 @@ operator|>=
 name|writeBatchSize
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Preparing to delete a batch of "
-operator|+
+literal|"Preparing to delete a batch of {} old start times"
+argument_list|,
 name|batchSize
-operator|+
-literal|" old start times"
 argument_list|)
 expr_stmt|;
-block|}
 name|starttimedb
 operator|.
 name|write
@@ -8511,28 +8460,19 @@ argument_list|(
 name|writeBatch
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleted batch of "
+literal|"Deleted batch of {}. Total start times deleted"
 operator|+
+literal|" so far this cycle: {}"
+argument_list|,
 name|batchSize
-operator|+
-literal|". Total start times deleted so far this cycle: "
-operator|+
+argument_list|,
 name|startTimesCount
 argument_list|)
 expr_stmt|;
-block|}
 name|IOUtils
 operator|.
 name|cleanupWithLogger
@@ -8559,26 +8499,15 @@ operator|++
 name|totalCount
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Preparing to delete a batch of "
-operator|+
+literal|"Preparing to delete a batch of {} old start times"
+argument_list|,
 name|batchSize
-operator|+
-literal|" old start times"
 argument_list|)
 expr_stmt|;
-block|}
 name|starttimedb
 operator|.
 name|write
@@ -8586,28 +8515,19 @@ argument_list|(
 name|writeBatch
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleted batch of "
+literal|"Deleted batch of {}. Total start times deleted so far"
 operator|+
+literal|" this cycle: {}"
+argument_list|,
 name|batchSize
-operator|+
-literal|". Total start times deleted so far this cycle: "
-operator|+
+argument_list|,
 name|startTimesCount
 argument_list|)
 expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info

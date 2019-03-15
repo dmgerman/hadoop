@@ -511,24 +511,15 @@ operator|.
 name|getQueueName
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Running plan follower edit policy for plan: "
-operator|+
+literal|"Running plan follower edit policy for plan: {}"
+argument_list|,
 name|planQueueName
 argument_list|)
 expr_stmt|;
-block|}
 comment|// align with plan step
 name|long
 name|step
@@ -1045,14 +1036,6 @@ name|capToAssign
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1066,7 +1049,6 @@ argument_list|,
 name|targetCapacity
 argument_list|)
 expr_stmt|;
-block|}
 comment|// set maxCapacity to 100% unless the job requires gang, in which
 comment|// case we stick to capacity (as running early/before is likely a
 comment|// waste of resources)
@@ -1136,14 +1118,6 @@ literal|1.0f
 operator|-
 name|totalAssignedCapacity
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1159,7 +1133,6 @@ argument_list|,
 name|defQCap
 argument_list|)
 expr_stmt|;
-block|}
 comment|// set the default queue to eat-up all remaining capacity
 try|try
 block|{

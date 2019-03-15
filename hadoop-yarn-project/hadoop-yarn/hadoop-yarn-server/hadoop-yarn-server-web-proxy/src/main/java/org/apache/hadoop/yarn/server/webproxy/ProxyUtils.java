@@ -280,14 +280,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -307,7 +299,6 @@ argument_list|,
 name|target
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|location
 init|=

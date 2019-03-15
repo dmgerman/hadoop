@@ -214,27 +214,15 @@ return|return
 literal|null
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Looking for a token with service "
-operator|+
+literal|"Looking for a token with service {}"
+argument_list|,
 name|service
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|Token
@@ -248,37 +236,23 @@ range|:
 name|tokens
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Token kind is "
-operator|+
+literal|"Token kind is {} and the token's service name is {}"
+argument_list|,
 name|token
 operator|.
 name|getKind
 argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" and the token's service name is "
-operator|+
+argument_list|,
 name|token
 operator|.
 name|getService
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|TimelineDelegationTokenIdentifier

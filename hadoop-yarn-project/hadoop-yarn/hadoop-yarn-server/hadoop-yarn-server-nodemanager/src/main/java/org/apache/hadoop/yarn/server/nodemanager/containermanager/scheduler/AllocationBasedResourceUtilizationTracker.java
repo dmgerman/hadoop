@@ -484,14 +484,6 @@ return|return
 literal|false
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -512,7 +504,6 @@ name|getVCoresAllocatedForContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Check CPU.
 if|if
 condition|(

@@ -492,24 +492,15 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Value of CGroupsHandler is: "
-operator|+
+literal|"Value of CGroupsHandler is: {}"
+argument_list|,
 name|cGroupsHandler
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -1405,14 +1396,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1422,32 +1405,22 @@ operator|+
 literal|"while trying to add ResourceHandlers from configuration!"
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 else|else
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"List of plugins of ResourcePluginManager: "
-operator|+
+literal|"List of plugins of ResourcePluginManager: {}"
+argument_list|,
 name|pluginManager
 operator|.
 name|getNameToPlugins
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 for|for
 control|(

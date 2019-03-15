@@ -2632,27 +2632,18 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing info for attempt: "
-operator|+
+literal|"Storing info for attempt: {}"
+argument_list|,
 name|attemptState
 operator|.
 name|getAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|store
 operator|.
 name|storeApplicationAttemptStateInternal
@@ -2801,27 +2792,18 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Updating info for attempt: "
-operator|+
+literal|"Updating info for attempt: {}"
+argument_list|,
 name|attemptState
 operator|.
 name|getAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|store
 operator|.
 name|updateApplicationAttemptStateInternal
@@ -5945,27 +5927,18 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing event of type "
-operator|+
+literal|"Processing event of type {}"
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|RMStateStoreState
 name|oldState

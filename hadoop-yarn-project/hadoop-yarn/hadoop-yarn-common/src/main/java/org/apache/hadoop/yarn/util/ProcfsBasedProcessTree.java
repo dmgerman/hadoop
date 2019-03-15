@@ -1488,10 +1488,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|this
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -2095,38 +2094,21 @@ name|info
 operator|.
 name|anonymous
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|" total("
-operator|+
+literal|" total({}): PID : {}, info : {}, total : {}"
+argument_list|,
 name|olderThanAge
-operator|+
-literal|"): PID : "
-operator|+
+argument_list|,
 name|p
 operator|.
 name|getPid
 argument_list|()
-operator|+
-literal|", info : "
-operator|+
+argument_list|,
 name|info
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|", total : "
-operator|+
+argument_list|,
 operator|(
 name|total
 operator|*
@@ -2135,15 +2117,13 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|procMemInfo
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2353,28 +2333,17 @@ init|=
 name|getTotalProcessJiffies
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Process "
-operator|+
+literal|"Process {} jiffies:{}"
+argument_list|,
 name|pid
-operator|+
-literal|" jiffies:"
-operator|+
+argument_list|,
 name|processTotalJiffies
 argument_list|)
 expr_stmt|;
-block|}
 name|cpuTimeTracker
 operator|.
 name|updateElapsedJiffies
@@ -3895,28 +3864,17 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"MemInfo : "
-operator|+
+literal|"MemInfo : {} : Value  : {}"
+argument_list|,
 name|key
-operator|+
-literal|" : Value  : "
-operator|+
+argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|memoryMappingInfo
@@ -4412,24 +4370,15 @@ condition|)
 block|{
 return|return;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"setMemInfo : memInfo : "
-operator|+
+literal|"setMemInfo : memInfo : {}"
+argument_list|,
 name|info
 argument_list|)
 expr_stmt|;
-block|}
 switch|switch
 condition|(
 name|info

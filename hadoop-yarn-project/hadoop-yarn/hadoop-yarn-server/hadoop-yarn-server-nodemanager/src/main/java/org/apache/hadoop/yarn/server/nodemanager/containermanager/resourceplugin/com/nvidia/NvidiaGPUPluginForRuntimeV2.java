@@ -817,24 +817,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to get output from "
-operator|+
+literal|"Failed to get output from {}"
+argument_list|,
 name|pathOfGpuBinary
 argument_list|)
 expr_stmt|;
-block|}
 throw|throw
 operator|new
 name|YarnException
@@ -863,31 +854,20 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Generating runtime spec for allocated devices: "
-operator|+
+literal|"Generating runtime spec for allocated devices: {}, {}"
+argument_list|,
 name|allocatedDevices
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|yarnRuntime
 operator|.
 name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|yarnRuntime
@@ -1028,24 +1008,15 @@ decl_stmt|;
 comment|// output "major:minor" in hex
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get major numbers from /dev/"
-operator|+
+literal|"Get major numbers from /dev/{}"
+argument_list|,
 name|devName
 argument_list|)
 expr_stmt|;
-block|}
 name|output
 operator|=
 name|shellExecutor
@@ -1069,24 +1040,15 @@ argument_list|(
 literal|":"
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stat output:"
-operator|+
+literal|"stat output:{}"
+argument_list|,
 name|output
 argument_list|)
 expr_stmt|;
-block|}
 name|output
 operator|=
 name|Integer

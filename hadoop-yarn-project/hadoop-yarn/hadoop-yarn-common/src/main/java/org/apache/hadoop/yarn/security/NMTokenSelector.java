@@ -191,28 +191,17 @@ range|:
 name|tokens
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Looking for service: "
-operator|+
+literal|"Looking for service: {}. Current token is {}"
+argument_list|,
 name|service
-operator|+
-literal|". Current token is "
-operator|+
+argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|NMTokenIdentifier

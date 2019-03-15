@@ -254,14 +254,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -271,7 +263,6 @@ operator|+
 literal|"TimelineEntities."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|TimelineWriteResponse
@@ -294,14 +285,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -311,7 +294,6 @@ operator|+
 literal|"TimelineEntities."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|TimelineWriteResponse
@@ -334,14 +316,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -351,7 +325,6 @@ operator|+
 literal|"TimelineEntities."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|TimelineWriteResponse
@@ -368,14 +341,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -383,7 +348,6 @@ argument_list|(
 literal|"NoOpTimelineWriter is configured. Ignoring flush call"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 end_class

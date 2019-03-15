@@ -67,36 +67,23 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|log
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|log
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping 'host' "
-operator|+
+literal|"Skipping 'host' {} for {} since it has been blacklisted"
+argument_list|,
 name|node
 operator|.
 name|getNodeName
 argument_list|()
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
-operator|+
-literal|" since it has been blacklisted"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -114,36 +101,23 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|log
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|log
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping 'rack' "
-operator|+
+literal|"Skipping 'rack' {} for {} since it has been blacklisted"
+argument_list|,
 name|node
 operator|.
 name|getRackName
 argument_list|()
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
-operator|+
-literal|" since it has been blacklisted"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;

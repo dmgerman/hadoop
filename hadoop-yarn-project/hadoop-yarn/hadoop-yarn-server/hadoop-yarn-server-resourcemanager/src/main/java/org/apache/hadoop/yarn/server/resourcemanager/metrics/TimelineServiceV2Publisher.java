@@ -3369,26 +3369,17 @@ operator|+
 name|entity
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Error when publishing entity "
-operator|+
+literal|"Error when publishing entity {}"
+argument_list|,
 name|entity
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|class|ApplicationFinishPublishEvent

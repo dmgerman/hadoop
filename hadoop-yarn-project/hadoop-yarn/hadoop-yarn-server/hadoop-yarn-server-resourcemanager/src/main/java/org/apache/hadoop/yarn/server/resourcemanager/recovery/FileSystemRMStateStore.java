@@ -2342,34 +2342,23 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded delegation key: keyId="
-operator|+
+literal|"Loaded delegation key: keyId={}, expirationDate={}"
+argument_list|,
 name|key
 operator|.
 name|getKeyId
 argument_list|()
-operator|+
-literal|", expirationDate="
-operator|+
+argument_list|,
 name|key
 operator|.
 name|getExpiryDate
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -2421,28 +2410,17 @@ argument_list|,
 name|renewDate
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded RMDelegationTokenIdentifier: "
-operator|+
+literal|"Loaded RMDelegationTokenIdentifier: {} renewDate={}"
+argument_list|,
 name|identifier
-operator|+
-literal|" renewDate="
-operator|+
+argument_list|,
 name|renewDate
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -5367,24 +5345,15 @@ argument_list|)
 condition|)
 block|{
 comment|// application
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading application from node: "
-operator|+
+literal|"Loading application from node: {}"
+argument_list|,
 name|childNodeName
 argument_list|)
 expr_stmt|;
-block|}
 name|ApplicationStateDataPBImpl
 name|appState
 init|=
@@ -5436,24 +5405,15 @@ argument_list|)
 condition|)
 block|{
 comment|// attempt
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loading application attempt from node: "
-operator|+
+literal|"Loading application attempt from node: {}"
+argument_list|,
 name|childNodeName
 argument_list|)
 expr_stmt|;
-block|}
 name|ApplicationAttemptStateDataPBImpl
 name|attemptState
 init|=

@@ -2811,29 +2811,18 @@ argument_list|,
 name|resourceTypes
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"capacityConfigType is '"
-operator|+
+literal|"capacityConfigType is '{}' for queue {}"
+argument_list|,
 name|capacityConfigType
-operator|+
-literal|"' for queue '"
-operator|+
+argument_list|,
 name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|this
@@ -2882,29 +2871,18 @@ name|CapacityConfigType
 operator|.
 name|PERCENTAGE
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"capacityConfigType is updated as '"
-operator|+
+literal|"capacityConfigType is updated as '{}' for queue {}"
+argument_list|,
 name|capacityConfigType
-operator|+
-literal|"' for queue '"
-operator|+
+argument_list|,
 name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|validateAbsoluteVsPercentageCapacityConfig
 argument_list|(
@@ -3073,33 +3051,22 @@ expr_stmt|;
 block|}
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Updating absolute resource configuration for queue:"
+literal|"Updating absolute resource configuration for queue:{} as"
 operator|+
+literal|" minResource={} and maxResource={}"
+argument_list|,
 name|getQueueName
 argument_list|()
-operator|+
-literal|" as minResource="
-operator|+
+argument_list|,
 name|minResource
-operator|+
-literal|" and maxResource="
-operator|+
+argument_list|,
 name|maxResource
 argument_list|)
 expr_stmt|;
-block|}
 name|queueResourceQuotas
 operator|.
 name|setConfiguredMinResource

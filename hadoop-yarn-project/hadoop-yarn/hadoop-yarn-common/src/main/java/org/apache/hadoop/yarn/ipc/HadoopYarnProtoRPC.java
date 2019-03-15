@@ -200,8 +200,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating a HadoopYarnProtoRpc proxy for protocol "
-operator|+
+literal|"Creating a HadoopYarnProtoRpc proxy for protocol {}"
+argument_list|,
 name|protocol
 argument_list|)
 expr_stmt|;
@@ -290,15 +290,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating a HadoopYarnProtoRpc server for protocol "
-operator|+
-name|protocol
-operator|+
-literal|" with "
-operator|+
-name|numHandlers
+literal|"Creating a HadoopYarnProtoRpc server for protocol {} with {}"
 operator|+
 literal|" handlers"
+argument_list|,
+name|protocol
+argument_list|,
+name|numHandlers
 argument_list|)
 expr_stmt|;
 return|return

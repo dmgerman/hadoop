@@ -684,14 +684,6 @@ name|void
 name|initializePriorityDigraph
 parameter_list|()
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -699,7 +691,6 @@ argument_list|(
 literal|"Initializing priority preemption directed graph:"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Make sure we iterate all leaf queue combinations
 for|for
 control|(
@@ -882,28 +873,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"- Added priority ordering edge: "
-operator|+
+literal|"- Added priority ordering edge: {}>> {}"
+argument_list|,
 name|q2
-operator|+
-literal|">> "
-operator|+
+argument_list|,
 name|q1
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -924,28 +904,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"- Added priority ordering edge: "
-operator|+
+literal|"- Added priority ordering edge: {}>> {}"
+argument_list|,
 name|q1
-operator|+
-literal|">> "
-operator|+
+argument_list|,
 name|q2
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -2092,38 +2061,25 @@ name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Trying to preempt following containers to make reserved "
 operator|+
-literal|"container="
-operator|+
+literal|"container={} on node={} can be allocated:"
+argument_list|,
 name|reservedContainer
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" on node="
-operator|+
+argument_list|,
 name|node
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|" can be allocated:"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Update to-be-preempt
 name|incToPreempt
 argument_list|(
@@ -2148,34 +2104,23 @@ range|:
 name|newlySelectedToBePreemptContainers
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|" --container="
-operator|+
+literal|" --container={} resource={}"
+argument_list|,
 name|c
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" resource="
-operator|+
+argument_list|,
 name|c
 operator|.
 name|getReservedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Add to preemptMap
 name|CapacitySchedulerPreemptionUtils
 operator|.

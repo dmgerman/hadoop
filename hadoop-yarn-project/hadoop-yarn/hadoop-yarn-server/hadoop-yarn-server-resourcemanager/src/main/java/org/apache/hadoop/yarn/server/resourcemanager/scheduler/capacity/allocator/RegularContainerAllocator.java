@@ -968,29 +968,20 @@ name|isWaitingForAMContainer
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skip allocating AM container to app_attempt="
+literal|"Skip allocating AM container to app_attempt={},"
 operator|+
+literal|" don't allow to allocate AM container in non-exclusive mode"
+argument_list|,
 name|application
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-operator|+
-literal|", don't allow to allocate AM container in non-exclusive mode"
 argument_list|)
 expr_stmt|;
-block|}
 name|application
 operator|.
 name|updateAppSkipNodeDiagnostics
@@ -1089,14 +1080,6 @@ name|required
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1104,7 +1087,6 @@ argument_list|(
 literal|"doesn't need containers based on reservation algo!"
 argument_list|)
 expr_stmt|;
-block|}
 name|ActivitiesLogger
 operator|.
 name|APP
@@ -1149,26 +1131,15 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"cannot allocate required resource="
-operator|+
+literal|"cannot allocate required resource={} because of headroom"
+argument_list|,
 name|required
-operator|+
-literal|" because of headroom"
 argument_list|)
 expr_stmt|;
-block|}
 name|ActivitiesLogger
 operator|.
 name|APP
@@ -3170,14 +3141,6 @@ condition|(
 name|needToUnreserve
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3185,7 +3148,6 @@ argument_list|(
 literal|"we needed to unreserve to be able to allocate"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Skip the locality request
 name|ActivitiesLogger
 operator|.
@@ -3927,14 +3889,6 @@ operator|.
 name|OFF_SWITCH
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -3942,7 +3896,6 @@ argument_list|(
 literal|"Resetting scheduling opportunities"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Only reset scheduling opportunities for RACK_LOCAL if configured
 comment|// to do so. Not resetting means we will continue to schedule
 comment|// RACK_LOCAL without delay.

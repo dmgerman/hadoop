@@ -1769,24 +1769,15 @@ name|size
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Starting to preempt containers for selectedCandidates and size:"
-operator|+
+literal|"Starting to preempt containers for selectedCandidates and size:{}"
+argument_list|,
 name|toPreemptCount
 argument_list|)
 expr_stmt|;
-block|}
 comment|// preempt (or kill) the selected containers
 comment|// We need toPreemptPerSelector here to match list of containers to
 comment|// its selector so that we can get custom timeout per selector when

@@ -1989,26 +1989,17 @@ name|message
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} :{}"
+argument_list|,
 name|YARN_NODEMANAGER_DURATION_TO_TRACK_STOPPED_CONTAINERS
-operator|+
-literal|" :"
-operator|+
+argument_list|,
 name|durationToTrackStoppedContainers
 argument_list|)
 expr_stmt|;
-block|}
 name|super
 operator|.
 name|serviceInit
@@ -2739,27 +2730,18 @@ operator|.
 name|pullCachedLogAggregationReports
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The cache log aggregation status size:"
-operator|+
+literal|"The cache log aggregation status size:{}"
+argument_list|,
 name|logAggregationReports
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|logAggregationReports
@@ -3310,34 +3292,23 @@ name|getLastHealthReportTime
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node's health-status : "
-operator|+
+literal|"Node's health-status : {}, {}"
+argument_list|,
 name|nodeHealthStatus
 operator|.
 name|getIsNodeHealthy
 argument_list|()
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|nodeHealthStatus
 operator|.
 name|getHealthReport
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|List
 argument_list|<
 name|ContainerStatus
@@ -3725,30 +3696,17 @@ name|applicationId
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is completing, remove {} from NM context."
+argument_list|,
 name|applicationId
-operator|+
-literal|" is completing, "
-operator|+
-literal|" remove "
-operator|+
+argument_list|,
 name|containerId
-operator|+
-literal|" from NM context."
 argument_list|)
 expr_stmt|;
-block|}
 name|context
 operator|.
 name|getContainers
@@ -3821,31 +3779,20 @@ name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending out "
-operator|+
+literal|"Sending out {} container statuses: {}"
+argument_list|,
 name|containerStatuses
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" container statuses: "
-operator|+
+argument_list|,
 name|containerStatuses
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|containerStatuses
 return|;
@@ -4846,15 +4793,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Retrieved credentials form RM for "
-operator|+
+literal|"Retrieved credentials form RM for {}: {}"
+argument_list|,
 name|entry
 operator|.
 name|getKey
 argument_list|()
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|entry
 operator|.
 name|getValue
@@ -5965,27 +5910,16 @@ name|getAreNodeAttributesAcceptedByRM
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node attributes {"
-operator|+
+literal|"Node attributes {{}} were Accepted by RM "
+argument_list|,
 name|getPreviousValue
 argument_list|()
-operator|+
-literal|"} were Accepted by RM "
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -6498,20 +6432,12 @@ name|getAreNodeLabelsAcceptedByRM
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node Labels {"
-operator|+
+literal|"Node Labels {{}} were Accepted by RM"
+argument_list|,
 name|StringUtils
 operator|.
 name|join
@@ -6521,11 +6447,8 @@ argument_list|,
 name|getPreviousValue
 argument_list|()
 argument_list|)
-operator|+
-literal|"} were Accepted by RM "
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -7077,27 +7000,15 @@ argument_list|(
 name|newResource
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node's resource is updated to "
-operator|+
+literal|"Node's resource is updated to {}"
+argument_list|,
 name|newResource
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -7246,14 +7157,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -7261,7 +7164,6 @@ argument_list|(
 literal|"No collectors to update RM"
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 name|Map
@@ -7356,33 +7258,22 @@ name|collectorData
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sync a new collector address: "
+literal|"Sync a new collector address: {} for application: {}"
 operator|+
+literal|" from RM."
+argument_list|,
 name|collectorData
 operator|.
 name|getCollectorAddr
 argument_list|()
-operator|+
-literal|" for application: "
-operator|+
+argument_list|,
 name|appId
-operator|+
-literal|" from RM."
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Update information for clients.
 name|NMTimelinePublisher
 name|nmTimelinePublisher

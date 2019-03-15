@@ -1447,24 +1447,17 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Constraint is found empty during constraint validation for app:"
+literal|"Constraint is found empty during constraint validation for"
 operator|+
+literal|" app:{}"
+argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -1700,28 +1693,17 @@ name|nodeAttribute
 init|=
 literal|null
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Incoming node attribute: "
-operator|+
+literal|"Incoming node attribute: {}={}"
+argument_list|,
 name|attrKey
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|attrString
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Input node attribute could be like 1.8
 name|String
 index|[]

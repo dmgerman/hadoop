@@ -337,35 +337,15 @@ name|void
 name|run
 parameter_list|()
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|String
-name|msg
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Running DeletionTask : %s"
-argument_list|,
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|msg
+literal|"Running DeletionTask : {}"
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
-block|}
 name|boolean
 name|error
 init|=
@@ -393,24 +373,15 @@ operator|==
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NM deleting absolute path : "
-operator|+
+literal|"NM deleting absolute path : {}"
+argument_list|,
 name|subDir
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|lfs
@@ -471,24 +442,15 @@ argument_list|,
 name|subDir
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NM deleting path : "
-operator|+
+literal|"NM deleting path : {}"
+argument_list|,
 name|del
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|lfs
@@ -528,31 +490,18 @@ else|else
 block|{
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting path: ["
-operator|+
+literal|"Deleting path: [{}] as user [{}]"
+argument_list|,
 name|subDir
-operator|+
-literal|"] as user: ["
-operator|+
+argument_list|,
 name|getUser
 argument_list|()
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|baseDirs

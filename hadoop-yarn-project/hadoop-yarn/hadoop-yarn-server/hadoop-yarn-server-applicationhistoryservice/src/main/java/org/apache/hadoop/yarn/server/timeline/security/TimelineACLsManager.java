@@ -792,43 +792,28 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ACL not found for access-type "
+literal|"ACL not found for access-type {} for domain {} owned by {}."
 operator|+
+literal|" Using default [{}]"
+argument_list|,
 name|applicationAccessType
-operator|+
-literal|" for domain "
-operator|+
+argument_list|,
 name|entity
 operator|.
 name|getDomainId
 argument_list|()
-operator|+
-literal|" owned by "
-operator|+
+argument_list|,
 name|owner
-operator|+
-literal|". Using default ["
-operator|+
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_YARN_APP_ACL
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
-block|}
 name|domainACL
 operator|=
 operator|new

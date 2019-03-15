@@ -3079,24 +3079,15 @@ condition|(
 name|isAppRecovering
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is recovering. Skip notifying APP_ACCEPTED"
+argument_list|,
 name|applicationId
-operator|+
-literal|" is recovering. Skip notifying APP_ACCEPTED"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -3341,24 +3332,15 @@ condition|(
 name|isAttemptRecovering
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is recovering. Skipping notifying ATTEMPT_ADDED"
+argument_list|,
 name|applicationAttemptId
-operator|+
-literal|" is recovering. Skipping notifying ATTEMPT_ADDED"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -4094,21 +4076,14 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping unreserve on removed node: "
-operator|+
+literal|"Skipping unreserve on removed node: {}"
+argument_list|,
 name|nodeID
 argument_list|)
 expr_stmt|;
@@ -4147,21 +4122,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping container release on removed node: "
-operator|+
+literal|"Skipping container release on removed node: {}"
+argument_list|,
 name|nodeID
 argument_list|)
 expr_stmt|;
@@ -5946,24 +5914,15 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No container is allocated on node "
-operator|+
+literal|"No container is allocated on node {}"
+argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 name|assignedContainers
@@ -7965,28 +7924,17 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ACL not found for queue access-type "
-operator|+
+literal|"ACL not found for queue access-type {} for queue {}"
+argument_list|,
 name|acl
-operator|+
-literal|" for queue "
-operator|+
+argument_list|,
 name|queueName
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;

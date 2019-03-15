@@ -3653,12 +3653,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"RMAppManager processing event for "
-operator|+
+literal|"RMAppManager processing event for {} of type {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" of type "
-operator|+
+argument_list|,
 name|event
 operator|.
 name|getType

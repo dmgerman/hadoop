@@ -696,24 +696,15 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removed TEMP containers of app="
-operator|+
+literal|"Removed TEMP containers of app={}"
+argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

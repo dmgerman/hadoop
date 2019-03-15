@@ -1243,27 +1243,18 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting default node label expression : "
-operator|+
+literal|"Setting default node label expression : {}"
+argument_list|,
 name|queueInfo
 operator|.
 name|getDefaultNodeLabelExpression
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|labelExp
 operator|=
 name|queueInfo

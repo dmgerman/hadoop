@@ -9534,14 +9534,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Reservation {0} is within threshold so attempting to create synchronously."
+literal|"Reservation {} is within threshold so attempting to"
+operator|+
+literal|" create synchronously."
 argument_list|,
 name|reservationId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|reservationSystem

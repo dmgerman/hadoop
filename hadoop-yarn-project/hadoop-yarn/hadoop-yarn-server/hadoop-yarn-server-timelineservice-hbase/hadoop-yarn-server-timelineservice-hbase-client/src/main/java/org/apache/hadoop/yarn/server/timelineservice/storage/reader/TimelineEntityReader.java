@@ -1291,11 +1291,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-operator|&&
 name|filterList
 operator|!=
 literal|null
@@ -1305,8 +1300,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"FilterList created for get is - "
-operator|+
+literal|"FilterList created for get is - {}"
+argument_list|,
 name|filterList
 argument_list|)
 expr_stmt|;
@@ -1407,11 +1402,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-operator|&&
 name|filterList
 operator|!=
 literal|null
@@ -1421,8 +1411,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"FilterList created for scan is - "
-operator|+
+literal|"FilterList created for scan is - {}"
+argument_list|,
 name|filterList
 argument_list|)
 expr_stmt|;

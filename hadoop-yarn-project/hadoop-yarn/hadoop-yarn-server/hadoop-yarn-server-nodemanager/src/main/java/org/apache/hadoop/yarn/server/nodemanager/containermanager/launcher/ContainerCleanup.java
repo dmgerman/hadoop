@@ -728,26 +728,15 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Marking container "
-operator|+
+literal|"Marking container {} as inactive"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|" as inactive"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// this should ensure that if the container process has not launched
 comment|// by this time, it will never be launched
 name|exec
@@ -765,14 +754,6 @@ operator|.
 name|getPidFilePath
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -792,7 +773,6 @@ else|:
 literal|"null"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// however the container process may have already started
 try|try
 block|{
@@ -1133,32 +1113,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending signal to pid "
-operator|+
+literal|"Sending signal to pid {} as user {} for container {}"
+argument_list|,
 name|processId
-operator|+
-literal|" as user "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" for container "
-operator|+
+argument_list|,
 name|containerIdStr
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|ContainerExecutor
 operator|.
@@ -1193,36 +1160,22 @@ argument_list|,
 name|signal
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sent signal "
+literal|"Sent signal {} to pid {} as user {} for container {},"
 operator|+
+literal|" result={}"
+argument_list|,
 name|signal
-operator|+
-literal|" to pid "
-operator|+
+argument_list|,
 name|processId
-operator|+
-literal|" as user "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" for container "
-operator|+
+argument_list|,
 name|containerIdStr
-operator|+
-literal|", result="
-operator|+
+argument_list|,
 operator|(
 name|result
 condition|?
@@ -1232,7 +1185,6 @@ literal|"failed"
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|sleepDelayBeforeSigKill
@@ -1388,28 +1340,16 @@ name|build
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sent signal to docker container "
-operator|+
+literal|"Sent signal to docker container {} as user {}, result={}"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|" as user "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|", result="
-operator|+
+argument_list|,
 operator|(
 name|result
 condition|?
@@ -1419,7 +1359,6 @@ literal|"failed"
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 end_class

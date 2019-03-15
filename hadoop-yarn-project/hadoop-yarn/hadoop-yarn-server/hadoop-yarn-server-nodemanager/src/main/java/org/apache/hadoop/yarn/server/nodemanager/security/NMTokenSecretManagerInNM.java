@@ -1162,24 +1162,17 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing application attempts NMToken keys for application "
+literal|"Removing application attempts NMToken keys for"
 operator|+
+literal|" application {}"
+argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|ApplicationAttemptId
@@ -1338,20 +1331,12 @@ argument_list|()
 condition|)
 block|{
 comment|// Update key only if it is modified.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"NMToken key updated for application attempt : "
-operator|+
+literal|"NMToken key updated for application attempt : {}"
+argument_list|,
 name|identifier
 operator|.
 name|getApplicationAttemptId
@@ -1361,7 +1346,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|identifier
@@ -1437,24 +1421,15 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updating nodeId : "
-operator|+
+literal|"updating nodeId : {}"
+argument_list|,
 name|nodeId
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|nodeId

@@ -2271,15 +2271,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - getCapacity: queuePrefix="
-operator|+
+literal|"CSConf - getCapacity: queuePrefix={}, capacity={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", capacity="
-operator|+
+argument_list|,
 name|capacity
 argument_list|)
 expr_stmt|;
@@ -2333,15 +2331,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - setCapacity: queuePrefix="
-operator|+
+literal|"CSConf - setCapacity: queuePrefix={}, capacity={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", capacity="
-operator|+
+argument_list|,
 name|capacity
 argument_list|)
 expr_stmt|;
@@ -2394,15 +2390,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - setCapacity: queuePrefix="
-operator|+
+literal|"CSConf - setCapacity: queuePrefix={}, capacity={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", capacity="
-operator|+
+argument_list|,
 name|absoluteResourceCapacity
 argument_list|)
 expr_stmt|;
@@ -2546,15 +2540,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - setMaxCapacity: queuePrefix="
-operator|+
+literal|"CSConf - setMaxCapacity: queuePrefix={}, maxCapacity={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", maxCapacity="
-operator|+
+argument_list|,
 name|maxCapacity
 argument_list|)
 expr_stmt|;
@@ -2943,15 +2935,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"here setUserLimit: queuePrefix="
-operator|+
+literal|"here setUserLimit: queuePrefix={}, userLimit={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", userLimit="
-operator|+
+argument_list|,
 name|getUserLimit
 argument_list|(
 name|queue
@@ -4422,8 +4412,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - getQueues called for: queuePrefix="
-operator|+
+literal|"CSConf - getQueues called for: queuePrefix={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
@@ -4501,15 +4491,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - getQueues: queuePrefix="
-operator|+
+literal|"CSConf - getQueues: queuePrefix={}, queues={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", queues="
-operator|+
+argument_list|,
 operator|(
 operator|(
 name|queues
@@ -4566,15 +4554,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - setQueues: qPrefix="
-operator|+
+literal|"CSConf - setQueues: qPrefix={}, queues={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", queues="
-operator|+
+argument_list|,
 name|StringUtils
 operator|.
 name|arrayToString
@@ -5853,15 +5839,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"here setReservableQueue: queuePrefix="
-operator|+
+literal|"here setReservableQueue: queuePrefix={}, isReservableQueue={}"
+argument_list|,
 name|getQueuePrefix
 argument_list|(
 name|queue
 argument_list|)
-operator|+
-literal|", isReservableQueue="
-operator|+
+argument_list|,
 name|isReservable
 argument_list|(
 name|queue

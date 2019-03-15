@@ -352,12 +352,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"successfully changed to "
-operator|+
+literal|"successfully changed to {} for queue {}"
+argument_list|,
 name|capacity
-operator|+
-literal|" for queue "
-operator|+
+argument_list|,
 name|this
 operator|.
 name|getQueueName

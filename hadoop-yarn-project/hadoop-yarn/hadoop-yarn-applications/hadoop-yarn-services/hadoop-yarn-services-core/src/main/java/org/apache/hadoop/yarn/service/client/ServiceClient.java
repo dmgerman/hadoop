@@ -8037,10 +8037,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|builder
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -8487,8 +8486,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Run as user "
-operator|+
+literal|"Run as user {}"
+argument_list|,
 name|userName
 argument_list|)
 expr_stmt|;
@@ -9378,8 +9377,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got DT: "
-operator|+
+literal|"Got DT: {}"
+argument_list|,
 name|token
 argument_list|)
 expr_stmt|;

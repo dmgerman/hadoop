@@ -292,28 +292,17 @@ operator|.
 name|incrActiveUsers
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} added to activeUsers, currently: {}"
+argument_list|,
 name|user
-operator|+
-literal|" added to activeUsers, currently: "
-operator|+
+argument_list|,
 name|activeUsers
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -424,28 +413,17 @@ operator|.
 name|decrActiveUsers
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} removed from activeUsers, currently: {}"
+argument_list|,
 name|user
-operator|+
-literal|" removed from activeUsers, currently: "
-operator|+
+argument_list|,
 name|activeUsers
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

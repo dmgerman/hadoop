@@ -330,14 +330,6 @@ name|e
 parameter_list|)
 block|{
 comment|// do nothing
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -347,7 +339,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// rename new to old
 name|fs

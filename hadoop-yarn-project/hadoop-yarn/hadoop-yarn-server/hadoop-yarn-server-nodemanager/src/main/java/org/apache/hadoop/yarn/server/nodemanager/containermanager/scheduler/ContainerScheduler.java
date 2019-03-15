@@ -872,20 +872,12 @@ name|context
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Resource handler chain enabled = "
-operator|+
+literal|"Resource handler chain enabled = {}"
+argument_list|,
 operator|(
 name|resourceHandlerChain
 operator|!=
@@ -893,7 +885,6 @@ literal|null
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|resourceHandlerChain

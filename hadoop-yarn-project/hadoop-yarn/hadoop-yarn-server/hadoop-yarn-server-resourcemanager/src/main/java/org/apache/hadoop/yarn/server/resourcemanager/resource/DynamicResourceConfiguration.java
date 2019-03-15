@@ -446,15 +446,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DRConf - setVcoresPerNode: nodePrefix="
-operator|+
+literal|"DRConf - setVcoresPerNode: nodePrefix={}, vcores={}"
+argument_list|,
 name|getNodePrefix
 argument_list|(
 name|node
 argument_list|)
-operator|+
-literal|", vcores="
-operator|+
+argument_list|,
 name|vcores
 argument_list|)
 expr_stmt|;
@@ -517,15 +515,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DRConf - setMemoryPerNode: nodePrefix="
-operator|+
+literal|"DRConf - setMemoryPerNode: nodePrefix={}, memory={}"
+argument_list|,
 name|getNodePrefix
 argument_list|(
 name|node
 argument_list|)
-operator|+
-literal|", memory="
-operator|+
+argument_list|,
 name|memory
 argument_list|)
 expr_stmt|;
@@ -588,15 +584,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"DRConf - setOverCommitTimeoutPerNode: nodePrefix="
+literal|"DRConf - setOverCommitTimeoutPerNode: nodePrefix={},"
 operator|+
+literal|" overCommitTimeout={}"
+argument_list|,
 name|getNodePrefix
 argument_list|(
 name|node
 argument_list|)
-operator|+
-literal|", overCommitTimeout="
-operator|+
+argument_list|,
 name|overCommitTimeout
 argument_list|)
 expr_stmt|;

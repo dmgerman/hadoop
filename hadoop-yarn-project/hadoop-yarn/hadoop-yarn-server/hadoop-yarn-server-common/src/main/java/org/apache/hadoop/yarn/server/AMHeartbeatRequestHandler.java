@@ -476,20 +476,12 @@ literal|"Null allocateRequest from requestInfo"
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending Heartbeat to RM. AskList:"
-operator|+
+literal|"Sending Heartbeat to RM. AskList:{}"
+argument_list|,
 operator|(
 operator|(
 name|request
@@ -512,7 +504,6 @@ argument_list|()
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 name|request
 operator|.
 name|setResponseId
@@ -585,20 +576,12 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Received Heartbeat reply from RM. Allocated Containers:"
-operator|+
+literal|"Received Heartbeat reply from RM. Allocated Containers:{}"
+argument_list|,
 operator|(
 operator|(
 name|response
@@ -621,7 +604,6 @@ argument_list|()
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|requestInfo
@@ -657,14 +639,6 @@ name|InterruptedException
 name|ex
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -674,7 +648,6 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(

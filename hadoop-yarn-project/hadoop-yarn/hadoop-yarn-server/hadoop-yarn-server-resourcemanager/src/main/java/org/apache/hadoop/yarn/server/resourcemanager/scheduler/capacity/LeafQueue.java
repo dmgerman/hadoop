@@ -1377,31 +1377,18 @@ operator|new
 name|FifoOrderingPolicyForPendingApps
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"LeafQueue:"
-operator|+
-literal|" name="
-operator|+
+literal|"LeafQueue: name={}, fullname={}"
+argument_list|,
 name|queueName
-operator|+
-literal|", fullname="
-operator|+
+argument_list|,
 name|getQueuePath
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|setupQueueConfigs
 argument_list|(
 name|cs
@@ -3758,38 +3745,23 @@ argument_list|,
 name|preWeighteduserAMLimit
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Effective user AM limit for \""
+literal|"Effective user AM limit for \"{}\":{}. Effective weighted"
 operator|+
+literal|" user AM limit: {}. User weight: {}"
+argument_list|,
 name|userName
-operator|+
-literal|"\":"
-operator|+
+argument_list|,
 name|preWeighteduserAMLimit
-operator|+
-literal|". "
-operator|+
-literal|"Effective weighted user AM limit: "
-operator|+
+argument_list|,
 name|userAMLimit
-operator|+
-literal|". User weight: "
-operator|+
+argument_list|,
 name|userWeight
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|userAMLimit
 return|;
@@ -3926,55 +3898,30 @@ argument_list|,
 name|amResouceLimit
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queue: "
+literal|"Queue: {}, node label : {}, queue partition resource : {},"
 operator|+
+literal|" queue current limit : {}, queue partition usable resource : {},"
+operator|+
+literal|" amResourceLimit : {}"
+argument_list|,
 name|getQueueName
 argument_list|()
-operator|+
-literal|", node label : "
-operator|+
+argument_list|,
 name|nodePartition
-operator|+
-literal|", queue "
-operator|+
-literal|"partition "
-operator|+
-literal|"resource : "
-operator|+
+argument_list|,
 name|queuePartitionResource
-operator|+
-literal|','
-operator|+
-literal|" queue current limit : "
-operator|+
+argument_list|,
 name|queueCurrentLimit
-operator|+
-literal|","
-operator|+
-literal|" queue partition usable resource : "
-operator|+
+argument_list|,
 name|queuePartitionUsableResource
-operator|+
-literal|","
-operator|+
-literal|" amResourceLimit : "
-operator|+
+argument_list|,
 name|amResouceLimit
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|amResouceLimit
 return|;
@@ -4258,32 +4205,21 @@ operator|.
 name|QUEUE_AM_RESOURCE_LIMIT_EXCEED
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not activating application "
+literal|"Not activating application {} as  amIfStarted: {}"
 operator|+
+literal|" exceeds amLimit: {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" as  amIfStarted: "
-operator|+
+argument_list|,
 name|amIfStarted
-operator|+
-literal|" exceeds amLimit: "
-operator|+
+argument_list|,
 name|amLimit
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 block|}
@@ -4438,36 +4374,23 @@ operator|.
 name|USER_AM_RESOURCE_LIMIT_EXCEED
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not activating application "
+literal|"Not activating application {} for user: {} as"
 operator|+
+literal|" userAmIfStarted: {} exceeds userAmLimit: {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" for user: "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" as userAmIfStarted: "
-operator|+
+argument_list|,
 name|userAmIfStarted
-operator|+
-literal|" exceeds userAmLimit: "
-operator|+
+argument_list|,
 name|userAMLimit
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 block|}
@@ -6325,26 +6248,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} has been removed!"
+argument_list|,
 name|username
-operator|+
-literal|" has been removed!"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -6392,28 +6304,17 @@ name|userLimit
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Used resource="
-operator|+
+literal|"Used resource={} exceeded user-limit={}"
+argument_list|,
 name|usedResource
-operator|+
-literal|" exceeded user-limit="
-operator|+
+argument_list|,
 name|userLimit
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -7215,26 +7116,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} has been removed!"
+argument_list|,
 name|user
-operator|+
-literal|" has been removed!"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|Resources
 operator|.
@@ -7552,26 +7442,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User "
-operator|+
+literal|"User {} has been removed!"
+argument_list|,
 name|userName
-operator|+
-literal|" has been removed!"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;

@@ -2824,9 +2824,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} reported unusable"
+argument_list|,
 name|eventNode
-operator|+
-literal|" reported unusable"
 argument_list|)
 expr_stmt|;
 name|sendRMAppNodeUpdateEventToNonFinalizedApps
@@ -2846,9 +2846,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} reported usable"
+argument_list|,
 name|eventNode
-operator|+
-literal|" reported usable"
 argument_list|)
 expr_stmt|;
 name|sendRMAppNodeUpdateEventToNonFinalizedApps
@@ -2868,9 +2868,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} reported decommissioning"
+argument_list|,
 name|eventNode
-operator|+
-literal|" reported decommissioning"
 argument_list|)
 expr_stmt|;
 name|sendRMAppNodeUpdateEventToNonFinalizedApps

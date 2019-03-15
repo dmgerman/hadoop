@@ -7962,28 +7962,17 @@ operator|.
 name|createWriteBatch
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting entity type:"
-operator|+
+literal|"Deleting entity type:{} id:{}"
+argument_list|,
 name|entityType
-operator|+
-literal|" id:"
-operator|+
+argument_list|,
 name|entityId
 argument_list|)
 expr_stmt|;
-block|}
 comment|// remove start time from cache and db
 name|writeBatch
 operator|.
@@ -8148,36 +8137,21 @@ argument_list|,
 name|pfIterator
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting entity type:"
-operator|+
+literal|"Deleting entity type:{} id:{} primary filter entry {} {}"
+argument_list|,
 name|entityType
-operator|+
-literal|" id:"
-operator|+
+argument_list|,
 name|entityId
-operator|+
-literal|" primary filter entry "
-operator|+
+argument_list|,
 name|name
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -8286,38 +8260,23 @@ name|entityType
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting entity type:"
+literal|"Deleting entity type:{} id:{} from invisible reverse"
 operator|+
+literal|" related entity entry of type:{} id:{}"
+argument_list|,
 name|entityType
-operator|+
-literal|" id:"
-operator|+
+argument_list|,
 name|entityId
-operator|+
-literal|" from invisible reverse related entity "
-operator|+
-literal|"entry of type:"
-operator|+
+argument_list|,
 name|type
-operator|+
-literal|" id:"
-operator|+
+argument_list|,
 name|id
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -8426,36 +8385,23 @@ name|entityType
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting entity type:"
+literal|"Deleting entity type:{} id:{} from related entity entry"
 operator|+
+literal|" of type:{} id:{}"
+argument_list|,
 name|entityType
-operator|+
-literal|" id:"
-operator|+
+argument_list|,
 name|entityId
-operator|+
-literal|" from related entity entry of type:"
-operator|+
+argument_list|,
 name|type
-operator|+
-literal|" id:"
-operator|+
+argument_list|,
 name|id
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 name|WriteOptions

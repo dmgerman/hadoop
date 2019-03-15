@@ -568,8 +568,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Writing NMTokenIdentifier to RPC layer: "
-operator|+
+literal|"Writing NMTokenIdentifier to RPC layer: {}"
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;

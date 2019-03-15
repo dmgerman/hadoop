@@ -3517,27 +3517,18 @@ name|service
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Auxiliary service already loaded: "
-operator|+
+literal|"Auxiliary service already loaded: {}"
+argument_list|,
 name|service
 operator|.
 name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 name|foundChanges

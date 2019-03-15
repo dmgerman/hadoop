@@ -804,24 +804,15 @@ argument_list|,
 name|locationMap
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Added priority="
-operator|+
+literal|"Added priority={}"
+argument_list|,
 name|priority
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|Map
 argument_list|<
@@ -866,24 +857,15 @@ argument_list|,
 name|execTypeMap
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Added resourceName="
-operator|+
+literal|"Added resourceName={}"
+argument_list|,
 name|resourceName
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|TreeMap
 argument_list|<
@@ -929,24 +911,15 @@ argument_list|,
 name|capabilityMap
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Added Execution Type="
-operator|+
+literal|"Added Execution Type={}"
+argument_list|,
 name|execType
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|capabilityMap
 operator|.
@@ -1012,24 +985,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No such priority="
-operator|+
+literal|"No such priority={}"
+argument_list|,
 name|priority
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1061,24 +1025,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No such resourceName="
-operator|+
+literal|"No such resourceName={}"
+argument_list|,
 name|resourceName
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1105,24 +1060,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No such Execution Type="
-operator|+
+literal|"No such Execution Type={}"
+argument_list|,
 name|execType
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1697,26 +1643,17 @@ name|labelExpression
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding request to ask "
-operator|+
+literal|"Adding request to ask {}"
+argument_list|,
 name|resourceRequestInfo
 operator|.
 name|remoteRequest
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|resourceRequestInfo
 return|;
@@ -1765,79 +1702,44 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Not decrementing resource as ResourceRequestInfo with"
 operator|+
-literal|"priority="
+literal|" priority={} resourceName={} executionType={} capability={} is"
 operator|+
+literal|" not present in request table"
+argument_list|,
 name|priority
-operator|+
-literal|", "
-operator|+
-literal|"resourceName="
-operator|+
+argument_list|,
 name|resourceName
-operator|+
-literal|", "
-operator|+
-literal|"executionType="
-operator|+
+argument_list|,
 name|execTypeReq
-operator|+
-literal|", "
-operator|+
-literal|"capability="
-operator|+
+argument_list|,
 name|capability
-operator|+
-literal|" is not present in request table"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"BEFORE decResourceRequest:"
+literal|"BEFORE decResourceRequest: applicationId= priority={}"
 operator|+
-literal|" applicationId="
-operator|+
-literal|" priority="
-operator|+
+literal|" resourceName={} numContainers={}"
+argument_list|,
 name|priority
 operator|.
 name|getPriority
 argument_list|()
-operator|+
-literal|" resourceName="
-operator|+
+argument_list|,
 name|resourceName
-operator|+
-literal|" numContainers="
-operator|+
+argument_list|,
 name|resourceRequestInfo
 operator|.
 name|remoteRequest
@@ -1846,7 +1748,6 @@ name|getNumContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|resourceRequestInfo
 operator|.
 name|remoteRequest

@@ -3884,15 +3884,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing "
-operator|+
+literal|"Processing {} of type {}"
+argument_list|,
 name|event
 operator|.
 name|getNodeId
 argument_list|()
-operator|+
-literal|" of type "
-operator|+
+argument_list|,
 name|event
 operator|.
 name|getType
@@ -7307,28 +7305,19 @@ name|containerAppId
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container "
+literal|"Container {} is the first container get launched for"
 operator|+
+literal|" application {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" is the first container get launched for application "
-operator|+
+argument_list|,
 name|containerAppId
 argument_list|)
 expr_stmt|;
-block|}
 name|handleRunningAppOnNode
 argument_list|(
 name|this

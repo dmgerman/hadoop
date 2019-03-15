@@ -2309,38 +2309,27 @@ expr_stmt|;
 operator|++
 name|numKeys
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded RM delegation key from "
+literal|"Loaded RM delegation key from {}: keyId={},"
 operator|+
+literal|" expirationDate={}"
+argument_list|,
 name|key
-operator|+
-literal|": keyId="
-operator|+
+argument_list|,
 name|masterKey
 operator|.
 name|getKeyId
 argument_list|()
-operator|+
-literal|", expirationDate="
-operator|+
+argument_list|,
 name|masterKey
 operator|.
 name|getExpiryDate
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 catch|catch
@@ -2566,32 +2555,21 @@ expr_stmt|;
 operator|++
 name|numTokens
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded RM delegation token from "
+literal|"Loaded RM delegation token from {}: tokenId={},"
 operator|+
+literal|" renewDate={}"
+argument_list|,
 name|key
-operator|+
-literal|": tokenId="
-operator|+
+argument_list|,
 name|tokenId
-operator|+
-literal|", renewDate="
-operator|+
+argument_list|,
 name|renewDate
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 catch|catch
@@ -3167,30 +3145,17 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Loaded application "
-operator|+
+literal|"Loaded application {} with {} attempts"
+argument_list|,
 name|appId
-operator|+
-literal|" with "
-operator|+
+argument_list|,
 name|numAttempts
-operator|+
-literal|" attempts"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|numAttempts
 return|;
@@ -3741,28 +3706,17 @@ argument_list|(
 name|appId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing state for app "
-operator|+
+literal|"Storing state for app {} at {}"
+argument_list|,
 name|appId
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|db
@@ -3847,28 +3801,17 @@ argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing state for attempt "
-operator|+
+literal|"Storing state for attempt {} at {}"
+argument_list|,
 name|attemptId
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|db
@@ -3951,28 +3894,17 @@ argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing state for attempt "
-operator|+
+literal|"Removing state for attempt {} at {}"
+argument_list|,
 name|attemptId
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|attemptKey
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|db
@@ -4195,32 +4127,19 @@ argument_list|,
 name|reservationIdName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing state for reservation "
-operator|+
+literal|"Storing state for reservation {} plan {} at {}"
+argument_list|,
 name|reservationIdName
-operator|+
-literal|" plan "
-operator|+
+argument_list|,
 name|planName
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 name|batch
 operator|.
 name|put
@@ -4316,32 +4235,19 @@ name|reservationKey
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing state for reservation "
-operator|+
+literal|"Removing state for reservation {} plan {} at {}"
+argument_list|,
 name|reservationIdName
-operator|+
-literal|" plan "
-operator|+
+argument_list|,
 name|planName
-operator|+
-literal|" at "
-operator|+
+argument_list|,
 name|reservationKey
 argument_list|)
 expr_stmt|;
-block|}
 name|db
 operator|.
 name|write
@@ -4410,24 +4316,15 @@ argument_list|,
 name|renewDate
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing token to "
-operator|+
+literal|"Storing token to {}"
+argument_list|,
 name|tokenKey
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|WriteBatch
@@ -4491,31 +4388,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing "
-operator|+
+literal|"Storing {} to {}"
+argument_list|,
 name|tokenId
 operator|.
 name|getSequenceNumber
 argument_list|()
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|RM_DT_SEQUENCE_NUMBER_KEY
 argument_list|)
 expr_stmt|;
-block|}
 name|batch
 operator|.
 name|put
@@ -4637,24 +4523,15 @@ argument_list|(
 name|tokenId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing token at "
-operator|+
+literal|"Removing token at {}"
+argument_list|,
 name|tokenKey
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|db
@@ -4704,24 +4581,15 @@ argument_list|(
 name|masterKey
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing token master key to "
-operator|+
+literal|"Storing token master key to {}"
+argument_list|,
 name|dbKey
 argument_list|)
 expr_stmt|;
-block|}
 name|ByteArrayOutputStream
 name|os
 init|=
@@ -4810,24 +4678,15 @@ argument_list|(
 name|masterKey
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing token master key at "
-operator|+
+literal|"Removing token master key at {}"
+argument_list|,
 name|dbKey
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|db

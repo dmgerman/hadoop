@@ -1126,10 +1126,10 @@ name|log
 operator|.
 name|debug
 argument_list|(
+literal|"{} = {}"
+argument_list|,
 name|key
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|ServiceUtils
 operator|.
 name|stringify

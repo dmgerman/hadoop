@@ -815,20 +815,12 @@ name|event
 parameter_list|)
 block|{
 comment|//all events go thru this loop
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Dispatching the event "
-operator|+
+literal|"Dispatching the event {}.{}"
+argument_list|,
 name|event
 operator|.
 name|getClass
@@ -836,16 +828,10 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|"."
-operator|+
+argument_list|,
 name|event
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Class
 argument_list|<
 name|?

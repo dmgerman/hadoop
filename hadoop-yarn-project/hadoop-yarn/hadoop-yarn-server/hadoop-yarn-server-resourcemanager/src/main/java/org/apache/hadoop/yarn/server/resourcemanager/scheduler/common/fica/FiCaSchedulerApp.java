@@ -2226,29 +2226,18 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"To-release container="
-operator|+
+literal|"To-release container={} is in final state"
+argument_list|,
 name|c
 operator|.
 name|getRmContainer
 argument_list|()
-operator|+
-literal|" is in final state"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -2297,29 +2286,20 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"To-release container="
+literal|"To-release container={}, for to a new allocated"
 operator|+
+literal|" container, is in final state"
+argument_list|,
 name|r
 operator|.
 name|getRmContainer
 argument_list|()
-operator|+
-literal|", for to a new allocated container, is in final state"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -2349,20 +2329,12 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocate from reserved container"
-operator|+
+literal|"Allocate from reserved container {} is in final state"
+argument_list|,
 name|c
 operator|.
 name|getAllocateFromReservedContainer
@@ -2370,11 +2342,8 @@ argument_list|()
 operator|.
 name|getRmContainer
 argument_list|()
-operator|+
-literal|" is in final state"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -2424,29 +2393,20 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"To-release container="
+literal|"To-release container={}, for a reserved container,"
 operator|+
+literal|" is in final state"
+argument_list|,
 name|r
 operator|.
 name|getRmContainer
 argument_list|()
-operator|+
-literal|", for a reserved container, is in final state"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -2532,14 +2492,6 @@ operator|!=
 name|reservedContainerOnNode
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -2547,7 +2499,6 @@ argument_list|(
 literal|"Try to allocate from a non-existed reserved container"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -4727,28 +4678,19 @@ name|reservedResource
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"unreserving node with reservation size: "
+literal|"unreserving node with reservation size: {} in order to"
 operator|+
+literal|" allocate container with size: {}"
+argument_list|,
 name|reservedResource
-operator|+
-literal|" in order to allocate container with size: "
-operator|+
+argument_list|,
 name|resourceNeedUnreserve
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|nodeId
 return|;
@@ -5008,14 +4950,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -5025,7 +4959,6 @@ operator|+
 literal|"reserved that matches for this app"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -6116,22 +6049,15 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to move reservation, two nodes are in different partition"
+literal|"Failed to move reservation, two nodes are in"
+operator|+
+literal|" different partition"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -6162,14 +6088,6 @@ operator|==
 name|map
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -6177,7 +6095,6 @@ argument_list|(
 literal|"Cannot find reserved container map."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -6193,14 +6110,6 @@ operator|!=
 name|reservedContainer
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -6208,7 +6117,6 @@ argument_list|(
 literal|"To-be-moved container already updated."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -6230,14 +6138,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -6245,7 +6145,6 @@ argument_list|(
 literal|"Target node is already occupied before moving"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 try|try
 block|{
@@ -6270,24 +6169,15 @@ name|IllegalStateException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Reserve on target node failed, e="
+literal|"Reserve on target node failed, e={}"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;

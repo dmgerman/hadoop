@@ -768,14 +768,6 @@ name|proxyHost
 argument_list|)
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -788,7 +780,6 @@ name|getHostAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|proxyAddresses
 operator|.
 name|add
@@ -900,14 +891,6 @@ name|HttpServletResponse
 operator|)
 name|resp
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -920,7 +903,6 @@ name|getRemoteAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -1105,28 +1087,17 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Could not find "
-operator|+
+literal|"Could not find {} cookie, so user will not be set"
+argument_list|,
 name|WebAppProxyServlet
 operator|.
 name|PROXY_USER_COOKIE_NAME
-operator|+
-literal|" cookie, so user will not be set"
 argument_list|)
 expr_stmt|;
-block|}
 name|chain
 operator|.
 name|doFilter

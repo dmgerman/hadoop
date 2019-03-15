@@ -899,20 +899,12 @@ name|RMNode
 name|rmNode
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node added event from: "
-operator|+
+literal|"Node added event from: {}"
+argument_list|,
 name|rmNode
 operator|.
 name|getNode
@@ -922,7 +914,6 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Ignoring this currently : at least one NODE_UPDATE heartbeat is
 comment|// required to ensure node eligibility.
 block|}
@@ -941,8 +932,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node delete event for: "
-operator|+
+literal|"Node delete event for: {}"
+argument_list|,
 name|removedRMNode
 operator|.
 name|getNode
@@ -1050,8 +1041,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node update event from: "
-operator|+
+literal|"Node update event from: {}"
+argument_list|,
 name|rmNode
 operator|.
 name|getNodeID
@@ -1284,41 +1275,24 @@ operator|.
 name|updateTimestamp
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Updating ClusterNode ["
+literal|"Updating ClusterNode [{}] with queue wait time [{}] and"
 operator|+
+literal|" wait queue length [{}]"
+argument_list|,
 name|rmNode
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|"] "
-operator|+
-literal|"with queue wait time ["
-operator|+
+argument_list|,
 name|estimatedQueueWaitTime
-operator|+
-literal|"] and "
-operator|+
-literal|"wait queue length ["
-operator|+
+argument_list|,
 name|waitQueueLength
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -1394,8 +1368,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node resource update event from: "
-operator|+
+literal|"Node resource update event from: {}"
+argument_list|,
 name|rmNode
 operator|.
 name|getNodeID

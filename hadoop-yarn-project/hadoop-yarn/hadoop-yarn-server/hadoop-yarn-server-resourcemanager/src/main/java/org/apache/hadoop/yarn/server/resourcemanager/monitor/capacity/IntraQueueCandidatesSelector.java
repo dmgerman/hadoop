@@ -1048,24 +1048,14 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Rolling resource usage for user:"
-operator|+
+literal|"Rolling resource usage for user:{} is : {}"
+argument_list|,
 name|user
-operator|+
-literal|" is : "
-operator|+
+argument_list|,
 name|rollingResourceUsagePerUser
 operator|.
 name|get
@@ -1074,7 +1064,6 @@ name|user
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|preemptFromLeastStarvedApp (LeafQueue leafQueue, FiCaSchedulerApp app, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Map<ApplicationAttemptId, Set<RMContainer>> curCandidates, Resource clusterResource, Resource totalPreemptedResourceAllowed, Map<String, Resource> resToObtainByPartition, Map<String, Resource> rollingResourceUsagePerUser)
@@ -1155,24 +1144,17 @@ argument_list|(
 name|liveContainers
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"totalPreemptedResourceAllowed for preemption at this round is :"
+literal|"totalPreemptedResourceAllowed for preemption at this"
 operator|+
+literal|" round is :{}"
+argument_list|,
 name|totalPreemptedResourceAllowed
 argument_list|)
 expr_stmt|;
-block|}
 name|Resource
 name|rollingUsedResourcePerUser
 init|=
@@ -1275,47 +1257,32 @@ name|c
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping container: "
+literal|"Skipping container: {} with resource:{} as UserLimit for"
 operator|+
+literal|" user:{} with resource usage: {} is going under UL"
+argument_list|,
 name|c
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" with resource:"
-operator|+
+argument_list|,
 name|c
 operator|.
 name|getAllocatedResource
 argument_list|()
-operator|+
-literal|" as UserLimit for user:"
-operator|+
+argument_list|,
 name|app
 operator|.
 name|getUser
 argument_list|()
-operator|+
-literal|" with resource usage: "
-operator|+
+argument_list|,
 name|rollingUsedResourcePerUser
-operator|+
-literal|" is going under UL"
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 comment|// Try to preempt this container

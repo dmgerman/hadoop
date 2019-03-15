@@ -317,6 +317,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is destroyed."
+argument_list|,
 name|authorizer
 operator|.
 name|getClass
@@ -324,8 +326,6 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" is destroyed."
 argument_list|)
 expr_stmt|;
 name|authorizer

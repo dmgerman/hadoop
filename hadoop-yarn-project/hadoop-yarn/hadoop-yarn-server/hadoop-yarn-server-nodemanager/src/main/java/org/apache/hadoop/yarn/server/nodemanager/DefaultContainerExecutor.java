@@ -2814,35 +2814,22 @@ operator|.
 name|getSignal
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending signal "
-operator|+
+literal|"Sending signal {} to pid {} as user {}"
+argument_list|,
 name|signal
 operator|.
 name|getValue
 argument_list|()
-operator|+
-literal|" to pid "
-operator|+
+argument_list|,
 name|pid
-operator|+
-literal|" as user "
-operator|+
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!

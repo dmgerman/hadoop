@@ -237,14 +237,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -254,7 +246,6 @@ operator|+
 literal|"requests would be empty"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|TimelineEntity
@@ -283,14 +274,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -300,7 +283,6 @@ operator|+
 literal|"requests would be empty"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|HashSet
@@ -324,14 +306,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -341,7 +315,6 @@ operator|+
 literal|"requests would be empty"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 operator|new
 name|HashSet

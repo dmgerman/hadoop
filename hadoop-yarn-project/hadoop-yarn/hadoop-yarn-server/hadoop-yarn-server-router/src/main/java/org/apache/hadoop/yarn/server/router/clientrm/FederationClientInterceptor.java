@@ -2376,12 +2376,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getNewApplication try #"
-operator|+
+literal|"getNewApplication try #{} on SubCluster {}"
+argument_list|,
 name|i
-operator|+
-literal|" on SubCluster "
-operator|+
+argument_list|,
 name|subClusterId
 argument_list|)
 expr_stmt|;

@@ -6114,15 +6114,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Event "
-operator|+
+literal|"Event {} handled by {}"
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
-operator|+
-literal|" handled by "
-operator|+
+argument_list|,
 name|previousFailedAttempt
 argument_list|)
 expr_stmt|;

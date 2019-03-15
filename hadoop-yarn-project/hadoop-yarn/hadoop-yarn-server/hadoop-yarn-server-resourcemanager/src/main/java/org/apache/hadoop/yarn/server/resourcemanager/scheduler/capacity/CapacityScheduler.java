@@ -5669,14 +5669,6 @@ operator|+
 name|queueName
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -5686,7 +5678,6 @@ operator|+
 literal|" is recovering. Skip notifying APP_ACCEPTED"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -7489,33 +7480,20 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
+name|debug
 argument_list|(
-literal|"Allocation for application "
-operator|+
+literal|"Allocation for application {} : {} with cluster resource : {}"
+argument_list|,
 name|applicationAttemptId
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|allocation
-operator|+
-literal|" with cluster resource : "
-operator|+
+argument_list|,
 name|getClusterResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|allocation
 return|;
@@ -8675,28 +8653,19 @@ operator|>=
 name|offswitchPerHeartbeatLimit
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Assigned maximum number of off-switch containers: "
+literal|"Assigned maximum number of off-switch containers: {},"
 operator|+
+literal|" assignments so far: {}"
+argument_list|,
 name|offswitchCount
-operator|+
-literal|", assignments so far: "
-operator|+
+argument_list|,
 name|assignment
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -8720,34 +8689,23 @@ name|boolean
 name|withNodeHeartbeat
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trying to schedule on node: "
-operator|+
+literal|"Trying to schedule on node: {}, available: {}"
+argument_list|,
 name|node
 operator|.
 name|getNodeName
 argument_list|()
-operator|+
-literal|", available: "
-operator|+
+argument_list|,
 name|node
 operator|.
 name|getUnallocatedResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Backward compatible way to make sure previous behavior which allocation
 comment|// driven by node heartbeat works.
 if|if
@@ -8844,34 +8802,23 @@ literal|null
 return|;
 block|}
 comment|// Try to fulfill the reservation
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trying to fulfill reservation for application "
-operator|+
+literal|"Trying to fulfill reservation for application {} on node: {}"
+argument_list|,
 name|reservedApplication
 operator|.
 name|getApplicationId
 argument_list|()
-operator|+
-literal|" on node: "
-operator|+
+argument_list|,
 name|node
 operator|.
 name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|LeafQueue
 name|queue
 init|=
@@ -9092,27 +9039,19 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping scheduling since node "
+literal|"Skipping scheduling since node {} is reserved by"
 operator|+
+literal|" application {}"
+argument_list|,
 name|node
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|" is reserved by application "
-operator|+
+argument_list|,
 name|node
 operator|.
 name|getReservedContainer
@@ -9125,7 +9064,6 @@ name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -9160,14 +9098,6 @@ operator|<=
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -9177,7 +9107,6 @@ operator|+
 literal|" preemptible resource"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -9510,14 +9439,6 @@ name|none
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -9527,7 +9448,6 @@ operator|+
 literal|"killable resource"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -11418,31 +11338,19 @@ name|RMContainer
 name|container
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}:{}"
+argument_list|,
 name|SchedulerEventType
 operator|.
 name|KILL_RESERVED_CONTAINER
-operator|+
-literal|":"
-operator|+
+argument_list|,
 name|container
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// To think: What happens if this is no longer a reserved container, for
 comment|// e.g if the reservation became an allocation.
 name|super
@@ -11485,38 +11393,21 @@ name|RMContainer
 name|cont
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: appAttempt:{} container:{}"
+argument_list|,
 name|SchedulerEventType
 operator|.
 name|MARK_CONTAINER_FOR_PREEMPTION
-operator|+
-literal|": appAttempt:"
-operator|+
+argument_list|,
 name|aid
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" container: "
-operator|+
+argument_list|,
 name|cont
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|FiCaSchedulerApp
 name|app
 init|=
@@ -11579,31 +11470,19 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: container {}"
+argument_list|,
 name|SchedulerEventType
 operator|.
 name|MARK_CONTAINER_FOR_KILLABLE
-operator|+
-literal|": container"
-operator|+
+argument_list|,
 name|killableContainer
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -11737,31 +11616,19 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}: container {}"
+argument_list|,
 name|SchedulerEventType
 operator|.
 name|MARK_CONTAINER_FOR_NONKILLABLE
-operator|+
-literal|": container"
-operator|+
+argument_list|,
 name|nonKillableContainer
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|FiCaSchedulerNode
 name|node
 init|=
@@ -11876,28 +11743,17 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ACL not found for queue access-type "
-operator|+
+literal|"ACL not found for queue access-type {} for queue {}"
+argument_list|,
 name|acl
-operator|+
-literal|" for queue "
-operator|+
+argument_list|,
 name|queueName
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -15581,24 +15437,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Try to commit allocation proposal="
-operator|+
+literal|"Try to commit allocation proposal={}"
+argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
-block|}
 name|boolean
 name|isSuccess
 init|=
@@ -15726,28 +15573,17 @@ literal|"Failed to accept allocation proposal"
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocation proposal accepted="
-operator|+
+literal|"Allocation proposal accepted={}, proposal={}"
+argument_list|,
 name|isSuccess
-operator|+
-literal|", proposal="
-operator|+
+argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Update unconfirmed allocated resource.
 if|if
 condition|(
@@ -15827,31 +15663,20 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trying to move container="
-operator|+
+literal|"Trying to move container={} to node={}"
+argument_list|,
 name|toBeMovedContainer
-operator|+
-literal|" to node="
-operator|+
+argument_list|,
 name|targetNode
 operator|.
 name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|FiCaSchedulerNode
 name|sourceNode
 init|=
@@ -15870,27 +15695,18 @@ operator|==
 name|sourceNode
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to move reservation, cannot find source node="
-operator|+
+literal|"Failed to move reservation, cannot find source node={}"
+argument_list|,
 name|toBeMovedContainer
 operator|.
 name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -15909,24 +15725,15 @@ operator|!=
 name|targetNode
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to move reservation, node updated or removed, moving "
+literal|"Failed to move reservation, node updated or removed,"
 operator|+
-literal|"cancelled."
+literal|" moving cancelled."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -15942,22 +15749,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Target node's reservation status changed, moving cancelled."
+literal|"Target node's reservation status changed,"
+operator|+
+literal|" moving cancelled."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -15980,27 +15780,18 @@ operator|==
 name|app
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cannot find to-be-moved container's application="
-operator|+
+literal|"Cannot find to-be-moved container's application={}"
+argument_list|,
 name|toBeMovedContainer
 operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;

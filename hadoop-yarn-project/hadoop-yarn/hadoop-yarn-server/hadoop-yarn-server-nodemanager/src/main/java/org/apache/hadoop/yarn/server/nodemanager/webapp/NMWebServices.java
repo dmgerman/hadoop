@@ -2536,25 +2536,15 @@ parameter_list|)
 block|{
 comment|// Something wrong with we tries to access the remote fs for the logs.
 comment|// Skip it and do nothing
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|ex
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|GenericEntity
 argument_list|<
@@ -2900,26 +2890,15 @@ parameter_list|)
 block|{
 comment|// This NM does not have this container any more. We
 comment|// assume the container has already finished.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Can not find the container:"
-operator|+
+literal|"Can not find the container:{} in this node."
+argument_list|,
 name|containerId
-operator|+
-literal|" in this node."
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 specifier|final
 name|boolean

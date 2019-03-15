@@ -574,14 +574,6 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -589,12 +581,8 @@ argument_list|(
 literal|"Received nodePublishVolume call, request: {}"
 argument_list|,
 name|request
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Csi
 operator|.
 name|NodePublishVolumeRequest
@@ -620,14 +608,6 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -635,12 +615,8 @@ argument_list|(
 literal|"Translate to CSI proto message: {}"
 argument_list|,
 name|req
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|csiClient
 operator|.
 name|nodePublishVolume
@@ -670,14 +646,6 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -685,12 +653,8 @@ argument_list|(
 literal|"Received nodeUnpublishVolume call, request: {}"
 argument_list|,
 name|request
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|Csi
 operator|.
 name|NodeUnpublishVolumeRequest
@@ -716,14 +680,6 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -731,12 +687,8 @@ argument_list|(
 literal|"Translate to CSI proto message: {}"
 argument_list|,
 name|req
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|csiClient
 operator|.
 name|nodeUnpublishVolume

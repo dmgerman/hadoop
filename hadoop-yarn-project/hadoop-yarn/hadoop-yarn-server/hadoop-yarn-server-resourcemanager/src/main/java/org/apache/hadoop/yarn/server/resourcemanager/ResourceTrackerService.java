@@ -2121,27 +2121,18 @@ name|getUnmanagedAM
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Ignoring container completion status for unmanaged AM "
-operator|+
+literal|"Ignoring container completion status for unmanaged AM {}"
+argument_list|,
 name|rmApp
 operator|.
 name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 name|RMAppAttempt
@@ -2610,34 +2601,21 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Resource for node: "
+literal|"Resource for node: {} is adjusted from: {} to: {} due to"
 operator|+
+literal|" settings in dynamic-resources.xml."
+argument_list|,
 name|nid
-operator|+
-literal|" is adjusted from: "
-operator|+
+argument_list|,
 name|capability
-operator|+
-literal|" to: "
-operator|+
+argument_list|,
 name|dynamicLoadCapability
-operator|+
-literal|" due to settings in dynamic-resources.xml."
 argument_list|)
 expr_stmt|;
-block|}
 name|capability
 operator|=
 name|dynamicLoadCapability
@@ -4412,25 +4390,18 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skip updating node attributes since there is no change for "
+literal|"Skip updating node attributes since there is no change"
 operator|+
+literal|" for {} : {}"
+argument_list|,
 name|nodeId
-operator|+
-literal|" : "
-operator|+
+argument_list|,
 name|nodeAttributes
 argument_list|)
 expr_stmt|;
@@ -4557,26 +4528,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Collector for applicaton: "
-operator|+
+literal|"Collector for applicaton: {} hasn't registered yet!"
+argument_list|,
 name|appId
-operator|+
-literal|" hasn't registered yet!"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -5492,24 +5452,15 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending System credentials for apps as part of NodeHeartbeat "
+literal|"Sending System credentials for apps as part of"
 operator|+
-literal|"response."
+literal|" NodeHeartbeat response."
 argument_list|)
 expr_stmt|;
-block|}
 name|nodeHeartBeatResponse
 operator|.
 name|setSystemCredentialsForApps

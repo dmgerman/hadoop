@@ -316,8 +316,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Creating YarnRPC for "
-operator|+
+literal|"Creating YarnRPC for {}"
+argument_list|,
 name|conf
 operator|.
 name|get

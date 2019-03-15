@@ -1254,15 +1254,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting key "
-operator|+
+literal|"Setting key {} to {}"
+argument_list|,
 name|entry
 operator|.
 name|getKey
 argument_list|()
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|entry
 operator|.
 name|getValue
@@ -1348,8 +1346,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Set memory to "
-operator|+
+literal|"Set memory to {}"
+argument_list|,
 name|ret
 operator|.
 name|getMemorySize
@@ -1436,8 +1434,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Set vcores to "
-operator|+
+literal|"Set vcores to {}"
+argument_list|,
 name|ret
 operator|.
 name|getVirtualCores
@@ -1450,8 +1448,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node resource information map is "
-operator|+
+literal|"Node resource information map is {}"
+argument_list|,
 name|ret
 argument_list|)
 expr_stmt|;

@@ -2163,23 +2163,11 @@ name|e
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Starting to download %s %s %s"
+literal|"Starting to download {} {} {}"
 argument_list|,
 name|sCopy
 argument_list|,
@@ -2193,9 +2181,7 @@ operator|.
 name|getPattern
 argument_list|()
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|Path
 name|destinationTmp
@@ -2309,23 +2295,11 @@ operator|.
 name|OVERWRITE
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"File has been downloaded to %s from %s"
+literal|"File has been downloaded to {} from {}"
 argument_list|,
 operator|new
 name|Path
@@ -2340,9 +2314,7 @@ argument_list|)
 argument_list|,
 name|sCopy
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2511,28 +2483,17 @@ else|:
 name|PRIVATE_FILE_PERMS
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Changing permissions for path "
-operator|+
+literal|"Changing permissions for path {} to perm {}"
+argument_list|,
 name|path
-operator|+
-literal|" to perm "
-operator|+
+argument_list|,
 name|perm
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|FsPermission
 name|fPerm

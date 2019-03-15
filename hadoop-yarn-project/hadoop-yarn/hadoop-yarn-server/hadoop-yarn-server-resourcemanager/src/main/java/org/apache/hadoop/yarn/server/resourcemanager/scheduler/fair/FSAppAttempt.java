@@ -1111,38 +1111,25 @@ name|event
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Completed container: "
-operator|+
+literal|"Completed container: {} in state: {} event:{}"
+argument_list|,
 name|rmContainer
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" in state: "
-operator|+
+argument_list|,
 name|rmContainer
 operator|.
 name|getState
 argument_list|()
-operator|+
-literal|" event:"
-operator|+
+argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
-block|}
 name|untrackContainerForPreemption
 argument_list|(
 name|rmContainer
@@ -1585,49 +1572,28 @@ argument_list|,
 name|maxAvailableResource
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Headroom calculation for "
+literal|"Headroom calculation for {}:Min((queueFairShare={} -"
 operator|+
+literal|" queueUsage={}), maxAvailableResource={} Headroom={}"
+argument_list|,
 name|this
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|":"
-operator|+
-literal|"Min("
-operator|+
-literal|"(queueFairShare="
-operator|+
+argument_list|,
 name|queueFairShare
-operator|+
-literal|" - queueUsage="
-operator|+
+argument_list|,
 name|queueUsage
-operator|+
-literal|"),"
-operator|+
-literal|" maxAvailableResource="
-operator|+
+argument_list|,
 name|maxAvailableResource
-operator|+
-literal|"Headroom="
-operator|+
+argument_list|,
 name|headroom
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|headroom
 return|;
@@ -2015,31 +1981,22 @@ argument_list|,
 name|currentTimeMs
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Init the lastScheduledContainer time, priority: "
+literal|"Init the lastScheduledContainer time, priority: {},"
 operator|+
+literal|" time: {}"
+argument_list|,
 name|schedulerKey
 operator|.
 name|getPriority
 argument_list|()
-operator|+
-literal|", time: "
-operator|+
+argument_list|,
 name|currentTimeMs
 argument_list|)
 expr_stmt|;
-block|}
 name|allowedLocalityLevel
 operator|.
 name|put
@@ -4118,33 +4075,19 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Resource ask %s fits in available node resources %s, "
+literal|"Resource ask {} fits in available node resources {},"
 operator|+
-literal|"but no container was allocated"
+literal|" but no container was allocated"
 argument_list|,
 name|capability
 argument_list|,
 name|available
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|Resources
 operator|.
@@ -4211,28 +4154,17 @@ return|return
 name|capability
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Resource request: "
-operator|+
-name|capability
-operator|+
-literal|" exceeds the available"
+literal|"Resource request: {} exceeds the available"
 operator|+
 literal|" resources of the node."
+argument_list|,
+name|capability
 argument_list|)
 expr_stmt|;
-block|}
 comment|// The desired container won't fit here, so reserve
 comment|// Reserve only, if app does not wait for preempted resources on the node,
 comment|// otherwise we may end up with duplicate reservations
@@ -4277,25 +4209,16 @@ operator|+
 literal|"the node and the request is reserved)"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}'s resource request is reserved."
+argument_list|,
 name|getName
 argument_list|()
-operator|+
-literal|"'s resource request is reserved."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|FairScheduler
 operator|.

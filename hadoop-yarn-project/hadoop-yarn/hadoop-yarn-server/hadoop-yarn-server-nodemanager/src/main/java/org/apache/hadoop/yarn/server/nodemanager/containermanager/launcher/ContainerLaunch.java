@@ -4235,28 +4235,17 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Container "
-operator|+
+literal|"Container {} completed with exit code {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" completed with exit code "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|)
 expr_stmt|;
-block|}
 name|StringBuilder
 name|diagnosticInfo
 init|=
@@ -5315,24 +5304,16 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Getting pid for container "
+literal|"Getting pid for container {} to send signal to from pid"
 operator|+
+literal|" file {}"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|" to send signal to from pid file "
-operator|+
+argument_list|,
 operator|(
 name|pidFilePath
 operator|!=
@@ -5347,7 +5328,6 @@ literal|"null"
 operator|)
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 comment|// get process id from pid file if available
@@ -5365,32 +5345,19 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sending signal to pid "
-operator|+
+literal|"Sending signal to pid {} as user {} for container {}"
+argument_list|,
 name|processId
-operator|+
-literal|" as user "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" for container "
-operator|+
+argument_list|,
 name|containerIdStr
 argument_list|)
 expr_stmt|;
-block|}
 name|boolean
 name|result
 init|=
@@ -6004,28 +5971,17 @@ decl_stmt|;
 name|String
 name|processId
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Accessing pid for container "
-operator|+
+literal|"Accessing pid for container {} from pid file {}"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|" from pid file "
-operator|+
+argument_list|,
 name|pidFilePath
 argument_list|)
 expr_stmt|;
-block|}
 name|int
 name|sleepCounter
 init|=
@@ -6060,28 +6016,17 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Got pid "
-operator|+
+literal|"Got pid {} for container {}"
+argument_list|,
 name|processId
-operator|+
-literal|" for container "
-operator|+
+argument_list|,
 name|containerIdStr
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 elseif|else

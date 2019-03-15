@@ -512,36 +512,21 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Verifying access-type "
-operator|+
+literal|"Verifying access-type {} for {} on application {} owned by {}"
+argument_list|,
 name|applicationAccessType
-operator|+
-literal|" for "
-operator|+
+argument_list|,
 name|callerUGI
-operator|+
-literal|" on application "
-operator|+
+argument_list|,
 name|applicationId
-operator|+
-literal|" owned by "
-operator|+
+argument_list|,
 name|applicationOwner
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|user
 init|=
@@ -590,36 +575,23 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ACL not found for application "
+literal|"ACL not found for application {} owned by {}."
 operator|+
+literal|" Using default [{}]"
+argument_list|,
 name|applicationId
-operator|+
-literal|" owned by "
-operator|+
+argument_list|,
 name|applicationOwner
-operator|+
-literal|". Using default ["
-operator|+
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_YARN_APP_ACL
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -645,38 +617,25 @@ operator|=
 name|applicationACLInMap
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ACL not found for access-type "
+literal|"ACL not found for access-type {} for application {}"
 operator|+
+literal|" owned by {}. Using default [{}]"
+argument_list|,
 name|applicationAccessType
-operator|+
-literal|" for application "
-operator|+
+argument_list|,
 name|applicationId
-operator|+
-literal|" owned by "
-operator|+
+argument_list|,
 name|applicationOwner
-operator|+
-literal|". Using default ["
-operator|+
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_YARN_APP_ACL
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
 block|}

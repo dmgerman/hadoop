@@ -966,39 +966,26 @@ name|MEMORY
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding resource type - name = "
-operator|+
+literal|"Adding resource type - name = {}, units = {}, type = {}"
+argument_list|,
 name|MEMORY
-operator|+
-literal|", units = "
-operator|+
+argument_list|,
 name|ResourceInformation
 operator|.
 name|MEMORY_MB
 operator|.
 name|getUnits
 argument_list|()
-operator|+
-literal|", type = "
-operator|+
+argument_list|,
 name|ResourceTypes
 operator|.
 name|COUNTABLE
 argument_list|)
 expr_stmt|;
-block|}
 name|ri
 operator|=
 name|ResourceInformation
@@ -1036,30 +1023,26 @@ name|VCORES
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adding resource type - name = "
-operator|+
+literal|"Adding resource type - name = {}, units = {}, type = {}"
+argument_list|,
 name|VCORES
-operator|+
-literal|", units = , type = "
-operator|+
+argument_list|,
+name|ResourceInformation
+operator|.
+name|VCORES
+operator|.
+name|getUnits
+argument_list|()
+argument_list|,
 name|ResourceTypes
 operator|.
 name|COUNTABLE
 argument_list|)
 expr_stmt|;
-block|}
 name|ri
 operator|=
 name|ResourceInformation
@@ -1297,19 +1280,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Mandatory Resource '"
-operator|+
-name|resourceTypesKey
-operator|+
-literal|"' is not "
+literal|"Mandatory Resource '{}' is not "
 operator|+
 literal|"configured in resource-types config file. Setting allocation "
 operator|+
-literal|"specified using '"
-operator|+
+literal|"specified using '{}'"
+argument_list|,
+name|resourceTypesKey
+argument_list|,
 name|schedulerKey
-operator|+
-literal|"'"
 argument_list|)
 expr_stmt|;
 name|value
@@ -2521,26 +2500,15 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found "
-operator|+
+literal|"Found {}, adding to configuration"
+argument_list|,
 name|resourceFile
-operator|+
-literal|", adding to configuration"
 argument_list|)
 expr_stmt|;
-block|}
 name|conf
 operator|.
 name|addResource
@@ -3165,32 +3133,19 @@ argument_list|(
 name|units
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting value for resource type "
-operator|+
+literal|"Setting value for resource type {} to {} with units {}"
+argument_list|,
 name|resourceType
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|resourceValue
-operator|+
-literal|" with units "
-operator|+
+argument_list|,
 name|units
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

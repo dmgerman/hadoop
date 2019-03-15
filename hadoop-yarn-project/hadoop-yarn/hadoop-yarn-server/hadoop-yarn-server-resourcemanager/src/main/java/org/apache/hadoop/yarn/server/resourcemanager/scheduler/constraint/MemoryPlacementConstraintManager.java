@@ -848,14 +848,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -867,7 +859,6 @@ argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -1008,14 +999,6 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1027,7 +1010,6 @@ argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;

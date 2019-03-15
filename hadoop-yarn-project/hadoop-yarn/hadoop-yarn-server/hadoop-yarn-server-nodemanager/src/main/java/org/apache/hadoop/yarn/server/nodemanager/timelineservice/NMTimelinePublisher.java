@@ -1442,20 +1442,12 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to publish Container metrics for container "
-operator|+
+literal|"Failed to publish Container metrics for container {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -1464,7 +1456,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1489,20 +1480,12 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to publish Container metrics for container "
-operator|+
+literal|"Failed to publish Container metrics for container {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -1511,7 +1494,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -2114,20 +2096,12 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to publish Container metrics for container "
-operator|+
+literal|"Failed to publish Container metrics for container {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -2136,7 +2110,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2161,20 +2134,12 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to publish Container metrics for container "
-operator|+
+literal|"Failed to publish Container metrics for container {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -2183,7 +2148,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -2283,12 +2247,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Publishing the entity "
-operator|+
+literal|"Publishing the entity {} JSON-style content: {}"
+argument_list|,
 name|entity
-operator|+
-literal|", JSON-style content: "
-operator|+
+argument_list|,
 name|TimelineUtils
 operator|.
 name|dumpTimelineRecordtoJSON
@@ -2351,26 +2313,17 @@ operator|+
 name|entity
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Error when publishing entity "
-operator|+
+literal|"Error when publishing entity {}"
+argument_list|,
 name|entity
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2392,26 +2345,17 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Error when publishing entity "
-operator|+
+literal|"Error when publishing entity {}"
+argument_list|,
 name|entity
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|publishApplicationEvent (ApplicationEvent event)
@@ -2476,29 +2420,20 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is not a desired ApplicationEvent which"
+operator|+
+literal|" needs to be published by NMTimelinePublisher"
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
-operator|+
-literal|" is not a desired ApplicationEvent which"
-operator|+
-literal|" needs to be published by NMTimelinePublisher"
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 block|}
@@ -2530,29 +2465,20 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is not a desired ContainerEvent which needs to be "
+operator|+
+literal|" published by NMTimelinePublisher"
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
-operator|+
-literal|" is not a desired ContainerEvent which needs to be published by"
-operator|+
-literal|" NMTimelinePublisher"
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 block|}
@@ -2607,29 +2533,20 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is not a desired LocalizationEvent which needs to be"
+operator|+
+literal|" published by NMTimelinePublisher"
+argument_list|,
 name|event
 operator|.
 name|getType
 argument_list|()
-operator|+
-literal|" is not a desired LocalizationEvent which needs to be published"
-operator|+
-literal|" by NMTimelinePublisher"
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 block|}

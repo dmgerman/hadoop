@@ -1369,8 +1369,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"RegisterUAM returned existing running container "
-operator|+
+literal|"RegisterUAM returned existing running container {}"
+argument_list|,
 name|container
 operator|.
 name|getId
@@ -1393,8 +1393,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"RegisterUAM returned existing NM token for node "
-operator|+
+literal|"RegisterUAM returned existing NM token for node {}"
+argument_list|,
 name|nmToken
 operator|.
 name|getNodeId

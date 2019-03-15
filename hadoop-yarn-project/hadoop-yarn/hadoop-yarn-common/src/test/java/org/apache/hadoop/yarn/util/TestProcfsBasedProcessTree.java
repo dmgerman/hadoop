@@ -1532,8 +1532,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"PidFile doesn't exist : "
-operator|+
+literal|"PidFile doesn't exist : {}"
+argument_list|,
 name|pidFileName
 argument_list|)
 expr_stmt|;

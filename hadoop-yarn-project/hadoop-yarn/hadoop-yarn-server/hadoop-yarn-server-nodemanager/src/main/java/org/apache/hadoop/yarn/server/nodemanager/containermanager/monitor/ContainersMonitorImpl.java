@@ -2149,8 +2149,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Current ProcessTree list : "
-operator|+
+literal|"Current ProcessTree list : {}"
+argument_list|,
 name|tmp
 operator|.
 name|substring
@@ -2262,28 +2262,19 @@ block|{
 continue|continue;
 comment|// processTree cannot be tracked
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Constructing ProcessTree for : PID = "
+literal|"Constructing ProcessTree for : PID = {}"
 operator|+
+literal|" ContainerId = {}"
+argument_list|,
 name|pId
-operator|+
-literal|" ContainerId = "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|ResourceCalculatorProcessTree
 name|pTree
 init|=
@@ -2425,34 +2416,23 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Total Resource Usage stats in NM by all containers : "
 operator|+
-literal|"Virtual Memory= "
+literal|"Virtual Memory= {}, Physical Memory= {}, "
 operator|+
+literal|"Total CPU usage(% per core)= {}"
+argument_list|,
 name|vmemUsageByAllContainers
-operator|+
-literal|", Physical Memory= "
-operator|+
+argument_list|,
 name|pmemByAllContainers
-operator|+
-literal|", Total CPU usage(% per core)= "
-operator|+
+argument_list|,
 name|cpuUsagePercentPerCoreByAllContainers
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Save the aggregated utilization of the containers
 name|setContainersUtilization
 argument_list|(
@@ -2612,26 +2592,15 @@ condition|)
 block|{
 comment|// pId will be null, either if the container is not spawned yet
 comment|// or if the container's pid is removed from ContainerExecutor
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Tracking ProcessTree "
-operator|+
+literal|"Tracking ProcessTree {} for the first time"
+argument_list|,
 name|pId
-operator|+
-literal|" for the first time"
 argument_list|)
 expr_stmt|;
-block|}
 name|ResourceCalculatorProcessTree
 name|pt
 init|=

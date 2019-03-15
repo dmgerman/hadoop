@@ -279,34 +279,21 @@ operator|<
 name|failureThreshold
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"blacklist size "
+literal|"blacklist size {} is less than failure threshold ratio {}"
 operator|+
+literal|" out of total usable nodes {}"
+argument_list|,
 name|currentBlacklistSize
-operator|+
-literal|" is less than "
-operator|+
-literal|"failure threshold ratio "
-operator|+
+argument_list|,
 name|blacklistDisableFailureThreshold
-operator|+
-literal|" out of total usable nodes "
-operator|+
+argument_list|,
 name|numberOfNodeManagerHosts
 argument_list|)
 expr_stmt|;
-block|}
 name|ret
 operator|=
 name|ResourceBlacklistRequest

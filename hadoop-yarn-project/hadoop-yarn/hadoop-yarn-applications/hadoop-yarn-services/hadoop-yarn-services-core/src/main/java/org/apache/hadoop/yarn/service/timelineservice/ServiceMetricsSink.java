@@ -296,24 +296,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|log
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|log
 operator|.
 name|debug
 argument_list|(
-literal|"Publishing service metrics. "
-operator|+
+literal|"Publishing service metrics. {}"
+argument_list|,
 name|record
 argument_list|)
 expr_stmt|;
-block|}
 name|serviceTimelinePublisher
 operator|.
 name|publishMetrics
@@ -345,24 +336,15 @@ condition|(
 name|isComponentMetrics
 condition|)
 block|{
-if|if
-condition|(
-name|log
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|log
 operator|.
 name|debug
 argument_list|(
-literal|"Publishing Component metrics. "
-operator|+
+literal|"Publishing Component metrics. {}"
+argument_list|,
 name|record
 argument_list|)
 expr_stmt|;
-block|}
 name|serviceTimelinePublisher
 operator|.
 name|publishMetrics

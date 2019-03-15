@@ -724,17 +724,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}={}"
+argument_list|,
 name|tk
 operator|.
 name|getService
 argument_list|()
-operator|+
-literal|" = "
-operator|+
+argument_list|,
 name|tk
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -730,8 +730,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get FPGA major-minor numbers from /dev/"
-operator|+
+literal|"Get FPGA major-minor numbers from /dev/{}"
+argument_list|,
 name|devName
 argument_list|)
 expr_stmt|;
@@ -761,8 +761,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stat output:"
-operator|+
+literal|"stat output:{}"
+argument_list|,
 name|shexec
 operator|.
 name|getOutput
@@ -929,6 +929,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|shexec
 operator|.
 name|getOutput
@@ -1148,8 +1150,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found: "
-operator|+
+literal|"Found: {}"
+argument_list|,
 name|ipFilePath
 argument_list|)
 expr_stmt|;
@@ -1286,6 +1288,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|shexec
 operator|.
 name|getOutput

@@ -2056,24 +2056,15 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the user in the context: "
-operator|+
+literal|"Setting the user in the context: {}"
+argument_list|,
 name|userId
 argument_list|)
 expr_stmt|;
-block|}
 name|collector
 operator|.
 name|getTimelineEntityContext
@@ -2106,24 +2097,15 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the flow name: "
-operator|+
+literal|"Setting the flow name: {}"
+argument_list|,
 name|flowName
 argument_list|)
 expr_stmt|;
-block|}
 name|collector
 operator|.
 name|getTimelineEntityContext
@@ -2156,24 +2138,15 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the flow version: "
-operator|+
+literal|"Setting the flow version: {}"
+argument_list|,
 name|flowVersion
 argument_list|)
 expr_stmt|;
-block|}
 name|collector
 operator|.
 name|getTimelineEntityContext
@@ -2200,24 +2173,15 @@ operator|!=
 literal|0L
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting the flow run id: "
-operator|+
+literal|"Setting the flow run id: {}"
+argument_list|,
 name|flowRunId
 argument_list|)
 expr_stmt|;
-block|}
 name|collector
 operator|.
 name|getTimelineEntityContext

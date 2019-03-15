@@ -1379,14 +1379,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"remove "
-operator|+
+literal|"remove {} {}"
+argument_list|,
 name|d
 operator|.
 name|nodeState
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|d
 operator|.
 name|nodeId
@@ -1442,15 +1440,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"remove "
-operator|+
+literal|"remove {} {}"
+argument_list|,
 name|rmNode
 operator|.
 name|getState
 argument_list|()
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|d
 operator|.
 name|nodeId
@@ -1496,8 +1492,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Identified stale and timeout node "
-operator|+
+literal|"Identified stale and timeout node {}"
+argument_list|,
 name|d
 operator|.
 name|nodeId
@@ -1721,11 +1717,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Consider non-existing app "
-operator|+
+literal|"Consider non-existing app {} as completed"
+argument_list|,
 name|appId
-operator|+
-literal|" as completed"
 argument_list|)
 expr_stmt|;
 name|it
@@ -1769,15 +1763,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Remove "
-operator|+
+literal|"Remove {} app {}"
+argument_list|,
 name|rmApp
 operator|.
 name|getState
 argument_list|()
-operator|+
-literal|" app "
-operator|+
+argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;

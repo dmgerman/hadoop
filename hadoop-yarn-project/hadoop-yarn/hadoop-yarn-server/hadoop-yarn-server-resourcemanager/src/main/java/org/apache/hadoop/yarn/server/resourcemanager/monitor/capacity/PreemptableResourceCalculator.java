@@ -650,26 +650,17 @@ operator|.
 name|preemptionDisabled
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"skipping from queue="
+literal|"skipping from queue={} because it's a non-preemptable"
 operator|+
+literal|" queue"
+argument_list|,
 name|queueName
-operator|+
-literal|" because it's a non-preemptable queue"
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 comment|// compute resToObtainByPartition considered inter-queue preemption
@@ -808,34 +799,21 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queue="
-operator|+
+literal|"Queue={} partition={} resource-to-obtain={}"
+argument_list|,
 name|queueName
-operator|+
-literal|" partition="
-operator|+
+argument_list|,
 name|qT
 operator|.
 name|partition
-operator|+
-literal|" resource-to-obtain="
-operator|+
+argument_list|,
 name|resToObtain
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|qT
 operator|.

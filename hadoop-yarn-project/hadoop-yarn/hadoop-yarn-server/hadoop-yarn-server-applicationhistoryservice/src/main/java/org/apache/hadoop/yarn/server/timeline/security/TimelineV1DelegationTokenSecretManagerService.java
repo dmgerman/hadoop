@@ -603,27 +603,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing master key "
-operator|+
+literal|"Storing master key {}"
+argument_list|,
 name|key
 operator|.
 name|getKeyId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if
@@ -675,27 +666,18 @@ name|DelegationKey
 name|key
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing master key "
-operator|+
+literal|"Removing master key {}"
+argument_list|,
 name|key
 operator|.
 name|getKeyId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if
@@ -750,27 +732,18 @@ name|long
 name|renewDate
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing token "
-operator|+
+literal|"Storing token {}"
+argument_list|,
 name|tokenId
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if
@@ -826,27 +799,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storing token "
-operator|+
+literal|"Storing token {}"
+argument_list|,
 name|tokenId
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if
@@ -901,27 +865,18 @@ name|long
 name|renewDate
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Updating token "
-operator|+
+literal|"Updating token {}"
+argument_list|,
 name|tokenId
 operator|.
 name|getSequenceNumber
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if

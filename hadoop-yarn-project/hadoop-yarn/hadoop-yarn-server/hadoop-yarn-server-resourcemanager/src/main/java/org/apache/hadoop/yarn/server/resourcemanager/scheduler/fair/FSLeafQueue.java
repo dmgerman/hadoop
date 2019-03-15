@@ -1700,31 +1700,18 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Assigned container in queue:"
-operator|+
+literal|"Assigned container in queue:{} container:{}"
+argument_list|,
 name|getName
 argument_list|()
-operator|+
-literal|" "
-operator|+
-literal|"container:"
-operator|+
+argument_list|,
 name|assigned
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 block|}

@@ -804,17 +804,17 @@ operator|.
 name|getStatus
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
+name|debug
+argument_list|(
+literal|"HTTP error code: {} Server response : \n{}"
+argument_list|,
+name|resp
+operator|.
+name|getStatus
 argument_list|()
-condition|)
-block|{
-name|String
-name|output
-init|=
+argument_list|,
 name|resp
 operator|.
 name|getEntity
@@ -823,24 +823,8 @@ name|String
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"HTTP error code: "
-operator|+
-name|resp
-operator|.
-name|getStatus
-argument_list|()
-operator|+
-literal|" Server response : \n"
-operator|+
-name|output
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 throw|throw
 operator|new
@@ -887,24 +871,15 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"POST to "
-operator|+
+literal|"POST to {}"
+argument_list|,
 name|resURI
 argument_list|)
 expr_stmt|;
-block|}
 name|ClientResponse
 name|r
 init|=
@@ -953,28 +928,17 @@ literal|"domain"
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"PUT to "
-operator|+
+literal|"PUT to {}/{}"
+argument_list|,
 name|resURI
-operator|+
-literal|"/"
-operator|+
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-block|}
 name|ClientResponse
 name|r
 init|=
