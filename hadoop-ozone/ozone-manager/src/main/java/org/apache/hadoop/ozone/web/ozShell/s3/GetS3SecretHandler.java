@@ -144,7 +144,7 @@ literal|"getsecret"
 argument_list|,
 name|description
 operator|=
-literal|"returns s3 secret for current user"
+literal|"Returns s3 secret for current user"
 argument_list|)
 DECL|class|GetS3SecretHandler
 specifier|public
