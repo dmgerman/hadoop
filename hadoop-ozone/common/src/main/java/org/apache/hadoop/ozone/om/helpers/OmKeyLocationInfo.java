@@ -46,6 +46,42 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|pipeline
+operator|.
+name|UnknownPipelineStateException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|security
 operator|.
 name|token
@@ -134,12 +170,20 @@ specifier|private
 name|long
 name|createVersion
 decl_stmt|;
-DECL|method|OmKeyLocationInfo (BlockID blockID, long length, long offset)
+DECL|field|pipeline
+specifier|private
+name|Pipeline
+name|pipeline
+decl_stmt|;
+DECL|method|OmKeyLocationInfo (BlockID blockID, Pipeline pipeline, long length, long offset)
 specifier|private
 name|OmKeyLocationInfo
 parameter_list|(
 name|BlockID
 name|blockID
+parameter_list|,
+name|Pipeline
+name|pipeline
 parameter_list|,
 name|long
 name|length
@@ -156,6 +200,12 @@ name|blockID
 expr_stmt|;
 name|this
 operator|.
+name|pipeline
+operator|=
+name|pipeline
+expr_stmt|;
+name|this
+operator|.
 name|length
 operator|=
 name|length
@@ -167,12 +217,15 @@ operator|=
 name|offset
 expr_stmt|;
 block|}
-DECL|method|OmKeyLocationInfo (BlockID blockID, long length, long offset, Token<OzoneBlockTokenIdentifier> token)
+DECL|method|OmKeyLocationInfo (BlockID blockID, Pipeline pipeline, long length, long offset, Token<OzoneBlockTokenIdentifier> token)
 specifier|private
 name|OmKeyLocationInfo
 parameter_list|(
 name|BlockID
 name|blockID
+parameter_list|,
+name|Pipeline
+name|pipeline
 parameter_list|,
 name|long
 name|length
@@ -192,6 +245,12 @@ operator|.
 name|blockID
 operator|=
 name|blockID
+expr_stmt|;
+name|this
+operator|.
+name|pipeline
+operator|=
+name|pipeline
 expr_stmt|;
 name|this
 operator|.
@@ -270,6 +329,16 @@ name|blockID
 operator|.
 name|getLocalID
 argument_list|()
+return|;
+block|}
+DECL|method|getPipeline ()
+specifier|public
+name|Pipeline
+name|getPipeline
+parameter_list|()
+block|{
+return|return
+name|pipeline
 return|;
 block|}
 DECL|method|getLength ()
@@ -353,6 +422,22 @@ operator|=
 name|token
 expr_stmt|;
 block|}
+DECL|method|setPipeline (Pipeline pipeline)
+specifier|public
+name|void
+name|setPipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|this
+operator|.
+name|pipeline
+operator|=
+name|pipeline
+expr_stmt|;
+block|}
 comment|/**    * Builder of OmKeyLocationInfo.    */
 DECL|class|Builder
 specifier|public
@@ -383,6 +468,11 @@ name|OzoneBlockTokenIdentifier
 argument_list|>
 name|token
 decl_stmt|;
+DECL|field|pipeline
+specifier|private
+name|Pipeline
+name|pipeline
+decl_stmt|;
 DECL|method|setBlockID (BlockID blockId)
 specifier|public
 name|Builder
@@ -397,6 +487,25 @@ operator|.
 name|blockID
 operator|=
 name|blockId
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setPipeline (Pipeline pipeline)
+specifier|public
+name|Builder
+name|setPipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|this
+operator|.
+name|pipeline
+operator|=
+name|pipeline
 expr_stmt|;
 return|return
 name|this
@@ -481,6 +590,8 @@ name|OmKeyLocationInfo
 argument_list|(
 name|blockID
 argument_list|,
+name|pipeline
+argument_list|,
 name|length
 argument_list|,
 name|offset
@@ -494,6 +605,8 @@ operator|new
 name|OmKeyLocationInfo
 argument_list|(
 name|blockID
+argument_list|,
+name|pipeline
 argument_list|,
 name|length
 argument_list|,
@@ -566,12 +679,75 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
+name|builder
+operator|.
+name|setPipeline
+argument_list|(
+name|pipeline
+operator|.
+name|getProtobufMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownPipelineStateException
+name|e
+parameter_list|)
+block|{
+comment|//TODO: fix me: we should not return KeyLocation without pipeline.
+block|}
 return|return
 name|builder
 operator|.
 name|build
 argument_list|()
 return|;
+block|}
+DECL|method|getPipeline (KeyLocation keyLocation)
+specifier|private
+specifier|static
+name|Pipeline
+name|getPipeline
+parameter_list|(
+name|KeyLocation
+name|keyLocation
+parameter_list|)
+block|{
+try|try
+block|{
+return|return
+name|keyLocation
+operator|.
+name|hasPipeline
+argument_list|()
+condition|?
+name|Pipeline
+operator|.
+name|getFromProtobuf
+argument_list|(
+name|keyLocation
+operator|.
+name|getPipeline
+argument_list|()
+argument_list|)
+else|:
+literal|null
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownPipelineStateException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 DECL|method|getFromProtobuf (KeyLocation keyLocation)
 specifier|public
@@ -597,6 +773,11 @@ name|keyLocation
 operator|.
 name|getBlockID
 argument_list|()
+argument_list|)
+argument_list|,
+name|getPipeline
+argument_list|(
+name|keyLocation
 argument_list|)
 argument_list|,
 name|keyLocation
@@ -683,6 +864,10 @@ operator|+
 literal|", token="
 operator|+
 name|token
+operator|+
+literal|", pipeline="
+operator|+
+name|pipeline
 operator|+
 literal|", createVersion="
 operator|+

@@ -3860,11 +3860,6 @@ argument_list|(
 name|xceiverClientManager
 argument_list|)
 operator|.
-name|setScmClient
-argument_list|(
-name|storageContainerLocationClient
-argument_list|)
-operator|.
 name|setOmClient
 argument_list|(
 name|ozoneManagerClient
@@ -5382,11 +5377,6 @@ operator|.
 name|setXceiverClientManager
 argument_list|(
 name|xceiverClientManager
-argument_list|)
-operator|.
-name|setScmClient
-argument_list|(
-name|storageContainerLocationClient
 argument_list|)
 operator|.
 name|setOmClient

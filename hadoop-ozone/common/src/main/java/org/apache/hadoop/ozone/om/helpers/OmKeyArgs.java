@@ -238,12 +238,17 @@ name|String
 argument_list|>
 name|metadata
 decl_stmt|;
+DECL|field|refreshPipeline
+specifier|private
+name|boolean
+name|refreshPipeline
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber, Map<String, String> metadataMap)
+DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber, Map<String, String> metadataMap, boolean refreshPipeline)
 specifier|private
 name|OmKeyArgs
 parameter_list|(
@@ -287,6 +292,9 @@ argument_list|,
 name|String
 argument_list|>
 name|metadataMap
+parameter_list|,
+name|boolean
+name|refreshPipeline
 parameter_list|)
 block|{
 name|this
@@ -354,6 +362,12 @@ operator|.
 name|metadata
 operator|=
 name|metadataMap
+expr_stmt|;
+name|this
+operator|.
+name|refreshPipeline
+operator|=
+name|refreshPipeline
 expr_stmt|;
 block|}
 DECL|method|getIsMultipartKey ()
@@ -526,6 +540,16 @@ parameter_list|()
 block|{
 return|return
 name|locationInfoList
+return|;
+block|}
+DECL|method|getRefreshPipeline ()
+specifier|public
+name|boolean
+name|getRefreshPipeline
+parameter_list|()
+block|{
+return|return
+name|refreshPipeline
 return|;
 block|}
 annotation|@
@@ -802,6 +826,11 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|refreshPipeline
+specifier|private
+name|boolean
+name|refreshPipeline
+decl_stmt|;
 DECL|method|setVolumeName (String volume)
 specifier|public
 name|Builder
@@ -1049,6 +1078,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setRefreshPipeline (boolean refresh)
+specifier|public
+name|Builder
+name|setRefreshPipeline
+parameter_list|(
+name|boolean
+name|refresh
+parameter_list|)
+block|{
+name|this
+operator|.
+name|refreshPipeline
+operator|=
+name|refresh
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|OmKeyArgs
@@ -1080,6 +1128,8 @@ argument_list|,
 name|multipartUploadPartNumber
 argument_list|,
 name|metadata
+argument_list|,
+name|refreshPipeline
 argument_list|)
 return|;
 block|}

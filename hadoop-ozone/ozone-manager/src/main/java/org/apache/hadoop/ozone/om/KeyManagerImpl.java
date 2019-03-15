@@ -372,6 +372,28 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerWithPipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ExcludeList
 import|;
 end_import
@@ -1150,6 +1172,18 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|HEAD
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implementation of keyManager.  */
 end_comment
@@ -1179,11 +1213,11 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * A SCM block client, used to talk to SCM to allocate block during putKey.    */
-DECL|field|scmBlockClient
+DECL|field|scmClient
 specifier|private
 specifier|final
-name|ScmBlockLocationProtocol
-name|scmBlockClient
+name|ScmClient
+name|scmClient
 decl_stmt|;
 DECL|field|metadataManager
 specifier|private
@@ -1260,7 +1294,13 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+operator|new
+name|ScmClient
+argument_list|(
 name|scmBlockClient
+argument_list|,
+literal|null
+argument_list|)
 argument_list|,
 name|metadataManager
 argument_list|,
@@ -1274,12 +1314,12 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|KeyManagerImpl (ScmBlockLocationProtocol scmBlockClient, OMMetadataManager metadataManager, OzoneConfiguration conf, String omId, OzoneBlockTokenSecretManager secretManager, KeyProviderCryptoExtension kmsProvider)
+DECL|method|KeyManagerImpl (ScmClient scmClient, OMMetadataManager metadataManager, OzoneConfiguration conf, String omId, OzoneBlockTokenSecretManager secretManager, KeyProviderCryptoExtension kmsProvider)
 specifier|public
 name|KeyManagerImpl
 parameter_list|(
-name|ScmBlockLocationProtocol
-name|scmBlockClient
+name|ScmClient
+name|scmClient
 parameter_list|,
 name|OMMetadataManager
 name|metadataManager
@@ -1299,9 +1339,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|scmBlockClient
+name|scmClient
 operator|=
-name|scmBlockClient
+name|scmClient
 expr_stmt|;
 name|this
 operator|.
@@ -1447,7 +1487,10 @@ operator|=
 operator|new
 name|KeyDeletingService
 argument_list|(
-name|scmBlockClient
+name|scmClient
+operator|.
+name|getBlockClient
+argument_list|()
 argument_list|,
 name|this
 argument_list|,
@@ -1976,7 +2019,10 @@ try|try
 block|{
 name|allocatedBlocks
 operator|=
-name|scmBlockClient
+name|scmClient
+operator|.
+name|getBlockClient
+argument_list|()
 operator|.
 name|allocateBlock
 argument_list|(
@@ -2081,6 +2127,14 @@ operator|.
 name|setOffset
 argument_list|(
 literal|0
+argument_list|)
+operator|.
+name|setPipeline
+argument_list|(
+name|allocatedBlock
+operator|.
+name|getPipeline
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3588,6 +3642,122 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Refresh container pipeline info from SCM
+comment|// based on OmKeyArgs.refreshPipeline flag
+comment|// 1. Client send initial read request OmKeyArgs.refreshPipeline = false
+comment|// and uses the pipeline cached in OM to access datanode
+comment|// 2. If succeeded, done.
+comment|// 3. If failed due to pipeline does not exist or invalid pipeline state
+comment|//    exception, client should retry lookupKey with
+comment|//    OmKeyArgs.refreshPipeline = true
+if|if
+condition|(
+name|args
+operator|.
+name|getRefreshPipeline
+argument_list|()
+condition|)
+block|{
+for|for
+control|(
+name|OmKeyLocationInfoGroup
+name|key
+range|:
+name|value
+operator|.
+name|getKeyLocationVersions
+argument_list|()
+control|)
+block|{
+name|key
+operator|.
+name|getLocationList
+argument_list|()
+operator|.
+name|forEach
+argument_list|(
+name|k
+lambda|->
+block|{
+comment|// TODO: fix Some tests that may not initialize container client
+comment|// The production should always have containerClient initialized.
+if|if
+condition|(
+name|scmClient
+operator|.
+name|getContainerClient
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|ContainerWithPipeline
+name|cp
+init|=
+name|scmClient
+operator|.
+name|getContainerClient
+argument_list|()
+operator|.
+name|getContainerWithPipeline
+argument_list|(
+name|k
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|cp
+operator|.
+name|getPipeline
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|k
+operator|.
+name|getPipeline
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|k
+operator|.
+name|setPipeline
+argument_list|(
+name|cp
+operator|.
+name|getPipeline
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unable to update pipeline for container"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 argument_list|)
 expr_stmt|;

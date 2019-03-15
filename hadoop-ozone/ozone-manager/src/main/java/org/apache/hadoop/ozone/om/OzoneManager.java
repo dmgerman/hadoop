@@ -3408,7 +3408,13 @@ operator|=
 operator|new
 name|KeyManagerImpl
 argument_list|(
+operator|new
+name|ScmClient
+argument_list|(
 name|scmBlockClient
+argument_list|,
+name|scmContainerClient
+argument_list|)
 argument_list|,
 name|metadataManager
 argument_list|,
