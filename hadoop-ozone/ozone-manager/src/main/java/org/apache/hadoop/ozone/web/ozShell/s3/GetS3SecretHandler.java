@@ -30,6 +30,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|client
@@ -98,6 +114,22 @@ name|Command
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_SECURITY_ENABLED_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Executes getsecret calls.  */
 end_comment
@@ -121,6 +153,17 @@ name|GetS3SecretHandler
 extends|extends
 name|Handler
 block|{
+DECL|field|OZONE_GETS3SECRET_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_GETS3SECRET_ERROR
+init|=
+literal|"This command is not"
+operator|+
+literal|" supported in unsecure clusters."
+decl_stmt|;
 comment|/**    * Executes getS3Secret.    */
 annotation|@
 name|Override
@@ -132,6 +175,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|OzoneConfiguration
+name|ozoneConfiguration
+init|=
+name|createOzoneConfiguration
+argument_list|()
+decl_stmt|;
 name|OzoneClient
 name|client
 init|=
@@ -141,10 +190,22 @@ argument_list|()
 operator|.
 name|createClient
 argument_list|(
-name|createOzoneConfiguration
-argument_list|()
+name|ozoneConfiguration
 argument_list|)
 decl_stmt|;
+comment|// getS3Secret works only with secured clusters
+if|if
+condition|(
+name|ozoneConfiguration
+operator|.
+name|getBoolean
+argument_list|(
+name|OZONE_SECURITY_ENABLED_KEY
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
 name|System
 operator|.
 name|out
@@ -171,6 +232,20 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// log a warning message for unsecured cluster
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|OZONE_GETS3SECRET_ERROR
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
