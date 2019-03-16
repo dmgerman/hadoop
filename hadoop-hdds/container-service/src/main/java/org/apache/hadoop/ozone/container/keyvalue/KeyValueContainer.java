@@ -3120,8 +3120,6 @@ argument_list|,
 name|config
 argument_list|,
 name|containerId
-argument_list|,
-name|containerData
 argument_list|)
 decl_stmt|;
 switch|switch

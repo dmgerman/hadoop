@@ -812,8 +812,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|containerID
-argument_list|,
-name|containerData
 argument_list|)
 decl_stmt|;
 comment|// first run checks on a Open Container

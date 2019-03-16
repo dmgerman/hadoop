@@ -369,12 +369,6 @@ specifier|private
 name|long
 name|containerID
 decl_stmt|;
-DECL|field|inMemContainerData
-specifier|private
-name|KeyValueContainerData
-name|inMemContainerData
-decl_stmt|;
-comment|//from caller, maybe null
 DECL|field|onDiskContainerData
 specifier|private
 name|KeyValueContainerData
@@ -391,7 +385,7 @@ specifier|private
 name|String
 name|metadataPath
 decl_stmt|;
-DECL|method|KeyValueContainerCheck (String metadataPath, Configuration conf, long containerID, KeyValueContainerData containerData)
+DECL|method|KeyValueContainerCheck (String metadataPath, Configuration conf, long containerID)
 specifier|public
 name|KeyValueContainerCheck
 parameter_list|(
@@ -403,9 +397,6 @@ name|conf
 parameter_list|,
 name|long
 name|containerID
-parameter_list|,
-name|KeyValueContainerData
-name|containerData
 parameter_list|)
 block|{
 name|Preconditions
@@ -434,12 +425,6 @@ operator|.
 name|onDiskContainerData
 operator|=
 literal|null
-expr_stmt|;
-name|this
-operator|.
-name|inMemContainerData
-operator|=
-name|containerData
 expr_stmt|;
 name|this
 operator|.
