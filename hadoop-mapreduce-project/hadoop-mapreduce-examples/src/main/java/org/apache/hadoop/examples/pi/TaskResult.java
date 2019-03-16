@@ -213,10 +213,6 @@ elseif|else
 if|if
 condition|(
 name|obj
-operator|!=
-literal|null
-operator|&&
-name|obj
 operator|instanceof
 name|TaskResult
 condition|)
@@ -260,7 +256,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/** Not supported */
+comment|/** Not supported. */
 annotation|@
 name|Override
 DECL|method|hashCode ()
@@ -414,7 +410,7 @@ operator|+
 literal|")"
 return|;
 block|}
-comment|/** Covert a String to a TaskResult */
+comment|/** Covert a String to a TaskResult. */
 DECL|method|valueOf (String s)
 specifier|public
 specifier|static
