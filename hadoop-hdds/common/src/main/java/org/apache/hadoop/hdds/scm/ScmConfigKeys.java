@@ -1370,6 +1370,25 @@ name|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
 init|=
 literal|"hdds.scm.http.kerberos.keytab"
 decl_stmt|;
+comment|// Network topology
+DECL|field|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE
+init|=
+literal|"ozone.scm.network.topology.schema.file"
+decl_stmt|;
+DECL|field|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE_DEFAULT
+init|=
+literal|"network-topology-default.xml"
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
 specifier|private
