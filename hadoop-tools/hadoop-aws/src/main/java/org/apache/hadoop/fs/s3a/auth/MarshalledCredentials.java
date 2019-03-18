@@ -851,7 +851,7 @@ name|format
 argument_list|(
 name|DateTimeFormatter
 operator|.
-name|ISO_DATE
+name|ISO_DATE_TIME
 argument_list|)
 argument_list|)
 operator|.
