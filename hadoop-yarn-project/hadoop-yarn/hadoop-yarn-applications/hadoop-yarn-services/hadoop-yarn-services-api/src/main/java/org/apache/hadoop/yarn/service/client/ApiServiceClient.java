@@ -1137,7 +1137,7 @@ return|;
 block|}
 comment|/**    * Compute active resource manager API service location.    *    * @param appName - YARN service name    * @return URI to API Service    * @throws IOException    */
 DECL|method|getServicePath (String appName)
-specifier|private
+specifier|protected
 name|String
 name|getServicePath
 parameter_list|(
@@ -1492,6 +1492,8 @@ parameter_list|(
 name|StringBuilder
 name|builder
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|Configuration
 name|conf
@@ -1514,6 +1516,17 @@ literal|"simple"
 argument_list|)
 condition|)
 block|{
+name|String
+name|username
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+decl_stmt|;
 name|builder
 operator|.
 name|append
@@ -1527,12 +1540,7 @@ name|UrlEncoded
 operator|.
 name|encodeString
 argument_list|(
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
+name|username
 argument_list|)
 argument_list|)
 expr_stmt|;

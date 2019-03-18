@@ -1519,6 +1519,56 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
+DECL|method|testNoneSecureApiClient ()
+specifier|public
+name|void
+name|testNoneSecureApiClient
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|String
+name|url
+init|=
+name|asc
+operator|.
+name|getServicePath
+argument_list|(
+literal|"/foobar"
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"User.name flag is missing in service path."
+argument_list|,
+name|url
+operator|.
+name|contains
+argument_list|(
+literal|"user.name"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"User.name flag is not matching JVM user."
+argument_list|,
+name|url
+operator|.
+name|contains
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
