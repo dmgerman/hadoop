@@ -292,9 +292,25 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|OzoneManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|protocol
 operator|.
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 import|;
 end_import
 
@@ -716,7 +732,7 @@ decl_stmt|;
 DECL|field|ozoneManager
 specifier|private
 specifier|final
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 name|ozoneManager
 decl_stmt|;
 DECL|field|clientId
@@ -814,14 +830,14 @@ name|MAX_VALUE
 return|;
 block|}
 comment|/**    * Returns an OM Ratis server.    * @param conf configuration    * @param om the OM instance starting the ratis server    * @param raftGroupIdStr raft group id string    * @param localRaftPeerId raft peer id of this Ratis server    * @param addr address of the ratis server    * @param raftPeers peer nodes in the raft ring    * @throws IOException    */
-DECL|method|OzoneManagerRatisServer (Configuration conf, OzoneManagerProtocol om, String raftGroupIdStr, RaftPeerId localRaftPeerId, InetSocketAddress addr, List<RaftPeer> raftPeers)
+DECL|method|OzoneManagerRatisServer (Configuration conf, OzoneManagerServerProtocol om, String raftGroupIdStr, RaftPeerId localRaftPeerId, InetSocketAddress addr, List<RaftPeer> raftPeers)
 specifier|private
 name|OzoneManagerRatisServer
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 name|om
 parameter_list|,
 name|String
@@ -1061,7 +1077,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Creates an instance of OzoneManagerRatisServer.    */
-DECL|method|newOMRatisServer ( Configuration ozoneConf, OzoneManagerProtocol om, OMNodeDetails omNodeDetails, List<OMNodeDetails> peerNodes)
+DECL|method|newOMRatisServer ( Configuration ozoneConf, OzoneManager om, OMNodeDetails omNodeDetails, List<OMNodeDetails> peerNodes)
 specifier|public
 specifier|static
 name|OzoneManagerRatisServer
@@ -1070,7 +1086,7 @@ parameter_list|(
 name|Configuration
 name|ozoneConf
 parameter_list|,
-name|OzoneManagerProtocol
+name|OzoneManager
 name|om
 parameter_list|,
 name|OMNodeDetails
@@ -1272,7 +1288,7 @@ return|;
 block|}
 DECL|method|getOzoneManager ()
 specifier|public
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 name|getOzoneManager
 parameter_list|()
 block|{

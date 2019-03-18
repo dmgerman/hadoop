@@ -80,7 +80,7 @@ name|om
 operator|.
 name|protocol
 operator|.
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 import|;
 end_import
 
@@ -299,7 +299,7 @@ decl_stmt|;
 DECL|field|handler
 specifier|private
 specifier|final
-name|OzoneManagerRequestHandler
+name|RequestHandler
 name|handler
 decl_stmt|;
 DECL|field|isRatisEnabled
@@ -309,11 +309,11 @@ name|boolean
 name|isRatisEnabled
 decl_stmt|;
 comment|/**    * Constructs an instance of the server handler.    *    * @param impl OzoneManagerProtocolPB    */
-DECL|method|OzoneManagerProtocolServerSideTranslatorPB ( OzoneManagerProtocol impl, OzoneManagerRatisServer ratisServer, OzoneManagerRatisClient ratisClient, boolean enableRatis)
+DECL|method|OzoneManagerProtocolServerSideTranslatorPB ( OzoneManagerServerProtocol impl, OzoneManagerRatisServer ratisServer, OzoneManagerRatisClient ratisClient, boolean enableRatis)
 specifier|public
 name|OzoneManagerProtocolServerSideTranslatorPB
 parameter_list|(
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 name|impl
 parameter_list|,
 name|OzoneManagerRatisServer

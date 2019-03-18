@@ -408,7 +408,7 @@ name|om
 operator|.
 name|protocol
 operator|.
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 import|;
 end_import
 
@@ -1879,6 +1879,8 @@ DECL|class|OzoneManagerRequestHandler
 specifier|public
 class|class
 name|OzoneManagerRequestHandler
+implements|implements
+name|RequestHandler
 block|{
 DECL|field|LOG
 specifier|static
@@ -1898,14 +1900,14 @@ decl_stmt|;
 DECL|field|impl
 specifier|private
 specifier|final
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 name|impl
 decl_stmt|;
-DECL|method|OzoneManagerRequestHandler (OzoneManagerProtocol om)
+DECL|method|OzoneManagerRequestHandler (OzoneManagerServerProtocol om)
 specifier|public
 name|OzoneManagerRequestHandler
 parameter_list|(
-name|OzoneManagerProtocol
+name|OzoneManagerServerProtocol
 name|om
 parameter_list|)
 block|{
@@ -1922,6 +1924,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"methodlength"
 argument_list|)
+annotation|@
+name|Override
 DECL|method|handle (OMRequest request)
 specifier|public
 name|OMResponse
@@ -2826,6 +2830,8 @@ return|;
 block|}
 block|}
 comment|/**    * Validates that the incoming OM request has required parameters.    * TODO: Add more validation checks before writing the request to Ratis log.    *    * @param omRequest client request to OM    * @throws OMException thrown if required parameters are set to null.    */
+annotation|@
+name|Override
 DECL|method|validateRequest (OMRequest omRequest)
 specifier|public
 name|void
@@ -4354,7 +4360,39 @@ argument_list|()
 decl_stmt|;
 name|OmKeyLocationInfo
 name|newLocation
-init|=
+decl_stmt|;
+if|if
+condition|(
+name|request
+operator|.
+name|hasKeyLocation
+argument_list|()
+condition|)
+block|{
+name|newLocation
+operator|=
+name|impl
+operator|.
+name|addAllocatedBlock
+argument_list|(
+name|omKeyArgs
+argument_list|,
+name|request
+operator|.
+name|getClientID
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getKeyLocation
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|newLocation
+operator|=
 name|impl
 operator|.
 name|allocateBlock
@@ -4376,7 +4414,8 @@ name|getExcludeList
 argument_list|()
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|resp
 operator|.
 name|setKeyLocation
