@@ -148,6 +148,15 @@ name|QUERY_PARAM_RETAIN_UNCOMMITTED_DATA
 init|=
 literal|"retainUncommittedData"
 decl_stmt|;
+DECL|field|QUERY_PARAM_CLOSE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUERY_PARAM_CLOSE
+init|=
+literal|"close"
+decl_stmt|;
 DECL|field|QUERY_PARAM_UPN
 specifier|public
 specifier|static

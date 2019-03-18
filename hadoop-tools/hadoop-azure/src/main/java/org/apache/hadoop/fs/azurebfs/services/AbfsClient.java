@@ -1751,7 +1751,7 @@ return|return
 name|op
 return|;
 block|}
-DECL|method|flush (final String path, final long position, boolean retainUncommittedData)
+DECL|method|flush (final String path, final long position, boolean retainUncommittedData, boolean isClose)
 specifier|public
 name|AbfsRestOperation
 name|flush
@@ -1766,6 +1766,9 @@ name|position
 parameter_list|,
 name|boolean
 name|retainUncommittedData
+parameter_list|,
+name|boolean
+name|isClose
 parameter_list|)
 throws|throws
 name|AzureBlobFileSystemException
@@ -1836,6 +1839,20 @@ operator|.
 name|valueOf
 argument_list|(
 name|retainUncommittedData
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|abfsUriQueryBuilder
+operator|.
+name|addQuery
+argument_list|(
+name|QUERY_PARAM_CLOSE
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|isClose
 argument_list|)
 argument_list|)
 expr_stmt|;

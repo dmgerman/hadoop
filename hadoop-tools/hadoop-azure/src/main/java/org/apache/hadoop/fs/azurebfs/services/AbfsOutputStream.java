@@ -827,7 +827,9 @@ name|supportFlush
 condition|)
 block|{
 name|flushInternal
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -848,7 +850,9 @@ name|supportFlush
 condition|)
 block|{
 name|flushInternal
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -874,7 +878,9 @@ block|}
 try|try
 block|{
 name|flushInternal
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|threadExecutor
 operator|.
@@ -928,12 +934,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|flushInternal ()
+DECL|method|flushInternal (boolean isClose)
 specifier|private
 specifier|synchronized
 name|void
 name|flushInternal
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isClose
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -944,7 +953,9 @@ name|writeCurrentBufferToService
 argument_list|()
 expr_stmt|;
 name|flushWrittenBytesToService
-argument_list|()
+argument_list|(
+name|isClose
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|flushInternalAsync ()
@@ -1107,12 +1118,15 @@ name|shrinkWriteOperationQueue
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|flushWrittenBytesToService ()
+DECL|method|flushWrittenBytesToService (boolean isClose)
 specifier|private
 specifier|synchronized
 name|void
 name|flushWrittenBytesToService
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isClose
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1221,6 +1235,8 @@ argument_list|(
 name|position
 argument_list|,
 literal|false
+argument_list|,
+name|isClose
 argument_list|)
 expr_stmt|;
 block|}
@@ -1256,11 +1272,14 @@ operator|.
 name|lastTotalAppendOffset
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+comment|/*Async flush on close not permitted*/
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|flushWrittenBytesToServiceInternal (final long offset, final boolean retainUncommitedData)
+DECL|method|flushWrittenBytesToServiceInternal (final long offset, final boolean retainUncommitedData, final boolean isClose)
 specifier|private
 specifier|synchronized
 name|void
@@ -1273,6 +1292,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|retainUncommitedData
+parameter_list|,
+specifier|final
+name|boolean
+name|isClose
 parameter_list|)
 throws|throws
 name|IOException
@@ -1288,6 +1311,8 @@ argument_list|,
 name|offset
 argument_list|,
 name|retainUncommitedData
+argument_list|,
+name|isClose
 argument_list|)
 expr_stmt|;
 block|}
