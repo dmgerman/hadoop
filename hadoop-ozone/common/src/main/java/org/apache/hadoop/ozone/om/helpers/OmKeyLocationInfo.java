@@ -492,6 +492,11 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:hiddenfield"
+argument_list|)
 DECL|method|setPipeline (Pipeline pipeline)
 specifier|public
 name|Builder

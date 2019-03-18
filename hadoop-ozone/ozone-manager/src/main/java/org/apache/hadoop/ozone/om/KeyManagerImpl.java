@@ -1172,18 +1172,6 @@ name|LoggerFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|HEAD
-import|;
-end_import
-
 begin_comment
 comment|/**  * Implementation of keyManager.  */
 end_comment
