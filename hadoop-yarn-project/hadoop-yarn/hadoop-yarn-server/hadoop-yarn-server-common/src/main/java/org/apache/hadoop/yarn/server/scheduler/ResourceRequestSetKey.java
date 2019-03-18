@@ -346,10 +346,6 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|obj
-operator|==
-literal|null
-operator|||
 operator|!
 operator|(
 name|obj
