@@ -3191,29 +3191,18 @@ name|nodeLabel
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queue is already active."
-operator|+
-literal|" Skipping activation : "
-operator|+
+literal|"Queue is already active. Skipping activation : {}"
+argument_list|,
 name|leafQueue
 operator|.
 name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -3239,29 +3228,20 @@ name|nodeLabel
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Queue is already de-activated. Skipping "
 operator|+
-literal|"de-activation : "
-operator|+
+literal|"de-activation : {}"
+argument_list|,
 name|leafQueue
 operator|.
 name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{

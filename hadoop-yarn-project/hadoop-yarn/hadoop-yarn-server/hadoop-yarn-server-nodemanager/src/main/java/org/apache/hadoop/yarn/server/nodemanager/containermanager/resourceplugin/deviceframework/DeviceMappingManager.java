@@ -86,13 +86,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -100,13 +96,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -409,12 +401,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DeviceMappingManager
 operator|.
@@ -905,28 +897,17 @@ argument_list|,
 name|requestedResource
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Try allocating "
-operator|+
+literal|"Try allocating {} {}"
+argument_list|,
 name|requestedDeviceCount
-operator|+
-literal|" "
-operator|+
+argument_list|,
 name|resourceName
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Assign devices to container if requested some.
 if|if
 condition|(
@@ -1432,35 +1413,22 @@ name|containerId
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Recycle devices: "
-operator|+
+literal|"Recycle devices: {}, type: {} from {}"
+argument_list|,
 name|entry
 operator|.
 name|getKey
 argument_list|()
-operator|+
-literal|", type: "
-operator|+
+argument_list|,
 name|resourceName
-operator|+
-literal|" from "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|iter
 operator|.
 name|remove
@@ -1712,14 +1680,6 @@ operator|==
 name|dps
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1729,7 +1689,6 @@ operator|+
 literal|"but not implemented, use default logic"
 argument_list|)
 expr_stmt|;
-block|}
 name|defaultScheduleAction
 argument_list|(
 name|allowed

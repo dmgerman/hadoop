@@ -752,24 +752,15 @@ name|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|" batch size="
-operator|+
+literal|" batch size={}"
+argument_list|,
 name|batchSize
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/*    * (non-Javadoc)    *    * @see org.apache.hadoop.hbase.regionserver.RegionScanner#getRegionInfo()    */
 annotation|@

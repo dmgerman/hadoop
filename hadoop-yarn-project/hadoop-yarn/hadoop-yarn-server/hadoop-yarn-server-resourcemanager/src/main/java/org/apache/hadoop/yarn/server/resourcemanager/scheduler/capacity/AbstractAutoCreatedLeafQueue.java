@@ -340,14 +340,6 @@ name|getMaxCapacity
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -362,7 +354,6 @@ name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|//update queue used capacity etc
 name|CSQueueUtils
 operator|.

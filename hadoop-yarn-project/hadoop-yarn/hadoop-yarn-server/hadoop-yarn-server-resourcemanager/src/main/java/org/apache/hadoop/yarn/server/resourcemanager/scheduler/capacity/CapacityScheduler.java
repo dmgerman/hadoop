@@ -6613,24 +6613,15 @@ condition|(
 name|isAttemptRecovering
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is recovering. Skipping notifying ATTEMPT_ADDED"
+argument_list|,
 name|applicationAttemptId
-operator|+
-literal|" is recovering. Skipping notifying ATTEMPT_ADDED"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{

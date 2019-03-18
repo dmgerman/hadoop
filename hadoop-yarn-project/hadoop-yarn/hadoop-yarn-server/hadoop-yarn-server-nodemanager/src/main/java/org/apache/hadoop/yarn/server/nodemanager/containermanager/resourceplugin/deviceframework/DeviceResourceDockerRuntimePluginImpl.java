@@ -30,13 +30,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -44,13 +40,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -405,12 +397,12 @@ block|{
 DECL|field|LOG
 specifier|final
 specifier|static
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DeviceResourceDockerRuntimePluginImpl
 operator|.
@@ -550,24 +542,15 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Try to update docker run command for: "
-operator|+
+literal|"Try to update docker run command for: {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -628,31 +611,20 @@ name|getContainerRuntime
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Handle docker container runtime type: "
-operator|+
+literal|"Handle docker container runtime type: {} for container: {}"
+argument_list|,
 name|deviceRuntimeSpec
 operator|.
 name|getContainerRuntime
 argument_list|()
-operator|+
-literal|" for container: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 comment|// handle device mounts
 name|Set
 argument_list|<
@@ -665,28 +637,17 @@ operator|.
 name|getDeviceMounts
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Handle device mounts: "
-operator|+
+literal|"Handle device mounts: {} for container: {}"
+argument_list|,
 name|deviceMounts
-operator|+
-literal|" for container: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|MountDeviceSpec
@@ -723,28 +684,17 @@ operator|.
 name|getVolumeMounts
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Handle volume mounts: "
-operator|+
+literal|"Handle volume mounts: {} for container: {}"
+argument_list|,
 name|mountVolumeSpecs
-operator|+
-literal|" for container: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|MountVolumeSpec
@@ -807,31 +757,20 @@ name|getEnvs
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Handle envs: "
-operator|+
+literal|"Handle envs: {} for container: {}"
+argument_list|,
 name|deviceRuntimeSpec
 operator|.
 name|getEnvs
 argument_list|()
-operator|+
-literal|" for container: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -945,34 +884,20 @@ name|getVolumeName
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get volume create request from plugin:"
-operator|+
+literal|"Get volume create request from plugin:{} for container: {}"
+argument_list|,
 name|volumeClaims
-operator|+
-literal|" for container: "
-operator|+
+argument_list|,
 name|container
 operator|.
 name|getContainerId
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|command
 return|;
@@ -1178,32 +1103,21 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get allocation from deviceMappingManager: "
+literal|"Get allocation from deviceMappingManager: {}, {} for"
 operator|+
+literal|" container: {}"
+argument_list|,
 name|allocated
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|resourceName
-operator|+
-literal|" for container: "
-operator|+
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
 name|cachedAllocation
 operator|.
 name|put

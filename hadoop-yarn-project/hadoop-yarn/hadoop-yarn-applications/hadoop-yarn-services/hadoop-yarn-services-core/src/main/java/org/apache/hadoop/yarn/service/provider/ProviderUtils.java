@@ -1306,34 +1306,25 @@ name|compInstanceDir
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|log
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|log
 operator|.
 name|debug
 argument_list|(
-literal|"Tokens substitution for component instance: "
+literal|"Tokens substitution for component instance: {}{}{}"
 operator|+
 name|instance
 operator|.
 name|getCompInstanceName
 argument_list|()
-operator|+
+argument_list|,
 name|System
 operator|.
 name|lineSeparator
 argument_list|()
-operator|+
+argument_list|,
 name|tokensForSubstitution
 argument_list|)
 expr_stmt|;
-block|}
 for|for
 control|(
 name|ConfigFile

@@ -2075,29 +2075,20 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Assigning container failed on node '"
+literal|"Assigning container failed on node '{}' because it has"
 operator|+
+literal|" reserved containers."
+argument_list|,
 name|node
 operator|.
 name|getNodeName
 argument_list|()
-operator|+
-literal|" because it has reserved containers."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;

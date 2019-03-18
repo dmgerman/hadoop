@@ -1040,35 +1040,22 @@ block|}
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping queue management updates for parent queue "
+literal|"Skipping queue management updates for parent queue {} "
 operator|+
+literal|"since configuration for auto creating queues beyond "
+operator|+
+literal|"parent's guaranteed capacity is disabled"
+argument_list|,
 name|parentQueue
 operator|.
 name|getQueuePath
 argument_list|()
-operator|+
-literal|" "
-operator|+
-literal|"since configuration for auto creating queues beyond "
-operator|+
-literal|"parent's "
-operator|+
-literal|"guaranteed capacity is disabled"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|queueManagementChanges

@@ -1688,14 +1688,6 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1707,7 +1699,6 @@ argument_list|,
 name|domainLogPath
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|logFDsCache

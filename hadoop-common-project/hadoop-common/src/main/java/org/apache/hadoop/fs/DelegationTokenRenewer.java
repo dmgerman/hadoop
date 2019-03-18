@@ -1113,24 +1113,15 @@ operator|+
 literal|"filesystem"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Exception in removeRenewAction: "
+literal|"Exception in removeRenewAction: {}"
 argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

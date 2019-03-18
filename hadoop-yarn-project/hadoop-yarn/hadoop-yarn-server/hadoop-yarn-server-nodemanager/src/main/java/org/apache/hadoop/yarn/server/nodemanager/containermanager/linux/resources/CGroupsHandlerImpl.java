@@ -2581,31 +2581,17 @@ name|pw
 init|=
 literal|null
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"updateCGroupParam for path: %s with value %s"
+literal|"updateCGroupParam for path: {} with value {}"
 argument_list|,
 name|cGroupParamPath
 argument_list|,
 name|value
 argument_list|)
-argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|File

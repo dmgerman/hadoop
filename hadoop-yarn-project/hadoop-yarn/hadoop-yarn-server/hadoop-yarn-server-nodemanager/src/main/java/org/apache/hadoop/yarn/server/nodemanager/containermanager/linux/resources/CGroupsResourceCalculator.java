@@ -44,13 +44,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -58,13 +54,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -308,12 +300,12 @@ DECL|field|LOG
 specifier|protected
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|CGroupsResourceCalculator
 operator|.
@@ -659,28 +651,17 @@ name|float
 name|getCpuUsagePercent
 parameter_list|()
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Process "
-operator|+
+literal|"Process {} jiffies:{}"
+argument_list|,
 name|pid
-operator|+
-literal|" jiffies:"
-operator|+
+argument_list|,
 name|processTotalJiffies
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|cpuTimeTracker
 operator|.
@@ -839,27 +820,17 @@ name|memswStat
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
+else|else
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Swap cgroups monitoring is not compiled into the kernel "
-operator|+
+literal|"Swap cgroups monitoring is not compiled into the kernel {}"
+argument_list|,
 name|memswStat
 operator|.
 name|getAbsolutePath
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

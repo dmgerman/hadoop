@@ -866,64 +866,42 @@ operator|.
 name|NE
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Incoming requestAttribute:"
+literal|"Incoming requestAttribute:{} is not present in {},"
 operator|+
+literal|" however opcode is NE. Hence accept this node."
+argument_list|,
 name|requestAttribute
-operator|+
-literal|"is not present in "
-operator|+
+argument_list|,
 name|schedulerNode
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|", however opcode is NE. Hence accept this node."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Incoming requestAttribute:"
+literal|"Incoming requestAttribute:{} is not present in {},"
 operator|+
+literal|" skip such node."
+argument_list|,
 name|requestAttribute
-operator|+
-literal|"is not present in "
-operator|+
+argument_list|,
 name|schedulerNode
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|", skip such node."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;
@@ -1018,31 +996,20 @@ name|opCode
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Incoming requestAttribute:"
-operator|+
+literal|"Incoming requestAttribute:{} matches with node:{}"
+argument_list|,
 name|requestAttribute
-operator|+
-literal|" matches with node:"
-operator|+
+argument_list|,
 name|schedulerNode
 operator|.
 name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|found
 operator|=
 literal|true
@@ -1059,31 +1026,20 @@ operator|!
 name|found
 condition|)
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
+name|debug
 argument_list|(
-literal|"skip this node:"
-operator|+
+literal|"skip this node:{} for requestAttribute:{}"
+argument_list|,
 name|schedulerNode
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|" for requestAttribute:"
-operator|+
+argument_list|,
 name|requestAttribute
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|false
 return|;

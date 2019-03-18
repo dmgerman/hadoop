@@ -3443,25 +3443,16 @@ name|node
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trying to assign containers to child-queue of "
-operator|+
+literal|"Trying to assign containers to child-queue of {}"
+argument_list|,
 name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Are we over maximum-capacity for this queue?
 comment|// This will also consider parent's limits and also continuous reservation
 comment|// looking
@@ -4288,31 +4279,20 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Trying to assign to queue: "
-operator|+
+literal|"Trying to assign to queue: {} stats: {}"
+argument_list|,
 name|childQueue
 operator|.
 name|getQueuePath
 argument_list|()
-operator|+
-literal|" stats: "
-operator|+
+argument_list|,
 name|childQueue
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Get ResourceLimits of child queue before assign containers
 name|ResourceLimits
 name|childLimits

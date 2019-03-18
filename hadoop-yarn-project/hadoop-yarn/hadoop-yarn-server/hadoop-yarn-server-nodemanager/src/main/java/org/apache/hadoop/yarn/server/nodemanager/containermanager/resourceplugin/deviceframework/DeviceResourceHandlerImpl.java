@@ -44,13 +44,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -58,13 +54,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -475,12 +467,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|DeviceResourceHandlerImpl
 operator|.
@@ -867,28 +859,17 @@ argument_list|,
 name|container
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Allocated to "
-operator|+
+literal|"Allocated to {}: {}"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|": "
-operator|+
+argument_list|,
 name|allocation
 argument_list|)
 expr_stmt|;
-block|}
 name|DeviceRuntimeSpec
 name|spec
 decl_stmt|;
@@ -1622,24 +1603,15 @@ name|deviceType
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Try to get device type from device path: "
-operator|+
+literal|"Try to get device type from device path: {}"
+argument_list|,
 name|devName
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|output
 init|=
@@ -1650,24 +1622,15 @@ argument_list|(
 name|devName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stat output:"
-operator|+
+literal|"stat output:{}"
+argument_list|,
 name|output
 argument_list|)
 expr_stmt|;
-block|}
 name|deviceType
 operator|=
 name|output

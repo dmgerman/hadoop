@@ -1659,31 +1659,20 @@ argument_list|,
 name|requests
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Added priority="
-operator|+
+literal|"Added priority={} application={}"
+argument_list|,
 name|schedulerKey
 operator|.
 name|getPriority
 argument_list|()
-operator|+
-literal|" application="
-operator|+
+argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 specifier|final
 name|Resource
@@ -1770,31 +1759,20 @@ name|getPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"addTask: application="
-operator|+
+literal|"addTask: application={} #asks={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" #asks="
-operator|+
+argument_list|,
 name|ask
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Create resource requests
 for|for
 control|(
@@ -2239,14 +2217,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getResources begin:"
-operator|+
-literal|" application="
-operator|+
+literal|"getResources begin: application={} #ask={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" #ask="
-operator|+
+argument_list|,
 name|ask
 operator|.
 name|size
@@ -2265,14 +2239,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getResources:"
-operator|+
-literal|" application="
-operator|+
+literal|"getResources: application={} ask-request={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" ask-request="
-operator|+
+argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
@@ -2390,21 +2360,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getResources() for "
-operator|+
+literal|"getResources() for {}: ask={} received={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|":"
-operator|+
-literal|" ask="
-operator|+
+argument_list|,
 name|ask
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" received="
-operator|+
+argument_list|,
 name|containers
 operator|.
 name|size
@@ -3029,33 +2993,20 @@ name|ANY
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updateResourceDemands:"
-operator|+
-literal|" application="
-operator|+
+literal|"updateResourceDemands: application={} #asks={}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" #asks="
-operator|+
+argument_list|,
 name|ask
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|updateResourceRequest (ResourceRequest request)
 specifier|private

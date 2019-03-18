@@ -1927,31 +1927,20 @@ parameter_list|)
 block|{
 comment|// We will only look at node label = nodeLabelToLookAt according to
 comment|// schedulingMode and partition of node.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"precheckNode is invoked for "
-operator|+
+literal|"precheckNode is invoked for {},{}"
+argument_list|,
 name|schedulerNode
 operator|.
 name|getNodeID
 argument_list|()
-operator|+
-literal|","
-operator|+
+argument_list|,
 name|schedulingMode
 argument_list|)
 expr_stmt|;
-block|}
 name|String
 name|nodePartitionToLookAt
 decl_stmt|;

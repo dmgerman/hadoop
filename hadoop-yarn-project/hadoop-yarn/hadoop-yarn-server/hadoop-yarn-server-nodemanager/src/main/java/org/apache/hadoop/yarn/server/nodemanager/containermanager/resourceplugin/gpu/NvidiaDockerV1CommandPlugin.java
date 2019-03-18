@@ -58,13 +58,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|Logger
 import|;
 end_import
 
@@ -72,13 +68,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
+name|LoggerFactory
 import|;
 end_import
 
@@ -439,12 +431,12 @@ block|{
 DECL|field|LOG
 specifier|final
 specifier|static
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|NvidiaDockerV1CommandPlugin
 operator|.
@@ -814,24 +806,15 @@ argument_list|(
 name|str
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found volume-driver:"
-operator|+
+literal|"Found volume-driver:{}"
+argument_list|,
 name|volumeDriver
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -1620,48 +1603,28 @@ name|newVolumeName
 operator|=
 name|mountSource
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found volume name for GPU:"
-operator|+
+literal|"Found volume name for GPU:{}"
+argument_list|,
 name|newVolumeName
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 else|else
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to match "
-operator|+
+literal|"Failed to match {} to named-volume regex pattern"
+argument_list|,
 name|mountSource
-operator|+
-literal|" to named-volume regex pattern"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
