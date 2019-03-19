@@ -210,6 +210,28 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|exception
+operator|.
+name|SCMSecurityException
+operator|.
+name|ErrorCode
+operator|.
+name|MISSING_BLOCK_TOKEN
+import|;
+end_import
+
 begin_comment
 comment|/**  * A server endpoint that acts as the communication layer for Ozone containers.  */
 end_comment
@@ -235,12 +257,21 @@ specifier|final
 name|TokenVerifier
 name|tokenVerifier
 decl_stmt|;
-DECL|method|XceiverServer (Configuration conf)
+DECL|field|caClient
+specifier|private
+specifier|final
+name|CertificateClient
+name|caClient
+decl_stmt|;
+DECL|method|XceiverServer (Configuration conf, CertificateClient client)
 specifier|public
 name|XceiverServer
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|CertificateClient
+name|client
 parameter_list|)
 block|{
 name|Preconditions
@@ -259,6 +290,12 @@ name|SecurityConfig
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|caClient
+operator|=
+name|client
 expr_stmt|;
 name|tokenVerifier
 operator|=
@@ -322,10 +359,6 @@ literal|"Security is enabled but client "
 operator|+
 literal|"request is missing block token."
 argument_list|,
-name|SCMSecurityException
-operator|.
-name|ErrorCode
-operator|.
 name|MISSING_BLOCK_TOKEN
 argument_list|)
 throw|;
@@ -336,7 +369,7 @@ name|verify
 argument_list|(
 name|encodedToken
 argument_list|,
-literal|""
+name|encodedToken
 argument_list|)
 expr_stmt|;
 block|}
@@ -349,9 +382,8 @@ name|CertificateClient
 name|getCaClient
 parameter_list|()
 block|{
-comment|// TODO: instantiate CertificateClient
 return|return
-literal|null
+name|caClient
 return|;
 block|}
 DECL|method|getSecurityConfig ()

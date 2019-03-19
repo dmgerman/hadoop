@@ -168,6 +168,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -806,6 +828,11 @@ init|=
 literal|60000
 decl_stmt|;
 comment|// 1 min
+DECL|field|caClient
+specifier|private
+name|CertificateClient
+name|caClient
+decl_stmt|;
 comment|/**    * Creates a new MiniOzoneCluster.    *    * @throws IOException if there is an I/O error    */
 DECL|method|MiniOzoneClusterImpl (OzoneConfiguration conf, OzoneManager ozoneManager, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
 name|MiniOzoneClusterImpl
@@ -1833,13 +1860,52 @@ parameter_list|(
 name|datanode
 parameter_list|)
 lambda|->
+block|{
+name|datanode
+operator|.
+name|setCertificateClient
+argument_list|(
+name|getCAClient
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|datanode
 operator|.
 name|start
 argument_list|(
 literal|null
 argument_list|)
+expr_stmt|;
+block|}
 argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getCAClient ()
+specifier|private
+name|CertificateClient
+name|getCAClient
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|caClient
+return|;
+block|}
+DECL|method|setCAClient (CertificateClient client)
+specifier|private
+name|void
+name|setCAClient
+parameter_list|(
+name|CertificateClient
+name|client
+parameter_list|)
+block|{
+name|this
+operator|.
+name|caClient
+operator|=
+name|client
 expr_stmt|;
 block|}
 comment|/**    * Builder for configuring the MiniOzoneCluster to run.    */
@@ -1975,6 +2041,13 @@ argument_list|,
 name|hddsDatanodes
 argument_list|)
 decl_stmt|;
+name|cluster
+operator|.
+name|setCAClient
+argument_list|(
+name|certClient
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|startDataNodes

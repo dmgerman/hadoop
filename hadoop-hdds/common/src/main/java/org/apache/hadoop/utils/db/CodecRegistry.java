@@ -110,6 +110,19 @@ name|StringCodec
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|valueCodecs
+operator|.
+name|put
+argument_list|(
+name|Long
+operator|.
+name|class
+argument_list|,
+operator|new
+name|LongCodec
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Convert raw value to strongly typed value/key with the help of a codec.    *    * @param rawData original byte array from the db.    * @param format  Class of the return value    * @param<T>     Type of the return value.    * @return the object with the parsed field data    */
 DECL|method|asObject (byte[] rawData, Class<T> format)

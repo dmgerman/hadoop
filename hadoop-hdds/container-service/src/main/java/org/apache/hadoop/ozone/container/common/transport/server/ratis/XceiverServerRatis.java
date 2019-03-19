@@ -246,6 +246,28 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|tracing
 operator|.
 name|TracingUtil
@@ -1019,7 +1041,7 @@ specifier|final
 name|long
 name|cacheEntryExpiryInteval
 decl_stmt|;
-DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, Configuration conf, StateContext context, GrpcTlsConfig tlsConfig)
+DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, Configuration conf, StateContext context, GrpcTlsConfig tlsConfig, CertificateClient caClient)
 specifier|private
 name|XceiverServerRatis
 parameter_list|(
@@ -1040,6 +1062,9 @@ name|context
 parameter_list|,
 name|GrpcTlsConfig
 name|tlsConfig
+parameter_list|,
+name|CertificateClient
+name|caClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -1047,6 +1072,8 @@ block|{
 name|super
 argument_list|(
 name|conf
+argument_list|,
+name|caClient
 argument_list|)
 expr_stmt|;
 name|Objects
@@ -2348,7 +2375,7 @@ return|return
 name|rpc
 return|;
 block|}
-DECL|method|newXceiverServerRatis ( DatanodeDetails datanodeDetails, Configuration ozoneConf, ContainerDispatcher dispatcher, StateContext context)
+DECL|method|newXceiverServerRatis ( DatanodeDetails datanodeDetails, Configuration ozoneConf, ContainerDispatcher dispatcher, StateContext context, CertificateClient caClient)
 specifier|public
 specifier|static
 name|XceiverServerRatis
@@ -2365,6 +2392,9 @@ name|dispatcher
 parameter_list|,
 name|StateContext
 name|context
+parameter_list|,
+name|CertificateClient
+name|caClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -2523,6 +2553,8 @@ argument_list|,
 name|context
 argument_list|,
 name|tlsConfig
+argument_list|,
+name|caClient
 argument_list|)
 return|;
 block|}

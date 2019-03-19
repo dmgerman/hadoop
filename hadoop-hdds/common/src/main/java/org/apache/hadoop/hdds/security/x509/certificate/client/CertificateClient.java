@@ -152,7 +152,18 @@ name|PublicKey
 name|getPublicKey
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the certificate  of the specified component if it exists on the    * local system.    *     * @return certificate or Null if there is no data.    */
+comment|/**    * Returns the certificate  of the specified component if it exists on the    * local system.    * @param certSerialId    *    * @return certificate or Null if there is no data.    */
+DECL|method|getCertificate (String certSerialId)
+name|X509Certificate
+name|getCertificate
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+throws|throws
+name|CertificateException
+function_decl|;
+comment|/**    * Returns the certificate  of the specified component if it exists on the    * local system.    *    * @return certificate or Null if there is no data.    */
 DECL|method|getCertificate ()
 name|X509Certificate
 name|getCertificate
@@ -247,13 +258,16 @@ name|String
 name|query
 parameter_list|)
 function_decl|;
-comment|/**    * Stores the Certificate.    *    * @param certificate - X509 Certificate     * @throws CertificateException - on Error.    */
-DECL|method|storeCertificate (X509Certificate certificate)
+comment|/**    * Stores the Certificate  for this client. Don't use this api to add    * trusted certificates of others.    *    * @param pemEncodedCert        - pem encoded X509 Certificate    * @param force                 - override any existing file    * @throws CertificateException - on Error.    *    */
+DECL|method|storeCertificate (String pemEncodedCert, boolean force)
 name|void
 name|storeCertificate
 parameter_list|(
-name|X509Certificate
-name|certificate
+name|String
+name|pemEncodedCert
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|CertificateException

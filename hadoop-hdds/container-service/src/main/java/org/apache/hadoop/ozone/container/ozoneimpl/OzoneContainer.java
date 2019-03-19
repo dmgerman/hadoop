@@ -162,6 +162,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -578,8 +600,8 @@ specifier|private
 name|ContainerScrubber
 name|scrubber
 decl_stmt|;
-comment|/**    * Construct OzoneContainer object.    * @param datanodeDetails    * @param conf    * @throws DiskOutOfSpaceException    * @throws IOException    */
-DECL|method|OzoneContainer (DatanodeDetails datanodeDetails, OzoneConfiguration conf, StateContext context)
+comment|/**    * Construct OzoneContainer object.    * @param datanodeDetails    * @param conf    * @param certClient    * @throws DiskOutOfSpaceException    * @throws IOException    */
+DECL|method|OzoneContainer (DatanodeDetails datanodeDetails, OzoneConfiguration conf, StateContext context, CertificateClient certClient)
 specifier|public
 name|OzoneContainer
 parameter_list|(
@@ -591,6 +613,9 @@ name|conf
 parameter_list|,
 name|StateContext
 name|context
+parameter_list|,
+name|CertificateClient
+name|certClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -737,6 +762,8 @@ argument_list|,
 name|hddsDispatcher
 argument_list|,
 name|context
+argument_list|,
+name|certClient
 argument_list|)
 expr_stmt|;
 name|this
@@ -751,6 +778,8 @@ argument_list|,
 name|config
 argument_list|,
 name|hddsDispatcher
+argument_list|,
+name|certClient
 argument_list|,
 name|createReplicationService
 argument_list|()

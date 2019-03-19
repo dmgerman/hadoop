@@ -1230,6 +1230,8 @@ name|getContext
 argument_list|(
 name|datanodeDetails
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|rpcEndPoint
@@ -1365,6 +1367,8 @@ name|getContext
 argument_list|(
 name|datanodeDetails
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|rpcEndPoint
@@ -1665,6 +1669,8 @@ name|getContext
 argument_list|(
 name|datanodeDetails
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|VersionEndpointTask
@@ -1789,6 +1795,8 @@ name|getContext
 argument_list|(
 name|datanodeDetails
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|VersionEndpointTask
@@ -3124,6 +3132,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|EndpointStateMachine

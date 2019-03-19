@@ -2238,6 +2238,54 @@ name|build
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns a create container command with token. There are a bunch of    * tests where we need to just send a request and get a reply.    *    * @return ContainerCommandRequestProto.    */
+DECL|method|getCreateContainerRequest ( long containerID, Pipeline pipeline, Token token)
+specifier|public
+specifier|static
+name|ContainerCommandRequestProto
+name|getCreateContainerRequest
+parameter_list|(
+name|long
+name|containerID
+parameter_list|,
+name|Pipeline
+name|pipeline
+parameter_list|,
+name|Token
+name|token
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"addContainer: {}"
+argument_list|,
+name|containerID
+argument_list|)
+expr_stmt|;
+return|return
+name|getContainerCommandRequestBuilder
+argument_list|(
+name|containerID
+argument_list|,
+name|pipeline
+argument_list|)
+operator|.
+name|setEncodedToken
+argument_list|(
+name|token
+operator|.
+name|encodeToUrlString
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
 DECL|method|getContainerCommandRequestBuilder (long containerID, Pipeline pipeline)
 specifier|private
 specifier|static

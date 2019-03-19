@@ -870,6 +870,45 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Persists current StorageInfo to file system..    * @throws IOException    */
+DECL|method|persistCurrentState ()
+specifier|public
+name|void
+name|persistCurrentState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|getCurrentDir
+argument_list|()
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Metadata dir doesn't exist, dir: "
+operator|+
+name|getCurrentDir
+argument_list|()
+argument_list|)
+throw|;
+block|}
+name|storageInfo
+operator|.
+name|writeTo
+argument_list|(
+name|getVersionFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

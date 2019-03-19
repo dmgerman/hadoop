@@ -1086,6 +1086,8 @@ name|getContext
 argument_list|(
 name|dn
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//Setting scmId, as we start manually ozone container.

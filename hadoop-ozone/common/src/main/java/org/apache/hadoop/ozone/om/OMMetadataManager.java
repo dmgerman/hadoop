@@ -170,6 +170,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|security
+operator|.
+name|OzoneTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|db
@@ -500,6 +516,17 @@ argument_list|,
 name|OmKeyInfo
 argument_list|>
 name|getOpenKeyTable
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the DelegationTokenTable.    *    * @return Table.    */
+DECL|method|getDelegationTokenTable ()
+name|Table
+argument_list|<
+name|OzoneTokenIdentifier
+argument_list|,
+name|Long
+argument_list|>
+name|getDelegationTokenTable
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the S3Bucket to Ozone Volume/bucket mapping table.    *    * @return Table.    */

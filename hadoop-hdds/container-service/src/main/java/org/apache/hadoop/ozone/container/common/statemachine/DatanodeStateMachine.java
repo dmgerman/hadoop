@@ -214,6 +214,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -666,8 +688,13 @@ specifier|private
 name|JvmPauseMonitor
 name|jvmPauseMonitor
 decl_stmt|;
-comment|/**    * Constructs a a datanode state machine.    *    * @param datanodeDetails - DatanodeDetails used to identify a datanode    * @param conf - Configuration.    */
-DECL|method|DatanodeStateMachine (DatanodeDetails datanodeDetails, Configuration conf)
+DECL|field|dnCertClient
+specifier|private
+name|CertificateClient
+name|dnCertClient
+decl_stmt|;
+comment|/**    * Constructs a a datanode state machine.    *  @param datanodeDetails - DatanodeDetails used to identify a datanode    * @param conf - Configuration.    * @param certClient - Datanode Certificate client, required if security is    *                     enabled    */
+DECL|method|DatanodeStateMachine (DatanodeDetails datanodeDetails, Configuration conf, CertificateClient certClient)
 specifier|public
 name|DatanodeStateMachine
 parameter_list|(
@@ -676,6 +703,9 @@ name|datanodeDetails
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|CertificateClient
+name|certClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -757,7 +787,13 @@ name|conf
 argument_list|)
 argument_list|,
 name|context
+argument_list|,
+name|certClient
 argument_list|)
+expr_stmt|;
+name|dnCertClient
+operator|=
+name|certClient
 expr_stmt|;
 name|nextHB
 operator|=

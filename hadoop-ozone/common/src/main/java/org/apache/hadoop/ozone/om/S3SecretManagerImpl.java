@@ -580,6 +580,16 @@ name|getAwsSecret
 argument_list|()
 return|;
 block|}
+DECL|method|getOmMetadataManager ()
+specifier|public
+name|OMMetadataManager
+name|getOmMetadataManager
+parameter_list|()
+block|{
+return|return
+name|omMetadataManager
+return|;
+block|}
 block|}
 end_class
 

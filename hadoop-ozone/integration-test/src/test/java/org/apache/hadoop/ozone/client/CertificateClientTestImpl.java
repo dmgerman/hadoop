@@ -204,16 +204,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|InputStream
 import|;
 end_import
@@ -334,6 +324,12 @@ specifier|final
 name|Configuration
 name|config
 decl_stmt|;
+DECL|field|x509Certificate
+specifier|private
+specifier|final
+name|X509Certificate
+name|x509Certificate
+decl_stmt|;
 DECL|method|CertificateClientTestImpl (OzoneConfiguration conf)
 specifier|public
 name|CertificateClientTestImpl
@@ -375,45 +371,6 @@ name|config
 operator|=
 name|conf
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getPrivateKey ()
-specifier|public
-name|PrivateKey
-name|getPrivateKey
-parameter_list|()
-block|{
-return|return
-name|keyPair
-operator|.
-name|getPrivate
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getPublicKey ()
-specifier|public
-name|PublicKey
-name|getPublicKey
-parameter_list|()
-block|{
-return|return
-name|keyPair
-operator|.
-name|getPublic
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getCertificate ()
-specifier|public
-name|X509Certificate
-name|getCertificate
-parameter_list|()
-block|{
 name|SelfSignedCertificate
 operator|.
 name|Builder
@@ -482,8 +439,6 @@ name|certificateHolder
 init|=
 literal|null
 decl_stmt|;
-try|try
-block|{
 name|certificateHolder
 operator|=
 name|builder
@@ -491,7 +446,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-return|return
+name|x509Certificate
+operator|=
 operator|new
 name|JcaX509CertificateConverter
 argument_list|()
@@ -500,24 +456,66 @@ name|getCertificate
 argument_list|(
 name|certificateHolder
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPrivateKey ()
+specifier|public
+name|PrivateKey
+name|getPrivateKey
+parameter_list|()
+block|{
+return|return
+name|keyPair
+operator|.
+name|getPrivate
+argument_list|()
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-decl||
-name|java
-operator|.
-name|security
-operator|.
-name|cert
-operator|.
-name|CertificateException
-name|e
-parameter_list|)
-block|{     }
+annotation|@
+name|Override
+DECL|method|getPublicKey ()
+specifier|public
+name|PublicKey
+name|getPublicKey
+parameter_list|()
+block|{
 return|return
-literal|null
+name|keyPair
+operator|.
+name|getPublic
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns the certificate  of the specified component if it exists on the    * local system.    *    * @return certificate or Null if there is no data.    */
+annotation|@
+name|Override
+DECL|method|getCertificate (String certSerialId)
+specifier|public
+name|X509Certificate
+name|getCertificate
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+throws|throws
+name|CertificateException
+block|{
+return|return
+name|x509Certificate
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCertificate ()
+specifier|public
+name|X509Certificate
+name|getCertificate
+parameter_list|()
+block|{
+return|return
+name|x509Certificate
 return|;
 block|}
 annotation|@
@@ -582,7 +580,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|verifySignature (InputStream stream, byte[] signature, X509Certificate x509Certificate)
+DECL|method|verifySignature (InputStream stream, byte[] signature, X509Certificate cert)
 specifier|public
 name|boolean
 name|verifySignature
@@ -595,7 +593,7 @@ index|[]
 name|signature
 parameter_list|,
 name|X509Certificate
-name|x509Certificate
+name|cert
 parameter_list|)
 throws|throws
 name|CertificateException
@@ -606,7 +604,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|verifySignature (byte[] data, byte[] signature, X509Certificate x509Certificate)
+DECL|method|verifySignature (byte[] data, byte[] signature, X509Certificate cert)
 specifier|public
 name|boolean
 name|verifySignature
@@ -620,7 +618,7 @@ index|[]
 name|signature
 parameter_list|,
 name|X509Certificate
-name|x509Certificate
+name|cert
 parameter_list|)
 throws|throws
 name|CertificateException
@@ -664,13 +662,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeCertificate (X509Certificate certificate)
+DECL|method|storeCertificate (String cert, boolean force)
 specifier|public
 name|void
 name|storeCertificate
 parameter_list|(
-name|X509Certificate
-name|certificate
+name|String
+name|cert
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|CertificateException

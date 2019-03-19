@@ -953,6 +953,8 @@ name|conf
 argument_list|,
 name|dispatcher
 argument_list|,
+literal|null
+argument_list|,
 name|createReplicationService
 argument_list|(
 operator|new

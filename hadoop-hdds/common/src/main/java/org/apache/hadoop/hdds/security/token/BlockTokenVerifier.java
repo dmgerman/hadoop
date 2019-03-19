@@ -321,9 +321,6 @@ name|isNullOrEmpty
 argument_list|(
 name|tokenStr
 argument_list|)
-operator|||
-name|isTestStub
-argument_list|()
 condition|)
 block|{
 throw|throw
@@ -332,7 +329,7 @@ name|BlockTokenException
 argument_list|(
 literal|"Fail to find any token (empty or "
 operator|+
-literal|"null."
+literal|"null.)"
 argument_list|)
 throw|;
 block|}
@@ -419,30 +416,38 @@ name|tokenStr
 argument_list|)
 throw|;
 block|}
-comment|// TODO: revisit this when caClient is ready, skip signature check now.
-comment|/**        * the final code should like        * if (caClient == null) {        *   throw new SCMSecurityException("Certificate client not available to        *       validate token");        * }        */
 if|if
 condition|(
 name|caClient
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+throw|throw
+operator|new
+name|SCMSecurityException
+argument_list|(
+literal|"Certificate client not available "
+operator|+
+literal|"to validate token"
+argument_list|)
+throw|;
+block|}
 name|X509Certificate
 name|singerCert
-init|=
+decl_stmt|;
+name|singerCert
+operator|=
 name|caClient
 operator|.
-name|queryCertificate
+name|getCertificate
 argument_list|(
-literal|"certId="
-operator|+
 name|tokenId
 operator|.
 name|getOmCertSerialId
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|singerCert
@@ -472,7 +477,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-name|Boolean
+name|boolean
 name|validToken
 init|=
 name|caClient
@@ -510,7 +515,6 @@ name|getUser
 argument_list|()
 argument_list|)
 throw|;
-block|}
 block|}
 comment|// check expiration
 if|if

@@ -22,6 +22,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|RandomUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -882,6 +896,24 @@ literal|3
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Add certificate serial  id.
+name|String
+name|certSerialId
+init|=
+literal|""
+operator|+
+name|RandomUtils
+operator|.
+name|nextLong
+argument_list|()
+decl_stmt|;
+name|id1
+operator|.
+name|setCertSerialId
+argument_list|(
+name|certSerialId
+argument_list|)
+expr_stmt|;
 comment|// Write a single ID to the file and read it out
 name|File
 name|validIdsFile
@@ -918,6 +950,16 @@ argument_list|(
 name|validIdsFile
 argument_list|)
 decl_stmt|;
+name|assertEquals
+argument_list|(
+name|validId
+operator|.
+name|getCertSerialId
+argument_list|()
+argument_list|,
+name|certSerialId
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|id1
@@ -1125,6 +1167,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1139,6 +1183,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1153,6 +1199,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|)
 init|)
 block|{
@@ -1311,6 +1359,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1325,6 +1375,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1339,6 +1391,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|)
 init|)
 block|{

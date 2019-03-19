@@ -236,6 +236,27 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|OMCertificateClient (SecurityConfig securityConfig, String certSerialId)
+specifier|public
+name|OMCertificateClient
+parameter_list|(
+name|SecurityConfig
+name|securityConfig
+parameter_list|,
+name|String
+name|certSerialId
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|securityConfig
+argument_list|,
+name|LOG
+argument_list|,
+name|certSerialId
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|OMCertificateClient (SecurityConfig securityConfig)
 specifier|public
 name|OMCertificateClient
@@ -249,6 +270,8 @@ argument_list|(
 name|securityConfig
 argument_list|,
 name|LOG
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

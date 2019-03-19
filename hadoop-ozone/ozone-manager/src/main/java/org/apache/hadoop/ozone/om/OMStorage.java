@@ -160,6 +160,15 @@ name|OM_ID
 init|=
 literal|"omUuid"
 decl_stmt|;
+DECL|field|OM_CERT_SERIAL_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_CERT_SERIAL_ID
+init|=
+literal|"omCertSerialId"
+decl_stmt|;
 comment|/**    * Construct OMStorage.    * @throws IOException if any directories are inaccessible.    */
 DECL|method|OMStorage (OzoneConfiguration conf)
 specifier|public
@@ -230,6 +239,28 @@ name|scmId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|setOmCertSerialId (String certSerialId)
+specifier|public
+name|void
+name|setOmCertSerialId
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getStorageInfo
+argument_list|()
+operator|.
+name|setProperty
+argument_list|(
+name|OM_CERT_SERIAL_ID
+argument_list|,
+name|certSerialId
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|setOmId (String omId)
 specifier|public
@@ -308,6 +339,23 @@ name|OM_ID
 argument_list|)
 return|;
 block|}
+comment|/**    * Retrieves the serial id of certificate issued by SCM.    * @return OM_ID    */
+DECL|method|getOmCertSerialId ()
+specifier|public
+name|String
+name|getOmCertSerialId
+parameter_list|()
+block|{
+return|return
+name|getStorageInfo
+argument_list|()
+operator|.
+name|getProperty
+argument_list|(
+name|OM_CERT_SERIAL_ID
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getNodeProperties ()
@@ -356,6 +404,25 @@ argument_list|,
 name|omId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|getOmCertSerialId
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|omProperties
+operator|.
+name|setProperty
+argument_list|(
+name|OM_CERT_SERIAL_ID
+argument_list|,
+name|getOmCertSerialId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|omProperties
 return|;

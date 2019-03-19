@@ -198,6 +198,28 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|security
+operator|.
+name|x509
+operator|.
+name|certificate
+operator|.
+name|client
+operator|.
+name|CertificateClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|tracing
 operator|.
 name|GrpcServerInterceptor
@@ -585,7 +607,7 @@ name|ContainerDispatcher
 name|storageContainer
 decl_stmt|;
 comment|/**    * Constructs a Grpc server class.    *    * @param conf - Configuration    */
-DECL|method|XceiverServerGrpc (DatanodeDetails datanodeDetails, Configuration conf, ContainerDispatcher dispatcher, BindableService... additionalServices)
+DECL|method|XceiverServerGrpc (DatanodeDetails datanodeDetails, Configuration conf, ContainerDispatcher dispatcher, CertificateClient caClient, BindableService... additionalServices)
 specifier|public
 name|XceiverServerGrpc
 parameter_list|(
@@ -598,6 +620,9 @@ parameter_list|,
 name|ContainerDispatcher
 name|dispatcher
 parameter_list|,
+name|CertificateClient
+name|caClient
+parameter_list|,
 name|BindableService
 modifier|...
 name|additionalServices
@@ -606,6 +631,8 @@ block|{
 name|super
 argument_list|(
 name|conf
+argument_list|,
+name|caClient
 argument_list|)
 expr_stmt|;
 name|Preconditions

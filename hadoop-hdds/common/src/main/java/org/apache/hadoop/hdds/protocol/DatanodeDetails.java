@@ -156,8 +156,13 @@ name|Port
 argument_list|>
 name|ports
 decl_stmt|;
-comment|/**    * Constructs DatanodeDetails instance. DatanodeDetails.Builder is used    * for instantiating DatanodeDetails.    * @param uuid DataNode's UUID    * @param ipAddress IP Address of this DataNode    * @param hostName DataNode's hostname    * @param ports Ports used by the DataNode    */
-DECL|method|DatanodeDetails (String uuid, String ipAddress, String hostName, List<Port> ports)
+DECL|field|certSerialId
+specifier|private
+name|String
+name|certSerialId
+decl_stmt|;
+comment|/**    * Constructs DatanodeDetails instance. DatanodeDetails.Builder is used    * for instantiating DatanodeDetails.    * @param uuid DataNode's UUID    * @param ipAddress IP Address of this DataNode    * @param hostName DataNode's hostname    * @param ports Ports used by the DataNode    * @param certSerialId serial id from SCM issued certificate.    */
+DECL|method|DatanodeDetails (String uuid, String ipAddress, String hostName, List<Port> ports, String certSerialId)
 specifier|private
 name|DatanodeDetails
 parameter_list|(
@@ -175,6 +180,9 @@ argument_list|<
 name|Port
 argument_list|>
 name|ports
+parameter_list|,
+name|String
+name|certSerialId
 parameter_list|)
 block|{
 name|this
@@ -205,6 +213,12 @@ operator|.
 name|ports
 operator|=
 name|ports
+expr_stmt|;
+name|this
+operator|.
+name|certSerialId
+operator|=
+name|certSerialId
 expr_stmt|;
 block|}
 DECL|method|DatanodeDetails (DatanodeDetails datanodeDetails)
@@ -481,6 +495,25 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|datanodeDetailsProto
+operator|.
+name|hasCertSerialId
+argument_list|()
+condition|)
+block|{
+name|builder
+operator|.
+name|setCertSerialId
+argument_list|(
+name|datanodeDetailsProto
+operator|.
+name|getCertSerialId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|HddsProtos
@@ -589,6 +622,21 @@ name|hostName
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|certSerialId
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setCertSerialId
+argument_list|(
+name|certSerialId
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|Port
@@ -662,6 +710,10 @@ operator|+
 literal|", host: "
 operator|+
 name|hostName
+operator|+
+literal|", certSerialId: "
+operator|+
+name|certSerialId
 operator|+
 literal|"}"
 return|;
@@ -783,6 +835,11 @@ name|Port
 argument_list|>
 name|ports
 decl_stmt|;
+DECL|field|certSerialId
+specifier|private
+name|String
+name|certSerialId
+decl_stmt|;
 comment|/**      * Default private constructor. To create Builder instance use      * DatanodeDetails#newBuilder.      */
 DECL|method|Builder ()
 specifier|private
@@ -880,6 +937,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Adds certificate serial id.      *      * @param certId Serial id of SCM issued certificate.      *      * @return DatanodeDetails.Builder      */
+DECL|method|setCertSerialId (String certId)
+specifier|public
+name|Builder
+name|setCertSerialId
+parameter_list|(
+name|String
+name|certId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|certSerialId
+operator|=
+name|certId
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Builds and returns DatanodeDetails instance.      *      * @return DatanodeDetails      */
 DECL|method|build ()
 specifier|public
@@ -905,6 +982,8 @@ argument_list|,
 name|hostName
 argument_list|,
 name|ports
+argument_list|,
+name|certSerialId
 argument_list|)
 return|;
 block|}
@@ -1080,6 +1159,34 @@ return|return
 literal|false
 return|;
 block|}
+block|}
+comment|/**    * Returns serial id of SCM issued certificate.    *    * @return certificate serial id    */
+DECL|method|getCertSerialId ()
+specifier|public
+name|String
+name|getCertSerialId
+parameter_list|()
+block|{
+return|return
+name|certSerialId
+return|;
+block|}
+comment|/**    * Set certificate serial id of SCM issued certificate.    *    */
+DECL|method|setCertSerialId (String certSerialId)
+specifier|public
+name|void
+name|setCertSerialId
+parameter_list|(
+name|String
+name|certSerialId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|certSerialId
+operator|=
+name|certSerialId
+expr_stmt|;
 block|}
 block|}
 end_class
