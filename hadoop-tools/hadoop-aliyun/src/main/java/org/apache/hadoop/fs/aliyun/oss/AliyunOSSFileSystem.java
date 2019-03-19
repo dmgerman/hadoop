@@ -3382,6 +3382,9 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|boolean
+name|succeed
+decl_stmt|;
 if|if
 condition|(
 name|srcStatus
@@ -3390,6 +3393,8 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
+name|succeed
+operator|=
 name|copyDirectory
 argument_list|(
 name|srcPath
@@ -3400,6 +3405,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|succeed
+operator|=
 name|copyFile
 argument_list|(
 name|srcPath
@@ -3421,12 +3428,16 @@ argument_list|(
 name|dstPath
 argument_list|)
 operator|||
+operator|(
+name|succeed
+operator|&&
 name|delete
 argument_list|(
 name|srcPath
 argument_list|,
 literal|true
 argument_list|)
+operator|)
 return|;
 block|}
 comment|/**    * Copy file from source path to destination path.    * (the caller should make sure srcPath is a file and dstPath is valid)    *    * @param srcPath source path.    * @param srcLen source path length if it is a file.    * @param dstPath destination path.    * @return true if file is successfully copied.    */

@@ -159,6 +159,9 @@ literal|false
 decl_stmt|;
 try|try
 block|{
+name|fail
+operator|=
+operator|!
 name|store
 operator|.
 name|copyFile
