@@ -1274,7 +1274,6 @@ decl_stmt|;
 comment|/** Identifier for the super user. */
 DECL|field|superUser
 specifier|private
-specifier|final
 name|String
 name|superUser
 decl_stmt|;
@@ -1336,6 +1335,38 @@ name|getNamenodeResolver
 argument_list|()
 expr_stmt|;
 comment|// User and group for reporting
+try|try
+block|{
+name|this
+operator|.
+name|superUser
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to get user name. Fall back to system property "
+operator|+
+literal|"user.name"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|superUser
@@ -1347,6 +1378,7 @@ argument_list|(
 literal|"user.name"
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|superGroup
