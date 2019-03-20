@@ -671,7 +671,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * get avialable devices minor numbers from toolchain or static configuration    * */
+comment|/**    * Get available devices minor numbers from toolchain or static configuration.    *    * @return the list of FPGA devices    * @throws ResourceHandlerException if there's any error during discovery    **/
 DECL|method|discover ()
 specifier|public
 name|List

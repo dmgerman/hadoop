@@ -675,7 +675,7 @@ return|return
 name|list
 return|;
 block|}
-comment|/**    *  Helper class to run aocl diagnose& determine major/minor numbers.    */
+comment|/**    *  Helper class to run aocl diagnose&amp; determine major/minor numbers.    */
 DECL|class|InnerShellExecutor
 specifier|public
 specifier|static

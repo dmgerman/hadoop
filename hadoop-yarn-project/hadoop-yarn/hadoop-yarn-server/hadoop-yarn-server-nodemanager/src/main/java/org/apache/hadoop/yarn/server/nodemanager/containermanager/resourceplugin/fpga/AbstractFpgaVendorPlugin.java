@@ -174,7 +174,7 @@ specifier|public
 interface|interface
 name|AbstractFpgaVendorPlugin
 block|{
-comment|/**    * Check vendor's toolchain and required environment    * */
+comment|/**    * Check vendor's toolchain and required environment    * @param conf Hadoop configuration    * @return true if the initialization was successful    * */
 DECL|method|initPlugin (Configuration conf)
 name|boolean
 name|initPlugin
@@ -183,7 +183,7 @@ name|Configuration
 name|conf
 parameter_list|)
 function_decl|;
-comment|/**    * Diagnose the devices using vendor toolchain but no need to parse device information    * */
+comment|/**    * Diagnose the devices using vendor toolchain but no need to parse device information    *    * @param timeout timeout in milliseconds    * @return true if the diagnostics was successful    * */
 DECL|method|diagnose (int timeout)
 name|boolean
 name|diagnose
@@ -206,7 +206,7 @@ name|int
 name|timeout
 parameter_list|)
 function_decl|;
-comment|/**    * Since all vendor plugins share a {@link org.apache.hadoop.yarn.server.nodemanager.containermanager.linux.resources.fpga.FpgaResourceAllocator}    * which distinguish FPGA devices by type. Vendor plugin must report this.    * */
+comment|/**    * Since all vendor plugins share a {@link org.apache.hadoop.yarn.server.nodemanager.containermanager.linux.resources.fpga.FpgaResourceAllocator}    * which distinguish FPGA devices by type. Vendor plugin must report this.    *    * @return the type of FPGA plugin represented as a string    * */
 DECL|method|getFpgaType ()
 name|String
 name|getFpgaType
