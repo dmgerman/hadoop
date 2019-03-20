@@ -235,7 +235,7 @@ name|YarnConfiguration
 operator|.
 name|TIMELINE_SERVICE_PREFIX
 operator|+
-literal|".flowrun"
+literal|"flowrun"
 decl_stmt|;
 comment|/** config param name that specifies the flowrun table name. */
 DECL|field|TABLE_NAME_CONF_NAME
