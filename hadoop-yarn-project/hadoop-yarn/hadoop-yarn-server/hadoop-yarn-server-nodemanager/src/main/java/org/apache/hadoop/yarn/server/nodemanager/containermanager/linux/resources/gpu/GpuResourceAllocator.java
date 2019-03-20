@@ -721,6 +721,15 @@ name|containerId
 argument_list|)
 throw|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting recovery of GpuDevice for {}."
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Serializable
@@ -839,7 +848,27 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ContainerId {} is assigned to GpuDevice {} on recovery."
+argument_list|,
+name|containerId
+argument_list|,
+name|gpuDevice
+argument_list|)
+expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Finished recovery of GpuDevice for {}."
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Get number of requested GPUs from resource.    * @param requestedResource requested resource    * @return #gpus.    */
 DECL|method|getRequestedGpus (Resource requestedResource)
