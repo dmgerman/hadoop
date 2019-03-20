@@ -992,7 +992,7 @@ try|try
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Running HBase liveness monitor"
 argument_list|)
