@@ -406,7 +406,7 @@ block|{
 name|File
 name|metadataDir
 init|=
-name|getDirWithFallBackToOzoneMetadata
+name|getDirectoryFromConfig
 argument_list|(
 name|conf
 argument_list|,
@@ -452,11 +452,12 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|getDirWithFallBackToOzoneMetadata (Configuration conf, String key, String componentName)
+comment|/**    * Utility method to get value of a given key that corresponds to a DB    * directory.    * @param conf configuration bag    * @param key Key to test    * @param componentName Which component's key is this    * @return File created from the value of the key in conf.    */
+DECL|method|getDirectoryFromConfig (Configuration conf, String key, String componentName)
 specifier|public
 specifier|static
 name|File
-name|getDirWithFallBackToOzoneMetadata
+name|getDirectoryFromConfig
 parameter_list|(
 name|Configuration
 name|conf
@@ -559,9 +560,7 @@ name|dbDirPath
 operator|+
 literal|" specified in configuration setting "
 operator|+
-name|ScmConfigKeys
-operator|.
-name|OZONE_SCM_DB_DIRS
+name|componentName
 argument_list|)
 throw|;
 block|}

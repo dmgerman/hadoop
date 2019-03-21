@@ -350,13 +350,11 @@ argument_list|)
 decl_stmt|;
 DECL|field|db
 specifier|private
-specifier|final
 name|RocksDB
 name|db
 decl_stmt|;
 DECL|field|dbLocation
 specifier|private
-specifier|final
 name|File
 name|dbLocation
 decl_stmt|;
@@ -401,7 +399,6 @@ name|checkPointManager
 decl_stmt|;
 DECL|field|checkpointsParentDir
 specifier|private
-specifier|final
 name|String
 name|checkpointsParentDir
 decl_stmt|;
@@ -437,10 +434,12 @@ argument_list|,
 operator|new
 name|CodecRegistry
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RDBStore (File dbFile, DBOptions options, Set<TableConfig> families, CodecRegistry registry)
+DECL|method|RDBStore (File dbFile, DBOptions options, Set<TableConfig> families, CodecRegistry registry, boolean readOnly)
 specifier|public
 name|RDBStore
 parameter_list|(
@@ -458,6 +457,9 @@ name|families
 parameter_list|,
 name|CodecRegistry
 name|registry
+parameter_list|,
+name|boolean
+name|readOnly
 parameter_list|)
 throws|throws
 name|IOException
@@ -561,6 +563,32 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|readOnly
+condition|)
+block|{
+name|db
+operator|=
+name|RocksDB
+operator|.
+name|openReadOnly
+argument_list|(
+name|dbOptions
+argument_list|,
+name|dbLocation
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|columnFamilyDescriptors
+argument_list|,
+name|columnFamilyHandles
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|db
 operator|=
 name|RocksDB
@@ -579,6 +607,7 @@ argument_list|,
 name|columnFamilyHandles
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|int
@@ -1579,6 +1608,17 @@ name|createCheckpoint
 argument_list|(
 name|checkpointsParentDir
 argument_list|)
+return|;
+block|}
+comment|/**    * Get current DB Location.    */
+DECL|method|getDbLocation ()
+specifier|public
+name|File
+name|getDbLocation
+parameter_list|()
+block|{
+return|return
+name|dbLocation
 return|;
 block|}
 block|}

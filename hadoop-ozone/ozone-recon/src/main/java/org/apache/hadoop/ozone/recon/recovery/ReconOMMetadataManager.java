@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.recon
+DECL|package|org.apache.hadoop.ozone.recon.recovery
 package|package
 name|org
 operator|.
@@ -15,11 +15,33 @@ operator|.
 name|ozone
 operator|.
 name|recon
+operator|.
+name|recovery
 package|;
 end_package
 
 begin_import
-import|import static
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -28,52 +50,37 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConsts
+name|om
 operator|.
-name|CONTAINER_DB_SUFFIX
+name|OMMetadataManager
 import|;
 end_import
 
 begin_comment
-comment|/**  * Recon Server constants file.  */
+comment|/**  * Interface for the OM Metadata Manager + DB store maintained by  * Recon.  */
 end_comment
 
-begin_class
-DECL|class|ReconConstants
+begin_interface
+DECL|interface|ReconOMMetadataManager
 specifier|public
-specifier|final
-class|class
-name|ReconConstants
+interface|interface
+name|ReconOMMetadataManager
+extends|extends
+name|OMMetadataManager
 block|{
-DECL|method|ReconConstants ()
-specifier|private
-name|ReconConstants
-parameter_list|()
-block|{
-comment|// Never Constructed
+comment|/**    * Refresh the DB instance to point to a new location. Get rid of the old    * DB instance.    * @param dbLocation New location of the OM Snapshot DB.    */
+DECL|method|updateOmDB (File dbLocation)
+name|void
+name|updateOmDB
+parameter_list|(
+name|File
+name|dbLocation
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
-DECL|field|RECON_CONTAINER_DB
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RECON_CONTAINER_DB
-init|=
-literal|"recon-"
-operator|+
-name|CONTAINER_DB_SUFFIX
-decl_stmt|;
-DECL|field|RECON_OM_SNAPSHOT_DB
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RECON_OM_SNAPSHOT_DB
-init|=
-literal|"om.snapshot.db"
-decl_stmt|;
-block|}
-end_class
+end_interface
 
 end_unit
 
