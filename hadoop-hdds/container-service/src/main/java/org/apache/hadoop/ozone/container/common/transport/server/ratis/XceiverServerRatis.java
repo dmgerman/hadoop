@@ -2904,8 +2904,6 @@ argument_list|,
 name|nextCallId
 argument_list|()
 argument_list|,
-literal|0
-argument_list|,
 name|Message
 operator|.
 name|valueOf
@@ -2917,6 +2915,8 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|type
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

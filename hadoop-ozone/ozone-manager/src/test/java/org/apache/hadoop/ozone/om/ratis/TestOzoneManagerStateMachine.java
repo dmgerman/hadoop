@@ -942,8 +942,6 @@ name|raftGroupId
 argument_list|,
 literal|1
 argument_list|,
-literal|1
-argument_list|,
 name|Message
 operator|.
 name|valueOf
@@ -969,6 +967,8 @@ operator|.
 name|getDefaultInstance
 argument_list|()
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|TransactionContext
@@ -1525,8 +1525,6 @@ name|raftGroupId
 argument_list|,
 literal|1
 argument_list|,
-literal|1
-argument_list|,
 name|Message
 operator|.
 name|valueOf
@@ -1552,6 +1550,8 @@ operator|.
 name|getDefaultInstance
 argument_list|()
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|TransactionContext
