@@ -174,30 +174,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
-name|resourceplugin
-operator|.
-name|fpga
-operator|.
-name|FpgaDiscoverer
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -718,6 +694,12 @@ specifier|private
 name|String
 name|IPID
 decl_stmt|;
+comment|// SHA-256 hash of the uploaded aocx file
+DECL|field|aocxHash
+specifier|private
+name|String
+name|aocxHash
+decl_stmt|;
 comment|// the device name under /dev
 DECL|field|devName
 specifier|private
@@ -785,6 +767,32 @@ block|{
 return|return
 name|IPID
 return|;
+block|}
+DECL|method|getAocxHash ()
+specifier|public
+name|String
+name|getAocxHash
+parameter_list|()
+block|{
+return|return
+name|aocxHash
+return|;
+block|}
+DECL|method|setAocxHash (String hash)
+specifier|public
+name|void
+name|setAocxHash
+parameter_list|(
+name|String
+name|hash
+parameter_list|)
+block|{
+name|this
+operator|.
+name|aocxHash
+operator|=
+name|hash
+expr_stmt|;
 block|}
 DECL|method|setIPID (String IPID)
 specifier|public
@@ -1265,6 +1273,12 @@ name|this
 operator|.
 name|IPID
 operator|+
+literal|", Hash: "
+operator|+
+name|this
+operator|.
+name|aocxHash
+operator|+
 literal|")"
 return|;
 block|}
@@ -1347,7 +1361,7 @@ name|list
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateFpga (String requestor, FpgaDevice device, String newIPID)
+DECL|method|updateFpga (String requestor, FpgaDevice device, String newIPID, String newHash)
 specifier|public
 specifier|synchronized
 name|void
@@ -1361,6 +1375,9 @@ name|device
 parameter_list|,
 name|String
 name|newIPID
+parameter_list|,
+name|String
+name|newHash
 parameter_list|)
 block|{
 name|List
@@ -1404,6 +1421,30 @@ operator|.
 name|setIPID
 argument_list|(
 name|newIPID
+argument_list|)
+expr_stmt|;
+name|FpgaDevice
+name|fpga
+init|=
+name|usedFpgas
+operator|.
+name|get
+argument_list|(
+name|index
+argument_list|)
+decl_stmt|;
+name|fpga
+operator|.
+name|setIPID
+argument_list|(
+name|newIPID
+argument_list|)
+expr_stmt|;
+name|fpga
+operator|.
+name|setAocxHash
+argument_list|(
+name|newHash
 argument_list|)
 expr_stmt|;
 block|}
@@ -1492,8 +1533,8 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Assign {@link FpgaAllocation} with preferred IPID, if no, with random FPGAs    * @param type vendor plugin supported FPGA device type    * @param count requested FPGA slot count    * @param container container id    * @param IPIDPreference allocate slot with this IPID first    * @return Instance consists two List of allowed and denied {@link FpgaDevice}    * @throws ResourceHandlerException When failed to allocate or write state store    * */
-DECL|method|assignFpga (String type, long count, Container container, String IPIDPreference)
+comment|/**    * Assign {@link FpgaAllocation} with preferred IPID, if no, with random FPGAs    * @param type vendor plugin supported FPGA device type    * @param count requested FPGA slot count    * @param container container id    * @param ipidHash hash of the localized aocx file    * @return Instance consists two List of allowed and denied {@link FpgaDevice}    * @throws ResourceHandlerException When failed to allocate or write state store    * */
+DECL|method|assignFpga (String type, long count, Container container, String ipidHash)
 specifier|public
 specifier|synchronized
 name|FpgaAllocation
@@ -1509,7 +1550,7 @@ name|Container
 name|container
 parameter_list|,
 name|String
-name|IPIDPreference
+name|ipidHash
 parameter_list|)
 throws|throws
 name|ResourceHandlerException
@@ -1626,33 +1667,30 @@ name|i
 operator|++
 control|)
 block|{
+name|String
+name|deviceIPIDhash
+init|=
+name|currentAvailableFpga
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getAocxHash
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-literal|null
+name|deviceIPIDhash
 operator|!=
-name|currentAvailableFpga
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-operator|.
-name|getIPID
-argument_list|()
+literal|null
 operator|&&
-name|currentAvailableFpga
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-operator|.
-name|getIPID
-argument_list|()
+name|deviceIPIDhash
 operator|.
 name|equalsIgnoreCase
 argument_list|(
-name|IPIDPreference
+name|ipidHash
 argument_list|)
 condition|)
 block|{
