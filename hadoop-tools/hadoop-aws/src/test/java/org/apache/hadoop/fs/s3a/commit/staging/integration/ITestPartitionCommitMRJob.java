@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a.commit.magic
+DECL|package|org.apache.hadoop.fs.s3a.commit.staging.integration
 package|package
 name|org
 operator|.
@@ -18,21 +18,39 @@ name|s3a
 operator|.
 name|commit
 operator|.
-name|magic
+name|staging
+operator|.
+name|integration
 package|;
 end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|fs
+name|junit
 operator|.
-name|Path
+name|BeforeClass
 import|;
 end_import
 
@@ -68,9 +86,9 @@ name|s3a
 operator|.
 name|commit
 operator|.
-name|files
+name|staging
 operator|.
-name|SuccessData
+name|PartitionedStagingCommitter
 import|;
 end_import
 
@@ -88,49 +106,79 @@ name|JobConf
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|commit
-operator|.
-name|CommitConstants
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
-comment|/**  * Full integration test for the Magic Committer.  *  * There's no need to disable the committer setting for the filesystem here,  * because the committers are being instantiated in their own processes;  * the settings in {@link AbstractITCommitMRJob#applyCustomConfigOptions(JobConf)} are  * passed down to these processes.  */
+comment|/**  * Full integration test for the partition committer.  */
 end_comment
 
 begin_class
-DECL|class|ITMagicCommitMRJob
+DECL|class|ITestPartitionCommitMRJob
 specifier|public
+specifier|final
 class|class
-name|ITMagicCommitMRJob
+name|ITestPartitionCommitMRJob
 extends|extends
 name|AbstractITCommitMRJob
 block|{
-comment|/**    * Need consistency here.    * @return false    */
+comment|/**    * The static cluster binding with the lifecycle of this test; served    * through instance-level methods for sharing across methods in the    * suite.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StaticNonFinalField"
+argument_list|)
+DECL|field|clusterBinding
+specifier|private
+specifier|static
+name|ClusterBinding
+name|clusterBinding
+decl_stmt|;
+annotation|@
+name|BeforeClass
+DECL|method|setupClusters ()
+specifier|public
+specifier|static
+name|void
+name|setupClusters
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|clusterBinding
+operator|=
+name|createCluster
+argument_list|(
+operator|new
+name|JobConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|AfterClass
+DECL|method|teardownClusters ()
+specifier|public
+specifier|static
+name|void
+name|teardownClusters
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|clusterBinding
+operator|.
+name|terminate
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
-DECL|method|useInconsistentClient ()
+DECL|method|getClusterBinding ()
 specifier|public
-name|boolean
-name|useInconsistentClient
+name|ClusterBinding
+name|getClusterBinding
 parameter_list|()
 block|{
 return|return
-literal|false
+name|clusterBinding
 return|;
 block|}
 annotation|@
@@ -142,63 +190,10 @@ name|committerName
 parameter_list|()
 block|{
 return|return
-name|MagicS3GuardCommitter
+name|PartitionedStagingCommitter
 operator|.
 name|NAME
 return|;
-block|}
-comment|/**    * Turn on the magic commit support for the FS, else nothing will work.    * @param conf configuration    */
-annotation|@
-name|Override
-DECL|method|applyCustomConfigOptions (JobConf conf)
-specifier|protected
-name|void
-name|applyCustomConfigOptions
-parameter_list|(
-name|JobConf
-name|conf
-parameter_list|)
-block|{
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|MAGIC_COMMITTER_ENABLED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Check that the magic dir was cleaned up.    * {@inheritDoc}    */
-annotation|@
-name|Override
-DECL|method|customPostExecutionValidation (Path destPath, SuccessData successData)
-specifier|protected
-name|void
-name|customPostExecutionValidation
-parameter_list|(
-name|Path
-name|destPath
-parameter_list|,
-name|SuccessData
-name|successData
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|assertPathDoesNotExist
-argument_list|(
-literal|"No cleanup"
-argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|destPath
-argument_list|,
-name|MAGIC
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class

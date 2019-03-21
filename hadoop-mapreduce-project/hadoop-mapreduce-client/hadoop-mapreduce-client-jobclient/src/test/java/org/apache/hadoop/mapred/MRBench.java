@@ -1551,9 +1551,9 @@ decl_stmt|;
 name|FileSystem
 name|fs
 init|=
-name|FileSystem
+name|BASE_DIR
 operator|.
-name|get
+name|getFileSystem
 argument_list|(
 name|jobConf
 argument_list|)

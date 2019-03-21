@@ -361,6 +361,8 @@ decl_stmt|;
 comment|// Run TeraGen
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|ToolRunner
 operator|.
 name|run
@@ -373,8 +375,6 @@ argument_list|()
 argument_list|,
 name|genArgs
 argument_list|)
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -415,6 +415,8 @@ decl_stmt|;
 comment|// Run Sort
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|ToolRunner
 operator|.
 name|run
@@ -427,8 +429,6 @@ argument_list|()
 argument_list|,
 name|sortArgs
 argument_list|)
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -468,6 +468,8 @@ decl_stmt|;
 comment|// Run Tera-Validator
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|ToolRunner
 operator|.
 name|run
@@ -480,8 +482,6 @@ argument_list|()
 argument_list|,
 name|svArgs
 argument_list|)
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
