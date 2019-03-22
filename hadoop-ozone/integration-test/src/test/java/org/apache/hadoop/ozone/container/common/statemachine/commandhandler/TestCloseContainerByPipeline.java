@@ -712,6 +712,11 @@ argument_list|(
 literal|"standalone"
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -1073,6 +1078,11 @@ argument_list|(
 literal|"standalone"
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -1379,6 +1389,11 @@ operator|.
 name|setKeyName
 argument_list|(
 literal|"ratis"
+argument_list|)
+operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
 argument_list|)
 operator|.
 name|build

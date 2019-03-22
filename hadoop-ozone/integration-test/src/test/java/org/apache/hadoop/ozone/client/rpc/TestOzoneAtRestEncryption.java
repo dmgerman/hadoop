@@ -1400,6 +1400,11 @@ argument_list|(
 name|keyName
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;

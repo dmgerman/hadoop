@@ -797,6 +797,11 @@ argument_list|(
 literal|1000
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -1383,6 +1388,11 @@ operator|.
 name|setDataSize
 argument_list|(
 literal|1000
+argument_list|)
+operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
 argument_list|)
 operator|.
 name|build

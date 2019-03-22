@@ -2971,6 +2971,11 @@ name|getSize
 argument_list|()
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -3175,6 +3180,11 @@ name|getKeyName
 argument_list|()
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -3318,6 +3328,11 @@ name|args
 operator|.
 name|getKeyName
 argument_list|()
+argument_list|)
+operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
 argument_list|)
 operator|.
 name|build

@@ -3691,6 +3691,11 @@ name|getKeyName
 argument_list|()
 argument_list|)
 operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -3781,6 +3786,11 @@ name|keyArgs
 operator|.
 name|getKeyName
 argument_list|()
+argument_list|)
+operator|.
+name|setRefreshPipeline
+argument_list|(
+literal|true
 argument_list|)
 operator|.
 name|build
