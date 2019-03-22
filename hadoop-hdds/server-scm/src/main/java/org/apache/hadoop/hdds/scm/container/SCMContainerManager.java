@@ -1192,7 +1192,7 @@ name|id
 operator|.
 name|getId
 argument_list|()
-operator|>=
+operator|>
 name|startId
 argument_list|)
 operator|.

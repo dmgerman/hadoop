@@ -1880,6 +1880,26 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+comment|// To allow startcontainerId to take the value "0",
+comment|// "null" is assigned, so that its handled in the
+comment|// scm.getContainerManager().listContainer method
+specifier|final
+name|ContainerID
+name|containerId
+init|=
+name|startContainerID
+operator|!=
+literal|0
+condition|?
+name|ContainerID
+operator|.
+name|valueof
+argument_list|(
+name|startContainerID
+argument_list|)
+else|:
+literal|null
+decl_stmt|;
 return|return
 name|scm
 operator|.
@@ -1888,12 +1908,7 @@ argument_list|()
 operator|.
 name|listContainer
 argument_list|(
-name|ContainerID
-operator|.
-name|valueof
-argument_list|(
-name|startContainerID
-argument_list|)
+name|containerId
 argument_list|,
 name|count
 argument_list|)
