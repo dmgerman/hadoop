@@ -126,6 +126,15 @@ name|ContainerManager
 extends|extends
 name|Closeable
 block|{
+comment|/**    * Returns all the container Ids managed by ContainerManager.    *    * @return Set of ContainerID    */
+DECL|method|getContainerIDs ()
+name|Set
+argument_list|<
+name|ContainerID
+argument_list|>
+name|getContainerIDs
+parameter_list|()
+function_decl|;
 comment|/**    * Returns all the containers managed by ContainerManager.    *    * @return List of ContainerInfo    */
 DECL|method|getContainers ()
 name|List

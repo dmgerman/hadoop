@@ -402,9 +402,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|TestContainerReportHelper
+name|TestUtils
 operator|.
 name|getReplicas
 import|;
@@ -422,9 +420,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|container
-operator|.
-name|TestContainerReportHelper
+name|TestUtils
 operator|.
 name|getContainer
 import|;

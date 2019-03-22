@@ -260,16 +260,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -555,7 +545,7 @@ operator|.
 name|containerMap
 operator|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -572,7 +562,7 @@ operator|.
 name|replicaMap
 operator|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -984,16 +974,11 @@ name|Collections
 operator|.
 name|unmodifiableSet
 argument_list|(
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|(
 name|replicaMap
 operator|.
 name|get
 argument_list|(
 name|containerID
-argument_list|)
 argument_list|)
 argument_list|)
 return|;
@@ -1487,10 +1472,15 @@ name|getAllContainerIDs
 parameter_list|()
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
 name|containerMap
 operator|.
 name|keySet
 argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns A list of containers owned by a name service.    *    * @param ownerName - Name of the NameService.    * @return - NavigableSet of ContainerIDs.    */
