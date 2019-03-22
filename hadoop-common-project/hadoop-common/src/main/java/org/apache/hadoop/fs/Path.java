@@ -191,6 +191,9 @@ class|class
 name|Path
 implements|implements
 name|Comparable
+argument_list|<
+name|Path
+argument_list|>
 implements|,
 name|Serializable
 implements|,
@@ -1876,23 +1879,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (Object o)
+DECL|method|compareTo (Path o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|Path
 name|o
 parameter_list|)
 block|{
-name|Path
-name|that
-init|=
-operator|(
-name|Path
-operator|)
-name|o
-decl_stmt|;
 return|return
 name|this
 operator|.
@@ -1900,7 +1895,7 @@ name|uri
 operator|.
 name|compareTo
 argument_list|(
-name|that
+name|o
 operator|.
 name|uri
 argument_list|)
