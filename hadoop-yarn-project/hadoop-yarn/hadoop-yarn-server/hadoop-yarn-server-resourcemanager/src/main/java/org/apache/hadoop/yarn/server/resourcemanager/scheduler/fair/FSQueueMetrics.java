@@ -385,6 +385,7 @@ specifier|private
 name|String
 name|schedulingPolicy
 decl_stmt|;
+comment|/**    * Constructor for {@link FairScheduler} queue metrics data object.    *    * @param ms the MetricSystem to register with    * @param queueName the queue name    * @param parent the parent {@link Queue}    * @param enableUserMetrics store metrics on user level    * @param conf the {@link Configuration} object to build buckets upon    */
 DECL|method|FSQueueMetrics (MetricsSystem ms, String queueName, Queue parent, boolean enableUserMetrics, Configuration conf)
 name|FSQueueMetrics
 parameter_list|(
@@ -470,6 +471,7 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Get instantaneous fair share of the queue.    *    * @return the returned {@link Resource} also contains custom resource types    */
 DECL|method|getFairShare ()
 specifier|public
 name|Resource
@@ -528,6 +530,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Set instantaneous fair share of the queue.    *    * @param resource the passed {@link Resource} object may also contain custom    *                 resource types    */
 DECL|method|setFairShare (Resource resource)
 specifier|public
 name|void
@@ -599,6 +602,7 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Get steady fair share for queue.    *    * @return the returned {@link Resource} also contains custom resource types    */
 DECL|method|getSteadyFairShare ()
 specifier|public
 name|Resource
@@ -657,6 +661,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Set steady fair share for queue.    *    * @param resource the passed {@link Resource} object may also contain custom    *                 resource types    */
 DECL|method|setSteadyFairShare (Resource resource)
 specifier|public
 name|void
@@ -728,6 +733,7 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Get minimum required resource share for queue.    *    * @return the returned {@link Resource} also contains custom resource types    */
 DECL|method|getMinShare ()
 specifier|public
 name|Resource
@@ -786,6 +792,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Set minimum required resource share for queue.    *    * @param resource the passed {@link Resource} object may also contain custom    *                 resource types    */
 DECL|method|setMinShare (Resource resource)
 specifier|public
 name|void
@@ -857,6 +864,7 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Get maximum allowed resource share for queue.    *    * @return the returned {@link Resource} also contains custom resource types    */
 DECL|method|getMaxShare ()
 specifier|public
 name|Resource
@@ -915,6 +923,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Set maximum allowed resource share for queue.    *    * @param resource the passed {@link Resource} object may also contain custom    *                 resource types    */
 DECL|method|setMaxShare (Resource resource)
 specifier|public
 name|void
@@ -1018,6 +1027,7 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Get maximum resource AM can use.    *    * @return the returned {@link Resource} also contains custom resource types    */
 DECL|method|getMaxAMShare ()
 specifier|public
 name|Resource
@@ -1070,7 +1080,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the maximum resource AM can use.    *    * @param resource the maximum resource AM can use    */
+comment|/**    * Set the maximum resource AM can use.    *    * @param resource the passed {@link Resource} object may also contain custom    *                 resource types    */
 DECL|method|setMaxAMShare (Resource resource)
 specifier|public
 name|void
@@ -1144,6 +1154,7 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Get resource usage of the AM.    *    * @return the returned {@link Resource} also contains custom resource types    */
 DECL|method|getAMResourceUsage ()
 specifier|public
 name|Resource
@@ -1196,7 +1207,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the AM resource usage.    *    * @param resource the AM resource usage    */
+comment|/**    * Set the AM resource usage.    *    * @param resource the passed {@link Resource} object may also contain custom    *                 resource types    */
 DECL|method|setAMResourceUsage (Resource resource)
 specifier|public
 name|void
