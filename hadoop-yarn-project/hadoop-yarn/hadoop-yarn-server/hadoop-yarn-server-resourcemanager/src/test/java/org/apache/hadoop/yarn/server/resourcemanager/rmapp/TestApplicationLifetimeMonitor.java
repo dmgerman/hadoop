@@ -1495,7 +1495,6 @@ expr_stmt|;
 name|long
 name|totalTimeRun
 init|=
-operator|(
 name|app4
 operator|.
 name|getFinishTime
@@ -1505,9 +1504,6 @@ name|app4
 operator|.
 name|getSubmitTime
 argument_list|()
-operator|)
-operator|/
-literal|1000
 decl_stmt|;
 name|Assert
 operator|.
@@ -1517,7 +1513,11 @@ literal|"Application killed before lifetime value"
 argument_list|,
 name|totalTimeRun
 operator|>
+operator|(
 name|maxLifetime
+operator|*
+literal|1000
+operator|)
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1530,9 +1530,15 @@ name|totalTimeRun
 argument_list|,
 name|totalTimeRun
 operator|<
+operator|(
+operator|(
 name|maxLifetime
 operator|+
 literal|10L
+operator|)
+operator|*
+literal|1000
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
