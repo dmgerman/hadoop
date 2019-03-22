@@ -346,7 +346,7 @@ name|threadFactory
 argument_list|)
 return|;
 block|}
-comment|/**    * Helper routine to shutdown a executorService.    *    * @param executorService - executorService    * @param logger          - Logger    * @param timeout         - Timeout    * @param unit            - TimeUnits, generally seconds.    */
+comment|/**    * Helper routine to shutdown a {@link ExecutorService}. Will wait up to a    * certain timeout for the ExecutorService to gracefully shutdown. If the    * ExecutorService did not shutdown and there are still tasks unfinished after    * the timeout period, the ExecutorService will be notified to forcibly shut    * down. Another timeout period will be waited before giving up. So, at most,    * a shutdown will be allowed to wait up to twice the timeout value before    * giving up.    *    * @param executorService ExecutorService to shutdown    * @param logger Logger    * @param timeout the maximum time to wait    * @param unit the time unit of the timeout argument    */
 DECL|method|shutdown (ExecutorService executorService, Logger logger, long timeout, TimeUnit unit)
 specifier|public
 specifier|static
@@ -366,41 +366,33 @@ name|TimeUnit
 name|unit
 parameter_list|)
 block|{
-try|try
-block|{
 if|if
 condition|(
 name|executorService
-operator|!=
+operator|==
 literal|null
 condition|)
+block|{
+return|return;
+block|}
+try|try
 block|{
 name|executorService
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-if|if
-condition|(
-operator|!
-name|executorService
+name|logger
 operator|.
-name|awaitTermination
+name|info
 argument_list|(
+literal|"Gracefully shutting down executor service. Waiting max {} {}"
+argument_list|,
 name|timeout
 argument_list|,
 name|unit
 argument_list|)
-condition|)
-block|{
-name|executorService
-operator|.
-name|shutdownNow
-argument_list|()
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -416,9 +408,58 @@ condition|)
 block|{
 name|logger
 operator|.
+name|info
+argument_list|(
+literal|"Executor service has not shutdown yet. Forcing. "
+operator|+
+literal|"Will wait up to an additional {} {} for shutdown"
+argument_list|,
+name|timeout
+argument_list|,
+name|unit
+argument_list|)
+expr_stmt|;
+name|executorService
+operator|.
+name|shutdownNow
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|executorService
+operator|.
+name|awaitTermination
+argument_list|(
+name|timeout
+argument_list|,
+name|unit
+argument_list|)
+condition|)
+block|{
+name|logger
+operator|.
+name|info
+argument_list|(
+literal|"Succesfully shutdown executor service"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|logger
+operator|.
 name|error
 argument_list|(
-literal|"Unable to shutdown properly."
+literal|"Unable to shutdown executor service after timeout {} {}"
+argument_list|,
+operator|(
+literal|2
+operator|*
+name|timeout
+operator|)
+argument_list|,
+name|unit
 argument_list|)
 expr_stmt|;
 block|}
@@ -433,7 +474,7 @@ name|logger
 operator|.
 name|error
 argument_list|(
-literal|"Error attempting to shutdown."
+literal|"Interrupted while attempting to shutdown"
 argument_list|,
 name|e
 argument_list|)
@@ -444,8 +485,6 @@ name|shutdownNow
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-block|}
 catch|catch
 parameter_list|(
 name|Exception
@@ -454,9 +493,21 @@ parameter_list|)
 block|{
 name|logger
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Error during shutdown: "
+literal|"Exception closing executor service {}"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|logger
+operator|.
+name|debug
+argument_list|(
+literal|"Exception closing executor service"
 argument_list|,
 name|e
 argument_list|)
