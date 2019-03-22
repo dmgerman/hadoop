@@ -915,6 +915,51 @@ return|return
 name|credentials
 return|;
 block|}
+comment|/**    * Returns the key for an entry in the copy listing sequence file.    * @param sourcePathRoot the root source path for determining the relative    *                       target path    * @param fileStatus the copy listing file status    * @return the key for the sequence file entry    */
+DECL|method|getFileListingKey (Path sourcePathRoot, CopyListingFileStatus fileStatus)
+specifier|protected
+name|Text
+name|getFileListingKey
+parameter_list|(
+name|Path
+name|sourcePathRoot
+parameter_list|,
+name|CopyListingFileStatus
+name|fileStatus
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Text
+argument_list|(
+name|DistCpUtils
+operator|.
+name|getRelativePath
+argument_list|(
+name|sourcePathRoot
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the value for an entry in the copy listing sequence file.    * @param fileStatus the copy listing file status    * @return the value for the sequence file entry    */
+DECL|method|getFileListingValue ( CopyListingFileStatus fileStatus)
+specifier|protected
+name|CopyListingFileStatus
+name|getFileListingValue
+parameter_list|(
+name|CopyListingFileStatus
+name|fileStatus
+parameter_list|)
+block|{
+return|return
+name|fileStatus
+return|;
+block|}
 comment|/**    * Public Factory method with which the appropriate CopyListing implementation may be retrieved.    * @param configuration The input configuration.    * @param credentials Credentials object on which the FS delegation tokens are cached    * @param context Distcp context with associated input options    * @return An instance of the appropriate CopyListing implementation.    * @throws java.io.IOException - Exception if any    */
 DECL|method|getCopyListing (Configuration configuration, Credentials credentials, DistCpContext context)
 specifier|public
