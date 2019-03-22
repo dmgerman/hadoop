@@ -1090,6 +1090,25 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Get number of containers in the given state.    *    * @param state {@link LifeCycleState}    * @return Count    */
+DECL|method|getContainerCountByState (LifeCycleState state)
+specifier|public
+name|Integer
+name|getContainerCountByState
+parameter_list|(
+name|LifeCycleState
+name|state
+parameter_list|)
+block|{
+return|return
+name|containerStateManager
+operator|.
+name|getContainerCountByState
+argument_list|(
+name|state
+argument_list|)
+return|;
+block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override

@@ -1829,6 +1829,11 @@ specifier|final
 name|ChillModeHandler
 name|chillModeHandler
 decl_stmt|;
+DECL|field|scmContainerMetrics
+specifier|private
+name|SCMContainerMetrics
+name|scmContainerMetrics
+decl_stmt|;
 comment|/**    * Creates a new StorageContainerManager. Configuration will be    * updated with information on the actual listening addresses used    * for RPC servers.    *    * @param conf configuration    */
 DECL|method|StorageContainerManager (OzoneConfiguration conf)
 specifier|public
@@ -1898,8 +1903,6 @@ name|configuration
 operator|=
 name|conf
 expr_stmt|;
-name|StorageContainerManager
-operator|.
 name|initMetrics
 argument_list|()
 expr_stmt|;
@@ -2530,6 +2533,11 @@ argument_list|)
 expr_stmt|;
 name|registerMXBean
 argument_list|()
+expr_stmt|;
+name|registerMetricsSource
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This function initializes the following managers. If the configurator    * specifies a value, we will use it, else we will use the default value.    *    *  Node Manager    *  Pipeline Manager    *  Container Manager    *  Block Manager    *  Replication Manager    *  Chill Mode Manager    *    * @param conf - Ozone Configuration.    * @param configurator - A customizer which allows different managers to be    *                    used if needed.    * @throws IOException - on Failure.    */
@@ -4359,6 +4367,25 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|registerMetricsSource (SCMMXBean scmMBean)
+specifier|private
+name|void
+name|registerMetricsSource
+parameter_list|(
+name|SCMMXBean
+name|scmMBean
+parameter_list|)
+block|{
+name|scmContainerMetrics
+operator|=
+name|SCMContainerMetrics
+operator|.
+name|create
+argument_list|(
+name|scmMBean
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|unregisterMXBean ()
 specifier|private
 name|void
@@ -4965,6 +4992,19 @@ block|}
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|scmContainerMetrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|scmContainerMetrics
+operator|.
+name|unRegister
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Event queue must be stopped before the DB store is closed at the end.
 try|try
 block|{
@@ -5566,13 +5606,10 @@ argument_list|()
 argument_list|,
 name|containerManager
 operator|.
-name|getContainers
+name|getContainerCountByState
 argument_list|(
 name|state
 argument_list|)
-operator|.
-name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

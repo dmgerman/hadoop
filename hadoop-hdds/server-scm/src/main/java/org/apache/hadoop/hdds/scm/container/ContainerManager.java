@@ -158,6 +158,17 @@ name|LifeCycleState
 name|state
 parameter_list|)
 function_decl|;
+comment|/**    * Returns number of containers in the given,    *  {@link org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState}.    *    * @return Number of containers    */
+DECL|method|getContainerCountByState (HddsProtos.LifeCycleState state)
+name|Integer
+name|getContainerCountByState
+parameter_list|(
+name|HddsProtos
+operator|.
+name|LifeCycleState
+name|state
+parameter_list|)
+function_decl|;
 comment|/**    * Returns the ContainerInfo from the container ID.    *    * @param containerID - ID of container.    * @return - ContainerInfo such as creation state and the pipeline.    * @throws IOException    */
 DECL|method|getContainer (ContainerID containerID)
 name|ContainerInfo
