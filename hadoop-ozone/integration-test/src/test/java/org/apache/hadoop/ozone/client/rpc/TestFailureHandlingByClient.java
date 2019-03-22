@@ -368,6 +368,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -461,10 +471,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests Close Container Exception handling by Ozone Client.  */
+comment|/**  * Tests Close Container Exception handling by Ozone Client.  * XXX Disabled [HDDS-1323]  */
 end_comment
 
 begin_class
+annotation|@
+name|Ignore
 DECL|class|TestFailureHandlingByClient
 specifier|public
 class|class
