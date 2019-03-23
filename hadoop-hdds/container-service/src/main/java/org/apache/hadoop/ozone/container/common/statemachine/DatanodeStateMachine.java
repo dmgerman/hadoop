@@ -1603,16 +1603,32 @@ parameter_list|()
 throws|throws
 name|InterruptedException
 block|{
+if|if
+condition|(
+name|stateMachineThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|stateMachineThread
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|cmdProcessThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|cmdProcessThread
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Stop the daemon thread of the datanode state machine.    */
 DECL|method|stopDaemon ()
