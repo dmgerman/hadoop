@@ -2600,6 +2600,22 @@ name|getPort
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_METRICS_ENABLE
+argument_list|,
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_METRICS_ENABLE_DEFAULT
+argument_list|)
+condition|)
+block|{
 comment|// Create metrics monitor
 name|Class
 argument_list|<
@@ -2641,6 +2657,16 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|// Create the client
 name|this
 operator|.
@@ -2734,9 +2760,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|info
 argument_list|(
-literal|"Cannot instantiate Router RPC metrics class"
+literal|"Do not start Router RPC metrics"
 argument_list|)
 expr_stmt|;
 block|}

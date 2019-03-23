@@ -238,7 +238,6 @@ literal|"dfs"
 argument_list|)
 DECL|class|StateStoreMetrics
 specifier|public
-specifier|final
 class|class
 name|StateStoreMetrics
 implements|implements
@@ -306,6 +305,11 @@ name|MutableGaugeInt
 argument_list|>
 name|cacheSizes
 decl_stmt|;
+DECL|method|StateStoreMetrics ()
+specifier|protected
+name|StateStoreMetrics
+parameter_list|()
+block|{}
 DECL|method|StateStoreMetrics (Configuration conf)
 specifier|private
 name|StateStoreMetrics
