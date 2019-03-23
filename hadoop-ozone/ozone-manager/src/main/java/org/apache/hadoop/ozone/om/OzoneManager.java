@@ -7995,14 +7995,6 @@ parameter_list|)
 throws|throws
 name|OMException
 block|{
-specifier|final
-name|boolean
-name|success
-decl_stmt|;
-specifier|final
-name|String
-name|tokenId
-decl_stmt|;
 name|Token
 argument_list|<
 name|OzoneTokenIdentifier

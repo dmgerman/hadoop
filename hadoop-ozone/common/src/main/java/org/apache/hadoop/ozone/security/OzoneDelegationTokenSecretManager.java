@@ -764,27 +764,17 @@ if|if
 condition|(
 name|LOG
 operator|.
-name|isTraceEnabled
+name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|String
-name|tokenId
-init|=
-name|identifier
-operator|.
-name|toStringStable
-argument_list|()
-decl_stmt|;
 name|LOG
 operator|.
-name|trace
+name|debug
 argument_list|(
-literal|"Issued delegation token -> expiryTime:{},tokenId:{}"
+literal|"Created delegation token: {}"
 argument_list|,
-name|expiryTime
-argument_list|,
-name|tokenId
+name|token
 argument_list|)
 expr_stmt|;
 block|}

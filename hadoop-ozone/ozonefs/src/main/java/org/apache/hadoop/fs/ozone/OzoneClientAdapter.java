@@ -26,6 +26,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|security
@@ -67,6 +83,16 @@ operator|.
 name|io
 operator|.
 name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
 import|;
 end_import
 
@@ -198,6 +224,25 @@ name|renewer
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|getKeyProvider ()
+name|KeyProvider
+name|getKeyProvider
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getKeyProviderUri ()
+name|URI
+name|getKeyProviderUri
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getCanonicalServiceName ()
+name|String
+name|getCanonicalServiceName
+parameter_list|()
 function_decl|;
 block|}
 end_interface

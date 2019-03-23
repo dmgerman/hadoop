@@ -100,6 +100,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|protocol
@@ -409,6 +425,24 @@ operator|.
 name|response
 operator|.
 name|VolumeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|rpc
+operator|.
+name|OzoneKMSUtil
 import|;
 end_import
 
@@ -4410,6 +4444,54 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getKeyProvider ()
+specifier|public
+name|KeyProvider
+name|getKeyProvider
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// TODO: fix me to support kms instances for difference OMs
+return|return
+name|OzoneKMSUtil
+operator|.
+name|getKeyProvider
+argument_list|(
+name|conf
+argument_list|,
+name|getKeyProviderUri
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKeyProviderUri ()
+specifier|public
+name|URI
+name|getKeyProviderUri
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|OzoneKMSUtil
+operator|.
+name|getKeyProviderUri
+argument_list|(
+name|ugi
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getKey ( String volumeName, String bucketName, String keyName)
 specifier|public
 name|OzoneInputStream
@@ -6034,6 +6116,23 @@ name|maxParts
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+comment|/**    * Get CanonicalServiceName for ozone delegation token.    * @return Canonical Service Name of ozone delegation token.    */
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
 block|{
 throw|throw
 operator|new

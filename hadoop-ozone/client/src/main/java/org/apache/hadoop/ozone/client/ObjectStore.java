@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -89,6 +99,22 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProvider
 import|;
 end_import
 
@@ -299,6 +325,7 @@ class|class
 name|ObjectStore
 block|{
 comment|/**    * The proxy used for connecting to the cluster and perform    * client operations.    */
+comment|// TODO: remove rest api and client
 DECL|field|proxy
 specifier|private
 specifier|final
@@ -800,6 +827,36 @@ argument_list|(
 name|volumeName
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getKeyProvider ()
+specifier|public
+name|KeyProvider
+name|getKeyProvider
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|proxy
+operator|.
+name|getKeyProvider
+argument_list|()
+return|;
+block|}
+DECL|method|getKeyProviderUri ()
+specifier|public
+name|URI
+name|getKeyProviderUri
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|proxy
+operator|.
+name|getKeyProviderUri
+argument_list|()
+return|;
 block|}
 comment|/**    * An Iterator to iterate over {@link OzoneVolume} list.    */
 DECL|class|VolumeIterator
@@ -1342,6 +1399,20 @@ argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * @return canonical service name of ozone delegation token.    */
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+name|proxy
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+return|;
 block|}
 block|}
 end_class

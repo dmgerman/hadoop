@@ -42,6 +42,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|KeyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdds
 operator|.
 name|protocol
@@ -255,6 +271,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
 import|;
 end_import
 
@@ -1064,6 +1090,28 @@ name|VisibleForTesting
 DECL|method|getOMProxyProvider ()
 name|OMFailoverProxyProvider
 name|getOMProxyProvider
+parameter_list|()
+function_decl|;
+comment|/**    * Get KMS client provider.    * @return KMS client provider.    * @throws IOException    */
+DECL|method|getKeyProvider ()
+name|KeyProvider
+name|getKeyProvider
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get KMS client provider uri.    * @return KMS client provider uri.    * @throws IOException    */
+DECL|method|getKeyProviderUri ()
+name|URI
+name|getKeyProviderUri
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get CanonicalServiceName for ozone delegation token.    * @return Canonical Service Name of ozone delegation token.    */
+DECL|method|getCanonicalServiceName ()
+name|String
+name|getCanonicalServiceName
 parameter_list|()
 function_decl|;
 block|}
