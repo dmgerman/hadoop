@@ -3122,6 +3122,34 @@ name|STARTED
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|waitForServiceToBeExpressUpgrading (ServiceClient client, Service exampleApp)
+specifier|protected
+name|void
+name|waitForServiceToBeExpressUpgrading
+parameter_list|(
+name|ServiceClient
+name|client
+parameter_list|,
+name|Service
+name|exampleApp
+parameter_list|)
+throws|throws
+name|TimeoutException
+throws|,
+name|InterruptedException
+block|{
+name|waitForServiceToBeInState
+argument_list|(
+name|client
+argument_list|,
+name|exampleApp
+argument_list|,
+name|ServiceState
+operator|.
+name|EXPRESS_UPGRADING
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|waitForServiceToBeInState (ServiceClient client, Service exampleApp, ServiceState desiredState)
 specifier|protected
 name|void
