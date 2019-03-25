@@ -1115,11 +1115,7 @@ name|assertEquals
 argument_list|(
 literal|"Minor number"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|0
-argument_list|)
 argument_list|,
 name|device0
 operator|.
@@ -1131,11 +1127,7 @@ name|assertEquals
 argument_list|(
 literal|"Major"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|243
-argument_list|)
 argument_list|,
 name|device0
 operator|.
@@ -1159,11 +1151,7 @@ name|assertEquals
 argument_list|(
 literal|"Minor number"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|1
-argument_list|)
 argument_list|,
 name|device1
 operator|.
@@ -1175,11 +1163,7 @@ name|assertEquals
 argument_list|(
 literal|"Major"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|244
-argument_list|)
 argument_list|,
 name|device1
 operator|.
@@ -1531,11 +1515,7 @@ name|assertEquals
 argument_list|(
 literal|"Minor number"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|0
-argument_list|)
 argument_list|,
 name|device0
 operator|.
@@ -1547,11 +1527,7 @@ name|assertEquals
 argument_list|(
 literal|"Major"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|243
-argument_list|)
 argument_list|,
 name|device0
 operator|.
@@ -1575,11 +1551,7 @@ name|assertEquals
 argument_list|(
 literal|"Minor number"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|1
-argument_list|)
 argument_list|,
 name|device1
 operator|.
@@ -1591,11 +1563,7 @@ name|assertEquals
 argument_list|(
 literal|"Major"
 argument_list|,
-operator|new
-name|Integer
-argument_list|(
 literal|244
-argument_list|)
 argument_list|,
 name|device1
 operator|.

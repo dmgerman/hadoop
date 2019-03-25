@@ -1053,7 +1053,9 @@ literal|247
 argument_list|,
 name|i
 argument_list|,
-literal|null
+literal|"acl"
+operator|+
+name|i
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1390,13 +1392,15 @@ control|)
 block|{
 if|if
 condition|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
 name|device
 operator|.
 name|getMinor
 argument_list|()
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 operator|.
 name|equals
 argument_list|(
@@ -1418,7 +1422,7 @@ literal|"Minor:"
 operator|+
 name|s
 operator|+
-literal|"found"
+literal|" found"
 argument_list|,
 name|check
 argument_list|)
@@ -2888,7 +2892,7 @@ literal|247
 argument_list|,
 literal|0
 argument_list|,
-literal|null
+literal|"acl0"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2905,7 +2909,7 @@ literal|247
 argument_list|,
 literal|1
 argument_list|,
-literal|null
+literal|"acl1"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3022,11 +3026,8 @@ name|device
 operator|.
 name|getMinor
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 literal|0
-argument_list|)
 condition|)
 block|{
 name|count
@@ -3039,11 +3040,8 @@ name|device
 operator|.
 name|getMinor
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 literal|1
-argument_list|)
 condition|)
 block|{
 name|count
@@ -3099,11 +3097,8 @@ name|device
 operator|.
 name|getMinor
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 literal|2
-argument_list|)
 condition|)
 block|{
 name|count
@@ -3155,7 +3150,7 @@ literal|247
 argument_list|,
 literal|5
 argument_list|,
-literal|null
+literal|"acl0"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3266,7 +3261,7 @@ literal|247
 argument_list|,
 literal|1
 argument_list|,
-literal|null
+literal|"acl0"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3376,7 +3371,7 @@ literal|247
 argument_list|,
 literal|2
 argument_list|,
-literal|null
+literal|"acl2"
 argument_list|)
 argument_list|)
 expr_stmt|;

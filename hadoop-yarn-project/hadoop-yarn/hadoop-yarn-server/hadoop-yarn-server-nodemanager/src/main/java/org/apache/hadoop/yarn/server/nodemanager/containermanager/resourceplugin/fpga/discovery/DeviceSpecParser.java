@@ -314,17 +314,7 @@ name|major
 argument_list|,
 name|minor
 argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
 name|devName
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
