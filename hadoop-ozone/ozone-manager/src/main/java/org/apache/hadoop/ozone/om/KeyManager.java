@@ -244,6 +244,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|om
+operator|.
+name|fs
+operator|.
+name|OzoneManagerFS
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -295,6 +313,8 @@ DECL|interface|KeyManager
 specifier|public
 interface|interface
 name|KeyManager
+extends|extends
+name|OzoneManagerFS
 block|{
 comment|/**    * Start key manager.    *    * @param configuration    * @throws IOException    */
 DECL|method|start (OzoneConfiguration configuration)

@@ -201,6 +201,13 @@ name|Metric
 name|MutableCounterLong
 name|numKeyOps
 decl_stmt|;
+DECL|field|numFSOps
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numFSOps
+decl_stmt|;
 comment|// OM op metrics
 DECL|field|numVolumeCreates
 specifier|private
@@ -362,6 +369,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numCompleteMultipartUploads
+decl_stmt|;
+DECL|field|numGetFileStatus
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numGetFileStatus
 decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
@@ -566,6 +580,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numListMultipartUploadPartFails
+decl_stmt|;
+DECL|field|numGetFileStatusFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numGetFileStatusFails
 decl_stmt|;
 comment|// Metrics for total number of volumes, buckets and keys
 DECL|field|numVolumes
@@ -1192,6 +1213,40 @@ name|incr
 argument_list|()
 expr_stmt|;
 name|numListMultipartUploadParts
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumGetFileStatus ()
+specifier|public
+name|void
+name|incNumGetFileStatus
+parameter_list|()
+block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numFSOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numGetFileStatus
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumGetFileStatusFails ()
+specifier|public
+name|void
+name|incNumGetFileStatusFails
+parameter_list|()
+block|{
+name|numGetFileStatusFails
 operator|.
 name|incr
 argument_list|()
@@ -2107,6 +2162,36 @@ parameter_list|()
 block|{
 return|return
 name|numKeyListFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumFSOps ()
+specifier|public
+name|long
+name|getNumFSOps
+parameter_list|()
+block|{
+return|return
+name|numFSOps
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumGetFileStatus ()
+specifier|public
+name|long
+name|getNumGetFileStatus
+parameter_list|()
+block|{
+return|return
+name|numGetFileStatus
 operator|.
 name|value
 argument_list|()

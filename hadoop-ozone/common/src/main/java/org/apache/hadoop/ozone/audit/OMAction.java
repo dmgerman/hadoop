@@ -115,6 +115,10 @@ name|COMPLETE_MULTIPART_UPLOAD
 block|,
 DECL|enumConstant|LIST_MULTIPART_UPLOAD_PARTS
 name|LIST_MULTIPART_UPLOAD_PARTS
+block|,
+comment|//FS Actions
+DECL|enumConstant|GET_FILE_STATUS
+name|GET_FILE_STATUS
 block|;
 annotation|@
 name|Override

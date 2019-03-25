@@ -905,6 +905,9 @@ case|:
 case|case
 name|ListMultiPartUploadParts
 case|:
+case|case
+name|GetFileStatus
+case|:
 return|return
 literal|true
 return|;

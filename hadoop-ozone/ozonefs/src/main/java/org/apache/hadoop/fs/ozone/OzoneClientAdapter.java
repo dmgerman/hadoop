@@ -68,6 +68,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OzoneFileStatus
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -156,14 +174,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|getKeyInfo (String keyName)
-name|BasicKeyInfo
-name|getKeyInfo
-parameter_list|(
-name|String
-name|keyName
-parameter_list|)
-function_decl|;
 DECL|method|isDirectory (BasicKeyInfo key)
 name|boolean
 name|isDirectory
@@ -186,19 +196,6 @@ name|deleteObject
 parameter_list|(
 name|String
 name|keyName
-parameter_list|)
-function_decl|;
-DECL|method|getCreationTime ()
-name|long
-name|getCreationTime
-parameter_list|()
-function_decl|;
-DECL|method|hasNextKey (String key)
-name|boolean
-name|hasNextKey
-parameter_list|(
-name|String
-name|key
 parameter_list|)
 function_decl|;
 DECL|method|listKeys (String pathKey)
@@ -243,6 +240,16 @@ DECL|method|getCanonicalServiceName ()
 name|String
 name|getCanonicalServiceName
 parameter_list|()
+function_decl|;
+DECL|method|getFileStatus (String pathKey)
+name|OzoneFileStatus
+name|getFileStatus
+parameter_list|(
+name|String
+name|pathKey
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

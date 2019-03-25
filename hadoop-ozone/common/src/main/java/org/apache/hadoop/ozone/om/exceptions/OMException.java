@@ -317,6 +317,9 @@ name|INVALID_KMS_PROVIDER
 block|,
 DECL|enumConstant|TOKEN_CREATION_ERROR
 name|TOKEN_CREATION_ERROR
+block|,
+DECL|enumConstant|FILE_NOT_FOUND
+name|FILE_NOT_FOUND
 block|}
 block|}
 end_class
