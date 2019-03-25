@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -278,6 +288,12 @@ name|flush
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Get DB Store location.    * @return DB file location.    */
+DECL|method|getDbLocation ()
+name|File
+name|getDbLocation
+parameter_list|()
 function_decl|;
 block|}
 end_interface

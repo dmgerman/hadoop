@@ -394,12 +394,12 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|filePath
+argument_list|,
 name|file
 operator|.
 name|getAbsolutePath
 argument_list|()
-argument_list|,
-name|filePath
 argument_list|)
 expr_stmt|;
 block|}
@@ -810,9 +810,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|contents
-argument_list|,
 literal|"File 1 Contents"
+argument_list|,
+name|contents
 argument_list|)
 expr_stmt|;
 block|}

@@ -88,6 +88,22 @@ specifier|public
 interface|interface
 name|ContainerDBServiceProvider
 block|{
+comment|/**    * Create new container DB and bulk Store the container to Key prefix    * mapping.    * @param containerKeyPrefixCounts Map of containerId, key-prefix tuple to    *                                 key count.    */
+DECL|method|initNewContainerDB (Map<ContainerKeyPrefix, Integer> containerKeyPrefixCounts)
+name|void
+name|initNewContainerDB
+parameter_list|(
+name|Map
+argument_list|<
+name|ContainerKeyPrefix
+argument_list|,
+name|Integer
+argument_list|>
+name|containerKeyPrefixCounts
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Store the container to Key prefix mapping into the Recon Container DB.    *    * @param containerKeyPrefix the containerId, key-prefix tuple.    * @param count              Count of Keys with that prefix.    */
 DECL|method|storeContainerKeyMapping (ContainerKeyPrefix containerKeyPrefix, Integer count)
 name|void
@@ -117,7 +133,7 @@ comment|/**    * Get the stored key prefixes for the given containerId.    *    
 DECL|method|getKeyPrefixesForContainer (long containerId)
 name|Map
 argument_list|<
-name|String
+name|ContainerKeyPrefix
 argument_list|,
 name|Integer
 argument_list|>
@@ -126,6 +142,8 @@ parameter_list|(
 name|long
 name|containerId
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

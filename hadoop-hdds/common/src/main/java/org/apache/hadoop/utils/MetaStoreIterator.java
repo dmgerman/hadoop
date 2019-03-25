@@ -56,16 +56,6 @@ name|void
 name|seekToLast
 parameter_list|()
 function_decl|;
-comment|/**    * seek with prefix.    */
-DECL|method|prefixSeek (byte[] prefix)
-name|void
-name|prefixSeek
-parameter_list|(
-name|byte
-index|[]
-name|prefix
-parameter_list|)
-function_decl|;
 block|}
 end_interface
 

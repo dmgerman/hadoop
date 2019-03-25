@@ -102,6 +102,8 @@ name|recon
 operator|.
 name|spi
 operator|.
+name|impl
+operator|.
 name|ReconContainerDBProvider
 import|;
 end_import
@@ -174,7 +176,9 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|db
+operator|.
+name|DBStore
 import|;
 end_import
 
@@ -252,7 +256,7 @@ argument_list|)
 expr_stmt|;
 name|bind
 argument_list|(
-name|MetadataStore
+name|DBStore
 operator|.
 name|class
 argument_list|)

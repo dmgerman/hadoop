@@ -56,10 +56,18 @@ specifier|public
 interface|interface
 name|OzoneManagerServiceProvider
 block|{
-comment|/**    * Start taking OM Snapshots.    */
-DECL|method|start ()
+comment|/**    * Initialize Ozone Manager Service Provider Impl.    */
+DECL|method|init ()
 name|void
-name|start
+name|init
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Update Recon OM DB with new snapshot from OM.    */
+DECL|method|updateReconOmDBWithNewSnapshot ()
+name|void
+name|updateReconOmDBWithNewSnapshot
 parameter_list|()
 throws|throws
 name|IOException
