@@ -42,6 +42,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -730,12 +744,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getTotalSuccessfulFlushedData ()
+DECL|method|getTotalAckDataLength ()
 name|long
-name|getTotalSuccessfulFlushedData
+name|getTotalAckDataLength
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -764,7 +776,7 @@ expr_stmt|;
 return|return
 name|out
 operator|.
-name|getTotalSuccessfulFlushedData
+name|getTotalAckDataLength
 argument_list|()
 return|;
 block|}
@@ -1315,6 +1327,8 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getOutputStream ()
 specifier|public
 name|OutputStream

@@ -137,10 +137,10 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
-DECL|method|getBuffer ()
+DECL|method|getCurrentBuffer ()
 specifier|public
 name|ByteBuffer
-name|getBuffer
+name|getCurrentBuffer
 parameter_list|()
 block|{
 return|return
@@ -169,7 +169,7 @@ block|{
 name|ByteBuffer
 name|buffer
 init|=
-name|getBuffer
+name|getCurrentBuffer
 argument_list|()
 decl_stmt|;
 if|if
@@ -251,11 +251,14 @@ return|return
 name|buffer
 return|;
 block|}
-DECL|method|releaseBuffer ()
+DECL|method|releaseBuffer (ByteBuffer byteBuffer)
 specifier|public
 name|void
 name|releaseBuffer
-parameter_list|()
+parameter_list|(
+name|ByteBuffer
+name|byteBuffer
+parameter_list|)
 block|{
 comment|// always remove from head of the list and append at last
 name|ByteBuffer
@@ -268,6 +271,19 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// Ensure the buffer to be removed is always at the head of the list.
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|buffer
+operator|.
+name|equals
+argument_list|(
+name|byteBuffer
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|buffer
 operator|.
 name|clear
@@ -278,6 +294,15 @@ operator|.
 name|add
 argument_list|(
 name|buffer
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|currentBufferIndex
+operator|>=
+literal|0
 argument_list|)
 expr_stmt|;
 name|currentBufferIndex
@@ -358,6 +383,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|getBuffer (int index)
+specifier|public
 name|ByteBuffer
 name|getBuffer
 parameter_list|(
@@ -372,6 +398,15 @@ name|get
 argument_list|(
 name|index
 argument_list|)
+return|;
+block|}
+DECL|method|getCurrentBufferIndex ()
+name|int
+name|getCurrentBufferIndex
+parameter_list|()
+block|{
+return|return
+name|currentBufferIndex
 return|;
 block|}
 block|}

@@ -1175,7 +1175,7 @@ name|length
 argument_list|,
 name|ReplicationType
 operator|.
-name|STAND_ALONE
+name|RATIS
 argument_list|,
 name|ReplicationFactor
 operator|.

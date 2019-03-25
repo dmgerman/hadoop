@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -442,9 +456,103 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
-name|*
+name|ConcurrentSkipListMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CompletableFuture
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CompletionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ExecutionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Executors
 import|;
 end_import
 
@@ -648,6 +756,20 @@ specifier|private
 name|long
 name|totalAckDataLength
 decl_stmt|;
+comment|// List containing buffers for which the putBlock call will
+comment|// update the length in the datanodes. This list will just maintain
+comment|// references to the buffers in the BufferPool which will be cleared
+comment|// when the watchForCommit acknowledges a putBlock logIndex has been
+comment|// committed on all datanodes. This list will be a  place holder for buffers
+comment|// which got written between successive putBlock calls.
+DECL|field|bufferList
+specifier|private
+name|List
+argument_list|<
+name|ByteBuffer
+argument_list|>
+name|bufferList
+decl_stmt|;
 comment|// future Map to hold up all putBlock futures
 specifier|private
 name|ConcurrentHashMap
@@ -664,17 +786,21 @@ argument_list|>
 DECL|field|futureMap
 name|futureMap
 decl_stmt|;
-comment|// map containing mapping for putBlock logIndex to to flushedDataLength Map.
 comment|// The map should maintain the keys (logIndexes) in order so that while
 comment|// removing we always end up updating incremented data flushed length.
-DECL|field|commitIndex2flushedDataMap
+comment|// Also, corresponding to the logIndex, the corresponding list of buffers will
+comment|// be released from the buffer pool.
 specifier|private
 name|ConcurrentSkipListMap
 argument_list|<
 name|Long
 argument_list|,
-name|Long
+name|List
+argument_list|<
+name|ByteBuffer
 argument_list|>
+argument_list|>
+DECL|field|commitIndex2flushedDataMap
 name|commitIndex2flushedDataMap
 decl_stmt|;
 DECL|field|failedServers
@@ -913,6 +1039,10 @@ operator|.
 name|emptyList
 argument_list|()
 expr_stmt|;
+name|bufferList
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|getBlockID ()
 specifier|public
@@ -924,10 +1054,10 @@ return|return
 name|blockID
 return|;
 block|}
-DECL|method|getTotalSuccessfulFlushedData ()
+DECL|method|getTotalAckDataLength ()
 specifier|public
 name|long
-name|getTotalSuccessfulFlushedData
+name|getTotalAckDataLength
 parameter_list|()
 block|{
 return|return
@@ -955,6 +1085,74 @@ parameter_list|()
 block|{
 return|return
 name|failedServers
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getXceiverClient ()
+specifier|public
+name|XceiverClientSpi
+name|getXceiverClient
+parameter_list|()
+block|{
+return|return
+name|xceiverClient
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTotalDataFlushedLength ()
+specifier|public
+name|long
+name|getTotalDataFlushedLength
+parameter_list|()
+block|{
+return|return
+name|totalDataFlushedLength
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBufferPool ()
+specifier|public
+name|BufferPool
+name|getBufferPool
+parameter_list|()
+block|{
+return|return
+name|bufferPool
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getIoException ()
+specifier|public
+name|IOException
+name|getIoException
+parameter_list|()
+block|{
+return|return
+name|ioException
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCommitIndex2flushedDataMap ()
+specifier|public
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|List
+argument_list|<
+name|ByteBuffer
+argument_list|>
+argument_list|>
+name|getCommitIndex2flushedDataMap
+parameter_list|()
+block|{
+return|return
+name|commitIndex2flushedDataMap
 return|;
 block|}
 annotation|@
@@ -1187,11 +1385,10 @@ name|shouldFlush
 argument_list|()
 condition|)
 block|{
-name|totalDataFlushedLength
-operator|+=
-name|streamBufferFlushSize
+name|updateFlushLength
+argument_list|()
 expr_stmt|;
-name|handlePartialFlush
+name|executePutBlock
 argument_list|()
 expr_stmt|;
 block|}
@@ -1215,12 +1412,28 @@ name|shouldFlush
 parameter_list|()
 block|{
 return|return
-name|writtenDataLength
+name|bufferPool
+operator|.
+name|computeBufferData
+argument_list|()
 operator|%
 name|streamBufferFlushSize
 operator|==
 literal|0
 return|;
+block|}
+DECL|method|updateFlushLength ()
+specifier|private
+name|void
+name|updateFlushLength
+parameter_list|()
+block|{
+name|totalDataFlushedLength
+operator|+=
+name|writtenDataLength
+operator|-
+name|totalDataFlushedLength
+expr_stmt|;
 block|}
 DECL|method|isBufferPoolFull ()
 specifier|private
@@ -1323,26 +1536,29 @@ name|writtenDataLength
 operator|+=
 name|writeLen
 expr_stmt|;
+comment|// we should not call isBufferFull/shouldFlush here.
+comment|// The buffer might already be full as whole data is already cached in
+comment|// the buffer. We should just validate
+comment|// if we wrote data of size streamBufferMaxSize/streamBufferFlushSize to
+comment|// call for handling full buffer/flush buffer condition.
 if|if
 condition|(
-name|shouldFlush
-argument_list|()
+name|writtenDataLength
+operator|%
+name|streamBufferFlushSize
+operator|==
+literal|0
 condition|)
 block|{
 comment|// reset the position to zero as now we will be reading the
 comment|// next buffer in the list
-name|totalDataFlushedLength
-operator|+=
-name|streamBufferFlushSize
+name|updateFlushLength
+argument_list|()
 expr_stmt|;
-name|handlePartialFlush
+name|executePutBlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// we should not call isBufferFull here. The buffer might already be full
-comment|// as whole data is already cached in the buffer. We should just validate
-comment|// if we wrote data of size streamBufferMaxSize to call for handling
-comment|// full buffer condition.
 if|if
 condition|(
 name|writtenDataLength
@@ -1400,8 +1616,11 @@ name|index
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|long
-name|length
+name|List
+argument_list|<
+name|ByteBuffer
+argument_list|>
+name|buffers
 init|=
 name|commitIndex2flushedDataMap
 operator|.
@@ -1410,21 +1629,49 @@ argument_list|(
 name|index
 argument_list|)
 decl_stmt|;
-comment|// totalAckDataLength replicated yet should always be less than equal to
-comment|// the current length being returned from commitIndex2flushedDataMap.
-comment|// The below precondition would ensure commitIndex2flushedDataMap entries
-comment|// are removed in order of the insertion to the map.
+name|long
+name|length
+init|=
+name|buffers
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|mapToLong
+argument_list|(
+name|value
+lambda|->
+block|{
+name|int
+name|pos
+init|=
+name|value
+operator|.
+name|position
+argument_list|()
+decl_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|totalAckDataLength
-operator|<
-name|length
+name|pos
+operator|<=
+name|chunkSize
 argument_list|)
 expr_stmt|;
+return|return
+name|pos
+return|;
+block|}
+argument_list|)
+operator|.
+name|sum
+argument_list|()
+decl_stmt|;
+comment|// totalAckDataLength replicated yet should always be incremented
+comment|// with the current length being returned from commitIndex2flushedDataMap.
 name|totalAckDataLength
-operator|=
+operator|+=
 name|length
 expr_stmt|;
 name|LOG
@@ -1444,41 +1691,22 @@ name|totalAckDataLength
 argument_list|)
 expr_stmt|;
 comment|// Flush has been committed to required servers successful.
-comment|// just release the current buffer from the buffer pool.
-comment|// every entry removed from the putBlock future Map signifies
-comment|// streamBufferFlushSize/chunkSize no of chunks successfully committed.
-comment|// Release the buffers from the buffer pool to be reused again.
-name|int
-name|chunkCount
-init|=
-call|(
-name|int
-call|)
-argument_list|(
-name|streamBufferFlushSize
-operator|/
-name|chunkSize
-argument_list|)
-decl_stmt|;
+comment|// just release the current buffer from the buffer pool corresponding
+comment|// to the buffers that have been committed with the putBlock call.
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|chunkCount
-condition|;
-name|i
-operator|++
+name|ByteBuffer
+name|byteBuffer
+range|:
+name|buffers
 control|)
 block|{
 name|bufferPool
 operator|.
 name|releaseBuffer
-argument_list|()
+argument_list|(
+name|byteBuffer
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1519,10 +1747,8 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
-name|adjustBuffersOnException
-argument_list|()
-expr_stmt|;
-throw|throw
+name|ioException
+operator|=
 operator|new
 name|IOException
 argument_list|(
@@ -1535,6 +1761,12 @@ argument_list|()
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+name|adjustBuffersOnException
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ioException
 throw|;
 block|}
 if|if
@@ -1809,10 +2041,10 @@ name|CompletableFuture
 argument_list|<
 name|ContainerProtos
 operator|.
-DECL|method|handlePartialFlush ()
+DECL|method|executePutBlock ()
 name|ContainerCommandResponseProto
 argument_list|>
-name|handlePartialFlush
+name|executePutBlock
 parameter_list|()
 throws|throws
 name|IOException
@@ -1825,6 +2057,32 @@ name|flushPos
 init|=
 name|totalDataFlushedLength
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|bufferList
+argument_list|)
+expr_stmt|;
+name|List
+argument_list|<
+name|ByteBuffer
+argument_list|>
+name|byteBufferList
+init|=
+name|bufferList
+decl_stmt|;
+name|bufferList
+operator|=
+literal|null
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|byteBufferList
+argument_list|)
+expr_stmt|;
 name|String
 name|requestId
 init|=
@@ -1917,25 +2175,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Adding index "
-operator|+
-name|asyncReply
-operator|.
-name|getLogIndex
-argument_list|()
-operator|+
-literal|" commitMap size "
-operator|+
-name|commitIndex2flushedDataMap
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|BlockID
 name|responseBlockID
 init|=
@@ -1978,6 +2217,54 @@ name|blockID
 operator|=
 name|responseBlockID
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding index "
+operator|+
+name|asyncReply
+operator|.
+name|getLogIndex
+argument_list|()
+operator|+
+literal|" commitMap size "
+operator|+
+name|commitIndex2flushedDataMap
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" flushLength "
+operator|+
+name|flushPos
+operator|+
+literal|" numBuffers "
+operator|+
+name|byteBufferList
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" blockID "
+operator|+
+name|blockID
+operator|+
+literal|" bufferPool size"
+operator|+
+name|bufferPool
+operator|.
+name|getSize
+argument_list|()
+operator|+
+literal|" currentBufferIndex "
+operator|+
+name|bufferPool
+operator|.
+name|getCurrentBufferIndex
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// for standalone protocol, logIndex will always be 0.
 name|commitIndex2flushedDataMap
 operator|.
@@ -1988,7 +2275,7 @@ operator|.
 name|getLogIndex
 argument_list|()
 argument_list|,
-name|flushPos
+name|byteBufferList
 argument_list|)
 expr_stmt|;
 block|}
@@ -2126,10 +2413,10 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
-name|adjustBuffersOnException
-argument_list|()
-expr_stmt|;
-throw|throw
+comment|// just set the exception here as well in order to maintain sanctity of
+comment|// ioException field
+name|ioException
+operator|=
 operator|new
 name|IOException
 argument_list|(
@@ -2142,6 +2429,12 @@ argument_list|()
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+name|adjustBuffersOnException
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ioException
 throw|;
 block|}
 block|}
@@ -2157,6 +2450,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// This data in the buffer will be pushed to datanode and a reference will
+comment|// be added to the bufferList. Once putBlock gets executed, this list will
+comment|// be marked null. Hence, during first writeChunk call after every putBlock
+comment|// call or during the first call to writeChunk here, the list will be null.
+if|if
+condition|(
+name|bufferList
+operator|==
+literal|null
+condition|)
+block|{
+name|bufferList
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
+name|bufferList
+operator|.
+name|add
+argument_list|(
+name|buffer
+argument_list|)
+expr_stmt|;
 comment|// Please note : We are not flipping the slice when we write since
 comment|// the slices are pointing the currentBuffer start and end as needed for
 comment|// the chunk write. Also please note, Duplicate does not create a
@@ -2221,76 +2540,48 @@ name|currentBuffer
 init|=
 name|bufferPool
 operator|.
-name|getBuffer
+name|getCurrentBuffer
 argument_list|()
 decl_stmt|;
-name|int
-name|pos
-init|=
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|currentBuffer
 operator|.
 name|position
 argument_list|()
-decl_stmt|;
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|currentBuffer
+operator|.
+name|position
+argument_list|()
+operator|!=
+name|chunkSize
+condition|)
+block|{
 name|writeChunk
 argument_list|(
 name|currentBuffer
 argument_list|)
 expr_stmt|;
-name|totalDataFlushedLength
-operator|+=
-name|pos
+block|}
+comment|// This can be a partially filled chunk. Since we are flushing the buffer
+comment|// here, we just limit this buffer to the current position. So that next
+comment|// write will happen in new buffer
+name|updateFlushLength
+argument_list|()
 expr_stmt|;
-name|handlePartialFlush
+name|executePutBlock
 argument_list|()
 expr_stmt|;
 block|}
 name|waitOnFlushFutures
-argument_list|()
-expr_stmt|;
-comment|// just check again if the exception is hit while waiting for the
-comment|// futures to ensure flush has indeed succeeded
-comment|// irrespective of whether the commitIndex2flushedDataMap is empty
-comment|// or not, ensure there is no exception set
-name|checkOpen
-argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|close ()
-specifier|public
-name|void
-name|close
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|xceiverClientManager
-operator|!=
-literal|null
-operator|&&
-name|xceiverClient
-operator|!=
-literal|null
-operator|&&
-name|bufferPool
-operator|!=
-literal|null
-operator|&&
-name|bufferPool
-operator|.
-name|getSize
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-try|try
-block|{
-name|handleFlush
 argument_list|()
 expr_stmt|;
 if|if
@@ -2346,6 +2637,51 @@ name|lastIndex
 argument_list|)
 expr_stmt|;
 block|}
+comment|// just check again if the exception is hit while waiting for the
+comment|// futures to ensure flush has indeed succeeded
+comment|// irrespective of whether the commitIndex2flushedDataMap is empty
+comment|// or not, ensure there is no exception set
+name|checkOpen
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|xceiverClientManager
+operator|!=
+literal|null
+operator|&&
+name|xceiverClient
+operator|!=
+literal|null
+operator|&&
+name|bufferPool
+operator|!=
+literal|null
+operator|&&
+name|bufferPool
+operator|.
+name|getSize
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+try|try
+block|{
+name|handleFlush
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2355,10 +2691,8 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
-name|adjustBuffersOnException
-argument_list|()
-expr_stmt|;
-throw|throw
+name|ioException
+operator|=
 operator|new
 name|IOException
 argument_list|(
@@ -2371,6 +2705,12 @@ argument_list|()
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+name|adjustBuffersOnException
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ioException
 throw|;
 block|}
 finally|finally
@@ -2575,6 +2915,23 @@ argument_list|()
 expr_stmt|;
 block|}
 name|futureMap
+operator|=
+literal|null
+expr_stmt|;
+if|if
+condition|(
+name|bufferList
+operator|!=
+literal|null
+condition|)
+block|{
+name|bufferList
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+name|bufferList
 operator|=
 literal|null
 expr_stmt|;

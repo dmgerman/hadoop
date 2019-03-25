@@ -522,6 +522,20 @@ name|KeyOutputStream
 extends|extends
 name|OutputStream
 block|{
+comment|/**    * Defines stream action while calling handleFlushOrClose.    */
+DECL|enum|StreamAction
+enum|enum
+name|StreamAction
+block|{
+DECL|enumConstant|FLUSH
+DECL|enumConstant|CLOSE
+DECL|enumConstant|FULL
+name|FLUSH
+block|,
+name|CLOSE
+block|,
+name|FULL
+block|}
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -1871,12 +1885,10 @@ block|{
 comment|// since the current block is already written close the stream.
 name|handleFlushOrClose
 argument_list|(
-literal|true
+name|StreamAction
+operator|.
+name|FULL
 argument_list|)
-expr_stmt|;
-name|currentStreamIndex
-operator|+=
-literal|1
 expr_stmt|;
 block|}
 name|len
@@ -2109,7 +2121,7 @@ name|closedContainerException
 operator|=
 name|checkIfContainerIsClosed
 argument_list|(
-name|exception
+name|t
 argument_list|)
 expr_stmt|;
 block|}
@@ -2123,7 +2135,7 @@ name|totalSuccessfulFlushedData
 init|=
 name|streamEntry
 operator|.
-name|getTotalSuccessfulFlushedData
+name|getTotalAckDataLength
 argument_list|()
 decl_stmt|;
 comment|//set the correct length for the current stream
@@ -2144,16 +2156,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Encountered exception {}"
+literal|"Encountered exception {}. The last committed block length is {}, "
+operator|+
+literal|"uncommitted data length is {}"
 argument_list|,
 name|exception
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"The last committed block length is {}, uncommitted data length is {}"
 argument_list|,
 name|totalSuccessfulFlushedData
 argument_list|,
@@ -2167,6 +2174,20 @@ argument_list|(
 name|bufferedDataLen
 operator|<=
 name|streamBufferMaxSize
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|streamEntry
+operator|.
+name|getWrittenDataLength
+argument_list|()
+operator|-
+name|totalSuccessfulFlushedData
+operator|==
+name|bufferedDataLen
 argument_list|)
 expr_stmt|;
 name|long
@@ -2607,7 +2628,7 @@ name|ContainerNotOpenException
 return|;
 block|}
 DECL|method|checkForException (IOException ioe)
-specifier|private
+specifier|public
 name|Throwable
 name|checkForException
 parameter_list|(
@@ -2684,7 +2705,7 @@ block|{
 return|return
 name|streamEntries
 operator|.
-name|parallelStream
+name|stream
 argument_list|()
 operator|.
 name|mapToLong
@@ -2748,18 +2769,20 @@ argument_list|()
 expr_stmt|;
 name|handleFlushOrClose
 argument_list|(
-literal|false
+name|StreamAction
+operator|.
+name|FLUSH
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Close or Flush the latest outputStream.    * @param close Flag which decides whether to call close or flush on the    *              outputStream.    * @throws IOException In case, flush or close fails with exception.    */
-DECL|method|handleFlushOrClose (boolean close)
+comment|/**    * Close or Flush the latest outputStream depending upon the action.    * This function gets called when while write is going on, the current stream    * gets full or explicit flush or close request is made by client. when the    * stream gets full and we try to close the stream , we might end up hitting    * an exception in the exception handling path, we write the data residing in    * in the buffer pool to a new Block. In cases, as such, when the data gets    * written to new stream , it will be at max half full. In such cases, we    * should just write the data and not close the stream as the block won't be    * completely full.    * @param op Flag which decides whether to call close or flush on the    *              outputStream.    * @throws IOException In case, flush or close fails with exception.    */
+DECL|method|handleFlushOrClose (StreamAction op)
 specifier|private
 name|void
 name|handleFlushOrClose
 parameter_list|(
-name|boolean
-name|close
+name|StreamAction
+name|op
 parameter_list|)
 throws|throws
 name|IOException
@@ -2855,9 +2878,31 @@ name|failedServers
 argument_list|)
 expr_stmt|;
 block|}
+switch|switch
+condition|(
+name|op
+condition|)
+block|{
+case|case
+name|CLOSE
+case|:
+name|entry
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|FULL
+case|:
 if|if
 condition|(
-name|close
+name|entry
+operator|.
+name|getRemaining
+argument_list|()
+operator|==
+literal|0
 condition|)
 block|{
 name|entry
@@ -2865,14 +2910,28 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|currentStreamIndex
+operator|++
+expr_stmt|;
 block|}
-else|else
-block|{
+break|break;
+case|case
+name|FLUSH
+case|:
 name|entry
 operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+break|break;
+default|default:
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid Operation"
+argument_list|)
+throw|;
 block|}
 block|}
 catch|catch
@@ -2922,7 +2981,9 @@ try|try
 block|{
 name|handleFlushOrClose
 argument_list|(
-literal|true
+name|StreamAction
+operator|.
+name|CLOSE
 argument_list|)
 expr_stmt|;
 if|if

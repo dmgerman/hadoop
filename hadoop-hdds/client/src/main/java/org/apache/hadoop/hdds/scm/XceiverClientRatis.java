@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -105,6 +119,20 @@ operator|.
 name|util
 operator|.
 name|GlobalTracer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -761,6 +789,11 @@ specifier|private
 name|RaftClient
 name|watchClient
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+name|XceiverClientMetrics
+name|metrics
+decl_stmt|;
 comment|/**    * Constructs a client.    */
 DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks, RetryPolicy retryPolicy, GrpcTlsConfig tlsConfig, TimeDuration timeout)
 specifier|private
@@ -834,6 +867,13 @@ operator|.
 name|clientRequestTimeout
 operator|=
 name|timeout
+expr_stmt|;
+name|metrics
+operator|=
+name|XceiverClientManager
+operator|.
+name|getXceiverClientMetrics
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|updateCommitInfosMap ( Collection<RaftProtos.CommitInfoProto> commitInfoProtos)
@@ -1185,6 +1225,26 @@ argument_list|()
 argument_list|,
 literal|"client is null"
 argument_list|)
+return|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|VisibleForTesting
+DECL|method|getCommitInfoMap ()
+specifier|public
+name|ConcurrentHashMap
+argument_list|<
+name|UUID
+argument_list|,
+name|Long
+argument_list|>
+name|getCommitInfoMap
+parameter_list|()
+block|{
+return|return
+name|commitInfoMap
 return|;
 block|}
 end_function
@@ -1742,6 +1802,14 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+name|long
+name|requestTime
+init|=
+name|Time
+operator|.
+name|monotonicNowNanos
+argument_list|()
+decl_stmt|;
 name|CompletableFuture
 argument_list|<
 name|RaftClientReply
@@ -1753,6 +1821,16 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
+name|metrics
+operator|.
+name|incrPendingContainerOpsMetrics
+argument_list|(
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|CompletableFuture
 argument_list|<
 name|ContainerCommandResponseProto
@@ -1769,6 +1847,7 @@ parameter_list|,
 name|e
 parameter_list|)
 lambda|->
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1801,6 +1880,35 @@ argument_list|()
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|decrPendingContainerOpsMetrics
+argument_list|(
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|addContainerOpsLatency
+argument_list|(
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+argument_list|,
+name|Time
+operator|.
+name|monotonicNowNanos
+argument_list|()
+operator|-
+name|requestTime
+argument_list|)
+expr_stmt|;
+block|}
 argument_list|)
 operator|.
 name|thenApply
@@ -1808,7 +1916,7 @@ argument_list|(
 name|reply
 lambda|->
 block|{
-lambda|try
+try|try
 block|{
 comment|// we need to handle RaftRetryFailure Exception
 name|RaftRetryFailureException
@@ -1932,14 +2040,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-end_function
-
-begin_empty_stmt
-unit|)
-empty_stmt|;
-end_empty_stmt
-
-begin_expr_stmt
+argument_list|)
+decl_stmt|;
 name|asyncReply
 operator|.
 name|setResponse
@@ -1947,14 +2049,12 @@ argument_list|(
 name|containerCommandResponse
 argument_list|)
 expr_stmt|;
-end_expr_stmt
-
-begin_return
 return|return
 name|asyncReply
 return|;
-end_return
+block|}
+end_function
 
-unit|}  }
+unit|}
 end_unit
 
