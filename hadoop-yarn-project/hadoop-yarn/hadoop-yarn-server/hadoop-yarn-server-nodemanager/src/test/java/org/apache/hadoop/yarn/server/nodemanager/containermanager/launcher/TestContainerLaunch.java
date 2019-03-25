@@ -3905,6 +3905,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// The whitelist vars should not have been added to env
+comment|// They should only be in the launch script
 for|for
 control|(
 name|String
@@ -3913,6 +3915,18 @@ range|:
 name|whitelistVars
 control|)
 block|{
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|env
+operator|.
+name|containsKey
+argument_list|(
+name|wlVar
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertTrue
@@ -3928,6 +3942,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Non-whitelist nm vars should be in neither env nor in launch script
 for|for
 control|(
 name|String
@@ -3936,6 +3951,18 @@ range|:
 name|nonWhiteListEnv
 control|)
 block|{
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|env
+operator|.
+name|containsKey
+argument_list|(
+name|nwlVar
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertFalse
