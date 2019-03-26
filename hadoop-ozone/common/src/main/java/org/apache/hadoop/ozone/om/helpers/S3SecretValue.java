@@ -26,22 +26,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|codec
-operator|.
-name|digest
-operator|.
-name|DigestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|ozone
@@ -74,11 +58,6 @@ specifier|private
 name|String
 name|awsSecret
 decl_stmt|;
-DECL|field|awsAccessKey
-specifier|private
-name|String
-name|awsAccessKey
-decl_stmt|;
 DECL|method|S3SecretValue (String kerberosID, String awsSecret)
 specifier|public
 name|S3SecretValue
@@ -101,17 +80,6 @@ operator|.
 name|awsSecret
 operator|=
 name|awsSecret
-expr_stmt|;
-name|this
-operator|.
-name|awsAccessKey
-operator|=
-name|DigestUtils
-operator|.
-name|md5Hex
-argument_list|(
-name|kerberosID
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getKerberosID ()
@@ -173,24 +141,8 @@ name|getAwsAccessKey
 parameter_list|()
 block|{
 return|return
-name|awsAccessKey
+name|kerberosID
 return|;
-block|}
-DECL|method|setAwsAccessKey (String awsAccessKey)
-specifier|public
-name|void
-name|setAwsAccessKey
-parameter_list|(
-name|String
-name|awsAccessKey
-parameter_list|)
-block|{
-name|this
-operator|.
-name|awsAccessKey
-operator|=
-name|awsAccessKey
-expr_stmt|;
 block|}
 DECL|method|fromProtobuf ( OzoneManagerProtocolProtos.S3Secret s3Secret)
 specifier|public
@@ -265,7 +217,7 @@ block|{
 return|return
 literal|"awsAccessKey="
 operator|+
-name|awsAccessKey
+name|kerberosID
 operator|+
 literal|"\nawsSecret="
 operator|+

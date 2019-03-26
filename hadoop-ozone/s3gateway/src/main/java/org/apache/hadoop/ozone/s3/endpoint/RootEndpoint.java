@@ -210,6 +210,26 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|s3
+operator|.
+name|util
+operator|.
+name|OzoneS3Util
+operator|.
+name|getVolumeName
+import|;
+end_import
+
 begin_comment
 comment|/**  * Top level rest endpoint.  */
 end_comment
@@ -303,12 +323,15 @@ argument_list|()
 return|;
 block|}
 name|String
-name|userName
+name|volumeName
 init|=
+name|getVolumeName
+argument_list|(
 name|authenticationHeaderParser
 operator|.
 name|getAccessKeyID
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|Iterator
 argument_list|<
@@ -320,7 +343,7 @@ name|bucketIterator
 init|=
 name|listS3Buckets
 argument_list|(
-name|userName
+name|volumeName
 argument_list|,
 literal|null
 argument_list|)

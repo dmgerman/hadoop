@@ -303,21 +303,11 @@ argument_list|,
 literal|"kerberosID cannot be null or empty."
 argument_list|)
 expr_stmt|;
-name|String
-name|awsAccessKeyStr
-init|=
-name|DigestUtils
-operator|.
-name|md5Hex
-argument_list|(
-name|kerberosID
-argument_list|)
-decl_stmt|;
 name|byte
 index|[]
 name|awsAccessKey
 init|=
-name|awsAccessKeyStr
+name|kerberosID
 operator|.
 name|getBytes
 argument_list|(
@@ -424,13 +414,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|result
-operator|.
-name|setAwsAccessKey
-argument_list|(
-name|awsAccessKeyStr
-argument_list|)
-expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -449,11 +432,9 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Secret for kerberosID:{},accessKey:{}, proto:{}"
+literal|"Secret for accessKey:{}, proto:{}"
 argument_list|,
 name|kerberosID
-argument_list|,
-name|awsAccessKeyStr
 argument_list|,
 name|result
 argument_list|)
@@ -464,13 +445,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getS3UserSecretString (String awsAccessKeyId)
+DECL|method|getS3UserSecretString (String kerberosID)
 specifier|public
 name|String
 name|getS3UserSecretString
 parameter_list|(
 name|String
-name|awsAccessKeyId
+name|kerberosID
 parameter_list|)
 throws|throws
 name|IOException
@@ -483,7 +464,7 @@ name|Strings
 operator|.
 name|isNotBlank
 argument_list|(
-name|awsAccessKeyId
+name|kerberosID
 argument_list|)
 argument_list|,
 literal|"awsAccessKeyId cannot be null or empty."
@@ -495,7 +476,7 @@ name|trace
 argument_list|(
 literal|"Get secret for awsAccessKey:{}"
 argument_list|,
-name|awsAccessKeyId
+name|kerberosID
 argument_list|)
 expr_stmt|;
 name|byte
@@ -509,7 +490,7 @@ argument_list|()
 operator|.
 name|acquireS3SecretLock
 argument_list|(
-name|awsAccessKeyId
+name|kerberosID
 argument_list|)
 expr_stmt|;
 try|try
@@ -523,7 +504,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|awsAccessKeyId
+name|kerberosID
 operator|.
 name|getBytes
 argument_list|(
@@ -546,7 +527,7 @@ literal|"S3 secret not found for "
 operator|+
 literal|"awsAccessKeyId "
 operator|+
-name|awsAccessKeyId
+name|kerberosID
 argument_list|,
 name|S3_SECRET_NOT_FOUND
 argument_list|)
@@ -562,7 +543,7 @@ argument_list|()
 operator|.
 name|releaseS3SecretLock
 argument_list|(
-name|awsAccessKeyId
+name|kerberosID
 argument_list|)
 expr_stmt|;
 block|}
