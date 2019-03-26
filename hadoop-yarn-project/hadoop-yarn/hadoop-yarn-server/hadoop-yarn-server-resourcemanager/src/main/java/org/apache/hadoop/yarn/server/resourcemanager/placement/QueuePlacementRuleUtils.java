@@ -167,7 +167,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utility class for QueuePlacementRule.  */
+comment|/**  * Utility class for Capacity Scheduler queue PlacementRules.  */
 end_comment
 
 begin_class

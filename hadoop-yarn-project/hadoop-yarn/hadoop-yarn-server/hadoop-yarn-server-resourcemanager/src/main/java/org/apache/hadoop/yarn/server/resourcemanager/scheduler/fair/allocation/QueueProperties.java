@@ -1024,8 +1024,7 @@ argument_list|()
 decl_stmt|;
 comment|// Remember all queue names so we can display them on web UI, etc.
 comment|// configuredQueues is segregated based on whether it is a leaf queue
-comment|// or a parent queue. This information is used for creating queues
-comment|// and also for making queue placement decisions(QueuePlacementRule.java).
+comment|// or a parent queue. This information is used for creating queues.
 DECL|field|configuredQueues
 specifier|private
 name|Map

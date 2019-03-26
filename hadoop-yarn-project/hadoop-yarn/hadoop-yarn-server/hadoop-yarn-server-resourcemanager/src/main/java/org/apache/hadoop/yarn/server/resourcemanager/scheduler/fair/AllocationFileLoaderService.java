@@ -660,6 +660,12 @@ specifier|final
 name|Clock
 name|clock
 decl_stmt|;
+DECL|field|scheduler
+specifier|private
+specifier|final
+name|FairScheduler
+name|scheduler
+decl_stmt|;
 comment|// Last time we successfully reloaded queues
 DECL|field|lastSuccessfulReload
 specifier|private
@@ -712,10 +718,12 @@ name|running
 init|=
 literal|true
 decl_stmt|;
-DECL|method|AllocationFileLoaderService ()
-specifier|public
+DECL|method|AllocationFileLoaderService (FairScheduler scheduler)
 name|AllocationFileLoaderService
-parameter_list|()
+parameter_list|(
+name|FairScheduler
+name|scheduler
+parameter_list|)
 block|{
 name|this
 argument_list|(
@@ -723,6 +731,8 @@ name|SystemClock
 operator|.
 name|getInstance
 argument_list|()
+argument_list|,
+name|scheduler
 argument_list|)
 expr_stmt|;
 block|}
@@ -734,12 +744,14 @@ name|Permission
 argument_list|>
 name|defaultPermissions
 decl_stmt|;
-DECL|method|AllocationFileLoaderService (Clock clock)
-specifier|public
+DECL|method|AllocationFileLoaderService (Clock clock, FairScheduler scheduler)
 name|AllocationFileLoaderService
 parameter_list|(
 name|Clock
 name|clock
+parameter_list|,
+name|FairScheduler
+name|scheduler
 parameter_list|)
 block|{
 name|super
@@ -751,6 +763,12 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|scheduler
+operator|=
+name|scheduler
 expr_stmt|;
 name|this
 operator|.
@@ -1456,25 +1474,12 @@ operator|.
 name|parse
 argument_list|()
 decl_stmt|;
-comment|// Load placement policy and pass it configured queues
-name|Configuration
-name|conf
-init|=
-name|getConfig
-argument_list|()
-decl_stmt|;
-name|QueuePlacementPolicy
-name|newPlacementPolicy
-init|=
+comment|// Load placement policy
 name|getQueuePlacementPolicy
 argument_list|(
 name|allocationFileParser
-argument_list|,
-name|queueProperties
-argument_list|,
-name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|setupRootQueueProperties
 argument_list|(
 name|allocationFileParser
@@ -1500,8 +1505,6 @@ name|queueProperties
 argument_list|,
 name|allocationFileParser
 argument_list|,
-name|newPlacementPolicy
-argument_list|,
 name|globalReservationQueueConfig
 argument_list|)
 decl_stmt|;
@@ -1524,19 +1527,13 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getQueuePlacementPolicy ( AllocationFileParser allocationFileParser, QueueProperties queueProperties, Configuration conf)
+DECL|method|getQueuePlacementPolicy ( AllocationFileParser allocationFileParser)
 specifier|private
-name|QueuePlacementPolicy
+name|void
 name|getQueuePlacementPolicy
 parameter_list|(
 name|AllocationFileParser
 name|allocationFileParser
-parameter_list|,
-name|QueueProperties
-name|queueProperties
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|)
 throws|throws
 name|AllocationConfigurationException
@@ -1552,7 +1549,6 @@ name|isPresent
 argument_list|()
 condition|)
 block|{
-return|return
 name|QueuePlacementPolicy
 operator|.
 name|fromXml
@@ -1565,30 +1561,19 @@ operator|.
 name|get
 argument_list|()
 argument_list|,
-name|queueProperties
-operator|.
-name|getConfiguredQueues
-argument_list|()
-argument_list|,
-name|conf
+name|scheduler
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 else|else
 block|{
-return|return
 name|QueuePlacementPolicy
 operator|.
 name|fromConfiguration
 argument_list|(
-name|conf
-argument_list|,
-name|queueProperties
-operator|.
-name|getConfiguredQueues
-argument_list|()
+name|scheduler
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 block|}
 DECL|method|setupRootQueueProperties ( AllocationFileParser allocationFileParser, QueueProperties queueProperties)

@@ -259,8 +259,9 @@ return|return
 name|queueManager
 return|;
 block|}
-comment|/**    * Set a rule to generate the parent queue dynamically.    * @param parent A PlacementRule    */
+comment|/**    * Set a rule to generate the parent queue dynamically. The parent rule    * should only be called on rule creation when the policy is read from the    * configuration.    * @param parent A PlacementRule    */
 DECL|method|setParentRule (PlacementRule parent)
+specifier|public
 name|void
 name|setParentRule
 parameter_list|(
@@ -276,7 +277,10 @@ name|parent
 expr_stmt|;
 block|}
 comment|/**    * Get the rule that is set to generate the parent queue dynamically.    * @return The rule set or<code>null</code> if not set.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getParentRule ()
+specifier|public
 name|PlacementRule
 name|getParentRule
 parameter_list|()
@@ -533,6 +537,17 @@ argument_list|()
 operator|)
 return|;
 block|}
+comment|/**    * Get the create flag as set during the config setup.    * @return The value of the {@link #createQueue} flag    */
+DECL|method|getCreateFlag ()
+specifier|public
+name|boolean
+name|getCreateFlag
+parameter_list|()
+block|{
+return|return
+name|createQueue
+return|;
+block|}
 comment|/**    * Get the create flag from the xml configuration element.    * @param conf The FS configuration element for the queue    * @return<code>false</code> only if the flag is set in the configuration to    * a text that is not case ignored "true",<code>true</code> in all other    * cases    */
 DECL|method|getCreateFlag (Element conf)
 name|boolean
@@ -560,6 +575,11 @@ literal|"create"
 argument_list|)
 decl_stmt|;
 return|return
+name|create
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
 name|Boolean
 operator|.
 name|parseBoolean

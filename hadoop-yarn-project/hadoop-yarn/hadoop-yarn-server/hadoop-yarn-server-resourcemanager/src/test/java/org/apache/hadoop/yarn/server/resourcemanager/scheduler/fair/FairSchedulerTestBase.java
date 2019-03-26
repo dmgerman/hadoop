@@ -352,6 +352,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|placement
+operator|.
+name|ApplicationPlacementContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmnode
 operator|.
 name|RMNode
@@ -1413,6 +1433,16 @@ name|ATTEMPT_ID
 operator|++
 argument_list|)
 decl_stmt|;
+comment|// This fakes the placement which is not part of the scheduler anymore
+name|ApplicationPlacementContext
+name|placementCtx
+init|=
+operator|new
+name|ApplicationPlacementContext
+argument_list|(
+name|queueId
+argument_list|)
+decl_stmt|;
 name|scheduler
 operator|.
 name|addApplication
@@ -1427,6 +1457,8 @@ argument_list|,
 name|userId
 argument_list|,
 literal|false
+argument_list|,
+name|placementCtx
 argument_list|)
 expr_stmt|;
 comment|// This conditional is for testAclSubmitApplication where app is rejected
@@ -1682,6 +1714,16 @@ name|ATTEMPT_ID
 operator|++
 argument_list|)
 decl_stmt|;
+comment|// This fakes the placement which is not part of the scheduler anymore
+name|ApplicationPlacementContext
+name|placementCtx
+init|=
+operator|new
+name|ApplicationPlacementContext
+argument_list|(
+name|queueId
+argument_list|)
+decl_stmt|;
 name|scheduler
 operator|.
 name|addApplication
@@ -1696,6 +1738,8 @@ argument_list|,
 name|userId
 argument_list|,
 literal|false
+argument_list|,
+name|placementCtx
 argument_list|)
 expr_stmt|;
 comment|// This conditional is for testAclSubmitApplication where app is rejected
@@ -2356,6 +2400,16 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+comment|// This fakes the placement which is not part of the scheduler anymore
+name|ApplicationPlacementContext
+name|placementCtx
+init|=
+operator|new
+name|ApplicationPlacementContext
+argument_list|(
+name|queue
+argument_list|)
+decl_stmt|;
 name|AppAddedSchedulerEvent
 name|appAddedEvent
 init|=
@@ -2367,6 +2421,8 @@ argument_list|,
 name|queue
 argument_list|,
 name|user
+argument_list|,
+name|placementCtx
 argument_list|)
 decl_stmt|;
 name|scheduler

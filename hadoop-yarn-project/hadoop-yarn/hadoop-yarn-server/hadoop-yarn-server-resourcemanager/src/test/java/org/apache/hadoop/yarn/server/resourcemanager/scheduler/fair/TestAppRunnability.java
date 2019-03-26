@@ -232,6 +232,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|placement
+operator|.
+name|ApplicationPlacementContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|attempt
@@ -439,7 +459,7 @@ import|;
 end_import
 
 begin_comment
-comment|/*  * This class is to  test the fair scheduler functionality of  * deciding the number of runnable application under various conditions.  */
+comment|/**  * This class is to  test the fair scheduler functionality of  * deciding the number of runnable application under various conditions.  */
 end_comment
 
 begin_class
@@ -590,7 +610,7 @@ name|createApplicationWithAMResource
 argument_list|(
 name|appAttemptId
 argument_list|,
-literal|"default"
+literal|"root.user1"
 argument_list|,
 literal|"user1"
 argument_list|,
@@ -814,6 +834,15 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+name|ApplicationPlacementContext
+name|apc
+init|=
+operator|new
+name|ApplicationPlacementContext
+argument_list|(
+literal|"user1"
+argument_list|)
+decl_stmt|;
 name|AppAddedSchedulerEvent
 name|appAddedEvent
 init|=
@@ -825,9 +854,11 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|,
-literal|"default"
+literal|"user1"
 argument_list|,
 literal|"user1"
+argument_list|,
+name|apc
 argument_list|)
 decl_stmt|;
 name|scheduler
@@ -1007,7 +1038,7 @@ name|createApplicationWithAMResource
 argument_list|(
 name|appAttemptId
 argument_list|,
-literal|"default"
+literal|"user1"
 argument_list|,
 literal|"user1"
 argument_list|,
@@ -1220,6 +1251,8 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+comment|// NOTE: placement is not inside the scheduler anymore need to fake it here.
+comment|// The scheduling request contains the fake placing
 comment|// Should get put into jerry
 name|createSchedulingRequest
 argument_list|(
@@ -1245,7 +1278,7 @@ name|createSchedulingRequest
 argument_list|(
 literal|1024
 argument_list|,
-literal|"newqueue"
+literal|"default"
 argument_list|,
 literal|"someuser"
 argument_list|)
@@ -1306,7 +1339,7 @@ name|createSchedulingRequest
 argument_list|(
 literal|1024
 argument_list|,
-literal|"default"
+literal|"jerry"
 argument_list|,
 literal|"jerry"
 argument_list|)

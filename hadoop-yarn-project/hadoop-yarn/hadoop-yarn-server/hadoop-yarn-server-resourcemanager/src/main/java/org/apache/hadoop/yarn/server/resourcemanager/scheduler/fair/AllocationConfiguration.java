@@ -82,20 +82,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|authorize
@@ -516,13 +502,6 @@ name|Resource
 argument_list|>
 name|queueMaxContainerAllocationMap
 decl_stmt|;
-comment|// Policy for mapping apps to queues
-annotation|@
-name|VisibleForTesting
-DECL|field|placementPolicy
-name|QueuePlacementPolicy
-name|placementPolicy
-decl_stmt|;
 comment|//Configured queues in the alloc xml
 annotation|@
 name|VisibleForTesting
@@ -553,7 +532,8 @@ name|String
 argument_list|>
 name|nonPreemptableQueues
 decl_stmt|;
-DECL|method|AllocationConfiguration (QueueProperties queueProperties, AllocationFileParser allocationFileParser, QueuePlacementPolicy newPlacementPolicy, ReservationQueueConfiguration globalReservationQueueConfig)
+comment|/**    * Create a fully initialised configuration for the scheduler.    * @param queueProperties The list of queues and their properties from the    *                        configuration.    * @param allocationFileParser The allocation file parser    * @param globalReservationQueueConfig The reservation queue config    * @throws AllocationConfigurationException    */
+DECL|method|AllocationConfiguration (QueueProperties queueProperties, AllocationFileParser allocationFileParser, ReservationQueueConfiguration globalReservationQueueConfig)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -562,9 +542,6 @@ name|queueProperties
 parameter_list|,
 name|AllocationFileParser
 name|allocationFileParser
-parameter_list|,
-name|QueuePlacementPolicy
-name|newPlacementPolicy
 parameter_list|,
 name|ReservationQueueConfiguration
 name|globalReservationQueueConfig
@@ -751,12 +728,6 @@ name|globalReservationQueueConfig
 expr_stmt|;
 name|this
 operator|.
-name|placementPolicy
-operator|=
-name|newPlacementPolicy
-expr_stmt|;
-name|this
-operator|.
 name|configuredQueues
 operator|=
 name|queueProperties
@@ -783,12 +754,13 @@ name|getMaxContainerAllocation
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|AllocationConfiguration (Configuration conf)
+comment|/**    * Create a base scheduler configuration with just the defaults set.    * Should only be called to init a basic setup on scheduler init.    * @param scheduler The {@link FairScheduler} to create and initialise the    *                  placement policy.    */
+DECL|method|AllocationConfiguration (FairScheduler scheduler)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
-name|Configuration
-name|conf
+name|FairScheduler
+name|scheduler
 parameter_list|)
 block|{
 name|minQueueResources
@@ -953,15 +925,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|placementPolicy
-operator|=
 name|QueuePlacementPolicy
 operator|.
 name|fromConfiguration
 argument_list|(
-name|conf
-argument_list|,
-name|configuredQueues
+name|scheduler
 argument_list|)
 expr_stmt|;
 name|nonPreemptableQueues
@@ -1463,16 +1431,6 @@ parameter_list|()
 block|{
 return|return
 name|configuredQueues
-return|;
-block|}
-DECL|method|getPlacementPolicy ()
-specifier|public
-name|QueuePlacementPolicy
-name|getPlacementPolicy
-parameter_list|()
-block|{
-return|return
-name|placementPolicy
 return|;
 block|}
 annotation|@

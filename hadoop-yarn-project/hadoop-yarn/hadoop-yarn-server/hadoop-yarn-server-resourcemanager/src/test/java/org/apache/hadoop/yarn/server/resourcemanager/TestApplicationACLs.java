@@ -2962,7 +2962,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Application rejected by queue placement policy"
+literal|"user owner application rejected by placement rules."
 argument_list|)
 argument_list|)
 expr_stmt|;

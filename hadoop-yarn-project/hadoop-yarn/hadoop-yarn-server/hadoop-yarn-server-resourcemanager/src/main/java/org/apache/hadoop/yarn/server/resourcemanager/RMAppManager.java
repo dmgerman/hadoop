@@ -852,6 +852,50 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|fair
+operator|.
+name|FSQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|fair
+operator|.
+name|FairScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|security
 operator|.
 name|ApplicationACLsManager
@@ -2701,7 +2745,7 @@ operator|!
 name|isRecovery
 condition|)
 block|{
-name|replaceQueueFromPlacementContext
+name|copyPlacementQueueToSubmissionContext
 argument_list|(
 name|placementContext
 argument_list|,
@@ -2791,11 +2835,6 @@ name|appPriority
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Since FairScheduler queue mapping is done inside scheduler,
-comment|// if FairScheduler is used and the queue doesn't exist, we should not
-comment|// fail here because queue will be created inside FS. Ideally, FS queue
-comment|// mapping should be done outside scheduler too like CS.
-comment|// For now, exclude FS for the acl check.
 if|if
 condition|(
 operator|!
@@ -2807,7 +2846,10 @@ name|isAclEnabled
 argument_list|(
 name|conf
 argument_list|)
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|scheduler
 operator|instanceof
 name|CapacityScheduler
@@ -2992,6 +3034,156 @@ argument_list|()
 argument_list|)
 argument_list|)
 throw|;
+block|}
+block|}
+if|if
+condition|(
+name|scheduler
+operator|instanceof
+name|FairScheduler
+condition|)
+block|{
+comment|// if we have not placed the app just skip this, the submit will be
+comment|// rejected in the scheduler.
+if|if
+condition|(
+name|placementContext
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// The queue might not be created yet. Walk up the tree to check the
+comment|// parent ACL. The queueName is assured root which always exists
+name|String
+name|queueName
+init|=
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+decl_stmt|;
+name|FSQueue
+name|queue
+init|=
+operator|(
+operator|(
+name|FairScheduler
+operator|)
+name|scheduler
+operator|)
+operator|.
+name|getQueueManager
+argument_list|()
+operator|.
+name|getQueue
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
+while|while
+condition|(
+name|queue
+operator|==
+literal|null
+condition|)
+block|{
+name|int
+name|sepIndex
+init|=
+name|queueName
+operator|.
+name|lastIndexOf
+argument_list|(
+literal|"."
+argument_list|)
+decl_stmt|;
+name|queueName
+operator|=
+name|queueName
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|sepIndex
+argument_list|)
+expr_stmt|;
+name|queue
+operator|=
+operator|(
+operator|(
+name|FairScheduler
+operator|)
+name|scheduler
+operator|)
+operator|.
+name|getQueueManager
+argument_list|()
+operator|.
+name|getQueue
+argument_list|(
+name|queueName
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|queue
+operator|.
+name|hasAccess
+argument_list|(
+name|QueueACL
+operator|.
+name|SUBMIT_APPLICATIONS
+argument_list|,
+name|userUgi
+argument_list|)
+operator|&&
+operator|!
+name|queue
+operator|.
+name|hasAccess
+argument_list|(
+name|QueueACL
+operator|.
+name|ADMINISTER_QUEUE
+argument_list|,
+name|userUgi
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"User "
+operator|+
+name|user
+operator|+
+literal|" does not have permission to submit "
+operator|+
+name|applicationId
+operator|+
+literal|" to queue "
+operator|+
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+operator|+
+literal|" denied by ACL for queue "
+operator|+
+name|queueName
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 block|}
 comment|// Create RMApp
@@ -4539,7 +4731,20 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"PlaceApplication failed,skipping on recovery of rm"
+literal|"Application placement failed for user "
+operator|+
+name|user
+operator|+
+literal|" and application "
+operator|+
+name|context
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|", skipping placement on recovery of rm"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 return|return
@@ -4551,6 +4756,10 @@ name|e
 throw|;
 block|}
 block|}
+comment|// The submission context when created often has a queue set. In case of
+comment|// the FairScheduler a null placement context is still considered as a
+comment|// failure, even when a queue is provided on submit. This case handled in
+comment|// the scheduler.
 if|if
 condition|(
 name|placementContext
@@ -4585,14 +4794,7 @@ operator|.
 name|getApplicationId
 argument_list|()
 operator|+
-literal|" to queue and specified "
-operator|+
-literal|"queue is invalid : "
-operator|+
-name|context
-operator|.
-name|getQueue
-argument_list|()
+literal|" in a queue and submit context queue is null or empty"
 decl_stmt|;
 name|LOG
 operator|.
@@ -4613,9 +4815,10 @@ return|return
 name|placementContext
 return|;
 block|}
-DECL|method|replaceQueueFromPlacementContext ( ApplicationPlacementContext placementContext, ApplicationSubmissionContext context)
+DECL|method|copyPlacementQueueToSubmissionContext ( ApplicationPlacementContext placementContext, ApplicationSubmissionContext context)
+specifier|private
 name|void
-name|replaceQueueFromPlacementContext
+name|copyPlacementQueueToSubmissionContext
 parameter_list|(
 name|ApplicationPlacementContext
 name|placementContext
@@ -4624,8 +4827,8 @@ name|ApplicationSubmissionContext
 name|context
 parameter_list|)
 block|{
-comment|// Set it to ApplicationSubmissionContext
-comment|//apply queue mapping only to new application submissions
+comment|// Set the queue from the placement in the ApplicationSubmissionContext
+comment|// Placement rule are only considered for new applications
 if|if
 condition|(
 name|placementContext
@@ -4653,21 +4856,21 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Placed application="
+literal|"Placed application with ID "
 operator|+
 name|context
 operator|.
 name|getApplicationId
 argument_list|()
 operator|+
-literal|" to queue="
+literal|" in queue: "
 operator|+
 name|placementContext
 operator|.
 name|getQueue
 argument_list|()
 operator|+
-literal|", original queue="
+literal|", original submission queue was: "
 operator|+
 name|context
 operator|.
