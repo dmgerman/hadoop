@@ -2631,6 +2631,11 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|connectionFactory
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
 specifier|public

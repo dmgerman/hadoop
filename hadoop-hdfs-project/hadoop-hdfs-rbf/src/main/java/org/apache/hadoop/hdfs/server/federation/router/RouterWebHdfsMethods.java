@@ -3205,6 +3205,11 @@ argument_list|(
 name|method
 argument_list|)
 expr_stmt|;
+name|connectionFactory
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 return|return
 name|conn
 return|;
@@ -3228,6 +3233,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|connectionFactory
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 return|return
 literal|null
 return|;
