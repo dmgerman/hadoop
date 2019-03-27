@@ -974,6 +974,12 @@ case|:
 case|case
 name|CancelDelegationToken
 case|:
+case|case
+name|ApplyCreateKey
+case|:
+case|case
+name|ApplyInitiateMultiPartUpload
+case|:
 return|return
 literal|false
 return|;

@@ -267,6 +267,48 @@ operator|.
 name|proto
 operator|.
 name|OzoneManagerProtocolProtos
+operator|.
+name|KeyArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|KeyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|KeyLocation
 import|;
 end_import
 
@@ -365,7 +407,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Ozone manager state machine call's this on an open key, to add allocated    * block to the tail of current block list of the open client.    *    * @param args the key to append    * @param clientID the client requesting block.    * @param keyLocation key location.    * @return the reference to the new block.    * @throws IOException    */
-DECL|method|addAllocatedBlock (OmKeyArgs args, long clientID, OzoneManagerProtocolProtos.KeyLocation keyLocation)
+DECL|method|addAllocatedBlock (OmKeyArgs args, long clientID, KeyLocation keyLocation)
 name|OmKeyLocationInfo
 name|addAllocatedBlock
 parameter_list|(
@@ -375,8 +417,6 @@ parameter_list|,
 name|long
 name|clientID
 parameter_list|,
-name|OzoneManagerProtocolProtos
-operator|.
 name|KeyLocation
 name|keyLocation
 parameter_list|)
@@ -390,6 +430,23 @@ name|openKey
 parameter_list|(
 name|OmKeyArgs
 name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Add the openKey entry with given keyInfo and clientID in to openKeyTable.    * This will be called only from applyTransaction, once after calling    * applyKey in startTransaction.    *    * @param omKeyArgs    * @param keyInfo    * @param clientID    * @throws IOException    */
+DECL|method|applyOpenKey (KeyArgs omKeyArgs, KeyInfo keyInfo, long clientID)
+name|void
+name|applyOpenKey
+parameter_list|(
+name|KeyArgs
+name|omKeyArgs
+parameter_list|,
+name|KeyInfo
+name|keyInfo
+parameter_list|,
+name|long
+name|clientID
 parameter_list|)
 throws|throws
 name|IOException
@@ -511,6 +568,20 @@ name|initiateMultipartUpload
 parameter_list|(
 name|OmKeyArgs
 name|keyArgs
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Initiate multipart upload for the specified key.    *    * @param keyArgs    * @param multipartUploadID    * @return MultipartInfo    * @throws IOException    */
+DECL|method|applyInitiateMultipartUpload (OmKeyArgs keyArgs, String multipartUploadID)
+name|OmMultipartInfo
+name|applyInitiateMultipartUpload
+parameter_list|(
+name|OmKeyArgs
+name|keyArgs
+parameter_list|,
+name|String
+name|multipartUploadID
 parameter_list|)
 throws|throws
 name|IOException

@@ -1616,7 +1616,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Scm in Chill mode Status code "
+literal|"Scm in Chill mode "
+operator|+
+name|OMException
+operator|.
+name|STATUS_CODE
 operator|+
 name|OMException
 operator|.

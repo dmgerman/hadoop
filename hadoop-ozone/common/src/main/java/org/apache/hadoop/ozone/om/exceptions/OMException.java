@@ -42,6 +42,15 @@ name|OMException
 extends|extends
 name|IOException
 block|{
+DECL|field|STATUS_CODE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STATUS_CODE
+init|=
+literal|"STATUS_CODE="
+decl_stmt|;
 DECL|field|result
 specifier|private
 specifier|final
