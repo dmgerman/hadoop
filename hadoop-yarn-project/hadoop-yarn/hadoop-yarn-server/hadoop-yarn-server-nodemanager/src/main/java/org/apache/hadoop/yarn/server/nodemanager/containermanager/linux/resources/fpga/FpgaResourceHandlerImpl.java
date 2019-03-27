@@ -736,7 +736,7 @@ argument_list|()
 decl_stmt|;
 name|allocator
 operator|.
-name|addFpga
+name|addFpgaDevices
 argument_list|(
 name|vendorPlugin
 operator|.
