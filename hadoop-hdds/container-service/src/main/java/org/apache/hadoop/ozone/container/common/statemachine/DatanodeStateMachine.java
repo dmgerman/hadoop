@@ -1711,16 +1711,6 @@ operator|.
 name|getContext
 argument_list|()
 operator|.
-name|getExecutionCount
-argument_list|()
-operator|==
-literal|0
-operator|&&
-name|this
-operator|.
-name|getContext
-argument_list|()
-operator|.
 name|getState
 argument_list|()
 operator|==
