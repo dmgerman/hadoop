@@ -2192,11 +2192,37 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|volArgs
+operator|.
+name|getQuota
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Creating Volume: {}, with {} as owner and quota set to {} bytes."
+literal|"Creating Volume: {}, with {} as owner."
+argument_list|,
+name|volumeName
+argument_list|,
+name|owner
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Creating Volume: {}, with {} as owner "
+operator|+
+literal|"and quota set to {} bytes."
 argument_list|,
 name|volumeName
 argument_list|,
@@ -2205,6 +2231,7 @@ argument_list|,
 name|quota
 argument_list|)
 expr_stmt|;
+block|}
 name|ozoneManagerClient
 operator|.
 name|createVolume
