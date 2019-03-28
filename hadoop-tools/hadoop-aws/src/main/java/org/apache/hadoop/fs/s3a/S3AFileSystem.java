@@ -6045,6 +6045,21 @@ name|metadataStore
 argument_list|)
 return|;
 block|}
+comment|/**    * Does the filesystem have an authoritative metadata store?    * @return true if there is a metadata store and the authoritative flag    * is set for this filesystem.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|hasAuthoritativeMetadataStore ()
+name|boolean
+name|hasAuthoritativeMetadataStore
+parameter_list|()
+block|{
+return|return
+name|hasMetadataStore
+argument_list|()
+operator|&&
+name|allowAuthoritative
+return|;
+block|}
 comment|/**    * Get the metadata store.    * This will always be non-null, but may be bound to the    * {@code NullMetadataStore}.    * @return the metadata store of this FS instance    */
 annotation|@
 name|VisibleForTesting
@@ -9306,6 +9321,137 @@ operator|+
 literal|"deleted by S3Guard"
 argument_list|)
 throw|;
+block|}
+comment|// if ms is not authoritative, check S3 if there's any recent
+comment|// modification - compare the modTime to check if metadata is up to date
+comment|// Skip going to s3 if the file checked is a directory. Because if the
+comment|// dest is also a directory, there's no difference.
+comment|// TODO After HADOOP-16085 the modification detection can be done with
+comment|//  etags or object version instead of modTime
+if|if
+condition|(
+operator|!
+name|pm
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+operator|&&
+operator|!
+name|allowAuthoritative
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Metadata for {} found in the non-auth metastore."
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+specifier|final
+name|long
+name|msModTime
+init|=
+name|pm
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|getModificationTime
+argument_list|()
+decl_stmt|;
+name|S3AFileStatus
+name|s3AFileStatus
+decl_stmt|;
+try|try
+block|{
+name|s3AFileStatus
+operator|=
+name|s3GetFileStatus
+argument_list|(
+name|path
+argument_list|,
+name|key
+argument_list|,
+name|tombstones
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fne
+parameter_list|)
+block|{
+name|s3AFileStatus
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|s3AFileStatus
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to find file {}. Either it is not yet visible, or "
+operator|+
+literal|"it has been deleted."
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+specifier|final
+name|long
+name|s3ModTime
+init|=
+name|s3AFileStatus
+operator|.
+name|getModificationTime
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|s3ModTime
+operator|>
+name|msModTime
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"S3Guard metadata for {} is outdated, updating it"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+name|S3Guard
+operator|.
+name|putAndReturn
+argument_list|(
+name|metadataStore
+argument_list|,
+name|s3AFileStatus
+argument_list|,
+name|instrumentation
+argument_list|)
+return|;
+block|}
+block|}
 block|}
 name|FileStatus
 name|msStatus

@@ -60,6 +60,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1961,6 +1971,13 @@ operator|.
 name|methodName
 operator|.
 name|getMethodName
+argument_list|()
+operator|+
+literal|"-"
+operator|+
+name|UUID
+operator|.
+name|randomUUID
 argument_list|()
 argument_list|)
 decl_stmt|;

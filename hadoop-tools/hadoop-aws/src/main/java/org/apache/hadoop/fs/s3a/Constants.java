@@ -1391,7 +1391,7 @@ specifier|final
 name|int
 name|DEFAULT_S3GUARD_METASTORE_LOCAL_ENTRY_TTL
 init|=
-literal|10
+literal|60
 operator|*
 literal|1000
 decl_stmt|;
