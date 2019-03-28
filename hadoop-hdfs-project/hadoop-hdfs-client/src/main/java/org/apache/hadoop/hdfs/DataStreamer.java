@@ -3612,9 +3612,9 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Caught exception"
+literal|"Thread interrupted"
 argument_list|,
 name|e
 argument_list|)
@@ -3671,9 +3671,9 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Caught exception"
+literal|"Thread interrupted"
 argument_list|,
 name|e
 argument_list|)
@@ -3736,28 +3736,17 @@ block|}
 block|}
 block|}
 comment|// get new block from namenode.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"stage="
-operator|+
+literal|"stage={}, {}"
+argument_list|,
 name|stage
-operator|+
-literal|", "
-operator|+
+argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|stage
@@ -3905,9 +3894,9 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Caught exception"
+literal|"Thread interrupted"
 argument_list|,
 name|e
 argument_list|)
@@ -4479,7 +4468,17 @@ parameter_list|(
 name|ClosedChannelException
 name|cce
 parameter_list|)
-block|{       }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Closed channel exception"
+argument_list|,
+name|cce
+argument_list|)
+expr_stmt|;
+block|}
 name|long
 name|duration
 init|=
@@ -4680,9 +4679,19 @@ block|}
 catch|catch
 parameter_list|(
 name|ClosedChannelException
-name|ignored
+name|cce
 parameter_list|)
-block|{       }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Closed channel exception"
+argument_list|,
+name|cce
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/*    * close the streamer, should be called only by an external thread    * and only after all data to be sent has been flushed to datanode.    *    * Interrupt this data streamer if force is true    *    * @param force if this data stream is forced to be closed    */
@@ -4785,12 +4794,20 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Caught exception"
+literal|"Thread interrupted"
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
 expr_stmt|;
 block|}
 finally|finally
@@ -5228,14 +5245,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -5245,7 +5254,6 @@ argument_list|,
 name|ack
 argument_list|)
 expr_stmt|;
-block|}
 name|long
 name|seqno
 init|=
@@ -7439,9 +7447,19 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ignored
+name|e
 parameter_list|)
-block|{       }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Thread interrupted"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|updateBlockForPipeline ()
