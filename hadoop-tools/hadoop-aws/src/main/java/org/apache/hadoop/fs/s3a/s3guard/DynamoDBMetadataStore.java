@@ -2945,6 +2945,9 @@ name|meta
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Minor race condition here - if the path is deleted between
+comment|// getting the list of items and the directory metadata we might
+comment|// get a null in DDBPathMetadata.
 name|DDBPathMetadata
 name|dirPathMeta
 init|=
@@ -2953,6 +2956,37 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+return|return
+name|getDirListingMetadataFromDirMetaAndList
+argument_list|(
+name|path
+argument_list|,
+name|metas
+argument_list|,
+name|dirPathMeta
+argument_list|)
+return|;
+block|}
+argument_list|)
+return|;
+block|}
+DECL|method|getDirListingMetadataFromDirMetaAndList (Path path, List<PathMetadata> metas, DDBPathMetadata dirPathMeta)
+name|DirListingMetadata
+name|getDirListingMetadataFromDirMetaAndList
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|List
+argument_list|<
+name|PathMetadata
+argument_list|>
+name|metas
+parameter_list|,
+name|DDBPathMetadata
+name|dirPathMeta
+parameter_list|)
+block|{
 name|boolean
 name|isAuthoritative
 init|=
@@ -2988,8 +3022,9 @@ argument_list|,
 name|metas
 argument_list|)
 expr_stmt|;
-return|return
-operator|(
+if|if
+condition|(
+operator|!
 name|metas
 operator|.
 name|isEmpty
@@ -2998,10 +3033,43 @@ operator|&&
 name|dirPathMeta
 operator|==
 literal|null
-operator|)
-condition|?
+condition|)
+block|{
+comment|// We handle this case as the directory is deleted.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Directory marker is deleted, but the list of the directory "
+operator|+
+literal|"elements is not empty: {}. This case is handled as if the "
+operator|+
+literal|"directory was deleted."
+argument_list|,
+name|metas
+argument_list|)
+expr_stmt|;
+return|return
 literal|null
-else|:
+return|;
+block|}
+if|if
+condition|(
+name|metas
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+name|dirPathMeta
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
 operator|new
 name|DirListingMetadata
 argument_list|(
@@ -3015,9 +3083,6 @@ name|dirPathMeta
 operator|.
 name|getLastUpdated
 argument_list|()
-argument_list|)
-return|;
-block|}
 argument_list|)
 return|;
 block|}
