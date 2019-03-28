@@ -298,6 +298,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|impl
+operator|.
+name|TestFsDatasetCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|nativeio
@@ -441,6 +463,10 @@ operator|.
 name|LoggerFactory
 import|;
 end_import
+
+begin_comment
+comment|/**  * Tests FsDatasetCache behaviors.  */
+end_comment
 
 begin_class
 DECL|class|TestFsDatasetCacheRevocation
@@ -763,7 +789,7 @@ decl_stmt|;
 comment|// Create and cache a file.
 specifier|final
 name|String
-name|TEST_FILE
+name|testFile
 init|=
 literal|"/test_file"
 decl_stmt|;
@@ -776,7 +802,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|TEST_FILE
+name|testFile
 argument_list|)
 argument_list|,
 name|BLOCK_SIZE
@@ -823,7 +849,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_FILE
+name|testFile
 argument_list|)
 argument_list|)
 operator|.
@@ -880,7 +906,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_FILE
+name|testFile
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -962,7 +988,7 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Test that when we have an uncache request, and the client refuses to release    * the replica for a long time, we will un-mlock it.    */
+comment|/**    * Test that when we have an uncache request, and the client refuses to    * release the replica for a long time, we will un-mlock it.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1068,7 +1094,7 @@ decl_stmt|;
 comment|// Create and cache a file.
 specifier|final
 name|String
-name|TEST_FILE
+name|testFile
 init|=
 literal|"/test_file2"
 decl_stmt|;
@@ -1081,7 +1107,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|TEST_FILE
+name|testFile
 argument_list|)
 argument_list|,
 name|BLOCK_SIZE
@@ -1128,7 +1154,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_FILE
+name|testFile
 argument_list|)
 argument_list|)
 operator|.
@@ -1185,7 +1211,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_FILE
+name|testFile
 argument_list|)
 argument_list|)
 decl_stmt|;

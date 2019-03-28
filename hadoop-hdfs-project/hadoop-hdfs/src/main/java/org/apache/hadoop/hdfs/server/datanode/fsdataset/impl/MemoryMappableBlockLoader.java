@@ -234,6 +234,27 @@ name|MemoryMappableBlockLoader
 extends|extends
 name|MappableBlockLoader
 block|{
+DECL|field|cacheManager
+specifier|private
+specifier|final
+name|FsDatasetCache
+name|cacheManager
+decl_stmt|;
+comment|/**    * Constructs memory mappable loader.    *    * @param cacheManager    *          FsDatasetCache reference.    */
+DECL|method|MemoryMappableBlockLoader (FsDatasetCache cacheManager)
+name|MemoryMappableBlockLoader
+parameter_list|(
+name|FsDatasetCache
+name|cacheManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cacheManager
+operator|=
+name|cacheManager
+expr_stmt|;
+block|}
 comment|/**    * Load the block.    *    * mmap and mlock the block, and then verify its checksum.    *    * @param length         The current length of the block.    * @param blockIn        The block input stream. Should be positioned at the    *                       start. The caller must close this.    * @param metaIn         The meta file input stream. Should be positioned at    *                       the start. The caller must close this.    * @param blockFileName  The block file name, for logging purposes.    * @param key            The extended block ID.    *    * @throws IOException   If mapping block to memory fails or checksum fails.     * @return               The Mappable block.    */
 annotation|@
 name|Override
@@ -396,7 +417,7 @@ return|;
 block|}
 comment|/**    * Verifies the block's checksum. This is an I/O intensive operation.    */
 DECL|method|verifyChecksum (long length, FileInputStream metaIn, FileChannel blockChannel, String blockFileName)
-specifier|public
+specifier|private
 name|void
 name|verifyChecksum
 parameter_list|(
@@ -672,6 +693,44 @@ name|metaChannel
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|reserve (long bytesCount)
+name|long
+name|reserve
+parameter_list|(
+name|long
+name|bytesCount
+parameter_list|)
+block|{
+return|return
+name|cacheManager
+operator|.
+name|reserve
+argument_list|(
+name|bytesCount
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|release (long bytesCount)
+name|long
+name|release
+parameter_list|(
+name|long
+name|bytesCount
+parameter_list|)
+block|{
+return|return
+name|cacheManager
+operator|.
+name|release
+argument_list|(
+name|bytesCount
+argument_list|)
+return|;
 block|}
 block|}
 end_class

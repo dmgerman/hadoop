@@ -151,6 +151,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Try to reserve some given bytes.    *    * @param bytesCount    *          The number of bytes to add.    *    * @return The new number of usedBytes if we succeeded; -1 if we failed.    */
+DECL|method|reserve (long bytesCount)
+specifier|abstract
+name|long
+name|reserve
+parameter_list|(
+name|long
+name|bytesCount
+parameter_list|)
+function_decl|;
+comment|/**    * Release some bytes that we're using.    *    * @param bytesCount    *          The number of bytes to release.    *    * @return The new number of usedBytes.    */
+DECL|method|release (long bytesCount)
+specifier|abstract
+name|long
+name|release
+parameter_list|(
+name|long
+name|bytesCount
+parameter_list|)
+function_decl|;
 comment|/**    * Reads bytes into a buffer until EOF or the buffer's limit is reached.    */
 DECL|method|fillBuffer (FileChannel channel, ByteBuffer buf)
 specifier|protected
