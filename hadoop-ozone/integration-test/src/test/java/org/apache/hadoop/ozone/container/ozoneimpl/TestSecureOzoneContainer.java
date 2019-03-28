@@ -1488,24 +1488,6 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|request
-operator|.
-name|getTraceID
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|response
-operator|.
-name|getTraceID
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 end_function
 

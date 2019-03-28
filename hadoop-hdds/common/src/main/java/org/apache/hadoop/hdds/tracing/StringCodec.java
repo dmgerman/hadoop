@@ -106,8 +106,28 @@ name|Format
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
-comment|/**  * A jaeger codec to save the current tracing context t a string.  */
+comment|/**  * A jaeger codec to save the current tracing context as a string.  */
 end_comment
 
 begin_class
@@ -121,6 +141,22 @@ argument_list|<
 name|StringBuilder
 argument_list|>
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|StringCodec
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|FORMAT
 specifier|public
 specifier|static
@@ -143,6 +179,19 @@ name|StringBuilder
 name|s
 parameter_list|)
 block|{
+if|if
+condition|(
+name|s
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|EmptyTracerStateStringException
+argument_list|()
+throw|;
+block|}
 name|String
 name|value
 init|=
@@ -186,6 +235,15 @@ operator|!=
 literal|4
 condition|)
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"MalformedTracerStateString: {}"
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|MalformedTracerStateStringException
