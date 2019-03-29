@@ -907,6 +907,25 @@ argument_list|,
 name|canonicalService
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|token
+operator|==
+literal|null
+condition|)
+block|{
+name|token
+operator|=
+name|KMSClientProvider
+operator|.
+name|selectDelegationToken
+argument_list|(
+name|creds
+argument_list|,
+name|dtService
+argument_list|)
+expr_stmt|;
+block|}
 comment|// fallback to querying each sub-provider.
 if|if
 condition|(
