@@ -650,15 +650,6 @@ argument_list|,
 literal|"localhost:0"
 argument_list|)
 expr_stmt|;
-name|InetSocketAddress
-operator|.
-name|createUnresolved
-argument_list|(
-literal|"localhost"
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
 name|StorageContainerManagerHttpServer
 name|server
 init|=
