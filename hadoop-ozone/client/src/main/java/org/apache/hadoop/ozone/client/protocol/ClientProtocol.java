@@ -206,6 +206,24 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|ha
 operator|.
 name|OMFailoverProxyProvider
@@ -1132,7 +1150,7 @@ name|String
 name|getCanonicalServiceName
 parameter_list|()
 function_decl|;
-comment|/**    * Get the Ozone File Status for a particular Ozone key.    * @param volumeName volume name.    * @param bucketName bucket name.    * @param keyName key name.    * @return OzoneFileStatus for the key.    * @throws IOException    */
+comment|/**    * Get the Ozone File Status for a particular Ozone key.    *    * @param volumeName volume name.    * @param bucketName bucket name.    * @param keyName    key name.    * @return OzoneFileStatus for the key.    * @throws OMException if file does not exist    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
 DECL|method|getOzoneFileStatus (String volumeName, String bucketName, String keyName)
 name|OzoneFileStatus
 name|getOzoneFileStatus
@@ -1145,6 +1163,77 @@ name|bucketName
 parameter_list|,
 name|String
 name|keyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates directory with keyName as the absolute path for the directory.    *    * @param volumeName Volume name    * @param bucketName Bucket name    * @param keyName    Absolute path for the directory    * @throws OMException if any entry in the path exists as a file    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+DECL|method|createDirectory (String volumeName, String bucketName, String keyName)
+name|void
+name|createDirectory
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates an input stream for reading file contents.    *    * @param volumeName Volume name    * @param bucketName Bucket name    * @param keyName    Absolute path of the file to be read    * @return Input stream for reading the file    * @throws OMException if any entry in the path exists as a file    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+DECL|method|readFile (String volumeName, String bucketName, String keyName)
+name|OzoneInputStream
+name|readFile
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates an output stream for writing to a file.    *    * @param volumeName Volume name    * @param bucketName Bucket name    * @param keyName    Absolute path of the file to be written    * @param size       Size of data to be written    * @param type       Replication Type    * @param factor     Replication Factor    * @param overWrite  if true existing file at the location will be overwritten    * @param recursive  if true file would be created even if parent directories    *                   do not exist    * @return Output stream for writing to the file    * @throws OMException if given key is a directory    *                     if file exists and isOverwrite flag is false    *                     if an ancestor exists as a file    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:parameternumber"
+argument_list|)
+DECL|method|createFile (String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor, boolean overWrite, boolean recursive)
+name|OzoneOutputStream
+name|createFile
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|long
+name|size
+parameter_list|,
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|boolean
+name|overWrite
+parameter_list|,
+name|boolean
+name|recursive
 parameter_list|)
 throws|throws
 name|IOException

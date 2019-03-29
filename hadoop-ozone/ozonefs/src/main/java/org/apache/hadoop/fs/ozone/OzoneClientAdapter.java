@@ -141,9 +141,9 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|createInputStream (String key)
+DECL|method|readFile (String key)
 name|InputStream
-name|createInputStream
+name|readFile
 parameter_list|(
 name|String
 name|key
@@ -151,12 +151,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|createKey (String key)
+DECL|method|createFile (String key, boolean overWrite, boolean recursive)
 name|OzoneFSOutputStream
-name|createKey
+name|createFile
 parameter_list|(
 name|String
 name|key
+parameter_list|,
+name|boolean
+name|overWrite
+parameter_list|,
+name|boolean
+name|recursive
 parameter_list|)
 throws|throws
 name|IOException
@@ -174,14 +180,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|isDirectory (BasicKeyInfo key)
-name|boolean
-name|isDirectory
-parameter_list|(
-name|BasicKeyInfo
-name|key
-parameter_list|)
-function_decl|;
 DECL|method|createDirectory (String keyName)
 name|boolean
 name|createDirectory
@@ -189,6 +187,8 @@ parameter_list|(
 name|String
 name|keyName
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|deleteObject (String keyName)
 name|boolean

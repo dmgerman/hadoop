@@ -6207,6 +6207,102 @@ literal|"support this operation."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|createDirectory (String volumeName, String bucketName, String keyName)
+specifier|public
+name|void
+name|createDirectory
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|readFile (String volumeName, String bucketName, String keyName)
+specifier|public
+name|OzoneInputStream
+name|readFile
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|createFile (String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor, boolean overWrite, boolean recursive)
+specifier|public
+name|OzoneOutputStream
+name|createFile
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|long
+name|size
+parameter_list|,
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|boolean
+name|overWrite
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 

@@ -54,6 +54,24 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|ha
 operator|.
 name|OMFailoverProxyProvider
@@ -943,19 +961,52 @@ name|OMFailoverProxyProvider
 name|getOMFailoverProxyProvider
 parameter_list|()
 function_decl|;
-comment|/**    * Get File Status for an Ozone key.    * @param volumeName volume name.    * @param bucketName bucket name.    * @param keyName key name.    * @return OzoneFileStatus for the key.    * @throws IOException    */
-DECL|method|getFileStatus (String volumeName, String bucketName, String keyName)
+comment|/**    * OzoneFS api to get file status for an entry.    *    * @param keyArgs Key args    * @throws OMException if file does not exist    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+DECL|method|getFileStatus (OmKeyArgs keyArgs)
 name|OzoneFileStatus
 name|getFileStatus
 parameter_list|(
-name|String
-name|volumeName
+name|OmKeyArgs
+name|keyArgs
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Ozone FS api to create a directory. Parent directories if do not exist    * are created for the input directory.    *    * @param args Key args    * @throws OMException if any entry in the path exists as a file    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+DECL|method|createDirectory (OmKeyArgs args)
+name|void
+name|createDirectory
+parameter_list|(
+name|OmKeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * OzoneFS api to creates an output stream for a file.    *    * @param keyArgs   Key args    * @param overWrite if true existing file at the location will be overwritten    * @param recursive if true file would be created even if parent directories    *                  do not exist    * @throws OMException if given key is a directory    *                     if file exists and isOverwrite flag is false    *                     if an ancestor exists as a file    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+DECL|method|createFile (OmKeyArgs keyArgs, boolean overWrite, boolean recursive)
+name|OpenKeySession
+name|createFile
+parameter_list|(
+name|OmKeyArgs
+name|keyArgs
 parameter_list|,
-name|String
-name|bucketName
+name|boolean
+name|overWrite
 parameter_list|,
-name|String
-name|keyName
+name|boolean
+name|recursive
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * OzoneFS api to lookup for a file.    *    * @param keyArgs Key args    * @throws OMException if given key is not found or it is not a file    *                     if bucket does not exist    * @throws IOException if there is error in the db    *                     invalid arguments    */
+DECL|method|lookupFile (OmKeyArgs keyArgs)
+name|OmKeyInfo
+name|lookupFile
+parameter_list|(
+name|OmKeyArgs
+name|keyArgs
 parameter_list|)
 throws|throws
 name|IOException

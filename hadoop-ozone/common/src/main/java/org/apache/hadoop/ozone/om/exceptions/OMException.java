@@ -329,6 +329,15 @@ name|TOKEN_CREATION_ERROR
 block|,
 DECL|enumConstant|FILE_NOT_FOUND
 name|FILE_NOT_FOUND
+block|,
+DECL|enumConstant|DIRECTORY_NOT_FOUND
+name|DIRECTORY_NOT_FOUND
+block|,
+DECL|enumConstant|FILE_ALREADY_EXISTS
+name|FILE_ALREADY_EXISTS
+block|,
+DECL|enumConstant|NOT_A_FILE
+name|NOT_A_FILE
 block|}
 block|}
 end_class

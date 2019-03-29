@@ -144,6 +144,21 @@ name|OzoneFileStatus
 extends|extends
 name|FileStatus
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|field|keyInfo
+specifier|transient
+specifier|private
+name|OmKeyInfo
+name|keyInfo
+decl_stmt|;
 DECL|method|OzoneFileStatus (OmKeyInfo key, long blockSize, boolean isDirectory)
 specifier|public
 name|OzoneFileStatus
@@ -191,6 +206,10 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|keyInfo
+operator|=
+name|key
+expr_stmt|;
 block|}
 DECL|method|OzoneFileStatus (FileStatus status)
 specifier|public
@@ -209,16 +228,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Use this constructor only for directories
-DECL|method|OzoneFileStatus (int replication, long blockSize, String keyName)
+DECL|method|OzoneFileStatus (String keyName)
 specifier|public
 name|OzoneFileStatus
 parameter_list|(
-name|int
-name|replication
-parameter_list|,
-name|long
-name|blockSize
-parameter_list|,
 name|String
 name|keyName
 parameter_list|)
@@ -229,9 +242,9 @@ literal|0
 argument_list|,
 literal|true
 argument_list|,
-name|replication
+literal|0
 argument_list|,
-name|blockSize
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -407,6 +420,51 @@ name|getModificationTime
 argument_list|()
 return|;
 block|}
+block|}
+DECL|method|getKeyInfo ()
+specifier|public
+name|OmKeyInfo
+name|getKeyInfo
+parameter_list|()
+block|{
+return|return
+name|keyInfo
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|equals (Object o)
+specifier|public
+name|boolean
+name|equals
+parameter_list|(
+name|Object
+name|o
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|equals
+argument_list|(
+name|o
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|hashCode
+argument_list|()
+return|;
 block|}
 block|}
 end_class

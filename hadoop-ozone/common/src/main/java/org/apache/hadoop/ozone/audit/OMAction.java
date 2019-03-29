@@ -122,6 +122,15 @@ block|,
 comment|//FS Actions
 DECL|enumConstant|GET_FILE_STATUS
 name|GET_FILE_STATUS
+block|,
+DECL|enumConstant|CREATE_DIRECTORY
+name|CREATE_DIRECTORY
+block|,
+DECL|enumConstant|CREATE_FILE
+name|CREATE_FILE
+block|,
+DECL|enumConstant|LOOKUP_FILE
+name|LOOKUP_FILE
 block|;
 annotation|@
 name|Override

@@ -908,6 +908,9 @@ case|:
 case|case
 name|GetFileStatus
 case|:
+case|case
+name|LookupFile
+case|:
 return|return
 literal|true
 return|;
@@ -979,6 +982,12 @@ name|ApplyCreateKey
 case|:
 case|case
 name|ApplyInitiateMultiPartUpload
+case|:
+case|case
+name|CreateDirectory
+case|:
+case|case
+name|CreateFile
 case|:
 return|return
 literal|false
