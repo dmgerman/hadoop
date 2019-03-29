@@ -558,6 +558,12 @@ specifier|final
 name|CGroupsHandler
 name|cGroupsHandler
 decl_stmt|;
+DECL|field|fpgaDiscoverer
+specifier|private
+specifier|final
+name|FpgaDiscoverer
+name|fpgaDiscoverer
+decl_stmt|;
 DECL|field|EXCLUDED_FPGAS_CLI_OPTION
 specifier|public
 specifier|static
@@ -583,7 +589,7 @@ name|privilegedOperationExecutor
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|method|FpgaResourceHandlerImpl (Context nmContext, CGroupsHandler cGroupsHandler, PrivilegedOperationExecutor privilegedOperationExecutor, AbstractFpgaVendorPlugin plugin)
+DECL|method|FpgaResourceHandlerImpl (Context nmContext, CGroupsHandler cGroupsHandler, PrivilegedOperationExecutor privilegedOperationExecutor, AbstractFpgaVendorPlugin plugin, FpgaDiscoverer fpgaDiscoverer)
 specifier|public
 name|FpgaResourceHandlerImpl
 parameter_list|(
@@ -598,6 +604,9 @@ name|privilegedOperationExecutor
 parameter_list|,
 name|AbstractFpgaVendorPlugin
 name|plugin
+parameter_list|,
+name|FpgaDiscoverer
+name|fpgaDiscoverer
 parameter_list|)
 block|{
 name|this
@@ -616,15 +625,11 @@ name|vendorPlugin
 operator|=
 name|plugin
 expr_stmt|;
-name|FpgaDiscoverer
+name|this
 operator|.
-name|getInstance
-argument_list|()
-operator|.
-name|setResourceHanderPlugin
-argument_list|(
-name|vendorPlugin
-argument_list|)
+name|fpgaDiscoverer
+operator|=
+name|fpgaDiscoverer
 expr_stmt|;
 name|this
 operator|.
@@ -720,16 +725,11 @@ expr_stmt|;
 comment|// Get avialable devices minor numbers from toolchain or static configuration
 name|List
 argument_list|<
-name|FpgaResourceAllocator
-operator|.
 name|FpgaDevice
 argument_list|>
 name|fpgaDeviceList
 init|=
-name|FpgaDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|fpgaDiscoverer
 operator|.
 name|discover
 argument_list|()
@@ -1132,8 +1132,6 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|FpgaResourceAllocator
-operator|.
 name|FpgaDevice
 argument_list|>
 name|allowed

@@ -167,6 +167,8 @@ operator|.
 name|fpga
 operator|.
 name|FpgaResourceAllocator
+operator|.
+name|FpgaDevice
 import|;
 end_import
 
@@ -238,6 +240,12 @@ name|FpgaNodeResourceUpdateHandler
 extends|extends
 name|NodeResourceUpdaterPlugin
 block|{
+DECL|field|fpgaDiscoverer
+specifier|private
+specifier|final
+name|FpgaDiscoverer
+name|fpgaDiscoverer
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -254,6 +262,21 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|FpgaNodeResourceUpdateHandler (FpgaDiscoverer fpgaDiscoverer)
+specifier|public
+name|FpgaNodeResourceUpdateHandler
+parameter_list|(
+name|FpgaDiscoverer
+name|fpgaDiscoverer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fpgaDiscoverer
+operator|=
+name|fpgaDiscoverer
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|updateConfiguredResource (Resource res)
@@ -276,16 +299,11 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|FpgaResourceAllocator
-operator|.
 name|FpgaDevice
 argument_list|>
 name|list
 init|=
-name|FpgaDiscoverer
-operator|.
-name|getInstance
-argument_list|()
+name|fpgaDiscoverer
 operator|.
 name|getCurrentFpgaInfo
 argument_list|()
@@ -303,8 +321,6 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FpgaResourceAllocator
-operator|.
 name|FpgaDevice
 name|device
 range|:
