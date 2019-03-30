@@ -615,6 +615,11 @@ name|WRITE
 argument_list|)
 expr_stmt|;
 block|}
+name|mountTable
+operator|.
+name|validate
+argument_list|()
+expr_stmt|;
 block|}
 name|boolean
 name|status
@@ -708,6 +713,11 @@ name|WRITE
 argument_list|)
 expr_stmt|;
 block|}
+name|mountTable
+operator|.
+name|validate
+argument_list|()
+expr_stmt|;
 block|}
 name|boolean
 name|status

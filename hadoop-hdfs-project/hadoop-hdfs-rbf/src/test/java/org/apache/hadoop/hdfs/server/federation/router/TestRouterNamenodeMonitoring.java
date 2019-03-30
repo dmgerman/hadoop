@@ -552,7 +552,9 @@ name|nnId
 argument_list|,
 operator|new
 name|MockNamenode
-argument_list|()
+argument_list|(
+name|nsId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

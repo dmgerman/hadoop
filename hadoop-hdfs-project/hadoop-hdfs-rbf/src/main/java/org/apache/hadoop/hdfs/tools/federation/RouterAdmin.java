@@ -1392,7 +1392,7 @@ block|{
 return|return
 literal|"\t[-add<source><nameservice1, nameservice2, ...><destination> "
 operator|+
-literal|"[-readonly] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-readonly] [-faulttolerant] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]"
 return|;
@@ -1413,7 +1413,7 @@ literal|"\t[-update<source><nameservice1, nameservice2, ...> "
 operator|+
 literal|"<destination> "
 operator|+
-literal|"[-readonly] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-readonly] [-faulttolerant] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]"
 return|;
@@ -2955,6 +2955,11 @@ name|readOnly
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|faultTolerant
+init|=
+literal|false
+decl_stmt|;
 name|String
 name|owner
 init|=
@@ -3000,6 +3005,25 @@ argument_list|)
 condition|)
 block|{
 name|readOnly
+operator|=
+literal|true
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|parameters
+index|[
+name|i
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-faulttolerant"
+argument_list|)
+condition|)
+block|{
+name|faultTolerant
 operator|=
 literal|true
 expr_stmt|;
@@ -3175,6 +3199,8 @@ name|dest
 argument_list|,
 name|readOnly
 argument_list|,
+name|faultTolerant
+argument_list|,
 name|order
 argument_list|,
 operator|new
@@ -3190,7 +3216,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Add a mount table entry or update if it exists.    *    * @param mount Mount point.    * @param nss Namespaces where this is mounted to.    * @param dest Destination path.    * @param readonly If the mount point is read only.    * @param order Order of the destination locations.    * @param aclInfo the ACL info for mount point.    * @return If the mount point was added.    * @throws IOException Error adding the mount point.    */
-DECL|method|addMount (String mount, String[] nss, String dest, boolean readonly, DestinationOrder order, ACLEntity aclInfo)
+DECL|method|addMount (String mount, String[] nss, String dest, boolean readonly, boolean faultTolerant, DestinationOrder order, ACLEntity aclInfo)
 specifier|public
 name|boolean
 name|addMount
@@ -3207,6 +3233,9 @@ name|dest
 parameter_list|,
 name|boolean
 name|readonly
+parameter_list|,
+name|boolean
+name|faultTolerant
 parameter_list|,
 name|DestinationOrder
 name|order
@@ -3362,6 +3391,19 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|faultTolerant
+condition|)
+block|{
+name|newEntry
+operator|.
+name|setFaultTolerant
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|order
 operator|!=
 literal|null
@@ -3439,6 +3481,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|newEntry
+operator|.
+name|validate
+argument_list|()
+expr_stmt|;
 name|AddMountTableEntryRequest
 name|request
 init|=
@@ -3545,6 +3592,19 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|faultTolerant
+condition|)
+block|{
+name|existingEntry
+operator|.
+name|setFaultTolerant
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|order
 operator|!=
 literal|null
@@ -3622,6 +3682,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|existingEntry
+operator|.
+name|validate
+argument_list|()
+expr_stmt|;
 name|UpdateMountTableEntryRequest
 name|updateRequest
 init|=
@@ -3729,6 +3794,11 @@ name|readOnly
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|faultTolerant
+init|=
+literal|false
+decl_stmt|;
 name|String
 name|owner
 init|=
@@ -3772,6 +3842,25 @@ argument_list|)
 condition|)
 block|{
 name|readOnly
+operator|=
+literal|true
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|parameters
+index|[
+name|i
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-faulttolerant"
+argument_list|)
+condition|)
+block|{
+name|faultTolerant
 operator|=
 literal|true
 expr_stmt|;
@@ -3947,6 +4036,8 @@ name|dest
 argument_list|,
 name|readOnly
 argument_list|,
+name|faultTolerant
+argument_list|,
 name|order
 argument_list|,
 operator|new
@@ -3962,7 +4053,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Update a mount table entry.    *    * @param mount Mount point.    * @param nss Nameservices where this is mounted to.    * @param dest Destination path.    * @param readonly If the mount point is read only.    * @param order Order of the destination locations.    * @param aclInfo the ACL info for mount point.    * @return If the mount point was updated.    * @throws IOException Error updating the mount point.    */
-DECL|method|updateMount (String mount, String[] nss, String dest, boolean readonly, DestinationOrder order, ACLEntity aclInfo)
+DECL|method|updateMount (String mount, String[] nss, String dest, boolean readonly, boolean faultTolerant, DestinationOrder order, ACLEntity aclInfo)
 specifier|public
 name|boolean
 name|updateMount
@@ -3979,6 +4070,9 @@ name|dest
 parameter_list|,
 name|boolean
 name|readonly
+parameter_list|,
+name|boolean
+name|faultTolerant
 parameter_list|,
 name|DestinationOrder
 name|order
@@ -4053,6 +4147,13 @@ operator|.
 name|setReadOnly
 argument_list|(
 name|readonly
+argument_list|)
+expr_stmt|;
+name|newEntry
+operator|.
+name|setFaultTolerant
+argument_list|(
+name|faultTolerant
 argument_list|)
 expr_stmt|;
 if|if
