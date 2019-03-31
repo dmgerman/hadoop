@@ -127,6 +127,18 @@ specifier|abstract
 class|class
 name|MappableBlockLoader
 block|{
+comment|/**    * Initialize a specific MappableBlockLoader.    */
+DECL|method|initialize (FsDatasetCache cacheManager)
+specifier|abstract
+name|void
+name|initialize
+parameter_list|(
+name|FsDatasetCache
+name|cacheManager
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Load the block.    *    * Map the block, and then verify its checksum.    *    * @param length         The current length of the block.    * @param blockIn        The block input stream. Should be positioned at the    *                       start. The caller must close this.    * @param metaIn         The meta file input stream. Should be positioned at    *                       the start. The caller must close this.    * @param blockFileName  The block file name, for logging purposes.    * @param key            The extended block ID.    *    * @throws IOException   If mapping block to cache region fails or checksum    *                       fails.    *    * @return               The Mappable block.    */
 DECL|method|load (long length, FileInputStream blockIn, FileInputStream metaIn, String blockFileName, ExtendedBlockId key)
 specifier|abstract
@@ -151,7 +163,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Try to reserve some given bytes.    *    * @param bytesCount    *          The number of bytes to add.    *    * @return The new number of usedBytes if we succeeded; -1 if we failed.    */
+comment|/**    * Try to reserve some given bytes.    *    * @param bytesCount    The number of bytes to add.    *    * @return              The new number of usedBytes if we succeeded;    *                      -1 if we failed.    */
 DECL|method|reserve (long bytesCount)
 specifier|abstract
 name|long
@@ -161,7 +173,7 @@ name|long
 name|bytesCount
 parameter_list|)
 function_decl|;
-comment|/**    * Release some bytes that we're using.    *    * @param bytesCount    *          The number of bytes to release.    *    * @return The new number of usedBytes.    */
+comment|/**    * Release some bytes that we're using.    *    * @param bytesCount    The number of bytes to release.    *    * @return              The new number of usedBytes.    */
 DECL|method|release (long bytesCount)
 specifier|abstract
 name|long
@@ -169,6 +181,44 @@ name|release
 parameter_list|(
 name|long
 name|bytesCount
+parameter_list|)
+function_decl|;
+comment|/**    * Get the config key of cache capacity.    */
+DECL|method|getCacheCapacityConfigKey ()
+specifier|abstract
+name|String
+name|getCacheCapacityConfigKey
+parameter_list|()
+function_decl|;
+comment|/**    * Get the approximate amount of cache space used.    */
+DECL|method|getCacheUsed ()
+specifier|abstract
+name|long
+name|getCacheUsed
+parameter_list|()
+function_decl|;
+comment|/**    * Get the maximum amount of cache bytes.    */
+DECL|method|getCacheCapacity ()
+specifier|abstract
+name|long
+name|getCacheCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Check whether the cache is non-volatile.    */
+DECL|method|isTransientCache ()
+specifier|abstract
+name|boolean
+name|isTransientCache
+parameter_list|()
+function_decl|;
+comment|/**    * Get a cache file path if applicable. Otherwise return null.    */
+DECL|method|getCachedPath (ExtendedBlockId key)
+specifier|abstract
+name|String
+name|getCachedPath
+parameter_list|(
+name|ExtendedBlockId
+name|key
 parameter_list|)
 function_decl|;
 comment|/**    * Reads bytes into a buffer until EOF or the buffer's limit is reached.    */

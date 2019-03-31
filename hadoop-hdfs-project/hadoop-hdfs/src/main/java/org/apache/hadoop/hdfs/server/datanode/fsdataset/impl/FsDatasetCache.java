@@ -96,6 +96,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -382,20 +396,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|BlockListAsLongs
@@ -432,7 +432,39 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|DNConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|DatanodeUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ReflectionUtils
 import|;
 end_import
 
@@ -646,11 +678,12 @@ specifier|final
 name|long
 name|revocationPollingMs
 decl_stmt|;
-DECL|field|mappableBlockLoader
+comment|/**    * A specific cacheLoader could cache block either to DRAM or    * to persistent memory.    */
+DECL|field|cacheLoader
 specifier|private
 specifier|final
 name|MappableBlockLoader
-name|mappableBlockLoader
+name|cacheLoader
 decl_stmt|;
 DECL|field|memCacheStats
 specifier|private
@@ -850,16 +883,6 @@ name|revocationPollingMs
 operator|=
 name|confRevocationPollingMs
 expr_stmt|;
-name|this
-operator|.
-name|mappableBlockLoader
-operator|=
-operator|new
-name|MemoryMappableBlockLoader
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
 comment|// Both lazy writer and read cache are sharing this statistics.
 name|this
 operator|.
@@ -879,6 +902,136 @@ name|getMaxLockedMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|MappableBlockLoader
+argument_list|>
+name|cacheLoaderClass
+init|=
+name|dataset
+operator|.
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|getCacheLoaderClass
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|cacheLoader
+operator|=
+name|ReflectionUtils
+operator|.
+name|newInstance
+argument_list|(
+name|cacheLoaderClass
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|cacheLoader
+operator|.
+name|initialize
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Check if pmem cache is enabled.    */
+DECL|method|isPmemCacheEnabled ()
+specifier|private
+name|boolean
+name|isPmemCacheEnabled
+parameter_list|()
+block|{
+return|return
+operator|!
+name|cacheLoader
+operator|.
+name|isTransientCache
+argument_list|()
+return|;
+block|}
+DECL|method|getDnConf ()
+name|DNConf
+name|getDnConf
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|dataset
+operator|.
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+return|;
+block|}
+DECL|method|getMemCacheStats ()
+name|MemoryCacheStats
+name|getMemCacheStats
+parameter_list|()
+block|{
+return|return
+name|memCacheStats
+return|;
+block|}
+comment|/**    * Get the cache path if the replica is cached into persistent memory.    */
+DECL|method|getReplicaCachePath (String bpid, long blockId)
+name|String
+name|getReplicaCachePath
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|cacheLoader
+operator|.
+name|isTransientCache
+argument_list|()
+operator|||
+operator|!
+name|isCached
+argument_list|(
+name|bpid
+argument_list|,
+name|blockId
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|ExtendedBlockId
+name|key
+init|=
+operator|new
+name|ExtendedBlockId
+argument_list|(
+name|blockId
+argument_list|,
+name|bpid
+argument_list|)
+decl_stmt|;
+return|return
+name|cacheLoader
+operator|.
+name|getCachedPath
+argument_list|(
+name|key
+argument_list|)
+return|;
 block|}
 comment|/**    * @return List of cached blocks suitable for translation into a    * {@link BlockListAsLongs} for a cache report.    */
 DECL|method|getCachedBlocks (String bpid)
@@ -1581,7 +1734,7 @@ decl_stmt|;
 name|long
 name|newUsedBytes
 init|=
-name|mappableBlockLoader
+name|cacheLoader
 operator|.
 name|reserve
 argument_list|(
@@ -1616,13 +1769,14 @@ name|length
 operator|+
 literal|" more bytes in the cache: "
 operator|+
-name|DFSConfigKeys
+name|cacheLoader
 operator|.
-name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
+name|getCacheCapacityConfigKey
+argument_list|()
 operator|+
 literal|" of "
 operator|+
-name|memCacheStats
+name|cacheLoader
 operator|.
 name|getCacheCapacity
 argument_list|()
@@ -1731,7 +1885,7 @@ try|try
 block|{
 name|mappableBlock
 operator|=
-name|mappableBlockLoader
+name|cacheLoader
 operator|.
 name|load
 argument_list|(
@@ -1958,7 +2112,7 @@ condition|(
 name|reservedBytes
 condition|)
 block|{
-name|mappableBlockLoader
+name|cacheLoader
 operator|.
 name|release
 argument_list|(
@@ -2302,7 +2456,7 @@ block|}
 name|long
 name|newUsedBytes
 init|=
-name|mappableBlockLoader
+name|cacheLoader
 operator|.
 name|release
 argument_list|(
@@ -2370,7 +2524,7 @@ block|}
 block|}
 block|}
 comment|// Stats related methods for FSDatasetMBean
-comment|/**    * Get the approximate amount of cache space used.    */
+comment|/**    * Get the approximate amount of DRAM cache space used.    */
 DECL|method|getCacheUsed ()
 specifier|public
 name|long
@@ -2384,7 +2538,31 @@ name|getCacheUsed
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the maximum amount of bytes we can cache.  This is a constant.    */
+comment|/**    * Get the approximate amount of persistent memory cache space used.    * TODO: advertise this metric to NameNode by FSDatasetMBean    */
+DECL|method|getPmemCacheUsed ()
+specifier|public
+name|long
+name|getPmemCacheUsed
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isPmemCacheEnabled
+argument_list|()
+condition|)
+block|{
+return|return
+name|cacheLoader
+operator|.
+name|getCacheUsed
+argument_list|()
+return|;
+block|}
+return|return
+literal|0
+return|;
+block|}
+comment|/**    * Get the maximum amount of bytes we can cache on DRAM.  This is a constant.    */
 DECL|method|getCacheCapacity ()
 specifier|public
 name|long
@@ -2396,6 +2574,30 @@ name|memCacheStats
 operator|.
 name|getCacheCapacity
 argument_list|()
+return|;
+block|}
+comment|/**    * Get cache capacity of persistent memory.    * TODO: advertise this metric to NameNode by FSDatasetMBean    */
+DECL|method|getPmemCacheCapacity ()
+specifier|public
+name|long
+name|getPmemCacheCapacity
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isPmemCacheEnabled
+argument_list|()
+condition|)
+block|{
+return|return
+name|cacheLoader
+operator|.
+name|getCacheCapacity
+argument_list|()
+return|;
+block|}
+return|return
+literal|0
 return|;
 block|}
 DECL|method|getNumBlocksFailedToCache ()
@@ -2484,6 +2686,17 @@ name|state
 operator|.
 name|shouldAdvertise
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCacheLoader ()
+name|MappableBlockLoader
+name|getCacheLoader
+parameter_list|()
+block|{
+return|return
+name|cacheLoader
 return|;
 block|}
 block|}
