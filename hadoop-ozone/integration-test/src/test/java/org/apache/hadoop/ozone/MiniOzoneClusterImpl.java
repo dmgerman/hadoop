@@ -2508,7 +2508,6 @@ expr_stmt|;
 block|}
 comment|/**      * Creates a new OzoneManager instance.      *      * @return {@link OzoneManager}      *      * @throws IOException      */
 DECL|method|createOM ()
-specifier|private
 name|OzoneManager
 name|createOM
 parameter_list|()
