@@ -284,6 +284,15 @@ name|Metric
 name|MutableGaugeInt
 name|containersRunning
 decl_stmt|;
+DECL|field|containersPaused
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of paused containers"
+argument_list|)
+name|MutableGaugeInt
+name|containersPaused
+decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
@@ -731,6 +740,30 @@ name|endReInitingContainer
 parameter_list|()
 block|{
 name|containersReIniting
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|pausedContainer ()
+specifier|public
+name|void
+name|pausedContainer
+parameter_list|()
+block|{
+name|containersPaused
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|endPausedContainer ()
+specifier|public
+name|void
+name|endPausedContainer
+parameter_list|()
+block|{
+name|containersPaused
 operator|.
 name|decr
 argument_list|()
@@ -1361,6 +1394,19 @@ parameter_list|()
 block|{
 return|return
 name|containersRunning
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getPausedContainers ()
+specifier|public
+name|int
+name|getPausedContainers
+parameter_list|()
+block|{
+return|return
+name|containersPaused
 operator|.
 name|value
 argument_list|()
