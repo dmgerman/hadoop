@@ -310,7 +310,7 @@ name|SCMContainerMetrics
 operator|.
 name|class
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 decl_stmt|;
 DECL|method|SCMContainerMetrics (SCMMXBean scmmxBean)
