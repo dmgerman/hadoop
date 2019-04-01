@@ -676,6 +676,11 @@ specifier|private
 name|int
 name|retryCount
 decl_stmt|;
+DECL|field|offset
+specifier|private
+name|long
+name|offset
+decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
@@ -782,6 +787,10 @@ operator|.
 name|TRY_ONCE_THEN_FAIL
 expr_stmt|;
 name|retryCount
+operator|=
+literal|0
+expr_stmt|;
+name|offset
 operator|=
 literal|0
 expr_stmt|;
@@ -931,6 +940,18 @@ expr_stmt|;
 block|}
 return|return
 name|locationInfoList
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRetryCount ()
+specifier|public
+name|int
+name|getRetryCount
+parameter_list|()
+block|{
+return|return
+name|retryCount
 return|;
 block|}
 annotation|@
@@ -1804,6 +1825,10 @@ argument_list|,
 name|writeLen
 argument_list|)
 expr_stmt|;
+name|offset
+operator|+=
+name|writeLen
+expr_stmt|;
 block|}
 block|}
 catch|catch
@@ -1830,15 +1855,9 @@ operator|<=
 name|streamBufferMaxSize
 argument_list|)
 expr_stmt|;
-name|writeLen
-operator|=
-name|retry
-condition|?
-operator|(
 name|int
-operator|)
-name|len
-else|:
+name|dataWritten
+init|=
 call|(
 name|int
 call|)
@@ -1850,7 +1869,30 @@ argument_list|()
 operator|-
 name|currentPos
 argument_list|)
+decl_stmt|;
+name|writeLen
+operator|=
+name|retry
+condition|?
+operator|(
+name|int
+operator|)
+name|len
+else|:
+name|dataWritten
 expr_stmt|;
+comment|// In retry path, the data written is already accounted in offset.
+if|if
+condition|(
+operator|!
+name|retry
+condition|)
+block|{
+name|offset
+operator|+=
+name|writeLen
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|debug
@@ -1901,8 +1943,8 @@ name|writeLen
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Discards the subsequent pre allocated blocks and removes the streamEntries    * from the streamEntries list for the container which is closed.    * @param containerID id of the closed container    * @param pipelineId id of the associated pipeline    */
-DECL|method|discardPreallocatedBlocks (long containerID, PipelineID pipelineId)
+comment|/**    * Discards the subsequent pre allocated blocks and removes the streamEntries    * from the streamEntries list for the container which is closed.    * @param containerID id of the closed container    * @param pipelineId id of the associated pipeline    * @param streamIndex index of the stream    */
+DECL|method|discardPreallocatedBlocks (long containerID, PipelineID pipelineId, int streamIndex)
 specifier|private
 name|void
 name|discardPreallocatedBlocks
@@ -1912,13 +1954,18 @@ name|containerID
 parameter_list|,
 name|PipelineID
 name|pipelineId
+parameter_list|,
+name|int
+name|streamIndex
 parameter_list|)
 block|{
-comment|// currentStreamIndex< streamEntries.size() signifies that, there are still
+comment|// streamIndex< streamEntries.size() signifies that, there are still
 comment|// pre allocated blocks available.
+comment|// This will be called only to discard the next subsequent unused blocks
+comment|// in the sreamEntryList.
 if|if
 condition|(
-name|currentStreamIndex
+name|streamIndex
 operator|<
 name|streamEntries
 operator|.
@@ -1936,7 +1983,7 @@ name|streamEntries
 operator|.
 name|listIterator
 argument_list|(
-name|currentStreamIndex
+name|streamIndex
 argument_list|)
 decl_stmt|;
 while|while
@@ -1955,6 +2002,18 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|streamEntry
+operator|.
+name|getCurrentPosition
+argument_list|()
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|(
@@ -1994,13 +2053,6 @@ operator|==
 name|containerID
 operator|)
 operator|)
-operator|&&
-name|streamEntry
-operator|.
-name|getCurrentPosition
-argument_list|()
-operator|==
-literal|0
 condition|)
 block|{
 name|streamEntryIterator
@@ -2103,7 +2155,7 @@ name|retryFailure
 init|=
 name|checkForRetryFailure
 argument_list|(
-name|exception
+name|t
 argument_list|)
 decl_stmt|;
 name|boolean
@@ -2180,12 +2232,10 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|streamEntry
-operator|.
-name|getWrittenDataLength
-argument_list|()
+name|offset
 operator|-
-name|totalSuccessfulFlushedData
+name|getKeyLength
+argument_list|()
 operator|==
 name|bufferedDataLen
 argument_list|)
@@ -2238,10 +2288,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|checkIfContainerIsClosed
-argument_list|(
-name|t
-argument_list|)
+name|closedContainerException
 condition|)
 block|{
 name|excludeList
@@ -2293,6 +2340,55 @@ argument_list|(
 name|retryFailure
 argument_list|)
 expr_stmt|;
+comment|// discard all sunsequent blocks the containers and pipelines which
+comment|// are in the exclude list so that, the very next retry should never
+comment|// write data on the  closed container/pipeline
+if|if
+condition|(
+name|closedContainerException
+condition|)
+block|{
+comment|// discard subsequent pre allocated blocks from the streamEntries list
+comment|// from the closed container
+name|discardPreallocatedBlocks
+argument_list|(
+name|streamEntry
+operator|.
+name|getBlockID
+argument_list|()
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+name|streamIndex
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// In case there is timeoutException or Watch for commit happening over
+comment|// majority or the client connection failure to the leader in the
+comment|// pipeline, just discard all the preallocated blocks on this pipeline.
+comment|// Next block allocation will happen with excluding this specific pipeline
+comment|// This will ensure if 2 way commit happens , it cannot span over multiple
+comment|// blocks
+name|discardPreallocatedBlocks
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|pipelineId
+argument_list|,
+name|streamIndex
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|bufferedDataLen
@@ -2313,6 +2409,11 @@ argument_list|,
 name|bufferedDataLen
 argument_list|)
 expr_stmt|;
+comment|// reset the retryCount after handling the exception
+name|retryCount
+operator|=
+literal|0
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -2331,44 +2432,6 @@ expr_stmt|;
 name|currentStreamIndex
 operator|-=
 literal|1
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|closedContainerException
-condition|)
-block|{
-comment|// discard subsequent pre allocated blocks from the streamEntries list
-comment|// from the closed container
-name|discardPreallocatedBlocks
-argument_list|(
-name|streamEntry
-operator|.
-name|getBlockID
-argument_list|()
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// In case there is timeoutException or Watch for commit happening over
-comment|// majority or the client connection failure to the leader in the
-comment|// pipeline, just discard all the preallocated blocks on this pipeline.
-comment|// Next block allocation will happen with excluding this specific pipeline
-comment|// This will ensure if 2 way commit happens , it cannot span over multiple
-comment|// blocks
-name|discardPreallocatedBlocks
-argument_list|(
-operator|-
-literal|1
-argument_list|,
-name|pipelineId
-argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2997,12 +3060,26 @@ comment|// in test, this could be null
 name|removeEmptyBlocks
 argument_list|()
 expr_stmt|;
+name|long
+name|length
+init|=
+name|getKeyLength
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|offset
+operator|==
+name|length
+argument_list|)
+expr_stmt|;
 name|keyArgs
 operator|.
 name|setDataSize
 argument_list|(
-name|getKeyLength
-argument_list|()
+name|length
 argument_list|)
 expr_stmt|;
 name|keyArgs
