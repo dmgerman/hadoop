@@ -2220,6 +2220,18 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+comment|// This fakes the placement which is not part of the scheduler anymore
+name|ApplicationPlacementContext
+name|placementCtx
+init|=
+operator|new
+name|ApplicationPlacementContext
+argument_list|(
+name|queue
+argument_list|)
+decl_stmt|;
+comment|// Set the placement in the app and not just in the event in the next call
+comment|// otherwise with out of order event processing we might remove the app.
 name|RMApp
 name|rmApp
 init|=
@@ -2279,6 +2291,11 @@ argument_list|,
 literal|null
 argument_list|,
 name|amReqs
+argument_list|,
+name|placementCtx
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|rmContext

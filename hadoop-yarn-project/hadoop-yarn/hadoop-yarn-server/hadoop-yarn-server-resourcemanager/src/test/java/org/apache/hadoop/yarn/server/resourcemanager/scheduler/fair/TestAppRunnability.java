@@ -689,15 +689,13 @@ specifier|public
 name|void
 name|testNotUserAsDefaultQueue
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-comment|// Restarting resource manager since the Conf object is changed changed.
-name|resourceManager
-operator|.
-name|stop
+comment|// We need a new scheduler since we want to change the conf object. This
+comment|// requires a new RM to propagate it . Do a proper teardown to not leak
+name|tearDown
 argument_list|()
 expr_stmt|;
+comment|// Create a new one with the amended config.
 name|conf
 operator|.
 name|set
@@ -748,29 +746,9 @@ name|appAttemptId
 argument_list|,
 literal|"default"
 argument_list|,
-literal|"user2"
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|0
-argument_list|,
-name|scheduler
-operator|.
-name|getQueueManager
-argument_list|()
-operator|.
-name|getLeafQueue
-argument_list|(
 literal|"user1"
 argument_list|,
-literal|true
-argument_list|)
-operator|.
-name|getNumRunnableApps
-argument_list|()
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -804,7 +782,7 @@ argument_list|()
 operator|.
 name|getLeafQueue
 argument_list|(
-literal|"user2"
+literal|"user1"
 argument_list|,
 literal|true
 argument_list|)
@@ -821,8 +799,6 @@ specifier|public
 name|void
 name|testAppAdditionAndRemoval
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ApplicationAttemptId
 name|attemptId
