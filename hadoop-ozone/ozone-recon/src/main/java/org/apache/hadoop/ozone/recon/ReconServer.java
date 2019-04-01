@@ -152,22 +152,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|cli
-operator|.
-name|HddsVersionProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
@@ -284,46 +268,11 @@ name|Injector
 import|;
 end_import
 
-begin_import
-import|import
-name|picocli
-operator|.
-name|CommandLine
-operator|.
-name|Command
-import|;
-end_import
-
 begin_comment
 comment|/**  * Recon server main class that stops and starts recon services.  */
 end_comment
 
 begin_class
-annotation|@
-name|Command
-argument_list|(
-name|name
-operator|=
-literal|"ozone recon"
-argument_list|,
-name|hidden
-operator|=
-literal|true
-argument_list|,
-name|description
-operator|=
-literal|"File system health and other stats server."
-argument_list|,
-name|versionProvider
-operator|=
-name|HddsVersionProvider
-operator|.
-name|class
-argument_list|,
-name|mixinStandardHelpOptions
-operator|=
-literal|true
-argument_list|)
 DECL|class|ReconServer
 specifier|public
 class|class
