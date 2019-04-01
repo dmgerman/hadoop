@@ -1186,6 +1186,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -1292,6 +1306,11 @@ name|String
 name|appName
 init|=
 literal|""
+decl_stmt|;
+DECL|field|applicationId
+specifier|private
+name|ApplicationId
+name|applicationId
 decl_stmt|;
 comment|// App master priority
 DECL|field|amPriority
@@ -4532,14 +4551,13 @@ operator|.
 name|getApplicationSubmissionContext
 argument_list|()
 decl_stmt|;
-name|ApplicationId
-name|appId
-init|=
+name|applicationId
+operator|=
 name|appContext
 operator|.
 name|getApplicationId
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 comment|// Set up resource type requirements
 comment|// For now, both memory and vcores are supported, so we set memory and
 comment|// vcores requirements
@@ -4741,7 +4759,7 @@ name|appMasterJar
 argument_list|,
 name|appMasterJarPath
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -4769,7 +4787,7 @@ name|log4jPropFile
 argument_list|,
 name|log4jPath
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -4895,7 +4913,7 @@ name|path
 argument_list|,
 name|fileName
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -5004,7 +5022,7 @@ name|getRelativePath
 argument_list|(
 name|appName
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -5091,7 +5109,7 @@ literal|null
 argument_list|,
 name|shellCommandPath
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -5119,7 +5137,7 @@ literal|null
 argument_list|,
 name|shellArgsPath
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -6032,7 +6050,7 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|,
-name|appId
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -6174,7 +6192,7 @@ comment|// Monitor the application
 return|return
 name|monitorApplication
 argument_list|(
-name|appId
+name|applicationId
 argument_list|)
 return|;
 block|}
@@ -6765,6 +6783,17 @@ argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAppId ()
+name|ApplicationId
+name|getAppId
+parameter_list|()
+block|{
+return|return
+name|applicationId
+return|;
 block|}
 DECL|method|prepareTimelineDomain ()
 specifier|private
