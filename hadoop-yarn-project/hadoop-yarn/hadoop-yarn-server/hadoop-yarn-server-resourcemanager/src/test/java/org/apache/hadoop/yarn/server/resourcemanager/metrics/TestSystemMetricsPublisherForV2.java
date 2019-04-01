@@ -2104,7 +2104,15 @@ name|CREATED_IN_RM_EVENT_TYPE
 argument_list|,
 literal|0
 argument_list|,
-literal|0
+name|TimelineServiceHelper
+operator|.
+name|invertLong
+argument_list|(
+name|containerId
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
