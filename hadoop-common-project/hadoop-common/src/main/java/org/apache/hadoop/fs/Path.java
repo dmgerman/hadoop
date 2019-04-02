@@ -264,6 +264,21 @@ argument_list|(
 literal|"^/?[a-zA-Z]:"
 argument_list|)
 decl_stmt|;
+comment|/** Pre-compiled regular expressions to detect duplicated slashes. */
+DECL|field|SLASHES
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|SLASHES
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"/+"
+argument_list|)
+decl_stmt|;
 DECL|field|serialVersionUID
 specifier|private
 specifier|static
@@ -1100,17 +1115,18 @@ name|String
 name|path
 parameter_list|)
 block|{
-comment|// Remove double forward slashes.
+comment|// Remove duplicated slashes.
 name|path
 operator|=
-name|StringUtils
+name|SLASHES
 operator|.
-name|replace
+name|matcher
 argument_list|(
 name|path
-argument_list|,
-literal|"//"
-argument_list|,
+argument_list|)
+operator|.
+name|replaceAll
+argument_list|(
 literal|"/"
 argument_list|)
 expr_stmt|;
