@@ -562,6 +562,16 @@ begin_import
 import|import
 name|javax
 operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|xml
 operator|.
 name|parsers
@@ -13549,11 +13559,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Write out the non-default properties in this configuration to the    * given {@link Writer}.    *<ul>    *<li>    * When property name is not empty and the property exists in the    * configuration, this method writes the property and its attributes    * to the {@link Writer}.    *</li>    *    *<li>    * When property name is null or empty, this method writes all the    * configuration properties and their attributes to the {@link Writer}.    *</li>    *    *<li>    * When property name is not empty but the property doesn't exist in    * the configuration, this method throws an {@link IllegalArgumentException}.    *</li>    *</ul>    * @param out the writer to write to.    */
-DECL|method|writeXml (String propertyName, Writer out)
+DECL|method|writeXml (@ullable String propertyName, Writer out)
 specifier|public
 name|void
 name|writeXml
 parameter_list|(
+annotation|@
+name|Nullable
 name|String
 name|propertyName
 parameter_list|,
@@ -13638,12 +13650,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Return the XML DOM corresponding to this Configuration.    */
-DECL|method|asXmlDocument (String propertyName)
+DECL|method|asXmlDocument (@ullable String propertyName)
 specifier|private
 specifier|synchronized
 name|Document
 name|asXmlDocument
 parameter_list|(
+annotation|@
+name|Nullable
 name|String
 name|propertyName
 parameter_list|)
