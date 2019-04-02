@@ -7620,6 +7620,41 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|omRpcAdd
+operator|==
+literal|null
+operator|||
+name|omRpcAdd
+operator|.
+name|getAddress
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Incorrect om rpc address. omRpcAdd:{}"
+argument_list|,
+name|omRpcAdd
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Can't get SCM signed certificate. "
+operator|+
+literal|"omRpcAdd: "
+operator|+
+name|omRpcAdd
+argument_list|)
+throw|;
+block|}
 comment|// Get host name.
 name|String
 name|hostname
@@ -7687,13 +7722,7 @@ argument_list|)
 operator|.
 name|addIpAddress
 argument_list|(
-name|omRpcAdd
-operator|.
-name|getAddress
-argument_list|()
-operator|.
-name|getHostAddress
-argument_list|()
+name|hostname
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -7751,13 +7780,7 @@ argument_list|)
 operator|.
 name|setIpAddress
 argument_list|(
-name|omRpcAdd
-operator|.
-name|getAddress
-argument_list|()
-operator|.
-name|getHostAddress
-argument_list|()
+name|hostname
 argument_list|)
 operator|.
 name|setUuid
