@@ -809,6 +809,8 @@ argument_list|,
 name|StorageContainerLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|InetSocketAddress
@@ -868,6 +870,8 @@ argument_list|,
 name|ScmBlockLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|RPC
@@ -959,6 +963,8 @@ argument_list|,
 name|OzoneManagerProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|storageHandler
@@ -981,6 +987,8 @@ argument_list|,
 name|StorageContainerLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 argument_list|,
 name|this

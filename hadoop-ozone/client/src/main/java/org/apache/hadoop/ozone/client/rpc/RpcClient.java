@@ -1511,6 +1511,8 @@ argument_list|,
 name|StorageContainerLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|this

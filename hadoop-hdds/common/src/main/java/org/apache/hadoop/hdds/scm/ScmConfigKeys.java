@@ -1425,6 +1425,24 @@ name|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE_DEFAULT
 init|=
 literal|"network-topology-default.xml"
 decl_stmt|;
+DECL|field|HDDS_TRACING_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_TRACING_ENABLED
+init|=
+literal|"hdds.tracing.enabled"
+decl_stmt|;
+DECL|field|HDDS_TRACING_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HDDS_TRACING_ENABLED_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
 specifier|private

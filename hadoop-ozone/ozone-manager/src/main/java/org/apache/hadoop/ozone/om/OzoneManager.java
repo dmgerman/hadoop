@@ -5210,6 +5210,8 @@ argument_list|,
 name|ScmBlockLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
@@ -5402,6 +5404,8 @@ argument_list|,
 name|StorageContainerLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 return|return

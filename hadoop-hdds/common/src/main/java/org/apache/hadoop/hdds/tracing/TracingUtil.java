@@ -104,6 +104,22 @@ name|GlobalTracer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utility class to collect all the tracing helper methods.  */
 end_comment
@@ -422,8 +438,8 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a proxy of the implementation and trace all the method calls.    *    * @param delegate the original class instance    * @param interfce the interface which should be implemented by the proxy    * @param<T> the type of the interface    *    * @return A new interface which implements interfce but delegate all the    * calls to the delegate and also enables tracing.    */
-DECL|method|createProxy (T delegate, Class<T> interfce)
+comment|/**    * Creates a proxy of the implementation and trace all the method calls.    *    * @param delegate the original class instance    * @param interfce the interface which should be implemented by the proxy    * @param<T> the type of the interface    * @param conf configuration    *    * @return A new interface which implements interfce but delegate all the    * calls to the delegate and also enables tracing.    */
+DECL|method|createProxy (T delegate, Class<T> interfce, org.apache.hadoop.conf.Configuration conf)
 specifier|public
 specifier|static
 parameter_list|<
@@ -440,8 +456,45 @@ argument_list|<
 name|T
 argument_list|>
 name|interfce
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+name|conf
 parameter_list|)
 block|{
+name|boolean
+name|isTracingEnabled
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|HDDS_TRACING_ENABLED
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|HDDS_TRACING_ENABLED_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isTracingEnabled
+condition|)
+block|{
+return|return
+name|delegate
+return|;
+block|}
 name|Class
 argument_list|<
 name|?

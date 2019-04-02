@@ -2300,6 +2300,8 @@ argument_list|,
 name|OzoneManagerProtocolPB
 operator|.
 name|class
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|this

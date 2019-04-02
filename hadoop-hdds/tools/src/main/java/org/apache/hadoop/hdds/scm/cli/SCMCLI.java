@@ -1025,6 +1025,8 @@ argument_list|,
 name|StorageContainerLocationProtocol
 operator|.
 name|class
+argument_list|,
+name|ozoneConf
 argument_list|)
 decl_stmt|;
 return|return
