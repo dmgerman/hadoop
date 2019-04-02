@@ -426,6 +426,16 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 function_decl|;
+DECL|method|getHddsDatanodeIndex (DatanodeDetails dn)
+name|int
+name|getHddsDatanodeIndex
+parameter_list|(
+name|DatanodeDetails
+name|dn
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Restart a particular HddsDatanode.    *    * @param dn HddsDatanode in the MiniOzoneCluster    */
 DECL|method|restartHddsDatanode (DatanodeDetails dn, boolean waitForDatanode)
 name|void

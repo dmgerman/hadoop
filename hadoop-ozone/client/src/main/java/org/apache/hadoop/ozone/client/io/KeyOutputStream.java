@@ -404,6 +404,20 @@ name|ratis
 operator|.
 name|protocol
 operator|.
+name|GroupMismatchException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
 name|RaftRetryFailureException
 import|;
 end_import
@@ -2210,13 +2224,15 @@ name|warn
 argument_list|(
 literal|"Encountered exception {}. The last committed block length is {}, "
 operator|+
-literal|"uncommitted data length is {}"
+literal|"uncommitted data length is {} retry count {}"
 argument_list|,
 name|exception
 argument_list|,
 name|totalSuccessfulFlushedData
 argument_list|,
 name|bufferedDataLen
+argument_list|,
+name|retryCount
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -2312,6 +2328,10 @@ operator|||
 name|t
 operator|instanceof
 name|TimeoutException
+operator|||
+name|t
+operator|instanceof
+name|GroupMismatchException
 condition|)
 block|{
 name|pipelineId
@@ -2510,6 +2530,11 @@ operator|.
 name|FAIL
 condition|)
 block|{
+name|String
+name|msg
+init|=
+literal|""
+decl_stmt|;
 if|if
 condition|(
 name|action
@@ -2519,22 +2544,32 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
+name|msg
+operator|=
 literal|"Retry request failed. "
 operator|+
 name|action
 operator|.
 name|reason
+expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
 argument_list|,
 name|exception
 argument_list|)
 expr_stmt|;
 block|}
 throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|,
 name|exception
+argument_list|)
 throw|;
 block|}
 comment|// Throw the exception if the thread is interrupted

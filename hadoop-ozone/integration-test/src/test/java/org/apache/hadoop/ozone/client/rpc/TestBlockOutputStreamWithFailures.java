@@ -346,7 +346,7 @@ name|ratis
 operator|.
 name|protocol
 operator|.
-name|AlreadyClosedException
+name|RaftRetryFailureException
 import|;
 end_import
 
@@ -3072,7 +3072,7 @@ name|getIoException
 argument_list|()
 argument_list|)
 operator|instanceof
-name|AlreadyClosedException
+name|RaftRetryFailureException
 argument_list|)
 expr_stmt|;
 comment|// Make sure the retryCount is reset after the exception is handled
@@ -6354,7 +6354,7 @@ name|getIoException
 argument_list|()
 argument_list|)
 operator|instanceof
-name|AlreadyClosedException
+name|RaftRetryFailureException
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -7197,7 +7197,7 @@ name|getIoException
 argument_list|()
 argument_list|)
 operator|instanceof
-name|AlreadyClosedException
+name|RaftRetryFailureException
 argument_list|)
 expr_stmt|;
 comment|// Make sure the retryCount is reset after the exception is handled

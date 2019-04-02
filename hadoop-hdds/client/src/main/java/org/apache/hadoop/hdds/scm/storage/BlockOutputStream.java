@@ -562,6 +562,20 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|stream
 operator|.
 name|Collectors
@@ -729,7 +743,10 @@ comment|// exception received in the response. If the exception is set, the next
 comment|// request will fail upfront.
 DECL|field|ioException
 specifier|private
+name|AtomicReference
+argument_list|<
 name|IOException
+argument_list|>
 name|ioException
 decl_stmt|;
 DECL|field|responseExecutor
@@ -1043,6 +1060,15 @@ name|bufferList
 operator|=
 literal|null
 expr_stmt|;
+name|ioException
+operator|=
+operator|new
+name|AtomicReference
+argument_list|<>
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getBlockID ()
 specifier|public
@@ -1123,8 +1149,6 @@ return|return
 name|bufferPool
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getIoException ()
 specifier|public
 name|IOException
@@ -1133,6 +1157,9 @@ parameter_list|()
 block|{
 return|return
 name|ioException
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -1747,18 +1774,8 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
-name|ioException
-operator|=
-operator|new
-name|IOException
+name|setIoException
 argument_list|(
-literal|"Unexpected Storage Container Exception: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -1766,7 +1783,8 @@ name|adjustBuffersOnException
 argument_list|()
 expr_stmt|;
 throw|throw
-name|ioException
+name|getIoException
+argument_list|()
 throw|;
 block|}
 if|if
@@ -2017,22 +2035,17 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+name|setIoException
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
 name|adjustBuffersOnException
 argument_list|()
 expr_stmt|;
 throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unexpected Storage Container Exception: "
-operator|+
-name|e
-operator|.
-name|toString
+name|getIoException
 argument_list|()
-argument_list|,
-name|e
-argument_list|)
 throw|;
 block|}
 block|}
@@ -2170,7 +2183,8 @@ block|}
 comment|// if the ioException is not set, putBlock is successful
 if|if
 condition|(
-name|ioException
+name|getIoException
+argument_list|()
 operator|==
 literal|null
 condition|)
@@ -2415,18 +2429,8 @@ parameter_list|)
 block|{
 comment|// just set the exception here as well in order to maintain sanctity of
 comment|// ioException field
-name|ioException
-operator|=
-operator|new
-name|IOException
+name|setIoException
 argument_list|(
-literal|"Unexpected Storage Container Exception: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -2434,7 +2438,8 @@ name|adjustBuffersOnException
 argument_list|()
 expr_stmt|;
 throw|throw
-name|ioException
+name|getIoException
+argument_list|()
 throw|;
 block|}
 block|}
@@ -2691,18 +2696,8 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
-name|ioException
-operator|=
-operator|new
-name|IOException
+name|setIoException
 argument_list|(
-literal|"Unexpected Storage Container Exception: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -2710,7 +2705,8 @@ name|adjustBuffersOnException
 argument_list|()
 expr_stmt|;
 throw|throw
-name|ioException
+name|getIoException
+argument_list|()
 throw|;
 block|}
 finally|finally
@@ -2790,15 +2786,21 @@ block|{
 comment|// if the ioException is already set, it means a prev request has failed
 comment|// just throw the exception. The current operation will fail with the
 comment|// original error
+name|IOException
+name|exception
+init|=
+name|getIoException
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|ioException
+name|exception
 operator|!=
 literal|null
 condition|)
 block|{
 throw|throw
-name|ioException
+name|exception
 throw|;
 block|}
 name|ContainerProtocolCalls
@@ -2845,13 +2847,15 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|ioException
-operator|!=
+name|getIoException
+argument_list|()
+operator|==
 literal|null
 condition|)
 block|{
-name|ioException
-operator|=
+name|IOException
+name|exception
+init|=
 operator|new
 name|IOException
 argument_list|(
@@ -2863,6 +2867,15 @@ name|toString
 argument_list|()
 argument_list|,
 name|e
+argument_list|)
+decl_stmt|;
+name|ioException
+operator|.
+name|compareAndSet
+argument_list|(
+literal|null
+argument_list|,
+name|exception
 argument_list|)
 expr_stmt|;
 block|}
@@ -2985,7 +2998,8 @@ block|}
 elseif|else
 if|if
 condition|(
-name|ioException
+name|getIoException
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -2994,7 +3008,8 @@ name|adjustBuffersOnException
 argument_list|()
 expr_stmt|;
 throw|throw
-name|ioException
+name|getIoException
+argument_list|()
 throw|;
 block|}
 block|}

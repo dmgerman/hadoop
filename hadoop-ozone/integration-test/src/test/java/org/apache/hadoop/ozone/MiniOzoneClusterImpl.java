@@ -1110,8 +1110,10 @@ return|return
 name|hddsDatanodes
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getHddsDatanodeIndex (DatanodeDetails dn)
-specifier|private
+specifier|public
 name|int
 name|getHddsDatanodeIndex
 parameter_list|(
