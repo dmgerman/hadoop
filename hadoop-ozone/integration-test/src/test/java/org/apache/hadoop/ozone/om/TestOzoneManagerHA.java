@@ -718,7 +718,7 @@ name|setInt
 argument_list|(
 name|OZONE_CLIENT_RETRY_MAX_ATTEMPTS_KEY
 argument_list|,
-literal|3
+literal|10
 argument_list|)
 expr_stmt|;
 name|conf
@@ -727,7 +727,7 @@ name|setInt
 argument_list|(
 name|OZONE_CLIENT_FAILOVER_MAX_ATTEMPTS_KEY
 argument_list|,
-literal|3
+literal|10
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -1217,6 +1217,15 @@ operator|.
 name|stopOzoneManager
 argument_list|(
 name|leaderOMNodeId
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|NODE_FAILURE_TIMEOUT
+operator|*
+literal|2
 argument_list|)
 expr_stmt|;
 name|createMultipartKeyAndReadKey
@@ -2442,12 +2451,12 @@ name|e
 parameter_list|)
 block|{
 comment|// Each retry attempt tries upto 10 times to connect. So there should be
-comment|// 3*10 "Retrying connect to server" messages
+comment|// 10*10 "Retrying connect to server" messages
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|30
+literal|100
 argument_list|,
 name|appender
 operator|.
@@ -2469,7 +2478,7 @@ name|countLinesWithMessage
 argument_list|(
 literal|"Failed to connect to OM. Attempted "
 operator|+
-literal|"3 retries and 3 failovers"
+literal|"10 retries and 10 failovers"
 argument_list|)
 argument_list|)
 expr_stmt|;
