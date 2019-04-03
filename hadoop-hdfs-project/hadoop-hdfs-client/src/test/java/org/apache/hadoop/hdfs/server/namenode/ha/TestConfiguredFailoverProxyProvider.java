@@ -890,7 +890,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add more DNS related settings to the passed in configuration.    * @param config Configuration file to add settings to.    */
-DECL|method|addDNSSettings (Configuration config, boolean hostResolvable)
+DECL|method|addDNSSettings (Configuration config, boolean hostResolvable, boolean useFQDN)
 specifier|private
 name|void
 name|addDNSSettings
@@ -900,6 +900,9 @@ name|config
 parameter_list|,
 name|boolean
 name|hostResolvable
+parameter_list|,
+name|boolean
+name|useFQDN
 parameter_list|)
 block|{
 name|config
@@ -1027,6 +1030,23 @@ operator|+
 name|ns3
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|config
+operator|.
+name|setBoolean
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|RESOLVE_ADDRESS_TO_FQDN
+operator|+
+literal|"."
+operator|+
+name|ns3
+argument_list|,
+name|useFQDN
 argument_list|)
 expr_stmt|;
 block|}
@@ -1619,13 +1639,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-DECL|method|testResolveDomainNameUsingDNS ()
-specifier|public
+DECL|method|testResolveDomainNameUsingDNS (boolean useFQDN)
+specifier|private
 name|void
 name|testResolveDomainNameUsingDNS
-parameter_list|()
+parameter_list|(
+name|boolean
+name|useFQDN
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -1643,6 +1664,8 @@ argument_list|(
 name|dnsConf
 argument_list|,
 literal|true
+argument_list|,
+name|useFQDN
 argument_list|)
 expr_stmt|;
 comment|// Mock ClientProtocol
@@ -1665,9 +1688,15 @@ name|nn1Count
 init|=
 name|addClientMock
 argument_list|(
+name|useFQDN
+condition|?
 name|MockDomainNameResolver
 operator|.
-name|BYTE_ADDR_1
+name|FQDN_1
+else|:
+name|MockDomainNameResolver
+operator|.
+name|ADDR_1
 argument_list|,
 name|proxyMap
 argument_list|)
@@ -1678,9 +1707,15 @@ name|nn2Count
 init|=
 name|addClientMock
 argument_list|(
+name|useFQDN
+condition|?
 name|MockDomainNameResolver
 operator|.
-name|BYTE_ADDR_2
+name|FQDN_2
+else|:
+name|MockDomainNameResolver
+operator|.
+name|ADDR_2
 argument_list|,
 name|proxyMap
 argument_list|)
@@ -1807,6 +1842,36 @@ name|getStats
 argument_list|()
 expr_stmt|;
 block|}
+name|String
+name|resolvedHost1
+init|=
+name|useFQDN
+condition|?
+name|MockDomainNameResolver
+operator|.
+name|FQDN_1
+else|:
+literal|"/"
+operator|+
+name|MockDomainNameResolver
+operator|.
+name|ADDR_1
+decl_stmt|;
+name|String
+name|resolvedHost2
+init|=
+name|useFQDN
+condition|?
+name|MockDomainNameResolver
+operator|.
+name|FQDN_2
+else|:
+literal|"/"
+operator|+
+name|MockDomainNameResolver
+operator|.
+name|ADDR_2
+decl_stmt|;
 comment|// Check we got the proper addresses
 name|assertEquals
 argument_list|(
@@ -1828,11 +1893,7 @@ name|proxyResults
 operator|.
 name|containsKey
 argument_list|(
-literal|"/"
-operator|+
-name|MockDomainNameResolver
-operator|.
-name|ADDR_1
+name|resolvedHost1
 operator|+
 literal|":8020"
 argument_list|)
@@ -1848,11 +1909,7 @@ name|proxyResults
 operator|.
 name|containsKey
 argument_list|(
-literal|"/"
-operator|+
-name|MockDomainNameResolver
-operator|.
-name|ADDR_2
+name|resolvedHost2
 operator|+
 literal|":8020"
 argument_list|)
@@ -1945,6 +2002,29 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testResolveDomainNameUsingDNS ()
+specifier|public
+name|void
+name|testResolveDomainNameUsingDNS
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// test resolving to IP
+name|testResolveDomainNameUsingDNS
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// test resolving to FQDN
+name|testResolveDomainNameUsingDNS
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testResolveDomainNameUsingDNSUnknownHost ()
 specifier|public
 name|void
@@ -1965,6 +2045,8 @@ decl_stmt|;
 name|addDNSSettings
 argument_list|(
 name|dnsConf
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -2023,15 +2105,14 @@ name|provider
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a ClientProtocol mock for the proxy.    * @param addr IP address for the destination.    * @param proxyMap Map containing the client for each target address.    * @return The counter for the number of calls to this target.    * @throws Exception If the client cannot be created.    */
-DECL|method|addClientMock ( byte[] addr, Map<InetSocketAddress, ClientProtocol> proxyMap)
+comment|/**    * Add a ClientProtocol mock for the proxy.    * @param host host name for the destination.    * @param proxyMap Map containing the client for each target address.    * @return The counter for the number of calls to this target.    * @throws Exception If the client cannot be created.    */
+DECL|method|addClientMock ( String host, Map<InetSocketAddress, ClientProtocol> proxyMap)
 specifier|private
 name|AtomicInteger
 name|addClientMock
 parameter_list|(
-name|byte
-index|[]
-name|addr
+name|String
+name|host
 parameter_list|,
 name|Map
 argument_list|<
@@ -2054,23 +2135,13 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|InetAddress
-name|inetAddr
-init|=
-name|InetAddress
-operator|.
-name|getByAddress
-argument_list|(
-name|addr
-argument_list|)
-decl_stmt|;
 name|InetSocketAddress
 name|inetSockerAddr
 init|=
 operator|new
 name|InetSocketAddress
 argument_list|(
-name|inetAddr
+name|host
 argument_list|,
 name|rpcPort
 argument_list|)

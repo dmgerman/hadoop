@@ -58,6 +58,30 @@ parameter_list|)
 throws|throws
 name|UnknownHostException
 function_decl|;
+comment|/**    * Reverse lookup an IP address and get the fully qualified domain name(fqdn).    *    * @param address    * @return fully qualified domain name    */
+DECL|method|getHostnameByIP (InetAddress address)
+name|String
+name|getHostnameByIP
+parameter_list|(
+name|InetAddress
+name|address
+parameter_list|)
+function_decl|;
+comment|/**    * This function combines getAllByDomainName and getHostnameByIP, for a single    * domain name, it will first do a forward lookup to get all of IP addresses,    * then for each IP address, it will do a reverse lookup to get the fqdn.    * This function is necessary in secure environment since Kerberos uses fqdn    * in the service principal instead of IP.    *    * @param domainName    * @return all fully qualified domain names belonging to the IPs resolved from    * the input domainName    * @throws UnknownHostException    */
+DECL|method|getAllResolvedHostnameByDomainName ( String domainName, boolean useFQDN)
+name|String
+index|[]
+name|getAllResolvedHostnameByDomainName
+parameter_list|(
+name|String
+name|domainName
+parameter_list|,
+name|boolean
+name|useFQDN
+parameter_list|)
+throws|throws
+name|UnknownHostException
+function_decl|;
 block|}
 end_interface
 

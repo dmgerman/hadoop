@@ -1144,6 +1144,20 @@ name|PREFIX
 operator|+
 literal|"resolver.impl"
 decl_stmt|;
+DECL|field|RESOLVE_ADDRESS_TO_FQDN
+name|String
+name|RESOLVE_ADDRESS_TO_FQDN
+init|=
+name|PREFIX
+operator|+
+literal|"useFQDN"
+decl_stmt|;
+DECL|field|RESOLVE_ADDRESS_TO_FQDN_DEFAULT
+name|boolean
+name|RESOLVE_ADDRESS_TO_FQDN_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 block|}
 comment|/** dfs.client.write configuration properties */
 DECL|interface|Write
