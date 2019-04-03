@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Arrays
@@ -141,6 +151,20 @@ operator|.
 name|examples
 operator|.
 name|WordCount
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileStatus
 import|;
 end_import
 
@@ -410,6 +434,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|Constants
+operator|.
+name|S3GUARD_METASTORE_NULL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3ATestUtils
 operator|.
 name|assumeSessionTestsEnabled
@@ -575,7 +617,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Submit a job with S3 delegation tokens.  *  * YARN will not collect DTs unless it is running secure, and turning  * security on complicates test setup "significantly".  * Specifically: buts of MR refuse to work on a local FS unless the  * native libraries are loaded and it can use lower level POSIX APIs  * for creating files and directories with specific permissions.  * In production, this is a good thing. In tests, this is not.  *  * To address this, Job to YARN communications are mocked.  * The client-side job submission is as normal, but the implementation  * of org.apache.hadoop.mapreduce.protocol.ClientProtocol is mock.  *  * It's still an ITest though, as it does use S3A as the source and  * dest so as to collect URLs.  */
+comment|/**  * Submit a job with S3 delegation tokens.  *  * YARN will not collect DTs unless it is running secure, and turning  * security on complicates test setup "significantly".  * Specifically: buts of MR refuse to work on a local FS unless the  * native libraries are loaded and it can use lower level POSIX APIs  * for creating files and directories with specific permissions.  * In production, this is a good thing. In tests, this is not.  *  * To address this, Job to YARN communications are mocked.  * The client-side job submission is as normal, but the implementation  * of org.apache.hadoop.mapreduce.protocol.ClientProtocol is mock.  *  * It's still an ITest though, as it does use S3A as the source and  * dest so as to collect delegation tokens.  *  * It also uses the open street map open bucket, so that there's an extra  * S3 URL in job submission which can be added as a job resource.  * This is needed to verify that job resources have their tokens extracted  * too.  */
 end_comment
 
 begin_class
@@ -649,6 +691,31 @@ DECL|field|destPath
 specifier|private
 name|Path
 name|destPath
+decl_stmt|;
+DECL|field|EXTRA_JOB_RESOURCE_PATH
+specifier|private
+specifier|static
+specifier|final
+name|Path
+name|EXTRA_JOB_RESOURCE_PATH
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"s3a://osm-pds/planet/planet-latest.orc"
+argument_list|)
+decl_stmt|;
+DECL|field|jobResource
+specifier|public
+specifier|static
+specifier|final
+name|URI
+name|jobResource
+init|=
+name|EXTRA_JOB_RESOURCE_PATH
+operator|.
+name|toUri
+argument_list|()
 decl_stmt|;
 comment|/**    * Test array for parameterized test runs.    * @return a list of parameter tuples.    */
 annotation|@
@@ -850,6 +917,48 @@ operator|.
 name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 argument_list|,
 literal|10_000
+argument_list|)
+expr_stmt|;
+comment|// turn off DDB for the job resource bucket
+name|String
+name|host
+init|=
+name|jobResource
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"fs.s3a.bucket.%s.metadatastore.impl"
+argument_list|,
+name|host
+argument_list|)
+argument_list|,
+name|S3GUARD_METASTORE_NULL
+argument_list|)
+expr_stmt|;
+comment|// and fix to the main endpoint if the caller has moved
+name|conf
+operator|.
+name|set
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"fs.s3a.bucket.%s.endpoint"
+argument_list|,
+name|host
+argument_list|)
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
 comment|// set up DTs
@@ -1061,6 +1170,59 @@ return|;
 block|}
 annotation|@
 name|Test
+DECL|method|testCommonCrawlLookup ()
+specifier|public
+name|void
+name|testCommonCrawlLookup
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|FileSystem
+name|resourceFS
+init|=
+name|EXTRA_JOB_RESOURCE_PATH
+operator|.
+name|getFileSystem
+argument_list|(
+name|getConfiguration
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|FileStatus
+name|status
+init|=
+name|resourceFS
+operator|.
+name|getFileStatus
+argument_list|(
+name|EXTRA_JOB_RESOURCE_PATH
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Extra job resource is {}"
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Not encrypted: "
+operator|+
+name|status
+argument_list|,
+name|status
+operator|.
+name|isEncrypted
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testJobSubmissionCollectsTokens ()
 specifier|public
 name|void
@@ -1269,6 +1431,31 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+comment|// and a file for a different store.
+comment|// This is to actually stress the terasort code for which
+comment|// the yarn ResourceLocalizationService was having problems with
+comment|// fetching resources from.
+name|URI
+name|partitionUri
+init|=
+operator|new
+name|URI
+argument_list|(
+name|EXTRA_JOB_RESOURCE_PATH
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"#_partition.lst"
+argument_list|)
+decl_stmt|;
+name|job
+operator|.
+name|addCacheFile
+argument_list|(
+name|partitionUri
+argument_list|)
+expr_stmt|;
 name|describe
 argument_list|(
 literal|"Executing Mock Job Submission to %s"
@@ -1406,6 +1593,23 @@ argument_list|(
 name|submittedCredentials
 argument_list|,
 name|fs
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|tokenKind
+argument_list|)
+expr_stmt|;
+name|lookupToken
+argument_list|(
+name|submittedCredentials
+argument_list|,
+name|EXTRA_JOB_RESOURCE_PATH
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
 operator|.
 name|getUri
 argument_list|()

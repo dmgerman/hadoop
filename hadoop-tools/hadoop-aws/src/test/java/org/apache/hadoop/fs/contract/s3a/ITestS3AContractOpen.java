@@ -142,6 +142,19 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * S3A always declares zero byte files as encrypted.    * @return true, always.    */
+annotation|@
+name|Override
+DECL|method|areZeroByteFilesEncrypted ()
+specifier|protected
+name|boolean
+name|areZeroByteFilesEncrypted
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

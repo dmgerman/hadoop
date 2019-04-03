@@ -380,11 +380,27 @@ name|getKind
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
+name|AbstractS3ATokenIdentifier
+name|tid
+init|=
 name|token
 operator|.
 name|decodeIdentifier
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found for URI {}, token {}"
+argument_list|,
+name|uri
+argument_list|,
+name|tid
+argument_list|)
+expr_stmt|;
+return|return
+name|tid
 return|;
 block|}
 comment|/**    * Create credentials with the DTs of the given FS.    * @param fs filesystem    * @return a non-empty set of credentials.    * @throws IOException failure to create.    */
