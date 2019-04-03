@@ -49,7 +49,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An id which uniquely identifies an inode. Id 1 to 1000 are reserved for  * potential future usage. The id won't be recycled and is not expected to wrap  * around in a very long time. Root inode id is always 1001. Id 0 is used for  * backward compatibility support.  */
+comment|/**  * An id which uniquely identifies an inode. Id 1 to 16384 are reserved for  * potential future usage. The id won't be recycled and is not expected to wrap  * around in a very long time. Root inode id is always 16385. Id 0 is used for  * backward compatibility support.  */
 end_comment
 
 begin_class
@@ -72,12 +72,11 @@ specifier|final
 name|long
 name|LAST_RESERVED_ID
 init|=
-literal|2
+literal|1
 operator|<<
 literal|14
-operator|-
-literal|1
 decl_stmt|;
+comment|// 16384
 DECL|field|ROOT_INODE_ID
 specifier|public
 specifier|static
@@ -89,6 +88,7 @@ name|LAST_RESERVED_ID
 operator|+
 literal|1
 decl_stmt|;
+comment|// 16385
 DECL|field|INVALID_INODE_ID
 specifier|public
 specifier|static
