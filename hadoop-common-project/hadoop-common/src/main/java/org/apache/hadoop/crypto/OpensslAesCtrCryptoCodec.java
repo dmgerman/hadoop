@@ -146,7 +146,7 @@ name|crypto
 operator|.
 name|random
 operator|.
-name|OsSecureRandom
+name|OpensslSecureRandom
 import|;
 end_import
 
@@ -290,7 +290,7 @@ name|getClass
 argument_list|(
 name|HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY
 argument_list|,
-name|OsSecureRandom
+name|OpensslSecureRandom
 operator|.
 name|class
 argument_list|,
