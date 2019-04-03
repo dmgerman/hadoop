@@ -526,6 +526,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -749,10 +761,10 @@ name|chunksPerBlock
 init|=
 literal|4
 decl_stmt|;
-name|KeyValueContainerCheck
-operator|.
-name|KvCheckError
-name|error
+name|boolean
+name|corruption
+init|=
+literal|false
 decl_stmt|;
 comment|// test Closed Container
 name|createContainerWithBlocks
@@ -815,22 +827,16 @@ name|containerID
 argument_list|)
 decl_stmt|;
 comment|// first run checks on a Open Container
-name|error
+name|corruption
 operator|=
 name|kvCheck
 operator|.
 name|fastCheck
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
-name|error
-operator|==
-name|KeyValueContainerCheck
-operator|.
-name|KvCheckError
-operator|.
-name|ERROR_NONE
+name|corruption
 argument_list|)
 expr_stmt|;
 name|container
@@ -839,22 +845,16 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|// next run checks on a Closed Container
-name|error
+name|corruption
 operator|=
 name|kvCheck
 operator|.
 name|fullCheck
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
-name|error
-operator|==
-name|KeyValueContainerCheck
-operator|.
-name|KvCheckError
-operator|.
-name|ERROR_NONE
+name|corruption
 argument_list|)
 expr_stmt|;
 block|}
