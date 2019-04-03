@@ -20,39 +20,72 @@ end_package
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|glassfish
+name|google
 operator|.
-name|jersey
+name|inject
 operator|.
-name|server
+name|Injector
+import|;
+end_import
+
+begin_import
+import|import
+name|com
 operator|.
-name|ResourceConfig
+name|google
+operator|.
+name|inject
+operator|.
+name|servlet
+operator|.
+name|GuiceServletContextListener
 import|;
 end_import
 
 begin_comment
-comment|/**  * JaxRS resource definition.  */
+comment|/**  * Servlet Context Listener that provides the Guice injector.  */
 end_comment
 
 begin_class
-DECL|class|ReconApplication
+DECL|class|ReconGuiceServletContextListener
 specifier|public
 class|class
-name|ReconApplication
+name|ReconGuiceServletContextListener
 extends|extends
-name|ResourceConfig
+name|GuiceServletContextListener
 block|{
-DECL|method|ReconApplication ()
+DECL|field|injector
+specifier|private
+specifier|static
+name|Injector
+name|injector
+decl_stmt|;
+annotation|@
+name|Override
+DECL|method|getInjector ()
 specifier|public
-name|ReconApplication
+name|Injector
+name|getInjector
 parameter_list|()
 block|{
-name|packages
-argument_list|(
-literal|"org.apache.hadoop.ozone.recon.api"
-argument_list|)
+return|return
+name|injector
+return|;
+block|}
+DECL|method|setInjector (Injector inj)
+specifier|static
+name|void
+name|setInjector
+parameter_list|(
+name|Injector
+name|inj
+parameter_list|)
+block|{
+name|injector
+operator|=
+name|inj
 expr_stmt|;
 block|}
 block|}

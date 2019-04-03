@@ -475,6 +475,20 @@ argument_list|,
 name|keyVersion
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|containerDBServiceProvider
+operator|.
+name|getCountForForContainerKeyPrefix
+argument_list|(
+name|containerKeyPrefix
+argument_list|)
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Save on writes. No need to save same container-key prefix
+comment|// mapping again.
 name|containerDBServiceProvider
 operator|.
 name|storeContainerKeyMapping
@@ -484,6 +498,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|containerCount
 operator|++
 expr_stmt|;

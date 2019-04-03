@@ -446,7 +446,7 @@ argument_list|)
 expr_stmt|;
 name|FileUtils
 operator|.
-name|deleteQuietly
+name|deleteDirectory
 argument_list|(
 name|oldDBLocation
 argument_list|)
