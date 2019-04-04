@@ -6332,7 +6332,7 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|e
+name|ie
 parameter_list|)
 block|{
 name|Thread
@@ -6343,21 +6343,24 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-name|LOG
-operator|.
-name|warn
+name|IOException
+name|ioe
+init|=
+operator|new
+name|InterruptedIOException
 argument_list|(
-literal|"interrupted waiting to send rpc request to server"
-argument_list|,
-name|e
+literal|"Interrupted waiting to send RPC request to server"
+argument_list|)
+decl_stmt|;
+name|ioe
+operator|.
+name|initCause
+argument_list|(
+name|ie
 argument_list|)
 expr_stmt|;
 throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|e
-argument_list|)
+name|ioe
 throw|;
 block|}
 block|}
