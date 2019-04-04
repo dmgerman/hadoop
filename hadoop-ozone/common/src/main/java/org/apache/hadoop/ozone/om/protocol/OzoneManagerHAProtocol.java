@@ -154,6 +154,14 @@ specifier|public
 interface|interface
 name|OzoneManagerHAProtocol
 block|{
+comment|/**    * Store the snapshot index i.e. the raft log index, corresponding to the    * last transaction applied to the OM RocksDB, in OM metadata dir on disk.    * @return the snapshot index    * @throws IOException    */
+DECL|method|saveRatisSnapshot ()
+name|long
+name|saveRatisSnapshot
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Add a allocate block, it is assumed that the client is having an open    * key session going on. This block will be appended to this open key session.    * This will be called only during HA enabled OM, as during HA we get an    * allocated Block information, and add that information to OM DB.    *    * In HA the flow for allocateBlock is in StartTransaction allocateBlock    * will be called which returns block information, and in the    * applyTransaction addAllocateBlock will be called to add the block    * information to DB.    *    * @param args the key to append    * @param clientID the client identification    * @param keyLocation key location given by allocateBlock    * @return an allocated block    * @throws IOException    */
 DECL|method|addAllocatedBlock (OmKeyArgs args, long clientID, KeyLocation keyLocation)
 name|OmKeyLocationInfo

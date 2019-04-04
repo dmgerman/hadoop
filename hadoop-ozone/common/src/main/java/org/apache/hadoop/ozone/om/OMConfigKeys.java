@@ -499,6 +499,25 @@ name|OZONE_OM_RATIS_LOG_APPENDER_QUEUE_BYTE_LIMIT_DEFAULT
 init|=
 literal|"32MB"
 decl_stmt|;
+comment|// OM Snapshot configurations
+DECL|field|OZONE_OM_RATIS_SNAPSHOT_AUTO_TRIGGER_THRESHOLD_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_RATIS_SNAPSHOT_AUTO_TRIGGER_THRESHOLD_KEY
+init|=
+literal|"ozone.om.ratis.snapshot.auto.trigger.threshold"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|long
+DECL|field|OZONE_OM_RATIS_SNAPSHOT_AUTO_TRIGGER_THRESHOLD_DEFAULT
+name|OZONE_OM_RATIS_SNAPSHOT_AUTO_TRIGGER_THRESHOLD_DEFAULT
+init|=
+literal|400000
+decl_stmt|;
 comment|// OM Ratis server configurations
 DECL|field|OZONE_OM_RATIS_SERVER_REQUEST_TIMEOUT_KEY
 specifier|public

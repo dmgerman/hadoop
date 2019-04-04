@@ -438,6 +438,26 @@ name|index
 argument_list|)
 return|;
 block|}
+DECL|method|getOzoneManager (String omNodeId)
+specifier|public
+name|OzoneManager
+name|getOzoneManager
+parameter_list|(
+name|String
+name|omNodeId
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|ozoneManagerMap
+operator|.
+name|get
+argument_list|(
+name|omNodeId
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|restartOzoneManager ()

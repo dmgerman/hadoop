@@ -542,7 +542,7 @@ block|}
 block|}
 comment|/**    * Directory {@code current} contains latest files defining    * the file system meta-data.    *    * @return the directory path    */
 DECL|method|getCurrentDir ()
-specifier|private
+specifier|public
 name|File
 name|getCurrentDir
 parameter_list|()

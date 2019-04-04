@@ -140,6 +140,14 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Flush the DB buffer onto persistent storage.    * @throws IOException    */
+DECL|method|flush ()
+name|void
+name|flush
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Compact the entire database.    *    * @throws IOException on Failure    */
 DECL|method|compactDB ()
 name|void

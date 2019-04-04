@@ -1443,6 +1443,16 @@ name|OM_NODE_ID_DUMMY
 init|=
 literal|"omNodeIdDummy"
 decl_stmt|;
+comment|// OM Ratis snapshot file to store the last applied index
+DECL|field|OM_RATIS_SNAPSHOT_INDEX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_RATIS_SNAPSHOT_INDEX
+init|=
+literal|"ratisSnapshotIndex"
+decl_stmt|;
 block|}
 end_class
 
