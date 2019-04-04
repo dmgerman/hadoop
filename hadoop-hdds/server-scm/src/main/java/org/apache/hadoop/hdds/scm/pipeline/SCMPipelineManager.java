@@ -1067,6 +1067,16 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|InsufficientDatanodesException
+name|idEx
+parameter_list|)
+block|{
+throw|throw
+name|idEx
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|ex
 parameter_list|)

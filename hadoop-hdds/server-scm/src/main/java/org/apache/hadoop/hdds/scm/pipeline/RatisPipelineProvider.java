@@ -620,7 +620,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|InsufficientDatanodesException
 argument_list|(
 name|e
 argument_list|)
