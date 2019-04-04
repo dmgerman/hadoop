@@ -40,7 +40,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
+name|Collections
 import|;
 end_import
 
@@ -1712,10 +1712,15 @@ name|names
 parameter_list|)
 block|{
 return|return
-name|Arrays
+name|Collections
 operator|.
-name|asList
+name|nCopies
 argument_list|(
+name|names
+operator|.
+name|size
+argument_list|()
+argument_list|,
 literal|"/rack1"
 argument_list|)
 return|;
