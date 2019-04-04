@@ -3322,11 +3322,25 @@ name|nodeId
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Opportunistic containers move directly from NEW to ACQUIRED
+if|if
+condition|(
+name|container
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|RMContainerState
+operator|.
+name|NEW
+condition|)
+block|{
 name|publishNonAMContainerEventstoATS
 argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|class|ContainerAcquiredWhileRunningTransition

@@ -1559,7 +1559,7 @@ name|publisher
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -2342,7 +2342,7 @@ name|publisher
 argument_list|,
 name|times
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -2975,7 +2975,7 @@ name|publisher
 argument_list|,
 name|times
 argument_list|(
-literal|4
+literal|2
 argument_list|)
 argument_list|)
 operator|.
