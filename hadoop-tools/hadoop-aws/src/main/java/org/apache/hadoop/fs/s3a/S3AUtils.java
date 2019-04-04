@@ -408,24 +408,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|s3a
-operator|.
-name|auth
-operator|.
-name|NoAuthWithAWSException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|s3native
 operator|.
 name|S3xLoginHelper
@@ -1112,7 +1094,7 @@ if|if
 condition|(
 name|exception
 operator|instanceof
-name|NoAuthWithAWSException
+name|CredentialInitializationException
 condition|)
 block|{
 comment|// the exception raised by AWSCredentialProvider list if the
