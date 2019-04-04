@@ -829,6 +829,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Returns true if the Replication Monitor Thread is running.    *    * @return true if running, false otherwise    */
+DECL|method|isRunning ()
+specifier|public
+name|boolean
+name|isRunning
+parameter_list|()
+block|{
+return|return
+name|replicationMonitor
+operator|.
+name|isAlive
+argument_list|()
+return|;
+block|}
 comment|/**    * Process all the containers immediately.    */
 annotation|@
 name|VisibleForTesting

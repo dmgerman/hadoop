@@ -144,9 +144,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|replication
-operator|.
-name|ReplicationActivityStatus
+name|ReplicationManager
 import|;
 end_import
 
@@ -327,14 +325,14 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|ReplicationActivityStatus
-name|replicationActivityStatus
+name|ReplicationManager
+name|replicationManager
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|ReplicationActivityStatus
+name|ReplicationManager
 operator|.
 name|class
 argument_list|)
@@ -351,7 +349,7 @@ name|scmClientProtocolServer
 argument_list|,
 name|blockManager
 argument_list|,
-name|replicationActivityStatus
+name|replicationManager
 argument_list|)
 decl_stmt|;
 name|eventQueue

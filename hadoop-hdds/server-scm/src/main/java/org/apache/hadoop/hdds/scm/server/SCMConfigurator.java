@@ -88,8 +88,6 @@ name|scm
 operator|.
 name|container
 operator|.
-name|replication
-operator|.
 name|ReplicationManager
 import|;
 end_import

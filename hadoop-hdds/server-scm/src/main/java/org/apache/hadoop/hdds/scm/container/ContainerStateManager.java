@@ -1155,9 +1155,9 @@ return|return
 name|containerInfo
 return|;
 block|}
-comment|/**    * Update the Container State to the next state.    *    * @param containerID - ContainerID    * @param event - LifeCycle Event    * @return Updated ContainerInfo.    * @throws SCMException  on Failure.    */
+comment|/**    * Update the Container State to the next state.    *    * @param containerID - ContainerID    * @param event - LifeCycle Event    * @throws SCMException  on Failure.    */
 DECL|method|updateContainerState (final ContainerID containerID, final HddsProtos.LifeCycleEvent event)
-name|ContainerInfo
+name|void
 name|updateContainerState
 parameter_list|(
 specifier|final
@@ -1188,6 +1188,15 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+specifier|final
+name|LifeCycleState
+name|oldState
+init|=
+name|info
+operator|.
+name|getState
+argument_list|()
+decl_stmt|;
 specifier|final
 name|LifeCycleState
 name|newState
@@ -1229,20 +1238,9 @@ name|containerStateCount
 operator|.
 name|decrementAndGet
 argument_list|(
-name|info
-operator|.
-name|getState
-argument_list|()
+name|oldState
 argument_list|)
 expr_stmt|;
-return|return
-name|containers
-operator|.
-name|getContainerInfo
-argument_list|(
-name|containerID
-argument_list|)
-return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1290,37 +1288,6 @@ name|FAILED_TO_CHANGE_CONTAINER_STATE
 argument_list|)
 throw|;
 block|}
-block|}
-comment|/**    * Update the container State.    * @param info - Container Info    * @return  ContainerInfo    * @throws SCMException - on Error.    */
-DECL|method|updateContainerInfo (final ContainerInfo info)
-name|ContainerInfo
-name|updateContainerInfo
-parameter_list|(
-specifier|final
-name|ContainerInfo
-name|info
-parameter_list|)
-throws|throws
-name|ContainerNotFoundException
-block|{
-name|containers
-operator|.
-name|updateContainerInfo
-argument_list|(
-name|info
-argument_list|)
-expr_stmt|;
-return|return
-name|containers
-operator|.
-name|getContainerInfo
-argument_list|(
-name|info
-operator|.
-name|containerID
-argument_list|()
-argument_list|)
-return|;
 block|}
 comment|/**    * Update deleteTransactionId for a container.    *    * @param deleteTransactionMap maps containerId to its new    *                             deleteTransactionID    */
 DECL|method|updateDeleteTransactionId ( final Map<Long, Long> deleteTransactionMap)

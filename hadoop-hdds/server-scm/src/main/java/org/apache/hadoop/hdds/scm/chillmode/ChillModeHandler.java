@@ -80,9 +80,7 @@ name|scm
 operator|.
 name|container
 operator|.
-name|replication
-operator|.
-name|ReplicationActivityStatus
+name|ReplicationManager
 import|;
 end_import
 
@@ -241,14 +239,14 @@ argument_list|(
 literal|true
 argument_list|)
 decl_stmt|;
-DECL|field|replicationActivityStatus
+DECL|field|replicationManager
 specifier|private
 specifier|final
-name|ReplicationActivityStatus
-name|replicationActivityStatus
+name|ReplicationManager
+name|replicationManager
 decl_stmt|;
-comment|/**    * ChillModeHandler, to handle the logic once we exit chill mode.    * @param configuration    * @param clientProtocolServer    * @param blockManager    * @param replicationStatus    */
-DECL|method|ChillModeHandler (Configuration configuration, SCMClientProtocolServer clientProtocolServer, BlockManager blockManager, ReplicationActivityStatus replicationStatus)
+comment|/**    * ChillModeHandler, to handle the logic once we exit chill mode.    * @param configuration    * @param clientProtocolServer    * @param blockManager    * @param replicationManager    */
+DECL|method|ChillModeHandler (Configuration configuration, SCMClientProtocolServer clientProtocolServer, BlockManager blockManager, ReplicationManager replicationManager)
 specifier|public
 name|ChillModeHandler
 parameter_list|(
@@ -261,8 +259,8 @@ parameter_list|,
 name|BlockManager
 name|blockManager
 parameter_list|,
-name|ReplicationActivityStatus
-name|replicationStatus
+name|ReplicationManager
+name|replicationManager
 parameter_list|)
 block|{
 name|Objects
@@ -298,9 +296,9 @@ name|Objects
 operator|.
 name|requireNonNull
 argument_list|(
-name|replicationStatus
+name|replicationManager
 argument_list|,
-literal|"ReplicationActivityStatus "
+literal|"ReplicationManager "
 operator|+
 literal|"object cannot be null"
 argument_list|)
@@ -326,18 +324,25 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|scmClientProtocolServer
 operator|=
 name|clientProtocolServer
 expr_stmt|;
+name|this
+operator|.
 name|scmBlockManager
 operator|=
 name|blockManager
 expr_stmt|;
-name|replicationActivityStatus
+name|this
+operator|.
+name|replicationManager
 operator|=
-name|replicationStatus
+name|replicationManager
 expr_stmt|;
+specifier|final
 name|boolean
 name|chillModeEnabled
 init|=
@@ -377,6 +382,8 @@ name|EventPublisher
 name|publisher
 parameter_list|)
 block|{
+try|try
+block|{
 name|isInChillMode
 operator|.
 name|set
@@ -385,18 +392,6 @@ name|chillModeStatus
 operator|.
 name|getChillModeStatus
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|replicationActivityStatus
-operator|.
-name|fireReplicationStart
-argument_list|(
-name|isInChillMode
-operator|.
-name|get
-argument_list|()
-argument_list|,
-name|waitTime
 argument_list|)
 expr_stmt|;
 name|scmClientProtocolServer
@@ -419,6 +414,37 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|waitTime
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|replicationManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getChillModeStatus ()
 specifier|public

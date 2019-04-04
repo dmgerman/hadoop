@@ -1314,17 +1314,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-specifier|final
-name|ContainerInfo
-name|newInfo
-init|=
-operator|new
-name|ContainerInfo
-argument_list|(
 name|currentInfo
-argument_list|)
-decl_stmt|;
-name|newInfo
 operator|.
 name|setState
 argument_list|(
@@ -1339,15 +1329,6 @@ comment|// fact that we have updated the lifecycle state in the map, and update
 comment|// the container state. If this second update fails, we will attempt to
 comment|// roll back the earlier change we did. If the rollback fails, we can
 comment|// be in an inconsistent state,
-name|containerMap
-operator|.
-name|put
-argument_list|(
-name|containerID
-argument_list|,
-name|newInfo
-argument_list|)
-expr_stmt|;
 name|lifeCycleStateMap
 operator|.
 name|update
@@ -1378,8 +1359,6 @@ comment|// Just flush both old and new data sets from the result cache.
 name|flushCache
 argument_list|(
 name|currentInfo
-argument_list|,
-name|newInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -1413,13 +1392,11 @@ argument_list|,
 name|newState
 argument_list|)
 expr_stmt|;
-name|containerMap
-operator|.
-name|put
-argument_list|(
-name|containerID
-argument_list|,
 name|currentInfo
+operator|.
+name|setState
+argument_list|(
+name|currentState
 argument_list|)
 expr_stmt|;
 comment|// if this line throws, the state map can be in an inconsistent

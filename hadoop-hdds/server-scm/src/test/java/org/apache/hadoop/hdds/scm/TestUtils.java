@@ -2292,6 +2292,11 @@ argument_list|(
 name|state
 argument_list|)
 operator|.
+name|setSequenceId
+argument_list|(
+literal|10000L
+argument_list|)
+operator|.
 name|setOwner
 argument_list|(
 literal|"TEST"
