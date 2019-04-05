@@ -92,6 +92,36 @@ init|=
 literal|"YARN_RM_CONTAINER_CREATED"
 decl_stmt|;
 comment|// Event of this type will be emitted by NM.
+DECL|field|PAUSED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PAUSED_EVENT_TYPE
+init|=
+literal|"YARN_CONTAINER_PAUSED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
+DECL|field|RESUMED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESUMED_EVENT_TYPE
+init|=
+literal|"YARN_CONTAINER_RESUMED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
+DECL|field|KILLED_EVENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KILLED_EVENT_TYPE
+init|=
+literal|"YARN_CONTAINER_KILLED"
+decl_stmt|;
+comment|// Event of this type will be emitted by NM.
 DECL|field|FINISHED_EVENT_TYPE
 specifier|public
 specifier|static
