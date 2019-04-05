@@ -1095,7 +1095,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Assert that starting statemachine executes the Init State.    *    * @throws InterruptedException    */
+comment|/**    * Assert that starting statemachine executes the Init State.    */
 annotation|@
 name|Test
 DECL|method|testStartStopDatanodeStateMachine ()
@@ -1147,29 +1147,28 @@ argument_list|(
 parameter_list|()
 lambda|->
 block|{
+name|int
+name|size
+init|=
+name|connectionManager
+operator|.
+name|getValues
+argument_list|()
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"connectionManager.getValues().size() is {}"
 argument_list|,
-name|connectionManager
-operator|.
-name|getValues
-argument_list|()
-operator|.
 name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|connectionManager
-operator|.
-name|getValues
-argument_list|()
-operator|.
 name|size
-argument_list|()
 operator|==
 literal|1
 return|;
