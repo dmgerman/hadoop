@@ -13390,29 +13390,20 @@ name|UNKNOWN
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Ignoring unknown CryptoProtocolVersion provided by "
 operator|+
-literal|"client: "
-operator|+
+literal|"client: {}"
+argument_list|,
 name|c
 operator|.
 name|getUnknownValue
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 if|if
@@ -19314,26 +19305,15 @@ condition|)
 block|{
 comment|// This may be a retry attempt so ignore the failure
 comment|// to locate the block.
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block (="
-operator|+
+literal|"Block (={}) not found"
+argument_list|,
 name|oldBlock
-operator|+
-literal|") not found"
 argument_list|)
 expr_stmt|;
-block|}
 return|return;
 block|}
 else|else
@@ -19475,18 +19455,16 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unexpected block (="
+literal|"Unexpected block (={}) since the file (={}) is not "
 operator|+
+literal|"under construction"
+argument_list|,
 name|oldBlock
-operator|+
-literal|") since the file (="
-operator|+
+argument_list|,
 name|iFile
 operator|.
 name|getLocalName
 argument_list|()
-operator|+
-literal|") is not under construction"
 argument_list|)
 expr_stmt|;
 block|}
@@ -26945,24 +26923,15 @@ argument_list|(
 name|skip
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"list corrupt file blocks returned: "
-operator|+
+literal|"list corrupt file blocks returned: {}"
+argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|corruptFiles
 return|;
@@ -30500,27 +30469,18 @@ name|StandbyException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Get corrupt file blocks returned error: "
-operator|+
+literal|"Get corrupt file blocks returned error: {}"
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
