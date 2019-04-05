@@ -2992,7 +2992,7 @@ return|;
 block|}
 comment|// Convert and exception to corresponding status code
 DECL|method|exceptionToResponseStatus (IOException ex)
-specifier|private
+specifier|protected
 name|Status
 name|exceptionToResponseStatus
 parameter_list|(
@@ -6505,6 +6505,16 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|getOzoneManagerServerProtocol ()
+specifier|protected
+name|OzoneManagerServerProtocol
+name|getOzoneManagerServerProtocol
+parameter_list|()
+block|{
+return|return
+name|impl
 return|;
 block|}
 block|}

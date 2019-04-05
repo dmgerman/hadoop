@@ -177,7 +177,6 @@ name|adminName
 decl_stmt|;
 DECL|field|ownerName
 specifier|private
-specifier|final
 name|String
 name|ownerName
 decl_stmt|;
@@ -189,13 +188,11 @@ name|volume
 decl_stmt|;
 DECL|field|creationTime
 specifier|private
-specifier|final
 name|long
 name|creationTime
 decl_stmt|;
 DECL|field|quotaInBytes
 specifier|private
-specifier|final
 name|long
 name|quotaInBytes
 decl_stmt|;
@@ -278,6 +275,54 @@ operator|.
 name|creationTime
 operator|=
 name|creationTime
+expr_stmt|;
+block|}
+DECL|method|setOwnerName (String newOwner)
+specifier|public
+name|void
+name|setOwnerName
+parameter_list|(
+name|String
+name|newOwner
+parameter_list|)
+block|{
+name|this
+operator|.
+name|ownerName
+operator|=
+name|newOwner
+expr_stmt|;
+block|}
+DECL|method|setQuotaInBytes (long quotaInBytes)
+specifier|public
+name|void
+name|setQuotaInBytes
+parameter_list|(
+name|long
+name|quotaInBytes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|quotaInBytes
+operator|=
+name|quotaInBytes
+expr_stmt|;
+block|}
+DECL|method|setCreationTime (long time)
+specifier|public
+name|void
+name|setCreationTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|creationTime
+operator|=
+name|time
 expr_stmt|;
 block|}
 comment|/**    * Returns the Admin Name.    * @return String.    */

@@ -344,7 +344,7 @@ name|ozone
 operator|.
 name|protocolPB
 operator|.
-name|OzoneManagerRequestHandler
+name|OzoneManagerHARequestHandler
 import|;
 end_import
 
@@ -360,7 +360,7 @@ name|ozone
 operator|.
 name|protocolPB
 operator|.
-name|RequestHandler
+name|OzoneManagerHARequestHandlerImpl
 import|;
 end_import
 
@@ -623,7 +623,7 @@ name|omID
 decl_stmt|;
 DECL|field|requestHandler
 specifier|private
-name|RequestHandler
+name|OzoneManagerHARequestHandler
 name|requestHandler
 decl_stmt|;
 DECL|field|raftGroupId
@@ -787,7 +787,7 @@ name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|OzoneManagerRequestHandler
+name|OzoneManagerHARequestHandlerImpl
 operator|.
 name|class
 argument_list|)

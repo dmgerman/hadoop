@@ -32,7 +32,43 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmDeleteVolumeResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OmVolumeArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmVolumeOwnerChangeResponse
 import|;
 end_import
 
@@ -53,6 +89,26 @@ operator|.
 name|OzoneManagerProtocolProtos
 operator|.
 name|OzoneAclInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|VolumeList
 import|;
 end_import
 
@@ -88,7 +144,7 @@ name|VolumeManager
 block|{
 comment|/**    * Create a new volume.    * @param args - Volume args to create a volume    */
 DECL|method|createVolume (OmVolumeArgs args)
-name|void
+name|VolumeList
 name|createVolume
 parameter_list|(
 name|OmVolumeArgs
@@ -97,9 +153,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Apply Create Volume changes to OM DB.    * @param omVolumeArgs    * @param volumeList    * @throws IOException    */
+DECL|method|applyCreateVolume (OmVolumeArgs omVolumeArgs, VolumeList volumeList)
+name|void
+name|applyCreateVolume
+parameter_list|(
+name|OmVolumeArgs
+name|omVolumeArgs
+parameter_list|,
+name|VolumeList
+name|volumeList
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Changes the owner of a volume.    *    * @param volume - Name of the volume.    * @param owner - Name of the owner.    * @throws IOException    */
 DECL|method|setOwner (String volume, String owner)
-name|void
+name|OmVolumeOwnerChangeResponse
 name|setOwner
 parameter_list|(
 name|String
@@ -111,9 +181,29 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Apply Set Owner changes to OM DB.    * @param oldOwner    * @param oldOwnerVolumeList    * @param newOwnerVolumeList    * @param newOwnerVolumeArgs    * @throws IOException    */
+DECL|method|applySetOwner (String oldOwner, VolumeList oldOwnerVolumeList, VolumeList newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs)
+name|void
+name|applySetOwner
+parameter_list|(
+name|String
+name|oldOwner
+parameter_list|,
+name|VolumeList
+name|oldOwnerVolumeList
+parameter_list|,
+name|VolumeList
+name|newOwnerVolumeList
+parameter_list|,
+name|OmVolumeArgs
+name|newOwnerVolumeArgs
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Changes the Quota on a volume.    *    * @param volume - Name of the volume.    * @param quota - Quota in bytes.    * @throws IOException    */
 DECL|method|setQuota (String volume, long quota)
-name|void
+name|OmVolumeArgs
 name|setQuota
 parameter_list|(
 name|String
@@ -121,6 +211,17 @@ name|volume
 parameter_list|,
 name|long
 name|quota
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply Set Quota changes to OM DB.    * @param omVolumeArgs    * @throws IOException    */
+DECL|method|applySetQuota (OmVolumeArgs omVolumeArgs)
+name|void
+name|applySetQuota
+parameter_list|(
+name|OmVolumeArgs
+name|omVolumeArgs
 parameter_list|)
 throws|throws
 name|IOException
@@ -138,11 +239,28 @@ name|IOException
 function_decl|;
 comment|/**    * Deletes an existing empty volume.    *    * @param volume - Name of the volume.    * @throws IOException    */
 DECL|method|deleteVolume (String volume)
-name|void
+name|OmDeleteVolumeResponse
 name|deleteVolume
 parameter_list|(
 name|String
 name|volume
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply Delete Volume changes to OM DB.    * @param volume    * @param owner    * @param newVolumeList    * @throws IOException    */
+DECL|method|applyDeleteVolume (String volume, String owner, VolumeList newVolumeList)
+name|void
+name|applyDeleteVolume
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|owner
+parameter_list|,
+name|VolumeList
+name|newVolumeList
 parameter_list|)
 throws|throws
 name|IOException
