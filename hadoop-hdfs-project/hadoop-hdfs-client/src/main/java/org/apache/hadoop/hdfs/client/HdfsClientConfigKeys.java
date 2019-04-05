@@ -1150,7 +1150,7 @@ name|RESOLVE_ADDRESS_TO_FQDN
 init|=
 name|PREFIX
 operator|+
-literal|"useFQDN"
+literal|"resolver.useFQDN"
 decl_stmt|;
 DECL|field|RESOLVE_ADDRESS_TO_FQDN_DEFAULT
 name|boolean
