@@ -969,6 +969,9 @@ name|fs
 expr_stmt|;
 name|statistics
 operator|=
+operator|(
+name|OzoneFSStorageStatistics
+operator|)
 name|o3fs
 operator|.
 name|getOzoneFSOpsCountStatistics

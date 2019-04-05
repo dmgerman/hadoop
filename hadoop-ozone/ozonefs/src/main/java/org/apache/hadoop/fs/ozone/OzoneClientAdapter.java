@@ -125,7 +125,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Lightweight adapter to separte hadoop/ozone classes.  *<p>  * This class contains only the bare minimum Ozone classes in the signature.  * It could be loaded by a different classloader because only the objects in  * the method signatures should be shared between the classloader.  */
+comment|/**  * Lightweight adapter to separate hadoop/ozone classes.  *<p>  * This class contains only the bare minimum Ozone classes in the signature.  * It could be loaded by a different classloader because only the objects in  * the method signatures should be shared between the classloader.  */
 end_comment
 
 begin_interface

@@ -92,6 +92,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageStatistics
+import|;
+end_import
+
+begin_import
+import|import
 name|edu
 operator|.
 name|umd
@@ -184,6 +198,8 @@ name|volumeStr
 argument_list|,
 name|bucketStr
 argument_list|,
+literal|true
+argument_list|,
 parameter_list|(
 name|aClass
 parameter_list|)
@@ -218,7 +234,7 @@ name|SuppressFBWarnings
 argument_list|(
 literal|"DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"
 argument_list|)
-DECL|method|createAdapter ( String volumeStr, String bucketStr, OzoneFSStorageStatistics storageStatistics)
+DECL|method|createAdapter ( String volumeStr, String bucketStr, StorageStatistics storageStatistics)
 specifier|public
 specifier|static
 name|OzoneClientAdapter
@@ -230,7 +246,7 @@ parameter_list|,
 name|String
 name|bucketStr
 parameter_list|,
-name|OzoneFSStorageStatistics
+name|StorageStatistics
 name|storageStatistics
 parameter_list|)
 throws|throws
@@ -243,6 +259,8 @@ name|volumeStr
 argument_list|,
 name|bucketStr
 argument_list|,
+literal|false
+argument_list|,
 parameter_list|(
 name|aClass
 parameter_list|)
@@ -283,7 +301,7 @@ name|SuppressFBWarnings
 argument_list|(
 literal|"DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"
 argument_list|)
-DECL|method|createAdapter ( String volumeStr, String bucketStr, OzoneClientAdapterCreator creator)
+DECL|method|createAdapter ( String volumeStr, String bucketStr, boolean basic, OzoneClientAdapterCreator creator)
 specifier|public
 specifier|static
 name|OzoneClientAdapter
@@ -295,6 +313,9 @@ parameter_list|,
 name|String
 name|bucketStr
 parameter_list|,
+name|boolean
+name|basic
+parameter_list|,
 name|OzoneClientAdapterCreator
 name|creator
 parameter_list|)
@@ -304,7 +325,7 @@ block|{
 name|ClassLoader
 name|currentClassLoader
 init|=
-name|OzoneFileSystem
+name|OzoneClientAdapterFactory
 operator|.
 name|class
 operator|.
@@ -418,15 +439,37 @@ name|Class
 argument_list|<
 name|?
 argument_list|>
-name|aClass
+name|adapterClass
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|basic
+condition|)
+block|{
+name|adapterClass
+operator|=
+name|classLoader
+operator|.
+name|loadClass
+argument_list|(
+literal|"org.apache.hadoop.fs.ozone.BasicOzoneClientAdapterImpl"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|adapterClass
+operator|=
 name|classLoader
 operator|.
 name|loadClass
 argument_list|(
 literal|"org.apache.hadoop.fs.ozone.OzoneClientAdapterImpl"
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|OzoneClientAdapter
 name|ozoneClientAdapter
 init|=
@@ -434,7 +477,7 @@ name|creator
 operator|.
 name|createOzoneClientAdapter
 argument_list|(
-name|aClass
+name|adapterClass
 argument_list|)
 decl_stmt|;
 name|Thread
@@ -570,7 +613,7 @@ decl_stmt|;
 name|ClassLoader
 name|currentClassLoader
 init|=
-name|OzoneFileSystem
+name|OzoneClientAdapterFactory
 operator|.
 name|class
 operator|.

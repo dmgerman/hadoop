@@ -500,7 +500,6 @@ block|}
 comment|/**    * Class to store proxy information.    */
 DECL|class|OMProxyInfo
 specifier|public
-specifier|final
 class|class
 name|OMProxyInfo
 extends|extends

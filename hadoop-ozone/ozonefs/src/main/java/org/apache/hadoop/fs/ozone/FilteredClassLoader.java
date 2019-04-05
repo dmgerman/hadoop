@@ -125,6 +125,13 @@ name|delegatedClasses
 operator|.
 name|add
 argument_list|(
+literal|"org.apache.hadoop.security.token.Token"
+argument_list|)
+expr_stmt|;
+name|delegatedClasses
+operator|.
+name|add
+argument_list|(
 literal|"org.apache.hadoop.fs.ozone.BasicKeyInfo"
 argument_list|)
 expr_stmt|;
