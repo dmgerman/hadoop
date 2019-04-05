@@ -787,7 +787,7 @@ name|args
 argument_list|,
 name|conf
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 return|;
 block|}
@@ -833,6 +833,7 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|HddsDatanodeService
@@ -840,22 +841,6 @@ argument_list|(
 name|conf
 argument_list|)
 return|;
-block|}
-else|else
-block|{
-operator|new
-name|HddsDatanodeService
-argument_list|()
-operator|.
-name|run
-argument_list|(
-name|args
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
 block|}
 DECL|method|main (String[] args)
 specifier|public
