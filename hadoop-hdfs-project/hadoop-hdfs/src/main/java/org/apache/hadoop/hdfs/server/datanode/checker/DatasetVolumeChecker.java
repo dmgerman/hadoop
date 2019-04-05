@@ -1308,7 +1308,7 @@ operator|.
 name|warn
 argument_list|(
 literal|"checkAllVolumes timed out after {} ms"
-operator|+
+argument_list|,
 name|maxAllowedTimeForCheckMs
 argument_list|)
 expr_stmt|;
