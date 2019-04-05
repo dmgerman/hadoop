@@ -8931,6 +8931,27 @@ name|DEFAULT_TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
 init|=
 literal|60
 decl_stmt|;
+comment|/** The setting that controls the capacity of the queue for async writes    * to timeline collector.    */
+DECL|field|TIMELINE_SERVICE_WRITER_ASYNC_QUEUE_CAPACITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_WRITER_ASYNC_QUEUE_CAPACITY
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"writer.async.queue.capacity"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_TIMELINE_SERVICE_WRITER_ASYNC_QUEUE_CAPACITY
+name|DEFAULT_TIMELINE_SERVICE_WRITER_ASYNC_QUEUE_CAPACITY
+init|=
+literal|100
+decl_stmt|;
 comment|/**    * The name for setting that controls how long the final value of    * a metric of a completed app is retained before merging    * into the flow sum.    */
 DECL|field|APP_FINAL_VALUE_RETENTION_THRESHOLD
 specifier|public
