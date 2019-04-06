@@ -347,6 +347,15 @@ name|DISTRIBUTE_KEYTAB
 init|=
 literal|"distribute_keytab"
 decl_stmt|;
+DECL|field|YAML_CONFIG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YAML_CONFIG
+init|=
+literal|"f"
+decl_stmt|;
 block|}
 end_class
 

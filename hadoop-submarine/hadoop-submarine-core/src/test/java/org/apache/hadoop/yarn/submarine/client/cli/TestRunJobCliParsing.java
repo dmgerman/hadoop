@@ -270,6 +270,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|ArgumentMatchers
@@ -377,7 +389,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getMockClientContext ()
-specifier|private
+specifier|static
 name|MockClientContext
 name|getMockClientContext
 parameter_list|()
@@ -614,8 +626,6 @@ operator|.
 name|getRunJobParameters
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -626,8 +636,6 @@ argument_list|,
 literal|"hdfs://input"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -638,8 +646,6 @@ argument_list|,
 literal|"hdfs://output"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -650,8 +656,6 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -662,8 +666,6 @@ argument_list|,
 literal|"python run-ps.py"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Resources
@@ -681,8 +683,6 @@ name|getPsResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -693,8 +693,6 @@ argument_list|,
 literal|"python run-job.py"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Resources
@@ -712,8 +710,6 @@ name|getWorkerResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -724,8 +720,6 @@ argument_list|,
 literal|"tf-docker:1.1.0"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -736,8 +730,6 @@ argument_list|,
 literal|"/keytab/path"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -853,8 +845,6 @@ operator|.
 name|getRunJobParameters
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -865,8 +855,6 @@ argument_list|,
 literal|"hdfs://input"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -877,8 +865,6 @@ argument_list|,
 literal|"hdfs://output"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -889,8 +875,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|jobRunParameters
@@ -901,8 +885,6 @@ argument_list|,
 literal|"python run-job.py"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Resources
@@ -1041,8 +1023,6 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expectedErrorMessage
@@ -1197,7 +1177,11 @@ literal|"2"
 block|,
 literal|"--worker_launch_cmd"
 block|,
-literal|"python run-job.py --input=%input_path% --model_dir=%checkpoint_path% --export_dir=%saved_model_path%/savedmodel"
+literal|"python run-job.py --input=%input_path% "
+operator|+
+literal|"--model_dir=%checkpoint_path% "
+operator|+
+literal|"--export_dir=%saved_model_path%/savedmodel"
 block|,
 literal|"--worker_resources"
 block|,
@@ -1213,14 +1197,14 @@ literal|"true"
 block|,
 literal|"--ps_launch_cmd"
 block|,
-literal|"python run-ps.py --input=%input_path% --model_dir=%checkpoint_path%/model"
+literal|"python run-ps.py --input=%input_path% "
+operator|+
+literal|"--model_dir=%checkpoint_path%/model"
 block|,
 literal|"--verbose"
 block|}
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"python run-job.py --input=hdfs://input --model_dir=hdfs://output "
@@ -1236,8 +1220,6 @@ name|getWorkerLaunchCmd
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"python run-ps.py --input=hdfs://input --model_dir=hdfs://output/model"
