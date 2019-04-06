@@ -7916,6 +7916,15 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|appAttempt
+operator|.
+name|rmApp
+operator|.
+name|getMaxAppAttempts
+argument_list|()
+operator|>
+literal|1
+operator|&&
 name|numberOfFailure
 operator|<
 name|appAttempt
