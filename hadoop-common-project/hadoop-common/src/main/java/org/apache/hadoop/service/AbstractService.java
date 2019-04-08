@@ -914,7 +914,7 @@ block|}
 comment|/* ===================================================================== */
 comment|/* Override Points */
 comment|/* ===================================================================== */
-comment|/**    * All initialization code needed by a service.    *    * This method will only ever be called once during the lifecycle of    * a specific service instance.    *    * Implementations do not need to be synchronized as the logic    * in {@link #init(Configuration)} prevents re-entrancy.    *    * The base implementation checks to see if the subclass has created    * a new configuration instance, and if so, updates the base class value    * @param conf configuration    * @throws Exception on a failure -these will be caught,    * possibly wrapped, and wil; trigger a service stop    */
+comment|/**    * All initialization code needed by a service.    *    * This method will only ever be called once during the lifecycle of    * a specific service instance.    *    * Implementations do not need to be synchronized as the logic    * in {@link #init(Configuration)} prevents re-entrancy.    *    * The base implementation checks to see if the subclass has created    * a new configuration instance, and if so, updates the base class value    * @param conf configuration    * @throws Exception on a failure -these will be caught,    * possibly wrapped, and will trigger a service stop    */
 DECL|method|serviceInit (Configuration conf)
 specifier|protected
 name|void
