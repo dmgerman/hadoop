@@ -435,15 +435,6 @@ name|REGISTER_AM
 init|=
 literal|"Register App Master"
 decl_stmt|;
-DECL|field|AM_ALLOCATE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|AM_ALLOCATE
-init|=
-literal|"App Master Heartbeats"
-decl_stmt|;
 DECL|field|UNREGISTER_AM
 specifier|public
 specifier|static
@@ -498,15 +489,6 @@ name|GET_APP_TIMEOUTS
 init|=
 literal|"Get Application Timeouts"
 decl_stmt|;
-DECL|field|CHANGE_CONTAINER_RESOURCE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CHANGE_CONTAINER_RESOURCE
-init|=
-literal|"AM Changed Container Resource"
-decl_stmt|;
 DECL|field|SIGNAL_CONTAINER
 specifier|public
 specifier|static
@@ -527,17 +509,6 @@ init|=
 literal|"Unauthorized user"
 decl_stmt|;
 comment|// For Reservation system
-DECL|field|CREATE_NEW_RESERVATION_REQUEST
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CREATE_NEW_RESERVATION_REQUEST
-init|=
-literal|"Create "
-operator|+
-literal|"Reservation Request"
-decl_stmt|;
 DECL|field|SUBMIT_RESERVATION_REQUEST
 specifier|public
 specifier|static
