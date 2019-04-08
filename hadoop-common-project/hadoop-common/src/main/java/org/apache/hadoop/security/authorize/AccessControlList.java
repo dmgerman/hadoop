@@ -390,7 +390,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Build ACL from the given two Strings.    * The Strings contain comma separated values.    *    * @param aclString build ACL from array of Strings    */
+comment|/**    * Build ACL from the given array of strings.    * The strings contain comma separated values.    *    * @param userGroupStrings build ACL from array of Strings    */
 DECL|method|buildACL (String[] userGroupStrings)
 specifier|private
 name|void
