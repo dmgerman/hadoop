@@ -630,6 +630,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|tools
+operator|.
+name|federation
+operator|.
+name|RouterAdmin
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -2063,15 +2081,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Build the path location to insert into the cache atomically. It must hold    * the read lock.    * @param path Path to check/insert.    * @return New remote location.    * @throws IOException If it cannot find the location.    */
-DECL|method|lookupLocation (final String path)
+comment|/**    * Build the path location to insert into the cache atomically. It must hold    * the read lock.    * @param str Path to check/insert.    * @return New remote location.    * @throws IOException If it cannot find the location.    */
+DECL|method|lookupLocation (final String str)
 specifier|public
 name|PathLocation
 name|lookupLocation
 parameter_list|(
 specifier|final
 name|String
-name|path
+name|str
 parameter_list|)
 throws|throws
 name|IOException
@@ -2080,6 +2098,17 @@ name|PathLocation
 name|ret
 init|=
 literal|null
+decl_stmt|;
+specifier|final
+name|String
+name|path
+init|=
+name|RouterAdmin
+operator|.
+name|normalizeFileSystemPath
+argument_list|(
+name|str
+argument_list|)
 decl_stmt|;
 name|MountTable
 name|entry
@@ -2189,13 +2218,18 @@ expr_stmt|;
 return|return
 name|findDeepest
 argument_list|(
+name|RouterAdmin
+operator|.
+name|normalizeFileSystemPath
+argument_list|(
 name|path
+argument_list|)
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getMountPoints (final String path)
+DECL|method|getMountPoints (final String str)
 specifier|public
 name|List
 argument_list|<
@@ -2205,7 +2239,7 @@ name|getMountPoints
 parameter_list|(
 specifier|final
 name|String
-name|path
+name|str
 parameter_list|)
 throws|throws
 name|IOException
@@ -2213,6 +2247,17 @@ block|{
 name|verifyMountTable
 argument_list|()
 expr_stmt|;
+specifier|final
+name|String
+name|path
+init|=
+name|RouterAdmin
+operator|.
+name|normalizeFileSystemPath
+argument_list|(
+name|str
+argument_list|)
+decl_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -2461,7 +2506,12 @@ expr_stmt|;
 return|return
 name|getTreeValues
 argument_list|(
+name|RouterAdmin
+operator|.
+name|normalizeFileSystemPath
+argument_list|(
 name|path
+argument_list|)
 argument_list|,
 literal|false
 argument_list|)
