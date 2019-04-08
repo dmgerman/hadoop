@@ -334,18 +334,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|InvocationTargetException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|security
 operator|.
 name|NoSuchAlgorithmException
@@ -3912,50 +3900,28 @@ name|String
 name|getDefaultRealmInJVM
 parameter_list|()
 block|{
-try|try
-block|{
-return|return
+name|String
+name|realm
+init|=
 name|KerberosUtil
 operator|.
-name|getDefaultRealm
+name|getDefaultRealmProtected
 argument_list|()
-return|;
-comment|// JDK7
-block|}
-catch|catch
-parameter_list|(
-name|ClassNotFoundException
-name|ignored
-parameter_list|)
+decl_stmt|;
+if|if
+condition|(
+name|realm
+operator|==
+literal|null
+condition|)
 block|{
-comment|// ignored
-block|}
-catch|catch
-parameter_list|(
-name|NoSuchMethodException
-name|ignored
-parameter_list|)
-block|{
-comment|// ignored
-block|}
-catch|catch
-parameter_list|(
-name|IllegalAccessException
-name|ignored
-parameter_list|)
-block|{
-comment|// ignored
-block|}
-catch|catch
-parameter_list|(
-name|InvocationTargetException
-name|ignored
-parameter_list|)
-block|{
-comment|// ignored
+name|realm
+operator|=
+literal|""
+expr_stmt|;
 block|}
 return|return
-literal|""
+name|realm
 return|;
 block|}
 comment|/**    * Create an ACL For a user.    * @param ugi User identity    * @return the ACL For the specified user. Ifthe username doesn't end    * in "@" then the realm is added    */
