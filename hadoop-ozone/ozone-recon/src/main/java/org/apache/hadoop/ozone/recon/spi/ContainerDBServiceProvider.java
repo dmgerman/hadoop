@@ -74,6 +74,26 @@ name|ContainerKeyPrefix
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|api
+operator|.
+name|types
+operator|.
+name|ContainerMetadata
+import|;
+end_import
+
 begin_comment
 comment|/**  * The Recon Container DB Service interface.  */
 end_comment
@@ -142,6 +162,19 @@ parameter_list|(
 name|long
 name|containerId
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get a Map of containerID, containerMetadata of all Containers.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
+DECL|method|getContainers ()
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|ContainerMetadata
+argument_list|>
+name|getContainers
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
