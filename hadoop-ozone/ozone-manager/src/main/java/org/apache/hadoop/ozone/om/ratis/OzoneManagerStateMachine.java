@@ -1007,6 +1007,15 @@ case|:
 case|case
 name|DeleteVolume
 case|:
+case|case
+name|CreateBucket
+case|:
+case|case
+name|SetBucketProperty
+case|:
+case|case
+name|DeleteBucket
+case|:
 name|newOmRequest
 operator|=
 name|handler

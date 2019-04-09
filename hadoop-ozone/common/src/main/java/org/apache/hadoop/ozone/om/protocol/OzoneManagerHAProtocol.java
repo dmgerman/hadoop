@@ -34,6 +34,42 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmBucketArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmBucketInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OmDeleteVolumeResponse
 import|;
 end_import
@@ -392,6 +428,78 @@ name|owner
 parameter_list|,
 name|VolumeList
 name|newVolumeList
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Start Create Bucket Transaction.    * @param omBucketInfo    * @return OmBucketInfo    * @throws IOException    */
+DECL|method|startCreateBucket (OmBucketInfo omBucketInfo)
+name|OmBucketInfo
+name|startCreateBucket
+parameter_list|(
+name|OmBucketInfo
+name|omBucketInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply Create Bucket Changes to OM DB.    * @param omBucketInfo    * @throws IOException    */
+DECL|method|applyCreateBucket (OmBucketInfo omBucketInfo)
+name|void
+name|applyCreateBucket
+parameter_list|(
+name|OmBucketInfo
+name|omBucketInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Start Delete Bucket Transaction.    * @param volumeName    * @param bucketName    * @throws IOException    */
+DECL|method|startDeleteBucket (String volumeName, String bucketName)
+name|void
+name|startDeleteBucket
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply Delete Bucket changes to OM DB.    * @param volumeName    * @param bucketName    * @throws IOException    */
+DECL|method|applyDeleteBucket (String volumeName, String bucketName)
+name|void
+name|applyDeleteBucket
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Start SetBucket Property Transaction.    * @param omBucketArgs    * @return OmBucketInfo    * @throws IOException    */
+DECL|method|startSetBucketProperty (OmBucketArgs omBucketArgs)
+name|OmBucketInfo
+name|startSetBucketProperty
+parameter_list|(
+name|OmBucketArgs
+name|omBucketArgs
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply SetBucket Property changes to OM DB.    * @param omBucketInfo    * @throws IOException    */
+DECL|method|applySetBucketProperty (OmBucketInfo omBucketInfo)
+name|void
+name|applySetBucketProperty
+parameter_list|(
+name|OmBucketInfo
+name|omBucketInfo
 parameter_list|)
 throws|throws
 name|IOException

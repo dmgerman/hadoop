@@ -86,11 +86,22 @@ name|BucketManager
 block|{
 comment|/**    * Creates a bucket.    * @param bucketInfo - OmBucketInfo for creating bucket.    */
 DECL|method|createBucket (OmBucketInfo bucketInfo)
-name|void
+name|OmBucketInfo
 name|createBucket
 parameter_list|(
 name|OmBucketInfo
 name|bucketInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply Create Bucket changes to OM DB.    * @param omBucketInfo    * @throws IOException    */
+DECL|method|applyCreateBucket (OmBucketInfo omBucketInfo)
+name|void
+name|applyCreateBucket
+parameter_list|(
+name|OmBucketInfo
+name|omBucketInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -111,7 +122,7 @@ name|IOException
 function_decl|;
 comment|/**    * Sets bucket property from args.    * @param args - BucketArgs.    * @throws IOException    */
 DECL|method|setBucketProperty (OmBucketArgs args)
-name|void
+name|OmBucketInfo
 name|setBucketProperty
 parameter_list|(
 name|OmBucketArgs
@@ -120,10 +131,35 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Apply SetBucket Property changes to OM DB.    * @param omBucketInfo    * @throws IOException    */
+DECL|method|applySetBucketProperty (OmBucketInfo omBucketInfo)
+name|void
+name|applySetBucketProperty
+parameter_list|(
+name|OmBucketInfo
+name|omBucketInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Deletes an existing empty bucket from volume.    * @param volumeName - Name of the volume.    * @param bucketName - Name of the bucket.    * @throws IOException    */
 DECL|method|deleteBucket (String volumeName, String bucketName)
 name|void
 name|deleteBucket
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Apply Delete Bucket changes to OM DB.    * @param volumeName    * @param bucketName    * @throws IOException    */
+DECL|method|applyDeleteBucket (String volumeName, String bucketName)
+name|void
+name|applyDeleteBucket
 parameter_list|(
 name|String
 name|volumeName
