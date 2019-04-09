@@ -96,6 +96,22 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|ByteStringHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|XceiverClientReply
 import|;
 end_import
@@ -2717,7 +2733,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO: Turn the below buffer empty check on whne Standalone pipeline
+comment|// TODO: Turn the below buffer empty check on when Standalone pipeline
 comment|// is removed in the write path in tests
 comment|// Preconditions.checkArgument(buffer.position() == 0);
 comment|// bufferPool.checkBufferPoolEmpty();
@@ -3036,9 +3052,9 @@ decl_stmt|;
 name|ByteString
 name|data
 init|=
-name|ByteString
+name|ByteStringHelper
 operator|.
-name|copyFrom
+name|getByteString
 argument_list|(
 name|chunk
 argument_list|)
@@ -3061,7 +3077,7 @@ name|checksum
 operator|.
 name|computeChecksum
 argument_list|(
-name|data
+name|chunk
 argument_list|)
 decl_stmt|;
 name|ChunkInfo

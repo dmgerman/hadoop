@@ -100,27 +100,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|BeforeClass
 import|;
 end_import
 
@@ -141,6 +121,7 @@ end_comment
 begin_class
 DECL|class|TestDataValidate
 specifier|public
+specifier|abstract
 class|class
 name|TestDataValidate
 block|{
@@ -149,31 +130,21 @@ specifier|private
 specifier|static
 name|MiniOzoneCluster
 name|cluster
-decl_stmt|;
-DECL|field|conf
-specifier|private
-specifier|static
-name|OzoneConfiguration
-name|conf
+init|=
+literal|null
 decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    */
-annotation|@
-name|BeforeClass
-DECL|method|init ()
-specifier|public
+DECL|method|startCluster (OzoneConfiguration conf)
 specifier|static
 name|void
-name|init
-parameter_list|()
+name|startCluster
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|conf
-operator|=
-operator|new
-name|OzoneConfiguration
-argument_list|()
-expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -209,13 +180,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Shutdown MiniDFSCluster.    */
-annotation|@
-name|AfterClass
-DECL|method|shutdown ()
-specifier|public
+DECL|method|shutdownCluster ()
 specifier|static
 name|void
-name|shutdown
+name|shutdownCluster
 parameter_list|()
 block|{
 if|if

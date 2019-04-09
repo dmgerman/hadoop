@@ -50,6 +50,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|MessageDigest
@@ -347,14 +357,14 @@ name|OZONE_CLIENT_BYTES_PER_CHECKSUM_DEFAULT_BYTES
 expr_stmt|;
 comment|// Default is 1MB
 block|}
-comment|/**    * Computes checksum for give data.    * @param byteString input data in the form of ByteString.    * @return ChecksumData computed for input data.    */
-DECL|method|computeChecksum (ByteString byteString)
+comment|/**    * Computes checksum for give data.    * @param byteBuffer input data in the form of ByteString.    * @return ChecksumData computed for input data.    */
+DECL|method|computeChecksum (ByteBuffer byteBuffer)
 specifier|public
 name|ChecksumData
 name|computeChecksum
 parameter_list|(
-name|ByteString
-name|byteString
+name|ByteBuffer
+name|byteBuffer
 parameter_list|)
 throws|throws
 name|OzoneChecksumException
@@ -362,9 +372,19 @@ block|{
 return|return
 name|computeChecksum
 argument_list|(
-name|byteString
+name|byteBuffer
 operator|.
-name|toByteArray
+name|array
+argument_list|()
+argument_list|,
+name|byteBuffer
+operator|.
+name|position
+argument_list|()
+argument_list|,
+name|byteBuffer
+operator|.
+name|limit
 argument_list|()
 argument_list|)
 return|;
@@ -378,6 +398,38 @@ parameter_list|(
 name|byte
 index|[]
 name|data
+parameter_list|)
+throws|throws
+name|OzoneChecksumException
+block|{
+return|return
+name|computeChecksum
+argument_list|(
+name|data
+argument_list|,
+literal|0
+argument_list|,
+name|data
+operator|.
+name|length
+argument_list|)
+return|;
+block|}
+comment|/**    * Computes checksum for give data.    * @param data input data in the form of byte array.    * @return ChecksumData computed for input data.    */
+DECL|method|computeChecksum (byte[] data, int offset, int len)
+specifier|public
+name|ChecksumData
+name|computeChecksum
+parameter_list|(
+name|byte
+index|[]
+name|data
+parameter_list|,
+name|int
+name|offset
+parameter_list|,
+name|int
+name|len
 parameter_list|)
 throws|throws
 name|OzoneChecksumException
@@ -490,9 +542,9 @@ comment|// per checksum.
 name|int
 name|dataSize
 init|=
-name|data
-operator|.
-name|length
+name|len
+operator|-
+name|offset
 decl_stmt|;
 name|int
 name|numChecksums
@@ -547,6 +599,10 @@ argument_list|(
 name|data
 argument_list|,
 name|index
+argument_list|,
+name|offset
+argument_list|,
+name|len
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -562,8 +618,8 @@ return|return
 name|checksumData
 return|;
 block|}
-comment|/**    * Computes checksum based on checksumType for a data block at given index    * and a max length of bytesPerChecksum.    * @param data input data    * @param index index to compute the offset from where data must be read    * @return computed checksum ByteString    * @throws OzoneChecksumException thrown when ChecksumType is not recognized    */
-DECL|method|computeChecksumAtIndex (byte[] data, int index)
+comment|/**    * Computes checksum based on checksumType for a data block at given index    * and a max length of bytesPerChecksum.    * @param data input data    * @param index index to compute the offset from where data must be read    * @param start start pos of the array where the computation has to start    * @length length of array till which checksum needs to be computed    * @return computed checksum ByteString    * @throws OzoneChecksumException thrown when ChecksumType is not recognized    */
+DECL|method|computeChecksumAtIndex (byte[] data, int index, int start, int length)
 specifier|private
 name|ByteString
 name|computeChecksumAtIndex
@@ -574,6 +630,12 @@ name|data
 parameter_list|,
 name|int
 name|index
+parameter_list|,
+name|int
+name|start
+parameter_list|,
+name|int
+name|length
 parameter_list|)
 throws|throws
 name|OzoneChecksumException
@@ -581,9 +643,18 @@ block|{
 name|int
 name|offset
 init|=
+name|start
+operator|+
 name|index
 operator|*
 name|bytesPerChecksum
+decl_stmt|;
+name|int
+name|dataLength
+init|=
+name|length
+operator|-
+name|start
 decl_stmt|;
 name|int
 name|len
@@ -598,16 +669,12 @@ operator|+
 name|len
 operator|)
 operator|>
-name|data
-operator|.
-name|length
+name|dataLength
 condition|)
 block|{
 name|len
 operator|=
-name|data
-operator|.
-name|length
+name|dataLength
 operator|-
 name|offset
 expr_stmt|;
@@ -967,6 +1034,12 @@ operator|.
 name|computeChecksum
 argument_list|(
 name|data
+argument_list|,
+literal|0
+argument_list|,
+name|data
+operator|.
+name|length
 argument_list|)
 decl_stmt|;
 return|return

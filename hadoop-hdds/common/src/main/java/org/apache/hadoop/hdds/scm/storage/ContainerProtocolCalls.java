@@ -1946,6 +1946,12 @@ operator|.
 name|computeChecksum
 argument_list|(
 name|data
+argument_list|,
+literal|0
+argument_list|,
+name|data
+operator|.
+name|length
 argument_list|)
 decl_stmt|;
 name|ChunkInfo
