@@ -180,7 +180,7 @@ name|Resource
 name|resource
 parameter_list|)
 function_decl|;
-comment|/**    * Get timeout for tolerant of resource over-commitment    * Note: negative value means no timeout so that allocated containers will    * keep running until the end even under resource over-commitment cases.    * @return<em>overCommitTimeout</em> of the ResourceOption    */
+comment|/**    * Get timeout for tolerant of resource over-commitment    * Note: negative value means no timeout so that allocated containers will    * keep running until the end even under resource over-commitment cases.    * @return<em>overCommitTimeout</em> of the ResourceOption in milliseconds.    */
 annotation|@
 name|Private
 annotation|@
@@ -192,6 +192,7 @@ name|int
 name|getOverCommitTimeout
 parameter_list|()
 function_decl|;
+comment|/**    * Set the overcommit timeout.    * @param overCommitTimeout Timeout in ms. Negative means no timeout.    */
 annotation|@
 name|Private
 annotation|@

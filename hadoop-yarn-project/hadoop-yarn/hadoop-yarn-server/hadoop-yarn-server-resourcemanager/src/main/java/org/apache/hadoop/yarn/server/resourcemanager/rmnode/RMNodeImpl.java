@@ -1349,6 +1349,14 @@ specifier|volatile
 name|Resource
 name|totalCapability
 decl_stmt|;
+DECL|field|updatedCapability
+specifier|private
+specifier|volatile
+name|boolean
+name|updatedCapability
+init|=
+literal|false
+decl_stmt|;
 DECL|field|node
 specifier|private
 specifier|final
@@ -3103,6 +3111,35 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isUpdatedCapability ()
+specifier|public
+name|boolean
+name|isUpdatedCapability
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|updatedCapability
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetUpdatedCapability ()
+specifier|public
+name|void
+name|resetUpdatedCapability
+parameter_list|()
+block|{
+name|this
+operator|.
+name|updatedCapability
+operator|=
+literal|false
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getRackName ()
 specifier|public
 name|String
@@ -4451,6 +4488,12 @@ name|resourceOption
 operator|.
 name|getResource
 argument_list|()
+expr_stmt|;
+name|rmNode
+operator|.
+name|updatedCapability
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|updateRMNodeFromStatusEvents ( RMNodeImpl rmNode, RMNodeStatusEvent statusEvent)

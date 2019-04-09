@@ -1200,6 +1200,26 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isUpdatedCapability ()
+specifier|public
+name|boolean
+name|isUpdatedCapability
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|resetUpdatedCapability ()
+specifier|public
+name|void
+name|resetUpdatedCapability
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
 DECL|method|getRackName ()
 specifier|public
 name|String

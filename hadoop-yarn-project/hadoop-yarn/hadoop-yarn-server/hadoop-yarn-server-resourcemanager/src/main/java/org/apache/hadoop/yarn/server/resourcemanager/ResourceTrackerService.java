@@ -4082,6 +4082,31 @@ name|capability
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Check if we got an event (AdminService) that updated the resources
+if|if
+condition|(
+name|rmNode
+operator|.
+name|isUpdatedCapability
+argument_list|()
+condition|)
+block|{
+name|nodeHeartBeatResponse
+operator|.
+name|setResource
+argument_list|(
+name|rmNode
+operator|.
+name|getTotalCapability
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|rmNode
+operator|.
+name|resetUpdatedCapability
+argument_list|()
+expr_stmt|;
+block|}
 comment|// 7. Send Container Queuing Limits back to the Node. This will be used by
 comment|// the node to truncate the number of Containers queued for execution.
 if|if

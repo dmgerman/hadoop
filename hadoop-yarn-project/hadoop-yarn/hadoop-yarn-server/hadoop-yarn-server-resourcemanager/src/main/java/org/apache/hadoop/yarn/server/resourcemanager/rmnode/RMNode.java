@@ -348,6 +348,18 @@ name|Resource
 name|getTotalCapability
 parameter_list|()
 function_decl|;
+comment|/**    * If the total available resources has been updated.    * @return If the capability has been updated.    */
+DECL|method|isUpdatedCapability ()
+name|boolean
+name|isUpdatedCapability
+parameter_list|()
+function_decl|;
+comment|/**    * Mark that the updated event has been processed.    */
+DECL|method|resetUpdatedCapability ()
+name|void
+name|resetUpdatedCapability
+parameter_list|()
+function_decl|;
 comment|/**    * the aggregated resource utilization of the containers.    * @return the aggregated resource utilization of the containers.    */
 DECL|method|getAggregatedContainersUtilization ()
 specifier|public
