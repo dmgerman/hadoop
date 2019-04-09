@@ -492,7 +492,7 @@ name|cluster
 operator|.
 name|startChaos
 argument_list|(
-literal|5
+name|failureInterval
 argument_list|,
 name|failureInterval
 argument_list|,
@@ -560,8 +560,6 @@ specifier|public
 name|void
 name|testReadWriteWithChaosCluster
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|cluster
 operator|.
@@ -569,7 +567,7 @@ name|startChaos
 argument_list|(
 literal|5
 argument_list|,
-literal|1
+literal|10
 argument_list|,
 name|TimeUnit
 operator|.

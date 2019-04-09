@@ -390,6 +390,15 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting MiniOzoneChaosCluster with:{} datanodes"
+operator|+
+name|numDatanodes
+argument_list|)
+expr_stmt|;
 name|LogUtils
 operator|.
 name|setLogLevel
@@ -583,6 +592,17 @@ name|TimeUnit
 name|timeUnit
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting Chaos with failure period:{} unit:{}"
+argument_list|,
+name|period
+argument_list|,
+name|timeUnit
+argument_list|)
+expr_stmt|;
 name|scheduledFuture
 operator|=
 name|executorService
@@ -608,6 +628,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|scheduledFuture
+operator|!=
+literal|null
+condition|)
+block|{
 name|scheduledFuture
 operator|.
 name|cancel
@@ -620,6 +647,7 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|shutdown ()
 specifier|public
@@ -910,6 +938,17 @@ argument_list|,
 name|TimeUnit
 operator|.
 name|SECONDS
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CONTAINER_CACHE_SIZE
+argument_list|,
+literal|8
 argument_list|)
 expr_stmt|;
 block|}

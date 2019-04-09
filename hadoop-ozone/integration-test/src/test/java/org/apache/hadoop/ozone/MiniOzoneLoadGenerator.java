@@ -495,12 +495,9 @@ name|long
 name|runTimeMillis
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Started IO Thread"
-operator|+
+name|long
+name|threadID
+init|=
 name|Thread
 operator|.
 name|currentThread
@@ -508,6 +505,14 @@ argument_list|()
 operator|.
 name|getId
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Started IO Thread:{}."
+argument_list|,
+name|threadID
 argument_list|)
 expr_stmt|;
 name|String
@@ -635,14 +640,16 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"LOADGEN: Create key:{} failed with exception"
+literal|"LOADGEN: Create key:{} failed with exception, skipping"
 argument_list|,
 name|keyName
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-break|break;
+continue|continue;
+comment|// TODO: HDDS-1403.A key write can fail after multiple block writes
+comment|//  to closed container. add a break here once that is fixed.
 block|}
 try|try
 init|(
@@ -741,7 +748,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Read key:{} failed with exception"
+literal|"LOADGEN: Read key:{} failed with exception"
 argument_list|,
 name|keyName
 argument_list|,
@@ -757,6 +764,15 @@ operator|.
 name|set
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Terminating IO thread:{}."
+argument_list|,
+name|threadID
 argument_list|)
 expr_stmt|;
 block|}
@@ -786,6 +802,23 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting MiniOzoneLoadGenerator for time {}:{} with {} buffers "
+operator|+
+literal|"and {} threads"
+argument_list|,
+name|time
+argument_list|,
+name|timeUnit
+argument_list|,
+name|numBuffers
+argument_list|,
+name|numWriteThreads
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|isWriteThreadRunning

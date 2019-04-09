@@ -1026,6 +1026,19 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"pipeline creation failed type:{} factor:{}"
+argument_list|,
+name|type
+argument_list|,
+name|factor
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 block|}
