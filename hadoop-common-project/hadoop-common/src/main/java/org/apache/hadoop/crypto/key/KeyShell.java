@@ -822,7 +822,7 @@ name|println
 argument_list|(
 literal|"\nEach attribute must correspond to only one "
 operator|+
-literal|"value:\natttribute \""
+literal|"value:\nattribute \""
 operator|+
 name|attr
 operator|+
