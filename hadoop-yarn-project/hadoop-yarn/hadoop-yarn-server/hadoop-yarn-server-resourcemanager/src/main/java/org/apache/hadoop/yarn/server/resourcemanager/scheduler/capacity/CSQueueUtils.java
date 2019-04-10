@@ -348,7 +348,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Illegal queue capacity setting, "
+literal|"Illegal queue capacity setting "
 operator|+
 literal|"(abs-capacity="
 operator|+
@@ -358,7 +358,11 @@ literal|")> (abs-maximum-capacity="
 operator|+
 name|absMaxCapacity
 operator|+
-literal|"). When label=["
+literal|") for queue=["
+operator|+
+name|queueName
+operator|+
+literal|"],label=["
 operator|+
 name|label
 operator|+
