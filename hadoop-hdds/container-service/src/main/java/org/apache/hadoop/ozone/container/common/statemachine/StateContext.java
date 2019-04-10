@@ -1402,6 +1402,16 @@ init|=
 name|getTask
 argument_list|()
 decl_stmt|;
+comment|// Adding not null check, in a case where datanode is still starting up, but
+comment|// we called stop DatanodeStateMachine, this sets state to SHUTDOWN, and
+comment|// there is a chance of getting task as null.
+if|if
+condition|(
+name|task
+operator|!=
+literal|null
+condition|)
+block|{
 if|if
 condition|(
 name|this
@@ -1497,6 +1507,7 @@ argument_list|(
 name|newState
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Returns the next command or null if it is empty.    *    * @return SCMCommand or Null.    */

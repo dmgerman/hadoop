@@ -521,6 +521,13 @@ argument_list|(
 name|endpoint
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|endpointTask
+operator|!=
+literal|null
+condition|)
+block|{
 name|ecs
 operator|.
 name|submit
@@ -528,6 +535,32 @@ argument_list|(
 name|endpointTask
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// This can happen if a task is taking more time than the timeOut
+comment|// specified for the task in await, and when it is completed the task
+comment|// has set the state to Shutdown, we may see the state as shutdown
+comment|// here. So, we need to Shutdown DatanodeStateMachine.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"State is Shutdown in RunningDatanodeState"
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setState
+argument_list|(
+name|DatanodeStateMachine
+operator|.
+name|DatanodeStates
+operator|.
+name|SHUTDOWN
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|//TODO : Cache some of these tasks instead of creating them
