@@ -3043,7 +3043,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|trace
 argument_list|(
 literal|"Unable to wrap exception of type {}: it has no (String) "
 operator|+
