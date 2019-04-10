@@ -470,6 +470,9 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 try|try
 block|{
 name|Files
@@ -490,9 +493,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Container import is failed and the downloaded file can't be "
-operator|+
-literal|"deleted: "
+literal|"Got exception while deleting downloaded container file: "
 operator|+
 name|tarFilePath
 operator|.
@@ -501,6 +502,8 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
