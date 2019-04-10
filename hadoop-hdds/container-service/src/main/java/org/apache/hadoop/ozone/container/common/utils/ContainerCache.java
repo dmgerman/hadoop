@@ -321,14 +321,14 @@ return|return
 name|cache
 return|;
 block|}
-comment|/**    * Closes a db instance.    *    * @param containerID - ID of the container to be closed.    * @param db - db instance to close.    */
-DECL|method|closeDB (long containerID, MetadataStore db)
+comment|/**    * Closes a db instance.    *    * @param containerPath - path of the container db to be closed.    * @param db - db instance to close.    */
+DECL|method|closeDB (String containerPath, MetadataStore db)
 specifier|private
 name|void
 name|closeDB
 parameter_list|(
-name|long
-name|containerID
+name|String
+name|containerPath
 parameter_list|,
 name|MetadataStore
 name|db
@@ -351,7 +351,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -361,7 +361,7 @@ name|error
 argument_list|(
 literal|"Error closing DB. Container: "
 operator|+
-name|containerID
+name|containerPath
 argument_list|,
 name|e
 argument_list|)
@@ -419,16 +419,11 @@ decl_stmt|;
 name|closeDB
 argument_list|(
 operator|(
-operator|(
-name|Number
+name|String
 operator|)
 name|iterator
 operator|.
 name|getKey
-argument_list|()
-operator|)
-operator|.
-name|longValue
 argument_list|()
 argument_list|,
 name|db
@@ -463,13 +458,6 @@ name|LinkEntry
 name|entry
 parameter_list|)
 block|{
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|MetadataStore
 name|db
 init|=
@@ -481,24 +469,55 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|closeDB
-argument_list|(
+name|String
+name|dbFile
+init|=
 operator|(
-operator|(
-name|Number
+name|String
 operator|)
 name|entry
 operator|.
 name|getKey
 argument_list|()
-operator|)
+decl_stmt|;
+name|lock
 operator|.
-name|longValue
+name|lock
 argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|closeDB
+argument_list|(
+name|dbFile
 argument_list|,
 name|db
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Eviction for db:{} failed"
+argument_list|,
+name|dbFile
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 finally|finally
 block|{
@@ -508,9 +527,6 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-return|return
-literal|true
-return|;
 block|}
 comment|/**    * Returns a DB handle if available, create the handler otherwise.    *    * @param containerID - ID of the container.    * @param containerDBType - DB type of the container.    * @param containerDBPath - DB path of the container.    * @param conf - Hadoop Configuration.    * @return MetadataStore.    */
 DECL|method|getDB (long containerID, String containerDBType, String containerDBPath, Configuration conf)
@@ -561,7 +577,7 @@ name|this
 operator|.
 name|get
 argument_list|(
-name|containerID
+name|containerDBPath
 argument_list|)
 decl_stmt|;
 if|if
@@ -609,7 +625,7 @@ name|this
 operator|.
 name|put
 argument_list|(
-name|containerID
+name|containerDBPath
 argument_list|,
 name|db
 argument_list|)
@@ -651,27 +667,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove a DB handler from cache.    *    * @param containerID - ID of the container.    */
-DECL|method|removeDB (long containerID)
+comment|/**    * Remove a DB handler from cache.    *    * @param containerPath - path of the container db file.    */
+DECL|method|removeDB (String containerPath)
 specifier|public
 name|void
 name|removeDB
 parameter_list|(
-name|long
-name|containerID
+name|String
+name|containerPath
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|containerID
-operator|>=
-literal|0
-argument_list|,
-literal|"Container ID cannot be negative."
-argument_list|)
-expr_stmt|;
 name|lock
 operator|.
 name|lock
@@ -689,12 +694,12 @@ name|this
 operator|.
 name|get
 argument_list|(
-name|containerID
+name|containerPath
 argument_list|)
 decl_stmt|;
 name|closeDB
 argument_list|(
-name|containerID
+name|containerPath
 argument_list|,
 name|db
 argument_list|)
@@ -703,7 +708,7 @@ name|this
 operator|.
 name|remove
 argument_list|(
-name|containerID
+name|containerPath
 argument_list|)
 expr_stmt|;
 block|}

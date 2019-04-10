@@ -1030,7 +1030,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"pipeline creation failed type:{} factor:{}"
+literal|"Pipeline creation failed for type:{} factor:{}"
 argument_list|,
 name|type
 argument_list|,

@@ -911,6 +911,8 @@ operator|new
 name|StorageContainerException
 argument_list|(
 literal|"Unable to find the block."
+operator|+
+name|blockID
 argument_list|,
 name|NO_SUCH_BLOCK
 argument_list|)

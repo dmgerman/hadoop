@@ -534,7 +534,10 @@ name|removeDB
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getDbFile
+argument_list|()
+operator|.
+name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;

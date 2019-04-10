@@ -1286,10 +1286,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|metadataStore
+name|BlockUtils
 operator|.
-name|close
-argument_list|()
+name|removeDB
+argument_list|(
+name|keyValueContainerData
+argument_list|,
+name|conf
+argument_list|)
 expr_stmt|;
 name|Map
 argument_list|<
