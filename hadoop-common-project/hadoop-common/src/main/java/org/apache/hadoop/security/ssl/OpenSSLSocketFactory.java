@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.azurebfs.utils
+DECL|package|org.apache.hadoop.security.ssl
 package|package
 name|org
 operator|.
@@ -12,11 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|security
 operator|.
-name|azurebfs
-operator|.
-name|utils
+name|ssl
 package|;
 end_package
 
@@ -187,15 +185,15 @@ comment|/**  * Extension to use native OpenSSL library instead of JSSE for bette
 end_comment
 
 begin_class
-DECL|class|SSLSocketFactoryEx
+DECL|class|OpenSSLSocketFactory
 specifier|public
 specifier|final
 class|class
-name|SSLSocketFactoryEx
+name|OpenSSLSocketFactory
 extends|extends
 name|SSLSocketFactory
 block|{
-comment|/**    * Default indicates Ordered, preferred OpenSSL, if failed to load then fall    * back to Default_JSSE    */
+comment|/**    * Default indicates Ordered, preferred OpenSSL, if failed to load then fall    * back to Default_JSSE.    */
 DECL|enum|SSLChannelMode
 specifier|public
 enum|enum
@@ -213,7 +211,7 @@ block|}
 DECL|field|instance
 specifier|private
 specifier|static
-name|SSLSocketFactoryEx
+name|OpenSSLSocketFactory
 name|instance
 init|=
 literal|null
@@ -229,7 +227,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SSLSocketFactoryEx
+name|OpenSSLSocketFactory
 operator|.
 name|class
 argument_list|)
@@ -279,7 +277,7 @@ block|{
 name|instance
 operator|=
 operator|new
-name|SSLSocketFactoryEx
+name|OpenSSLSocketFactory
 argument_list|(
 name|preferredMode
 argument_list|)
@@ -290,7 +288,7 @@ comment|/**    * Singletone instance of the SSLSocketFactory.    *    * SSLSocke
 DECL|method|getDefaultFactory ()
 specifier|public
 specifier|static
-name|SSLSocketFactoryEx
+name|OpenSSLSocketFactory
 name|getDefaultFactory
 parameter_list|()
 block|{
@@ -306,9 +304,9 @@ name|register
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|SSLSocketFactoryEx (SSLChannelMode preferredChannelMode)
+DECL|method|OpenSSLSocketFactory (SSLChannelMode preferredChannelMode)
 specifier|private
-name|SSLSocketFactoryEx
+name|OpenSSLSocketFactory
 parameter_list|(
 name|SSLChannelMode
 name|preferredChannelMode
@@ -504,7 +502,8 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// Strong reference needs to be kept to logger until initialization of SSLContext finished (see HADOOP-16174):
+comment|// Strong reference needs to be kept to logger until initialization of
+comment|// SSLContext finished (see HADOOP-16174):
 name|logger
 operator|.
 name|setLevel
