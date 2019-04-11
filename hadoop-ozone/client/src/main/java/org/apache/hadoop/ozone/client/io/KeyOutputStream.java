@@ -1700,6 +1700,8 @@ operator|>
 literal|0
 condition|)
 block|{
+try|try
+block|{
 if|if
 condition|(
 name|streamEntries
@@ -1956,6 +1958,20 @@ operator|+=
 name|writeLen
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|markStreamClosed
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 block|}
 comment|/**    * Discards the subsequent pre allocated blocks and removes the streamEntries    * from the streamEntries list for the container which is closed.    * @param containerID id of the closed container    * @param pipelineId id of the associated pipeline    * @param streamIndex index of the stream    */
 DECL|method|discardPreallocatedBlocks (long containerID, PipelineID pipelineId, int streamIndex)
@@ -1976,7 +1992,7 @@ block|{
 comment|// streamIndex< streamEntries.size() signifies that, there are still
 comment|// pre allocated blocks available.
 comment|// This will be called only to discard the next subsequent unused blocks
-comment|// in the sreamEntryList.
+comment|// in the streamEntryList.
 if|if
 condition|(
 name|streamIndex
@@ -2136,6 +2152,56 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+DECL|method|cleanup ()
+specifier|private
+name|void
+name|cleanup
+parameter_list|()
+block|{
+if|if
+condition|(
+name|excludeList
+operator|!=
+literal|null
+condition|)
+block|{
+name|excludeList
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|excludeList
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|bufferPool
+operator|!=
+literal|null
+condition|)
+block|{
+name|bufferPool
+operator|.
+name|clearBufferPool
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|streamEntries
+operator|!=
+literal|null
+condition|)
+block|{
+name|streamEntries
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * It performs following actions :    * a. Updates the committed length at datanode for the current stream in    *    datanode.    * b. Reads the data from the underlying buffer and writes it the next stream.    *    * @param streamEntry StreamEntry    * @param streamIndex Index of the entry    * @param exception actual exception that occurred    * @throws IOException Throws IOException if Write fails    */
@@ -2454,6 +2520,20 @@ operator|-=
 literal|1
 expr_stmt|;
 block|}
+block|}
+DECL|method|markStreamClosed ()
+specifier|private
+name|void
+name|markStreamClosed
+parameter_list|()
+block|{
+name|cleanup
+argument_list|()
+expr_stmt|;
+name|closed
+operator|=
+literal|true
+expr_stmt|;
 block|}
 DECL|method|handleRetry (IOException exception, long len)
 specifier|private
@@ -2902,6 +2982,8 @@ condition|(
 literal|true
 condition|)
 block|{
+try|try
+block|{
 name|int
 name|size
 init|=
@@ -3052,6 +3134,20 @@ block|}
 block|}
 break|break;
 block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|markStreamClosed
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 block|}
 comment|/**    * Commit the key to OM, this will add the blocks as the new key blocks.    *    * @throws IOException    */
 annotation|@
@@ -3184,9 +3280,7 @@ throw|;
 block|}
 finally|finally
 block|{
-name|bufferPool
-operator|.
-name|clearBufferPool
+name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
