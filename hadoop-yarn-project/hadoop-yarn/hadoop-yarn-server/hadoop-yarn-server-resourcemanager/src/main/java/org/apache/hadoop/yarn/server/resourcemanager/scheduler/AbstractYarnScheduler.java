@@ -690,6 +690,24 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|metrics
+operator|.
+name|OpportunisticSchedulerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|RMAppManagerEvent
@@ -4034,6 +4052,16 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+name|OpportunisticSchedulerMetrics
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|incrReleasedOppContainers
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 block|}
 comment|// If the container is getting killed in ACQUIRED state, the requester (AM
 comment|// for regular containers and RM itself for AM container) will not know what
