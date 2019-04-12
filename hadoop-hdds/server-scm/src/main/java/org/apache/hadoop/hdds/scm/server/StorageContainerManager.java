@@ -2262,6 +2262,8 @@ argument_list|,
 name|scmBlockManager
 argument_list|,
 name|replicationManager
+argument_list|,
+name|pipelineManager
 argument_list|)
 expr_stmt|;
 name|eventQueue
@@ -5124,6 +5126,30 @@ parameter_list|()
 block|{
 return|return
 name|chillModeHandler
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getScmChillModeManager ()
+specifier|public
+name|SCMChillModeManager
+name|getScmChillModeManager
+parameter_list|()
+block|{
+return|return
+name|scmChillModeManager
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getReplicationManager ()
+specifier|public
+name|ReplicationManager
+name|getReplicationManager
+parameter_list|()
+block|{
+return|return
+name|replicationManager
 return|;
 block|}
 DECL|method|checkAdminAccess (String remoteUser)

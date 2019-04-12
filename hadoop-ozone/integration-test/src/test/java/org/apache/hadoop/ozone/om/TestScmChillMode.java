@@ -2029,7 +2029,9 @@ comment|// Even on SCM restart, cluster should be out of chill mode immediately.
 name|cluster
 operator|.
 name|restartStorageContainerManager
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(

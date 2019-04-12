@@ -388,11 +388,14 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Restarts StorageContainerManager instance.    *    * @throws IOException    * @throws TimeoutException    * @throws InterruptedException    */
-DECL|method|restartStorageContainerManager ()
+comment|/**    * Restarts StorageContainerManager instance.    *    * @param waitForDatanode    * @throws IOException    * @throws TimeoutException    * @throws InterruptedException    */
+DECL|method|restartStorageContainerManager (boolean waitForDatanode)
 name|void
 name|restartStorageContainerManager
-parameter_list|()
+parameter_list|(
+name|boolean
+name|waitForDatanode
+parameter_list|)
 throws|throws
 name|InterruptedException
 throws|,

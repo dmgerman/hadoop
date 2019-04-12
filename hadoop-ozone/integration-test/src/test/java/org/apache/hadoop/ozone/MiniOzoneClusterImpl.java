@@ -1307,11 +1307,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|restartStorageContainerManager ()
+DECL|method|restartStorageContainerManager (boolean waitForDatanode)
 specifier|public
 name|void
 name|restartStorageContainerManager
-parameter_list|()
+parameter_list|(
+name|boolean
+name|waitForDatanode
+parameter_list|)
 throws|throws
 name|TimeoutException
 throws|,
@@ -1347,9 +1350,15 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|waitForDatanode
+condition|)
+block|{
 name|waitForClusterToBeReady
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

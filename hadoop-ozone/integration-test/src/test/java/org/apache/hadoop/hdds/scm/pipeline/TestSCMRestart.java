@@ -392,7 +392,9 @@ comment|// correct state.
 name|cluster
 operator|.
 name|restartStorageContainerManager
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|newContainerManager
 operator|=
