@@ -5175,7 +5175,7 @@ name|DEFAULT_NM_PMEM_CHECK_ENABLED
 init|=
 literal|true
 decl_stmt|;
-comment|/** Specifies whether physical memory check is enabled. */
+comment|/** Specifies whether virtual memory check is enabled. */
 DECL|field|NM_VMEM_CHECK_ENABLED
 specifier|public
 specifier|static
