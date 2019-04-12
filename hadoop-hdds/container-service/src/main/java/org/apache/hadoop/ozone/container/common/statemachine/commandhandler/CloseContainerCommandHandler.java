@@ -328,16 +328,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
 begin_comment
 comment|/**  * Handler for close container command received from SCM.  */
 end_comment
@@ -737,19 +727,6 @@ operator|.
 name|CloseContainerRequestProto
 operator|.
 name|getDefaultInstance
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|command
-operator|.
-name|setTraceID
-argument_list|(
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

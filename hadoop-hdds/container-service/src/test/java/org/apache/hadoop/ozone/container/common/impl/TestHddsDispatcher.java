@@ -1961,17 +1961,6 @@ operator|.
 name|WriteChunk
 argument_list|)
 operator|.
-name|setTraceID
-argument_list|(
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|datanodeId
