@@ -1099,7 +1099,7 @@ specifier|final
 name|String
 name|OZONE_SCM_STALENODE_INTERVAL_DEFAULT
 init|=
-literal|"90s"
+literal|"5m"
 decl_stmt|;
 DECL|field|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
 specifier|public
@@ -1287,7 +1287,7 @@ specifier|final
 name|String
 name|OZONE_SCM_PIPELINE_DESTROY_TIMEOUT_DEFAULT
 init|=
-literal|"300s"
+literal|"66s"
 decl_stmt|;
 DECL|field|OZONE_SCM_PIPELINE_CREATION_INTERVAL
 specifier|public
