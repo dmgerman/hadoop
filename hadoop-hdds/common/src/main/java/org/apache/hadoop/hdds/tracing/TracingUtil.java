@@ -131,6 +131,15 @@ specifier|final
 class|class
 name|TracingUtil
 block|{
+DECL|field|NULL_SPAN_AS_STRING
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|NULL_SPAN_AS_STRING
+init|=
+literal|""
+decl_stmt|;
 DECL|method|TracingUtil ()
 specifier|private
 name|TracingUtil
@@ -216,13 +225,6 @@ name|String
 name|exportCurrentSpan
 parameter_list|()
 block|{
-name|StringBuilder
-name|builder
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|GlobalTracer
@@ -236,6 +238,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|StringBuilder
+name|builder
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
 name|GlobalTracer
 operator|.
 name|get
@@ -261,12 +270,15 @@ argument_list|,
 name|builder
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|builder
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+return|return
+name|NULL_SPAN_AS_STRING
 return|;
 block|}
 comment|/**    * Export the specific span as a string.    *    * @return encoded tracing context.    */
@@ -280,13 +292,6 @@ name|Span
 name|span
 parameter_list|)
 block|{
-name|StringBuilder
-name|builder
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|span
@@ -294,6 +299,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|StringBuilder
+name|builder
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
 name|GlobalTracer
 operator|.
 name|get
@@ -313,12 +325,15 @@ argument_list|,
 name|builder
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|builder
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+return|return
+name|NULL_SPAN_AS_STRING
 return|;
 block|}
 comment|/**    * Create a new scope and use the imported span as the parent.    *    * @param name          name of the newly created scope    * @param encodedParent Encoded parent span (could be null or empty)    *    * @return OpenTracing scope.    */
