@@ -1820,7 +1820,7 @@ comment|// arrive in case the ContainerStateMachine reapplies the transaction
 comment|// on datanode restart. Just log a warning msg here.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Container already exists."
 operator|+
