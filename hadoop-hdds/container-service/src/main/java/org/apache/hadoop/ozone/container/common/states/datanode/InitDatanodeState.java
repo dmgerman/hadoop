@@ -62,7 +62,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|HddsUtils
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -76,9 +78,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|scm
 operator|.
-name|DatanodeDetails
+name|HddsServerUtil
 import|;
 end_import
 
@@ -625,7 +627,7 @@ block|{
 name|String
 name|dataNodeIDPath
 init|=
-name|HddsUtils
+name|HddsServerUtil
 operator|.
 name|getDatanodeIdFilePath
 argument_list|(

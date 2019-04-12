@@ -560,7 +560,7 @@ name|dbDirPath
 operator|+
 literal|" specified in configuration setting "
 operator|+
-name|componentName
+name|key
 argument_list|)
 throw|;
 block|}
@@ -572,7 +572,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Checks and creates Ozone Metadir Path if it does not exist.    *    * @param conf - Configuration    *    * @return File MetaDir    */
+comment|/**    * Checks and creates Ozone Metadir Path if it does not exist.    *    * @param conf - Configuration    * @return File MetaDir    * @throws IllegalArgumentException if the configuration setting is not set    */
 DECL|method|getOzoneMetaDirPath (Configuration conf)
 specifier|public
 specifier|static
@@ -583,28 +583,25 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|String
-name|metaDirPath
+name|File
+name|dirPath
 init|=
-name|conf
-operator|.
-name|getTrimmed
+name|getDirectoryFromConfig
 argument_list|(
+name|conf
+argument_list|,
 name|HddsConfigKeys
 operator|.
 name|OZONE_METADATA_DIRS
+argument_list|,
+literal|"Ozone"
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|metaDirPath
+name|dirPath
 operator|==
 literal|null
-operator|||
-name|metaDirPath
-operator|.
-name|isEmpty
-argument_list|()
 condition|)
 block|{
 throw|throw
@@ -616,40 +613,6 @@ operator|.
 name|OZONE_METADATA_DIRS
 operator|+
 literal|" must be defined."
-argument_list|)
-throw|;
-block|}
-name|File
-name|dirPath
-init|=
-operator|new
-name|File
-argument_list|(
-name|metaDirPath
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|dirPath
-operator|.
-name|exists
-argument_list|()
-operator|&&
-operator|!
-name|dirPath
-operator|.
-name|mkdirs
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Unable to create paths. Path: "
-operator|+
-name|dirPath
 argument_list|)
 throw|;
 block|}

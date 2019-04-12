@@ -393,26 +393,6 @@ return|return
 name|host
 return|;
 block|}
-comment|/**    * Get the path for datanode id file.    *    * @param conf - Configuration    * @return the path of datanode id as string    */
-DECL|method|getDatanodeIdFilePath (Configuration conf)
-specifier|public
-specifier|static
-name|String
-name|getDatanodeIdFilePath
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|HddsUtils
-operator|.
-name|getDatanodeIdFilePath
-argument_list|(
-name|conf
-argument_list|)
-return|;
-block|}
 comment|/**    * Convert time in millisecond to a human readable format required in ozone.    * @return a human readable string for the input time    */
 DECL|method|formatTime (long millis)
 specifier|public

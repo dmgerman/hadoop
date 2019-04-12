@@ -400,7 +400,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Get configured Recon DB directory value based on config. If not present,    * fallback to om.metadata.dirs    *    * @param conf         configuration bag    * @param dirConfigKey key to check    * @return Return File based on configured or fallback value.    */
+comment|/**    * Get configured Recon DB directory value based on config. If not present,    * fallback to ozone.metadata.dirs    *    * @param conf         configuration bag    * @param dirConfigKey key to check    * @return Return File based on configured or fallback value.    */
 DECL|method|getReconDbDir (Configuration conf, String dirConfigKey)
 specifier|public
 specifier|static

@@ -1423,6 +1423,85 @@ name|getPath
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the path for datanode id file.    *    * @param conf - Configuration    * @return the path of datanode id as string    */
+DECL|method|getDatanodeIdFilePath (Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getDatanodeIdFilePath
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|String
+name|dataNodeIDPath
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_DATANODE_ID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|dataNodeIDPath
+operator|==
+literal|null
+condition|)
+block|{
+name|File
+name|metaDirPath
+init|=
+name|ServerUtils
+operator|.
+name|getOzoneMetaDirPath
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|metaDirPath
+operator|==
+literal|null
+condition|)
+block|{
+comment|// this means meta data is not found, in theory should not happen at
+comment|// this point because should've failed earlier.
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unable to locate meta data"
+operator|+
+literal|"directory when getting datanode id path"
+argument_list|)
+throw|;
+block|}
+name|dataNodeIDPath
+operator|=
+operator|new
+name|File
+argument_list|(
+name|metaDirPath
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_DATANODE_ID_PATH_DEFAULT
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|dataNodeIDPath
+return|;
+block|}
 block|}
 end_class
 
