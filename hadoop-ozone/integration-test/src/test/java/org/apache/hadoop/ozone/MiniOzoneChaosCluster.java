@@ -468,6 +468,22 @@ name|void
 name|failNodes
 parameter_list|()
 block|{
+specifier|final
+name|int
+name|numNodesToFail
+init|=
+name|getNumberOfNodesToFail
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Will restart {} nodes to simulate failure"
+argument_list|,
+name|numNodesToFail
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -477,8 +493,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|getNumberOfNodesToFail
-argument_list|()
+name|numNodesToFail
 condition|;
 name|i
 operator|++
@@ -498,11 +513,29 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restarting DataNodeIndex {}"
+argument_list|,
+name|failedNodeIndex
+argument_list|)
+expr_stmt|;
 name|restartHddsDatanode
 argument_list|(
 name|failedNodeIndex
 argument_list|,
 name|failureMode
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Completed restarting DataNodeIndex {}"
+argument_list|,
+name|failedNodeIndex
 argument_list|)
 expr_stmt|;
 block|}
@@ -596,11 +629,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting Chaos with failure period:{} unit:{}"
+literal|"Starting Chaos with failure period:{} unit:{} numDataNodes:{}"
 argument_list|,
 name|period
 argument_list|,
 name|timeUnit
+argument_list|,
+name|numDatanodes
 argument_list|)
 expr_stmt|;
 name|scheduledFuture
