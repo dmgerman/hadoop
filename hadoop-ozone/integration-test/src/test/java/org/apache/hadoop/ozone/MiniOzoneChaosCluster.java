@@ -690,11 +690,6 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
-name|super
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 try|try
 block|{
 name|stopChaos
@@ -715,6 +710,13 @@ name|TimeUnit
 operator|.
 name|DAYS
 argument_list|)
+expr_stmt|;
+comment|//this should be called after stopChaos to be sure that the
+comment|//datanode collection is not modified during the shutdown
+name|super
+operator|.
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
