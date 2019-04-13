@@ -426,7 +426,7 @@ return|;
 block|}
 comment|/**    * Compute HMAC of the identifier using the secret key and return the     * output as password    * @param identifier the bytes of the identifier    * @param key the secret key    * @return the bytes of the generated password    */
 DECL|method|createPassword (byte[] identifier, SecretKey key)
-specifier|protected
+specifier|public
 specifier|static
 name|byte
 index|[]

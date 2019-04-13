@@ -9717,6 +9717,18 @@ name|getPort
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSaslServer ()
+specifier|public
+name|SaslDataTransferServer
+name|getSaslServer
+parameter_list|()
+block|{
+return|return
+name|saslServer
+return|;
+block|}
 comment|/**    * @return name useful for logging    */
 DECL|method|getDisplayName ()
 specifier|public

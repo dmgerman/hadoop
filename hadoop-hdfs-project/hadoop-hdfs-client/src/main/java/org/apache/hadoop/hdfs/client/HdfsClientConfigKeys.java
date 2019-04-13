@@ -621,6 +621,12 @@ name|DFS_ENCRYPT_DATA_TRANSFER_CIPHER_SUITES_KEY
 init|=
 literal|"dfs.encrypt.data.transfer.cipher.suites"
 decl_stmt|;
+DECL|field|DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_NEW_QOP_KEY
+name|String
+name|DFS_ENCRYPT_DATA_OVERWRITE_DOWNSTREAM_NEW_QOP_KEY
+init|=
+literal|"dfs.encrypt.data.overwrite.downstream.new.qop"
+decl_stmt|;
 DECL|field|DFS_DATA_TRANSFER_PROTECTION_KEY
 name|String
 name|DFS_DATA_TRANSFER_PROTECTION_KEY

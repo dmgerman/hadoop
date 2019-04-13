@@ -194,10 +194,10 @@ name|TestHAAuxiliaryPort
 block|{
 annotation|@
 name|Test
-DECL|method|testTest ()
+DECL|method|testHAAuxiliaryPort ()
 specifier|public
 name|void
-name|testTest
+name|testHAAuxiliaryPort
 parameter_list|()
 throws|throws
 name|Exception
